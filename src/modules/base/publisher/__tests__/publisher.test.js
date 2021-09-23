@@ -65,7 +65,7 @@ describe('Publisher', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('A string label');
         });
     });
@@ -83,8 +83,8 @@ describe('Publisher', () => {
 
         return Promise.resolve().then(() => {
             // The button should not be disabled by default
-            const button = element.shadowRoot.querySelector('lightning-button');
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
 
             expect(input.disabled).toBeFalsy();
             expect(button.disabled).toBeFalsy();
@@ -101,8 +101,8 @@ describe('Publisher', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
 
             expect(input.disabled).toBeTruthy();
             expect(button.disabled).toBeTruthy();
@@ -123,7 +123,7 @@ describe('Publisher', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input"]'
                 );
                 expect(input.placeholder).toBe('A string placeholder');
 
@@ -168,7 +168,7 @@ describe('Publisher', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button).toBeTruthy();
         });
     });
@@ -183,7 +183,7 @@ describe('Publisher', () => {
         element.variant = 'comment';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button).toBeFalsy();
         });
     });
@@ -228,7 +228,7 @@ describe('Publisher', () => {
         element.focus();
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
             button.click();
             expect(handler).toHaveBeenCalledTimes(1);

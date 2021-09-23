@@ -565,7 +565,7 @@ export default class List extends LightningElement {
         const hoveredItem = this.getHoveredItem(center);
         if (hoveredItem) this.switchWithItem(hoveredItem);
         const buttonMenu = event.currentTarget.querySelector(
-            'lightning-button-menu'
+            '[data-element-id="lightning-button-menu"]'
         );
         if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
     }

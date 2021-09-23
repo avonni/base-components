@@ -57,6 +57,7 @@
                     <lightning-formatted-rich-text
                         value={value}
                         disable-linkify
+                        data-element-id="lightning-formatted-rich-text-bottom-toolbar"
                     ></lightning-formatted-rich-text>
                 </div>
             </div>
@@ -90,6 +91,7 @@
                             options={fontMenus.fontList}
                             disabled={disabled}
                             dropdown-alignment={menuDropdownAlignment}
+                            data-element-id="lightning-combobox-font"
                             onfocus={activateEditor}
                             onchange={selectFont}
                         ></lightning-combobox>
@@ -104,6 +106,7 @@
                             options={fontMenus.sizeList}
                             disabled={disabled}
                             dropdown-alignment={menuDropdownAlignment}
+                            data-element-id="lightning-combobox-size"
                             onfocus={activateEditor}
                             onchange={selectSize}
                         ></lightning-combobox>
@@ -193,6 +196,7 @@
                         <lightning-formatted-rich-text
                             value={value}
                             disable-linkify
+                            data-element-id="lightning-formatted-rich-text-top-toolbar"
                         ></lightning-formatted-rich-text>
                     </div>
                 </div>

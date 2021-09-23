@@ -178,7 +178,7 @@ describe('PrimitiveComboboxGroup', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('h3');
+            const label = element.shadowRoot.querySelector('[data-element-id="h3"]');
             expect(label).toBeTruthy();
             expect(label.textContent).toBe('A string label');
         });

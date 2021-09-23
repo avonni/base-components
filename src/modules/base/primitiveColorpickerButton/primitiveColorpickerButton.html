@@ -36,8 +36,9 @@
     <button
         type="button"
         class="slds-button slds-color-picker__summary-button slds-button_icon slds-button_icon-more"
-        onclick={handleColorPickerToggleClick}
         disabled={disabled}
+        data-element-id="button"
+        onclick={handleColorPickerToggleClick}
     >
         <span class="slds-swatch" data-id="thumbnail" style={colorInputStyle}>
             <span class="slds-assistive-text">{i18n.a11yTriggerText}</span>

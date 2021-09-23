@@ -105,7 +105,7 @@ describe('VisualPickerLink', () => {
         element.href = 'https://www.avonni.app/';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('a');
+            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
             expect(link.href).toBe('https://www.avonni.app/');
         });
     });
@@ -122,7 +122,7 @@ describe('VisualPickerLink', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-welcome-mat__tile-icon-container lightning-icon:first-of-type'
+                '[data-element-id="lightning-icon-left"]'
             );
 
             expect(icon).toBeTruthy();
@@ -224,7 +224,7 @@ describe('VisualPickerLink', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-welcome-mat__tile'
             );
-            const link = element.shadowRoot.querySelector('a');
+            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
 
             expect(link).toBeTruthy();
             expect(wrapper.classList).not.toContain(
@@ -246,7 +246,7 @@ describe('VisualPickerLink', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-welcome-mat__tile'
             );
-            const link = element.shadowRoot.querySelector('a');
+            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
 
             expect(link).toBeFalsy();
             expect(wrapper.classList).toContain(
@@ -286,7 +286,7 @@ describe('VisualPickerLink', () => {
         const handler = jest.fn();
         element.addEventListener('click', handler);
 
-        const link = element.shadowRoot.querySelector('a');
+        const link = element.shadowRoot.querySelector('[data-element-id="a"]');
         link.click();
 
         expect(handler).toHaveBeenCalled();

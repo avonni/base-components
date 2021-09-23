@@ -614,7 +614,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {element}
      */
     get input() {
-        return this.template.querySelector('input');
+        return this.template.querySelector('[data-element-id="input"]');
     }
 
     /**
@@ -1025,7 +1025,7 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._autoPosition.start({
-            target: () => this.template.querySelector('input'),
+            target: () => this.template.querySelector('[data-element-id="input"]'),
             element: () => this.template.querySelector('div.slds-dropdown'),
             align: {
                 horizontal: Direction.Left,

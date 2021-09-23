@@ -70,13 +70,13 @@ export default class PrimitiveColorpickerButton extends LightningElement {
 
     @api
     focus() {
-        const button = this.template.querySelector('button');
+        const button = this.template.querySelector('[data-element-id="button"]');
         return button && button.focus();
     }
 
     @api
     blur() {
-        const button = this.template.querySelector('button');
+        const button = this.template.querySelector('[data-element-id="button"]');
         return button && button.blur();
     }
 
@@ -103,7 +103,7 @@ export default class PrimitiveColorpickerButton extends LightningElement {
         this._autoPosition.start({
             target: () =>
                 this.template.querySelector(
-                    'button.slds-color-picker__summary-button'
+                    '[data-element-id="button"]'
                 ),
             element: () =>
                 this.template

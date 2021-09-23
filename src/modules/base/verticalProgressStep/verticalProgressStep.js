@@ -105,7 +105,7 @@ export default class VerticalProgressStep extends LightningElement {
      * @type {Element}
      */
     get slotItems() {
-        return this.template.querySelector('slot');
+        return this.template.querySelector('[data-element-id="slot-default"]');
     }
 
     /**

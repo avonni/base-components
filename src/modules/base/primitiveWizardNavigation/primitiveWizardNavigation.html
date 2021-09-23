@@ -50,7 +50,7 @@
                 label={previousButtonLabel}
                 variant={previousButtonVariant}
                 data-action="previous"
-                data-element-id="lightning-button"
+                data-element-id="lightning-button-previous"
                 class="slds-m-right_xx-small slds-m-left_small"
                 onclick={handleButtonClick}
             ></lightning-button>
@@ -112,6 +112,7 @@
                                     class={step.bulletClass}
                                     title={step.label}
                                     aria-selected={step.selected}
+                                    data-element-id="span-bullet"
                                 >
                                     <span class="slds-assistive-text"
                                         >{step.label}</span
@@ -162,7 +163,7 @@
                         data-action="next"
                         variant={nextButtonVariant}
                         class="slds-m-left_xx-small"
-                        data-element-id="lightning-button"
+                        data-element-id="lightning-button-next"
                         onclick={handleButtonClick}
                     ></lightning-button>
                     <lightning-button
@@ -172,7 +173,7 @@
                         data-action="finish"
                         label={finishButtonLabel}
                         variant={finishButtonVariant}
-                        data-element-id="lightning-button"
+                        data-element-id="lightning-button-last"
                         class="slds-m-left_xx-small"
                         onclick={handleButtonClick}
                     ></lightning-button>

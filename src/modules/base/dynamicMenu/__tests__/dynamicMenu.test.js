@@ -111,7 +111,7 @@ describe('Dynamic Menu', () => {
         element.buttonSize = 'auto';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList).not.toContain('slds-button_stretch');
             expect(element.classList).not.toContain('slds-button_stretch');
         });
@@ -127,7 +127,7 @@ describe('Dynamic Menu', () => {
         element.buttonSize = 'stretch';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList).toContain('slds-button_stretch');
             expect(element.classList).toContain('slds-button_stretch');
         });
@@ -143,7 +143,7 @@ describe('Dynamic Menu', () => {
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button).toBeTruthy();
             expect(button.textContent).toBe('This is a label');
         });
@@ -160,7 +160,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.iconName).toBe('utility:close');
         });
@@ -194,7 +194,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.iconName).toBe('utility:add');
             expect(button.size).toBe('medium');
@@ -234,7 +234,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.alternativeText).toBe('This is an alternative text');
         });
@@ -250,7 +250,7 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
@@ -275,7 +275,7 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
@@ -300,7 +300,7 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
@@ -325,7 +325,7 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
@@ -350,7 +350,7 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
@@ -375,7 +375,7 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
@@ -400,7 +400,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.disabled).toBeTruthy();
         });
@@ -416,7 +416,7 @@ describe('Dynamic Menu', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.disabled).toBeTruthy();
         });
     });
@@ -433,13 +433,13 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    'lightning-spinner'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeTruthy();
             });
@@ -458,13 +458,13 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    'lightning-spinner'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner.alternativeText).toBe('This is a loading text');
             });
@@ -482,13 +482,13 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
             .then(() => {
                 const searchInput = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input"]'
                 );
                 expect(searchInput).toBeTruthy();
                 expect(searchInput.type).toBe('search');
@@ -508,13 +508,13 @@ describe('Dynamic Menu', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon"]'
                 );
                 button.click();
             })
             .then(() => {
                 const searchInput = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input"]'
                 );
                 expect(searchInput).toBeTruthy();
                 expect(searchInput.placeholder).toBe(
@@ -534,7 +534,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.title).toBe('This is a title text');
         });
@@ -550,7 +550,7 @@ describe('Dynamic Menu', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.title).toBe('This is a title text');
         });
     });
@@ -566,7 +566,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.variant).toBe('bare');
         });
@@ -582,7 +582,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.variant).toBe('container');
         });
@@ -598,7 +598,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.variant).toBe('brand');
         });
@@ -614,7 +614,7 @@ describe('Dynamic Menu', () => {
         element.label = 'Some label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList).toContain('slds-button_brand');
         });
     });
@@ -629,7 +629,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.variant).toBe('border-filled');
         });
@@ -645,7 +645,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.variant).toBe('bare-inverse');
         });
@@ -661,7 +661,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.variant).toBe('border-inverse');
         });
@@ -678,7 +678,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.value).toBe('1');
         });
@@ -694,7 +694,7 @@ describe('Dynamic Menu', () => {
         element.value = '1';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.value).toBe('1');
         });
     });
@@ -710,7 +710,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.accessKey).toBe('K');
         });
@@ -726,7 +726,7 @@ describe('Dynamic Menu', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.accessKey).toBe('K');
         });
     });
@@ -742,7 +742,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(button.tooltip).toBe('This is a tooltip text');
         });
@@ -759,7 +759,7 @@ describe('Dynamic Menu', () => {
         element.items = items;
 
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         const handler = jest.fn();

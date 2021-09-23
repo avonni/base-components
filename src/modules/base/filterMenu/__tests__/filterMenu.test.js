@@ -123,7 +123,7 @@ describe('FilterMenu', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.accessKey).toBe('K');
         });
     });
@@ -155,12 +155,12 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.applyButtonLabel = 'A string label';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const submitButton = element.shadowRoot.querySelector(
-                '.slds-dropdown lightning-button:last-of-type'
+                '[data-element-id="lightning-button-apply"]'
             );
             expect(submitButton.label).toBe('A string label');
         });
@@ -178,7 +178,7 @@ describe('FilterMenu', () => {
         element.buttonVariant = 'border';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-border'
             );
@@ -196,7 +196,7 @@ describe('FilterMenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_neutral'
             );
@@ -214,7 +214,7 @@ describe('FilterMenu', () => {
         element.iconName = 'utility:user';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon slds-button_icon-more'
             );
@@ -231,7 +231,7 @@ describe('FilterMenu', () => {
         element.buttonVariant = 'bare';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-bare'
             );
@@ -249,7 +249,7 @@ describe('FilterMenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe('slds-button');
         });
     });
@@ -265,7 +265,7 @@ describe('FilterMenu', () => {
         element.iconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-more'
             );
@@ -282,7 +282,7 @@ describe('FilterMenu', () => {
         element.buttonVariant = 'container';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-container'
             );
@@ -300,7 +300,7 @@ describe('FilterMenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe('slds-button');
         });
     });
@@ -316,7 +316,7 @@ describe('FilterMenu', () => {
         element.icon = 'utility:user';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-container'
             );
@@ -333,7 +333,7 @@ describe('FilterMenu', () => {
         element.buttonVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-border-filled'
             );
@@ -351,7 +351,7 @@ describe('FilterMenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe('slds-button');
         });
     });
@@ -367,7 +367,7 @@ describe('FilterMenu', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
             );
@@ -384,7 +384,7 @@ describe('FilterMenu', () => {
         element.buttonVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-bare slds-button_icon-inverse'
             );
@@ -402,7 +402,7 @@ describe('FilterMenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe('slds-button');
         });
     });
@@ -418,7 +418,7 @@ describe('FilterMenu', () => {
         element.iconName = 'standard:apps';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
             );
@@ -435,7 +435,7 @@ describe('FilterMenu', () => {
         element.buttonVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-border-inverse'
             );
@@ -453,7 +453,7 @@ describe('FilterMenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_inverse'
             );
@@ -471,7 +471,7 @@ describe('FilterMenu', () => {
         element.icon = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList.value).toBe(
                 'slds-button slds-button_icon-border-inverse'
             );
@@ -489,7 +489,7 @@ describe('FilterMenu', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.disabled).toBeFalsy();
         });
     });
@@ -504,7 +504,7 @@ describe('FilterMenu', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.disabled).toBeTruthy();
         });
     });
@@ -519,7 +519,7 @@ describe('FilterMenu', () => {
 
         element.dropdownAlignment = 'left';
         element.dropdownNubbin = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -555,7 +555,7 @@ describe('FilterMenu', () => {
 
         element.dropdownAlignment = 'auto';
         element.dropdownNubbin = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -591,7 +591,7 @@ describe('FilterMenu', () => {
 
         element.dropdownAlignment = 'center';
         element.dropdownNubbin = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -627,7 +627,7 @@ describe('FilterMenu', () => {
 
         element.dropdownAlignment = 'right';
         element.dropdownNubbin = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -663,7 +663,7 @@ describe('FilterMenu', () => {
 
         element.dropdownAlignment = 'bottom-left';
         element.dropdownNubbin = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -697,7 +697,7 @@ describe('FilterMenu', () => {
 
         element.dropdownAlignment = 'bottom-center';
         element.dropdownNubbin = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -733,7 +733,7 @@ describe('FilterMenu', () => {
 
         element.dropdownAlignment = 'bottom-right';
         element.dropdownNubbin = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -764,7 +764,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownNubbin = false;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -790,7 +790,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownLength = '7-items';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -817,7 +817,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownLength = '5-items';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -844,7 +844,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownLength = '10-items';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -872,7 +872,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownWidth = 'small';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -893,7 +893,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownWidth = 'xx-small';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -914,7 +914,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownWidth = 'x-small';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -935,7 +935,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownWidth = 'medium';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -956,7 +956,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.dropdownWidth = 'large';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -980,12 +980,12 @@ describe('FilterMenu', () => {
 
         element.hideApplyResetButtons = false;
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
             expect(buttons).toHaveLength(2);
         });
@@ -1003,7 +1003,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
             expect(buttons).toHaveLength(2);
         });
@@ -1018,12 +1018,12 @@ describe('FilterMenu', () => {
 
         element.hideApplyResetButtons = true;
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
             expect(buttons).toHaveLength(0);
         });
@@ -1041,7 +1041,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
             expect(buttons).toHaveLength(0);
         });
@@ -1060,12 +1060,12 @@ describe('FilterMenu', () => {
         element.items = ITEMS;
         element.value = VALUE;
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id="lightning-pill-container"]'
             );
             expect(pills).toBeTruthy();
         });
@@ -1085,7 +1085,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id="lightning-pill-container"]'
             );
             expect(pills).toBeTruthy();
         });
@@ -1102,12 +1102,12 @@ describe('FilterMenu', () => {
         element.items = ITEMS;
         element.value = VALUE;
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id="lightning-pill-container"]'
             );
             expect(pills).toBeFalsy();
         });
@@ -1127,7 +1127,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id="lightning-pill-container"]'
             );
             expect(pills).toBeFalsy();
         });
@@ -1144,7 +1144,7 @@ describe('FilterMenu', () => {
         element.iconName = 'utility:chevrondown';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             const icons = element.shadowRoot.querySelectorAll(
                 '[data-element-id^="avonni-primitive-icon"]'
             );
@@ -1164,7 +1164,7 @@ describe('FilterMenu', () => {
         element.iconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             const icons = element.shadowRoot.querySelectorAll(
                 '[data-element-id^="avonni-primitive-icon"]'
             );
@@ -1186,7 +1186,7 @@ describe('FilterMenu', () => {
         element.iconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList).toContain('slds-button_icon-xx-small');
             expect(button.classList).not.toContain('slds-button_icon-x-small');
             expect(button.classList).not.toContain('slds-button_icon-small');
@@ -1204,7 +1204,7 @@ describe('FilterMenu', () => {
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList).not.toContain('slds-button_icon-xx-small');
             expect(button.classList).toContain('slds-button_icon-x-small');
             expect(button.classList).not.toContain('slds-button_icon-small');
@@ -1222,7 +1222,7 @@ describe('FilterMenu', () => {
         element.iconSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList).not.toContain('slds-button_icon-xx-small');
             expect(button.classList).not.toContain('slds-button_icon-x-small');
             expect(button.classList).not.toContain('slds-button_icon-small');
@@ -1240,7 +1240,7 @@ describe('FilterMenu', () => {
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.classList).not.toContain('slds-button_icon-xx-small');
             expect(button.classList).not.toContain('slds-button_icon-x-small');
             expect(button.classList).not.toContain('slds-button_icon-small');
@@ -1257,12 +1257,12 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.isLoading = false;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             const list = element.shadowRoot.querySelector(
                 '.slds-dropdown__list'
@@ -1281,12 +1281,12 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.isLoading = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             const list = element.shadowRoot.querySelector(
                 '.slds-dropdown__list'
@@ -1306,12 +1306,12 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.items = ITEMS;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                'lightning-menu-item'
+                '[data-element-id^="lightning-menu-item"]'
             );
 
             expect(items).toHaveLength(6);
@@ -1345,7 +1345,7 @@ describe('FilterMenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.textContent).toContain('A string label');
         });
     });
@@ -1361,12 +1361,12 @@ describe('FilterMenu', () => {
 
         element.loadingStateAlternativeText = 'A string alt text';
         element.isLoading = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner.alternativeText).toBe('A string alt text');
         });
@@ -1381,7 +1381,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.resetButtonLabel = 'A string label';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -1403,11 +1403,11 @@ describe('FilterMenu', () => {
 
         element.searchInputPlaceholder = 'A string placeholder';
         element.showSearchBox = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
             expect(input.placeholder).toBe('A string placeholder');
         });
     });
@@ -1421,11 +1421,11 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.showSearchBox = false;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
             expect(input).toBeFalsy();
         });
     });
@@ -1438,11 +1438,11 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.showSearchBox = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
             expect(input).toBeTruthy();
         });
     });
@@ -1458,7 +1458,7 @@ describe('FilterMenu', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.title).toBe('A string title');
         });
     });
@@ -1476,7 +1476,7 @@ describe('FilterMenu', () => {
         element.variant = 'vertical';
 
         return Promise.resolve().then(() => {
-            const help = element.shadowRoot.querySelector('lightning-helptext');
+            const help = element.shadowRoot.querySelector('[data-element-id="lightning-helptext"]');
             expect(help).toBeTruthy();
             expect(help.content).toBe('A string tooltip');
         });
@@ -1493,12 +1493,12 @@ describe('FilterMenu', () => {
 
         element.value = VALUE;
         element.items = ITEMS;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                'lightning-menu-item'
+                '[data-element-id^="lightning-menu-item"]'
             );
             expect(items[0].checked).toBeTruthy();
             expect(items[1].checked).toBeTruthy();
@@ -1517,7 +1517,7 @@ describe('FilterMenu', () => {
         element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
             expect(button).toBeTruthy();
             expect(element.shadowRoot.host.classList).toContain(
@@ -1540,7 +1540,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const checkbox = element.shadowRoot.querySelector(
-                'lightning-checkbox-group'
+                '[data-element-id="lightning-checkbox-group"]'
             );
 
             expect(checkbox).toBeTruthy();
@@ -1591,7 +1591,7 @@ describe('FilterMenu', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container"]'
                 );
                 expect(pills).toBeTruthy();
             });
@@ -1606,7 +1606,7 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         const handler = jest.fn();
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.addEventListener('focus', handler);
 
         element.focus();
@@ -1628,13 +1628,13 @@ describe('FilterMenu', () => {
         element.addEventListener('select', handler);
 
         element.items = ITEMS;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve()
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    'lightning-menu-item'
+                    '[data-element-id^="lightning-menu-item"]'
                 );
                 expect(items[2].checked).toBeFalsy();
 
@@ -1653,7 +1653,7 @@ describe('FilterMenu', () => {
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    'lightning-menu-item'
+                    '[data-element-id^="lightning-menu-item"]'
                 );
                 expect(items[2].checked).toBeTruthy();
 
@@ -1669,7 +1669,7 @@ describe('FilterMenu', () => {
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    'lightning-menu-item'
+                    '[data-element-id^="lightning-menu-item"]'
                 );
                 expect(items[2].checked).toBeFalsy();
             });
@@ -1689,7 +1689,7 @@ describe('FilterMenu', () => {
 
         return Promise.resolve().then(() => {
             const checkbox = element.shadowRoot.querySelector(
-                'lightning-checkbox-group'
+                '[data-element-id="lightning-checkbox-group"]'
             );
 
             checkbox.dispatchEvent(
@@ -1719,12 +1719,12 @@ describe('FilterMenu', () => {
 
         element.items = ITEMS;
         element.value = VALUE;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const applyButton = element.shadowRoot.querySelector(
-                '.slds-dropdown lightning-button:last-of-type'
+                '[data-element-id="lightning-button-apply"]'
             );
             applyButton.click();
 
@@ -1750,14 +1750,14 @@ describe('FilterMenu', () => {
 
         element.items = ITEMS;
         element.value = VALUE;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
-            const applyButton = element.shadowRoot.querySelector(
-                '.slds-dropdown lightning-button:first-of-type'
+            const resetButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-reset"]'
             );
-            applyButton.click();
+            resetButton.click();
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -1779,7 +1779,7 @@ describe('FilterMenu', () => {
         const handler = jest.fn();
         element.addEventListener('close', handler);
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -1806,13 +1806,13 @@ describe('FilterMenu', () => {
 
         element.items = ITEMS;
         element.showSearchBox = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input"]'
                 );
                 input.value = 'Searchable';
                 input.dispatchEvent(new CustomEvent('change'));
@@ -1821,7 +1821,7 @@ describe('FilterMenu', () => {
             })
             .then(() => {
                 const items = element.shadowRoot.querySelectorAll(
-                    'lightning-menu-item'
+                    '[data-element-id^="lightning-menu-item"]'
                 );
                 expect(items).toHaveLength(1);
                 expect(items[0].value).toBe('item-3');
@@ -1839,7 +1839,7 @@ describe('FilterMenu', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
@@ -1863,12 +1863,12 @@ describe('FilterMenu', () => {
         document.body.appendChild(element);
 
         element.items = ITEMS;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
         button.click();
 
         return Promise.resolve().then(() => {
             const item = element.shadowRoot.querySelector(
-                'lightning-menu-item'
+                '[data-element-id^="lightning-menu-item"]'
             );
             item.dispatchEvent(
                 new CustomEvent('privatefocus', {

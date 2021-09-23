@@ -87,7 +87,7 @@ describe('FilterMenuGroup', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button + lightning-button'
+                '[data-element-id="lightning-button-apply"]'
             );
             expect(button.label).toBe('Save');
         });
@@ -107,7 +107,7 @@ describe('FilterMenuGroup', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id^="lightning-pill-container"]'
             );
             expect(pills).toBeTruthy();
         });
@@ -125,7 +125,7 @@ describe('FilterMenuGroup', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id^="lightning-pill-container"]'
             );
             expect(pills).toBeFalsy();
         });
@@ -216,7 +216,7 @@ describe('FilterMenuGroup', () => {
         element.variant = 'vertical';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button-reset"]');
             expect(button.label).toBe('Erase');
         });
     });
@@ -250,7 +250,7 @@ describe('FilterMenuGroup', () => {
             expect(buttonGroupItem).toBeTruthy();
 
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id="lightning-button-reset"]'
             );
             expect(buttons).toHaveLength(0);
         });
@@ -283,7 +283,7 @@ describe('FilterMenuGroup', () => {
             expect(buttonGroupItem).toBeFalsy();
 
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
             expect(buttons).toHaveLength(2);
         });
@@ -315,7 +315,7 @@ describe('FilterMenuGroup', () => {
                 });
 
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container"]'
                 );
                 expect(pills).toBeFalsy();
             });
@@ -343,7 +343,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id^="lightning-pill-container"]'
                 );
                 expect(pills.items[0].name).toBe('contact,call');
             });
@@ -412,7 +412,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-horizontal"]'
                 );
                 expect(pills.items[0].name).toBe('contact,call');
             });
@@ -436,13 +436,13 @@ describe('FilterMenuGroup', () => {
                 menus[0].value = ['call'];
 
                 const applyButton = element.shadowRoot.querySelector(
-                    'lightning-button + lightning-button'
+                    '[data-element-id="lightning-button-apply"]'
                 );
                 applyButton.click();
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-vertical"]'
                 );
                 expect(pills.items[0].name).toBe('contact,call');
             });
@@ -468,7 +468,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-horizontal"]'
                 );
                 expect(pills).toBeFalsy();
             });
@@ -487,13 +487,13 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const resetButton = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button-reset"]'
                 );
                 resetButton.click();
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-vertical"]'
                 );
                 expect(pills).toBeFalsy();
             });
@@ -513,7 +513,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id^="lightning-pill-container"]'
                 );
                 pills.dispatchEvent(
                     new CustomEvent('itemremove', {
@@ -529,7 +529,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id^="lightning-pill-container"]'
                 );
                 expect(pills.items).toHaveLength(1);
                 expect(pills.items[0]).toMatchObject({

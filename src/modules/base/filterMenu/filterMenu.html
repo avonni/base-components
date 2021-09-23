@@ -43,6 +43,7 @@
             accesskey={accessKey}
             value={value}
             type="button"
+            data-element-id="button"
             onclick={handleButtonClick}
             onblur={handleButtonBlur}
             onfocus={handleButtonFocus}
@@ -80,6 +81,7 @@
                     <lightning-spinner
                         size="small"
                         alternative-text={loadingStateAlternativeText}
+                        data-element-id="lightning-spinner"
                     ></lightning-spinner>
                 </template>
                 <template if:false={isLoading}>
@@ -95,6 +97,7 @@
                             is-loading={isLoading}
                             value={searchTerm}
                             autocomplete="off"
+                            data-element-id="lightning-input"
                             onchange={handleSearch}
                             onblur={handlePrivateBlur}
                             onfocus={handlePrivateFocus}
@@ -116,6 +119,7 @@
                                     checked={item.checked}
                                     disabled={item.disabled}
                                     tab-index={item.tabindex}
+                                    data-element-id="lightning-menu-item"
                                     data-index={index}
                                     onkeydown={handleKeyDown}
                                 >
@@ -134,6 +138,7 @@
                                 variant="base"
                                 label={resetButtonLabel}
                                 title={resetButtonLabel}
+                                data-element-id="lightning-button-reset"
                                 onfocus={handlePrivateFocus}
                                 onblur={handlePrivateBlur}
                                 onclick={handleResetClick}
@@ -143,6 +148,7 @@
                                 variant="brand"
                                 label={applyButtonLabel}
                                 title={applyButtonLabel}
+                                data-element-id="lightning-button-apply"
                                 onfocus={handlePrivateFocus}
                                 onblur={handlePrivateBlur}
                                 onclick={handleApplyClick}
@@ -157,6 +163,7 @@
     <div if:true={showSelectedItems} class="slds-m-top_x-small">
         <lightning-pill-container
             items={selectedItems}
+            data-element-id="lightning-pill-container"
             onitemremove={handleSelectedItemRemove}
         ></lightning-pill-container>
     </div>

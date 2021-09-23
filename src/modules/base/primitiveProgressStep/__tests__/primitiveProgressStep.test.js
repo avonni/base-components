@@ -102,7 +102,7 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('A string label');
         });
     });
@@ -120,7 +120,7 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.name).toBe('a-string-name');
         });
     });
@@ -138,7 +138,7 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.iconName).toBe('utility:apps');
         });
     });
@@ -156,7 +156,7 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.iconPosition).toBe('right');
         });
     });
@@ -174,7 +174,7 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.disabled).toBeTruthy();
         });
     });
@@ -192,7 +192,7 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.title).toBe('A string title');
         });
     });
@@ -210,7 +210,7 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('destructive');
         });
     });
@@ -267,7 +267,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const description = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-top p'
+                '[data-element-id="p-top-description"]'
             );
             expect(description.textContent).toBe('A string description');
         });
@@ -287,10 +287,10 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const descriptionTop = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-top p'
+                '[data-element-id="p-top-description"]'
             );
             const descriptionBottom = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-bottom p'
+                '[data-element-id="p-bottom-description"]'
             );
 
             expect(descriptionTop).toBeTruthy();
@@ -310,10 +310,10 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const descriptionTop = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-top p'
+                '[data-element-id="p-top-description"]'
             );
             const descriptionBottom = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-bottom p'
+                '[data-element-id="p-bottom-description"]'
             );
 
             expect(descriptionTop).toBeFalsy();
@@ -335,9 +335,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             const lightningButton = element.shadowRoot.querySelector(
-                'lightning-button'
+                '[data-element-id="lightning-button"]'
             );
 
             buttons.forEach((button) => {
@@ -360,9 +360,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             const lightningButton = element.shadowRoot.querySelector(
-                'lightning-button'
+                '[data-element-id="lightning-button"]'
             );
 
             buttons.forEach((button) => {
@@ -385,7 +385,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-top .slds-text-title_bold'
+                '[data-element-id="p-top-label"]'
             );
 
             expect(label.textContent).toBe('A string label');
@@ -406,10 +406,10 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const labelTop = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-top p'
+                '[data-element-id="p-top-label"]'
             );
             const labelBottom = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-bottom p'
+                '[data-element-id="p-bottom-label"]'
             );
 
             expect(labelTop).toBeTruthy();
@@ -429,10 +429,10 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const labelTop = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-top p'
+                '[data-element-id="p-top-label"]'
             );
             const labelBottom = element.shadowRoot.querySelector(
-                '.avonni-progress-step-position-bottom p'
+                '[data-element-id="p-bottom-label"]'
             );
 
             expect(labelTop).toBeFalsy();
@@ -452,7 +452,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const description = element.shadowRoot.querySelector(
-                '.avonni-progress-step-overflow-hidden p'
+                '[data-element-id="p-popover-description"]'
             );
             expect(description.textContent).toBe('A string description');
         });
@@ -589,7 +589,7 @@ describe('PrimitiveProgressStep', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-popover__body .slds-text-title_bold'
+                '[data-element-id="p-popover-label"]'
             );
             expect(label.textContent).toBe('A string label');
         });

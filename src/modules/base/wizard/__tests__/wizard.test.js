@@ -123,7 +123,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.actionPosition).toBe('right');
         });
@@ -141,7 +141,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.finishButtonIconName).toBe(
                 'utility:apps'
@@ -161,7 +161,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.finishButtonIconPosition).toBe('right');
         });
@@ -179,7 +179,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.finishButtonLabel).toBe('The end');
         });
@@ -197,7 +197,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.finishButtonVariant).toBe('brand');
         });
@@ -215,7 +215,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.nextButtonIconName).toBe('utility:apps');
         });
@@ -233,7 +233,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.nextButtonIconPosition).toBe('right');
         });
@@ -251,7 +251,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.nextButtonLabel).toBe('The end');
         });
@@ -269,7 +269,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.nextButtonVariant).toBe('brand');
         });
@@ -287,7 +287,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.previousButtonIconName).toBe(
                 'utility:apps'
@@ -307,7 +307,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.previousButtonIconPosition).toBe(
                 'right'
@@ -327,7 +327,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.previousButtonLabel).toBe('The end');
         });
@@ -345,7 +345,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.previousButtonVariant).toBe('brand');
         });
@@ -363,7 +363,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.buttonAlignmentBump).toBe('right');
         });
@@ -414,7 +414,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.fractionLabel).toBe('/');
         });
@@ -432,7 +432,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.fractionPrefixLabel).toBe('Page');
         });
@@ -450,7 +450,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.hideIndicator).toBeTruthy();
         });
@@ -503,7 +503,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const primitiveNavigation = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             expect(primitiveNavigation.indicatorType).toBe('path');
         });
@@ -521,13 +521,13 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-top"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-side"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(
@@ -553,13 +553,13 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-top"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-side"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(
@@ -586,13 +586,13 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-top"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-side"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(
@@ -619,13 +619,13 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const footerNavigation = element.shadowRoot.querySelector(
-                'footer [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-bottom"]'
             );
             const headerNavigation = element.shadowRoot.querySelector(
-                'header [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-top"]'
             );
             const sideNavigation = element.shadowRoot.querySelector(
-                '.side-col [data-element-id="avonni-primitive-wizard-navigation"]'
+                '[data-element-id="avonni-primitive-wizard-navigation-side"]'
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(

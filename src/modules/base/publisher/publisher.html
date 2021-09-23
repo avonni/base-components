@@ -45,11 +45,12 @@
                     if:false={isActive}
                     label="Publisher"
                     class="slds-publisher__input"
-                    onfocus={focus}
                     type="text"
                     variant="label-hidden"
                     placeholder={placeholder}
                     disabled={disabled}
+                    data-element-id="lightning-input"
+                    onfocus={focus}
                 ></lightning-input>
                 <div>
                     <c-input-rich-text
@@ -72,9 +73,10 @@
                             variant="brand"
                             label={buttonLabel}
                             title={buttonLabel}
-                            onclick={hanlerClick}
                             disabled={buttonDisabled}
                             class="slds-m-left_x-small"
+                            data-element-id="lightning-button"
+                            onclick={hanlerClick}
                         ></lightning-button>
                     </div>
                 </div>

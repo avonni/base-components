@@ -135,6 +135,6 @@ export default class Link extends LightningElement {
      * @type {Element}
      */
     get linkElement() {
-        return this.template.querySelector('a');
+        return this.template.querySelector('[data-element-id="a"]');
     }
 }

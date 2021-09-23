@@ -1211,7 +1211,7 @@ describe('Scheduler', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeTruthy();
         });

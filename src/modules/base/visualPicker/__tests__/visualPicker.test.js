@@ -116,7 +116,7 @@ describe('VisualPicker', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             inputs.forEach((input, index) => {
                 expect(input.disabled).toBe(ITEMS[index].disabled || false);
             });
@@ -134,7 +134,7 @@ describe('VisualPicker', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -239,7 +239,7 @@ describe('VisualPicker', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             const figureIcons = element.shadowRoot.querySelectorAll(
                 '.slds-visual-picker__figure lightning-icon'
             );
@@ -304,7 +304,7 @@ describe('VisualPicker', () => {
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             inputs.forEach((input) => {
                 expect(input.name).toBe('a-string-name');
             });
@@ -420,8 +420,8 @@ describe('VisualPicker', () => {
         element.required = false;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
-            const fieldset = element.shadowRoot.querySelector('fieldset');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const fieldset = element.shadowRoot.querySelector('[data-element-id="fieldset"]');
 
             expect(abbr).toBeFalsy();
             expect(fieldset.ariaRequired).toBe('false');
@@ -438,8 +438,8 @@ describe('VisualPicker', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
-            const fieldset = element.shadowRoot.querySelector('fieldset');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const fieldset = element.shadowRoot.querySelector('[data-element-id="fieldset"]');
 
             expect(abbr).toBeTruthy();
             expect(fieldset.ariaRequired).toBe('true');
@@ -631,7 +631,7 @@ describe('VisualPicker', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             inputs.forEach((input) => {
                 expect(input.type).toBe('radio');
             });
@@ -649,7 +649,7 @@ describe('VisualPicker', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             inputs.forEach((input) => {
                 expect(input.type).toBe('checkbox');
             });
@@ -689,7 +689,7 @@ describe('VisualPicker', () => {
         element.type = 'checkbox';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             expect(inputs[0].checked).toBeTruthy();
             expect(inputs[1].checked).toBeFalsy();
             expect(inputs[2].checked).toBeTruthy();
@@ -924,7 +924,7 @@ describe('VisualPicker', () => {
         element.type = 'radio';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             inputs[2].click();
 
             expect(handler).toHaveBeenCalled();
@@ -948,7 +948,7 @@ describe('VisualPicker', () => {
         element.type = 'checkbox';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
             inputs[2].click();
             inputs[1].click();
 

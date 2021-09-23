@@ -70,7 +70,7 @@ describe('SummaryDetail', () => {
                 '.slds-summary-detail'
             );
             const icon = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
 
             expect(wrapper.classList).toContain('slds-is-open');
@@ -91,7 +91,7 @@ describe('SummaryDetail', () => {
                 '.slds-summary-detail'
             );
             const icon = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
 
             expect(wrapper.classList).not.toContain('slds-is-open');
@@ -112,7 +112,7 @@ describe('SummaryDetail', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(icon.iconName).toBe('utility:apps');
         });
@@ -129,7 +129,7 @@ describe('SummaryDetail', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(icon).toBeTruthy();
         });
@@ -145,7 +145,7 @@ describe('SummaryDetail', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(icon).toBeFalsy();
         });
@@ -162,10 +162,10 @@ describe('SummaryDetail', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '.slds-summary-detail__title > div > div'
+                '[data-element-id="div-title"]'
             );
             const body = element.shadowRoot.querySelector(
-                '.slds-summary-detail div'
+                '[data-element-id="div-body"]'
             );
 
             expect(title.classList).not.toContain('slds-col');
@@ -183,10 +183,10 @@ describe('SummaryDetail', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '.slds-summary-detail__title > div > div'
+                '[data-element-id="div-title"]'
             );
             const body = element.shadowRoot.querySelector(
-                '.slds-summary-detail div'
+                '[data-element-id="div-body"]'
             );
 
             expect(title.classList).toContain('slds-col');
@@ -238,7 +238,7 @@ describe('SummaryDetail', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             expect(icon.iconName).toBe('utility:apps');
         });
@@ -254,7 +254,7 @@ describe('SummaryDetail', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h3');
+            const title = element.shadowRoot.querySelector('[data-element-id="h3"]');
             expect(title).toBeTruthy();
             expect(title.textContent).toBe('A string title');
         });
@@ -271,7 +271,7 @@ describe('SummaryDetail', () => {
         document.body.appendChild(element);
         const handler = jest.fn();
         element.addEventListener('toggle', handler);
-        const icon = element.shadowRoot.querySelector('lightning-button-icon');
+        const icon = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon"]');
         icon.click();
 
         expect(handler).toHaveBeenCalled();
