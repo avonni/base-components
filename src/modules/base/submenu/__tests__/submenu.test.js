@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Submenu from 'c/submenu';
 
+let element;
 describe('Submenu', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Submenu', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-submenu', {
+    beforeEach(() => {
+        element = createElement('base-submenu', {
             is: Submenu
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.draftAlternativeText).toBeUndefined();
@@ -59,11 +63,6 @@ describe('Submenu', () => {
 
     // access-key
     it('accessKey', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
         element.accessKey = 'k';
 
         return Promise.resolve().then(() => {
@@ -74,12 +73,6 @@ describe('Submenu', () => {
 
     // disabled
     it('disabled = false', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
         const handler = jest.fn();
         element.addEventListener('privateselect', handler);
@@ -94,12 +87,6 @@ describe('Submenu', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
         const handler = jest.fn();
         element.addEventListener('privateselect', handler);
@@ -116,12 +103,6 @@ describe('Submenu', () => {
     // draft-alternative-text
     // Depends on isDraft
     it('draftAlternativeText', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
-
         element.isDraft = true;
         element.draftAlternativeText = 'A string help';
 
@@ -133,11 +114,6 @@ describe('Submenu', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -151,11 +127,6 @@ describe('Submenu', () => {
 
     // is-draft
     it('isDraft = false', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
         element.isDraft = false;
 
         return Promise.resolve().then(() => {
@@ -165,11 +136,6 @@ describe('Submenu', () => {
     });
 
     it('isDraft = true', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
         element.isDraft = true;
 
         return Promise.resolve().then(() => {
@@ -179,11 +145,6 @@ describe('Submenu', () => {
     });
 
     it('label', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -195,11 +156,6 @@ describe('Submenu', () => {
 
     // prefix-icon-name
     it('prefixIconName', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
         element.prefixIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -213,11 +169,6 @@ describe('Submenu', () => {
 
     // tab-index
     it('tabIndex', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
         element.tabIndex = '-1';
 
         return Promise.resolve().then(() => {
@@ -230,16 +181,56 @@ describe('Submenu', () => {
 
     // focus
     it('focus method', () => {
-        const element = createElement('base-submenu', {
-            is: Submenu
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('focus', handler);
         element.focus();
 
         expect(handler).toHaveBeenCalled();
+    });
+
+    /* ----- EVENTS ----- */
+    it('Submenu blur', () => {
+        const handler = jest.fn();
+        element.addEventListener('blur', handler);
+
+        return Promise.resolve().then(() => {
+            const a = element.shadowRoot.querySelector('a');
+            a.dispatchEvent(new CustomEvent('blur'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Submenu privateblur', () => {
+        const handler = jest.fn();
+        element.addEventListener('privateblur', handler);
+
+        return Promise.resolve().then(() => {
+            const a = element.shadowRoot.querySelector('a');
+            a.dispatchEvent(new CustomEvent('blur'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+
+    it('Submenu privatefocus', () => {
+        const handler = jest.fn();
+        element.addEventListener('privatefocus', handler);
+
+        return Promise.resolve().then(() => {
+            const a = element.shadowRoot.querySelector('a');
+            a.dispatchEvent(new CustomEvent('focus'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
     });
 });
