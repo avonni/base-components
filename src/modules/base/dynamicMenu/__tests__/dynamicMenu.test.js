@@ -582,6 +582,19 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    /* ---- JS ----- */
+    // blur
+    it('Dynamic Menu blur without label', () => {
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        button.click();
+        return Promise.resolve().then(() => {
+            button.dispatchEvent(new CustomEvent('blur'));
+            expect(element.classList).not.toContain('slds-is-open');
+        });
+    });
+
     /* ---- EVENTS ----- */
 
     it('Dynamic Menu event: click on item', () => {
