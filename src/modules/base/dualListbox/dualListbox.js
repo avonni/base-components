@@ -886,10 +886,10 @@ export default class DualListbox extends LightningElement {
         let overSelectedHeight;
         let overSourceHeight;
         const sourceOptions = this.template.querySelectorAll(
-            'li[data-role="source"]'
+            '[data-element-id="li-source"]'
         );
         const selectedOptions = this.template.querySelectorAll(
-            'li[data-role="selected"]'
+            '[data-element-id="li-selected"]'
         );
 
         const sourceOptionsHeight = getListHeight(
@@ -902,7 +902,7 @@ export default class DualListbox extends LightningElement {
             sourceOptions.length > 0
         ) {
             overSourceHeight =
-                this.template.querySelector('li[data-role="source"]')
+                this.template.querySelector('[data-element-id="li-source"]')
                     .offsetHeight *
                 (this._maxVisibleOptions - this.computedSourceList.length);
         } else overSourceHeight = 0;
@@ -912,7 +912,7 @@ export default class DualListbox extends LightningElement {
             selectedOptions.length > 0
         ) {
             overSelectedHeight =
-                this.template.querySelector('li[data-role="selected"]')
+                this.template.querySelector('[data-element-id="li-selected"]')
                     .offsetHeight *
                 (this._maxVisibleOptions - this.computedSelectedList.length);
         } else overSelectedHeight = 0;
@@ -1892,13 +1892,17 @@ export default class DualListbox extends LightningElement {
      * Sets the data-index attribute of each option.
      */
     setOptionIndexes() {
-        const sourceBox = this.template.querySelector('[data-source-list]');
+        const sourceBox = this.template.querySelector(
+            '[data-element-id="ul-source-list"]'
+        );
         sourceBox
             .querySelectorAll('.slds-listbox__option')
             .forEach((option, index) => {
                 option.setAttribute('data-index', index);
             });
-        const selectedBox = this.template.querySelector('[data-selected-list]');
+        const selectedBox = this.template.querySelector(
+            '[data-element-id="ul-selected-list"]'
+        );
         selectedBox
             .querySelectorAll('.slds-listbox__option')
             .forEach((option, index) => {

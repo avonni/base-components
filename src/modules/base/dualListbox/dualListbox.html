@@ -118,7 +118,7 @@
                                         key={option.value}
                                         role="presentation"
                                         class={computedListItemClass}
-                                        data-role="source"
+                                        data-element-id="li-source"
                                     >
                                         <div
                                             class={option.classList}
@@ -253,7 +253,7 @@
                                         key={option.value}
                                         role="presentation"
                                         class={computedListItemClass}
-                                        data-role="selected"
+                                        data-element-id="li-selected"
                                     >
                                         <div
                                             class={option.classList}
@@ -354,6 +354,7 @@
                 class="slds-has-error slds-form-element__help"
                 aria-live="assertive"
                 role="alert"
+                data-element-id="div-alert"
             >
                 {errorMessage}
             </div>

@@ -424,7 +424,7 @@ describe('DualListbox', () => {
             })
             .then(() => {
                 const div = element.shadowRoot.querySelector(
-                    "div[role='alert']"
+                    '[data-element-id="div-alert"]'
                 );
                 const message = element.shadowRoot.querySelector(
                     '.slds-has-error.slds-form-element__help'
@@ -682,8 +682,12 @@ describe('DualListbox', () => {
             const selected = element.shadowRoot.querySelector(
                 '[data-element-id="ul-selected-list"]'
             );
-            expect(source.querySelectorAll('li')).toHaveLength(7);
-            expect(selected.querySelectorAll('li')).toHaveLength(3);
+            expect(
+                source.querySelectorAll('[data-element-id="li-source"]')
+            ).toHaveLength(7);
+            expect(
+                selected.querySelectorAll('[data-element-id="li-selected"]')
+            ).toHaveLength(3);
         });
     });
 
@@ -836,7 +840,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const sourceBox = element.shadowRoot.querySelector(
-                '[data-source-list]'
+                '[data-element-id="ul-source-list"]'
             );
             const option = sourceBox.querySelectorAll('.slds-listbox__option');
             const firstOption = option[0];
@@ -852,7 +856,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const option = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
@@ -881,7 +885,7 @@ describe('DualListbox', () => {
             );
             option.click();
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='add']"
+                '[data-element-id="lightning-button-icon-add"]'
             );
             lightningButtonIcon.click();
             expect(handler).toHaveBeenCalled();
@@ -906,13 +910,13 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const options = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
             );
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='remove']"
+                '[data-element-id="lightning-button-icon-remove"]'
             );
             options[1].click();
             lightningButtonIcon.click();
@@ -934,13 +938,13 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const options = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
             );
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='down']"
+                '[data-element-id="lightning-button-icon-down"]'
             );
             options[1].click();
             lightningButtonIcon.click();
@@ -966,13 +970,13 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const options = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
             );
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='up']"
+                '[data-element-id="lightning-button-icon-up"]'
             );
             options[1].click();
             lightningButtonIcon.click();
