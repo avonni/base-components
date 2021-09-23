@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Splitter from 'c/splitter';
 
+let element;
 describe('Splitter', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Splitter', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-splitter', {
+    beforeEach(() => {
+        element = createElement('base-splitter', {
             is: Splitter
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.orientation).toBe('horizontal');
     });
 
@@ -52,11 +56,6 @@ describe('Splitter', () => {
 
     // orientation
     it('orientation = horizontal', () => {
-        const element = createElement('base-splitter', {
-            is: Splitter
-        });
-
-        document.body.appendChild(element);
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
@@ -71,11 +70,6 @@ describe('Splitter', () => {
     });
 
     it('orientation = vertical', () => {
-        const element = createElement('base-splitter', {
-            is: Splitter
-        });
-
-        document.body.appendChild(element);
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
@@ -93,11 +87,6 @@ describe('Splitter', () => {
 
     // changeHeight
     it('changeHeight method', () => {
-        const element = createElement('base-splitter', {
-            is: Splitter
-        });
-
-        document.body.appendChild(element);
         element.changeHeight(300);
 
         return Promise.resolve().then(() => {
