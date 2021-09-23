@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import ProfileCard from 'c/profileCard';
 
+let element;
 describe('ProfileCard', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('ProfileCard', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-profile-card', {
+    beforeEach(() => {
+        element = createElement('base-profile-card', {
             is: ProfileCard
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.avatarAlternativeText).toBeUndefined();
         expect(element.avatarFallbackIconName).toBeUndefined();
         expect(element.avatarPosition).toBe('top-left');
@@ -64,12 +68,6 @@ describe('ProfileCard', () => {
     // avatar-alternative-text
     // Depends on avatarFallbackIconName and avatarSrc
     it('avatarAlternativeText, with an image', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarAlternativeText = 'A string alternative text';
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -81,12 +79,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarAlternativeText, with an icon', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarAlternativeText = 'A string alternative text';
         element.avatarFallbackIconName = 'standard:user';
 
@@ -103,12 +95,6 @@ describe('ProfileCard', () => {
 
     // avatar-fallback-icon-name
     it('avatarFallbackIconName', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarFallbackIconName = 'standard:user';
 
         return Promise.resolve()
@@ -130,12 +116,6 @@ describe('ProfileCard', () => {
 
     // avatar-position
     it('avatarPosition = top-left', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarPosition = 'top-left';
         element.showActions = true;
 
@@ -152,12 +132,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarPosition = top-center', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarPosition = 'top-center';
 
         return Promise.resolve().then(() => {
@@ -173,12 +147,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarPosition = top-right', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarPosition = 'top-right';
 
         return Promise.resolve().then(() => {
@@ -194,12 +162,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarPosition = bottom-left', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarPosition = 'bottom-left';
 
         return Promise.resolve().then(() => {
@@ -215,12 +177,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarPosition = bottom-center', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarPosition = 'bottom-center';
 
         return Promise.resolve().then(() => {
@@ -236,12 +192,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarPosition = bottom-right', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarPosition = 'bottom-right';
 
         return Promise.resolve().then(() => {
@@ -258,12 +208,7 @@ describe('ProfileCard', () => {
 
     // avatar-mobile-position
     it('avatarMobilePosition = top-left', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
         window.innerWidth = 200;
-        document.body.appendChild(element);
 
         element.avatarMobilePosition = 'top-left';
 
@@ -280,12 +225,7 @@ describe('ProfileCard', () => {
     });
 
     it('avatarMobilePosition = top-center', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
         window.innerWidth = 200;
-        document.body.appendChild(element);
 
         element.avatarMobilePosition = 'top-center';
 
@@ -304,12 +244,7 @@ describe('ProfileCard', () => {
     });
 
     it('avatarMobilePosition = top-right', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
         window.innerWidth = 200;
-        document.body.appendChild(element);
 
         element.avatarMobilePosition = 'top-right';
 
@@ -328,12 +263,7 @@ describe('ProfileCard', () => {
     });
 
     it('avatarMobilePosition = bottom-left', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
         window.innerWidth = 200;
-        document.body.appendChild(element);
 
         element.avatarMobilePosition = 'bottom-left';
 
@@ -350,12 +280,7 @@ describe('ProfileCard', () => {
     });
 
     it('avatarMobilePosition = bottom-center', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
         window.innerWidth = 200;
-        document.body.appendChild(element);
 
         element.avatarMobilePosition = 'bottom-center';
 
@@ -374,12 +299,7 @@ describe('ProfileCard', () => {
     });
 
     it('avatarMobilePosition = bottom-right', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
         window.innerWidth = 200;
-        document.body.appendChild(element);
 
         element.avatarMobilePosition = 'bottom-right';
 
@@ -399,12 +319,6 @@ describe('ProfileCard', () => {
 
     // avatar-src
     it('avatarSrc', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
@@ -419,12 +333,6 @@ describe('ProfileCard', () => {
     // avatar-variant
     // Depends on avatarSrc and avatarFallbackIconName
     it('avatarVariant = circle, with image', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarVariant = 'circle';
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -441,12 +349,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarVariant = circle, with icon', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarVariant = 'circle';
         element.avatarFallbackIconName = 'standard:user';
 
@@ -469,12 +371,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarVariant = square, with image', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarVariant = 'square';
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -491,12 +387,6 @@ describe('ProfileCard', () => {
     });
 
     it('avatarVariant = square, with icon', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.avatarVariant = 'square';
         element.avatarFallbackIconName = 'standard:user';
 
@@ -524,12 +414,6 @@ describe('ProfileCard', () => {
 
     // background-alternative-text
     it('backgroundAlternativeText', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.backgroundAlternativeText = 'An alternative text';
 
         return Promise.resolve().then(() => {
@@ -542,10 +426,9 @@ describe('ProfileCard', () => {
 
     // background-color
     it('backgroundColor', () => {
-        const element = createElement('base-profile-card', {
+        element = createElement('base-profile-card', {
             is: ProfileCard
         });
-
         document.body.appendChild(element);
 
         element.backgroundColor = 'tomato';
@@ -558,10 +441,9 @@ describe('ProfileCard', () => {
 
     // background-src
     it('backgroundSrc', () => {
-        const element = createElement('base-profile-card', {
+        element = createElement('base-profile-card', {
             is: ProfileCard
         });
-
         document.body.appendChild(element);
 
         element.backgroundSrc =
@@ -577,12 +459,6 @@ describe('ProfileCard', () => {
 
     // size
     it('size = medium', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
@@ -600,12 +476,6 @@ describe('ProfileCard', () => {
     });
 
     it('size = x-small', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -623,12 +493,6 @@ describe('ProfileCard', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'small';
 
         return Promise.resolve().then(() => {
@@ -646,12 +510,6 @@ describe('ProfileCard', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -669,12 +527,6 @@ describe('ProfileCard', () => {
     });
 
     it('size = x-large', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-large';
 
         return Promise.resolve().then(() => {
@@ -693,12 +545,6 @@ describe('ProfileCard', () => {
 
     // subtitle
     it('subtitle', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.subtitle = 'A string subtitle';
 
         return Promise.resolve().then(() => {
@@ -711,12 +557,6 @@ describe('ProfileCard', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-
-        document.body.appendChild(element);
-
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
