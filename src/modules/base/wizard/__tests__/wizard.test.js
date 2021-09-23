@@ -71,6 +71,7 @@ const STEPS = [
     }
 ];
 
+let element;
 describe('Wizard', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -78,11 +79,15 @@ describe('Wizard', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-wizard', {
+    beforeEach(() => {
+        element = createElement('base-wizard', {
             is: Wizard
         });
 
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
         expect(element.actionPosition).toBe('left');
         expect(element.finishButtonIconName).toBeUndefined();
         expect(element.finishButtonIconPosition).toBe('left');
@@ -113,12 +118,6 @@ describe('Wizard', () => {
 
     // action-position
     it('actionPosition', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.actionPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -131,12 +130,6 @@ describe('Wizard', () => {
 
     // button-finish-icon-name
     it('finishButtonIconName', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.finishButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -151,12 +144,6 @@ describe('Wizard', () => {
 
     // button-finish-icon-position
     it('finishButtonIconPosition', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.finishButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -169,12 +156,6 @@ describe('Wizard', () => {
 
     // button-finish-label
     it('finishButtonLabel', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.finishButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
@@ -187,12 +168,6 @@ describe('Wizard', () => {
 
     // button-finish-variant
     it('finishButtonVariant', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.finishButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -205,12 +180,6 @@ describe('Wizard', () => {
 
     // button-next-icon-name
     it('nextButtonIconName', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -223,12 +192,6 @@ describe('Wizard', () => {
 
     // button-next-icon-position
     it('nextButtonIconPosition', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -241,12 +204,6 @@ describe('Wizard', () => {
 
     // button-next-label
     it('nextButtonLabel', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
@@ -259,12 +216,6 @@ describe('Wizard', () => {
 
     // button-next-variant
     it('nextButtonVariant', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -277,12 +228,6 @@ describe('Wizard', () => {
 
     // button-previous-icon-name
     it('previousButtonIconName', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -297,12 +242,6 @@ describe('Wizard', () => {
 
     // button-previous-icon-position
     it('previousButtonIconPosition', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -317,12 +256,6 @@ describe('Wizard', () => {
 
     // button-previous-label
     it('previousButtonLabel', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
@@ -335,12 +268,6 @@ describe('Wizard', () => {
 
     // button-previous-variant
     it('previousButtonVariant', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -353,12 +280,6 @@ describe('Wizard', () => {
 
     // button-alignment-bump
     it('buttonAlignmentBump', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.buttonAlignmentBump = 'right';
 
         return Promise.resolve().then(() => {
@@ -371,12 +292,6 @@ describe('Wizard', () => {
 
     // current-step
     it('currentStep', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.currentStep = 'second-step';
 
         const slot = element.shadowRoot.querySelector('main slot');
@@ -402,12 +317,6 @@ describe('Wizard', () => {
 
     // fraction-label
     it('fractionLabel', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.fractionLabel = '/';
 
         return Promise.resolve().then(() => {
@@ -420,12 +329,6 @@ describe('Wizard', () => {
 
     // fraction-prefix-label
     it('fractionPrefixLabel', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.fractionPrefixLabel = 'Page';
 
         return Promise.resolve().then(() => {
@@ -438,12 +341,6 @@ describe('Wizard', () => {
 
     // hide-indicator
     it('hideIndicator', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.hideIndicator = true;
 
         return Promise.resolve().then(() => {
@@ -456,12 +353,6 @@ describe('Wizard', () => {
 
     // hide-navigation
     it('hideNavigation = false', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.hideNavigation = false;
 
         return Promise.resolve().then(() => {
@@ -471,12 +362,6 @@ describe('Wizard', () => {
     });
 
     it('hideNavigation = true', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.hideNavigation = true;
 
         return Promise.resolve().then(() => {
@@ -487,12 +372,6 @@ describe('Wizard', () => {
 
     // indicator-type
     it('indicatorType', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'path';
 
         return Promise.resolve().then(() => {
@@ -505,12 +384,6 @@ describe('Wizard', () => {
 
     // indicator-position
     it('indicatorPosition = bottom', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorPosition = 'bottom';
 
         return Promise.resolve().then(() => {
@@ -535,12 +408,6 @@ describe('Wizard', () => {
     });
 
     it('indicatorPosition = top', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorPosition = 'top';
 
         return Promise.resolve().then(() => {
@@ -566,12 +433,6 @@ describe('Wizard', () => {
     });
 
     it('indicatorPosition = right', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -597,12 +458,6 @@ describe('Wizard', () => {
     });
 
     it('indicatorPosition = left', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorPosition = 'left';
 
         return Promise.resolve().then(() => {
@@ -629,12 +484,6 @@ describe('Wizard', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -645,12 +494,6 @@ describe('Wizard', () => {
 
     // variant
     it('variant = base', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -665,12 +508,6 @@ describe('Wizard', () => {
     });
 
     it('variant = card', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'card';
 
         return Promise.resolve().then(() => {
@@ -685,12 +522,6 @@ describe('Wizard', () => {
     });
 
     it('variant = modal', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'modal';
 
         return Promise.resolve().then(() => {
@@ -708,11 +539,6 @@ describe('Wizard', () => {
 
     // show and hide
     it('show and hide methods', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
         const article = element.shadowRoot.querySelector('article');
         expect(article).toBeTruthy();
 
@@ -737,12 +563,6 @@ describe('Wizard', () => {
 
     // next and previous
     it('next and previous methods', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         const slot = element.shadowRoot.querySelector('main slot');
         STEPS.forEach((step) => {
             slot.dispatchEvent(
@@ -798,12 +618,6 @@ describe('Wizard', () => {
     // change
     // Depends on next()
     it('change event based on next()', () => {
-        const element = createElement('base-wizard', {
-            is: Wizard
-        });
-
-        document.body.appendChild(element);
-
         const slot = element.shadowRoot.querySelector('main slot');
         STEPS.forEach((step) => {
             slot.dispatchEvent(
