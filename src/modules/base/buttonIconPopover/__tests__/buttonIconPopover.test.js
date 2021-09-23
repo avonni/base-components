@@ -33,9 +33,6 @@
 import { createElement } from 'lwc';
 import ButtonIconPopover from 'c/buttonIconPopover';
 
-// not tested
-// triggers : hover
-
 let element;
 describe('Button Icon Popover', () => {
     afterEach(() => {
@@ -297,7 +294,6 @@ describe('Button Icon Popover', () => {
         const button = element.shadowRoot.querySelector(
             'lightning-button-icon'
         );
-
         return Promise.resolve().then(() => {
             expect(button.iconName).toBe('utility:lock');
         });
@@ -308,20 +304,12 @@ describe('Button Icon Popover', () => {
         element.title = 'This is a popover Title';
         element.triggers = 'focus';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const header = element.shadowRoot.querySelector(
-                    '.slds-text-heading_small'
-                );
-                expect(header.textContent).toBe('This is a popover Title');
-            });
+        return Promise.resolve().then(() => {
+            const header = element.shadowRoot.querySelector(
+                '.slds-text-heading_small'
+            );
+            expect(header.textContent).toBe('This is a popover Title');
+        });
     });
 
     // popover size
@@ -329,312 +317,151 @@ describe('Button Icon Popover', () => {
         element.triggers = 'focus';
         element.popoverSize = 'small';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-popover_small');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-popover_small');
+        });
     });
 
     it('Button Icon Popover popoverSize medium', () => {
         element.triggers = 'focus';
         element.popoverSize = 'medium';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-popover_medium');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-popover_medium');
+        });
     });
 
     it('Button Icon Popover popoverSize large', () => {
         element.triggers = 'focus';
         element.popoverSize = 'large';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-popover_large');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-popover_large');
+        });
     });
 
     // popover variant
     it('Button Icon Popover variant base', () => {
-        element.triggers = 'focus';
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).not.toContain('slds-popover_warning');
-                expect(popover.className).not.toContain('slds-popover_error');
-                expect(popover.className).not.toContain(
-                    'slds-popover_walkthrough'
-                );
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).not.toContain('slds-popover_warning');
+            expect(popover.className).not.toContain('slds-popover_error');
+            expect(popover.className).not.toContain('slds-popover_walkthrough');
+        });
     });
 
     it('Button Icon Popover variant warning', () => {
-        element.triggers = 'focus';
         element.popoverVariant = 'warning';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-popover_warning');
-                expect(popover.className).not.toContain('slds-popover_error');
-                expect(popover.className).not.toContain(
-                    'slds-popover_walkthrough'
-                );
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-popover_warning');
+            expect(popover.className).not.toContain('slds-popover_error');
+            expect(popover.className).not.toContain('slds-popover_walkthrough');
+        });
     });
 
     it('Button Icon Popover variant error', () => {
-        element.triggers = 'focus';
         element.popoverVariant = 'error';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).not.toContain('slds-popover_warning');
-                expect(popover.className).toContain('slds-popover_error');
-                expect(popover.className).not.toContain(
-                    'slds-popover_walkthrough'
-                );
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).not.toContain('slds-popover_warning');
+            expect(popover.className).toContain('slds-popover_error');
+            expect(popover.className).not.toContain('slds-popover_walkthrough');
+        });
     });
 
     it('Button Icon Popover variant walkthrough', () => {
-        element.triggers = 'focus';
         element.popoverVariant = 'walkthrough';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).not.toContain('slds-popover_warning');
-                expect(popover.className).not.toContain('slds-popover_error');
-                expect(popover.className).toContain('slds-popover_walkthrough');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).not.toContain('slds-popover_warning');
+            expect(popover.className).not.toContain('slds-popover_error');
+            expect(popover.className).toContain('slds-popover_walkthrough');
+        });
     });
 
     // placement
     it('Button Icon Popover placement left', () => {
-        element.triggers = 'focus';
         element.placement = 'left';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-nubbin_top-left');
-                expect(popover.className).toContain('slds-dropdown_left');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-nubbin_top-left');
+            expect(popover.className).toContain('slds-dropdown_left');
+        });
     });
 
     it('Button Icon Popover placement auto', () => {
-        element.triggers = 'focus';
         element.placement = 'auto';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-dropdown_left');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-dropdown_left');
+        });
     });
 
     it('Button Icon Popover placement center', () => {
-        element.triggers = 'focus';
         element.placement = 'center';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-nubbin_top');
-                expect(popover.className).toContain('slds-dropdown_center');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-nubbin_top');
+            expect(popover.className).toContain('slds-dropdown_center');
+        });
     });
 
     it('Button Icon Popover placement right', () => {
-        element.triggers = 'focus';
         element.placement = 'right';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-nubbin_top-right');
-                expect(popover.className).toContain('slds-dropdown_right');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-nubbin_top-right');
+            expect(popover.className).toContain('slds-dropdown_right');
+        });
     });
 
     it('Button Icon Popover placement bottom-left', () => {
-        element.triggers = 'focus';
         element.placement = 'bottom-left';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-nubbin_bottom-left');
-                expect(popover.className).toContain('slds-dropdown_bottom');
-                expect(popover.className).toContain('slds-dropdown_left');
-                expect(popover.className).toContain(
-                    'slds-dropdown_bottom-left'
-                );
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-nubbin_bottom-left');
+            expect(popover.className).toContain('slds-dropdown_bottom');
+            expect(popover.className).toContain('slds-dropdown_left');
+            expect(popover.className).toContain('slds-dropdown_bottom-left');
+        });
     });
 
     it('Button Icon Popover placement bottom-right', () => {
-        element.triggers = 'focus';
         element.placement = 'bottom-right';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-nubbin_bottom-right');
-                expect(popover.className).toContain(
-                    'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
-                );
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-nubbin_bottom-right');
+            expect(popover.className).toContain(
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
+            );
+        });
     });
 
     it('Button Icon Popover placement bottom-center', () => {
-        element.triggers = 'focus';
         element.placement = 'bottom-center';
 
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
-                );
-                element.focus();
-                button.focus();
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
-                expect(popover.className).toContain('slds-nubbin_bottom');
-                expect(popover.className).toContain('slds-dropdown_bottom');
-            });
+        return Promise.resolve().then(() => {
+            const popover = element.shadowRoot.querySelector('.slds-popover');
+            expect(popover.className).toContain('slds-nubbin_bottom');
+            expect(popover.className).toContain('slds-dropdown_bottom');
+        });
     });
 
     // is loading
     it('Button Icon Popover is loading', () => {
-        element.triggers = 'focus';
         element.isLoading = true;
 
         return Promise.resolve()
@@ -642,7 +469,6 @@ describe('Button Icon Popover', () => {
                 const button = element.shadowRoot.querySelector(
                     'lightning-button-icon'
                 );
-                element.focus();
                 button.focus();
             })
             .then(() => {
@@ -655,7 +481,6 @@ describe('Button Icon Popover', () => {
 
     // loading state alternative text
     it('Button Icon Popover loading state alternative text', () => {
-        element.triggers = 'focus';
         element.isLoading = true;
         element.loadingStateAlternativeText = 'This is a loading text';
 
@@ -664,7 +489,6 @@ describe('Button Icon Popover', () => {
                 const button = element.shadowRoot.querySelector(
                     'lightning-button-icon'
                 );
-                element.focus();
                 button.focus();
             })
             .then(() => {
@@ -684,13 +508,11 @@ describe('Button Icon Popover', () => {
                 const button = element.shadowRoot.querySelector(
                     'lightning-button-icon'
                 );
-                element.focus();
                 button.focus();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                expect(element.classList).toContain('slds-is-open');
+                const popover = element.shadowRoot.querySelector('.slds-show');
                 expect(popover).toBeTruthy();
             });
     });
@@ -703,14 +525,122 @@ describe('Button Icon Popover', () => {
                 const button = element.shadowRoot.querySelector(
                     'lightning-button-icon'
                 );
-                element.focus();
                 button.click();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                expect(element.classList).toContain('slds-is-open');
+                const popover = element.shadowRoot.querySelector('.slds-show');
                 expect(popover).toBeTruthy();
+            });
+    });
+
+    it('Button Icon Popover triggers hover mouseenter', () => {
+        element.triggers = 'hover';
+
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        return Promise.resolve()
+            .then(() => {
+                button.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                expect(element.classList).toContain('slds-is-open');
+                const popover = element.shadowRoot.querySelector('.slds-show');
+                expect(popover).toBeTruthy();
+            });
+    });
+
+    it('Button Icon Popover triggers hover mouseleave', () => {
+        element.triggers = 'hover';
+
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                button.dispatchEvent(new CustomEvent('mouseleave'));
+            })
+            .then(() => {
+                expect(element.classList).not.toContain('slds-is-open');
+                const popover = element.shadowRoot.querySelector('.slds-show');
+                expect(popover).toBeFalsy();
+            });
+    });
+
+    it('Button Icon Popover triggers focus blur', () => {
+        element.triggers = 'focus';
+
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        return Promise.resolve()
+            .then(() => {
+                button.focus();
+                button.dispatchEvent(new CustomEvent('blur'));
+            })
+            .then(() => {
+                expect(element.classList).not.toContain('slds-is-open');
+                const popover = element.shadowRoot.querySelector('.slds-show');
+                expect(popover).toBeFalsy();
+            });
+    });
+
+    it('Button Icon Popover triggers click popoverblur', () => {
+        element.triggers = 'click';
+
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        const popover = element.shadowRoot.querySelector('.slds-popover');
+        return Promise.resolve()
+            .then(() => {
+                button.click();
+                popover.dispatchEvent(new CustomEvent('blur'));
+            })
+            .then(() => {
+                expect(element.classList).not.toContain('slds-is-open');
+                expect(popover.classList).not.toContain('slds-show');
+            });
+    });
+
+    it('Button Icon Popover triggers hover popoverenter', () => {
+        element.triggers = 'hover';
+
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        const popover = element.shadowRoot.querySelector('.slds-popover');
+        return Promise.resolve()
+            .then(() => {
+                button.dispatchEvent(new CustomEvent('mouseenter'));
+                expect(element.classList).toContain('slds-is-open');
+            })
+            .then(() => {
+                popover.dispatchEvent(new CustomEvent('mouseenter'));
+            })
+            .then(() => {
+                expect(element.classList).toContain('slds-is-open');
+                expect(popover.classList).toContain('slds-show');
+            });
+    });
+
+    it('Button Icon Popover triggers hover popoverleave', () => {
+        element.triggers = 'hover';
+
+        const button = element.shadowRoot.querySelector(
+            'lightning-button-icon'
+        );
+        const popover = element.shadowRoot.querySelector('.slds-popover');
+        return Promise.resolve()
+            .then(() => {
+                button.click();
+                popover.dispatchEvent(new CustomEvent('mouseleave'));
+            })
+            .then(() => {
+                expect(element.classList).not.toContain('slds-is-open');
+                expect(popover.classList).not.toContain('slds-show');
             });
     });
 
