@@ -31,34 +31,13 @@
  */
 
 import { createElement } from 'lwc';
+import { Options, OptionsWithGroups } from '../__docs__/data';
 import DualListbox from 'c/dualListbox';
 
 // Not tested
 // maxVisibleOptions, because depends on DOM measurements (offsetHeight)
 
-const options = [
-    {
-        value: '1',
-        label: 'Option 1'
-    },
-    {
-        value: '2',
-        label: 'Option 2'
-    },
-    {
-        value: '3',
-        label: 'Option 3'
-    },
-    {
-        value: '4',
-        label: 'Option 4'
-    },
-    {
-        value: '5',
-        label: 'Option 5'
-    }
-];
-
+let element = null;
 describe('DualListbox', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -66,10 +45,14 @@ describe('DualListbox', () => {
         }
     });
 
-    it('Dual Listbox Default attributes', () => {
-        const element = createElement('base-dual-listbox', {
+    beforeEach(() => {
+        element = createElement('base-dual-listbox', {
             is: DualListbox
         });
+        document.body.appendChild(element);
+    });
+
+    it('Dual Listbox Default attributes', () => {
         expect(element.addButtonIconName).toBe('utility:right');
         expect(element.addButtonLabel).toBeUndefined();
         expect(element.hideBottomDivider).toBeFalsy();
@@ -92,7 +75,7 @@ describe('DualListbox', () => {
         expect(element.options).toMatchObject([]);
         expect(element.required).toBeFalsy();
         expect(element.requiredOptions).toMatchObject([]);
-        expect(element.searchEngine).toBeFalsy();
+        expect(element.allowSearch).toBeFalsy();
         expect(element.selectedLabel).toBeUndefined();
         expect(element.selectedPlaceholder).toBeUndefined();
         expect(element.maxVisibleOptions).toBe(5);
@@ -109,11 +92,6 @@ describe('DualListbox', () => {
 
     // add-button-icon-name & add-button-label
     it('Dual Listbox add button icon name and label', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.addButtonIconName = 'utility:add';
         element.addButtonLabel = 'add';
 
@@ -128,12 +106,7 @@ describe('DualListbox', () => {
 
     // hide bottom divider
     it('Dual Listbox hide bottom divider', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
+        element.options = Options;
 
         element.hideBottomDivider = true;
 
@@ -151,11 +124,6 @@ describe('DualListbox', () => {
 
     // button-size
     it('Dual Listbox button size xx-small', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonSize = 'xx-small';
 
         return Promise.resolve().then(() => {
@@ -171,11 +139,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button size x-small', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -190,11 +153,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button size small', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonSize = 'small';
 
         return Promise.resolve().then(() => {
@@ -209,11 +167,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button size medium', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -228,11 +181,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button size large', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonSize = 'large';
 
         return Promise.resolve().then(() => {
@@ -248,11 +196,6 @@ describe('DualListbox', () => {
 
     // button-variant
     it('Dual Listbox button variant bare', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -267,11 +210,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button variant container', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonVariant = 'container';
 
         return Promise.resolve().then(() => {
@@ -286,11 +224,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button variant brand', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -305,11 +238,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button variant border-filled', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
@@ -324,11 +252,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button variant bare-inverse', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
@@ -343,11 +266,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox button variant border-inverse', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.buttonVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
@@ -363,11 +281,6 @@ describe('DualListbox', () => {
 
     // disable-reordering
     it('Dual Listbox disable reordering', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.disableReordering = true;
         element.addButtonLabel = 'add';
         element.removeButtonLabel = 'remove';
@@ -385,41 +298,35 @@ describe('DualListbox', () => {
 
     // disabled
     it('Dual Listbox disabled', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.addButtonLabel = 'add';
         element.downButtonLabel = 'down';
         element.removeButtonLabel = 'remove';
         element.upButtonLabel = 'up';
 
-        return Promise.resolve().then(() => {
-            const columns = element.shadowRoot.querySelectorAll(
-                '.slds-dueling-list__options'
-            );
-            
-            columns.forEach((column) => {
-                expect(column.classList).toContain('slds-is-disabled');
-            });
-        }).then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
+        return Promise.resolve()
+            .then(() => {
+                const columns = element.shadowRoot.querySelectorAll(
+                    '.slds-dueling-list__options'
+                );
 
-            buttons.forEach((button) => {
-                expect(button.disabled).toBeTruthy();
+                columns.forEach((column) => {
+                    expect(column.classList).toContain('slds-is-disabled');
+                });
+            })
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id^="lightning-button-icon"]'
+                );
+
+                buttons.forEach((button) => {
+                    expect(button.disabled).toBeTruthy();
+                });
             });
-        });
     });
 
     // down-button-icon-name & down-button-label
     it('Dual Listbox down button icon name and label', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.downButtonIconName = 'utility:apex';
         element.downButtonLabel = 'down';
 
@@ -434,12 +341,7 @@ describe('DualListbox', () => {
 
     // draggagble
     it('Dual Listbox draggable without disabled', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
+        element.options = Options;
         element.draggable = true;
 
         return Promise.resolve().then(() => {
@@ -453,12 +355,7 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox draggable with disabled', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
+        element.options = Options;
         element.draggable = true;
         element.disabled = true;
 
@@ -474,26 +371,18 @@ describe('DualListbox', () => {
 
     // field-level-help
     it('Dual Listbox field level help', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
-            const help = element.shadowRoot.querySelector('[data-element-id="lightning-helptext"]');
+            const help = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-helptext"]'
+            );
             expect(help).toBeTruthy();
         });
     });
 
     // isLoading
     it('Dual Listbox is loading', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -506,11 +395,6 @@ describe('DualListbox', () => {
 
     // label
     it('Dual Listbox label', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -523,14 +407,9 @@ describe('DualListbox', () => {
 
     // message-when-range-overflow and max
     it('Dual Listbox message when range overflow', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.max = 2;
         element.messageWhenRangeOverflow = 'Maximum Capacity!';
-        element.options = options;
+        element.options = Options;
         element.value = ['1', '2', '3'];
         element.addButtonLabel = 'add';
 
@@ -557,13 +436,9 @@ describe('DualListbox', () => {
 
     // message-when-range-underflow and min
     it('Dual Listbox message when range underflow', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
         element.messageWhenRangeUnderflow = 'Minimum Capacity!';
         element.min = 5;
-        element.options = options;
+        element.options = Options;
         element.value = ['1', '2', '3', '4', '5'];
         element.removeButtonLabel = 'remove';
 
@@ -590,12 +465,8 @@ describe('DualListbox', () => {
 
     // message-when-value-missing
     it('Dual Listbox message when value is missing', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
         element.required = true;
-        element.options = options;
+        element.options = Options;
         element.messageWhenValueMissing = 'Missing value!';
         element.value = ['1'];
         element.removeButtonLabel = 'remove';
@@ -623,11 +494,6 @@ describe('DualListbox', () => {
 
     // options
     it('Dual Listbox options with avatar', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         const optionWithAvatar = [
             {
                 value: '1',
@@ -654,11 +520,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox options without avatar', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         const optionWithoutAvatar = [
             {
                 value: '1',
@@ -687,13 +548,33 @@ describe('DualListbox', () => {
             });
     });
 
+    it('Dual Listbox options with groupName', () => {
+        const optionWithGroupName = [
+            {
+                value: '1',
+                label: 'Option 1',
+                groupName: 'Odd'
+            },
+            {
+                value: '2',
+                label: 'Option 2',
+                groupName: 'Even'
+            }
+        ];
+
+        element.options = optionWithGroupName;
+
+        return Promise.resolve().then(() => {
+            const optionValue = element.shadowRoot.querySelectorAll(
+                '.slds-listbox__option-header'
+            );
+            expect(optionValue[0].textContent).toBe('Odd');
+            expect(optionValue[1].textContent).toBe('Even');
+        });
+    });
+
     // remove-button-icon-name & remove-button-label
     it('Dual Listbox remove button icon name and label', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.removeButtonIconName = 'utility:apex';
         element.removeButtonLabel = 'remove';
 
@@ -708,11 +589,8 @@ describe('DualListbox', () => {
 
     // required
     it('Dual Listbox required', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
         element.required = true;
+        element.options = Options;
 
         return Promise.resolve().then(() => {
             const asterisk = element.shadowRoot.querySelector('.slds-required');
@@ -722,12 +600,7 @@ describe('DualListbox', () => {
 
     // required options
     it('Dual Listbox required options', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
+        element.options = Options;
 
         return Promise.resolve()
             .then(() => {
@@ -741,13 +614,9 @@ describe('DualListbox', () => {
             });
     });
 
-    // search engine
-    it('Dual Listbox search engine', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-        element.searchEngine = true;
+    // allow search
+    it('Dual Listbox allow search', () => {
+        element.allowSearch = true;
 
         return Promise.resolve().then(() => {
             const searchBox = element.shadowRoot.querySelector(
@@ -760,11 +629,6 @@ describe('DualListbox', () => {
 
     // selected label and source label
     it('Dual Listbox selected label & source label', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.sourceLabel = 'A string source label';
         element.selectedLabel = 'A string selected label';
 
@@ -779,16 +643,13 @@ describe('DualListbox', () => {
 
     // selected placeholder
     it('Dual Listbox selected placeholder', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.value = [];
         element.selectedPlaceholder = 'A string selected placeholder';
 
         return Promise.resolve().then(() => {
-            const placeHolder = element.shadowRoot.querySelector('[data-element-id="span-selected-placeholder"]');
+            const placeHolder = element.shadowRoot.querySelector(
+                '[data-element-id="span-selected-placeholder"]'
+            );
             expect(placeHolder.textContent).toBe(
                 'A string selected placeholder'
             );
@@ -797,11 +658,6 @@ describe('DualListbox', () => {
 
     // up-button-icon-name & up-button-label
     it('Dual Listbox up button icon name and label', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.upButtonIconName = 'utility:apex';
         element.upButtonLabel = 'up';
 
@@ -816,12 +672,7 @@ describe('DualListbox', () => {
 
     // value
     it('Dual Listbox value', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
+        element.options = Options;
         element.value = ['1', '2', '3'];
 
         return Promise.resolve().then(() => {
@@ -831,18 +682,13 @@ describe('DualListbox', () => {
             const selected = element.shadowRoot.querySelector(
                 '[data-element-id="ul-selected-list"]'
             );
-            expect(source.querySelectorAll('li')).toHaveLength(2);
+            expect(source.querySelectorAll('li')).toHaveLength(7);
             expect(selected.querySelectorAll('li')).toHaveLength(3);
         });
     });
 
     // variants
     it('Dual Listbox variant label hidden', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.label = 'This is a label-hidden';
         element.variant = 'label-hidden';
 
@@ -855,11 +701,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox variant label stacked', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-stacked';
 
         return Promise.resolve().then(() => {
@@ -872,11 +713,6 @@ describe('DualListbox', () => {
 
     // size
     it('Dual Listbox size small', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.size = 'small';
 
         return Promise.resolve().then(() => {
@@ -910,11 +746,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox size medium', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
@@ -948,11 +779,6 @@ describe('DualListbox', () => {
     });
 
     it('Dual Listbox size large', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -989,12 +815,7 @@ describe('DualListbox', () => {
 
     // testing selection
     it('Dual Listbox selection', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
+        element.options = Options;
 
         return Promise.resolve().then(() => {
             const option = element.shadowRoot.querySelectorAll(
@@ -1009,16 +830,45 @@ describe('DualListbox', () => {
         });
     });
 
+    // data-index
+    it('Dual Listbox data-index sourceBox', () => {
+        element.options = OptionsWithGroups;
+
+        return Promise.resolve().then(() => {
+            const sourceBox = element.shadowRoot.querySelector(
+                '[data-source-list]'
+            );
+            const option = sourceBox.querySelectorAll('.slds-listbox__option');
+            const firstOption = option[0];
+            expect(firstOption.getAttribute('data-index')).toBe('0');
+            const secondOption = option[1];
+            expect(secondOption.getAttribute('data-index')).toBe('1');
+        });
+    });
+
+    it('Dual Listbox data-index selectedBox', () => {
+        element.options = OptionsWithGroups;
+        element.value = ['1', '2'];
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const option = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const firstOption = option[0];
+            expect(firstOption.getAttribute('data-index')).toBe('0');
+            const secondOption = option[1];
+            expect(secondOption.getAttribute('data-index')).toBe('1');
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // change
-    it('change event', () => {
-        const element = createElement('base-dual-listbox', {
-            is: DualListbox
-        });
-        document.body.appendChild(element);
-
-        element.options = options;
+    it('change event add', () => {
+        element.options = Options;
         element.value = ['1', '2'];
         element.addButtonLabel = 'add';
 
@@ -1029,10 +879,10 @@ describe('DualListbox', () => {
             const option = element.shadowRoot.querySelector(
                 '.slds-listbox__option'
             );
+            option.click();
             const lightningButtonIcon = element.shadowRoot.querySelector(
                 "lightning-button-icon[title='add']"
             );
-            option.click();
             lightningButtonIcon.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
@@ -1044,5 +894,122 @@ describe('DualListbox', () => {
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    it('change event remove', () => {
+        element.options = Options;
+        element.value = ['1', '2'];
+        element.removeButtonLabel = 'remove';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const options = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='remove']"
+            );
+            options[1].click();
+            lightningButtonIcon.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject(['1']);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('change event down', () => {
+        element.options = Options;
+        element.value = ['1', '2', '3'];
+        element.downButtonLabel = 'down';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const options = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='down']"
+            );
+            options[1].click();
+            lightningButtonIcon.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                '1',
+                '3',
+                '2'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('change event up', () => {
+        element.options = Options;
+        element.value = ['1', '2', '3'];
+        element.upButtonLabel = 'up';
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const selectedBox = element.shadowRoot.querySelector(
+                '[data-selected-list]'
+            );
+            const options = selectedBox.querySelectorAll(
+                '.slds-listbox__option'
+            );
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='up']"
+            );
+            options[1].click();
+            lightningButtonIcon.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                '2',
+                '1',
+                '3'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // blur
+    it('blur event', () => {
+        const handler = jest.fn();
+        element.addEventListener('blur', handler);
+
+        element.dispatchEvent(new CustomEvent('blur'));
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+    });
+
+    // focus
+    it('focus event', () => {
+        const handler = jest.fn();
+        element.addEventListener('focus', handler);
+        element.dispatchEvent(new CustomEvent('focus'));
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 });

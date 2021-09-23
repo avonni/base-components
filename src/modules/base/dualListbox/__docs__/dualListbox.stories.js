@@ -31,6 +31,13 @@
  */
 
 import { DualListbox } from '../__examples__/dualListbox';
+import {
+    LanguagesOptions,
+    OptionsWithAvatar,
+    OptionsWithAvatarSrc,
+    Options,
+    OptionsWithGroups
+} from './data';
 
 export default {
     title: 'Example/Dual Listbox',
@@ -58,13 +65,14 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        hideBottomDivider: {
-            name: 'hide-bottom-divider',
+        allowSearch: {
+            name: 'allow-search',
             control: {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If present, hides the bottom divider.',
+            description:
+                'If present, a search box is added to the first listbox.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false }
@@ -174,6 +182,18 @@ export default {
                 'Help text detailing the purpose and function of the dual listbox.',
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        hideBottomDivider: {
+            name: 'hide-bottom-divider',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description: 'If present, hides the bottom divider.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
             }
         },
         isLoading: {
@@ -332,19 +352,6 @@ export default {
                 type: { summary: 'string []' }
             }
         },
-        searchEngine: {
-            name: 'search-engine',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description:
-                'If present, a search box is added to the first listbox.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false }
-            }
-        },
         selectedLabel: {
             name: 'selected-label',
             type: { name: 'string' },
@@ -445,203 +452,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'standard' }
             }
+        },
+        args: {
+            allowSearch: false,
+            disableReordering: false,
+            disabled: false,
+            draggable: false,
+            hideBottomDivider: false,
+            isLoading: false,
+            required: false
         }
     }
 };
-
-const LanguagesOptions = [
-    {
-        value: 'fr',
-        label: 'French'
-    },
-    {
-        value: 'en',
-        label: 'English'
-    },
-    {
-        value: 'es',
-        label: 'Spanish'
-    },
-    {
-        value: 'de',
-        label: 'German'
-    },
-    {
-        value: 'it',
-        label: 'Italian'
-    },
-    {
-        value: 'ja',
-        label: 'Japanese'
-    },
-    {
-        value: 'hi',
-        label: 'Hindi'
-    },
-    {
-        value: 'md',
-        label: 'Mandarin'
-    }
-];
-
-const OptionsWithAvatar = [
-    {
-        value: '1',
-        label: 'Jobs',
-        iconName: 'custom:custom91'
-    },
-    {
-        value: '2',
-        label: 'Leads & Referrals',
-        iconName: 'standard:lead'
-    },
-    {
-        value: '3',
-        label: 'Legal Entities',
-        iconName: 'custom:custom87'
-    },
-    {
-        value: '4',
-        label: 'Contacts',
-        iconName: 'standard:contact'
-    },
-    {
-        value: '5',
-        label: 'Cases',
-        iconName: 'standard:case'
-    },
-    {
-        value: '6',
-        label: 'Accounts',
-        iconName: 'standard:account'
-    },
-    {
-        value: '7',
-        label: 'Reports',
-        iconName: 'standard:report'
-    },
-    {
-        value: '8',
-        label: 'Knowledge',
-        iconName: 'standard:knowledge'
-    },
-    {
-        value: '9',
-        label: 'List Emails',
-        iconName: 'standard:list_email'
-    },
-    {
-        value: '10',
-        label: 'Dashboards',
-        iconName: 'standard:dashboard'
-    }
-];
-
-const OptionsWithAvatarSrc = [
-    {
-        value: '1',
-        label: 'Carl Smith',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    {
-        value: '2',
-        label: 'Suzan White',
-        description: 'SW',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
-    },
-    {
-        value: '3',
-        label: 'Philipp Johnson',
-        description: 'PJ',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
-    },
-    {
-        value: '4',
-        label: 'Miles Williams',
-        description: 'MW',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    {
-        value: '5',
-        label: 'Jane Doe',
-        description: 'JD',
-        iconName: 'standard:account',
-        initials: 'JD'
-    },
-    {
-        value: '6',
-        label: 'Gina Garcia',
-        description: 'GG',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
-    },
-    {
-        value: '7',
-        label: 'John Smith',
-        iconName: 'standard:address',
-        initials: 'JS'
-    },
-    {
-        value: '8',
-        label: 'Xavier Anderson',
-        description: 'XA',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
-    },
-    {
-        value: '9',
-        label: 'James Jackson',
-        description: 'JJ',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    {
-        value: '10',
-        label: 'Diane Wilson',
-        description: 'DW',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
-    }
-];
-
-const Options = [
-    {
-        value: '1',
-        label: 'Option 1'
-    },
-    {
-        value: '2',
-        label: 'Option 2'
-    },
-    {
-        value: '3',
-        label: 'Option 3'
-    },
-    {
-        value: '4',
-        label: 'Option 4'
-    },
-    {
-        value: '5',
-        label: 'Option 5'
-    },
-    {
-        value: '6',
-        label: 'Option 6'
-    },
-    {
-        value: '7',
-        label: 'Option 7'
-    },
-    {
-        value: '8',
-        label: 'Option 8'
-    },
-    {
-        value: '9',
-        label: 'Option 9'
-    },
-    {
-        value: '10',
-        label: 'Option 10'
-    }
-];
 
 const Template = (args) => DualListbox(args);
 
@@ -657,6 +479,22 @@ Base.args = {
     upButtonLabel: 'Up Button Label',
     options: Options,
     value: ['3', '2', '4', '5', '6'],
+    draggable: true,
+    hideBottomDivider: true
+};
+
+export const BaseWithGroups = Template.bind({});
+BaseWithGroups.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: OptionsWithGroups,
+    value: ['B', '3', '2', '4', '5', '6'],
     draggable: true,
     hideBottomDivider: true
 };
@@ -860,7 +698,7 @@ LanguagesWithSearchEngine.args = {
     downButtonLabel: 'Down Button Label',
     upButtonLabel: 'Up Button Label',
     options: LanguagesOptions,
-    searchEngine: true,
+    allowSearch: true,
     value: ['en', 'fr']
 };
 

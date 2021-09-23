@@ -62,7 +62,9 @@ describe('Expandable Section', () => {
         element.title = 'This is a title';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('[data-element-id="h3"]');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="h3"]'
+            );
             expect(title.textContent).toBe('This is a title');
         });
     });
@@ -101,7 +103,9 @@ describe('Expandable Section', () => {
             expect(spanTitle.className).not.toContain(
                 'slds-p-horizontal_small'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon).toBeTruthy();
         });
     });
@@ -118,7 +122,9 @@ describe('Expandable Section', () => {
             );
             expect(title).toBeTruthy();
 
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon).toBeFalsy();
         });
     });
@@ -185,12 +191,15 @@ describe('Expandable Section', () => {
         });
     });
 
-    /* ----- USER ACTIONS ----- */
+    /* ----- EVENTS ----- */
 
-    // Toggle the section
+    // toggle
     // Depends on collapsible
-    it('The user toggles the collapse button', () => {
+    it('toggle event', () => {
         element.collapsible = true;
+
+        const handler = jest.fn();
+        element.addEventListener('toggle', handler);
 
         const section = element.shadowRoot.querySelector('.slds-section');
         expect(section.classList).toContain('slds-is-open');
@@ -203,6 +212,9 @@ describe('Expandable Section', () => {
                 button.click();
             })
             .then(() => {
+                expect(handler).toHaveBeenCalledTimes(1);
+                expect(handler.mock.calls[0][0].detail.closed).toBeTruthy();
+
                 const button = element.shadowRoot.querySelector(
                     '.slds-section__title-action'
                 );
@@ -211,6 +223,8 @@ describe('Expandable Section', () => {
             })
             .then(() => {
                 expect(section.classList).toContain('slds-is-open');
+                expect(handler).toHaveBeenCalledTimes(2);
+                expect(handler.mock.calls[1][0].detail.closed).toBeFalsy();
             });
     });
 });

@@ -58,8 +58,8 @@
                         >{sourceLabel}</span
                     >
                     <div
-                        if:true={searchEngine}
-                        class="avonni-dual-listbox-search-engine"
+                        if:true={allowSearch}
+                        class="avonni-dual-listbox-allow-search"
                     >
                         <lightning-input
                             id="search-input"
@@ -88,52 +88,77 @@
                             data-element-id="ul-source-list"
                         >
                             <template
-                                for:each={computedSourceList}
-                                for:item="option"
-                                for:index="index"
+                                for:each={computedSourceGroups}
+                                for:item="group"
                             >
-                                <li
-                                    key={option.value}
+                                <div
+                                    if:true={group.label}
+                                    key={generateKey}
                                     role="presentation"
-                                    class={computedListItemClass}
-                                    data-role="source"
+                                    class="slds-listbox__item dual-listbox__group-title"
                                 >
                                     <div
-                                        class={option.classList}
-                                        aria-selected={option.selected}
-                                        role="option"
-                                        tabindex={option.tabIndex}
-                                        data-index={index}
-                                        data-value={option.value}
-                                        data-type={computedSourceListId}
-                                        onclick={handleOptionClick}
-                                        onkeydown={handleOptionKeyDown}
-                                        draggable={draggable}
-                                        ondragstart={handleDragStartSource}
-                                        ondragend={handleDragEndSource}
+                                        class="slds-media slds-media_small"
+                                        role="presentation"
                                     >
-                                        <div class="slds-media__figure">
-                                            <c-avatar
-                                                fallback-icon-name={option.iconName}
-                                                src={option.src}
-                                                initials={option.initials}
-                                                size={option.iconSize}
-                                                variant={option.variant}
-                                                primary-text={option.primaryText}
-                                                secondary-text={option.secondaryText}
-                                            ></c-avatar>
-                                        </div>
-                                        <template if:false={option.description}>
-                                            <span class="slds-media__body">
-                                                <span
-                                                    class="slds-truncate"
-                                                    title={option.label}
-                                                    >{option.label}</span
-                                                >
-                                            </span>
-                                        </template>
+                                        <h3
+                                            class="slds-listbox__option-header slds-p-around_x-small slds-text-color_default"
+                                            role="presentation"
+                                        >
+                                            {group.label}
+                                        </h3>
                                     </div>
-                                </li>
+                                </div>
+                                <template
+                                    for:each={group.options}
+                                    for:item="option"
+                                    for:index="index"
+                                >
+                                    <li
+                                        key={option.value}
+                                        role="presentation"
+                                        class={computedListItemClass}
+                                        data-role="source"
+                                    >
+                                        <div
+                                            class={option.classList}
+                                            aria-selected={option.selected}
+                                            role="option"
+                                            tabindex={option.tabIndex}
+                                            group-index={index}
+                                            data-value={option.value}
+                                            data-type={computedSourceListId}
+                                            onclick={handleOptionClick}
+                                            onkeydown={handleOptionKeyDown}
+                                            draggable={draggable}
+                                            ondragstart={handleDragStartSource}
+                                            ondragend={handleDragEndSource}
+                                        >
+                                            <div class="slds-media__figure">
+                                                <c-avatar
+                                                    fallback-icon-name={option.iconName}
+                                                    src={option.src}
+                                                    initials={option.initials}
+                                                    size={option.iconSize}
+                                                    variant={option.variant}
+                                                    primary-text={option.primaryText}
+                                                    secondary-text={option.secondaryText}
+                                                ></c-avatar>
+                                            </div>
+                                            <template
+                                                if:false={option.description}
+                                            >
+                                                <span class="slds-media__body">
+                                                    <span
+                                                        class="slds-truncate"
+                                                        title={option.label}
+                                                        >{option.label}</span
+                                                    >
+                                                </span>
+                                            </template>
+                                        </div>
+                                    </li>
+                                </template>
                             </template>
                         </ul>
                         <div if:true={isLoading}>
@@ -197,68 +222,97 @@
                             data-element-id="ul-selected-list"
                         >
                             <template
-                                for:each={computedSelectedList}
-                                for:item="option"
-                                for:index="index"
+                                for:each={computedSelectedGroups}
+                                for:item="group"
+                                for:index="groupIndex"
                             >
-                                <li
-                                    key={option.value}
+                                <div
+                                    if:true={group.label}
+                                    key={generateKey}
                                     role="presentation"
-                                    class={computedListItemClass}
-                                    data-role="selected"
+                                    class="slds-listbox__item dual-listbox__group-title"
                                 >
                                     <div
-                                        class={option.classList}
-                                        aria-selected={option.selected}
-                                        role="option"
-                                        tabindex={option.tabIndex}
-                                        data-index={index}
-                                        data-value={option.value}
-                                        data-type={computedSelectedListId}
-                                        onclick={handleOptionClick}
-                                        onkeydown={handleOptionKeyDown}
-                                        draggable={draggable}
-                                        ondragstart={handleDragStartSelected}
-                                        ondragend={handleDragEndSelected}
-                                        ondragover={handleDragOver}
+                                        class="slds-media slds-media_small"
+                                        role="presentation"
                                     >
-                                        <div class="slds-media__figure">
-                                            <c-avatar
-                                                fallback-icon-name={option.iconName}
-                                                src={option.src}
-                                                initials={option.initials}
-                                                size={option.iconSize}
-                                                variant={option.variant}
-                                                primary-text={option.primaryText}
-                                                secondary-text={option.secondaryText}
-                                            ></c-avatar>
-                                        </div>
-                                        <template if:false={option.description}>
-                                            <span class="slds-media__body">
-                                                <span
-                                                    class="slds-truncate"
-                                                    title={option.label}
-                                                    >{option.label}</span
-                                                >
-                                            </span>
-                                        </template>
-                                        <template if:true={option.isLocked}>
-                                            <span
-                                                class="slds-media__figure slds-media__figure_reverse"
-                                            >
-                                                <lightning-icon
-                                                    icon-name="utility:lock"
-                                                    size="x-small"
-                                                    alternative-text={computedLockAssistiveText}
-                                                ></lightning-icon>
-                                            </span>
-                                        </template>
+                                        <h3
+                                            class="slds-listbox__option-header slds-p-around_x-small slds-text-color_default"
+                                            role="presentation"
+                                        >
+                                            {group.label}
+                                        </h3>
                                     </div>
-                                </li>
+                                </div>
+                                <template
+                                    for:each={group.options}
+                                    for:item="option"
+                                    for:index="insideGroupIndex"
+                                >
+                                    <li
+                                        key={option.value}
+                                        role="presentation"
+                                        class={computedListItemClass}
+                                        data-role="selected"
+                                    >
+                                        <div
+                                            class={option.classList}
+                                            aria-selected={option.selected}
+                                            role="option"
+                                            tabindex={option.tabIndex}
+                                            data-group-index={groupIndex}
+                                            data-inside-group-index={insideGroupIndex}
+                                            data-value={option.value}
+                                            data-type={computedSelectedListId}
+                                            onclick={handleOptionClick}
+                                            onkeydown={handleOptionKeyDown}
+                                            draggable={draggable}
+                                            ondragstart={handleDragStartSelected}
+                                            ondragend={handleDragEndSelected}
+                                            ondragover={handleDragOver}
+                                        >
+                                            <div class="slds-media__figure">
+                                                <c-avatar
+                                                    fallback-icon-name={option.iconName}
+                                                    src={option.src}
+                                                    initials={option.initials}
+                                                    size={option.iconSize}
+                                                    variant={option.variant}
+                                                    primary-text={option.primaryText}
+                                                    secondary-text={option.secondaryText}
+                                                ></c-avatar>
+                                            </div>
+                                            <template
+                                                if:false={option.description}
+                                            >
+                                                <span class="slds-media__body">
+                                                    <span
+                                                        class="slds-truncate"
+                                                        title={option.label}
+                                                        >{option.label}</span
+                                                    >
+                                                </span>
+                                            </template>
+                                            <template if:true={option.isLocked}>
+                                                <span
+                                                    class="slds-media__figure slds-media__figure_reverse"
+                                                >
+                                                    <lightning-icon
+                                                        icon-name="utility:lock"
+                                                        size="x-small"
+                                                        alternative-text={computedLockAssistiveText}
+                                                    ></lightning-icon>
+                                                </span>
+                                            </template>
+                                        </div>
+                                    </li>
+                                </template>
                             </template>
                         </ul>
                         <template if:true={isSelectedBoxEmpty}>
-                            <span data-element-id="span-selected-placeholder">{selectedPlaceholder}</span>
+                            <span data-element-id="span-selected-placeholder"
+                                >{selectedPlaceholder}</span
+                            >
                         </template>
                     </div>
                 </div>
