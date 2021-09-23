@@ -60,6 +60,7 @@ const STEPS = [
     }
 ];
 
+let element;
 describe('PrimitiveWizardNavigation', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -67,11 +68,14 @@ describe('PrimitiveWizardNavigation', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
+    beforeEach(() => {
+        element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.actionPosition).toBe('left');
         expect(element.buttonAlignmentBump).toBeUndefined();
         expect(element.finishButtonIconName).toBeUndefined();
@@ -100,12 +104,6 @@ describe('PrimitiveWizardNavigation', () => {
 
     // action-position
     it('actionPosition = left', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.actionPosition = 'left';
 
         return Promise.resolve().then(() => {
@@ -121,12 +119,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('actionPosition = right', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.actionPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -143,12 +135,6 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-alignment-bump
     it('buttonAlignmentBump = left', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.buttonAlignmentBump = 'left';
 
         return Promise.resolve().then(() => {
@@ -186,12 +172,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('buttonAlignmentBump = right', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.buttonAlignmentBump = 'right';
 
         return Promise.resolve().then(() => {
@@ -231,7 +211,7 @@ describe('PrimitiveWizardNavigation', () => {
     // button-finish-icon-name
     // Depends on steps and currentStep
     it('finishButtonIconName', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
+        element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
@@ -253,7 +233,7 @@ describe('PrimitiveWizardNavigation', () => {
     // button-finish-icon-position
     // Depends on steps and currentStep
     it('finishButtonIconPosition', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
+        element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
@@ -276,7 +256,7 @@ describe('PrimitiveWizardNavigation', () => {
     // button-finish-label
     // Depends on steps and currentStep
     it('finishButtonLabel', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
+        element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
@@ -299,7 +279,7 @@ describe('PrimitiveWizardNavigation', () => {
     // button-finish-variant
     // Depends on steps and currentStep
     it('finishButtonVariant', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
+        element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
@@ -322,12 +302,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-next-icon-name
     // Depends on steps
     it('nextButtonIconName', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonIconName = 'utility:apps';
         element.steps = STEPS;
 
@@ -344,12 +318,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-next-icon-position
     // Depends on steps
     it('nextButtonIconPosition', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonIconPosition = 'right';
         element.steps = STEPS;
 
@@ -366,12 +334,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-next-label
     // Depends on steps
     it('nextButtonLabel', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonLabel = 'A string label';
         element.steps = STEPS;
 
@@ -388,12 +350,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-next-variant
     // Depends on steps
     it('nextButtonVariant', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.nextButtonVariant = 'brand';
         element.steps = STEPS;
 
@@ -410,12 +366,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-previous-icon-name
     // Depends on steps
     it('previousButtonIconName', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonIconName = 'utility:user';
         element.steps = STEPS;
 
@@ -432,12 +382,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-previous-icon-position
     // Depends on steps
     it('previousButtonIconPosition', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonIconPosition = 'right';
         element.steps = STEPS;
 
@@ -454,12 +398,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-previous-label
     // Depends on steps
     it('previousButtonLabel', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonLabel = 'A string label';
         element.steps = STEPS;
 
@@ -476,12 +414,6 @@ describe('PrimitiveWizardNavigation', () => {
     // button-previous-variant
     // Depends on steps
     it('previousButtonVariant', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.previousButtonVariant = 'destructive';
         element.steps = STEPS;
 
@@ -498,7 +430,7 @@ describe('PrimitiveWizardNavigation', () => {
     // current-step
     // Depends on steps
     it('currentStep = last step', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
+        element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
@@ -517,7 +449,7 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('currentStep = first step', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
+        element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
 
@@ -536,12 +468,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('currentStep = middle step', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.currentStep = 'step-2';
         element.steps = STEPS;
 
@@ -558,12 +484,6 @@ describe('PrimitiveWizardNavigation', () => {
 
     // indicatorPosition and position
     it('indicatorPosition = top and position = top', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorPosition = 'top';
         element.position = 'top';
 
@@ -580,12 +500,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('indicatorPosition = top and position = bottom', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorPosition = 'top';
         element.position = 'bottom';
 
@@ -595,12 +509,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('indicatorPosition = left and position = side', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorPosition = 'left';
         element.position = 'side';
 
@@ -620,12 +528,6 @@ describe('PrimitiveWizardNavigation', () => {
     // indicator-type
     // Depends on steps
     it('indicatorType = base', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'base';
 
         return Promise.resolve().then(() => {
@@ -651,12 +553,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('indicatorType = base-shaded', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'base-shaded';
 
         return Promise.resolve().then(() => {
@@ -682,12 +578,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('indicatorType = path', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'path';
 
         return Promise.resolve().then(() => {
@@ -713,12 +603,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('indicatorType = bullet', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'bullet';
         element.steps = STEPS;
 
@@ -749,12 +633,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('indicatorType = fractions', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'fractions';
         element.steps = STEPS;
 
@@ -780,12 +658,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('indicatorType = bar', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'bar';
         element.steps = STEPS;
 
@@ -813,12 +685,6 @@ describe('PrimitiveWizardNavigation', () => {
     // fraction-label and fraction-prefix-label
     // Depends on indicatorType and steps
     it('fractionLabel and prefixFractionLabel', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.indicatorType = 'fractions';
         element.steps = STEPS;
         element.fractionLabel = 'Label';
@@ -837,12 +703,6 @@ describe('PrimitiveWizardNavigation', () => {
     // hide-indicator
     // Depends on steps
     it('hideIndicator = true', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.hideIndicator = true;
         element.steps = STEPS;
 
@@ -856,12 +716,6 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     it('hideIndicator = false', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         element.hideIndicator = false;
         element.steps = STEPS;
 
@@ -877,12 +731,6 @@ describe('PrimitiveWizardNavigation', () => {
     // Attributes updates after first render
     // Depends on steps, indicatorType and currentStep
     it('Attributes updated after first render', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         // Only steps are set
         element.steps = [STEPS[0], STEPS[2]];
 
@@ -909,12 +757,6 @@ describe('PrimitiveWizardNavigation', () => {
     // change
     // Depends on steps
     it('change event', () => {
-        const element = createElement('base-primitive-wizard-navigation', {
-            is: PrimitiveWizardNavigation
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.steps = STEPS;
