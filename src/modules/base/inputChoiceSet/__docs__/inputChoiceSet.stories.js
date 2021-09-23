@@ -206,7 +206,7 @@ const optionsWithoutIcon = [
     { label: 'Thu', value: 'thu' },
     { label: 'Fri', value: 'fri' }
 ];
-const dayValue = ['fri'];
+const dayValue = 'fri';
 const daysValue = ['thu', 'fri'];
 const alignmentValue = ['center'];
 

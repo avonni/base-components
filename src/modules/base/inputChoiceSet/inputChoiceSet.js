@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
+    normalizeArray,
     synchronizeAttrs,
     getRealDOMId,
     classListMutation
@@ -158,7 +159,8 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     set value(value) {
-        this._value = value ? value : [];
+        this._value =
+            typeof value === 'string' ? value : [...normalizeArray(value)];
     }
 
     /**
@@ -448,9 +450,10 @@ export default class InputChoiceSet extends LightningElement {
      * @returns {array} Checked values.
      */
     handleValueChange(inputs) {
-        return Array.from(inputs)
+        const checkedValues = Array.from(inputs)
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.value);
+        return checkedValues.length > 1 ? checkedValues : checkedValues[0];
     }
 
     /**
@@ -502,7 +505,7 @@ export default class InputChoiceSet extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.value
+                    value: this._value
                 },
                 composed: true,
                 bubbles: true,
@@ -532,11 +535,7 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedLegendClass() {
-        const classnames = classSet(
-            'slds-form-element__legend slds-form-element__label'
-        );
-
-        return classnames
+        return classSet('slds-form-element__label')
             .add({
                 'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN
             })

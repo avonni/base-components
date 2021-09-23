@@ -310,7 +310,7 @@ describe('Input choice set', () => {
                 'slds-form-element_horizontal'
             );
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__legend.slds-form-element__label'
+                '.slds-form-element__label'
             );
             expect(label.className).not.toContain('slds-assistive-text');
         });
@@ -328,7 +328,7 @@ describe('Input choice set', () => {
                 'slds-form-element_horizontal'
             );
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__legend.slds-form-element__label'
+                '.slds-form-element__label'
             );
             expect(label.className).toContain('slds-assistive-text');
         });
@@ -344,7 +344,7 @@ describe('Input choice set', () => {
             );
             expect(element.className).toContain('slds-form-element_horizontal');
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__legend.slds-form-element__label'
+                '.slds-form-element__label'
             );
             expect(label.className).not.toContain('slds-assistive-text');
         });
@@ -360,7 +360,7 @@ describe('Input choice set', () => {
                 'slds-form-element_horizontal'
             );
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__legend.slds-form-element__label'
+                '.slds-form-element__label'
             );
             expect(label.className).not.toContain('slds-assistive-text');
         });
@@ -414,19 +414,40 @@ describe('Input choice set', () => {
     /* ----- EVENTS ----- */
 
     // change event
-    it('Input choice set change event', () => {
+    it('Input choice set change event single', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
         element.options = options;
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector('input');
-            const handleChange = (event) => {
-                expect(event.detail).toBeTruthy();
-                expect(event.bubbles).toBeTruthy();
-                expect(event.cancelable).toBeTruthy();
-                expect(event.composed).toBeTruthy();
-            };
-            element.addEventListener('change', handleChange);
             input.click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe('mon');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+        });
+    });
+
+    it('Input choice set change event multiple', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.options = options;
+        element.value = 'mon';
+        element.isMultiSelect = true;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelectorAll('input');
+            input[1].click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+                'mon',
+                'tue'
+            ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
         });
     });
 
