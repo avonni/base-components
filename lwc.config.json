@@ -507,20 +507,16 @@
             "path": "src/modules/base/colorPalette/colorPalette.js"
         },
         {
-            "name": "avonni/combobox",
-            "path": "src/modules/base/combobox/combobox.js"
-        },
-        {
             "name": "avonni/colorPicker",
             "path": "src/modules/base/colorPicker/colorPicker.js"
         },
         {
-            "name": "avonni/confetti",
-            "path": "src/modules/base/confetti/confetti.js"
+            "name": "avonni/combobox",
+            "path": "src/modules/base/combobox/combobox.js"
         },
         {
-            "name": "avonni/inputData",
-            "path": "src/modules/base/inputData/inputData.js"
+            "name": "avonni/confetti",
+            "path": "src/modules/base/confetti/confetti.js"
         },
         {
             "name": "avonni/datatable",
@@ -579,6 +575,10 @@
             "path": "src/modules/base/inputCounter/inputCounter.js"
         },
         {
+            "name": "avonni/inputData",
+            "path": "src/modules/base/inputData/inputData.js"
+        },
+        {
             "name": "avonni/inputDateRange",
             "path": "src/modules/base/inputDateRange/inputDateRange.js"
         },
@@ -631,10 +631,6 @@
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
         {
-            "name": "avonni/primitiveSchedulerHeaderGroup",
-            "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
-        },
-        {
             "name": "avonni/profileCard",
             "path": "src/modules/base/profileCard/profileCard.js"
         },
@@ -683,10 +679,6 @@
             "path": "src/modules/base/separator/separator.js"
         },
         {
-            "name": "avonni/list",
-            "path": "src/modules/base/list/list.js"
-        },
-        {
             "name": "avonni/splitter",
             "path": "src/modules/base/splitter/splitter.js"
         },
@@ -725,14 +717,6 @@
         {
             "name": "avonni/wizard",
             "path": "src/modules/base/wizard/wizard.js"
-        },
-        {
-            "name": "avonni/primitiveWizardNavigation",
-            "path": "src/modules/base/primitiveWizardNavigation/primitiveWizardNavigation.js"
-        },
-        {
-            "name": "avonni/wizardStep",
-            "path": "src/modules/base/wizardStep/wizardStep.js"
         }
     ],
     "expose": [
@@ -753,7 +737,6 @@
         "avonni/colorPicker",
         "avonni/combobox",
         "avonni/confetti",
-        "avonni/inputData",
         "avonni/datatable",
         "avonni/dateTimePicker",
         "avonni/dialog",
@@ -761,13 +744,14 @@
         "avonni/dynamicMenu",
         "avonni/emojiPicker",
         "avonni/expandableSection",
-        "avonni/filterMenuGroup",
         "avonni/filterMenu",
+        "avonni/filterMenuGroup",
         "avonni/heroBanner",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputChoiceSet",
         "avonni/inputCounter",
+        "avonni/inputData",
         "avonni/inputDateRange",
         "avonni/inputPen",
         "avonni/inputRichText",
@@ -787,14 +771,12 @@
         "avonni/progressIndicator",
         "avonni/progressRing",
         "avonni/publisher",
-        "avonni/outputData",
         "avonni/qrcode",
         "avonni/range",
         "avonni/rating",
         "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/separator",
-        "avonni/list",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",
@@ -803,6 +785,7 @@
         "avonni/verticalProgressIndicator",
         "avonni/verticalProgressStep",
         "avonni/visualPicker",
-        "avonni/visualPickerLink"
+        "avonni/visualPickerLink",
+        "avonni/wizard"
     ]
 }
