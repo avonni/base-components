@@ -93,6 +93,7 @@ const ROWS = [
     }
 ];
 
+let element;
 describe('PrimitiveSchedulerEventOccurrence', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -100,14 +101,14 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
+    beforeEach(() => {
+        element = createElement('base-primitive-scheduler-event-occurrence', {
+            is: PrimitiveSchedulerEventOccurrence
+        });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.color).toBeUndefined();
         expect(element.columnDuration).toBe(0);
         expect(element.columns).toMatchObject([]);
@@ -142,15 +143,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // color
     // Depends on theme, rows and rowKey
     it('color', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.from = FROM;
         element.to = TO;
         element.color = 'tomato';
@@ -165,15 +157,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('color defined by the row color', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.from = FROM;
         element.to = TO;
         element.theme = 'default';
@@ -191,15 +174,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // date-format
     // Depends on labels, rows and rowKey
     it('dateFormat', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.from = FROM;
         element.to = TO;
         element.rows = ROWS;
@@ -222,15 +196,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // disabled
     // Depends on rows and rowKey
     it('disabled = false', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -242,15 +207,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -262,15 +218,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('disabled occurrence height', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.rows = ROWS;
         element.rowKey = ROW_KEY;
@@ -283,15 +230,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // event-data
     // Depends on labels, rows and rowKey
     it('eventData', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.rows = ROWS;
         element.rowKey = ROW_KEY;
         element.labels = {
@@ -314,15 +252,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // icon-name
     // Depends on disabled
     it('iconName', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.iconName = 'utility:apps';
 
@@ -337,15 +266,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // labels
     // Depends on title, eventData, rows and rowKey
     it('labels', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.rows = ROWS;
         element.rowKey = ROW_KEY;
         element.title = 'Title of the event';
@@ -412,15 +332,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // read-only
     // Depends on disabled and referenceLine
     it('read-only = false', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.readOnly = false;
         const dblClickHandler = jest.fn();
         const mouseDownHandler = jest.fn();
@@ -447,15 +358,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('read-only = false, disabled occurrence', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.readOnly = false;
         element.disabled = true;
         const disabledDblClickHandler = jest.fn();
@@ -481,15 +383,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('read-only = false, reference line', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.readOnly = false;
         element.referenceLine = true;
         const disabledDblClickHandler = jest.fn();
@@ -515,15 +408,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('read-only = true', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.readOnly = true;
         const dblClickHandler = jest.fn();
         const mouseDownHandler = jest.fn();
@@ -550,15 +434,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('read-only = true, disabled occurrence', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.readOnly = true;
         element.disabled = true;
         const disabledDblClickHandler = jest.fn();
@@ -584,15 +459,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('read-only = true, reference line', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.readOnly = true;
         element.referenceLine = true;
         const disabledDblClickHandler = jest.fn();
@@ -619,15 +485,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // reference-line
     it('referenceLine = false', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.referenceLine = false;
 
         return Promise.resolve().then(() => {
@@ -639,15 +496,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('referenceLine = true', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.referenceLine = true;
 
         return Promise.resolve().then(() => {
@@ -661,15 +509,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // scroll-left-offset
     // Depends on labels, rows, and rowKey
     it('scrollLeftOffset', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.scrollLeftOffset = 30;
         element.from = FROM;
         element.to = TO;
@@ -692,15 +531,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // theme
     // Depends on color and referenceLine
     it('theme = default', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.theme = 'default';
         element.color = 'rgb(0, 0, 0)';
 
@@ -714,15 +544,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('theme = transparent', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.theme = 'transparent';
         element.color = 'rgb(0, 0, 0)';
 
@@ -737,15 +558,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('theme = transparent, with hexadecimal color', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.theme = 'transparent';
         element.color = '#000';
 
@@ -762,15 +574,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('theme = line', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.theme = 'line';
         element.color = 'rgb(0, 0, 0)';
 
@@ -784,15 +587,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('theme = hollow', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.theme = 'hollow';
         element.color = 'rgb(0, 0, 0)';
 
@@ -806,15 +600,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('theme = rounded', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.theme = 'rounded';
         element.color = 'rgb(0, 0, 0)';
 
@@ -828,15 +613,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('theme, referenceLine = true', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.theme = 'inverse';
         element.referenceLine = true;
 
@@ -851,15 +627,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // title
     // Depends on referenceLine and disabled
     it('title, referenceLine = true', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.title = 'Title string';
         element.referenceLine = true;
 
@@ -872,15 +639,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('title, disabled = true', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.title = 'Title string';
         element.disabled = true;
 
@@ -894,15 +652,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // x
     it('x', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.x = 70;
 
         return Promise.resolve().then(() => {
@@ -912,15 +661,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // y
     it('y', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.y = 70;
 
         return Promise.resolve().then(() => {
@@ -932,15 +672,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // focus
     it('focus method', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-scheduler__event-wrapper'
@@ -954,15 +685,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // hideRightLabel
     // Depends on labels, rowKey and rows
     it('hideRightLabel method', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.rowKey = ROW_KEY;
         element.rows = ROWS;
         element.labels = {
@@ -984,15 +706,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // showRightLabel
     // Depends on hideRightLabel() labels, rowKey and rows
     it('showRightLabel method', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.rowKey = ROW_KEY;
         element.rows = ROWS;
         element.labels = {
@@ -1015,15 +728,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // Horizontal position and width: updatePosition() and updateWidth()
     // columnDuration, columns, columnWidth, from, leftPosition, to, x
     it('updateWidth and updatePosition methods, event spans only on full columns', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.from = FROM;
         element.to = TO;
         element.columnWidth = COLUMN_WIDTH;
@@ -1038,15 +742,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('updateWidth and updatePosition methods, event spans on full and half columns', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.from = new Date(FROM.getTime()).setHours(7, 30);
         element.to = new Date(TO.getTime()).setHours(9, 30);
         element.columnWidth = COLUMN_WIDTH;
@@ -1061,15 +756,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('updateWidth and updatePosition methods, event spans on only part of a column', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.from = new Date(FROM.getTime()).setHours(8, 15);
         element.to = new Date(TO.getTime()).setHours(8, 45);
         element.columnWidth = COLUMN_WIDTH;
@@ -1086,15 +772,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // Vertical position: updatePosition()
     // occurrence, y, columns, rows and rowKey
     it('updatePosition method, vertical position', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.from = FROM;
         element.to = TO;
         element.rows = ROWS;
@@ -1113,15 +790,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privateblur
     // Depends on eventName and occurrenceKey
     it('privateblur event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1141,15 +809,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatecontextmenu
     // Depends on eventName and occurrenceKey
     it('privatecontextmenu event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1176,15 +835,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     it('privatecontextmenu event, triggered by the keyboard', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1213,15 +863,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatedblclick
     // Depends on eventName and occurrenceKey
     it('privatedblclick event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1250,15 +891,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatedisabledcontextmenu
     // Depends on disabled
     it('privatedisabledcontextmenu event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -1282,15 +914,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatedisableddblclick
     // Depends on disabled
     it('privatedisableddblclick event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -1314,15 +937,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatedisabledmousedown
     // Depends on disabled
     it('privatedisabledmousedown event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -1347,15 +961,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatefocus
     // Depends on eventName and occurrenceKey
     it('privatefocus event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1391,15 +996,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatemousedown
     // Depends on eventName and occurrenceKey
     it('privatemousedown event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1429,15 +1025,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatemouseenter
     // Depends on eventName and occurrenceKey
     it('privatemouseenter event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1465,15 +1052,6 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     // privatemouseleave
     // Depends on eventName and occurrenceKey
     it('privatemouseleave event', () => {
-        const element = createElement(
-            'base-primitive-scheduler-event-occurrence',
-            {
-                is: PrimitiveSchedulerEventOccurrence
-            }
-        );
-
-        document.body.appendChild(element);
-
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
