@@ -90,6 +90,7 @@ const STEPS = [
 
 const STEPS_NAMES = ['step-2', 'step-3'];
 
+let element;
 describe('ProgressIndicator', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -97,11 +98,14 @@ describe('ProgressIndicator', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-progress-indicator', {
+    beforeEach(() => {
+        element = createElement('base-progress-indicator', {
             is: ProgressIndicator
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.completedSteps).toMatchObject([]);
         expect(element.currentStep).toBeUndefined();
         expect(element.disabledSteps).toMatchObject([]);
@@ -117,12 +121,6 @@ describe('ProgressIndicator', () => {
     // completed-steps
     // Depends on steps
     it('completedSteps', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.steps = STEPS;
         element.completedSteps = STEPS_NAMES;
 
@@ -143,12 +141,6 @@ describe('ProgressIndicator', () => {
     // current-step
     // Depends on steps
     it('currentStep', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.steps = STEPS;
         element.currentStep = 'step-2';
 
@@ -164,12 +156,6 @@ describe('ProgressIndicator', () => {
     // disabled-steps
     // Depends on steps
     it('disabledSteps', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.steps = STEPS;
         element.disabledSteps = STEPS_NAMES;
 
@@ -187,12 +173,6 @@ describe('ProgressIndicator', () => {
     // error-steps
     // Depends on steps
     it('errorSteps', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.steps = STEPS;
         element.errorSteps = STEPS_NAMES;
 
@@ -211,12 +191,6 @@ describe('ProgressIndicator', () => {
 
     // steps
     it('steps', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -288,12 +262,6 @@ describe('ProgressIndicator', () => {
 
     // type
     it('type', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
@@ -365,12 +333,6 @@ describe('ProgressIndicator', () => {
 
     // variant
     it('variant = base', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -380,12 +342,6 @@ describe('ProgressIndicator', () => {
     });
 
     it('variant = shaded', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'shaded';
 
         return Promise.resolve().then(() => {
@@ -397,12 +353,6 @@ describe('ProgressIndicator', () => {
     // warning-steps
     // Depends on variant and steps
     it('Warning steps', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.steps = STEPS;
         element.warningSteps = STEPS_NAMES;
 
@@ -420,12 +370,6 @@ describe('ProgressIndicator', () => {
     });
 
     it('Warning steps, with variant shaded', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'shaded';
         element.steps = STEPS;
         element.warningSteps = STEPS_NAMES;
@@ -453,12 +397,6 @@ describe('ProgressIndicator', () => {
     // stepclick
     // Depends on steps
     it('stepclick event', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.steps = STEPS;
         element.addEventListener('stepclick', handler);
@@ -476,12 +414,6 @@ describe('ProgressIndicator', () => {
     // stepblur
     // Depends on steps
     it('stepblur event', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.steps = STEPS;
         element.addEventListener('stepblur', handler);
@@ -499,12 +431,6 @@ describe('ProgressIndicator', () => {
     // stepfocus
     // Depends on steps
     it('stepfocus event', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.steps = STEPS;
         element.addEventListener('stepfocus', handler);
@@ -522,12 +448,6 @@ describe('ProgressIndicator', () => {
     // stepmouseenter
     // Depends on steps
     it('stepmouseenter event', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.steps = STEPS;
         element.addEventListener('stepmouseenter', handler);
@@ -545,12 +465,6 @@ describe('ProgressIndicator', () => {
     // stepmouseleave
     // Depends on steps
     it('stepmouseleave event', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.steps = STEPS;
         element.addEventListener('stepmouseleave', handler);
@@ -568,12 +482,6 @@ describe('ProgressIndicator', () => {
     // stepbuttonclick
     // Depends on steps
     it('stepbuttonclick event', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.steps = STEPS;
         element.addEventListener('stepbuttonclick', handler);
@@ -591,12 +499,6 @@ describe('ProgressIndicator', () => {
     // steppopoverclick
     // Depends on steps
     it('steppopoverclick event', () => {
-        const element = createElement('base-progress-indicator', {
-            is: ProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.steps = STEPS;
         element.addEventListener('steppopoverclick', handler);
