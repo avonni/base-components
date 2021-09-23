@@ -74,6 +74,7 @@ const ITEMS = [
     }
 ];
 
+let element;
 describe('VisualPicker', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -81,11 +82,14 @@ describe('VisualPicker', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-visual-picker', {
+    beforeEach(() => {
+        element = createElement('base-visual-picker', {
             is: VisualPicker
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.hideBorder).toBeFalsy();
         expect(element.hideCheckMark).toBeFalsy();
@@ -106,12 +110,6 @@ describe('VisualPicker', () => {
     // disabled
     // Depends on items
     it('disabled = false', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
         element.items = ITEMS;
 
@@ -124,12 +122,6 @@ describe('VisualPicker', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.items = ITEMS;
 
@@ -144,12 +136,6 @@ describe('VisualPicker', () => {
     // hide-border
     // Depends on items
     it('hideBorder = false', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.hideBorder = false;
         element.items = ITEMS;
 
@@ -162,12 +148,6 @@ describe('VisualPicker', () => {
     });
 
     it('hideBorder = true', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.hideBorder = true;
         element.items = ITEMS;
 
@@ -182,12 +162,6 @@ describe('VisualPicker', () => {
     // hide-check-mark
     // Depends on variant, value and items
     it('hideCheckMark = false', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.hideCheckMark = false;
         element.items = ITEMS;
         element.variant = 'coverable';
@@ -206,12 +180,6 @@ describe('VisualPicker', () => {
     });
 
     it('hideCheckMark = true', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.hideCheckMark = true;
         element.items = ITEMS;
         element.variant = 'coverable';
@@ -231,11 +199,6 @@ describe('VisualPicker', () => {
 
     // items
     it('items', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -277,12 +240,6 @@ describe('VisualPicker', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -295,12 +252,6 @@ describe('VisualPicker', () => {
 
     // name
     it('name', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
@@ -314,12 +265,6 @@ describe('VisualPicker', () => {
     // ratio
     // Depends on items
     it('ratio = 1-by-1', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         const ratios = ['1-by-1', '4-by-3', '16-by-9'];
         const pickedRatio = '1-by-1';
 
@@ -346,12 +291,6 @@ describe('VisualPicker', () => {
     });
 
     it('ratio = 4-by-3', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         const ratios = ['1-by-1', '4-by-3', '16-by-9'];
         const pickedRatio = '4-by-3';
 
@@ -378,12 +317,6 @@ describe('VisualPicker', () => {
     });
 
     it('ratio = 16-by-9', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         const ratios = ['1-by-1', '4-by-3', '16-by-9'];
         const pickedRatio = '16-by-9';
 
@@ -411,12 +344,6 @@ describe('VisualPicker', () => {
 
     // required
     it('required = false', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.required = false;
 
         return Promise.resolve().then(() => {
@@ -429,12 +356,6 @@ describe('VisualPicker', () => {
     });
 
     it('required = true', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -449,12 +370,6 @@ describe('VisualPicker', () => {
     // size
     // Depends on items
     it('size = medium', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'medium';
         element.items = ITEMS;
 
@@ -483,12 +398,6 @@ describe('VisualPicker', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.items = ITEMS;
 
@@ -517,12 +426,6 @@ describe('VisualPicker', () => {
     });
 
     it('size = xx-small', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'xx-small';
         element.items = ITEMS;
 
@@ -551,12 +454,6 @@ describe('VisualPicker', () => {
     });
 
     it('size = x-small', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-small';
         element.items = ITEMS;
 
@@ -585,12 +482,6 @@ describe('VisualPicker', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.items = ITEMS;
 
@@ -621,12 +512,6 @@ describe('VisualPicker', () => {
     // type
     // Depends on items
     it('type = radio', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.type = 'radio';
         element.items = ITEMS;
 
@@ -639,12 +524,6 @@ describe('VisualPicker', () => {
     });
 
     it('type = checkbox', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.type = 'checkbox';
         element.items = ITEMS;
 
@@ -659,12 +538,6 @@ describe('VisualPicker', () => {
     // value
     // Depends on items and type
     it('value, with radio type', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.value = 'item-1';
         element.items = ITEMS;
         element.type = 'radio';
@@ -678,12 +551,6 @@ describe('VisualPicker', () => {
     });
 
     it('value, with checkbox type', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.value = ['item-1', 'item-3'];
         element.items = ITEMS;
         element.type = 'checkbox';
@@ -699,12 +566,6 @@ describe('VisualPicker', () => {
     // variant
     // Depends on items
     it('variant = non-coverable', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'non-coverable';
         element.items = ITEMS;
 
@@ -769,12 +630,6 @@ describe('VisualPicker', () => {
     });
 
     it('variant = coverable', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'coverable';
         element.items = ITEMS;
 
@@ -839,12 +694,6 @@ describe('VisualPicker', () => {
     });
 
     it('variant = vertical', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'vertical';
         element.items = ITEMS;
 
@@ -911,12 +760,6 @@ describe('VisualPicker', () => {
     // change
     // Depends on items and type
     it('change event, with radio type', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -935,12 +778,6 @@ describe('VisualPicker', () => {
     });
 
     it('change event, with checkbox type', () => {
-        const element = createElement('base-visual-picker', {
-            is: VisualPicker
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
