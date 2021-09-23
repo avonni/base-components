@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import ProgressRing from 'c/progressRing';
 
+let element;
 describe('ProgressRing', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('ProgressRing', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-progress-ring', {
+    beforeEach(() => {
+        element = createElement('base-progress-ring', {
             is: ProgressRing
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.direction).toBe('fill');
         expect(element.hideIcon).toBeFalsy();
         expect(element.size).toBe('medium');
@@ -56,12 +60,6 @@ describe('ProgressRing', () => {
 
     // direction and value
     it('direction = fill, value = 34', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.direction = 'fill';
         element.value = 34;
 
@@ -76,13 +74,31 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('direction = drain, value = 87', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
+    it('value > 100', () => {
+        element.value = 110;
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toBe(100);
         });
+    });
 
-        document.body.appendChild(element);
+    it('value < 0', () => {
+        element.value = -110;
 
+        return Promise.resolve().then(() => {
+            expect(element.value).toBe(0);
+        });
+    });
+
+    it('value NaN', () => {
+        element.value = 'a';
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toBe(0);
+        });
+    });
+
+    it('direction = drain, value = 87', () => {
         element.direction = 'drain';
         element.value = 87;
 
@@ -100,12 +116,6 @@ describe('ProgressRing', () => {
     // hide-icon
     // Depends on variant
     it('hideIcon = false', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.hideIcon = false;
         element.variant = 'warning';
 
@@ -117,12 +127,6 @@ describe('ProgressRing', () => {
     });
 
     it('hideIcon = true', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.hideIcon = true;
         element.variant = 'warning';
 
@@ -135,12 +139,6 @@ describe('ProgressRing', () => {
 
     // size
     it('size = medium', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
@@ -153,12 +151,6 @@ describe('ProgressRing', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -173,12 +165,6 @@ describe('ProgressRing', () => {
     // variant
     // Depends on value
     it('variant = base', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -204,12 +190,6 @@ describe('ProgressRing', () => {
     });
 
     it('variant = active-step', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'active-step';
 
         return Promise.resolve().then(() => {
@@ -235,12 +215,6 @@ describe('ProgressRing', () => {
     });
 
     it('variant = warning', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
@@ -269,12 +243,6 @@ describe('ProgressRing', () => {
     });
 
     it('variant = expired', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'expired';
 
         return Promise.resolve().then(() => {
@@ -303,12 +271,6 @@ describe('ProgressRing', () => {
     });
 
     it('variant = base-autocomplete', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base-autocomplete';
 
         return Promise.resolve().then(() => {
@@ -334,12 +296,6 @@ describe('ProgressRing', () => {
     });
 
     it('variant = base-autocomplete, with value = 100', () => {
-        const element = createElement('base-progress-ring', {
-            is: ProgressRing
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base-autocomplete';
         element.value = 100;
 
