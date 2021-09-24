@@ -932,9 +932,9 @@ describe('Color Picker', () => {
                 expect(handler.mock.calls[0][0].detail.hexa).toBeUndefined();
                 expect(handler.mock.calls[0][0].detail.rgb).toBeUndefined();
                 expect(handler.mock.calls[0][0].detail.rgba).toBeUndefined();
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             });
     });
 
