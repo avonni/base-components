@@ -394,6 +394,10 @@ export default class ColorPalette extends LightningElement {
         }
     }
 
+    /**
+     * Double click event handler.
+     *
+     */
     handleDblClick() {
         this.dispatchEvent(
             new CustomEvent('colordblclick', {
