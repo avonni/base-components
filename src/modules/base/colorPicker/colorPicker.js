@@ -186,6 +186,12 @@ export default class ColorPicker extends LightningElement {
     currentLabel;
     currentToken;
 
+    connectedCallback() {
+        this.addEventListener('colordblclick', () => {
+            this.handlerDone();
+        });
+    }
+
     renderedCallback() {
         if (!this.init) {
             this.initSwatchColor();
@@ -561,7 +567,9 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get isInputFilled() {
-        let input = this.template.querySelector('[data-element-id="lightning-input"]');
+        let input = this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
         if (input == null) {
             return this.inputValue;
         }
@@ -806,9 +814,9 @@ export default class ColorPicker extends LightningElement {
         this.currentLabel = undefined;
         this.currentToken = undefined;
         this.showError = false;
-            this.template
-                .querySelector('[data-element-id="lightning-input"]')
-                .classList.remove('slds-has-error');
+        this.template
+            .querySelector('[data-element-id="lightning-input"]')
+            .classList.remove('slds-has-error');
 
         this.dispatchClear();
     }
