@@ -631,6 +631,10 @@
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
         {
+            "name": "avonni/primitiveSchedulerHeaderGroup",
+            "path": "src/modules/base/primitiveSchedulerHeaderGroup/primitiveSchedulerHeaderGroup.js"
+        },
+        {
             "name": "avonni/profileCard",
             "path": "src/modules/base/profileCard/profileCard.js"
         },
