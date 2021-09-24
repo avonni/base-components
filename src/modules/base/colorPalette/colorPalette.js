@@ -280,7 +280,8 @@ export default class ColorPalette extends LightningElement {
      */
     @api
     reset() {
-        this._value = '';
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.value = '';
         this.dispatchChange();
     }
 
@@ -347,7 +348,8 @@ export default class ColorPalette extends LightningElement {
 
         let currentTarget = event.currentTarget;
         currentTarget.children[0].classList.add('slds-is-selected');
-        this._value = currentTarget.getAttribute('item-color');
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.value = currentTarget.getAttribute('item-color');
         this.currentLabel = currentTarget.getAttribute('item-label');
         this.currentToken = currentTarget.getAttribute('item-token');
         this.lastTarget = currentTarget;

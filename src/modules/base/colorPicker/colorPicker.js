@@ -804,7 +804,8 @@ export default class ColorPicker extends LightningElement {
     }
 
     clearInput() {
-        this._value = undefined;
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.value = undefined;
         this.inputValue = undefined;
         this.currentLabel = undefined;
         this.currentToken = undefined;
@@ -837,7 +838,8 @@ export default class ColorPicker extends LightningElement {
      */
     handlerDone() {
         if (!this.readOnly && this.newValue) {
-            this._value = this.newValue;
+            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+            this.value = this.newValue;
             this.newValue = '';
 
             if (this.showError) {
@@ -1026,7 +1028,8 @@ export default class ColorPicker extends LightningElement {
                 ).style.background = color;
             }
 
-            this._value = color;
+            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+            this.value = color;
 
             let gradientPalette = this.template.querySelector(
                 '[data-name="colorGradient"]'
