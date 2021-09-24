@@ -186,12 +186,6 @@ export default class ColorPicker extends LightningElement {
     currentLabel;
     currentToken;
 
-    connectedCallback() {
-        this.addEventListener('change', (event) => {
-            console.log(event);
-        });
-    }
-
     renderedCallback() {
         if (!this.init) {
             this.initSwatchColor();
