@@ -97,7 +97,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='add']"
+                '[data-element-id="lightning-button-icon-add"]'
             );
             expect(lightningButtonIcon.iconName).toBe('utility:add');
             expect(lightningButtonIcon.title).toBe('add');
@@ -129,7 +129,7 @@ describe('DualListbox', () => {
         return Promise.resolve().then(() => {
             expect(element.buttonSize).toBe('xx-small');
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -143,7 +143,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -157,7 +157,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -171,7 +171,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -185,7 +185,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -200,7 +200,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -214,7 +214,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -228,7 +228,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -242,7 +242,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -256,7 +256,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -270,7 +270,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             lightningButtonIcon.forEach((button) => {
@@ -287,7 +287,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
 
             expect(lightningButtonIcon.length).toBe(2);
@@ -304,20 +304,25 @@ describe('DualListbox', () => {
         element.removeButtonLabel = 'remove';
         element.upButtonLabel = 'up';
 
-        return Promise.resolve().then(() => {
-            const columns = element.shadowRoot.querySelectorAll(
-                '.slds-dueling-list__options'
-            );
+        return Promise.resolve()
+            .then(() => {
+                const columns = element.shadowRoot.querySelectorAll(
+                    '.slds-dueling-list__options'
+                );
 
-            const buttons = element.shadowRoot.querySelectorAll('button');
-            buttons.forEach((button) => {
-                expect(button.disabled).toBeTruthy();
-            });
+                columns.forEach((column) => {
+                    expect(column.classList).toContain('slds-is-disabled');
+                });
+            })
+            .then(() => {
+                const buttons = element.shadowRoot.querySelectorAll(
+                    '[data-element-id^="lightning-button-icon"]'
+                );
 
-            columns.forEach((column) => {
-                expect(column.classList).toContain('slds-is-disabled');
+                buttons.forEach((button) => {
+                    expect(button.disabled).toBeTruthy();
+                });
             });
-        });
     });
 
     // down-button-icon-name & down-button-label
@@ -327,7 +332,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='down']"
+                '[data-element-id="lightning-button-icon-down"]'
             );
             expect(lightningButtonIcon.iconName).toBe('utility:apex');
             expect(lightningButtonIcon.title).toBe('down');
@@ -369,7 +374,9 @@ describe('DualListbox', () => {
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
-            const help = element.shadowRoot.querySelector('lightning-helptext');
+            const help = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-helptext"]'
+            );
             expect(help).toBeTruthy();
         });
     });
@@ -380,7 +387,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeTruthy();
         });
@@ -409,7 +416,7 @@ describe('DualListbox', () => {
         return Promise.resolve()
             .then(() => {
                 const lightningButtonIcon = element.shadowRoot.querySelector(
-                    "lightning-button-icon[title='add']"
+                    '[data-element-id="lightning-button-icon-add"]'
                 );
                 element.focus();
                 lightningButtonIcon.click();
@@ -417,7 +424,7 @@ describe('DualListbox', () => {
             })
             .then(() => {
                 const div = element.shadowRoot.querySelector(
-                    "div[role='alert']"
+                    '[data-element-id="div-alert"]'
                 );
                 const message = element.shadowRoot.querySelector(
                     '.slds-has-error.slds-form-element__help'
@@ -442,7 +449,7 @@ describe('DualListbox', () => {
                 );
                 opt.click();
                 const lightningButtonIcon = element.shadowRoot.querySelector(
-                    "lightning-button-icon[title='remove']"
+                    '[data-element-id="lightning-button-icon-remove"]'
                 );
                 lightningButtonIcon.click();
                 element.blur();
@@ -471,7 +478,7 @@ describe('DualListbox', () => {
                 );
                 opt.click();
                 const lightningButtonIcon = element.shadowRoot.querySelector(
-                    "lightning-button-icon[title='remove']"
+                    '[data-element-id="lightning-button-icon-remove"]'
                 );
                 lightningButtonIcon.click();
                 element.blur();
@@ -573,7 +580,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='remove']"
+                '[data-element-id="lightning-button-icon-remove"]'
             );
             expect(lightningButtonIcon.iconName).toBe('utility:apex');
             expect(lightningButtonIcon.title).toBe('remove');
@@ -601,7 +608,7 @@ describe('DualListbox', () => {
             })
             .then(() => {
                 const selected = element.shadowRoot.querySelector(
-                    'ul[data-selected-list]'
+                    '[data-element-id="ul-selected-list"]'
                 );
                 expect(selected.querySelectorAll('li')).toHaveLength(1);
             });
@@ -613,7 +620,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const searchBox = element.shadowRoot.querySelector(
-                'lightning-input'
+                '[data-element-id="lightning-input"]'
             );
             expect(searchBox).toBeTruthy();
             expect(searchBox.type).toBe('search');
@@ -627,7 +634,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const Labels = element.shadowRoot.querySelectorAll(
-                "span[class='slds-form-element__label']"
+                'span.slds-form-element__label'
             );
             expect(Labels[0].textContent).toBe('A string source label');
             expect(Labels[1].textContent).toBe('A string selected label');
@@ -640,7 +647,9 @@ describe('DualListbox', () => {
         element.selectedPlaceholder = 'A string selected placeholder';
 
         return Promise.resolve().then(() => {
-            const placeHolder = element.shadowRoot.querySelector('ul + span');
+            const placeHolder = element.shadowRoot.querySelector(
+                '[data-element-id="span-selected-placeholder"]'
+            );
             expect(placeHolder.textContent).toBe(
                 'A string selected placeholder'
             );
@@ -654,7 +663,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='up']"
+                '[data-element-id="lightning-button-icon-up"]'
             );
             expect(lightningButtonIcon.iconName).toBe('utility:apex');
             expect(lightningButtonIcon.title).toBe('up');
@@ -668,13 +677,17 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const source = element.shadowRoot.querySelector(
-                'ul[data-source-list]'
+                '[data-element-id="ul-source-list"]'
             );
             const selected = element.shadowRoot.querySelector(
-                'ul[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
-            expect(source.querySelectorAll('li')).toHaveLength(7);
-            expect(selected.querySelectorAll('li')).toHaveLength(3);
+            expect(
+                source.querySelectorAll('[data-element-id="li-source"]')
+            ).toHaveLength(7);
+            expect(
+                selected.querySelectorAll('[data-element-id="li-selected"]')
+            ).toHaveLength(3);
         });
     });
 
@@ -827,7 +840,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const sourceBox = element.shadowRoot.querySelector(
-                '[data-source-list]'
+                '[data-element-id="ul-source-list"]'
             );
             const option = sourceBox.querySelectorAll('.slds-listbox__option');
             const firstOption = option[0];
@@ -843,7 +856,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const option = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
@@ -872,7 +885,7 @@ describe('DualListbox', () => {
             );
             option.click();
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='add']"
+                '[data-element-id="lightning-button-icon-add"]'
             );
             lightningButtonIcon.click();
             expect(handler).toHaveBeenCalled();
@@ -897,13 +910,13 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const options = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
             );
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='remove']"
+                '[data-element-id="lightning-button-icon-remove"]'
             );
             options[1].click();
             lightningButtonIcon.click();
@@ -925,13 +938,13 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const options = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
             );
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='down']"
+                '[data-element-id="lightning-button-icon-down"]'
             );
             options[1].click();
             lightningButtonIcon.click();
@@ -957,13 +970,13 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const selectedBox = element.shadowRoot.querySelector(
-                '[data-selected-list]'
+                '[data-element-id="ul-selected-list"]'
             );
             const options = selectedBox.querySelectorAll(
                 '.slds-listbox__option'
             );
             const lightningButtonIcon = element.shadowRoot.querySelector(
-                "lightning-button-icon[title='up']"
+                '[data-element-id="lightning-button-icon-up"]'
             );
             options[1].click();
             lightningButtonIcon.click();

@@ -99,11 +99,11 @@ describe('Color Palette', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('a');
+            const a = element.shadowRoot.querySelectorAll('[data-element-id^="a-"]');
             a.forEach((color) => {
                 expect(color.getAttribute('is-disabled')).toBe('true');
             });
-            const colors = element.shadowRoot.querySelectorAll('a > span');
+            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span-"]');
             colors.forEach((color) => {
                 expect(color.style.backgroundColor).toBe('rgb(221, 219, 218)');
             });
@@ -120,7 +120,7 @@ describe('Color Palette', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('a');
+            const a = element.shadowRoot.querySelectorAll('[data-element-id^="a-"]');
             a.forEach((color) => {
                 expect(color.getAttribute('read-only')).toBe('true');
             });
@@ -138,7 +138,7 @@ describe('Color Palette', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeTruthy();
         });
@@ -161,7 +161,7 @@ describe('Color Palette', () => {
 
         return Promise.resolve().then(() => {
             let colorsArray = [];
-            const colors = element.shadowRoot.querySelectorAll('a > span');
+            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
             expect(colors).toHaveLength(5);
             colors.forEach((color) => {
                 colorsArray.push(color.style.backgroundColor);
@@ -201,7 +201,7 @@ describe('Color Palette', () => {
         element.tileWidth = 4;
 
         return Promise.resolve().then(() => {
-            const colors = element.shadowRoot.querySelectorAll('a > span');
+            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
             colors.forEach((color) => {
                 expect(color.style.width).toBe('4px');
             });
@@ -218,7 +218,7 @@ describe('Color Palette', () => {
         element.tileHeight = 10;
 
         return Promise.resolve().then(() => {
-            const colors = element.shadowRoot.querySelectorAll('a > span');
+            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
             colors.forEach((color) => {
                 expect(color.style.height).toBe('10px');
             });
@@ -236,7 +236,7 @@ describe('Color Palette', () => {
 
         element.disabled = true;
 
-        const color = element.shadowRoot.querySelector('a');
+        const color = element.shadowRoot.querySelector('[data-element-id^="a-"]');
         color.click();
 
         return Promise.resolve().then(() => {
@@ -274,7 +274,7 @@ describe('Color Palette', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('a > span');
+            const a = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
             a[0].click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.hex).toBe('#e3abec');

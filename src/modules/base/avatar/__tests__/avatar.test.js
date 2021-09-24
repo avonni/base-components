@@ -85,7 +85,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.alternativeText).toBe('This is an alternative text');
         });
@@ -103,7 +103,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.alternativeText).toBe('This is an alternative text');
         });
@@ -121,7 +121,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.alternativeText).toBe('This is an alternative text');
         });
@@ -139,7 +139,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.fallbackIconName).toBe('standard:account');
         });
@@ -157,7 +157,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.initials).toBe('JD');
         });
@@ -177,7 +177,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.size).toBe('xx-small');
         });
@@ -196,7 +196,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.size).toBe('x-small');
         });
@@ -215,7 +215,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.size).toBe('small');
         });
@@ -234,7 +234,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.size).toBe('medium');
         });
@@ -253,7 +253,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.size).toBe('large');
         });
@@ -272,7 +272,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.size).toBe('x-large');
         });
@@ -291,7 +291,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.size).toBe('xx-large');
         });
@@ -311,7 +311,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.src).toBe(
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
@@ -333,7 +333,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.variant).toBe('square');
         });
@@ -352,7 +352,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.variant).toBe('circle');
         });
@@ -372,7 +372,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.status).toBe('approved');
         });
@@ -391,7 +391,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.status).toBe('locked');
         });
@@ -410,7 +410,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.status).toBe('declined');
         });
@@ -429,7 +429,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.status).toBe('unknown');
         });
@@ -450,7 +450,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.statusPosition).toBe('top-right');
         });
@@ -470,7 +470,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.statusPosition).toBe('top-left');
         });
@@ -490,7 +490,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.statusPosition).toBe('bottom-right');
         });
@@ -510,7 +510,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.statusPosition).toBe('bottom-left');
         });
@@ -531,7 +531,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.statusTitle).toBe('Status title');
         });
@@ -551,7 +551,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presence).toBe('online');
         });
@@ -570,7 +570,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presence).toBe('busy');
         });
@@ -589,7 +589,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presence).toBe('focus');
         });
@@ -608,7 +608,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presence).toBe('offline');
         });
@@ -627,7 +627,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presence).toBe('blocked');
         });
@@ -646,7 +646,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presence).toBe('away');
         });
@@ -667,7 +667,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presenceTitle).toBe('Presence Title');
         });
@@ -688,7 +688,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presencePosition).toBe('bottom-right');
         });
@@ -708,7 +708,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presencePosition).toBe('bottom-left');
         });
@@ -728,7 +728,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presencePosition).toBe('top-left');
         });
@@ -748,7 +748,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.presencePosition).toBe('top-right');
         });
@@ -769,7 +769,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityIconName).toBe('standard:account');
         });
@@ -791,7 +791,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityPosition).toBe('top-right');
         });
@@ -812,7 +812,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityPosition).toBe('top-left');
         });
@@ -833,7 +833,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityPosition).toBe('bottom-right');
         });
@@ -854,7 +854,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityPosition).toBe('bottom-left');
         });
@@ -874,7 +874,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entitySrc).toBe(
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
@@ -897,7 +897,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityTitle).toBe('Entity Title');
         });
@@ -919,7 +919,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityVariant).toBe('circle');
         });
@@ -940,7 +940,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const avatar = element.shadowRoot.querySelector(
-                'c-primitive-avatar'
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
             );
             expect(avatar.entityVariant).toBe('square');
         });
@@ -1023,7 +1023,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const mediaObject = element.shadowRoot.querySelector(
-                'c-media-object'
+                '[data-element-id="avonni-media-object"]'
             );
             expect(mediaObject.inline).toBeTruthy();
             expect(mediaObject.className).toBe('slds-text-align_center');
@@ -1045,7 +1045,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const mediaObject = element.shadowRoot.querySelector(
-                'c-media-object'
+                '[data-element-id="avonni-media-object"]'
             );
             expect(mediaObject.className).toBe('slds-text-align_right');
         });
@@ -1059,7 +1059,7 @@ describe('Avatar', () => {
         document.body.appendChild(element);
         element.tags = tags;
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('lightning-badge');
+            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-badge');
             expect(badge.label).toBe('default');
         });
@@ -1073,7 +1073,7 @@ describe('Avatar', () => {
         document.body.appendChild(element);
         element.tags = tags;
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('lightning-badge');
+            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-badge_inverse');
             expect(badge.label).toBe('inverse');
         });
@@ -1088,7 +1088,7 @@ describe('Avatar', () => {
         document.body.appendChild(element);
         element.tags = tags;
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('lightning-badge');
+            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-badge_lightest');
             expect(badge.label).toBe('lightest');
         });
@@ -1103,7 +1103,7 @@ describe('Avatar', () => {
         document.body.appendChild(element);
         element.tags = tags;
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('lightning-badge');
+            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-theme_success');
             expect(badge.label).toBe('success');
         });
@@ -1118,7 +1118,7 @@ describe('Avatar', () => {
         document.body.appendChild(element);
         element.tags = tags;
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('lightning-badge');
+            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-theme_warning');
             expect(badge.label).toBe('warning');
         });
@@ -1133,7 +1133,7 @@ describe('Avatar', () => {
         document.body.appendChild(element);
         element.tags = tags;
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('lightning-badge');
+            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-theme_error');
             expect(badge.label).toBe('error');
         });

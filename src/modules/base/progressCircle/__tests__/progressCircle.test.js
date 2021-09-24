@@ -71,8 +71,8 @@ describe('ProgressCircle', () => {
         element.color = 'tomato';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
-            const path = element.shadowRoot.querySelector('path');
+            const span = element.shadowRoot.querySelector('[data-element-id="span"]');
+            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
             expect(span.style.color).toBe('tomato');
             expect(path.getAttribute('fill')).toBe('tomato');
         });
@@ -90,7 +90,7 @@ describe('ProgressCircle', () => {
         element.value = 65;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('path');
+            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
             const arcX = Math.cos(2 * Math.PI * ((100 - 65) / 100));
             const arcY = Math.sin(2 * Math.PI * ((100 - 65) / 100));
             expect(path.getAttribute('d')).toBe(
@@ -110,7 +110,7 @@ describe('ProgressCircle', () => {
         element.value = 43;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('path');
+            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
             const arcX = Math.cos(2 * Math.PI * (43 / 100));
             const arcY = Math.sin(2 * Math.PI * (43 / 100));
             expect(path.getAttribute('d')).toBe(
@@ -1129,7 +1129,7 @@ describe('ProgressCircle', () => {
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
-            const value = element.shadowRoot.querySelector('span');
+            const value = element.shadowRoot.querySelector('[data-element-id="span"]');
             expect(value.textContent).toBeTruthy();
         });
     });
@@ -1144,10 +1144,8 @@ describe('ProgressCircle', () => {
         element.variant = 'value-hidden';
 
         return Promise.resolve().then(() => {
-            const value = element.shadowRoot.querySelector('span');
+            const value = element.shadowRoot.querySelector('[data-element-id="span"]');
             expect(value).toBeFalsy();
         });
     });
 });
-
-// expect(element.variant).toBe('standard');

@@ -74,6 +74,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         expect(element.actionPosition).toBe('left');
         expect(element.buttonAlignmentBump).toBeUndefined();
+        expect(element.currentStepHasError).toBeFalsy();
         expect(element.finishButtonIconName).toBeUndefined();
         expect(element.finishButtonIconPosition).toBe('left');
         expect(element.finishButtonLabel).toBe('Finish');
@@ -242,10 +243,9 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-last"]'
             );
-            const lastButton = buttons[buttons.length - 1];
             expect(lastButton.iconName).toBe('utility:apps');
         });
     });
@@ -264,10 +264,9 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-last"]'
             );
-            const lastButton = buttons[buttons.length - 1];
 
             expect(lastButton.iconPosition).toBe('right');
         });
@@ -287,10 +286,9 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-last"]'
             );
-            const lastButton = buttons[buttons.length - 1];
 
             expect(lastButton.label).toBe('A string label');
         });
@@ -310,10 +308,9 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-last"]'
             );
-            const lastButton = buttons[buttons.length - 1];
 
             expect(lastButton.variant).toBe('inverse');
         });
@@ -332,12 +329,10 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-next"]'
             );
-            const lastButton = buttons[buttons.length - 1];
-
-            expect(lastButton.iconName).toBe('utility:apps');
+            expect(nextButton.iconName).toBe('utility:apps');
         });
     });
 
@@ -354,12 +349,10 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-next"]'
             );
-            const lastButton = buttons[buttons.length - 1];
-
-            expect(lastButton.iconPosition).toBe('right');
+            expect(nextButton.iconPosition).toBe('right');
         });
     });
 
@@ -376,12 +369,11 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-next"]'
             );
-            const lastButton = buttons[buttons.length - 1];
 
-            expect(lastButton.label).toBe('A string label');
+            expect(nextButton.label).toBe('A string label');
         });
     });
 
@@ -398,12 +390,11 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-next"]'
             );
-            const lastButton = buttons[buttons.length - 1];
 
-            expect(lastButton.variant).toBe('brand');
+            expect(nextButton.variant).toBe('brand');
         });
     });
 
@@ -420,10 +411,9 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-previous"]'
             );
-            const firstButton = buttons[0];
 
             expect(firstButton.iconName).toBe('utility:user');
         });
@@ -442,10 +432,9 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-previous"]'
             );
-            const firstButton = buttons[0];
 
             expect(firstButton.iconPosition).toBe('right');
         });
@@ -464,10 +453,9 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-previous"]'
             );
-            const firstButton = buttons[0];
 
             expect(firstButton.label).toBe('A string label');
         });
@@ -486,10 +474,9 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-previous"]'
             );
-            const firstButton = buttons[0];
 
             expect(firstButton.variant).toBe('destructive');
         });
@@ -508,10 +495,9 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-last"]'
             );
-            const lastButton = buttons[buttons.length - 1];
             expect(lastButton.dataset.action).toBe('finish');
         });
     });
@@ -527,11 +513,10 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-next"]'
             );
-            const firstButton = buttons[0];
-            expect(firstButton.dataset.action).toBe('next');
+            expect(nextButton.dataset.action).toBe('next');
         });
     });
 
@@ -546,11 +531,12 @@ describe('PrimitiveWizardNavigation', () => {
         element.steps = STEPS;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-previous"]'
             );
-            const firstButton = buttons[0];
-            const lastButton = buttons[buttons.length - 1];
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-next"]'
+            );
             expect(firstButton.dataset.action).toBe('previous');
             expect(lastButton.dataset.action).toBe('next');
         });
@@ -572,7 +558,7 @@ describe('PrimitiveWizardNavigation', () => {
                 'lightning-layout-item.slds-hide'
             );
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id="lightning-button"]'
             );
             expect(buttons).toHaveLength(0);
             expect(actionsSlotCol).toBeTruthy();
@@ -606,10 +592,10 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const indicator = element.shadowRoot.querySelector(
-                'c-vertical-progress-indicator'
+                '[data-element-id="avonni-vertical-progress-indicator"]'
             );
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
 
             expect(indicator).toBeTruthy();
@@ -630,7 +616,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const progressIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
             const bulletIndicator = element.shadowRoot.querySelector(
                 '.slds-carousel__indicators'
@@ -639,7 +625,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -661,7 +647,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const progressIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
             const bulletIndicator = element.shadowRoot.querySelector(
                 '.slds-carousel__indicators'
@@ -670,7 +656,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -692,7 +678,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const progressIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
             const bulletIndicator = element.shadowRoot.querySelector(
                 '.slds-carousel__indicators'
@@ -701,7 +687,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeTruthy();
@@ -724,7 +710,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const progressIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
             const bulletIndicator = element.shadowRoot.querySelector(
                 '.slds-carousel__indicators'
@@ -733,11 +719,11 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             const bullets = element.shadowRoot.querySelectorAll(
-                '.slds-carousel__indicator > span'
+                '[data-element-id="span-bullet"]'
             );
 
             expect(progressIndicator).toBeFalsy();
@@ -760,7 +746,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const progressIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
             const bulletIndicator = element.shadowRoot.querySelector(
                 '.slds-carousel__indicators'
@@ -769,7 +755,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeFalsy();
@@ -791,7 +777,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const progressIndicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
             const bulletIndicator = element.shadowRoot.querySelector(
                 '.slds-carousel__indicators'
@@ -800,7 +786,7 @@ describe('PrimitiveWizardNavigation', () => {
                 '.fractions-indicator'
             );
             const barIndicator = element.shadowRoot.querySelector(
-                'c-progress-bar'
+                '[data-element-id="avonni-progress-bar"]'
             );
 
             expect(progressIndicator).toBeFalsy();
@@ -848,7 +834,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const indicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
 
             expect(indicator).toBeFalsy();
@@ -867,7 +853,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const indicator = element.shadowRoot.querySelector(
-                'lightning-progress-indicator'
+                '[data-element-id="lightning-progress-indicator"]'
             );
 
             expect(indicator).toBeTruthy();
@@ -921,7 +907,7 @@ describe('PrimitiveWizardNavigation', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
 
             // Click on next button

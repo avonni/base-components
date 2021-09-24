@@ -75,7 +75,7 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const image = element.shadowRoot.querySelector('img');
+            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(image.alt).toBe('A string alternative text');
         });
     });
@@ -92,11 +92,11 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('img');
+                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const icon = element.shadowRoot.querySelector('lightning-icon');
+                const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
                 expect(icon.alternativeText).toBe('A string alternative text');
             });
     });
@@ -113,14 +113,14 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('img');
+                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
                 const avatarWrapper = element.shadowRoot.querySelector(
                     '.avatar-img'
                 );
-                const icon = element.shadowRoot.querySelector('lightning-icon');
+                const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
                 expect(icon.iconName).toBe('standard:user');
                 expect(avatarWrapper.classList).toContain(
                     'avonni-icon-container'
@@ -409,7 +409,7 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const image = element.shadowRoot.querySelector('img');
+            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(image.src).toBe(
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
             );
@@ -433,7 +433,7 @@ describe('ProfileCard', () => {
             const avatarWrapper = element.shadowRoot.querySelector(
                 '.avatar-img'
             );
-            const image = element.shadowRoot.querySelector('img');
+            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
 
             expect(avatarWrapper.classList).toContain('avatar-img-circle');
             expect(image.classList).toContain('avatar-img-circle');
@@ -452,7 +452,7 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('img');
+                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
@@ -483,7 +483,7 @@ describe('ProfileCard', () => {
             const avatarWrapper = element.shadowRoot.querySelector(
                 '.avatar-img'
             );
-            const image = element.shadowRoot.querySelector('img');
+            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
 
             expect(avatarWrapper.classList).not.toContain('avatar-img-circle');
             expect(image.classList).not.toContain('avatar-img-circle');
@@ -502,7 +502,7 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('img');
+                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
@@ -551,7 +551,7 @@ describe('ProfileCard', () => {
         element.backgroundColor = 'tomato';
 
         return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector('header');
+            const header = element.shadowRoot.querySelector('[data-element-id="header"]');
             expect(header.style.backgroundColor).toBe('tomato');
         });
     });
@@ -568,7 +568,7 @@ describe('ProfileCard', () => {
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg';
 
         return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector('header');
+            const header = element.shadowRoot.querySelector('[data-element-id="header"]');
             expect(header.style.backgroundImage).toBe(
                 'url(https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg)'
             );

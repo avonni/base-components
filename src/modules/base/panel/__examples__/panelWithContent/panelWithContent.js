@@ -1,22 +1,15 @@
-import { LightningElement, api } from 'lwc';
-
-const DEFAULT_PANEL_POSITION = 'right';
-const DEFAULT_PANEL_SIZE = 'medium';
+import { LightningElement } from 'lwc';
 
 export default class PanelWithContentInside extends LightningElement {
-    @api position = DEFAULT_PANEL_POSITION;
-    @api title;
-    @api size = DEFAULT_PANEL_SIZE;
-
     open() {
-        this.template.querySelector('c-panel').open();
+        this.template.querySelector('[data-element-id="avonni-panel"]').open();
     }
 
     close() {
-        this.template.querySelector('c-panel').close();
+        this.template.querySelector('[data-element-id="avonni-panel"]').close();
     }
 
     toggle() {
-        this.template.querySelector('c-panel').toggle();
+        this.template.querySelector('[data-element-id="avonni-panel"]').toggle();
     }
 }

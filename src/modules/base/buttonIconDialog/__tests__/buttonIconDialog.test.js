@@ -66,7 +66,7 @@ describe('Button Icon Dialog', () => {
 
         element.accessKey = 'K';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -83,7 +83,7 @@ describe('Button Icon Dialog', () => {
 
         element.alternativeText = 'This is an alternative text';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -100,7 +100,7 @@ describe('Button Icon Dialog', () => {
 
         element.disabled = true;
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -117,7 +117,7 @@ describe('Button Icon Dialog', () => {
 
         element.variant = 'border';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -133,7 +133,7 @@ describe('Button Icon Dialog', () => {
 
         element.variant = 'bare';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -149,7 +149,7 @@ describe('Button Icon Dialog', () => {
 
         element.variant = 'container';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -165,7 +165,7 @@ describe('Button Icon Dialog', () => {
 
         element.variant = 'brand';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -181,7 +181,7 @@ describe('Button Icon Dialog', () => {
 
         element.variant = 'border-filled';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -197,7 +197,7 @@ describe('Button Icon Dialog', () => {
 
         element.variant = 'bare-inverse';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -213,7 +213,7 @@ describe('Button Icon Dialog', () => {
 
         element.variant = 'border-inverse';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -230,7 +230,7 @@ describe('Button Icon Dialog', () => {
 
         element.size = 'xx-small';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -246,7 +246,7 @@ describe('Button Icon Dialog', () => {
 
         element.size = 'x-small';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -262,7 +262,7 @@ describe('Button Icon Dialog', () => {
 
         element.size = 'small';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -278,7 +278,7 @@ describe('Button Icon Dialog', () => {
 
         element.size = 'medium';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -294,7 +294,7 @@ describe('Button Icon Dialog', () => {
 
         element.size = 'large';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -311,7 +311,7 @@ describe('Button Icon Dialog', () => {
         element.variant = 'bare';
         element.size = 'large';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -328,7 +328,7 @@ describe('Button Icon Dialog', () => {
 
         element.tooltip = 'This is a tooltip';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -345,7 +345,7 @@ describe('Button Icon Dialog', () => {
 
         element.iconClass = 'button-dialog-icon-class';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {
@@ -362,7 +362,7 @@ describe('Button Icon Dialog', () => {
 
         element.iconName = 'utility:lock';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         return Promise.resolve().then(() => {

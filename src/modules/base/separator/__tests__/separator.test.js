@@ -63,7 +63,7 @@ describe('Separator', () => {
         element.label = 'Today';
 
         return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector('h1');
+            const header = element.shadowRoot.querySelector('[data-element-id="h1"]');
             expect(header.textContent).toBe('Today');
         });
     });
@@ -78,7 +78,7 @@ describe('Separator', () => {
         element.iconName = 'utility:check';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             expect(icon.iconName).toBe('utility:check');
         });
     });
@@ -112,7 +112,7 @@ describe('Separator', () => {
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            const content = element.shadowRoot.querySelector('lightning-icon');
+            const content = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             expect(content.size).toBe('x-small');
         });
     });
@@ -185,7 +185,7 @@ describe('Separator', () => {
         element.iconPosition = 'left';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             expect(icon.classList).toContain('slds-m-right_x-small');
         });
     });
@@ -203,7 +203,7 @@ describe('Separator', () => {
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             expect(icon.classList).toContain('slds-m-left_x-small');
         });
     });

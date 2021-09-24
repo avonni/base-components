@@ -62,7 +62,9 @@ describe('Expandable Section', () => {
         element.title = 'This is a title';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h3');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="h3"]'
+            );
             expect(title.textContent).toBe('This is a title');
         });
     });
@@ -101,7 +103,9 @@ describe('Expandable Section', () => {
             expect(spanTitle.className).not.toContain(
                 'slds-p-horizontal_small'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon).toBeTruthy();
         });
     });
@@ -118,7 +122,9 @@ describe('Expandable Section', () => {
             );
             expect(title).toBeTruthy();
 
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon).toBeFalsy();
         });
     });

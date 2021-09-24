@@ -69,10 +69,10 @@ describe('Calendar', () => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
             expect(day.textContent).toBe('15');
             const month = element.shadowRoot.querySelector(
-                "h2[class='slds-align-middle']"
+                '[data-element-id="h2"]'
             );
             expect(month.textContent).toBe('April');
-            const year = element.shadowRoot.querySelector('lightning-combobox');
+            const year = element.shadowRoot.querySelector('[data-element-id="lightning-combobox"]');
             expect(year.value).toBe(2021);
         });
     });
@@ -88,16 +88,16 @@ describe('Calendar', () => {
         element.disabled = true;
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
             buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
             const combobox = element.shadowRoot.querySelector(
-                'lightning-combobox'
+                '[data-element-id="lightning-combobox"]'
             );
             expect(combobox.disabled).toBeTruthy();
-            const tds = element.shadowRoot.querySelectorAll('td > span');
+            const tds = element.shadowRoot.querySelectorAll('[data-element-id^="span-day-label"]');
             tds.forEach((td) => {
                 expect(td.className).toBe('avonni-disabled-cell');
             });

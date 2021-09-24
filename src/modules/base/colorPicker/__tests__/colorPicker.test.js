@@ -114,7 +114,7 @@ describe('Color Picker', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.accessKey).toBe('K');
         });
     });
@@ -129,7 +129,7 @@ describe('Color Picker', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.disabled).toBeTruthy();
         });
     });
@@ -145,7 +145,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const helpText = element.shadowRoot.querySelector(
-                'lightning-helptext'
+                '[data-element-id="lightning-helptext"]'
             );
             expect(helpText.content).toBe('This is a field level help text');
         });
@@ -162,12 +162,12 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    'lightning-spinner'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeTruthy();
             });
@@ -183,7 +183,7 @@ describe('Color Picker', () => {
         element.label = 'This is a label text';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
             expect(label.textContent).toBe('This is a label text');
         });
     });
@@ -198,7 +198,7 @@ describe('Color Picker', () => {
         element.name = 'This is a name text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
             expect(input.name).toBe('This is a name text');
         });
     });
@@ -213,7 +213,7 @@ describe('Color Picker', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
             expect(input.disabled).toBeTruthy();
         });
     });
@@ -246,12 +246,12 @@ describe('Color Picker', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input"]'
                 );
                 expect(input.value).toBe('rgb(65, 159, 236)');
             })
             .then(() => {
-                const swatch = element.shadowRoot.querySelector('span');
+                const swatch = element.shadowRoot.querySelector('[data-element-id="span"]');
                 expect(swatch.style.background).toBe('rgb(65, 159, 236)');
             });
     });
@@ -366,7 +366,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -387,12 +387,12 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
                 const gradient = element.shadowRoot.querySelector(
-                    'c-color-palette'
+                    '[data-element-id="avonni-color-palette-custom"]'
                 );
                 expect(gradient).toBeTruthy();
             });
@@ -408,7 +408,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'bare';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
             );
@@ -424,7 +424,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'container';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-container-more'
             );
@@ -440,7 +440,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'border';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-more'
             );
@@ -456,7 +456,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
             );
@@ -472,7 +472,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
             );
@@ -488,7 +488,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
             );
@@ -506,7 +506,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'bare';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe('slds-button slds-button_icon-bare');
         });
     });
@@ -521,7 +521,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'container';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon-container'
             );
@@ -538,7 +538,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'border';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon-border'
             );
@@ -555,7 +555,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon-border-filled'
             );
@@ -572,7 +572,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon-bare slds-button_icon-inverse'
             );
@@ -589,7 +589,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toBe(
                 'slds-button slds-button_icon-border-inverse'
             );
@@ -606,7 +606,7 @@ describe('Color Picker', () => {
         element.menuIconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
             expect(icon.size).toBe('xx-small');
         });
     });
@@ -620,7 +620,7 @@ describe('Color Picker', () => {
         element.menuIconSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
             expect(icon.size).toBe('xx-small');
         });
     });
@@ -634,7 +634,7 @@ describe('Color Picker', () => {
         element.menuIconSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
             expect(icon.size).toBe('xx-small');
         });
     });
@@ -648,7 +648,7 @@ describe('Color Picker', () => {
         element.menuIconSize = 'large';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
             expect(icon.size).toBe('xx-small');
         });
     });
@@ -664,7 +664,7 @@ describe('Color Picker', () => {
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
             expect(icon.size).toBe('xx-small');
         });
     });
@@ -679,7 +679,7 @@ describe('Color Picker', () => {
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
             expect(icon.size).toBe('x-small');
         });
     });
@@ -694,7 +694,7 @@ describe('Color Picker', () => {
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
             expect(icon.size).toBe('medium');
         });
     });
@@ -709,7 +709,7 @@ describe('Color Picker', () => {
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
             expect(icon.size).toBe('large');
         });
     });
@@ -724,7 +724,7 @@ describe('Color Picker', () => {
         element.menuLabel = 'This is a menu label text';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.textContent).toBe('This is a menu label text');
             expect(button.className).toContain('slds-button');
         });
@@ -740,7 +740,7 @@ describe('Color Picker', () => {
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.textContent).toBe('This is a menu label text');
             expect(button.className).toContain('slds-button_inverse');
         });
@@ -755,7 +755,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -776,7 +776,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -798,7 +798,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -820,7 +820,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -842,7 +842,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -864,7 +864,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -886,7 +886,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -908,7 +908,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -930,7 +930,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -954,7 +954,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -978,7 +978,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -1002,7 +1002,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -1027,12 +1027,12 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
                 const palette = element.shadowRoot.querySelector(
-                    'c-color-palette'
+                    '[data-element-id="avonni-color-palette-default"]'
                 );
                 expect(palette.colors).toMatchObject([
                     '#e3abec',
@@ -1077,7 +1077,7 @@ describe('Color Picker', () => {
         element.hideColorInput = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
             expect(input).toBeFalsy();
         });
     });
@@ -1093,12 +1093,12 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
                 const doneButton = element.shadowRoot.querySelector(
-                    "lightning-button[title='Done']"
+                    '[data-element-id="lightning-button-done"]'
                 );
                 expect(doneButton).toBeTruthy();
                 doneButton.click();
@@ -1114,12 +1114,12 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
                 const cancelButton = element.shadowRoot.querySelector(
-                    "lightning-button[title='Cancel']"
+                    '[data-element-id="lightning-button-cancel"]'
                 );
                 expect(cancelButton).toBeTruthy();
                 cancelButton.click();
@@ -1135,7 +1135,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {

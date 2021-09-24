@@ -56,40 +56,7 @@
         </ul>
     </div>
     <div slot="details">
-        <div class="avonni-panel-details-slot-container">
-            <avonni-panel
-                if:false={isRight}
-                position={position}
-                title={title}
-                size={size}
-                show-panel="true"
-            >
-                <div slot="title">Filter</div>
-                <div slot="panel-body">
-                    <div class="slds-box">
-                        <div class="slds-text-body_small">Filter by Owner</div>
-                        <div class="slds-text-body_regular">
-                            My opportunities
-                        </div>
-                    </div>
-                </div>
-                <lightning-layout horizontal-align="spread">
-                    <lightning-layout-item>
-                        <lightning-button
-                            label="Add Filter"
-                            title="Neutral action"
-                            variant="base"
-                        ></lightning-button>
-                    </lightning-layout-item>
-                    <lightning-layout-item>
-                        <lightning-button
-                            label="Remove All"
-                            title="Neutral action"
-                            variant="base"
-                        ></lightning-button>
-                    </lightning-layout-item>
-                </lightning-layout>
-            </avonni-panel>
+        <div class="slds-grid slds-p-top_x-small">
             <table
                 class="slds-table slds-table_cell-buffer slds-table_bordered"
             >
@@ -903,11 +870,8 @@
                 </tbody>
             </table>
             <avonni-panel
-                if:true={isRight}
-                position={position}
-                title={title}
-                size={size}
-                show-panel="true"
+                show-panel
+                data-element-id="avonni-panel"
             >
                 <div slot="title">Filter</div>
                 <div slot="panel-body">

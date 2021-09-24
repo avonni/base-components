@@ -33,8 +33,12 @@
 -->
 
 <template>
-    <label class={computedLabelClass} for="select">
-        <abbr if:true={required} class="slds-required" title={i18n.required}
+    <label class={computedLabelClass} for="select" data-element-id="label">
+        <abbr
+            if:true={required}
+            class="slds-required"
+            title={i18n.required}
+            data-element-id="abbr"
             >*</abbr
         >
         {label}
@@ -42,6 +46,7 @@
     <lightning-helptext
         if:true={fieldLevelHelp}
         content={fieldLevelHelp}
+        data-element-id="lightning-helptext"
     ></lightning-helptext>
     <div class="slds-form-element__control">
         <div class="slds-select_container">
@@ -54,12 +59,17 @@
                 tabindex={tabIndex}
                 disabled={disabled}
                 multiple={multiple}
+                data-element-id="select"
                 onfocus={handleFocus}
                 onblur={handleBlur}
                 onchange={handleChange}
             >
                 <template for:each={options} for:item="option">
-                    <option value={option.value} key={option.value}>
+                    <option
+                        value={option.value}
+                        key={option.value}
+                        data-element-id="option"
+                    >
                         {option.label}
                     </option>
                 </template>

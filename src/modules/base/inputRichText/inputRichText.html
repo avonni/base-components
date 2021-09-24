@@ -57,6 +57,7 @@
                     <lightning-formatted-rich-text
                         value={value}
                         disable-linkify
+                        data-element-id="lightning-formatted-rich-text-bottom-toolbar"
                     ></lightning-formatted-rich-text>
                 </div>
             </div>
@@ -90,6 +91,7 @@
                             options={fontMenus.fontList}
                             disabled={disabled}
                             dropdown-alignment={menuDropdownAlignment}
+                            data-element-id="lightning-combobox-font"
                             onfocus={activateEditor}
                             onchange={selectFont}
                         ></lightning-combobox>
@@ -104,6 +106,7 @@
                             options={fontMenus.sizeList}
                             disabled={disabled}
                             dropdown-alignment={menuDropdownAlignment}
+                            data-element-id="lightning-combobox-size"
                             onfocus={activateEditor}
                             onchange={selectSize}
                         ></lightning-combobox>
@@ -140,6 +143,7 @@
                 if:true={isColorpickerVisible}
                 disabled={disabled}
                 value={selectedTextColorValue}
+                data-element-id="avonni-primitive-colorpicker-button"
                 onchange={handleColorUpdate}
             ></c-primitive-colorpicker-button>
             <template for:each={computedCategories} for:item="category">
@@ -192,6 +196,7 @@
                         <lightning-formatted-rich-text
                             value={value}
                             disable-linkify
+                            data-element-id="lightning-formatted-rich-text-top-toolbar"
                         ></lightning-formatted-rich-text>
                     </div>
                 </div>
@@ -238,5 +243,6 @@
         if:true={isPublisher}
         class="slds-is-absolute slds-hide"
         onemoji={handleEmoji}
+        data-element-id="avonni-emoji-picker"
     ></c-emoji-picker>
 </template>

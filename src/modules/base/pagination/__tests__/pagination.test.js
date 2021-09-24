@@ -132,8 +132,8 @@ describe('Pagination', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
             buttons.forEach(button => {
                 expect(button.disabled).toBeFalsy();
@@ -154,8 +154,8 @@ describe('Pagination', () => {
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
             buttons.forEach(button => {
                 expect(button.disabled).toBeFalsy();
@@ -181,8 +181,8 @@ describe('Pagination', () => {
         element.value = 4;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
             buttons.forEach(button => {
                 expect(button.disabled).toBeFalsy();
@@ -204,8 +204,8 @@ describe('Pagination', () => {
         element.value = 10;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
             buttons.forEach(button => {
                 expect(button.disabled).toBeFalsy();
@@ -231,8 +231,8 @@ describe('Pagination', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
             buttons.forEach(button => {
                 expect(button.disabled).toBeTruthy();
@@ -255,7 +255,7 @@ describe('Pagination', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="lightning-button-no-icon-page"]');
             expect(buttons[0].value).toBe('A string ellipsis');
             expect(buttons[buttons.length - 1].value).toBe('A string ellipsis');
         });
@@ -271,8 +271,8 @@ describe('Pagination', () => {
         element.firstButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            expect(buttonIcons[0].iconName).toBe('utility:apps');
+            const firstButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-first"]');
+            expect(firstButton.iconName).toBe('utility:apps');
         });
     });
     
@@ -286,9 +286,9 @@ describe('Pagination', () => {
         element.firstButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[0].label).toBe('A string label');
-            expect(buttons[0].iconName).toBeUndefined();
+            const firstButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-first"]');
+            expect(firstButton.label).toBe('A string label');
+            expect(firstButton.iconName).toBeUndefined();
         });
     });
 
@@ -302,9 +302,9 @@ describe('Pagination', () => {
         element.firstButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[0].label).toBe('A string label');
-            expect(buttons[0].iconName).toBe('utility:apps');
+            const firstButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-first"]');
+            expect(firstButton.label).toBe('A string label');
+            expect(firstButton.iconName).toBe('utility:apps');
         });
     });
 
@@ -318,8 +318,8 @@ describe('Pagination', () => {
         element.lastButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            expect(buttonIcons[buttonIcons.length - 1].iconName).toBe('standard:user');
+            const lastButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-last"]');
+            expect(lastButton.iconName).toBe('standard:user');
         });
     });
         
@@ -333,9 +333,9 @@ describe('Pagination', () => {
         element.lastButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[buttons.length - 1].label).toBe('A string label');
-            expect(buttons[buttons.length - 1].iconName).toBeUndefined();
+            const lastButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-last"]');
+            expect(lastButton.label).toBe('A string label');
+            expect(lastButton.iconName).toBeUndefined();
         });
     });
 
@@ -349,9 +349,9 @@ describe('Pagination', () => {
         element.lastButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[buttons.length - 1].label).toBe('A string label');
-            expect(buttons[buttons.length - 1].iconName).toBe('utility:apps');
+            const lastButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-last"]');
+            expect(lastButton.label).toBe('A string label');
+            expect(lastButton.iconName).toBe('utility:apps');
         });
     });
 
@@ -367,7 +367,7 @@ describe('Pagination', () => {
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
             expect(buttons).toHaveLength(6);
         });
     });
@@ -382,7 +382,7 @@ describe('Pagination', () => {
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
             expect(buttons).toHaveLength(3);
         });
     });
@@ -397,7 +397,7 @@ describe('Pagination', () => {
         element.totalRows = 25;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
             expect(buttons).toHaveLength(2);
         });
     });
@@ -412,7 +412,7 @@ describe('Pagination', () => {
         element.totalRows = 25;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
             expect(buttons).toHaveLength(2);
         });
     });
@@ -427,8 +427,8 @@ describe('Pagination', () => {
         element.nextButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            expect(buttonIcons[buttonIcons.length - 1].iconName).toBe('standard:user');
+            const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-next"]');
+            expect(nextButton.iconName).toBe('standard:user');
         });
     });
 
@@ -442,9 +442,9 @@ describe('Pagination', () => {
         element.nextButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[buttons.length - 1].label).toBe('A string label');
-            expect(buttons[buttons.length - 1].iconName).toBeUndefined();
+            const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-next"]');
+            expect(nextButton.label).toBe('A string label');
+            expect(nextButton.iconName).toBeUndefined();
         });
     });
 
@@ -458,9 +458,9 @@ describe('Pagination', () => {
         element.nextButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[buttons.length - 1].label).toBe('A string label');
-            expect(buttons[buttons.length - 1].iconName).toBe('utility:apps');
+            const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-next"]');
+            expect(nextButton.label).toBe('A string label');
+            expect(nextButton.iconName).toBe('utility:apps');
         });
     });
 
@@ -474,8 +474,8 @@ describe('Pagination', () => {
         element.previousButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-            expect(buttonIcons[0].iconName).toBe('standard:user');
+            const previousButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-previous"]');
+            expect(previousButton.iconName).toBe('standard:user');
         });
     });
         
@@ -489,9 +489,9 @@ describe('Pagination', () => {
         element.previousButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[0].label).toBe('A string label');
-            expect(buttons[0].iconName).toBeUndefined();
+            const previousButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-previous"]');
+            expect(previousButton.label).toBe('A string label');
+            expect(previousButton.iconName).toBeUndefined();
         });
     });
 
@@ -505,9 +505,9 @@ describe('Pagination', () => {
         element.previousButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('lightning-button');
-            expect(buttons[0].label).toBe('A string label');
-            expect(buttons[0].iconName).toBe('utility:apps');
+            const buttons = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-previous"]');
+            expect(buttons.label).toBe('A string label');
+            expect(buttons.iconName).toBe('utility:apps');
         });
     });
 
@@ -554,9 +554,8 @@ describe('Pagination', () => {
         element.perPage = 10;
         element.totalRows = 50;
 
-        const buttonIcons = element.shadowRoot.querySelectorAll('lightning-button-icon');
-        const nextButton = buttonIcons[buttonIcons.length - 1];
-        const previousButton = buttonIcons[0];
+        const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-next"]');
+        const previousButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-previous"]');
 
         // The previous button should be disabled on first page
         expect(previousButton.disabled).toBeTruthy();

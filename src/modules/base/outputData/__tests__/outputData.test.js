@@ -65,26 +65,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(boolean).toBeTruthy();
@@ -106,26 +106,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(
@@ -151,26 +151,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(
@@ -209,26 +209,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(number).toBeTruthy();
@@ -286,26 +286,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(date).toBeTruthy();
@@ -345,26 +345,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(email).toBeTruthy();
@@ -394,26 +394,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(location).toBeTruthy();
@@ -447,26 +447,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(number).toBeTruthy();
@@ -515,26 +515,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(number).toBeTruthy();
@@ -573,26 +573,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(phone).toBeTruthy();
@@ -619,27 +619,27 @@ describe('OutputData', () => {
         };
 
         return Promise.resolve().then(() => {
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(text).toBeTruthy();
@@ -670,26 +670,26 @@ describe('OutputData', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                'lightning-formatted-text'
+                '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('lightning-icon');
+            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             const number = element.shadowRoot.querySelector(
-                'lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number"]'
             );
             const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+                '[data-element-id="lightning-formatted-date-time"]'
             );
             const email = element.shadowRoot.querySelector(
-                'lightning-formatted-email'
+                '[data-element-id="lightning-formatted-email"]'
             );
             const location = element.shadowRoot.querySelector(
-                'lightning-formatted-location'
+                '[data-element-id="lightning-formatted-location"]'
             );
             const phone = element.shadowRoot.querySelector(
-                'lightning-formatted-phone'
+                '[data-element-id="lightning-formatted-phone"]'
             );
             const url = element.shadowRoot.querySelector(
-                'lightning-formatted-url'
+                '[data-element-id="lightning-formatted-url"]'
             );
 
             expect(url).toBeTruthy();

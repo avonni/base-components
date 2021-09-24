@@ -69,7 +69,7 @@ describe('InputData', () => {
         element.label = 'Base input';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.label).toBe('Base input');
         });
     });
@@ -81,7 +81,7 @@ describe('InputData', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.label).toBe('Data input');
             expect(input.variant).toBe('label-hidden');
         });
@@ -97,7 +97,7 @@ describe('InputData', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.disabled).toBeTruthy();
         });
     });
@@ -112,7 +112,7 @@ describe('InputData', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.readOnly).toBeTruthy();
         });
     });
@@ -127,7 +127,7 @@ describe('InputData', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.required).toBeTruthy();
         });
     });
@@ -142,7 +142,7 @@ describe('InputData', () => {
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.variant).toBe('label-inline');
         });
     });
@@ -157,7 +157,7 @@ describe('InputData', () => {
         element.value = 'Default text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.value).toBe('Default text');
         });
     });
@@ -172,7 +172,7 @@ describe('InputData', () => {
         element.value = undefined;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.value).toBe('');
         });
     });
@@ -188,7 +188,7 @@ describe('InputData', () => {
         element.checked = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.checked).toBeTruthy();
         });
     });
@@ -206,7 +206,7 @@ describe('InputData', () => {
 
         return Promise.resolve().then(() => {
             const locationInput = element.shadowRoot.querySelector(
-                'lightning-input-location'
+                '[data-element-id="lightning-input-location"]'
             );
             expect(locationInput.latitude).toBe(80);
             expect(locationInput.longitude).toBe(-50);
@@ -226,7 +226,7 @@ describe('InputData', () => {
 
         return Promise.resolve().then(() => {
             const locationInput = element.shadowRoot.querySelector(
-                'lightning-input-location'
+                '[data-element-id="lightning-input-location"]'
             );
             expect(locationInput.latitude).toBe(90);
             expect(locationInput.longitude).toBe(180);
@@ -246,7 +246,7 @@ describe('InputData', () => {
 
         return Promise.resolve().then(() => {
             const locationInput = element.shadowRoot.querySelector(
-                'lightning-input-location'
+                '[data-element-id="lightning-input-location"]'
             );
             expect(locationInput.latitude).toBe(-90);
             expect(locationInput.longitude).toBe(-180);
@@ -266,7 +266,7 @@ describe('InputData', () => {
 
         return Promise.resolve().then(() => {
             const locationInput = element.shadowRoot.querySelector(
-                'lightning-input-location'
+                '[data-element-id="lightning-input-location"]'
             );
             expect(locationInput.latitude).toBe(0);
             expect(locationInput.longitude).toBe(0);
@@ -286,7 +286,7 @@ describe('InputData', () => {
 
         return Promise.resolve().then(() => {
             const locationInput = element.shadowRoot.querySelector(
-                'lightning-input-location'
+                '[data-element-id="lightning-input-location"]'
             );
             expect(locationInput.latitude).toBeUndefined();
             expect(locationInput.longitude).toBeUndefined();
@@ -305,7 +305,7 @@ describe('InputData', () => {
         element.type = 'boolean';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('checkbox');
         });
     });
@@ -320,7 +320,7 @@ describe('InputData', () => {
         element.type = 'number';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('number');
             expect(input.formatter).toBe('decimal');
         });
@@ -336,7 +336,7 @@ describe('InputData', () => {
         element.type = 'currency';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('number');
             expect(input.formatter).toBe('currency');
         });
@@ -352,7 +352,7 @@ describe('InputData', () => {
         element.type = 'percent';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('number');
             expect(input.formatter).toBe('percent');
         });
@@ -368,7 +368,7 @@ describe('InputData', () => {
         element.type = 'date';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('date');
         });
     });
@@ -383,7 +383,7 @@ describe('InputData', () => {
         element.type = 'email';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('email');
         });
     });
@@ -399,10 +399,10 @@ describe('InputData', () => {
 
         return Promise.resolve().then(() => {
             const baseInput = element.shadowRoot.querySelector(
-                'lightning-input'
+                '[data-element-id="lightning-input-base"]'
             );
             const locationInput = element.shadowRoot.querySelector(
-                'lightning-input-location'
+                '[data-element-id="lightning-input-location"]'
             );
             expect(baseInput).toBeFalsy();
             expect(locationInput).toBeTruthy();
@@ -419,7 +419,7 @@ describe('InputData', () => {
         element.type = 'phone';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-phone"]');
             expect(input.type).toBe('tel');
         });
     });
@@ -435,7 +435,7 @@ describe('InputData', () => {
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-phone"]');
             expect(input.value).toBe('123-456-7890');
         });
     });
@@ -450,7 +450,7 @@ describe('InputData', () => {
         element.type = 'url';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('url');
         });
     });
@@ -465,7 +465,7 @@ describe('InputData', () => {
         element.type = 'text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('lightning-input');
+            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
             expect(input.type).toBe('text');
         });
     });
@@ -484,14 +484,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 input.value = '4501234567';
                 input.dispatchEvent(new CustomEvent('change'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 expect(input.value).toBe('450-123-4567');
             });
@@ -509,14 +509,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 input.value = '4501234';
                 input.dispatchEvent(new CustomEvent('change'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 expect(input.value).toBe('450-123-4');
             });
@@ -534,14 +534,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 input.value = '45012';
                 input.dispatchEvent(new CustomEvent('change'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 expect(input.value).toBe('450-12');
             });
@@ -559,14 +559,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 input.value = '4';
                 input.dispatchEvent(new CustomEvent('change'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-phone"]'
                 );
                 expect(input.value).toBe('4');
             });
@@ -584,7 +584,7 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input-location'
+                    '[data-element-id="lightning-input-location"]'
                 );
                 input.latitude = 10;
                 input.longitude = -10;
@@ -592,7 +592,7 @@ describe('InputData', () => {
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input-location'
+                    '[data-element-id="lightning-input-location"]'
                 );
                 expect(input.latitude).toBe(10);
                 expect(input.longitude).toBe(-10);
@@ -613,7 +613,7 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input-location'
+                    '[data-element-id="lightning-input-location"]'
                 );
                 input.latitude = undefined;
                 input.longitude = undefined;
@@ -621,7 +621,7 @@ describe('InputData', () => {
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input-location'
+                    '[data-element-id="lightning-input-location"]'
                 );
                 expect(input.latitude).toBeUndefined();
                 expect(input.longitude).toBeUndefined();
@@ -639,14 +639,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 input.value = '';
                 input.dispatchEvent(new CustomEvent('change'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 expect(input.value).toBe('');
             });
@@ -665,14 +665,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 input.value = 'Simple text';
                 input.dispatchEvent(new CustomEvent('commit'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 expect(input.value).toBe('Simple text');
             });
@@ -689,14 +689,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 input.value = 'Simple text';
                 input.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 expect(input.value).toBe('Simple text');
             });
@@ -713,14 +713,14 @@ describe('InputData', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 input.value = 'Simple text';
                 input.dispatchEvent(new CustomEvent('focus'));
             })
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    'lightning-input'
+                    '[data-element-id="lightning-input-base"]'
                 );
                 expect(input.value).toBe('Simple text');
             });

@@ -92,7 +92,7 @@ describe('Range', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeFalsy();
             });
@@ -109,7 +109,7 @@ describe('Range', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -127,7 +127,7 @@ describe('Range', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
             expect(label.textContent).toBe('A string label');
         });
     });
@@ -144,12 +144,12 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '.inverse-right input'
+                '[data-element-id="input-right"]'
             );
-            const formattedNumbers = element.shadowRoot.querySelectorAll(
-                'lightning-formatted-number'
+            const formattedNumber = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number-max"]'
             );
-            expect(formattedNumbers[1].value).toBe(45);
+            expect(formattedNumber.value).toBe(45);
             expect(input.max).toBe('45');
         });
     });
@@ -166,12 +166,12 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '.inverse-left input'
+                '[data-element-id="input-left"]'
             );
-            const formattedNumbers = element.shadowRoot.querySelectorAll(
-                'lightning-formatted-number'
+            const formattedNumber = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number-min"]'
             );
-            expect(formattedNumbers[0].value).toBe(34);
+            expect(formattedNumber.value).toBe(34);
             expect(input.min).toBe('34');
         });
     });
@@ -222,7 +222,7 @@ describe('Range', () => {
         element.size = '';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
             expect(wrapper.classList).toHaveLength(0);
         });
     });
@@ -237,7 +237,7 @@ describe('Range', () => {
         element.size = 'x-small';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
             expect(wrapper.classList).toContain('avonni-container_x-small');
         });
     });
@@ -252,7 +252,7 @@ describe('Range', () => {
         element.size = 'small';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
             expect(wrapper.classList).toContain('avonni-container_small');
         });
     });
@@ -267,7 +267,7 @@ describe('Range', () => {
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
             expect(wrapper.classList).toContain('avonni-container_medium');
         });
     });
@@ -282,7 +282,7 @@ describe('Range', () => {
         element.size = 'large';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
             expect(wrapper.classList).toContain('avonni-container_large');
         });
     });
@@ -298,7 +298,7 @@ describe('Range', () => {
         element.step = 3;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.step).toBe('3');
             });
@@ -317,7 +317,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const formattedNumbers = element.shadowRoot.querySelectorAll(
-                'lightning-formatted-number'
+                '[data-element-id^="lightning-formatted-number"]'
             );
             formattedNumbers.forEach((formattedNumber) => {
                 expect(formattedNumber.formatStyle).toBe('currency');
@@ -346,7 +346,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const formattedNumbers = element.shadowRoot.querySelectorAll(
-                'lightning-formatted-number'
+                '[data-element-id^="lightning-formatted-number"]'
             );
             formattedNumbers.forEach((formattedNumber) => {
                 expect(formattedNumber.currencyCode).toBe(
@@ -460,10 +460,10 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '.inverse-left input'
+                '[data-element-id="input-left"]'
             );
             const bubble = element.shadowRoot.querySelector(
-                '.left-bubble lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number-left"]'
             );
             expect(input.value).toBe('34');
             expect(bubble.value).toBe(34);
@@ -484,10 +484,10 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '.inverse-right input'
+                '[data-element-id="input-right"]'
             );
             const bubble = element.shadowRoot.querySelector(
-                '.right-bubble lightning-formatted-number'
+                '[data-element-id="lightning-formatted-number-right"]'
             );
             expect(input.value).toBe('34');
             expect(bubble.value).toBe(34);
@@ -508,7 +508,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-slider-label span'
+                '[data-element-id="span-label"]'
             );
             expect(label.classList).not.toContain('slds-assistive-text');
             expect(label.classList).toContain('slds-slider-label__label');
@@ -527,7 +527,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-slider-label span'
+                '[data-element-id="span-label"]'
             );
             expect(label.classList).toContain('slds-assistive-text');
             expect(label.classList).not.toContain('slds-slider-label__label');
@@ -580,7 +580,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '.inverse-left input'
+                '[data-element-id="input-left"]'
             );
             input.dispatchEvent(new CustomEvent('input'));
 
@@ -608,7 +608,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '.inverse-right input'
+                '[data-element-id="input-right"]'
             );
             input.dispatchEvent(new CustomEvent('input'));
 
