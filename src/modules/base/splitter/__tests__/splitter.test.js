@@ -59,7 +59,7 @@ describe('Splitter', () => {
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div"]');
             expect(wrapper.classList).not.toContain(
                 'splitter-orientation-vertical'
             );
@@ -73,7 +73,7 @@ describe('Splitter', () => {
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div"]');
             expect(wrapper.classList).toContain(
                 'splitter-orientation-vertical'
             );
@@ -90,7 +90,7 @@ describe('Splitter', () => {
         element.changeHeight(300);
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div"]');
             expect(wrapper.style.height).toBe('300px');
         });
     });

@@ -61,7 +61,7 @@ describe('Illustration', () => {
         element.title = 'This is a title';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h3');
+            const title = element.shadowRoot.querySelector('[data-element-id="h3"]');
             expect(title.textContent).toBe('This is a title');
         });
     });
@@ -96,7 +96,7 @@ describe('Illustration', () => {
     // variant
     it('Illustration variant text-only', () => {
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img).toBeFalsy();
         });
     });
@@ -105,7 +105,7 @@ describe('Illustration', () => {
         element.variant = 'going-camping';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/going-camping.svg'
             );
@@ -116,7 +116,7 @@ describe('Illustration', () => {
         element.variant = 'maintenance';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/maintenance.svg'
             );
@@ -127,7 +127,7 @@ describe('Illustration', () => {
         element.variant = 'desert';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/desert.svg'
             );
@@ -138,7 +138,7 @@ describe('Illustration', () => {
         element.variant = 'open-road';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/open-road.svg'
             );
@@ -149,7 +149,7 @@ describe('Illustration', () => {
         element.variant = 'no-access';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/no-access.svg'
             );
@@ -160,7 +160,7 @@ describe('Illustration', () => {
         element.variant = 'no-connection';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/no-connection.svg'
             );
@@ -171,7 +171,7 @@ describe('Illustration', () => {
         element.variant = 'not-available-in-lightning';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/not-available-in-lightning.svg'
             );
@@ -182,7 +182,7 @@ describe('Illustration', () => {
         element.variant = 'page-not-available';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/page-not-available.svg'
             );
@@ -193,7 +193,7 @@ describe('Illustration', () => {
         element.variant = 'walkthrough-not-available';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/walkthrough-not-available.svg'
             );
@@ -204,7 +204,7 @@ describe('Illustration', () => {
         element.variant = 'fishing-deals';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/fishing-deals.svg'
             );
@@ -215,7 +215,7 @@ describe('Illustration', () => {
         element.variant = 'lake-mountain';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/lake-mountain.svg'
             );
@@ -226,7 +226,7 @@ describe('Illustration', () => {
         element.variant = 'no-events';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/no-events.svg'
             );
@@ -237,7 +237,7 @@ describe('Illustration', () => {
         element.variant = 'no-task';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/no-task.svg'
             );
@@ -248,7 +248,7 @@ describe('Illustration', () => {
         element.variant = 'setup';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/setup.svg'
             );
@@ -259,7 +259,7 @@ describe('Illustration', () => {
         element.variant = 'gone-fishing';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/gone-fishing.svg'
             );
@@ -270,7 +270,7 @@ describe('Illustration', () => {
         element.variant = 'no-access-2';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/no-access-2.svg'
             );
@@ -281,7 +281,7 @@ describe('Illustration', () => {
         element.variant = 'no-content';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/no-content.svg'
             );
@@ -292,7 +292,7 @@ describe('Illustration', () => {
         element.variant = 'no-preview';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/no-preview.svg'
             );
@@ -303,7 +303,7 @@ describe('Illustration', () => {
         element.variant = 'preview';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/preview.svg'
             );
@@ -314,7 +314,7 @@ describe('Illustration', () => {
         element.variant = 'research';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toContain(
                 '/assets/canvas-elements/illustrationLibrary/research.svg'
             );

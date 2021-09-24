@@ -270,7 +270,7 @@ export default class PrivateSelect extends LightningElement {
     }
 
     get getElement() {
-        return this.template.querySelector('select');
+        return this.template.querySelector('[data-element-id="select"]');
     }
 
     get computedUniqueErrorMessageElementId() {
@@ -325,7 +325,7 @@ export default class PrivateSelect extends LightningElement {
     selectOptionsByValue(value) {
         if (this.multiple) {
             if (Array.isArray(value)) {
-                this.template.querySelectorAll('option').forEach((option) => {
+                this.template.querySelectorAll('[data-element-id^="option"]').forEach((option) => {
                     option.selected = value.includes(t.value);
                 });
             }
@@ -336,7 +336,7 @@ export default class PrivateSelect extends LightningElement {
 
     getSelectedOptionValues() {
         if (this.multiple) {
-            const option = this.template.querySelectorAll('option');
+            const option = this.template.querySelectorAll('[data-element-id^="option"]');
             return selectedOptionValues.call(
                 option,
                 (option, item) => (

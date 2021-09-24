@@ -196,7 +196,7 @@ export default class ColorPickerPanel extends LightningElement {
             event.target.name === 'done'
         ) {
             event.preventDefault();
-            this.template.querySelector('c-color-picker-custom').focus();
+            this.template.querySelector('[data-element-id="avonni-color-picker-custom"]').focus();
         }
     }
 }

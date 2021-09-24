@@ -101,7 +101,7 @@ export default class VisualPicker extends LightningElement {
     _ratio = VISUAL_PICKER_RATIOS.default;
 
     renderedCallback() {
-        const inputs = this.template.querySelectorAll('input');
+        const inputs = this.template.querySelectorAll('[data-element-id="input"]');
 
         if (inputs) {
             Array.from(inputs).forEach((item) => {
@@ -125,7 +125,7 @@ export default class VisualPicker extends LightningElement {
 
     set value(value) {
         this._value = value instanceof Array ? value : [value];
-        const inputs = this.template.querySelectorAll('input');
+        const inputs = this.template.querySelectorAll('[data-element-id="input"]');
 
         if (inputs && this.value.length) {
             Array.from(inputs).forEach((item) => {
@@ -488,7 +488,7 @@ export default class VisualPicker extends LightningElement {
         event.stopPropagation();
 
         if (this._variant === 'coverable' && this._hideCheckMark) {
-            const labels = this.template.querySelectorAll('label');
+            const labels = this.template.querySelectorAll('[data-element-id="label"]');
 
             labels.forEach((label) => {
                 let icon = label.querySelector('lightning-icon');
@@ -500,7 +500,7 @@ export default class VisualPicker extends LightningElement {
             });
         }
 
-        const inputs = this.template.querySelectorAll('input');
+        const inputs = this.template.querySelectorAll('[data-element-id="input"]');
         const value = Array.from(inputs)
             .filter((input) => input.checked)
             .map((input) => input.value);

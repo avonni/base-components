@@ -64,7 +64,7 @@ describe('ProgressRing', () => {
         element.value = 34;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('path');
+            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
             const arcx = Math.cos(2 * Math.PI * 0.34);
             const arcy = Math.sin(2 * Math.PI * 0.34) * -1;
 
@@ -103,7 +103,7 @@ describe('ProgressRing', () => {
         element.value = 87;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('path');
+            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
             const arcx = Math.cos(2 * Math.PI * 0.87);
             const arcy = Math.sin(2 * Math.PI * 0.87);
 
@@ -120,7 +120,7 @@ describe('ProgressRing', () => {
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(icon).toBeTruthy();
         });
@@ -131,7 +131,7 @@ describe('ProgressRing', () => {
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(icon).toBeFalsy();
         });
@@ -171,7 +171,7 @@ describe('ProgressRing', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -196,7 +196,7 @@ describe('ProgressRing', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -221,7 +221,7 @@ describe('ProgressRing', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).toContain('slds-progress-ring_warning');
             expect(wrapper.classList).not.toContain(
@@ -249,7 +249,7 @@ describe('ProgressRing', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -277,7 +277,7 @@ describe('ProgressRing', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -303,7 +303,7 @@ describe('ProgressRing', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'

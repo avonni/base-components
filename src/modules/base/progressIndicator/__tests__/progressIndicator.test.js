@@ -126,7 +126,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives.forEach((primitive) => {
                 expect(primitive.completedSteps).toMatchObject(STEPS_NAMES);
@@ -146,7 +146,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
 
             expect(primitives[1].classList).toContain('slds-is-active');
@@ -161,7 +161,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
 
             primitives.forEach((primitive) => {
@@ -178,7 +178,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
 
             primitives.forEach((primitive) => {
@@ -195,7 +195,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
 
             expect(primitives).toHaveLength(4);
@@ -266,7 +266,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
 
             expect(primitives).toHaveLength(4);
@@ -358,7 +358,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
 
             primitives.forEach((primitive) => {
@@ -376,7 +376,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
 
             primitives.forEach((primitive) => {
@@ -403,7 +403,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives[1].dispatchEvent(new CustomEvent('stepclick'));
 
@@ -420,7 +420,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives[1].dispatchEvent(new CustomEvent('stepblur'));
 
@@ -437,7 +437,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives[1].dispatchEvent(new CustomEvent('stepfocus'));
 
@@ -454,7 +454,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives[1].dispatchEvent(new CustomEvent('stepmouseenter'));
 
@@ -471,7 +471,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives[1].dispatchEvent(new CustomEvent('stepmouseleave'));
 
@@ -488,7 +488,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives[1].dispatchEvent(new CustomEvent('stepbuttonclick'));
 
@@ -505,7 +505,7 @@ describe('ProgressIndicator', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-progress-step'
+                '[data-element-id="avonni-primitive-progress-step"]'
             );
             primitives[1].dispatchEvent(new CustomEvent('steppopoverclick'));
 

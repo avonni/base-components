@@ -61,7 +61,7 @@ describe('PageHeader', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('c-primitive-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-icon-mobile"]');
             expect(icon.iconName).toBe('utility:apps');
         });
     });

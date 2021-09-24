@@ -62,7 +62,7 @@ describe('ScopedNotification', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             expect(icon).toBeTruthy();
             expect(icon.iconName).toBe('utility:apps');
         });
@@ -75,7 +75,7 @@ describe('ScopedNotification', () => {
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
             expect(icon.size).toBe('large');
         });
     });
@@ -86,7 +86,7 @@ describe('ScopedNotification', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '.slds-media__body p'
+                '[data-element-id="p-title"]'
             );
             expect(title.textContent).toBe('A string title');
         });
@@ -122,7 +122,7 @@ describe('ScopedNotification', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-scoped-notification'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_light'
@@ -166,7 +166,7 @@ describe('ScopedNotification', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-scoped-notification'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_light'
@@ -189,7 +189,7 @@ describe('ScopedNotification', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-scoped-notification'
             );
-            const icon = element.shadowRoot.querySelector('lightning-icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-scoped-notification_light'

@@ -561,7 +561,7 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get isInputFilled() {
-        let input = this.template.querySelector('lightning-input');
+        let input = this.template.querySelector('[data-element-id="lightning-input"]');
         if (input == null) {
             return this.inputValue;
         }
@@ -647,7 +647,7 @@ export default class ColorPicker extends LightningElement {
      * Button focus handler.
      */
     focusOnButton() {
-        this.template.querySelector('button').focus();
+        this.template.querySelector('[data-element-id="button"]').focus();
     }
 
     /**
@@ -806,9 +806,9 @@ export default class ColorPicker extends LightningElement {
         this.currentLabel = undefined;
         this.currentToken = undefined;
         this.showError = false;
-        this.template
-            .querySelector('lightning-input')
-            .classList.remove('slds-has-error');
+            this.template
+                .querySelector('[data-element-id="lightning-input"]')
+                .classList.remove('slds-has-error');
 
         this.dispatchClear();
     }
@@ -841,7 +841,7 @@ export default class ColorPicker extends LightningElement {
             if (this.showError) {
                 this.showError = false;
                 this.template
-                    .querySelector('lightning-input')
+                    .querySelector('[data-element-id="lightning-input"]')
                     .classList.remove('slds-has-error');
             }
 
@@ -1015,7 +1015,7 @@ export default class ColorPicker extends LightningElement {
         ) {
             this.showError = false;
             this.template
-                .querySelector('lightning-input')
+                .querySelector('[data-element-id="lightning-input"]')
                 .classList.remove('slds-has-error');
 
             if (!this.menuIconName) {
@@ -1039,7 +1039,7 @@ export default class ColorPicker extends LightningElement {
         } else {
             this.showError = true;
             this.template
-                .querySelector('lightning-input')
+                .querySelector('[data-element-id="lightning-input"]')
                 .classList.add('slds-has-error');
         }
 

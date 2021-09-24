@@ -80,7 +80,7 @@ describe('Panel', () => {
 
     // title
     it('title', () => {
-        const title = element.shadowRoot.querySelector('h1');
+        const title = element.shadowRoot.querySelector('[data-element-id="h1"]');
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {

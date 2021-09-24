@@ -68,7 +68,7 @@ describe('Color Gradient', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -89,7 +89,7 @@ describe('Color Gradient', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '.slds-form-element__control > input'
+                '.slds-form-element__control > [data-element-id="input"]'
             );
             expect(input.value).toBe('#b63e3e');
         });
@@ -112,7 +112,7 @@ describe('Color Gradient', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -152,7 +152,7 @@ describe('Color Gradient', () => {
     // private focus
     it('Color Gradient private focus', () => {
         let focusEvent = false;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
         element.addEventListener('privatefocus', (event) => {
             focusEvent = true;
@@ -170,7 +170,7 @@ describe('Color Gradient', () => {
     // private blur
     it('Color Gradient private blur', () => {
         let blurEvent = false;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
         element.addEventListener('privateblur', (event) => {
             blurEvent = true;

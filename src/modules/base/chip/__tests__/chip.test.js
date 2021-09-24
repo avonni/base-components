@@ -61,7 +61,7 @@ describe('Chip', () => {
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.textContent).toBe('This is a label');
         });
     });
@@ -69,7 +69,7 @@ describe('Chip', () => {
     // variant
     it('Chip variant base', () => {
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_base');
         });
     });
@@ -78,7 +78,7 @@ describe('Chip', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_brand');
         });
     });
@@ -87,7 +87,7 @@ describe('Chip', () => {
         element.variant = 'inverse';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_inverse');
         });
     });
@@ -96,7 +96,7 @@ describe('Chip', () => {
         element.variant = 'alt-inverse';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_alt-inverse');
         });
     });
@@ -105,7 +105,7 @@ describe('Chip', () => {
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_success');
         });
     });
@@ -114,7 +114,7 @@ describe('Chip', () => {
         element.variant = 'info';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_info');
         });
     });
@@ -123,7 +123,7 @@ describe('Chip', () => {
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_warning');
         });
     });
@@ -132,7 +132,7 @@ describe('Chip', () => {
         element.variant = 'error';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_error');
         });
     });
@@ -141,7 +141,7 @@ describe('Chip', () => {
         element.variant = 'offline';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_offline');
         });
     });
@@ -151,7 +151,7 @@ describe('Chip', () => {
         element.outline = true;
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toContain('avonni-outline');
         });
     });

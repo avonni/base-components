@@ -358,7 +358,7 @@ describe('Carousel', () => {
         element.hideIndicator = true;
 
         return Promise.resolve().then(() => {
-            const indicators = element.shadowRoot.querySelectorAll('li');
+            const indicators = element.shadowRoot.querySelectorAll('[data-element-id^="li-pagination"]');
             expect(indicators).toHaveLength(0);
         });
     });
@@ -382,7 +382,7 @@ describe('Carousel', () => {
         return Promise.resolve().then(() => {
             // only the autoplay button is present
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id^="lightning-button-icon"]'
             );
             expect(buttons).toHaveLength(1);
         });
@@ -434,12 +434,12 @@ describe('Carousel', () => {
                 '.slds-carousel__content-title'
             );
             expect(title.textContent).toBe('Visit App Exchange');
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toBe(
                 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
             );
             const action = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions > lightning-button-icon'
+                '[data-element-id="lightning-button-icon-actions"]'
             );
             expect(action.name).toBe('action-add');
             expect(action.iconName).toBe('utility:add');
@@ -453,7 +453,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const action = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions > lightning-button-icon'
+                '[data-element-id="lightning-button-icon-actions"]'
             );
             expect(action.variant).toBe('bare');
         });
@@ -465,7 +465,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const action = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions > lightning-button-icon'
+                '[data-element-id="lightning-button-icon-actions"]'
             );
             expect(action.variant).toBe('border-filled');
         });
@@ -477,7 +477,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const action = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions > lightning-button'
+                '[data-element-id="lightning-button-actions"]'
             );
             expect(action.variant).toBe('base');
         });
@@ -489,7 +489,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const action = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions > lightning-button'
+                '[data-element-id="lightning-button-actions"]'
             );
             expect(action.variant).toBe('neutral');
         });
@@ -501,7 +501,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const action = element.shadowRoot.querySelector(
-                'lightning-button-menu'
+                '[data-element-id="lightning-button-menu"]'
             );
             expect(action).toBeTruthy();
             expect(action.menuAlignment).toBe('auto');
@@ -610,7 +610,7 @@ describe('Carousel', () => {
             })
             .then(() => {
                 const indicators = element.shadowRoot.querySelectorAll(
-                    'li > a'
+                    '[data-element-id^="a-pagination"]'
                 );
                 expect(indicators[lastItem].className).toContain(
                     'slds-is-active'
@@ -633,14 +633,14 @@ describe('Carousel', () => {
             })
             .then(() => {
                 const indicators = element.shadowRoot.querySelectorAll(
-                    'li > a'
+                    '[data-element-id^="a-pagination"]'
                 );
                 expect(indicators[0].className).toContain('slds-is-active');
                 element.previous();
             })
             .then(() => {
                 const indicators = element.shadowRoot.querySelectorAll(
-                    'li > a'
+                    '[data-element-id^="a-pagination"]'
                 );
                 expect(indicators[lastItem].className).toContain(
                     'slds-is-active'
@@ -657,7 +657,7 @@ describe('Carousel', () => {
         return Promise.resolve()
             .then(() => {
                 const indicators = element.shadowRoot.querySelectorAll(
-                    'li > a'
+                    '[data-element-id^="a-pagination"]'
                 );
                 expect(indicators[0].className).toContain('slds-is-active');
                 expect(indicators[1].className).not.toContain('slds-is-active');
@@ -665,7 +665,7 @@ describe('Carousel', () => {
             })
             .then(() => {
                 const indicators = element.shadowRoot.querySelectorAll(
-                    'li > a'
+                    '[data-element-id^="a-pagination"]'
                 );
                 expect(indicators[0].className).not.toContain('slds-is-active');
                 expect(indicators[1].className).toContain('slds-is-active');
@@ -673,7 +673,7 @@ describe('Carousel', () => {
             })
             .then(() => {
                 const indicators = element.shadowRoot.querySelectorAll(
-                    'li > a'
+                    '[data-element-id^="a-pagination"]'
                 );
                 expect(indicators[0].className).toContain('slds-is-active');
                 expect(indicators[1].className).not.toContain('slds-is-active');
@@ -691,7 +691,7 @@ describe('Carousel', () => {
             })
             .then(() => {
                 const indicators = element.shadowRoot.querySelectorAll(
-                    'li > a'
+                    '[data-element-id^="a-pagination"]'
                 );
                 expect(indicators[lastItem].className).toContain(
                     'slds-is-active'
@@ -730,7 +730,7 @@ describe('Carousel', () => {
 
         return Promise.resolve()
             .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll('li');
+                const indicators = element.shadowRoot.querySelectorAll('[data-element-id="li-pagination"]');
                 const secondIndicator = indicators[1];
                 secondIndicator.click();
             })
@@ -767,10 +767,9 @@ describe('Carousel', () => {
     // Scroll right
     it('Carousel handle scroll right', () => {
         element.items = items;
-        const buttons = element.shadowRoot.querySelectorAll(
-            'lightning-button-icon'
+        const nextButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-next"]'
         );
-        const nextButton = buttons[2];
 
         return Promise.resolve()
             .then(() => {
@@ -788,11 +787,12 @@ describe('Carousel', () => {
     // Scroll left
     it('Carousel handle scroll left', () => {
         element.items = items;
-        const buttons = element.shadowRoot.querySelectorAll(
-            'lightning-button-icon'
+        const nextButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-next"]'
         );
-        const nextButton = buttons[2];
-        const previousButton = buttons[0];
+        const previousButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-previous"]'
+        );
 
         return Promise.resolve()
             .then(() => {
@@ -881,7 +881,7 @@ describe('Carousel', () => {
         element.addEventListener('itemclick', handler);
 
         return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector('a');
+            const item = element.shadowRoot.querySelector('[data-element-id="a-actions"]');
             item.click();
             expect(handler).toHaveBeenCalled();
             expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
@@ -911,7 +911,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const action = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions > lightning-button-icon'
+                '[data-element-id="lightning-button-icon-actions"]'
             );
             action.click();
             expect(handler).toHaveBeenCalled();

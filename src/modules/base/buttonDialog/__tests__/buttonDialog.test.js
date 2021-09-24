@@ -63,7 +63,7 @@ describe('Button Dialog', () => {
     // access-key
     it('Button Dialog access-key', () => {
         element.accessKey = 'K';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.accessKey).toBe('K');
@@ -87,7 +87,7 @@ describe('Button Dialog', () => {
     // disabled
     it('Button Dialog disabled', () => {
         element.disabled = true;
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.disabled).toBeTruthy();
@@ -97,7 +97,7 @@ describe('Button Dialog', () => {
     // label
     it('Button Dialog label', () => {
         element.label = 'Button Label';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.label).toBe('Button Label');
@@ -107,7 +107,7 @@ describe('Button Dialog', () => {
     // variant
     it('Button Dialog variant neutral', () => {
         element.variant = 'neutral';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('neutral');
@@ -116,7 +116,7 @@ describe('Button Dialog', () => {
 
     it('Button Dialog variant base', () => {
         element.variant = 'base';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('base');
@@ -125,7 +125,7 @@ describe('Button Dialog', () => {
 
     it('Button Dialog variant brand', () => {
         element.variant = 'brand';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('brand');
@@ -134,7 +134,7 @@ describe('Button Dialog', () => {
 
     it('Button Dialog variant brand-outline', () => {
         element.variant = 'brand-outline';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('brand-outline');
@@ -143,7 +143,7 @@ describe('Button Dialog', () => {
 
     it('Button Dialog variant destructive', () => {
         element.variant = 'destructive';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('destructive');
@@ -152,7 +152,7 @@ describe('Button Dialog', () => {
 
     it('Button Dialog variant destructive-text', () => {
         element.variant = 'destructive-text';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('destructive-text');
@@ -161,7 +161,7 @@ describe('Button Dialog', () => {
 
     it('Button Dialog variant inverse', () => {
         element.variant = 'inverse';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('inverse');
@@ -170,7 +170,7 @@ describe('Button Dialog', () => {
 
     it('Button Dialog variant success', () => {
         element.variant = 'success';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('success');
@@ -180,7 +180,7 @@ describe('Button Dialog', () => {
     // icon name
     it('Button Dialog icon name', () => {
         element.iconName = 'utility:lock';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.iconName).toBe('utility:lock');
@@ -190,7 +190,7 @@ describe('Button Dialog', () => {
     // icon position
     it('Button Dialog icon position left', () => {
         element.iconName = 'utility:lock';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.iconPosition).toBe('left');
@@ -200,7 +200,7 @@ describe('Button Dialog', () => {
     it('Button Dialog icon position right', () => {
         element.iconName = 'utility:lock';
         element.iconPosition = 'right';
-        const button = element.shadowRoot.querySelector('lightning-button');
+        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
         return Promise.resolve().then(() => {
             expect(button.iconPosition).toBe('right');

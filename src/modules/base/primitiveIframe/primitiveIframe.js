@@ -69,7 +69,7 @@ export default class PrimitiveIframe extends LightningElement {
         });
 
         this.contentWindow = this.template.querySelector(
-            'iframe'
+            '[data-element-id="iframe"]'
         ).contentWindow;
         this.dispatchEvent(iframeload);
     }

@@ -88,7 +88,7 @@ describe('PrimitiveDropdownMenu', () => {
 
         return Promise.resolve().then(() => {
             const itemElements = element.shadowRoot.querySelectorAll(
-                'lightning-menu-item'
+                '[data-element-id^="lightning-menu-item"]'
             );
             expect(itemElements).toHaveLength(items.length);
 
@@ -130,7 +130,7 @@ describe('PrimitiveDropdownMenu', () => {
         return Promise.resolve()
             .then(() => {
                 const item = element.shadowRoot.querySelector(
-                    'lightning-menu-item'
+                    '[data-element-id="lightning-menu-item"]'
                 );
                 item.dispatchEvent(
                     new CustomEvent('privateblur', {
@@ -158,7 +158,7 @@ describe('PrimitiveDropdownMenu', () => {
         return Promise.resolve()
             .then(() => {
                 const item = element.shadowRoot.querySelector(
-                    'lightning-menu-item'
+                    '[data-element-id="lightning-menu-item"]'
                 );
                 item.dispatchEvent(
                     new CustomEvent('privateselect', {

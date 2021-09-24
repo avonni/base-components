@@ -80,10 +80,10 @@ describe('Input Date Range', () => {
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelectorAll('input');
+            const input = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             expect(input).toHaveLength(2);
             const lightningInput = element.shadowRoot.querySelectorAll(
-                'lightning-input'
+                '[data-element-id^="lightning-input"]'
             );
             expect(lightningInput).toHaveLength(0);
         });
@@ -95,10 +95,10 @@ describe('Input Date Range', () => {
         element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelectorAll('input');
+            const input = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             expect(input).toHaveLength(2);
             const lightningInput = element.shadowRoot.querySelectorAll(
-                'lightning-input'
+                '[data-element-id^="lightning-input"]'
             );
             expect(lightningInput).toHaveLength(2);
         });
@@ -179,7 +179,7 @@ describe('Input Date Range', () => {
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
-                'lightning-input'
+                '[data-element-id^="lightning-input"]'
             );
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('short');
@@ -199,7 +199,7 @@ describe('Input Date Range', () => {
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
-                'lightning-input'
+                '[data-element-id^="lightning-input"]'
             );
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('medium');
@@ -219,7 +219,7 @@ describe('Input Date Range', () => {
 
         return Promise.resolve().then(() => {
             const lightningInputs = element.shadowRoot.querySelectorAll(
-                'lightning-input'
+                '[data-element-id^="lightning-input"]'
             );
             lightningInputs.forEach((input) => {
                 expect(input.timeStyle).toBe('long');
@@ -234,7 +234,7 @@ describe('Input Date Range', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -247,7 +247,7 @@ describe('Input Date Range', () => {
 
         return Promise.resolve().then(() => {
             const helpText = element.shadowRoot.querySelector(
-                'lightning-helptext'
+                '[data-element-id="lightning-helptext"]'
             );
             expect(helpText).toBeTruthy();
             expect(helpText.content).toBe('This is a field level help text');
@@ -260,7 +260,7 @@ describe('Input Date Range', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.avonni-label-container > p'
+                '[data-element-id="p-label"]'
             );
             expect(label.textContent).toBe('This is a label');
         });
@@ -300,7 +300,7 @@ describe('Input Date Range', () => {
             .then(() => {
                 // Time inputs should not be read only
                 const timeInputs = element.shadowRoot.querySelectorAll(
-                    'lightning-input'
+                    '[data-element-id^="lightning-input"]'
                 );
                 timeInputs.forEach((input) => {
                     expect(input.readOnly).toBeFalsy();
@@ -308,7 +308,7 @@ describe('Input Date Range', () => {
 
                 // Start date input should not be read only
                 const startDateInput = element.shadowRoot.querySelector(
-                    'input.start-date'
+                    '[data-element-id="input-start-date"]'
                 );
 
                 expect(startDateInput.readOnly).toBeFalsy();
@@ -325,7 +325,7 @@ describe('Input Date Range', () => {
 
                 // End date input should not be read only
                 const endDateInput = element.shadowRoot.querySelector(
-                    'input.end-date'
+                    '[data-element-id="input-end-date"]'
                 );
 
                 expect(endDateInput.readOnly).toBeFalsy();
@@ -350,7 +350,7 @@ describe('Input Date Range', () => {
             .then(() => {
                 // Time inputs should be read only
                 const timeInputs = element.shadowRoot.querySelectorAll(
-                    'lightning-input'
+                    '[data-element-id^="lightning-input"]'
                 );
                 timeInputs.forEach((input) => {
                     expect(input.readOnly).toBeTruthy();
@@ -358,7 +358,7 @@ describe('Input Date Range', () => {
 
                 // Start date input should be read only
                 const startDateInput = element.shadowRoot.querySelector(
-                    'input.start-date'
+                    '[data-element-id="input-start-date"]'
                 );
 
                 expect(startDateInput.readOnly).toBeTruthy();
@@ -375,7 +375,7 @@ describe('Input Date Range', () => {
 
                 // End date input should be read only
                 const endDateInput = element.shadowRoot.querySelector(
-                    'input.end-date'
+                    '[data-element-id="input-end-date"]'
                 );
 
                 expect(endDateInput.readOnly).toBeTruthy();
@@ -431,7 +431,7 @@ describe('Input Date Range', () => {
             const label = element.shadowRoot.querySelector(
                 '.avonni-label-container'
             );
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
 
             expect(label.classList).not.toContain('slds-assistive-text');
             expect(label.classList).not.toContain('slds-m-right_small');
@@ -446,7 +446,7 @@ describe('Input Date Range', () => {
             const label = element.shadowRoot.querySelector(
                 '.avonni-label-container'
             );
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
 
             expect(label.classList).toContain('slds-assistive-text');
             expect(label.classList).not.toContain('slds-m-right_small');
@@ -461,7 +461,7 @@ describe('Input Date Range', () => {
             const label = element.shadowRoot.querySelector(
                 '.avonni-label-container'
             );
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
 
             expect(label.classList).not.toContain('slds-assistive-text');
             expect(label.classList).toContain('slds-m-right_small');
@@ -476,7 +476,7 @@ describe('Input Date Range', () => {
             const label = element.shadowRoot.querySelector(
                 '.avonni-label-container'
             );
-            const wrapper = element.shadowRoot.querySelector('div');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
 
             expect(label.classList).not.toContain('slds-assistive-text');
             expect(label.classList).not.toContain('slds-m-right_small');

@@ -66,7 +66,7 @@ describe('Submenu', () => {
         element.accessKey = 'k';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('a');
+            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
             expect(link.accessKey).toBe('k');
         });
     });
@@ -78,7 +78,7 @@ describe('Submenu', () => {
         element.addEventListener('privateselect', handler);
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('a');
+            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
             link.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(link.ariaDisabled).toBe('false');
@@ -92,7 +92,7 @@ describe('Submenu', () => {
         element.addEventListener('privateselect', handler);
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('a');
+            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
             link.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(link.ariaDisabled).toBe('true');
@@ -107,7 +107,7 @@ describe('Submenu', () => {
         element.draftAlternativeText = 'A string help';
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
             expect(abbr.title).toBe('A string help');
         });
     });
@@ -118,7 +118,7 @@ describe('Submenu', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                'span + lightning-icon'
+                '[data-element-id="lightning-icon"]'
             );
             expect(icon).toBeTruthy();
             expect(icon.iconName).toBe('utility:apps');
@@ -130,7 +130,7 @@ describe('Submenu', () => {
         element.isDraft = false;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
             expect(abbr).toBeFalsy();
         });
     });
@@ -139,7 +139,7 @@ describe('Submenu', () => {
         element.isDraft = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
             expect(abbr).toBeTruthy();
         });
     });
@@ -148,7 +148,7 @@ describe('Submenu', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('span');
+            const span = element.shadowRoot.querySelector('[data-element-id="span-label"]');
             expect(span.textContent).toBe('A string label');
             expect(span.title).toBe('A string label');
         });
@@ -160,7 +160,7 @@ describe('Submenu', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                'span lightning-icon'
+                '[data-element-id="lightning-icon-prefix"]'
             );
             expect(icon).toBeTruthy();
             expect(icon.iconName).toBe('utility:apps');
@@ -172,7 +172,7 @@ describe('Submenu', () => {
         element.tabIndex = '-1';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('a');
+            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
             expect(link.tabIndex).toBe(-1);
         });
     });

@@ -66,7 +66,7 @@ describe('FilterMenuGroup', () => {
         element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.applyButtonLabel).toBe('Save');
             });
@@ -79,7 +79,7 @@ describe('FilterMenuGroup', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'lightning-button + lightning-button'
+                '[data-element-id="lightning-button-apply"]'
             );
             expect(button.label).toBe('Save');
         });
@@ -93,7 +93,7 @@ describe('FilterMenuGroup', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id^="lightning-pill-container"]'
             );
             expect(pills).toBeTruthy();
         });
@@ -105,7 +105,7 @@ describe('FilterMenuGroup', () => {
 
         return Promise.resolve().then(() => {
             const pills = element.shadowRoot.querySelector(
-                'lightning-pill-container'
+                '[data-element-id^="lightning-pill-container"]'
             );
             expect(pills).toBeFalsy();
         });
@@ -116,7 +116,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu, index) => {
                 expect(menu.accessKey).toBe(MENUS[index].accessKey);
                 expect(menu.alternativeText).toBe(
@@ -166,7 +166,7 @@ describe('FilterMenuGroup', () => {
         element.variant = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.resetButtonLabel).toBe('Erase');
             });
@@ -178,7 +178,7 @@ describe('FilterMenuGroup', () => {
         element.variant = 'vertical';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button-reset"]');
             expect(button.label).toBe('Erase');
         });
     });
@@ -190,7 +190,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.hideApplyResetButtons).toBeFalsy();
             });
@@ -206,7 +206,7 @@ describe('FilterMenuGroup', () => {
             expect(buttonGroupItem).toBeTruthy();
 
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id="lightning-button-reset"]'
             );
             expect(buttons).toHaveLength(0);
         });
@@ -217,7 +217,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus.forEach((menu) => {
                 expect(menu.hideApplyResetButtons).toBeTruthy();
             });
@@ -233,7 +233,7 @@ describe('FilterMenuGroup', () => {
             expect(buttonGroupItem).toBeFalsy();
 
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button'
+                '[data-element-id^="lightning-button"]'
             );
             expect(buttons).toHaveLength(2);
         });
@@ -252,14 +252,14 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus.forEach((menu) => {
                     expect(menu.value).toMatchObject([]);
                 });
 
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container"]'
                 );
                 expect(pills).toBeFalsy();
             });
@@ -273,7 +273,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].value = ['call'];
 
@@ -281,7 +281,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id^="lightning-pill-container"]'
                 );
                 expect(pills.items[0].name).toBe('contact,call');
             });
@@ -297,7 +297,7 @@ describe('FilterMenuGroup', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
-            const menus = element.shadowRoot.querySelectorAll('c-filter-menu');
+            const menus = element.shadowRoot.querySelectorAll('[data-element-id^="avonni-filter-menu"]');
             menus[1].dispatchEvent(
                 new CustomEvent('select', {
                     cancelable: true,
@@ -326,7 +326,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].dispatchEvent(
                     new CustomEvent('apply', {
@@ -338,7 +338,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-horizontal"]'
                 );
                 expect(pills.items[0].name).toBe('contact,call');
             });
@@ -351,18 +351,18 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].value = ['call'];
 
                 const applyButton = element.shadowRoot.querySelector(
-                    'lightning-button + lightning-button'
+                    '[data-element-id="lightning-button-apply"]'
                 );
                 applyButton.click();
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-vertical"]'
                 );
                 expect(pills.items[0].name).toBe('contact,call');
             });
@@ -376,13 +376,13 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const menus = element.shadowRoot.querySelectorAll(
-                    'c-filter-menu'
+                    '[data-element-id^="avonni-filter-menu"]'
                 );
                 menus[0].dispatchEvent(new CustomEvent('reset'));
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-horizontal"]'
                 );
                 expect(pills).toBeFalsy();
             });
@@ -395,13 +395,13 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const resetButton = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button-reset"]'
                 );
                 resetButton.click();
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id="lightning-pill-container-vertical"]'
                 );
                 expect(pills).toBeFalsy();
             });
@@ -415,7 +415,7 @@ describe('FilterMenuGroup', () => {
         return Promise.resolve()
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id^="lightning-pill-container"]'
                 );
                 pills.dispatchEvent(
                     new CustomEvent('itemremove', {
@@ -431,7 +431,7 @@ describe('FilterMenuGroup', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelector(
-                    'lightning-pill-container'
+                    '[data-element-id^="lightning-pill-container"]'
                 );
                 expect(pills.items).toHaveLength(1);
                 expect(pills.items[0]).toMatchObject({

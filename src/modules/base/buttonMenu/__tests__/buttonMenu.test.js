@@ -75,7 +75,7 @@ describe('Button Menu', () => {
     // access-key
     it('Button Menu access-key', () => {
         element.accessKey = 'K';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.accessKey).toBe('K');
@@ -99,7 +99,7 @@ describe('Button Menu', () => {
     // disabled
     it('Button Menu disabled', () => {
         element.disabled = true;
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.disabled).toBeTruthy();
@@ -123,7 +123,7 @@ describe('Button Menu', () => {
     // icon name
     it('Button Menu icon name', () => {
         element.iconName = 'utility:close';
-        const icon = element.shadowRoot.querySelector('c-primitive-icon');
+        const icon = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-icon-main"]');
 
         return Promise.resolve().then(() => {
             expect(icon.iconName).toBe('utility:close');
@@ -133,7 +133,7 @@ describe('Button Menu', () => {
     // icon size
     it('Button Menu icon size xx-small', () => {
         element.iconSize = 'xx-small';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.className).toContain('slds-button_icon-xx-small');
@@ -142,7 +142,7 @@ describe('Button Menu', () => {
 
     it('Button Menu icon size x-small', () => {
         element.iconSize = 'x-small';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.className).toContain('slds-button_icon-x-small');
@@ -151,7 +151,7 @@ describe('Button Menu', () => {
 
     it('Button Menu icon size small', () => {
         element.iconSize = 'small';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.className).toContain('slds-button_icon-small');
@@ -160,7 +160,7 @@ describe('Button Menu', () => {
 
     it('Button Menu icon size medium', () => {
         element.iconSize = 'medium';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.className).not.toContain('slds-button_icon-xx-small');
@@ -174,7 +174,7 @@ describe('Button Menu', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText =
             'This is a loading state alternative text';
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve()
             .then(() => {
@@ -182,7 +182,7 @@ describe('Button Menu', () => {
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
-                    'lightning-spinner'
+                    '[data-element-id="lightning-spinner"]'
                 );
                 expect(spinner).toBeTruthy();
                 expect(spinner.alternativeText).toBe(
@@ -195,7 +195,7 @@ describe('Button Menu', () => {
     it('Button Menu label', () => {
         element.label = 'This is a label';
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.textContent).toContain('This is a label');
@@ -206,7 +206,7 @@ describe('Button Menu', () => {
     it('Button menu menu alignement left', () => {
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -222,7 +222,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -239,7 +239,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -256,7 +256,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -273,7 +273,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -290,7 +290,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -307,7 +307,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -324,7 +324,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -341,7 +341,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -360,7 +360,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -379,7 +379,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -398,7 +398,7 @@ describe('Button Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('button');
+                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
                 button.click();
             })
             .then(() => {
@@ -418,7 +418,7 @@ describe('Button Menu', () => {
     it('Button Menu title', () => {
         element.title = 'This is a title';
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.title).toBe('This is a title');
@@ -429,7 +429,7 @@ describe('Button Menu', () => {
     it('Button Menu value', () => {
         element.value = 'This is a value';
 
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve().then(() => {
             expect(button.value).toBe('This is a value');
@@ -441,7 +441,7 @@ describe('Button Menu', () => {
         element.variant = 'bare';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain('slds-button_icon-bare');
         });
     });
@@ -450,7 +450,7 @@ describe('Button Menu', () => {
         element.variant = 'container';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain('slds-button_icon-container');
         });
     });
@@ -459,7 +459,7 @@ describe('Button Menu', () => {
         element.variant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain(
                 'slds-button_icon-border-filled'
             );
@@ -470,7 +470,7 @@ describe('Button Menu', () => {
         element.variant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain('slds-button_icon-inverse');
         });
     });
@@ -479,7 +479,7 @@ describe('Button Menu', () => {
         element.variant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain(
                 'slds-button_icon-border-inverse'
             );
@@ -491,7 +491,7 @@ describe('Button Menu', () => {
         element.label = 'label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain('slds-button_inverse');
         });
     });
@@ -501,7 +501,7 @@ describe('Button Menu', () => {
         element.label = 'label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain('slds-button_neutral');
         });
     });
@@ -511,7 +511,7 @@ describe('Button Menu', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain(
                 'slds-button_icon-container-more'
             );
@@ -523,7 +523,7 @@ describe('Button Menu', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
             expect(button.className).toContain('slds-button_icon-bare');
             expect(button.className).toContain('slds-button_icon-more');
         });
@@ -544,7 +544,7 @@ describe('Button Menu', () => {
     });
 
     it('Button menu clicked', () => {
-        const button = element.shadowRoot.querySelector('button');
+        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
 
         return Promise.resolve()
             .then(() => {

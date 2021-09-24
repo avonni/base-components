@@ -81,7 +81,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const span = element.shadowRoot.querySelector(
-                '.slds-assistive-text:nth-of-type(2)'
+                '[data-element-id="span-alternative-text"]'
             );
             expect(span.textContent).toBe('A string alternative text');
         });
@@ -92,7 +92,7 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('li');
+            const items = element.shadowRoot.querySelectorAll('[data-element-id^="li-main"');
             expect(items).toHaveLength(5);
 
             items.forEach((item, index) => {
@@ -102,7 +102,7 @@ describe('List', () => {
                 expect(item.ariaLabel).toBe(originalItem.label);
                 expect(item.textContent).toBe(originalItem.label);
 
-                const avatar = item.querySelector('c-avatar');
+                const avatar = item.querySelector('[data-element-id="avonni-avatar"]');
                 if (avatar) {
                     if (originalItem.avatarFallbackIconName) {
                         expect(avatar.fallbackIconName).toBe(
@@ -174,7 +174,7 @@ describe('List', () => {
             })
             .then(() => {
                 const menuItem = element.shadowRoot.querySelectorAll(
-                    'lightning-menu-item'
+                    '[data-element-id^="lightning-menu-item"]'
                 );
                 expect(menuItem[0].label).toBe('Completed');
                 expect(menuItem[0].value).toBe('completed-action');
@@ -196,7 +196,7 @@ describe('List', () => {
         element.actions = ACTION;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
             expect(button.label).toBe('Completed');
             expect(button.iconName).toBe('utility:check');
@@ -211,7 +211,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const buttonIcon = element.shadowRoot.querySelector(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
 
             expect(buttonIcon.iconName).toBe('utility:event');
@@ -227,7 +227,7 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('li');
+            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
             const menu = element.shadowRoot.querySelector(
                 '.avonni-list__item-menu'
             );
@@ -252,7 +252,7 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('li');
+            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
             const menu = element.shadowRoot.querySelector(
                 '.avonni-list__item-menu'
             );
@@ -288,7 +288,7 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const icons = element.shadowRoot.querySelectorAll('lightning-icon');
+            const icons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-icon-sort"]');
             expect(icons).toHaveLength(0);
         });
     });
@@ -299,7 +299,7 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const icons = element.shadowRoot.querySelectorAll('lightning-icon');
+            const icons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-icon-sort"]');
             expect(icons).toHaveLength(4);
 
             icons.forEach((icon) => {
@@ -346,7 +346,7 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('img');
+            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
             expect(images).toHaveLength(3);
         });
     });
@@ -356,7 +356,7 @@ describe('List', () => {
         element.imageWidth = 'small';
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('img');
+            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
             expect(images[0].width).toBe(48);
             expect(images[1].width).toBe(48);
             expect(images[2].width).toBe(48);
@@ -368,7 +368,7 @@ describe('List', () => {
         element.imageWidth = 'medium';
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('img');
+            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
             expect(images[0].width).toBe(72);
             expect(images[1].width).toBe(72);
             expect(images[2].width).toBe(72);
@@ -380,7 +380,7 @@ describe('List', () => {
         element.imageWidth = 'large';
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('img');
+            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
             expect(images[0].width).toBe(128);
             expect(images[1].width).toBe(128);
             expect(images[2].width).toBe(128);
@@ -420,7 +420,7 @@ describe('List', () => {
         element.sortable = true;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('li');
+            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
 
             items[2].dispatchEvent(new CustomEvent('mousedown'));
             element.reset();
@@ -442,7 +442,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'li lightning-button'
+                '[data-element-id="lightning-button"]'
             );
             button.dispatchEvent(new CustomEvent('click'));
 
@@ -465,7 +465,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'li lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             button.dispatchEvent(new CustomEvent('click'));
 
@@ -490,7 +490,7 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
-                'li lightning-button-menu'
+                '[data-element-id="lightning-button-menu"]'
             );
             button.dispatchEvent(
                 new CustomEvent('select', {
@@ -519,7 +519,7 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('li');
+            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
 
             items[2].dispatchEvent(new CustomEvent('click'));
             expect(handler).toHaveBeenCalled();

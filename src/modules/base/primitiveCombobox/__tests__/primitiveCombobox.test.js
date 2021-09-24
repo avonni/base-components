@@ -161,7 +161,7 @@ describe('PrimitiveCombobox', () => {
                 }
 
                 if (bottomActions[index].iconName) {
-                    const icon = actionElement.querySelector('lightning-icon');
+                    const icon = actionElement.querySelector('[data-element-id="lightning-icon-bottom-action"]');
                     expect(icon).toBeTruthy();
                     expect(icon.iconName).toBe(bottomActions[index].iconName);
                 }
@@ -174,7 +174,7 @@ describe('PrimitiveCombobox', () => {
         element.allowSearch = false;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.readOnly).toBeTruthy();
             const inputIcon = element.shadowRoot.querySelector(
                 '.slds-input__icon_right:last-of-type'
@@ -187,7 +187,7 @@ describe('PrimitiveCombobox', () => {
         element.allowSearch = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.readOnly).toBeFalsy();
             const inputIcon = element.shadowRoot.querySelector(
                 '.slds-input__icon_right:last-of-type'
@@ -204,7 +204,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve()
             .then(() => {
-                const input = element.shadowRoot.querySelector('input');
+                const input = element.shadowRoot.querySelector('[data-element-id="input"]');
                 expect(input.disabled).toBeFalsy();
 
                 element.open();
@@ -223,7 +223,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve()
             .then(() => {
-                const input = element.shadowRoot.querySelector('input');
+                const input = element.shadowRoot.querySelector('[data-element-id="input"]');
                 expect(input.disabled).toBeTruthy();
 
                 element.open();
@@ -379,7 +379,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const helptext = element.shadowRoot.querySelector(
-                'lightning-helptext'
+                '[data-element-id="lightning-helptext"]'
             );
             expect(helptext.content).toBe('A string help');
         });
@@ -390,12 +390,12 @@ describe('PrimitiveCombobox', () => {
     it('groups', () => {
         element.groups = groups;
         element.options = options;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         return Promise.resolve().then(() => {
             const groupElements = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             expect(groupElements).toHaveLength(5);
             groupElements.forEach((group, index) => {
@@ -432,7 +432,7 @@ describe('PrimitiveCombobox', () => {
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
-            const pills = element.shadowRoot.querySelectorAll('lightning-pill');
+            const pills = element.shadowRoot.querySelectorAll('[data-element-id="lightning-pill"]');
             expect(pills).toHaveLength(2);
 
             pills.forEach((pill, index) => {
@@ -452,7 +452,7 @@ describe('PrimitiveCombobox', () => {
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
-            const pills = element.shadowRoot.querySelectorAll('lightning-pill');
+            const pills = element.shadowRoot.querySelectorAll('[data-element-id="lightning-pill"]');
             expect(pills).toHaveLength(0);
         });
     });
@@ -465,7 +465,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeFalsy();
         });
@@ -477,7 +477,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeTruthy();
         });
@@ -488,7 +488,7 @@ describe('PrimitiveCombobox', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
             expect(label.textContent).toBe('A string label');
         });
     });
@@ -498,12 +498,12 @@ describe('PrimitiveCombobox', () => {
     it('loadingStateAlternativeText', () => {
         element.loadingStateAlternativeText = 'An alternative help';
         element.isLoading = true;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner.alternativeText).toBe('An alternative help');
         });
@@ -530,12 +530,12 @@ describe('PrimitiveCombobox', () => {
         element.groups = groups;
         element.options = options;
         element.multiLevelGroups = false;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         return Promise.resolve().then(() => {
             const groupElements = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             expect(groupElements).toHaveLength(5);
         });
@@ -545,12 +545,12 @@ describe('PrimitiveCombobox', () => {
         element.groups = groups;
         element.options = options;
         element.multiLevelGroups = true;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         return Promise.resolve().then(() => {
             const groupElements = element.shadowRoot.querySelectorAll(
-                'c-primitive-combobox-group'
+                '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             expect(groupElements).toHaveLength(3);
         });
@@ -561,7 +561,7 @@ describe('PrimitiveCombobox', () => {
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.name).toBe('a-string-name');
         });
     });
@@ -569,7 +569,7 @@ describe('PrimitiveCombobox', () => {
     // options
     it('options', () => {
         element.options = options;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         return Promise.resolve().then(() => {
@@ -577,7 +577,7 @@ describe('PrimitiveCombobox', () => {
                 expect(option).toBeInstanceOf(Option);
             });
             const group = element.shadowRoot.querySelector(
-                'c-primitive-combobox-group'
+                '[data-element-id="avonni-primitive-combobox-group"]'
             );
             expect(group.options).toMatchObject(options);
         });
@@ -589,7 +589,7 @@ describe('PrimitiveCombobox', () => {
         element.allowSearch = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.placeholder).toBe('Search...');
         });
     });
@@ -598,7 +598,7 @@ describe('PrimitiveCombobox', () => {
         element.placeholder = 'A custom placeholder';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.placeholder).toBe('A custom placeholder');
         });
     });
@@ -608,7 +608,7 @@ describe('PrimitiveCombobox', () => {
         element.readOnly = false;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.disabled).toBeFalsy();
         });
     });
@@ -617,7 +617,7 @@ describe('PrimitiveCombobox', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.disabled).toBeTruthy();
         });
     });
@@ -629,7 +629,7 @@ describe('PrimitiveCombobox', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
             expect(abbr).toBeFalsy();
         });
     });
@@ -639,7 +639,7 @@ describe('PrimitiveCombobox', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
             expect(abbr).toBeTruthy();
         });
     });
@@ -650,7 +650,7 @@ describe('PrimitiveCombobox', () => {
         const mockSearch = jest.fn().mockReturnValue([]);
         element.search = mockSearch;
         element.allowSearch = true;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
         return Promise.resolve().then(() => {
             input.value = 'Some search term';
@@ -679,12 +679,12 @@ describe('PrimitiveCombobox', () => {
     // Depends on allowSearch
     it('showClearInput = false', () => {
         element.showClearInput = false;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
         return Promise.resolve()
             .then(() => {
                 input.value = 'Some value';
-                input.dispatchEvent(new CustomEvent('input'));
+                input.dispatchEvent(new CustomEvent('[data-element-id="input"]'));
             })
             .then(() => {
                 const clearButton = element.shadowRoot.querySelector(
@@ -696,7 +696,7 @@ describe('PrimitiveCombobox', () => {
 
     it('showClearInput = true', () => {
         element.showClearInput = true;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
         return Promise.resolve()
             .then(() => {
@@ -715,7 +715,7 @@ describe('PrimitiveCombobox', () => {
     // Depends on required
     it('validity', () => {
         element.required = true;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
         return Promise.resolve().then(() => {
             input.click();
@@ -733,10 +733,10 @@ describe('PrimitiveCombobox', () => {
         element.isMultiSelect = false;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
             expect(input.value).toBe(options[1].label);
 
-            const pills = element.shadowRoot.querySelectorAll('lightning-pill');
+            const pills = element.shadowRoot.querySelectorAll('[data-element-id="lightning-pill"]');
             expect(pills).toHaveLength(0);
         });
     });
@@ -747,7 +747,7 @@ describe('PrimitiveCombobox', () => {
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
-            const pills = element.shadowRoot.querySelectorAll('lightning-pill');
+            const pills = element.shadowRoot.querySelectorAll('[data-element-id="lightning-pill"]');
             expect(pills).toHaveLength(2);
         });
     });
@@ -830,7 +830,7 @@ describe('PrimitiveCombobox', () => {
 
     // blur
     it('blur method', () => {
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         const spy = jest.spyOn(input, 'blur');
 
         element.blur();
@@ -859,7 +859,7 @@ describe('PrimitiveCombobox', () => {
     // Depends on options
     it('close method', () => {
         element.options = options;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         return Promise.resolve()
@@ -881,7 +881,7 @@ describe('PrimitiveCombobox', () => {
 
     // focus
     it('focus method', () => {
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         const spy = jest.spyOn(input, 'focus');
 
         element.focus();
@@ -901,7 +901,7 @@ describe('PrimitiveCombobox', () => {
         return Promise.resolve()
             .then(() => {
                 const pills = element.shadowRoot.querySelectorAll(
-                    'lightning-pill'
+                    '[data-element-id="lightning-pill"]'
                 );
                 expect(pills).toHaveLength(2);
 
@@ -923,7 +923,7 @@ describe('PrimitiveCombobox', () => {
             })
             .then(() => {
                 const pills = element.shadowRoot.querySelectorAll(
-                    'lightning-pill'
+                    '[data-element-id="lightning-pill"]'
                 );
                 expect(pills).toHaveLength(1);
             });
@@ -979,7 +979,7 @@ describe('PrimitiveCombobox', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.actions = actions;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         return Promise.resolve().then(() => {
@@ -1025,7 +1025,7 @@ describe('PrimitiveCombobox', () => {
         const handler = jest.fn();
         element.addEventListener('open', handler);
         element.options = options;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
 
         expect(handler).toHaveBeenCalled();
@@ -1041,7 +1041,7 @@ describe('PrimitiveCombobox', () => {
         element.addEventListener('search', handler);
         element.options = options;
         element.allowSearch = true;
-        const input = element.shadowRoot.querySelector('input');
+        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
         return Promise.resolve().then(() => {
             input.value = 'Some search term';

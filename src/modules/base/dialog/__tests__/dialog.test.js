@@ -63,7 +63,7 @@ describe('Dialog', () => {
         element.show();
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h2');
+            const title = element.shadowRoot.querySelector('[data-element-id="h2"]');
             expect(title.textContent).toBe('This is a title');
         });
     });
@@ -105,7 +105,7 @@ describe('Dialog', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner).toBeTruthy();
         });
@@ -120,7 +120,7 @@ describe('Dialog', () => {
 
         return Promise.resolve().then(() => {
             const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
+                '[data-element-id="lightning-spinner"]'
             );
             expect(spinner.alternativeText).toBe(
                 'This is a loading state alternative text'

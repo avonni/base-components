@@ -101,7 +101,7 @@ describe('Input choice set', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -128,7 +128,7 @@ describe('Input choice set', () => {
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="span-checkbox-container"]');
             inputs.forEach((input) => {
                 expect(input.className).toContain('slds-checkbox vertical');
                 expect(input.className).not.toContain(
@@ -144,7 +144,7 @@ describe('Input choice set', () => {
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="span-checkbox-container"]');
             inputs.forEach((input) => {
                 const expected =
                     input.className ===
@@ -183,7 +183,7 @@ describe('Input choice set', () => {
         element.name = 'Checkbox group name';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 expect(input.name).toBe('Checkbox group name');
             });
@@ -195,7 +195,7 @@ describe('Input choice set', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
-            const labels = element.shadowRoot.querySelectorAll('label');
+            const labels = element.shadowRoot.querySelectorAll('[data-element-id="label"]');
             let index = 0;
             labels.forEach((label) => {
                 expect(label.control.value).toBe(
@@ -210,13 +210,13 @@ describe('Input choice set', () => {
         element.options = optionsWithIcon;
 
         return Promise.resolve().then(() => {
-            const icons = element.shadowRoot.querySelectorAll('lightning-icon');
+            const icons = element.shadowRoot.querySelectorAll('[data-element-id="lightning-icon-checkbox"]');
             let index = 0;
             icons.forEach((icon) => {
                 expect(icon.iconName).toBe(element.options[index++].iconName);
             });
 
-            const labels = element.shadowRoot.querySelectorAll('label');
+            const labels = element.shadowRoot.querySelectorAll('[data-element-id="label"]');
             index = 0;
             labels.forEach((label) => {
                 expect(label.control.value).toBe(
@@ -236,7 +236,7 @@ describe('Input choice set', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id^="input"]');
             input.click();
             expect(handler).not.toHaveBeenCalled();
             expect(element.value).toBe(options[0].value);
@@ -249,7 +249,7 @@ describe('Input choice set', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
             expect(abbr).toBeTruthy();
         });
     });
@@ -261,7 +261,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const values = [];
-            const inputs = element.shadowRoot.querySelectorAll('input');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
             inputs.forEach((input) => {
                 if (input.checked) {
                     values.push(input.value);
@@ -277,7 +277,7 @@ describe('Input choice set', () => {
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="span-checkbox-container"]');
             inputs.forEach((input) => {
                 expect(input.className).not.toContain('horizontal');
                 expect(input.className).toContain('vertical');
@@ -290,7 +290,7 @@ describe('Input choice set', () => {
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('div > span');
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="span-checkbox-container"]');
             inputs.forEach((input) => {
                 expect(input.className).not.toContain('vertical');
                 expect(input.className).toContain('horizontal');
@@ -420,7 +420,7 @@ describe('Input choice set', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id^="input"]');
             input.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toBe('mon');
@@ -438,8 +438,8 @@ describe('Input choice set', () => {
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelectorAll('input');
-            input[1].click();
+            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
+            inputs[1].click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
                 'mon',
@@ -456,7 +456,7 @@ describe('Input choice set', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id^="input"]');
             const handleBlur = (event) => {
                 expect(event.bubbles).toBeFalsy();
                 expect(event.cancelable).toBeFalsy();
@@ -472,7 +472,7 @@ describe('Input choice set', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('input');
+            const input = element.shadowRoot.querySelector('[data-element-id^="input"]');
             const handleFocus = (event) => {
                 expect(event.bubbles).toBeFalsy();
                 expect(event.cancelable).toBeFalsy();

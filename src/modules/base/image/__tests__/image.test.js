@@ -87,7 +87,7 @@ describe('Image', () => {
         element.src = src;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.src).toBe(
                 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
             );
@@ -100,7 +100,7 @@ describe('Image', () => {
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.srcset).toBe(
                 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
             );
@@ -113,7 +113,7 @@ describe('Image', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.srcset).toBe(
                 'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
             );
@@ -128,7 +128,7 @@ describe('Image', () => {
             '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.sizes).toBe(
                 '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
             );
@@ -143,7 +143,7 @@ describe('Image', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.sizes).toBe(
                 '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
             );
@@ -156,7 +156,7 @@ describe('Image', () => {
         element.alt = 'This is an alt text';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.alt).toBe('This is an alt text');
         });
     });
@@ -168,7 +168,7 @@ describe('Image', () => {
         element.height = 100;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.width).toBe(120);
             expect(img.height).toBe(100);
         });
@@ -180,7 +180,7 @@ describe('Image', () => {
         element.height = '100';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.width).toBe(120);
             expect(img.height).toBe(100);
         });
@@ -192,7 +192,7 @@ describe('Image', () => {
         element.block = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-display-block');
         });
     });
@@ -203,7 +203,7 @@ describe('Image', () => {
         element.fluid = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-img-fluid');
         });
     });
@@ -214,7 +214,7 @@ describe('Image', () => {
         element.fluidGrow = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe(
                 'avonni-img-fluid avonni-img-fluid-grow'
             );
@@ -227,7 +227,7 @@ describe('Image', () => {
         element.rounded = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-rounded');
         });
     });
@@ -237,7 +237,7 @@ describe('Image', () => {
         element.rounded = 'top';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-rounded-top');
         });
     });
@@ -247,7 +247,7 @@ describe('Image', () => {
         element.rounded = 'right';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-rounded-right');
         });
     });
@@ -257,7 +257,7 @@ describe('Image', () => {
         element.rounded = 'left';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-rounded-left');
         });
     });
@@ -267,7 +267,7 @@ describe('Image', () => {
         element.rounded = 'bottom';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-rounded-bottom');
         });
     });
@@ -277,7 +277,7 @@ describe('Image', () => {
         element.rounded = 'circle';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-rounded-circle');
         });
     });
@@ -288,7 +288,7 @@ describe('Image', () => {
         element.thumbnail = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-img-thumbnail');
         });
     });
@@ -299,7 +299,7 @@ describe('Image', () => {
         element.left = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-float-left');
         });
     });
@@ -310,7 +310,7 @@ describe('Image', () => {
         element.right = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-float-right');
         });
     });
@@ -321,7 +321,7 @@ describe('Image', () => {
         element.center = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe(
                 'avonni-margin-auto avonni-display-block'
             );
@@ -335,7 +335,7 @@ describe('Image', () => {
         element.cropFit = 'cover';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.objectFit).toBe('cover');
         });
     });
@@ -346,7 +346,7 @@ describe('Image', () => {
         element.cropFit = 'contain';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.objectFit).toBe('contain');
         });
     });
@@ -357,7 +357,7 @@ describe('Image', () => {
         element.cropFit = 'fill';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.objectFit).toBe('fill');
         });
     });
@@ -368,7 +368,7 @@ describe('Image', () => {
         element.cropFit = 'none';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.objectFit).toBe('none');
         });
     });
@@ -382,7 +382,7 @@ describe('Image', () => {
         element.cropPositionY = '75';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.objectPosition).toBe('25% 75%');
         });
     });
@@ -395,7 +395,7 @@ describe('Image', () => {
         element.left = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-float-left');
         });
     });
@@ -407,7 +407,7 @@ describe('Image', () => {
         element.center = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe(
                 'avonni-margin-auto avonni-display-block'
             );
@@ -421,7 +421,7 @@ describe('Image', () => {
         element.right = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBe('avonni-float-right');
         });
     });
@@ -432,7 +432,7 @@ describe('Image', () => {
         element.height = '225';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.width).toBeFalsy();
             expect(img.style.height).toBe('225px');
         });
@@ -445,7 +445,7 @@ describe('Image', () => {
         element.width = '400';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.className).toBeFalsy();
             expect(img.style.maxWidth).toBe('400px');
             expect(img.style.height).toBeFalsy();
@@ -457,7 +457,7 @@ describe('Image', () => {
         element.height = '400';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.maxHeight).toBe('400px');
             expect(img.style.minHeight).toBe('400px');
             expect(img.style.height).toBe('400px');
@@ -471,7 +471,7 @@ describe('Image', () => {
         return Promise.resolve()
             .then(() => {})
             .then(() => {
-                const img = element.shadowRoot.querySelector('img');
+                const img = element.shadowRoot.querySelector('[data-element-id="img"]');
                 expect(img.className).toBeFalsy();
                 expect(img.style.minWidth).toBe('0px');
                 expect(img.style.minHeight).toBe('0px');
@@ -488,7 +488,7 @@ describe('Image', () => {
         return Promise.resolve()
             .then(() => {})
             .then(() => {
-                const img = element.shadowRoot.querySelector('img');
+                const img = element.shadowRoot.querySelector('[data-element-id="img"]');
                 expect(img.style.minWidth).toBe('400px');
                 expect(img.style.minHeight).toBe('400px');
                 expect(img.style.maxWidth).toBe('400px');
@@ -504,7 +504,7 @@ describe('Image', () => {
         element.cropSize = '1x1';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.maxWidth).toBe('400px');
             expect(img.style.maxHeight).toBe('400px');
             expect(img.style.minWidth).toBe('400px');
@@ -518,7 +518,7 @@ describe('Image', () => {
         element.width = '50%';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.width).toBe('50%');
         });
     });
@@ -528,7 +528,7 @@ describe('Image', () => {
         element.height = '50%';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('img');
+            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
             expect(img.style.height).toBe('50%');
         });
     });

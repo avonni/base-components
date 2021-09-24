@@ -73,7 +73,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover access-key', () => {
         element.accessKey = 'K';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -85,7 +85,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover alternative-text', () => {
         element.alternativeText = 'This is an alternative text';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -97,7 +97,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover disabled', () => {
         element.disabled = true;
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -109,7 +109,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover variant border', () => {
         element.variant = 'border';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -120,7 +120,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover variant bare', () => {
         element.variant = 'bare';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -131,7 +131,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover variant container', () => {
         element.variant = 'container';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -142,7 +142,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover variant brand', () => {
         element.variant = 'brand';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -153,7 +153,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover variant border-filled', () => {
         element.variant = 'border-filled';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -164,7 +164,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover variant bare-inverse', () => {
         element.variant = 'bare-inverse';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -175,7 +175,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover variant border-inverse', () => {
         element.variant = 'border-inverse';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -187,7 +187,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover size xx-small', () => {
         element.size = 'xx-small';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -198,7 +198,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover size x-small', () => {
         element.size = 'x-small';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -209,7 +209,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover size small', () => {
         element.size = 'small';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -220,7 +220,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover size medium', () => {
         element.size = 'medium';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -231,7 +231,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover size large for non bare', () => {
         element.size = 'large';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -243,7 +243,7 @@ describe('Button Icon Popover', () => {
         element.variant = 'bare';
         element.size = 'large';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -255,7 +255,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover tooltip', () => {
         element.tooltip = 'This is a tooltip';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -267,7 +267,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover hide close button', () => {
         element.hideCloseButton = true;
         const closeButton = element.shadowRoot.querySelector(
-            'lightning-button-icon[title="Close popover"]'
+            '[data-element-id="lightning-button-icon-close"]'
         );
 
         return Promise.resolve().then(() => {
@@ -280,7 +280,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover icon class', () => {
         element.iconClass = 'button-dialog-icon-class';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         return Promise.resolve().then(() => {
@@ -292,7 +292,7 @@ describe('Button Icon Popover', () => {
     it('Button Icon Popover icon name', () => {
         element.iconName = 'utility:lock';
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         return Promise.resolve().then(() => {
             expect(button.iconName).toBe('utility:lock');
@@ -467,7 +467,7 @@ describe('Button Icon Popover', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon-main"]'
                 );
                 button.focus();
             })
@@ -487,7 +487,7 @@ describe('Button Icon Popover', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon-main"]'
                 );
                 button.focus();
             })
@@ -506,7 +506,7 @@ describe('Button Icon Popover', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon-main"]'
                 );
                 button.focus();
             })
@@ -523,7 +523,7 @@ describe('Button Icon Popover', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button-icon'
+                    '[data-element-id="lightning-button-icon-main"]'
                 );
                 button.click();
             })
@@ -538,7 +538,7 @@ describe('Button Icon Popover', () => {
         element.triggers = 'hover';
 
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         return Promise.resolve()
             .then(() => {
@@ -555,7 +555,7 @@ describe('Button Icon Popover', () => {
         element.triggers = 'hover';
 
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         return Promise.resolve()
             .then(() => {
@@ -573,7 +573,7 @@ describe('Button Icon Popover', () => {
         element.triggers = 'focus';
 
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         return Promise.resolve()
             .then(() => {
@@ -591,7 +591,7 @@ describe('Button Icon Popover', () => {
         element.triggers = 'click';
 
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         const popover = element.shadowRoot.querySelector('.slds-popover');
         return Promise.resolve()
@@ -609,7 +609,7 @@ describe('Button Icon Popover', () => {
         element.triggers = 'hover';
 
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         const popover = element.shadowRoot.querySelector('.slds-popover');
         return Promise.resolve()
@@ -630,7 +630,7 @@ describe('Button Icon Popover', () => {
         element.triggers = 'hover';
 
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         const popover = element.shadowRoot.querySelector('.slds-popover');
         return Promise.resolve()
@@ -659,7 +659,7 @@ describe('Button Icon Popover', () => {
 
     it('Button Icon Popover method: focus', () => {
         const buttonIcon = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
 
         let focusEvent = false;
@@ -719,7 +719,7 @@ describe('Button Icon Popover', () => {
         const handler = jest.fn();
         element.addEventListener('click', handler);
         const button = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon-main"]'
         );
         button.click();
 

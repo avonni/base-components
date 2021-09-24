@@ -1378,7 +1378,7 @@ export default class InputRichText extends LightningElement {
      */
     emojiButtonClickHandler() {
         this.template
-            .querySelector('c-emoji-picker')
+            .querySelector('[data-element-id="avonni-emoji-picker"]')
             .classList.remove('slds-hide');
     }
 
@@ -1696,7 +1696,7 @@ export default class InputRichText extends LightningElement {
         const buttons = this.template.querySelectorAll(BUTTON_SELECTOR);
         const format = item ? this.quill.getFormat(item) : {};
 
-        let emojiContainer = this.template.querySelector('c-emoji-picker');
+        let emojiContainer = this.template.querySelector('[data-element-id="avonni-emoji-picker"]');
 
         if (emojiContainer && !emojiContainer.classList.contains('slds-hide')) {
             emojiContainer.classList.add('slds-hide');
@@ -1800,7 +1800,7 @@ export default class InputRichText extends LightningElement {
     handleEmoji(event) {
         this.insertTextAtCursor(`${event.detail.value} `);
         this.template
-            .querySelector('c-emoji-picker')
+            .querySelector('[data-element-id="avonni-emoji-picker"]')
             .classList.add('slds-hide');
     }
 }

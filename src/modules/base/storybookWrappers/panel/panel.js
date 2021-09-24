@@ -40,8 +40,4 @@ export default class Panel extends LightningElement {
     @api title;
     @api size = DEFAULT_PANEL_SIZE;
     @api showPanel = false;
-
-    open() {
-        this.template.querySelector('c-panel').open();
-    }
 }

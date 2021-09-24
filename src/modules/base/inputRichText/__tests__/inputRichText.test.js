@@ -71,14 +71,14 @@ describe('InputRichText', () => {
 
         return Promise.resolve().then(() => {
             const comboboxes = element.shadowRoot.querySelectorAll(
-                'lightning-combobox'
+                '[data-element-id^="lightning-combobox"]'
             );
             comboboxes.forEach((combobox) => {
                 expect(combobox.disabled).toBeTruthy();
             });
 
             const colorPicker = element.shadowRoot.querySelector(
-                'c-primitive-colorpicker-button'
+                '[data-element-id="avonni-primitive-colorpicker-button"]'
             );
             if (colorPicker) {
                 expect(colorPicker.disabled).toBeTruthy();
@@ -98,14 +98,14 @@ describe('InputRichText', () => {
 
         return Promise.resolve().then(() => {
             const comboboxes = element.shadowRoot.querySelectorAll(
-                'lightning-combobox'
+                '[data-element-id^="lightning-combobox"]'
             );
             comboboxes.forEach((combobox) => {
                 expect(combobox.disabled).toBeFalsy();
             });
 
             const colorPicker = element.shadowRoot.querySelector(
-                'c-primitive-colorpicker-button'
+                '[data-element-id="avonni-primitive-colorpicker-button"]'
             );
             if (colorPicker) expect(colorPicker.disabled).toBeFalsy();
 
@@ -247,7 +247,7 @@ describe('InputRichText', () => {
             expect(quillEditor).toBeFalsy();
 
             const fakeEditor = element.shadowRoot.querySelector(
-                'lightning-formatted-rich-text'
+                '[data-element-id="lightning-formatted-rich-text-top-toolbar"]'
             );
             expect(fakeEditor).toBeTruthy();
             expect(fakeEditor.value).toBe('Some value');
@@ -258,7 +258,7 @@ describe('InputRichText', () => {
     it('value', () => {
         element.value = 'A string value';
         const textArea = element.shadowRoot.querySelector(
-            'lightning-formatted-rich-text'
+            '[data-element-id="lightning-formatted-rich-text-top-toolbar"]'
         );
 
         return Promise.resolve().then(() => {

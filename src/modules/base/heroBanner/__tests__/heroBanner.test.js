@@ -72,7 +72,7 @@ describe('Hero Banner', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('h2');
+            const title = element.shadowRoot.querySelector('[data-element-id="h2"]');
             expect(title.textContent).toBe('This is a title text');
         });
     });
@@ -82,7 +82,7 @@ describe('Hero Banner', () => {
         element.caption = 'This is a caption text';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('h1');
+            const caption = element.shadowRoot.querySelector('[data-element-id="h1"]');
             expect(caption.textContent).toBe('This is a caption text');
         });
     });
@@ -92,7 +92,7 @@ describe('Hero Banner', () => {
         element.subtitle = 'This is a subtitle text';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('p');
+            const subtitle = element.shadowRoot.querySelector('[data-element-id="p-subtitle"]');
             expect(subtitle.textContent).toBe('This is a subtitle text');
         });
     });

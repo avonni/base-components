@@ -134,7 +134,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar__value'
             );
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-reference-line'
+                '[data-element-id="avonni-primitive-reference-line"]'
             );
 
             expect(outerWrapper.classList).not.toContain(
@@ -160,7 +160,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar__value'
             );
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-reference-line'
+                '[data-element-id="avonni-primitive-reference-line"]'
             );
 
             expect(outerWrapper.classList).toContain(
@@ -180,7 +180,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const primitives = element.shadowRoot.querySelectorAll(
-                'c-primitive-reference-line'
+                '[data-element-id="avonni-primitive-reference-line"]'
             );
 
             primitives.forEach((primitive, index) => {
@@ -687,7 +687,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const primitives = element.querySelectorAll(
-                'c-primitive-reference-line'
+                '[data-element-id="avonni-primitive-reference-line"]-line'
             );
 
             expect(outerWrapper.classList).not.toContain(
@@ -714,7 +714,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const primitives = element.querySelectorAll(
-                'c-primitive-reference-line'
+                '[data-element-id="avonni-primitive-reference-line"]-line'
             );
 
             expect(outerWrapper.classList).toContain(
@@ -741,7 +741,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const primitives = element.querySelectorAll(
-                'c-primitive-reference-line'
+                '[data-element-id="avonni-primitive-reference-line"]-line'
             );
 
             expect(outerWrapper.classList).not.toContain(
@@ -766,7 +766,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const primitives = element.querySelectorAll(
-                'c-primitive-reference-line'
+                '[data-element-id="avonni-primitive-reference-line"]-line'
             );
 
             expect(outerWrapper.classList).not.toContain(

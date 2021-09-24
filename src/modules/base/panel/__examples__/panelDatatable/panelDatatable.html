@@ -1,71 +1,34 @@
-<div class="avonni-panel-container">
-    <avonni-panel
-        if:false={isRight}
-        position={position}
-        title={title}
-        size={size}
-        show-panel={showPanel}
-    >
-        <div slot="title">Filters</div>
-        <div slot="panel-body">
-            <div class="slds-box">
-                <div class="slds-text-body_small">Filter by</div>
-                <div class="slds-text-body_regular">Opportunity Name</div>
-                <div class="slds-text-body_regular">Account Name</div>
-                <div class="slds-text-body_regular">Close date</div>
-                <div class="slds-text-body_regular">Stage</div>
-                <div class="slds-text-body_regular">Confidence</div>
-                <div class="slds-text-body_regular">Ammount</div>
-                <div class="slds-text-body_regular">Contact</div>
-            </div>
-        </div>
-        <lightning-layout horizontal-align="spread">
-            <lightning-layout-item>
-                <lightning-button
-                    label="Add Filter"
-                    title="Neutral action"
-                    variant="base"
-                ></lightning-button>
-            </lightning-layout-item>
-            <lightning-layout-item>
-                <lightning-button
-                    label="Remove All"
-                    title="Neutral action"
-                    variant="base"
-                ></lightning-button>
-            </lightning-layout-item>
-        </lightning-layout>
-    </avonni-panel>
+<div class="slds-grid">
     <table class="slds-table slds-table_cell-buffer slds-table_bordered">
         <thead>
             <tr class="slds-line-height_reset">
-                <th class="" scope="col">
+                <th scope="col">
                     <div class="slds-truncate" title="Opportunity Name">
                         Opportunity Name
                     </div>
                 </th>
-                <th class="" scope="col">
+                <th scope="col">
                     <div class="slds-truncate" title="Account Name">
                         Account Name
                     </div>
                 </th>
-                <th class="" scope="col">
+                <th scope="col">
                     <div class="slds-truncate" title="Close Date">
                         Close Date
                     </div>
                 </th>
-                <th class="" scope="col">
+                <th scope="col">
                     <div class="slds-truncate" title="Stage">Stage</div>
                 </th>
-                <th class="" scope="col">
+                <th scope="col">
                     <div class="slds-truncate" title="Confidence">
                         Confidence
                     </div>
                 </th>
-                <th class="" scope="col">
+                <th scope="col">
                     <div class="slds-truncate" title="Amount">Amount</div>
                 </th>
-                <th class="" scope="col">
+                <th scope="col">
                     <div class="slds-truncate" title="Contact">Contact</div>
                 </th>
             </tr>
@@ -681,11 +644,8 @@
         </tbody>
     </table>
     <avonni-panel
-        if:true={isRight}
-        position={position}
-        title={title}
-        size={size}
-        show-panel="true"
+        show-panel
+        data-element-id="avonni-panel"
     >
         <div slot="title">Filters</div>
         <div slot="panel-body">

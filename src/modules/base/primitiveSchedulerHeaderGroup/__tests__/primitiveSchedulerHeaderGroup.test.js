@@ -128,7 +128,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
                 '.avonni-scheduler__header-row'
             );
             const labels = row.querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(labels).toHaveLength(2);
 
@@ -175,7 +175,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
                 '.avonni-scheduler__header-row'
             );
             const labels = row.querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(labels).toHaveLength(2);
         });
@@ -209,7 +209,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
                 '.avonni-scheduler__header-row'
             );
             const labels = row.querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(labels).toHaveLength(4);
 
@@ -253,7 +253,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
                 '.avonni-scheduler__header-row'
             );
             const labels = row.querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(labels).toHaveLength(4);
 
@@ -303,17 +303,17 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             expect(rows).toHaveLength(3);
 
             const weekCells = rows[0].querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(weekCells).toHaveLength(2);
 
             const dayCells = rows[1].querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(dayCells).toHaveLength(8);
 
             const hourCells = rows[2].querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(hourCells).toHaveLength(192);
         });
@@ -355,19 +355,19 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             );
 
             const weekCells = rows[0].querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(weekCells).toHaveLength(
                 Math.ceil(MAX_VISIBLE_COLUMNS / 24 / 7)
             );
 
             const dayCells = rows[1].querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(dayCells).toHaveLength(Math.ceil(MAX_VISIBLE_COLUMNS / 24));
 
             const hourCells = rows[2].querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(hourCells).toHaveLength(MAX_VISIBLE_COLUMNS);
         });
@@ -398,7 +398,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
                 '.avonni-scheduler__header-row'
             );
             const weekCells = row.querySelectorAll(
-                '.avonni-scheduler__header-cell span'
+                '[data-element-id^="span-label"]'
             );
             expect(weekCells).toHaveLength(1);
         });
@@ -421,7 +421,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             element.scrollLeftOffset = 30;
 
             const stickyLabels = element.shadowRoot.querySelectorAll(
-                '.avonni-scheduler__header-label_sticky'
+                '[data-element-id="span-label-sticky"]'
             );
 
             stickyLabels.forEach((label) => {
