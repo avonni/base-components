@@ -94,7 +94,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('A string label');
         });
     });
@@ -106,7 +108,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.name).toBe('a-string-name');
         });
     });
@@ -118,7 +122,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.iconName).toBe('utility:apps');
         });
     });
@@ -130,7 +136,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.iconPosition).toBe('right');
         });
     });
@@ -142,7 +150,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.disabled).toBeTruthy();
         });
     });
@@ -154,7 +164,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.title).toBe('A string title');
         });
     });
@@ -166,7 +178,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('destructive');
         });
     });
@@ -255,7 +269,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             const lightningButton = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button"]'
             );
@@ -274,7 +290,9 @@ describe('PrimitiveProgressStep', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             const lightningButton = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button"]'
             );
@@ -609,7 +627,9 @@ describe('PrimitiveProgressStep', () => {
         element.addEventListener('stepclick', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
@@ -624,7 +644,9 @@ describe('PrimitiveProgressStep', () => {
         element.addEventListener('stepmouseenter', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             button.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(handler).toHaveBeenCalled();
@@ -639,7 +661,9 @@ describe('PrimitiveProgressStep', () => {
         element.addEventListener('stepmouseleave', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             button.dispatchEvent(new CustomEvent('mouseleave'));
 
             expect(handler).toHaveBeenCalled();
@@ -654,7 +678,9 @@ describe('PrimitiveProgressStep', () => {
         element.addEventListener('stepfocus', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             button.dispatchEvent(new CustomEvent('focus'));
 
             expect(handler).toHaveBeenCalled();
@@ -669,7 +695,9 @@ describe('PrimitiveProgressStep', () => {
         element.addEventListener('stepblur', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('button');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             button.dispatchEvent(new CustomEvent('blur'));
 
             expect(handler).toHaveBeenCalled();
@@ -702,7 +730,9 @@ describe('PrimitiveProgressStep', () => {
         element.addEventListener('stepbuttonclick', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();

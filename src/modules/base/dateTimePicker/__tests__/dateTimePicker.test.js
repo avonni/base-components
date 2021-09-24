@@ -102,7 +102,9 @@ describe('DateTimePicker', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const paragraph = element.shadowRoot.querySelector('[data-element-id="p-empty-message"]');
+            const paragraph = element.shadowRoot.querySelector(
+                '[data-element-id="p-empty-message"]'
+            );
             expect(paragraph.textContent).toBe(
                 'No available time slots for this period.'
             );
@@ -118,7 +120,9 @@ describe('DateTimePicker', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const paragraph = element.shadowRoot.querySelector('[data-element-id="p-empty-message"]');
+            const paragraph = element.shadowRoot.querySelector(
+                '[data-element-id="p-empty-message"]'
+            );
             expect(paragraph.textContent).toBe(
                 'No available time slots for this period.'
             );
@@ -134,7 +138,9 @@ describe('DateTimePicker', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const paragraph = element.shadowRoot.querySelector('[data-element-id="p-empty-message"]');
+            const paragraph = element.shadowRoot.querySelector(
+                '[data-element-id="p-empty-message"]'
+            );
             expect(paragraph.textContent).toBe(
                 'No available time slots for this period.'
             );
@@ -150,7 +156,9 @@ describe('DateTimePicker', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const paragraph = element.shadowRoot.querySelector('[data-element-id="p-empty-message"]');
+            const paragraph = element.shadowRoot.querySelector(
+                '[data-element-id="p-empty-message"]'
+            );
             expect(paragraph.textContent).toBe(
                 'No available time slots for this period.'
             );
@@ -166,13 +174,17 @@ describe('DateTimePicker', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const paragraph = element.shadowRoot.querySelector('[data-element-id="p-empty-message"]');
+            const paragraph = element.shadowRoot.querySelector(
+                '[data-element-id="p-empty-message"]'
+            );
             expect(paragraph).toBeFalsy();
             const time = element.shadowRoot.querySelector(
                 '.avonni-date-time-picker__time'
             );
             expect(time).toBeFalsy();
-            const calendar = element.shadowRoot.querySelector('[data-element-id="avonni-calendar"]');
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
             expect(calendar.disabled).toBeTruthy();
         });
     });
@@ -221,7 +233,9 @@ describe('DateTimePicker', () => {
         element.variant = 'daily';
 
         return Promise.resolve().then(() => {
-            const calendar = element.shadowRoot.querySelector('[data-element-id="avonni-calendar"]');
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
                 '.avonni-date-time-picker__time'
@@ -238,7 +252,9 @@ describe('DateTimePicker', () => {
         element.variant = 'weekly';
 
         return Promise.resolve().then(() => {
-            const calendar = element.shadowRoot.querySelector('[data-element-id="avonni-calendar"]');
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
                 '.avonni-date-time-picker__time'
@@ -255,7 +271,9 @@ describe('DateTimePicker', () => {
         element.variant = 'inline';
 
         return Promise.resolve().then(() => {
-            const calendar = element.shadowRoot.querySelector('[data-element-id="avonni-calendar"]');
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
                 '.avonni-date-time-picker__time'
@@ -272,7 +290,9 @@ describe('DateTimePicker', () => {
         element.variant = 'timeline';
 
         return Promise.resolve().then(() => {
-            const calendar = element.shadowRoot.querySelector('[data-element-id="avonni-calendar"]');
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
             expect(calendar).toBeFalsy();
             const time = element.shadowRoot.querySelector(
                 '.avonni-date-time-picker__time'
@@ -293,7 +313,9 @@ describe('DateTimePicker', () => {
         element.variant = 'monthly';
 
         return Promise.resolve().then(() => {
-            const calendar = element.shadowRoot.querySelector('[data-element-id="avonni-calendar"]');
+            const calendar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar"]'
+            );
             expect(calendar).toBeTruthy();
             const time = element.shadowRoot.querySelector(
                 '.avonni-date-time-picker__time'
@@ -313,7 +335,9 @@ describe('DateTimePicker', () => {
     // read only
     it('Date time picker read only daily', () => {
         element.readOnly = true;
-        const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+        const buttons = element.shadowRoot.querySelectorAll(
+            '[data-element-id="button-default"]'
+        );
         const firstButton = buttons[0];
 
         return Promise.resolve().then(() => {
@@ -359,7 +383,9 @@ describe('DateTimePicker', () => {
     // name
     it('Date time picker name', () => {
         element.name = 'a-string-name';
-        const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.name).toBe('a-string-name');
@@ -549,7 +575,9 @@ describe('DateTimePicker', () => {
         element.showDisabledDates = true;
 
         return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+            const times = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
             times.forEach((time) => {
                 expect(time.disabled).toBeTruthy();
             });
@@ -562,7 +590,9 @@ describe('DateTimePicker', () => {
         element.variant = 'weekly';
 
         return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+            const times = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
             times.forEach((time) => {
                 expect(time.disabled).toBeTruthy();
             });
@@ -575,7 +605,9 @@ describe('DateTimePicker', () => {
         element.variant = 'inline';
 
         return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+            const times = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
             times.forEach((time) => {
                 expect(time.disabled).toBeTruthy();
             });
@@ -588,7 +620,9 @@ describe('DateTimePicker', () => {
         element.variant = 'timeline';
 
         return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+            const times = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
             times.forEach((time) => {
                 expect(time.disabled).toBeTruthy();
             });
@@ -601,7 +635,9 @@ describe('DateTimePicker', () => {
         element.variant = 'monthly';
 
         return Promise.resolve().then(() => {
-            const times = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+            const times = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
             times.forEach((time) => {
                 expect(time.disabled).toBeTruthy();
             });
@@ -615,7 +651,9 @@ describe('DateTimePicker', () => {
         element.max = maxDate;
         element.min = minDate;
 
-        const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.max).toBe(maxDate.toISOString());
@@ -627,7 +665,9 @@ describe('DateTimePicker', () => {
     it('Date time picker type checkbox', () => {
         element.type = 'checkbox';
 
-        const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+        const buttons = element.shadowRoot.querySelectorAll(
+            '[data-element-id="button-default"]'
+        );
         const firstButton = buttons[0];
         const secondButton = buttons[1];
         const thirdButton = buttons[2];
@@ -645,7 +685,9 @@ describe('DateTimePicker', () => {
     it('Date time picker type radio', () => {
         element.type = 'radio';
 
-        const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+        const buttons = element.shadowRoot.querySelectorAll(
+            '[data-element-id="button-default"]'
+        );
         const firstButton = buttons[0];
         const secondButton = buttons[1];
         const thirdButton = buttons[2];
@@ -732,7 +774,9 @@ describe('DateTimePicker', () => {
 
     // showHelpMessageIfInvalid
     it('showHelpMessageIfInvalid method', () => {
-        const datePicker = element.shadowRoot.querySelector('lightning-input');
+        const datePicker = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
         const spy = jest.spyOn(datePicker, 'reportValidity');
 
         element.showHelpMessageIfInvalid();
@@ -753,7 +797,9 @@ describe('DateTimePicker', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelectorAll('[data-element-id="button-default"]');
+            const button = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button-default"]'
+            );
             button[0].click();
             const date = new Date(handler.mock.calls[0][0].detail.value);
             const eventDay = date.getDate();
