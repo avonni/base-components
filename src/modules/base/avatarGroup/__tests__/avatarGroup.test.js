@@ -441,7 +441,7 @@ describe('Avatar Group', () => {
         element.items = item;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll('c-avatar');
+            const avatars = element.shadowRoot.querySelectorAll('[data-element-id="avonni-avatar"]');
             avatars.forEach((avatar, index) => {
                 const correspondingField = item[index];
                 expect(correspondingField).toBeTruthy();
@@ -700,13 +700,13 @@ describe('Avatar Group', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button"]'
                 );
                 button.click();
             })
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button"]'
                 );
                 expect(button.iconName).toBe('utility:lock');
             });
@@ -736,13 +736,13 @@ describe('Avatar Group', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button"]'
                 );
                 button.click();
             })
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button"]'
                 );
                 expect(button.iconPosition).toBe('right');
             });
@@ -770,13 +770,13 @@ describe('Avatar Group', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button"]'
                 );
                 button.click();
             })
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button"]'
                 );
                 expect(button.label).toBe('This is a list button label');
             });
@@ -802,7 +802,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.iconName).toBe('utility:lock');
         });
     });
@@ -829,7 +829,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.iconPosition).toBe('right');
         });
     });
@@ -854,7 +854,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('This is a list button label');
         });
     });
@@ -880,7 +880,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('neutral');
         });
     });
@@ -905,7 +905,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('base');
         });
     });
@@ -930,7 +930,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('brand');
         });
     });
@@ -955,7 +955,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('brand-outline');
         });
     });
@@ -980,7 +980,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('destructive');
         });
     });
@@ -1005,7 +1005,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('destructive-text');
         });
     });
@@ -1030,7 +1030,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('inverse');
         });
     });
@@ -1055,7 +1055,7 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('success');
         });
     });
@@ -1089,7 +1089,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const actionButton = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__action-button > lightning-icon'
+                '.avonni-avatar-group__action-button > [data-element-id="lightning-icon"]'
             );
             expect(actionButton.iconName).toBe('utility:check');
         });
@@ -1109,7 +1109,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const actionButton = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__action-button > lightning-icon'
+                '.avonni-avatar-group__action-button > [data-element-id="lightning-icon"]'
             );
             expect(actionButton.size).toBe('x-small');
         });
@@ -1127,7 +1127,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const actionButton = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__action-button > lightning-icon'
+                '.avonni-avatar-group__action-button > [data-element-id="lightning-icon"]'
             );
             expect(actionButton.size).toBe('x-small');
         });
@@ -1145,7 +1145,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const actionButton = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__action-button > lightning-icon'
+                '.avonni-avatar-group__action-button > [data-element-id="lightning-icon"]'
             );
             expect(actionButton.size).toBe('x-small');
         });
@@ -1163,7 +1163,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const actionButton = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__action-button > lightning-icon'
+                '.avonni-avatar-group__action-button > [data-element-id="lightning-icon"]'
             );
             expect(actionButton.size).toBe('small');
         });
@@ -1181,7 +1181,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const actionButton = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__action-button > lightning-icon'
+                '.avonni-avatar-group__action-button > [data-element-id="lightning-icon"]'
             );
             expect(actionButton.size).toBe('small');
         });
@@ -1199,7 +1199,7 @@ describe('Avatar Group', () => {
 
         return Promise.resolve().then(() => {
             const actionButton = element.shadowRoot.querySelector(
-                '.avonni-avatar-group__action-button > lightning-icon'
+                '.avonni-avatar-group__action-button > [data-element-id="lightning-icon"]'
             );
             expect(actionButton.size).toBe('medium');
         });
@@ -1228,19 +1228,19 @@ describe('Avatar Group', () => {
         return Promise.resolve()
             .then(() => {
                 const avatarShow = element.shadowRoot.querySelectorAll(
-                    'c-avatar'
+                    '[data-element-id^="avonni-avatar"]'
                 );
                 expect(avatarShow).toHaveLength(3);
             })
             .then(() => {
                 const button = element.shadowRoot.querySelector(
-                    'lightning-button'
+                    '[data-element-id="lightning-button"]'
                 );
                 button.click();
             })
             .then(() => {
                 const avatarHidden = element.shadowRoot.querySelectorAll(
-                    'c-primitive-avatar'
+                    '[data-element-id^="avonni-primitive-avatar"]'
                 );
                 expect(avatarHidden).toHaveLength(9);
             });

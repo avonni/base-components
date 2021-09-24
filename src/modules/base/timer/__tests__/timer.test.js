@@ -122,7 +122,7 @@ describe('Timer', () => {
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('12:59:49');
         });
     });
@@ -137,7 +137,7 @@ describe('Timer', () => {
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('779:49');
         });
     });
@@ -152,7 +152,7 @@ describe('Timer', () => {
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('12:59');
         });
     });
@@ -167,7 +167,7 @@ describe('Timer', () => {
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('12');
         });
     });
@@ -182,7 +182,7 @@ describe('Timer', () => {
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe('779');
         });
     });
@@ -197,7 +197,7 @@ describe('Timer', () => {
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.label).toBe(46789);
         });
     });
@@ -212,7 +212,7 @@ describe('Timer', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.iconName).toBe('utility:apps');
         });
     });
@@ -227,7 +227,7 @@ describe('Timer', () => {
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.iconPosition).toBe('right');
         });
     });
@@ -261,7 +261,7 @@ describe('Timer', () => {
         element.variant = 'neutral';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('neutral');
         });
     });
@@ -275,7 +275,7 @@ describe('Timer', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('base');
         });
     });
@@ -289,7 +289,7 @@ describe('Timer', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('brand');
         });
     });
@@ -303,7 +303,7 @@ describe('Timer', () => {
         element.variant = 'brand-outline';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('brand-outline');
         });
     });
@@ -317,7 +317,7 @@ describe('Timer', () => {
         element.variant = 'destructive';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('destructive');
         });
     });
@@ -331,7 +331,7 @@ describe('Timer', () => {
         element.variant = 'destructive-text';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('destructive-text');
         });
     });
@@ -345,7 +345,7 @@ describe('Timer', () => {
         element.variant = 'inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('inverse');
         });
     });
@@ -359,7 +359,7 @@ describe('Timer', () => {
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('lightning-button');
+            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
             expect(button.variant).toBe('success');
         });
     });

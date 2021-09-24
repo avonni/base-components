@@ -64,7 +64,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'solid';
         element.orientation = 'horizontal';
@@ -97,7 +97,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'dashed';
         element.orientation = 'horizontal';
@@ -130,7 +130,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'dotted';
         element.orientation = 'horizontal';
@@ -163,7 +163,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'none';
         element.orientation = 'horizontal';
@@ -189,7 +189,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'solid';
         element.orientation = 'vertical';
@@ -222,7 +222,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'dashed';
         element.orientation = 'vertical';
@@ -255,7 +255,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'dotted';
         element.orientation = 'vertical';
@@ -288,7 +288,7 @@ describe('PrimitiveReferenceLine', () => {
 
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.borderStyle = 'none';
         element.orientation = 'vertical';
@@ -313,7 +313,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const badge = element.shadowRoot.querySelector('lightning-badge');
+        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.label = 'A string label';
 
@@ -330,7 +330,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
 
@@ -348,7 +348,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
 
@@ -366,7 +366,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'x-small';
         element.orientation = 'horizontal';
@@ -401,7 +401,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'small';
         element.orientation = 'horizontal';
@@ -436,7 +436,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'medium';
         element.orientation = 'horizontal';
@@ -471,7 +471,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'large';
         element.orientation = 'horizontal';
@@ -506,7 +506,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'x-small';
         element.orientation = 'vertical';
@@ -541,7 +541,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'small';
         element.orientation = 'vertical';
@@ -576,7 +576,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'medium';
         element.orientation = 'vertical';
@@ -611,7 +611,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'large';
         element.orientation = 'vertical';
@@ -648,7 +648,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
         element.value = -4;
@@ -665,7 +665,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
         element.value = 345;
@@ -682,7 +682,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
         element.value = 35;
@@ -699,7 +699,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
         element.value = -4;
@@ -716,7 +716,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
         element.value = 345;
@@ -733,7 +733,7 @@ describe('PrimitiveReferenceLine', () => {
 
         document.body.appendChild(element);
 
-        const div = element.shadowRoot.querySelector('div');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
         element.value = 35;
@@ -753,8 +753,8 @@ describe('PrimitiveReferenceLine', () => {
 
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
-        const div = element.shadowRoot.querySelector('div');
-        const badge = element.shadowRoot.querySelector('lightning-badge');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
+        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.variant = 'default';
 
@@ -782,8 +782,8 @@ describe('PrimitiveReferenceLine', () => {
 
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
-        const div = element.shadowRoot.querySelector('div');
-        const badge = element.shadowRoot.querySelector('lightning-badge');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
+        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.variant = 'inverse';
 
@@ -823,8 +823,8 @@ describe('PrimitiveReferenceLine', () => {
 
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
-        const div = element.shadowRoot.querySelector('div');
-        const badge = element.shadowRoot.querySelector('lightning-badge');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
+        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.variant = 'success';
 
@@ -864,8 +864,8 @@ describe('PrimitiveReferenceLine', () => {
 
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
-        const div = element.shadowRoot.querySelector('div');
-        const badge = element.shadowRoot.querySelector('lightning-badge');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
+        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.variant = 'warning';
 
@@ -905,8 +905,8 @@ describe('PrimitiveReferenceLine', () => {
 
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
-        const div = element.shadowRoot.querySelector('div');
-        const badge = element.shadowRoot.querySelector('lightning-badge');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
+        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.variant = 'error';
 
@@ -946,8 +946,8 @@ describe('PrimitiveReferenceLine', () => {
 
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
-        const div = element.shadowRoot.querySelector('div');
-        const badge = element.shadowRoot.querySelector('lightning-badge');
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
+        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.variant = 'lightest';
 

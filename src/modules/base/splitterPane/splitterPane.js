@@ -79,7 +79,7 @@ export default class SplitterPane extends LightningElement {
 
     renderedCallback() {
         let slotElements = this.template
-            .querySelector('slot')
+            .querySelector('[data-element-id="slot-default"]')
             .assignedElements();
 
         if (slotElements.length > 0) {

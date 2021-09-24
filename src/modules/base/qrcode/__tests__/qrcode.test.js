@@ -88,7 +88,7 @@ describe('Qrcode', () => {
         element.value = 'A string value';
 
         return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector('canvas');
+            const canvas = element.shadowRoot.querySelector('[data-element-id="canvas"]');
             expect(canvas.style.border).toBe('25px solid tomato');
         });
     });
@@ -107,7 +107,7 @@ describe('Qrcode', () => {
         element.value = 'A string value';
 
         return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector('canvas');
+            const canvas = element.shadowRoot.querySelector('[data-element-id="canvas"]');
             expect(canvas.style.padding).toBe('34px');
         });
     });
@@ -123,8 +123,8 @@ describe('Qrcode', () => {
         element.renderAs = 'svg';
 
         return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector('canvas');
-            const svg = element.shadowRoot.querySelector('span');
+            const canvas = element.shadowRoot.querySelector('[data-element-id="canvas"]');
+            const svg = element.shadowRoot.querySelector('[data-element-id="span"]');
 
             expect(canvas).toBeFalsy();
             expect(svg).toBeTruthy();
@@ -141,8 +141,8 @@ describe('Qrcode', () => {
         element.renderAs = 'canvas';
 
         return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector('canvas');
-            const svg = element.shadowRoot.querySelector('span');
+            const canvas = element.shadowRoot.querySelector('[data-element-id="canvas"]');
+            const svg = element.shadowRoot.querySelector('[data-element-id="span"]');
 
             expect(canvas).toBeTruthy();
             expect(svg).toBeFalsy();
@@ -163,7 +163,7 @@ describe('Qrcode', () => {
         element.size = 45;
 
         return Promise.resolve().then(() => {
-            const canvas = element.shadowRoot.querySelector('canvas');
+            const canvas = element.shadowRoot.querySelector('[data-element-id="canvas"]');
             expect(canvas.width).toBe(45);
             expect(canvas.height).toBe(45);
             expect(canvas.style.maxWidth).toBe('45px');

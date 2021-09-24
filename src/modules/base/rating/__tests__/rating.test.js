@@ -73,7 +73,7 @@ describe('Rating', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
@@ -91,7 +91,7 @@ describe('Rating', () => {
         element.iconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
@@ -108,7 +108,7 @@ describe('Rating', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
@@ -127,7 +127,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
@@ -149,7 +149,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const helptext = element.shadowRoot.querySelector(
-                'lightning-helptext'
+                '[data-element-id="lightning-helptext"]'
             );
             expect(helptext).toBeTruthy();
             expect(helptext.content).toBe('A string help');
@@ -168,7 +168,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             buttons.forEach((button) => {
                 expect(button.iconName).toBe('utility:location');
@@ -190,7 +190,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             buttons.forEach((button) => {
                 expect(button.size).toBe('small');
@@ -209,7 +209,7 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
             expect(label).toBeTruthy();
             expect(label.textContent.trim()).toBe('A string label');
         });
@@ -226,7 +226,7 @@ describe('Rating', () => {
         element.max = 8;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             expect(buttons).toHaveLength(8);
             expect(buttons[0].textContent).toBe('8');
         });
@@ -243,7 +243,7 @@ describe('Rating', () => {
         element.min = 2;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             expect(buttons).toHaveLength(4);
             expect(buttons[buttons.length - 1].textContent).toBe('2');
         });
@@ -262,7 +262,7 @@ describe('Rating', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons[1].click();
             expect(element.value).toBe(4);
         });
@@ -279,7 +279,7 @@ describe('Rating', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons[1].click();
             expect(element.value).toBe(3);
         });
@@ -297,7 +297,7 @@ describe('Rating', () => {
         element.selection = 'continuous';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button) => {
                 expect(button.classList).toContain('avonni-continuous');
             });
@@ -316,7 +316,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             buttons.forEach((button) => {
                 expect(button.classList).toContain('avonni-continuous-star');
@@ -334,7 +334,7 @@ describe('Rating', () => {
         element.selection = 'single';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button) => {
                 expect(button.classList).not.toContain('avonni-continuous');
             });
@@ -352,7 +352,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             buttons.forEach((button) => {
                 expect(button.classList).not.toContain(
@@ -374,7 +374,7 @@ describe('Rating', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button, index) => {
                 if (index < 2) {
                     expect(button.classList).toContain(
@@ -402,7 +402,7 @@ describe('Rating', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button, index) => {
                 if (index < 1) {
                     expect(button.classList).toContain(
@@ -467,8 +467,8 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
-            const label = element.shadowRoot.querySelector('label');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -489,8 +489,8 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
-            const label = element.shadowRoot.querySelector('label');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -511,8 +511,8 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
-            const label = element.shadowRoot.querySelector('label');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -533,8 +533,8 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('div');
-            const label = element.shadowRoot.querySelector('label');
+            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(wrapper.classList).toContain('slds-form-element_stacked');
             expect(wrapper.classList).not.toContain('avonni-label-inline');
@@ -557,7 +557,7 @@ describe('Rating', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('button');
+            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons[2].click();
 
             expect(handler).toHaveBeenCalled();
@@ -581,7 +581,7 @@ describe('Rating', () => {
 
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
-                'lightning-button-icon'
+                '[data-element-id="lightning-button-icon"]'
             );
             buttons[2].click();
 

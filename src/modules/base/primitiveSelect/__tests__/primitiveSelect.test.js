@@ -89,7 +89,7 @@ describe('PrimitiveSelect', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
             expect(select.accessKey).toBe('K');
         });
     });
@@ -105,7 +105,7 @@ describe('PrimitiveSelect', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
             expect(select.disabled).toBeTruthy();
         });
     });
@@ -120,7 +120,7 @@ describe('PrimitiveSelect', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
             expect(select.disabled).toBeFalsy();
         });
     });
@@ -136,7 +136,7 @@ describe('PrimitiveSelect', () => {
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
-            const help = element.shadowRoot.querySelector('lightning-helptext');
+            const help = element.shadowRoot.querySelector('[data-element-id="lightning-helptext"]');
             expect(help).toBeTruthy();
             expect(help.content).toBe('A string help');
         });
@@ -153,7 +153,7 @@ describe('PrimitiveSelect', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
             expect(label.textContent).toBe('A string label');
         });
     });
@@ -190,7 +190,7 @@ describe('PrimitiveSelect', () => {
         element.multiple = true;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
             expect(select.multiple).toBeTruthy();
         });
     });
@@ -205,7 +205,7 @@ describe('PrimitiveSelect', () => {
         element.multiple = false;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
             expect(select.multiple).toBeFalsy();
         });
     });
@@ -221,7 +221,7 @@ describe('PrimitiveSelect', () => {
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
             expect(select.name).toBe('a-string-name');
         });
     });
@@ -237,7 +237,7 @@ describe('PrimitiveSelect', () => {
         element.options = OPTIONS;
 
         return Promise.resolve().then(() => {
-            const options = element.shadowRoot.querySelectorAll('option');
+            const options = element.shadowRoot.querySelectorAll('[data-element-id="option"]');
 
             expect(options).toHaveLength(3);
             options.forEach((option, index) => {
@@ -258,7 +258,7 @@ describe('PrimitiveSelect', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
 
             expect(abbr).toBeTruthy();
         });
@@ -274,7 +274,7 @@ describe('PrimitiveSelect', () => {
         element.required = false;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('abbr');
+            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
 
             expect(abbr).toBeFalsy();
         });
@@ -292,7 +292,7 @@ describe('PrimitiveSelect', () => {
         element.multiple = true;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
 
             expect(element.size).toBe('4');
             expect(select.size).toBe(4);
@@ -310,7 +310,7 @@ describe('PrimitiveSelect', () => {
         element.size = '6';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
 
             expect(element.size).toBe('6');
             expect(select.size).toBe(6);
@@ -328,7 +328,7 @@ describe('PrimitiveSelect', () => {
         element.tabIndex = -1;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
 
             expect(select.tabIndex).toBe(-1);
         });
@@ -395,7 +395,7 @@ describe('PrimitiveSelect', () => {
         element.value = 'option-1';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('select');
+            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
             expect(select.value).toBe('option-1');
         });
     });
@@ -411,7 +411,7 @@ describe('PrimitiveSelect', () => {
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(element.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -433,7 +433,7 @@ describe('PrimitiveSelect', () => {
         element.variant = 'label-hidden';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(element.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -455,7 +455,7 @@ describe('PrimitiveSelect', () => {
         element.variant = 'label-stacked';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(element.classList).toContain('slds-form-element_stacked');
             expect(element.classList).not.toContain(
@@ -475,7 +475,7 @@ describe('PrimitiveSelect', () => {
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('label');
+            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(element.classList).not.toContain(
                 'slds-form-element_stacked'
