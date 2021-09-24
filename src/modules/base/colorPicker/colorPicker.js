@@ -186,6 +186,12 @@ export default class ColorPicker extends LightningElement {
     currentLabel;
     currentToken;
 
+    connectedCallback() {
+        this.addEventListener('change', (event) => {
+            console.log(event);
+        });
+    }
+
     renderedCallback() {
         if (!this.init) {
             this.initSwatchColor();
@@ -622,18 +628,14 @@ export default class ColorPicker extends LightningElement {
      *
      */
     dispatchClear() {
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    hex: undefined,
-                    hexa: undefined,
-                    rgb: undefined,
-                    rgba: undefined,
-                    alpha: undefined,
-                    token: undefined
-                }
-            })
-        );
+        this.dispatchChange({
+            hex: undefined,
+            hexa: undefined,
+            rgb: undefined,
+            rgba: undefined,
+            alpha: undefined,
+            token: undefined
+        });
     }
 
     /**
