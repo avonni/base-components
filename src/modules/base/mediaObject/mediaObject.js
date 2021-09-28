@@ -56,22 +56,9 @@ export default class MediaObject extends LightningElement {
     _size = MEDIA_OBJECT_SIZES.default;
     _rendered = false;
 
-    showFigureSlot = true;
-    showFigureInverseSlot = true;
-
     renderedCallback() {
         if (!this._rendered) {
             this._rendered = true;
-
-            this.showFigureSlot =
-                this.figureSlot &&
-                this.figureSlot.assignedElements() &&
-                this.figureSlot.assignedElements().length > 0;
-
-            this.showFigureInverseSlot =
-                this.figureInverseSlot &&
-                this.figureInverseSlot.assignedElements() &&
-                this.figureInverseSlot.assignedElements().length > 0;
         }
     }
 
