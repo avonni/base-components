@@ -31,6 +31,8 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { normalizeBoolean } from 'c/utilsPrivate';
+import { InteractingState } from 'c/inputUtils';
 
 export default class PrimitiveCellCombobox extends LightningElement {
     @api colKeyValue;
@@ -43,8 +45,31 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api options;
     @api placeholder;
 
+    isMassEditEnabled = false;
+    _selectedNumber = 0;
     _value;
-    readOnly;
+    _readOnly;
+
+    connectedCallback() {
+        this.interactingState = new InteractingState({
+            duration: 10,
+            debounceInteraction: true
+        });
+        this.interactingState.onleave(() => this.handlePanelLoosedFocus());
+    }
+
+    getState(state) {
+        this.state = state;
+    }
+
+    renderedCallback() {
+        this.primitiveCellCombobox = this.template.querySelector(
+            '[data-element-id^="primitive-cell-combobox-input"]'
+        );
+        if (this.primitiveCellCombobox) {
+            this.primitiveCellCombobox.focus();
+        }
+    }
 
     @api
     get value() {
@@ -54,11 +79,20 @@ export default class PrimitiveCellCombobox extends LightningElement {
         // When data is first set, the value is an object containing the editable state
         // When the cell is edited, only the value is sent back
         if (typeof value === 'object' && value.editable !== undefined) {
-            this.readOnly = !value.editable;
+            this._readOnly = !value.editable;
             this._value = value.value;
         } else {
             this._value = value;
         }
+    }
+
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
     }
 
     handleChange(event) {
@@ -75,5 +109,88 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 composed: true
             })
         );
+        this._readOnly = true;
+        this.visible = false;
+    }
+
+    handleEditButtonClick() {
+        this._readOnly = false;
+        this.visible = true;
+        this.dispatchEvent(
+            new CustomEvent('comboboxadd', {
+                detail: {
+                    callbacks: {
+                        updateList: this.getState.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+
+        this._selectedNumber = this.countNumberSelected(
+            this.state.selectedRowsKeys
+        );
+        this.isMassEditEnabled =
+            this.countNumberSelected(this.state.selectedRowsKeys) > 1;
+    }
+
+    countNumberSelected(object) {
+        let count = 0;
+        Object.values(object).forEach((value) => {
+            if (value) {
+                count++;
+            }
+        });
+        return count;
+    }
+
+    handleComboboxBlur() {
+        this._readOnly = true;
+        this.visible = false;
+    }
+
+    get computedStyle() {
+        const styleHash = {
+            'z-index': 1000,
+            'background-color': 'white',
+            'margin-top': '1px',
+            position: 'absolute',
+            top: 0
+        };
+
+        styleHash.display = this.visible ? 'block' : 'none';
+
+        return Object.keys(styleHash)
+            .map((styleProp) => `${styleProp}:${styleHash[styleProp]}`)
+            .join(';');
+    }
+
+    get massEditCheckboxLabel() {
+        return `Update ${this._selectedNumber} selected items`;
+    }
+
+    handleTypeElemBlur() {
+        if (this.visible && !this.template.activeElement) {
+            this.interactingState.leave();
+        }
+    }
+
+    handleTypeElemFocus() {
+        this.interactingState.enter();
+    }
+
+    handleMassCheckboxChange(event) {
+        const customEvent = new CustomEvent('masscheckboxchange', {
+            detail: {
+                checked: event.detail.checked
+            }
+        });
+
+        this.dispatchEvent(customEvent);
+    }
+
+    cancelEdition() {
+        this.visible = false;
     }
 }

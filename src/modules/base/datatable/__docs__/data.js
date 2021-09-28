@@ -212,7 +212,7 @@ const columnsCD = [
             isMultiSelect: { fieldName: 'isMultiSelect' }
         },
         editable: true,
-        fixedWidth: 260
+        fixedWidth: 360
     },
     {
         label: 'Currency',
@@ -548,7 +548,8 @@ const recordsCD = [
         dynamicIcon: 'ellie',
         date: new Date('2022/03/24'),
         dateLocal: new Date('2022/03/24'),
-        combobox: 'no-avatar-burlington'
+        combobox: 'no-avatar-burlington',
+        isMultiSelect: true
     },
     {
         id: 2,

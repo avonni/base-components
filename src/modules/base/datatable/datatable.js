@@ -307,6 +307,10 @@ export default class Datatable extends LightningDatatable {
             'privateactionclick',
             this.handleDispatchEvents
         );
+
+        this.template.addEventListener('comboboxadd', (e) => {
+            e.detail.callbacks.updateList(this.state);
+        });
     }
 
     renderedCallback() {
