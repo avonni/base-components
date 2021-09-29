@@ -70,8 +70,6 @@
         class="slds-popover slds-popover_edit"
         role="dialog"
         tabindex="-1"
-        onblur={handleTypeElemBlur}
-        onfocus={handleTypeElemFocus}
         onkeydown={handleCellKeydown}
         style={computedStyle}
     >
@@ -81,40 +79,44 @@
             onfocus={handleFormStartFocus}
         ></span>
         <div class="slds-popover__body">
-            <c-combobox
-                data-element-id="primitive-cell-combobox-input"
-                disabled={disabled}
-                dropdown-alignment={dropdownAlignement}
-                dropdown-length={dropdownLength}
-                is-multi-select={isMultiSelect}
-                label={label}
-                options={options}
-                placeholder={placeholder}
-                read-only={readOnly}
-                onchange={handleChange}
-                variant="label-hidden"
-                value={value}
-            ></c-combobox>
-            <template if:true={isMassEditEnabled}>
-                <lightning-input
-                    data-mass-selection="true"
-                    type="checkbox"
-                    name="dt-iedit-mass-edit"
-                    label={massEditCheckboxLabel}
-                    onchange={handleMassCheckboxChange}
+            <form onsubmit={handleEditFormSubmit} novalidate>
+                <c-combobox
+                    data-element-id="primitive-cell-combobox-input"
+                    disabled={disabled}
+                    dropdown-alignment={dropdownAlignement}
+                    dropdown-length={dropdownLength}
+                    is-multi-select={isMultiSelect}
+                    label={label}
+                    options={options}
+                    placeholder={placeholder}
+                    read-only={readOnly}
+                    onchange={handleChange}
+                    variant="label-hidden"
+                    value={value}
                     onblur={handleTypeElemBlur}
                     onfocus={handleTypeElemFocus}
-                ></lightning-input>
-            </template>
-            <template if:false={isMassEditEnabled}>
-                <button
-                    type="submit"
-                    aria-hidden="true"
-                    tabindex="-1"
-                    class="slds-hide"
-                    value="save"
-                ></button>
-            </template>
+                ></c-combobox>
+                <template if:true={isMassEditEnabled}>
+                    <lightning-input
+                        data-mass-selection="true"
+                        type="checkbox"
+                        name="dt-iedit-mass-edit"
+                        label={massEditCheckboxLabel}
+                        onchange={handleMassCheckboxChange}
+                        onblur={handleTypeElemBlur}
+                        onfocus={handleTypeElemFocus}
+                    ></lightning-input>
+                </template>
+                <template if:false={isMassEditEnabled}>
+                    <button
+                        type="submit"
+                        aria-hidden="true"
+                        tabindex="-1"
+                        class="slds-hide"
+                        value="save"
+                    ></button>
+                </template>
+            </form>
             <form onsubmit={handleEditFormSubmit} novalidate>
                 <template if:false={isMassEditEnabled}>
                     <button
@@ -132,9 +134,9 @@
                 <div class="slds-grid slds-grid_align-end">
                     <lightning-button
                         label="cancel"
+                        onclick={cancelEdition}
                         onblur={handleTypeElemBlur}
                         onfocus={handleTypeElemFocus}
-                        onclick={cancelEdition}
                     ></lightning-button>
                     <lightning-button
                         label="apply"

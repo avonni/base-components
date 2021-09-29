@@ -45,6 +45,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api options;
     @api placeholder;
 
+    visible = false;
     isMassEditEnabled = false;
     _selectedNumber = 0;
     _value;
@@ -128,11 +129,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
             })
         );
 
-        this._selectedNumber = this.countNumberSelected(
-            this.state.selectedRowsKeys
-        );
-        this.isMassEditEnabled =
-            this.countNumberSelected(this.state.selectedRowsKeys) > 1;
+        this.countNumberSelected(this.state.selectedRowsKeys);
     }
 
     countNumberSelected(object) {
@@ -142,7 +139,8 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 count++;
             }
         });
-        return count;
+        this._selectedNumber = count;
+        this.isMassEditEnabled = count > 1;
     }
 
     handleComboboxBlur() {
@@ -170,16 +168,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         return `Update ${this._selectedNumber} selected items`;
     }
 
-    handleTypeElemBlur() {
-        if (this.visible && !this.template.activeElement) {
-            this.interactingState.leave();
-        }
-    }
-
-    handleTypeElemFocus() {
-        this.interactingState.enter();
-    }
-
     handleMassCheckboxChange(event) {
         const customEvent = new CustomEvent('masscheckboxchange', {
             detail: {
@@ -192,5 +180,114 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     cancelEdition() {
         this.visible = false;
+        this._readOnly = true;
+    }
+
+    handleFormStartFocus() {
+        this.interactingState.enter();
+
+        if (this.isMassEditEnabled) {
+            // on mass edit the panel dont loses the focus with the keyboard.
+            this.focusLastElement();
+        } else {
+            this.triggerEditFinished({
+                reason: 'tab-pressed-prev'
+            });
+        }
+    }
+
+    handleFormEndsFocus() {
+        this.interactingState.enter();
+
+        if (this.isMassEditEnabled) {
+            // on mass edit the panel dont loses the focus with the keyboard.
+            this.focus();
+        } else {
+            this.triggerEditFinished({
+                reason: 'tab-pressed-next'
+            });
+        }
+    }
+
+    triggerEditFinished(detail) {
+        detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
+        detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
+
+        const event = new CustomEvent('ieditfinished', {
+            detail
+        });
+        this.dispatchEvent(event);
+    }
+
+    @api
+    focus() {
+        const elem = this.inputableElement;
+        this.interactingState.enter();
+
+        if (elem) {
+            elem.focus();
+        }
+    }
+
+    get inputableElement() {
+        return this.template.querySelector(
+            '[data-element-id^="primitive-cell-combobox-input"]'
+        );
+    }
+
+    @api
+    getPositionedElement() {
+        return this.template.querySelector('section');
+    }
+
+    handleTypeElemBlur() {
+        if (this.visible && !this.template.activeElement) {
+            this.interactingState.leave();
+        }
+    }
+
+    handleTypeElemFocus() {
+        this.interactingState.enter();
+    }
+
+    handleEditFormSubmit(event) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        if (!this.isMassEditEnabled) {
+            this.processSubmission();
+        }
+
+        return false;
+    }
+
+    handleCellKeydown(event) {
+        const { keyCode } = event;
+
+        if (keyCode === 27) {
+            // Esc key
+            event.stopPropagation();
+            this.cancelEdition();
+        }
+    }
+
+    handlePanelLoosedFocus() {
+        if (this.visible) {
+            this.triggerEditFinished({
+                reason: 'loosed-focus'
+            });
+        }
+    }
+
+    focusLastElement() {
+        this.template.querySelector('[data-form-last-element="true"]').focus();
+    }
+
+    processSubmission() {
+        if (this.validity.valid) {
+            this.triggerEditFinished({ reason: 'submit-action' });
+        } else {
+            this.inputableElement.showHelpMessageIfInvalid();
+        }
     }
 }
