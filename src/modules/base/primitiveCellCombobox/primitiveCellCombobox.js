@@ -47,7 +47,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     visible = false;
     isMassEditEnabled = false;
-    _selectedNumber = 0;
+    numberOfSelectedRows = 0;
     _value;
     _readOnly;
 
@@ -57,6 +57,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
             debounceInteraction: true
         });
         this.interactingState.onleave(() => this.handlePanelLoosedFocus());
+        this.template.addEventListener('changecomboboxfactory', (event) => {
+            this.handleChange(event);
+        });
     }
 
     getState(state) {
@@ -115,8 +118,17 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     handleEditButtonClick() {
-        this._readOnly = false;
-        this.visible = true;
+        const { rowKeyValue, colKeyValue } = this;
+        const event = new CustomEvent('privateeditcustomcell', {
+            bubbles: true,
+            composed: true,
+            detail: {
+                rowKeyValue,
+                colKeyValue
+            }
+        });
+        this.dispatchEvent(event);
+
         this.dispatchEvent(
             new CustomEvent('comboboxadd', {
                 detail: {
@@ -129,6 +141,8 @@ export default class PrimitiveCellCombobox extends LightningElement {
             })
         );
 
+        this._readOnly = false;
+        this.visible = true;
         this.countNumberSelected(this.state.selectedRowsKeys);
     }
 
@@ -139,155 +153,12 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 count++;
             }
         });
-        this._selectedNumber = count;
+        this.numberOfSelectedRows = count;
         this.isMassEditEnabled = count > 1;
     }
 
-    handleComboboxBlur() {
-        this._readOnly = true;
-        this.visible = false;
-    }
-
-    get computedStyle() {
-        const styleHash = {
-            'z-index': 1000,
-            'background-color': 'white',
-            'margin-top': '1px',
-            position: 'absolute',
-            top: 0
-        };
-
-        styleHash.display = this.visible ? 'block' : 'none';
-
-        return Object.keys(styleHash)
-            .map((styleProp) => `${styleProp}:${styleHash[styleProp]}`)
-            .join(';');
-    }
-
-    get massEditCheckboxLabel() {
-        return `Update ${this._selectedNumber} selected items`;
-    }
-
-    handleMassCheckboxChange(event) {
-        const customEvent = new CustomEvent('masscheckboxchange', {
-            detail: {
-                checked: event.detail.checked
-            }
-        });
-
-        this.dispatchEvent(customEvent);
-    }
-
-    cancelEdition() {
+    handleInlineEditFinish() {
         this.visible = false;
         this._readOnly = true;
-    }
-
-    handleFormStartFocus() {
-        this.interactingState.enter();
-
-        if (this.isMassEditEnabled) {
-            // on mass edit the panel dont loses the focus with the keyboard.
-            this.focusLastElement();
-        } else {
-            this.triggerEditFinished({
-                reason: 'tab-pressed-prev'
-            });
-        }
-    }
-
-    handleFormEndsFocus() {
-        this.interactingState.enter();
-
-        if (this.isMassEditEnabled) {
-            // on mass edit the panel dont loses the focus with the keyboard.
-            this.focus();
-        } else {
-            this.triggerEditFinished({
-                reason: 'tab-pressed-next'
-            });
-        }
-    }
-
-    triggerEditFinished(detail) {
-        detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
-        detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-
-        const event = new CustomEvent('ieditfinished', {
-            detail
-        });
-        this.dispatchEvent(event);
-    }
-
-    @api
-    focus() {
-        const elem = this.inputableElement;
-        this.interactingState.enter();
-
-        if (elem) {
-            elem.focus();
-        }
-    }
-
-    get inputableElement() {
-        return this.template.querySelector(
-            '[data-element-id^="primitive-cell-combobox-input"]'
-        );
-    }
-
-    @api
-    getPositionedElement() {
-        return this.template.querySelector('section');
-    }
-
-    handleTypeElemBlur() {
-        if (this.visible && !this.template.activeElement) {
-            this.interactingState.leave();
-        }
-    }
-
-    handleTypeElemFocus() {
-        this.interactingState.enter();
-    }
-
-    handleEditFormSubmit(event) {
-        event.preventDefault();
-        event.stopPropagation();
-
-        if (!this.isMassEditEnabled) {
-            this.processSubmission();
-        }
-
-        return false;
-    }
-
-    handleCellKeydown(event) {
-        const { keyCode } = event;
-
-        if (keyCode === 27) {
-            // Esc key
-            event.stopPropagation();
-            this.cancelEdition();
-        }
-    }
-
-    handlePanelLoosedFocus() {
-        if (this.visible) {
-            this.triggerEditFinished({
-                reason: 'loosed-focus'
-            });
-        }
-    }
-
-    focusLastElement() {
-        this.template.querySelector('[data-form-last-element="true"]').focus();
-    }
-
-    processSubmission() {
-        if (this.validity.valid) {
-            this.triggerEditFinished({ reason: 'submit-action' });
-        } else {
-            this.inputableElement.showHelpMessageIfInvalid();
-        }
     }
 }

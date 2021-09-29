@@ -33,128 +33,55 @@
 -->
 
 <template>
-    <span class="slds-grid slds-grid_align-end slds-cell-edit">
-        <c-combobox
-            disabled={disabled}
-            dropdown-alignment={dropdownAlignement}
-            dropdown-length={dropdownLength}
-            is-multi-select={isMultiSelect}
-            label={label}
+    <template if:true={visible}>
+        <c-primitive-datatable-iedit-panel
+            data-iedit-panel="true"
+            visible={visible}
+            row-key-value={state.activeCell.rowKeyValue}
+            col-key-value={state.activeCell.colKeyValue}
+            edited-value={value}
+            column-def={state}
+            is-mass-edit-enabled={isMassEditEnabled}
+            number-of-selected-rows={numberOfSelectedRows}
+            onieditfinished={handleInlineEditFinish}
+            onmasscheckboxchange={handleMassCheckboxChange}
             options={options}
-            placeholder={placeholder}
-            read-only={readOnly}
-            onchange={handleChange}
-            variant="label-hidden"
-            value={value}
-        ></c-combobox>
-        <button
-            tabindex={internalTabIndex}
-            class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small"
-            style="margin-top: 7px"
-            data-navigation="enable"
-            data-action-triggers="enter,space"
-            data-action-edit="true"
-            onclick={handleEditButtonClick}
-        >
-            <c-primitive-icon
-                icon-name="utility:edit"
-                size="xx-small"
-                svg-class="slds-button__icon slds-button__icon_hint slds-button__icon_lock slds-button__icon_small slds-button__icon_edit"
+        ></c-primitive-datatable-iedit-panel>
+    </template>
+    <template if:false={visible}>
+        <span class="slds-grid slds-grid_align-end slds-cell-edit">
+            <c-combobox
+                disabled={disabled}
+                dropdown-alignment={dropdownAlignement}
+                dropdown-length={dropdownLength}
+                is-multi-select={isMultiSelect}
+                label={label}
+                options={options}
+                placeholder={placeholder}
+                read-only={readOnly}
+                onchange={handleChange}
+                variant="label-hidden"
+                value={value}
+            ></c-combobox>
+            <button
+                tabindex={internalTabIndex}
+                class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small"
+                style="margin-top: 7px"
+                data-navigation="enable"
+                data-action-triggers="enter,space"
+                data-action-edit="true"
+                onclick={handleEditButtonClick}
             >
-            </c-primitive-icon>
-            <span class="slds-assistive-text"> {editIconAssistiveText} </span>
-        </button>
-    </span>
-    <section
-        if:true={visible}
-        class="slds-popover slds-popover_edit"
-        role="dialog"
-        tabindex="-1"
-        onkeydown={handleCellKeydown}
-        style={computedStyle}
-    >
-        <span
-            class="inline-edit-form-start"
-            tabindex="0"
-            onfocus={handleFormStartFocus}
-        ></span>
-        <div class="slds-popover__body">
-            <form onsubmit={handleEditFormSubmit} novalidate>
-                <c-combobox
-                    data-element-id="primitive-cell-combobox-input"
-                    disabled={disabled}
-                    dropdown-alignment={dropdownAlignement}
-                    dropdown-length={dropdownLength}
-                    is-multi-select={isMultiSelect}
-                    label={label}
-                    options={options}
-                    placeholder={placeholder}
-                    read-only={readOnly}
-                    onchange={handleChange}
-                    variant="label-hidden"
-                    value={value}
-                    onblur={handleTypeElemBlur}
-                    onfocus={handleTypeElemFocus}
-                ></c-combobox>
-                <template if:true={isMassEditEnabled}>
-                    <lightning-input
-                        data-mass-selection="true"
-                        type="checkbox"
-                        name="dt-iedit-mass-edit"
-                        label={massEditCheckboxLabel}
-                        onchange={handleMassCheckboxChange}
-                        onblur={handleTypeElemBlur}
-                        onfocus={handleTypeElemFocus}
-                    ></lightning-input>
-                </template>
-                <template if:false={isMassEditEnabled}>
-                    <button
-                        type="submit"
-                        aria-hidden="true"
-                        tabindex="-1"
-                        class="slds-hide"
-                        value="save"
-                    ></button>
-                </template>
-            </form>
-            <form onsubmit={handleEditFormSubmit} novalidate>
-                <template if:false={isMassEditEnabled}>
-                    <button
-                        type="submit"
-                        aria-hidden="true"
-                        tabindex="-1"
-                        class="slds-hide"
-                        value="save"
-                    ></button>
-                </template>
-            </form>
-        </div>
-        <template if:true={isMassEditEnabled}>
-            <div class="slds-popover__footer">
-                <div class="slds-grid slds-grid_align-end">
-                    <lightning-button
-                        label="cancel"
-                        onclick={cancelEdition}
-                        onblur={handleTypeElemBlur}
-                        onfocus={handleTypeElemFocus}
-                    ></lightning-button>
-                    <lightning-button
-                        label="apply"
-                        style="margin-left: 0.25rem"
-                        variant="brand"
-                        onblur={handleTypeElemBlur}
-                        onfocus={handleTypeElemFocus}
-                        data-form-last-element="true"
-                        onclick={processSubmission}
-                    >
-                    </lightning-button>
-                </div>
-            </div>
-        </template>
-        <div
-            class="inline-edit-form-end"
-            onfocus={handleFormEndsFocus}
-            tabindex="0"
-        ></div>
-    </section>
+                <c-primitive-icon
+                    icon-name="utility:edit"
+                    size="xx-small"
+                    svg-class="slds-button__icon slds-button__icon_hint slds-button__icon_lock slds-button__icon_small slds-button__icon_edit"
+                >
+                </c-primitive-icon>
+                <span class="slds-assistive-text">
+                    {editIconAssistiveText}
+                </span>
+            </button>
+        </span>
+    </template>
 </template>
