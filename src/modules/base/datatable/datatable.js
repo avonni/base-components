@@ -33,6 +33,13 @@
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import {
+    getCellValue,
+    getCurrentSelectionLength,
+    isSelectedRow,
+    getColumns,
+    getChangesForCustomer
+} from './inlineEdit';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
@@ -308,7 +315,12 @@ export default class Datatable extends LightningDatatable {
             this.handleDispatchEvents
         );
 
-        this.template.addEventListener('comboboxadd', (e) => {
+        this.template.addEventListener(
+            'customeditbuttonclick',
+            this.handleCustomEditButtonClick
+        );
+
+        this.template.addEventListener('getcomboboxstate', (e) => {
             e.detail.callbacks.updateList(this.state);
         });
     }
@@ -644,68 +656,34 @@ export default class Datatable extends LightningDatatable {
         }
     }
 
-    getRowIndexByKey(state, key) {
-        if (!state.indexes[key]) {
-            return undefined;
-        }
-
-        return state.indexes[key].rowIndex;
-    }
-
-    getRowByKey(state, key) {
-        const rows = state.rows;
-        return rows[this.getRowIndexByKey(state, key)];
-    }
-
-    getCellValue(state, rowKeyValue, colKeyValue) {
-        const row = this.getRowByKey(state, rowKeyValue);
-        const colIndex = state.headerIndexes[colKeyValue];
-
-        return row.cells[colIndex].value;
-    }
-
-    getSelectedRowsKeys(state) {
-        return Object.keys(state.selectedRowsKeys).filter(
-            (key) => state.selectedRowsKeys[key]
-        );
-    }
-
-    getCurrentSelectionLength(state) {
-        return this.getSelectedRowsKeys(state).length;
-    }
-
-    isSelectedRow(state, rowKeyValue) {
-        return !!state.selectedRowsKeys[rowKeyValue];
-    }
-
-    getColumns(state) {
-        return state.columns;
-    }
-
-    handleEditCell = (event) => {
+    handleCustomEditButtonClick(event) {
         event.stopPropagation();
-
-        const { colKeyValue, rowKeyValue, value } = event.detail;
-        const dirtyValues = this.state.inlineEdit.dirtyValues;
+        const { colKeyValue, rowKeyValue, state } = event.detail;
+        this.state = state;
         const inlineEdit = this.state.inlineEdit;
 
+        // console.log((Object.values(dirtyValues).length > 0))
         inlineEdit.panelVisible = true;
         inlineEdit.rowKeyValue = rowKeyValue;
         inlineEdit.colKeyValue = colKeyValue;
-        inlineEdit.editedValue = this.getCellValue(
+        inlineEdit.editedValue = getCellValue(
             this.state,
             rowKeyValue,
             colKeyValue
         );
-        inlineEdit.massEditSelectedRows = this.getCurrentSelectionLength(
-            this.state
-        );
+        inlineEdit.massEditSelectedRows = getCurrentSelectionLength(this.state);
         inlineEdit.massEditEnabled =
-            this.isSelectedRow(this.state, rowKeyValue) &&
+            isSelectedRow(this.state, rowKeyValue) &&
             inlineEdit.massEditSelectedRows > 1;
 
         const colIndex = this.state.headerIndexes[colKeyValue];
-        inlineEdit.columnDef = this.getColumns(this.state)[colIndex];
+        inlineEdit.columnDef = getColumns(this.state)[colIndex];
+    }
+
+    handleEditCell = (event) => {
+        event.stopPropagation();
+        const { colKeyValue, rowKeyValue, value } = event.detail;
+        const dirtyValues = this.state.inlineEdit.dirtyValues;
 
         // If no values have been edited in the row yet,
         // create the row object in the state dirty values
@@ -721,7 +699,7 @@ export default class Datatable extends LightningDatatable {
         this.dispatchEvent(
             new CustomEvent('cellchange', {
                 detail: {
-                    draftValues: this.getChangesForCustomer(cellChange)
+                    draftValues: getChangesForCustomer(cellChange, this.state)
                 }
             })
         );
@@ -746,39 +724,5 @@ export default class Datatable extends LightningDatatable {
         );
     }
 
-    /**
-     *
-     * @param {Object} changes - The internal representation of changes in a row.
-     * @returns {Object} - the list of customer changes in a row
-     */
-    getColumnsChangesForCustomer(changes) {
-        return Object.keys(changes).reduce((result, colKey) => {
-            const columns = this.state.columns;
-            const columnIndex = this.state.headerIndexes[colKey];
-
-            result[columns[columnIndex].fieldName] = changes[colKey];
-
-            return result;
-        }, {});
-    }
-
-    /**
-     *
-     * @param {Object} changes - The internal representation of changes in a row
-     * @returns {Object} - The formatted data for draft values.
-     */
-    getChangesForCustomer(changes) {
-        const keyField = this.state.keyField;
-        return Object.keys(changes).reduce((result, rowKey) => {
-            const rowChanges = this.getColumnsChangesForCustomer(
-                changes[rowKey]
-            );
-
-            if (Object.keys(rowChanges).length > 0) {
-                rowChanges[keyField] = rowKey;
-                result.push(rowChanges);
-            }
-            return result;
-        }, []);
-    }
+    /* -------------- MassCheckboxChange ------------- */
 }

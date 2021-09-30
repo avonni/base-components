@@ -110,20 +110,8 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     handleEditButtonClick() {
-        const { rowKeyValue, colKeyValue } = this;
         this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                bubbles: true,
-                composed: true,
-                detail: {
-                    rowKeyValue,
-                    colKeyValue
-                }
-            })
-        );
-
-        this.dispatchEvent(
-            new CustomEvent('comboboxadd', {
+            new CustomEvent('getcomboboxstate', {
                 detail: {
                     callbacks: {
                         updateList: this.getState.bind(this)
@@ -131,6 +119,19 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 },
                 bubbles: true,
                 composed: true
+            })
+        );
+
+        const { rowKeyValue, colKeyValue, state } = this;
+        this.dispatchEvent(
+            new CustomEvent('customeditbuttonclick', {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    rowKeyValue,
+                    colKeyValue,
+                    state
+                }
             })
         );
 
