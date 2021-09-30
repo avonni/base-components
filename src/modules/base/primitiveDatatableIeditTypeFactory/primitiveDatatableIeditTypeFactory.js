@@ -28,15 +28,13 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     }
 
     set columnDef(value) {
-        const def = value.columns[4];
-        console.log(def);
         assert(
             // eslint-disable-next-line no-prototype-builtins
-            CUSTOM_TYPES_TPL.hasOwnProperty(def.type),
+            CUSTOM_TYPES_TPL.hasOwnProperty(value.type),
             INVALID_TYPE_FOR_EDIT
         );
-        this._columnDef = def;
-        this.columnLabel = def.label;
+        this._columnDef = value;
+        this.columnLabel = value.label;
     }
 
     get columnType() {
@@ -57,6 +55,9 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         this.concreteComponent.addEventListener('blur', this._blurHandler);
         this.concreteComponent.addEventListener('focus', this._focusHandler);
         this.concreteComponent.addEventListener('change', this._changeHandler);
+        if (this.concreteComponent) {
+            this.concreteComponent.focus();
+        }
     }
 
     get concreteComponent() {

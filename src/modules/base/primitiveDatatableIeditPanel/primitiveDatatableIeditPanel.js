@@ -17,7 +17,6 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             debounceInteraction: true
         });
         this.interactingState.onleave(() => this.handlePanelLoosedFocus());
-        console.log(this.options);
     }
 
     get computedStyle() {

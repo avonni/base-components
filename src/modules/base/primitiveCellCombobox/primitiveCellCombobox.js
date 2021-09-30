@@ -32,7 +32,6 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean } from 'c/utilsPrivate';
-import { InteractingState } from 'c/inputUtils';
 
 export default class PrimitiveCellCombobox extends LightningElement {
     @api colKeyValue;
@@ -46,17 +45,10 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api placeholder;
 
     visible = false;
-    isMassEditEnabled = false;
-    numberOfSelectedRows = 0;
     _value;
     _readOnly;
 
     connectedCallback() {
-        this.interactingState = new InteractingState({
-            duration: 10,
-            debounceInteraction: true
-        });
-        this.interactingState.onleave(() => this.handlePanelLoosedFocus());
         this.template.addEventListener('changecomboboxfactory', (event) => {
             this.handleChange(event);
         });
@@ -144,18 +136,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
         this._readOnly = false;
         this.visible = true;
-        this.countNumberSelected(this.state.selectedRowsKeys);
-    }
-
-    countNumberSelected(object) {
-        let count = 0;
-        Object.values(object).forEach((value) => {
-            if (value) {
-                count++;
-            }
-        });
-        this.numberOfSelectedRows = count;
-        this.isMassEditEnabled = count > 1;
     }
 
     handleInlineEditFinish() {

@@ -644,11 +644,68 @@ export default class Datatable extends LightningDatatable {
         }
     }
 
+    getRowIndexByKey(state, key) {
+        if (!state.indexes[key]) {
+            return undefined;
+        }
+
+        return state.indexes[key].rowIndex;
+    }
+
+    getRowByKey(state, key) {
+        const rows = state.rows;
+        return rows[this.getRowIndexByKey(state, key)];
+    }
+
+    getCellValue(state, rowKeyValue, colKeyValue) {
+        const row = this.getRowByKey(state, rowKeyValue);
+        const colIndex = state.headerIndexes[colKeyValue];
+
+        return row.cells[colIndex].value;
+    }
+
+    getSelectedRowsKeys(state) {
+        return Object.keys(state.selectedRowsKeys).filter(
+            (key) => state.selectedRowsKeys[key]
+        );
+    }
+
+    getCurrentSelectionLength(state) {
+        return this.getSelectedRowsKeys(state).length;
+    }
+
+    isSelectedRow(state, rowKeyValue) {
+        return !!state.selectedRowsKeys[rowKeyValue];
+    }
+
+    getColumns(state) {
+        return state.columns;
+    }
+
     handleEditCell = (event) => {
         event.stopPropagation();
 
         const { colKeyValue, rowKeyValue, value } = event.detail;
         const dirtyValues = this.state.inlineEdit.dirtyValues;
+        const inlineEdit = this.state.inlineEdit;
+
+        inlineEdit.panelVisible = true;
+        inlineEdit.rowKeyValue = rowKeyValue;
+        inlineEdit.colKeyValue = colKeyValue;
+        inlineEdit.editedValue = this.getCellValue(
+            this.state,
+            rowKeyValue,
+            colKeyValue
+        );
+        inlineEdit.massEditSelectedRows = this.getCurrentSelectionLength(
+            this.state
+        );
+        inlineEdit.massEditEnabled =
+            this.isSelectedRow(this.state, rowKeyValue) &&
+            inlineEdit.massEditSelectedRows > 1;
+
+        const colIndex = this.state.headerIndexes[colKeyValue];
+        inlineEdit.columnDef = this.getColumns(this.state)[colIndex];
 
         // If no values have been edited in the row yet,
         // create the row object in the state dirty values

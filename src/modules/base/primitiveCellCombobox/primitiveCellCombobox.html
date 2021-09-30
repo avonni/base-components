@@ -36,13 +36,13 @@
     <template if:true={visible}>
         <c-primitive-datatable-iedit-panel
             data-iedit-panel="true"
-            visible={visible}
-            row-key-value={state.activeCell.rowKeyValue}
-            col-key-value={state.activeCell.colKeyValue}
-            edited-value={value}
-            column-def={state}
-            is-mass-edit-enabled={isMassEditEnabled}
-            number-of-selected-rows={numberOfSelectedRows}
+            visible={state.inlineEdit.panelVisible}
+            row-key-value={state.inlineEdit.rowKeyValue}
+            col-key-value={state.inlineEdit.colKeyValue}
+            edited-value={state.inlineEdit.editedValue}
+            column-def={state.inlineEdit.columnDef}
+            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
+            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
             onieditfinished={handleInlineEditFinish}
             onmasscheckboxchange={handleMassCheckboxChange}
             options={options}
