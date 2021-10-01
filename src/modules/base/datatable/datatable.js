@@ -38,7 +38,10 @@ import {
     getCurrentSelectionLength,
     isSelectedRow,
     getColumns,
-    getChangesForCustomer
+    getChangesForCustomer,
+    markSelectedCell,
+    markAllSelectedRowsAsSelectedCell,
+    markAllSelectedRowsAsDeselectedCell
 } from './inlineEdit';
 
 import avatar from './avatar.html';
@@ -320,6 +323,11 @@ export default class Datatable extends LightningDatatable {
             this.handleCustomEditButtonClick
         );
 
+        this.template.addEventListener(
+            'custommasscheckboxchange',
+            this.handleMassCheckboxChange
+        );
+
         this.template.addEventListener('getcomboboxstate', (e) => {
             e.detail.callbacks.updateList(this.state);
         });
@@ -350,6 +358,7 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
+        console.log(this.state);
     }
 
     disconnectedCallback() {
@@ -724,5 +733,17 @@ export default class Datatable extends LightningDatatable {
         );
     }
 
-    /* -------------- MassCheckboxChange ------------- */
+    handleMassCheckboxChange(event) {
+        const state = this.state;
+        if (event.detail.checked) {
+            markAllSelectedRowsAsSelectedCell(this.state);
+        } else {
+            markAllSelectedRowsAsDeselectedCell(this.state);
+            markSelectedCell(
+                state,
+                state.inlineEdit.rowKeyValue,
+                state.inlineEdit.colKeyValue
+            );
+        }
+    }
 }

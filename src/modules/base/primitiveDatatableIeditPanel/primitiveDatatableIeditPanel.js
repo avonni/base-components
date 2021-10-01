@@ -86,10 +86,11 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
         detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
 
-        const event = new CustomEvent('ieditfinished', {
-            detail
-        });
-        this.dispatchEvent(event);
+        this.dispatchEvent(
+            new CustomEvent('ieditfinished', {
+                detail
+            })
+        );
     }
 
     @api
@@ -187,12 +188,14 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     handleMassCheckboxChange(event) {
-        const customEvent = new CustomEvent('masscheckboxchange', {
-            detail: {
-                checked: event.detail.checked
-            }
-        });
-
-        this.dispatchEvent(customEvent);
+        this.dispatchEvent(
+            new CustomEvent('custommasscheckboxchange', {
+                detail: {
+                    checked: event.detail.checked
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 }

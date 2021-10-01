@@ -69,3 +69,41 @@ export function getChangesForCustomer(changes, state) {
         return result;
     }, []);
 }
+
+/* -------------- MassCheckboxChange ------------- */
+
+function markDeselectedCell(state, rowKeyValue, colKeyValue) {
+    const row = getRowByKey(state, rowKeyValue);
+    const colIndex = state.headerIndexes[colKeyValue];
+
+    if (row && colIndex) {
+        row.cells[colIndex].ariaSelected = false;
+    }
+}
+
+export function markSelectedCell(state, rowKeyValue, colKeyValue) {
+    const row = getRowByKey(state, rowKeyValue);
+    const colIndex = state.headerIndexes[colKeyValue];
+
+    if (row && colIndex) {
+        row.cells[colIndex].ariaSelected = 'true';
+    }
+}
+
+export function markAllSelectedRowsAsSelectedCell(state) {
+    const { colKeyValue } = state.inlineEdit;
+    const selectedRowKeys = getSelectedRowsKeys(state);
+
+    selectedRowKeys.forEach((rowKeyValue) => {
+        markSelectedCell(state, rowKeyValue, colKeyValue);
+    });
+}
+
+export function markAllSelectedRowsAsDeselectedCell(state) {
+    const { colKeyValue } = state.inlineEdit;
+    const selectedRowKeys = getSelectedRowsKeys(state);
+
+    selectedRowKeys.forEach((rowKeyValue) => {
+        markDeselectedCell(state, rowKeyValue, colKeyValue);
+    });
+}
