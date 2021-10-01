@@ -45,6 +45,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api placeholder;
 
     visible = false;
+    editable = false;
     _value;
     _readOnly;
 
@@ -52,10 +53,34 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this.template.addEventListener('changecomboboxfactory', (event) => {
             this.handleChange(event);
         });
+
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandrecord', {
+                detail: {
+                    callbacks: {
+                        getState: this.getState.bind(this),
+                        getColumns: this.getColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     getState(state) {
         this.state = state;
+    }
+
+    getColumns(columns) {
+        this.columns = columns;
+        this.isEditable();
+    }
+
+    isEditable() {
+        let combobox = {};
+        combobox = this.columns.find((column) => column.type === 'combobox');
+        this.editable = combobox.editable;
     }
 
     renderedCallback() {
@@ -111,10 +136,11 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     handleEditButtonClick() {
         this.dispatchEvent(
-            new CustomEvent('getcomboboxstate', {
+            new CustomEvent('getdatatablestateanddata', {
                 detail: {
                     callbacks: {
-                        updateList: this.getState.bind(this)
+                        getState: this.getState.bind(this),
+                        getColumns: this.getColumns.bind(this)
                     }
                 },
                 bubbles: true,

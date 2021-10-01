@@ -63,25 +63,13 @@
                 variant="label-hidden"
                 value={value}
             ></c-combobox>
-            <button
-                tabindex={internalTabIndex}
-                class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small"
-                style="margin-top: 7px"
-                data-navigation="enable"
-                data-action-triggers="enter,space"
-                data-action-edit="true"
-                onclick={handleEditButtonClick}
-            >
-                <c-primitive-icon
-                    icon-name="utility:edit"
-                    size="xx-small"
-                    svg-class="slds-button__icon slds-button__icon_hint slds-button__icon_lock slds-button__icon_small slds-button__icon_edit"
-                >
-                </c-primitive-icon>
-                <span class="slds-assistive-text">
-                    {editIconAssistiveText}
-                </span>
-            </button>
+            <template if:true={editable}>
+                <c-primitive-cell-editable-button
+                    onclick={handleEditButtonClick}
+                    column-label="combobox"
+                    style="margin-top: 7px"
+                ></c-primitive-cell-editable-button>
+            </template>
         </span>
     </template>
 </template>

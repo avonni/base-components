@@ -275,6 +275,10 @@
             "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
+            "name": "c/primitiveCellEditableButton",
+            "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
+        },
+        {
             "name": "c/primitiveCellInputCounter",
             "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
         },

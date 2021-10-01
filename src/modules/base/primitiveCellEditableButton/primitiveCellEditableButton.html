@@ -1,0 +1,17 @@
+<template>
+    <button
+        tabindex={internalTabIndex}
+        class="slds-button slds-button_icon slds-cell-edit__button slds-m-left_x-small"
+        data-navigation="enable"
+        data-action-triggers="enter,space"
+        data-action-edit="true"
+    >
+        <c-primitive-icon
+            icon-name="utility:edit"
+            size="xx-small"
+            svg-class="slds-button__icon slds-button__icon_hint slds-button__icon_lock slds-button__icon_small slds-button__icon_edit"
+        >
+        </c-primitive-icon>
+        <span class="slds-assistive-text"> {assistiveText} </span>
+    </button>
+</template>

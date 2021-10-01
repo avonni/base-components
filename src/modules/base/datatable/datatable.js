@@ -298,8 +298,6 @@ export default class Datatable extends LightningDatatable {
         }
     };
 
-    _records = [];
-
     connectedCallback() {
         super.connectedCallback();
 
@@ -328,8 +326,9 @@ export default class Datatable extends LightningDatatable {
             this.handleMassCheckboxChange
         );
 
-        this.template.addEventListener('getcomboboxstate', (e) => {
-            e.detail.callbacks.updateList(this.state);
+        this.template.addEventListener('getdatatablestateandrecord', (e) => {
+            e.detail.callbacks.getState(this.state);
+            e.detail.callbacks.getColumns(this.columns);
         });
     }
 
@@ -358,7 +357,6 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
-        console.log(this.state);
     }
 
     disconnectedCallback() {
@@ -671,7 +669,6 @@ export default class Datatable extends LightningDatatable {
         this.state = state;
         const inlineEdit = this.state.inlineEdit;
 
-        // console.log((Object.values(dirtyValues).length > 0))
         inlineEdit.panelVisible = true;
         inlineEdit.rowKeyValue = rowKeyValue;
         inlineEdit.colKeyValue = colKeyValue;
