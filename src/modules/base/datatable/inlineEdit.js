@@ -107,3 +107,81 @@ export function markAllSelectedRowsAsDeselectedCell(state) {
         markDeselectedCell(state, rowKeyValue, colKeyValue);
     });
 }
+
+/* -------------- processInlineEditFinish ------------- */
+export function isValidCell(state, rowKeyValue, colKeyValue) {
+    const row = getRowByKey(state, rowKeyValue);
+    const colIndex = state.headerIndexes[colKeyValue];
+
+    return row && row.cells[colIndex];
+}
+
+export function updateDirtyValues(state, rowColKeyValues) {
+    const dirtyValues = state.inlineEdit.dirtyValues;
+
+    Object.keys(rowColKeyValues).forEach((rowKey) => {
+        if (!Object.prototype.hasOwnProperty.call(dirtyValues, rowKey)) {
+            dirtyValues[rowKey] = {};
+        }
+
+        Object.assign(dirtyValues[rowKey], rowColKeyValues[rowKey]);
+    });
+}
+
+function dispatchCellChangeEvent(dtInstance, cellChange) {
+    dtInstance.dispatchEvent(
+        new CustomEvent('cellchange', {
+            detail: {
+                draftValues: getChangesForCustomer(dtInstance.state, cellChange)
+            }
+        })
+    );
+}
+
+export function processInlineEditFinishCustom(
+    dt,
+    reason,
+    rowKeyValue,
+    colKeyValue
+) {
+    const state = dt.state;
+    const inlineEditState = state.inlineEdit;
+    console.log(inlineEditState);
+
+    const shouldSaveData =
+        reason !== 'edit-canceled' &&
+        !(inlineEditState.massEditEnabled && reason === 'loosed-focus') &&
+        isValidCell(dt.state, rowKeyValue, colKeyValue);
+
+    if (shouldSaveData) {
+        const panel = dt.template.querySelector('[data-iedit-panel="true"]');
+        const editValue = panel.value;
+        const isValidEditValue = panel.validity.valid;
+        const updateAllSelectedRows = panel.isMassEditChecked;
+        const currentValue = getCellValue(state, rowKeyValue, colKeyValue);
+
+        if (
+            isValidEditValue &&
+            (editValue !== currentValue || updateAllSelectedRows)
+        ) {
+            const cellChange = {};
+            cellChange[rowKeyValue] = {};
+            cellChange[rowKeyValue][colKeyValue] = editValue;
+
+            if (updateAllSelectedRows) {
+                const selectedRowKeys = getSelectedRowsKeys(state);
+                selectedRowKeys.forEach((rowKey) => {
+                    cellChange[rowKey] = {};
+                    cellChange[rowKey][colKeyValue] = editValue;
+                });
+            }
+
+            updateDirtyValues(state, cellChange);
+
+            dispatchCellChangeEvent(dt, cellChange);
+
+            // @todo: do we need to update all rows in the dt or just the one that was modified?
+            // updateRowsAndCellIndexes.call(dt);
+        }
+    }
+}

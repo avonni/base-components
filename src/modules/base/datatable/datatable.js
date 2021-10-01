@@ -41,7 +41,10 @@ import {
     getChangesForCustomer,
     markSelectedCell,
     markAllSelectedRowsAsSelectedCell,
-    markAllSelectedRowsAsDeselectedCell
+    markAllSelectedRowsAsDeselectedCell,
+    updateDirtyValues,
+    isValidCell,
+    getSelectedRowsKeys
 } from './inlineEdit';
 
 import avatar from './avatar.html';
@@ -324,6 +327,11 @@ export default class Datatable extends LightningDatatable {
         this.template.addEventListener(
             'custommasscheckboxchange',
             this.handleMassCheckboxChange
+        );
+
+        this.template.addEventListener(
+            'ieditfinishedcustom',
+            this.handleInlineEditFinishCustom
         );
 
         this.template.addEventListener('getdatatablestateandrecord', (e) => {
@@ -730,7 +738,7 @@ export default class Datatable extends LightningDatatable {
         );
     }
 
-    handleMassCheckboxChange(event) {
+    handleMassCheckboxChange = (event) => {
         const state = this.state;
         if (event.detail.checked) {
             markAllSelectedRowsAsSelectedCell(this.state);
@@ -741,6 +749,56 @@ export default class Datatable extends LightningDatatable {
                 state.inlineEdit.rowKeyValue,
                 state.inlineEdit.colKeyValue
             );
+        }
+    };
+
+    handleInlineEditFinishCustom = (event) => {
+        const { reason, rowKeyValue, colKeyValue } = event.detail;
+
+        this.processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue);
+    };
+
+    processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue) {
+        const state = this.state;
+        const inlineEditState = state.inlineEdit;
+
+        const shouldSaveData =
+            reason !== 'edit-canceled' &&
+            !(inlineEditState.massEditEnabled && reason === 'loosed-focus') &&
+            isValidCell(this.state, rowKeyValue, colKeyValue);
+
+        if (shouldSaveData) {
+            const panel = this.template.querySelector(
+                '[data-iedit-panel="true"]'
+            );
+            const editValue = panel.value;
+            const isValidEditValue = panel.validity.valid;
+            const updateAllSelectedRows = panel.isMassEditChecked;
+            const currentValue = getCellValue(state, rowKeyValue, colKeyValue);
+
+            if (
+                isValidEditValue &&
+                (editValue !== currentValue || updateAllSelectedRows)
+            ) {
+                const cellChange = {};
+                cellChange[rowKeyValue] = {};
+                cellChange[rowKeyValue][colKeyValue] = editValue;
+
+                if (updateAllSelectedRows) {
+                    const selectedRowKeys = getSelectedRowsKeys(state);
+                    selectedRowKeys.forEach((rowKey) => {
+                        cellChange[rowKey] = {};
+                        cellChange[rowKey][colKeyValue] = editValue;
+                    });
+                }
+
+                updateDirtyValues(state, cellChange);
+
+                // dispatchCellChangeEvent(this, cellChange);
+
+                // @todo: do we need to update all rows in the this or just the one that was modified?
+                // updateRowsAndCellIndexes.call(dt);
+            }
         }
     }
 }

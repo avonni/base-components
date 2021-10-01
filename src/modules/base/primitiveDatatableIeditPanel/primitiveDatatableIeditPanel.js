@@ -87,8 +87,10 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
 
         this.dispatchEvent(
-            new CustomEvent('ieditfinished', {
-                detail
+            new CustomEvent('ieditfinishedcustom', {
+                detail,
+                bubbles: true,
+                composed: true
             })
         );
     }
@@ -108,17 +110,17 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     @api
-    get value() {
-        return this.inputableElement.value;
+    value() {
+        return this.inputableElement.value();
     }
 
     @api
-    get validity() {
+    validity() {
         return this.inputableElement.validity;
     }
 
     @api
-    get isMassEditChecked() {
+    isMassEditChecked() {
         return (
             this.isMassEditEnabled &&
             this.template.querySelector('[data-mass-selection="true"]').checked

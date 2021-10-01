@@ -54,6 +54,11 @@ export default class PrimitiveCellCombobox extends LightningElement {
             this.handleChange(event);
         });
 
+        this.template.addEventListener('ieditfinishedcustom', () => {
+            this.visible = false;
+            this._readOnly = true;
+        });
+
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandrecord', {
                 detail: {
@@ -126,6 +131,14 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('privateeditcustomcell', {
                 detail: detail,
+                bubbles: true,
+                composed: true
+            })
+        );
+
+        this.dispatchEvent(
+            new CustomEvent('ieditfinishedcustom', {
+                detail,
                 bubbles: true,
                 composed: true
             })

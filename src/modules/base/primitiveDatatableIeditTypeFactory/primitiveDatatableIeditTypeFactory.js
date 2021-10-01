@@ -8,7 +8,8 @@ const CUSTOM_TYPES_TPL = {
     combobox: ComboboxTpl
 };
 
-const INVALID_TYPE_FOR_EDIT = 'column type not supported for inline edit';
+const INVALID_TYPE_FOR_EDIT =
+    'column custom type not supported for inline edit';
 
 export default class PrimitiveDatatableIeditTypeFactory extends LightningElement {
     columnLabel;
@@ -72,12 +73,12 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     }
 
     @api
-    get value() {
+    value() {
         return this.concreteComponent.value;
     }
 
     @api
-    get validity() {
+    validity() {
         return this.concreteComponent.validity;
     }
 
