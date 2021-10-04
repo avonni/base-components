@@ -35,6 +35,40 @@ import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 export default {
     title: 'Example/Input Choice Set',
     argTypes: {
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the input is disabled.',
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
+        fieldLevelHelp: {
+            name: 'field-level-help',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Help text detailing the purpose and function of the input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        isMultiSelect: {
+            name: 'is-multi-select',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, multiple choices can be selected.',
+            defaultValue: 0,
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -56,17 +90,13 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        type: {
+        options: {
             control: {
-                type: 'radio'
+                type: 'object'
             },
-            description:
-                'Type of the input. Valid values include default and button.',
-            options: ['default', 'button'],
-            defaultValue: 'default',
+            description: 'Array of option objects.',
             table: {
-                defaultValue: { summary: 'default' },
-                type: { summary: 'string' }
+                type: { summary: 'object[]' }
             }
         },
         orientation: {
@@ -80,36 +110,6 @@ export default {
             table: {
                 defaultValue: { summary: 'vertical' },
                 type: { summary: 'string' }
-            }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'standard',
-                'label-hidden',
-                'label-inline',
-                'label-stacked'
-            ],
-            type: { required: true },
-            defaultValue: 'standard',
-            description:
-                'The variant changes the appearance of the input label. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
-            table: {
-                defaultValue: { summary: 'standard' },
-                type: { summary: 'string' }
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the input is disabled.',
-            defaultValue: 0,
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
             }
         },
         readOnly: {
@@ -136,28 +136,19 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        isMultiSelect: {
-            name: 'is-multi-select',
+        type: {
             control: {
-                type: 'boolean'
+                type: 'radio'
             },
-            description: 'If present, multiple choices can be selected.',
-            defaultValue: 0,
+            description:
+                'Type of the input. Valid values include default and button.',
+            options: ['default', 'button'],
+            defaultValue: 'default',
             table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
+                defaultValue: { summary: 'default' },
+                type: { summary: 'string' }
             }
         },
-        options: {
-            control: {
-                type: 'object'
-            },
-            description: 'Array of option objects.',
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
-
         value: {
             control: {
                 type: 'object'
@@ -167,6 +158,25 @@ export default {
                 'The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.',
             table: {
                 type: { summary: 'string[]' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'standard',
+                'label-hidden',
+                'label-inline',
+                'label-stacked'
+            ],
+            type: { required: true },
+            defaultValue: 'standard',
+            description:
+                'The variant changes the appearance of the input label. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
+            table: {
+                defaultValue: { summary: 'standard' },
+                type: { summary: 'string' }
             }
         }
     },
@@ -215,7 +225,8 @@ RadioButtons.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue
+    value: dayValue,
+    fieldLevelHelp: 'Input choice set with radio buttons'
 };
 
 export const Checkboxes = Template.bind({});
