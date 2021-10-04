@@ -738,7 +738,9 @@ export default class Combobox extends LightningElement {
      * Dispatches change event.
      */
     handleChange(event) {
-        this._value = event.detail.value;
+        this._value = this.isMultiSelect
+            ? event.detail.value
+            : event.detail.value.toString();
         /**
          * The event fired when a user clicks on an action.
          *
@@ -751,7 +753,7 @@ export default class Combobox extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.value
+                    value: this._value
                 },
                 bubbles: true
             })
