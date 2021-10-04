@@ -34,7 +34,7 @@
 
 <template>
     <template if:true={visible}>
-        <c-primitive-datatable-iedit-panel
+        <c-primitive-datatable-iedit-panel-custom
             data-iedit-panel="true"
             visible={state.inlineEdit.panelVisible}
             row-key-value={state.inlineEdit.rowKeyValue}
@@ -46,7 +46,7 @@
             onieditfinished={handleInlineEditFinish}
             onmasscheckboxchange={handleMassCheckboxChange}
             options={options}
-        ></c-primitive-datatable-iedit-panel>
+        ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
         <span class="slds-grid slds-grid_align-end slds-cell-edit">

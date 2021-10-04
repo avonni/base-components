@@ -315,16 +315,16 @@
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
-            "name": "c/primitiveDatatableIeditInputWrapper",
-            "path": "src/modules/base/primitiveDatatableIeditInputWrapper/primitiveDatatableIeditInputWrapper.js"
+            "name": "c/primitiveDatatableIeditInputWrapperCustom",
+            "path": "src/modules/base/primitiveDatatableIeditInputWrapperCustom/primitiveDatatableIeditInputWrapperCustom.js"
         },
         {
-            "name": "c/primitiveDatatableIeditPanel",
-            "path": "src/modules/base/primitiveDatatableIeditPanel/primitiveDatatableIeditPanel.js"
+            "name": "c/primitiveDatatableIeditPanelCustom",
+            "path": "src/modules/base/primitiveDatatableIeditPanelCustom/primitiveDatatableIeditPanelCustom.js"
         },
         {
-            "name": "c/primitiveDatatableIeditTypeFactory",
-            "path": "src/modules/base/primitiveDatatableIeditTypeFactory/primitiveDatatableIeditTypeFactory.js"
+            "name": "c/primitiveDatatableIeditTypeFactoryCustom",
+            "path": "src/modules/base/primitiveDatatableIeditTypeFactoryCustom/primitiveDatatableIeditTypeFactoryCustom.js"
         },
         {
             "name": "c/primitiveDropdownMenu",
