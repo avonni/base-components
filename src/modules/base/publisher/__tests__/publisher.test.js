@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Publisher from 'c/publisher';
 
+let element;
 describe('Publisher', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,15 @@ describe('Publisher', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-publisher', {
+    beforeEach(() => {
+        element = createElement('base-publisher', {
             is: Publisher
         });
 
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
         expect(element.buttonLabel).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.placeholder).toBeUndefined();
@@ -56,12 +61,6 @@ describe('Publisher', () => {
 
     // button-label
     it('buttonLabel', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -73,12 +72,6 @@ describe('Publisher', () => {
     // disabled
     // Depends on focus()
     it('disabled = false', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -92,12 +85,6 @@ describe('Publisher', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -112,12 +99,6 @@ describe('Publisher', () => {
     // placeholder
     // Depends on focus()
     it('placeholder', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.placeholder = 'A string placeholder';
 
         return Promise.resolve()
@@ -140,12 +121,6 @@ describe('Publisher', () => {
     // value
     // Depends on focus()
     it('value', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.value = 'A string value';
         element.focus();
 
@@ -159,12 +134,6 @@ describe('Publisher', () => {
 
     // variant
     it('variant = base', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -174,12 +143,6 @@ describe('Publisher', () => {
     });
 
     it('variant = comment', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'comment';
 
         return Promise.resolve().then(() => {
@@ -192,12 +155,6 @@ describe('Publisher', () => {
 
     // focus
     it('focus method', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         element.focus();
 
         return Promise.resolve().then(() => {
@@ -216,12 +173,6 @@ describe('Publisher', () => {
     // submit
     // Depends on value
     it('submit event', () => {
-        const element = createElement('base-publisher', {
-            is: Publisher
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.value = 'A string value';
         element.addEventListener('submit', handler);

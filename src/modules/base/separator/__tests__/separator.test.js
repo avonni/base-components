@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Separator from 'c/separator';
 
+let element;
 describe('Separator', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Separator', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-separator', {
+    beforeEach(() => {
+        element = createElement('base-separator', {
             is: Separator
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.iconPosition.default).toBe('left');
@@ -54,12 +58,6 @@ describe('Separator', () => {
     });
 
     it('Label', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'Today';
 
         return Promise.resolve().then(() => {
@@ -69,12 +67,6 @@ describe('Separator', () => {
     });
 
     it('IconName', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:check';
 
         return Promise.resolve().then(() => {
@@ -84,12 +76,6 @@ describe('Separator', () => {
     });
 
     it('IconPosition', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:check';
         element.iconPosition = 'right';
 
@@ -102,12 +88,6 @@ describe('Separator', () => {
     });
 
     it('IconSize', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:check';
         element.iconSize = 'x-small';
 
@@ -118,12 +98,6 @@ describe('Separator', () => {
     });
 
     it('Orientation', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
@@ -135,12 +109,6 @@ describe('Separator', () => {
     });
 
     it('Align Content start', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:check';
         element.iconSize = 'x-small';
         element.alignContent = 'start';
@@ -154,12 +122,6 @@ describe('Separator', () => {
     });
 
     it('Align Content end', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:check';
         element.iconSize = 'x-small';
         element.alignContent = 'end';
@@ -173,12 +135,6 @@ describe('Separator', () => {
     });
 
     it('Icon Margin left', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'Tester';
         element.iconName = 'utility:check';
         element.iconSize = 'small';
@@ -191,12 +147,6 @@ describe('Separator', () => {
     });
 
     it('Icon Margin Right', () => {
-        const element = createElement('base-separator', {
-            is: Separator
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'Tester';
         element.iconName = 'utility:check';
         element.iconSize = 'small';

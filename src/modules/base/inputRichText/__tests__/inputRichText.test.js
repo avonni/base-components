@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import InputRichText from '../inputRichText';
 
+let element;
 describe('InputRichText', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('InputRichText', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-input-rich-text', {
+    beforeEach(() => {
+        element = createElement('base-input-rich-text', {
             is: InputRichText
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.customButtons).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.disabledCategories).toHaveLength(0);
@@ -63,11 +67,6 @@ describe('InputRichText', () => {
 
     // disabled
     it('disabled = true', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -95,11 +94,6 @@ describe('InputRichText', () => {
     });
 
     it('disabled = false', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -130,11 +124,6 @@ describe('InputRichText', () => {
 
     // disabled-categories
     it('disabledCategories', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.disabledCategories = ['FORMAT_TEXT', 'ALIGN_TEXT'];
 
         return Promise.resolve().then(() => {
@@ -157,11 +146,6 @@ describe('InputRichText', () => {
 
     // formats
     it('formats', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.formats = ['align', 'bold'];
 
         return Promise.resolve().then(() => {
@@ -178,11 +162,6 @@ describe('InputRichText', () => {
 
     // is-publisher
     it('isPublisher', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.isPublisher = true;
 
         return Promise.resolve().then(() => {
@@ -196,11 +175,6 @@ describe('InputRichText', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -213,11 +187,6 @@ describe('InputRichText', () => {
 
     // label-visible
     it('labelVisible = true', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.labelVisible = true;
 
         return Promise.resolve().then(() => {
@@ -233,11 +202,6 @@ describe('InputRichText', () => {
     });
 
     it('labelVisible = false', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string label';
         element.labelVisible = false;
 
@@ -251,11 +215,6 @@ describe('InputRichText', () => {
 
     // message-when-bad-input
     it('messageWhenBadInput', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.messageWhenBadInput = 'A string error message';
 
         return Promise.resolve().then(() => {
@@ -268,11 +227,6 @@ describe('InputRichText', () => {
 
     // placeholder
     it('placeholder', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.placeholder = 'A string placeholder';
 
         return Promise.resolve().then(() => {
@@ -285,11 +239,6 @@ describe('InputRichText', () => {
 
     // readOnly
     it('readOnly', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
         element.value = 'Some value';
 
@@ -307,11 +256,6 @@ describe('InputRichText', () => {
 
     // value
     it('value', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.value = 'A string value';
         const textArea = element.shadowRoot.querySelector(
             '[data-element-id="lightning-formatted-rich-text-top-toolbar"]'
@@ -324,11 +268,6 @@ describe('InputRichText', () => {
 
     // variant
     it('variant = top-toolbar', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.variant = 'top-toolbar';
 
         return Promise.resolve().then(() => {
@@ -340,11 +279,6 @@ describe('InputRichText', () => {
     });
 
     it('variant = bottom-toolbar', () => {
-        const element = createElement('base-input-rich-text', {
-            is: InputRichText
-        });
-        document.body.appendChild(element);
-
         element.variant = 'bottom-toolbar';
 
         return Promise.resolve().then(() => {

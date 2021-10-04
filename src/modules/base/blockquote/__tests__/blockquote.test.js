@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Blockquote from 'c/blockquote';
 
+let element;
 describe('Blockquote', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Blockquote', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-blockquote', {
+    beforeEach(() => {
+        element = createElement('base-blockquote', {
             is: Blockquote
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.variant).toBe('default');
         expect(element.title).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -55,11 +59,6 @@ describe('Blockquote', () => {
     /* ----- ATTRIBUTES ----- */
     // variant
     it('Blockquote variant default', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.title = 'Blockquote Title';
 
         return Promise.resolve().then(() => {
@@ -69,11 +68,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote variant brand', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -83,11 +77,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote variant warning', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
@@ -97,11 +86,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote variant success', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
@@ -111,11 +95,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote variant error', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.variant = 'error';
 
         return Promise.resolve().then(() => {
@@ -126,11 +105,6 @@ describe('Blockquote', () => {
 
     // title
     it('Blockquote title', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.title = 'Blockquote Title';
 
         return Promise.resolve().then(() => {
@@ -141,11 +115,6 @@ describe('Blockquote', () => {
 
     // icon name
     it('Blockquote icon name', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
@@ -156,11 +125,6 @@ describe('Blockquote', () => {
 
     // icon size
     it('Blockquote icon size xx-small', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
         element.iconSize = 'xx-small';
 
@@ -171,11 +135,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote icon size x-small', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
         element.iconSize = 'x-small';
 
@@ -186,11 +145,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote icon size small', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
@@ -200,11 +154,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote icon size medium', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
         element.iconSize = 'medium';
 
@@ -215,11 +164,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote icon size large', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
         element.iconSize = 'large';
 
@@ -231,11 +175,6 @@ describe('Blockquote', () => {
 
     // icon position
     it('Blockquote icon position right', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
         element.iconPosition = 'right';
 
@@ -246,11 +185,6 @@ describe('Blockquote', () => {
     });
 
     it('Blockquote icon position left', () => {
-        const element = createElement('base-blockquote', {
-            is: Blockquote
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:error';
         element.iconPosition = 'left';
 

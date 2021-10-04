@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import PrimitiveReferenceLine from 'c/primitiveReferenceLine';
 
+let element;
 describe('PrimitiveReferenceLine', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('PrimitiveReferenceLine', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-reference-line', {
+    beforeEach(() => {
+        element = createElement('base-primitive-reference-line', {
             is: PrimitiveReferenceLine
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.borderStyle).toBe('dotted');
         expect(element.label).toBeUndefined();
         expect(element.orientation).toBe('horizontal');
@@ -56,12 +60,6 @@ describe('PrimitiveReferenceLine', () => {
     // border-style
     // Depends on orientation
     it('borderStyle = solid, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -89,12 +87,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('borderStyle = dashed, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -122,12 +114,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('borderStyle = dotted, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -155,12 +141,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('borderStyle = none, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -181,12 +161,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('borderStyle = solid, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -214,12 +188,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('borderStyle = dashed, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -247,12 +215,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('borderStyle = dotted, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -280,12 +242,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('borderStyle = none, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -307,12 +263,6 @@ describe('PrimitiveReferenceLine', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
 
         element.label = 'A string label';
@@ -324,12 +274,6 @@ describe('PrimitiveReferenceLine', () => {
 
     // orientation
     it('orientation = horizontal', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -342,12 +286,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('orientation = vertical', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -360,12 +298,6 @@ describe('PrimitiveReferenceLine', () => {
     // thickness
     // Depends on orientation
     it('thickness = x-small, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'x-small';
@@ -395,12 +327,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('thickness = small, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'small';
@@ -430,12 +356,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('thickness = medium, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'medium';
@@ -465,12 +385,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('thickness = large, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'large';
@@ -500,12 +414,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('thickness = x-small, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'x-small';
@@ -535,12 +443,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('thickness = small, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'small';
@@ -570,12 +472,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('thickness = medium, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'medium';
@@ -605,12 +501,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('thickness = large, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'large';
@@ -642,12 +532,6 @@ describe('PrimitiveReferenceLine', () => {
     // value
     // Depends on orientation
     it('value lesser than 0, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -659,12 +543,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('value greater than 100, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -676,12 +554,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('value = 35, horizontal orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -693,12 +565,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('value lesser than 0, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -710,12 +576,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('value greater than 100, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -727,12 +587,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('value = 35, vertical orientation', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -745,12 +599,6 @@ describe('PrimitiveReferenceLine', () => {
 
     // variant
     it('variant = default', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -774,12 +622,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('variant = inverse', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -815,12 +657,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('variant = success', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -856,12 +692,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('variant = warning', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -897,12 +727,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('variant = error', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -938,12 +762,6 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     it('variant = lightest', () => {
-        const element = createElement('base-primitive-reference-line', {
-            is: PrimitiveReferenceLine
-        });
-
-        document.body.appendChild(element);
-
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');

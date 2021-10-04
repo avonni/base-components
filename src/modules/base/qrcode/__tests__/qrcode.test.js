@@ -47,6 +47,7 @@ HTMLCanvasElement.prototype.getContext = () => {
     return true;
 };
 
+let element;
 describe('Qrcode', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -54,11 +55,14 @@ describe('Qrcode', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-qrcode', {
+    beforeEach(() => {
+        element = createElement('base-qrcode', {
             is: Qrcode
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.background).toBe('#fff');
         expect(element.borderColor).toBeUndefined();
         expect(element.borderWidth).toBe(0);
@@ -76,12 +80,6 @@ describe('Qrcode', () => {
     // border-color and border-width
     // Depends on renderAs and value
     it('borderColor and borderWidth', () => {
-        const element = createElement('base-qrcode', {
-            is: Qrcode
-        });
-
-        document.body.appendChild(element);
-
         element.borderColor = 'tomato';
         element.borderWidth = 25;
         element.renderAs = 'canvas';
@@ -96,12 +94,6 @@ describe('Qrcode', () => {
     // padding
     // Depends on renderAs and value
     it('padding', () => {
-        const element = createElement('base-qrcode', {
-            is: Qrcode
-        });
-
-        document.body.appendChild(element);
-
         element.padding = 34;
         element.renderAs = 'canvas';
         element.value = 'A string value';
@@ -114,12 +106,6 @@ describe('Qrcode', () => {
 
     // render-as
     it('renderAs = svg', () => {
-        const element = createElement('base-qrcode', {
-            is: Qrcode
-        });
-
-        document.body.appendChild(element);
-
         element.renderAs = 'svg';
 
         return Promise.resolve().then(() => {
@@ -132,12 +118,6 @@ describe('Qrcode', () => {
     });
 
     it('renderAs = canvas', () => {
-        const element = createElement('base-qrcode', {
-            is: Qrcode
-        });
-
-        document.body.appendChild(element);
-
         element.renderAs = 'canvas';
 
         return Promise.resolve().then(() => {
@@ -152,12 +132,6 @@ describe('Qrcode', () => {
     // size
     // Depends on value and renderAs
     it('size', () => {
-        const element = createElement('base-qrcode', {
-            is: Qrcode
-        });
-
-        document.body.appendChild(element);
-
         element.renderAs = 'canvas';
         element.value = 'A string value';
         element.size = 45;

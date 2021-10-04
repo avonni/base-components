@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Pagination from 'c/pagination';
 
+let element;
 describe('Pagination', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Pagination', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-pagination', {
+    beforeEach(() => {
+        element = createElement('base-paginaion', {
             is: Pagination
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.align).toBe('left');
         expect(element.disabled).toBeFalsy();
         expect(element.ellipsisText).toBe('...');
@@ -66,90 +70,76 @@ describe('Pagination', () => {
 
     // align
     it('align = left', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
-        const wrapper = element.shadowRoot.querySelector('.avonni-pagination-container');
+        const wrapper = element.shadowRoot.querySelector(
+            '.avonni-pagination-container'
+        );
         element.align = 'left';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain('avonni-pagination-container-left');
+            expect(wrapper.classList).toContain(
+                'avonni-pagination-container-left'
+            );
         });
     });
 
     it('align = center', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
-        const wrapper = element.shadowRoot.querySelector('.avonni-pagination-container');
+        const wrapper = element.shadowRoot.querySelector(
+            '.avonni-pagination-container'
+        );
         element.align = 'center';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain('avonni-pagination-container-center');
+            expect(wrapper.classList).toContain(
+                'avonni-pagination-container-center'
+            );
         });
     });
 
     it('align = right', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
-        const wrapper = element.shadowRoot.querySelector('.avonni-pagination-container');
+        const wrapper = element.shadowRoot.querySelector(
+            '.avonni-pagination-container'
+        );
         element.align = 'right';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain('avonni-pagination-container-right');
+            expect(wrapper.classList).toContain(
+                'avonni-pagination-container-right'
+            );
         });
     });
 
     it('align = fill', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
-        const wrapper = element.shadowRoot.querySelector('.avonni-pagination-container');
+        const wrapper = element.shadowRoot.querySelector(
+            '.avonni-pagination-container'
+        );
         element.align = 'fill';
 
         return Promise.resolve().then(() => {
-            expect(wrapper.classList).toContain('avonni-pagination-container-fill');
+            expect(wrapper.classList).toContain(
+                'avonni-pagination-container-fill'
+            );
         });
     });
 
     // disabled
     // Depends on totalRows and value
     it('disabled = false, with one page', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
             const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
-            buttons.forEach(button => {
+            buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
-            buttonIcons.forEach(button => {
+            buttonIcons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
         });
     });
-    
-    it('disabled = false, with several pages, on first page', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
 
+    it('disabled = false, with several pages, on first page', () => {
         element.disabled = false;
         element.totalRows = 200;
 
@@ -157,7 +147,7 @@ describe('Pagination', () => {
             const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
-            buttons.forEach(button => {
+            buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
             buttonIcons.forEach((button, index) => {
@@ -171,11 +161,6 @@ describe('Pagination', () => {
     });
 
     it('disabled = false, with several pages, on middle page', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.disabled = false;
         element.totalRows = 200;
         element.value = 4;
@@ -184,21 +169,16 @@ describe('Pagination', () => {
             const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
-            buttons.forEach(button => {
+            buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
-            buttonIcons.forEach(button => {
+            buttonIcons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
         });
     });
 
     it('disabled = false, with several pages, on last page', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.disabled = false;
         element.totalRows = 200;
         element.value = 10;
@@ -207,7 +187,7 @@ describe('Pagination', () => {
             const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
-            buttons.forEach(button => {
+            buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
             buttonIcons.forEach((button, index) => {
@@ -219,13 +199,8 @@ describe('Pagination', () => {
             });
         });
     });
-    
-    it('disabled = true', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
 
+    it('disabled = true', () => {
         element.disabled = true;
         element.totalRows = 200;
         element.value = 3;
@@ -234,22 +209,17 @@ describe('Pagination', () => {
             const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
 
-            buttons.forEach(button => {
+            buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
-            buttonIcons.forEach(button => {
+            buttonIcons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
         });
     });
-    
+
     // ellipsis-text
     it('ellipsisText', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.ellipsisText = 'A string ellipsis';
         element.totalRows = 200;
         element.value = 3;
@@ -260,14 +230,9 @@ describe('Pagination', () => {
             expect(buttons[buttons.length - 1].value).toBe('A string ellipsis');
         });
     });
-    
+
     // first-button-icon-name
     it('firstButtonIconName, without label', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.firstButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -275,14 +240,9 @@ describe('Pagination', () => {
             expect(firstButton.iconName).toBe('utility:apps');
         });
     });
-    
+
     // first-button-label
     it('firstButtonLabel, without icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.firstButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -293,11 +253,6 @@ describe('Pagination', () => {
     });
 
     it('firstButtonLabel, with icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.firstButtonLabel = 'A string label';
         element.firstButtonIconName = 'utility:apps';
 
@@ -310,11 +265,6 @@ describe('Pagination', () => {
 
     // last-button-icon-name
     it('lastButtonIconName, without label', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.lastButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
@@ -322,14 +272,9 @@ describe('Pagination', () => {
             expect(lastButton.iconName).toBe('standard:user');
         });
     });
-        
+
     // last-button-label
     it('lastButtonLabel, without icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.lastButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -340,11 +285,6 @@ describe('Pagination', () => {
     });
 
     it('lastButtonIconName, with icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.lastButtonLabel = 'A string label';
         element.lastButtonIconName = 'utility:apps';
 
@@ -355,14 +295,9 @@ describe('Pagination', () => {
         });
     });
 
-    // limit 
+    // limit
     // Depends on totalRows
     it('limit greater than 3, with enough results to see all buttons', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.limit = 6;
         element.totalRows = 200;
 
@@ -373,11 +308,6 @@ describe('Pagination', () => {
     });
 
     it('limit less than 3, with enough results to see all buttons', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.limit = 1;
         element.totalRows = 200;
 
@@ -388,11 +318,6 @@ describe('Pagination', () => {
     });
 
     it('limit greater than 3, without enough results to see all buttons', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.limit = 18;
         element.totalRows = 25;
 
@@ -403,11 +328,6 @@ describe('Pagination', () => {
     });
 
     it('limit less than 3, without enough results to see all buttons', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.limit = 1;
         element.totalRows = 25;
 
@@ -419,11 +339,6 @@ describe('Pagination', () => {
 
     // next-button-icon-name
     it('nextButtonIconName, without label', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.nextButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
@@ -434,11 +349,6 @@ describe('Pagination', () => {
 
     // next-button-label
     it('nextButtonLabel, without icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.nextButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -449,11 +359,6 @@ describe('Pagination', () => {
     });
 
     it('nextButtonLabel, with icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.nextButtonLabel = 'A string label';
         element.nextButtonIconName = 'utility:apps';
 
@@ -466,11 +371,6 @@ describe('Pagination', () => {
 
     // previous-button-icon-name
     it('previousButtonIconName, without label', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.previousButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
@@ -478,14 +378,9 @@ describe('Pagination', () => {
             expect(previousButton.iconName).toBe('standard:user');
         });
     });
-        
+
     // previous-button-label
     it('previousButtonLabel, without icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.previousButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -496,11 +391,6 @@ describe('Pagination', () => {
     });
 
     it('previousButtonIconName, with icon', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.previousButtonLabel = 'A string label';
         element.previousButtonIconName = 'utility:apps';
 
@@ -514,42 +404,31 @@ describe('Pagination', () => {
     // value
     // Depends on total-rows
     it('value in the range', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.value = 3;
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
+            const activeButton = element.shadowRoot.querySelector(
+                '.avonni-button-active'
+            );
             expect(activeButton.value).toBe(3);
         });
     });
 
     it('value greater than the available range', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.value = 30;
         element.totalRows = 20;
 
         return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
+            const activeButton = element.shadowRoot.querySelector(
+                '.avonni-button-active'
+            );
             expect(activeButton).toBeFalsy();
         });
     });
 
     // Number of pages and page change. Checks change event.
     it('Number of pages and page change (test of perPage, totalRows and change event)', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         // There are 5 pages
         element.perPage = 10;
         element.totalRows = 50;
@@ -560,65 +439,72 @@ describe('Pagination', () => {
         // The previous button should be disabled on first page
         expect(previousButton.disabled).toBeTruthy();
 
-        for (let i = 0; i < 3 ; i++) {
+        for (let i = 0; i < 3; i++) {
             nextButton.click();
         }
 
-        return Promise.resolve().then(() => {
-            // After clicking 3 times on the next button, we should be on the penultimate page
-            // Next and previous buttons should not be disabled
-            expect(nextButton.disabled).toBeFalsy();
-            expect(previousButton.disabled).toBeFalsy();
+        return Promise.resolve()
+            .then(() => {
+                // After clicking 3 times on the next button, we should be on the penultimate page
+                // Next and previous buttons should not be disabled
+                expect(nextButton.disabled).toBeFalsy();
+                expect(previousButton.disabled).toBeFalsy();
 
-            // Check if event is fired on click on next button
-            const handleChange = (event) => {
-                expect(event.detail.value).toBe(5);
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            }
-            element.addEventListener('change', handleChange)
+                // Check if event is fired on click on next button
+                const handleChange = (event) => {
+                    expect(event.detail.value).toBe(5);
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                };
+                element.addEventListener('change', handleChange);
 
-            nextButton.click();
+                nextButton.click();
 
-            element.removeEventListener('change', handleChange);
-        }).then(() => {
-            // After clicking once more, we should be on the last page
-            // Next button should be disabled, but not previous button
-            expect(nextButton.disabled).toBeTruthy();
-            expect(previousButton.disabled).toBeFalsy();
+                element.removeEventListener('change', handleChange);
+            })
+            .then(() => {
+                // After clicking once more, we should be on the last page
+                // Next button should be disabled, but not previous button
+                expect(nextButton.disabled).toBeTruthy();
+                expect(previousButton.disabled).toBeFalsy();
 
-            // The current page value should be 5
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(5);
+                // The current page value should be 5
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(5);
 
-            // Check if event is fired on click on previous button
-            let pageCounter = 4
-            const handleChange = (event) => {
-                expect(event.detail.value).toBe(pageCounter);
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
+                // Check if event is fired on click on previous button
+                let pageCounter = 4;
+                const handleChange = (event) => {
+                    expect(event.detail.value).toBe(pageCounter);
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
 
-                pageCounter -= 1;
-            }
-            element.addEventListener('change', handleChange)
+                    pageCounter -= 1;
+                };
+                element.addEventListener('change', handleChange);
 
-            for (let i = 0; i < 4 ; i++) {
-                previousButton.click();
-            }
+                for (let i = 0; i < 4; i++) {
+                    previousButton.click();
+                }
 
-            element.removeEventListener('change', handleChange);
-        }).then(() => {
-            // After clicking 4 times on the previous button, we should be on the first page
-            // Previous button should be disabled, but not next button
-            expect(previousButton.disabled).toBeTruthy();
-            expect(nextButton.disabled).toBeFalsy();
+                element.removeEventListener('change', handleChange);
+            })
+            .then(() => {
+                // After clicking 4 times on the previous button, we should be on the first page
+                // Previous button should be disabled, but not next button
+                expect(previousButton.disabled).toBeTruthy();
+                expect(nextButton.disabled).toBeFalsy();
 
-            // The current page value should be 1
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(1);
-        });
+                // The current page value should be 1
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(1);
+            });
     });
 
     /* ---- METHODS ----- */
@@ -626,164 +512,169 @@ describe('Pagination', () => {
     // first
     // Depends on totalRows and value. Checks change event.
     it('method: first', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.totalRows = 200;
         element.value = 3;
 
-        return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(3);
+        return Promise.resolve()
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(3);
 
-            // Check if event is fired
-            const handleChange = (event) => {
-                expect(event.detail.value).toBe(1);
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            };
-            element.addEventListener('change', handleChange);
+                // Check if event is fired
+                const handleChange = (event) => {
+                    expect(event.detail.value).toBe(1);
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                };
+                element.addEventListener('change', handleChange);
 
-            element.first();
+                element.first();
 
-            element.removeEventListener('change', handleChange);
-        }).then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(1);
-        });
+                element.removeEventListener('change', handleChange);
+            })
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(1);
+            });
     });
 
     // last
     // Depends on totalRows. Checks change event.
     it('method: last', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.totalRows = 200;
 
-        return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(1);
+        return Promise.resolve()
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(1);
 
-            // Check if event is fired
-            const handleChange = (event) => {
-                expect(event.detail.value).toBe(10);
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            };
-            element.addEventListener('change', handleChange);
+                // Check if event is fired
+                const handleChange = (event) => {
+                    expect(event.detail.value).toBe(10);
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                };
+                element.addEventListener('change', handleChange);
 
-            element.last();
+                element.last();
 
-            element.removeEventListener('change', handleChange);
-        }).then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            
-            // Based on the fact that the default value for limit is 5, there should be 10 pages
-            expect(activeButton.value).toBe(10);
-        });
+                element.removeEventListener('change', handleChange);
+            })
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+
+                // Based on the fact that the default value for limit is 5, there should be 10 pages
+                expect(activeButton.value).toBe(10);
+            });
     });
 
     // next
     // Depends on totalRows. Checks change event.
     it('method: next', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.totalRows = 200;
 
-        return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(1);
+        return Promise.resolve()
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(1);
 
-            // Check if event is fired
-            const handleChange = (event) => {
-                expect(event.detail.value).toBe(2);
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            };
-            element.addEventListener('change', handleChange);
+                // Check if event is fired
+                const handleChange = (event) => {
+                    expect(event.detail.value).toBe(2);
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                };
+                element.addEventListener('change', handleChange);
 
-            element.next();
+                element.next();
 
-            element.removeEventListener('change', handleChange);
-        }).then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(2);
-        });
+                element.removeEventListener('change', handleChange);
+            })
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(2);
+            });
     });
 
     // previous
     // Depends on totalRows and value. Checks change event.
     it('method: previous', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.totalRows = 200;
         element.value = 3;
 
-        return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(3);
+        return Promise.resolve()
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(3);
 
-            // Check if event is fired
-            const handleChange = (event) => {
-                expect(event.detail.value).toBe(2);
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            };
-            element.addEventListener('change', handleChange);
+                // Check if event is fired
+                const handleChange = (event) => {
+                    expect(event.detail.value).toBe(2);
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                };
+                element.addEventListener('change', handleChange);
 
-            element.previous();
+                element.previous();
 
-            element.removeEventListener('change', handleChange);
-        }).then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(2);
-        });
+                element.removeEventListener('change', handleChange);
+            })
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(2);
+            });
     });
 
     // goto
     // Depends on totalRows. Checks change event.
     it('method: goto', () => {
-        const element = createElement('base-paginaion', {
-            is: Pagination
-        });
-        document.body.appendChild(element);
-
         element.totalRows = 200;
 
-        return Promise.resolve().then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(1);
+        return Promise.resolve()
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(1);
 
-            // Check if event is fired
-            const handleChange = (event) => {
-                expect(event.detail.value).toBe(4);
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            };
-            element.addEventListener('change', handleChange);
+                // Check if event is fired
+                const handleChange = (event) => {
+                    expect(event.detail.value).toBe(4);
+                    expect(event.bubbles).toBeFalsy();
+                    expect(event.cancelable).toBeFalsy();
+                    expect(event.composed).toBeFalsy();
+                };
+                element.addEventListener('change', handleChange);
 
-            element.goto(4);
+                element.goto(4);
 
-            element.removeEventListener('change', handleChange);
-        }).then(() => {
-            const activeButton = element.shadowRoot.querySelector('.avonni-button-active');
-            expect(activeButton.value).toBe(4);
-        });
+                element.removeEventListener('change', handleChange);
+            })
+            .then(() => {
+                const activeButton = element.shadowRoot.querySelector(
+                    '.avonni-button-active'
+                );
+                expect(activeButton.value).toBe(4);
+            });
     });
 });

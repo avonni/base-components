@@ -35,8 +35,8 @@ import VerticalProgressIndicator from '../verticalProgressIndicator';
 
 // Not tested because depends on slot content
 // currentStep
-// hasError
 
+let element;
 describe('VerticalProgressIndicator', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -44,11 +44,14 @@ describe('VerticalProgressIndicator', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-vertical-progress-indicator', {
+    beforeEach(() => {
+        element = createElement('base-vertical-progress-indicator', {
             is: VerticalProgressIndicator
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.contentInLine).toBeFalsy();
         expect(element.currentStep).toBeUndefined();
         expect(element.hasError).toBeFalsy();
@@ -59,12 +62,6 @@ describe('VerticalProgressIndicator', () => {
 
     // content-in-line
     it('contentInLine = false', () => {
-        const element = createElement('base-vertical-progress-indicator', {
-            is: VerticalProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.contentInLine = false;
 
         return Promise.resolve().then(() => {
@@ -78,12 +75,6 @@ describe('VerticalProgressIndicator', () => {
     });
 
     it('contentInLine = true', () => {
-        const element = createElement('base-vertical-progress-indicator', {
-            is: VerticalProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.contentInLine = true;
 
         return Promise.resolve().then(() => {
@@ -96,14 +87,25 @@ describe('VerticalProgressIndicator', () => {
         });
     });
 
+    // hasError
+    it('hasError = false', () => {
+        element.hasError = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.hasError).toBeFalsy();
+        });
+    });
+
+    it('hasError = true', () => {
+        element.hasError = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.hasError).toBeTruthy();
+        });
+    });
+
     // variant
     it('variant = base', () => {
-        const element = createElement('base-vertical-progress-indicator', {
-            is: VerticalProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -113,12 +115,6 @@ describe('VerticalProgressIndicator', () => {
     });
 
     it('variant = shaded', () => {
-        const element = createElement('base-vertical-progress-indicator', {
-            is: VerticalProgressIndicator
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'shaded';
 
         return Promise.resolve().then(() => {

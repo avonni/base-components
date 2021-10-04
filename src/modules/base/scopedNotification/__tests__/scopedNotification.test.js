@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import ScopedNotification from 'c/scopedNotification';
 
+let element;
 describe('ScopedNotification', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('ScopedNotification', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-scoped-notification', {
+    beforeEach(() => {
+        element = createElement('base-scoped-notification', {
             is: ScopedNotification
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.iconSize).toBe('medium');
         expect(element.title).toBeUndefined();
@@ -55,12 +59,6 @@ describe('ScopedNotification', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -73,12 +71,6 @@ describe('ScopedNotification', () => {
     // icon-size
     // Depends on iconName
     it('iconSize', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
         element.iconSize = 'large';
 
@@ -90,12 +82,6 @@ describe('ScopedNotification', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -109,12 +95,6 @@ describe('ScopedNotification', () => {
     // variant
     // Depends on iconName
     it('variant = base', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -135,12 +115,6 @@ describe('ScopedNotification', () => {
     });
 
     it('variant = dark', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'dark';
         element.iconName = 'utility:favorite';
 
@@ -164,12 +138,6 @@ describe('ScopedNotification', () => {
     });
 
     it('variant = warning', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'warning';
         element.iconName = 'utility:favorite';
 
@@ -191,12 +159,6 @@ describe('ScopedNotification', () => {
     });
 
     it('variant = error', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'error';
         element.iconName = 'utility:favorite';
 
@@ -220,12 +182,6 @@ describe('ScopedNotification', () => {
     });
 
     it('variant = success', () => {
-        const element = createElement('base-scoped-notification', {
-            is: ScopedNotification
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'success';
         element.iconName = 'utility:favorite';
 

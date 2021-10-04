@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import VisualPickerLink from 'c/visualPickerLink';
 
+let element;
 describe('VisualPickerLink', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('VisualPickerLink', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-visual-picker-link', {
+    beforeEach(() => {
+        element = createElement('base-visual-picker-link', {
             is: VisualPickerLink
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.completed).toBeFalsy();
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -57,12 +61,6 @@ describe('VisualPickerLink', () => {
 
     // completed
     it('completed = false', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.completed = false;
 
         return Promise.resolve().then(() => {
@@ -76,12 +74,6 @@ describe('VisualPickerLink', () => {
     });
 
     it('completed = true', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.completed = true;
 
         return Promise.resolve().then(() => {
@@ -96,12 +88,6 @@ describe('VisualPickerLink', () => {
 
     // href
     it('href', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.href = 'https://www.avonni.app/';
 
         return Promise.resolve().then(() => {
@@ -112,12 +98,6 @@ describe('VisualPickerLink', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -131,12 +111,6 @@ describe('VisualPickerLink', () => {
     });
 
     it('no iconName', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -153,12 +127,6 @@ describe('VisualPickerLink', () => {
     // icon-position
     // Depends on iconName
     it('iconPosition = left', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
         element.iconPosition = 'left';
 
@@ -182,12 +150,6 @@ describe('VisualPickerLink', () => {
     });
 
     it('iconPosition = right', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.iconName = 'utility:apps';
         element.iconPosition = 'right';
 
@@ -212,12 +174,6 @@ describe('VisualPickerLink', () => {
 
     // info-only
     it('infoOnly = false', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.infoOnly = false;
 
         return Promise.resolve().then(() => {
@@ -234,12 +190,6 @@ describe('VisualPickerLink', () => {
     });
 
     it('infoOnly = true', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.infoOnly = true;
 
         return Promise.resolve().then(() => {
@@ -257,12 +207,6 @@ describe('VisualPickerLink', () => {
 
     // title
     it('title', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -277,12 +221,6 @@ describe('VisualPickerLink', () => {
 
     // click
     it('click event', () => {
-        const element = createElement('base-visual-picker-link', {
-            is: VisualPickerLink
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('click', handler);
 

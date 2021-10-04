@@ -38,8 +38,8 @@
             <template for:each={bundles} for:item="bundle">
                 <div
                     key={uniqKey}
-					item-label={bundle.label}
-					item-token={bundle.token}
+                    item-label={bundle.label}
+                    item-token={bundle.token}
                     item-color={bundle.value}
                     onclick={handleClick}
                     onblur={handleBlur}
@@ -53,7 +53,11 @@
                             tabindex="0"
                             data-element-id="a-list"
                         >
-                            <span class="slds-truncate" title="Table View" data-element-id="span-list-icon-wrapper">
+                            <span
+                                class="slds-truncate"
+                                title="Table View"
+                                data-element-id="span-list-icon-wrapper"
+                            >
                                 <svg
                                     class="slds-icon slds-icon_selected slds-icon_x-small slds-icon-text-default slds-m-right_x-small"
                                     aria-hidden="true"
@@ -110,6 +114,7 @@
                             class="slds-color-picker__swatch-trigger"
                             href="javascript:void(0)"
                             onclick={handleClick}
+                            ondblclick={handleDblClick}
                             onblur={handleBlur}
                             onfocus={handleFocus}
                             item-color={color}
@@ -119,8 +124,11 @@
                             tabindex="0"
                             data-element-id="a-base"
                         >
-                            <span class="slds-swatch" data-element-id="span-base">
-                                <span class="slds-assistive-text" 
+                            <span
+                                class="slds-swatch"
+                                data-element-id="span-base"
+                            >
+                                <span class="slds-assistive-text"
                                     >{color}
                                 </span>
                             </span>

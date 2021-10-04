@@ -37,6 +37,7 @@ import ColorPicker from 'c/colorPicker';
 // change event because cannot select color in c-color-palette
 // opacity and type custom because of issues with canvas
 
+let element;
 describe('Color Picker', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -44,10 +45,14 @@ describe('Color Picker', () => {
         }
     });
 
-    it('Color Picker Default attributes', () => {
-        const element = createElement('base-color-picker', {
+    beforeEach(() => {
+        element = createElement('base-color-picker', {
             is: ColorPicker
         });
+        document.body.appendChild(element);
+    });
+
+    it('Color Picker Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
@@ -106,41 +111,30 @@ describe('Color Picker', () => {
 
     // access key
     it('Color Picker access key', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.accessKey).toBe('K');
         });
     });
 
     // // disabled
     it('Color Picker disabled', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.disabled).toBeTruthy();
         });
     });
 
     // field level help
     it('Color Picker field level help', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'This is a field level help text';
 
         return Promise.resolve().then(() => {
@@ -153,16 +147,13 @@ describe('Color Picker', () => {
 
     // isLoading
     it('Color Picker isLoading', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -175,56 +166,42 @@ describe('Color Picker', () => {
 
     // label
     it('Color Picker label', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.label = 'This is a label text';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
             expect(label.textContent).toBe('This is a label text');
         });
     });
 
     // name
     it('Color Picker name', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.name = 'This is a name text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.name).toBe('This is a name text');
         });
     });
 
     // readOnly
     it('Color Picker readOnly', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.disabled).toBeTruthy();
         });
     });
 
     // required
     it('Color Picker required', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -236,11 +213,6 @@ describe('Color Picker', () => {
 
     // value
     it('Color Picker value', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.value = 'rgb(65, 159, 236)';
 
         return Promise.resolve()
@@ -251,18 +223,15 @@ describe('Color Picker', () => {
                 expect(input.value).toBe('rgb(65, 159, 236)');
             })
             .then(() => {
-                const swatch = element.shadowRoot.querySelector('[data-element-id="span"]');
+                const swatch = element.shadowRoot.querySelector(
+                    '[data-element-id="span"]'
+                );
                 expect(swatch.style.background).toBe('rgb(65, 159, 236)');
             });
     });
 
     // variant
     it('Color Picker variant standard', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
@@ -282,11 +251,6 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker variant label-stacked', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-stacked';
 
         return Promise.resolve().then(() => {
@@ -306,11 +270,6 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker variant label-hidden', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-hidden';
         element.label = 'label-hidden';
 
@@ -332,11 +291,6 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker variant label-inline', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
@@ -357,16 +311,13 @@ describe('Color Picker', () => {
 
     // type
     it('Color Picker type base', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.type = 'base';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -378,16 +329,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker type predefined', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.type = 'predefined';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -400,15 +348,12 @@ describe('Color Picker', () => {
 
     // Menu variant without menu icon name
     it('Color Picker menu variant bare', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuVariant = 'bare';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
             );
@@ -416,15 +361,12 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant container', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuVariant = 'container';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-container-more'
             );
@@ -432,15 +374,12 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant border', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuVariant = 'border';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-more'
             );
@@ -448,15 +387,12 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant border-filled', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
             );
@@ -464,15 +400,12 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant bare-inverse', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
             );
@@ -480,15 +413,12 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant border-inverse', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
             );
@@ -497,31 +427,25 @@ describe('Color Picker', () => {
 
     // Menu variant with menu icon name
     it('Color Picker menu variant bare without menu icon down', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconName = 'utility:down';
         element.menuVariant = 'bare';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe('slds-button slds-button_icon-bare');
         });
     });
 
     it('Color Picker menu variant container without menu icon down', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconName = 'utility:down';
         element.menuVariant = 'container';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon-container'
             );
@@ -529,16 +453,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant border without menu icon down', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconName = 'utility:down';
         element.menuVariant = 'border';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon-border'
             );
@@ -546,16 +467,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant border-filled without menu icon down', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconName = 'utility:down';
         element.menuVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon-border-filled'
             );
@@ -563,16 +481,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant bare-inverse without menu icon down', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconName = 'utility:down';
         element.menuVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon-bare slds-button_icon-inverse'
             );
@@ -580,16 +495,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu variant border-inverse without menu icon down', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconName = 'utility:down';
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toBe(
                 'slds-button slds-button_icon-border-inverse'
             );
@@ -598,149 +510,119 @@ describe('Color Picker', () => {
 
     // Menu icon size without menu icon name
     it('Color Picker menu icon size xx-small', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-no-menu-icon-name"]'
+            );
             expect(icon.size).toBe('xx-small');
         });
     });
 
     it('Color Picker menu icon size x-small', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-no-menu-icon-name"]'
+            );
             expect(icon.size).toBe('xx-small');
         });
     });
 
     it('Color Picker menu icon size medium', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-no-menu-icon-name"]'
+            );
             expect(icon.size).toBe('xx-small');
         });
     });
 
     it('Color Picker menu icon size large', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'large';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-no-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-no-menu-icon-name"]'
+            );
             expect(icon.size).toBe('xx-small');
         });
     });
 
     // Menu icon size with menu icon name
     it('Color Picker menu icon size xx-small with menu icon name', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'xx-small';
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-menu-icon-name"]'
+            );
             expect(icon.size).toBe('xx-small');
         });
     });
 
     it('Color Picker menu icon size x-small with menu icon name', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'x-small';
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-menu-icon-name"]'
+            );
             expect(icon.size).toBe('x-small');
         });
     });
 
     it('Color Picker menu icon size medium with menu icon name', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'medium';
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-menu-icon-name"]'
+            );
             expect(icon.size).toBe('medium');
         });
     });
 
     it('Color Picker menu icon size large with menu icon name', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuIconSize = 'large';
         element.menuIconName = 'utility:down';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon-menu-icon-name"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon-menu-icon-name"]'
+            );
             expect(icon.size).toBe('large');
         });
     });
 
     // Menu label
     it('Color Picker menu label border', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuLabel = 'This is a menu label text';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.textContent).toBe('This is a menu label text');
             expect(button.className).toContain('slds-button');
         });
     });
 
     it('Color Picker menu label border-inverse', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuLabel = 'This is a menu label text';
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.textContent).toBe('This is a menu label text');
             expect(button.className).toContain('slds-button_inverse');
         });
@@ -748,14 +630,11 @@ describe('Color Picker', () => {
 
     // Menu alignement & menu nubbin
     it('Color Picker menu alignement left', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -767,16 +646,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement left and menu nubbin', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuNubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -789,16 +665,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement right', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'right';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -810,17 +683,14 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement right and menu nubbin', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'right';
         element.menuNubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -833,16 +703,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement center', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'center';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -854,17 +721,14 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement center and menu nubbin', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'center';
         element.menuNubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -877,16 +741,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement bottom-center', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -898,17 +759,14 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement bottom-center and menu nubbin', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-center';
         element.menuNubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -921,16 +779,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement bottom-left', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -944,17 +799,14 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement bottom-left and menu nubbin', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-left';
         element.menuNubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -969,16 +821,13 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement bottom-right', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -992,17 +841,14 @@ describe('Color Picker', () => {
     });
 
     it('Color Picker menu alignement bottom-right and menu nubbin', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.menuAlignment = 'bottom-right';
         element.menuNubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -1018,16 +864,24 @@ describe('Color Picker', () => {
             });
     });
 
+    // message when bad input
+    it('Color Picker message when bad input value', () => {
+        element.messageWhenBadInput = 2;
+
+        return Promise.resolve().then(() => {
+            expect(element.messageWhenBadInput).toBe(
+                'Please ensure value is correct'
+            );
+        });
+    });
+
     // colors
     it('Color Picker colors', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -1069,15 +923,12 @@ describe('Color Picker', () => {
 
     // Hide color input
     it('Color Picker hide color input', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.hideColorInput = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input).toBeFalsy();
         });
     });
@@ -1086,14 +937,11 @@ describe('Color Picker', () => {
 
     // done button
     it('Color Picker done button ', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -1107,14 +955,11 @@ describe('Color Picker', () => {
 
     // cancel button
     it('Color Picker cancel button ', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -1128,14 +973,11 @@ describe('Color Picker', () => {
 
     // focus and blur on tab
     it('Color Picker focus', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
@@ -1163,14 +1005,66 @@ describe('Color Picker', () => {
             });
     });
 
+    // color picker clear
+    it('Color picker clear', () => {
+        element.value = '#ffffff';
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    'lightning-input'
+                );
+                input.value = '#ffffff';
+            })
+            .then(() => {
+                const clearButton = element.shadowRoot.querySelector(
+                    '.avonni-builder-icon-picker-clear-icon'
+                );
+                clearButton.click();
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].detail.hex).toBeUndefined();
+                expect(handler.mock.calls[0][0].detail.hexa).toBeUndefined();
+                expect(handler.mock.calls[0][0].detail.rgb).toBeUndefined();
+                expect(handler.mock.calls[0][0].detail.rgba).toBeUndefined();
+                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            });
+    });
+
     /* ----- EVENTS ----- */
 
-    it('Color Picker focus event and method', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
+    // color picker change
+    it('Color picker change event', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
+        input.value = '#ffffff';
 
+        return Promise.resolve().then(() => {
+            input.value = '#e3abec';
+            input.dispatchEvent(new CustomEvent('change'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.hex).toBe('#e3abec');
+            expect(handler.mock.calls[0][0].detail.hexa).toBe('#e3abecff');
+            expect(handler.mock.calls[0][0].detail.rgb).toBe(
+                'rgb(227,171,236)'
+            );
+            expect(handler.mock.calls[0][0].detail.rgba).toBe(
+                'rgba(227,171,236,1)'
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+
+    // color picker focus event and method
+    it('Color Picker focus event and method', () => {
         element.addEventListener('focus', (event) => {
             expect(event.bubbles).toBeFalsy();
             expect(event.cancelable).toBeFalsy();
@@ -1180,12 +1074,8 @@ describe('Color Picker', () => {
         element.focus();
     });
 
+    // color picker blur event and method
     it('Color Picker blur event', () => {
-        const element = createElement('base-color-picker', {
-            is: ColorPicker
-        });
-        document.body.appendChild(element);
-
         element.addEventListener('blur', (event) => {
             expect(event.bubbles).toBeFalsy();
             expect(event.cancelable).toBeFalsy();

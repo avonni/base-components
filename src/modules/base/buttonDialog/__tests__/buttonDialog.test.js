@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import ButtonDialog from 'c/buttonDialog';
 
+let element;
 describe('Button Dialog', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Button Dialog', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-button-dialog', {
+    beforeEach(() => {
+        element = createElement('base-button-dialog', {
             is: ButtonDialog
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.alternativeText).toBeUndefined();
         expect(element.disabled).toBeFalsy();
@@ -58,11 +62,6 @@ describe('Button Dialog', () => {
 
     // access-key
     it('Button Dialog access-key', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.accessKey = 'K';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -73,11 +72,6 @@ describe('Button Dialog', () => {
 
     // alternative-text
     it('Button Dialog alternative-text', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.alternativeText = 'This is an alternative text';
         const assistiveText = element.shadowRoot.querySelector(
             '.slds-assistive-text'
@@ -92,11 +86,6 @@ describe('Button Dialog', () => {
 
     // disabled
     it('Button Dialog disabled', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -107,11 +96,6 @@ describe('Button Dialog', () => {
 
     // label
     it('Button Dialog label', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.label = 'Button Label';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -122,11 +106,6 @@ describe('Button Dialog', () => {
 
     // variant
     it('Button Dialog variant neutral', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'neutral';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -136,11 +115,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog variant base', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'base';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -150,11 +124,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog variant brand', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'brand';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -164,11 +133,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog variant brand-outline', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'brand-outline';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -178,11 +142,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog variant destructive', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'destructive';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -192,11 +151,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog variant destructive-text', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'destructive-text';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -206,11 +160,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog variant inverse', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'inverse';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -220,11 +169,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog variant success', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.variant = 'success';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -235,11 +179,6 @@ describe('Button Dialog', () => {
 
     // icon name
     it('Button Dialog icon name', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:lock';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -250,11 +189,6 @@ describe('Button Dialog', () => {
 
     // icon position
     it('Button Dialog icon position left', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:lock';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
@@ -264,11 +198,6 @@ describe('Button Dialog', () => {
     });
 
     it('Button Dialog icon position right', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'utility:lock';
         element.iconPosition = 'right';
         const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
@@ -280,11 +209,6 @@ describe('Button Dialog', () => {
 
     /* ---- METHODS ----- */
     it('method: click', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         let clickEvent = false;
         element.addEventListener('click', () => {
             clickEvent = true;
@@ -297,11 +221,6 @@ describe('Button Dialog', () => {
     });
 
     it('method: focus', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         let focusEvent = false;
         element.addEventListener('focus', () => {
             focusEvent = true;
@@ -314,11 +233,6 @@ describe('Button Dialog', () => {
     });
 
     it('method: show', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         let showEvent = false;
         element.addEventListener('show', () => {
             showEvent = true;
@@ -331,11 +245,6 @@ describe('Button Dialog', () => {
     });
 
     it('method: hide', () => {
-        const element = createElement('base-button-dialog', {
-            is: ButtonDialog
-        });
-        document.body.appendChild(element);
-
         let hideEvent = false;
         element.addEventListener('hide', () => {
             hideEvent = true;

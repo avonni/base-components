@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import OutputData from 'c/outputData';
 
+let element;
 describe('OutputData', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('OutputData', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-output-data', {
+    beforeEach(() => {
+        element = createElement('base-output-data', {
             is: OutputData
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.type).toBe('text');
         expect(element.typeAttributes).toMatchObject({});
@@ -55,11 +59,6 @@ describe('OutputData', () => {
 
     // Boolean
     it('type = boolean, with true value', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
         element.value = true;
         element.type = 'boolean';
 
@@ -96,11 +95,6 @@ describe('OutputData', () => {
     });
 
     it('type = boolean, with false value', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
         element.type = 'boolean';
         element.value = false;
 
@@ -142,11 +136,6 @@ describe('OutputData', () => {
     });
 
     it('type = boolean, with no value', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
         element.type = 'boolean';
 
         return Promise.resolve().then(() => {
@@ -188,12 +177,6 @@ describe('OutputData', () => {
 
     // Currency
     it('type = currency', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
-
         const typeAttributes = {
             currencyCode: 'EUR',
             currencyDisplayAs: 'name',
@@ -261,12 +244,6 @@ describe('OutputData', () => {
 
     // Date
     it('type = date', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
-
         const typeAttributes = {
             day: '2-digit',
             era: 'long',
@@ -332,11 +309,6 @@ describe('OutputData', () => {
 
     // Email
     it('type = email', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
         element.type = 'email';
         element.value = 'jane.doe@email.com';
         element.typeAttributes = {
@@ -379,12 +351,6 @@ describe('OutputData', () => {
 
     // Location
     it('type = location', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
-
         const typeAttributes = {
             latitude: '45.53713090203662',
             longitude: '-73.61483166585984'
@@ -428,12 +394,6 @@ describe('OutputData', () => {
 
     // Number
     it('type = number', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
-
         const typeAttributes = {
             minimumIntegerDigits: 2,
             maximumFractionDigits: 4,
@@ -495,12 +455,6 @@ describe('OutputData', () => {
 
     // Percent
     it('type = percent', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
-
         const typeAttributes = {
             minimumIntegerDigits: 2,
             maximumFractionDigits: 4,
@@ -563,11 +517,6 @@ describe('OutputData', () => {
 
     // Phone
     it('type = phone', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
         element.type = 'phone';
         element.value = '123-456-7890';
 
@@ -606,12 +555,6 @@ describe('OutputData', () => {
 
     // Text
     it('type = text', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
-
         element.type = 'text';
         element.value = 'A string value';
         element.typeAttributes = {
@@ -653,12 +596,6 @@ describe('OutputData', () => {
 
     // URL
     it('type = url', () => {
-        const element = createElement('base-output-data', {
-            is: OutputData
-        });
-
-        document.body.appendChild(element);
-
         const typeAttributes = {
             label: 'A string label',
             target: '_blank',

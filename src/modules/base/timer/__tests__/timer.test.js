@@ -34,10 +34,10 @@ import { createElement } from 'lwc';
 import Timer from 'c/timer';
 
 // Not tested because of setInterval
-// duration
 // repeat
 // type
 
+let element;
 describe('Timer', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -47,13 +47,13 @@ describe('Timer', () => {
 
     beforeEach(() => {
         jest.useFakeTimers();
+        element = createElement('base-timer', {
+            is: Timer
+        });
+        document.body.appendChild(element);
     });
 
     it('Default attributes', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
         expect(element.autoStart).toBeFalsy();
         expect(element.duration).toBe(1);
         expect(element.format).toBe('hh:mm:ss');
@@ -69,11 +69,6 @@ describe('Timer', () => {
 
     // auto-start
     it('autoStart = false', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.autoStart = false;
 
         return Promise.resolve().then(() => {
@@ -82,11 +77,6 @@ describe('Timer', () => {
     });
 
     it('autoStart = true', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.autoStart = true;
 
         return Promise.resolve().then(() => {
@@ -95,29 +85,60 @@ describe('Timer', () => {
     });
 
     // duration
-    // Depends on start()
-    // it('duration', () => {
-    //     const element = createElement('base-timer', {
-    //         is: Timer
-    //     });
+    it('duration > 86400000', () => {
+        element.duration = 86500000;
 
-    //     document.body.appendChild(element);
-    //     element.duration = 20000;
-    //     element.start();
+        return Promise.resolve().then(() => {
+            expect(element.duration).toBe(86400);
+        });
+    });
 
-    //     return Promise.resolve().then(() => {
-    //         jest.advanceTimersByTime(4000);
-    //         expect(setInterval).toHaveBeenCalledTimes(2);
-    //     });
-    // });
+    it('duration = 86200000', () => {
+        element.duration = 86200000;
+        const duration = 86200000 / 1000;
+
+        return Promise.resolve().then(() => {
+            expect(element.duration).toBe(duration);
+        });
+    });
+
+    it('duration default', () => {
+        element.duration = 'test';
+        const DEFAULT_DURATION = 1;
+        return Promise.resolve().then(() => {
+            expect(element.duration).toBe(DEFAULT_DURATION);
+        });
+    });
+
+    // type
+    it('type', () => {
+        element.type = 86400000;
+        const DEFAULT_TYPE = 'count-up';
+
+        return Promise.resolve().then(() => {
+            expect(element.type).toBe(DEFAULT_TYPE);
+        });
+    });
+
+    // repeat
+    it('repeat false', () => {
+        element.repeat = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.repeat).toBeFalsy();
+        });
+    });
+
+    it('repeat true', () => {
+        element.repeat = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.repeat).toBeTruthy();
+        });
+    });
 
     // format and value
     it('format = hh:mm:ss', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.format = 'hh:mm:ss';
         element.value = 46789000;
 
@@ -128,11 +149,6 @@ describe('Timer', () => {
     });
 
     it('format = mm:ss', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.format = 'mm:ss';
         element.value = 46789000;
 
@@ -143,11 +159,6 @@ describe('Timer', () => {
     });
 
     it('format = hh:mm', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.format = 'hh:mm';
         element.value = 46789000;
 
@@ -158,11 +169,6 @@ describe('Timer', () => {
     });
 
     it('format = hh', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.format = 'hh';
         element.value = 46789000;
 
@@ -173,11 +179,6 @@ describe('Timer', () => {
     });
 
     it('format = mm', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.format = 'mm';
         element.value = 46789000;
 
@@ -188,11 +189,6 @@ describe('Timer', () => {
     });
 
     it('format = ss', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.format = 'ss';
         element.value = 46789000;
 
@@ -204,11 +200,6 @@ describe('Timer', () => {
 
     // icon-name
     it('iconName', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -219,11 +210,6 @@ describe('Timer', () => {
 
     // icon-position
     it('iconPosition', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -253,11 +239,6 @@ describe('Timer', () => {
 
     // variant
     it('variant = neutral', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'neutral';
 
         return Promise.resolve().then(() => {
@@ -267,11 +248,6 @@ describe('Timer', () => {
     });
 
     it('variant = base', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -281,11 +257,6 @@ describe('Timer', () => {
     });
 
     it('variant = brand', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -295,11 +266,6 @@ describe('Timer', () => {
     });
 
     it('variant = brand-outline', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'brand-outline';
 
         return Promise.resolve().then(() => {
@@ -309,11 +275,6 @@ describe('Timer', () => {
     });
 
     it('variant = destructive', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'destructive';
 
         return Promise.resolve().then(() => {
@@ -323,11 +284,6 @@ describe('Timer', () => {
     });
 
     it('variant = destructive-text', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'destructive-text';
 
         return Promise.resolve().then(() => {
@@ -337,11 +293,6 @@ describe('Timer', () => {
     });
 
     it('variant = inverse', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'inverse';
 
         return Promise.resolve().then(() => {
@@ -351,11 +302,6 @@ describe('Timer', () => {
     });
 
     it('variant = success', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
@@ -368,12 +314,6 @@ describe('Timer', () => {
 
     // start method and timerstart event
     it('start method and timerstart event', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('timerstart', handler);
 
@@ -395,12 +335,6 @@ describe('Timer', () => {
 
     // pause method and timerpause event
     it('pause method and timerpause event', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('timerpause', handler);
 
@@ -421,12 +355,6 @@ describe('Timer', () => {
 
     // stop method and timerstop event
     it('stop method and timerstop event', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('timerstop', handler);
 
@@ -447,12 +375,6 @@ describe('Timer', () => {
 
     // reset method and timerreset event
     it('reset method and timerreset event', () => {
-        const element = createElement('base-timer', {
-            is: Timer
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('timerreset', handler);
 

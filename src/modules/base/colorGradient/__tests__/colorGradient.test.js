@@ -36,6 +36,7 @@ import ColorGradient from 'c/colorGradient';
 // not tested
 // message when bad input
 
+let element;
 describe('Color Gradient', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -43,11 +44,14 @@ describe('Color Gradient', () => {
         }
     });
 
-    it('Color Gradient Default attributes', () => {
-        const element = createElement('base-color-gradient', {
+    beforeEach(() => {
+        element = createElement('base-color-gradient', {
             is: ColorGradient
         });
+        document.body.appendChild(element);
+    });
 
+    it('Color Gradient Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.value).toBe('#ffffff');
         expect(element.readOnly).toBeFalsy();
@@ -61,11 +65,6 @@ describe('Color Gradient', () => {
 
     // disabled
     it('Color Gradient disabled', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -86,11 +85,6 @@ describe('Color Gradient', () => {
 
     // value
     it('Color Gradient value', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         element.value = '#b63e3e';
 
         return Promise.resolve().then(() => {
@@ -102,11 +96,6 @@ describe('Color Gradient', () => {
     });
 
     it('Color Gradient disabled with opacity', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.opacity = true;
 
@@ -120,11 +109,6 @@ describe('Color Gradient', () => {
 
     // read only
     it('Color Gradient read only', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -140,11 +124,6 @@ describe('Color Gradient', () => {
     });
 
     it('Color Gradient read only with opacity', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
         element.opacity = true;
 
@@ -158,11 +137,6 @@ describe('Color Gradient', () => {
 
     // opacity
     it('Color Gradient opacity', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         element.opacity = true;
 
         return Promise.resolve().then(() => {
@@ -177,11 +151,6 @@ describe('Color Gradient', () => {
 
     // private focus
     it('Color Gradient private focus', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         let focusEvent = false;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
@@ -200,11 +169,6 @@ describe('Color Gradient', () => {
 
     // private blur
     it('Color Gradient private blur', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         let blurEvent = false;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
@@ -222,15 +186,33 @@ describe('Color Gradient', () => {
         });
     });
 
+    // render value
+    it('Color Gradient render value', () => {
+        element.value = '#b63e3e';
+        element.renderValue('#ffffff');
+        return Promise.resolve().then(() => {
+            expect(element.value).toBe('#ffffff');
+        });
+    });
+
+    // set opacity
+    it('Color Gradient set opacity and disabled', () => {
+        element.value = '#b63e3e';
+        element.opacity = true;
+        element.disabled = true;
+        return Promise.resolve().then(() => {
+            element.renderValue('#fffff');
+            const opacity = element.shadowRoot.querySelector(
+                '.avonni-opacity-input'
+            );
+            expect(opacity.style.backgroundImage).toBe('none');
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // color gradient change
     it('Color Gradient change event', () => {
-        const element = createElement('base-color-gradient', {
-            is: ColorGradient
-        });
-        document.body.appendChild(element);
-
         element.value = '#ffffff';
 
         const handler = jest.fn();

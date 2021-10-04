@@ -44,6 +44,15 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        name: {
+            control: {
+                type: 'text'
+            },
+            description: 'Specifies the name of an input element.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         fieldLevelHelp: {
             name: 'field-level-help',
             control: {
