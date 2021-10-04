@@ -320,13 +320,13 @@ export default class Datatable extends LightningDatatable {
         );
 
         this.template.addEventListener(
-            'customeditbuttonclick',
-            this.handleCustomEditButtonClick
+            'editbuttonclickcustom',
+            this.handleEditButtonClickCustom
         );
 
         this.template.addEventListener(
-            'custommasscheckboxchange',
-            this.handleMassCheckboxChange
+            'masscheckboxchangecustom',
+            this.handleMassCheckboxChangeCustom
         );
 
         this.template.addEventListener(
@@ -671,7 +671,7 @@ export default class Datatable extends LightningDatatable {
         }
     }
 
-    handleCustomEditButtonClick(event) {
+    handleEditButtonClickCustom(event) {
         event.stopPropagation();
         const { colKeyValue, rowKeyValue, state } = event.detail;
         this.state = state;
@@ -738,7 +738,7 @@ export default class Datatable extends LightningDatatable {
         );
     }
 
-    handleMassCheckboxChange = (event) => {
+    handleMassCheckboxChangeCustom = (event) => {
         const state = this.state;
         if (event.detail.checked) {
             markAllSelectedRowsAsSelectedCell(this.state);
@@ -794,11 +794,21 @@ export default class Datatable extends LightningDatatable {
 
                 updateDirtyValues(state, cellChange);
 
-                // dispatchCellChangeEvent(this, cellChange);
+                this.dispatchCellChangeEvent(cellChange);
 
                 // @todo: do we need to update all rows in the this or just the one that was modified?
                 // updateRowsAndCellIndexes.call(dt);
             }
         }
+    }
+
+    dispatchCellChangeEvent(cellChange) {
+        this.dispatchEvent(
+            new CustomEvent('cellchange', {
+                detail: {
+                    draftValues: getChangesForCustomer(cellChange, this.state)
+                }
+            })
+        );
     }
 }

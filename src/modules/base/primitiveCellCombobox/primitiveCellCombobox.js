@@ -163,7 +163,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
-            new CustomEvent('customeditbuttonclick', {
+            new CustomEvent('editbuttonclickcustom', {
                 bubbles: true,
                 composed: true,
                 detail: {

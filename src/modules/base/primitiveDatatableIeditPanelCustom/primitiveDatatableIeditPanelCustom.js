@@ -191,7 +191,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
 
     handleMassCheckboxChange(event) {
         this.dispatchEvent(
-            new CustomEvent('custommasscheckboxchange', {
+            new CustomEvent('masscheckboxchangecustom', {
                 detail: {
                     checked: event.detail.checked
                 },
