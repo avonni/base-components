@@ -76,7 +76,9 @@ describe('InputToggle', () => {
     // access-key
     it('accessKey', () => {
         element.accessKey = 'K';
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.accessKey).toBe('K');
@@ -86,7 +88,9 @@ describe('InputToggle', () => {
     // aria-controls
     it('ariaControls', () => {
         element.ariaControls = 'id-1 id-2 id-3';
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.ariaControls).toBe('id-1 id-2 id-3');
@@ -96,7 +100,9 @@ describe('InputToggle', () => {
     // aria-described-by
     it('ariaDescribedBy', () => {
         element.ariaDescribedBy = 'id-1 id-2 id-3';
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.ariaDescribedBy).toBe('id-1 id-2 id-3');
@@ -106,7 +112,9 @@ describe('InputToggle', () => {
     // aria-label
     it('ariaLabel', () => {
         element.ariaLabel = 'String label';
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.ariaLabel).toBe('String label');
@@ -116,7 +124,9 @@ describe('InputToggle', () => {
     // aria-labelled-by
     it('ariaLabelledBy', () => {
         element.ariaLabelledBy = 'id-1 id-2 id-3';
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.ariaLabelledBy).toBe('id-1 id-2 id-3');
@@ -126,7 +136,9 @@ describe('InputToggle', () => {
     // checked
     it('checked', () => {
         element.checked = true;
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.checked).toBeTruthy();
@@ -136,7 +148,9 @@ describe('InputToggle', () => {
     // disabled
     it('disabled', () => {
         element.disabled = true;
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.disabled).toBeTruthy();
@@ -148,7 +162,9 @@ describe('InputToggle', () => {
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
-            const help = element.shadowRoot.querySelector('[data-element-id="lightning-helptext"]');
+            const help = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-helptext"]'
+            );
             expect(help).toBeTruthy();
         });
     });
@@ -158,9 +174,8 @@ describe('InputToggle', () => {
         element.hideMark = true;
 
         return Promise.resolve().then(() => {
-            const fauxToggle = element.shadowRoot.querySelector(
-                '.faux_hide-mark'
-            );
+            const fauxToggle =
+                element.shadowRoot.querySelector('.faux_hide-mark');
             expect(fauxToggle).toBeTruthy();
         });
     });
@@ -182,9 +197,8 @@ describe('InputToggle', () => {
         element.messageToggleActive = 'This toggle is active';
 
         return Promise.resolve().then(() => {
-            const message = element.shadowRoot.querySelector(
-                '.slds-checkbox_on'
-            );
+            const message =
+                element.shadowRoot.querySelector('.slds-checkbox_on');
             expect(message.textContent).toBe('This toggle is active');
         });
     });
@@ -194,9 +208,8 @@ describe('InputToggle', () => {
         element.messageToggleInactive = 'This toggle is inactive';
 
         return Promise.resolve().then(() => {
-            const message = element.shadowRoot.querySelector(
-                '.slds-checkbox_off'
-            );
+            const message =
+                element.shadowRoot.querySelector('.slds-checkbox_off');
             expect(message.textContent).toBe('This toggle is inactive');
         });
     });
@@ -224,7 +237,9 @@ describe('InputToggle', () => {
     // name
     it('name', () => {
         element.name = 'a-string-name';
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.name).toBe('a-string-name');
@@ -234,7 +249,9 @@ describe('InputToggle', () => {
     // read-only
     it('readOnly', () => {
         element.readOnly = true;
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(input.readOnly).toBeTruthy();
@@ -316,7 +333,9 @@ describe('InputToggle', () => {
         element.value = 'A string value';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
             expect(input.value).toBe('A string value');
         });
     });
@@ -445,7 +464,9 @@ describe('InputToggle', () => {
 
     // change
     it('change event', () => {
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
         element.addEventListener('change', (event) => {
             expect(event.detail.checked).toBeTruthy();
             expect(event.bubbles).toBeTruthy();
@@ -457,26 +478,43 @@ describe('InputToggle', () => {
 
     // blur
     it('blur event', () => {
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
-        element.addEventListener('blur', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
+        const handler = jest.fn();
 
-        input.focus();
-        input.blur();
+        input.addEventListener('blur', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                input.dispatchEvent(new CustomEvent('blur', {}));
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
     });
 
     // focus
     it('focus event', () => {
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
-        element.addEventListener('focus', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
+        const handler = jest.fn();
 
-        input.focus();
+        input.addEventListener('focus', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                input.dispatchEvent(new CustomEvent('focus', {}));
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
     });
 });
