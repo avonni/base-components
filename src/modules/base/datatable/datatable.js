@@ -775,7 +775,7 @@ export default class Datatable extends LightningDatatable {
 
         if (shouldSaveData) {
             const panel = this.template.querySelector(
-                '[data-iedit-panel="true"]'
+                '[data-iedit-panel-custom="true"]'
             );
             const editValue = panel.value;
             const isValidEditValue = panel.validity.valid;
