@@ -787,7 +787,8 @@ describe('Combobox', () => {
     });
 
     // change
-    it('change event', () => {
+    it('change event multiselect = true', () => {
+        element.isMultiSelect = true;
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -807,6 +808,28 @@ describe('Combobox', () => {
             'value-1',
             'value-2'
         ]);
+        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+    });
+
+    it('change event multiselect = false', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        const combobox = element.shadowRoot.querySelector(
+            '.combobox__main-combobox'
+        );
+        combobox.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: 'value-1'
+                }
+            })
+        );
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.value).toBe('value-1');
         expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -834,7 +857,9 @@ describe('Combobox', () => {
                 );
             })
             .then(() => {
-                const pill = element.shadowRoot.querySelector('[data-element-id="lightning-pill"]');
+                const pill = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-pill"]'
+                );
                 pill.dispatchEvent(
                     new CustomEvent('remove', {
                         detail: {
