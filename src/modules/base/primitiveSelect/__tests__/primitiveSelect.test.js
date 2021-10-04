@@ -48,6 +48,7 @@ const OPTIONS = [
     }
 ];
 
+let element;
 describe('PrimitiveSelect', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -55,11 +56,14 @@ describe('PrimitiveSelect', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-select', {
+    beforeEach(() => {
+        element = createElement('base-primitive-select', {
             is: PrimitiveSelect
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
@@ -80,12 +84,6 @@ describe('PrimitiveSelect', () => {
 
     // accessKey
     it('accessKey', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
@@ -96,12 +94,6 @@ describe('PrimitiveSelect', () => {
 
     // disabled
     it('disabled = true', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -111,12 +103,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('disabled = false', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -127,12 +113,6 @@ describe('PrimitiveSelect', () => {
 
     // field-level-help
     it('fieldLevelHelp', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -144,12 +124,6 @@ describe('PrimitiveSelect', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -161,12 +135,6 @@ describe('PrimitiveSelect', () => {
     // message-when-value-missing
     // Depends on required and reportValidity method
     it('messageWhenValueMissing', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.messageWhenValueMissing = 'A string message';
         element.required = true;
         element.reportValidity();
@@ -181,12 +149,6 @@ describe('PrimitiveSelect', () => {
 
     // multiple
     it('multiple = true', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.multiple = true;
 
         return Promise.resolve().then(() => {
@@ -196,12 +158,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('multiple = false', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.multiple = false;
 
         return Promise.resolve().then(() => {
@@ -212,12 +168,6 @@ describe('PrimitiveSelect', () => {
 
     // name
     it('name', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
@@ -228,12 +178,6 @@ describe('PrimitiveSelect', () => {
 
     // options
     it('options', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.options = OPTIONS;
 
         return Promise.resolve().then(() => {
@@ -249,12 +193,6 @@ describe('PrimitiveSelect', () => {
 
     // required
     it('required = true', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -265,12 +203,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('required = false', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.required = false;
 
         return Promise.resolve().then(() => {
@@ -283,12 +215,6 @@ describe('PrimitiveSelect', () => {
     // size
     // Depends on multiple
     it('size, unset with multiple', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.multiple = true;
 
         return Promise.resolve().then(() => {
@@ -300,12 +226,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('size, set with multiple', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.multiple = true;
         element.size = '6';
 
@@ -319,12 +239,6 @@ describe('PrimitiveSelect', () => {
 
     // tab-index
     it('tabIndex', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.tabIndex = -1;
 
         return Promise.resolve().then(() => {
@@ -337,12 +251,6 @@ describe('PrimitiveSelect', () => {
     // validity
     // Depends on disabled, required and value
     it('validity, with required = true and disabled = true', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.required = true;
 
@@ -352,12 +260,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('validity, with required = true and disabled = false', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
         element.required = true;
 
@@ -367,12 +269,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('validity, with required = true, disabled = true, and a value', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
         element.required = true;
         element.options = OPTIONS;
@@ -385,12 +281,6 @@ describe('PrimitiveSelect', () => {
 
     // value
     it('value', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.options = OPTIONS;
         element.value = 'option-1';
 
@@ -402,12 +292,6 @@ describe('PrimitiveSelect', () => {
 
     // variant
     it('variant = standard', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
@@ -424,12 +308,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('variant = label-hidden', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'label-hidden';
 
         return Promise.resolve().then(() => {
@@ -446,12 +324,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('variant = label-stacked', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'label-stacked';
 
         return Promise.resolve().then(() => {
@@ -466,12 +338,6 @@ describe('PrimitiveSelect', () => {
     });
 
     it('variant = label-inline', () => {
-        const element = createElement('base-primitive-select', {
-            is: PrimitiveSelect
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
@@ -482,6 +348,53 @@ describe('PrimitiveSelect', () => {
             );
             expect(element.classList).toContain('slds-form-element_horizontal');
             expect(label.classList).not.toContain('slds-assistive-text');
+        });
+    });
+
+    /* ----- EVENTS ----- */
+    it('focus', () => {
+        const handler = jest.fn();
+        element.addEventListener('focus', handler);
+
+        return Promise.resolve().then(() => {
+            const select = element.shadowRoot.querySelector('select');
+            select.dispatchEvent(new CustomEvent('focus'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('blur', () => {
+        const handler = jest.fn();
+        element.addEventListener('blur', handler);
+
+        return Promise.resolve().then(() => {
+            const select = element.shadowRoot.querySelector('select');
+            select.dispatchEvent(new CustomEvent('blur'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('change', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const select = element.shadowRoot.querySelector('select');
+            select.dispatchEvent(new CustomEvent('change'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail).toMatchObject({value: ""});
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

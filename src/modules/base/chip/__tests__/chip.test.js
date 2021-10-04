@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Chip from 'c/chip';
 
+let element;
 describe('Chip', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Chip', () => {
         }
     });
 
-    it('Chip Default attributes', () => {
-        const element = createElement('base-chip', {
+    beforeEach(() => {
+        element = createElement('base-chip', {
             is: Chip
         });
+        document.body.appendChild(element);
+    });
 
+    it('Chip Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.variant).toBe('base');
         expect(element.outline).toBeFalsy();
@@ -54,11 +58,6 @@ describe('Chip', () => {
 
     // label
     it('Chip label', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
@@ -69,11 +68,6 @@ describe('Chip', () => {
 
     // variant
     it('Chip variant base', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         return Promise.resolve().then(() => {
             const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
             expect(span.className).toBe('slds-badge slds-theme_base');
@@ -81,11 +75,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant brand', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -95,11 +84,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant inverse', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'inverse';
 
         return Promise.resolve().then(() => {
@@ -109,11 +93,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant alt-inverse', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'alt-inverse';
 
         return Promise.resolve().then(() => {
@@ -123,11 +102,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant success', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
@@ -137,11 +111,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant info', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'info';
 
         return Promise.resolve().then(() => {
@@ -151,11 +120,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant warning', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
@@ -165,11 +129,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant error', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'error';
 
         return Promise.resolve().then(() => {
@@ -179,11 +138,6 @@ describe('Chip', () => {
     });
 
     it('Chip variant offline', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.variant = 'offline';
 
         return Promise.resolve().then(() => {
@@ -194,11 +148,6 @@ describe('Chip', () => {
 
     // outline
     it('Chip outline', () => {
-        const element = createElement('base-chip', {
-            is: Chip
-        });
-        document.body.appendChild(element);
-
         element.outline = true;
 
         return Promise.resolve().then(() => {

@@ -36,6 +36,7 @@ import ColorPalette from 'c/colorPalette';
 // Not tested because not used:
 // value
 
+let element;
 describe('Color Palette', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -43,11 +44,14 @@ describe('Color Palette', () => {
         }
     });
 
-    it('Color Palette Default attributes', () => {
-        const element = createElement('base-color-palette', {
+    beforeEach(() => {
+        element = createElement('base-color-palette', {
             is: ColorPalette
         });
+        document.body.appendChild(element);
+    });
 
+    it('Color Palette Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.value).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
@@ -91,19 +95,18 @@ describe('Color Palette', () => {
 
     // disabled
     it('Color Palette disabled', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('[data-element-id^="a-"]');
+            const a = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="a-"]'
+            );
             a.forEach((color) => {
                 expect(color.getAttribute('is-disabled')).toBe('true');
             });
-            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span-"]');
+            const colors = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="span-"]'
+            );
             colors.forEach((color) => {
                 expect(color.style.backgroundColor).toBe('rgb(221, 219, 218)');
             });
@@ -112,15 +115,12 @@ describe('Color Palette', () => {
 
     // read-only
     it('Color Palette read-only', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('[data-element-id^="a-"]');
+            const a = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="a-"]'
+            );
             a.forEach((color) => {
                 expect(color.getAttribute('read-only')).toBe('true');
             });
@@ -129,11 +129,6 @@ describe('Color Palette', () => {
 
     // is loading
     it('Color Palette is loading', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -146,11 +141,6 @@ describe('Color Palette', () => {
 
     // colors
     it('Color Palette colors', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.colors = [
             'rgb(10, 35, 153)',
             'rgb(9, 116, 118)',
@@ -161,7 +151,9 @@ describe('Color Palette', () => {
 
         return Promise.resolve().then(() => {
             let colorsArray = [];
-            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
+            const colors = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="span"]'
+            );
             expect(colors).toHaveLength(5);
             colors.forEach((color) => {
                 colorsArray.push(color.style.backgroundColor);
@@ -176,11 +168,6 @@ describe('Color Palette', () => {
 
     // columns
     it('Color Palette columns', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.columns = 4;
 
         return Promise.resolve().then(() => {
@@ -193,15 +180,12 @@ describe('Color Palette', () => {
 
     // tile width
     it('Color Palette tile width', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.tileWidth = 4;
 
         return Promise.resolve().then(() => {
-            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
+            const colors = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="span"]'
+            );
             colors.forEach((color) => {
                 expect(color.style.width).toBe('4px');
             });
@@ -210,15 +194,12 @@ describe('Color Palette', () => {
 
     // tile height
     it('Color Palette tile height', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.tileHeight = 10;
 
         return Promise.resolve().then(() => {
-            const colors = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
+            const colors = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="span"]'
+            );
             colors.forEach((color) => {
                 expect(color.style.height).toBe('10px');
             });
@@ -229,14 +210,11 @@ describe('Color Palette', () => {
 
     // click when disabled
     it('Color Palette click when disabled', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
-        const color = element.shadowRoot.querySelector('[data-element-id^="a-"]');
+        const color = element.shadowRoot.querySelector(
+            '[data-element-id^="a-"]'
+        );
         color.click();
 
         return Promise.resolve().then(() => {
@@ -248,11 +226,6 @@ describe('Color Palette', () => {
 
     // reset method
     it('Color Palette reset method', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         element.value = '#ffffff';
         element.reset();
 
@@ -265,16 +238,13 @@ describe('Color Palette', () => {
 
     // color palette change
     it('Color Palette change event', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const a = element.shadowRoot.querySelectorAll('[data-element-id^="span"]');
+            const a = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="span"]'
+            );
             a[0].click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.hex).toBe('#e3abec');
@@ -292,12 +262,25 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette focus event', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
+    // color palette change
+    it('Color Palette double click event', () => {
+        const handler = jest.fn();
+        element.addEventListener('colordblclick', handler);
 
+        return Promise.resolve().then(() => {
+            const a = element.shadowRoot.querySelector(
+                '[data-element-id="a-base"]'
+            );
+            a.dispatchEvent(new CustomEvent('dblclick'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Color Palette focus event', () => {
         const color = element.shadowRoot.querySelector(
             '.slds-color-picker__swatch-trigger'
         );
@@ -311,11 +294,6 @@ describe('Color Palette', () => {
     });
 
     it('Color Palette blur event', () => {
-        const element = createElement('base-color-palette', {
-            is: ColorPalette
-        });
-        document.body.appendChild(element);
-
         const color = element.shadowRoot.querySelector(
             '.slds-color-picker__swatch-trigger'
         );

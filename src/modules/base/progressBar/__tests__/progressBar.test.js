@@ -53,6 +53,7 @@ const REFERENCE_LINES = [
 
 const SIZES = ['x-small', 'small', 'medium', 'large', 'full'];
 
+let element;
 describe('ProgressBar', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -60,11 +61,14 @@ describe('ProgressBar', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-progress-bar', {
+    beforeEach(() => {
+        element = createElement('base-progress-bar', {
             is: ProgressBar
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.showValue).toBeFalsy();
         expect(element.orientation).toBe('horizontal');
@@ -83,12 +87,6 @@ describe('ProgressBar', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -101,12 +99,6 @@ describe('ProgressBar', () => {
 
     // show-value
     it('showValue = false', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = false;
 
         return Promise.resolve().then(() => {
@@ -118,12 +110,6 @@ describe('ProgressBar', () => {
     });
 
     it('showValue = true', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = true;
 
         return Promise.resolve().then(() => {
@@ -137,12 +123,6 @@ describe('ProgressBar', () => {
     // orientation
     // Depends on referenceLines
     it('orientation = horizontal', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.orientation = 'horizontal';
         element.referenceLines = REFERENCE_LINES;
 
@@ -169,12 +149,6 @@ describe('ProgressBar', () => {
     });
 
     it('orientation = vertical', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.orientation = 'vertical';
         element.referenceLines = REFERENCE_LINES;
 
@@ -202,12 +176,6 @@ describe('ProgressBar', () => {
 
     // reference-lines
     it('referenceLines', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
@@ -231,12 +199,6 @@ describe('ProgressBar', () => {
     // size
     // Depends on orientation
     it('size = full, with horizontal orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'full';
         element.orientation = 'horizontal';
 
@@ -262,12 +224,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = full, with vertical orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'full';
         element.orientation = 'vertical';
 
@@ -295,12 +251,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = x-small, with horizontal orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-small';
         element.orientation = 'horizontal';
 
@@ -330,12 +280,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = x-small, with vertical orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-small';
         element.orientation = 'vertical';
 
@@ -365,12 +309,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = small, with horizontal orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.orientation = 'horizontal';
 
@@ -400,12 +338,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = small, with vertical orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.orientation = 'vertical';
 
@@ -435,12 +367,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = medium, with horizontal orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'medium';
         element.orientation = 'horizontal';
 
@@ -470,12 +396,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = medium, with vertical orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'medium';
         element.orientation = 'vertical';
 
@@ -505,12 +425,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = large, with horizontal orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.orientation = 'horizontal';
 
@@ -540,12 +454,6 @@ describe('ProgressBar', () => {
     });
 
     it('size = large, with vertical orientation', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.orientation = 'vertical';
 
@@ -576,12 +484,6 @@ describe('ProgressBar', () => {
 
     // textured
     it('textured = false', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.textured = false;
 
         return Promise.resolve().then(() => {
@@ -595,12 +497,6 @@ describe('ProgressBar', () => {
     });
 
     it('textured = true', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.textured = true;
 
         return Promise.resolve().then(() => {
@@ -615,12 +511,6 @@ describe('ProgressBar', () => {
 
     // theme
     it('theme = base', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'base';
 
         return Promise.resolve().then(() => {
@@ -642,12 +532,6 @@ describe('ProgressBar', () => {
     });
 
     it('theme = success', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'success';
 
         return Promise.resolve().then(() => {
@@ -669,12 +553,6 @@ describe('ProgressBar', () => {
     });
 
     it('theme = inverse', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'inverse';
 
         return Promise.resolve().then(() => {
@@ -696,12 +574,6 @@ describe('ProgressBar', () => {
     });
 
     it('theme = alt-inverse', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'alt-inverse';
 
         return Promise.resolve().then(() => {
@@ -721,12 +593,6 @@ describe('ProgressBar', () => {
     });
 
     it('theme = warning', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'warning';
 
         return Promise.resolve().then(() => {
@@ -748,12 +614,6 @@ describe('ProgressBar', () => {
     });
 
     it('theme = info', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'info';
 
         return Promise.resolve().then(() => {
@@ -775,12 +635,6 @@ describe('ProgressBar', () => {
     });
 
     it('theme = error', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'error';
 
         return Promise.resolve().then(() => {
@@ -802,12 +656,6 @@ describe('ProgressBar', () => {
     });
 
     it('theme = offline', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.theme = 'offline';
 
         return Promise.resolve().then(() => {
@@ -831,12 +679,6 @@ describe('ProgressBar', () => {
     // thickness
     // Depends on referenceLines
     it('thickness = medium', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.thickness = 'medium';
         element.referenceLines = REFERENCE_LINES;
 
@@ -864,12 +706,6 @@ describe('ProgressBar', () => {
     });
 
     it('thickness = x-small', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.thickness = 'x-small';
         element.referenceLines = REFERENCE_LINES;
 
@@ -897,12 +733,6 @@ describe('ProgressBar', () => {
     });
 
     it('thickness = small', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.thickness = 'small';
         element.referenceLines = REFERENCE_LINES;
 
@@ -928,12 +758,6 @@ describe('ProgressBar', () => {
     });
 
     it('thickness = large', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.thickness = 'large';
         element.referenceLines = REFERENCE_LINES;
 
@@ -961,12 +785,6 @@ describe('ProgressBar', () => {
     // value
     // Depends on showValue
     it('value', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.value = 56;
         element.showValue = true;
 
@@ -987,15 +805,51 @@ describe('ProgressBar', () => {
         });
     });
 
+    it('value > 100', () => {
+        element.value = 156;
+        element.showValue = true;
+
+        return Promise.resolve().then(() => {
+            const value = element.shadowRoot.querySelector(
+                '.avonni-progress-bar_value'
+            );
+            const assistiveText = element.shadowRoot.querySelector(
+                '.slds-assistive-text'
+            );
+            const innerWrapper = element.shadowRoot.querySelector(
+                '.slds-progress-bar__value'
+            );
+
+            expect(value.textContent.trim()).toBe('100%');
+            expect(assistiveText.textContent).toBe('Progress: 100%');
+            expect(innerWrapper.style.width).toBe('100%');
+        });
+    });
+
+    it('value NaN', () => {
+        element.value = 'a';
+        element.showValue = true;
+
+        return Promise.resolve().then(() => {
+            const value = element.shadowRoot.querySelector(
+                '.avonni-progress-bar_value'
+            );
+            const assistiveText = element.shadowRoot.querySelector(
+                '.slds-assistive-text'
+            );
+            const innerWrapper = element.shadowRoot.querySelector(
+                '.slds-progress-bar__value'
+            );
+
+            expect(value.textContent.trim()).toBe('0%');
+            expect(assistiveText.textContent).toBe('Progress: 0%');
+            expect(innerWrapper.style.width).toBe('0%');
+        });
+    });
+
     // value-label
     // Depends on showValue
     it('valueLabel', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.valueLabel = 'A string label';
         element.showValue = true;
 
@@ -1010,12 +864,6 @@ describe('ProgressBar', () => {
     // value-position
     // Depends on showValue
     it('valuePosition = top-right', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = true;
         element.valuePosition = 'top-right';
 
@@ -1049,12 +897,6 @@ describe('ProgressBar', () => {
     });
 
     it('valuePosition = left', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = true;
         element.valuePosition = 'left';
 
@@ -1088,12 +930,6 @@ describe('ProgressBar', () => {
     });
 
     it('valuePosition = top-left', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = true;
         element.valuePosition = 'top-left';
 
@@ -1127,12 +963,6 @@ describe('ProgressBar', () => {
     });
 
     it('valuePosition = bottom-right', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = true;
         element.valuePosition = 'bottom-right';
 
@@ -1166,12 +996,6 @@ describe('ProgressBar', () => {
     });
 
     it('valuePosition = bottom-left', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = true;
         element.valuePosition = 'bottom-left';
 
@@ -1205,12 +1029,6 @@ describe('ProgressBar', () => {
     });
 
     it('valuePosition = right', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.showValue = true;
         element.valuePosition = 'right';
 
@@ -1245,12 +1063,6 @@ describe('ProgressBar', () => {
 
     // variant
     it('variant = base', () => {
-        const element = createElement('base-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -1264,12 +1076,6 @@ describe('ProgressBar', () => {
     });
 
     it('variant = circular', () => {
-        const element = createElement('circular-progress-bar', {
-            is: ProgressBar
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'circular';
 
         return Promise.resolve().then(() => {

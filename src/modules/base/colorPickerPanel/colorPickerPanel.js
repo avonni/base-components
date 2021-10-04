@@ -1,4 +1,3 @@
-
 /**
  * BSD 3-Clause License
  *
@@ -51,7 +50,7 @@ const DEFAULT_COLOR = '#000000';
 export default class ColorPickerPanel extends LightningElement {
     /**
      * Get currentColor.
-     * 
+     *
      * @public
      */
     @api currentColor;
@@ -65,7 +64,7 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Localization.
-     * 
+     *
      * @type {object}
      */
     get i18n() {
@@ -74,7 +73,7 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Computed Panel class default styling.
-     * 
+     *
      * @type {string}
      */
     get computedClassDefault() {
@@ -86,7 +85,7 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Computed Panel class custom styling.
-     * 
+     *
      * @type {string}
      */
     get computedClassCustom() {
@@ -98,7 +97,7 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Aria for Default Panel.
-     * 
+     *
      * @type {string}
      */
     get ariaSelectedDefault() {
@@ -107,7 +106,7 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Aria for Custom Panel.
-     * 
+     *
      * @type {string}
      */
     get ariaSelectedCustom() {
@@ -116,7 +115,7 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Tab change handler.
-     * 
+     *
      * @param {Event} event
      */
     handleTabChange(event) {
@@ -130,8 +129,8 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Selected Color update handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleUpdateSelectedColor(event) {
         this._selectedColor = event.detail.color;
@@ -139,21 +138,20 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Updated color event dispatcher.
-     * 
-     * @param {string} color 
+     *
+     * @param {string} color
      */
     dispatchUpdateColorEventWithColor(color) {
         /**
          * Event that fires when updating the color value.
-         * 
+         *
          * @event
          * @name updatecolor
          * @param {string} color
          * @composed
-         * @bubbles 
+         * @bubbles
          */
         this.dispatchEvent(
-            // eslint-disable-next-line lightning-global/no-custom-event-bubbling
             new CustomEvent('updatecolor', {
                 composed: true,
                 bubbles: true,
@@ -178,8 +176,8 @@ export default class ColorPickerPanel extends LightningElement {
 
     /**
      * Handle Keydown event.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleKeydown(event) {
         if (event.keyCode === keyCodes.escape) {
@@ -188,7 +186,7 @@ export default class ColorPickerPanel extends LightningElement {
         } else if (
             event.shiftKey &&
             event.keyCode === keyCodes.tab &&
-            event.target.dataset.id === 'color-anchor'  
+            event.target.dataset.id === 'color-anchor'
         ) {
             event.preventDefault();
             this.template.querySelector('button[name="done"]').focus();

@@ -94,7 +94,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Current color value.
-     * 
+     *
      * @public
      * @type {string}
      */
@@ -111,7 +111,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Focus anchor element.
-     * 
+     *
      * @public
      */
     @api
@@ -121,7 +121,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Localization.
-     * 
+     *
      * @type {object}
      */
     get i18n() {
@@ -130,7 +130,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Compute thumbnail styling.
-     * 
+     *
      * @type {string}
      */
     get thumbnailStyle() {
@@ -139,7 +139,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Compute gradient styling.
-     * 
+     *
      * @type {string}
      */
     get gradientStyle() {
@@ -150,7 +150,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Get Canvas object dimensions.
-     * 
+     *
      * @type {object}
      */
     get canvasRect() {
@@ -159,8 +159,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Get DOM anchor element.
-     * 
-     * @type {Element} 
+     *
+     * @type {Element}
      */
     get anchorElement() {
         return this.template.querySelector('*[data-id="color-anchor"]');
@@ -168,7 +168,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Get DOM thumbnail element.
-     * 
+     *
      * @type {Element}
      */
     get thumbnailElement() {
@@ -177,7 +177,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Get DOM gradient element.
-     * 
+     *
      * @type {Element}
      */
     get gradientElement() {
@@ -186,7 +186,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Computed Saturation and Brightness styling.
-     * 
+     *
      * @type {string}
      */
     get computedSaturationAndBrightness() {
@@ -199,7 +199,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Prevent event default handler.
-     * 
+     *
      * @param {Event} event
      */
     handlePreventDefault(event) {
@@ -208,14 +208,14 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Color select event handler.
-     * 
+     *
      * @param {Event} event
      */
     selectColor(event) {
         this.dispatchEvent(
             /**
              * Event that fires when updating the color value.
-             * 
+             *
              * @event
              * @name updatecolor
              * @params {string} color
@@ -223,7 +223,6 @@ export default class ColorPickerCustom extends LightningElement {
              * @composed
              * @cancelable
              */
-            // eslint-disable-next-line lightning-global/no-custom-event-bubbling
             new CustomEvent('updatecolor', {
                 bubbles: true,
                 composed: true,
@@ -235,7 +234,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Mouse down event handler.
-     * 
+     *
      * @param {Event} event
      */
     handleMouseDown(event) {
@@ -245,7 +244,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Mouse Drag event handler.
-     * 
+     *
      * @param {Event} event
      */
     handleDrag(event) {
@@ -261,7 +260,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Parse and limit color numerical values.
-     * 
+     *
      * @param {number} value
      * @return {number} out
      */
@@ -277,7 +276,7 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * RGB Change handler.
-     * 
+     *
      * @param {Event} event
      */
     handleRgbChange(event) {
@@ -309,8 +308,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Hex Change handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleHexChange(event) {
         const isInputValid = event.srcElement.validity.valid;
@@ -340,8 +339,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Update Selected Color.
-     * 
-     * @param {string} selectedColor 
+     *
+     * @param {string} selectedColor
      */
     updateSelectedColor(selectedColor) {
         this.template
@@ -353,7 +352,7 @@ export default class ColorPickerCustom extends LightningElement {
 
         /**
          * The event that fires when the selected color is updated.
-         * 
+         *
          * @event
          * @name updateselectedcolor
          * @params {string} color
@@ -362,7 +361,6 @@ export default class ColorPickerCustom extends LightningElement {
          * @cancelable
          */
         this.dispatchEvent(
-            // eslint-disable-next-line lightning-global/no-custom-event-bubbling
             new CustomEvent('updateselectedcolor', {
                 bubbles: true,
                 composed: true,
@@ -374,8 +372,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Mouse Drag handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      * @param {boolean} isGradientCursor
      */
     onMouseDrag(event, isGradientCursor) {
@@ -435,8 +433,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Compute color from gradient from x,y coordinates of cursor position.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     getColorFromGradient(event) {
         let cursorPosition;
@@ -473,8 +471,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Update hue color.
-     * 
-     * @param {string} hue 
+     *
+     * @param {string} hue
      */
     updateRainbow(hue) {
         this._hueValue = hue;
@@ -499,8 +497,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Get Cursor position on canvas gradient.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      * @returns {object} x,y number coordinates
      */
     gradientCursorPosition(event) {
@@ -533,8 +531,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Get Cursor position from keydown event on canvas gradient.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      * @return {object} x,y number coordinates
      */
     gradientCursorPositionFromKeydown(event) {
@@ -583,9 +581,9 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * RGB values compute.
-     * 
-     * @param {number} x 
-     * @param {number} y 
+     *
+     * @param {number} x
+     * @param {number} y
      */
     setRGBValues(x, y) {
         const ctx = this._canvasCtx;
@@ -603,8 +601,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Set Canvas color.
-     * 
-     * @param {string} hue 
+     *
+     * @param {string} hue
      */
     setCanvasColor(hue) {
         const ctx = this._canvasCtx;
@@ -626,9 +624,9 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Set Cursor position on canvas.
-     * 
-     * @param {number} x 
-     * @param {number} y 
+     *
+     * @param {number} x
+     * @param {number} y
      */
     setCanvasCursor(x, y) {
         const position = { x, y };
@@ -655,8 +653,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Keydown handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handleKeydown(event) {
         this.getColorFromGradient(event);
@@ -664,8 +662,8 @@ export default class ColorPickerCustom extends LightningElement {
 
     /**
      * Use RGB to set position on canvas.
-     * 
-     * @param {string} rgb 
+     *
+     * @param {string} rgb
      * @returns object x,y number
      */
     rgbToPosition(rgb) {

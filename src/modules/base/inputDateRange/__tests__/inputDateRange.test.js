@@ -39,6 +39,7 @@ import InputDateRange from 'avonni/inputDateRange';
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
 
+let element;
 describe('Input Date Range', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -46,11 +47,14 @@ describe('Input Date Range', () => {
         }
     });
 
-    it('Input Date Range Default attributes', () => {
-        const element = createElement('base-input-date-range', {
+    beforeEach(() => {
+        element = createElement('base-input-date-range', {
             is: InputDateRange
         });
+        document.body.appendChild(element);
+    });
 
+    it('Input Date Range Default attributes', () => {
         expect(element.type).toBe('date');
         expect(element.dateStyle).toBe('medium');
         expect(element.timeStyle).toBe('short');
@@ -72,11 +76,6 @@ describe('Input Date Range', () => {
 
     // type
     it('Input Date Range date type date', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.startDate = startDate;
         element.endDate = endDate;
 
@@ -91,11 +90,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range date type datetime', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.type = 'datetime';
         element.startDate = startDate;
         element.endDate = endDate;
@@ -112,11 +106,6 @@ describe('Input Date Range', () => {
 
     // date style, start-date and end-date
     it('Input Date Range date style short', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         const sDate = '7/20/2021';
         const eDate = '7/21/2021';
         element.dateStyle = 'short';
@@ -132,11 +121,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range date style medium', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         const startMonth = startDate.toLocaleString('default', {
             month: 'short'
         });
@@ -161,11 +145,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range date style long', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         const startMonth = startDate.toLocaleString('default', {
             month: 'long'
         });
@@ -192,11 +171,6 @@ describe('Input Date Range', () => {
 
     //time style
     it('Input Date Range date time style short', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.type = 'datetime';
         element.startDate = startDate;
         element.endDate = endDate;
@@ -216,11 +190,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range date time style medium', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.type = 'datetime';
         element.timeStyle = 'medium';
         element.startDate = startDate;
@@ -241,11 +210,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range date time style long', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.type = 'datetime';
         element.timeStyle = 'long';
         element.startDate = startDate;
@@ -267,11 +231,6 @@ describe('Input Date Range', () => {
 
     // disabled
     it('Input Date Range disabled', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -284,11 +243,6 @@ describe('Input Date Range', () => {
 
     // field level help
     it('Input Date Range field level help', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'This is a field level help text';
 
         return Promise.resolve().then(() => {
@@ -302,11 +256,6 @@ describe('Input Date Range', () => {
 
     // label
     it('Input Date Range label', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
@@ -319,11 +268,6 @@ describe('Input Date Range', () => {
 
     // label start date
     it('Input Date Range label start date', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.labelStartDate = 'This is a label start date';
 
         return Promise.resolve().then(() => {
@@ -336,11 +280,6 @@ describe('Input Date Range', () => {
 
     // label end date
     it('Input Date Range label end date', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.labelEndDate = 'This is a label end date';
 
         return Promise.resolve().then(() => {
@@ -354,11 +293,6 @@ describe('Input Date Range', () => {
     // read-only
     // Depends on type
     it('Input Date Range read only false', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.readOnly = false;
         element.type = 'datetime';
 
@@ -409,11 +343,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range read only true', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
         element.type = 'datetime';
 
@@ -465,11 +394,6 @@ describe('Input Date Range', () => {
 
     // required
     it('Input Date Range required', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -481,11 +405,7 @@ describe('Input Date Range', () => {
 
     // message-when-value-missing
     // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
-    it('messageWhenValueMissing', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
+    it('Input Date Range messageWhenValueMissing', () => {
         element.required = true;
         element.messageWhenValueMissing = 'Missing value!';
 
@@ -505,11 +425,6 @@ describe('Input Date Range', () => {
 
     // variant
     it('Input Date Range variant standard', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
@@ -525,11 +440,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range variant label-hidden', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-hidden';
 
         return Promise.resolve().then(() => {
@@ -545,11 +455,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range variant label-inline', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
@@ -565,11 +470,6 @@ describe('Input Date Range', () => {
     });
 
     it('Input Date Range variant stacked', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.variant = 'stacked';
 
         return Promise.resolve().then(() => {
@@ -588,11 +488,6 @@ describe('Input Date Range', () => {
 
     // Input date range method focus
     it('Input date range method: focus', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         let focusEvent = false;
         const startInput = element.shadowRoot.querySelector('.start-date');
         startInput.addEventListener('focus', () => {
@@ -607,11 +502,6 @@ describe('Input Date Range', () => {
 
     // Input date range method blur
     it('Input date range method: blur', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         let blurEvent = false;
         const startInput = element.shadowRoot.querySelector('.start-date');
 
@@ -631,11 +521,6 @@ describe('Input Date Range', () => {
     // reportValidity
     // Depends on required
     it('reportValidity method', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.reportValidity();
 
@@ -650,11 +535,6 @@ describe('Input Date Range', () => {
     // showHelpMessageIfInvalid
     // Depends on required
     it('showHelpMessageIfInvalid method', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -670,11 +550,6 @@ describe('Input Date Range', () => {
 
     // Input date range change
     it('Input date range change event', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.startDate = startDate;
         element.endDate = endDate;
         const startInput = element.shadowRoot.querySelector('.start-date');
@@ -704,11 +579,6 @@ describe('Input Date Range', () => {
 
     // Input date range change
     it('Input date range change event with timezone', () => {
-        const element = createElement('base-input-date-range', {
-            is: InputDateRange
-        });
-        document.body.appendChild(element);
-
         element.startDate = startDate;
         element.endDate = endDate;
         element.timezone = 'America/Port-au-Prince';

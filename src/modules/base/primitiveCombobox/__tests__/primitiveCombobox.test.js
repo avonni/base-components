@@ -48,6 +48,7 @@ import { options, actions, topActions, bottomActions, groups } from './data';
 //   * removeSelectedOptions
 //   * change event
 
+let element;
 describe('PrimitiveCombobox', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -55,11 +56,14 @@ describe('PrimitiveCombobox', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-combobox', {
+    beforeEach(() => {
+        element = createElement('base-primitive-combobox', {
             is: PrimitiveCombobox
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.allowSearch).toBeFalsy();
         expect(element.disabled).toBeFalsy();
@@ -92,11 +96,6 @@ describe('PrimitiveCombobox', () => {
 
     // actions
     it('actions', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.actions = actions;
 
         return Promise.resolve().then(() => {
@@ -172,11 +171,6 @@ describe('PrimitiveCombobox', () => {
 
     // allow-search
     it('allowSearch = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.allowSearch = false;
 
         return Promise.resolve().then(() => {
@@ -190,11 +184,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('allowSearch = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.allowSearch = true;
 
         return Promise.resolve().then(() => {
@@ -210,11 +199,6 @@ describe('PrimitiveCombobox', () => {
     // disabled
     // Depends on open() and options
     it('disabled = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.disabled = false;
         element.options = options;
 
@@ -234,11 +218,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.disabled = true;
         element.options = options;
 
@@ -259,11 +238,6 @@ describe('PrimitiveCombobox', () => {
 
     // dropdown-alignment
     it('dropdown-alignment = left', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'left';
 
         return Promise.resolve().then(() => {
@@ -284,11 +258,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('dropdown-alignment = auto', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'auto';
 
         return Promise.resolve().then(() => {
@@ -309,11 +278,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('dropdown-alignment = center', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'center';
 
         return Promise.resolve().then(() => {
@@ -334,11 +298,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('dropdown-alignment = right', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'right';
 
         return Promise.resolve().then(() => {
@@ -359,11 +318,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('dropdown-alignment = bottom-center', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'bottom-center';
 
         return Promise.resolve().then(() => {
@@ -384,11 +338,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('dropdown-alignment = bottom-right', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'bottom-right';
 
         return Promise.resolve().then(() => {
@@ -407,11 +356,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('dropdown-alignment = bottom-left', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.dropdownAlignment = 'bottom-left';
 
         return Promise.resolve().then(() => {
@@ -431,11 +375,6 @@ describe('PrimitiveCombobox', () => {
 
     // field-level-help
     it('fieldLevelHelp', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -449,11 +388,6 @@ describe('PrimitiveCombobox', () => {
     // groups
     // Depends on options
     it('groups', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.groups = groups;
         element.options = options;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
@@ -491,11 +425,6 @@ describe('PrimitiveCombobox', () => {
     // hide-selected-options
     // Depends on options, isMultiSelect and value
     it('hideSelectedOptions = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const values = ['oil-sla', 'dickenson'];
         element.options = options;
         element.value = values;
@@ -517,11 +446,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('hideSelectedOptions = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.value = ['oil-sla', 'dickenson'];
         element.hideSelectedOptions = true;
@@ -536,11 +460,6 @@ describe('PrimitiveCombobox', () => {
     // is-loading
     // Depends on options
     it('isLoading = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.isLoading = false;
 
@@ -553,11 +472,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('isLoading = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.isLoading = true;
 
@@ -571,11 +485,6 @@ describe('PrimitiveCombobox', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -587,11 +496,6 @@ describe('PrimitiveCombobox', () => {
     // loading-state-altermative-text
     // Depends on isLoading
     it('loadingStateAlternativeText', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.loadingStateAlternativeText = 'An alternative help';
         element.isLoading = true;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
@@ -608,11 +512,6 @@ describe('PrimitiveCombobox', () => {
     // message-when-value-missing
     // Depends on required and showHelpMessageIfInvalid()
     it('messageWhenValueMissing', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.messageWhenValueMissing = 'Something is wrong';
         element.required = true;
         element.showHelpMessageIfInvalid();
@@ -628,11 +527,6 @@ describe('PrimitiveCombobox', () => {
     // multi-level-groups
     // Depends on options and groups
     it('multiLevelGroups = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.groups = groups;
         element.options = options;
         element.multiLevelGroups = false;
@@ -648,11 +542,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('multiLevelGroups = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.groups = groups;
         element.options = options;
         element.multiLevelGroups = true;
@@ -669,11 +558,6 @@ describe('PrimitiveCombobox', () => {
 
     // name
     it('name', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
@@ -684,11 +568,6 @@ describe('PrimitiveCombobox', () => {
 
     // options
     it('options', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
@@ -707,11 +586,6 @@ describe('PrimitiveCombobox', () => {
     // placeholder
     // Depends on allowSearch
     it('default placeholder, with allowSearch = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.allowSearch = true;
 
         return Promise.resolve().then(() => {
@@ -721,11 +595,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('placeholder', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.placeholder = 'A custom placeholder';
 
         return Promise.resolve().then(() => {
@@ -736,11 +605,6 @@ describe('PrimitiveCombobox', () => {
 
     // read-only
     it('readOnly = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.readOnly = false;
 
         return Promise.resolve().then(() => {
@@ -750,11 +614,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('readOnly = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -766,11 +625,6 @@ describe('PrimitiveCombobox', () => {
     // required
     // Depends on label
     it('required = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.required = false;
         element.label = 'A string label';
 
@@ -781,11 +635,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('required = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.label = 'A string label';
 
@@ -798,11 +647,6 @@ describe('PrimitiveCombobox', () => {
     // search
     // Depends on allowSearch
     it('search', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const mockSearch = jest.fn().mockReturnValue([]);
         element.search = mockSearch;
         element.allowSearch = true;
@@ -818,11 +662,6 @@ describe('PrimitiveCombobox', () => {
     // selected-options-aria-label
     // Depends on isMultiSelect, value and options
     it('selectedOptionsAriaLabel', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.value = [options[1].value, options[0].value];
         element.isMultiSelect = true;
@@ -839,11 +678,6 @@ describe('PrimitiveCombobox', () => {
     // showClearInput
     // Depends on allowSearch
     it('showClearInput = false', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.showClearInput = false;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
@@ -861,11 +695,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('showClearInput = true', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.showClearInput = true;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
@@ -885,11 +714,6 @@ describe('PrimitiveCombobox', () => {
     // validity
     // Depends on required
     it('validity', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
 
@@ -904,11 +728,6 @@ describe('PrimitiveCombobox', () => {
     // value
     // Depends on options and isMultiSelect
     it('value without multiselect', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.value = [options[1].value, options[0].value];
         element.isMultiSelect = false;
@@ -923,11 +742,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('value with multiselect', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.value = [options[1].value, options[0].value];
         element.isMultiSelect = true;
@@ -941,11 +755,6 @@ describe('PrimitiveCombobox', () => {
     // variant
     // Depends on label
     it('variant = standard', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.label = 'Some label';
         element.variant = 'standard';
 
@@ -965,11 +774,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('variant = label-hidden', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.label = 'Some label';
         element.variant = 'label-hidden';
 
@@ -989,11 +793,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('variant = label-inline', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.label = 'Some label';
         element.variant = 'label-inline';
 
@@ -1011,11 +810,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('variant = label-stacked', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.label = 'Some label';
         element.variant = 'label-stacked';
 
@@ -1036,11 +830,6 @@ describe('PrimitiveCombobox', () => {
 
     // blur
     it('blur method', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         const spy = jest.spyOn(input, 'blur');
 
@@ -1051,11 +840,6 @@ describe('PrimitiveCombobox', () => {
     // checkValidity
     // Depends on required
     it('checkValidity method, valid', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.required = false;
 
         return Promise.resolve().then(() => {
@@ -1064,11 +848,6 @@ describe('PrimitiveCombobox', () => {
     });
 
     it('checkValidity method, invalid', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -1079,11 +858,6 @@ describe('PrimitiveCombobox', () => {
     // close
     // Depends on options
     it('close method', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         input.click();
@@ -1107,11 +881,6 @@ describe('PrimitiveCombobox', () => {
 
     // focus
     it('focus method', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const input = element.shadowRoot.querySelector('[data-element-id="input"]');
         const spy = jest.spyOn(input, 'focus');
 
@@ -1122,11 +891,6 @@ describe('PrimitiveCombobox', () => {
     // handleRemoveSelectedOption and change event
     // Depends on value, isMultiSelect and options
     it('handleRemoveSelectedOption method and change event', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.value = [options[0].value, options[1].value];
         element.options = options;
         element.isMultiSelect = true;
@@ -1168,11 +932,6 @@ describe('PrimitiveCombobox', () => {
     // open
     // Depends on options
     it('open method', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.open();
 
@@ -1187,11 +946,6 @@ describe('PrimitiveCombobox', () => {
     // reportValidity
     // Depends on required
     it('reportValidity method', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.reportValidity();
 
@@ -1206,11 +960,6 @@ describe('PrimitiveCombobox', () => {
     // showHelpMessageIfInvalid
     // Depends on required
     it('showHelpMessageIfInvalid method', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -1227,11 +976,6 @@ describe('PrimitiveCombobox', () => {
     // actionclick
     // Depends on actions
     it('actionclick event', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.actions = actions;
@@ -1255,11 +999,6 @@ describe('PrimitiveCombobox', () => {
     // change
     // Depends on options, showClearInput and value
     it('change event', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.options = options;
@@ -1283,11 +1022,6 @@ describe('PrimitiveCombobox', () => {
     // open
     // Depends on options
     it('open event', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('open', handler);
         element.options = options;
@@ -1303,11 +1037,6 @@ describe('PrimitiveCombobox', () => {
     // search
     // Depends on options and allowSearch
     it('search event', () => {
-        const element = createElement('base-primitive-combobox', {
-            is: PrimitiveCombobox
-        });
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('search', handler);
         element.options = options;

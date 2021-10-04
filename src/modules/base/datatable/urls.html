@@ -33,15 +33,15 @@
 -->
 
 <template>
-    <div class={mediaObjectClass}>
-        <div class="slds-media__figure">
-            <slot name="figure"></slot>
-        </div>
-        <div class="slds-media__body">
-            <slot></slot>
-        </div>
-        <div class="slds-media__figure slds-media__figure_reverse">
-            <slot name="figure-inverse"></slot>
-        </div>
-    </div>
+    <ul class="slds-p-around_x-small">
+        <template for:each={typeAttributes.urls} for:item="url">
+            <li key={url.value}>
+                <lightning-formatted-url
+                    value={url.value}
+                    label={url.label}
+                    target={url.target}
+                ></lightning-formatted-url>
+            </li>
+        </template>
+    </ul>
 </template>

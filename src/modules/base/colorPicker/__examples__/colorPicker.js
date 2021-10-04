@@ -42,6 +42,7 @@ export const ColorPicker = ({
     readOnly,
     isLoading,
     label,
+    name,
     fieldLevelHelp,
     value,
     variant,
@@ -62,6 +63,7 @@ export const ColorPicker = ({
     element.readOnly = readOnly;
     element.isLoading = isLoading;
     element.label = label;
+    element.name = name;
     element.fieldLevelHelp = fieldLevelHelp;
     element.value = value;
     element.variant = variant;

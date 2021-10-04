@@ -33,6 +33,7 @@
 import { createElement } from 'lwc';
 import Avatar from 'c/avatar';
 
+let element;
 describe('Avatar', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -40,11 +41,14 @@ describe('Avatar', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-avatar', {
+    beforeEach(() => {
+        element = createElement('base-avatar', {
             is: Avatar
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.alternativeText).toBe('Avatar');
         expect(element.fallbackIconName).toBeUndefined();
         expect(element.initials).toBeUndefined();
@@ -73,11 +77,6 @@ describe('Avatar', () => {
 
     // alternative-text
     it('Avatar alternative text with image', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.alternativeText = 'This is an alternative text';
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -92,11 +91,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar alternative text with icon', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.alternativeText = 'This is an alternative text';
         element.fallbackIconName = 'standard:account';
         element.hideAvatarDetails = true;
@@ -110,11 +104,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar alternative text with initials', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.alternativeText = 'This is an alternative text';
         element.initials = 'JD';
         element.hideAvatarDetails = true;
@@ -129,11 +118,6 @@ describe('Avatar', () => {
 
     // fallback icon name
     it('Avatar fallback icon name', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.fallbackIconName = 'standard:account';
         element.hideAvatarDetails = true;
 
@@ -147,11 +131,6 @@ describe('Avatar', () => {
 
     // Itinitals
     it('Avatar initials', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.initials = 'JD';
         element.hideAvatarDetails = true;
 
@@ -165,11 +144,6 @@ describe('Avatar', () => {
 
     //size
     it('Avatar Size xx-small', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'xx-small';
         element.hideAvatarDetails = true;
         element.src =
@@ -184,11 +158,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar Size x-small', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'x-small';
         element.hideAvatarDetails = true;
         element.src =
@@ -203,11 +172,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar Size small', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.hideAvatarDetails = true;
         element.src =
@@ -222,11 +186,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar Size medium', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'medium';
         element.hideAvatarDetails = true;
         element.src =
@@ -241,11 +200,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar Size large', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.hideAvatarDetails = true;
         element.src =
@@ -260,11 +214,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar Size x-large', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'x-large';
         element.hideAvatarDetails = true;
         element.src =
@@ -279,11 +228,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar Size xx-large', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'xx-large';
         element.hideAvatarDetails = true;
         element.src =
@@ -299,11 +243,6 @@ describe('Avatar', () => {
 
     // src
     it('Avatar Src', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.size = 'xx-large';
         element.hideAvatarDetails = true;
         element.src =
@@ -321,11 +260,6 @@ describe('Avatar', () => {
 
     // variant
     it('Avatar variant square', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.variant = 'square';
         element.hideAvatarDetails = true;
         element.src =
@@ -340,11 +274,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar variant circle', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.variant = 'circle';
         element.hideAvatarDetails = true;
         element.src =
@@ -360,11 +289,6 @@ describe('Avatar', () => {
 
     // status
     it('Avatar status approved', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'approved';
         element.hideAvatarDetails = true;
         element.src =
@@ -379,11 +303,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar status locked', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'locked';
         element.hideAvatarDetails = true;
         element.src =
@@ -398,11 +317,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar status declined', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'declined';
         element.hideAvatarDetails = true;
         element.src =
@@ -417,11 +331,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar status unknown', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'unknown';
         element.hideAvatarDetails = true;
         element.src =
@@ -437,11 +346,6 @@ describe('Avatar', () => {
 
     // status position
     it('Avatar status position top-right', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'approved';
         element.statusPosition = 'top-right';
         element.hideAvatarDetails = true;
@@ -457,11 +361,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar status position top-left', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'approved';
         element.statusPosition = 'top-left';
         element.hideAvatarDetails = true;
@@ -477,11 +376,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar status position bottom-right', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'approved';
         element.statusPosition = 'bottom-right';
         element.hideAvatarDetails = true;
@@ -497,11 +391,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar status position bottom-left', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'approved';
         element.statusPosition = 'bottom-left';
         element.hideAvatarDetails = true;
@@ -518,11 +407,6 @@ describe('Avatar', () => {
 
     // status title
     it('Avatar status title', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.status = 'approved';
         element.statusTitle = 'Status title';
         element.hideAvatarDetails = true;
@@ -539,11 +423,6 @@ describe('Avatar', () => {
 
     // presence
     it('Avatar presence online', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'online';
         element.hideAvatarDetails = true;
         element.src =
@@ -558,11 +437,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence busy', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'busy';
         element.hideAvatarDetails = true;
         element.src =
@@ -577,11 +451,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence focus', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'focus';
         element.hideAvatarDetails = true;
         element.src =
@@ -596,11 +465,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence offline', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'offline';
         element.hideAvatarDetails = true;
         element.src =
@@ -615,11 +479,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence blocked', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'blocked';
         element.hideAvatarDetails = true;
         element.src =
@@ -634,11 +493,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence away', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'away';
         element.hideAvatarDetails = true;
         element.src =
@@ -654,11 +508,6 @@ describe('Avatar', () => {
 
     // presence title
     it('Avatar presence title', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'online';
         element.presenceTitle = 'Presence Title';
         element.hideAvatarDetails = true;
@@ -675,11 +524,6 @@ describe('Avatar', () => {
 
     // presence position
     it('Avatar presence bottom-right', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'online';
         element.presencePosition = 'bottom-right';
         element.hideAvatarDetails = true;
@@ -695,11 +539,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence bottom-left', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'online';
         element.presencePosition = 'bottom-left';
         element.hideAvatarDetails = true;
@@ -715,11 +554,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence top-left', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'online';
         element.presencePosition = 'top-left';
         element.hideAvatarDetails = true;
@@ -735,11 +569,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar presence top-right', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.presence = 'online';
         element.presencePosition = 'top-right';
         element.hideAvatarDetails = true;
@@ -756,11 +585,6 @@ describe('Avatar', () => {
 
     // entity-icon-name
     it('Avatar entity icon name', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.hideAvatarDetails = true;
@@ -777,11 +601,6 @@ describe('Avatar', () => {
 
     // entity position
     it('Avatar entity top-right', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'top-right';
@@ -798,11 +617,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar entity top-left', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'top-left';
@@ -819,11 +633,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar entity bottom-right', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'bottom-right';
@@ -840,11 +649,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar entity bottom-left', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'bottom-left';
@@ -862,11 +666,6 @@ describe('Avatar', () => {
 
     // entity src
     it('Avatar entity src', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.hideAvatarDetails = true;
         element.fallbackIconName = 'standard:account';
         element.entitySrc =
@@ -884,11 +683,6 @@ describe('Avatar', () => {
 
     // entity title
     it('Avatar entity title', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.hideAvatarDetails = true;
         element.fallbackIconName = 'standard:account';
         element.entitySrc =
@@ -905,11 +699,6 @@ describe('Avatar', () => {
 
     // entity variant
     it('Avatar entity circle', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.entityIconName = 'standard:account';
         element.entityPosition = 'bottom-right';
         element.entityVariant = 'circle';
@@ -926,11 +715,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar entity square', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.entityIconName = 'standard:account';
         element.entityPosition = 'bottom-right';
         element.entityVariant = 'square';
@@ -948,11 +732,6 @@ describe('Avatar', () => {
 
     // primary text
     it('Avatar primary text', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
         element.primaryText = 'This is a primary text';
@@ -967,11 +746,6 @@ describe('Avatar', () => {
 
     // secondary text
     it('Avatar secondary text', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
         element.secondaryText = 'This is a secondary text';
@@ -986,11 +760,6 @@ describe('Avatar', () => {
 
     // tertiary text
     it('Avatar tertiary text', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
@@ -1009,11 +778,6 @@ describe('Avatar', () => {
 
     // text-position
     it('Avatar center', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
         element.primaryText = 'This is a primary Text';
@@ -1031,11 +795,6 @@ describe('Avatar', () => {
     });
 
     it('Avatar left', () => {
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
-
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
         element.primaryText = 'This is a primary Text';
@@ -1050,14 +809,12 @@ describe('Avatar', () => {
             expect(mediaObject.className).toBe('slds-text-align_right');
         });
     });
+
     // tags
     it('Avatar with default tags', () => {
         const tags = [{ label: 'default', variant: 'default' }];
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
         element.tags = tags;
+
         return Promise.resolve().then(() => {
             const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-badge');
@@ -1067,11 +824,8 @@ describe('Avatar', () => {
 
     it('Avatar with inverse tags', () => {
         const tags = [{ label: 'inverse', variant: 'inverse' }];
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-        document.body.appendChild(element);
         element.tags = tags;
+
         return Promise.resolve().then(() => {
             const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-badge_inverse');
@@ -1081,12 +835,8 @@ describe('Avatar', () => {
 
     it('Avatar with lightest tags', () => {
         const tags = [{ label: 'lightest', variant: 'lightest' }];
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-
-        document.body.appendChild(element);
         element.tags = tags;
+
         return Promise.resolve().then(() => {
             const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-badge_lightest');
@@ -1096,12 +846,8 @@ describe('Avatar', () => {
 
     it('Avatar with success tags', () => {
         const tags = [{ label: 'success', variant: 'success' }];
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-
-        document.body.appendChild(element);
         element.tags = tags;
+
         return Promise.resolve().then(() => {
             const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-theme_success');
@@ -1111,12 +857,8 @@ describe('Avatar', () => {
 
     it('Avatar with warning tags', () => {
         const tags = [{ label: 'warning', variant: 'warning' }];
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-
-        document.body.appendChild(element);
         element.tags = tags;
+
         return Promise.resolve().then(() => {
             const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-theme_warning');
@@ -1126,12 +868,8 @@ describe('Avatar', () => {
 
     it('Avatar with error tags', () => {
         const tags = [{ label: 'error', variant: 'error' }];
-        const element = createElement('base-avatar', {
-            is: Avatar
-        });
-
-        document.body.appendChild(element);
         element.tags = tags;
+
         return Promise.resolve().then(() => {
             const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
             expect(badge.className).toBe('slds-theme_error');

@@ -43,6 +43,7 @@ import Range from 'c/range';
 // messageWhenPatternMismatch
 // messageWhenTypeMismatch
 
+let element;
 describe('Range', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -50,11 +51,15 @@ describe('Range', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-range', {
+    beforeEach(() => {
+        element = createElement('base-range', {
             is: Range
         });
 
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.max).toBe(100);
@@ -83,12 +88,6 @@ describe('Range', () => {
 
     // disabled
     it('disabled = false', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -100,12 +99,6 @@ describe('Range', () => {
     });
 
     it('disabled = true', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -118,12 +111,6 @@ describe('Range', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -134,12 +121,6 @@ describe('Range', () => {
 
     // max
     it('max', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.max = 45;
 
         return Promise.resolve().then(() => {
@@ -156,12 +137,6 @@ describe('Range', () => {
 
     // min
     it('min', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.min = 34;
 
         return Promise.resolve().then(() => {
@@ -178,12 +153,6 @@ describe('Range', () => {
 
     // pin
     it('pin = false', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.pin = false;
 
         return Promise.resolve().then(() => {
@@ -195,12 +164,6 @@ describe('Range', () => {
     });
 
     it('pin = true', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.pin = true;
 
         return Promise.resolve().then(() => {
@@ -213,12 +176,6 @@ describe('Range', () => {
 
     // size
     it('size = ""', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.size = '';
 
         return Promise.resolve().then(() => {
@@ -228,12 +185,6 @@ describe('Range', () => {
     });
 
     it('size = x-small', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -243,12 +194,6 @@ describe('Range', () => {
     });
 
     it('size = small', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'small';
 
         return Promise.resolve().then(() => {
@@ -258,12 +203,6 @@ describe('Range', () => {
     });
 
     it('size = medium', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
@@ -273,12 +212,6 @@ describe('Range', () => {
     });
 
     it('size = large', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -289,12 +222,6 @@ describe('Range', () => {
 
     // step
     it('step', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.step = 3;
 
         return Promise.resolve().then(() => {
@@ -307,12 +234,6 @@ describe('Range', () => {
 
     // unit
     it('unit', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.unit = 'currency';
 
         return Promise.resolve().then(() => {
@@ -327,12 +248,6 @@ describe('Range', () => {
 
     // unit-attributes
     it('unitAttributes', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         const unitAttributes = {
             currencyCode: 'CAD',
             currencyDisplayAs: 'name',
@@ -377,12 +292,6 @@ describe('Range', () => {
     // type
     // Depends on pin
     it('type = horizontal', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.type = 'horizontal';
         element.pin = true;
 
@@ -412,12 +321,6 @@ describe('Range', () => {
     });
 
     it('type = vertical', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.type = 'vertical';
         element.pin = true;
 
@@ -449,12 +352,6 @@ describe('Range', () => {
     // value-lower
     // Depends on pin
     it('valueLower', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.valueLower = 34;
         element.pin = true;
 
@@ -473,12 +370,6 @@ describe('Range', () => {
     // value-upper
     // Depends on pin
     it('valueUpper', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.valueUpper = 34;
         element.pin = true;
 
@@ -497,12 +388,6 @@ describe('Range', () => {
     // variant
     // Depends on label
     it('variant = standard', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'standard';
         element.label = 'A string label';
 
@@ -516,12 +401,6 @@ describe('Range', () => {
     });
 
     it('variant = label-hidden', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.variant = 'label-hidden';
         element.label = 'A string label';
 
@@ -537,12 +416,6 @@ describe('Range', () => {
     // inputs width
     // Depends on valueLower, valueUpper, min, max and step
     it('inputs width', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         element.valueLower = 34;
         element.valueUpper = 48;
         element.min = 10;
@@ -561,17 +434,18 @@ describe('Range', () => {
         });
     });
 
+    // checkValidity
+    it('checkValidity method', () => {
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toBeTruthy();
+        });
+    });
+
     /* ----- EVENTS ----- */
 
     // change
     // Depends on valueLower and valueUpper
     it('change event on left input', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -594,12 +468,6 @@ describe('Range', () => {
     });
 
     it('change event on right input', () => {
-        const element = createElement('base-range', {
-            is: Range
-        });
-
-        document.body.appendChild(element);
-
         const handler = jest.fn();
         element.addEventListener('change', handler);
 

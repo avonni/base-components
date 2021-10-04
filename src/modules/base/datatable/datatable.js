@@ -63,8 +63,9 @@ import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
-import slider from './slider.html';
 import rating from './rating.html';
+import slider from './slider.html';
+import urls from './urls.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar',
@@ -83,7 +84,8 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'progress-ring',
     'qrcode',
     'rating',
-    'slider'
+    'slider',
+    'urls'
 ];
 
 const CUSTOM_TYPES_EDITABLE = [
@@ -298,6 +300,10 @@ export default class Datatable extends LightningDatatable {
         slider: {
             template: slider,
             typeAttributes: ['disabled', 'label', 'max', 'min', 'size', 'step']
+        },
+        urls: {
+            template: urls,
+            typeAttributes: ['urls']
         }
     };
 

@@ -426,19 +426,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Compute icon container class styling.
-     *
-     * @type {string}
-     */
-    get iconContainerClass() {
-        return classSet('slds-icon_container')
-            .add({
-                'slds-visual-picker__text-check': this._variant !== 'coverable'
-            })
-            .toString();
-    }
-
-    /**
      * Compute element control class styling.
      *
      * @type {string}

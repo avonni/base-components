@@ -77,6 +77,7 @@ const items = [
     }
 ];
 
+let element;
 describe('Avatar Group', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -84,15 +85,19 @@ describe('Avatar Group', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-avatar-group', {
+    beforeEach(() => {
+        element = createElement('base-avatar-group', {
             is: AvatarGroup
         });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
         expect(element.size).toBe('medium');
         expect(element.variant).toBe('square');
         expect(element.items).toMatchObject([]);
         expect(element.layout).toBe('stack');
-        expect(element.maxCount).toBeUndefined();
+        expect(element.maxCount).toBe(5);
         expect(element.listButtonShowLessIconName).toBeUndefined();
         expect(element.listButtonShowLessIconPosition).toBe('left');
         expect(element.listButtonShowLessLabel).toBe('Show less');
@@ -108,11 +113,6 @@ describe('Avatar Group', () => {
     // size
     // Depends on actionIconName
     it('Avatar group size x-small', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'x-small';
         element.items = items;
 
@@ -127,11 +127,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button size x-small', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'x-small';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -147,11 +142,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group size small', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.items = items;
 
@@ -166,11 +156,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button size small', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'small';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -186,11 +171,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group size medium', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'medium';
         element.items = items;
 
@@ -205,11 +185,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button size medium', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'medium';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -225,11 +200,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group size large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.items = items;
 
@@ -244,11 +214,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button size large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'large';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -264,11 +229,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group size x-large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'x-large';
         element.items = items;
 
@@ -285,11 +245,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button size x-large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'x-large';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -305,11 +260,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group size xx-large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'xx-large';
         element.items = items;
 
@@ -326,11 +276,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button size xx-large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.size = 'xx-large';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -348,11 +293,6 @@ describe('Avatar Group', () => {
     // Variant
     // Depends on actionIconName
     it('Avatar group variant square', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.variant = 'square';
         element.items = items;
 
@@ -369,11 +309,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action button variant square', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.variant = 'square';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -389,11 +324,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group variant circle', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.variant = 'circle';
         element.items = items;
 
@@ -410,11 +340,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action button variant circle', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.variant = 'circle';
         element.actionIconName = 'utility:add';
         element.items = items;
@@ -431,11 +356,6 @@ describe('Avatar Group', () => {
 
     // items
     it('Avatar group items', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.variant = 'circle';
         element.size = 'xx-large';
         element.items = item;
@@ -491,11 +411,6 @@ describe('Avatar Group', () => {
 
     // layout
     it('Avatar group layout stack with less than 3', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'stack';
         element.items = items;
         element.actionIconName = '';
@@ -514,11 +429,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group layout stack with more than 2', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'stack';
         element.items = [...items, ...items, ...items];
 
@@ -543,11 +453,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group layout grid', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'grid';
         element.items = [...items, ...items, ...items];
 
@@ -571,11 +476,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group layout list', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.items = [...items, ...items, ...items];
 
@@ -600,11 +500,6 @@ describe('Avatar Group', () => {
 
     //max count
     it('Avatar group max count stack', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'stack';
         element.items = [
             ...items,
@@ -625,11 +520,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group max count grid', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.maxCount = '11';
         element.layout = 'grid';
         element.items = [
@@ -654,11 +544,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group max count list', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.maxCount = '11';
         element.items = [
             ...items,
@@ -680,11 +565,6 @@ describe('Avatar Group', () => {
 
     // list button show less icon name
     it('Avatar group list button show less icon name', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonShowLessIconName = 'utility:lock';
@@ -714,11 +594,6 @@ describe('Avatar Group', () => {
 
     // list button show less icon position
     it('Avatar group list button show less position right', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonVariant = 'neutral';
@@ -750,11 +625,6 @@ describe('Avatar Group', () => {
 
     // list button show less label
     it('Avatar group list button show less label', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonShowLessLabel = 'This is a list button label';
@@ -784,11 +654,6 @@ describe('Avatar Group', () => {
 
     // list button show more icon name
     it('Avatar group list button show more icon name', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonShowMoreIconName = 'utility:lock';
@@ -809,11 +674,6 @@ describe('Avatar Group', () => {
 
     // list button show more icon position
     it('Avatar group list button show more position right', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonVariant = 'neutral';
@@ -836,11 +696,6 @@ describe('Avatar Group', () => {
 
     // list button show more label
     it('Avatar group list button show more label', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonShowMoreLabel = 'This is a list button label';
@@ -861,11 +716,6 @@ describe('Avatar Group', () => {
 
     // list button variant
     it('Avatar group list button variant neutral', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -886,11 +736,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group list button variant base', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -911,11 +756,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group list button variant brand', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -936,11 +776,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group list button variant brand-outline', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -961,11 +796,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group list button variant destructive', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -986,11 +816,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group list button variant destructive-text', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -1011,11 +836,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group list button variant inverse', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -1036,11 +856,6 @@ describe('Avatar Group', () => {
     });
 
     it('Avatar group list button variant success', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 5;
         element.listButtonLabel = 'button';
@@ -1062,11 +877,6 @@ describe('Avatar Group', () => {
 
     //Action button: absence of action-icon-name
     it('Action Button absence of action-icon-name makes action button disappear', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = '';
         element.items = [...items, ...items, ...items];
 
@@ -1079,11 +889,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button action-icon-name button icon', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = 'utility:check';
         element.items = [...items, ...items, ...items];
 
@@ -1098,11 +903,6 @@ describe('Avatar Group', () => {
     // Action button icon size predicated on switch case due to utility icon default sizing
     // size : x-small, small, medium = x-small icon // size: large, x-large = small icon // size: xx-large = medium icon
     it('Action Button button icon size x-small', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = 'utility:check';
         element.size = 'x-small';
         element.items = [...items, ...items, ...items];
@@ -1116,11 +916,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button button icon size small', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = 'utility:check';
         element.size = 'small';
         element.items = [...items, ...items, ...items];
@@ -1134,11 +929,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button button icon size medium', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = 'utility:check';
         element.size = 'medium';
         element.items = [...items, ...items, ...items];
@@ -1152,11 +942,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button button icon size large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = 'utility:check';
         element.size = 'large';
         element.items = [...items, ...items, ...items];
@@ -1170,11 +955,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button button icon size x-large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = 'utility:check';
         element.size = 'x-large';
         element.items = [...items, ...items, ...items];
@@ -1188,11 +968,6 @@ describe('Avatar Group', () => {
     });
 
     it('Action Button button icon size xx-large', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.actionIconName = 'utility:check';
         element.size = 'xx-large';
         element.items = [...items, ...items, ...items];
@@ -1209,11 +984,6 @@ describe('Avatar Group', () => {
 
     // list hidden items
     it('Avatar group list hidden items', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.layout = 'list';
         element.maxCount = 3;
         element.items = [
@@ -1249,11 +1019,6 @@ describe('Avatar Group', () => {
 
     // avatar click
     it('Avatar group avatar click event', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.items = item;
 
         const handler = jest.fn();
@@ -1274,11 +1039,6 @@ describe('Avatar Group', () => {
 
     // Action button click
     it('Avatar Action button click event', () => {
-        const element = createElement('base-avatar-group', {
-            is: AvatarGroup
-        });
-        document.body.appendChild(element);
-
         element.items = item;
         element.name = 'Avatar group name';
         element.actionIconName = 'utility:add';

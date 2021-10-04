@@ -441,6 +441,14 @@ const columnsRZ = [
             label: { fieldName: 'urlLabel' },
             target: '_blank'
         }
+    },
+    {
+        label: 'URLS',
+        fieldName: 'urls',
+        type: 'urls',
+        typeAttributes: {
+            urls: { fieldName: 'urls' }
+        }
     }
 ];
 
@@ -758,7 +766,19 @@ const recordsRZ = [
         slider: 36,
         text: 'Nina Gomez',
         url: 'https://www.avonnicomponents.com/',
-        urlLabel: 'Avonni Components Documentation'
+        urlLabel: 'Avonni Components Documentation',
+        urls: [
+            {
+                value: 'https://www.avonnicomponents.com/',
+                label: 'Avonni Components Documentation'
+            },
+            { value: 'https://www.avonni.app/', label: 'Avonni' },
+            {
+                value:
+                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                label: 'Salesforce documentation'
+            }
+        ]
     },
     {
         id: 2,
@@ -766,7 +786,19 @@ const recordsRZ = [
         slider: 78,
         text: 'Dave McKinsley',
         url: 'https://www.avonni.app/',
-        urlLabel: 'Avonni'
+        urlLabel: 'Avonni',
+        urls: [
+            { value: 'https://www.avonni.app/', label: 'Avonni' },
+            {
+                value: 'https://www.avonnicomponents.com/',
+                label: 'Avonni Components Documentation'
+            },
+            {
+                value:
+                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                label: 'Salesforce documentation'
+            }
+        ]
     },
     {
         id: 3,
@@ -775,7 +807,19 @@ const recordsRZ = [
         text: 'Jung Phung',
         url:
             'https://developer.salesforce.com/docs/component-library/overview/components',
-        urlLabel: 'Salesforce documentation'
+        urlLabel: 'Salesforce documentation',
+        urls: [
+            {
+                value:
+                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                label: 'Salesforce documentation'
+            },
+            {
+                value: 'https://www.avonnicomponents.com/',
+                label: 'Avonni Components Documentation'
+            },
+            { value: 'https://www.avonni.app/', label: 'Avonni' }
+        ]
     },
     {
         id: 4,
@@ -784,7 +828,19 @@ const recordsRZ = [
         sliderStep: 4,
         text: 'Lily Murray',
         url: 'https://www.lightningdesignsystem.com/',
-        urlLabel: 'Lightning Design System'
+        urlLabel: 'Lightning Design System',
+        urls: [
+            {
+                value: 'https://www.lightningdesignsystem.com/',
+                label: 'Lightning Design System'
+            },
+            { value: 'https://www.avonni.app/', label: 'Avonni' },
+            {
+                value:
+                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                label: 'Salesforce documentation'
+            }
+        ]
     },
     {
         id: 5,
@@ -792,7 +848,16 @@ const recordsRZ = [
         slider: '0',
         text: 'Reginald Martin',
         url: 'https://lwc.dev/',
-        urlLabel: 'LWC Documentation'
+        urlLabel: 'LWC Documentation',
+        urls: [
+            { value: 'https://lwc.dev/', label: 'LWC Documentation' },
+            { value: 'https://www.avonni.app/', label: 'Avonni' },
+            {
+                value:
+                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                label: 'Salesforce documentation'
+            }
+        ]
     }
 ];
 

@@ -99,9 +99,7 @@ export default class PrivateSelect extends LightningElement {
         if (this.multiple) {
             if (this._size === undefined) {
                 return '4';
-            } else {
-                return this._size;
-            }
+            } return this._size;
         }
         return null;
     }

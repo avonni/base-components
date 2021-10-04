@@ -31,122 +31,10 @@
  */
 
 import { createElement } from 'lwc';
+import { groups, options } from './data';
 import PrimitiveComboboxGroup from 'c/primitiveComboboxGroup';
 
-const options = [
-    {
-        avatarFallbackIconName: 'standard:account',
-        groups: ['accounts'],
-        label: 'Burlington Textiles Corp of America',
-        secondaryText: 'Account - Burlington, NC',
-        value: 'burlington',
-        hasAvatar: true,
-        computedClass: 'combobox__option',
-        options: []
-    },
-    {
-        label: 'Dickenson plc',
-        value: 'dickenson',
-        computedClass: 'combobox__option',
-        options: [
-            {
-                avatarFallbackIconName: 'standard:opportunity',
-                groups: ['opportunities'],
-                label: 'Tyrell Corp',
-                options: [],
-                secondaryText: 'Opportunity',
-                value: 'tyrell',
-                hasAvatar: true,
-                computedClass: 'combobox__option'
-            }
-        ],
-        groups: [
-            {
-                label: 'Some group',
-                name: 'some-group',
-                options: [
-                    {
-                        label: 'Sub-option',
-                        name: 'suboption'
-                    }
-                ]
-            }
-        ]
-    },
-    {
-        avatarFallbackIconName: 'standard:account',
-        groups: ['accounts'],
-        label: 'Edge Communication',
-        secondaryText: 'Account - Singapore',
-        value: 'edge',
-        hasAvatar: true,
-        showCheckmark: true,
-        computedClass: 'combobox__option',
-        options: []
-    }
-];
-
-const groups = [
-    {
-        label: 'Accounts',
-        name: 'accounts',
-        options: options
-    },
-    {
-        label: 'Opportunities',
-        name: 'opportunities',
-        options: [
-            {
-                avatarFallbackIconName: 'standard:opportunity',
-                groups: ['opportunities'],
-                label: 'Tyrell Corp',
-                options: options,
-                secondaryText: 'Opportunity',
-                value: 'tyrell',
-                hasAvatar: true,
-                computedClass: 'combobox__option'
-            }
-        ],
-        groups: [
-            {
-                label: 'Closed',
-                name: 'closed',
-                options: [
-                    {
-                        avatarFallbackIconName: 'standard:opportunity',
-                        groups: ['opportunities', 'closed'],
-                        label: 'United Oil SLA',
-                        secondaryText: 'Opportunity - Closed',
-                        value: 'oil-sla',
-                        hasAvatar: true,
-                        computedClass: 'combobox__option',
-                        options: []
-                    }
-                ],
-                groups: [
-                    {
-                        label: 'Won',
-                        name: 'won',
-                        options: [
-                            {
-                                avatarFallbackIconName: 'standard:opportunity',
-                                groups: ['opportunities', 'closed', 'won'],
-                                label: 'United Oil Standby Generators',
-                                secondaryText: 'Opportunity - Closed Won',
-                                value: 'united-oil',
-                                hasAvatar: true,
-                                showCheckmark: true,
-                                computedClass: 'combobox__option',
-                                options: []
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
-];
-
+let element;
 describe('PrimitiveComboboxGroup', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -154,11 +42,14 @@ describe('PrimitiveComboboxGroup', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('base-primitive-combobox-group', {
+    beforeEach(() => {
+        element = createElement('base-primitive-combobox-group', {
             is: PrimitiveComboboxGroup
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.groups).toMatchObject([]);
         expect(element.name).toBeUndefined();
@@ -170,11 +61,6 @@ describe('PrimitiveComboboxGroup', () => {
 
     // label
     it('label', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -186,11 +72,6 @@ describe('PrimitiveComboboxGroup', () => {
 
     // groups
     it('groups', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.groups = groups;
 
         return Promise.resolve().then(() => {
@@ -212,11 +93,6 @@ describe('PrimitiveComboboxGroup', () => {
 
     // options
     it('options', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -276,11 +152,6 @@ describe('PrimitiveComboboxGroup', () => {
     // remove-selected-options
     // Depends on groups and options
     it('removeSelectedOptions = false', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.groups = groups;
         element.options = options;
         element.removeSelectedOptions = false;
@@ -310,11 +181,6 @@ describe('PrimitiveComboboxGroup', () => {
     });
 
     it('removeSelectedOptions = true', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.groups = groups;
         element.options = options;
         element.removeSelectedOptions = true;
@@ -338,11 +204,6 @@ describe('PrimitiveComboboxGroup', () => {
 
     // optionElements
     it('get optionElements', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -353,11 +214,6 @@ describe('PrimitiveComboboxGroup', () => {
 
     // titleElement
     it('get titleElement', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.label = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -371,11 +227,6 @@ describe('PrimitiveComboboxGroup', () => {
     // privateoptionclick event
     // Depends on options and name
     it('privateoptionclick event', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.name = 'string-name';
         const handler = jest.fn();
@@ -398,11 +249,6 @@ describe('PrimitiveComboboxGroup', () => {
     // privateoptionmouseenter event
     // Depends on options and name
     it('privateoptionmouseenter event', () => {
-        const element = createElement('base-primitive-combobox-group', {
-            is: PrimitiveComboboxGroup
-        });
-        document.body.appendChild(element);
-
         element.options = options;
         element.name = 'string-name';
         const handler = jest.fn();
