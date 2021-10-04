@@ -14,8 +14,8 @@
     },
     "devDependencies": {
         "@babel/core": "^7.12.13",
-        "@lwc/jest-preset": "^9.0.0",
-        "@lwc/synthetic-shadow": "^1.17.0",
+        "@lwc/jest-preset": "^11.2.1",
+        "@lwc/synthetic-shadow": "^2.5.2",
         "@salesforce-ux/design-system": "^2.16.1",
         "@storybook/addon-actions": "^6.2.8",
         "@storybook/addon-essentials": "^6.2.8",
@@ -30,8 +30,8 @@
         "jsdoc": "~3.6.7",
         "lint-staged": "^10.5.3",
         "lit-html": "^1.3.0",
-        "lwc-services": "^3.0.1",
-        "lwc-webpack-plugin": "^1.2.2",
+        "lwc-services": "^3.1.2",
+        "lwc-webpack-plugin": "^2.0.2",
         "prettier": "^2.2.1"
     },
     "engines": {
