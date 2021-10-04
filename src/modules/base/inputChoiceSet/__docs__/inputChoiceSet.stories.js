@@ -225,7 +225,8 @@ RadioButtons.args = {
     label: 'Please select a value',
     messageWhenValueMissing: 'Value missing',
     options: optionsWithoutIcon,
-    value: dayValue
+    value: dayValue,
+    fieldLevelHelp: 'Input choice set with radio buttons'
 };
 
 export const Checkboxes = Template.bind({});
