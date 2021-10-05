@@ -222,14 +222,20 @@ describe('Calendar', () => {
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
 
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
         return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector('.slds-day');
-            element.addEventListener('change', (event) => {
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            });
-            date.click();
+            element.dispatchEvent(new CustomEvent('change', {
+                detail: {
+                    value: element.value
+                }
+            }));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toMatchObject(new Date('05/09/2021'));
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

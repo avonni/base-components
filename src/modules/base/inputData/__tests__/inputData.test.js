@@ -520,38 +520,49 @@ describe('InputData', () => {
     it('Transfer blur event', () => {
         element.label = 'Label';
 
+        const handler = jest.fn();
+
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input-base"]'
+        );
+
+        input.addEventListener('blur', handler);
+
         return Promise.resolve()
             .then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input-base"]'
-                );
                 input.value = 'Simple text';
                 input.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input-base"]'
-                );
                 expect(input.value).toBe('Simple text');
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             });
     });
 
     it('Transfer focus event', () => {
         element.label = 'Label';
+        const handler = jest.fn();
+
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input-base"]'
+        );
+
+        input.addEventListener('focus', handler);
 
         return Promise.resolve()
             .then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input-base"]'
-                );
                 input.value = 'Simple text';
                 input.dispatchEvent(new CustomEvent('focus'));
             })
             .then(() => {
-                const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input-base"]'
-                );
                 expect(input.value).toBe('Simple text');
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             });
     });
 

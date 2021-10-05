@@ -284,26 +284,39 @@ describe('Color Palette', () => {
         const color = element.shadowRoot.querySelector(
             '.slds-color-picker__swatch-trigger'
         );
-        element.addEventListener('focus', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
+        const handler = jest.fn();
 
-        color.focus();
+        color.addEventListener('focus', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                color.dispatchEvent(new CustomEvent('focus', {}));
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
     });
 
     it('Color Palette blur event', () => {
         const color = element.shadowRoot.querySelector(
             '.slds-color-picker__swatch-trigger'
         );
-        element.addEventListener('blur', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
+        const handler = jest.fn();
 
-        color.focus();
-        color.blur();
+        color.addEventListener('blur', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                color.dispatchEvent(new CustomEvent('blur', {}));
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
     });
 });

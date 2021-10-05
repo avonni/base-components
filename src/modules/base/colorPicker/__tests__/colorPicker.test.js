@@ -321,9 +321,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const palette = element.shadowRoot.querySelector(
-                    '.slds-tabs_default'
-                );
+                const palette =
+                    element.shadowRoot.querySelector('.slds-tabs_default');
                 expect(palette).toBeTruthy();
             });
     });
@@ -638,9 +637,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_left');
             });
     });
@@ -656,9 +654,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_left');
                 expect(dropdown.className).toContain('slds-nubbin_top-left');
             });
@@ -675,9 +672,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_right');
             });
     });
@@ -694,9 +690,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_right');
                 expect(dropdown.className).toContain('slds-nubbin_top-right');
             });
@@ -713,9 +708,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_center');
             });
     });
@@ -732,9 +726,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_center');
                 expect(dropdown.className).toContain('slds-nubbin_top');
             });
@@ -751,9 +744,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_bottom');
             });
     });
@@ -770,9 +762,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_bottom');
                 expect(dropdown.className).toContain('slds-nubbin_bottom');
             });
@@ -789,9 +780,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
                 );
@@ -810,9 +800,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
                 );
@@ -831,9 +820,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
                 );
@@ -852,9 +840,8 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
                 );
@@ -936,7 +923,7 @@ describe('Color Picker', () => {
     /* ----- JS ----- */
 
     // done button
-    it('Color Picker done button ', () => {
+    it('Color Picker done button', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -954,7 +941,7 @@ describe('Color Picker', () => {
     });
 
     // cancel button
-    it('Color Picker cancel button ', () => {
+    it('Color Picker cancel button', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -1013,9 +1000,8 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const input = element.shadowRoot.querySelector(
-                    'lightning-input'
-                );
+                const input =
+                    element.shadowRoot.querySelector('lightning-input');
                 input.value = '#ffffff';
             })
             .then(() => {
@@ -1065,24 +1051,37 @@ describe('Color Picker', () => {
 
     // color picker focus event and method
     it('Color Picker focus event and method', () => {
-        element.addEventListener('focus', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
+        const handler = jest.fn();
 
-        element.focus();
+        element.addEventListener('focus', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                element.dispatchEvent(new CustomEvent('focus', {}));
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
     });
 
     // color picker blur event and method
     it('Color Picker blur event', () => {
-        element.addEventListener('blur', (event) => {
-            expect(event.bubbles).toBeFalsy();
-            expect(event.cancelable).toBeFalsy();
-            expect(event.composed).toBeFalsy();
-        });
+        const handler = jest.fn();
 
-        element.focus();
-        element.blur();
+        element.addEventListener('blur', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                element.dispatchEvent(new CustomEvent('blur', {}));
+            })
+            .then(() => {
+                expect(handler).toHaveBeenCalled();
+                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+                expect(handler.mock.calls[0][0].composed).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            });
     });
 });
