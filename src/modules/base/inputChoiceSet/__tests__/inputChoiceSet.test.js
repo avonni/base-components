@@ -130,9 +130,8 @@ describe('Input choice set', () => {
         element.fieldLevelHelp = 'This is a field level help';
 
         return Promise.resolve().then(() => {
-            const fieldLevelHelp = element.shadowRoot.querySelector(
-                'lightning-helptext'
-            );
+            const fieldLevelHelp =
+                element.shadowRoot.querySelector('lightning-helptext');
             expect(fieldLevelHelp.content).toBe('This is a field level help');
         });
     });
@@ -497,17 +496,20 @@ describe('Input choice set', () => {
     it('Input choice set blur event', () => {
         element.options = options;
 
+        const handler = jest.fn();
+        element.addEventListener('blur', handler);
+
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
                 '[data-element-id^="input"]'
             );
-            const handleBlur = (event) => {
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            };
-            element.addEventListener('blur', handleBlur);
-            input.blur();
+
+            input.addEventListener('blur', handler);
+            input.dispatchEvent(new CustomEvent('blur', {}));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -515,17 +517,20 @@ describe('Input choice set', () => {
     it('Input choice set focus event', () => {
         element.options = options;
 
+        const handler = jest.fn();
+        element.addEventListener('focus', handler);
+
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
                 '[data-element-id^="input"]'
             );
-            const handleFocus = (event) => {
-                expect(event.bubbles).toBeFalsy();
-                expect(event.cancelable).toBeFalsy();
-                expect(event.composed).toBeFalsy();
-            };
-            element.addEventListener('focus', handleFocus);
-            input.focus();
+
+            input.addEventListener('focus', handler);
+            input.dispatchEvent(new CustomEvent('focus', {}));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

@@ -182,10 +182,13 @@ describe('Publisher', () => {
             const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
 
             button.click();
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toBe(
                 'A string value'
             );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

@@ -774,6 +774,9 @@ describe('VisualPicker', () => {
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
                 'item-3'
             ]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
