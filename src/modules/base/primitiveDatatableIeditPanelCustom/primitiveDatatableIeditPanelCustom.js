@@ -17,6 +17,11 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             debounceInteraction: true
         });
         this.interactingState.onleave(() => this.handlePanelLoosedFocus());
+
+        this.template.addEventListener(
+            'changecomboboxfactory',
+            this.processOnChange
+        );
     }
 
     get computedStyle() {
@@ -85,9 +90,9 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     triggerEditFinished(detail) {
         detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
         detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-        detail.value = this.inputableElement.value();
-        detail.valid = this.inputableElement.validity();
-        detail.updateAllSelectedRows = this.isMassEditChecked();
+        detail.value = this.value;
+        detail.valid = this.validity.valid;
+        detail.isMassEditChecked = this.isMassEditChecked;
         this.dispatchEvent(
             new CustomEvent('ieditfinishedcustom', {
                 detail: detail,
@@ -112,17 +117,17 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     @api
-    value() {
-        return this.inputableElement.value();
+    get value() {
+        return this.inputableElement ? this.inputableElement.value : null;
     }
 
     @api
-    validity() {
+    get validity() {
         return this.inputableElement.validity;
     }
 
     @api
-    isMassEditChecked() {
+    get isMassEditChecked() {
         return (
             this.isMassEditEnabled &&
             this.template.querySelector('[data-mass-selection="true"]').checked
@@ -184,6 +189,14 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             this.inputableElement.showHelpMessageIfInvalid();
         }
     }
+
+    processOnChange = (event) => {
+        if (event.detail.validity) {
+            this.triggerEditFinished({ reason: 'on-change' });
+        } else {
+            this.inputableElement.showHelpMessageIfInvalid();
+        }
+    };
 
     cancelEdition() {
         this.triggerEditFinished({

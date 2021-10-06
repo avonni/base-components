@@ -127,7 +127,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 'secondaryText',
                 'status',
                 'variant'
-            ],
+            ]
         },
         'avatar-group': {
             template: avatarGroup,
@@ -138,15 +138,15 @@ export default class primitiveDatatable extends LightningDatatable {
                 'variant',
                 'actionIconName',
                 'name'
-            ],
+            ]
         },
         badge: {
             template: badge,
-            typeAttributes: ['variant'],
+            typeAttributes: ['variant']
         },
         'checkbox-button': {
             template: checkboxButton,
-            typeAttributes: ['disabled', 'label', 'name'],
+            typeAttributes: ['disabled', 'label', 'name']
         },
         'color-picker': {
             template: colorPicker,
@@ -162,7 +162,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 'name',
                 'opacity',
                 'type'
-            ],
+            ]
         },
         combobox: {
             template: combobox,
@@ -174,15 +174,15 @@ export default class primitiveDatatable extends LightningDatatable {
                 'label',
                 'placeholder',
                 'options'
-            ],
+            ]
         },
         'dynamic-icon': {
             template: dynamicIcon,
-            typeAttributes: ['alternativeText', 'option'],
+            typeAttributes: ['alternativeText', 'option']
         },
         'formatted-rich-text': {
             template: formattedRichText,
-            typeAttributes: ['disableLinkify'],
+            typeAttributes: ['disableLinkify']
         },
         image: {
             template: image,
@@ -200,7 +200,7 @@ export default class primitiveDatatable extends LightningDatatable {
         },
         'input-counter': {
             template: inputCounter,
-            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step'],
+            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step']
         },
         'input-date-range': {
             template: inputDateRange,
@@ -213,7 +213,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 'timeStyle',
                 'timezone',
                 'type'
-            ],
+            ]
         },
         'input-toggle': {
             template: inputToggle,
@@ -225,7 +225,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 'messageToggleInactive',
                 'name',
                 'size'
-            ],
+            ]
         },
         'progress-bar': {
             template: progressBar,
@@ -243,7 +243,7 @@ export default class primitiveDatatable extends LightningDatatable {
         },
         'progress-ring': {
             template: progressRing,
-            typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
+            typeAttributes: ['direction', 'hideIcon', 'size', 'variant']
         },
         'progress-circle': {
             template: progressCircle,
@@ -254,7 +254,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 'size',
                 'thickness',
                 'variant'
-            ],
+            ]
         },
         qrcode: {
             template: qrcode,
@@ -267,7 +267,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 'errorCorrection',
                 'padding',
                 'size'
-            ],
+            ]
         },
         rating: {
             template: rating,
@@ -280,7 +280,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 'min',
                 'selection',
                 'valueHidden'
-            ],
+            ]
         },
         slider: {
             template: slider,
@@ -589,7 +589,7 @@ export default class primitiveDatatable extends LightningDatatable {
         super.wrapTextMaxLines = value;
     }
 
-    @api 
+    @api
     get state() {
         return super.state;
     }
@@ -674,6 +674,7 @@ export default class primitiveDatatable extends LightningDatatable {
     handleEditButtonClickCustom(event) {
         event.stopPropagation();
         const { colKeyValue, rowKeyValue, state } = event.detail;
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.state = state;
         const inlineEdit = this.state.inlineEdit;
 
@@ -753,11 +754,32 @@ export default class primitiveDatatable extends LightningDatatable {
     };
 
     handleInlineEditFinishCustom = (event) => {
-        const { reason, rowKeyValue, colKeyValue, value, valid, updateAllSelectedRows } = event.detail;
-        this.processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue, value, valid, updateAllSelectedRows);
+        const {
+            reason,
+            rowKeyValue,
+            colKeyValue,
+            value,
+            valid,
+            isMassEditChecked
+        } = event.detail;
+        this.processInlineEditFinishCustom(
+            reason,
+            rowKeyValue,
+            colKeyValue,
+            value,
+            valid,
+            isMassEditChecked
+        );
     };
 
-    processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue, value, valid, massEdit) {
+    processInlineEditFinishCustom(
+        reason,
+        rowKeyValue,
+        colKeyValue,
+        value,
+        valid,
+        massEdit
+    ) {
         const state = this.state;
         const inlineEditState = state.inlineEdit;
         const shouldSaveData =
@@ -766,7 +788,7 @@ export default class primitiveDatatable extends LightningDatatable {
             isValidCell(this.state, rowKeyValue, colKeyValue);
 
         if (shouldSaveData) {
-            const editValue = JSON.parse(JSON.stringify(value));
+            const editValue = value;
             const isValidEditValue = valid;
             const updateAllSelectedRows = massEdit;
             const currentValue = getCellValue(state, rowKeyValue, colKeyValue);

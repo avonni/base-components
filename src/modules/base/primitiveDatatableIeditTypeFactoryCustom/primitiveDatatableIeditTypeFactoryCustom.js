@@ -73,12 +73,12 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     }
 
     @api
-    value() {
+    get value() {
         return this.concreteComponent.value;
     }
 
     @api
-    validity() {
+    get validity() {
         return this.concreteComponent.validity;
     }
 
@@ -102,7 +102,10 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     onChange(event) {
         this.dispatchEvent(
             new CustomEvent('changecomboboxfactory', {
-                detail: event.detail,
+                detail: {
+                    value: event.detail.value,
+                    validity: this.validity.valid
+                },
                 bubbles: true,
                 composed: true
             })
