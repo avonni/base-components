@@ -39,27 +39,29 @@ customElements.define(
 
 export const InputChoiceSet = ({
     disabled,
+    isMultiSelect,
+    fieldLevelHelp,
     label,
-    type,
     messageWhenValueMissing,
     options,
     orientation,
     readOnly,
     required,
-    isMultiSelect,
+    type,
     value,
     variant
 }) => {
     const element = document.createElement('ac-base-input-choice-set');
     element.disabled = disabled;
+    element.fieldLevelHelp = fieldLevelHelp;
+    element.isMultiSelect = isMultiSelect;
     element.label = label;
-    element.type = type;
-    element.orientation = orientation;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.options = options;
+    element.orientation = orientation;
     element.readOnly = readOnly;
     element.required = required;
-    element.isMultiSelect = isMultiSelect;
+    element.type = type;
     element.value = value;
     element.variant = variant;
     return element;

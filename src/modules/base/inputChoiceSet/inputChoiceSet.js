@@ -76,13 +76,12 @@ export default class InputChoiceSet extends LightningElement {
      */
     @api label;
     /**
-     * Array of option objects.
+     * Help text detailing the purpose and function of the input.
      *
-     * @type {object[]}
+     * @type {string}
      * @public
-     * @required
      */
-    @api options;
+    @api fieldLevelHelp;
     /**
      * Optional message to be displayed when no option is selected and the required attribute is set.
      *
@@ -98,14 +97,24 @@ export default class InputChoiceSet extends LightningElement {
      * @required
      */
     @api name;
+    /**
+     * Array of option objects.
+     *
+     * @type {object[]}
+     * @public
+     * @required
+     */
+    @api options;
 
-    _orientation = INPUT_CHOICE_ORIENTATIONS.default;
-    _type = INPUT_CHOICE_TYPES.default;
-    _helpMessage;
     _disabled = false;
-    _required = false;
-    _value = [];
     _isMultiSelect = false;
+    _orientation = INPUT_CHOICE_ORIENTATIONS.default;
+    _required = false;
+    _type = INPUT_CHOICE_TYPES.default;
+    _value = [];
+    _variant;
+
+    _helpMessage;
 
     constructor() {
         super();
@@ -116,7 +125,9 @@ export default class InputChoiceSet extends LightningElement {
      * Synchronize all inputs Aria help element ID.
      */
     synchronizeA11y() {
-        const inputs = this.template.querySelectorAll('[data-element-id^="input"]');
+        const inputs = this.template.querySelectorAll(
+            '[data-element-id^="input"]'
+        );
         Array.prototype.slice.call(inputs).forEach((input) => {
             synchronizeAttrs(input, {
                 'aria-describedby': this.computedUniqueHelpElementId
@@ -391,7 +402,9 @@ export default class InputChoiceSet extends LightningElement {
      */
     @api
     focus() {
-        const firstCheckbox = this.template.querySelector('[data-element-id="input"]');
+        const firstCheckbox = this.template.querySelector(
+            '[data-element-id="input"]'
+        );
         if (firstCheckbox) {
             firstCheckbox.focus();
         }
@@ -463,7 +476,9 @@ export default class InputChoiceSet extends LightningElement {
         event.stopPropagation();
 
         let value = event.target.value;
-        const checkboxes = this.template.querySelectorAll('[data-element-id^="input"]');
+        const checkboxes = this.template.querySelectorAll(
+            '[data-element-id^="input"]'
+        );
         if (this.isMultiSelect) {
             this._value = this.handleValueChange(checkboxes);
         } else {
@@ -478,7 +493,9 @@ export default class InputChoiceSet extends LightningElement {
         if (this.type === 'button') {
             checkboxes.forEach((checkbox) => {
                 const label = checkbox.labels[0];
-                let icon = label.querySelector('[data-element-id="lightning-icon-button"]');
+                let icon = label.querySelector(
+                    '[data-element-id="lightning-icon-button"]'
+                );
                 if (icon) {
                     if (value.includes(label.control.value))
                         icon.variant = 'inverse';
@@ -535,9 +552,11 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedLegendClass() {
-        return classSet('slds-form-element__label')
+        return classSet('')
             .add({
-                'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN
+                'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
+                'avonni-input-choice-set__display_flex':
+                    this.variant !== VARIANT.LABEL_INLINE
             })
             .toString();
     }

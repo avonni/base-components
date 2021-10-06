@@ -407,7 +407,10 @@ describe('ProgressIndicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepclick'));
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -424,7 +427,10 @@ describe('ProgressIndicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepblur'));
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -441,7 +447,10 @@ describe('ProgressIndicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepfocus'));
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -458,7 +467,10 @@ describe('ProgressIndicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepmouseenter'));
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -475,7 +487,10 @@ describe('ProgressIndicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepmouseleave'));
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -492,7 +507,10 @@ describe('ProgressIndicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('stepbuttonclick'));
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -509,7 +527,10 @@ describe('ProgressIndicator', () => {
             );
             primitives[1].dispatchEvent(new CustomEvent('steppopoverclick'));
 
-            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });
