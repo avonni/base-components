@@ -12,14 +12,12 @@ const INVALID_TYPE_FOR_EDIT =
     'column custom type not supported for inline edit';
 
 export default class PrimitiveDatatableIeditTypeFactory extends LightningElement {
-    columnLabel;
     @api editedValue;
     @api required;
     @api disabled;
     @api dropdownAlignement;
     @api dropdownLength;
     @api isMultiSelect;
-    @api label;
     @api options;
     @api placeholder;
 

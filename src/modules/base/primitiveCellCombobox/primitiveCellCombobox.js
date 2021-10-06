@@ -138,19 +138,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     handleEditButtonClick() {
-        this.dispatchEvent(
-            new CustomEvent('getdatatablestateanddata', {
-                detail: {
-                    callbacks: {
-                        getState: this.getState.bind(this),
-                        getColumns: this.getColumns.bind(this)
-                    }
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
             new CustomEvent('editbuttonclickcustom', {
@@ -163,13 +150,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 }
             })
         );
-
         this._readOnly = false;
         this.visible = true;
-    }
-
-    handleInlineEditFinish() {
-        this.visible = false;
-        this._readOnly = true;
     }
 }

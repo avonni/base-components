@@ -203,16 +203,4 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             reason: 'edit-canceled'
         });
     }
-
-    handleMassCheckboxChange(event) {
-        this.dispatchEvent(
-            new CustomEvent('masscheckboxchangecustom', {
-                detail: {
-                    checked: event.detail.checked
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
 }

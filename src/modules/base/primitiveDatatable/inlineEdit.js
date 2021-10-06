@@ -70,44 +70,6 @@ export function getChangesForCustomer(changes, state) {
     }, []);
 }
 
-/* -------------- MassCheckboxChange ------------- */
-
-function markDeselectedCell(state, rowKeyValue, colKeyValue) {
-    const row = getRowByKey(state, rowKeyValue);
-    const colIndex = state.headerIndexes[colKeyValue];
-
-    if (row && colIndex) {
-        row.cells[colIndex].ariaSelected = false;
-    }
-}
-
-export function markSelectedCell(state, rowKeyValue, colKeyValue) {
-    const row = getRowByKey(state, rowKeyValue);
-    const colIndex = state.headerIndexes[colKeyValue];
-
-    if (row && colIndex) {
-        row.cells[colIndex].ariaSelected = 'true';
-    }
-}
-
-export function markAllSelectedRowsAsSelectedCell(state) {
-    const { colKeyValue } = state.inlineEdit;
-    const selectedRowKeys = getSelectedRowsKeys(state);
-
-    selectedRowKeys.forEach((rowKeyValue) => {
-        markSelectedCell(state, rowKeyValue, colKeyValue);
-    });
-}
-
-export function markAllSelectedRowsAsDeselectedCell(state) {
-    const { colKeyValue } = state.inlineEdit;
-    const selectedRowKeys = getSelectedRowsKeys(state);
-
-    selectedRowKeys.forEach((rowKeyValue) => {
-        markDeselectedCell(state, rowKeyValue, colKeyValue);
-    });
-}
-
 /* -------------- processInlineEditFinish ------------- */
 export function isValidCell(state, rowKeyValue, colKeyValue) {
     const row = getRowByKey(state, rowKeyValue);
@@ -126,4 +88,47 @@ export function updateDirtyValues(state, rowColKeyValues) {
 
         Object.assign(dirtyValues[rowKey], rowColKeyValues[rowKey]);
     });
+}
+
+export function processInlineEditFinishCustom(
+    dtState,
+    reason,
+    rowKeyValue,
+    colKeyValue,
+    value,
+    valid,
+    massEdit
+) {
+    const state = dtState;
+    const inlineEditState = state.inlineEdit;
+    const shouldSaveData =
+        reason !== 'edit-canceled' &&
+        !(inlineEditState.massEditEnabled && reason === 'loosed-focus') &&
+        isValidCell(state, rowKeyValue, colKeyValue);
+
+    if (shouldSaveData) {
+        const editValue = value;
+        const isValidEditValue = valid;
+        const updateAllSelectedRows = massEdit;
+        const currentValue = getCellValue(state, rowKeyValue, colKeyValue);
+
+        if (
+            isValidEditValue &&
+            (editValue !== currentValue || updateAllSelectedRows)
+        ) {
+            const cellChange = {};
+            cellChange[rowKeyValue] = {};
+            cellChange[rowKeyValue][colKeyValue] = editValue;
+
+            if (updateAllSelectedRows) {
+                const selectedRowKeys = getSelectedRowsKeys(state);
+                selectedRowKeys.forEach((rowKey) => {
+                    cellChange[rowKey] = {};
+                    cellChange[rowKey][colKeyValue] = editValue;
+                });
+            }
+
+            updateDirtyValues(state, cellChange);
+        }
+    }
 }

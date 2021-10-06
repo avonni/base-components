@@ -39,12 +39,7 @@ import {
     isSelectedRow,
     getColumns,
     getChangesForCustomer,
-    markSelectedCell,
-    markAllSelectedRowsAsSelectedCell,
-    markAllSelectedRowsAsDeselectedCell,
-    updateDirtyValues,
-    isValidCell,
-    getSelectedRowsKeys
+    processInlineEditFinishCustom
 } from './inlineEdit';
 
 import avatar from './avatar.html';
@@ -313,11 +308,6 @@ export default class primitiveDatatable extends LightningDatatable {
         this.template.addEventListener(
             'editbuttonclickcustom',
             this.handleEditButtonClickCustom
-        );
-
-        this.template.addEventListener(
-            'masscheckboxchangecustom',
-            this.handleMassCheckboxChangeCustom
         );
 
         this.template.addEventListener(
@@ -739,20 +729,6 @@ export default class primitiveDatatable extends LightningDatatable {
         );
     }
 
-    handleMassCheckboxChangeCustom = (event) => {
-        const state = this.state;
-        if (event.detail.checked) {
-            markAllSelectedRowsAsSelectedCell(this.state);
-        } else {
-            markAllSelectedRowsAsDeselectedCell(this.state);
-            markSelectedCell(
-                state,
-                state.inlineEdit.rowKeyValue,
-                state.inlineEdit.colKeyValue
-            );
-        }
-    };
-
     handleInlineEditFinishCustom = (event) => {
         const {
             reason,
@@ -762,7 +738,8 @@ export default class primitiveDatatable extends LightningDatatable {
             valid,
             isMassEditChecked
         } = event.detail;
-        this.processInlineEditFinishCustom(
+        processInlineEditFinishCustom(
+            this.state,
             reason,
             rowKeyValue,
             colKeyValue,
@@ -771,61 +748,4 @@ export default class primitiveDatatable extends LightningDatatable {
             isMassEditChecked
         );
     };
-
-    processInlineEditFinishCustom(
-        reason,
-        rowKeyValue,
-        colKeyValue,
-        value,
-        valid,
-        massEdit
-    ) {
-        const state = this.state;
-        const inlineEditState = state.inlineEdit;
-        const shouldSaveData =
-            reason !== 'edit-canceled' &&
-            !(inlineEditState.massEditEnabled && reason === 'loosed-focus') &&
-            isValidCell(this.state, rowKeyValue, colKeyValue);
-
-        if (shouldSaveData) {
-            const editValue = value;
-            const isValidEditValue = valid;
-            const updateAllSelectedRows = massEdit;
-            const currentValue = getCellValue(state, rowKeyValue, colKeyValue);
-
-            if (
-                isValidEditValue &&
-                (editValue !== currentValue || updateAllSelectedRows)
-            ) {
-                const cellChange = {};
-                cellChange[rowKeyValue] = {};
-                cellChange[rowKeyValue][colKeyValue] = editValue;
-
-                if (updateAllSelectedRows) {
-                    const selectedRowKeys = getSelectedRowsKeys(state);
-                    selectedRowKeys.forEach((rowKey) => {
-                        cellChange[rowKey] = {};
-                        cellChange[rowKey][colKeyValue] = editValue;
-                    });
-                }
-
-                updateDirtyValues(state, cellChange);
-
-                this.dispatchCellChangeEvent(cellChange);
-
-                // @todo: do we need to update all rows in the this or just the one that was modified?
-                // this.updateRowsAndCellIndexesCustom.call(this);
-            }
-        }
-    }
-
-    dispatchCellChangeEvent(cellChange) {
-        this.dispatchEvent(
-            new CustomEvent('cellchange', {
-                detail: {
-                    draftValues: getChangesForCustomer(cellChange, this.state)
-                }
-            })
-        );
-    }
 }

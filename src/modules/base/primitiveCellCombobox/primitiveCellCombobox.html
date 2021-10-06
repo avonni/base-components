@@ -43,13 +43,14 @@
             column-def={state.inlineEdit.columnDef}
             is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            onieditfinished={handleInlineEditFinish}
-            onmasscheckboxchange={handleMassCheckboxChange}
             options={options}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
-        <span class="slds-grid slds-cell-edit" style="justify-content: space-between;">
+        <span
+            class="slds-grid slds-cell-edit"
+            style="justify-content: space-between"
+        >
             <c-combobox
                 disabled={disabled}
                 dropdown-alignment={dropdownAlignement}
