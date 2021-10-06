@@ -54,7 +54,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
             this.handleChange(event);
         });
 
-        this.template.addEventListener('ieditfinishedcustom', () => {
+        this.addEventListener('ieditfinishedcustom', () => {
             this.visible = false;
             this._readOnly = true;
         });
@@ -135,16 +135,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 composed: true
             })
         );
-
-        this.dispatchEvent(
-            new CustomEvent('ieditfinishedcustom', {
-                detail,
-                bubbles: true,
-                composed: true
-            })
-        );
-        this._readOnly = true;
-        this.visible = false;
     }
 
     handleEditButtonClick() {

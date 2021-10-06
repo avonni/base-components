@@ -31,8 +31,31 @@
  */
 
 import { api, LightningElement } from 'lwc';
-import { normalizeArray } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 
+const WIDTHSMODE = {
+    valid: ['fixed', 'auto'],
+    default: 'fixed'
+};
+
+const SORTDIRECTION = {
+    valid: ['asc', 'desc'],
+    default: 'asc'
+};
+
+const DEFAULT_LOAD_MORE_OFFSET = 20;
+
+const DEFAULT_MAX_COLUMN_WIDTH = 1000;
+
+const DEFAULT_MIN_COLUMN_WIDTH = 50;
+
+const DEFAULT_ROW_NUMBER_OFFSET = 0;
+
+const DEFAULT_RESIZE_STEP = 10;
 /**
  * Lightning datatable with custom cell types and extended functionalities.
  *
@@ -43,41 +66,11 @@ import { normalizeArray } from 'c/utilsPrivate';
  */
 export default class Datatable extends LightningElement {
     /**
-     * Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths.
-     * Set to 'auto' for column widths that are based on the width of the column content and the table width. The default is 'fixed'.
-     * @public
-     * @type {string}
-     * @default fixed
-     */
-    @api columnWidthsMode;
-
-    /**
-     * Specifies the default sorting direction on an unsorted column.
-     * Valid options include 'asc' and 'desc'.
-     * The default is 'asc' for sorting in ascending order.
-     * @public
-     * @type {string}
-     * @default asc
-     */
-    // eslint-disable-next-line @lwc/lwc/valid-api
-    @api defaultSortDirection;
-
-    /**
      * The current values per row that are provided during inline edit.
      * @public
      * @type {string[]}
      */
     @api draftValues;
-
-    /**
-     * If present, you can load a subset of data and then display more
-     * when users scroll to the end of the table.
-     * Use with the onloadmore event handler to retrieve more data.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api enableInfiniteLoading;
 
     /**
      * Specifies an object containing information about cell level, row level, and table level errors.
@@ -88,53 +81,12 @@ export default class Datatable extends LightningElement {
     @api errors;
 
     /**
-     * If present, the checkbox column for row selection is hidden.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api hideCheckboxColumn;
-
-    /**
-     * If present, the table header is hidden.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api hideTableHeader;
-
-    /**
-     * If present, a spinner is shown to indicate that more data is loading.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api isLoading;
-
-    /**
      * Associates each row with a unique ID.
      * @public
      * @type {string}
      * @required
      */
     @api keyField;
-
-    /**
-     * Determines when to trigger infinite loading based on
-     * how many pixels the table's scroll position is from the bottom of the table.
-     * @public
-     * @type {number}
-     * @default 20
-     */
-    @api loadMoreOffset;
-
-    /**
-     * The maximum width for all columns.
-     * @public
-     * @type {number}
-     * @default 1000px
-     */
-    @api maxColumnWidth;
 
     /**
      * The maximum number of rows that can be selected.
@@ -146,44 +98,12 @@ export default class Datatable extends LightningElement {
     @api maxRowSelection;
 
     /**
-     * The minimum width for all columns.
-     * @public
-     * @type {number}
-     * @default 50px
-     */
-    @api minColumnWidth;
-
-    /**
      * Reserved for internal use.
      * Enables and configures advanced rendering modes.
      * @public
-     * @type {RenderManagerConfig} value - config object for datatable rendering
+     * @type {RenderManagerConfig}
      */
     @api renderConfig;
-
-    /**
-     * If present, column resizing is disabled.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api resizeColumnDisabled;
-
-    /**
-     * The width to resize the column when a user presses left or right arrow.
-     * @public
-     * @type {number}
-     * @default 10px
-     */
-    @api resizeStep;
-
-    /**
-     * Determines where to start counting the row number.
-     * @public
-     * @type {number}
-     * @default 0
-     */
-    @api rowNumberOffset;
 
     /**
      * Enables programmatic row selection with a list of key-field values.
@@ -191,15 +111,6 @@ export default class Datatable extends LightningElement {
      * @type {string[]}
      */
     @api selectedRows;
-
-    /**
-     * If present, the row numbers are shown in the first column.
-     * If a column is editable, the row number column will be automatically displayed.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api showRowNumberColumn;
 
     /**
      * The column fieldName that controls the sorting order.
@@ -219,14 +130,6 @@ export default class Datatable extends LightningElement {
     @api sortedDirection;
 
     /**
-     * If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api suppressBottomBar;
-
-    /**
      * This value specifies the number of lines after which the
      * content will be cut off and hidden. It must be at least 1 or more.
      * The text in the last line is truncated and shown with an ellipsis.
@@ -236,14 +139,31 @@ export default class Datatable extends LightningElement {
     @api wrapTextMaxLines;
 
     _columns;
+    _columnWidthsMode;
+    _defaultSortDirection;
+    _enableInfiniteLoading = false;
     _records;
+    _groupBy;
+    _hideUndefinedGroup;
+    _hideCollapsibleIcon;
+    _hideCheckboxColumn = false;
+    _hideTableHeader = false;
+    _isLoading = false;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    _maxColumnWidth = DEFAULT_MAX_COLUMN_WIDTH;
+    _minColumnWidth = DEFAULT_MIN_COLUMN_WIDTH;
+    _resizeColumnDisabled = false;
+    _resizeStep = DEFAULT_RESIZE_STEP;
+    _rowNumberOffset = DEFAULT_ROW_NUMBER_OFFSET;
+    _showRowNumberColumn = false;
+    _suppressBottomBar = false;
 
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
      * See the Documentation tab for more information.
      * @public
-     * @type {array}
+     * @type {object}
      */
     @api
     get columns() {
@@ -255,9 +175,247 @@ export default class Datatable extends LightningElement {
     }
 
     /**
+     * Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths.
+     * Set to 'auto' for column widths that are based on the width of the column content and the table width. The default is 'fixed'.
+     * @public
+     * @type {string}
+     * @default fixed
+     */
+    @api
+    get columnWidthsMode() {
+        return this._columnWidthsMode;
+    }
+
+    set columnWidthsMode(value) {
+        this._columnWidthsMode = normalizeString(value, {
+            validValues: WIDTHSMODE.valid,
+            fallbackValue: WIDTHSMODE.default
+        });
+    }
+
+    /**
+     * Specifies the default sorting direction on an unsorted column.
+     * Valid options include 'asc' and 'desc'.
+     * The default is 'asc' for sorting in ascending order.
+     * @public
+     * @type {string}
+     * @default asc
+     */
+    @api
+    get defaultSortDirection() {
+        return this._defaultSortDirection;
+    }
+
+    set defaultSortDirection(value) {
+        this._defaultSortDirection = normalizeString(value, {
+            validValues: SORTDIRECTION.valid,
+            fallbackValue: SORTDIRECTION.default
+        });
+    }
+
+    /**
+     * If present, you can load a subset of data and then display more
+     * when users scroll to the end of the table.
+     * Use with the onloadmore event handler to retrieve more data.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the value will define how the data will be grouped.
+     * @public
+     * @type {string}
+     */
+    @api
+    get groupBy() {
+        return this._groupBy;
+    }
+
+    set groupBy(value) {
+        this._groupBy = value;
+    }
+
+    /**
+     * If present, the checkbox column for row selection is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideCheckboxColumn() {
+        return this._hideCheckboxColumn;
+    }
+
+    set hideCheckboxColumn(value) {
+        this._hideCheckboxColumn = normalizeBoolean(value);
+    }
+
+    /**
+     * In case of group-by, if present, the section is not collapsible and the left icon is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideCollapsibleIcon() {
+        return this._hideCollapsibleIcon;
+    }
+    set hideCollapsibleIcon(value) {
+        this._hideCollapsibleIcon = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the table header is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideTableHeader() {
+        return this._hideTableHeader;
+    }
+
+    set hideTableHeader(value) {
+        this._hideTableHeader = normalizeBoolean(value);
+    }
+
+    /**
+     * In case of group-by, if present, hides undefined groups.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideUndefinedGroup() {
+        return this._hideUndefinedGroup;
+    }
+    set hideUndefinedGroup(value) {
+        this._hideUndefinedGroup = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, a spinner is shown to indicate that more data is loading.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * Determines when to trigger infinite loading based on
+     * how many pixels the table's scroll position is from the bottom of the table.
+     * @public
+     * @type {number}
+     * @default 20
+     */
+    @api
+    get loadMoreOffset() {
+        return this._loadMoreOffset;
+    }
+
+    set loadMoreOffset(value) {
+        this._loadMoreOffset =
+            typeof value === 'number' ? value : DEFAULT_LOAD_MORE_OFFSET;
+    }
+    /**
+     * The maximum width for all columns.
+     * @public
+     * @type {number}
+     * @default 1000
+     */
+    @api
+    get maxColumnWidth() {
+        return this._maxColumnWidth;
+    }
+
+    set maxColumnWidth(value) {
+        this._maxColumnWidth =
+            typeof value === 'number' ? value : DEFAULT_MAX_COLUMN_WIDTH;
+    }
+
+    /**
+     * The minimum width for all columns.
+     * @public
+     * @type {number}
+     * @default 50
+     */
+    @api
+    get minColumnWidth() {
+        return this._minColumnWidth;
+    }
+
+    set minColumnWidth(value) {
+        this._minColumnWidth =
+            typeof value === 'number' ? value : DEFAULT_MIN_COLUMN_WIDTH;
+    }
+
+    /**
+     * If present, column resizing is disabled.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get resizeColumnDisabled() {
+        return this._resizeColumnDisabled;
+    }
+
+    set resizeColumnDisabled(value) {
+        this._resizeColumnDisabled = normalizeBoolean(value);
+    }
+
+    /**
+     * The width to resize the column when a user presses left or right arrow.
+     * @public
+     * @type {number}
+     * @default 10
+     */
+    @api
+    get resizeStep() {
+        return this._resizeStep;
+    }
+
+    set resizeStep(value) {
+        this._resizeStep =
+            typeof value === 'number' ? value : DEFAULT_RESIZE_STEP;
+    }
+
+    /**
+     * Determines where to start counting the row number.
+     * @public
+     * @type {number}
+     * @default 0
+     */
+    @api
+    get rowNumberOffset() {
+        return this._rowNumberOffset;
+    }
+
+    set rowNumberOffset(value) {
+        this._rowNumberOffset =
+            typeof value === 'number' ? value : DEFAULT_ROW_NUMBER_OFFSET;
+    }
+
+    /**
      * The array of data to be displayed. The objects keys depend on the columns fieldNames.
      * @public
-     * @type {array}
+     * @type {object}
      */
     @api
     get records() {
@@ -266,5 +424,131 @@ export default class Datatable extends LightningElement {
 
     set records(value) {
         this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
+    }
+
+    /**
+     * If present, the row numbers are shown in the first column.
+     * If a column is editable, the row number column will be automatically displayed.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showRowNumberColumn() {
+        return this._showRowNumberColumn;
+    }
+
+    set showRowNumberColumn(value) {
+        this._showRowNumberColumn = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get suppressBottomBar() {
+        return this._suppressBottomBar;
+    }
+
+    set suppressBottomBar(value) {
+        this._suppressBottomBar = normalizeBoolean(value);
+    }
+
+    /*------------ JAVASCRIPT FUNCTIONS ------------*/
+    renderedCallback() {
+        this.states();
+        this.rendered = true
+    }
+
+    get primitiveDatatble() {
+        return this.template.querySelector('[data-element-id^="avonni-primitive-datatable"]')
+    }
+
+    states() {
+        this.state = JSON.parse(JSON.stringify(this.primitiveDatatble.state));
+    }
+
+    /**
+     * Dispatches events from the primitive-datatable.
+     *
+     * @param {event} event
+     */
+    handleDispatchEvents(event) {
+        event.stopPropagation();
+        /**
+         * The event fired when data is saved during inline editing.
+         *
+         * @event
+         * @name cancel
+         * @public
+         * @cancelable
+         */
+        /**
+         * The event fired when a header action is selected, such as text wrapping, text clipping, or a custom header action.
+         *
+         * @event
+         * @name headeraction
+         * @param {object} action The action definition described in the “Actions” table.
+         * @param {object} columnDefinition The column definition specified in the columns property,
+         * for example, the key-value pairs for label, fieldName, type, typeAttributes, and wrapText.
+         * @public
+         */
+        /**
+         * The event fired when you scroll to the bottom of the table to load more data, until there are no more data to load.
+         *
+         * @event
+         * @name loadmore
+         * @param {boolean} enableInfiniteLoading Specifies whether infinite loading is available on the table.
+         * @param {boolean} isLoading Specifies that data is loading and displays a spinner on the table.
+         * @param {boolean} loadMoreOffset The number of pixels between the bottom of the table and the current scroll position,
+         * used to trigger more data loading.
+         * @public
+         */
+        /**
+         * The event fired when the a table column is resized.
+         *
+         * @event
+         * @name resize
+         * @param {object} columnsWidth The width of all columns, in pixels. For example,
+         * a table with 5 columns of 205px width each at initial render returns [205, 205, 205, 205, 205].
+         * @param {boolean} isUserTriggered Specifies whether the column resize is caused by a user action.
+         * @public
+         */
+        /**
+         * The event fired when the row is selected.
+         *
+         * @event
+         * @name rowselection
+         * @param {object} selectedRows The data in the rows that are selected.
+         * @public
+         */
+        /**
+         * The event fired when data is saved during inline editing.
+         *
+         * @event
+         * @name save
+         * @param {object} draftValues The current value that's provided during inline editing.
+         * @public
+         */
+        /**
+         * The event fired when a column is sorted.
+         *
+         * @event
+         * @name sort
+         * @param {string} fieldName The fieldName that controls the sorting.
+         * @param {string} sortedDirection The sorting direction. Valid options include 'asc' and 'desc'.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent(`${event.type}`, {
+                detail: event.detail,
+                bubbles: event.bubbles,
+                composed: event.composed,
+                cancelable: event.cancelable
+            })
+        );
     }
 }

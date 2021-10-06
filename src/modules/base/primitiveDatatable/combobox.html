@@ -33,17 +33,19 @@
 -->
 
 <template>
-    <c-primitive-cell-combobox
-        col-key-value={colKeyValue}
-        row-key-value={rowKeyValue}
-        disabled={typeAttributes.disabled}
-        dropdown-alignment={typeAttributes.dropdownAlignement}
-        dropdown-length={typeAttributes.dropdownLength}
-        is-multi-select={typeAttributes.isMultiSelect}
-        read-only="true"
-        label={typeAttributes.label}
-        options={typeAttributes.options}
-        value={value}
-        placeholder={typeAttributes.placeholder}
-    ></c-primitive-cell-combobox>
+    <div class="slds-p-around_x-small">
+        <c-primitive-cell-combobox
+            col-key-value={colKeyValue}
+            row-key-value={rowKeyValue}
+            disabled={typeAttributes.disabled}
+            dropdown-alignment={typeAttributes.dropdownAlignement}
+            dropdown-length={typeAttributes.dropdownLength}
+            is-multi-select={typeAttributes.isMultiSelect}
+            read-only="true"
+            label={typeAttributes.label}
+            options={typeAttributes.options}
+            value={value}
+            placeholder={typeAttributes.placeholder}
+        ></c-primitive-cell-combobox>
+    </div>
 </template>

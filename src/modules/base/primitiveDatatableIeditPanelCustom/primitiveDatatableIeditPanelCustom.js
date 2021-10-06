@@ -85,10 +85,12 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     triggerEditFinished(detail) {
         detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
         detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-
+        detail.value = this.inputableElement.value();
+        detail.valid = this.inputableElement.validity();
+        detail.updateAllSelectedRows = this.isMassEditChecked();
         this.dispatchEvent(
             new CustomEvent('ieditfinishedcustom', {
-                detail,
+                detail: detail,
                 bubbles: true,
                 composed: true
             })

@@ -72,7 +72,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'badge',
     'avatar-group',
     'checkbox-button',
-    'color-picker',
+    // 'color-picker',
     'combobox',
     'dynamic-icon',
     'image',
@@ -128,7 +128,6 @@ export default class primitiveDatatable extends LightningDatatable {
                 'status',
                 'variant'
             ],
-            standardCellLayout: true
         },
         'avatar-group': {
             template: avatarGroup,
@@ -140,17 +139,14 @@ export default class primitiveDatatable extends LightningDatatable {
                 'actionIconName',
                 'name'
             ],
-            standardCellLayout: true
         },
         badge: {
             template: badge,
             typeAttributes: ['variant'],
-            standardCellLayout: true
         },
         'checkbox-button': {
             template: checkboxButton,
             typeAttributes: ['disabled', 'label', 'name'],
-            standardCellLayout: true
         },
         'color-picker': {
             template: colorPicker,
@@ -167,7 +163,6 @@ export default class primitiveDatatable extends LightningDatatable {
                 'opacity',
                 'type'
             ],
-            standardCellLayout: true
         },
         combobox: {
             template: combobox,
@@ -180,17 +175,14 @@ export default class primitiveDatatable extends LightningDatatable {
                 'placeholder',
                 'options'
             ],
-            standardCellLayout: true
         },
         'dynamic-icon': {
             template: dynamicIcon,
             typeAttributes: ['alternativeText', 'option'],
-            standardCellLayout: true
         },
         'formatted-rich-text': {
             template: formattedRichText,
             typeAttributes: ['disableLinkify'],
-            standardCellLayout: true
         },
         image: {
             template: image,
@@ -209,7 +201,6 @@ export default class primitiveDatatable extends LightningDatatable {
         'input-counter': {
             template: inputCounter,
             typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step'],
-            standardCellLayout: true
         },
         'input-date-range': {
             template: inputDateRange,
@@ -223,7 +214,6 @@ export default class primitiveDatatable extends LightningDatatable {
                 'timezone',
                 'type'
             ],
-            standardCellLayout: true
         },
         'input-toggle': {
             template: inputToggle,
@@ -236,7 +226,6 @@ export default class primitiveDatatable extends LightningDatatable {
                 'name',
                 'size'
             ],
-            standardCellLayout: true
         },
         'progress-bar': {
             template: progressBar,
@@ -255,7 +244,6 @@ export default class primitiveDatatable extends LightningDatatable {
         'progress-ring': {
             template: progressRing,
             typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
-            standardCellLayout: true
         },
         'progress-circle': {
             template: progressCircle,
@@ -267,7 +255,6 @@ export default class primitiveDatatable extends LightningDatatable {
                 'thickness',
                 'variant'
             ],
-            standardCellLayout: true
         },
         qrcode: {
             template: qrcode,
@@ -281,7 +268,6 @@ export default class primitiveDatatable extends LightningDatatable {
                 'padding',
                 'size'
             ],
-            standardCellLayout: true
         },
         rating: {
             template: rating,
@@ -295,7 +281,6 @@ export default class primitiveDatatable extends LightningDatatable {
                 'selection',
                 'valueHidden'
             ],
-            standardCellLayout: true
         },
         slider: {
             template: slider,
@@ -604,6 +589,15 @@ export default class primitiveDatatable extends LightningDatatable {
         super.wrapTextMaxLines = value;
     }
 
+    @api 
+    get state() {
+        return super.state;
+    }
+
+    set state(value) {
+        super.state = value;
+    }
+
     /**
      * Gets a row height.
      *
@@ -759,27 +753,22 @@ export default class primitiveDatatable extends LightningDatatable {
     };
 
     handleInlineEditFinishCustom = (event) => {
-        const { reason, rowKeyValue, colKeyValue } = event.detail;
-
-        this.processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue);
+        const { reason, rowKeyValue, colKeyValue, value, valid, updateAllSelectedRows } = event.detail;
+        this.processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue, value, valid, updateAllSelectedRows);
     };
 
-    processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue) {
+    processInlineEditFinishCustom(reason, rowKeyValue, colKeyValue, value, valid, massEdit) {
         const state = this.state;
         const inlineEditState = state.inlineEdit;
-
         const shouldSaveData =
             reason !== 'edit-canceled' &&
             !(inlineEditState.massEditEnabled && reason === 'loosed-focus') &&
             isValidCell(this.state, rowKeyValue, colKeyValue);
 
         if (shouldSaveData) {
-            const panel = this.template.querySelector(
-                '[data-iedit-panel-custom="true"]'
-            );
-            const editValue = panel.value;
-            const isValidEditValue = panel.validity.valid;
-            const updateAllSelectedRows = panel.isMassEditChecked;
+            const editValue = JSON.parse(JSON.stringify(value));
+            const isValidEditValue = valid;
+            const updateAllSelectedRows = massEdit;
             const currentValue = getCellValue(state, rowKeyValue, colKeyValue);
 
             if (
@@ -803,7 +792,7 @@ export default class primitiveDatatable extends LightningDatatable {
                 this.dispatchCellChangeEvent(cellChange);
 
                 // @todo: do we need to update all rows in the this or just the one that was modified?
-                // updateRowsAndCellIndexes.call(dt);
+                // this.updateRowsAndCellIndexesCustom.call(this);
             }
         }
     }

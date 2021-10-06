@@ -1,5 +1,6 @@
 <template>
     <c-primitive-datatable
+        data-element-id="avonni-primitive-datatable"
         column-widths-mode={columnWidthsMode}
         columns={columns}
         records={records}
@@ -25,6 +26,29 @@
         sorted-direction={sortedDirection}
         suppress-bottom-bar={suppressBottomBar}
         wrap-text-max-lines={wrapTextMaxLines}
+        onrowselection={handleDispatchEvents}
+        oncancel={handleDispatchEvents}
+        oncellchange={handleDispatchEvents}
+        onheaderaction={handleDispatchEvents}
+        onloadmore={handleDispatchEvents}
+        onresize={handleDispatchEvents}
+        onsave={handleDispatchEvents}
+        onsort={handleDispatchEvents}
     >
     </c-primitive-datatable>
+    <!-- <template if:true={rendered}>
+        <c-primitive-datatable-iedit-panel-custom
+            data-iedit-panel-custom="true"
+            visible={state.inlineEdit.panelVisible}
+            row-key-value={state.inlineEdit.rowKeyValue}
+            col-key-value={state.inlineEdit.colKeyValue}
+            edited-value={state.inlineEdit.editedValue}
+            column-def={state.inlineEdit.columnDef}
+            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
+            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
+            onieditfinished={handleInlineEditFinish}
+            onmasscheckboxchange={handleMassCheckboxChange}
+            options={options}
+        ></c-primitive-datatable-iedit-panel-custom>
+    </template> -->
 </template>
