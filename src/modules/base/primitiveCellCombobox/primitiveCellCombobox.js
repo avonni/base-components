@@ -108,6 +108,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     /*----------- Inline Editing Functions -------------*/
+
     /**
      * Gets the inputable element inside the inline edit popover.
      *

@@ -43,17 +43,19 @@
             column-def={state.inlineEdit.columnDef}
             is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            options={options}
-            dropdown-length={dropdownLength}
             is-multi-select={isMultiSelect}
-            placeholder={placeholder}
             disabled={disabled}
+            dropdown-length={dropdownLength}
+            options={options}
+            placeholder={placeholder}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
         <span
-            class="slds-grid slds-cell-edit"
-            style="justify-content: space-between"
+            class="
+                slds-grid slds-cell-edit
+                slds-grid_align-spread slds-grid_vertical-align-center
+            "
         >
             <c-combobox
                 disabled={disabled}
@@ -63,15 +65,14 @@
                 options={options}
                 placeholder={placeholder}
                 read-only={readOnly}
-                onchange={handleChange}
                 variant="label-hidden"
                 value={value}
+                onchange={handleChange}
             ></c-combobox>
             <template if:true={editable}>
                 <c-primitive-cell-editable-button
                     onclick={handleEditButtonClick}
-                    column-label="combobox"
-                    style="margin-top: 7px"
+                    column-label="Combobox"
                 ></c-primitive-cell-editable-button>
             </template>
         </span>

@@ -211,8 +211,8 @@ const columnsCD = [
             options: options,
             isMultiSelect: { fieldName: 'isMultiSelect' }
         },
-        editable: true,
-        fixedWidth: 300
+        editable: true
+        // fixedWidth: 300
     },
     {
         label: 'Currency',

@@ -67,8 +67,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'badge',
     'avatar-group',
     'checkbox-button',
-    // 'color-picker',
-    'combobox',
+    'color-picker',
     'dynamic-icon',
     'image',
     'input-counter',
@@ -575,15 +574,6 @@ export default class Datatable extends LightningDatatable {
     set wrapTextMaxLines(value) {
         if (value === undefined) return;
         super.wrapTextMaxLines = value;
-    }
-
-    @api
-    get state() {
-        return super.state;
-    }
-
-    set state(value) {
-        super.state = value;
     }
 
     /**
