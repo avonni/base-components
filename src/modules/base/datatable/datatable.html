@@ -1,0 +1,54 @@
+<template>
+    <c-primitive-datatable
+        data-element-id="avonni-primitive-datatable"
+        column-widths-mode={columnWidthsMode}
+        columns={columns}
+        records={records}
+        default-sort-direction={defaultSortDirection}
+        draft-values={draftValues}
+        enable-infinite-loading={enableInfiniteLoading}
+        errors={errors}
+        hide-checkbox-column={hideCheckboxColumn}
+        hide-table-header={hideTableHeader}
+        is-loading={isLoading}
+        key-field={keyField}
+        load-more-offset={loadMoreOffset}
+        max-column-width={maxColumnWidth}
+        max-row-selection={maxRowSelection}
+        min-column-width={minColumnWidth}
+        render-config={renderConfig}
+        resize-column-disabled={resizeColumnDisabled}
+        resize-step={resizeStep}
+        row-number-offset={rowNumberOffset}
+        selected-rows={selectedRows}
+        show-row-number-column={showRowNumberColumn}
+        sorted-by={sortedBy}
+        sorted-direction={sortedDirection}
+        suppress-bottom-bar={suppressBottomBar}
+        wrap-text-max-lines={wrapTextMaxLines}
+        onrowselection={handleDispatchEvents}
+        oncancel={handleDispatchEvents}
+        oncellchange={handleDispatchEvents}
+        onheaderaction={handleDispatchEvents}
+        onloadmore={handleDispatchEvents}
+        onresize={handleDispatchEvents}
+        onsave={handleDispatchEvents}
+        onsort={handleDispatchEvents}
+    >
+    </c-primitive-datatable>
+    <!-- <template if:true={rendered}>
+        <c-primitive-datatable-iedit-panel-custom
+            data-iedit-panel-custom="true"
+            visible={state.inlineEdit.panelVisible}
+            row-key-value={state.inlineEdit.rowKeyValue}
+            col-key-value={state.inlineEdit.colKeyValue}
+            edited-value={state.inlineEdit.editedValue}
+            column-def={state.inlineEdit.columnDef}
+            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
+            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
+            onieditfinished={handleInlineEditFinish}
+            onmasscheckboxchange={handleMassCheckboxChange}
+            options={options}
+        ></c-primitive-datatable-iedit-panel-custom>
+    </template> -->
+</template>

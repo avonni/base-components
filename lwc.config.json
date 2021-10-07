@@ -315,6 +315,10 @@
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
         },
         {
+            "name": "c/primitiveDatatable",
+            "path": "src/modules/base/primitiveDatatable/primitiveDatatable.js"
+        },
+        {
             "name": "c/primitiveDatatableIeditInputWrapperCustom",
             "path": "src/modules/base/primitiveDatatableIeditInputWrapperCustom/primitiveDatatableIeditInputWrapperCustom.js"
         },

@@ -30,74 +30,32 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import LightningDatatable from 'lightning/datatable';
-import { api } from 'lwc';
-import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import { api, LightningElement } from 'lwc';
 import {
-    getCellValue,
-    getCurrentSelectionLength,
-    isSelectedRow,
-    getColumns,
-    getChangesForCustomer,
-    processInlineEditFinishCustom
-} from './inlineEdit';
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from 'c/utilsPrivate';
 
-import avatar from './avatar.html';
-import avatarGroup from './avatarGroup.html';
-import badge from './badge.html';
-import checkboxButton from './checkboxButton.html';
-import colorPicker from './colorPicker.html';
-import combobox from './combobox.html';
-import dynamicIcon from './dynamicIcon.html';
-import formattedRichText from './formattedRichText.html';
-import image from './image.html';
-import inputCounter from './inputCounter.html';
-import inputDateRange from './inputDateRange.html';
-import inputToggle from './inputToggle.html';
-import progressBar from './progressBar.html';
-import progressCircle from './progressCircle.html';
-import progressRing from './progressRing.html';
-import qrcode from './qrcode.html';
-import rating from './rating.html';
-import slider from './slider.html';
-import urls from './urls.html';
+const WIDTHSMODE = {
+    valid: ['fixed', 'auto'],
+    default: 'fixed'
+};
 
-const CUSTOM_TYPES_ALWAYS_WRAPPED = [
-    'avatar',
-    'badge',
-    'avatar-group',
-    'checkbox-button',
-    // 'color-picker',
-    'combobox',
-    'dynamic-icon',
-    'image',
-    'input-counter',
-    'input-date-range',
-    'input-toggle',
-    'progress-bar',
-    'progress-circle',
-    'progress-ring',
-    'qrcode',
-    'rating',
-    'slider',
-    'urls'
-];
+const SORTDIRECTION = {
+    valid: ['asc', 'desc'],
+    default: 'asc'
+};
 
-const CUSTOM_TYPES_EDITABLE = [
-    'checkbox-button',
-    'color-picker',
-    'combobox',
-    'input-counter',
-    'input-date-range',
-    'input-toggle',
-    'rating',
-    'slider'
-];
+const DEFAULT_LOAD_MORE_OFFSET = 20;
 
-const COLUMN_WIDTHS_MODES = { valid: ['fixed', 'auto'], default: 'fixed' };
+const DEFAULT_MAX_COLUMN_WIDTH = 1000;
 
-const SORT_DIRECTIONS = { valid: ['asc', 'desc'], default: 'desc' };
+const DEFAULT_MIN_COLUMN_WIDTH = 50;
 
+const DEFAULT_ROW_NUMBER_OFFSET = 0;
+
+const DEFAULT_RESIZE_STEP = 10;
 /**
  * Lightning datatable with custom cell types and extended functionalities.
  *
@@ -106,275 +64,114 @@ const SORT_DIRECTIONS = { valid: ['asc', 'desc'], default: 'desc' };
  * @storyId example-datatable--data-types-from-a-to-b
  * @public
  */
-export default class Datatable extends LightningDatatable {
-    static customTypes = {
-        avatar: {
-            template: avatar,
-            typeAttributes: [
-                'alternativeText',
-                'entityIconName',
-                'entitySrc',
-                'fallbackIconName',
-                'initials',
-                'size',
-                'presence',
-                'primaryText',
-                'secondaryText',
-                'status',
-                'variant'
-            ]
-        },
-        'avatar-group': {
-            template: avatarGroup,
-            typeAttributes: [
-                'layout',
-                'maxCount',
-                'size',
-                'variant',
-                'actionIconName',
-                'name'
-            ]
-        },
-        badge: {
-            template: badge,
-            typeAttributes: ['variant']
-        },
-        'checkbox-button': {
-            template: checkboxButton,
-            typeAttributes: ['disabled', 'label', 'name']
-        },
-        'color-picker': {
-            template: colorPicker,
-            typeAttributes: [
-                'colors',
-                'disabled',
-                'hideColorInput',
-                'label',
-                'menuAlignment',
-                'menuIconName',
-                'menuIconSize',
-                'menuVariant',
-                'name',
-                'opacity',
-                'type'
-            ]
-        },
-        combobox: {
-            template: combobox,
-            typeAttributes: [
-                'disabled',
-                'dropdownAlignment',
-                'dropdownLenght',
-                'isMultiSelect',
-                'label',
-                'placeholder',
-                'options'
-            ]
-        },
-        'dynamic-icon': {
-            template: dynamicIcon,
-            typeAttributes: ['alternativeText', 'option']
-        },
-        'formatted-rich-text': {
-            template: formattedRichText,
-            typeAttributes: ['disableLinkify']
-        },
-        image: {
-            template: image,
-            typeAttributes: [
-                'alt',
-                'blank',
-                'blankColor',
-                'height',
-                'rounded',
-                'sizes',
-                'srcset',
-                'thumbnail',
-                'width'
-            ]
-        },
-        'input-counter': {
-            template: inputCounter,
-            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step']
-        },
-        'input-date-range': {
-            template: inputDateRange,
-            typeAttributes: [
-                'dateStyle',
-                'disabled',
-                'label',
-                'labelStartDate',
-                'labelEndDate',
-                'timeStyle',
-                'timezone',
-                'type'
-            ]
-        },
-        'input-toggle': {
-            template: inputToggle,
-            typeAttributes: [
-                'disabled',
-                'hideMark',
-                'label',
-                'messageToggleActive',
-                'messageToggleInactive',
-                'name',
-                'size'
-            ]
-        },
-        'progress-bar': {
-            template: progressBar,
-            typeAttributes: [
-                'label',
-                'referenceLines',
-                'showValue',
-                'textured',
-                'theme',
-                'thickness',
-                'valueLabel',
-                'valuePostion',
-                'variant'
-            ]
-        },
-        'progress-ring': {
-            template: progressRing,
-            typeAttributes: ['direction', 'hideIcon', 'size', 'variant']
-        },
-        'progress-circle': {
-            template: progressCircle,
-            typeAttributes: [
-                'color',
-                'direction',
-                'label',
-                'size',
-                'thickness',
-                'variant'
-            ]
-        },
-        qrcode: {
-            template: qrcode,
-            typeAttributes: [
-                'background',
-                'borderColor',
-                'borderWidth',
-                'color',
-                'encoding',
-                'errorCorrection',
-                'padding',
-                'size'
-            ]
-        },
-        rating: {
-            template: rating,
-            typeAttributes: [
-                'disabled',
-                'iconName',
-                'iconSize',
-                'label',
-                'max',
-                'min',
-                'selection',
-                'valueHidden'
-            ]
-        },
-        slider: {
-            template: slider,
-            typeAttributes: ['disabled', 'label', 'max', 'min', 'size', 'step']
-        },
-        urls: {
-            template: urls,
-            typeAttributes: ['urls']
-        }
-    };
+export default class Datatable extends LightningElement {
+    /**
+     * The current values per row that are provided during inline edit.
+     * @public
+     * @type {string[]}
+     */
+    @api draftValues;
 
-    connectedCallback() {
-        super.connectedCallback();
+    /**
+     * Specifies an object containing information about cell level, row level, and table level errors.
+     * When it's set, error messages are displayed on the table accordingly.
+     * @public
+     * @type {object}
+     */
+    @api errors;
 
-        this.template.addEventListener(
-            'privateeditcustomcell',
-            this.handleEditCell
-        );
+    /**
+     * Associates each row with a unique ID.
+     * @public
+     * @type {string}
+     * @required
+     */
+    @api keyField;
 
-        this.template.addEventListener(
-            'privateavatarclick',
-            this.handleDispatchEvents
-        );
+    /**
+     * The maximum number of rows that can be selected.
+     * Checkboxes are used for selection by default,
+     * and radio buttons are used when maxRowSelection is 1.
+     * @public
+     * @type {number}
+     */
+    @api maxRowSelection;
 
-        this.template.addEventListener(
-            'privateactionclick',
-            this.handleDispatchEvents
-        );
+    /**
+     * Reserved for internal use.
+     * Enables and configures advanced rendering modes.
+     * @public
+     * @type {RenderManagerConfig}
+     */
+    @api renderConfig;
 
-        this.template.addEventListener(
-            'editbuttonclickcustom',
-            this.handleEditButtonClickCustom
-        );
+    /**
+     * Enables programmatic row selection with a list of key-field values.
+     * @public
+     * @type {string[]}
+     */
+    @api selectedRows;
 
-        this.template.addEventListener(
-            'ieditfinishedcustom',
-            this.handleInlineEditFinishCustom
-        );
+    /**
+     * The column fieldName that controls the sorting order.
+     * Sort the data using the onsort event handler.
+     * @public
+     * @type {string}
+     */
+    @api sortedBy;
 
-        this.template.addEventListener('getdatatablestateandrecord', (e) => {
-            e.detail.callbacks.getState(this.state);
-            e.detail.callbacks.getColumns(this.columns);
-        });
-    }
+    /**
+     * Specifies the sorting direction.
+     * Sort the data using the onsort event handler.
+     * Valid options include 'asc' and 'desc'.
+     * @public
+     * @type {string}
+     */
+    @api sortedDirection;
 
-    renderedCallback() {
-        super.renderedCallback();
+    /**
+     * This value specifies the number of lines after which the
+     * content will be cut off and hidden. It must be at least 1 or more.
+     * The text in the last line is truncated and shown with an ellipsis.
+     * @public
+     * @type {integer}
+     */
+    @api wrapTextMaxLines;
 
-        this._data = JSON.parse(JSON.stringify(normalizeArray(super.data)));
-        this.computeEditableOption();
-
-        if (this.isLoading) {
-            this.template.querySelector(
-                'lightning-primitive-datatable-loading-indicator'
-            ).style.height = '40px';
-        }
-
-        // Make sure custom edited cells stay yellow on hover
-        // Make sure error cells appear edited and with a red border
-        const edited = Array.from(
-            this.template.querySelectorAll('td.slds-is-edited')
-        );
-        const error = Array.from(
-            this.template.querySelectorAll('td.slds-has-error')
-        );
-        const editCells = edited.concat(error);
-
-        editCells.forEach((cell) => {
-            cell.classList.add('slds-cell-edit');
-        });
-    }
-
-    disconnectedCallback() {
-        super.disconnectedCallback();
-
-        this.template.removeEventListener(
-            'privateeditcustomcell',
-            this.handleEditCell
-        );
-    }
+    _columns;
+    _columnWidthsMode;
+    _defaultSortDirection;
+    _enableInfiniteLoading = false;
+    _records;
+    _groupBy;
+    _hideUndefinedGroup;
+    _hideCollapsibleIcon;
+    _hideCheckboxColumn = false;
+    _hideTableHeader = false;
+    _isLoading = false;
+    _loadMoreOffset = DEFAULT_LOAD_MORE_OFFSET;
+    _maxColumnWidth = DEFAULT_MAX_COLUMN_WIDTH;
+    _minColumnWidth = DEFAULT_MIN_COLUMN_WIDTH;
+    _resizeColumnDisabled = false;
+    _resizeStep = DEFAULT_RESIZE_STEP;
+    _rowNumberOffset = DEFAULT_ROW_NUMBER_OFFSET;
+    _showRowNumberColumn = false;
+    _suppressBottomBar = false;
 
     /**
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
      * See the Documentation tab for more information.
      * @public
-     * @type {array}
+     * @type {object}
      */
     @api
     get columns() {
-        return super.columns;
+        return this._columns;
     }
 
     set columns(value) {
-        super.columns = value;
-
-        this._columns = JSON.parse(JSON.stringify(this._columns));
-        this.removeWrapOption();
-        this.computeEditableOption();
+        this._columns = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
     /**
@@ -386,13 +183,13 @@ export default class Datatable extends LightningDatatable {
      */
     @api
     get columnWidthsMode() {
-        return super.columnWidthsMode;
+        return this._columnWidthsMode;
     }
 
     set columnWidthsMode(value) {
-        super.columnWidthsMode = normalizeString(value, {
-            fallbackValue: COLUMN_WIDTHS_MODES.default,
-            validValues: COLUMN_WIDTHS_MODES.valid
+        this._columnWidthsMode = normalizeString(value, {
+            validValues: WIDTHSMODE.valid,
+            fallbackValue: WIDTHSMODE.default
         });
     }
 
@@ -406,14 +203,118 @@ export default class Datatable extends LightningDatatable {
      */
     @api
     get defaultSortDirection() {
-        return super.defaultSortDirection;
+        return this._defaultSortDirection;
     }
 
     set defaultSortDirection(value) {
-        super.defaultSortDirection = normalizeString(value, {
-            fallbackValue: SORT_DIRECTIONS.default,
-            validValues: SORT_DIRECTIONS.valid
+        this._defaultSortDirection = normalizeString(value, {
+            validValues: SORTDIRECTION.valid,
+            fallbackValue: SORTDIRECTION.default
         });
+    }
+
+    /**
+     * If present, you can load a subset of data and then display more
+     * when users scroll to the end of the table.
+     * Use with the onloadmore event handler to retrieve more data.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get enableInfiniteLoading() {
+        return this._enableInfiniteLoading;
+    }
+
+    set enableInfiniteLoading(value) {
+        this._enableInfiniteLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the value will define how the data will be grouped.
+     * @public
+     * @type {string}
+     */
+    @api
+    get groupBy() {
+        return this._groupBy;
+    }
+
+    set groupBy(value) {
+        this._groupBy = value;
+    }
+
+    /**
+     * If present, the checkbox column for row selection is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideCheckboxColumn() {
+        return this._hideCheckboxColumn;
+    }
+
+    set hideCheckboxColumn(value) {
+        this._hideCheckboxColumn = normalizeBoolean(value);
+    }
+
+    /**
+     * In case of group-by, if present, the section is not collapsible and the left icon is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideCollapsibleIcon() {
+        return this._hideCollapsibleIcon;
+    }
+    set hideCollapsibleIcon(value) {
+        this._hideCollapsibleIcon = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the table header is hidden.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideTableHeader() {
+        return this._hideTableHeader;
+    }
+
+    set hideTableHeader(value) {
+        this._hideTableHeader = normalizeBoolean(value);
+    }
+
+    /**
+     * In case of group-by, if present, hides undefined groups.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideUndefinedGroup() {
+        return this._hideUndefinedGroup;
+    }
+    set hideUndefinedGroup(value) {
+        this._hideUndefinedGroup = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, a spinner is shown to indicate that more data is loading.
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     /**
@@ -425,91 +326,74 @@ export default class Datatable extends LightningDatatable {
      */
     @api
     get loadMoreOffset() {
-        return super.loadMoreOffset;
+        return this._loadMoreOffset;
     }
 
     set loadMoreOffset(value) {
-        if (value === undefined) return;
-        super.loadMoreOffset = value;
+        this._loadMoreOffset =
+            typeof value === 'number' ? value : DEFAULT_LOAD_MORE_OFFSET;
     }
-
     /**
      * The maximum width for all columns.
      * @public
      * @type {number}
-     * @default 1000px
+     * @default 1000
      */
     @api
     get maxColumnWidth() {
-        return super.maxColumnWidth;
+        return this._maxColumnWidth;
     }
 
     set maxColumnWidth(value) {
-        if (value === undefined) return;
-        super.maxColumnWidth = value;
-    }
-
-    /**
-     * The maximum number of rows that can be selected.
-     * Checkboxes are used for selection by default,
-     * and radio buttons are used when maxRowSelection is 1.
-     * @public
-     * @type {number}
-     */
-    @api
-    get maxRowSelection() {
-        return super.maxRowSelection;
-    }
-
-    set maxRowSelection(value) {
-        if (value === undefined) return;
-        super.maxRowSelection = value;
+        this._maxColumnWidth =
+            typeof value === 'number' ? value : DEFAULT_MAX_COLUMN_WIDTH;
     }
 
     /**
      * The minimum width for all columns.
      * @public
      * @type {number}
-     * @default 50px
+     * @default 50
      */
     @api
     get minColumnWidth() {
-        return super.minColumnWidth;
+        return this._minColumnWidth;
     }
 
     set minColumnWidth(value) {
-        if (value === undefined) return;
-        super.minColumnWidth = value;
+        this._minColumnWidth =
+            typeof value === 'number' ? value : DEFAULT_MIN_COLUMN_WIDTH;
     }
 
     /**
-     * The array of data to be displayed. The objects keys depend on the columns fieldNames.
+     * If present, column resizing is disabled.
      * @public
-     * @type {array}
+     * @type {boolean}
+     * @default false
      */
     @api
-    get records() {
-        return super.data;
+    get resizeColumnDisabled() {
+        return this._resizeColumnDisabled;
     }
 
-    set records(value) {
-        super.data = normalizeArray(value);
+    set resizeColumnDisabled(value) {
+        this._resizeColumnDisabled = normalizeBoolean(value);
     }
 
     /**
      * The width to resize the column when a user presses left or right arrow.
      * @public
      * @type {number}
-     * @default 10px
+     * @default 10
      */
     @api
     get resizeStep() {
-        return super.resizeStep;
+        return this._resizeStep;
     }
 
     set resizeStep(value) {
-        if (value === undefined) return;
-        super.resizeStep = value;
+        this._resizeStep =
+            typeof value === 'number' ? value : DEFAULT_RESIZE_STEP;
     }
 
     /**
@@ -520,232 +404,151 @@ export default class Datatable extends LightningDatatable {
      */
     @api
     get rowNumberOffset() {
-        return super.rowNumberOffset;
+        return this._rowNumberOffset;
     }
 
     set rowNumberOffset(value) {
-        if (value === undefined) return;
-        super.rowNumberOffset = value;
+        this._rowNumberOffset =
+            typeof value === 'number' ? value : DEFAULT_ROW_NUMBER_OFFSET;
     }
 
     /**
-     * Enables programmatic row selection with a list of key-field values.
+     * The array of data to be displayed. The objects keys depend on the columns fieldNames.
      * @public
-     * @type {string[]}
+     * @type {object}
      */
     @api
-    get selectedRows() {
-        return super.selectedRows;
+    get records() {
+        return this._records;
     }
 
-    set selectedRows(value) {
-        if (value === undefined) return;
-        super.selectedRows = value;
+    set records(value) {
+        this._records = JSON.parse(JSON.stringify(normalizeArray(value)));
     }
 
     /**
-     * Specifies the sorting direction.
-     * Sort the data using the onsort event handler.
-     * Valid options include 'asc' and 'desc'.
+     * If present, the row numbers are shown in the first column.
+     * If a column is editable, the row number column will be automatically displayed.
      * @public
-     * @type {string}
+     * @type {boolean}
+     * @default false
      */
     @api
-    get sortedDirection() {
-        return super.sortedDirection;
+    get showRowNumberColumn() {
+        return this._showRowNumberColumn;
     }
 
-    set sortedDirection(value) {
-        super.sortedDirection = normalizeString(value, {
-            fallbackValue: SORT_DIRECTIONS.default,
-            validValues: SORT_DIRECTIONS.valid
-        });
+    set showRowNumberColumn(value) {
+        this._showRowNumberColumn = normalizeBoolean(value);
     }
 
     /**
-     * This value specifies the number of lines after which the
-     * content will be cut off and hidden. It must be at least 1 or more.
-     * The text in the last line is truncated and shown with an ellipsis.
+     * If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.
      * @public
-     * @type {integer}
+     * @type {boolean}
+     * @default false
      */
     @api
-    get wrapTextMaxLines() {
-        return super.wrapTextMaxLines;
+    get suppressBottomBar() {
+        return this._suppressBottomBar;
     }
 
-    set wrapTextMaxLines(value) {
-        if (value === undefined) return;
-        super.wrapTextMaxLines = value;
+    set suppressBottomBar(value) {
+        this._suppressBottomBar = normalizeBoolean(value);
     }
 
-    @api
-    get state() {
-        return super.state;
+    /*------------ JAVASCRIPT FUNCTIONS ------------*/
+    renderedCallback() {
+        this.states();
+        this.rendered = true
     }
 
-    set state(value) {
-        super.state = value;
+    get primitiveDatatble() {
+        return this.template.querySelector('[data-element-id^="avonni-primitive-datatable"]')
     }
 
-    /**
-     * Gets a row height.
-     *
-     * @param {string} rowKeyField The key field value of the row.
-     * @returns {number} The height of the row, in pixels.
-     * @public
-     */
-    @api
-    getRowHeight(rowKeyField) {
-        const row = this.template.querySelector(
-            `tr[data-row-key-value="${rowKeyField}"]`
-        );
-
-        if (row) {
-            if (rowKeyField === this.data[0][this.keyField]) {
-                // The first row has one pixel more because of the border
-                return row.offsetHeight + 1;
-            }
-            return row.offsetHeight;
-        }
-        return null;
+    states() {
+        this.state = JSON.parse(JSON.stringify(this.primitiveDatatble.state));
     }
 
     /**
-     * Sets the height of a row.
-     *
-     * @param {string} rowKeyField The key field value of the row.
-     * @param {number} height The new height of the row, in pixels.
-     * @public
-     */
-    @api
-    setRowHeight(rowKeyField, height) {
-        const row = this.template.querySelector(
-            `tr[data-row-key-value="${rowKeyField}"]`
-        );
-
-        if (row) {
-            row.style.height = height ? `${height}px` : undefined;
-        }
-    }
-
-    /**
-     * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
-     */
-    removeWrapOption() {
-        this.columns.forEach((column) => {
-            if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
-                column.wrapText = true;
-                column.hideDefaultActions = true;
-            }
-        });
-    }
-
-    /**
-     * If the data type is editable, transforms the value into an object containing the editable property.
-     */
-    computeEditableOption() {
-        if (this.columns && this._data) {
-            this.columns.forEach((column) => {
-                if (CUSTOM_TYPES_EDITABLE.includes(column.type)) {
-                    const fieldName = column.fieldName;
-                    this._data.forEach((row) => {
-                        const value = row[fieldName];
-                        row[fieldName] = {
-                            value: value,
-                            editable: !!column.editable
-                        };
-                    });
-                }
-            });
-        }
-    }
-
-    handleEditButtonClickCustom(event) {
-        event.stopPropagation();
-        const { colKeyValue, rowKeyValue, state } = event.detail;
-        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.state = state;
-        const inlineEdit = this.state.inlineEdit;
-
-        inlineEdit.panelVisible = true;
-        inlineEdit.rowKeyValue = rowKeyValue;
-        inlineEdit.colKeyValue = colKeyValue;
-        inlineEdit.editedValue = getCellValue(
-            this.state,
-            rowKeyValue,
-            colKeyValue
-        );
-        inlineEdit.massEditSelectedRows = getCurrentSelectionLength(this.state);
-        inlineEdit.massEditEnabled =
-            isSelectedRow(this.state, rowKeyValue) &&
-            inlineEdit.massEditSelectedRows > 1;
-
-        const colIndex = this.state.headerIndexes[colKeyValue];
-        inlineEdit.columnDef = getColumns(this.state)[colIndex];
-    }
-
-    handleEditCell = (event) => {
-        event.stopPropagation();
-        const { colKeyValue, rowKeyValue, value } = event.detail;
-        const dirtyValues = this.state.inlineEdit.dirtyValues;
-
-        // If no values have been edited in the row yet,
-        // create the row object in the state dirty values
-        if (!dirtyValues[rowKeyValue]) {
-            dirtyValues[rowKeyValue] = {};
-        }
-
-        // Add the new cell value to the state dirty values
-        dirtyValues[rowKeyValue][colKeyValue] = value;
-
-        const cellChange = { [rowKeyValue]: { [colKeyValue]: value } };
-
-        this.dispatchEvent(
-            new CustomEvent('cellchange', {
-                detail: {
-                    draftValues: getChangesForCustomer(cellChange, this.state)
-                }
-            })
-        );
-        // Show yellow background and save/cancel button
-        super.updateRowsState(this.state);
-    };
-
-    /**
-     * Dispatches event from the lighnting-datatable.
+     * Dispatches events from the primitive-datatable.
      *
      * @param {event} event
      */
     handleDispatchEvents(event) {
         event.stopPropagation();
+        /**
+         * The event fired when data is saved during inline editing.
+         *
+         * @event
+         * @name cancel
+         * @public
+         * @cancelable
+         */
+        /**
+         * The event fired when a header action is selected, such as text wrapping, text clipping, or a custom header action.
+         *
+         * @event
+         * @name headeraction
+         * @param {object} action The action definition described in the “Actions” table.
+         * @param {object} columnDefinition The column definition specified in the columns property,
+         * for example, the key-value pairs for label, fieldName, type, typeAttributes, and wrapText.
+         * @public
+         */
+        /**
+         * The event fired when you scroll to the bottom of the table to load more data, until there are no more data to load.
+         *
+         * @event
+         * @name loadmore
+         * @param {boolean} enableInfiniteLoading Specifies whether infinite loading is available on the table.
+         * @param {boolean} isLoading Specifies that data is loading and displays a spinner on the table.
+         * @param {boolean} loadMoreOffset The number of pixels between the bottom of the table and the current scroll position,
+         * used to trigger more data loading.
+         * @public
+         */
+        /**
+         * The event fired when the a table column is resized.
+         *
+         * @event
+         * @name resize
+         * @param {object} columnsWidth The width of all columns, in pixels. For example,
+         * a table with 5 columns of 205px width each at initial render returns [205, 205, 205, 205, 205].
+         * @param {boolean} isUserTriggered Specifies whether the column resize is caused by a user action.
+         * @public
+         */
+        /**
+         * The event fired when the row is selected.
+         *
+         * @event
+         * @name rowselection
+         * @param {object} selectedRows The data in the rows that are selected.
+         * @public
+         */
+        /**
+         * The event fired when data is saved during inline editing.
+         *
+         * @event
+         * @name save
+         * @param {object} draftValues The current value that's provided during inline editing.
+         * @public
+         */
+        /**
+         * The event fired when a column is sorted.
+         *
+         * @event
+         * @name sort
+         * @param {string} fieldName The fieldName that controls the sorting.
+         * @param {string} sortedDirection The sorting direction. Valid options include 'asc' and 'desc'.
+         * @public
+         */
         this.dispatchEvent(
-            new CustomEvent(`${event.detail.type}`, {
-                detail: event.detail.detail,
-                bubbles: event.detail.bubbles,
-                composed: event.detail.composed,
-                cancelable: event.detail.cancelable
+            new CustomEvent(`${event.type}`, {
+                detail: event.detail,
+                bubbles: event.bubbles,
+                composed: event.composed,
+                cancelable: event.cancelable
             })
         );
     }
-
-    handleInlineEditFinishCustom = (event) => {
-        const {
-            reason,
-            rowKeyValue,
-            colKeyValue,
-            value,
-            valid,
-            isMassEditChecked
-        } = event.detail;
-        processInlineEditFinishCustom(
-            this.state,
-            reason,
-            rowKeyValue,
-            colKeyValue,
-            value,
-            valid,
-            isMassEditChecked
-        );
-    };
 }
