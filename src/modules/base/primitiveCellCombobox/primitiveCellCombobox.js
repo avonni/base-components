@@ -40,7 +40,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api dropdownAlignment;
     @api dropdownLength;
     @api isMultiSelect;
-    @api label;
     @api options;
     @api placeholder;
 
@@ -60,7 +59,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
         });
 
         this.dispatchEvent(
-            new CustomEvent('getdatatablestateandrecord', {
+            new CustomEvent('getdatatablestateandcolumns', {
                 detail: {
                     callbacks: {
                         getState: this.getState.bind(this),
@@ -71,6 +70,15 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 composed: true
             })
         );
+    }
+
+    renderedCallback() {
+        this.primitiveCellCombobox = this.template.querySelector(
+            '[data-element-id^="primitive-cell-combobox-input"]'
+        );
+        if (this.primitiveCellCombobox) {
+            this.primitiveCellCombobox.focus();
+        }
     }
 
     getState(state) {
@@ -88,19 +96,11 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this.editable = combobox.editable;
     }
 
-    renderedCallback() {
-        this.primitiveCellCombobox = this.template.querySelector(
-            '[data-element-id^="primitive-cell-combobox-input"]'
-        );
-        if (this.primitiveCellCombobox) {
-            this.primitiveCellCombobox.focus();
-        }
-    }
-
     @api
     get value() {
         return this._value;
     }
+
     set value(value) {
         // When data is first set, the value is an object containing the editable state
         // When the cell is edited, only the value is sent back

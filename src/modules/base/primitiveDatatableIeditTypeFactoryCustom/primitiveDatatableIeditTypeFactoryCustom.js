@@ -15,7 +15,8 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api editedValue;
     @api required;
     @api disabled;
-    @api dropdownAlignement;
+
+    // combobox attributes
     @api dropdownLength;
     @api isMultiSelect;
     @api options;

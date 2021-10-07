@@ -9,7 +9,13 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     @api columnDef;
     @api isMassEditEnabled = false;
     @api numberOfSelectedRows;
+
+    // Primitive cell combobox
+    @api disabled;
+    @api dropdownLength;
+    @api isMultiSelect;
     @api options;
+    @api placeholder;
 
     connectedCallback() {
         this.interactingState = new InteractingState({

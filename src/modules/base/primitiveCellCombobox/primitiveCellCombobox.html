@@ -44,6 +44,10 @@
             is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
             options={options}
+            dropdown-length={dropdownLength}
+            is-multi-select={isMultiSelect}
+            placeholder={placeholder}
+            disabled={disabled}
         ></c-primitive-datatable-iedit-panel-custom>
     </template>
     <template if:false={visible}>
@@ -56,7 +60,6 @@
                 dropdown-alignment={dropdownAlignement}
                 dropdown-length={dropdownLength}
                 is-multi-select={isMultiSelect}
-                label={label}
                 options={options}
                 placeholder={placeholder}
                 read-only={readOnly}

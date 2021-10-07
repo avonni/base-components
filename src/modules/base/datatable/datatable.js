@@ -164,9 +164,8 @@ export default class Datatable extends LightningDatatable {
             typeAttributes: [
                 'disabled',
                 'dropdownAlignment',
-                'dropdownLenght',
+                'dropdownLength',
                 'isMultiSelect',
-                'label',
                 'placeholder',
                 'options'
             ]
@@ -315,7 +314,7 @@ export default class Datatable extends LightningDatatable {
             this.handleInlineEditFinishCustom
         );
 
-        this.template.addEventListener('getdatatablestateandrecord', (e) => {
+        this.template.addEventListener('getdatatablestateandcolumns', (e) => {
             e.detail.callbacks.getState(this.state);
             e.detail.callbacks.getColumns(this.columns);
         });
