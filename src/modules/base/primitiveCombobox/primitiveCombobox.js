@@ -770,7 +770,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {boolean}
      */
     get showClearInputIcon() {
-        return this.showClearInput && this.input && this.inputValue !== '';
+        return this.showClearInput && this.inputValue !== '';
     }
 
     /**
@@ -804,8 +804,8 @@ export default class PrimitiveCombobox extends LightningElement {
         )
             .add({
                 'slds-is-open': this.dropdownVisible,
-                'slds-has-icon-only slds-combobox_container': this
-                    .showInputValueIcon
+                'slds-has-icon-only slds-combobox_container':
+                    this.showInputValueIcon
             })
             .toString();
     }
@@ -1025,7 +1025,8 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._autoPosition.start({
-            target: () => this.template.querySelector('[data-element-id="input"]'),
+            target: () =>
+                this.template.querySelector('[data-element-id="input"]'),
             element: () => this.template.querySelector('div.slds-dropdown'),
             align: {
                 horizontal: Direction.Left,
