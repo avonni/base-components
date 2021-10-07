@@ -31,7 +31,6 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from 'c/utilsPrivate';
 
 export default class PrimitiveCellCombobox extends LightningElement {
     @api colKeyValue;
@@ -44,26 +43,25 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api placeholder;
 
     visible = false;
+    readOnly = true;
     editable = false;
     _value;
-    _readOnly;
 
     connectedCallback() {
-        this.template.addEventListener('changecomboboxfactory', (event) => {
+        // Dispatches the inline edit event to the parent component.
+        this.template.addEventListener('inlineeditchange', (event) => {
             this.handleChange(event);
         });
 
-        this.addEventListener('ieditfinishedcustom', () => {
-            this.visible = false;
-            this._readOnly = true;
+        this.template.addEventListener('ieditfinishedcustom', () => {
+            this.toggleInlineEdit();
         });
 
         this.dispatchEvent(
             new CustomEvent('getdatatablestateandcolumns', {
                 detail: {
                     callbacks: {
-                        getState: this.getState.bind(this),
-                        getColumns: this.getColumns.bind(this)
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
                     }
                 },
                 bubbles: true,
@@ -73,27 +71,10 @@ export default class PrimitiveCellCombobox extends LightningElement {
     }
 
     renderedCallback() {
-        this.primitiveCellCombobox = this.template.querySelector(
-            '[data-element-id^="primitive-cell-combobox-input"]'
-        );
-        if (this.primitiveCellCombobox) {
-            this.primitiveCellCombobox.focus();
+        // focus on the combobox when the inline edit panel is opened.
+        if (this.inputableElement) {
+            this.inputableElement.focus();
         }
-    }
-
-    getState(state) {
-        this.state = state;
-    }
-
-    getColumns(columns) {
-        this.columns = columns;
-        this.isEditable();
-    }
-
-    isEditable() {
-        let combobox = {};
-        combobox = this.columns.find((column) => column.type === 'combobox');
-        this.editable = combobox.editable;
     }
 
     @api
@@ -105,20 +86,10 @@ export default class PrimitiveCellCombobox extends LightningElement {
         // When data is first set, the value is an object containing the editable state
         // When the cell is edited, only the value is sent back
         if (typeof value === 'object' && value.editable !== undefined) {
-            this._readOnly = !value.editable;
             this._value = value.value;
         } else {
             this._value = value;
         }
-    }
-
-    @api
-    get readOnly() {
-        return this._readOnly;
-    }
-
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
     }
 
     handleChange(event) {
@@ -127,7 +98,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
             colKeyValue: this.colKeyValue,
             rowKeyValue: this.rowKeyValue
         };
-
         this.dispatchEvent(
             new CustomEvent('privateeditcustomcell', {
                 detail: detail,
@@ -137,6 +107,39 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
     }
 
+    /*----------- Inline Editing Functions -------------*/
+    /**
+     * Gets the inputable element inside the inline edit popover.
+     *
+     * @type {Element}
+     */
+    get inputableElement() {
+        return this.template.querySelector(
+            '[data-element-id^="primitive-cell-combobox-input"]'
+        );
+    }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this._readOnly = !this._readOnly;
+    }
+
+    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    getStateAndColumns(state, columns) {
+        this.state = state;
+        this.columns = columns;
+        this.isEditable();
+    }
+
+    // Checks if the column is editable.
+    isEditable() {
+        let combobox = {};
+        combobox = this.columns.find((column) => column.type === 'combobox');
+        this.editable = combobox.editable;
+    }
+
+    // Handles the edit button click and dispatches the event.
     handleEditButtonClick() {
         const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
@@ -150,7 +153,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
                 }
             })
         );
-        this._readOnly = false;
-        this.visible = true;
+        this.toggleInlineEdit();
     }
 }

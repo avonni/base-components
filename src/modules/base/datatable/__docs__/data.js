@@ -212,7 +212,7 @@ const columnsCD = [
             isMultiSelect: { fieldName: 'isMultiSelect' }
         },
         editable: true,
-        fixedWidth: 360
+        fixedWidth: 300
     },
     {
         label: 'Currency',
@@ -455,8 +455,7 @@ const columnsRZ = [
 const recordsAB = [
     {
         id: 1,
-        avatar:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         avatarInitials: 'NG',
         avatarSecondaryText: 'Approved',
         avatarStatus: 'approved',
@@ -474,8 +473,7 @@ const recordsAB = [
     },
     {
         id: 2,
-        avatar:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'DM',
         avatarSecondaryText: 'Declined',
@@ -529,8 +527,7 @@ const recordsAB = [
     },
     {
         id: 5,
-        avatar:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+        avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'RM',
         avatarSecondaryText: 'Approved',
@@ -603,8 +600,7 @@ const recordsEN = [
         id: 1,
         email: 'nina.gomez@email.com',
         formattedRichText: '<h1>Header 1</h1>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputCounter: 1,
         inputDateRange: {
             startDate: new Date('2021/10/02'),
@@ -620,8 +616,7 @@ const recordsEN = [
         id: 2,
         email: 'dave.mckinsley@email.com',
         formattedRichText: '<h2>Header 2</h2>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
         inputDateRange: {
             startDate: new Date('2021/09/12'),
@@ -638,8 +633,7 @@ const recordsEN = [
         id: 3,
         email: 'jung.phung@email.com',
         formattedRichText: '<h3>Header 3</h3>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
         imageBlankColor: '#CCC',
         imageHeight: 50,
@@ -656,8 +650,7 @@ const recordsEN = [
         id: 4,
         email: 'lily.murray@email.com',
         formattedRichText: '<h4>Header 4</h4>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
         inputDateRange: {
             startDate: new Date('2021/09/17'),
@@ -673,8 +666,7 @@ const recordsEN = [
         id: 5,
         email: 'reginald.martin@email.com',
         formattedRichText: '<h5>Header 5</h5>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
         inputCounter: 0,
         inputDateRange: {
@@ -774,8 +766,7 @@ const recordsRZ = [
             },
             { value: 'https://www.avonni.app/', label: 'Avonni' },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]
@@ -794,8 +785,7 @@ const recordsRZ = [
                 label: 'Avonni Components Documentation'
             },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]
@@ -805,13 +795,11 @@ const recordsRZ = [
         sliderDisabled: true,
         ratingDisabled: true,
         text: 'Jung Phung',
-        url:
-            'https://developer.salesforce.com/docs/component-library/overview/components',
+        url: 'https://developer.salesforce.com/docs/component-library/overview/components',
         urlLabel: 'Salesforce documentation',
         urls: [
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             },
             {
@@ -836,8 +824,7 @@ const recordsRZ = [
             },
             { value: 'https://www.avonni.app/', label: 'Avonni' },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]
@@ -853,8 +840,7 @@ const recordsRZ = [
             { value: 'https://lwc.dev/', label: 'LWC Documentation' },
             { value: 'https://www.avonni.app/', label: 'Avonni' },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]

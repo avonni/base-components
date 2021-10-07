@@ -71,6 +71,14 @@ export function getChangesForCustomer(changes, state) {
 }
 
 /* -------------- processInlineEditFinish ------------- */
+
+/**
+ * Validates if it's a valid cell.
+ *
+ * @param {Object} state - state of the datatable
+ * @param {string} rowKeyValue - the row key of the edited cell
+ * @param {string} colKeyValue - the column key of the edited cell
+ */
 export function isValidCell(state, rowKeyValue, colKeyValue) {
     const row = getRowByKey(state, rowKeyValue);
     const colIndex = state.headerIndexes[colKeyValue];
@@ -78,6 +86,12 @@ export function isValidCell(state, rowKeyValue, colKeyValue) {
     return row && row.cells[colIndex];
 }
 
+/**
+ * Will update the dirty values specified in rowColKeyValues.
+ *
+ * @param {Object} state - state of the datatable
+ * @param {Object} rowColKeyValues - An object in the form of { rowKeyValue: { colKeyValue1: value, ..., colKeyValueN: value } ... }
+ */
 export function updateDirtyValues(state, rowColKeyValues) {
     const dirtyValues = state.inlineEdit.dirtyValues;
 
@@ -90,6 +104,17 @@ export function updateDirtyValues(state, rowColKeyValues) {
     });
 }
 
+/**
+ * It will process when the datatable had finished an edition.
+ *
+ * @param {Object} dtState - the datatable state
+ * @param {string} reason - the reason to finish the edition. valid reasons are: edit-canceled | loosed-focus | tab-pressed | submit-action
+ * @param {string} rowKeyValue - the row key of the edited cell
+ * @param {string} colKeyValue - the column key of the edited cell
+ * @param {string} value - the edited value
+ * @param {boolean} valid - boolean value that indicates if the edited value is valid or not
+ * @param {boolean} massEdit -  boolean value that indicates if the edition it's more than one row edited
+ */
 export function processInlineEditFinishCustom(
     dtState,
     reason,

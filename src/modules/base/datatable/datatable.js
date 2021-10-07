@@ -315,8 +315,7 @@ export default class Datatable extends LightningDatatable {
         );
 
         this.template.addEventListener('getdatatablestateandcolumns', (e) => {
-            e.detail.callbacks.getState(this.state);
-            e.detail.callbacks.getColumns(this.columns);
+            e.detail.callbacks.getStateAndColumns(this.state, this.columns);
         });
     }
 
@@ -660,6 +659,11 @@ export default class Datatable extends LightningDatatable {
         }
     }
 
+    /**
+     * Handles the edit button click event of each custom cell type.
+     *
+     * @param {event} event
+     */
     handleEditButtonClickCustom(event) {
         event.stopPropagation();
         const { colKeyValue, rowKeyValue, state } = event.detail;
@@ -684,6 +688,11 @@ export default class Datatable extends LightningDatatable {
         inlineEdit.columnDef = getColumns(this.state)[colIndex];
     }
 
+    /**
+     * Handles the inline editing event of each custom cell type.
+     *
+     * @param {event} event
+     */
     handleEditCell = (event) => {
         event.stopPropagation();
         const { colKeyValue, rowKeyValue, value } = event.detail;
@@ -728,6 +737,11 @@ export default class Datatable extends LightningDatatable {
         );
     }
 
+    /**
+     * Handles the finish of inline editing of custom cell type.
+     *
+     * @param {event} event
+     */
     handleInlineEditFinishCustom = (event) => {
         const {
             reason,
