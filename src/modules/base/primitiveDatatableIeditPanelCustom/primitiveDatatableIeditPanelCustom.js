@@ -119,11 +119,14 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     triggerEditFinished(detail) {
-        detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
-        detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-        detail.value = this.value;
-        detail.valid = this.validity.valid;
-        detail.isMassEditChecked = this.isMassEditChecked;
+        // for combobox we need to make sure that the value is only set if the there is a change or a submit.
+        if (this.value.length !== 0 && typeof this.value !== 'string') {
+            detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
+            detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
+            detail.value = this.value;
+            detail.valid = this.validity.valid;
+            detail.isMassEditChecked = this.isMassEditChecked;
+        }
         this.dispatchEvent(
             new CustomEvent('ieditfinishedcustom', {
                 detail: detail,

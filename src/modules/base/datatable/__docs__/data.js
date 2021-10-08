@@ -84,6 +84,25 @@ const options = [
     }
 ];
 
+const groups = [
+    {
+        label: 'Accounts',
+        value: 'accounts'
+    },
+    {
+        label: 'Opportunities',
+        value: 'opportunities'
+    },
+    {
+        label: 'Closed',
+        value: 'closed'
+    },
+    {
+        label: 'Won',
+        value: 'won'
+    }
+];
+
 const columnsAB = [
     {
         label: 'Action',
@@ -208,11 +227,11 @@ const columnsCD = [
         type: 'combobox',
         typeAttributes: {
             label: 'Simple Combobox',
-            options: options,
+            options: { fieldName: 'options' },
             isMultiSelect: { fieldName: 'isMultiSelect' }
         },
-        editable: true
-        // fixedWidth: 300
+        editable: true,
+        fixedWidth: 300
     },
     {
         label: 'Currency',
@@ -554,6 +573,7 @@ const recordsCD = [
         date: new Date('2022/03/24'),
         dateLocal: new Date('2022/03/24'),
         combobox: 'no-avatar-burlington',
+        options: options,
         isMultiSelect: true
     },
     {
@@ -563,7 +583,8 @@ const recordsCD = [
         dynamicIcon: 'score',
         dynamicIconOption: 'negative',
         date: new Date('2022/03/21'),
-        dateLocal: new Date('2022/03/21')
+        dateLocal: new Date('2022/03/21'),
+        options: options
     },
     {
         id: 3,
@@ -575,7 +596,8 @@ const recordsCD = [
         dynamicIconOption: -3,
         date: new Date('2022/05/04'),
         dateLocal: new Date('2022/05/04'),
-        isMultiSelect: true
+        isMultiSelect: true,
+        options: options
     },
     {
         id: 4,
@@ -583,7 +605,8 @@ const recordsCD = [
         currency: '432',
         dynamicIcon: 'eq',
         date: new Date('2021/02/14'),
-        dateLocal: new Date('2021/02/14')
+        dateLocal: new Date('2021/02/14'),
+        options: options
     },
     {
         id: 5,
@@ -592,7 +615,8 @@ const recordsCD = [
         currency: '217',
         dynamicIcon: 'waffle',
         date: new Date('2021/02/14'),
-        dateLocal: new Date('2022/10/12')
+        dateLocal: new Date('2022/10/12'),
+        options: groups
     }
 ];
 const recordsEN = [

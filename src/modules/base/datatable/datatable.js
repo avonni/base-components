@@ -68,6 +68,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'avatar-group',
     'checkbox-button',
     'color-picker',
+    'combobox',
     'dynamic-icon',
     'image',
     'input-counter',
@@ -308,10 +309,10 @@ export default class Datatable extends LightningDatatable {
             this.handleEditButtonClickCustom
         );
 
-        this.template.addEventListener(
-            'ieditfinishedcustom',
-            this.handleInlineEditFinishCustom
-        );
+        this.template.addEventListener('ieditfinishedcustom', (event) => {
+            console.log(event);
+            this.handleInlineEditFinishCustom(event);
+        });
 
         this.template.addEventListener('getdatatablestateandcolumns', (e) => {
             e.detail.callbacks.getStateAndColumns(this.state, this.columns);
@@ -343,6 +344,8 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
+
+        console.log(this.state);
     }
 
     disconnectedCallback() {
@@ -684,6 +687,7 @@ export default class Datatable extends LightningDatatable {
      * @param {event} event
      */
     handleEditCell = (event) => {
+        console.log(event.detail);
         event.stopPropagation();
         const { colKeyValue, rowKeyValue, value } = event.detail;
         const dirtyValues = this.state.inlineEdit.dirtyValues;
