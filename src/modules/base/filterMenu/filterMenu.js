@@ -192,6 +192,7 @@ export default class FilterMenu extends LightningElement {
         });
 
         this.dispatchEvent(privatebuttonregister);
+        this._connected = true;
     }
 
     disconnectedCallback() {
@@ -998,7 +999,7 @@ export default class FilterMenu extends LightningElement {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             setTimeout(
                 () => {
-                    if (this.isConnected) {
+                    if (this._connected) {
                         observePosition(this, 300, this._boundingRect, () => {
                             this.close();
                         });

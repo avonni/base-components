@@ -161,6 +161,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -333,7 +334,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set isMultiSelect(value) {
         this._isMultiSelect = normalizeBoolean(value);
-        if (this.isConnected) this.initValue();
+        if (this._connected) this.initValue();
     }
 
     /**
@@ -391,7 +392,7 @@ export default class PrimitiveCombobox extends LightningElement {
         this._options = optionObjects;
         this.visibleOptions = optionObjects;
 
-        if (this.isConnected) {
+        if (this._connected) {
             this.initValue();
         }
     }
@@ -537,7 +538,7 @@ export default class PrimitiveCombobox extends LightningElement {
     set value(value) {
         this._value =
             typeof value === 'string' ? [value] : normalizeArray(value);
-        if (this.isConnected) this.initValue();
+        if (this._connected) this.initValue();
     }
 
     /**
@@ -577,7 +578,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set visibleOptions(value) {
         this._visibleOptions =
-            this.isConnected && this.removeSelectedOptions
+            this._connected && this.removeSelectedOptions
                 ? this.removeSelectedOptionsFrom(value)
                 : value;
 

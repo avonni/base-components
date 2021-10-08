@@ -134,7 +134,7 @@ export default class PrivateSelect extends LightningElement {
     set value(value) {
         this._selectedValue = value;
 
-        if (this.connected && value) {
+        if (this._connected && value) {
             this.selectOptionsByValue(value);
         }
     }
@@ -147,7 +147,7 @@ export default class PrivateSelect extends LightningElement {
     set options(value) {
         this._options = value;
 
-        if (this.connected && value) {
+        if (this._connected && value) {
             this.selectOptionsByValue(this._selectedValue);
         }
     }
@@ -166,7 +166,7 @@ export default class PrivateSelect extends LightningElement {
         this.updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-        this.connected = true;
+        this._connected = true;
     }
 
     updateClassList() {
@@ -184,19 +184,19 @@ export default class PrivateSelect extends LightningElement {
     }
 
     disconnectedCallback() {
-        this.connected = false;
+        this._connected = false;
     }
 
     @api
     focus() {
-        if (this.connected) {
+        if (this._connected) {
             this.getElement.focus();
         }
     }
 
     @api
     blur() {
-        if (this.connected) {
+        if (this._connected) {
             this.getElement.blur();
         }
     }

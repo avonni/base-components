@@ -190,6 +190,7 @@ export default class ColorPicker extends LightningElement {
         this.addEventListener('colordblclick', () => {
             this.handlerDone();
         });
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -583,7 +584,7 @@ export default class ColorPicker extends LightningElement {
      */
     @api
     focus() {
-        if (this.isConnected) {
+        if (this._connected) {
             this.focusOnButton();
         }
     }
@@ -1092,7 +1093,7 @@ export default class ColorPicker extends LightningElement {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this.isConnected) {
+                if (this._connected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });
