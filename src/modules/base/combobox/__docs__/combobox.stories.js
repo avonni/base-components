@@ -372,6 +372,15 @@ export default {
                 defaultValue: { summary: 'standard' }
             }
         }
+    },
+    args: {
+        hideSelectedOptions: false,
+        isLoading: false,
+        isMultiSelect: false,
+        multiLevelGroups: false,
+        readOnly: false,
+        removeSelectedOptions: false,
+        required: false
     }
 };
 
