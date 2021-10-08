@@ -93,6 +93,14 @@ export default class Combobox extends LightningElement {
     @api label;
 
     /**
+     * Error message to be displayed when a bad input is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenBadInput;
+
+    /**
      * Error message to be displayed when the value is missing and input is required.
      *
      * @type {string}

@@ -97,6 +97,14 @@ export default class PrimitiveCombobox extends LightningElement {
     @api label;
 
     /**
+     * Error message to be displayed when a bad input is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenBadInput;
+
+    /**
      * Error message to be displayed when the value is missing and input is required.
      *
      * @type {string}
@@ -804,8 +812,8 @@ export default class PrimitiveCombobox extends LightningElement {
         )
             .add({
                 'slds-is-open': this.dropdownVisible,
-                'slds-has-icon-only slds-combobox_container': this
-                    .showInputValueIcon
+                'slds-has-icon-only slds-combobox_container':
+                    this.showInputValueIcon
             })
             .toString();
     }
@@ -1025,7 +1033,8 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this._autoPosition.start({
-            target: () => this.template.querySelector('[data-element-id="input"]'),
+            target: () =>
+                this.template.querySelector('[data-element-id="input"]'),
             element: () => this.template.querySelector('div.slds-dropdown'),
             align: {
                 horizontal: Direction.Left,

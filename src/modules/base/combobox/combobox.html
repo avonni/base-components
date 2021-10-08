@@ -77,6 +77,7 @@
                 is-loading={isLoading}
                 is-multi-select={isMultiSelect}
                 loading-state-alternative-text={loadingStateAlternativeText}
+                message-when-bad-input={messageWhenBadInput}
                 message-when-value-missing={messageWhenValueMissing}
                 multi-level-groups={multiLevelGroups}
                 name={name}
@@ -102,7 +103,11 @@
         <!-- Selected options -->
         <ul
             if:true={showSelectedOptions}
-            class="slds-grid slds-wrap slds-p-vertical_xx-small combobox__selected-options"
+            class="
+                slds-grid slds-wrap
+                slds-p-vertical_xx-small
+                combobox__selected-options
+            "
             role="listbox"
             aria-label={selectedOptionsAriaLabel}
             aria-orientation="horizontal"
