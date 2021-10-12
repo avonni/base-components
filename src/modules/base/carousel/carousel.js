@@ -158,6 +158,7 @@ export default class Carousel extends LightningElement {
 
     connectedCallback() {
         this.initCarousel();
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -217,7 +218,7 @@ export default class Carousel extends LightningElement {
                 actions: item.actions || []
             });
         });
-        if (this.isConnected) {
+        if (this._connected) {
             this.initCarousel();
         }
     }
@@ -257,7 +258,7 @@ export default class Carousel extends LightningElement {
             fallbackValue: INDICATOR_VARIANTS.default,
             validValues: INDICATOR_VARIANTS.valid
         });
-        if (this.isConnected) {
+        if (this._connected) {
             this.initCarousel();
         }
     }

@@ -98,6 +98,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             })
         );
         this.initHeaders();
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -148,7 +149,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set availableDaysOfTheWeek(value) {
         this._availableDaysOfTheWeek = normalizeArray(value);
-        if (this.isConnected) this.initHeaders();
+        if (this._connected) this.initHeaders();
     }
 
     /**
@@ -163,7 +164,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set availableMonths(value) {
         this._availableMonths = normalizeArray(value);
-        if (this.isConnected) this.initHeaders();
+        if (this._connected) this.initHeaders();
     }
 
     /**
@@ -178,7 +179,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set availableTimeFrames(value) {
         this._availableTimeFrames = normalizeArray(value);
-        if (this.isConnected) this.initHeaders();
+        if (this._connected) this.initHeaders();
     }
 
     /**
@@ -193,7 +194,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set headers(value) {
         this._headers = normalizeArray(value);
-        if (this.isConnected) this.initHeaders();
+        if (this._connected) this.initHeaders();
     }
 
     /**
@@ -230,7 +231,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 ? start
                 : dateTimeObjectFrom(DEFAULT_START_DATE);
 
-        if (this.isConnected) this.initHeaders();
+        if (this._connected) this.initHeaders();
     }
 
     /**
@@ -248,7 +249,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set timeSpan(value) {
         this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
-        if (this.isConnected) this.initHeaders();
+        if (this._connected) this.initHeaders();
     }
 
     /**
