@@ -881,10 +881,20 @@ export default class PrimitiveCombobox extends LightningElement {
             .toString();
     }
 
+    /**
+     * True if read-only and is-multi-select is false.
+     *
+     * @type {boolean}
+     */
     get readOnlyNotMultiSelect() {
         return this.readOnly && !this.isMultiSelect;
     }
 
+    /**
+     * True if value is valid returns the input value, if else return the value.
+     *
+     * @type {string}
+     */
     get readOnlyValue() {
         return this.validity.valid ? this.inputValue : this.value[0];
     }

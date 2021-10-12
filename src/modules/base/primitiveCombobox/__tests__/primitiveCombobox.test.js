@@ -658,9 +658,9 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="input"]'
+                '[data-element-id="lightning-input-read-only"]'
             );
-            expect(input.disabled).toBeFalsy();
+            expect(input).toBeFalsy();
         });
     });
 
@@ -669,9 +669,47 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="input"]'
+                '[data-element-id="lightning-input-read-only"]'
             );
-            expect(input.disabled).toBeTruthy();
+            expect(input).toBeTruthy();
+        });
+    });
+
+    it('readOnly = true and good value', () => {
+        element.readOnly = true;
+        element.options = options;
+        element.value = 'no-avatar-oil-sla'
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-read-only"]'
+            );
+            expect(input.value).toBe('United Oil SLA');
+        });
+    });
+
+    it('readOnly = true and bad value', () => {
+        element.readOnly = true;
+        element.options = options;
+        element.value = 'no-avatarsss-oil-sla'
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-read-only"]'
+            );
+            expect(input.value).toBe('no-avatarsss-oil-sla');
+        });
+    });
+
+    it('readOnly = true and multiselect', () => {
+        element.readOnly = true;
+        element.isMultiSelect = true;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-read-only"]'
+            );
+            expect(input).toBeFalsy();
         });
     });
 
