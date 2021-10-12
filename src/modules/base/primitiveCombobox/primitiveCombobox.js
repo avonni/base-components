@@ -881,6 +881,14 @@ export default class PrimitiveCombobox extends LightningElement {
             .toString();
     }
 
+    get readOnlyNotMultiSelect() {
+        return this.readOnly && !this.isMultiSelect;
+    }
+
+    get readOnlyValue() {
+        return this.validity.valid ? this.inputValue : this.value[0];
+    }
+
     /**
      * Removes focus from the input.
      *
