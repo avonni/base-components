@@ -1,3 +1,9 @@
+/**
+ * Get row index by the key field value.
+ *
+ * @param {Object} state - the datatable state
+ * @param {string} key - key field of the row
+ */
 export function getRowIndexByKey(state, key) {
     if (!state.indexes[key]) {
         return undefined;
@@ -6,11 +12,24 @@ export function getRowIndexByKey(state, key) {
     return state.indexes[key].rowIndex;
 }
 
+/**
+ * Get row the key field value.
+ *
+ * @param {Object} state - the datatable state
+ * @param {string} key - key field of the row
+ */
 export function getRowByKey(state, key) {
     const rows = state.rows;
     return rows[getRowIndexByKey(state, key)];
 }
 
+/**
+ * Gets the cell value by the rowKeyValue and colKeyValue.
+ *
+ * @param {Object} state - state of the datatable
+ * @param {string} rowKeyValue - the row key of the edited cell
+ * @param {string} colKeyValue - the column key of the edited cell
+ */
 export function getCellValue(state, rowKeyValue, colKeyValue) {
     const row = getRowByKey(state, rowKeyValue);
     const colIndex = state.headerIndexes[colKeyValue];
@@ -18,22 +37,34 @@ export function getCellValue(state, rowKeyValue, colKeyValue) {
     return row.cells[colIndex].value;
 }
 
+/**
+ * Gets the selected rows keys.
+ *
+ * @param {Object} state - state of the datatable
+ */
 export function getSelectedRowsKeys(state) {
     return Object.keys(state.selectedRowsKeys).filter(
         (key) => state.selectedRowsKeys[key]
     );
 }
 
+/**
+ * Gets the current selection length.
+ *
+ * @param {Object} state - state of the datatable
+ */
 export function getCurrentSelectionLength(state) {
     return getSelectedRowsKeys(state).length;
 }
 
+/**
+ * Return true if the row is selected.
+ *
+ * @param {Object} state - state of the datatable
+ * @param {string} rowKeyValue - the row key of the edited cell
+ */
 export function isSelectedRow(state, rowKeyValue) {
     return !!state.selectedRowsKeys[rowKeyValue];
-}
-
-export function getColumns(state) {
-    return state.columns;
 }
 
 /**

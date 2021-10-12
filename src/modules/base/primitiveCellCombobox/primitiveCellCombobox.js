@@ -42,10 +42,10 @@ export default class PrimitiveCellCombobox extends LightningElement {
     @api options;
     @api placeholder;
 
-    visible = false;
-    readOnly = true;
-    editable = false;
     _value;
+    visible = false;
+    editable = false;
+    readOnly = true;
 
     connectedCallback() {
         // Dispatches the inline edit event to the parent component.
@@ -123,7 +123,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
     toggleInlineEdit() {
         this.visible = !this.visible;
-        this._readOnly = !this._readOnly;
+        this.readOnly = !this.readOnly;
     }
 
     // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.

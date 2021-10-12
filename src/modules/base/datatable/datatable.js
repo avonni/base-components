@@ -37,7 +37,6 @@ import {
     getCellValue,
     getCurrentSelectionLength,
     isSelectedRow,
-    getColumns,
     getChangesForCustomer,
     processInlineEditFinishCustom
 } from './inlineEdit';
@@ -310,7 +309,6 @@ export default class Datatable extends LightningDatatable {
         );
 
         this.template.addEventListener('ieditfinishedcustom', (event) => {
-            console.log(event);
             this.handleInlineEditFinishCustom(event);
         });
 
@@ -344,8 +342,6 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
-
-        console.log(this.state);
     }
 
     disconnectedCallback() {
@@ -678,7 +674,7 @@ export default class Datatable extends LightningDatatable {
             inlineEdit.massEditSelectedRows > 1;
 
         const colIndex = this.state.headerIndexes[colKeyValue];
-        inlineEdit.columnDef = getColumns(this.state)[colIndex];
+        inlineEdit.columnDef = this.state.columns[colIndex];
     }
 
     /**
@@ -687,7 +683,6 @@ export default class Datatable extends LightningDatatable {
      * @param {event} event
      */
     handleEditCell = (event) => {
-        console.log(event.detail);
         event.stopPropagation();
         const { colKeyValue, rowKeyValue, value } = event.detail;
         const dirtyValues = this.state.inlineEdit.dirtyValues;
