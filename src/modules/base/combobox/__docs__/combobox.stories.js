@@ -195,6 +195,17 @@ export default {
                 defaultValue: { summary: 'Loading' }
             }
         },
+        messageWhenBadInput: {
+            name: 'message-when-bad-input',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a bad input is detected.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         messageWhenValueMissing: {
             name: 'message-when-value-missing',
             control: {
@@ -361,6 +372,15 @@ export default {
                 defaultValue: { summary: 'standard' }
             }
         }
+    },
+    args: {
+        hideSelectedOptions: false,
+        isLoading: false,
+        isMultiSelect: false,
+        multiLevelGroups: false,
+        readOnly: false,
+        removeSelectedOptions: false,
+        required: false
     }
 };
 

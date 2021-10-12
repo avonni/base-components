@@ -170,6 +170,7 @@ export default class ButtonIconPopover extends LightningElement {
             'slds-dropdown-trigger',
             'slds-dropdown-trigger_click'
         );
+        this._connected = true;
     }
 
     renderedCallback() {
@@ -479,7 +480,7 @@ export default class ButtonIconPopover extends LightningElement {
      */
     @api
     click() {
-        if (this.isConnected) {
+        if (this._connected) {
             this.clickOnButton();
         }
         /**
@@ -499,7 +500,7 @@ export default class ButtonIconPopover extends LightningElement {
      */
     @api
     focus() {
-        if (this.isConnected) {
+        if (this._connected) {
             this.focusOnButton();
         }
     }
@@ -786,7 +787,7 @@ export default class ButtonIconPopover extends LightningElement {
         if (this.isAutoAlignment() && this.popoverVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this.isConnected) {
+                if (this._connected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });
