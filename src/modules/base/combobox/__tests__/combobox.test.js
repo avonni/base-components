@@ -65,6 +65,7 @@ describe('Combobox', () => {
         expect(element.isMultiSelect).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.loadingStateAlternativeText).toBe('Loading');
+        expect(element.messageWhenBadInput).toBeUndefined();
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.multiLevelGroups).toBeFalsy();
         expect(element.name).toBeUndefined();
@@ -296,6 +297,18 @@ describe('Combobox', () => {
                 '.combobox__main-combobox'
             );
             expect(combobox.loadingStateAlternativeText).toBe('A string text');
+        });
+    });
+
+    // message-when-bad-input
+    it('messageWhenBadInput', () => {
+        element.messageWhenBadInput = 'A string message';
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '.combobox__main-combobox'
+            );
+            expect(combobox.messageWhenBadInput).toBe('A string message');
         });
     });
 

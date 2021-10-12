@@ -97,6 +97,14 @@ export default class PrimitiveCombobox extends LightningElement {
     @api label;
 
     /**
+     * Error message to be displayed when a bad input is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenBadInput;
+
+    /**
      * Error message to be displayed when the value is missing and input is required.
      *
      * @type {string}
@@ -586,6 +594,26 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Returns a boolean indicating if the value is valid or not.
+     *
+     * @type {boolean}
+     */
+    get hasBadInput() {
+        let values = [];
+        this.options.forEach((option) => {
+            if (option.options) {
+                option.options.forEach((innerOption) => {
+                    values.push(innerOption.value);
+                });
+            }
+            values.push(option.value);
+        });
+        return this._value.length > 0
+            ? values.some((e) => this._value.includes(e))
+            : true;
+    }
+
+    /**
      * Gets FieldConstraintApi.
      *
      * @type {object}
@@ -594,7 +622,8 @@ export default class PrimitiveCombobox extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
+                    !this.disabled && this.required && this.value.length === 0,
+                badInput: () => !this.hasBadInput
             });
         }
         return this._constraintApi;

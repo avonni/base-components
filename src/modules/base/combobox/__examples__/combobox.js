@@ -47,6 +47,7 @@ export const Combobox = ({
     isMultiSelect,
     label,
     loadingStateAlternativeText,
+    messageWhenBadInput,
     messageWhenValueMissing,
     multiLevelGroups,
     name,
@@ -75,6 +76,7 @@ export const Combobox = ({
     element.isMultiSelect = isMultiSelect;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.messageWhenBadInput = messageWhenBadInput;
     element.messageWhenValueMissing = messageWhenValueMissing;
     element.multiLevelGroups = multiLevelGroups;
     element.name = name;
