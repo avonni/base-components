@@ -39,6 +39,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 
 import { classSet } from 'c/utils';
 import { generateUUID } from 'c/utils';
@@ -178,11 +179,13 @@ export default class ColorPicker extends LightningElement {
 
     _dropdownVisible = false;
     _dropdownOpened = false;
+    _inputValue;
     init = false;
     showError = false;
     isDefault = true;
     newValue;
 
+    helpMessage;
     currentLabel;
     currentToken;
 
@@ -190,6 +193,10 @@ export default class ColorPicker extends LightningElement {
         this.addEventListener('colordblclick', () => {
             this.handlerDone();
         });
+
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+
         this._connected = true;
     }
 
@@ -198,6 +205,10 @@ export default class ColorPicker extends LightningElement {
             this.initSwatchColor();
             this.init = true;
         }
+
+        console.log('value', this.value);
+        console.log('input', this.inputValue);
+        console.log(this.inputValue && this.hasBadInput);
     }
 
     /**
@@ -560,8 +571,6 @@ export default class ColorPicker extends LightningElement {
         this._inputValue = val;
     }
 
-    _inputValue;
-
     /**
      * Whether the color input field contains a value.
      *
@@ -577,6 +586,88 @@ export default class ColorPicker extends LightningElement {
         return !!input.value;
     }
 
+    get hasBadInput() {
+        return !(
+            colorType(this.inputValue) === 'hex' ||
+            (colorType(this.inputValue) === 'hexa' && this.opacity)
+        );
+    }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && !this.value,
+                badInput: () => this.inputValue && this.hasBadInput
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /**
+     * Indicates whether the element meets all constraint validations.
+     *
+     * @returns {boolean} the valid attribute value on the ValidityState object.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    /**
+     * Displays the error messages and returns false if the input is invalid.
+     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     *
+     * @returns {boolean} - The validity status of the input fields.
+     * @public
+     */
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = this.messageWhenValueMissing || message;
+        });
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     *
+     * @param {string} message - The string that describes the error.
+     * If message is an empty string, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
     /**
      * Sets focus on the input element.
      *
@@ -587,6 +678,11 @@ export default class ColorPicker extends LightningElement {
         if (this._connected) {
             this.focusOnButton();
         }
+    }
+
+    @api
+    blur() {
+        this.interactingState.leave();
     }
 
     /**
@@ -811,13 +907,12 @@ export default class ColorPicker extends LightningElement {
     clearInput() {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = undefined;
-        this.inputValue = undefined;
+        this.inputValue = '';
         this.currentLabel = undefined;
         this.currentToken = undefined;
         this.showError = false;
-        this.template
-            .querySelector('[data-element-id="lightning-input"]')
-            .classList.remove('slds-has-error');
+        this.interactingState.enter();
+        this.interactingState.leave();
 
         this.dispatchClear();
     }
@@ -855,9 +950,8 @@ export default class ColorPicker extends LightningElement {
             }
 
             if (!this.menuIconName) {
-                this.template.querySelector(
-                    '.slds-swatch'
-                ).style.background = this.value;
+                this.template.querySelector('.slds-swatch').style.background =
+                    this.value;
             }
 
             let gradientPalette = this.template.querySelector(
@@ -983,6 +1077,7 @@ export default class ColorPicker extends LightningElement {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
         }
+        this.interactingState.leave();
     }
 
     /**
@@ -995,6 +1090,14 @@ export default class ColorPicker extends LightningElement {
 
         this.allowBlur();
         this._menuHasFocus = true;
+    }
+
+    handleInputFocus() {
+        this.interactingState.enter();
+    }
+
+    handleInputBlur() {
+        this.interactingState.leave();
     }
 
     /**
@@ -1028,9 +1131,8 @@ export default class ColorPicker extends LightningElement {
                 .classList.remove('slds-has-error');
 
             if (!this.menuIconName) {
-                this.template.querySelector(
-                    '.slds-swatch'
-                ).style.background = color;
+                this.template.querySelector('.slds-swatch').style.background =
+                    color;
             }
 
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments

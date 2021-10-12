@@ -208,7 +208,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -221,9 +221,21 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the palette is read-only and cannot be edited by users.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        required: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the input field must be filled out before the form is submitted.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -234,7 +246,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, a spinner is displayed to indicate that data is loading. ',
             table: {
@@ -247,7 +259,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
             table: {
@@ -262,7 +274,7 @@ export default {
                 type: 'boolean'
             },
             description: 'If true, hide the input color value.',
-            defaultValue: 0,
+            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -273,7 +285,7 @@ export default {
                 type: 'boolean'
             },
             description: 'Defines whether the alpha slider will be displayed.',
-            defaultValue: 0,
+            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

@@ -34,7 +34,11 @@
 
 <template>
     <div class={computedContainerClass}>
-        <label if:true={showLabel} class={computedLegendClass} data-element-id="label">
+        <label
+            if:true={showLabel}
+            class={computedLegendClass}
+            data-element-id="label"
+        >
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
             >
@@ -109,13 +113,18 @@
                                             role="tablist"
                                         >
                                             <li
-                                                class="slds-tabs_default__item slds-is-active"
+                                                class="
+                                                    slds-tabs_default__item
+                                                    slds-is-active
+                                                "
                                                 title="Default"
                                                 role="presentation"
                                             >
                                                 <a
                                                     id="default__item"
-                                                    class="slds-tabs_default__link"
+                                                    class="
+                                                        slds-tabs_default__link
+                                                    "
                                                     href="javascript:void(0);"
                                                     role="tab"
                                                     onclick={handlerTabClick}
@@ -131,7 +140,9 @@
                                             >
                                                 <a
                                                     id="custom__item"
-                                                    class="slds-tabs_default__link"
+                                                    class="
+                                                        slds-tabs_default__link
+                                                    "
                                                     href="javascript:void(0);"
                                                     role="tab"
                                                     onclick={handlerTabClick}
@@ -215,11 +226,18 @@
                 </template>
             </div>
             <div
-                class="slds-form-element slds-p-left_xx-small avonni-builder-icon-picker-input-container"
+                class="
+                    slds-form-element
+                    slds-p-left_xx-small
+                    avonni-builder-icon-picker-input-container
+                "
                 if:false={hideColorInput}
             >
                 <div
-                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+                    class="
+                        slds-form-element__control
+                        slds-input-has-icon slds-input-has-icon_right
+                    "
                 >
                     <lightning-input
                         type="text"
@@ -228,13 +246,20 @@
                         value={inputValue}
                         name={name}
                         onchange={handleInputColor}
+                        onfocus={handleInputFocus}
+                        onblur={handleInputBlur}
                         disabled={disabledInput}
                         read-only={isLabelDisplayed}
                         data-element-id="lightning-input"
+                        required={required}
                     ></lightning-input>
                     <template if:true={isInputFilled}>
                         <button
-                            class="slds-button slds-button_icon slds-input__icon slds-input__icon_right avonni-builder-icon-picker-clear-icon"
+                            class="
+                                slds-button slds-button_icon
+                                slds-input__icon slds-input__icon_right
+                                avonni-builder-icon-picker-clear-icon
+                            "
                             title="Clear"
                             data-element-id="button"
                             onclick={clearInput}
@@ -249,9 +274,19 @@
                     </template>
                 </div>
             </div>
-            <p if:true={showError} class="slds-form-error">
+            <!-- <p if:true={showError} class="slds-form-error">
                 {messageWhenBadInput}
-            </p>
+            </p> -->
+            <div class="slds-has-error" if:true={showError}>
+                <div
+                    id="help-message"
+                    class="slds-form-element__help"
+                    data-help-message
+                    role="alert"
+                >
+                    {helpMessage}
+                </div>
+            </div>
         </div>
     </div>
 </template>

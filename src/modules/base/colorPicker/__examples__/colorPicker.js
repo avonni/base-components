@@ -40,6 +40,7 @@ customElements.define(
 export const ColorPicker = ({
     disabled,
     readOnly,
+    required,
     isLoading,
     label,
     name,
@@ -61,6 +62,7 @@ export const ColorPicker = ({
     const element = document.createElement('ac-base-color-picker');
     element.disabled = disabled;
     element.readOnly = readOnly;
+    element.required = required;
     element.isLoading = isLoading;
     element.label = label;
     element.name = name;
