@@ -188,20 +188,22 @@ export default class ColorPicker extends LightningElement {
     _colors = DEFAULT_COLORS;
     _opacity = false;
 
-    _dropdownVisible = false;
-    _dropdownOpened = false;
-    _inputValue;
-    init = false;
+    dropdownOpened = false;
+    dropdownVisible = false;
     isDefault = true;
     newValue;
-
     helpMessage;
     currentLabel;
     currentToken;
 
+    _inputValue;
+    _rendered = false;
+
     connectedCallback() {
+        // Handles double click in the color palette.
         this.addEventListener('colordblclick', () => {
             this.handlerDone();
+            this.focus();
         });
 
         this.interactingState = new InteractingState();
@@ -211,9 +213,9 @@ export default class ColorPicker extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.init) {
+        if (!this._rendered) {
             this.initSwatchColor();
-            this.init = true;
+            this._rendered = true;
         }
     }
 
@@ -245,10 +247,10 @@ export default class ColorPicker extends LightningElement {
 
     set value(value) {
         if (!value) {
-            this._value = '';
-            this._inputValue = '';
-            this.currentLabel = '';
-            this.currentToken = '';
+            this._value = null;
+            this._inputValue = null;
+            this.currentLabel = null;
+            this.currentToken = null;
         } else {
             this._value = value;
             this.inputValue = value;
@@ -480,6 +482,9 @@ export default class ColorPicker extends LightningElement {
         this._opacity = normalizeBoolean(value);
     }
 
+    /**
+     * Generate unique ID key.
+     */
     get uniqueKey() {
         return generateUUID();
     }
@@ -521,31 +526,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Show label.
-     *
-     * @returns {boolean}
-     */
-    get showLabel() {
-        return this.label || this.required;
-    }
-
-    /**
-     * Disabled input.
-     *
-     * @returns {boolean}
-     */
-    get disabledInput() {
-        return this.disabled || this.readOnly;
-    }
-
-    /*
-     * Whether there a label next to each default color.
-     */
-    get isLabelDisplayed() {
-        return !!this.currentLabel;
-    }
-
-    /**
      * Retrieve the input value.
      *
      * @type {string}
@@ -571,6 +551,11 @@ export default class ColorPicker extends LightningElement {
         return !!this.inputValue;
     }
 
+    /**
+     * Returns true if the input value is color type.
+     *
+     * @type {boolean}
+     */
     get hasBadInput() {
         return !(
             colorType(this.inputValue) === 'hex' ||
@@ -578,167 +563,22 @@ export default class ColorPicker extends LightningElement {
         );
     }
 
+    /**
+     * Returns swatch element.
+     *
+     * @type {element}
+     */
     get elementSwatch() {
         return this.template.querySelector('[data-element-id="swatch"]');
     }
 
+    /**
+     * Returns colorGradient element.
+     *
+     * @type {element}
+     */
     get colorGradient() {
         return this.template.querySelector('[data-name="colorGradient"]');
-    }
-
-    /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get validity() {
-        return this._constraint.validity;
-    }
-
-    /**
-     * Gets FieldConstraintApi.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled && this.required && !this.value,
-                badInput: () => this.inputValue && this.hasBadInput
-            });
-        }
-        return this._constraintApi;
-    }
-
-    /**
-     * Indicates whether the element meets all constraint validations.
-     *
-     * @returns {boolean} the valid attribute value on the ValidityState object.
-     * @public
-     */
-    @api
-    checkValidity() {
-        return this._constraint.checkValidity();
-    }
-
-    /**
-     * Displays the error messages and returns false if the input is invalid.
-     * If the input is valid, reportValidity() clears displayed error messages and returns true.
-     *
-     * @returns {boolean} - The validity status of the input fields.
-     * @public
-     */
-    @api
-    reportValidity() {
-        return this._constraint.reportValidity((message) => {
-            this.helpMessage = message;
-        });
-    }
-
-    /**
-     * Sets a custom error message to be displayed when a form is submitted.
-     *
-     * @param {string} message - The string that describes the error.
-     * If message is an empty string, the error message is reset.
-     * @public
-     */
-    @api
-    setCustomValidity(message) {
-        this._constraint.setCustomValidity(message);
-    }
-
-    /**
-     * Displays error messages on invalid fields.
-     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
-     *
-     * @public
-     */
-    @api
-    showHelpMessageIfInvalid() {
-        this.reportValidity();
-    }
-
-    /**
-     * Sets focus on the input element.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        if (this._connected) {
-            this.focusOnButton();
-        }
-    }
-
-    /**
-     * Change event dispatcher.
-     *
-     * @param {object} colors
-     */
-    dispatchChange(colors) {
-        if (!this.disabled && !this.readOnly) {
-            /**
-             * The event fired when the color value changed.
-             *
-             * @event
-             * @public
-             * @name change
-             * @param {string} hex Color in hexadecimal format.
-             * @param {string} hexa Color in hexadecimal format with alpha.
-             * @param {string} rgb Color in rgb format.
-             * @param {string} rgba Color in rgba format.
-             * @param {string} alpha Alpha value of the color.
-             */
-            this.dispatchEvent(
-                new CustomEvent('change', {
-                    detail: {
-                        hex: colors.hex,
-                        hexa: colors.hexa,
-                        rgb: colors.rgb,
-                        rgba: colors.rgba,
-                        alpha: colors.alpha,
-                        token: this.currentToken
-                    },
-                    bubbles: true,
-                    cancelable: true,
-                    composed: false
-                })
-            );
-        }
-    }
-
-    /**
-     * Dispatches an event when the input is cleared.
-     *
-     */
-    dispatchClear() {
-        this.dispatchChange({
-            hex: undefined,
-            hexa: undefined,
-            rgb: undefined,
-            rgba: undefined,
-            alpha: undefined,
-            token: undefined
-        });
-    }
-
-    /**
-     * Initialize swatch colors.
-     */
-    initSwatchColor() {
-        if (this.elementSwatch) {
-            this.elementSwatch.style.background = this.value;
-        }
-    }
-
-    /**
-     * Button focus handler.
-     */
-    focusOnButton() {
-        this.template.querySelector('[data-element-id="button"]').focus();
     }
 
     /**
@@ -748,7 +588,7 @@ export default class ColorPicker extends LightningElement {
      * @return {String} from dropdownVisible
      */
     get computedAriaExpanded() {
-        return String(this._dropdownVisible);
+        return String(this.dropdownVisible);
     }
 
     /**
@@ -770,7 +610,7 @@ export default class ColorPicker extends LightningElement {
      *
      * @type {string}
      */
-    get computedLegendClass() {
+    get computedLabelClass() {
         return classSet('slds-form-element__label slds-no-flex')
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden'
@@ -835,7 +675,6 @@ export default class ColorPicker extends LightningElement {
                 'slds-swatch-read-only': this.readOnly
             });
         }
-
         return classes.toString();
     }
 
@@ -886,22 +725,134 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Check if auto aligned.
+     * Represents the validity states that an element can be in, with respect to constraint validation.
      *
-     * @returns {boolean}
+     * @type {string}
+     * @public
      */
-    isAutoAlignment() {
-        return this.menuAlignment.startsWith('auto');
+    @api
+    get validity() {
+        return this._constraint.validity;
     }
 
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && !this.value,
+                badInput: () => this.inputValue && this.hasBadInput
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /*-------- Public methods --------*/
+
+    /**
+     * Indicates whether the element meets all constraint validations.
+     *
+     * @returns {boolean} the valid attribute value on the ValidityState object.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    /**
+     * Displays the error messages and returns false if the input is invalid.
+     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     *
+     * @returns {boolean} - The validity status of the input fields.
+     * @public
+     */
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
+        });
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     *
+     * @param {string} message - The string that describes the error.
+     * If message is an empty string, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        if (this._connected) {
+            this.template.querySelector('[data-element-id="input"]').focus();
+        }
+    }
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        if (this._connected) {
+            this.template.querySelector('[data-element-id="input"]').blur();
+        }
+    }
+
+    /*-------- Private methods --------*/
+
+    /**
+     * Initialize swatch colors.
+     */
+    initSwatchColor() {
+        if (this.elementSwatch) {
+            this.elementSwatch.style.background = this.value;
+        }
+    }
+
+    /**
+     * Button focus handler.
+     */
+    focusOnButton() {
+        this.template.querySelector('[data-element-id="button"]').focus();
+    }
+
+    /**
+     * Clear color picker input.
+     */
     clearInput() {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = undefined;
         this.inputValue = null;
         this.currentLabel = undefined;
         this.currentToken = undefined;
-        this.interactingState.enter();
-        this.interactingState.leave();
+        this.focus();
 
         this.dispatchClear();
     }
@@ -929,7 +880,7 @@ export default class ColorPicker extends LightningElement {
         if (!this.readOnly && this.newValue) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
-            this.newValue = '';
+            this.newValue = null;
 
             if (!this.menuIconName) {
                 this.elementSwatch.style.background = this.value;
@@ -948,7 +899,7 @@ export default class ColorPicker extends LightningElement {
      * Handle new value canceled.
      */
     handlerCancel() {
-        this.newValue = '';
+        this.newValue = null;
 
         if (this.colorGradient) {
             this.colorGradient.renderValue(this.value);
@@ -964,7 +915,7 @@ export default class ColorPicker extends LightningElement {
         if (!this.readOnly) {
             this.allowBlur();
             this.toggleMenuVisibility();
-            this.focus();
+            this.focusOnButton();
         }
     }
 
@@ -1009,24 +960,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Tab click event handler.
-     *
-     * @param {Event} event
-     */
-    handlerTabClick(event) {
-        event.preventDefault();
-
-        [...this.template.querySelectorAll('a')].forEach((tab) => {
-            if (tab.id === event.target.id) {
-                tab.parentElement.classList.add('slds-is-active');
-                this.isDefault = tab.parentElement.title === 'Default';
-            } else {
-                tab.parentElement.classList.remove('slds-is-active');
-            }
-        });
-    }
-
-    /**
      * Sets blur.
      */
     allowBlur() {
@@ -1048,9 +981,84 @@ export default class ColorPicker extends LightningElement {
             return;
         }
 
-        if (this._dropdownVisible) {
+        if (this.dropdownVisible) {
             this.toggleMenuVisibility();
         }
+    }
+
+    /**
+     * Dropdown menu visibility toggle.
+     */
+    toggleMenuVisibility() {
+        if (!this.disabled) {
+            this.dropdownVisible = !this.dropdownVisible;
+
+            if (!this.dropdownOpened && this.dropdownVisible) {
+                this.dropdownOpened = true;
+            }
+
+            if (this.dropdownVisible) {
+                this._boundingRect = this.getBoundingClientRect();
+                this.pollBoundingRect();
+            }
+
+            this.template
+                .querySelector('.slds-dropdown-trigger')
+                .classList.toggle('slds-is-open');
+        }
+    }
+
+    /**
+     * Close dropdown menu.
+     */
+    close() {
+        if (this.dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Check if auto aligned.
+     *
+     * @returns {boolean}
+     */
+    isAutoAlignment() {
+        return this.menuAlignment.startsWith('auto');
+    }
+
+    /**
+     * Poll bounding rect of the dropdown menu.
+     */
+    pollBoundingRect() {
+        if (this.isAutoAlignment() && this.dropdownVisible) {
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                if (this._connected) {
+                    observePosition(this, 300, this._boundingRect, () => {
+                        this.close();
+                    });
+
+                    this.pollBoundingRect();
+                }
+            }, 250);
+        }
+    }
+
+    /**
+     * Tab click event handler.
+     *
+     * @param {Event} event
+     */
+    handlerTabClick(event) {
+        event.preventDefault();
+        [...this.template.querySelectorAll('a')].forEach((tab) => {
+            if (tab.id === event.target.id) {
+                tab.parentElement.classList.add('slds-is-active');
+                this.isDefault = tab.parentElement.title === 'Default';
+            } else {
+                tab.parentElement.classList.remove('slds-is-active');
+            }
+        });
     }
 
     /**
@@ -1063,14 +1071,6 @@ export default class ColorPicker extends LightningElement {
 
         this.allowBlur();
         this._menuHasFocus = true;
-    }
-
-    handleInputFocus() {
-        this.interactingState.enter();
-    }
-
-    handleInputBlur() {
-        this.interactingState.leave();
     }
 
     /**
@@ -1111,52 +1111,89 @@ export default class ColorPicker extends LightningElement {
         event.stopPropagation();
     }
 
+    /*-------- Public events --------*/
+
     /**
-     * Dropdown menu visibility toggle.
+     * Focus event dispatcher.
+     *
      */
-    toggleMenuVisibility() {
-        if (!this.disabled) {
-            this._dropdownVisible = !this._dropdownVisible;
+    handleInputFocus() {
+        this.interactingState.enter();
+        /**
+         * The event fired when you focus the color picker input.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
 
-            if (!this._dropdownOpened && this._dropdownVisible) {
-                this._dropdownOpened = true;
-            }
+    /**
+     * Blur event dispatcher.
+     *
+     */
+    handleInputBlur() {
+        this.interactingState.leave();
+        /**
+         * The event fired when the focus is removed from the color picker input.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
 
-            if (this._dropdownVisible) {
-                this._boundingRect = this.getBoundingClientRect();
-                this.pollBoundingRect();
-            }
-
-            this.template
-                .querySelector('.slds-dropdown-trigger')
-                .classList.toggle('slds-is-open');
+    /**
+     * Change event dispatcher.
+     *
+     * @param {object} colors
+     */
+    dispatchChange(colors) {
+        if (!this.disabled && !this.readOnly) {
+            /**
+             * The event fired when the color value changed.
+             *
+             * @event
+             * @public
+             * @name change
+             * @param {string} hex Color in hexadecimal format.
+             * @param {string} hexa Color in hexadecimal format with alpha.
+             * @param {string} rgb Color in rgb format.
+             * @param {string} rgba Color in rgba format.
+             * @param {string} alpha Alpha value of the color.
+             */
+            this.dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        hex: colors.hex,
+                        hexa: colors.hexa,
+                        rgb: colors.rgb,
+                        rgba: colors.rgba,
+                        alpha: colors.alpha,
+                        token: this.currentToken
+                    },
+                    bubbles: true,
+                    cancelable: true,
+                    composed: false
+                })
+            );
         }
     }
 
     /**
-     * Close dropdown menu.
+     * Dispatches an event when the input is cleared.
+     *
      */
-    close() {
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Poll bounding rect of the dropdown menu.
-     */
-    pollBoundingRect() {
-        if (this.isAutoAlignment() && this._dropdownVisible) {
-            // eslint-disable-next-line @lwc/lwc/no-async-operation
-            setTimeout(() => {
-                if (this._connected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        this.close();
-                    });
-
-                    this.pollBoundingRect();
-                }
-            }, 250);
-        }
+    dispatchClear() {
+        this.dispatchChange({
+            hex: undefined,
+            hexa: undefined,
+            rgb: undefined,
+            rgba: undefined,
+            alpha: undefined,
+            token: undefined
+        });
     }
 }

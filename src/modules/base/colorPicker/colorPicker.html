@@ -34,11 +34,7 @@
 
 <template>
     <div class={computedContainerClass}>
-        <label
-            if:true={showLabel}
-            class={computedLegendClass}
-            data-element-id="label"
-        >
+        <label class={computedLabelClass} data-element-id="label">
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
             >
@@ -92,7 +88,7 @@
                         ></span>
                     </template>
                 </button>
-                <template if:true={_dropdownOpened}>
+                <template if:true={dropdownOpened}>
                     <div
                         class={computedDropdownClass}
                         onmousedown={handleDropdownMouseDown}
@@ -182,7 +178,7 @@
                                             class="slds-tabs_default__content"
                                         >
                                             <c-color-gradient
-                                                if:true={_dropdownVisible}
+                                                if:true={dropdownVisible}
                                                 data-name="colorGradient"
                                                 message-when-bad-input={messageWhenBadInput}
                                                 opacity={opacity}
@@ -194,7 +190,7 @@
                                 </template>
                                 <template if:true={isCustom}>
                                     <c-color-gradient
-                                        if:true={_dropdownVisible}
+                                        if:true={dropdownVisible}
                                         data-name="colorGradient"
                                         message-when-bad-input={messageWhenBadInput}
                                         opacity={opacity}
@@ -260,8 +256,7 @@
                             onchange={handleInputColor}
                             onfocus={handleInputFocus}
                             onblur={handleInputBlur}
-                            disabled={disabledInput}
-                            read-only={isLabelDisplayed}
+                            disabled={disabled}
                             data-element-id="input"
                             required={required}
                         />
@@ -301,14 +296,13 @@
             </div>
         </div>
     </div>
-    <div class="slds-has-error" if:true={helpMessage}>
-        <div
-            id="help-message"
-            class="slds-form-error"
-            data-help-message
-            role="alert"
-        >
-            {helpMessage}
-        </div>
+    <div
+        if:true={helpMessage}
+        class="slds-form-element__help"
+        aria-live="assertive"
+        data-help-message
+        role="alert"
+    >
+        {helpMessage}
     </div>
 </template>

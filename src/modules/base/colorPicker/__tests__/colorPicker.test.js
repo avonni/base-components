@@ -198,7 +198,16 @@ describe('Color Picker', () => {
             const input = element.shadowRoot.querySelector(
                 '[data-element-id="input"]'
             );
-            expect(input.disabled).toBeTruthy();
+            const readOnly = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-read-only"]'
+            );
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+
+            expect(readOnly).toBeTruthy();
+            expect(input).toBeFalsy();
+            expect(button.className).toBe('slds-button slds-swatch-read-only');
         });
     });
 
@@ -941,6 +950,17 @@ describe('Color Picker', () => {
 
     /* ----- JS ----- */
 
+    // swatch initialization
+    it('Color Picker swatch initialization', () => {
+        element.value = '#e3abec';
+        return Promise.resolve().then(() => {
+            const swatch = element.shadowRoot.querySelector(
+                '[data-element-id="swatch"]'
+            );
+            expect(swatch.style.background).toBe('rgb(227, 171, 236)');
+        });
+    });
+
     // done button
     it('Color Picker done button', () => {
         return Promise.resolve()
@@ -1118,12 +1138,14 @@ describe('Color Picker', () => {
     // color picker focus event and method
     it('Color Picker focus event and method', () => {
         const handler = jest.fn();
-
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
         element.addEventListener('focus', handler);
 
         return Promise.resolve()
             .then(() => {
-                element.dispatchEvent(new CustomEvent('focus', {}));
+                input.dispatchEvent(new CustomEvent('focus'));
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();
@@ -1136,12 +1158,15 @@ describe('Color Picker', () => {
     // color picker blur event and method
     it('Color Picker blur event', () => {
         const handler = jest.fn();
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         element.addEventListener('blur', handler);
 
         return Promise.resolve()
             .then(() => {
-                element.dispatchEvent(new CustomEvent('blur', {}));
+                input.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();

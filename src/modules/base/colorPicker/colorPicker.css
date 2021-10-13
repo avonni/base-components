@@ -67,12 +67,6 @@ div:focus {
     padding-bottom: 0;
 }
 
-.slds-form-error {
-    padding-top: 0.5rem;
-    color: #ea001e;
-    font-size: 0.75rem;
-}
-
 .slds-nubbin_top {
     position: absolute;
     top: 100%;
