@@ -33,47 +33,17 @@
 -->
 
 <template>
-    <template if:true={visible}>
-        <c-primitive-datatable-iedit-panel-custom
-            data-iedit-panel-custom="true"
-            visible={state.inlineEdit.panelVisible}
-            row-key-value={state.inlineEdit.rowKeyValue}
-            col-key-value={state.inlineEdit.colKeyValue}
-            edited-value={state.inlineEdit.editedValue}
-            column-def={state.inlineEdit.columnDef}
-            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
-            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            label={label}
-            max={max}
-            min={min}
-            step={step}
-        ></c-primitive-datatable-iedit-panel-custom>
-    </template>
-    <template if:false={visible}>
-        <span
-            class="
-                slds-grid slds-cell-edit
-                slds-grid_align-spread slds-grid_vertical-align-center
-            "
-        >
-            <c-input-counter
-                value={value}
-                name={name}
-                label={label}
-                max={max}
-                min={min}
-                read-only={readOnly}
-                step={step}
-                variant="label-hidden"
-                disabled={disabled}
-                onchange={handleChange}
-            ></c-input-counter>
-            <template if:true={editable}>
-                <c-primitive-cell-editable-button
-                    onclick={handleEditButtonClick}
-                    column-label="Combobox"
-                ></c-primitive-cell-editable-button>
-            </template>
-        </span>
-    </template>
+    <c-input-counter
+        name="dt-inline-edit-input-counter"
+        data-element-id="primitive-cell-input-counter"
+        data-inputable="true"
+        disabled={disabled}
+        label={label}
+        max={max}
+        min={min}
+        step={step}
+        value={editedValue}
+        variant="label-hidden"
+        onchange={handleOnChange}
+    ></c-input-counter>
 </template>

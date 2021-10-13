@@ -34,10 +34,12 @@ import { LightningElement, api } from 'lwc';
 import { assert } from 'c/utilsPrivate';
 
 import ComboboxTpl from './combobox.html';
+import inputCounterTpl from './inputCounter.html';
 import DefaultTpl from './default.html';
 
 const CUSTOM_TYPES_TPL = {
-    combobox: ComboboxTpl
+    combobox: ComboboxTpl,
+    'input-counter': inputCounterTpl
 };
 
 const INVALID_TYPE_FOR_EDIT =
@@ -53,6 +55,12 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api isMultiSelect;
     @api options;
     @api placeholder;
+
+    // input-counter attributes
+    @api label;
+    @api max;
+    @api min;
+    @api step;
 
     @api
     get columnDef() {
@@ -90,6 +98,8 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         if (this.concreteComponent) {
             this.concreteComponent.focus();
         }
+
+        console.log(this.label);
     }
 
     /**
