@@ -63,27 +63,33 @@
                     onmousedown={handleButtonMouseDown}
                     type="button"
                 >
-                    {menuLabel}
-                    <template if:true={menuIconName}>
-                        <lightning-icon
-                            icon-name={menuIconName}
-                            size={menuIconSize}
-                            class={iconClass}
-                            data-element-id="lightning-icon-menu-icon-name"
-                        ></lightning-icon>
-                    </template>
-                    <template if:false={menuIconName}>
-                        <span
-                            class="slds-swatch"
-                            data-element-id="swatch"
-                        ></span>
-                        <template if:false={readOnly}>
+                    <template if:false={readOnly}>
+                        {menuLabel}
+                        <template if:true={menuIconName}>
+                            <lightning-icon
+                                icon-name={menuIconName}
+                                size={menuIconSize}
+                                class={iconClass}
+                                data-element-id="lightning-icon-menu-icon-name"
+                            ></lightning-icon>
+                        </template>
+                        <template if:false={menuIconName}>
+                            <span
+                                class="slds-swatch"
+                                data-element-id="swatch"
+                            ></span>
                             <lightning-icon
                                 icon-name="utility:down"
                                 size="xx-small"
                                 data-element-id="lightning-icon-no-menu-icon-name"
                             ></lightning-icon>
                         </template>
+                    </template>
+                    <template if:true={readOnly}>
+                        <span
+                            class="slds-swatch"
+                            data-element-id="swatch"
+                        ></span>
                     </template>
                 </button>
                 <template if:true={_dropdownOpened}>

@@ -832,7 +832,7 @@ export default class ColorPicker extends LightningElement {
             });
         } else {
             classes.add({
-                'slds-swatch-read-only': this.readOnly && !this.menuLabel
+                'slds-swatch-read-only': this.readOnly
             });
         }
 
@@ -897,7 +897,7 @@ export default class ColorPicker extends LightningElement {
     clearInput() {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = undefined;
-        this.inputValue = '';
+        this.inputValue = null;
         this.currentLabel = undefined;
         this.currentToken = undefined;
         this.interactingState.enter();
