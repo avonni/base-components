@@ -370,24 +370,24 @@ const colorsValue = [
 
 const Template = (args) => ColorPicker(args);
 
-export const Standard = Template.bind({});
-Standard.args = {
+export const Base = Template.bind({});
+Base.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     colors: colorsValue
 };
 
-export const StandardWithLabels = Template.bind({});
-StandardWithLabels.args = {
+export const BaseWithLabels = Template.bind({});
+BaseWithLabels.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     colors: colorsWithLabel
 };
 
-export const StandardWithIcon = Template.bind({});
-StandardWithIcon.args = {
+export const BaseWithIcon = Template.bind({});
+BaseWithIcon.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
@@ -396,15 +396,24 @@ StandardWithIcon.args = {
     colors: colorsValue
 };
 
-export const StandardWithIconWithoutColorInput = Template.bind({});
-StandardWithIconWithoutColorInput.args = {
+export const BaseWithIconWithoutColorInput = Template.bind({});
+BaseWithIconWithoutColorInput.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
+    fieldLevelHelp: 'Read Only',
     value: '#419fec',
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
     hideColorInput: 'true',
     colors: colorsValue
+};
+
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    colors: colorsValue,
+    readOnly: true
 };
 
 export const LabelInlineWithMenuVariantContainer = Template.bind({});
