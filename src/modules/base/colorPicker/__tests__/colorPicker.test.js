@@ -104,6 +104,7 @@ describe('Color Picker', () => {
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.value).toBeUndefined();
+        expect(element.validity).toMatchObject({});
         expect(element.variant).toBe('standard');
         expect(element.type).toBe('base');
     });
@@ -854,12 +855,29 @@ describe('Color Picker', () => {
 
     // message when bad input
     it('Color Picker message when bad input value', () => {
-        element.messageWhenBadInput = 2;
+        element.messageWhenBadInput = 'Something is wrong';
+        element.value = 'hello';
+        element.showHelpMessageIfInvalid();
 
         return Promise.resolve().then(() => {
-            expect(element.messageWhenBadInput).toBe(
-                'Please ensure value is correct'
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
             );
+            expect(help.textContent).toBe('Something is wrong');
+        });
+    });
+
+    // message when missing value
+    it('Color Picker message when missing value', () => {
+        element.messageWhenValueMissing = 'Something is wrong';
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
+            );
+            expect(help.textContent).toBe('Something is wrong');
         });
     });
 
@@ -1001,8 +1019,9 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const input =
-                    element.shadowRoot.querySelector('lightning-input');
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
                 input.value = '#ffffff';
             })
             .then(() => {
@@ -1019,6 +1038,52 @@ describe('Color Picker', () => {
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             });
+    });
+
+    // checkValidity
+    // Depends on required
+    it('Color picker checkValidity method, valid', () => {
+        element.required = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toBeTruthy();
+        });
+    });
+
+    it('Color picker checkValidity method, invalid', () => {
+        element.required = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toBeFalsy();
+        });
+    });
+
+    // reportValidity
+    // Depends on required
+    it('Color picker reportValidity method', () => {
+        element.required = true;
+        element.reportValidity();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('Color picker showHelpMessageIfInvalid method', () => {
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
+            );
+            expect(help).toBeTruthy();
+        });
     });
 
     /* ----- EVENTS ----- */
