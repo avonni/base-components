@@ -59,6 +59,10 @@ div:focus {
     margin-left: 0.25rem;
 }
 
+.slds-swatch-read-only {
+    padding: 0.25rem 0.5rem;
+}
+
 .slds-tabs_default__content {
     padding-bottom: 0;
 }

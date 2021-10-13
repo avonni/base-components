@@ -77,11 +77,13 @@
                             class="slds-swatch"
                             data-element-id="swatch"
                         ></span>
-                        <lightning-icon
-                            icon-name="utility:down"
-                            size="xx-small"
-                            data-element-id="lightning-icon-no-menu-icon-name"
-                        ></lightning-icon>
+                        <template if:false={readOnly}>
+                            <lightning-icon
+                                icon-name="utility:down"
+                                size="xx-small"
+                                data-element-id="lightning-icon-no-menu-icon-name"
+                            ></lightning-icon>
+                        </template>
                     </template>
                 </button>
                 <template if:true={_dropdownOpened}>
@@ -242,38 +244,52 @@
                         slds-input-has-icon slds-input-has-icon_right
                     "
                 >
-                    <input
-                        class="slds-input"
-                        type="text"
-                        label="color"
-                        value={inputValue}
-                        name={name}
-                        onchange={handleInputColor}
-                        onfocus={handleInputFocus}
-                        onblur={handleInputBlur}
-                        disabled={disabledInput}
-                        read-only={isLabelDisplayed}
-                        data-element-id="input"
-                        required={required}
-                    />
-                    <template if:true={isInputFilled}>
-                        <button
-                            class="
-                                slds-button slds-button_icon
-                                slds-input__icon slds-input__icon_right
-                                avonni-builder-icon-picker-clear-icon
-                            "
-                            title="Clear"
-                            data-element-id="button"
-                            onclick={clearInput}
-                        >
-                            <lightning-icon
-                                size="xx-small"
-                                class="slds-button__icon slds-icon-text-light"
-                                icon-name="utility:clear"
-                            ></lightning-icon>
-                            <span class="slds-assistive-text">Clear</span>
-                        </button>
+                    <template if:false={readOnly}>
+                        <input
+                            class="slds-input"
+                            type="text"
+                            label="color"
+                            value={inputValue}
+                            name={name}
+                            onchange={handleInputColor}
+                            onfocus={handleInputFocus}
+                            onblur={handleInputBlur}
+                            disabled={disabledInput}
+                            read-only={isLabelDisplayed}
+                            data-element-id="input"
+                            required={required}
+                        />
+                        <template if:true={isInputFilled}>
+                            <button
+                                class="
+                                    slds-button slds-button_icon
+                                    slds-input__icon slds-input__icon_right
+                                    avonni-builder-icon-picker-clear-icon
+                                "
+                                title="Clear"
+                                data-element-id="button"
+                                onclick={clearInput}
+                            >
+                                <lightning-icon
+                                    size="xx-small"
+                                    class="
+                                        slds-button__icon
+                                        slds-icon-text-light
+                                    "
+                                    icon-name="utility:clear"
+                                ></lightning-icon>
+                                <span class="slds-assistive-text">Clear</span>
+                            </button>
+                        </template>
+                    </template>
+                    <template if:true={readOnly}>
+                        <lightning-input
+                            data-element-id="lightning-input-read-only"
+                            label={label}
+                            value={inputValue}
+                            variant="label-hidden"
+                            read-only
+                        ></lightning-input>
                     </template>
                 </div>
             </div>

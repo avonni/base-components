@@ -795,13 +795,13 @@ export default class ColorPicker extends LightningElement {
             this.menuVariant === 'bare-inverse' ||
             this.menuVariant === 'border-inverse';
 
-        if (this.menuLabel) {
+        if (this.menuLabel && !this.readOnly) {
             classes.add({
                 'slds-button_neutral':
                     this.menuVariant === 'border' && isDropdownIcon,
                 'slds-button_inverse': this.menuVariant === 'border-inverse'
             });
-        } else {
+        } else if (!this.menuLabel && !this.readOnly) {
             classes.add({
                 'slds-button_icon': !isDropdownIcon,
                 'slds-button_icon-bare': isBare,
@@ -829,6 +829,10 @@ export default class ColorPicker extends LightningElement {
                     this.menuIconSize === 'small' && !isBare && this.menuLabel,
                 'slds-icon_large':
                     this.menuIconSize === 'large' && this.menuIconName
+            });
+        } else {
+            classes.add({
+                'slds-swatch-read-only': this.readOnly && !this.menuLabel
             });
         }
 
@@ -957,9 +961,11 @@ export default class ColorPicker extends LightningElement {
      * Button click handler.
      */
     handleButtonClick() {
-        this.allowBlur();
-        this.toggleMenuVisibility();
-        this.focus();
+        if (!this.readOnly) {
+            this.allowBlur();
+            this.toggleMenuVisibility();
+            this.focus();
+        }
     }
 
     /**
