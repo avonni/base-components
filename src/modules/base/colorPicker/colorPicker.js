@@ -203,7 +203,6 @@ export default class ColorPicker extends LightningElement {
         // Handles double click in the color palette.
         this.addEventListener('colordblclick', () => {
             this.handlerDone();
-            this.focus();
         });
 
         this.interactingState = new InteractingState();
@@ -893,6 +892,7 @@ export default class ColorPicker extends LightningElement {
         }
 
         this.handleBlur();
+        this.focus();
     }
 
     /**
