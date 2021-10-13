@@ -73,7 +73,10 @@
                         ></lightning-icon>
                     </template>
                     <template if:false={menuIconName}>
-                        <span class="slds-swatch" data-element-id="span"></span>
+                        <span
+                            class="slds-swatch"
+                            data-element-id="swatch"
+                        ></span>
                         <lightning-icon
                             icon-name="utility:down"
                             size="xx-small"
@@ -239,9 +242,9 @@
                         slds-input-has-icon slds-input-has-icon_right
                     "
                 >
-                    <lightning-input
+                    <input
+                        class="slds-input"
                         type="text"
-                        variant="label-hidden"
                         label="color"
                         value={inputValue}
                         name={name}
@@ -250,9 +253,9 @@
                         onblur={handleInputBlur}
                         disabled={disabledInput}
                         read-only={isLabelDisplayed}
-                        data-element-id="lightning-input"
+                        data-element-id="input"
                         required={required}
-                    ></lightning-input>
+                    />
                     <template if:true={isInputFilled}>
                         <button
                             class="
@@ -274,19 +277,16 @@
                     </template>
                 </div>
             </div>
-            <!-- <p if:true={showError} class="slds-form-error">
-                {messageWhenBadInput}
-            </p> -->
-            <div class="slds-has-error" if:true={showError}>
-                <div
-                    id="help-message"
-                    class="slds-form-element__help"
-                    data-help-message
-                    role="alert"
-                >
-                    {helpMessage}
-                </div>
-            </div>
+        </div>
+    </div>
+    <div class="slds-has-error" if:true={helpMessage}>
+        <div
+            id="help-message"
+            class="slds-form-error"
+            data-help-message
+            role="alert"
+        >
+            {helpMessage}
         </div>
     </div>
 </template>

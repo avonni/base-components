@@ -29,7 +29,7 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
- 
+
 lightning-input {
     padding-left: 0.5rem;
     width: 7rem;
@@ -65,7 +65,7 @@ div:focus {
 
 .slds-form-error {
     padding-top: 0.5rem;
-    color: #c23934;
+    color: #ea001e;
     font-size: 0.75rem;
 }
 
@@ -140,6 +140,6 @@ button:disabled {
     height: 4rem;
 }
 
-.palette-height{
-	height: 180px;
+.palette-height {
+    height: 180px;
 }

@@ -114,8 +114,6 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
-const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
-
 /**
  * @class
  * @descriptor avonni-color-picker
@@ -159,6 +157,20 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     @api menuLabel;
+    /**
+     * Error message to be displayed when a bad input is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenBadInput;
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing;
 
     _value;
     _name;
@@ -175,13 +187,11 @@ export default class ColorPicker extends LightningElement {
     _menuNubbin = false;
     _colors = DEFAULT_COLORS;
     _opacity = false;
-    _messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
 
     _dropdownVisible = false;
     _dropdownOpened = false;
     _inputValue;
     init = false;
-    showError = false;
     isDefault = true;
     newValue;
 
@@ -205,10 +215,6 @@ export default class ColorPicker extends LightningElement {
             this.initSwatchColor();
             this.init = true;
         }
-
-        console.log('value', this.value);
-        console.log('input', this.inputValue);
-        console.log(this.inputValue && this.hasBadInput);
     }
 
     /**
@@ -474,25 +480,6 @@ export default class ColorPicker extends LightningElement {
         this._opacity = normalizeBoolean(value);
     }
 
-    /**
-     * Error message to be displayed when a bad input is detected.
-     *
-     * @public
-     * @type {string}
-     * @default Please ensure value is correct
-     */
-    @api
-    get messageWhenBadInput() {
-        return this._messageWhenBadInput;
-    }
-
-    set messageWhenBadInput(value) {
-        this._messageWhenBadInput =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
-    }
-
     get uniqueKey() {
         return generateUUID();
     }
@@ -577,13 +564,11 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get isInputFilled() {
-        let input = this.template.querySelector(
-            '[data-element-id="lightning-input"]'
-        );
+        let input = this.template.querySelector('[data-element-id="input"]');
         if (input == null) {
             return this.inputValue;
         }
-        return !!input.value;
+        return !!this.inputValue;
     }
 
     get hasBadInput() {
@@ -591,6 +576,14 @@ export default class ColorPicker extends LightningElement {
             colorType(this.inputValue) === 'hex' ||
             (colorType(this.inputValue) === 'hexa' && this.opacity)
         );
+    }
+
+    get elementSwatch() {
+        return this.template.querySelector('[data-element-id="swatch"]');
+    }
+
+    get colorGradient() {
+        return this.template.querySelector('[data-name="colorGradient"]');
     }
 
     /**
@@ -641,7 +634,7 @@ export default class ColorPicker extends LightningElement {
     @api
     reportValidity() {
         return this._constraint.reportValidity((message) => {
-            this.helpMessage = this.messageWhenValueMissing || message;
+            this.helpMessage = message;
         });
     }
 
@@ -678,11 +671,6 @@ export default class ColorPicker extends LightningElement {
         if (this._connected) {
             this.focusOnButton();
         }
-    }
-
-    @api
-    blur() {
-        this.interactingState.leave();
     }
 
     /**
@@ -741,10 +729,8 @@ export default class ColorPicker extends LightningElement {
      * Initialize swatch colors.
      */
     initSwatchColor() {
-        let element = this.template.querySelector('.slds-swatch');
-
-        if (element) {
-            element.style.background = this.value;
+        if (this.elementSwatch) {
+            this.elementSwatch.style.background = this.value;
         }
     }
 
@@ -910,7 +896,6 @@ export default class ColorPicker extends LightningElement {
         this.inputValue = '';
         this.currentLabel = undefined;
         this.currentToken = undefined;
-        this.showError = false;
         this.interactingState.enter();
         this.interactingState.leave();
 
@@ -942,24 +927,11 @@ export default class ColorPicker extends LightningElement {
             this.value = this.newValue;
             this.newValue = '';
 
-            if (this.showError) {
-                this.showError = false;
-                this.template
-                    .querySelector('[data-element-id="lightning-input"]')
-                    .classList.remove('slds-has-error');
-            }
-
             if (!this.menuIconName) {
-                this.template.querySelector('.slds-swatch').style.background =
-                    this.value;
+                this.elementSwatch.style.background = this.value;
             }
-
-            let gradientPalette = this.template.querySelector(
-                '[data-name="colorGradient"]'
-            );
-
-            if (gradientPalette) {
-                gradientPalette.renderValue(this.value);
+            if (this.colorGradient) {
+                this.colorGradient.renderValue(this.value);
             }
 
             this.dispatchChange(generateColors(this.value));
@@ -974,12 +946,8 @@ export default class ColorPicker extends LightningElement {
     handlerCancel() {
         this.newValue = '';
 
-        let gradientPalette = this.template.querySelector(
-            '[data-name="colorGradient"]'
-        );
-
-        if (gradientPalette) {
-            gradientPalette.renderValue(this.value);
+        if (this.colorGradient) {
+            this.colorGradient.renderValue(this.value);
         }
 
         this.handleBlur();
@@ -1077,7 +1045,6 @@ export default class ColorPicker extends LightningElement {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
         }
-        this.interactingState.leave();
     }
 
     /**
@@ -1120,40 +1087,21 @@ export default class ColorPicker extends LightningElement {
     handleInputColor(event) {
         let color = event.target.value;
         this.inputValue = color;
-
         if (
             colorType(color) === 'hex' ||
             (colorType(color) === 'hexa' && this.opacity)
         ) {
-            this.showError = false;
-            this.template
-                .querySelector('[data-element-id="lightning-input"]')
-                .classList.remove('slds-has-error');
-
             if (!this.menuIconName) {
-                this.template.querySelector('.slds-swatch').style.background =
-                    color;
+                this.elementSwatch.style.background = color;
             }
-
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = color;
 
-            let gradientPalette = this.template.querySelector(
-                '[data-name="colorGradient"]'
-            );
-
-            if (gradientPalette) {
-                gradientPalette.renderValue(color);
+            if (this.colorGradient) {
+                this.colorGradient.renderValue(color);
             }
-
             this.dispatchChange(generateColors(color));
-        } else {
-            this.showError = true;
-            this.template
-                .querySelector('[data-element-id="lightning-input"]')
-                .classList.add('slds-has-error');
         }
-
         event.stopPropagation();
     }
 
