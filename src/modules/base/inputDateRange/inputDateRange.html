@@ -122,6 +122,7 @@
                         name="start-time"
                         label="Start time"
                         variant="label-hidden"
+                        value={startTimeValue}
                         readonly
                         aria-readonly="true"
                         class="slds-input start-time"
@@ -201,7 +202,7 @@
                     disabled={disabled}
                     class="end-time"
                     data-element-id="lightning-input-end-time"
-                    onchange={handleChangEendTime}
+                    onchange={handleChangeEndTime}
                 ></lightning-input>
                 <div
                     class="
@@ -214,6 +215,7 @@
                         name="end-time"
                         label="end time"
                         variant="label-hidden"
+                        value={endTimeValue}
                         readonly
                         aria-readonly="true"
                         class="slds-input end-time"
