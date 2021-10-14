@@ -46,7 +46,7 @@ const DATE_STYLES = {
     defaultTime: 'short'
 };
 const LABEL_VARIANTS = {
-    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
+    valid: ['standard', 'label-hidden'],
     default: 'standard'
 };
 
@@ -84,12 +84,28 @@ export default class InputDateRange extends LightningElement {
     @api labelStartDate;
 
     /**
+     * If type is datetime, text label for the start time input.
+     *
+     * @type {string}
+     * @public
+     */
+    @api labelStartTime;
+
+    /**
      * Text label for the end input.
      *
      * @type {string}
      * @public
      */
     @api labelEndDate;
+
+    /**
+     * If type is datetime, text label for the end time input.
+     *
+     * @type {string}
+     * @public
+     */
+    @api labelEndTime;
 
     /**
      * Error message to be displayed when the start-date is missing.
@@ -295,11 +311,9 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * The variant changes the appearance of an input field.
-     * Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+     * Accepted variants include standard and label-hidden.
      * This value defaults to standard, which displays the label above the field.
      * Use label-hidden to hide the label but make it available to assistive technology.
-     * Use label-inline to horizontally align the label and input field.
-     * Use label-stacked to place the label above the input field.
      *
      * @type {string}
      * @default standard
@@ -334,7 +348,9 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get startDateInput() {
-        return this.template.querySelector('.start-date');
+        return this.template.querySelector(
+            '[data-element-id="input-start-date"]'
+        );
     }
 
     /**
@@ -343,7 +359,9 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get endDateInput() {
-        return this.template.querySelector('.end-date');
+        return this.template.querySelector(
+            '[data-element-id="input-end-date"]'
+        );
     }
 
     /**
@@ -352,7 +370,9 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get startTimeInput() {
-        return this.template.querySelector('.start-time');
+        return this.template.querySelector(
+            '[data-element-id="lightning-input-start-time"]'
+        );
     }
 
     /**
@@ -361,7 +381,9 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get endTimeInput() {
-        return this.template.querySelector('.end-time');
+        return this.template.querySelector(
+            '[data-element-id="lightning-input-end-time"]'
+        );
     }
 
     /**
@@ -411,21 +433,7 @@ export default class InputDateRange extends LightningElement {
     get computedLabelClass() {
         return classSet('avonni-label-container')
             .add({
-                'slds-assistive-text': this.variant === 'label-hidden',
-                'slds-m-right_small': this.variant === 'label-inline'
-            })
-            .toString();
-    }
-
-    /**
-     * Class of the input date range wrapper.
-     *
-     * @type {string}
-     */
-    get computedWrapperClass() {
-        return classSet()
-            .add({
-                'slds-grid': this.variant === 'label-inline'
+                'slds-assistive-text': this.variant === 'label-hidden'
             })
             .toString();
     }
@@ -446,7 +454,7 @@ export default class InputDateRange extends LightningElement {
             this.endDateInput.classList.add(
                 'avonni-input-date-rage-input-error'
             );
-            if (this.showTime) {
+            if (this.showTime && !this.readOnly) {
                 this.startTimeInput.classList.add('slds-has-error');
                 this.endTimeInput.classList.add('slds-has-error');
             }
@@ -460,7 +468,7 @@ export default class InputDateRange extends LightningElement {
             this.endDateInput.classList.remove(
                 'avonni-input-date-rage-input-error'
             );
-            if (this.showTime) {
+            if (this.showTime && !this.readOnly) {
                 this.startTimeInput.classList.remove('slds-has-error');
                 this.endTimeInput.classList.remove('slds-has-error');
             }
