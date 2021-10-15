@@ -443,6 +443,15 @@ const columnsRZ = [
         editable: true
     },
     {
+        label: 'Text Area',
+        fieldName: 'textarea',
+        type: 'textarea',
+        typeAttributes: {
+            disabled: { fieldName: 'textareaDisabled' }
+        },
+        editable: true
+    },
+    {
         label: 'URL',
         fieldName: 'url',
         type: 'url',

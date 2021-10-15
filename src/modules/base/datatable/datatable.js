@@ -52,6 +52,7 @@ import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
+import textarea from './textarea.html';
 import slider from './slider.html';
 import urls from './urls.html';
 
@@ -294,6 +295,10 @@ export default class Datatable extends LightningDatatable {
         slider: {
             template: slider,
             typeAttributes: ['disabled', 'label', 'max', 'min', 'size', 'step']
+        },
+        textarea: {
+            template: textarea,
+            typeAttributes: ['disabled', 'maxlength', 'name', 'placeholder']
         },
         urls: {
             template: urls,
