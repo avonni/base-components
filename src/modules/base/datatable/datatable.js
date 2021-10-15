@@ -298,7 +298,13 @@ export default class Datatable extends LightningDatatable {
         },
         textarea: {
             template: textarea,
-            typeAttributes: ['disabled', 'maxlength', 'name', 'placeholder']
+            typeAttributes: [
+                'disabled',
+                'label',
+                'maxlength',
+                'name',
+                'placeholder'
+            ]
         },
         urls: {
             template: urls,

@@ -36,6 +36,7 @@ export default class PrimitiveCellTextarea extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
     @api disabled;
+    @api label;
     @api maxLength;
     @api minLength;
     @api name;

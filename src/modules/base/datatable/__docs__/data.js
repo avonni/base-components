@@ -447,7 +447,8 @@ const columnsRZ = [
         fieldName: 'textarea',
         type: 'textarea',
         typeAttributes: {
-            disabled: { fieldName: 'textareaDisabled' }
+            disabled: { fieldName: 'textareaDisabled' },
+            label: 'Text area'
         },
         editable: true
     },
