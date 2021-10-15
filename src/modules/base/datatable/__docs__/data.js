@@ -851,6 +851,7 @@ const recordsRZ = [
         rating: '4',
         slider: '0',
         text: 'Reginald Martin',
+        textareaDisabled: true,
         url: 'https://lwc.dev/',
         urlLabel: 'LWC Documentation',
         urls: [
