@@ -249,6 +249,17 @@ Base.args = {
     label: 'Text label'
 };
 
+export const readOnly = Template.bind({});
+readOnly.args = {
+    labelStartDate: 'Start date',
+    labelEndDate: 'End date',
+    startDate: '7/20/2021 10:00',
+    endDate: '7/21/2021 18:15',
+    dateStyle: 'long',
+    readOnly: true,
+    type: 'datetime'
+};
+
 export const Prefilled = Template.bind({});
 Prefilled.args = {
     label: 'Input with prefilled values',
@@ -256,8 +267,8 @@ Prefilled.args = {
     fieldLevelHelp: 'The date format has been set to long',
     labelStartDate: 'Start date',
     labelEndDate: 'End date',
-    startDate: new Date('7/20/2021 10:00'),
-    endDate: new Date('7/21/2021 18:15'),
+    startDate: '7/20/2021 10:00',
+    endDate: '7/21/2021 18:15',
     dateStyle: 'long'
 };
 
@@ -279,6 +290,6 @@ Disabled.args = {
     fieldLevelHelp: 'Disabled input with prefilled start and end dates',
     labelStartDate: 'Start date',
     labelEndDate: 'End date',
-    startDate: new Date('7/20/2021 10:00'),
-    endDate: new Date('7/21/2021 18:15')
+    startDate: '7/20/2021 10:00',
+    endDate: '7/21/2021 18:15'
 };

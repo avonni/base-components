@@ -426,24 +426,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Formatted start time value.
-     *
-     * @type {string}
-     */
-    get startTimeValue() {
-        return this.startTime ? this.startTime : null;
-    }
-
-    /**
-     * Formatted end time value.
-     *
-     * @type {string}
-     */
-    get endTimeValue() {
-        return this.endTime ? this.endTime : null;
-    }
-
-    /**
      * Class of the label container.
      *
      * @type {string}
