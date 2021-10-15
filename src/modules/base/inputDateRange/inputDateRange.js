@@ -370,13 +370,9 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get startTimeInput() {
-        return this.readOnly
-            ? this.template.querySelector(
-                  '[data-element-id="input-start-time"]'
-              )
-            : this.template.querySelector(
-                  '[data-element-id="lightning-input-start-time"]'
-              );
+        return this.template.querySelector(
+            '[data-element-id="lightning-input-start-time"]'
+        );
     }
 
     /**
@@ -385,11 +381,9 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get endTimeInput() {
-        return this.readOnly
-            ? this.template.querySelector('[data-element-id="input-end-time"]')
-            : this.template.querySelector(
-                  '[data-element-id="lightning-input-end-time"]'
-              );
+        return this.template.querySelector(
+            '[data-element-id="lightning-input-end-time"]'
+        );
     }
 
     /**
@@ -463,12 +457,21 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * True if readOnly and startDateString.
+     *
+     * @type {boolean}
+     */
+    get readOnlyAndDate() {
+        return this.readOnly && this.startDateString;
+    }
+
+    /**
      * Removes the slds-has-error class on the whole element if it's not valid.
      * Aplies it on every input we need it applied.
      * Removes it from every input when valid.
      */
     updateClassListWhenError() {
-        if (!this._valid) {
+        if (!this._valid && !this._readOnly) {
             this.classList.remove('slds-has-error');
             this.startDateInput.classList.add('slds-has-error');
             this.startDateInput.classList.add(
@@ -483,7 +486,7 @@ export default class InputDateRange extends LightningElement {
                 this.endTimeInput.classList.add('slds-has-error');
             }
         }
-        if (this._valid) {
+        if (this._valid && !this._readOnly) {
             this.startDateInput.classList.remove('slds-has-error');
             this.startDateInput.classList.remove(
                 'avonni-input-date-rage-input-error'

@@ -349,14 +349,19 @@ describe('Input Date Range', () => {
     it('Input Date Range read only true', () => {
         element.readOnly = true;
         element.type = 'datetime';
+        element.startDate = startDate;
+        element.endDate = endDate;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+            const startDateString = element.shadowRoot.querySelector(
+                '[data-element-id="start-date"]'
             );
-            inputs.forEach((input) => {
-                expect(input.readOnly).toBeTruthy();
-            });
+            expect(startDateString.textContent).toBe('juil. 20, 2021');
+
+            const endDateString = element.shadowRoot.querySelector(
+                '[data-element-id="end-date"]'
+            );
+            expect(endDateString.textContent).toBe('juil. 21, 2021');
         });
     });
 
