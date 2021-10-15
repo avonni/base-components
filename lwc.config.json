@@ -283,6 +283,10 @@
             "path": "src/modules/base/primitiveCellInputDateRange/primitiveCellInputDateRange.js"
         },
         {
+            "name": "c/primitiveCellInputRichText",
+            "path": "src/modules/base/primitiveCellInputRichText/primitiveCellInputRichText.js"
+        },
+        {
             "name": "c/primitiveCellInputToggle",
             "path": "src/modules/base/primitiveCellInputToggle/primitiveCellInputToggle.js"
         },

@@ -1,7 +1,16 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromOToQ extends LightningElement {
+export default class DataTypesFromNToQ extends LightningElement {
     columns = [
+        {
+            label: 'Number',
+            type: 'number',
+            fieldName: 'number',
+            editable: true,
+            typeAttributes: {
+                minimumFractionDigits: 2
+            }
+        },
         {
             label: 'Percent',
             fieldName: 'percent',
@@ -60,6 +69,7 @@ export default class DataTypesFromOToQ extends LightningElement {
     records = [
         {
             id: 1,
+            number: '1789',
             percent: 0.34,
             phone: '5142223333',
             progress: 34,
@@ -80,6 +90,7 @@ export default class DataTypesFromOToQ extends LightningElement {
         },
         {
             id: 2,
+            number: '1',
             percent: 0.45,
             phone: '5144546767',
             progress: 100,
@@ -92,6 +103,7 @@ export default class DataTypesFromOToQ extends LightningElement {
         },
         {
             id: 3,
+            number: '1,234',
             percent: 0.67,
             phone: '6785643214',
             progress: 43,
@@ -99,6 +111,7 @@ export default class DataTypesFromOToQ extends LightningElement {
         },
         {
             id: 4,
+            number: '345',
             percent: 4,
             phone: '3547789900',
             progress: 5,
@@ -108,6 +121,7 @@ export default class DataTypesFromOToQ extends LightningElement {
         },
         {
             id: 5,
+            number: '9',
             percent: 0.05,
             phone: '5143245564',
             progress: 66,

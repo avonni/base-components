@@ -45,6 +45,7 @@ import formattedRichText from './formattedRichText.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
+import inputRichText from './inputRichText.html';
 import inputToggle from './inputToggle.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
@@ -65,6 +66,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'image',
     'input-counter',
     'input-date-range',
+    'input-rich-text',
     'input-toggle',
     'progress-bar',
     'progress-circle',
@@ -81,6 +83,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'input-counter',
     'input-date-range',
+    'input-rich-text',
     'input-toggle',
     'rating',
     'slider'
@@ -211,6 +214,10 @@ export default class Datatable extends LightningDatatable {
                 'type'
             ],
             standardCellLayout: true
+        },
+        'input-rich-text': {
+            template: inputRichText,
+            typeAttributes: ['disabled', 'placeholder', 'variant']
         },
         'input-toggle': {
             template: inputToggle,
