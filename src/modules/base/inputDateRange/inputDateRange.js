@@ -370,9 +370,13 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get startTimeInput() {
-        return this.template.querySelector(
-            '[data-element-id="lightning-input-start-time"]'
-        );
+        return this.readOnly
+            ? this.template.querySelector(
+                  '[data-element-id="input-start-time"]'
+              )
+            : this.template.querySelector(
+                  '[data-element-id="lightning-input-start-time"]'
+              );
     }
 
     /**
@@ -381,9 +385,11 @@ export default class InputDateRange extends LightningElement {
      * @type {element}
      */
     get endTimeInput() {
-        return this.template.querySelector(
-            '[data-element-id="lightning-input-end-time"]'
-        );
+        return this.readOnly
+            ? this.template.querySelector('[data-element-id="input-end-time"]')
+            : this.template.querySelector(
+                  '[data-element-id="lightning-input-end-time"]'
+              );
     }
 
     /**
@@ -425,10 +431,20 @@ export default class InputDateRange extends LightningElement {
         return dateStr;
     }
 
+    /**
+     * Formatted start time value.
+     *
+     * @type {string}
+     */
     get startTimeValue() {
         return this.startTime ? this.startTime : null;
     }
 
+    /**
+     * Formatted end time value.
+     *
+     * @type {string}
+     */
     get endTimeValue() {
         return this.endTime ? this.endTime : null;
     }
@@ -462,7 +478,7 @@ export default class InputDateRange extends LightningElement {
             this.endDateInput.classList.add(
                 'avonni-input-date-rage-input-error'
             );
-            if (this.showTime && !this.readOnly) {
+            if (this.showTime) {
                 this.startTimeInput.classList.add('slds-has-error');
                 this.endTimeInput.classList.add('slds-has-error');
             }
@@ -476,7 +492,7 @@ export default class InputDateRange extends LightningElement {
             this.endDateInput.classList.remove(
                 'avonni-input-date-rage-input-error'
             );
-            if (this.showTime && !this.readOnly) {
+            if (this.showTime) {
                 this.startTimeInput.classList.remove('slds-has-error');
                 this.endTimeInput.classList.remove('slds-has-error');
             }

@@ -71,6 +71,7 @@ describe('Input Date Range', () => {
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
+        expect(element.validity).toMatchObject({});
         expect(element.variant).toBe('standard');
     });
 
@@ -324,6 +325,41 @@ describe('Input Date Range', () => {
         });
     });
 
+    // read only
+    it('Input Date Range read only false', () => {
+        element.readOnly = false;
+        element.type = 'datetime';
+
+        return Promise.resolve().then(() => {
+            const lightningInputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-input"]'
+            );
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="input"]'
+            );
+            inputs.forEach((input) => {
+                expect(input.readOnly).toBeFalsy();
+            });
+            lightningInputs.forEach((input) => {
+                expect(input.readOnly).toBeFalsy();
+            });
+        });
+    });
+
+    it('Input Date Range read only true', () => {
+        element.readOnly = true;
+        element.type = 'datetime';
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="input"]'
+            );
+            inputs.forEach((input) => {
+                expect(input.readOnly).toBeTruthy();
+            });
+        });
+    });
+
     // required
     it('Input Date Range required', () => {
         element.required = true;
@@ -340,6 +376,7 @@ describe('Input Date Range', () => {
     it('Input Date Range messageWhenValueMissing', () => {
         element.required = true;
         element.messageWhenValueMissing = 'Missing value!';
+        element.type = 'datetime';
 
         return Promise.resolve()
             .then(() => {
@@ -348,6 +385,19 @@ describe('Input Date Range', () => {
                 element.showHelpMessageIfInvalid();
             })
             .then(() => {
+                const lightningInputs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id^="lightning-input"]'
+                );
+                lightningInputs.forEach((input) => {
+                    expect(input.className).toContain('slds-has-error');
+                });
+                const inputs = element.shadowRoot.querySelectorAll(
+                    '[data-element-id^="input"]'
+                );
+                inputs.forEach((input) => {
+                    expect(input.className).toContain('slds-has-error');
+                });
+
                 const message = element.shadowRoot.querySelector(
                     '.slds-form-element__help'
                 );
@@ -442,6 +492,22 @@ describe('Input Date Range', () => {
             );
             expect(help).toBeTruthy();
         });
+    });
+
+    // checkValidity
+    it('checkValidity method', () => {
+        const spy = jest.spyOn(element, 'checkValidity');
+
+        element.checkValidity();
+        expect(spy).toHaveBeenCalled();
+    });
+
+    // setCustomValidity
+    it('setCustomValidity method', () => {
+        const spy = jest.spyOn(element, 'setCustomValidity');
+
+        element.setCustomValidity('Something');
+        expect(spy).toHaveBeenCalled();
     });
 
     /* ----- EVENTS ----- */
