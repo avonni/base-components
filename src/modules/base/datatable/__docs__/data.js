@@ -331,7 +331,8 @@ const columnsEN = [
             disabled: { fieldName: 'inputDateRangeDisabled' },
             dateStyle: 'short',
             labelStartDate: 'Start',
-            labelEndDate: 'End'
+            labelEndDate: 'End',
+            type: 'datetime'
         },
         editable: true
     },

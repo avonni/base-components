@@ -35,11 +35,13 @@ import { assert } from 'c/utilsPrivate';
 
 import ComboboxTpl from './combobox.html';
 import inputCounterTpl from './inputCounter.html';
+import inputDateRangeTpl from './inputDateRange.html';
 import DefaultTpl from './default.html';
 
 const CUSTOM_TYPES_TPL = {
     combobox: ComboboxTpl,
-    'input-counter': inputCounterTpl
+    'input-counter': inputCounterTpl,
+    'input-date-range': inputDateRangeTpl
 };
 
 const INVALID_TYPE_FOR_EDIT =
@@ -48,6 +50,9 @@ const INVALID_TYPE_FOR_EDIT =
 export default class PrimitiveDatatableIeditTypeFactory extends LightningElement {
     @api editedValue;
     @api required;
+
+    // shared attributes
+    @api label;
     @api disabled;
 
     // combobox attributes
@@ -57,10 +62,19 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api placeholder;
 
     // input-counter attributes
-    @api label;
     @api max;
     @api min;
     @api step;
+
+    // input-date-range attributes
+    _startDate;
+    _endDate;
+    @api dateStyle;
+    @api timeStyle;
+    @api timezone;
+    @api labelStartDate;
+    @api labelEndDate;
+    @api type;
 
     @api
     get columnDef() {
@@ -99,7 +113,29 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
             this.concreteComponent.focus();
         }
 
-        console.log(this.label);
+        console.log(this.concreteComponent.value);
+    }
+
+    @api
+    get startDate() {
+        return typeof this.editedValue === 'object'
+            ? this.editedValue.startDate
+            : undefined;
+    }
+
+    set startDate(value) {
+        this._startDate = value;
+    }
+
+    @api
+    get endDate() {
+        return typeof this.editedValue === 'object'
+            ? this.editedValue.endDate
+            : undefined;
+    }
+
+    set endDate(value) {
+        this._endDate = value;
     }
 
     /**
@@ -150,6 +186,20 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
             new CustomEvent('inlineeditchange', {
                 detail: {
                     value: event.detail.value,
+                    validity: this.validity.valid
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    handleOnChangeInputDateRange(event) {
+        this.dispatchEvent(
+            new CustomEvent('inlineeditchange', {
+                detail: {
+                    startDate: event.detail.startDate,
+                    endDate: event.detail.endDate,
                     validity: this.validity.valid
                 },
                 bubbles: true,

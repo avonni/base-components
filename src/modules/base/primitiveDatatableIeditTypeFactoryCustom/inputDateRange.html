@@ -33,19 +33,20 @@
 -->
 
 <template>
-    <c-combobox
-        name="dt-inline-edit-combobox"
-        data-element-id="primitive-cell-combobox-input"
+    <c-input-date-range
+        data-element-id="primitive-cell-input-date-range"
         data-inputable="true"
+        start-date={startDate}
+        end-date={endDate}
+        date-style={dateStyle}
+        time-style={timeStyle}
+        timezone={timezone}
         disabled={disabled}
-        dropdown-alignment="auto"
-        dropdown-length={dropdownLength}
-        is-multi-select={isMultiSelect}
-        options={options}
-        placeholder={placeholder}
-        value={editedValue}
+        label={label}
+        label-start-date={labelStartDate}
+        label-end-date={labelEndDate}
+        type={type}
         variant="label-hidden"
-        onchange={handleOnChange}
-    >
-    </c-combobox>
+        onchange={handleOnChangeInputDateRange}
+    ></c-input-date-range>
 </template>

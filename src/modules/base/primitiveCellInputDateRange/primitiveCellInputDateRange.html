@@ -33,19 +33,54 @@
 -->
 
 <template>
-    <c-input-date-range
-        start-date={startDate}
-        end-date={endDate}
-        date-style={dateStyle}
-        time-style={timeStyle}
-        timezone={timezone}
-        disabled={disabled}
-        label={label}
-        label-start-date={labelStartDate}
-        label-end-date={labelEndDate}
-        read-only={readOnly}
-        type={type}
-        variant="label-hidden"
-        onchange={handleChange}
-    ></c-input-date-range>
+    <template if:true={visible}>
+        <c-primitive-datatable-iedit-panel-custom
+            data-iedit-panel-custom="true"
+            visible={state.inlineEdit.panelVisible}
+            row-key-value={state.inlineEdit.rowKeyValue}
+            col-key-value={state.inlineEdit.colKeyValue}
+            edited-value={state.inlineEdit.editedValue}
+            column-def={state.inlineEdit.columnDef}
+            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
+            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
+            date-style={dateStyle}
+            time-style={timeStyle}
+            timezone={timezone}
+            disabled={disabled}
+            label={label}
+            label-start-date={labelStartDate}
+            label-end-date={labelEndDate}
+            type={type}
+        ></c-primitive-datatable-iedit-panel-custom>
+    </template>
+    <template if:false={visible}>
+        <span
+            class="
+                slds-grid slds-cell-edit
+                slds-grid_align-spread slds-grid_vertical-align-center
+            "
+        >
+            <c-input-date-range
+                start-date={startDate}
+                end-date={endDate}
+                date-style={dateStyle}
+                time-style={timeStyle}
+                timezone={timezone}
+                disabled={disabled}
+                label={label}
+                label-start-date={labelStartDate}
+                label-end-date={labelEndDate}
+                type={type}
+                read-only={readOnly}
+                variant="label-hidden"
+                onchange={handleChange}
+            ></c-input-date-range>
+            <template if:true={editable}>
+                <c-primitive-cell-editable-button
+                    onclick={handleEditButtonClick}
+                    column-label="Input Date Range"
+                ></c-primitive-cell-editable-button>
+            </template>
+        </span>
+    </template>
 </template>

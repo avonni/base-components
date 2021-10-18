@@ -45,6 +45,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
 
     //shared
     @api disabled;
+    @api label;
 
     // Primitive cell combobox
     @api dropdownLength;
@@ -53,10 +54,19 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     @api placeholder;
 
     // Primitive cell input-counter
-    @api label;
     @api max;
     @api min;
     @api step;
+
+    // Primitive cell input-date-range
+    @api startDate;
+    @api endDate;
+    @api dateStyle;
+    @api timeStyle;
+    @api timezone;
+    @api labelStartDate;
+    @api labelEndDate;
+    @api type;
 
     connectedCallback() {
         this.interactingState = new InteractingState({
@@ -127,6 +137,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     triggerEditFinished(detail) {
+        console.log(this.value);
         // for combobox we need to make sure that the value is only set if the there is a change or a submit.
         if (this.value.length !== 0 && typeof this.value !== 'string') {
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
@@ -146,11 +157,10 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
 
     @api
     focus() {
-        const elem = this.inputableElement;
         this.interactingState.enter();
 
-        if (elem) {
-            elem.focus();
+        if (this.inputableElement) {
+            this.inputableElement.focus();
         }
     }
 
