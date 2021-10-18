@@ -110,6 +110,14 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         );
     }
 
+    get showButtons() {
+        return (
+            this.isMassEditEnabled ||
+            this.isMultiSelect ||
+            this.columnDef.type === 'input-counter'
+        );
+    }
+
     handleFormStartFocus() {
         this.interactingState.enter();
 
@@ -137,7 +145,6 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     triggerEditFinished(detail) {
-        console.log(this.value);
         // for combobox we need to make sure that the value is only set if the there is a change or a submit.
         if (this.value.length !== 0 && typeof this.value !== 'string') {
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
@@ -237,6 +244,17 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     processSubmission() {
         if (this.validity.valid) {
             this.triggerEditFinished({ reason: 'submit-action' });
+            this.dispatchEvent(
+                new CustomEvent('privateeditcustomcell', {
+                    detail: {
+                        rowKeyValue: this.rowKeyValue,
+                        colKeyValue: this.colKeyValue,
+                        value: this.value
+                    },
+                    bubbles: true,
+                    composed: true
+                })
+            );
         } else {
             this.inputableElement.showHelpMessageIfInvalid();
         }

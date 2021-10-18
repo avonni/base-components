@@ -51,10 +51,7 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
 
     connectedCallback() {
         // Dispatches the inline edit event to the parent component.
-        this.template.addEventListener('inlineeditchange', (event) => {
-            console.log(event);
-            this.handleChange(event);
-        });
+        this.template.addEventListener('inlineeditchange', this.handleChange);
 
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();

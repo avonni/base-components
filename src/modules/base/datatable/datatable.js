@@ -312,9 +312,15 @@ export default class Datatable extends LightningDatatable {
             this.handleInlineEditFinishCustom(event);
         });
 
-        this.template.addEventListener('getdatatablestateandcolumns', (e) => {
-            e.detail.callbacks.getStateAndColumns(this.state, this.columns);
-        });
+        this.template.addEventListener(
+            'getdatatablestateandcolumns',
+            (event) => {
+                event.detail.callbacks.getStateAndColumns(
+                    this.state,
+                    this.columns
+                );
+            }
+        );
     }
 
     renderedCallback() {

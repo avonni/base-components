@@ -112,8 +112,6 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         if (this.concreteComponent) {
             this.concreteComponent.focus();
         }
-
-        console.log(this.concreteComponent.value);
     }
 
     @api
