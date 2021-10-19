@@ -35,16 +35,6 @@ import { Calendar } from '../__examples__/calendar';
 export default {
     title: 'Example/Calendar',
     argTypes: {
-        value: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -86,7 +76,7 @@ export default {
             },
             description:
                 'Specifies the minimum date, which the calendar can show.',
-            defaultValue: Date(1900, 0, 1),
+            defaultValue: new Date(1900, 0, 1),
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date(1900, 0, 1)' }
@@ -98,13 +88,13 @@ export default {
             },
             description:
                 'Specifies the maximum date, which the calendar can show.',
-            defaultValue: Date(2099, 11, 31),
+            defaultValue: new Date(2099, 11, 31),
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date(2099, 11, 31)' }
             }
         },
-        selectionMonde: {
+        selectionMode: {
             name: 'selection-mode',
             control: {
                 type: 'select'
@@ -116,6 +106,16 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'single' }
+            }
+        },
+        value: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         weekNumber: {
@@ -149,7 +149,7 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: '05/03/2021',
+    value: ['05/03/2021', '05/08/2021'],
     disabled: false,
     weekNumber: false,
     disabledDates: [
@@ -162,8 +162,7 @@ Base.args = {
         'Wed',
         'Thu'
     ],
-    min: new Date('04/15/2021'),
-    max: new Date('06/10/2021')
+    selectionMode: 'multiple'
 };
 
 export const Disabled = Template.bind({});
@@ -171,9 +170,7 @@ Disabled.args = {
     value: '05/05/2021',
     disabled: true,
     weekNumber: false,
-    disabledDates: [],
-    min: new Date('04/15/2021'),
-    max: new Date('06/10/2021')
+    disabledDates: []
 };
 
 export const BaseWithWeekNumber = Template.bind({});
@@ -190,17 +187,12 @@ BaseWithWeekNumber.args = {
         21,
         'Wed',
         'Thu'
-    ],
-    min: new Date('04/15/2021'),
-    max: new Date('06/10/2021')
+    ]
 };
 
 export const MarkedDates = Template.bind({});
 MarkedDates.args = {
     value: '05/09/2021',
     disabledDates: [20, 'Sat'],
-    markedDates: markedDates,
-    // [new Date(2021, 4, 9), new Date(2021, 4, 26), 14, 20, 'Wed'],
-    min: new Date('04/15/2021'),
-    max: new Date('06/10/2021')
+    markedDates: markedDates
 };

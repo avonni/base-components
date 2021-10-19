@@ -31,7 +31,11 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeArray
+} from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -56,7 +60,7 @@ const DEFAULT_MIN = new Date(1900, 0, 1);
 
 const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 
-const SELECTION_MODE = {
+const SELECTION_MODES = {
     valid: ['single', 'multiple', 'interval'],
     default: 'single'
 };
@@ -74,13 +78,13 @@ export default class Calendar extends LightningElement {
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
-    _selectionMode = SELECTION_MODE.default;
-    _value;
+    _selectionMode = SELECTION_MODES.default;
+    _value = [];
     _weekNumber = false;
+    date = DEFAULT_DATE;
     year;
     month;
     day;
-    date = DEFAULT_DATE;
     calendarData;
 
     months = MONTHS;
@@ -103,7 +107,6 @@ export default class Calendar extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-        this.updateDateParameters();
     }
 
     /**
@@ -119,7 +122,6 @@ export default class Calendar extends LightningElement {
 
     set disabledDates(value) {
         this._disabledDates = value;
-        this.updateDateParameters();
     }
 
     /**
@@ -135,7 +137,6 @@ export default class Calendar extends LightningElement {
 
     set markedDates(value) {
         this._markedDates = value;
-        this.updateDateParameters();
     }
 
     /**
@@ -150,10 +151,9 @@ export default class Calendar extends LightningElement {
         return this._max;
     }
 
-    set max(value) {
-        this._max = new Date(value);
+    set max(max) {
+        this._max = new Date(max);
         this._max.setHours(0, 0, 0, 0);
-        this.updateDateParameters();
     }
 
     /**
@@ -168,10 +168,9 @@ export default class Calendar extends LightningElement {
         return this._min;
     }
 
-    set min(value) {
-        this._min = new Date(value);
+    set min(min) {
+        this._min = new Date(min);
         this._min.setHours(0, 0, 0, 0);
-        this.updateDateParameters();
     }
 
     /**
@@ -183,14 +182,15 @@ export default class Calendar extends LightningElement {
      * @type {string}
      * @default single
      */
+    @api
     get selectionMode() {
         return this._selectionMode;
     }
 
     set selectionMode(value) {
         this._selectionMode = normalizeString(value, {
-            fallbackValue: SELECTION_MODE.default,
-            validValues: SELECTION_MODE.valid
+            validValues: SELECTION_MODES.valid,
+            fallbackValue: SELECTION_MODES.default
         });
     }
 
@@ -207,12 +207,23 @@ export default class Calendar extends LightningElement {
 
     set value(value) {
         if (value) {
-            this._value = new Date(value);
-            this.date = new Date(value);
-            this._value.setHours(0, 0, 0, 0);
-            this.date.setHours(0, 0, 0, 0);
+            this._value =
+                typeof value === 'string'
+                    ? [new Date(value)]
+                    : [...normalizeArray(this.multipleValues(value))];
+            this.date = this._value.length
+                ? new Date(this._value[0])
+                : DEFAULT_DATE;
             this.updateDateParameters();
         }
+    }
+
+    multipleValues(values) {
+        let array = [];
+        array = values.map((value) => {
+            return new Date(value);
+        });
+        return array;
     }
 
     /**
@@ -229,7 +240,6 @@ export default class Calendar extends LightningElement {
 
     set weekNumber(value) {
         this._weekNumber = normalizeBoolean(value);
-        this.updateDateParameters();
     }
 
     /**
@@ -267,7 +277,7 @@ export default class Calendar extends LightningElement {
         previousDate.setMonth(this.date.getMonth() - 1);
         previousDate.setDate(1);
 
-        let minDate = new Date(this.min);
+        let minDate = new Date(this._min);
         minDate.setDate(1);
 
         if (previousDate < minDate) {
@@ -418,7 +428,9 @@ export default class Calendar extends LightningElement {
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
                 let time = date.getTime();
-                let valueTime = this.value ? this.value.getTime() : '';
+                let valueTime = this._value.length
+                    ? this._value[0].getTime()
+                    : '';
 
                 if (date.getMonth() !== currentMonth || disabled) {
                     if (i > 3 && a === 0) {
@@ -441,15 +453,27 @@ export default class Calendar extends LightningElement {
                 }
 
                 if (
-                    this.value &&
+                    this._value &&
                     this.multiValue &&
                     ((this.multiValue.getTime() <= time && time <= valueTime) ||
                         (valueTime <= time &&
                             time <= this.multiValue.getTime()))
                 ) {
                     dateClass += ' slds-is-selected slds-is-selected-multi';
-                } else if (this.value && valueTime === time) {
+                } else if (this._value && valueTime === time) {
                     dateClass += ' slds-is-selected';
+                }
+
+                // multiple choices
+                if (
+                    this._value.length > 1 &&
+                    this._selectionMode === 'multiple'
+                ) {
+                    this._value.forEach((day) => {
+                        if (day.getTime() === time) {
+                            dateClass += ' slds-is-selected';
+                        }
+                    });
                 }
 
                 let label = '';
@@ -553,12 +577,14 @@ export default class Calendar extends LightningElement {
     handlerSelectDate(event) {
         let date = event.target.dataset.day;
 
-        if (date) {
-            this._value = new Date(Number(date));
+        if (date && this._selectionMode === 'single') {
+            this._value = [new Date(Number(date))];
+        } else if (date && this._selectionMode === 'multiple') {
+            this._value.push(new Date(Number(date)));
             this.date = new Date(Number(date));
-            this.updateDateParameters();
-            this.dispatchChange();
         }
+        this.updateDateParameters();
+        this.dispatchChange();
     }
 
     /**
