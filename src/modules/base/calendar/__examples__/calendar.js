@@ -36,7 +36,7 @@ customElements.define('ac-base-calendar', Component.CustomElementConstructor);
 
 export const Calendar = ({
     value,
-    multiValue,
+    selectionMode,
     disabled,
     weekNumber,
     disabledDates,
@@ -46,7 +46,7 @@ export const Calendar = ({
 }) => {
     const element = document.createElement('ac-base-calendar');
     element.value = value;
-    element.multiValue = multiValue;
+    element.selectionMode = selectionMode;
     element.disabled = disabled;
     element.weekNumber = weekNumber;
     element.disabledDates = disabledDates;

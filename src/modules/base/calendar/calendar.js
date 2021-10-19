@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
@@ -56,6 +56,11 @@ const DEFAULT_MIN = new Date(1900, 0, 1);
 
 const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 
+const SELECTION_MODE = {
+    valid: ['single', 'multiple', 'interval'],
+    default: 'single'
+};
+
 /**
  * @class
  * @name Calendar
@@ -64,13 +69,13 @@ const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
  * @public
  */
 export default class Calendar extends LightningElement {
+    _disabled = false;
     _disabledDates = [];
     _markedDates = [];
-    _value;
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
-    _multiValue;
-    _disabled = false;
+    _selectionMode = SELECTION_MODE.default;
+    _value;
     _weekNumber = false;
     year;
     month;
@@ -81,6 +86,23 @@ export default class Calendar extends LightningElement {
     months = MONTHS;
 
     connectedCallback() {
+        this.updateDateParameters();
+    }
+
+    /**
+     * If true, the calendar is disabled.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
         this.updateDateParameters();
     }
 
@@ -114,27 +136,6 @@ export default class Calendar extends LightningElement {
     set markedDates(value) {
         this._markedDates = value;
         this.updateDateParameters();
-    }
-
-    /**
-     * The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get value() {
-        return this._value;
-    }
-
-    set value(value) {
-        if (value) {
-            this._value = new Date(value);
-            this.date = new Date(value);
-            this._value.setHours(0, 0, 0, 0);
-            this.date.setHours(0, 0, 0, 0);
-            this.updateDateParameters();
-        }
     }
 
     /**
@@ -174,39 +175,44 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * The value of the date which will use for the draw multi-select line. Multi-value can be before or after the selected date value.
+     * Specifies the selection mode of the calendar. Valid values include single, multiple and interval.
+     * If single, only one date can be selected at a time. If multiple, the user can select multiple dates.
+     * If interval, the user can only select a date range (two dates).
+     *
+     * @public
+     * @type {string}
+     * @default single
+     */
+    get selectionMode() {
+        return this._selectionMode;
+    }
+
+    set selectionMode(value) {
+        this._selectionMode = normalizeString(value, {
+            fallbackValue: SELECTION_MODE.default,
+            validValues: SELECTION_MODE.valid
+        });
+    }
+
+    /**
+     * The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @public
      * @type {string}
      */
     @api
-    get multiValue() {
-        return this._multiValue;
+    get value() {
+        return this._value;
     }
 
-    set multiValue(value) {
+    set value(value) {
         if (value) {
-            this._multiValue = new Date(value);
-            this._multiValue.setHours(0, 0, 0, 0);
+            this._value = new Date(value);
+            this.date = new Date(value);
+            this._value.setHours(0, 0, 0, 0);
+            this.date.setHours(0, 0, 0, 0);
             this.updateDateParameters();
         }
-    }
-
-    /**
-     * If true, the calendar is disabled.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get disabled() {
-        return this._disabled;
-    }
-
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
-        this.updateDateParameters();
     }
 
     /**

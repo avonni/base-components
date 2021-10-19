@@ -104,6 +104,20 @@ export default {
                 defaultValue: { summary: 'Date(2099, 11, 31)' }
             }
         },
+        selectionMonde: {
+            name: 'selection-mode',
+            control: {
+                type: 'select'
+            },
+            options: ['single', 'multiple', 'interval'],
+            defaultValue: 'single',
+            description:
+                'Specifies the selection mode of the calendar. Valid values include single, multiple and interval. If single, only one date can be selected at a time. If multiple, the user can select multiple dates. If interval, the user can only select a date range (two dates).',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'single' }
+            }
+        },
         weekNumber: {
             name: 'week-number',
             control: {
@@ -114,17 +128,6 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
-            }
-        },
-        multiValue: {
-            name: 'multi-value',
-            control: {
-                type: 'text'
-            },
-            description:
-                'The value of the date which will use for the draw multi-select line. Multi-value can be before or after the selected date value.',
-            table: {
-                type: { summary: 'string' }
             }
         }
     },
@@ -176,7 +179,6 @@ Disabled.args = {
 export const BaseWithWeekNumber = Template.bind({});
 BaseWithWeekNumber.args = {
     value: '05/09/2021',
-    multiValue: '05/11/2021',
     disabled: false,
     weekNumber: true,
     disabledDates: [
