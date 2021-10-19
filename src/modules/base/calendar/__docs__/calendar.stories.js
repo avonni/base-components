@@ -134,6 +134,14 @@ export default {
     }
 };
 
+const markedDates = [
+    { date: new Date(2021, 4, 9), color: '#ffffff' },
+    { date: new Date(2021, 4, 26), color: '#ffffff' },
+    { date: 14, color: '#ffffff' },
+    { date: 20, color: '#ffffff' },
+    { date: 'Wed', color: '#ffffff' }
+];
+
 const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
@@ -189,7 +197,8 @@ export const MarkedDates = Template.bind({});
 MarkedDates.args = {
     value: '05/09/2021',
     disabledDates: [20, 'Sat'],
-    markedDates: [new Date(2021, 4, 9), new Date(2021, 4, 26), 14, 20, 'Wed'],
+    markedDates: markedDates,
+    // [new Date(2021, 4, 9), new Date(2021, 4, 26), 14, 20, 'Wed'],
     min: new Date('04/15/2021'),
     max: new Date('06/10/2021')
 };

@@ -57,6 +57,18 @@ th {
     right: 2px;
 }
 
+.avonni-marked-cells {
+    content: '';
+    display: block;
+    width: 5px;
+    height: 5px;
+    background: #bf0201;
+    border-radius: var(--lwc-borderRadiusCircle, 50%);
+    position: absolute;
+    margin-left: 13px;
+    margin-top: 2px;
+}
+
 .slds-day_adjacent-month {
     color: #adadad;
 }

@@ -297,6 +297,12 @@ export default class Calendar extends LightningElement {
         return generateUUID();
     }
 
+    get markedDatesArray() {
+        return this.markedDates.map((date) => {
+            return date.date;
+        });
+    }
+
     /**
      * Create Dates array.
      *
@@ -404,7 +410,7 @@ export default class Calendar extends LightningElement {
                 let dayClass = 'slds-day';
                 let fullDate = '';
                 let disabled = this.isInArray(date, this.disabledDates);
-                const marked = this.isInArray(date, this.markedDates);
+                const marked = this.isInArray(date, this.markedDatesArray);
                 let time = date.getTime();
                 let valueTime = this.value ? this.value.getTime() : '';
 
@@ -449,8 +455,9 @@ export default class Calendar extends LightningElement {
                     fullDate = '';
                 }
 
+                let markedDate = false;
                 if (marked && label > 0) {
-                    dayClass += ' avonni-marked-cell';
+                    markedDate = true;
                 }
 
                 weekData.push({
@@ -459,7 +466,8 @@ export default class Calendar extends LightningElement {
                     dayClass: dayClass,
                     selected: selected,
                     currentDate: currentDate,
-                    fullDate: fullDate
+                    fullDate: fullDate,
+                    marked: markedDate
                 });
 
                 date.setDate(date.getDate() + 1);

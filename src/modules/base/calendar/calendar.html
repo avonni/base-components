@@ -43,7 +43,11 @@
             <div class="slds-datepicker">
                 <div class="slds-datepicker__filter slds-grid">
                     <div
-                        class="slds-datepicker__filter_month slds-grid slds-grid_align-spread slds-grow"
+                        class="
+                            slds-datepicker__filter_month
+                            slds-grid slds-grid_align-spread
+                            slds-grow
+                        "
                     >
                         <div class="slds-align-middle">
                             <lightning-button-icon
@@ -57,10 +61,9 @@
                                 onblur={handleBlur}
                             ></lightning-button-icon>
                         </div>
-                        <h2
-                            class="slds-align-middle"
-                            data-element-id="h2"
-                        >{month}</h2>
+                        <h2 class="slds-align-middle" data-element-id="h2">
+                            {month}
+                        </h2>
                         <div class="slds-align-middle">
                             <lightning-button-icon
                                 icon-name="utility:right"
@@ -128,6 +131,11 @@
                                             onclick={handlerSelectDate}
                                             >{day.label}</span
                                         >
+                                        <template if:true={day.marked}>
+                                            <div
+                                                class="avonni-marked-cells"
+                                            ></div>
+                                        </template>
                                     </td>
                                 </template>
                             </tr>
