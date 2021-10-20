@@ -93,10 +93,6 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
-    renderedCallback() {
-        // console.log(this._value)
-    }
-
     /**
      * If true, the calendar is disabled.
      *
@@ -456,8 +452,8 @@ export default class Calendar extends LightningElement {
                     currentDate = true;
                 }
 
-                this.sortedTime(this._value);
                 // interval
+                this.sortedTime(this._value);
                 if (
                     this._value.length >= 2 &&
                     this._selectionMode === 'interval' &&
@@ -468,6 +464,7 @@ export default class Calendar extends LightningElement {
                 ) {
                     dateClass += ' slds-is-selected slds-is-selected-multi';
                 }
+
                 // multiple choices
                 else if (
                     this._value.length > 1 &&
@@ -581,27 +578,21 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
-        let date = event.target.dataset.day;
+        let date = new Date(Number(event.target.dataset.day));
 
-        if (date && this._selectionMode === 'single') {
-            this._value =
-                this._value.length > 0 &&
-                this._value[0].getTime() === new Date(Number(date)).getTime()
-                    ? []
-                    : [new Date(Number(date))];
-            this.date = new Date(Number(date));
-        } else if (date && this._selectionMode === 'multiple') {
-            this._value = this.isSelectedMultiple(
-                this._value,
-                new Date(Number(date))
-            );
-            this.date = new Date(Number(date));
-        } else if (date && this._selectionMode === 'interval') {
-            this._value = this.isSelectedInterval(
-                this._value,
-                new Date(Number(date))
-            );
-            this.date = new Date(Number(date));
+        if (date) {
+            if (this._selectionMode === 'single') {
+                this._value =
+                    this._value.length > 0 &&
+                    this._value[0].getTime() === date.getTime()
+                        ? []
+                        : [date];
+            } else if (this._selectionMode === 'multiple') {
+                this._value = this.isSelectedMultiple(this._value, date);
+            } else if (this._selectionMode === 'interval') {
+                this._value = this.isSelectedInterval(this._value, date);
+            }
+            this.date = date;
         }
 
         this.updateDateParameters();
@@ -635,15 +626,14 @@ export default class Calendar extends LightningElement {
             } else if (times.length === 1) {
                 if (time > times[0]) {
                     times.push(time);
-                }
-                if (time < times[0]) {
+                } else {
                     times = [time];
                 }
-            } else if (times.length >= 2) {
+            } else {
                 if (time > times[0]) {
                     times.splice(timesLength, 1);
                     times.push(time);
-                } else if (time < times[0]) {
+                } else {
                     times = [time];
                 }
             }
@@ -664,13 +654,6 @@ export default class Calendar extends LightningElement {
      * Change event dispatcher.
      */
     dispatchChange() {
-        const date = this.date.getDate();
-        const datePrefix = date < 10 ? '0' : '';
-        const month = this.date.getMonth() + 1;
-        const monthPrefix = month < 10 ? '0' : '';
-        const year = this.date.getFullYear();
-
-        const dateStr = `${year}-${monthPrefix}${month}-${datePrefix}${date}`;
         /**
          * The event fired when the selected date is changed.
          *
@@ -682,7 +665,7 @@ export default class Calendar extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: dateStr
+                    value: this._value
                 }
             })
         );

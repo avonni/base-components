@@ -115,8 +115,3 @@ th {
 div:focus {
     outline: none;
 }
-
-.border {
-    border-top: #adadad 1px dashed;
-    border-bottom: #adadad 1px dashed;
-}
