@@ -93,6 +93,10 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
+    renderedCallback() {
+        // console.log(this._value)
+    }
+
     /**
      * If true, the calendar is disabled.
      *
@@ -452,20 +456,20 @@ export default class Calendar extends LightningElement {
                     currentDate = true;
                 }
 
+                this.sortedTime(this._value);
+                // interval
                 if (
-                    this._value &&
-                    this.multiValue &&
-                    ((this.multiValue.getTime() <= time && time <= valueTime) ||
+                    this._value.length >= 2 &&
+                    this._selectionMode === 'interval' &&
+                    ((this.lastInterval.getTime() <= time &&
+                        time <= valueTime) ||
                         (valueTime <= time &&
-                            time <= this.multiValue.getTime()))
+                            time <= this.lastInterval.getTime()))
                 ) {
                     dateClass += ' slds-is-selected slds-is-selected-multi';
-                } else if (this._value && valueTime === time) {
-                    dateClass += ' slds-is-selected';
                 }
-
                 // multiple choices
-                if (
+                else if (
                     this._value.length > 1 &&
                     this._selectionMode === 'multiple'
                 ) {
@@ -474,6 +478,8 @@ export default class Calendar extends LightningElement {
                             dateClass += ' slds-is-selected';
                         }
                     });
+                } else if (this._value && valueTime === time) {
+                    dateClass += ' slds-is-selected';
                 }
 
                 let label = '';
@@ -578,13 +584,80 @@ export default class Calendar extends LightningElement {
         let date = event.target.dataset.day;
 
         if (date && this._selectionMode === 'single') {
-            this._value = [new Date(Number(date))];
+            this._value =
+                this._value.length > 0 &&
+                this._value[0].getTime() === new Date(Number(date)).getTime()
+                    ? []
+                    : [new Date(Number(date))];
+            this.date = new Date(Number(date));
         } else if (date && this._selectionMode === 'multiple') {
-            this._value.push(new Date(Number(date)));
+            this._value = this.isSelectedMultiple(
+                this._value,
+                new Date(Number(date))
+            );
+            this.date = new Date(Number(date));
+        } else if (date && this._selectionMode === 'interval') {
+            this._value = this.isSelectedInterval(
+                this._value,
+                new Date(Number(date))
+            );
             this.date = new Date(Number(date));
         }
+
         this.updateDateParameters();
         this.dispatchChange();
+    }
+
+    isSelectedMultiple(arr, newDate) {
+        const time = newDate.getTime();
+        let times = arr.map((x) => x.getTime());
+
+        if (!times.includes(time)) {
+            times.push(time);
+        } else {
+            times.splice(times.indexOf(time), 1);
+        }
+        let strings = times.map((x) => new Date(x));
+
+        return strings;
+    }
+
+    isSelectedInterval(arr, newDate) {
+        const time = newDate.getTime();
+        let times = arr.map((x) => x.getTime()).sort((a, b) => a - b);
+        const timesLength = times.length - 1;
+
+        if (times.includes(time)) {
+            times.splice(times.indexOf(time), 1);
+        } else {
+            if (times.length === 0) {
+                times.push(time);
+            } else if (times.length === 1) {
+                if (time > times[0]) {
+                    times.push(time);
+                }
+                if (time < times[0]) {
+                    times = [time];
+                }
+            } else if (times.length >= 2) {
+                if (time > times[0]) {
+                    times.splice(timesLength, 1);
+                    times.push(time);
+                } else if (time < times[0]) {
+                    times = [time];
+                }
+            }
+        }
+
+        let strings = times.map((x) => new Date(x));
+
+        return strings;
+    }
+
+    sortedTime(arr) {
+        arr.map((x) => x.getTime()).sort((a, b) => a - b);
+        const length = arr.length;
+        this.lastInterval = arr[length - 1];
     }
 
     /**
@@ -598,7 +671,6 @@ export default class Calendar extends LightningElement {
         const year = this.date.getFullYear();
 
         const dateStr = `${year}-${monthPrefix}${month}-${datePrefix}${date}`;
-
         /**
          * The event fired when the selected date is changed.
          *

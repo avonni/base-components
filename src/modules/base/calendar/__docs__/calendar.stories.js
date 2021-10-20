@@ -152,16 +152,16 @@ Base.args = {
     value: ['05/03/2021', '05/08/2021'],
     disabled: false,
     weekNumber: false,
-    disabledDates: [
-        new Date(2021, 4, 9),
-        new Date(2021, 4, 26),
-        13,
-        14,
-        20,
-        21,
-        'Wed',
-        'Thu'
-    ],
+    // disabledDates: [
+    //     new Date(2021, 4, 9),
+    //     new Date(2021, 4, 26),
+    //     13,
+    //     14,
+    //     20,
+    //     21,
+    //     'Wed',
+    //     'Thu'
+    // ],
     selectionMode: 'multiple'
 };
 
