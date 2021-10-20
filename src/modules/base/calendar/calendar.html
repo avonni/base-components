@@ -57,6 +57,7 @@
                                 title="Previous Month"
                                 onclick={handlerPreviousMonth}
                                 disabled={disabledPrevious}
+                                data-element-id="previous-lightning-button-icon"
                                 onfocus={handleFocus}
                                 onblur={handleBlur}
                             ></lightning-button-icon>
@@ -71,7 +72,7 @@
                                 alternative-text="Next Month"
                                 title="Next Month"
                                 disabled={disabledNext}
-                                data-element-id="lightning-button-icon"
+                                data-element-id="next-lightning-button-icon"
                                 onclick={handlerNextMonth}
                                 onfocus={handleFocus}
                                 onblur={handleBlur}
@@ -129,11 +130,12 @@
                                             data-day={day.fullDate}
                                             data-element-id="span-day-label"
                                             onclick={handlerSelectDate}
-                                            >{day.label}</span
-                                        >
+                                            >{day.label}
+                                        </span>
                                         <template if:true={day.marked}>
                                             <div
                                                 class="avonni-marked-cells"
+                                                data-element-id="div-marked-cells"
                                             ></div>
                                         </template>
                                     </td>

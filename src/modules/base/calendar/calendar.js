@@ -107,6 +107,7 @@ export default class Calendar extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+        this.updateDateParameters();
     }
 
     /**
@@ -122,6 +123,7 @@ export default class Calendar extends LightningElement {
 
     set disabledDates(value) {
         this._disabledDates = value;
+        this.updateDateParameters();
     }
 
     /**
@@ -137,6 +139,7 @@ export default class Calendar extends LightningElement {
 
     set markedDates(value) {
         this._markedDates = value;
+        this.updateDateParameters();
     }
 
     /**
@@ -192,6 +195,7 @@ export default class Calendar extends LightningElement {
             validValues: SELECTION_MODES.valid,
             fallbackValue: SELECTION_MODES.default
         });
+        this.updateDateParameters();
     }
 
     /**
@@ -210,20 +214,12 @@ export default class Calendar extends LightningElement {
             this._value =
                 typeof value === 'string'
                     ? [new Date(value)]
-                    : [...normalizeArray(this.multipleValues(value))];
+                    : [...normalizeArray(value.map((x) => new Date(x)))];
             this.date = this._value.length
                 ? new Date(this._value[0])
                 : DEFAULT_DATE;
             this.updateDateParameters();
         }
-    }
-
-    multipleValues(values) {
-        let array = [];
-        array = values.map((value) => {
-            return new Date(value);
-        });
-        return array;
     }
 
     /**
@@ -240,6 +236,7 @@ export default class Calendar extends LightningElement {
 
     set weekNumber(value) {
         this._weekNumber = normalizeBoolean(value);
+        this.updateDateParameters();
     }
 
     /**
@@ -579,8 +576,11 @@ export default class Calendar extends LightningElement {
      */
     handlerSelectDate(event) {
         let date = new Date(Number(event.target.dataset.day));
+        const disabledDate = Array.from(event.target.classList).includes(
+            'avonni-disabled-cell'
+        );
 
-        if (date) {
+        if (date && !disabledDate) {
             if (this._selectionMode === 'single') {
                 this._value =
                     this._value.length > 0 &&
@@ -593,10 +593,10 @@ export default class Calendar extends LightningElement {
                 this._value = this.isSelectedInterval(this._value, date);
             }
             this.date = date;
-        }
 
-        this.updateDateParameters();
-        this.dispatchChange();
+            this.updateDateParameters();
+            this.dispatchChange();
+        }
     }
 
     isSelectedMultiple(arr, newDate) {

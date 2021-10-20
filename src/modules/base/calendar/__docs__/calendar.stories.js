@@ -149,34 +149,29 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    value: '05/08/2021'
+};
+
+export const Multiple = Template.bind({});
+Multiple.args = {
     value: ['05/03/2021', '05/08/2021'],
-    disabled: false,
-    weekNumber: false,
-    // disabledDates: [
-    //     new Date(2021, 4, 9),
-    //     new Date(2021, 4, 26),
-    //     13,
-    //     14,
-    //     20,
-    //     21,
-    //     'Wed',
-    //     'Thu'
-    // ],
     selectionMode: 'multiple'
+};
+
+export const Interval = Template.bind({});
+Interval.args = {
+    value: ['05/03/2021', '05/08/2021'],
+    selectionMode: 'interval'
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-    value: '05/05/2021',
-    disabled: true,
-    weekNumber: false,
-    disabledDates: []
+    disabled: true
 };
 
 export const BaseWithWeekNumber = Template.bind({});
 BaseWithWeekNumber.args = {
     value: '05/09/2021',
-    disabled: false,
     weekNumber: true,
     disabledDates: [
         new Date(2021, 4, 9),
