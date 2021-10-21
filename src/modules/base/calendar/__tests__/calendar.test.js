@@ -169,12 +169,13 @@ describe('Calendar', () => {
         element.value = ['05/15/2021'];
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
+        element.selectionMode = 'single';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                '[data-day="1620964800000"]'
+                'span[data-day="1620964800000"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(element.value).toMatchObject([new Date(1620964800000)]);
         });
     });
 
@@ -184,7 +185,7 @@ describe('Calendar', () => {
         element.max = new Date('05/31/2021');
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                '[data-day="1620964800000"]'
+                'span[data-day="1620964800000"]'
             );
             day14.click();
             expect(element.value).toMatchObject([]);
@@ -224,7 +225,7 @@ describe('Calendar', () => {
         element.selectionMode = 'multiple';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                '[data-day="1620964800000"]'
+                'span[data-day="1620964800000"]'
             );
             day14.click();
             expect(element.value).toMatchObject([
@@ -241,7 +242,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                '[data-day="1620964800000"]'
+                'span[data-day="1620964800000"]'
             );
             day14.click();
             expect(element.value).toMatchObject([]);
@@ -257,7 +258,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                '[data-day="1620964800000"]'
+                'span[data-day="1620964800000"]'
             );
             day14.click();
             expect(element.value).toMatchObject([new Date('05/14/2021')]);
@@ -271,7 +272,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day17 = element.shadowRoot.querySelector(
-                '[data-day="1621224000000"]'
+                'span[data-day="1621224000000"]'
             );
             day17.click();
             expect(element.value).toMatchObject([
@@ -288,7 +289,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day17 = element.shadowRoot.querySelector(
-                '[data-day="1621224000000"]'
+                'span[data-day="1621224000000"]'
             );
             day17.click();
             expect(element.value).toMatchObject([
@@ -305,7 +306,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                '[data-day="1620964800000"]'
+                'span[data-day="1620964800000"]'
             );
             day14.click();
             expect(element.value).toMatchObject([new Date('05/14/2021')]);
@@ -411,7 +412,7 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day9 = element.shadowRoot.querySelector(
-                '[data-day="1620532800000"]'
+                'span[data-day="1620532800000"]'
             );
             day9.click();
             expect(handler).toHaveBeenCalled();
@@ -433,7 +434,7 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day11 = element.shadowRoot.querySelector(
-                '[data-day="1620705600000"]'
+                'span[data-day="1620705600000"]'
             );
             day11.click();
             expect(handler).toHaveBeenCalled();

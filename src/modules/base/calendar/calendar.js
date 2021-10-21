@@ -663,6 +663,7 @@ export default class Calendar extends LightningElement {
             this.date = date;
 
             this.updateDateParameters();
+            this.dispatchChange();
         }
     }
 
@@ -742,7 +743,7 @@ export default class Calendar extends LightningElement {
                 }
                 this.template.querySelectorAll('td').forEach((x) => {
                     if (
-                        x.getAttribute('data-cell-day') > timeArray[0] &&
+                        x.getAttribute('data-cell-day') >= timeArray[0] &&
                         x.getAttribute('data-cell-day') <= day
                     ) {
                         x.classList.add(
@@ -758,7 +759,7 @@ export default class Calendar extends LightningElement {
                 }
                 this.template.querySelectorAll('td').forEach((x) => {
                     if (
-                        x.getAttribute('data-cell-day') > timeArray[1] &&
+                        x.getAttribute('data-cell-day') >= timeArray[1] &&
                         x.getAttribute('data-cell-day') <= day
                     ) {
                         x.classList.add(
