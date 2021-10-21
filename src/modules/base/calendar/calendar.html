@@ -124,6 +124,10 @@
                                         key={generateKey}
                                         aria-selected={day.selected}
                                         aria-current={day.currentDate}
+                                        onmouseover={handleMouseOver}
+                                        onmouseout={handleMouseOut}
+                                        data-cell-day={day.fullDate}
+                                        data-day={day.fullDate}
                                     >
                                         <span
                                             class={day.dayClass}

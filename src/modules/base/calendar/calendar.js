@@ -310,6 +310,9 @@ export default class Calendar extends LightningElement {
         return generateUUID();
     }
 
+    /**
+     * Generate array of dates from marked dates object.
+     */
     get markedDatesArray() {
         return this.markedDates.map((date) => {
             return date.date;
@@ -378,6 +381,17 @@ export default class Calendar extends LightningElement {
         this.month = MONTHS[this.date.getMonth()];
         this.day = this.date.getDay();
         this.generateViewData();
+    }
+
+    /**
+     * Returns last date of array.
+     *
+     * @param {object[]} array
+     */
+    endDateInInterval(array) {
+        array.map((x) => x.getTime()).sort((a, b) => a - b);
+        const length = array.length;
+        this.endDate = array[length - 1];
     }
 
     /**
@@ -450,14 +464,12 @@ export default class Calendar extends LightningElement {
                 }
 
                 // interval
-                this.sortedTime(this._value);
+                this.endDateInInterval(this._value);
                 if (
                     this._value.length >= 2 &&
                     this._selectionMode === 'interval' &&
-                    ((this.lastInterval.getTime() <= time &&
-                        time <= valueTime) ||
-                        (valueTime <= time &&
-                            time <= this.lastInterval.getTime()))
+                    ((this.endDate.getTime() <= time && time <= valueTime) ||
+                        (valueTime <= time && time <= this.endDate.getTime()))
                 ) {
                     dateClass += ' slds-is-selected slds-is-selected-multi';
                 }
@@ -570,6 +582,62 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Returns an array of dates base on the selection mode multiple.
+     *
+     * @param {object[]} array - array of dates
+     * @param {string | Date} newDate - new date
+     * @returns array of dates
+     */
+    isSelectedMultiple(array, newDate) {
+        const timestamp = newDate.getTime();
+        let timestamps = array.map((x) => x.getTime());
+
+        if (!timestamps.includes(timestamp)) {
+            timestamps.push(timestamp);
+        } else {
+            timestamps.splice(timestamps.indexOf(timestamp), 1);
+        }
+
+        return timestamps.map((x) => new Date(x));
+    }
+
+    /**
+     * Returns an array of dates base on the selection mode interval.
+     *
+     * @param {object[]} array - array of dates
+     * @param {string | Date} newDate - new date
+     * @returns array of dates
+     */
+    isSelectedInterval(array, newDate) {
+        const timestamp = newDate.getTime();
+        let timestamps = array.map((x) => x.getTime()).sort((a, b) => a - b);
+        const timesLength = timestamps.length - 1;
+
+        if (timestamps.includes(timestamp)) {
+            timestamps.splice(timestamps.indexOf(timestamp), 1);
+        } else {
+            if (timestamps.length === 0) {
+                timestamps.push(timestamp);
+            } else if (timestamps.length === 1) {
+                if (timestamp > timestamps[0]) {
+                    timestamps.push(timestamp);
+                } else {
+                    timestamps = [timestamp];
+                }
+            } else {
+                if (timestamp > timestamps[0]) {
+                    timestamps.splice(timesLength, 1);
+                    timestamps.push(timestamp);
+                } else {
+                    timestamps = [timestamp];
+                }
+            }
+        }
+
+        return timestamps.map((x) => new Date(x));
+    }
+
+    /**
      * Date selection handler.
      *
      * @param {object} event
@@ -595,59 +663,7 @@ export default class Calendar extends LightningElement {
             this.date = date;
 
             this.updateDateParameters();
-            this.dispatchChange();
         }
-    }
-
-    isSelectedMultiple(arr, newDate) {
-        const time = newDate.getTime();
-        let times = arr.map((x) => x.getTime());
-
-        if (!times.includes(time)) {
-            times.push(time);
-        } else {
-            times.splice(times.indexOf(time), 1);
-        }
-        let strings = times.map((x) => new Date(x));
-
-        return strings;
-    }
-
-    isSelectedInterval(arr, newDate) {
-        const time = newDate.getTime();
-        let times = arr.map((x) => x.getTime()).sort((a, b) => a - b);
-        const timesLength = times.length - 1;
-
-        if (times.includes(time)) {
-            times.splice(times.indexOf(time), 1);
-        } else {
-            if (times.length === 0) {
-                times.push(time);
-            } else if (times.length === 1) {
-                if (time > times[0]) {
-                    times.push(time);
-                } else {
-                    times = [time];
-                }
-            } else {
-                if (time > times[0]) {
-                    times.splice(timesLength, 1);
-                    times.push(time);
-                } else {
-                    times = [time];
-                }
-            }
-        }
-
-        let strings = times.map((x) => new Date(x));
-
-        return strings;
-    }
-
-    sortedTime(arr) {
-        arr.map((x) => x.getTime()).sort((a, b) => a - b);
-        const length = arr.length;
-        this.lastInterval = arr[length - 1];
     }
 
     /**
@@ -709,6 +725,56 @@ export default class Calendar extends LightningElement {
                 cancelable: true
             })
         );
+    }
+
+    handleMouseOver(event) {
+        const day = event.target.getAttribute('data-day');
+        const dayCell = this.template.querySelector(`[data-day="${day}"]`);
+        const timeArray = this._value
+            .map((x) => x.getTime())
+            .sort((a, b) => a - b);
+        if (this._selectionMode === 'interval') {
+            if (timeArray.length === 1) {
+                if (day > timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar-cell__bordered_right'
+                    );
+                }
+                this.template.querySelectorAll('td').forEach((x) => {
+                    if (
+                        x.getAttribute('data-cell-day') > timeArray[0] &&
+                        x.getAttribute('data-cell-day') <= day
+                    ) {
+                        x.classList.add(
+                            'avonni-calendar-cell__bordered_top_bottom'
+                        );
+                    }
+                });
+            } else if (timeArray.length === 2) {
+                if (day > timeArray[1]) {
+                    dayCell.classList.add(
+                        'avonni-calendar-cell__bordered_right'
+                    );
+                }
+                this.template.querySelectorAll('td').forEach((x) => {
+                    if (
+                        x.getAttribute('data-cell-day') > timeArray[1] &&
+                        x.getAttribute('data-cell-day') <= day
+                    ) {
+                        x.classList.add(
+                            'avonni-calendar-cell__bordered_top_bottom'
+                        );
+                    }
+                });
+            }
+        }
+    }
+
+    handleMouseOut() {
+        this.template.querySelectorAll('td').forEach((x) => {
+            x.classList.remove('avonni-calendar-cell__bordered_top_bottom');
+            x.classList.remove('avonni-calendar-cell__bordered_right');
+        });
     }
 }
 
