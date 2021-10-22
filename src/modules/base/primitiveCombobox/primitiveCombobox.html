@@ -40,7 +40,9 @@
         data-element-id="label"
     >
         <template if:true={required}>
-            <abbr class="slds-required" title="Required" data-element-id="abbr">*</abbr>
+            <abbr class="slds-required" title="Required" data-element-id="abbr"
+                >*</abbr
+            >
         </template>
         {label}
     </label>
@@ -73,7 +75,11 @@
             <!-- Main input -->
             <input
                 id="combobox-input"
-                class="slds-input slds-combobox__input"
+                class="
+                    slds-input
+                    slds-combobox__input
+                    avonni-primitive-combobox__input
+                "
                 type="text"
                 role="combobox"
                 aria-expanded={computedAriaExpanded}
@@ -97,7 +103,10 @@
             <!-- Clear input icon -->
             <button
                 if:true={showClearInputIcon}
-                class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                class="
+                    slds-button slds-button_icon
+                    slds-input__icon slds-input__icon_right
+                "
                 onclick={handleClearInput}
             >
                 <lightning-icon
@@ -109,7 +118,10 @@
             <!-- Right icon: down arrow or magnifying glass -->
             <lightning-icon
                 if:false={showClearInputIcon}
-                class="slds-icon_container slds-input__icon slds-input__icon_right"
+                class="
+                    slds-icon_container
+                    slds-input__icon slds-input__icon_right
+                "
                 icon-name={inputIconName}
                 aria-hidden="true"
                 size="x-small"
@@ -154,7 +166,10 @@
                     </div>
                     <div class="slds-media__body">
                         <span
-                            class="slds-listbox__option-text slds-listbox__option-text_entity"
+                            class="
+                                slds-listbox__option-text
+                                slds-listbox__option-text_entity
+                            "
                             >{backLink.label}</span
                         >
                     </div>
@@ -185,7 +200,10 @@
                         </div>
                         <div class="slds-media__body">
                             <span
-                                class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                class="
+                                    slds-listbox__option-text
+                                    slds-listbox__option-text_entity
+                                "
                                 >{action.label}</span
                             >
                         </div>
@@ -242,7 +260,10 @@
                         </div>
                         <div class="slds-media__body">
                             <span
-                                class="slds-listbox__option-text slds-listbox__option-text_entity"
+                                class="
+                                    slds-listbox__option-text
+                                    slds-listbox__option-text_entity
+                                "
                                 >{action.label}</span
                             >
                         </div>
@@ -255,7 +276,11 @@
     <!-- Selected options -->
     <ul
         if:true={showSelectedOptions}
-        class="slds-grid slds-wrap slds-p-vertical_xx-small primitive-combobox__selected-options"
+        class="
+            slds-grid slds-wrap
+            slds-p-vertical_xx-small
+            primitive-combobox__selected-options
+        "
         role="listbox"
         aria-label={selectedOptionsAriaLabel}
         aria-orientation="horizontal"
