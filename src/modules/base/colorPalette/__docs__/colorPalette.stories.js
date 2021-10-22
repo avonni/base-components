@@ -165,23 +165,41 @@ const colors = [
 ];
 
 const colorsWithLabel = [
-    { label: 'brand-accessible', value: '#0176d3' },
-    { label: 'brand-active', value: '#014486' },
-    { label: 'brand-dark', value: '#014486' },
+    {
+        label: 'brand-accessible',
+        color: '#0176d3',
+        value: '--lwc-brandAccessible'
+    },
+    {
+        label: 'brand-active',
+        color: '#014486',
+        value: '--lwc-brandAccessibleActive'
+    },
+    {
+        label: 'brand-dark',
+        color: '#014486',
+        value: '--lwc-brandBackgroundDark'
+    },
     {
         label: 'dark-transparent',
-        value: 'rgba(1, 68, 134, 0)'
+        color: 'rgba(1, 68, 134, 0)',
+        value: '--lwc-brandBackgroundDarkTransparent'
     },
-    { label: 'background-primary', value: '#eef4ff' },
+    {
+        label: 'background-primary',
+        color: '#eef4ff',
+        value: '--lwc-brandBackgroundPrimary'
+    },
     {
         label: 'primary-transparent',
-        value: 'rgba(176,196,223,0)'
+        color: 'rgba(176,196,223,0)',
+        value: '--lwc-brandBackgroundPrimaryTransparent'
     },
-    { label: 'brand-contrast', value: 'rgb(26, 27, 30)' },
-    { label: 'color 1', value: '#e3abec' },
-    { label: 'color 2', value: '#c2dbf7' },
-    { label: 'color 3', value: '#9fd6ff' },
-    { label: 'color 4', value: '#9de7da' }
+    {
+        label: 'brand-contrast',
+        color: 'rgb(26, 27, 30)',
+        value: '--lwc-brandContrast'
+    }
 ];
 
 const Template = (args) => ColorPalette(args);

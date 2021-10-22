@@ -56,7 +56,8 @@ export const ColorPicker = ({
     colors,
     hideColorInput,
     opacity,
-    messageWhenBadInput
+    messageWhenBadInput,
+    tokens
 }) => {
     const element = document.createElement('ac-base-color-picker');
     element.disabled = disabled;
@@ -78,5 +79,6 @@ export const ColorPicker = ({
     element.hideColorInput = hideColorInput;
     element.opacity = opacity;
     element.messageWhenBadInput = messageWhenBadInput;
+    element.tokens = tokens;
     return element;
 };

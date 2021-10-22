@@ -80,7 +80,6 @@ const TYPES = { valid: ['base', 'list'], default: 'base' };
 export default class ColorPalette extends LightningElement {
     _type = TYPES.default;
     _colors = DEFAULT_COLORS;
-    bundles = [];
     _columns = DEFAULT_COLUMNS;
     _tileWidth = DEFAULT_TILE_WIDTH;
     _tileHeight = DEFAULT_TILE_HEIGHT;
@@ -88,10 +87,11 @@ export default class ColorPalette extends LightningElement {
     _isLoading = false;
     _readOnly = false;
     _value;
+
+    bundles = [];
     init = false;
     currentLabel;
     currentToken;
-    lastTarget;
 
     renderedCallback() {
         this.initContainer();
@@ -101,29 +101,29 @@ export default class ColorPalette extends LightningElement {
      * Initialize Palette container.
      */
     initContainer() {
-        let containerWidth = this.columns * (Number(this.tileWidth) + 8);
-        let containerMinHeight = Number(this.tileHeight) + 8;
-        let container = this.template.querySelector('.avonni-pallet-container');
+        const containerWidth = this.columns * (Number(this.tileWidth) + 8);
+        const containerMinHeight = Number(this.tileHeight) + 8;
+        const container = this.template.querySelector(
+            '[data-element-id="div-palette-container"]'
+        );
 
         if (container) {
             container.style.width = `${containerWidth}px`;
             container.style.minHeight = `${containerMinHeight}px`;
         }
 
-        [...this.template.querySelectorAll('.slds-swatch')].forEach(
-            (element) => {
-                if (this.disabled) {
-                    element.style.backgroundColor = '#dddbda';
-                } else {
-                    element.style.backgroundColor = element.parentElement.getAttribute(
-                        'item-color'
-                    );
-                }
-
-                element.style.height = `${this.tileHeight}px`;
-                element.style.width = `${this.tileWidth}px`;
+        [
+            ...this.template.querySelectorAll('[data-group-name="swatches"]')
+        ].forEach((element) => {
+            if (this.disabled) {
+                element.style.backgroundColor = '#dddbda';
+            } else {
+                element.style.backgroundColor = element.dataset.color;
             }
-        );
+
+            element.style.height = `${this.tileHeight}px`;
+            element.style.width = `${this.tileWidth}px`;
+        });
     }
 
     @api
@@ -342,17 +342,15 @@ export default class ColorPalette extends LightningElement {
             return;
         }
 
-        if (this.lastTarget !== undefined) {
-            this.lastTarget.children[0].classList.remove('slds-is-selected');
-        }
+        const selectedColor = this.template.querySelector('.slds-is-selected');
+        if (selectedColor) selectedColor.classList.remove('slds-is-selected');
 
-        let currentTarget = event.currentTarget;
-        currentTarget.children[0].classList.add('slds-is-selected');
+        const currentTarget = event.currentTarget;
+        currentTarget.classList.add('slds-is-selected');
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.value = currentTarget.getAttribute('item-color');
-        this.currentLabel = currentTarget.getAttribute('item-label');
-        this.currentToken = currentTarget.getAttribute('item-token');
-        this.lastTarget = currentTarget;
+        this.value = currentTarget.dataset.color;
+        this.currentLabel = currentTarget.dataset.label;
+        this.currentToken = currentTarget.dataset.token;
         event.preventDefault();
         this.dispatchChange();
     }

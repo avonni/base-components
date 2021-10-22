@@ -66,3 +66,11 @@
  * @name largeIconWithColorInput
  * @storyId example-color-picker--large-icon-with-color-input
  */
+
+/**
+ * @typedef {Object} Token
+ * @name tokens
+ * @property {string} label Token label.
+ * @property {string} value Token value (for example <code>--lwc-brandAccessible</code>).
+ * @property {string} color Color represented by the token (for example <code>#0176d3</code>).
+ */

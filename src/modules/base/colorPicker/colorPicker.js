@@ -175,12 +175,14 @@ export default class ColorPicker extends LightningElement {
     _colors = DEFAULT_COLORS;
     _opacity = false;
     _messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
+    _tokens = [];
 
+    _currentTab = 'default';
+    _draftToken;
     _dropdownVisible = false;
     _dropdownOpened = false;
     init = false;
     showError = false;
-    isDefault = true;
     newValue;
 
     currentLabel;
@@ -482,6 +484,47 @@ export default class ColorPicker extends LightningElement {
                 : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
     }
 
+    /**
+     * Array of token objects. If present, a token tab will be added in the menu.
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get tokens() {
+        return this._tokens;
+    }
+
+    set tokens(value) {
+        this._tokens = normalizeArray(value);
+    }
+
+    /**
+     * Tokens array or colors array, depending on the selected tab.
+     *
+     * @type {(object[]|string[])}
+     */
+    get computedColors() {
+        return this.tokens.length && this._currentTab === 'tokens'
+            ? this.tokens
+            : this.colors;
+    }
+
+    /**
+     * True if the selected tab is "Custom".
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get customTabIsSelected() {
+        return this._currentTab === 'custom';
+    }
+
+    /**
+     * Generated unique key.
+     *
+     * @type {string}
+     */
     get uniqueKey() {
         return generateUUID();
     }
@@ -814,6 +857,7 @@ export default class ColorPicker extends LightningElement {
         this.inputValue = undefined;
         this.currentLabel = undefined;
         this.currentToken = undefined;
+        this._draftToken = undefined;
         this.showError = false;
         this.template
             .querySelector('[data-element-id="lightning-input"]')
@@ -833,8 +877,10 @@ export default class ColorPicker extends LightningElement {
                 this.opacity && Number(event.detail.alpha) < 1
                     ? event.detail.hexa
                     : event.detail.hex;
-            this.currentLabel = event.detail.label;
-            this.currentToken = event.detail.token;
+            this._draftToken = {
+                label: event.detail.label,
+                value: event.detail.token
+            };
         }
     }
 
@@ -846,6 +892,8 @@ export default class ColorPicker extends LightningElement {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
             this.newValue = '';
+            this.currentLabel = this._draftToken.label;
+            this.currentToken = this._draftToken.value;
 
             if (this.showError) {
                 this.showError = false;
@@ -855,9 +903,8 @@ export default class ColorPicker extends LightningElement {
             }
 
             if (!this.menuIconName) {
-                this.template.querySelector(
-                    '.slds-swatch'
-                ).style.background = this.value;
+                this.template.querySelector('.slds-swatch').style.background =
+                    this.value;
             }
 
             let gradientPalette = this.template.querySelector(
@@ -949,9 +996,11 @@ export default class ColorPicker extends LightningElement {
         event.preventDefault();
 
         [...this.template.querySelectorAll('a')].forEach((tab) => {
-            if (tab.id === event.target.id) {
+            const tabName = tab.dataset.tabName;
+            const targetName = event.currentTarget.dataset.tabName;
+            if (tabName === targetName) {
                 tab.parentElement.classList.add('slds-is-active');
-                this.isDefault = tab.parentElement.title === 'Default';
+                this._currentTab = tabName;
             } else {
                 tab.parentElement.classList.remove('slds-is-active');
             }
@@ -1028,9 +1077,8 @@ export default class ColorPicker extends LightningElement {
                 .classList.remove('slds-has-error');
 
             if (!this.menuIconName) {
-                this.template.querySelector(
-                    '.slds-swatch'
-                ).style.background = color;
+                this.template.querySelector('.slds-swatch').style.background =
+                    color;
             }
 
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
