@@ -212,7 +212,7 @@ export default class Calendar extends LightningElement {
     set value(value) {
         if (value) {
             this._value =
-                typeof value === 'string'
+                typeof value === 'string' || !Array.isArray(value)
                     ? [new Date(value)]
                     : [...normalizeArray(value.map((x) => new Date(x)))];
             this.date = this._value.length

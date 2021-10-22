@@ -430,6 +430,18 @@ export default class InputDateRange extends LightningElement {
             .toString();
     }
 
+    get intervalDate() {
+        return [this.startDate];
+    }
+
+    get startDateEndDate() {
+        return [this.startDate, this.endDate];
+    }
+
+    get isStartDateEndDatePresent() {
+        return this.startDate && this.endDate;
+    }
+
     /**
      * Removes the slds-has-error class on the whole element if it's not valid.
      * Aplies it on every input we need it applied.
@@ -622,13 +634,12 @@ export default class InputDateRange extends LightningElement {
      */
     handleChangeStartDate(event) {
         // Date format received is: YYYY-MM-DD
-        const date = event.detail.value.split('-');
-        const year = Number(date[0]);
-        const month = Number(date[1]) - 1;
-        const day = Number(date[2]);
+        const date = event.detail.value;
 
-        this._startDate = new Date(year, month, day);
+        this._startDate = new Date(date[0]);
         event.stopPropagation();
+        this.toggleStartDateVisibility();
+
         this._cancelBlurStartDate = false;
         this.handleBlurStartDate();
     }
@@ -736,13 +747,9 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of end-date on c-calendar.
      */
     handleChangeEndDate(event) {
-        // Date format received is: YYYY-MM-DD
-        const date = event.detail.value.split('-');
-        const year = Number(date[0]);
-        const month = Number(date[1]) - 1;
-        const day = Number(date[2]);
+        const date = event.detail.value;
 
-        this._endDate = new Date(year, month, day);
+        this._endDate = date[1] ? new Date(date[1]) : undefined;
         event.stopPropagation();
         this._cancelBlurEndDate = false;
         this.handleBlurEndDate();
