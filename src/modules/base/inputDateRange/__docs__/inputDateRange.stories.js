@@ -229,7 +229,8 @@ const Template = (args) => InputDateRange(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Text label'
+    label: 'Text label',
+    endDate: '7/21/2021'
 };
 
 export const Prefilled = Template.bind({});

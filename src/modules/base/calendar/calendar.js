@@ -60,6 +60,8 @@ const DEFAULT_MIN = new Date(1900, 0, 1);
 
 const DEFAULT_DATE = new Date(new Date().setHours(0, 0, 0, 0));
 
+const NULL_DATE = new Date('12/31/1969').setHours(0, 0, 0, 0);
+
 const SELECTION_MODES = {
     valid: ['single', 'multiple', 'interval'],
     default: 'single'
@@ -91,6 +93,10 @@ export default class Calendar extends LightningElement {
 
     connectedCallback() {
         this.updateDateParameters();
+    }
+
+    renderedCallback() {
+        console.log(this._value);
     }
 
     /**
@@ -211,14 +217,33 @@ export default class Calendar extends LightningElement {
 
     set value(value) {
         if (value) {
-            this._value =
-                typeof value === 'string' || !Array.isArray(value)
-                    ? [new Date(value)]
-                    : [...normalizeArray(value.map((x) => new Date(x)))];
-            this.date = this._value.length
+            this.valueSetter(value);
+            this.updateDateParameters();
+        }
+    }
+
+    valueSetter(value) {
+        this._value = !Array.isArray(value)
+            ? [new Date(value)]
+            : [...normalizeArray(value.map((x) => new Date(x)))];
+        if (this._value.length > 1) {
+            if (
+                this.isStartDateNullDate &&
+                this._value[1].setHours(0, 0, 0, 0) !== NULL_DATE
+            ) {
+                this.date = new Date(this._value[1]);
+            } else if (!this.isStartDateNullDate) {
+                this.date = new Date(this._value[0]);
+            }
+        } else if (this._value.length === 1) {
+            this.date = !this.isStartDateNullDate
                 ? new Date(this._value[0])
                 : DEFAULT_DATE;
-            this.updateDateParameters();
+        }
+        if (this._selectionMode !== 'interval') {
+            this._value = this._value.filter(
+                (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
+            );
         }
     }
 
@@ -319,6 +344,12 @@ export default class Calendar extends LightningElement {
         });
     }
 
+    get isStartDateNullDate() {
+        return this._value.length
+            ? this._value[0].setHours(0, 0, 0, 0) === NULL_DATE
+            : false;
+    }
+
     /**
      * Create Dates array.
      *
@@ -394,6 +425,23 @@ export default class Calendar extends LightningElement {
         this.endDate = array[length - 1];
     }
 
+    setValueTime() {
+        if (this._value.length > 1) {
+            if (
+                this.isStartDateNullDate &&
+                this._value[1].setHours(0, 0, 0, 0) !== NULL_DATE
+            ) {
+                return this._value[1].getTime();
+            } else if (!this.isStartDateNullDate) {
+                return this._value[0].getTime();
+            }
+            return '';
+        } else if (this._value.length === 1 && !this.isStartDateNullDate) {
+            return this._value[0].getTime();
+        }
+        return '';
+    }
+
     /**
      * Compute view data for Calendar.
      */
@@ -439,9 +487,7 @@ export default class Calendar extends LightningElement {
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
                 let time = date.getTime();
-                let valueTime = this._value.length
-                    ? this._value[0].getTime()
-                    : '';
+                let valueTime = this.setValueTime();
 
                 if (date.getMonth() !== currentMonth || disabled) {
                     if (i > 3 && a === 0) {
@@ -613,23 +659,37 @@ export default class Calendar extends LightningElement {
         let timestamps = array.map((x) => x.getTime()).sort((a, b) => a - b);
         const timesLength = timestamps.length - 1;
 
-        if (timestamps.includes(timestamp)) {
-            timestamps.splice(timestamps.indexOf(timestamp), 1);
-        } else {
-            if (timestamps.length === 0) {
-                timestamps.push(timestamp);
-            } else if (timestamps.length === 1) {
-                if (timestamp > timestamps[0]) {
-                    timestamps.push(timestamp);
-                } else {
-                    timestamps = [timestamp];
-                }
+        if (this.isStartDateNullDate) {
+            if (timestamps.includes(timestamp)) {
+                timestamps.splice(timestamps.indexOf(timestamp), 1);
             } else {
-                if (timestamp > timestamps[0]) {
-                    timestamps.splice(timesLength, 1);
+                if (timestamps.length === 2) {
+                    if (timestamp < timestamps[1]) {
+                        timestamps[0] = timestamp;
+                    } else {
+                        timestamps = [timestamp];
+                    }
+                }
+            }
+        } else {
+            if (timestamps.includes(timestamp)) {
+                timestamps.splice(timestamps.indexOf(timestamp), 1);
+            } else {
+                if (timestamps.length === 0) {
                     timestamps.push(timestamp);
+                } else if (timestamps.length === 1) {
+                    if (timestamp > timestamps[0]) {
+                        timestamps.push(timestamp);
+                    } else {
+                        timestamps = [timestamp];
+                    }
                 } else {
-                    timestamps = [timestamp];
+                    if (timestamp > timestamps[0]) {
+                        timestamps.splice(timesLength, 1);
+                        timestamps.push(timestamp);
+                    } else {
+                        timestamps = [timestamp];
+                    }
                 }
             }
         }
@@ -735,38 +795,58 @@ export default class Calendar extends LightningElement {
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
         if (this._selectionMode === 'interval') {
-            if (timeArray.length === 1) {
-                if (day > timeArray[0]) {
-                    dayCell.classList.add(
-                        'avonni-calendar-cell__bordered_right'
-                    );
-                }
-                this.template.querySelectorAll('td').forEach((x) => {
-                    if (
-                        x.getAttribute('data-cell-day') >= timeArray[0] &&
-                        x.getAttribute('data-cell-day') <= day
-                    ) {
-                        x.classList.add(
-                            'avonni-calendar-cell__bordered_top_bottom'
+            if (this.isStartDateNullDate) {
+                if (timeArray.length === 2) {
+                    if (day < timeArray[1]) {
+                        dayCell.classList.add(
+                            'avonni-calendar-cell__bordered_left'
                         );
                     }
-                });
-            } else if (timeArray.length === 2) {
-                if (day > timeArray[1]) {
-                    dayCell.classList.add(
-                        'avonni-calendar-cell__bordered_right'
-                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') <= timeArray[1] &&
+                            x.getAttribute('data-cell-day') >= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
                 }
-                this.template.querySelectorAll('td').forEach((x) => {
-                    if (
-                        x.getAttribute('data-cell-day') >= timeArray[1] &&
-                        x.getAttribute('data-cell-day') <= day
-                    ) {
-                        x.classList.add(
-                            'avonni-calendar-cell__bordered_top_bottom'
+            } else {
+                if (timeArray.length === 1) {
+                    if (day > timeArray[0]) {
+                        dayCell.classList.add(
+                            'avonni-calendar-cell__bordered_right'
                         );
                     }
-                });
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') >= timeArray[0] &&
+                            x.getAttribute('data-cell-day') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
+                } else if (timeArray.length === 2) {
+                    if (day > timeArray[1]) {
+                        dayCell.classList.add(
+                            'avonni-calendar-cell__bordered_right'
+                        );
+                    }
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') >= timeArray[1] &&
+                            x.getAttribute('data-cell-day') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
+                }
             }
         }
     }
@@ -775,6 +855,7 @@ export default class Calendar extends LightningElement {
         this.template.querySelectorAll('td').forEach((x) => {
             x.classList.remove('avonni-calendar-cell__bordered_top_bottom');
             x.classList.remove('avonni-calendar-cell__bordered_right');
+            x.classList.remove('avonni-calendar-cell__bordered_left');
         });
     }
 }

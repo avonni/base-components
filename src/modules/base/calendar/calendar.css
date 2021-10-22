@@ -120,6 +120,10 @@ div:focus {
     border-right: #d3d3d39a 1px dashed;
 }
 
+.avonni-calendar-cell__bordered_left {
+    border-left: #d3d3d39a 1px dashed;
+}
+
 .avonni-calendar-cell__bordered_top_bottom {
     border-bottom: #d3d3d39a 1px dashed;
     border-top: #d3d3d39a 1px dashed;
