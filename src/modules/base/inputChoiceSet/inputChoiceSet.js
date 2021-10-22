@@ -136,6 +136,14 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     connectedCallback() {
+        if (this.isMultiSelect && this.value) {
+            // Make sure the value is an array when the input is multiselect
+            this._value =
+                typeof this.value === 'string'
+                    ? [this.value]
+                    : normalizeArray(this.value);
+        }
+
         this.classList.add('slds-form-element');
         this.updateClassList();
         this.interactingState = new InteractingState();
@@ -170,8 +178,12 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     set value(value) {
-        this._value =
-            typeof value === 'string' ? value : [...normalizeArray(value)];
+        this._value = value;
+
+        if (value && this.isConnected && this.isMultiSelect) {
+            this._value =
+                typeof value === 'string' ? [value] : normalizeArray(value);
+        }
     }
 
     /**
@@ -466,7 +478,9 @@ export default class InputChoiceSet extends LightningElement {
         const checkedValues = Array.from(inputs)
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.value);
-        return checkedValues.length > 1 ? checkedValues : checkedValues[0];
+
+        if (!checkedValues.length) return null;
+        return this.isMultiSelect ? checkedValues : checkedValues[0];
     }
 
     /**
@@ -496,23 +510,6 @@ export default class InputChoiceSet extends LightningElement {
                 checkbox.checked = false;
             });
             this._value = this.handleValueChange(checkboxes);
-        }
-        if (this.type === 'button') {
-            checkboxes.forEach((checkbox) => {
-                const label = checkbox.labels[0];
-                let icon = label.querySelector(
-                    '[data-element-id="lightning-icon-button"]'
-                );
-                if (icon) {
-                    if (value.includes(label.control.value))
-                        icon.variant = 'inverse';
-                    else icon.variant = '';
-
-                    if (!checkbox.checked && icon.variant === 'inverse') {
-                        icon.variant = '';
-                    }
-                }
-            });
         }
 
         /**
