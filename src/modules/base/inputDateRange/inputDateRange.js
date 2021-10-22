@@ -434,6 +434,18 @@ export default class InputDateRange extends LightningElement {
         return [this.startDate];
     }
 
+    get isOnlyEndDate() {
+        return !this.startDate && this.endDate;
+    }
+
+    get endDateOnly() {
+        return [null, this.endDate];
+    }
+
+    get isOnlyStartDate() {
+        return this.startDate && !this.endDate;
+    }
+
     get startDateEndDate() {
         return [this.startDate, this.endDate];
     }
@@ -748,8 +760,13 @@ export default class InputDateRange extends LightningElement {
      */
     handleChangeEndDate(event) {
         const date = event.detail.value;
+        console.log(event.detail.value);
 
-        this._endDate = date[1] ? new Date(date[1]) : undefined;
+        if (date.length === 1) {
+            this._endDate = new Date(date[0]);
+        } else {
+            this._endDate = date[1] ? new Date(date[1]) : undefined;
+        }
         event.stopPropagation();
         this._cancelBlurEndDate = false;
         this.handleBlurEndDate();
