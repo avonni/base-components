@@ -33,16 +33,18 @@
 -->
 
 <template>
-    <c-qrcode
-        value={value}
-        background={typeAttributes.background}
-        border-color={typeAttributes.borderColor}
-        border-width={typeAttributes.borderWidth}
-        color={typeAttributes.color}
-        encoding={typeAttributes.encoding}
-        error-correction={typeAttributes.errorCorrection}
-        padding={typeAttributes.padding}
-        render-as={typeAttributes.renderAs}
-        size={typeAttributes.size}
-    ></c-qrcode>
+    <div class="slds-p-around_x-small">
+        <c-qrcode
+            value={value}
+            background={typeAttributes.background}
+            border-color={typeAttributes.borderColor}
+            border-width={typeAttributes.borderWidth}
+            color={typeAttributes.color}
+            encoding={typeAttributes.encoding}
+            error-correction={typeAttributes.errorCorrection}
+            padding={typeAttributes.padding}
+            render-as={typeAttributes.renderAs}
+            size={typeAttributes.size}
+        ></c-qrcode>
+    </div>
 </template>

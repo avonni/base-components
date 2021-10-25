@@ -36,6 +36,37 @@ import ColorPicker from 'c/colorPicker';
 // not tested
 // Positioning of the dropdown menu.
 
+const colors = [
+    '#e3abec',
+    '#c2dbf6',
+    '#9fd6ff',
+    '#9de7da',
+    '#9df0bf',
+    '#fff099',
+    '#fed49a',
+    '#d073df',
+    '#86b9f3',
+    '#5ebbff',
+    '#44d8be',
+    '#3be281',
+    '#ffe654',
+    '#ffb758',
+    '#bd35bd',
+    '#5778c1',
+    '#5ebbff',
+    '#00aea9',
+    '#3bba4c',
+    '#f4bc25',
+    '#f99120',
+    '#580d8c',
+    '#001870',
+    '#0a2399',
+    '#097476',
+    '#096a50',
+    '#b67d11',
+    '#b85d0d'
+];
+
 let element;
 describe('Color Picker', () => {
     afterEach(() => {
@@ -53,58 +84,29 @@ describe('Color Picker', () => {
 
     it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
+        expect(element.colors).toMatchObject(colors);
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
+        expect(element.hideColorInput).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
-        expect(element.name).toBeUndefined();
-        expect(element.readOnly).toBeFalsy();
-        expect(element.required).toBeFalsy();
-        expect(element.value).toBeUndefined();
-        expect(element.variant).toBe('standard');
-        expect(element.type).toBe('base');
         expect(element.menuVariant).toBe('border');
         expect(element.menuIconName).toBeUndefined();
         expect(element.menuIconSize).toBe('x-small');
         expect(element.menuLabel).toBeUndefined();
         expect(element.menuAlignment).toBe('left');
         expect(element.menuNubbin).toBeFalsy();
-        expect(element.colors).toMatchObject([
-            '#e3abec',
-            '#c2dbf6',
-            '#9fd6ff',
-            '#9de7da',
-            '#9df0bf',
-            '#fff099',
-            '#fed49a',
-            '#d073df',
-            '#86b9f3',
-            '#5ebbff',
-            '#44d8be',
-            '#3be281',
-            '#ffe654',
-            '#ffb758',
-            '#bd35bd',
-            '#5778c1',
-            '#5ebbff',
-            '#00aea9',
-            '#3bba4c',
-            '#f4bc25',
-            '#f99120',
-            '#580d8c',
-            '#001870',
-            '#0a2399',
-            '#097476',
-            '#096a50',
-            '#b67d11',
-            '#b85d0d'
-        ]);
-        expect(element.hideColorInput).toBeFalsy();
+        expect(element.messageWhenBadInput).toBeUndefined();
+        expect(element.messageWhenValueMissing).toBeUndefined();
+        expect(element.name).toBeUndefined();
         expect(element.opacity).toBeFalsy();
-        expect(element.messageWhenBadInput).toBe(
-            'Please ensure value is correct'
-        );
         expect(element.tokens).toMatchObject([]);
+        expect(element.readOnly).toBeFalsy();
+        expect(element.required).toBeFalsy();
+        expect(element.value).toBeUndefined();
+        expect(element.validity).toMatchObject({});
+        expect(element.variant).toBe('standard');
+        expect(element.type).toBe('base');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -182,7 +184,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
             expect(input.name).toBe('This is a name text');
         });
@@ -194,9 +196,18 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
-            expect(input.disabled).toBeTruthy();
+            const readOnly = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-read-only"]'
+            );
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+
+            expect(readOnly).toBeTruthy();
+            expect(input).toBeFalsy();
+            expect(button.className).toBe('slds-button slds-swatch-read-only');
         });
     });
 
@@ -218,13 +229,13 @@ describe('Color Picker', () => {
         return Promise.resolve()
             .then(() => {
                 const input = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
+                    '[data-element-id="input"]'
                 );
                 expect(input.value).toBe('rgb(65, 159, 236)');
             })
             .then(() => {
                 const swatch = element.shadowRoot.querySelector(
-                    '[data-element-id="span"]'
+                    '[data-element-id="swatch"]'
                 );
                 expect(swatch.style.background).toBe('rgb(65, 159, 236)');
             });
@@ -852,13 +863,30 @@ describe('Color Picker', () => {
     });
 
     // message when bad input
-    it('message when bad input value', () => {
-        element.messageWhenBadInput = 2;
+    it('Color Picker message when bad input value', () => {
+        element.messageWhenBadInput = 'Something is wrong';
+        element.value = 'hello';
+        element.showHelpMessageIfInvalid();
 
         return Promise.resolve().then(() => {
-            expect(element.messageWhenBadInput).toBe(
-                'Please ensure value is correct'
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
             );
+            expect(help.textContent).toBe('Something is wrong');
+        });
+    });
+
+    // message when missing value
+    it('Color Picker message when missing value', () => {
+        element.messageWhenValueMissing = 'Something is wrong';
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
+            );
+            expect(help.textContent).toBe('Something is wrong');
         });
     });
 
@@ -888,7 +916,7 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-input"]'
+                '[data-element-id="input"]'
             );
             expect(input).toBeFalsy();
         });
@@ -909,6 +937,35 @@ describe('Color Picker', () => {
             );
             expect(gradient.opacity).toBe(true);
         });
+    });
+    
+    // swatch initialization
+    it('Color Picker swatch initialization', () => {
+        element.value = '#e3abec';
+        return Promise.resolve().then(() => {
+            const swatch = element.shadowRoot.querySelector(
+                '[data-element-id="swatch"]'
+            );
+            expect(swatch.style.background).toBe('rgb(227, 171, 236)');
+        });
+    });
+
+    // done button
+    it('Color Picker done button', () => {
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const doneButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-done"]'
+                );
+                expect(doneButton).toBeTruthy();
+                doneButton.click();
+            });
     });
 
     // tokens
@@ -1008,8 +1065,9 @@ describe('Color Picker', () => {
 
         return Promise.resolve()
             .then(() => {
-                const input =
-                    element.shadowRoot.querySelector('lightning-input');
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
                 input.value = '#ffffff';
             })
             .then(() => {
@@ -1026,6 +1084,52 @@ describe('Color Picker', () => {
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             });
+    });
+
+    // checkValidity
+    // Depends on required
+    it('Color picker checkValidity method, valid', () => {
+        element.required = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toBeTruthy();
+        });
+    });
+
+    it('Color picker checkValidity method, invalid', () => {
+        element.required = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toBeFalsy();
+        });
+    });
+
+    // reportValidity
+    // Depends on required
+    it('Color picker reportValidity method', () => {
+        element.required = true;
+        element.reportValidity();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('Color picker showHelpMessageIfInvalid method', () => {
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-help-message]'
+            );
+            expect(help).toBeTruthy();
+        });
     });
 
     /* ----- EVENTS ----- */
@@ -1077,7 +1181,7 @@ describe('Color Picker', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         const input = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-input"]'
+            '[data-element-id="input"]'
         );
         input.value = '#ffffff';
 
@@ -1151,12 +1255,15 @@ describe('Color Picker', () => {
     // focus event and method
     it('focus event and method', () => {
         const handler = jest.fn();
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         element.addEventListener('focus', handler);
 
         return Promise.resolve()
             .then(() => {
-                element.dispatchEvent(new CustomEvent('focus', {}));
+                input.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();

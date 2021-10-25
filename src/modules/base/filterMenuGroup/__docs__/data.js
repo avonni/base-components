@@ -148,7 +148,7 @@ const MENUS = [
         alternativeText: 'Open contact type filter',
         items: contact,
         tooltip: 'Type of contact',
-        value: ['email', 'meeting']
+        value: 'email'
     },
     {
         name: 'prices',
@@ -164,7 +164,8 @@ const MENUS = [
         items: editions,
         label: 'Editions',
         showSearchBox: true,
-        dropdownLength: '5-items'
+        dropdownLength: '5-items',
+        isMultiSelect: true
     },
     {
         name: 'ratings',
@@ -176,7 +177,9 @@ const MENUS = [
         name: 'languages',
         items: languages,
         label: 'Laguages',
-        dropdownLength: '10-items'
+        dropdownLength: '10-items',
+        isMultiSelect: true,
+        value: ['dutch', 'english']
     }
 ];
 
@@ -188,7 +191,7 @@ const ICONS_MENUS = [
         items: contact,
         iconName: 'utility:call',
         tooltip: 'Type of contact',
-        value: ['email', 'meeting']
+        value: 'email'
     },
     {
         name: 'prices',
@@ -217,7 +220,9 @@ const ICONS_MENUS = [
         name: 'languages',
         iconName: 'utility:world',
         items: languages,
-        dropdownLength: '10-items'
+        dropdownLength: '10-items',
+        isMultiSelect: true,
+        value: ['dutch', 'english']
     }
 ];
 

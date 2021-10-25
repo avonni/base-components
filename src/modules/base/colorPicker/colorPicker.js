@@ -39,6 +39,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 
 import { classSet } from 'c/utils';
 import { generateUUID } from 'c/utils';
@@ -113,8 +114,6 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
-const DEFAULT_MESSAGE_WHEN_BAD_INPUT = 'Please ensure value is correct';
-
 /**
  * @class
  * @descriptor avonni-color-picker
@@ -158,6 +157,20 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     @api menuLabel;
+    /**
+     * Error message to be displayed when a bad input is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenBadInput;
+    /**
+     * Error message to be displayed when the value is missing and input is required.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing;
 
     _value;
     _name;
@@ -174,24 +187,32 @@ export default class ColorPicker extends LightningElement {
     _menuNubbin = false;
     _colors = DEFAULT_COLORS;
     _opacity = false;
-    _messageWhenBadInput = DEFAULT_MESSAGE_WHEN_BAD_INPUT;
     _tokens = [];
 
     _currentTab = 'default';
     _draftToken;
-    _dropdownVisible = false;
-    _dropdownOpened = false;
+    
+    dropdownOpened = false;
+    dropdownVisible = false;
     init = false;
     showError = false;
     newValue;
-
+    helpMessage;
     currentLabel;
     currentToken;
 
+    _inputValue;
+    _rendered = false;
+
+    connectedCallback() {
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+    }
+
     renderedCallback() {
-        if (!this.init) {
+        if (!this._rendered) {
             this.initSwatchColor();
-            this.init = true;
+            this._rendered = true;
         }
     }
 
@@ -223,10 +244,10 @@ export default class ColorPicker extends LightningElement {
 
     set value(value) {
         if (!value) {
-            this._value = '';
-            this._inputValue = '';
-            this.currentLabel = '';
-            this.currentToken = '';
+            this._value = null;
+            this._inputValue = null;
+            this.currentLabel = null;
+            this.currentToken = null;
         } else {
             this._value = value;
             this.inputValue = value;
@@ -459,25 +480,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Error message to be displayed when a bad input is detected.
-     *
-     * @public
-     * @type {string}
-     * @default Please ensure value is correct
-     */
-    @api
-    get messageWhenBadInput() {
-        return this._messageWhenBadInput;
-    }
-
-    set messageWhenBadInput(value) {
-        this._messageWhenBadInput =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_MESSAGE_WHEN_BAD_INPUT;
-    }
-
-    /**
      * Array of token objects. If present, a token tab will be added in the menu.
      *
      * @public
@@ -550,31 +552,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Show label.
-     *
-     * @returns {boolean}
-     */
-    get showLabel() {
-        return this.label || this.required;
-    }
-
-    /**
-     * Disabled input.
-     *
-     * @returns {boolean}
-     */
-    get disabledInput() {
-        return this.disabled || this.readOnly;
-    }
-
-    /*
-     * Whether there a label next to each default color.
-     */
-    get isLabelDisplayed() {
-        return !!this.currentLabel;
-    }
-
-    /**
      * Retrieve the input value.
      *
      * @type {string}
@@ -587,21 +564,267 @@ export default class ColorPicker extends LightningElement {
         this._inputValue = val;
     }
 
-    _inputValue;
-
     /**
      * Whether the color input field contains a value.
      *
      * @type {string}
      */
     get isInputFilled() {
-        let input = this.template.querySelector(
-            '[data-element-id="lightning-input"]'
-        );
+        let input = this.template.querySelector('[data-element-id="input"]');
         if (input == null) {
             return this.inputValue;
         }
-        return !!input.value;
+        return !!this.inputValue;
+    }
+
+    /**
+     * Returns true if the input value is color type.
+     *
+     * @type {boolean}
+     */
+    get hasBadInput() {
+        return !(
+            colorType(this.inputValue) === 'hex' ||
+            (colorType(this.inputValue) === 'hexa' && this.opacity)
+        );
+    }
+
+    /**
+     * Returns swatch element.
+     *
+     * @type {element}
+     */
+    get elementSwatch() {
+        return this.template.querySelector('[data-element-id="swatch"]');
+    }
+
+    /**
+     * Returns colorGradient element.
+     *
+     * @type {element}
+     */
+    get colorGradient() {
+        return this.template.querySelector('[data-element-id="avonni-color-gradient"]');
+    }
+
+    /**
+     * Compute Aria Expanded for dropdown.
+     *
+     * @type {string}
+     * @return {String} from dropdownVisible
+     */
+    get computedAriaExpanded() {
+        return String(this.dropdownVisible);
+    }
+
+    /**
+     * Computed container class styling.
+     *
+     * @type {string}
+     */
+    get computedContainerClass() {
+        return classSet()
+            .add({
+                'slds-form-element_stacked': this.variant === 'label-stacked',
+                'avonni-label-inline': this.variant === 'label-inline'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Legend class styling.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        return classSet('slds-form-element__label slds-no-flex')
+            .add({
+                'slds-assistive-text': this.variant === 'label-hidden'
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Button class styling.
+     *
+     * @type {string}
+     */
+    get computedButtonClass() {
+        const isDropdownIcon = !this.computedShowDownIcon;
+        const isBare =
+            this.menuVariant === 'bare' || this.menuVariant === 'bare-inverse';
+
+        const classes = classSet('slds-button');
+
+        const useMoreContainer =
+            this.menuVariant === 'container' ||
+            this.menuVariant === 'bare-inverse' ||
+            this.menuVariant === 'border-inverse';
+
+        if (this.menuLabel && !this.readOnly) {
+            classes.add({
+                'slds-button_neutral':
+                    this.menuVariant === 'border' && isDropdownIcon,
+                'slds-button_inverse': this.menuVariant === 'border-inverse'
+            });
+        } else if (!this.menuLabel && !this.readOnly) {
+            classes.add({
+                'slds-button_icon': !isDropdownIcon,
+                'slds-button_icon-bare': isBare,
+                'slds-button_icon-more': !useMoreContainer && !isDropdownIcon,
+                'slds-button_icon-container-more':
+                    useMoreContainer && !isDropdownIcon,
+                'slds-button_icon-container':
+                    this.menuVariant === 'container' && isDropdownIcon,
+                'slds-button_icon-border':
+                    this.menuVariant === 'border' && isDropdownIcon,
+                'slds-button_icon-border-filled':
+                    this.menuVariant === 'border-filled',
+                'slds-button_icon-border-inverse':
+                    this.menuVariant === 'border-inverse',
+                'slds-button_icon-inverse': this.menuVariant === 'bare-inverse',
+                'slds-button_icon-xx-small':
+                    this.menuIconSize === 'xx-small' &&
+                    !isBare &&
+                    this.menuLabel,
+                'slds-button_icon-x-small':
+                    this.menuIconSize === 'x-small' &&
+                    !isBare &&
+                    this.menuLabel,
+                'slds-button_icon-small':
+                    this.menuIconSize === 'small' && !isBare && this.menuLabel,
+                'slds-icon_large':
+                    this.menuIconSize === 'large' && this.menuIconName
+            });
+        } else {
+            classes.add({
+                'slds-swatch-read-only': this.readOnly
+            });
+        }
+        return classes.toString();
+    }
+
+    /**
+     * Compute show down Icon.
+     *
+     * @type {boolean}
+     */
+    get computedShowDownIcon() {
+        return !(
+            this.menuIconName === 'utility:down' ||
+            this.menuIconName === 'utility:chevrondown'
+        );
+    }
+
+    /**
+     * Computed dropdown menu classs styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownClass() {
+        return classSet('slds-color-picker__selector slds-dropdown')
+            .add({
+                'slds-dropdown_left':
+                    this.menuAlignment === 'left' || this.isAutoAlignment(),
+                'slds-dropdown_center': this.menuAlignment === 'center',
+                'slds-dropdown_right': this.menuAlignment === 'right',
+                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                    this.menuAlignment === 'bottom-right',
+                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                    this.menuAlignment === 'bottom-left',
+                'slds-nubbin_top-left':
+                    this.menuNubbin && this.menuAlignment === 'left',
+                'slds-nubbin_top-right':
+                    this.menuNubbin && this.menuAlignment === 'right',
+                'slds-nubbin_top':
+                    this.menuNubbin && this.menuAlignment === 'center',
+                'slds-nubbin_bottom-left':
+                    this.menuNubbin && this.menuAlignment === 'bottom-left',
+                'slds-nubbin_bottom-right':
+                    this.menuNubbin && this.menuAlignment === 'bottom-right',
+                'slds-nubbin_bottom':
+                    this.menuNubbin && this.menuAlignment === 'bottom-center',
+                'slds-p-vertical_large': this.isLoading
+            })
+            .toString();
+    }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && !this.value,
+                badInput: () => this.inputValue && this.hasBadInput
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /*-------- Public methods --------*/
+
+    /**
+     * Indicates whether the element meets all constraint validations.
+     *
+     * @returns {boolean} the valid attribute value on the ValidityState object.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    /**
+     * Displays the error messages and returns false if the input is invalid.
+     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     *
+     * @returns {boolean} - The validity status of the input fields.
+     * @public
+     */
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
+        });
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     *
+     * @param {string} message - The string that describes the error.
+     * If message is an empty string, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
     }
 
     /**
@@ -611,10 +834,347 @@ export default class ColorPicker extends LightningElement {
      */
     @api
     focus() {
-        const button = this.template.querySelector(
-            '[data-element-id="button"]'
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.focus();
+    }
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.blur();
+    }
+
+    /*-------- Private methods --------*/
+
+    /**
+     * Initialize swatch colors.
+     */
+    initSwatchColor() {
+        if (this.elementSwatch) {
+            this.elementSwatch.style.background = this.value;
+        }
+    }
+
+    /**
+     * Button focus handler.
+     */
+    focusOnButton() {
+        this.template.querySelector('[data-element-id="button"]').focus();
+    }
+
+    /**
+     * Clear color picker input.
+     */
+    clearInput() {
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.value = undefined;
+        this.inputValue = null;
+        this.currentLabel = undefined;
+        this.currentToken = undefined;
+        this._draftToken = undefined;
+        this.focus();
+
+        this.dispatchClear();
+    }
+
+    /**
+     * Change Handler.
+     *
+     * @param {Event} event
+     */
+    handlerChange(event) {
+        if (event.detail) {
+            this.newValue =
+                this.opacity && Number(event.detail.alpha) < 1
+                    ? event.detail.hexa
+                    : event.detail.hex;
+            this._draftToken = {
+                label: event.detail.label,
+                value: event.detail.token
+            };
+        }
+    }
+
+    /**
+     * Handle new value change and update ui.
+     */
+    handlerDone() {
+        if (!this.readOnly && this.newValue) {
+            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+            this.value = this.newValue;
+            this.currentLabel = this._draftToken.label;
+            this.currentToken = this._draftToken.value;
+            this.newValue = null;
+
+            if (!this.menuIconName) {
+                this.elementSwatch.style.background = this.value;
+            }
+            if (this.colorGradient) {
+                this.colorGradient.renderValue(this.value);
+            }
+
+            this.dispatchChange(generateColors(this.value));
+        }
+
+        this.handleBlur();
+        this.focus();
+    }
+
+    /**
+     * Handle new value canceled.
+     */
+    handlerCancel() {
+        this.newValue = null;
+
+        if (this.colorGradient) {
+            this.colorGradient.renderValue(this.value);
+        }
+
+        this.handleBlur();
+    }
+
+    /**
+     * Button click handler.
+     */
+    handleButtonClick() {
+        if (!this.readOnly) {
+            this.allowBlur();
+            this.toggleMenuVisibility();
+            this.focusOnButton();
+        }
+    }
+
+    /**
+     * Handle mouse down on Button.
+     *
+     * @param {Event} event
+     */
+    handleButtonMouseDown(event) {
+        const mainButton = 0;
+        if (event.button === mainButton) {
+            this.cancelBlur();
+        }
+    }
+
+    /**
+     * Dropdown menu mouse down handler.
+     *
+     * @param {Event} event
+     */
+    handleDropdownMouseDown(event) {
+        const mainButton = 0;
+        if (event.button === mainButton) {
+            this.cancelBlur();
+        }
+    }
+
+    /**
+     * Dropdown menu mouse up handler.
+     */
+    handleDropdownMouseUp() {
+        this.allowBlur();
+    }
+
+    /**
+     * Sets blur.
+     */
+    allowBlur() {
+        this._cancelBlur = false;
+    }
+
+    /**
+     * Cancels blur.
+     */
+    cancelBlur() {
+        this._cancelBlur = true;
+    }
+
+    /**
+     * Blur handler.
+     */
+    handleBlur() {
+        if (this._cancelBlur) {
+            return;
+        }
+
+        if (this.dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Dropdown menu visibility toggle.
+     */
+    toggleMenuVisibility() {
+        if (!this.disabled) {
+            this.dropdownVisible = !this.dropdownVisible;
+
+            if (!this.dropdownOpened && this.dropdownVisible) {
+                this.dropdownOpened = true;
+            }
+
+            if (this.dropdownVisible) {
+                this._boundingRect = this.getBoundingClientRect();
+                this.pollBoundingRect();
+            }
+
+            this.template
+                .querySelector('.slds-dropdown-trigger')
+                .classList.toggle('slds-is-open');
+        }
+    }
+
+    /**
+     * Close dropdown menu.
+     */
+    close() {
+        if (this.dropdownVisible) {
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Check if auto aligned.
+     *
+     * @returns {boolean}
+     */
+    isAutoAlignment() {
+        return this.menuAlignment.startsWith('auto');
+    }
+
+    /**
+     * Poll bounding rect of the dropdown menu.
+     */
+    pollBoundingRect() {
+        if (this.isAutoAlignment() && this.dropdownVisible) {
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                if (this._connected) {
+                    observePosition(this, 300, this._boundingRect, () => {
+                        this.close();
+                    });
+
+                    this.pollBoundingRect();
+                }
+            }, 250);
+        }
+    }
+
+    /**
+     * Tab click event handler.
+     *
+     * @param {Event} event
+     */
+    handlerTabClick(event) {
+        event.preventDefault();
+
+        this.template
+            .querySelectorAll('[data-group-name="tabs"]')
+            .forEach((tab) => {
+                const tabName = tab.dataset.tabName;
+                const targetName = event.currentTarget.dataset.tabName;
+
+                if (tabName === targetName) {
+                    tab.parentElement.classList.add('slds-is-active');
+                    this._currentTab = tabName;
+                } else {
+                    tab.parentElement.classList.remove('slds-is-active');
+                }
+            });
+
+        const palette = this.template.querySelector(
+            '[data-element-id="avonni-color-palette-default"]'
         );
-        if (button) button.focus();
+        if (palette) palette.colors = [...this.computedColors];
+    }
+
+    /**
+     * Private focus handler.
+     *
+     * @param {Event} event
+     */
+    handlePrivateFocus(event) {
+        event.stopPropagation();
+
+        this.allowBlur();
+        this._menuHasFocus = true;
+    }
+
+    /**
+     * Private blur handler.
+     *
+     * @param {Event} event
+     */
+    handlePrivateBlur(event) {
+        event.stopPropagation();
+
+        this.handleBlur();
+        this._menuHasFocus = false;
+    }
+
+    /**
+     * Input color event handler.
+     *
+     * @param {Event} event
+     */
+    handleInputColor(event) {
+        let color = event.target.value;
+        this.inputValue = color;
+        if (
+            colorType(color) === 'hex' ||
+            (colorType(color) === 'hexa' && this.opacity)
+        ) {
+            if (!this.menuIconName) {
+                this.elementSwatch.style.background = color;
+            }
+            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+            this.value = color;
+
+            if (this.colorGradient) {
+                this.colorGradient.renderValue(color);
+            }
+            this.dispatchChange(generateColors(color));
+        }
+        event.stopPropagation();
+    }
+
+    /*-------- Public events --------*/
+
+    /**
+     * Focus event dispatcher.
+     *
+     */
+    handleInputFocus() {
+        this.interactingState.enter();
+        /**
+         * The event fired when you focus the color picker input.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
+     * Blur event dispatcher.
+     *
+     */
+    handleInputBlur() {
+        this.interactingState.leave();
+        /**
+         * The event fired when the focus is removed from the color picker input.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
@@ -667,465 +1227,5 @@ export default class ColorPicker extends LightningElement {
             alpha: undefined,
             token: undefined
         });
-    }
-
-    /**
-     * Initialize swatch colors.
-     */
-    initSwatchColor() {
-        let element = this.template.querySelector('.slds-swatch');
-
-        if (element) {
-            element.style.background = this.value;
-        }
-    }
-
-    /**
-     * Compute Aria Expanded for dropdown.
-     *
-     * @type {string}
-     * @return {String} from dropdownVisible
-     */
-    get computedAriaExpanded() {
-        return String(this._dropdownVisible);
-    }
-
-    /**
-     * Computed container class styling.
-     *
-     * @type {string}
-     */
-    get computedContainerClass() {
-        return classSet()
-            .add({
-                'slds-form-element_stacked': this.variant === 'label-stacked',
-                'avonni-label-inline': this.variant === 'label-inline'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Legend class styling.
-     *
-     * @type {string}
-     */
-    get computedLegendClass() {
-        return classSet('slds-form-element__label slds-no-flex')
-            .add({
-                'slds-assistive-text': this.variant === 'label-hidden'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Button class styling.
-     *
-     * @type {string}
-     */
-    get computedButtonClass() {
-        const isDropdownIcon = !this.computedShowDownIcon;
-        const isBare =
-            this.menuVariant === 'bare' || this.menuVariant === 'bare-inverse';
-
-        const classes = classSet('slds-button');
-
-        const useMoreContainer =
-            this.menuVariant === 'container' ||
-            this.menuVariant === 'bare-inverse' ||
-            this.menuVariant === 'border-inverse';
-
-        if (this.menuLabel) {
-            classes.add({
-                'slds-button_neutral':
-                    this.menuVariant === 'border' && isDropdownIcon,
-                'slds-button_inverse': this.menuVariant === 'border-inverse'
-            });
-        } else {
-            classes.add({
-                'slds-button_icon': !isDropdownIcon,
-                'slds-button_icon-bare': isBare,
-                'slds-button_icon-more': !useMoreContainer && !isDropdownIcon,
-                'slds-button_icon-container-more':
-                    useMoreContainer && !isDropdownIcon,
-                'slds-button_icon-container':
-                    this.menuVariant === 'container' && isDropdownIcon,
-                'slds-button_icon-border':
-                    this.menuVariant === 'border' && isDropdownIcon,
-                'slds-button_icon-border-filled':
-                    this.menuVariant === 'border-filled',
-                'slds-button_icon-border-inverse':
-                    this.menuVariant === 'border-inverse',
-                'slds-button_icon-inverse': this.menuVariant === 'bare-inverse',
-                'slds-button_icon-xx-small':
-                    this.menuIconSize === 'xx-small' &&
-                    !isBare &&
-                    this.menuLabel,
-                'slds-button_icon-x-small':
-                    this.menuIconSize === 'x-small' &&
-                    !isBare &&
-                    this.menuLabel,
-                'slds-button_icon-small':
-                    this.menuIconSize === 'small' && !isBare && this.menuLabel,
-                'slds-icon_large':
-                    this.menuIconSize === 'large' && this.menuIconName
-            });
-        }
-
-        return classes.toString();
-    }
-
-    /**
-     * Compute show down Icon.
-     *
-     * @type {boolean}
-     */
-    get computedShowDownIcon() {
-        return !(
-            this.menuIconName === 'utility:down' ||
-            this.menuIconName === 'utility:chevrondown'
-        );
-    }
-
-    /**
-     * Computed dropdown menu classs styling.
-     *
-     * @type {string}
-     */
-    get computedDropdownClass() {
-        return classSet('slds-color-picker__selector slds-dropdown')
-            .add({
-                'slds-dropdown_left':
-                    this.menuAlignment === 'left' || this.isAutoAlignment(),
-                'slds-dropdown_center': this.menuAlignment === 'center',
-                'slds-dropdown_right': this.menuAlignment === 'right',
-                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
-                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                    this.menuAlignment === 'bottom-right',
-                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                    this.menuAlignment === 'bottom-left',
-                'slds-nubbin_top-left':
-                    this.menuNubbin && this.menuAlignment === 'left',
-                'slds-nubbin_top-right':
-                    this.menuNubbin && this.menuAlignment === 'right',
-                'slds-nubbin_top':
-                    this.menuNubbin && this.menuAlignment === 'center',
-                'slds-nubbin_bottom-left':
-                    this.menuNubbin && this.menuAlignment === 'bottom-left',
-                'slds-nubbin_bottom-right':
-                    this.menuNubbin && this.menuAlignment === 'bottom-right',
-                'slds-nubbin_bottom':
-                    this.menuNubbin && this.menuAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading
-            })
-            .toString();
-    }
-
-    /**
-     * Check if auto aligned.
-     *
-     * @returns {boolean}
-     */
-    isAutoAlignment() {
-        return this.menuAlignment.startsWith('auto');
-    }
-
-    clearInput() {
-        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.value = undefined;
-        this.inputValue = undefined;
-        this.currentLabel = undefined;
-        this.currentToken = undefined;
-        this._draftToken = undefined;
-        this.showError = false;
-        this.template
-            .querySelector('[data-element-id="lightning-input"]')
-            .classList.remove('slds-has-error');
-
-        this.dispatchClear();
-    }
-
-    /**
-     * Change Handler.
-     *
-     * @param {Event} event
-     */
-    handlerChange(event) {
-        if (event.detail) {
-            this.newValue =
-                this.opacity && Number(event.detail.alpha) < 1
-                    ? event.detail.hexa
-                    : event.detail.hex;
-            this._draftToken = {
-                label: event.detail.label,
-                value: event.detail.token
-            };
-        }
-    }
-
-    /**
-     * Handle new value change and update ui.
-     */
-    handlerDone() {
-        if (!this.readOnly && this.newValue) {
-            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-            this.value = this.newValue;
-            this.newValue = '';
-            this.currentLabel = this._draftToken.label;
-            this.currentToken = this._draftToken.value;
-
-            if (this.showError) {
-                this.showError = false;
-                this.template
-                    .querySelector('[data-element-id="lightning-input"]')
-                    .classList.remove('slds-has-error');
-            }
-
-            if (!this.menuIconName) {
-                this.template.querySelector('.slds-swatch').style.background =
-                    this.value;
-            }
-
-            let gradientPalette = this.template.querySelector(
-                '[data-element-id^="avonni-color-gradient"]'
-            );
-
-            if (gradientPalette) {
-                gradientPalette.renderValue(this.value);
-            }
-
-            this.dispatchChange(generateColors(this.value));
-        }
-
-        this.handleBlur();
-    }
-
-    /**
-     * Handle new value canceled.
-     */
-    handlerCancel() {
-        this.newValue = '';
-
-        let gradientPalette = this.template.querySelector(
-            '[data-element-id^="avonni-color-gradient"]'
-        );
-
-        if (gradientPalette) {
-            gradientPalette.renderValue(this.value);
-        }
-
-        this.handleBlur();
-    }
-
-    /**
-     * Button click handler.
-     */
-    handleButtonClick() {
-        this.allowBlur();
-        this.toggleMenuVisibility();
-        this.focus();
-    }
-
-    /**
-     * Handle mouse down on Button.
-     *
-     * @param {Event} event
-     */
-    handleButtonMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
-    }
-
-    /**
-     * Dropdown menu mouse down handler.
-     *
-     * @param {Event} event
-     */
-    handleDropdownMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
-    }
-
-    /**
-     * Dropdown menu mouse up handler.
-     */
-    handleDropdownMouseUp() {
-        this.allowBlur();
-    }
-
-    /**
-     * Tab click event handler.
-     *
-     * @param {Event} event
-     */
-    handlerTabClick(event) {
-        event.preventDefault();
-
-        this.template
-            .querySelectorAll('[data-group-name="tabs"]')
-            .forEach((tab) => {
-                const tabName = tab.dataset.tabName;
-                const targetName = event.currentTarget.dataset.tabName;
-
-                if (tabName === targetName) {
-                    tab.parentElement.classList.add('slds-is-active');
-                    this._currentTab = tabName;
-                } else {
-                    tab.parentElement.classList.remove('slds-is-active');
-                }
-            });
-
-        const palette = this.template.querySelector(
-            '[data-element-id="avonni-color-palette-default"]'
-        );
-        if (palette) palette.colors = [...this.computedColors];
-    }
-
-    /**
-     * Sets blur.
-     */
-    allowBlur() {
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Cancels blur.
-     */
-    cancelBlur() {
-        this._cancelBlur = true;
-    }
-
-    /**
-     * Blur handler.
-     */
-    handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
-
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Private focus handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateFocus(event) {
-        event.stopPropagation();
-
-        this.allowBlur();
-        this._menuHasFocus = true;
-    }
-
-    /**
-     * Private blur handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateBlur(event) {
-        event.stopPropagation();
-
-        this.handleBlur();
-        this._menuHasFocus = false;
-    }
-
-    /**
-     * Input color event handler.
-     *
-     * @param {Event} event
-     */
-    handleInputColor(event) {
-        let color = event.target.value;
-        this.inputValue = color;
-
-        if (
-            colorType(color) === 'hex' ||
-            (colorType(color) === 'hexa' && this.opacity)
-        ) {
-            this.showError = false;
-            this.template
-                .querySelector('[data-element-id="lightning-input"]')
-                .classList.remove('slds-has-error');
-
-            if (!this.menuIconName) {
-                this.template.querySelector('.slds-swatch').style.background =
-                    color;
-            }
-
-            // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-            this.value = color;
-
-            let gradientPalette = this.template.querySelector(
-                '[data-element-id^="avonni-color-gradient"]'
-            );
-
-            if (gradientPalette) {
-                gradientPalette.renderValue(color);
-            }
-
-            this.dispatchChange(generateColors(color));
-        } else {
-            this.showError = true;
-            this.template
-                .querySelector('[data-element-id="lightning-input"]')
-                .classList.add('slds-has-error');
-        }
-
-        event.stopPropagation();
-    }
-
-    /**
-     * Dropdown menu visibility toggle.
-     */
-    toggleMenuVisibility() {
-        if (!this.disabled) {
-            this._dropdownVisible = !this._dropdownVisible;
-
-            if (!this._dropdownOpened && this._dropdownVisible) {
-                this._dropdownOpened = true;
-            }
-
-            if (this._dropdownVisible) {
-                this._boundingRect = this.getBoundingClientRect();
-                this.pollBoundingRect();
-            }
-
-            this.template
-                .querySelector('[data-element-id="div-dropdown-trigger"]')
-                .classList.toggle('slds-is-open');
-        }
-    }
-
-    /**
-     * Close dropdown menu.
-     */
-    close() {
-        if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
-        }
-    }
-
-    /**
-     * Poll bounding rect of the dropdown menu.
-     */
-    pollBoundingRect() {
-        if (this.isAutoAlignment() && this._dropdownVisible) {
-            // eslint-disable-next-line @lwc/lwc/no-async-operation
-            setTimeout(() => {
-                if (this.isConnected) {
-                    observePosition(this, 300, this._boundingRect, () => {
-                        this.close();
-                    });
-
-                    this.pollBoundingRect();
-                }
-            }, 250);
-        }
     }
 }

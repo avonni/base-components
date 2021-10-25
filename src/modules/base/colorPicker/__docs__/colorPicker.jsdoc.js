@@ -8,6 +8,11 @@
  */
 /**
  * @memberof examples
+ * @name readOnly
+ * @storyId example-color-picker--read-only
+ */
+/**
+ * @memberof examples
  * @name standardWithIcon
  * @storyId example-color-picker--standard-with-icon
  */

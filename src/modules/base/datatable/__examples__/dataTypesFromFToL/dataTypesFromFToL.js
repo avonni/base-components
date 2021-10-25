@@ -1,14 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromEtoN extends LightningElement {
+export default class DataTypesFromFtoL extends LightningElement {
     columns = [
-        {
-            label: 'Email',
-            fieldName: 'email',
-            type: 'email',
-            editable: true,
-            initialWidth: 225
-        },
         {
             label: 'Formatted Rich Text',
             fieldName: 'formattedRichText',
@@ -64,6 +57,15 @@ export default class DataTypesFromEtoN extends LightningElement {
             editable: true
         },
         {
+            label: 'Input Rich Text',
+            fieldName: 'inputRichText',
+            type: 'input-rich-text',
+            typeAttributes: {
+                disabled: { fieldName: 'inputRichTextDisabled' }
+            },
+            editable: true
+        },
+        {
             label: 'Input Toggle',
             fieldName: 'inputToggle',
             type: 'input-toggle',
@@ -82,25 +84,14 @@ export default class DataTypesFromEtoN extends LightningElement {
             type: 'location',
             fieldName: 'location',
             editable: true
-        },
-        {
-            label: 'Number',
-            type: 'number',
-            fieldName: 'number',
-            editable: true,
-            typeAttributes: {
-                minimumFractionDigits: 2
-            }
         }
     ];
 
     records = [
         {
             id: 1,
-            email: 'nina.gomez@email.com',
             formattedRichText: '<h1>Header 1</h1>',
-            image:
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
             inputCounter: 1,
             inputDateRange: {
                 startDate: new Date('2021/10/02'),
@@ -109,15 +100,12 @@ export default class DataTypesFromEtoN extends LightningElement {
             location: {
                 latitude: '45.53',
                 longitude: '-73.61'
-            },
-            number: '6'
+            }
         },
         {
             id: 2,
-            email: 'dave.mckinsley@email.com',
             formattedRichText: '<h2>Header 2</h2>',
-            image:
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
             inputCounter: 3,
             inputDateRange: {
                 startDate: new Date('2021/09/12'),
@@ -127,15 +115,12 @@ export default class DataTypesFromEtoN extends LightningElement {
             location: {
                 latitude: '45.53',
                 longitude: '-73.58'
-            },
-            number: '18'
+            }
         },
         {
             id: 3,
-            email: 'jung.phung@email.com',
             formattedRichText: '<h3>Header 3</h3>',
-            image:
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
             imageBlank: true,
             imageBlankColor: '#CCC',
             imageHeight: 50,
@@ -145,15 +130,12 @@ export default class DataTypesFromEtoN extends LightningElement {
             location: {
                 latitude: '45.54',
                 longitude: '-73.60'
-            },
-            number: '1789'
+            }
         },
         {
             id: 4,
-            email: 'lily.murray@email.com',
             formattedRichText: '<h4>Header 4</h4>',
-            image:
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
+            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
             inputCounter: 5,
             inputDateRange: {
                 startDate: new Date('2021/09/17'),
@@ -162,15 +144,12 @@ export default class DataTypesFromEtoN extends LightningElement {
             location: {
                 latitude: '45.55',
                 longitude: '-73.62'
-            },
-            number: '345'
+            }
         },
         {
             id: 5,
-            email: 'reginald.martin@email.com',
             formattedRichText: '<h5>Header 5</h5>',
-            image:
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
+            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
             inputCounterStep: 2,
             inputCounter: 0,
             inputDateRange: {
@@ -180,8 +159,7 @@ export default class DataTypesFromEtoN extends LightningElement {
             location: {
                 latitude: '45.56',
                 longitude: '-73.56'
-            },
-            number: '9'
+            }
         }
     ];
 }

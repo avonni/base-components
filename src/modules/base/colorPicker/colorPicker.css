@@ -59,14 +59,12 @@ div:focus {
     margin-left: 0.25rem;
 }
 
-.slds-tabs_default__content {
-    padding-bottom: 0;
+.slds-swatch-read-only {
+    padding: 0.3rem 0.5rem;
 }
 
-.slds-form-error {
-    padding-top: 0.5rem;
-    color: #c23934;
-    font-size: 0.75rem;
+.slds-tabs_default__content {
+    padding-bottom: 0;
 }
 
 .slds-nubbin_top {

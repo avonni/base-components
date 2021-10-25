@@ -119,6 +119,18 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        isMultiSelect: {
+            name: 'is-multi-select',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, multiple items can be selected.',
+            defaultValue: false,
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         value: {
             control: {
                 type: 'object'
@@ -392,6 +404,12 @@ Base.args = {
     items: items
 };
 
+export const MultiSelect = Template.bind({});
+MultiSelect.args = {
+    items: items,
+    isMultiSelect: true
+};
+
 export const Search = Template.bind({});
 Search.args = {
     items: items,
@@ -446,6 +464,14 @@ Vertical.args = {
     items: items,
     variant: 'vertical',
     label: 'Contact'
+};
+
+export const VerticalMultiSelect = Template.bind({});
+VerticalMultiSelect.args = {
+    items: items,
+    variant: 'vertical',
+    label: 'Contact',
+    isMultiSelect: true
 };
 
 export const VerticalWithSearchAndIcon = Template.bind({});
