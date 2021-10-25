@@ -35,16 +35,42 @@ import { InputDateRange } from '../__examples__/inputDateRange';
 export default {
     title: 'Example/Input Date Range',
     argTypes: {
-        type: {
+        fieldLevelHelp: {
+            name: 'field-level-help',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Help text detailing the purpose and function of the input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        dateStyle: {
+            name: 'date-style',
             control: {
                 type: 'select'
             },
-            options: ['date', 'datetime'],
-            defaultValue: 'date',
-            description: 'Valid types include date and datetime.',
+            options: ['short', 'medium', 'long'],
+            defaultValue: 'medium',
+            description:
+                "The display style of the date when type='date' or type='datetime'. Valid values are short, medium and long. The format of each style is specific to the locale. On mobile devices this attribute has no effect.",
             table: {
-                defaultValue: { summary: 'date' },
+                defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Validation'
             }
         },
         label: {
@@ -59,17 +85,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        fieldLevelHelp: {
-            name: 'field-level-help',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Help text detailing the purpose and function of the input.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         labelStartDate: {
             name: 'label-start-date',
             control: {
@@ -80,12 +95,34 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        labelStartTime: {
+            name: 'label-start-time',
+            control: {
+                type: 'text'
+            },
+            description:
+                'If type is datetime, text label for the start time input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         labelEndDate: {
             name: 'label-end-date',
             control: {
                 type: 'text'
             },
             description: 'Text label for the end input.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        labelEndTime: {
+            name: 'label-end-time',
+            control: {
+                type: 'text'
+            },
+            description:
+                'If type is datetime, text label for the end time input.',
             table: {
                 type: { summary: 'string' }
             }
@@ -110,17 +147,15 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        dateStyle: {
-            name: 'date-style',
+        messageWhenValueMissing: {
+            name: 'message-when-value-missing',
             control: {
-                type: 'select'
+                type: 'text'
             },
-            options: ['short', 'medium', 'long'],
-            defaultValue: 'medium',
             description:
-                "The display style of the date when type='date' or type='datetime'. Valid values are short, medium and long. The format of each style is specific to the locale. On mobile devices this attribute has no effect.",
+                'Error message to be displayed when the start-date is missing.',
             table: {
-                defaultValue: { summary: 'medium' },
+                category: 'Validation',
                 type: { summary: 'string' }
             }
         },
@@ -135,6 +170,19 @@ export default {
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
+                category: 'Validation'
+            }
+        },
+        required: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description:
+                'If present, the input field must be filled out before the form is submitted.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
                 category: 'Validation'
             }
         },
@@ -162,41 +210,15 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        disabled: {
+        type: {
             control: {
-                type: 'boolean'
+                type: 'select'
             },
-            defaultValue: 0,
-            description:
-                'If present, the input field is disabled and users cannot interact with it.',
+            options: ['date', 'datetime'],
+            defaultValue: 'date',
+            description: 'Valid types include date and datetime.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Validation'
-            }
-        },
-        required: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, the input field must be filled out before the form is submitted.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Validation'
-            }
-        },
-        messageWhenValueMissing: {
-            name: 'message-when-value-missing',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when the start-date is missing.',
-            table: {
-                category: 'Validation',
+                defaultValue: { summary: 'date' },
                 type: { summary: 'string' }
             }
         },
@@ -204,12 +226,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: [
-                'standard',
-                'label-inline',
-                'label-hidden',
-                'label-stacked'
-            ],
+            options: ['standard', 'label-hidden'],
             defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
@@ -232,6 +249,17 @@ Base.args = {
     label: 'Text label'
 };
 
+export const readOnly = Template.bind({});
+readOnly.args = {
+    labelStartDate: 'Start date',
+    labelEndDate: 'End date',
+    startDate: '7/20/2021 10:00',
+    endDate: '7/21/2021 18:15',
+    dateStyle: 'long',
+    readOnly: true,
+    type: 'datetime'
+};
+
 export const Prefilled = Template.bind({});
 Prefilled.args = {
     label: 'Input with prefilled values',
@@ -239,8 +267,8 @@ Prefilled.args = {
     fieldLevelHelp: 'The date format has been set to long',
     labelStartDate: 'Start date',
     labelEndDate: 'End date',
-    startDate: new Date('7/20/2021 10:00'),
-    endDate: new Date('7/21/2021 18:15'),
+    startDate: '7/20/2021 10:00',
+    endDate: '7/21/2021 18:15',
     dateStyle: 'long'
 };
 
@@ -262,6 +290,6 @@ Disabled.args = {
     fieldLevelHelp: 'Disabled input with prefilled start and end dates',
     labelStartDate: 'Start date',
     labelEndDate: 'End date',
-    startDate: new Date('7/20/2021 10:00'),
-    endDate: new Date('7/21/2021 18:15')
+    startDate: '7/20/2021 10:00',
+    endDate: '7/21/2021 18:15'
 };
