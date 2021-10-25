@@ -608,9 +608,9 @@ export default class PrimitiveCombobox extends LightningElement {
             }
             values.push(option.value);
         });
-        return this._value.length > 0
-            ? values.some((e) => this._value.includes(e))
-            : true;
+        return this._value.length === 0 || this._value[0] === ''
+            ? true
+            : values.some((e) => this._value.includes(e));
     }
 
     /**

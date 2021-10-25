@@ -33,20 +33,12 @@
 -->
 
 <template>
-    <div class="slds-p-around_x-small">
-        <c-image
-            src={value}
-            alt={typeAttributes.alt}
-            srcset={typeAttributes.srcset}
-            sizes={typeAttributes.sizes}
-            width={typeAttributes.width}
-            height={typeAttributes.height}
-            block="true"
-            fluid="true"
-            rounded={typeAttributes.rounded}
-            thumbnail={typeAttributes.thumbnail}
-            blank={typeAttributes.blank}
-            blank-color={typeAttributes.blankColor}
-        ></c-image>
-    </div>
+    <template if:true={required}>
+        <abbr
+            aria-hidden="true"
+            class="slds-required slds-col slds-grow-none slds-m-right_xx-small"
+            >*</abbr
+        >
+    </template>
+    <slot></slot>
 </template>

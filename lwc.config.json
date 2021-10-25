@@ -275,6 +275,10 @@
             "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
+            "name": "c/primitiveCellEditableButton",
+            "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
+        },
+        {
             "name": "c/primitiveCellInputCounter",
             "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
         },
@@ -309,6 +313,18 @@
         {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
+        },
+        {
+            "name": "c/primitiveDatatableIeditInputWrapperCustom",
+            "path": "src/modules/base/primitiveDatatableIeditInputWrapperCustom/primitiveDatatableIeditInputWrapperCustom.js"
+        },
+        {
+            "name": "c/primitiveDatatableIeditPanelCustom",
+            "path": "src/modules/base/primitiveDatatableIeditPanelCustom/primitiveDatatableIeditPanelCustom.js"
+        },
+        {
+            "name": "c/primitiveDatatableIeditTypeFactoryCustom",
+            "path": "src/modules/base/primitiveDatatableIeditTypeFactoryCustom/primitiveDatatableIeditTypeFactoryCustom.js"
         },
         {
             "name": "c/primitiveDropdownMenu",
