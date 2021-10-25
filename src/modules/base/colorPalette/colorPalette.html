@@ -35,14 +35,14 @@
 <template>
     <template if:true={isList}>
         <div class="list-container slds-scrollable">
-            <template for:each={bundles} for:item="bundle">
+            <template for:each={colors} for:item="color">
                 <div
                     key={uniqKey}
                     class="slds-dropdown__item"
                     role="presentation"
-                    data-label={bundle.label}
-                    data-token={bundle.value}
-                    data-color={bundle.color}
+                    data-label={color.label}
+                    data-token={color.value}
+                    data-color={color.color}
                     onclick={handleClick}
                 >
                     <a
@@ -71,18 +71,18 @@
                                 icon-name="utility:check"
                                 size="x-small"
                             ></lightning-icon>
-                            {bundle.label}
+                            {color.label}
                         </span>
                         <div role="presentation">
                             <div class="slds-color-picker__swatch-trigger">
                                 <span
                                     class="slds-swatch"
-                                    data-color={bundle.color}
+                                    data-color={color.color}
                                     data-element-id="span-list"
                                     data-group-name="swatches"
                                 >
                                     <p class="slds-assistive-text">
-                                        {bundle.color}
+                                        {color.color}
                                     </p>
                                 </span>
                             </div>

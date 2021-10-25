@@ -88,7 +88,6 @@ export default class ColorPalette extends LightningElement {
     _readOnly = false;
     _value;
 
-    bundles = [];
     init = false;
     currentLabel;
     currentToken;
@@ -136,7 +135,7 @@ export default class ColorPalette extends LightningElement {
         }
 
         if (typeof values[0] == 'object') {
-            this.bundles = values;
+            this._colors = values;
             this._type = 'list';
         } else {
             this._colors = values;
