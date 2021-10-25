@@ -8,6 +8,16 @@
  */
 /**
  * @memberof examples
+ * @name readOnly
+ * @storyId example-combobox--read-only
+ */
+/**
+ * @memberof examples
+ * @name readOnlyMultiSelect
+ * @storyId example-combobox--read-only-multi-select
+ */
+/**
+ * @memberof examples
  * @name disabled
  * @storyId example-combobox--disabled
  */
