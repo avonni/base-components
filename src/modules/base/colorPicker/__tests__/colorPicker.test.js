@@ -892,8 +892,8 @@ describe('Color Picker', () => {
 
     // colors
     it('colors', () => {
-        const colors = ['#fff', '#333', '#555'];
-        element.colors = colors;
+        const simpleColors = ['#fff', '#333', '#555'];
+        element.colors = simpleColors;
 
         return Promise.resolve()
             .then(() => {
@@ -906,7 +906,7 @@ describe('Color Picker', () => {
                 const palette = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-color-palette-default"]'
                 );
-                expect(palette.colors).toMatchObject(colors);
+                expect(palette.colors).toMatchObject(simpleColors);
             });
     });
 
@@ -933,12 +933,12 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const gradient = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-color-gradient-custom-type"]'
+                '[data-element-id="avonni-color-gradient"]'
             );
             expect(gradient.opacity).toBe(true);
         });
     });
-    
+
     // swatch initialization
     it('Color Picker swatch initialization', () => {
         element.value = '#e3abec';
@@ -1252,25 +1252,20 @@ describe('Color Picker', () => {
             });
     });
 
-    // focus event and method
-    it('focus event and method', () => {
+    // focus event
+    it('focus event', () => {
         const handler = jest.fn();
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
         );
 
         element.addEventListener('focus', handler);
+        input.dispatchEvent(new CustomEvent('focus'));
 
-        return Promise.resolve()
-            .then(() => {
-                input.dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            });
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 
     // blur

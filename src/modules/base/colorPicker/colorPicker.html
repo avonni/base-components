@@ -34,11 +34,7 @@
 
 <template>
     <div class={computedContainerClass}>
-        <label
-            if:true={showLabel}
-            class={computedLegendClass}
-            data-element-id="label"
-        >
+        <label class={computedLabelClass} data-element-id="label">
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
             >
@@ -116,6 +112,7 @@
                         <template if:false={isLoading}>
                             <div
                                 class="slds-popover__body"
+                                oncolordblclick={handlerDone}
                                 onprivateblur={handlePrivateBlur}
                                 onprivatefocus={handlePrivateFocus}
                                 onmouseover={cancelBlur}

@@ -191,7 +191,7 @@ export default class ColorPicker extends LightningElement {
 
     _currentTab = 'default';
     _draftToken;
-    
+
     dropdownOpened = false;
     dropdownVisible = false;
     init = false;
@@ -583,9 +583,12 @@ export default class ColorPicker extends LightningElement {
      * @type {boolean}
      */
     get hasBadInput() {
-        return !(
-            colorType(this.inputValue) === 'hex' ||
-            (colorType(this.inputValue) === 'hexa' && this.opacity)
+        return (
+            !this.tokens.length &&
+            !(
+                colorType(this.inputValue) === 'hex' ||
+                (colorType(this.inputValue) === 'hexa' && this.opacity)
+            )
         );
     }
 
@@ -604,7 +607,9 @@ export default class ColorPicker extends LightningElement {
      * @type {element}
      */
     get colorGradient() {
-        return this.template.querySelector('[data-element-id="avonni-color-gradient"]');
+        return this.template.querySelector(
+            '[data-element-id="avonni-color-gradient"]'
+        );
     }
 
     /**
@@ -1054,7 +1059,7 @@ export default class ColorPicker extends LightningElement {
         if (this.isAutoAlignment() && this.dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });
