@@ -33,14 +33,14 @@
 import { Datatable } from '../__examples__/datatable';
 import {
     columnsAB,
-    columnsCD,
-    columnsEN,
-    columnsOQ,
+    columnsCE,
+    columnsFL,
+    columnsNQ,
     columnsRZ,
     recordsAB,
-    recordsCD,
-    recordsEN,
-    recordsOQ,
+    recordsCE,
+    recordsFL,
+    recordsNQ,
     recordsRZ
 } from './data';
 
@@ -381,10 +381,10 @@ DataTypesFromAToB.args = {
     columnWidthsMode: 'auto'
 };
 
-export const DataTypesFromCToD = Template.bind({});
-DataTypesFromCToD.args = {
-    columns: columnsCD,
-    records: recordsCD,
+export const DataTypesFromCToE = Template.bind({});
+DataTypesFromCToE.args = {
+    columns: columnsCE,
+    records: recordsCE,
     keyField: 'id',
     columnWidthsMode: 'auto',
     draftValues: [
@@ -407,19 +407,19 @@ DataTypesFromCToD.args = {
         }
     }
 };
-export const DataTypesFromEToN = Template.bind({});
-DataTypesFromEToN.args = {
-    columns: columnsEN,
-    records: recordsEN,
+export const DataTypesFromFToL = Template.bind({});
+DataTypesFromFToL.args = {
+    columns: columnsFL,
+    records: recordsFL,
     keyField: 'id',
     columnWidthsMode: 'auto',
     hideCheckboxColumn: true
 };
 
-export const DataTypesFromOToQ = Template.bind({});
-DataTypesFromOToQ.args = {
-    columns: columnsOQ,
-    records: recordsOQ,
+export const DataTypesFromNToQ = Template.bind({});
+DataTypesFromNToQ.args = {
+    columns: columnsNQ,
+    records: recordsNQ,
     keyField: 'id',
     columnWidthsMode: 'auto',
     selectedRows: ['2']

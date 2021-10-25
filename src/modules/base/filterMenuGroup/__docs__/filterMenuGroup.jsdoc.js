@@ -27,6 +27,7 @@
  * @property {boolean} dropdownNubbin Default( false ). If true, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
  * This attribute isn’t supported for the vertical variant.
  * @property {object[]} items Array of item objects.
+ * @property {boolean} isMultiSelect If present, multiple items can be selected.
  */
 /**
  * @typedef {Object} Item

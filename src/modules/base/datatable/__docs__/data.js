@@ -84,6 +84,25 @@ const options = [
     }
 ];
 
+const groups = [
+    {
+        label: 'Accounts',
+        value: 'accounts'
+    },
+    {
+        label: 'Opportunities',
+        value: 'opportunities'
+    },
+    {
+        label: 'Closed',
+        value: 'closed'
+    },
+    {
+        label: 'Won',
+        value: 'won'
+    }
+];
+
 const columnsAB = [
     {
         label: 'Action',
@@ -171,7 +190,7 @@ const columnsAB = [
     }
 ];
 
-const columnsCD = [
+const columnsCE = [
     {
         label: 'Checkbox button',
         fieldName: 'checkboxButton',
@@ -208,11 +227,11 @@ const columnsCD = [
         type: 'combobox',
         typeAttributes: {
             label: 'Simple Combobox',
-            options: options,
+            options: { fieldName: 'options' },
             isMultiSelect: { fieldName: 'isMultiSelect' }
         },
         editable: true,
-        fixedWidth: 260
+        fixedWidth: 300
     },
     {
         label: 'Currency',
@@ -255,17 +274,17 @@ const columnsCD = [
             alternativeText: { fieldName: 'dynamicIcon' },
             option: { fieldName: 'dynamicIconOption' }
         }
-    }
-];
-
-const columnsEN = [
+    },
     {
         label: 'Email',
         fieldName: 'email',
         type: 'email',
         editable: true,
         initialWidth: 225
-    },
+    }
+];
+
+const columnsFL = [
     {
         label: 'Formatted Rich Text',
         fieldName: 'formattedRichText',
@@ -317,6 +336,15 @@ const columnsEN = [
         editable: true
     },
     {
+        label: 'Input Rich Text',
+        fieldName: 'inputRichText',
+        type: 'input-rich-text',
+        typeAttributes: {
+            disabled: { fieldName: 'inputRichTextDisabled' }
+        },
+        editable: true
+    },
+    {
         label: 'Input Toggle',
         fieldName: 'inputToggle',
         type: 'input-toggle',
@@ -335,7 +363,10 @@ const columnsEN = [
         type: 'location',
         fieldName: 'location',
         editable: true
-    },
+    }
+];
+
+const columnsNQ = [
     {
         label: 'Number',
         type: 'number',
@@ -344,10 +375,7 @@ const columnsEN = [
         typeAttributes: {
             minimumFractionDigits: 2
         }
-    }
-];
-
-const columnsOQ = [
+    },
     {
         label: 'Percent',
         fieldName: 'percent',
@@ -434,6 +462,16 @@ const columnsRZ = [
         editable: true
     },
     {
+        label: 'Text Area',
+        fieldName: 'textarea',
+        type: 'textarea',
+        typeAttributes: {
+            disabled: { fieldName: 'textareaDisabled' },
+            label: 'Text area'
+        },
+        editable: true
+    },
+    {
         label: 'URL',
         fieldName: 'url',
         type: 'url',
@@ -455,8 +493,7 @@ const columnsRZ = [
 const recordsAB = [
     {
         id: 1,
-        avatar:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         avatarInitials: 'NG',
         avatarSecondaryText: 'Approved',
         avatarStatus: 'approved',
@@ -474,8 +511,7 @@ const recordsAB = [
     },
     {
         id: 2,
-        avatar:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'DM',
         avatarSecondaryText: 'Declined',
@@ -529,8 +565,7 @@ const recordsAB = [
     },
     {
         id: 5,
-        avatar:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+        avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         avatarFallbackIconName: 'standard:person_account',
         avatarInitials: 'RM',
         avatarSecondaryText: 'Approved',
@@ -548,7 +583,7 @@ const recordsAB = [
     }
 ];
 
-const recordsCD = [
+const recordsCE = [
     {
         id: 1,
         colorPicker: '#00a1e0',
@@ -556,7 +591,10 @@ const recordsCD = [
         dynamicIcon: 'ellie',
         date: new Date('2022/03/24'),
         dateLocal: new Date('2022/03/24'),
-        combobox: 'no-avatar-burlington'
+        combobox: 'no-avatar-burlington',
+        email: 'nina.gomez@email.com',
+        options: options,
+        isMultiSelect: true
     },
     {
         id: 2,
@@ -565,7 +603,9 @@ const recordsCD = [
         dynamicIcon: 'score',
         dynamicIconOption: 'negative',
         date: new Date('2022/03/21'),
-        dateLocal: new Date('2022/03/21')
+        dateLocal: new Date('2022/03/21'),
+        email: 'dave.mckinsley@email.com',
+        options: options
     },
     {
         id: 3,
@@ -577,7 +617,9 @@ const recordsCD = [
         dynamicIconOption: -3,
         date: new Date('2022/05/04'),
         dateLocal: new Date('2022/05/04'),
-        isMultiSelect: true
+        isMultiSelect: true,
+        email: 'jung.phung@email.com',
+        options: options
     },
     {
         id: 4,
@@ -585,7 +627,9 @@ const recordsCD = [
         currency: '432',
         dynamicIcon: 'eq',
         date: new Date('2021/02/14'),
-        dateLocal: new Date('2021/02/14')
+        dateLocal: new Date('2021/02/14'),
+        email: 'lily.murray@email.com',
+        options: options
     },
     {
         id: 5,
@@ -594,16 +638,16 @@ const recordsCD = [
         currency: '217',
         dynamicIcon: 'waffle',
         date: new Date('2021/02/14'),
-        dateLocal: new Date('2022/10/12')
+        dateLocal: new Date('2022/10/12'),
+        options: groups
     }
 ];
-const recordsEN = [
+
+const recordsFL = [
     {
         id: 1,
-        email: 'nina.gomez@email.com',
         formattedRichText: '<h1>Header 1</h1>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputCounter: 1,
         inputDateRange: {
             startDate: new Date('2021/10/02'),
@@ -612,15 +656,12 @@ const recordsEN = [
         location: {
             latitude: '45.53',
             longitude: '-73.61'
-        },
-        number: '6'
+        }
     },
     {
         id: 2,
-        email: 'dave.mckinsley@email.com',
         formattedRichText: '<h2>Header 2</h2>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
         inputDateRange: {
             startDate: new Date('2021/09/12'),
@@ -630,15 +671,12 @@ const recordsEN = [
         location: {
             latitude: '45.53',
             longitude: '-73.58'
-        },
-        number: '18'
+        }
     },
     {
         id: 3,
-        email: 'jung.phung@email.com',
         formattedRichText: '<h3>Header 3</h3>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
         imageBlankColor: '#CCC',
         imageHeight: 50,
@@ -648,15 +686,12 @@ const recordsEN = [
         location: {
             latitude: '45.54',
             longitude: '-73.60'
-        },
-        number: '1789'
+        }
     },
     {
         id: 4,
-        email: 'lily.murray@email.com',
         formattedRichText: '<h4>Header 4</h4>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
         inputDateRange: {
             startDate: new Date('2021/09/17'),
@@ -665,15 +700,12 @@ const recordsEN = [
         location: {
             latitude: '45.55',
             longitude: '-73.62'
-        },
-        number: '345'
+        }
     },
     {
         id: 5,
-        email: 'reginald.martin@email.com',
         formattedRichText: '<h5>Header 5</h5>',
-        image:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
+        image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
         inputCounter: 0,
         inputDateRange: {
@@ -683,14 +715,14 @@ const recordsEN = [
         location: {
             latitude: '45.56',
             longitude: '-73.56'
-        },
-        number: '9'
+        }
     }
 ];
 
-const recordsOQ = [
+const recordsNQ = [
     {
         id: 1,
+        number: '1789',
         percent: 0.34,
         phone: '5142223333',
         progress: 34,
@@ -711,6 +743,7 @@ const recordsOQ = [
     },
     {
         id: 2,
+        number: '1',
         percent: 0.45,
         phone: '5144546767',
         progress: 100,
@@ -723,6 +756,7 @@ const recordsOQ = [
     },
     {
         id: 3,
+        number: '1,234',
         percent: 0.67,
         phone: '6785643214',
         progress: 43,
@@ -730,6 +764,7 @@ const recordsOQ = [
     },
     {
         id: 4,
+        number: '345',
         percent: 4,
         phone: '3547789900',
         progress: 5,
@@ -739,6 +774,7 @@ const recordsOQ = [
     },
     {
         id: 5,
+        number: '9',
         percent: 0.05,
         phone: '5143245564',
         progress: 66,
@@ -773,8 +809,7 @@ const recordsRZ = [
             },
             { value: 'https://www.avonni.app/', label: 'Avonni' },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]
@@ -793,8 +828,7 @@ const recordsRZ = [
                 label: 'Avonni Components Documentation'
             },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]
@@ -804,13 +838,11 @@ const recordsRZ = [
         sliderDisabled: true,
         ratingDisabled: true,
         text: 'Jung Phung',
-        url:
-            'https://developer.salesforce.com/docs/component-library/overview/components',
+        url: 'https://developer.salesforce.com/docs/component-library/overview/components',
         urlLabel: 'Salesforce documentation',
         urls: [
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             },
             {
@@ -835,8 +867,7 @@ const recordsRZ = [
             },
             { value: 'https://www.avonni.app/', label: 'Avonni' },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]
@@ -846,14 +877,14 @@ const recordsRZ = [
         rating: '4',
         slider: '0',
         text: 'Reginald Martin',
+        textareaDisabled: true,
         url: 'https://lwc.dev/',
         urlLabel: 'LWC Documentation',
         urls: [
             { value: 'https://lwc.dev/', label: 'LWC Documentation' },
             { value: 'https://www.avonni.app/', label: 'Avonni' },
             {
-                value:
-                    'https://developer.salesforce.com/docs/component-library/overview/components',
+                value: 'https://developer.salesforce.com/docs/component-library/overview/components',
                 label: 'Salesforce documentation'
             }
         ]
@@ -862,13 +893,13 @@ const recordsRZ = [
 
 export {
     columnsAB,
-    columnsCD,
-    columnsEN,
-    columnsOQ,
+    columnsCE,
+    columnsFL,
+    columnsNQ,
     columnsRZ,
     recordsAB,
-    recordsCD,
-    recordsEN,
-    recordsOQ,
+    recordsCE,
+    recordsFL,
+    recordsNQ,
     recordsRZ
 };

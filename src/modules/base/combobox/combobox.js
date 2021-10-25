@@ -666,6 +666,17 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * Update the scope dropdown value.
+     *
+     * @param {string} value Unique value of the scope that should be selected.
+     * @public
+     */
+    @api
+    updateScope(value) {
+        this.scopesValue = value;
+    }
+
+    /**
      * Dispatches blur event.
      */
     handleBlur() {

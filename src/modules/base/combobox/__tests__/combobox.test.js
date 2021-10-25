@@ -676,6 +676,28 @@ describe('Combobox', () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    // updateScope
+    // Depends on scopes
+    it('updateScope method', () => {
+        element.scopes = scopes;
+
+        return Promise.resolve()
+            .then(() => {
+                const scopeCombobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-scopes"]'
+                );
+                expect(scopeCombobox.value).toMatchObject(['all']);
+
+                element.updateScope('accounts');
+            })
+            .then(() => {
+                const scopeCombobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-scopes"]'
+                );
+                expect(scopeCombobox.value).toMatchObject(['accounts']);
+            });
+    });
+
     /* ----- EVENTS ----- */
 
     // actionclick

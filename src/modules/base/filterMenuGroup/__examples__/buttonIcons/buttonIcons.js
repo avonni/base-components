@@ -118,7 +118,7 @@ export default class FilterMenuGroupButtonIcons extends LightningElement {
             items: contact,
             iconName: 'utility:call',
             tooltip: 'Type of contact',
-            value: ['email', 'meeting']
+            value: 'email'
         },
         {
             name: 'prices',
@@ -147,7 +147,9 @@ export default class FilterMenuGroupButtonIcons extends LightningElement {
             name: 'languages',
             iconName: 'utility:world',
             items: languages,
-            dropdownLength: '10-items'
+            dropdownLength: '10-items',
+            isMultiSelect: true,
+            value: ['dutch', 'english']
         }
     ];
 }

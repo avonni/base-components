@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ColorPickerStandardWithIcon extends LightningElement {
+export default class ColorPickerReadOnly extends LightningElement {
     colorsValue = [
         '#e3abec',
         '#c2dbf7',
