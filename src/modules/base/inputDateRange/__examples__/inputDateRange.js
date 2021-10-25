@@ -42,6 +42,8 @@ export const InputDateRange = ({
     label,
     fieldLevelHelp,
     labelStartDate,
+    labelStartTime,
+    labelEndTime,
     labelEndDate,
     startDate,
     endDate,
@@ -59,7 +61,9 @@ export const InputDateRange = ({
     element.label = label;
     element.fieldLevelHelp = fieldLevelHelp;
     element.labelStartDate = labelStartDate;
+    element.labelStartTime = labelStartTime;
     element.labelEndDate = labelEndDate;
+    element.labelEndTime = labelEndTime;
     element.startDate = startDate;
     element.endDate = endDate;
     element.dateStyle = dateStyle;

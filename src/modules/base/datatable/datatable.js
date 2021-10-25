@@ -33,6 +33,13 @@
 import LightningDatatable from 'lightning/datatable';
 import { api } from 'lwc';
 import { normalizeArray, normalizeString } from 'c/utilsPrivate';
+import {
+    getCellValue,
+    getCurrentSelectionLength,
+    isSelectedRow,
+    getChangesForCustomer,
+    processInlineEditFinishCustom
+} from './inlineEdit';
 
 import avatar from './avatar.html';
 import avatarGroup from './avatarGroup.html';
@@ -118,8 +125,7 @@ export default class Datatable extends LightningDatatable {
                 'secondaryText',
                 'status',
                 'variant'
-            ],
-            standardCellLayout: true
+            ]
         },
         'avatar-group': {
             template: avatarGroup,
@@ -130,18 +136,15 @@ export default class Datatable extends LightningDatatable {
                 'variant',
                 'actionIconName',
                 'name'
-            ],
-            standardCellLayout: true
+            ]
         },
         badge: {
             template: badge,
-            typeAttributes: ['variant'],
-            standardCellLayout: true
+            typeAttributes: ['variant']
         },
         'checkbox-button': {
             template: checkboxButton,
-            typeAttributes: ['disabled', 'label', 'name'],
-            standardCellLayout: true
+            typeAttributes: ['disabled', 'label', 'name']
         },
         'color-picker': {
             template: colorPicker,
@@ -157,31 +160,26 @@ export default class Datatable extends LightningDatatable {
                 'name',
                 'opacity',
                 'type'
-            ],
-            standardCellLayout: true
+            ]
         },
         combobox: {
             template: combobox,
             typeAttributes: [
                 'disabled',
                 'dropdownAlignment',
-                'dropdownLenght',
+                'dropdownLength',
                 'isMultiSelect',
-                'label',
                 'placeholder',
                 'options'
-            ],
-            standardCellLayout: true
+            ]
         },
         'dynamic-icon': {
             template: dynamicIcon,
-            typeAttributes: ['alternativeText', 'option'],
-            standardCellLayout: true
+            typeAttributes: ['alternativeText', 'option']
         },
         'formatted-rich-text': {
             template: formattedRichText,
-            typeAttributes: ['disableLinkify'],
-            standardCellLayout: true
+            typeAttributes: ['disableLinkify']
         },
         image: {
             template: image,
@@ -199,8 +197,7 @@ export default class Datatable extends LightningDatatable {
         },
         'input-counter': {
             template: inputCounter,
-            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step'],
-            standardCellLayout: true
+            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step']
         },
         'input-date-range': {
             template: inputDateRange,
@@ -213,8 +210,7 @@ export default class Datatable extends LightningDatatable {
                 'timeStyle',
                 'timezone',
                 'type'
-            ],
-            standardCellLayout: true
+            ]
         },
         'input-rich-text': {
             template: inputRichText,
@@ -230,8 +226,7 @@ export default class Datatable extends LightningDatatable {
                 'messageToggleInactive',
                 'name',
                 'size'
-            ],
-            standardCellLayout: true
+            ]
         },
         'progress-bar': {
             template: progressBar,
@@ -249,8 +244,7 @@ export default class Datatable extends LightningDatatable {
         },
         'progress-ring': {
             template: progressRing,
-            typeAttributes: ['direction', 'hideIcon', 'size', 'variant'],
-            standardCellLayout: true
+            typeAttributes: ['direction', 'hideIcon', 'size', 'variant']
         },
         'progress-circle': {
             template: progressCircle,
@@ -261,8 +255,7 @@ export default class Datatable extends LightningDatatable {
                 'size',
                 'thickness',
                 'variant'
-            ],
-            standardCellLayout: true
+            ]
         },
         qrcode: {
             template: qrcode,
@@ -275,8 +268,7 @@ export default class Datatable extends LightningDatatable {
                 'errorCorrection',
                 'padding',
                 'size'
-            ],
-            standardCellLayout: true
+            ]
         },
         rating: {
             template: rating,
@@ -289,8 +281,7 @@ export default class Datatable extends LightningDatatable {
                 'min',
                 'selection',
                 'valueHidden'
-            ],
-            standardCellLayout: true
+            ]
         },
         slider: {
             template: slider,
@@ -312,8 +303,6 @@ export default class Datatable extends LightningDatatable {
         }
     };
 
-    _records = [];
-
     connectedCallback() {
         super.connectedCallback();
 
@@ -331,6 +320,19 @@ export default class Datatable extends LightningDatatable {
             'privateactionclick',
             this.handleDispatchEvents
         );
+
+        this.template.addEventListener(
+            'editbuttonclickcustom',
+            this.handleEditButtonClickCustom
+        );
+
+        this.template.addEventListener('ieditfinishedcustom', (event) => {
+            this.handleInlineEditFinishCustom(event);
+        });
+
+        this.template.addEventListener('getdatatablestateandcolumns', (e) => {
+            e.detail.callbacks.getStateAndColumns(this.state, this.columns);
+        });
     }
 
     renderedCallback() {
@@ -664,9 +666,42 @@ export default class Datatable extends LightningDatatable {
         }
     }
 
+    /**
+     * Handles the edit button click event of each custom cell type.
+     *
+     * @param {event} event
+     */
+    handleEditButtonClickCustom(event) {
+        event.stopPropagation();
+        const { colKeyValue, rowKeyValue, state } = event.detail;
+        // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+        this.state = state;
+        const inlineEdit = this.state.inlineEdit;
+
+        inlineEdit.panelVisible = true;
+        inlineEdit.rowKeyValue = rowKeyValue;
+        inlineEdit.colKeyValue = colKeyValue;
+        inlineEdit.editedValue = getCellValue(
+            this.state,
+            rowKeyValue,
+            colKeyValue
+        );
+        inlineEdit.massEditSelectedRows = getCurrentSelectionLength(this.state);
+        inlineEdit.massEditEnabled =
+            isSelectedRow(this.state, rowKeyValue) &&
+            inlineEdit.massEditSelectedRows > 1;
+
+        const colIndex = this.state.headerIndexes[colKeyValue];
+        inlineEdit.columnDef = this.state.columns[colIndex];
+    }
+
+    /**
+     * Handles the inline editing event of each custom cell type.
+     *
+     * @param {event} event
+     */
     handleEditCell = (event) => {
         event.stopPropagation();
-
         const { colKeyValue, rowKeyValue, value } = event.detail;
         const dirtyValues = this.state.inlineEdit.dirtyValues;
 
@@ -684,7 +719,7 @@ export default class Datatable extends LightningDatatable {
         this.dispatchEvent(
             new CustomEvent('cellchange', {
                 detail: {
-                    draftValues: this.getChangesForCustomer(cellChange)
+                    draftValues: getChangesForCustomer(cellChange, this.state)
                 }
             })
         );
@@ -710,38 +745,27 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
+     * Handles the finish of inline editing of custom cell type.
      *
-     * @param {Object} changes - The internal representation of changes in a row.
-     * @returns {Object} - the list of customer changes in a row
+     * @param {event} event
      */
-    getColumnsChangesForCustomer(changes) {
-        return Object.keys(changes).reduce((result, colKey) => {
-            const columns = this.state.columns;
-            const columnIndex = this.state.headerIndexes[colKey];
-
-            result[columns[columnIndex].fieldName] = changes[colKey];
-
-            return result;
-        }, {});
-    }
-
-    /**
-     *
-     * @param {Object} changes - The internal representation of changes in a row
-     * @returns {Object} - The formatted data for draft values.
-     */
-    getChangesForCustomer(changes) {
-        const keyField = this.state.keyField;
-        return Object.keys(changes).reduce((result, rowKey) => {
-            const rowChanges = this.getColumnsChangesForCustomer(
-                changes[rowKey]
-            );
-
-            if (Object.keys(rowChanges).length > 0) {
-                rowChanges[keyField] = rowKey;
-                result.push(rowChanges);
-            }
-            return result;
-        }, []);
-    }
+    handleInlineEditFinishCustom = (event) => {
+        const {
+            reason,
+            rowKeyValue,
+            colKeyValue,
+            value,
+            valid,
+            isMassEditChecked
+        } = event.detail;
+        processInlineEditFinishCustom(
+            this.state,
+            reason,
+            rowKeyValue,
+            colKeyValue,
+            value,
+            valid,
+            isMassEditChecked
+        );
+    };
 }

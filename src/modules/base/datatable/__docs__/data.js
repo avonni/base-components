@@ -84,6 +84,25 @@ const options = [
     }
 ];
 
+const groups = [
+    {
+        label: 'Accounts',
+        value: 'accounts'
+    },
+    {
+        label: 'Opportunities',
+        value: 'opportunities'
+    },
+    {
+        label: 'Closed',
+        value: 'closed'
+    },
+    {
+        label: 'Won',
+        value: 'won'
+    }
+];
+
 const columnsAB = [
     {
         label: 'Action',
@@ -208,11 +227,11 @@ const columnsCE = [
         type: 'combobox',
         typeAttributes: {
             label: 'Simple Combobox',
-            options: options,
+            options: { fieldName: 'options' },
             isMultiSelect: { fieldName: 'isMultiSelect' }
         },
         editable: true,
-        fixedWidth: 260
+        fixedWidth: 300
     },
     {
         label: 'Currency',
@@ -573,7 +592,9 @@ const recordsCE = [
         date: new Date('2022/03/24'),
         dateLocal: new Date('2022/03/24'),
         combobox: 'no-avatar-burlington',
-        email: 'nina.gomez@email.com'
+        email: 'nina.gomez@email.com',
+        options: options,
+        isMultiSelect: true
     },
     {
         id: 2,
@@ -583,7 +604,8 @@ const recordsCE = [
         dynamicIconOption: 'negative',
         date: new Date('2022/03/21'),
         dateLocal: new Date('2022/03/21'),
-        email: 'dave.mckinsley@email.com'
+        email: 'dave.mckinsley@email.com',
+        options: options
     },
     {
         id: 3,
@@ -596,7 +618,8 @@ const recordsCE = [
         date: new Date('2022/05/04'),
         dateLocal: new Date('2022/05/04'),
         isMultiSelect: true,
-        email: 'jung.phung@email.com'
+        email: 'jung.phung@email.com',
+        options: options
     },
     {
         id: 4,
@@ -605,7 +628,8 @@ const recordsCE = [
         dynamicIcon: 'eq',
         date: new Date('2021/02/14'),
         dateLocal: new Date('2021/02/14'),
-        email: 'lily.murray@email.com'
+        email: 'lily.murray@email.com',
+        options: options
     },
     {
         id: 5,
@@ -614,7 +638,8 @@ const recordsCE = [
         currency: '217',
         dynamicIcon: 'waffle',
         date: new Date('2021/02/14'),
-        dateLocal: new Date('2022/10/12')
+        dateLocal: new Date('2022/10/12'),
+        options: groups
     }
 ];
 

@@ -402,6 +402,23 @@ Base.args = {
     options: options
 };
 
+export const readOnly = Template.bind({});
+readOnly.args = {
+    label: 'Read-only combobox',
+    options: options,
+    readOnly: true,
+    value: 'no-avatar-oil-sla'
+};
+
+export const readOnlyMultiSelect = Template.bind({});
+readOnlyMultiSelect.args = {
+    label: 'Read-only multi-select combobox',
+    options: options,
+    isMultiSelect: true,
+    readOnly: true,
+    value: ['no-avatar-dickenson', 'no-avatar-oil-sla']
+};
+
 export const Disabled = Template.bind({});
 Disabled.args = {
     label: 'Disabled combobox',

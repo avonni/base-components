@@ -34,7 +34,7 @@
 
 <template>
     <div class={computedContainerClass}>
-        <label if:true={showLabel} class={computedLegendClass} data-element-id="label">
+        <label class={computedLabelClass} data-element-id="label">
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
             >
@@ -59,25 +59,36 @@
                     onmousedown={handleButtonMouseDown}
                     type="button"
                 >
-                    {menuLabel}
-                    <template if:true={menuIconName}>
-                        <lightning-icon
-                            icon-name={menuIconName}
-                            size={menuIconSize}
-                            class={iconClass}
-                            data-element-id="lightning-icon-menu-icon-name"
-                        ></lightning-icon>
+                    <template if:false={readOnly}>
+                        {menuLabel}
+                        <template if:true={menuIconName}>
+                            <lightning-icon
+                                icon-name={menuIconName}
+                                size={menuIconSize}
+                                class={iconClass}
+                                data-element-id="lightning-icon-menu-icon-name"
+                            ></lightning-icon>
+                        </template>
+                        <template if:false={menuIconName}>
+                            <span
+                                class="slds-swatch"
+                                data-element-id="swatch"
+                            ></span>
+                            <lightning-icon
+                                icon-name="utility:down"
+                                size="xx-small"
+                                data-element-id="lightning-icon-no-menu-icon-name"
+                            ></lightning-icon>
+                        </template>
                     </template>
-                    <template if:false={menuIconName}>
-                        <span class="slds-swatch" data-element-id="span"></span>
-                        <lightning-icon
-                            icon-name="utility:down"
-                            size="xx-small"
-                            data-element-id="lightning-icon-no-menu-icon-name"
-                        ></lightning-icon>
+                    <template if:true={readOnly}>
+                        <span
+                            class="slds-swatch"
+                            data-element-id="swatch"
+                        ></span>
                     </template>
                 </button>
-                <template if:true={_dropdownOpened}>
+                <template if:true={dropdownOpened}>
                     <div
                         class={computedDropdownClass}
                         onmousedown={handleDropdownMouseDown}
@@ -109,13 +120,18 @@
                                             role="tablist"
                                         >
                                             <li
-                                                class="slds-tabs_default__item slds-is-active"
+                                                class="
+                                                    slds-tabs_default__item
+                                                    slds-is-active
+                                                "
                                                 title="Default"
                                                 role="presentation"
                                             >
                                                 <a
                                                     id="default__item"
-                                                    class="slds-tabs_default__link"
+                                                    class="
+                                                        slds-tabs_default__link
+                                                    "
                                                     href="javascript:void(0);"
                                                     role="tab"
                                                     onclick={handlerTabClick}
@@ -131,7 +147,9 @@
                                             >
                                                 <a
                                                     id="custom__item"
-                                                    class="slds-tabs_default__link"
+                                                    class="
+                                                        slds-tabs_default__link
+                                                    "
                                                     href="javascript:void(0);"
                                                     role="tab"
                                                     onclick={handlerTabClick}
@@ -160,7 +178,7 @@
                                             class="slds-tabs_default__content"
                                         >
                                             <c-color-gradient
-                                                if:true={_dropdownVisible}
+                                                if:true={dropdownVisible}
                                                 data-name="colorGradient"
                                                 message-when-bad-input={messageWhenBadInput}
                                                 opacity={opacity}
@@ -172,7 +190,7 @@
                                 </template>
                                 <template if:true={isCustom}>
                                     <c-color-gradient
-                                        if:true={_dropdownVisible}
+                                        if:true={dropdownVisible}
                                         data-name="colorGradient"
                                         message-when-bad-input={messageWhenBadInput}
                                         opacity={opacity}
@@ -215,43 +233,76 @@
                 </template>
             </div>
             <div
-                class="slds-form-element slds-p-left_xx-small avonni-builder-icon-picker-input-container"
+                class="
+                    slds-form-element
+                    slds-p-left_xx-small
+                    avonni-builder-icon-picker-input-container
+                "
                 if:false={hideColorInput}
             >
                 <div
-                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+                    class="
+                        slds-form-element__control
+                        slds-input-has-icon slds-input-has-icon_right
+                    "
                 >
-                    <lightning-input
-                        type="text"
-                        variant="label-hidden"
-                        label="color"
-                        value={inputValue}
-                        name={name}
-                        onchange={handleInputColor}
-                        disabled={disabledInput}
-                        read-only={isLabelDisplayed}
-                        data-element-id="lightning-input"
-                    ></lightning-input>
-                    <template if:true={isInputFilled}>
-                        <button
-                            class="slds-button slds-button_icon slds-input__icon slds-input__icon_right avonni-builder-icon-picker-clear-icon"
-                            title="Clear"
-                            data-element-id="button"
-                            onclick={clearInput}
-                        >
-                            <lightning-icon
-                                size="xx-small"
-                                class="slds-button__icon slds-icon-text-light"
-                                icon-name="utility:clear"
-                            ></lightning-icon>
-                            <span class="slds-assistive-text">Clear</span>
-                        </button>
+                    <template if:false={readOnly}>
+                        <input
+                            class="slds-input"
+                            type="text"
+                            label="color"
+                            value={inputValue}
+                            name={name}
+                            onchange={handleInputColor}
+                            onfocus={handleInputFocus}
+                            onblur={handleInputBlur}
+                            disabled={disabled}
+                            data-element-id="input"
+                            required={required}
+                        />
+                        <template if:true={isInputFilled}>
+                            <button
+                                class="
+                                    slds-button slds-button_icon
+                                    slds-input__icon slds-input__icon_right
+                                    avonni-builder-icon-picker-clear-icon
+                                "
+                                title="Clear"
+                                data-element-id="button"
+                                onclick={clearInput}
+                            >
+                                <lightning-icon
+                                    size="xx-small"
+                                    class="
+                                        slds-button__icon
+                                        slds-icon-text-light
+                                    "
+                                    icon-name="utility:clear"
+                                ></lightning-icon>
+                                <span class="slds-assistive-text">Clear</span>
+                            </button>
+                        </template>
+                    </template>
+                    <template if:true={readOnly}>
+                        <lightning-input
+                            data-element-id="lightning-input-read-only"
+                            label={label}
+                            value={inputValue}
+                            variant="label-hidden"
+                            read-only
+                        ></lightning-input>
                     </template>
                 </div>
             </div>
-            <p if:true={showError} class="slds-form-error">
-                {messageWhenBadInput}
-            </p>
         </div>
+    </div>
+    <div
+        if:true={helpMessage}
+        class="slds-form-element__help"
+        aria-live="assertive"
+        data-help-message
+        role="alert"
+    >
+        {helpMessage}
     </div>
 </template>
