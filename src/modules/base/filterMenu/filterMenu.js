@@ -412,8 +412,8 @@ export default class FilterMenu extends LightningElement {
     get value() {
         return this._value;
     }
-    set value(proxy) {
-        const array = normalizeArray(proxy);
+    set value(val) {
+        const array = typeof val === 'string' ? [val] : normalizeArray(val);
         this._value = JSON.parse(JSON.stringify(array));
 
         this.computeValue();
