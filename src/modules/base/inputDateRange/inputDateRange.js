@@ -645,12 +645,32 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of start-date on c-calendar.
      */
     handleChangeStartDate(event) {
-        // Date format received is: YYYY-MM-DD
         const date = event.detail.value;
 
-        this._startDate = new Date(date[0]);
+        if (this.isStartDateEndDatePresent) {
+            if (date[1] > this._endDate) {
+                this._startDate = new Date(date[1]);
+            } else if (date[0] < this._startDate) {
+                this._startDate = new Date(date[0]);
+            } else if (date.length === 1) {
+                this._startDate = null;
+            } else {
+                this._startDate = new Date(date[1]);
+            }
+        } else if (this.isOnlyEndDate) {
+            if (date[1] > this._endDate) {
+                this._startDate = new Date(date[1]);
+            } else if (date.length === 0) {
+                this._startDate = this._endDate;
+            } else {
+                this._startDate = new Date(date[0]);
+            }
+        } else {
+            this._startDate =
+                date[0] !== undefined ? new Date(date[0]) : undefined;
+        }
+
         event.stopPropagation();
-        this.toggleStartDateVisibility();
 
         this._cancelBlurStartDate = false;
         this.handleBlurStartDate();
@@ -690,7 +710,6 @@ export default class InputDateRange extends LightningElement {
                     this._startDate.setHours(0, 0, 0, 0);
                 }
             }
-
             this.toggleStartDateVisibility();
 
             if (
@@ -698,12 +717,7 @@ export default class InputDateRange extends LightningElement {
                 (!this.endDate ||
                     this.startDate.getTime() > this.endDate.getTime())
             ) {
-                let endDate = new Date(this.startDate).setDate(
-                    this.startDate.getDate() + 1
-                );
-                this._endDate = new Date(
-                    new Date(endDate).setHours(0, 0, 0, 0)
-                );
+                this._endDate = null;
                 this.endDateInput.focus();
             }
 
@@ -760,13 +774,26 @@ export default class InputDateRange extends LightningElement {
      */
     handleChangeEndDate(event) {
         const date = event.detail.value;
-        console.log(event.detail.value);
 
-        if (date.length === 1) {
+        if (date.length === 1 && !this._startDate) {
             this._endDate = new Date(date[0]);
+        } else if (this.isOnlyStartDate) {
+            if (date[1] > this._startDate) {
+                this._endDate = new Date(date[1]);
+            } else if (date.length === 0) {
+                this._endDate = this._startDate;
+            } else {
+                this._endDate = new Date(date[0]);
+            }
         } else {
-            this._endDate = date[1] ? new Date(date[1]) : undefined;
+            if (date[1]) {
+                this._endDate = new Date(date[1]);
+            } else {
+                this._startDate = date[0] ? new Date(date[0]) : undefined;
+                this._endDate = undefined;
+            }
         }
+
         event.stopPropagation();
         this._cancelBlurEndDate = false;
         this.handleBlurEndDate();
@@ -806,17 +833,17 @@ export default class InputDateRange extends LightningElement {
             this.toggleEndDateVisibility();
 
             if (
-                this.endDate &&
-                (!this.startDate ||
-                    this.startDate.getTime() > this.endDate.getTime())
+                this.isStartDateEndDatePresent &&
+                this.startDate.getTime() > this.endDate.getTime()
             ) {
                 let startDate = new Date(this.endDate).setDate(
-                    this.endDate.getDate() - 1
+                    this.endDate.getDate()
                 );
                 this._startDate = new Date(
                     new Date(startDate).setHours(0, 0, 0, 0)
                 );
-                this.startDateInput.focus();
+                this._endDate = null;
+                this.endDateInput.focus();
             }
 
             this.dispatchChange();

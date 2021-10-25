@@ -95,10 +95,6 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
-    renderedCallback() {
-        console.log(this._value);
-    }
-
     /**
      * If true, the calendar is disabled.
      *

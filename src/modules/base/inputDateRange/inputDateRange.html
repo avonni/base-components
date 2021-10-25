@@ -71,6 +71,7 @@
                         data-element-id="input-start-date"
                         onblur={handleBlurStartDate}
                         onfocus={handleFocusStartDate}
+                        autocomplete="off"
                     />
                     <lightning-icon
                         icon-name="utility:event"
@@ -85,24 +86,24 @@
                     onmouseleave={allowBlurStartDate}
                 >
                     <template if:false={isStartDateEndDatePresent}>
-                        <template if:false={isOnlyEndDate}>
-                            <c-calendar
-                                value={startDate}
-                                selection-mode="single"
-                                onchange={handleChangeStartDate}
-                                onprivatefocus={handlePrivateFocusStartDate}
-                                onprivateblur={handlePrivateBlurStartDate}
-                            ></c-calendar>
-                        </template>
-                        <template if:true={isOnlyEndDate}>
-                            <c-calendar
-                                value={endDateOnly}
-                                selection-mode="interval"
-                                onchange={handleChangeStartDate}
-                                onprivatefocus={handlePrivateFocusStartDate}
-                                onprivateblur={handlePrivateBlurStartDate}
-                            ></c-calendar>
-                        </template>
+                        <c-calendar
+                            if:false={isOnlyEndDate}
+                            value={startDate}
+                            selection-mode="single"
+                            onchange={handleChangeStartDate}
+                            onprivatefocus={handlePrivateFocusStartDate}
+                            onprivateblur={handlePrivateBlurStartDate}
+                            data-element-id="c-calendar-start-date-no-end-date"
+                        ></c-calendar>
+                        <c-calendar
+                            if:true={isOnlyEndDate}
+                            value={endDate}
+                            selection-mode="interval"
+                            onchange={handleChangeStartDate}
+                            onprivatefocus={handlePrivateFocusStartDate}
+                            onprivateblur={handlePrivateBlurStartDate}
+                            data-element-id="c-calendar-start-date-with-end-date"
+                        ></c-calendar>
                     </template>
                     <template if:true={isStartDateEndDatePresent}>
                         <c-calendar
@@ -111,6 +112,7 @@
                             onchange={handleChangeStartDate}
                             onprivatefocus={handlePrivateFocusStartDate}
                             onprivateblur={handlePrivateBlurStartDate}
+                            data-element-id="c-calendar-start-date-both-date"
                         ></c-calendar>
                     </template>
                 </div>
@@ -153,6 +155,7 @@
                         data-element-id="input-end-date"
                         onblur={handleBlurEndDate}
                         onfocus={handleFocusEndDate}
+                        autocomplete="off"
                     />
                     <lightning-icon
                         icon-name="utility:event"
@@ -167,24 +170,22 @@
                     onmouseleave={allowBlurEndDate}
                 >
                     <template if:false={isStartDateEndDatePresent}>
-                        <template if:false={isOnlyStartDate}>
-                            <c-calendar
-                                value={endDate}
-                                selection-mode="single"
-                                onchange={handleChangeEndDate}
-                                onprivatefocus={handlePrivateFocusEndDate}
-                                onprivateblur={handlePrivateBlurEndDate}
-                            ></c-calendar>
-                        </template>
-                        <template if:true={isOnlyStartDate}>
-                            <c-calendar
-                                value={startDate}
-                                selection-mode="interval"
-                                onchange={handleChangeEndDate}
-                                onprivatefocus={handlePrivateFocusEndDate}
-                                onprivateblur={handlePrivateBlurEndDate}
-                            ></c-calendar>
-                        </template>
+                        <c-calendar
+                            if:false={isOnlyStartDate}
+                            value={endDate}
+                            selection-mode="single"
+                            onchange={handleChangeEndDate}
+                            onprivatefocus={handlePrivateFocusEndDate}
+                            onprivateblur={handlePrivateBlurEndDate}
+                        ></c-calendar>
+                        <c-calendar
+                            if:true={isOnlyStartDate}
+                            value={startDate}
+                            selection-mode="interval"
+                            onchange={handleChangeEndDate}
+                            onprivatefocus={handlePrivateFocusEndDate}
+                            onprivateblur={handlePrivateBlurEndDate}
+                        ></c-calendar>
                     </template>
                     <template if:true={isStartDateEndDatePresent}>
                         <c-calendar
