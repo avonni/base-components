@@ -160,9 +160,7 @@ Multiple.args = {
 
 export const Interval = Template.bind({});
 Interval.args = {
-    value: [null, '05/18/2021'],
-    // value: [null, '05/08/2021', '05/12/2021', '05/18/2021'],
-    // value: ['05/03/2021', '05/08/2021'],
+    value: ['05/03/2021', '05/08/2021'],
     selectionMode: 'interval'
 };
 
