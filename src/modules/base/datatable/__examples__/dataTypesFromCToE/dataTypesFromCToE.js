@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromCToD extends LightningElement {
+export default class DataTypesFromCToE extends LightningElement {
     columns = [
         {
             label: 'Checkbox button',
@@ -106,6 +106,13 @@ export default class DataTypesFromCToD extends LightningElement {
                 alternativeText: { fieldName: 'dynamicIcon' },
                 option: { fieldName: 'dynamicIconOption' }
             }
+        },
+        {
+            label: 'Email',
+            fieldName: 'email',
+            type: 'email',
+            editable: true,
+            initialWidth: 225
         }
     ];
 
@@ -117,7 +124,8 @@ export default class DataTypesFromCToD extends LightningElement {
             dynamicIcon: 'ellie',
             date: new Date('2022/03/24'),
             dateLocal: new Date('2022/03/24'),
-            combobox: 'no-avatar-burlington'
+            combobox: 'no-avatar-burlington',
+            email: 'nina.gomez@email.com'
         },
         {
             id: 2,
@@ -126,7 +134,8 @@ export default class DataTypesFromCToD extends LightningElement {
             dynamicIcon: 'score',
             dynamicIconOption: 'negative',
             date: new Date('2022/03/21'),
-            dateLocal: new Date('2022/03/21')
+            dateLocal: new Date('2022/03/21'),
+            email: 'dave.mckinsley@email.com'
         },
         {
             id: 3,
@@ -138,7 +147,8 @@ export default class DataTypesFromCToD extends LightningElement {
             dynamicIconOption: -3,
             date: new Date('2022/05/04'),
             dateLocal: new Date('2022/05/04'),
-            isMultiSelect: true
+            isMultiSelect: true,
+            email: 'jung.phung@email.com'
         },
         {
             id: 4,
@@ -146,7 +156,8 @@ export default class DataTypesFromCToD extends LightningElement {
             currency: '432',
             dynamicIcon: 'eq',
             date: new Date('2021/02/14'),
-            dateLocal: new Date('2021/02/14')
+            dateLocal: new Date('2021/02/14'),
+            email: 'lily.murray@email.com'
         },
         {
             id: 5,

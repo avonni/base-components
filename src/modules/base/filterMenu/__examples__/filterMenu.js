@@ -47,6 +47,7 @@ export const FilterMenu = ({
     label,
     loadingStateAlternativeText,
     items,
+    isMultiSelect,
     title,
     tooltip,
     value,
@@ -73,6 +74,7 @@ export const FilterMenu = ({
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.items = items;
+    element.isMultiSelect = isMultiSelect;
     element.title = title;
     element.tooltip = tooltip;
     element.value = value;

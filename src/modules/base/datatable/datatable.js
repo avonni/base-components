@@ -52,12 +52,14 @@ import formattedRichText from './formattedRichText.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
+import inputRichText from './inputRichText.html';
 import inputToggle from './inputToggle.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
+import textarea from './textarea.html';
 import slider from './slider.html';
 import urls from './urls.html';
 
@@ -72,6 +74,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'image',
     'input-counter',
     'input-date-range',
+    'input-rich-text',
     'input-toggle',
     'progress-bar',
     'progress-circle',
@@ -88,6 +91,7 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'input-counter',
     'input-date-range',
+    'input-rich-text',
     'input-toggle',
     'rating',
     'slider'
@@ -208,6 +212,10 @@ export default class Datatable extends LightningDatatable {
                 'type'
             ]
         },
+        'input-rich-text': {
+            template: inputRichText,
+            typeAttributes: ['disabled', 'placeholder', 'variant']
+        },
         'input-toggle': {
             template: inputToggle,
             typeAttributes: [
@@ -278,6 +286,16 @@ export default class Datatable extends LightningDatatable {
         slider: {
             template: slider,
             typeAttributes: ['disabled', 'label', 'max', 'min', 'size', 'step']
+        },
+        textarea: {
+            template: textarea,
+            typeAttributes: [
+                'disabled',
+                'label',
+                'maxlength',
+                'name',
+                'placeholder'
+            ]
         },
         urls: {
             template: urls,

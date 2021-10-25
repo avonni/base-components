@@ -190,7 +190,7 @@ const columnsAB = [
     }
 ];
 
-const columnsCD = [
+const columnsCE = [
     {
         label: 'Checkbox button',
         fieldName: 'checkboxButton',
@@ -274,17 +274,17 @@ const columnsCD = [
             alternativeText: { fieldName: 'dynamicIcon' },
             option: { fieldName: 'dynamicIconOption' }
         }
-    }
-];
-
-const columnsEN = [
+    },
     {
         label: 'Email',
         fieldName: 'email',
         type: 'email',
         editable: true,
         initialWidth: 225
-    },
+    }
+];
+
+const columnsFL = [
     {
         label: 'Formatted Rich Text',
         fieldName: 'formattedRichText',
@@ -337,6 +337,15 @@ const columnsEN = [
         editable: true
     },
     {
+        label: 'Input Rich Text',
+        fieldName: 'inputRichText',
+        type: 'input-rich-text',
+        typeAttributes: {
+            disabled: { fieldName: 'inputRichTextDisabled' }
+        },
+        editable: true
+    },
+    {
         label: 'Input Toggle',
         fieldName: 'inputToggle',
         type: 'input-toggle',
@@ -355,7 +364,10 @@ const columnsEN = [
         type: 'location',
         fieldName: 'location',
         editable: true
-    },
+    }
+];
+
+const columnsNQ = [
     {
         label: 'Number',
         type: 'number',
@@ -364,10 +376,7 @@ const columnsEN = [
         typeAttributes: {
             minimumFractionDigits: 2
         }
-    }
-];
-
-const columnsOQ = [
+    },
     {
         label: 'Percent',
         fieldName: 'percent',
@@ -451,6 +460,16 @@ const columnsRZ = [
         label: 'Text',
         fieldName: 'text',
         type: 'text',
+        editable: true
+    },
+    {
+        label: 'Text Area',
+        fieldName: 'textarea',
+        type: 'textarea',
+        typeAttributes: {
+            disabled: { fieldName: 'textareaDisabled' },
+            label: 'Text area'
+        },
         editable: true
     },
     {
@@ -565,7 +584,7 @@ const recordsAB = [
     }
 ];
 
-const recordsCD = [
+const recordsCE = [
     {
         id: 1,
         colorPicker: '#00a1e0',
@@ -574,6 +593,7 @@ const recordsCD = [
         date: new Date('2022/03/24'),
         dateLocal: new Date('2022/03/24'),
         combobox: 'no-avatar-burlington',
+        email: 'nina.gomez@email.com',
         options: options,
         isMultiSelect: true
     },
@@ -585,6 +605,7 @@ const recordsCD = [
         dynamicIconOption: 'negative',
         date: new Date('2022/03/21'),
         dateLocal: new Date('2022/03/21'),
+        email: 'dave.mckinsley@email.com',
         options: options
     },
     {
@@ -598,6 +619,7 @@ const recordsCD = [
         date: new Date('2022/05/04'),
         dateLocal: new Date('2022/05/04'),
         isMultiSelect: true,
+        email: 'jung.phung@email.com',
         options: options
     },
     {
@@ -607,6 +629,7 @@ const recordsCD = [
         dynamicIcon: 'eq',
         date: new Date('2021/02/14'),
         dateLocal: new Date('2021/02/14'),
+        email: 'lily.murray@email.com',
         options: options
     },
     {
@@ -620,10 +643,10 @@ const recordsCD = [
         options: groups
     }
 ];
-const recordsEN = [
+
+const recordsFL = [
     {
         id: 1,
-        email: 'nina.gomez@email.com',
         formattedRichText: '<h1>Header 1</h1>',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputCounter: 1,
@@ -634,12 +657,10 @@ const recordsEN = [
         location: {
             latitude: '45.53',
             longitude: '-73.61'
-        },
-        number: '6'
+        }
     },
     {
         id: 2,
-        email: 'dave.mckinsley@email.com',
         formattedRichText: '<h2>Header 2</h2>',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
@@ -651,12 +672,10 @@ const recordsEN = [
         location: {
             latitude: '45.53',
             longitude: '-73.58'
-        },
-        number: '18'
+        }
     },
     {
         id: 3,
-        email: 'jung.phung@email.com',
         formattedRichText: '<h3>Header 3</h3>',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
@@ -668,12 +687,10 @@ const recordsEN = [
         location: {
             latitude: '45.54',
             longitude: '-73.60'
-        },
-        number: '1789'
+        }
     },
     {
         id: 4,
-        email: 'lily.murray@email.com',
         formattedRichText: '<h4>Header 4</h4>',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
@@ -684,12 +701,10 @@ const recordsEN = [
         location: {
             latitude: '45.55',
             longitude: '-73.62'
-        },
-        number: '345'
+        }
     },
     {
         id: 5,
-        email: 'reginald.martin@email.com',
         formattedRichText: '<h5>Header 5</h5>',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
@@ -701,14 +716,14 @@ const recordsEN = [
         location: {
             latitude: '45.56',
             longitude: '-73.56'
-        },
-        number: '9'
+        }
     }
 ];
 
-const recordsOQ = [
+const recordsNQ = [
     {
         id: 1,
+        number: '1789',
         percent: 0.34,
         phone: '5142223333',
         progress: 34,
@@ -729,6 +744,7 @@ const recordsOQ = [
     },
     {
         id: 2,
+        number: '1',
         percent: 0.45,
         phone: '5144546767',
         progress: 100,
@@ -741,6 +757,7 @@ const recordsOQ = [
     },
     {
         id: 3,
+        number: '1,234',
         percent: 0.67,
         phone: '6785643214',
         progress: 43,
@@ -748,6 +765,7 @@ const recordsOQ = [
     },
     {
         id: 4,
+        number: '345',
         percent: 4,
         phone: '3547789900',
         progress: 5,
@@ -757,6 +775,7 @@ const recordsOQ = [
     },
     {
         id: 5,
+        number: '9',
         percent: 0.05,
         phone: '5143245564',
         progress: 66,
@@ -859,6 +878,7 @@ const recordsRZ = [
         rating: '4',
         slider: '0',
         text: 'Reginald Martin',
+        textareaDisabled: true,
         url: 'https://lwc.dev/',
         urlLabel: 'LWC Documentation',
         urls: [
@@ -874,13 +894,13 @@ const recordsRZ = [
 
 export {
     columnsAB,
-    columnsCD,
-    columnsEN,
-    columnsOQ,
+    columnsCE,
+    columnsFL,
+    columnsNQ,
     columnsRZ,
     recordsAB,
-    recordsCD,
-    recordsEN,
-    recordsOQ,
+    recordsCE,
+    recordsFL,
+    recordsNQ,
     recordsRZ
 };
