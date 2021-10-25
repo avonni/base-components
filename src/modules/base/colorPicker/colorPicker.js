@@ -188,13 +188,6 @@ export default class ColorPicker extends LightningElement {
     currentLabel;
     currentToken;
 
-    connectedCallback() {
-        this.addEventListener('colordblclick', () => {
-            this.handlerDone();
-        });
-        this._connected = true;
-    }
-
     renderedCallback() {
         if (!this.init) {
             this.initSwatchColor();
@@ -214,7 +207,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     set name(value) {
-        this._name = value ? value : this.uniqueKey;
+        this._name = value ? value : generateUUID();
     }
 
     /**
@@ -521,15 +514,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Generated unique key.
-     *
-     * @type {string}
-     */
-    get uniqueKey() {
-        return generateUUID();
-    }
-
-    /**
      * Verify if type is Base.
      *
      * @returns {boolean}
@@ -627,9 +611,10 @@ export default class ColorPicker extends LightningElement {
      */
     @api
     focus() {
-        if (this._connected) {
-            this.focusOnButton();
-        }
+        const button = this.template.querySelector(
+            '[data-element-id="button"]'
+        );
+        if (button) button.focus();
     }
 
     /**
@@ -693,13 +678,6 @@ export default class ColorPicker extends LightningElement {
         if (element) {
             element.style.background = this.value;
         }
-    }
-
-    /**
-     * Button focus handler.
-     */
-    focusOnButton() {
-        this.template.querySelector('[data-element-id="button"]').focus();
     }
 
     /**
@@ -908,7 +886,7 @@ export default class ColorPicker extends LightningElement {
             }
 
             let gradientPalette = this.template.querySelector(
-                '[data-name="colorGradient"]'
+                '[data-element-id^="avonni-color-gradient"]'
             );
 
             if (gradientPalette) {
@@ -928,7 +906,7 @@ export default class ColorPicker extends LightningElement {
         this.newValue = '';
 
         let gradientPalette = this.template.querySelector(
-            '[data-name="colorGradient"]'
+            '[data-element-id^="avonni-color-gradient"]'
         );
 
         if (gradientPalette) {
@@ -979,15 +957,6 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Dropdown menu mouse leave handler.
-     */
-    handleDropdownMouseLeave() {
-        if (!this._menuHasFocus) {
-            this.close();
-        }
-    }
-
-    /**
      * Tab click event handler.
      *
      * @param {Event} event
@@ -995,16 +964,24 @@ export default class ColorPicker extends LightningElement {
     handlerTabClick(event) {
         event.preventDefault();
 
-        [...this.template.querySelectorAll('a')].forEach((tab) => {
-            const tabName = tab.dataset.tabName;
-            const targetName = event.currentTarget.dataset.tabName;
-            if (tabName === targetName) {
-                tab.parentElement.classList.add('slds-is-active');
-                this._currentTab = tabName;
-            } else {
-                tab.parentElement.classList.remove('slds-is-active');
-            }
-        });
+        this.template
+            .querySelectorAll('[data-group-name="tabs"]')
+            .forEach((tab) => {
+                const tabName = tab.dataset.tabName;
+                const targetName = event.currentTarget.dataset.tabName;
+
+                if (tabName === targetName) {
+                    tab.parentElement.classList.add('slds-is-active');
+                    this._currentTab = tabName;
+                } else {
+                    tab.parentElement.classList.remove('slds-is-active');
+                }
+            });
+
+        const palette = this.template.querySelector(
+            '[data-element-id="avonni-color-palette-default"]'
+        );
+        if (palette) palette.colors = [...this.computedColors];
     }
 
     /**
@@ -1085,7 +1062,7 @@ export default class ColorPicker extends LightningElement {
             this.value = color;
 
             let gradientPalette = this.template.querySelector(
-                '[data-name="colorGradient"]'
+                '[data-element-id^="avonni-color-gradient"]'
             );
 
             if (gradientPalette) {
@@ -1120,7 +1097,7 @@ export default class ColorPicker extends LightningElement {
             }
 
             this.template
-                .querySelector('.slds-dropdown-trigger')
+                .querySelector('[data-element-id="div-dropdown-trigger"]')
                 .classList.toggle('slds-is-open');
         }
     }
@@ -1141,7 +1118,7 @@ export default class ColorPicker extends LightningElement {
         if (this.isAutoAlignment() && this._dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });

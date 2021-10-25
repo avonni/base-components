@@ -50,7 +50,10 @@
             data-element-id="lightning-helptext"
         ></lightning-helptext>
         <div class="avonni-flex">
-            <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
+            <div
+                class="slds-dropdown-trigger slds-dropdown-trigger_click"
+                data-element-id="div-dropdown-trigger"
+            >
                 <button
                     class={computedButtonClass}
                     disabled={disabled}
@@ -88,6 +91,7 @@
                         onmousedown={handleDropdownMouseDown}
                         onmouseup={handleDropdownMouseUp}
                         onblur={handleBlur}
+                        data-element-id="div-dropdown"
                         tabindex="0"
                     >
                         <!-- Loading spinner -->
@@ -131,6 +135,7 @@
                                                     "
                                                     href="javascript:void(0);"
                                                     role="tab"
+                                                    data-group-name="tabs"
                                                     data-tab-name="default"
                                                     onclick={handlerTabClick}
                                                     onblur={handlePrivateBlur}
@@ -143,6 +148,7 @@
                                                 class="slds-tabs_default__item"
                                                 title="Tokens"
                                                 role="presentation"
+                                                data-element-id="li-tokens-tab"
                                             >
                                                 <a
                                                     class="
@@ -150,6 +156,8 @@
                                                     "
                                                     href="javascript:void(0);"
                                                     role="tab"
+                                                    data-element-id="a-tokens-tab"
+                                                    data-group-name="tabs"
                                                     data-tab-name="tokens"
                                                     onclick={handlerTabClick}
                                                     onblur={handlePrivateBlur}
@@ -168,6 +176,7 @@
                                                     "
                                                     href="javascript:void(0);"
                                                     role="tab"
+                                                    data-group-name="tabs"
                                                     data-tab-name="custom"
                                                     onclick={handlerTabClick}
                                                     onblur={handlePrivateBlur}
@@ -196,11 +205,11 @@
                                             <!-- Custom tab -->
                                             <c-color-gradient
                                                 if:true={customTabIsSelected}
-                                                data-name="colorGradient"
                                                 message-when-bad-input={messageWhenBadInput}
                                                 opacity={opacity}
                                                 value={value}
                                                 read-only={readOnly}
+                                                data-element-id="avonni-color-gradient"
                                             ></c-color-gradient>
                                         </div>
                                     </div>
@@ -210,11 +219,11 @@
                                 <template if:true={isCustom}>
                                     <c-color-gradient
                                         if:true={_dropdownVisible}
-                                        data-name="colorGradient"
                                         message-when-bad-input={messageWhenBadInput}
                                         opacity={opacity}
                                         value={value}
                                         read-only={readOnly}
+                                        data-element-id="avonni-color-gradient-custom-type"
                                     ></c-color-gradient>
                                 </template>
 
