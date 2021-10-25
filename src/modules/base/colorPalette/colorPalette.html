@@ -43,10 +43,7 @@
                     data-label={bundle.label}
                     data-token={bundle.value}
                     data-color={bundle.color}
-                    onblur={handleBlur}
                     onclick={handleClick}
-                    ondblclick={handleDblClick}
-                    onfocus={handleFocus}
                 >
                     <a
                         aria-checked="true"
@@ -55,6 +52,9 @@
                         href="javascript:void(0)"
                         role="menuitemcheckbox"
                         data-element-id="a-list"
+                        onblur={handleBlur}
+                        ondblclick={handleDblClick}
+                        onfocus={handleFocus}
                     >
                         <span
                             class="slds-truncate"
@@ -78,6 +78,7 @@
                                 <span
                                     class="slds-swatch"
                                     data-color={bundle.color}
+                                    data-element-id="span-list"
                                     data-group-name="swatches"
                                 >
                                     <p class="slds-assistive-text">

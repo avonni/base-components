@@ -36,6 +36,19 @@ import ColorPalette from 'c/colorPalette';
 // Not tested because not used:
 // value
 
+const TOKENS = [
+    {
+        label: 'brand-accessible',
+        color: 'rgb(10, 35, 153)',
+        value: '--lwc-brandAccessible'
+    },
+    {
+        label: 'brand-active',
+        color: 'rgb(9, 106, 80)',
+        value: '--lwc-brandAccessibleActive'
+    }
+];
+
 let element;
 describe('Color Palette', () => {
     afterEach(() => {
@@ -102,7 +115,7 @@ describe('Color Palette', () => {
                 '[data-element-id^="a-"]'
             );
             a.forEach((color) => {
-                expect(color.getAttribute('is-disabled')).toBe('true');
+                expect(color.getAttribute('aria-disabled')).toBe('true');
             });
             const colors = element.shadowRoot.querySelectorAll(
                 '[data-element-id^="span-"]'
@@ -122,7 +135,7 @@ describe('Color Palette', () => {
                 '[data-element-id^="a-"]'
             );
             a.forEach((color) => {
-                expect(color.getAttribute('read-only')).toBe('true');
+                expect(color.getAttribute('aria-readonly')).toBe('true');
             });
         });
     });
@@ -152,7 +165,7 @@ describe('Color Palette', () => {
         return Promise.resolve().then(() => {
             let colorsArray = [];
             const colors = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="span"]'
+                '[data-element-id="span-base"]'
             );
             expect(colors).toHaveLength(5);
             colors.forEach((color) => {
@@ -166,13 +179,27 @@ describe('Color Palette', () => {
         });
     });
 
+    it('Color Palette colors as tokens', () => {
+        element.colors = TOKENS;
+
+        return Promise.resolve().then(() => {
+            const colorElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="span-list"]'
+            );
+            expect(colorElements).toHaveLength(2);
+            colorElements.forEach((color, index) => {
+                expect(color.style.backgroundColor).toBe(TOKENS[index].color);
+            });
+        });
+    });
+
     // columns
     it('Color Palette columns', () => {
         element.columns = 4;
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-pallet-container'
+                '[data-element-id="div-palette-container"]'
             );
             expect(container.style.width).toBe('112px');
         });
@@ -243,7 +270,7 @@ describe('Color Palette', () => {
 
         return Promise.resolve().then(() => {
             const a = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="span"]'
+                '[data-element-id="span-base"]'
             );
             a[0].click();
             expect(handler).toHaveBeenCalled();
@@ -254,6 +281,32 @@ describe('Color Palette', () => {
             );
             expect(handler.mock.calls[0][0].detail.rgba).toBe(
                 'rgba(227,171,236,1)'
+            );
+            expect(handler.mock.calls[0][0].detail.alpha).toBe('1');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+
+    it('Color Palette change event in a list', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.colors = TOKENS;
+
+        return Promise.resolve().then(() => {
+            const a = element.shadowRoot.querySelectorAll(
+                '[data-element-id="span-list"]'
+            );
+            a[0].click();
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.hex).toBe('#0a2399');
+            expect(handler.mock.calls[0][0].detail.hexa).toBe('#0a2399ff');
+            expect(handler.mock.calls[0][0].detail.rgb).toBe(
+                'rgb(10, 35, 153)'
+            );
+            expect(handler.mock.calls[0][0].detail.rgba).toBe(
+                'rgba(10, 35, 153,1)'
             );
             expect(handler.mock.calls[0][0].detail.alpha).toBe('1');
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
@@ -280,17 +333,67 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette focus event', () => {
-        const color = element.shadowRoot.querySelector(
-            '.slds-color-picker__swatch-trigger'
-        );
+    it('Color Palette double click event in a list', () => {
         const handler = jest.fn();
+        element.addEventListener('colordblclick', handler);
+        element.colors = TOKENS;
 
-        color.addEventListener('focus', handler);
+        return Promise.resolve().then(() => {
+            const a = element.shadowRoot.querySelector(
+                '[data-element-id="a-list"]'
+            );
+            a.dispatchEvent(new CustomEvent('dblclick'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Color Palette focus event', () => {
+        const handler = jest.fn();
+        element.addEventListener('privatefocus', handler);
+
+        return Promise.resolve().then(() => {
+            const color = element.shadowRoot.querySelector(
+                '[data-element-id="a-base"]'
+            );
+            color.dispatchEvent(new CustomEvent('focus'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+
+    it('Color Palette focus event in a list', () => {
+        const handler = jest.fn();
+        element.addEventListener('privatefocus', handler);
+        element.colors = TOKENS;
+
+        return Promise.resolve().then(() => {
+            const color = element.shadowRoot.querySelector(
+                '[data-element-id="a-list"]'
+            );
+            color.dispatchEvent(new CustomEvent('focus'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+
+    it('Color Palette blur event', () => {
+        const handler = jest.fn();
+        element.addEventListener('blur', handler);
 
         return Promise.resolve()
             .then(() => {
-                color.dispatchEvent(new CustomEvent('focus', {}));
+                const color = element.shadowRoot.querySelector(
+                    '[data-element-id="a-base"]'
+                );
+                color.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();
@@ -300,17 +403,17 @@ describe('Color Palette', () => {
             });
     });
 
-    it('Color Palette blur event', () => {
-        const color = element.shadowRoot.querySelector(
-            '.slds-color-picker__swatch-trigger'
-        );
+    it('Color Palette blur event in a list', () => {
         const handler = jest.fn();
-
-        color.addEventListener('blur', handler);
+        element.addEventListener('blur', handler);
+        element.colors = TOKENS;
 
         return Promise.resolve()
             .then(() => {
-                color.dispatchEvent(new CustomEvent('blur', {}));
+                const color = element.shadowRoot.querySelector(
+                    '[data-element-id="a-list"]'
+                );
+                color.dispatchEvent(new CustomEvent('blur'));
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();
