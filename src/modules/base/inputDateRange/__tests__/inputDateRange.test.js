@@ -519,26 +519,27 @@ describe('Input Date Range', () => {
 
     // Input date range change
     it('Input date range change event', () => {
-        element.startDate = startDate;
-        element.endDate = endDate;
-        const startInput = element.shadowRoot.querySelector('.start-date');
+        element.startDate = startDate.setHours(0, 0, 0, 0);
+        element.endDate = endDate.setHours(0, 0, 0, 0);
+        const startInput = element.shadowRoot.querySelector(
+            '[data-element-id="input-start-date"]'
+        );
         const handler = jest.fn();
 
+        const newDate = new Date('12/12/2022').setHours(0, 0, 0, 0);
         startInput.addEventListener('change', handler);
 
         return Promise.resolve()
             .then(() => {
                 startInput.dispatchEvent(
                     new CustomEvent('change', {
-                        detail: { startDate: startDate, endDate: endDate }
+                        detail: { startDate: newDate, endDate: endDate }
                     })
                 );
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.startDate).toBe(
-                    startDate
-                );
+                expect(handler.mock.calls[0][0].detail.startDate).toBe(newDate);
                 expect(handler.mock.calls[0][0].detail.endDate).toBe(endDate);
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -551,7 +552,9 @@ describe('Input Date Range', () => {
         element.startDate = startDate;
         element.endDate = endDate;
         element.timezone = 'America/Port-au-Prince';
-        const startInput = element.shadowRoot.querySelector('.start-date');
+        const startInput = element.shadowRoot.querySelector(
+            '[data-element-id="input-start-date"]'
+        );
         const handler = jest.fn();
 
         startInput.addEventListener('change', handler);

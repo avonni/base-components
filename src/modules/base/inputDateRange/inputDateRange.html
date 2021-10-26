@@ -66,8 +66,6 @@
                         class="slds-input start-date"
                         value={startDateString}
                         disabled={disabled}
-                        aria-readonly={readOnly}
-                        readonly={readOnly}
                         required={required}
                         data-element-id="input-start-date"
                         onblur={handleBlurStartDate}
@@ -95,7 +93,8 @@
                             onprivatefocus={handlePrivateFocusStartDate}
                             onprivateblur={handlePrivateBlurStartDate}
                             data-element-id="c-calendar-start-date-no-end-date"
-                        ></c-calendar>
+                        >
+                        </c-calendar>
                         <c-calendar
                             if:true={isOnlyEndDate}
                             value={endDate}
@@ -104,7 +103,8 @@
                             onprivatefocus={handlePrivateFocusStartDate}
                             onprivateblur={handlePrivateBlurStartDate}
                             data-element-id="c-calendar-start-date-with-end-date"
-                        ></c-calendar>
+                        >
+                        </c-calendar>
                     </template>
                     <template if:true={areBothDatePresent}>
                         <c-calendar
@@ -114,7 +114,8 @@
                             onprivatefocus={handlePrivateFocusStartDate}
                             onprivateblur={handlePrivateBlurStartDate}
                             data-element-id="c-calendar-start-date-both-date"
-                        ></c-calendar>
+                        >
+                        </c-calendar>
                     </template>
                 </div>
                 <p data-element-id="start-date" if:true={readOnly}>
@@ -168,8 +169,6 @@
                         class="slds-input end-date"
                         value={endDateString}
                         disabled={disabled}
-                        aria-readonly={readOnly}
-                        readonly={readOnly}
                         data-element-id="input-end-date"
                         onblur={handleBlurEndDate}
                         onfocus={handleFocusEndDate}
@@ -195,7 +194,9 @@
                             onchange={handleChangeEndDate}
                             onprivatefocus={handlePrivateFocusEndDate}
                             onprivateblur={handlePrivateBlurEndDate}
-                        ></c-calendar>
+                            data-element-id="c-calendar-end-date-no-start-date"
+                        >
+                        </c-calendar>
                         <c-calendar
                             if:true={isOnlyStartDate}
                             value={startDate}
@@ -203,7 +204,9 @@
                             onchange={handleChangeEndDate}
                             onprivatefocus={handlePrivateFocusEndDate}
                             onprivateblur={handlePrivateBlurEndDate}
-                        ></c-calendar>
+                            data-element-id="c-calendar-end-date-with-start-date"
+                        >
+                        </c-calendar>
                     </template>
                     <template if:true={areBothDatePresent}>
                         <c-calendar
@@ -212,7 +215,9 @@
                             onchange={handleChangeEndDate}
                             onprivatefocus={handlePrivateFocusEndDate}
                             onprivateblur={handlePrivateBlurEndDate}
-                        ></c-calendar>
+                            data-element-id="c-calendar-end-date-both-date"
+                        >
+                        </c-calendar>
                     </template>
                 </div>
                 <p data-element-id="end-date" if:true={readOnly}>

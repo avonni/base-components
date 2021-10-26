@@ -750,8 +750,6 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._endDate = null;
                 this.endDateInput.focus();
-            } else if (this.isOnlyEndDate) {
-                this.startDateInput.focus();
             }
 
             this.dispatchChange();
@@ -881,10 +879,6 @@ export default class InputDateRange extends LightningElement {
                 );
                 this._endDate = null;
                 this.endDateInput.focus();
-            } else if (this.isOnlyStartDate) {
-                this.endDateInput.focus();
-            } else if (this.isOnlyEndDate) {
-                this.startDateInput.focus();
             }
 
             this.dispatchChange();
@@ -979,12 +973,8 @@ export default class InputDateRange extends LightningElement {
             });
         }
 
-        startDate = this.startDateString
-            ? new Date(startDate).toISOString()
-            : startDate;
-        endDate = this.endDateString
-            ? new Date(endDate).toISOString()
-            : endDate;
+        startDate = this.startDateString ? new Date(startDate) : startDate;
+        endDate = this.endDateString ? new Date(endDate) : endDate;
 
         /**
          * The event fired when the value changed.

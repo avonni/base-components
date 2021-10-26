@@ -33,6 +33,8 @@
 import { createElement } from 'lwc';
 import Calendar from 'c/calendar';
 
+// not tested : mouse over, mouse out events on calendar
+
 let element;
 describe('Calendar', () => {
     afterEach(() => {
