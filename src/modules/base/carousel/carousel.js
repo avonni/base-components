@@ -157,6 +157,7 @@ export default class Carousel extends LightningElement {
     panelStyle;
 
     connectedCallback() {
+        this.initCarousel();
         this._connected = true;
     }
 
