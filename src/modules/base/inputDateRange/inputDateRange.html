@@ -85,7 +85,7 @@
                     onmouseenter={cancelBlurStartDate}
                     onmouseleave={allowBlurStartDate}
                 >
-                    <template if:false={isStartDateEndDatePresent}>
+                    <template if:false={areBothDatePresent}>
                         <c-calendar
                             if:false={isOnlyEndDate}
                             value={startDate}
@@ -105,7 +105,7 @@
                             data-element-id="c-calendar-start-date-with-end-date"
                         ></c-calendar>
                     </template>
-                    <template if:true={isStartDateEndDatePresent}>
+                    <template if:true={areBothDatePresent}>
                         <c-calendar
                             value={startDateEndDate}
                             selection-mode="interval"
@@ -169,7 +169,7 @@
                     onmouseenter={cancelBlurEndDate}
                     onmouseleave={allowBlurEndDate}
                 >
-                    <template if:false={isStartDateEndDatePresent}>
+                    <template if:false={areBothDatePresent}>
                         <c-calendar
                             if:false={isOnlyStartDate}
                             value={endDate}
@@ -187,7 +187,7 @@
                             onprivateblur={handlePrivateBlurEndDate}
                         ></c-calendar>
                     </template>
-                    <template if:true={isStartDateEndDatePresent}>
+                    <template if:true={areBothDatePresent}>
                         <c-calendar
                             value={startDateEndDate}
                             selection-mode="interval"

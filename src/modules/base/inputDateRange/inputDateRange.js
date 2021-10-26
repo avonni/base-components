@@ -430,28 +430,40 @@ export default class InputDateRange extends LightningElement {
             .toString();
     }
 
-    get intervalDate() {
-        return [this.startDate];
-    }
-
-    get isOnlyEndDate() {
-        return !this.startDate && this.endDate;
-    }
-
-    get endDateOnly() {
-        return [null, this.endDate];
-    }
-
+    /**
+     * Returns true if only the start date is present.
+     *
+     * @type {boolean}
+     */
     get isOnlyStartDate() {
         return this.startDate && !this.endDate;
     }
 
-    get startDateEndDate() {
-        return [this.startDate, this.endDate];
+    /**
+     * Returns true if only the end date is present.
+     *
+     * @type {boolean}
+     */
+    get isOnlyEndDate() {
+        return !this.startDate && this.endDate;
     }
 
-    get isStartDateEndDatePresent() {
+    /**
+     * Returns true if the start date and end date are present.
+     *
+     * @type {boolean}
+     */
+    get areBothDatePresent() {
         return this.startDate && this.endDate;
+    }
+
+    /**
+     * Array with the start date and end date.
+     *
+     * @type {object}
+     */
+    get startDateEndDate() {
+        return [this.startDate, this.endDate];
     }
 
     /**
@@ -647,7 +659,8 @@ export default class InputDateRange extends LightningElement {
     handleChangeStartDate(event) {
         const date = event.detail.value;
 
-        if (this.isStartDateEndDatePresent) {
+        // Handler if there is a start date and there is an end date.
+        if (this.areBothDatePresent) {
             if (date[1] > this._endDate) {
                 this._startDate = new Date(date[1]);
             } else if (date[0] < this._startDate) {
@@ -657,6 +670,7 @@ export default class InputDateRange extends LightningElement {
             } else {
                 this._startDate = new Date(date[1]);
             }
+            // If there is no start date, but there is an end date.
         } else if (this.isOnlyEndDate) {
             if (date[1] > this._endDate) {
                 this._startDate = new Date(date[1]);
@@ -665,9 +679,9 @@ export default class InputDateRange extends LightningElement {
             } else {
                 this._startDate = new Date(date[0]);
             }
+            // If there is no start date and no end date.
         } else {
-            this._startDate =
-                date[0] !== undefined ? new Date(date[0]) : undefined;
+            this._startDate = date[0] ? new Date(date[0]) : undefined;
         }
 
         event.stopPropagation();
@@ -719,6 +733,8 @@ export default class InputDateRange extends LightningElement {
             ) {
                 this._endDate = null;
                 this.endDateInput.focus();
+            } else if (this.isOnlyEndDate) {
+                this.startDateInput.focus();
             }
 
             this.dispatchChange();
@@ -775,8 +791,10 @@ export default class InputDateRange extends LightningElement {
     handleChangeEndDate(event) {
         const date = event.detail.value;
 
+        // Handler if there is an end date and there is no start date.
         if (date.length === 1 && !this._startDate) {
             this._endDate = new Date(date[0]);
+            // Handler if there is no end date, but there is a start date.
         } else if (this.isOnlyStartDate) {
             if (date[1] > this._startDate) {
                 this._endDate = new Date(date[1]);
@@ -785,11 +803,13 @@ export default class InputDateRange extends LightningElement {
             } else {
                 this._endDate = new Date(date[0]);
             }
+            // Handler if there is no end date and no start date.
         } else {
             if (date[1]) {
                 this._endDate = new Date(date[1]);
             } else {
                 this._startDate = date[0] ? new Date(date[0]) : undefined;
+                // For the case of double clicking on the date to delete it.
                 this._endDate = undefined;
             }
         }
@@ -833,7 +853,7 @@ export default class InputDateRange extends LightningElement {
             this.toggleEndDateVisibility();
 
             if (
-                this.isStartDateEndDatePresent &&
+                this.areBothDatePresent &&
                 this.startDate.getTime() > this.endDate.getTime()
             ) {
                 let startDate = new Date(this.endDate).setDate(
@@ -844,6 +864,10 @@ export default class InputDateRange extends LightningElement {
                 );
                 this._endDate = null;
                 this.endDateInput.focus();
+            } else if (this.isOnlyStartDate) {
+                this.endDateInput.focus();
+            } else if (this.isOnlyEndDate) {
+                this.startDateInput.focus();
             }
 
             this.dispatchChange();
