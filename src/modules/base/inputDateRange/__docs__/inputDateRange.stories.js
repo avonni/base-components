@@ -267,8 +267,8 @@ Prefilled.args = {
     fieldLevelHelp: 'The date format has been set to long',
     labelStartDate: 'Start date',
     labelEndDate: 'End date',
-    startDate: '7/20/2021 10:00',
-    endDate: '7/21/2021 18:15',
+    startDate: '7/20/2021',
+    endDate: '7/21/2021',
     dateStyle: 'long'
 };
 
@@ -291,5 +291,6 @@ Disabled.args = {
     labelStartDate: 'Start date',
     labelEndDate: 'End date',
     startDate: '7/20/2021 10:00',
-    endDate: '7/21/2021 18:15'
+    endDate: '7/21/2021 18:15',
+    type: 'datetime'
 };

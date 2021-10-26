@@ -682,6 +682,7 @@ export default class InputDateRange extends LightningElement {
                 this._startDate = new Date(date[1]);
             } else if (date[0] < this._startDate) {
                 this._startDate = new Date(date[0]);
+                // If user click on the same date.
             } else if (date.length === 1) {
                 this._startDate = null;
             } else {
@@ -698,7 +699,7 @@ export default class InputDateRange extends LightningElement {
             }
             // If there is no start date and no end date.
         } else {
-            this._startDate = date[0] ? new Date(date[0]) : undefined;
+            this._startDate = date[0] ? new Date(date[0]) : null;
         }
 
         event.stopPropagation();
@@ -818,14 +819,14 @@ export default class InputDateRange extends LightningElement {
             } else {
                 this._endDate = new Date(date[0]);
             }
-            // Handler if there is no end date and no start date.
+            // Handler if there is no end date and no start date or both date.
         } else {
             if (date[1]) {
                 this._endDate = new Date(date[1]);
             } else {
-                this._startDate = date[0] ? new Date(date[0]) : undefined;
-                // For the case of double clicking on the date to delete it.
-                this._endDate = undefined;
+                this._startDate = date[0] ? new Date(date[0]) : null;
+                // For the case of clicking on the same date to delete it.
+                this._endDate = null;
             }
         }
 
