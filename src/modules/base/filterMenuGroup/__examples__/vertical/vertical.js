@@ -118,7 +118,7 @@ export default class FilterMenuGroupVertical extends LightningElement {
             alternativeText: 'Open contact type filter',
             items: contact,
             tooltip: 'Type of contact',
-            value: ['email', 'meeting']
+            value: 'email'
         },
         {
             name: 'prices',
@@ -134,7 +134,8 @@ export default class FilterMenuGroupVertical extends LightningElement {
             items: editions,
             label: 'Editions',
             showSearchBox: true,
-            dropdownLength: '5-items'
+            dropdownLength: '5-items',
+            isMultiSelect: true
         },
         {
             name: 'ratings',
@@ -146,7 +147,9 @@ export default class FilterMenuGroupVertical extends LightningElement {
             name: 'languages',
             items: languages,
             label: 'Laguages',
-            dropdownLength: '10-items'
+            dropdownLength: '10-items',
+            isMultiSelect: true,
+            value: ['dutch', 'english']
         }
     ];
 }

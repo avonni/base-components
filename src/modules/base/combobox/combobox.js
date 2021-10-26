@@ -519,7 +519,9 @@ export default class Combobox extends LightningElement {
      * @type {element}
      */
     get mainCombobox() {
-        return this.template.querySelector('.combobox__main-combobox');
+        return this.template.querySelector(
+            '[data-element-id="avonni-primitive-combobox-main"]'
+        );
     }
 
     /**
@@ -561,9 +563,10 @@ export default class Combobox extends LightningElement {
      * @type {string}
      */
     get computedMainComboboxClass() {
-        return classSet('combobox__main-combobox')
+        return classSet('avonni-combobox__main-combobox')
             .add({
-                'slds-combobox-addon_end slds-col': this.showScopes
+                'slds-combobox-addon_end slds-col': this.showScopes,
+                'avonni-combobox__main-combobox_no-scopes': !this.showScopes
             })
             .toString();
     }
@@ -660,6 +663,17 @@ export default class Combobox extends LightningElement {
     @api
     showHelpMessageIfInvalid() {
         this.reportValidity();
+    }
+
+    /**
+     * Update the scope dropdown value.
+     *
+     * @param {string} value Unique value of the scope that should be selected.
+     * @public
+     */
+    @api
+    updateScope(value) {
+        this.scopesValue = value;
     }
 
     /**

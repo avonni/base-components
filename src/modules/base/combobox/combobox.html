@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <span class={computedLabelClass}>
+    <span class={computedLabelClass} data-element-id="span-label">
         <template if:true={required}>
             <abbr class="slds-required" title="Required">*</abbr>
         </template>
@@ -50,7 +50,11 @@
             <!-- Scopes -->
             <c-primitive-combobox
                 if:true={showScopes}
-                class="slds-combobox_object-switcher slds-combobox-addon_start"
+                class="
+                    slds-combobox_object-switcher
+                    slds-combobox-addon_start
+                    avonni-combobox__scopes
+                "
                 disabled={disabled}
                 dropdown-alignment={dropdownAlignment}
                 dropdown-length={dropdownLength}
@@ -60,6 +64,7 @@
                 options={scopes}
                 read-only={readOnly}
                 value={scopesValue}
+                data-element-id="avonni-primitive-combobox-scopes"
                 onchange={handleScopeChange}
             ></c-primitive-combobox>
 
@@ -91,6 +96,7 @@
                 show-clear-input
                 value={value}
                 variant="label-hidden"
+                data-element-id="avonni-primitive-combobox-main"
                 onblur={handleBlur}
                 onfocus={handleFocus}
                 onopen={handleOpen}

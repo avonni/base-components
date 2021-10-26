@@ -40,6 +40,7 @@ customElements.define(
 export const ColorPicker = ({
     disabled,
     readOnly,
+    required,
     isLoading,
     label,
     name,
@@ -56,11 +57,14 @@ export const ColorPicker = ({
     colors,
     hideColorInput,
     opacity,
-    messageWhenBadInput
+    messageWhenBadInput,
+    tokens,
+    messageWhenValueMissing
 }) => {
     const element = document.createElement('ac-base-color-picker');
     element.disabled = disabled;
     element.readOnly = readOnly;
+    element.required = required;
     element.isLoading = isLoading;
     element.label = label;
     element.name = name;
@@ -78,5 +82,7 @@ export const ColorPicker = ({
     element.hideColorInput = hideColorInput;
     element.opacity = opacity;
     element.messageWhenBadInput = messageWhenBadInput;
+    element.tokens = tokens;
+    element.messageWhenValueMissing = messageWhenValueMissing;
     return element;
 };

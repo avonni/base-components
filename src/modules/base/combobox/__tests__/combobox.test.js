@@ -91,7 +91,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.actions).toMatchObject(actions);
         });
@@ -103,7 +103,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.allowSearch).toBeTruthy();
         });
@@ -117,12 +117,12 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.disabled).toBeTruthy();
 
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             expect(scopesCombobox.disabled).toBeTruthy();
         });
@@ -136,12 +136,12 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.dropdownAlignment).toBe('right');
 
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             expect(scopesCombobox.dropdownAlignment).toBe('right');
         });
@@ -155,12 +155,12 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.dropdownLength).toBe('5-items');
 
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             expect(scopesCombobox.dropdownLength).toBe('5-items');
         });
@@ -184,7 +184,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             // A default group will be added to the beginning of the list by the primitive combobox
             expect(combobox.groups.slice(1)).toMatchObject(groups);
@@ -200,7 +200,7 @@ describe('Combobox', () => {
         return Promise.resolve()
             .then(() => {
                 const combobox = element.shadowRoot.querySelector(
-                    '.combobox__main-combobox'
+                    '[data-element-id="avonni-primitive-combobox-main"]'
                 );
                 combobox.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -229,7 +229,7 @@ describe('Combobox', () => {
         return Promise.resolve()
             .then(() => {
                 const combobox = element.shadowRoot.querySelector(
-                    '.combobox__main-combobox'
+                    '[data-element-id="avonni-primitive-combobox-main"]'
                 );
                 combobox.dispatchEvent(
                     new CustomEvent('privateselect', {
@@ -253,7 +253,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.isLoading).toBeTruthy();
         });
@@ -265,7 +265,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.isMultiSelect).toBeTruthy();
         });
@@ -277,12 +277,12 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.label).toBe('A string label');
 
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="span-label"]'
             );
             expect(label.textContent).toBe('A string label');
         });
@@ -294,7 +294,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.loadingStateAlternativeText).toBe('A string text');
         });
@@ -306,7 +306,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.messageWhenBadInput).toBe('A string message');
         });
@@ -318,7 +318,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.messageWhenValueMissing).toBe('A string message');
         });
@@ -332,12 +332,12 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.multiLevelGroups).toBeTruthy();
 
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             expect(scopesCombobox.multiLevelGroups).toBeTruthy();
         });
@@ -349,7 +349,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.name).toBe('a-string-name');
         });
@@ -361,7 +361,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.options).toMatchObject(options);
         });
@@ -373,7 +373,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.placeholder).toBe('A string placeholder');
         });
@@ -387,12 +387,12 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.readOnly).toBeTruthy();
 
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             expect(scopesCombobox.readOnly).toBeTruthy();
         });
@@ -404,7 +404,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.removeSelectedOptions).toBeTruthy();
         });
@@ -416,7 +416,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.required).toBeTruthy();
         });
@@ -428,7 +428,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             expect(scopesCombobox.options).toMatchObject(scopes);
         });
@@ -442,7 +442,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             // A default group will be added to the beginning of the list by the primitive combobox
             expect(scopesCombobox.groups.splice(1)).toMatchObject(scopesGroups);
@@ -456,7 +456,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.search).toBe(search);
         });
@@ -472,7 +472,7 @@ describe('Combobox', () => {
         return Promise.resolve()
             .then(() => {
                 const combobox = element.shadowRoot.querySelector(
-                    '.combobox__main-combobox'
+                    '[data-element-id="avonni-primitive-combobox-main"]'
                 );
                 expect(combobox.selectedOptionsAriaLabel).toBe(
                     'A string label'
@@ -510,7 +510,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const combobox = element.shadowRoot.querySelector(
-                '.combobox__main-combobox'
+                '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.value).toMatchObject([options[0].value]);
         });
@@ -524,7 +524,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="span-label"]'
             );
             expect(label.classList).not.toContain('slds-assistive-text');
             expect(element.classList).not.toContain(
@@ -542,7 +542,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="span-label"]'
             );
             expect(label.classList).not.toContain('slds-assistive-text');
             expect(element.classList).toContain('slds-form-element_stacked');
@@ -558,7 +558,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="span-label"]'
             );
             expect(label.classList).toContain('slds-assistive-text');
             expect(element.classList).not.toContain(
@@ -576,7 +576,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="span-label"]'
             );
             expect(label.classList).not.toContain('slds-assistive-text');
             expect(element.classList).not.toContain(
@@ -591,7 +591,7 @@ describe('Combobox', () => {
     // blur
     it('blur method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'blur');
 
@@ -602,7 +602,7 @@ describe('Combobox', () => {
     // checkValidity
     it('checkValidity method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'checkValidity');
 
@@ -613,7 +613,7 @@ describe('Combobox', () => {
     // close
     it('close method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'close');
 
@@ -624,7 +624,7 @@ describe('Combobox', () => {
     // focus
     it('focus method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'focus');
 
@@ -635,7 +635,7 @@ describe('Combobox', () => {
     // open
     it('open method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'open');
 
@@ -646,7 +646,7 @@ describe('Combobox', () => {
     // reportValidity
     it('reportValidity method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'reportValidity');
 
@@ -657,7 +657,7 @@ describe('Combobox', () => {
     // setCustomValidity
     it('setCustomValidity method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'setCustomValidity');
 
@@ -668,12 +668,34 @@ describe('Combobox', () => {
     // showHelpMessageIfInvalid
     it('showHelpMessageIfInvalid method', () => {
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         const spy = jest.spyOn(combobox, 'reportValidity');
 
         element.showHelpMessageIfInvalid();
         expect(spy).toHaveBeenCalled();
+    });
+
+    // updateScope
+    // Depends on scopes
+    it('updateScope method', () => {
+        element.scopes = scopes;
+
+        return Promise.resolve()
+            .then(() => {
+                const scopeCombobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-scopes"]'
+                );
+                expect(scopeCombobox.value).toMatchObject(['all']);
+
+                element.updateScope('accounts');
+            })
+            .then(() => {
+                const scopeCombobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-scopes"]'
+                );
+                expect(scopeCombobox.value).toMatchObject(['accounts']);
+            });
     });
 
     /* ----- EVENTS ----- */
@@ -684,7 +706,7 @@ describe('Combobox', () => {
         element.addEventListener('actionclick', handler);
 
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.dispatchEvent(
             new CustomEvent('actionclick', {
@@ -707,7 +729,7 @@ describe('Combobox', () => {
         element.addEventListener('blur', handler);
 
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.dispatchEvent(new CustomEvent('blur'));
 
@@ -723,7 +745,7 @@ describe('Combobox', () => {
         element.addEventListener('focus', handler);
 
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.dispatchEvent(new CustomEvent('focus'));
 
@@ -739,7 +761,7 @@ describe('Combobox', () => {
         element.addEventListener('open', handler);
 
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.dispatchEvent(new CustomEvent('open'));
 
@@ -758,7 +780,7 @@ describe('Combobox', () => {
 
         return Promise.resolve().then(() => {
             const scopesCombobox = element.shadowRoot.querySelector(
-                '.slds-combobox_object-switcher'
+                '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             scopesCombobox.dispatchEvent(
                 new CustomEvent('change', {
@@ -782,7 +804,7 @@ describe('Combobox', () => {
         element.addEventListener('search', handler);
 
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.dispatchEvent(
             new CustomEvent('search', {
@@ -806,7 +828,7 @@ describe('Combobox', () => {
         element.addEventListener('change', handler);
 
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.dispatchEvent(
             new CustomEvent('change', {
@@ -831,7 +853,7 @@ describe('Combobox', () => {
         element.addEventListener('change', handler);
 
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.dispatchEvent(
             new CustomEvent('change', {
@@ -853,7 +875,7 @@ describe('Combobox', () => {
     it('Remove a selected option', () => {
         const handler = jest.fn();
         const combobox = element.shadowRoot.querySelector(
-            '.combobox__main-combobox'
+            '[data-element-id="avonni-primitive-combobox-main"]'
         );
         combobox.handleRemoveSelectedOption = handler;
 

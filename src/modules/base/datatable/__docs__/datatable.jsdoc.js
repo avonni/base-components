@@ -161,18 +161,18 @@
  */
 /**
  * @memberof examples
- * @name dataTypesFromCToD
- * @storyId example-datatable--data-types-from-c-to-d
+ * @name dataTypesFromCToE
+ * @storyId example-datatable--data-types-from-c-to-e
  */
 /**
  * @memberof examples
- * @name dataTypesFromEToN
- * @storyId example-datatable--data-types-from-e-to-n
+ * @name dataTypesFromFToL
+ * @storyId example-datatable--data-types-from-f-to-l
  */
 /**
  * @memberof examples
- * @name dataTypesFromOToQ
- * @storyId example-datatable--data-types-from-o-to-q
+ * @name dataTypesFromNToQ
+ * @storyId example-datatable--data-types-from-n-to-q
  */
 /**
  * @memberof examples

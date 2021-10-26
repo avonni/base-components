@@ -136,6 +136,14 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     connectedCallback() {
+        if (this.isMultiSelect && this.value) {
+            // Make sure the value is an array when the input is multiselect
+            this._value =
+                typeof this.value === 'string'
+                    ? [this.value]
+                    : normalizeArray(this.value);
+        }
+
         this.classList.add('slds-form-element');
         this.updateClassList();
         this.interactingState = new InteractingState();
@@ -170,8 +178,12 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     set value(value) {
-        this._value =
-            typeof value === 'string' ? value : [...normalizeArray(value)];
+        this._value = value;
+
+        if (value && this.isConnected && this.isMultiSelect) {
+            this._value =
+                typeof value === 'string' ? [value] : normalizeArray(value);
+        }
     }
 
     /**
@@ -466,7 +478,9 @@ export default class InputChoiceSet extends LightningElement {
         const checkedValues = Array.from(inputs)
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.value);
-        return checkedValues.length > 1 ? checkedValues : checkedValues[0];
+
+        if (!checkedValues.length) return null;
+        return this.isMultiSelect ? checkedValues : checkedValues[0];
     }
 
     /**
@@ -475,13 +489,20 @@ export default class InputChoiceSet extends LightningElement {
     handleChange(event) {
         event.stopPropagation();
 
-        let value = event.target.value;
+        const value = event.currentTarget.value;
         const checkboxes = this.template.querySelectorAll(
             '[data-element-id^="input"]'
         );
         if (this.isMultiSelect) {
             this._value = this.handleValueChange(checkboxes);
         } else {
+            if (this.required && this.value === value) {
+                // Prevent unselecting the current option when the input is required
+                // (make sure the radio behaviour works when the type is 'button')
+                event.currentTarget.checked = true;
+                return;
+            }
+
             const checkboxesToUncheck = Array.from(checkboxes).filter(
                 (checkbox) => checkbox.value !== value
             );
@@ -489,23 +510,6 @@ export default class InputChoiceSet extends LightningElement {
                 checkbox.checked = false;
             });
             this._value = this.handleValueChange(checkboxes);
-        }
-        if (this.type === 'button') {
-            checkboxes.forEach((checkbox) => {
-                const label = checkbox.labels[0];
-                let icon = label.querySelector(
-                    '[data-element-id="lightning-icon-button"]'
-                );
-                if (icon) {
-                    if (value.includes(label.control.value))
-                        icon.variant = 'inverse';
-                    else icon.variant = '';
-
-                    if (!checkbox.checked && icon.variant === 'inverse') {
-                        icon.variant = '';
-                    }
-                }
-            });
         }
 
         /**
@@ -540,7 +544,9 @@ export default class InputChoiceSet extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && !this.value.length
+                    !this.disabled &&
+                    this.required &&
+                    (!this.value || !this.value.length)
             });
         }
         return this._constraintApi;

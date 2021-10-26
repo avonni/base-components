@@ -35,22 +35,36 @@ import { ColorPicker } from '../__examples__/colorPicker';
 export default {
     title: 'Example/Color Picker',
     argTypes: {
-        label: {
+        accessKey: {
+            name: 'access-key',
             control: {
                 type: 'text'
             },
-            description: 'Text label for the input.',
+            description:
+                'Specifies a shortcut key to activate or focus an element.',
             table: {
                 type: { summary: 'string' }
             }
         },
-        name: {
+        colors: {
             control: {
-                type: 'text'
+                type: 'object'
             },
-            description: 'Specifies the name of an input element.',
+            description: 'Color values displayed in the default palette.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string[]' }
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, the input field is disabled and users cannot interact with it.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         fieldLevelHelp: {
@@ -64,112 +78,38 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        value: {
+        hideColorInput: {
+            name: 'hide-color-input',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, hide the input color value.',
+            defaultValue: false,
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, a spinner is displayed to indicate that data is loading. ',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        label: {
             control: {
                 type: 'text'
             },
-            description: 'Specifies the value of an input element.',
+            description: 'Text label for the input.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        messageWhenBadInput: {
-            name: 'message-when-bad-input',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Error message to be displayed when a bad input is detected.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: [
-                'standard',
-                'label-inline',
-                'label-hidden',
-                'label-stacked'
-            ],
-            defaultValue: 'standard',
-            description:
-                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
-            table: {
-                defaultValue: { summary: 'standard' },
-                type: { summary: 'string' }
-            }
-        },
-        type: {
-            control: {
-                type: 'select'
-            },
-            options: ['base', 'custom', 'predefined'],
-            defaultValue: 'base',
-            description: 'Values include base, custom and predefined.',
-            table: {
-                defaultValue: { summary: 'base' },
-                type: { summary: 'string' }
-            }
-        },
-        menuVariant: {
-            name: 'menu-variant',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'bare',
-                'container',
-                'border',
-                'border-filled',
-                'bare-inverse',
-                'border-inverse'
-            ],
-            defaultValue: 'border',
-            description:
-                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
-            table: {
-                defaultValue: { summary: 'border' },
-                type: { summary: 'string' },
-                category: 'menu'
-            }
-        },
-        menuIconName: {
-            name: 'menu-icon-name',
-            control: {
-                type: 'text'
-            },
-            table: {
-                type: { summary: 'string' },
-                category: 'menu'
-            }
-        },
-        menuLabel: {
-            name: 'menu-label',
-            control: {
-                type: 'text'
-            },
-            description: 'Optional text to be shown on the button.',
-            table: {
-                type: { summary: 'string' },
-                category: 'menu'
-            }
-        },
-        menuIconSize: {
-            name: 'menu-icon-size',
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'x-small',
-            description:
-                'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
-            table: {
-                defaultValue: { summary: 'x-small' },
-                type: { summary: 'string' },
-                category: 'menu'
             }
         },
         menuAlignment: {
@@ -195,22 +135,115 @@ export default {
                 category: 'menu'
             }
         },
-        colors: {
+        menuIconName: {
+            name: 'menu-icon-name',
             control: {
-                type: 'object'
+                type: 'text'
             },
-            description: 'Color values displayed in the default palette.',
             table: {
-                type: { summary: 'string[]' }
+                type: { summary: 'string' },
+                category: 'menu'
             }
         },
-        disabled: {
+        menuIconSize: {
+            name: 'menu-icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            defaultValue: 'x-small',
+            description:
+                'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
+            table: {
+                defaultValue: { summary: 'x-small' },
+                type: { summary: 'string' },
+                category: 'menu'
+            }
+        },
+        menuLabel: {
+            name: 'menu-label',
+            control: {
+                type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
+            table: {
+                type: { summary: 'string' },
+                category: 'menu'
+            }
+        },
+        menuNubbin: {
+            name: 'menu-nubbin',
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
-                'If present, the input field is disabled and users cannot interact with it.',
+                'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'menu'
+            }
+        },
+        menuVariant: {
+            name: 'menu-variant',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'bare',
+                'container',
+                'border',
+                'border-filled',
+                'bare-inverse',
+                'border-inverse'
+            ],
+            defaultValue: 'border',
+            description:
+                'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
+            table: {
+                defaultValue: { summary: 'border' },
+                type: { summary: 'string' },
+                category: 'menu'
+            }
+        },
+        messageWhenBadInput: {
+            name: 'message-when-bad-input',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when a bad input is detected.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        messageWhenValueMissing: {
+            name: 'message-when-value-missing',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Error message to be displayed when the value is missing and input is required.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        name: {
+            control: {
+                type: 'text'
+            },
+            description: 'Specifies the name of an input element.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        opacity: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'Defines whether the alpha slider will be displayed.',
+            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -221,7 +254,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
                 'If present, the palette is read-only and cannot be edited by users.',
             table: {
@@ -229,54 +262,65 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        isLoading: {
-            name: 'is-loading',
+        required: {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description:
-                'If present, a spinner is displayed to indicate that data is loading. ',
+                'If present, the input field must be filled out before the form is submitted.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
             }
         },
-        menuNubbin: {
-            name: 'menu-nubbin',
+        type: {
             control: {
-                type: 'boolean'
+                type: 'select'
             },
-            defaultValue: 0,
+            options: ['base', 'custom', 'predefined'],
+            defaultValue: 'base',
+            description: 'Values include base, custom and predefined.',
+            table: {
+                defaultValue: { summary: 'base' },
+                type: { summary: 'string' }
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description: 'Specifies the value of an input element.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'standard',
+                'label-inline',
+                'label-hidden',
+                'label-stacked'
+            ],
+            defaultValue: 'standard',
             description:
-                'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
+                'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'menu'
+                defaultValue: { summary: 'standard' },
+                type: { summary: 'string' }
             }
         },
-        hideColorInput: {
-            name: 'hide-color-input',
+        tokens: {
             control: {
-                type: 'boolean'
+                type: 'object'
             },
-            description: 'If true, hide the input color value.',
-            defaultValue: 0,
+            description:
+                'Array of token objects. If present, a token tab will be added in the menu.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
-        opacity: {
-            control: {
-                type: 'boolean'
-            },
-            description: 'Defines whether the alpha slider will be displayed.',
-            defaultValue: 0,
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
+                type: { summary: 'object[]' }
             }
         }
     },
@@ -290,16 +334,31 @@ export default {
     }
 };
 
-const colorsWithLabel = [
+const tokens = [
     {
         label: 'brand-accessible',
-        token: '--lwc-brand-accessible',
-        value: '#0176d3'
+        value: '--lwc-brand-accessible',
+        color: '#0176d3'
     },
     {
         label: 'brand-accessible-active',
-        token: '--lwc-brand-accessible-active',
-        value: '#014486'
+        value: '--lwc-brand-accessible-active',
+        color: '#014486'
+    },
+    {
+        label: 'color-text-action-label',
+        value: '--lwc-colorTextActionLabel',
+        color: '#3e3e3c'
+    },
+    {
+        label: 'color-text-customer',
+        value: '--lwc-colorTextCustomer',
+        color: '#fe9339'
+    },
+    {
+        label: 'color-text-error',
+        value: '--lwc-colorTextError',
+        color: '#ea001e'
     }
 ];
 
@@ -336,45 +395,52 @@ const colorsValue = [
 
 const Template = (args) => ColorPicker(args);
 
-export const Standard = Template.bind({});
-Standard.args = {
+export const Base = Template.bind({});
+Base.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     colors: colorsValue
 };
 
-export const StandardWithLabels = Template.bind({});
-StandardWithLabels.args = {
+export const StandardWithTokens = Template.bind({});
+StandardWithTokens.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     messageWhenBadInput: 'Please ensure value is correct',
-    colors: colorsWithLabel
+    colors: colorsValue,
+    tokens: tokens
 };
 
-export const StandardWithIcon = Template.bind({});
-StandardWithIcon.args = {
+export const BaseWithIcon = Template.bind({});
+BaseWithIcon.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
     colors: colorsValue
 };
 
-export const StandardWithIconWithoutColorInput = Template.bind({});
-StandardWithIconWithoutColorInput.args = {
+export const BaseWithIconWithoutColorInput = Template.bind({});
+BaseWithIconWithoutColorInput.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
+    fieldLevelHelp: 'Read Only',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
     hideColorInput: 'true',
     colors: colorsValue
+};
+
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    value: '#419fec',
+    colors: colorsValue,
+    readOnly: true
 };
 
 export const LabelInlineWithMenuVariantContainer = Template.bind({});
@@ -382,7 +448,6 @@ LabelInlineWithMenuVariantContainer.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#0a2399',
-    messageWhenBadInput: 'Please ensure value is correct',
     variant: 'label-inline',
     menuVariant: 'container',
     colors: colorsValue
@@ -393,7 +458,6 @@ LabelInlineWithoutColorInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#096a50',
-    messageWhenBadInput: 'Please ensure value is correct',
     variant: 'label-inline',
     menuVariant: 'container',
     hideColorInput: 'true',
@@ -403,7 +467,6 @@ LabelInlineWithoutColorInput.args = {
 export const LabelHiddenWithoutHelpMessage = Template.bind({});
 LabelHiddenWithoutHelpMessage.args = {
     label: 'Color label',
-    messageWhenBadInput: 'Please ensure value is correct',
     value: '#ffb758',
     variant: 'label-hidden',
     hideColorInput: 'true',
@@ -414,7 +477,6 @@ LabelHiddenWithoutHelpMessage.args = {
 export const LabelHiddenWithoutHelpMessageBorderInverse = Template.bind({});
 LabelHiddenWithoutHelpMessageBorderInverse.args = {
     label: 'Color label',
-    messageWhenBadInput: 'Please ensure value is correct',
     value: '#3be281',
     variant: 'label-hidden',
     hideColorInput: 'true',
@@ -425,7 +487,6 @@ LabelHiddenWithoutHelpMessageBorderInverse.args = {
 export const LabelHiddenWithMenuLabel = Template.bind({});
 LabelHiddenWithMenuLabel.args = {
     label: 'Color label',
-    messageWhenBadInput: 'Please ensure value is correct',
     value: '#d073df',
     variant: 'label-hidden',
     hideColorInput: 'true',
@@ -439,7 +500,6 @@ Xx_smallIconWithColorInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'xx-small',
     colorsValue: colorsValue
@@ -450,7 +510,6 @@ X_smallIconWithColorInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'x-small',
     colors: colorsValue
@@ -461,7 +520,6 @@ SmallIconWithColorInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'small',
     colors: colorsValue
@@ -472,7 +530,6 @@ MediumIconWithColorInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'medium',
     colors: colorsValue
@@ -483,7 +540,6 @@ LargeIconWithColorInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    messageWhenBadInput: 'Please ensure value is correct',
     menuIconName: 'utility:down',
     menuIconSize: 'large',
     colors: colorsValue

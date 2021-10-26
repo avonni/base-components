@@ -275,12 +275,20 @@
             "path": "src/modules/base/primitiveCellCombobox/primitiveCellCombobox.js"
         },
         {
+            "name": "c/primitiveCellEditableButton",
+            "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
+        },
+        {
             "name": "c/primitiveCellInputCounter",
             "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
         },
         {
             "name": "c/primitiveCellInputDateRange",
             "path": "src/modules/base/primitiveCellInputDateRange/primitiveCellInputDateRange.js"
+        },
+        {
+            "name": "c/primitiveCellInputRichText",
+            "path": "src/modules/base/primitiveCellInputRichText/primitiveCellInputRichText.js"
         },
         {
             "name": "c/primitiveCellInputToggle",
@@ -293,6 +301,10 @@
         {
             "name": "c/primitiveCellSlider",
             "path": "src/modules/base/primitiveCellSlider/primitiveCellSlider.js"
+        },
+        {
+            "name": "c/primitiveCellTextarea",
+            "path": "src/modules/base/primitiveCellTextarea/primitiveCellTextarea.js"
         },
         {
             "name": "c/primitiveColorpickerButton",
@@ -309,6 +321,18 @@
         {
             "name": "c/primitiveCoordinateItem",
             "path": "src/modules/base/primitiveCoordinateItem/primitiveCoordinateItem.js"
+        },
+        {
+            "name": "c/primitiveDatatableIeditInputWrapperCustom",
+            "path": "src/modules/base/primitiveDatatableIeditInputWrapperCustom/primitiveDatatableIeditInputWrapperCustom.js"
+        },
+        {
+            "name": "c/primitiveDatatableIeditPanelCustom",
+            "path": "src/modules/base/primitiveDatatableIeditPanelCustom/primitiveDatatableIeditPanelCustom.js"
+        },
+        {
+            "name": "c/primitiveDatatableIeditTypeFactoryCustom",
+            "path": "src/modules/base/primitiveDatatableIeditTypeFactoryCustom/primitiveDatatableIeditTypeFactoryCustom.js"
         },
         {
             "name": "c/primitiveDropdownMenu",

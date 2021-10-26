@@ -52,14 +52,14 @@ export default class InputChoiceOption {
         this.label = option.label;
         this.value = option.value;
         this.id = `checkbox-${index}`;
-        this.isChecked = value.indexOf(option.value) !== -1;
+        this.isChecked = value && value.indexOf(option.value) !== -1;
         this.iconName = option.iconName;
         this.iconPosition = option.iconPosition;
     }
 
     /**
      * True if options's icon position is top or left or no icon position or no icon name.
-     * 
+     *
      * @type {boolean}
      */
     get isIconTopLeft() {
@@ -73,7 +73,7 @@ export default class InputChoiceOption {
 
     /**
      * True if options's icon position is bottom or right.
-     * 
+     *
      * @type {boolean}
      */
     get isIconBottomRight() {
@@ -85,7 +85,7 @@ export default class InputChoiceOption {
 
     /**
      * Class of options's icon button.
-     * 
+     *
      * @type {string}
      */
     get computedIconButtonClass() {
@@ -106,7 +106,7 @@ export default class InputChoiceOption {
 
     /**
      * Class of options's label button.
-     * 
+     *
      * @type {string}
      */
     get computedLabelButtonClass() {
@@ -121,7 +121,7 @@ export default class InputChoiceOption {
 
     /**
      * Class of options's button variant.
-     * 
+     *
      * @type {string}
      */
     get computedVariantButton() {
