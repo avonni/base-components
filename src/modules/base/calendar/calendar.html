@@ -138,9 +138,30 @@
                                         </span>
                                         <template if:true={day.marked}>
                                             <div
-                                                class="avonni-marked-cells"
-                                                data-element-id="div-marked-cells"
-                                            ></div>
+                                                class="
+                                                    avonni-calendar-marker-container
+                                                "
+                                            >
+                                                <div
+                                                    class="
+                                                        avonni-calendar-marker
+                                                    "
+                                                >
+                                                    <template
+                                                        for:each={day.markedColors}
+                                                        for:item="marker"
+                                                    >
+                                                        <div
+                                                            key={generateKey}
+                                                            class="
+                                                                avonni-marked-cells
+                                                            "
+                                                            data-element-id="div-marked-cells"
+                                                            style={marker.color}
+                                                        ></div>
+                                                    </template>
+                                                </div>
+                                            </div>
                                         </template>
                                     </td>
                                 </template>

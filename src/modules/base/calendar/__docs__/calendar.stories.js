@@ -138,11 +138,11 @@ export default {
 };
 
 const markedDates = [
-    { date: new Date(2021, 4, 9), color: '#ffffff' },
-    { date: new Date(2021, 4, 26), color: '#ffffff' },
-    { date: 14, color: '#ffffff' },
-    { date: 20, color: '#ffffff' },
-    { date: 'Wed', color: '#ffffff' }
+    { date: new Date('05/09/2021'), color: 'red' },
+    { date: new Date('05/26/2021'), color: 'brown' },
+    { date: 14, color: 'blue' },
+    { date: 20, color: 'yellow' },
+    { date: 'Wed', color: 'black' }
 ];
 
 const Template = (args) => Calendar(args);

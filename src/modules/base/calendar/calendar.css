@@ -45,18 +45,6 @@ th {
     cursor: default;
 }
 
-.avonni-marked-cell::after {
-    content: '';
-    display: block;
-    width: 5px;
-    height: 5px;
-    background: #bf0201;
-    border-radius: var(--lwc-borderRadiusCircle, 50%);
-    position: absolute;
-    top: 4px;
-    right: 2px;
-}
-
 .avonni-marked-cells {
     content: '';
     display: block;
@@ -64,9 +52,7 @@ th {
     height: 5px;
     background: #bf0201;
     border-radius: var(--lwc-borderRadiusCircle, 50%);
-    position: absolute;
-    margin-left: 13px;
-    margin-top: 2px;
+    margin: 1px;
 }
 
 .slds-day_adjacent-month {
@@ -123,4 +109,15 @@ div:focus {
 .avonni-calendar-cell__bordered_top_bottom {
     border-bottom: #d3d3d39a 1px dashed;
     border-top: #d3d3d39a 1px dashed;
+}
+
+.avonni-calendar-marker-container {
+    position: absolute;
+    width: 32px;
+}
+
+.avonni-calendar-marker {
+    display: flex;
+    width: 100%;
+    justify-content: center;
 }

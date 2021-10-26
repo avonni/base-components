@@ -443,6 +443,7 @@ export default class Calendar extends LightningElement {
                 let fullDate = '';
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
+                const markedColors = this.isInArrayMarked(date);
                 let time = date.getTime();
                 let valueTime = this._value.length
                     ? this._value[0].getTime()
@@ -514,13 +515,14 @@ export default class Calendar extends LightningElement {
                     selected: selected,
                     currentDate: currentDate,
                     fullDate: fullDate,
-                    marked: markedDate
+                    marked: markedDate,
+                    markedColors: markedColors
                 });
 
                 date.setDate(date.getDate() + 1);
             }
-
             calendarData.push(weekData);
+            console.log(calendarData);
         }
 
         this.calendarData = calendarData;
@@ -534,7 +536,7 @@ export default class Calendar extends LightningElement {
      * @returns disabled
      */
     isInArray(date, array) {
-        let disabled = false;
+        let marked = false;
         let time = date.getTime();
         let weekDay = date.getDay();
         let monthDay = date.getDate();
@@ -544,10 +546,31 @@ export default class Calendar extends LightningElement {
             this.weekDaysFromArray(array).indexOf(weekDay) > -1 ||
             this.monthDaysFromArray(array).indexOf(monthDay) > -1
         ) {
-            disabled = true;
+            marked = true;
         }
 
-        return disabled;
+        return marked;
+    }
+
+    isInArrayMarked(date) {
+        let marked = [];
+        let time = date.getTime();
+        let weekDay = date.getDay();
+        let monthDay = date.getDate();
+
+        this._markedDates.forEach((marker) => {
+            if (
+                this.fullDatesFromArray([marker.date]).indexOf(time) > -1 ||
+                this.weekDaysFromArray([marker.date]).indexOf(weekDay) > -1 ||
+                this.monthDaysFromArray([marker.date]).indexOf(monthDay) > -1
+            ) {
+                marked.push({
+                    marked: true,
+                    color: `background-color: ${marker.color}`
+                });
+            }
+        });
+        return marked;
     }
 
     /**
