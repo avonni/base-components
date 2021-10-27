@@ -33,12 +33,14 @@
 import { LightningElement, api } from 'lwc';
 import { assert } from 'c/utilsPrivate';
 
+import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
 import inputCounterTpl from './inputCounter.html';
 import inputDateRangeTpl from './inputDateRange.html';
 import DefaultTpl from './default.html';
 
 const CUSTOM_TYPES_TPL = {
+    'color-picker': ColorPickerTpl,
     combobox: ComboboxTpl,
     'input-counter': inputCounterTpl,
     'input-date-range': inputDateRangeTpl
@@ -54,6 +56,17 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     // shared attributes
     @api label;
     @api disabled;
+    @api type;
+
+    // color picker attributes
+    @api colors;
+    @api hideColorInput;
+    @api menuAlignment;
+    @api menuIconName;
+    @api menuIconSize;
+    @api menuVariant;
+    @api name;
+    @api opacity;
 
     // combobox attributes
     @api dropdownLength;
@@ -74,7 +87,6 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api timezone;
     @api labelStartDate;
     @api labelEndDate;
-    @api type;
 
     @api
     get columnDef() {

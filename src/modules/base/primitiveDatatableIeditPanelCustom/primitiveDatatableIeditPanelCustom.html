@@ -63,6 +63,15 @@
                         key={inputKey}
                         disabled={disabled}
                         label={label}
+                        type={type}
+                        colors={colors}
+                        hide-color-input={hideColorInput}
+                        menu-alignment={menuAlignment}
+                        menu-icon-name={menuIconName}
+                        menu-icon-size={menuIconSize}
+                        menu-variant={menuVariant}
+                        name={name}
+                        opacity={opacity}
                         dropdown-length={dropdownLength}
                         is-multi-select={isMultiSelect}
                         options={options}
@@ -77,7 +86,6 @@
                         timezone={timezone}
                         label-start-date={labelStartDate}
                         label-end-date={labelEndDate}
-                        type={type}
                     ></c-primitive-datatable-iedit-type-factory-custom>
                 </c-primitive-datatable-iedit-input-wrapper-custom>
                 <template if:true={isMassEditEnabled}>

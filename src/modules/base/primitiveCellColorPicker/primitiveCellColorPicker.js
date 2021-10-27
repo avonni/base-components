@@ -47,7 +47,39 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     @api type;
 
     _value;
-    readOnly;
+    visible = false;
+    editable = false;
+    readOnly = true;
+
+    connectedCallback() {
+        // Dispatches the inline edit event to the parent component.
+        this.template.addEventListener('inlineeditchange', (event) => {
+            this.handleChange(event);
+        });
+
+        this.template.addEventListener('ieditfinishedcustom', () => {
+            this.toggleInlineEdit();
+        });
+
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
+    renderedCallback() {
+        // focus on the combobox when the inline edit panel is opened.
+        if (this.inputableElement) {
+            this.inputableElement.focus();
+        }
+    }
 
     @api
     get value() {
@@ -78,5 +110,57 @@ export default class PrimitiveCellColorPicker extends LightningElement {
                 composed: true
             })
         );
+    }
+
+    /*----------- Inline Editing Functions -------------*/
+
+    /**
+     * Gets the inputable element inside the inline edit popover.
+     *
+     * @type {Element}
+     */
+    get inputableElement() {
+        return this.template.querySelector(
+            '[data-element-id^="primitive-cell-color-picker"]'
+        );
+    }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
+    }
+
+    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    getStateAndColumns(state, columns) {
+        this.state = state;
+        this.columns = columns;
+        this.isEditable();
+    }
+
+    // Checks if the column is editable.
+    isEditable() {
+        let colorPicker = {};
+        colorPicker = this.columns.find(
+            (column) => column.type === 'color-picker'
+        );
+        this.editable = colorPicker.editable;
+    }
+
+    // Handles the edit button click and dispatches the event.
+    handleEditButtonClick() {
+        const { rowKeyValue, colKeyValue, state } = this;
+        this.dispatchEvent(
+            new CustomEvent('editbuttonclickcustom', {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    rowKeyValue,
+                    colKeyValue,
+                    state
+                }
+            })
+        );
+        this.toggleInlineEdit();
     }
 }

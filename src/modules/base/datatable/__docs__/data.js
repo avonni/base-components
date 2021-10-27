@@ -218,7 +218,7 @@ const columnsCE = [
             label: 'Pick a color',
             opacity: true
         },
-        fixedWidth: 190,
+        fixedWidth: 250,
         editable: true
     },
     {

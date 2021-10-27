@@ -46,6 +46,17 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     //shared
     @api disabled;
     @api label;
+    @api type;
+
+    // Primitive cell color-picker
+    @api colors;
+    @api hideColorInput;
+    @api menuAlignment;
+    @api menuIconName;
+    @api menuIconSize;
+    @api menuVariant;
+    @api name;
+    @api opacity;
 
     // Primitive cell combobox
     @api dropdownLength;
@@ -66,7 +77,6 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     @api timezone;
     @api labelStartDate;
     @api labelEndDate;
-    @api type;
 
     connectedCallback() {
         this.interactingState = new InteractingState({
