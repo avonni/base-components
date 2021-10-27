@@ -177,10 +177,10 @@ describe('Calendar', () => {
         element.selectionMode = 'single';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                'span[data-day="1620964800000"]'
+                'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([new Date(1620964800000)]);
+            expect(element.value).toMatchObject([new Date('05/14/2021')]);
         });
     });
 
@@ -190,7 +190,7 @@ describe('Calendar', () => {
         element.max = new Date('05/31/2021');
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                'span[data-day="1620964800000"]'
+                'span[data-date="14"]'
             );
             day14.click();
             expect(element.value).toMatchObject([]);
@@ -230,7 +230,7 @@ describe('Calendar', () => {
         element.selectionMode = 'multiple';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                'span[data-day="1620964800000"]'
+                'span[data-date="14"]'
             );
             day14.click();
             expect(element.value).toMatchObject([
@@ -247,7 +247,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                'span[data-day="1620964800000"]'
+                'span[data-date="14"]'
             );
             day14.click();
             expect(element.value).toMatchObject([]);
@@ -263,7 +263,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                'span[data-day="1620964800000"]'
+                'span[data-date="14"]'
             );
             day14.click();
             expect(element.value).toMatchObject([new Date('05/14/2021')]);
@@ -277,7 +277,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day17 = element.shadowRoot.querySelector(
-                'span[data-day="1621224000000"]'
+                'span[data-date="17"]'
             );
             day17.click();
             expect(element.value).toMatchObject([
@@ -294,7 +294,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day17 = element.shadowRoot.querySelector(
-                'span[data-day="1621224000000"]'
+                'span[data-date="17"]'
             );
             day17.click();
             expect(element.value).toMatchObject([
@@ -311,7 +311,7 @@ describe('Calendar', () => {
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
-                'span[data-day="1620964800000"]'
+                'span[data-date="14"]'
             );
             day14.click();
             expect(element.value).toMatchObject([new Date('05/14/2021')]);
@@ -398,7 +398,7 @@ describe('Calendar', () => {
             );
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-                new Date(['05/09/2021'])
+                new Date('05/09/2021')
             ]);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -407,7 +407,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar event change selection-mode: multiple unselect', () => {
-        element.value = ['05/09/2021'];
+        element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
         element.selectionMode = 'multiple';
@@ -417,7 +417,7 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day9 = element.shadowRoot.querySelector(
-                'span[data-day="1620532800000"]'
+                'span[data-date="9"]'
             );
             day9.click();
             expect(handler).toHaveBeenCalled();
@@ -439,7 +439,7 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day11 = element.shadowRoot.querySelector(
-                'span[data-day="1620705600000"]'
+                'span[data-date="11"]'
             );
             day11.click();
             expect(handler).toHaveBeenCalled();
