@@ -638,8 +638,8 @@ describe('Color Picker', () => {
         });
     });
 
-    // Menu alignement & menu nubbin
-    it('menu alignement left', () => {
+    // Menu alignment & menu nubbin
+    it('menu alignment left', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -654,7 +654,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement left and menu nubbin', () => {
+    it('menu alignment left and menu nubbin', () => {
         element.menuNubbin = true;
 
         return Promise.resolve()
@@ -672,7 +672,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement right', () => {
+    it('menu alignment right', () => {
         element.menuAlignment = 'right';
 
         return Promise.resolve()
@@ -689,7 +689,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement right and menu nubbin', () => {
+    it('menu alignment right and menu nubbin', () => {
         element.menuAlignment = 'right';
         element.menuNubbin = true;
 
@@ -708,7 +708,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement center', () => {
+    it('menu alignment center', () => {
         element.menuAlignment = 'center';
 
         return Promise.resolve()
@@ -725,7 +725,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement center and menu nubbin', () => {
+    it('menu alignment center and menu nubbin', () => {
         element.menuAlignment = 'center';
         element.menuNubbin = true;
 
@@ -744,7 +744,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-center', () => {
+    it('menu alignment bottom-center', () => {
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
@@ -761,7 +761,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-center and menu nubbin', () => {
+    it('menu alignment bottom-center and menu nubbin', () => {
         element.menuAlignment = 'bottom-center';
         element.menuNubbin = true;
 
@@ -780,7 +780,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-left', () => {
+    it('menu alignment bottom-left', () => {
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
@@ -799,7 +799,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-left and menu nubbin', () => {
+    it('menu alignment bottom-left and menu nubbin', () => {
         element.menuAlignment = 'bottom-left';
         element.menuNubbin = true;
 
@@ -820,7 +820,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-right', () => {
+    it('menu alignment bottom-right', () => {
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
@@ -839,7 +839,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-right and menu nubbin', () => {
+    it('menu alignment bottom-right and menu nubbin', () => {
         element.menuAlignment = 'bottom-right';
         element.menuNubbin = true;
 

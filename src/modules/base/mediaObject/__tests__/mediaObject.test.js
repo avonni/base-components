@@ -63,7 +63,7 @@ describe('MediaObject', () => {
         return Promise.resolve().then(() => {
             expect(wrapper.classList).not.toContain('slds-media_center');
             expect(wrapper.classList).not.toContain(
-                'avonni-media-object-alignement-end'
+                'avonni-media-object-alignment-end'
             );
         });
     });
@@ -75,7 +75,7 @@ describe('MediaObject', () => {
         return Promise.resolve().then(() => {
             expect(wrapper.classList).toContain('slds-media_center');
             expect(wrapper.classList).not.toContain(
-                'avonni-media-object-alignement-end'
+                'avonni-media-object-alignment-end'
             );
         });
     });
@@ -87,7 +87,7 @@ describe('MediaObject', () => {
         return Promise.resolve().then(() => {
             expect(wrapper.classList).not.toContain('slds-media_center');
             expect(wrapper.classList).toContain(
-                'avonni-media-object-alignement-end'
+                'avonni-media-object-alignment-end'
             );
         });
     });
