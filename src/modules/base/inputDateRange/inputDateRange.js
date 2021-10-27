@@ -448,6 +448,42 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Returns true if only the start date is present.
+     *
+     * @type {boolean}
+     */
+    get isOnlyStartDate() {
+        return this.startDate && !this.endDate;
+    }
+
+    /**
+     * Returns true if only the end date is present.
+     *
+     * @type {boolean}
+     */
+    get isOnlyEndDate() {
+        return !this.startDate && this.endDate;
+    }
+
+    /**
+     * Returns true if the start date and end date are present.
+     *
+     * @type {boolean}
+     */
+    get areBothDatePresent() {
+        return this.startDate && this.endDate;
+    }
+
+    /**
+     * Array with the start date and end date.
+     *
+     * @type {object}
+     */
+    get startDateEndDate() {
+        return [this.startDate, this.endDate];
+    }
+
+    /**
      * Removes the slds-has-error class on the whole element if it's not valid.
      * Aplies it on every input we need it applied.
      * Removes it from every input when valid.
@@ -638,14 +674,36 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of start-date on c-calendar.
      */
     handleChangeStartDate(event) {
-        // Date format received is: YYYY-MM-DD
-        const date = event.detail.value.split('-');
-        const year = Number(date[0]);
-        const month = Number(date[1]) - 1;
-        const day = Number(date[2]);
+        const date = event.detail.value;
 
-        this._startDate = new Date(year, month, day);
+        // Handler if there is a start date and there is an end date.
+        if (this.areBothDatePresent) {
+            if (date[1] > this._endDate) {
+                this._startDate = new Date(date[1]);
+            } else if (date[0] < this._startDate) {
+                this._startDate = new Date(date[0]);
+                // If user click on the same date.
+            } else if (date.length === 1) {
+                this._startDate = null;
+            } else {
+                this._startDate = new Date(date[1]);
+            }
+            // If there is no start date, but there is an end date.
+        } else if (this.isOnlyEndDate) {
+            if (date[1] > this._endDate) {
+                this._startDate = new Date(date[1]);
+            } else if (date.length === 0) {
+                this._startDate = this._endDate;
+            } else {
+                this._startDate = new Date(date[0]);
+            }
+            // If there is no start date and no end date.
+        } else {
+            this._startDate = date[0] ? new Date(date[0]) : null;
+        }
+
         event.stopPropagation();
+
         this._cancelBlurStartDate = false;
         this.handleBlurStartDate();
     }
@@ -684,7 +742,6 @@ export default class InputDateRange extends LightningElement {
                     this._startDate.setHours(0, 0, 0, 0);
                 }
             }
-
             this.toggleStartDateVisibility();
 
             if (
@@ -692,12 +749,7 @@ export default class InputDateRange extends LightningElement {
                 (!this.endDate ||
                     this.startDate.getTime() > this.endDate.getTime())
             ) {
-                let endDate = new Date(this.startDate).setDate(
-                    this.startDate.getDate() + 1
-                );
-                this._endDate = new Date(
-                    new Date(endDate).setHours(0, 0, 0, 0)
-                );
+                this._endDate = null;
                 this.endDateInput.focus();
             }
 
@@ -753,13 +805,31 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of end-date on c-calendar.
      */
     handleChangeEndDate(event) {
-        // Date format received is: YYYY-MM-DD
-        const date = event.detail.value.split('-');
-        const year = Number(date[0]);
-        const month = Number(date[1]) - 1;
-        const day = Number(date[2]);
+        const date = event.detail.value;
 
-        this._endDate = new Date(year, month, day);
+        // Handler if there is an end date and there is no start date.
+        if (date.length === 1 && !this._startDate) {
+            this._endDate = new Date(date[0]);
+            // Handler if there is no end date, but there is a start date.
+        } else if (this.isOnlyStartDate) {
+            if (date[1] > this._startDate) {
+                this._endDate = new Date(date[1]);
+            } else if (date.length === 0) {
+                this._endDate = this._startDate;
+            } else {
+                this._endDate = new Date(date[0]);
+            }
+            // Handler if there is no end date and no start date or both date.
+        } else {
+            if (date[1]) {
+                this._endDate = new Date(date[1]);
+            } else {
+                this._startDate = date[0] ? new Date(date[0]) : null;
+                // For the case of clicking on the same date to delete it.
+                this._endDate = null;
+            }
+        }
+
         event.stopPropagation();
         this._cancelBlurEndDate = false;
         this.handleBlurEndDate();
@@ -799,17 +869,17 @@ export default class InputDateRange extends LightningElement {
             this.toggleEndDateVisibility();
 
             if (
-                this.endDate &&
-                (!this.startDate ||
-                    this.startDate.getTime() > this.endDate.getTime())
+                this.areBothDatePresent &&
+                this.startDate.getTime() > this.endDate.getTime()
             ) {
                 let startDate = new Date(this.endDate).setDate(
-                    this.endDate.getDate() - 1
+                    this.endDate.getDate()
                 );
                 this._startDate = new Date(
                     new Date(startDate).setHours(0, 0, 0, 0)
                 );
-                this.startDateInput.focus();
+                this._endDate = null;
+                this.endDateInput.focus();
             }
 
             this.dispatchChange();
@@ -904,12 +974,8 @@ export default class InputDateRange extends LightningElement {
             });
         }
 
-        startDate = this.startDateString
-            ? new Date(startDate).toISOString()
-            : startDate;
-        endDate = this.endDateString
-            ? new Date(endDate).toISOString()
-            : endDate;
+        startDate = this.startDateString ? new Date(startDate) : startDate;
+        endDate = this.endDateString ? new Date(endDate) : endDate;
 
         /**
          * The event fired when the value changed.
