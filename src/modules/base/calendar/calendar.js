@@ -443,7 +443,7 @@ export default class Calendar extends LightningElement {
                 let fullDate = '';
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
-                const markedColors = this.isInArrayMarked(date);
+                const markedColors = this.isInArrayMarker(date);
                 let time = date.getTime();
                 let valueTime = this._value.length
                     ? this._value[0].getTime()
@@ -522,7 +522,6 @@ export default class Calendar extends LightningElement {
                 date.setDate(date.getDate() + 1);
             }
             calendarData.push(weekData);
-            console.log(calendarData);
         }
 
         this.calendarData = calendarData;
@@ -536,7 +535,7 @@ export default class Calendar extends LightningElement {
      * @returns disabled
      */
     isInArray(date, array) {
-        let marked = false;
+        let disabled = false;
         let time = date.getTime();
         let weekDay = date.getDay();
         let monthDay = date.getDate();
@@ -546,27 +545,36 @@ export default class Calendar extends LightningElement {
             this.weekDaysFromArray(array).indexOf(weekDay) > -1 ||
             this.monthDaysFromArray(array).indexOf(monthDay) > -1
         ) {
-            marked = true;
+            disabled = true;
         }
 
-        return marked;
+        return disabled;
     }
 
-    isInArrayMarked(date) {
+    /**
+     * Find if date entry is in the markedDate array.
+     *
+     * @param {object | Date} date
+     * @returns marked
+     */
+    isInArrayMarker(date) {
         let marked = [];
         let time = date.getTime();
         let weekDay = date.getDay();
         let monthDay = date.getDate();
 
         this._markedDates.forEach((marker) => {
+            const dateArray = [marker.date];
             if (
-                this.fullDatesFromArray([marker.date]).indexOf(time) > -1 ||
-                this.weekDaysFromArray([marker.date]).indexOf(weekDay) > -1 ||
-                this.monthDaysFromArray([marker.date]).indexOf(monthDay) > -1
+                this.fullDatesFromArray(dateArray).indexOf(time) > -1 ||
+                this.weekDaysFromArray(dateArray).indexOf(weekDay) > -1 ||
+                this.monthDaysFromArray(dateArray).indexOf(monthDay) > -1
             ) {
                 marked.push({
                     marked: true,
-                    color: `background-color: ${marker.color}`
+                    color: marker.color
+                        ? `background-color: ${marker.color}`
+                        : ''
                 });
             }
         });

@@ -136,33 +136,30 @@
                                             onclick={handlerSelectDate}
                                             >{day.label}
                                         </span>
-                                        <template if:true={day.marked}>
+                                        <div
+                                            if:true={day.marked}
+                                            class="slds-is-relative"
+                                        >
                                             <div
                                                 class="
                                                     avonni-calendar-marker-container
                                                 "
                                             >
-                                                <div
-                                                    class="
-                                                        avonni-calendar-marker
-                                                    "
+                                                <template
+                                                    for:each={day.markedColors}
+                                                    for:item="marker"
                                                 >
-                                                    <template
-                                                        for:each={day.markedColors}
-                                                        for:item="marker"
-                                                    >
-                                                        <div
-                                                            key={generateKey}
-                                                            class="
-                                                                avonni-marked-cells
-                                                            "
-                                                            data-element-id="div-marked-cells"
-                                                            style={marker.color}
-                                                        ></div>
-                                                    </template>
-                                                </div>
+                                                    <div
+                                                        key={generateKey}
+                                                        class="
+                                                            avonni-calendar-marked-cells
+                                                        "
+                                                        data-element-id="div-marked-cells"
+                                                        style={marker.color}
+                                                    ></div>
+                                                </template>
                                             </div>
-                                        </template>
+                                        </div>
                                     </td>
                                 </template>
                             </tr>

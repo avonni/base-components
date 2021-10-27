@@ -118,9 +118,9 @@ describe('Calendar', () => {
     it('Calendar marked dates', () => {
         element.value = '05/09/2021';
         element.markedDates = [
-            { date: new Date('05/05/2021') },
-            { date: new Date('05/10/2021') },
-            { date: new Date('05/15/2021') }
+            { date: new Date('05/05/2021'), color: 'rgb(255, 0, 0)' },
+            { date: new Date('05/10/2021'), color: 'rgb(0, 0, 0)' },
+            { date: new Date('05/15/2021'), color: 'rgb(255, 255, 255)' }
         ];
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -130,6 +130,9 @@ describe('Calendar', () => {
                 '[data-element-id="div-marked-cells"]'
             );
             expect(markedDates).toHaveLength(3);
+            expect(markedDates[0].style.background).toBe('rgb(255, 0, 0)');
+            expect(markedDates[1].style.background).toBe('rgb(0, 0, 0)');
+            expect(markedDates[2].style.background).toBe('rgb(255, 255, 255)');
         });
     });
 
@@ -168,7 +171,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: single no value', () => {
-        element.value = ['05/15/2021'];
+        element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
         element.selectionMode = 'single';
@@ -182,7 +185,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: single same value', () => {
-        element.value = ['05/14/2021'];
+        element.value = '05/14/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
         return Promise.resolve().then(() => {
@@ -221,7 +224,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: multiple no value', () => {
-        element.value = ['05/15/2021'];
+        element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
         element.selectionMode = 'multiple';
@@ -238,7 +241,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: interval no value', () => {
-        element.value = ['05/14/2021'];
+        element.value = '05/14/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
         element.selectionMode = 'interval';
@@ -254,7 +257,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: interval startDate < newDate', () => {
-        element.value = ['05/15/2021'];
+        element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
         element.selectionMode = 'interval';
@@ -268,7 +271,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: interval startDate > newDate', () => {
-        element.value = ['05/15/2021'];
+        element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
         element.selectionMode = 'interval';
