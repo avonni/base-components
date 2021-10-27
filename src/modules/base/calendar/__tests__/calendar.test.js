@@ -69,7 +69,7 @@ describe('Calendar', () => {
 
     // disabled
     it('Calendar disabled', () => {
-        element.value = '04/15/2021';
+        element.value = 1618459200000;
         element.disabled = true;
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll(
@@ -93,10 +93,10 @@ describe('Calendar', () => {
 
     // disabled dates
     it('Calendar disabled dates', () => {
-        element.value = '05/09/2021';
+        element.value = 1620532800000;
         element.disabledDates = [5, 10, 15, 20, 25];
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.min = 1619841600000;
+        element.max = 1622433600000;
 
         return Promise.resolve().then(() => {
             const dates = [];
@@ -116,14 +116,14 @@ describe('Calendar', () => {
 
     // marked dates
     it('Calendar marked dates', () => {
-        element.value = '05/09/2021';
+        element.value = 1620532800000;
         element.markedDates = [
             { date: new Date('05/05/2021'), color: 'rgb(255, 0, 0)' },
             { date: new Date('05/10/2021'), color: 'rgb(0, 0, 0)' },
-            { date: new Date('05/15/2021'), color: 'rgb(255, 255, 255)' }
+            { date: new Date(1621051200000), color: 'rgb(255, 255, 255)' }
         ];
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.min = 1619841600000;
+        element.max = 1622433600000;
 
         return Promise.resolve().then(() => {
             const markedDates = element.shadowRoot.querySelectorAll(
@@ -138,9 +138,9 @@ describe('Calendar', () => {
 
     // min & max
     it('Calendar min and max', () => {
-        element.value = '05/09/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1620532800000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
 
         return Promise.resolve().then(() => {
             const dateArray = [];
@@ -155,7 +155,7 @@ describe('Calendar', () => {
 
     // values
     it('Calendar values selection-mode: single', () => {
-        element.value = '04/15/2021';
+        element.value = 1618459200000;
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
             expect(day.textContent).toBe('15');
@@ -171,9 +171,9 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: single no value', () => {
-        element.value = '05/15/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1621051200000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'single';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
@@ -185,9 +185,9 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: single same value', () => {
-        element.value = '05/14/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1620964800000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
                 'span[data-day="1620964800000"]'
@@ -198,7 +198,7 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: multiple', () => {
-        element.value = ['04/15/2021', '04/16/2021', '04/17/2021'];
+        element.value = [1618459200000, 1618545600000, 1618632000000];
         element.selectionMode = 'multiple';
         return Promise.resolve().then(() => {
             const days =
@@ -224,9 +224,9 @@ describe('Calendar', () => {
     });
 
     it('Calendar values selection-mode: multiple no value', () => {
-        element.value = '05/15/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1621051200000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'multiple';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
@@ -234,16 +234,16 @@ describe('Calendar', () => {
             );
             day14.click();
             expect(element.value).toMatchObject([
-                new Date('05/15/2021'),
-                new Date('05/14/2021')
+                new Date(1621051200000),
+                new Date(1620964800000)
             ]);
         });
     });
 
     it('Calendar values selection-mode: interval no value', () => {
-        element.value = '05/14/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1620964800000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
@@ -252,28 +252,28 @@ describe('Calendar', () => {
             day14.click();
             expect(element.value).toMatchObject([]);
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(element.value).toMatchObject([new Date(1620964800000)]);
         });
     });
 
     it('Calendar values selection-mode: interval startDate < newDate', () => {
-        element.value = '05/15/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1621051200000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
                 'span[data-day="1620964800000"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(element.value).toMatchObject([new Date(1620964800000)]);
         });
     });
 
     it('Calendar values selection-mode: interval startDate > newDate', () => {
-        element.value = '05/15/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1621051200000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day17 = element.shadowRoot.querySelector(
@@ -281,16 +281,16 @@ describe('Calendar', () => {
             );
             day17.click();
             expect(element.value).toMatchObject([
-                new Date('05/15/2021'),
-                new Date('05/17/2021')
+                new Date(1621051200000),
+                new Date(1621224000000)
             ]);
         });
     });
 
     it('Calendar values selection-mode: interval endDate < newDate', () => {
-        element.value = ['05/15/2021', '05/16/2021'];
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = [1621051200000, 1621137600000];
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day17 = element.shadowRoot.querySelector(
@@ -298,31 +298,31 @@ describe('Calendar', () => {
             );
             day17.click();
             expect(element.value).toMatchObject([
-                new Date('05/15/2021'),
-                new Date('05/17/2021')
+                new Date(1621051200000),
+                new Date(1621224000000)
             ]);
         });
     });
 
     it('Calendar values selection-mode: interval endDate > newDate < startDate', () => {
-        element.value = ['05/15/2021', '05/16/2021'];
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = [1621051200000, 1621137600000];
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'interval';
         return Promise.resolve().then(() => {
             const day14 = element.shadowRoot.querySelector(
                 'span[data-day="1620964800000"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(element.value).toMatchObject([new Date(1620964800000)]);
         });
     });
 
     // week number
     it('Calendar week number', () => {
-        element.value = '05/09/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1620532800000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.weekNumber = true;
 
         return Promise.resolve().then(() => {
@@ -381,9 +381,9 @@ describe('Calendar', () => {
 
     // calendar change
     it('Calendar event change', () => {
-        element.value = '05/09/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1620532800000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
 
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -398,7 +398,7 @@ describe('Calendar', () => {
             );
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-                new Date(['05/09/2021'])
+                new Date(1620532800000)
             ]);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -407,9 +407,9 @@ describe('Calendar', () => {
     });
 
     it('Calendar event change selection-mode: multiple unselect', () => {
-        element.value = ['05/09/2021'];
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1620532800000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'multiple';
 
         const handler = jest.fn();
@@ -429,9 +429,9 @@ describe('Calendar', () => {
     });
 
     it('Calendar event change selection-mode: interval', () => {
-        element.value = '05/09/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.value = 1620532800000;
+        element.min = 1619841600000;
+        element.max = 1622433600000;
         element.selectionMode = 'interval';
 
         const handler = jest.fn();
@@ -444,8 +444,8 @@ describe('Calendar', () => {
             day11.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-                new Date('05/09/2021'),
-                new Date('05/11/2021')
+                new Date(1620532800000),
+                new Date(1620705600000)
             ]);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
