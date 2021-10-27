@@ -96,10 +96,11 @@ export default class InputChoiceOption {
                 'slds-align_absolute-center slds-m-bottom_x-small':
                     this.iconPosition === POSITION_ICON.BOTTOM,
                 'slds-m-left_x-small':
-                    this.iconPosition === POSITION_ICON.RIGHT,
+                    this.label && this.iconPosition === POSITION_ICON.RIGHT,
                 'slds-m-right_x-small':
-                    this.iconPosition === POSITION_ICON.LEFT ||
-                    !this.iconPosition
+                    this.label &&
+                    (this.iconPosition === POSITION_ICON.LEFT ||
+                        !this.iconPosition)
             })
             .toString();
     }
