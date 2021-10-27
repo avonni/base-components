@@ -103,3 +103,61 @@
  * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
  * @property {string} position Position of the action in the drop-down. Valid values include top and bottom. Defaults to top.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-color
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-top-width
+ * @default 1px
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-bottom-width
+ * @default 1px
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-right-width
+ * @default 1px
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-left-width
+ * @default 1px
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-bottom-left-radius
+ * @default 0.25rem
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-bottom-right-radius
+ * @default 0.25rem
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-top-right-radius
+ * @default 0.25rem
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-border-top-left-radius
+ * @default 0.25rem
+ * @type radius
+ */

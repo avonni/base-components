@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import ColorGradient from 'c/colorGradient';
+import ColorGradient from 'avonni/colorGradient';
 
 // not tested
 // message when bad input
@@ -68,7 +68,9 @@ describe('Color Gradient', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -112,7 +114,9 @@ describe('Color Gradient', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -152,7 +156,9 @@ describe('Color Gradient', () => {
     // private focus
     it('Color Gradient private focus', () => {
         let focusEvent = false;
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         element.addEventListener('privatefocus', (event) => {
             focusEvent = true;
@@ -170,7 +176,9 @@ describe('Color Gradient', () => {
     // private blur
     it('Color Gradient private blur', () => {
         let blurEvent = false;
-        const input = element.shadowRoot.querySelector('[data-element-id="input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
 
         element.addEventListener('privateblur', (event) => {
             blurEvent = true;

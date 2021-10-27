@@ -312,6 +312,16 @@ export default {
                 defaultValue: { summary: 'standard' },
                 type: { summary: 'string' }
             }
+        },
+        tokens: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of token objects. If present, a token tab will be added in the menu.',
+            table: {
+                type: { summary: 'object[]' }
+            }
         }
     },
     args: {
@@ -324,16 +334,31 @@ export default {
     }
 };
 
-const colorsWithLabel = [
+const tokens = [
     {
         label: 'brand-accessible',
-        token: '--lwc-brand-accessible',
-        value: '#0176d3'
+        value: '--lwc-brand-accessible',
+        color: '#0176d3'
     },
     {
         label: 'brand-accessible-active',
-        token: '--lwc-brand-accessible-active',
-        value: '#014486'
+        value: '--lwc-brand-accessible-active',
+        color: '#014486'
+    },
+    {
+        label: 'color-text-action-label',
+        value: '--lwc-colorTextActionLabel',
+        color: '#3e3e3c'
+    },
+    {
+        label: 'color-text-customer',
+        value: '--lwc-colorTextCustomer',
+        color: '#fe9339'
+    },
+    {
+        label: 'color-text-error',
+        value: '--lwc-colorTextError',
+        color: '#ea001e'
     }
 ];
 
@@ -378,12 +403,14 @@ Base.args = {
     colors: colorsValue
 };
 
-export const BaseWithLabels = Template.bind({});
-BaseWithLabels.args = {
+export const StandardWithTokens = Template.bind({});
+StandardWithTokens.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
-    colors: colorsWithLabel
+    messageWhenBadInput: 'Please ensure value is correct',
+    colors: colorsValue,
+    tokens: tokens
 };
 
 export const BaseWithIcon = Template.bind({});

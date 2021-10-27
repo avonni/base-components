@@ -138,6 +138,6 @@ button:disabled {
     height: 4rem;
 }
 
-.palette-height {
-    height: 180px;
+.avonni-color-picker__default-palette {
+    max-height: 180px;
 }

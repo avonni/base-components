@@ -187,10 +187,15 @@ export default class ColorPicker extends LightningElement {
     _menuNubbin = false;
     _colors = DEFAULT_COLORS;
     _opacity = false;
+    _tokens = [];
+
+    _currentTab = 'default';
+    _draftToken;
 
     dropdownOpened = false;
     dropdownVisible = false;
-    isDefault = true;
+    init = false;
+    showError = false;
     newValue;
     helpMessage;
     currentLabel;
@@ -200,15 +205,8 @@ export default class ColorPicker extends LightningElement {
     _rendered = false;
 
     connectedCallback() {
-        // Handles double click in the color palette.
-        this.addEventListener('colordblclick', () => {
-            this.handlerDone();
-        });
-
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-
-        this._connected = true;
     }
 
     renderedCallback() {
@@ -230,7 +228,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     set name(value) {
-        this._name = value ? value : this.uniqueKey;
+        this._name = value ? value : generateUUID();
     }
 
     /**
@@ -482,10 +480,39 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Generate unique ID key.
+     * Array of token objects. If present, a token tab will be added in the menu.
+     *
+     * @public
+     * @type {object[]}
      */
-    get uniqueKey() {
-        return generateUUID();
+    @api
+    get tokens() {
+        return this._tokens;
+    }
+
+    set tokens(value) {
+        this._tokens = normalizeArray(value);
+    }
+
+    /**
+     * Tokens array or colors array, depending on the selected tab.
+     *
+     * @type {(object[]|string[])}
+     */
+    get computedColors() {
+        return this.tokens.length && this._currentTab === 'tokens'
+            ? this.tokens
+            : this.colors;
+    }
+
+    /**
+     * True if the selected tab is "Custom".
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get customTabIsSelected() {
+        return this._currentTab === 'custom';
     }
 
     /**
@@ -556,9 +583,12 @@ export default class ColorPicker extends LightningElement {
      * @type {boolean}
      */
     get hasBadInput() {
-        return !(
-            colorType(this.inputValue) === 'hex' ||
-            (colorType(this.inputValue) === 'hexa' && this.opacity)
+        return (
+            !this.tokens.length &&
+            !(
+                colorType(this.inputValue) === 'hex' ||
+                (colorType(this.inputValue) === 'hexa' && this.opacity)
+            )
         );
     }
 
@@ -577,7 +607,9 @@ export default class ColorPicker extends LightningElement {
      * @type {element}
      */
     get colorGradient() {
-        return this.template.querySelector('[data-name="colorGradient"]');
+        return this.template.querySelector(
+            '[data-element-id="avonni-color-gradient"]'
+        );
     }
 
     /**
@@ -807,9 +839,8 @@ export default class ColorPicker extends LightningElement {
      */
     @api
     focus() {
-        if (this._connected) {
-            this.template.querySelector('[data-element-id="input"]').focus();
-        }
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.focus();
     }
 
     /**
@@ -819,9 +850,8 @@ export default class ColorPicker extends LightningElement {
      */
     @api
     blur() {
-        if (this._connected) {
-            this.template.querySelector('[data-element-id="input"]').blur();
-        }
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.blur();
     }
 
     /*-------- Private methods --------*/
@@ -851,6 +881,7 @@ export default class ColorPicker extends LightningElement {
         this.inputValue = null;
         this.currentLabel = undefined;
         this.currentToken = undefined;
+        this._draftToken = undefined;
         this.focus();
 
         this.dispatchClear();
@@ -867,8 +898,10 @@ export default class ColorPicker extends LightningElement {
                 this.opacity && Number(event.detail.alpha) < 1
                     ? event.detail.hexa
                     : event.detail.hex;
-            this.currentLabel = event.detail.label;
-            this.currentToken = event.detail.token;
+            this._draftToken = {
+                label: event.detail.label,
+                value: event.detail.token
+            };
         }
     }
 
@@ -879,6 +912,8 @@ export default class ColorPicker extends LightningElement {
         if (!this.readOnly && this.newValue) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
+            this.currentLabel = this._draftToken.label;
+            this.currentToken = this._draftToken.value;
             this.newValue = null;
 
             if (!this.menuIconName) {
@@ -948,15 +983,6 @@ export default class ColorPicker extends LightningElement {
      */
     handleDropdownMouseUp() {
         this.allowBlur();
-    }
-
-    /**
-     * Dropdown menu mouse leave handler.
-     */
-    handleDropdownMouseLeave() {
-        if (!this._menuHasFocus) {
-            this.close();
-        }
     }
 
     /**
@@ -1033,7 +1059,7 @@ export default class ColorPicker extends LightningElement {
         if (this.isAutoAlignment() && this.dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this._connected) {
+                if (this.isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });
@@ -1051,14 +1077,25 @@ export default class ColorPicker extends LightningElement {
      */
     handlerTabClick(event) {
         event.preventDefault();
-        [...this.template.querySelectorAll('a')].forEach((tab) => {
-            if (tab.id === event.target.id) {
-                tab.parentElement.classList.add('slds-is-active');
-                this.isDefault = tab.parentElement.title === 'Default';
-            } else {
-                tab.parentElement.classList.remove('slds-is-active');
-            }
-        });
+
+        this.template
+            .querySelectorAll('[data-group-name="tabs"]')
+            .forEach((tab) => {
+                const tabName = tab.dataset.tabName;
+                const targetName = event.currentTarget.dataset.tabName;
+
+                if (tabName === targetName) {
+                    tab.parentElement.classList.add('slds-is-active');
+                    this._currentTab = tabName;
+                } else {
+                    tab.parentElement.classList.remove('slds-is-active');
+                }
+            });
+
+        const palette = this.template.querySelector(
+            '[data-element-id="avonni-color-palette-default"]'
+        );
+        if (palette) palette.colors = [...this.computedColors];
     }
 
     /**

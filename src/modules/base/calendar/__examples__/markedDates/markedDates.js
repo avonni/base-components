@@ -1,16 +1,12 @@
 import { LightningElement } from 'lwc';
 
 export default class CalendarMarkedDates extends LightningElement {
-    
     disabledDates = [20, 'Sat'];
     markedDates = [
-        new Date(2021, 4, 9), 
-        new Date(2021, 4, 26), 
-        14, 
-        20, 
-        'Wed'
+        { date: new Date('05/09/2021'), color: 'red' },
+        { date: new Date('05/26/2021'), color: 'brown' },
+        { date: 14, color: 'blue' },
+        { date: 20, color: 'yellow' },
+        { date: 'Wed', color: 'black' }
     ];
-
-    min = new Date('04/15/2021');
-    max = new Date('06/10/2021');
 }
