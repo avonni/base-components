@@ -204,6 +204,19 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         );
     }
 
+    handleOnChangeColorPicker(event) {
+        this.dispatchEvent(
+            new CustomEvent('inlineeditchange', {
+                detail: {
+                    value: event.detail.hex,
+                    validity: this.validity.valid
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
+
     handleOnChangeInputDateRange(event) {
         this.dispatchEvent(
             new CustomEvent('inlineeditchange', {

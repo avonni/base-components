@@ -57,8 +57,16 @@ export default class PrimitiveCellColorPicker extends LightningElement {
             this.handleChange(event);
         });
 
-        this.template.addEventListener('ieditfinishedcustom', () => {
-            this.toggleInlineEdit();
+        this.template.addEventListener('ieditfinishedcustom', (event) => {
+            const reason = event.detail.reason;
+            if (
+                reason === 'on-change' ||
+                reason === 'submit-action' ||
+                reason === 'tab-pressed-next' ||
+                reason === 'edit-canceled'
+            ) {
+                this.toggleInlineEdit();
+            }
         });
 
         this.dispatchEvent(
@@ -98,11 +106,10 @@ export default class PrimitiveCellColorPicker extends LightningElement {
 
     handleChange(event) {
         const detail = {
-            value: event.detail.hex,
+            value: event.detail.value,
             colKeyValue: this.colKeyValue,
             rowKeyValue: this.rowKeyValue
         };
-
         this.dispatchEvent(
             new CustomEvent('privateeditcustomcell', {
                 detail: detail,
@@ -125,7 +132,7 @@ export default class PrimitiveCellColorPicker extends LightningElement {
         );
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
     toggleInlineEdit() {
         this.visible = !this.visible;
         this.readOnly = !this.readOnly;

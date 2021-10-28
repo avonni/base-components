@@ -124,7 +124,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         return (
             this.isMassEditEnabled ||
             this.isMultiSelect ||
-            this.columnDef.type === 'input-counter'
+            this.columnDef.type === 'input-counter' ||
+            this.columnDef.type === 'color-picker'
         );
     }
 
@@ -222,7 +223,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         event.preventDefault();
         event.stopPropagation();
 
-        if (!this.isMassEditEnabled) {
+        if (!this.isMassEditEnabled && this.columnDef.type !== 'color-picker') {
             this.processSubmission();
         }
 
