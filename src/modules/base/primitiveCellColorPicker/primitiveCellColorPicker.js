@@ -57,16 +57,8 @@ export default class PrimitiveCellColorPicker extends LightningElement {
             this.handleChange(event);
         });
 
-        this.template.addEventListener('ieditfinishedcustom', (event) => {
-            const reason = event.detail.reason;
-            if (
-                reason === 'on-change' ||
-                reason === 'submit-action' ||
-                reason === 'tab-pressed-next' ||
-                reason === 'edit-canceled'
-            ) {
-                this.toggleInlineEdit();
-            }
+        this.template.addEventListener('ieditfinishedcustom', () => {
+            this.toggleInlineEdit();
         });
 
         this.dispatchEvent(
@@ -81,8 +73,6 @@ export default class PrimitiveCellColorPicker extends LightningElement {
             })
         );
     }
-
-    renderedCallback() {}
 
     @api
     get value() {
@@ -124,17 +114,6 @@ export default class PrimitiveCellColorPicker extends LightningElement {
      */
     get showEditButton() {
         return this.editable && !this.disabled;
-    }
-
-    /**
-     * Gets the inputable element inside the inline edit popover.
-     *
-     * @type {Element}
-     */
-    get inputableElement() {
-        return this.template.querySelector(
-            '[data-element-id^="primitive-cell-color-picker"]'
-        );
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.

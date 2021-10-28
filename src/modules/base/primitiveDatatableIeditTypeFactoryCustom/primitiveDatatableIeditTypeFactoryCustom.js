@@ -121,7 +121,7 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         this.concreteComponent.addEventListener('blur', this._blurHandler);
         this.concreteComponent.addEventListener('focus', this._focusHandler);
         this.concreteComponent.addEventListener('change', this._changeHandler);
-        if (this.concreteComponent) {
+        if (this.concreteComponent && this.columnDef.type !== 'color-picker') {
             this.concreteComponent.focus();
         }
     }

@@ -70,13 +70,6 @@ export default class PrimitiveCellInputCounter extends LightningElement {
         );
     }
 
-    renderedCallback() {
-        // focus on the input counter when the inline edit panel is opened.
-        if (this.inputableElement) {
-            this.inputableElement.focus();
-        }
-    }
-
     @api
     get value() {
         return this._value;

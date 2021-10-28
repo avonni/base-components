@@ -70,13 +70,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         );
     }
 
-    renderedCallback() {
-        // focus on the combobox when the inline edit panel is opened.
-        if (this.inputableElement) {
-            this.inputableElement.focus();
-        }
-    }
-
     @api
     get value() {
         return this._value;
@@ -116,16 +109,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
      */
     get showEditButton() {
         return this.editable && !this.disabled;
-    }
-    /**
-     * Gets the inputable element inside the inline edit popover.
-     *
-     * @type {Element}
-     */
-    get inputableElement() {
-        return this.template.querySelector(
-            '[data-element-id^="primitive-cell-combobox-input"]'
-        );
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
