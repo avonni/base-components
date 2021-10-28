@@ -110,6 +110,14 @@ export default class PrimitiveCellCombobox extends LightningElement {
     /*----------- Inline Editing Functions -------------*/
 
     /**
+     * Return true if cell is editable and not disabled.
+     *
+     * @type {Boolean}
+     */
+    get showEditButton() {
+        return this.editable && !this.disabled;
+    }
+    /**
      * Gets the inputable element inside the inline edit popover.
      *
      * @type {Element}

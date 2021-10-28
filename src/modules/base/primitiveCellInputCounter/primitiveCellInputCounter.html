@@ -68,7 +68,7 @@
                 disabled={disabled}
                 onchange={handleChange}
             ></c-input-counter>
-            <template if:true={editable}>
+            <template if:true={showEditButton}>
                 <c-primitive-cell-editable-button
                     onclick={handleEditButtonClick}
                     column-label="Input Counter"

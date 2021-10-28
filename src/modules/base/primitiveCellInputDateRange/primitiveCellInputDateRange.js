@@ -71,7 +71,7 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     }
 
     renderedCallback() {
-        // focus on the combobox when the inline edit panel is opened.
+        // focus on the input-date-range when the inline edit panel is opened.
         if (this.inputableElement) {
             this.inputableElement.focus();
         }
@@ -123,6 +123,14 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
 
     /*----------- Inline Editing Functions -------------*/
 
+    /**
+     * Return true if cell is editable and not disabled.
+     *
+     * @type {Boolean}
+     */
+    get showEditButton() {
+        return this.editable && !this.disabled;
+    }
     /**
      * Gets the inputable element inside the inline edit popover.
      *

@@ -684,6 +684,7 @@ const recordsFL = [
         inputCounterDisabled: true,
         inputDateRangeDisabled: true,
         inputToggleDisabled: true,
+        inputRichTextDisabled: true,
         location: {
             latitude: '45.54',
             longitude: '-73.60'

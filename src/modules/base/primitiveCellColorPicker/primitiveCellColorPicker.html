@@ -44,6 +44,7 @@
             is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
             number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
             colors={colors}
+            disabled={disabled}
             hide-color-input={hideColorInput}
             label={label}
             menu-alignment={menuAlignment}
@@ -77,7 +78,7 @@
                 variant="label-hidden"
                 onchange={handleChange}
             ></c-color-picker>
-            <template if:true={editable}>
+            <template if:true={showEditButton}>
                 <c-primitive-cell-editable-button
                     onclick={handleEditButtonClick}
                     column-label="Color Picker"

@@ -82,21 +82,17 @@ export default class PrimitiveCellColorPicker extends LightningElement {
         );
     }
 
-    renderedCallback() {
-        // focus on the combobox when the inline edit panel is opened.
-        if (this.inputableElement) {
-            this.inputableElement.focus();
-        }
-    }
+    renderedCallback() {}
 
     @api
     get value() {
         return this._value;
     }
+
     set value(value) {
         // When data is first set, the value is an object containing the editable state
         // When the cell is edited, only the value is sent back
-        if (typeof value === 'object') {
+        if (typeof value === 'object' && value !== null) {
             this.readOnly = !value.editable;
             this._value = value.value;
         } else {
@@ -120,6 +116,15 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     }
 
     /*----------- Inline Editing Functions -------------*/
+
+    /**
+     * Return true if cell is editable and not disabled.
+     *
+     * @type {Boolean}
+     */
+    get showEditButton() {
+        return this.editable && !this.disabled;
+    }
 
     /**
      * Gets the inputable element inside the inline edit popover.

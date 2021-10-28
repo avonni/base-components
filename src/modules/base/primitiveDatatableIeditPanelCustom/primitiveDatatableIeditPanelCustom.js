@@ -157,7 +157,11 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
 
     triggerEditFinished(detail) {
         // for combobox we need to make sure that the value is only set if the there is a change or a submit.
-        if (this.value.length !== 0 && typeof this.value !== 'string') {
+        if (
+            this.value &&
+            this.value.length !== 0 &&
+            typeof this.value !== 'string'
+        ) {
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
             detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
             detail.value = this.value;
@@ -272,7 +276,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     processOnChange = (event) => {
-        if (event.detail.validity) {
+        if (event.detail.validity && this.columnDef.type !== 'color-picker') {
             this.triggerEditFinished({ reason: 'on-change' });
         } else {
             this.inputableElement.showHelpMessageIfInvalid();
