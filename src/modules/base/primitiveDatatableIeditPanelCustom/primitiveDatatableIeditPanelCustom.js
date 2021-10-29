@@ -125,7 +125,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             this.isMassEditEnabled ||
             this.isMultiSelect ||
             this.columnDef.type === 'input-counter' ||
-            this.columnDef.type === 'color-picker'
+            this.columnDef.type === 'color-picker' ||
+            this.columnDef.type === 'input-date-range'
         );
     }
 

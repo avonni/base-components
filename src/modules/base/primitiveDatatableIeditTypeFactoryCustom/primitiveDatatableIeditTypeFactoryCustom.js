@@ -121,7 +121,11 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         this.concreteComponent.addEventListener('blur', this._blurHandler);
         this.concreteComponent.addEventListener('focus', this._focusHandler);
         this.concreteComponent.addEventListener('change', this._changeHandler);
-        if (this.concreteComponent && this.columnDef.type !== 'color-picker') {
+        if (
+            this.concreteComponent &&
+            this.columnDef.type !== 'color-picker' &&
+            this.columnDef.type !== 'input-date-range'
+        ) {
             this.concreteComponent.focus();
         }
     }
@@ -209,20 +213,6 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
             new CustomEvent('inlineeditchange', {
                 detail: {
                     value: event.detail.hex,
-                    validity: this.validity.valid
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    handleOnChangeInputDateRange(event) {
-        this.dispatchEvent(
-            new CustomEvent('inlineeditchange', {
-                detail: {
-                    startDate: event.detail.startDate,
-                    endDate: event.detail.endDate,
                     validity: this.validity.valid
                 },
                 bubbles: true,

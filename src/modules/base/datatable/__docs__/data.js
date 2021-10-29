@@ -649,10 +649,10 @@ const recordsFL = [
         formattedRichText: '<h1>Header 1</h1>',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputCounter: 1,
-        inputDateRange: {
-            startDate: new Date('2021/10/02'),
-            endDate: new Date('2021/10/05')
-        },
+        // inputDateRange: {
+        //     startDate: new Date('2021/10/02'),
+        //     endDate: new Date('2021/10/05')
+        // },
         location: {
             latitude: '45.53',
             longitude: '-73.61'
