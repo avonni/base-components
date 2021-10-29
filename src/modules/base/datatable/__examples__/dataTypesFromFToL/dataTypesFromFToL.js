@@ -3,12 +3,6 @@ import { LightningElement } from 'lwc';
 export default class DataTypesFromFtoL extends LightningElement {
     columns = [
         {
-            label: 'Formatted Rich Text',
-            fieldName: 'formattedRichText',
-            type: 'formatted-rich-text',
-            editable: true
-        },
-        {
             label: 'Image',
             fieldName: 'image',
             type: 'image',
@@ -90,7 +84,6 @@ export default class DataTypesFromFtoL extends LightningElement {
     records = [
         {
             id: 1,
-            formattedRichText: '<h1>Header 1</h1>',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
             inputCounter: 1,
             inputDateRange: {
@@ -104,7 +97,6 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 2,
-            formattedRichText: '<h2>Header 2</h2>',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
             inputCounter: 3,
             inputDateRange: {
@@ -119,7 +111,6 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 3,
-            formattedRichText: '<h3>Header 3</h3>',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
             imageBlank: true,
             imageBlankColor: '#CCC',
@@ -134,7 +125,6 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 4,
-            formattedRichText: '<h4>Header 4</h4>',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
             inputCounter: 5,
             inputDateRange: {
@@ -148,7 +138,6 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 5,
-            formattedRichText: '<h5>Header 5</h5>',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
             inputCounterStep: 2,
             inputCounter: 0,
