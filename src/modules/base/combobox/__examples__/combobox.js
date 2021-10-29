@@ -42,6 +42,7 @@ export const Combobox = ({
     dropdownLength,
     fieldLevelHelp,
     groups,
+    hideClearIcon,
     hideSelectedOptions,
     isLoading,
     isMultiSelect,
@@ -71,6 +72,7 @@ export const Combobox = ({
     element.dropdownLength = dropdownLength;
     element.fieldLevelHelp = fieldLevelHelp;
     element.groups = groups;
+    element.hideClearIcon = hideClearIcon;
     element.hideSelectedOptions = hideSelectedOptions;
     element.isLoading = isLoading;
     element.isMultiSelect = isMultiSelect;

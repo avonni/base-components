@@ -87,7 +87,7 @@ describe('PrimitiveCombobox', () => {
         expect(element.required).toBeFalsy();
         expect(element.search).toBeInstanceOf(Function);
         expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
-        expect(element.showClearInput).toBeFalsy();
+        expect(element.hideClearIcon).toBeFalsy();
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('standard');
@@ -532,7 +532,7 @@ describe('PrimitiveCombobox', () => {
 
     // message-when-bad-input
     // Depends on required and showHelpMessageIfInvalid()
-    it('messageWhenValueMissing', () => {
+    it('messageWhenBadInput', () => {
         element.messageWhenBadInput = 'Something is wrong';
         element.options = options;
         element.value = ['hello']
@@ -772,10 +772,9 @@ describe('PrimitiveCombobox', () => {
         });
     });
 
-    // showClearInput
-    // Depends on allowSearch
-    it('showClearInput = false', () => {
-        element.showClearInput = false;
+    // hideClearIcon
+    it('hideClearIcon = true', () => {
+        element.hideClearIcon = true;
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
         );
@@ -784,7 +783,7 @@ describe('PrimitiveCombobox', () => {
             .then(() => {
                 input.value = 'Some value';
                 input.dispatchEvent(
-                    new CustomEvent('[data-element-id="input"]')
+                    new CustomEvent('input')
                 );
             })
             .then(() => {
@@ -795,8 +794,8 @@ describe('PrimitiveCombobox', () => {
             });
     });
 
-    it('showClearInput = true', () => {
-        element.showClearInput = true;
+    it('hideClearIcon = false', () => {
+        element.hideClearIcon = false;
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
         );
