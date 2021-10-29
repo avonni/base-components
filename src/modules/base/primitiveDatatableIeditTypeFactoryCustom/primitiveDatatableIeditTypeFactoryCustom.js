@@ -37,13 +37,15 @@ import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
 import inputCounterTpl from './inputCounter.html';
 import inputDateRangeTpl from './inputDateRange.html';
+import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
 
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
     combobox: ComboboxTpl,
     'input-counter': inputCounterTpl,
-    'input-date-range': inputDateRangeTpl
+    'input-date-range': inputDateRangeTpl,
+    textarea: textareaTpl
 };
 
 const INVALID_TYPE_FOR_EDIT =
@@ -54,8 +56,10 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api required;
 
     // shared attributes
-    @api label;
     @api disabled;
+    @api label;
+    @api name;
+    @api placeholder;
     @api type;
 
     // color picker attributes
@@ -65,14 +69,12 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api menuIconName;
     @api menuIconSize;
     @api menuVariant;
-    @api name;
     @api opacity;
 
     // combobox attributes
     @api dropdownLength;
     @api isMultiSelect;
     @api options;
-    @api placeholder;
 
     // input-counter attributes
     @api max;
@@ -87,6 +89,10 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api timezone;
     @api labelStartDate;
     @api labelEndDate;
+
+    // textarea attributes
+    @api maxLength;
+    @api minLength;
 
     @api
     get columnDef() {

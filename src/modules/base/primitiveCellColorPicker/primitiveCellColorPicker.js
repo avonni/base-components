@@ -72,6 +72,8 @@ export default class PrimitiveCellColorPicker extends LightningElement {
                 composed: true
             })
         );
+
+        console.log(this.editable);
     }
 
     @api

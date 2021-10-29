@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,51 +30,20 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-import { LightningElement, api } from 'lwc';
-
-export default class PrimitiveCellInputRichText extends LightningElement {
-    @api colKeyValue;
-    @api rowKeyValue;
-    @api disabled;
-    @api variant;
-    @api placeholder;
-
-    _value;
-    readOnly;
-
-    renderedCallback() {
-        console.log(this._value);
-    }
-
-    @api
-    get value() {
-        return this._value;
-    }
-    set value(value) {
-        // When data is first set, the value is an object containing the editable state
-        // When the cell is edited, only the value is sent back
-        if (typeof value === 'object' && value.editable !== undefined) {
-            this.readOnly = !value.editable;
-            this._value = value.value;
-        } else {
-            this._value = value;
-        }
-    }
-
-    handleChange(event) {
-        const detail = {
-            value: event.detail.value,
-            colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
-        };
-        console.log(detail);
-        this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                detail: detail,
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-}
+<template>
+    <lightning-textarea
+        name="dt-inline-edit-textarea"
+        data-inputable="true"
+        disabled={disabled}
+        label={label}
+        max-length={maxLength}
+        min-length={minLength}
+        placeholder={placeholder}
+        value={editedValue}
+        variant="label-hidden"
+        onchange={focus}
+    >
+    </lightning-textarea>
+</template>

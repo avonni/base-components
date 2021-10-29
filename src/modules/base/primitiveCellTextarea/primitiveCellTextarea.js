@@ -43,7 +43,32 @@ export default class PrimitiveCellTextarea extends LightningElement {
     @api placeholder;
 
     _value;
-    _readOnly;
+    visible = false;
+    editable = false;
+    readOnly = true;
+
+    connectedCallback() {
+        // Dispatches the inline edit event to the parent component.
+        this.template.addEventListener('inlineeditchange', (event) => {
+            this.handleChange(event);
+        });
+
+        this.template.addEventListener('ieditfinishedcustom', () => {
+            this.toggleInlineEdit();
+        });
+
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
 
     @api
     get value() {
@@ -74,5 +99,53 @@ export default class PrimitiveCellTextarea extends LightningElement {
                 composed: true
             })
         );
+    }
+
+    /*----------- Inline Editing Functions -------------*/
+
+    /**
+     * Return true if cell is editable and not disabled.
+     *
+     * @type {Boolean}
+     */
+    get showEditButton() {
+        return this.editable && !this.disabled;
+    }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
+    }
+
+    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    getStateAndColumns(state, columns) {
+        this.state = state;
+        this.columns = columns;
+        this.isEditable();
+    }
+
+    // Checks if the column is editable.
+    isEditable() {
+        let textArea = {};
+        textArea = this.columns.find((column) => column.type === 'textarea');
+        this.editable = textArea.editable;
+    }
+
+    // Handles the edit button click and dispatches the event.
+    handleEditButtonClick() {
+        const { rowKeyValue, colKeyValue, state } = this;
+        this.dispatchEvent(
+            new CustomEvent('editbuttonclickcustom', {
+                bubbles: true,
+                composed: true,
+                detail: {
+                    rowKeyValue,
+                    colKeyValue,
+                    state
+                }
+            })
+        );
+        this.toggleInlineEdit();
     }
 }

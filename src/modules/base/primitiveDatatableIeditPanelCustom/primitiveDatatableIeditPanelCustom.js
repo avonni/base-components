@@ -46,6 +46,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     //shared
     @api disabled;
     @api label;
+    @api name;
+    @api placeholder;
     @api type;
 
     // Primitive cell color-picker
@@ -55,14 +57,12 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     @api menuIconName;
     @api menuIconSize;
     @api menuVariant;
-    @api name;
     @api opacity;
 
     // Primitive cell combobox
     @api dropdownLength;
     @api isMultiSelect;
     @api options;
-    @api placeholder;
 
     // Primitive cell input-counter
     @api max;
@@ -77,6 +77,10 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     @api timezone;
     @api labelStartDate;
     @api labelEndDate;
+
+    // primitive cell textarea
+    @api maxLength;
+    @api minLength;
 
     connectedCallback() {
         this.interactingState = new InteractingState({
@@ -126,7 +130,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             this.isMultiSelect ||
             this.columnDef.type === 'input-counter' ||
             this.columnDef.type === 'color-picker' ||
-            this.columnDef.type === 'input-date-range'
+            this.columnDef.type === 'input-date-range' ||
+            this.columnDef.type === 'textarea'
         );
     }
 

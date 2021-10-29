@@ -111,6 +111,7 @@ export default class PrimitiveCellInputCounter extends LightningElement {
     get showEditButton() {
         return this.editable && !this.disabled;
     }
+
     /**
      * Gets the inputable element inside the inline edit popover.
      *
