@@ -131,6 +131,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             this.columnDef.type === 'input-counter' ||
             this.columnDef.type === 'color-picker' ||
             this.columnDef.type === 'input-date-range' ||
+            this.columnDef.type === 'input-rich-text' ||
             this.columnDef.type === 'textarea'
         );
     }
@@ -263,7 +264,20 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     processSubmission() {
-        if (this.validity.valid) {
+        if (this.columnDef.type === 'input-rich-text') {
+            this.triggerEditFinished({ reason: 'submit-action' });
+            this.dispatchEvent(
+                new CustomEvent('privateeditcustomcell', {
+                    detail: {
+                        rowKeyValue: this.rowKeyValue,
+                        colKeyValue: this.colKeyValue,
+                        value: this.value
+                    },
+                    bubbles: true,
+                    composed: true
+                })
+            );
+        } else if (this.validity.valid) {
             this.triggerEditFinished({ reason: 'submit-action' });
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {

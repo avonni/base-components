@@ -33,35 +33,12 @@
 -->
 
 <template>
-    <template if:true={visible}>
-        <c-primitive-datatable-iedit-panel-custom
-            data-iedit-panel-custom="true"
-            visible={state.inlineEdit.panelVisible}
-            row-key-value={state.inlineEdit.rowKeyValue}
-            col-key-value={state.inlineEdit.colKeyValue}
-            edited-value={state.inlineEdit.editedValue}
-            column-def={state.inlineEdit.columnDef}
-            is-mass-edit-enabled={state.inlineEdit.massEditEnabled}
-            number-of-selected-rows={state.inlineEdit.massEditSelectedRows}
-            disabled={disabled}
-            placeholder={placeholder}
-        ></c-primitive-datatable-iedit-panel-custom>
-    </template>
-    <template if:false={visible}>
-        <span
-            class="
-                slds-grid slds-cell-edit
-                slds-grid_align-spread slds-grid_vertical-align-center
-            "
-        >
-            <lightning-formatted-rich-text value={value}>
-            </lightning-formatted-rich-text>
-            <template if:true={showEditButton}>
-                <c-primitive-cell-editable-button
-                    onclick={handleEditButtonClick}
-                    column-label="Color Picker"
-                ></c-primitive-cell-editable-button>
-            </template>
-        </span>
-    </template>
+    <c-input-rich-text
+        data-inputable="true"
+        placeholder={placeholder}
+        disabled={disabled}
+        variant={variant}
+        value={editedValue}
+        onchange={focus}
+    ></c-input-rich-text>
 </template>

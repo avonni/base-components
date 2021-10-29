@@ -37,6 +37,7 @@ import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
 import inputCounterTpl from './inputCounter.html';
 import inputDateRangeTpl from './inputDateRange.html';
+import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
 
@@ -45,6 +46,7 @@ const CUSTOM_TYPES_TPL = {
     combobox: ComboboxTpl,
     'input-counter': inputCounterTpl,
     'input-date-range': inputDateRangeTpl,
+    'input-rich-text': richTextTpl,
     textarea: textareaTpl
 };
 
@@ -186,7 +188,9 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
 
     @api
     showHelpMessageIfInvalid() {
-        this.concreteComponent.showHelpMessageIfInvalid();
+        if (this.columnDef.type !== 'input-rich-text') {
+            this.concreteComponent.showHelpMessageIfInvalid();
+        }
     }
 
     handleComponentFocus() {
