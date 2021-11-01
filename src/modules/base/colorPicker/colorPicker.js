@@ -194,7 +194,6 @@ export default class ColorPicker extends LightningElement {
 
     dropdownOpened = false;
     dropdownVisible = false;
-    init = false;
     showError = false;
     newValue;
     helpMessage;
@@ -252,7 +251,7 @@ export default class ColorPicker extends LightningElement {
             this._inputValue = null;
             this.currentToken = {};
         }
-        if (this.isConnected) this.initSwatchColor();
+        this.initSwatchColor();
     }
 
     /**
@@ -492,6 +491,7 @@ export default class ColorPicker extends LightningElement {
 
     set tokens(value) {
         this._tokens = normalizeArray(value);
+        if (this.isConnected) this.computeToken();
     }
 
     /**
@@ -880,6 +880,7 @@ export default class ColorPicker extends LightningElement {
         } else {
             this.currentToken = {};
         }
+        this.initSwatchColor();
     }
 
     /**
