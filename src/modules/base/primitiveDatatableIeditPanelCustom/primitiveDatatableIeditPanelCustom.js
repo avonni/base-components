@@ -124,14 +124,22 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         );
     }
 
+    get isTypeInputRichText() {
+        return this.columnDef.type === 'input-rich-text';
+    }
+
+    get isTypeInputDateRange() {
+        return this.columnDef.type === 'input-date-range';
+    }
+
     get showButtons() {
         return (
             this.isMassEditEnabled ||
             this.isMultiSelect ||
             this.columnDef.type === 'input-counter' ||
             this.columnDef.type === 'color-picker' ||
-            this.columnDef.type === 'input-date-range' ||
-            this.columnDef.type === 'input-rich-text' ||
+            this.isTypeInputDateRange ||
+            this.isTypeInputRichText ||
             this.columnDef.type === 'textarea'
         );
     }
@@ -162,22 +170,27 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         }
     }
 
+    editedFormattedValue(value) {
+        if (this.isTypeInputDateRange) {
+            return {
+                startDate: value[0].startDate,
+                endDate: value[1].endDate
+            };
+        } else if (this.isTypeInputRichText) {
+            return this.convertHTML(value);
+        }
+        return value;
+    }
+
     triggerEditFinished(detail) {
         if (this.value) {
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
             detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.valid =
-                this.columnDef.type === 'input-rich-text'
-                    ? true
-                    : this.validity.valid;
+            detail.valid = this.isTypeInputRichText
+                ? true
+                : this.validity.valid;
             detail.isMassEditChecked = this.isMassEditChecked;
-            detail.value =
-                this.columnDef.type === 'input-date-range'
-                    ? {
-                          startDate: this.value[0].startDate,
-                          endDate: this.value[1].endDate
-                      }
-                    : this.value;
+            detail.value = this.editedFormattedValue(this.value);
         }
         this.dispatchEvent(
             new CustomEvent('ieditfinishedcustom', {
@@ -278,47 +291,31 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
 
     processSubmission() {
         this.triggerEditFinished({ reason: 'submit-action' });
-        if (this.columnDef.type === 'input-rich-text') {
+        // if type input rich text, there is no validity check.
+        if (this.isTypeInputRichText) {
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {
                     detail: {
                         rowKeyValue: this.rowKeyValue,
                         colKeyValue: this.colKeyValue,
-                        value: this.convertHTML(this.value)
+                        value: this.editedFormattedValue(this.value)
                     },
                     bubbles: true,
                     composed: true
                 })
             );
         } else if (this.validity.valid) {
-            if (this.columnDef.type === 'input-date-range') {
-                this.dispatchEvent(
-                    new CustomEvent('privateeditcustomcell', {
-                        detail: {
-                            rowKeyValue: this.rowKeyValue,
-                            colKeyValue: this.colKeyValue,
-                            value: {
-                                startDate: this.value[0].startDate,
-                                endDate: this.value[1].endDate
-                            }
-                        },
-                        bubbles: true,
-                        composed: true
-                    })
-                );
-            } else {
-                this.dispatchEvent(
-                    new CustomEvent('privateeditcustomcell', {
-                        detail: {
-                            rowKeyValue: this.rowKeyValue,
-                            colKeyValue: this.colKeyValue,
-                            value: this.value
-                        },
-                        bubbles: true,
-                        composed: true
-                    })
-                );
-            }
+            this.dispatchEvent(
+                new CustomEvent('privateeditcustomcell', {
+                    detail: {
+                        rowKeyValue: this.rowKeyValue,
+                        colKeyValue: this.colKeyValue,
+                        value: this.editedFormattedValue(this.value)
+                    },
+                    bubbles: true,
+                    composed: true
+                })
+            );
         } else {
             this.inputableElement.showHelpMessageIfInvalid();
         }

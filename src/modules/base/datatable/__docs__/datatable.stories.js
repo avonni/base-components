@@ -412,8 +412,7 @@ DataTypesFromFToL.args = {
     columns: columnsFL,
     records: recordsFL,
     keyField: 'id',
-    columnWidthsMode: 'auto',
-    hideCheckboxColumn: true
+    columnWidthsMode: 'auto'
 };
 
 export const DataTypesFromNToQ = Template.bind({});

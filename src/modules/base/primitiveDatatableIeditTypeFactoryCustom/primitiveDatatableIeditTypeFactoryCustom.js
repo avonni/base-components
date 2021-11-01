@@ -84,13 +84,13 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api step;
 
     // input-date-range attributes
-    _startDate;
-    _endDate;
     @api dateStyle;
     @api timeStyle;
     @api timezone;
     @api labelStartDate;
     @api labelEndDate;
+    _startDate;
+    _endDate;
 
     // textarea attributes
     @api maxLength;
@@ -119,16 +119,7 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         return CUSTOM_TYPES_TPL[this.columnType] || DefaultTpl;
     }
 
-    connectedCallback() {
-        this._blurHandler = this.handleComponentBlur.bind(this);
-        this._focusHandler = this.handleComponentFocus.bind(this);
-        this._changeHandler = this.handleComponentChange.bind(this);
-    }
-
     renderedCallback() {
-        this.concreteComponent.addEventListener('blur', this._blurHandler);
-        this.concreteComponent.addEventListener('focus', this._focusHandler);
-        this.concreteComponent.addEventListener('change', this._changeHandler);
         if (
             this.concreteComponent &&
             this.columnDef.type !== 'color-picker' &&
@@ -193,36 +184,11 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         }
     }
 
-    handleComponentFocus() {
-        this.dispatchEvent(new CustomEvent('focus'));
-    }
-
-    handleComponentBlur() {
-        this.dispatchEvent(new CustomEvent('blur'));
-    }
-
-    handleComponentChange() {
-        this.showHelpMessageIfInvalid();
-    }
-
     handleOnChange(event) {
         this.dispatchEvent(
             new CustomEvent('inlineeditchange', {
                 detail: {
                     value: event.detail.value,
-                    validity: this.validity.valid
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    handleOnChangeColorPicker(event) {
-        this.dispatchEvent(
-            new CustomEvent('inlineeditchange', {
-                detail: {
-                    value: event.detail.hex,
                     validity: this.validity.valid
                 },
                 bubbles: true,

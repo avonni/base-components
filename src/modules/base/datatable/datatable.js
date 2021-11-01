@@ -81,6 +81,7 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'qrcode',
     'rating',
     'slider',
+    'textarea',
     'urls'
 ];
 
