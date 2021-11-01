@@ -288,17 +288,34 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             );
         } else if (this.validity.valid) {
             this.triggerEditFinished({ reason: 'submit-action' });
-            this.dispatchEvent(
-                new CustomEvent('privateeditcustomcell', {
-                    detail: {
-                        rowKeyValue: this.rowKeyValue,
-                        colKeyValue: this.colKeyValue,
-                        value: this.value
-                    },
-                    bubbles: true,
-                    composed: true
-                })
-            );
+            if (this.columnDef.type === 'input-date-range') {
+                this.dispatchEvent(
+                    new CustomEvent('privateeditcustomcell', {
+                        detail: {
+                            rowKeyValue: this.rowKeyValue,
+                            colKeyValue: this.colKeyValue,
+                            value: {
+                                startDate: this.value[0].startDate,
+                                endDate: this.value[1].endDate
+                            }
+                        },
+                        bubbles: true,
+                        composed: true
+                    })
+                );
+            } else {
+                this.dispatchEvent(
+                    new CustomEvent('privateeditcustomcell', {
+                        detail: {
+                            rowKeyValue: this.rowKeyValue,
+                            colKeyValue: this.colKeyValue,
+                            value: this.value
+                        },
+                        bubbles: true,
+                        composed: true
+                    })
+                );
+            }
         } else {
             this.inputableElement.showHelpMessageIfInvalid();
         }

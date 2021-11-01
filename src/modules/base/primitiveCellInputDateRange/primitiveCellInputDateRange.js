@@ -50,9 +50,6 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     readOnly = true;
 
     connectedCallback() {
-        // Dispatches the inline edit event to the parent component.
-        this.template.addEventListener('inlineeditchange', this.handleChange);
-
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
@@ -93,25 +90,6 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
 
     get endDate() {
         return typeof this.value === 'object' ? this.value.endDate : undefined;
-    }
-
-    handleChange(event) {
-        const detail = {
-            value: {
-                startDate: event.detail.startDate,
-                endDate: event.detail.endDate
-            },
-            colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
-        };
-
-        this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                detail: detail,
-                bubbles: true,
-                composed: true
-            })
-        );
     }
 
     /*----------- Inline Editing Functions -------------*/
