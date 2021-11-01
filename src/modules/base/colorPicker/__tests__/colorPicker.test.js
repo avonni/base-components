@@ -67,6 +67,34 @@ const colors = [
     '#b85d0d'
 ];
 
+const tokens = [
+    {
+        label: 'brand-accessible',
+        value: '--lwc-brand-accessible',
+        color: '#0176d3'
+    },
+    {
+        label: 'brand-accessible-active',
+        value: '--lwc-brand-accessible-active',
+        color: 'rgb(1, 68, 134)'
+    },
+    {
+        label: 'color-text-action-label',
+        value: '--lwc-colorTextActionLabel',
+        color: '#3e3e3c'
+    },
+    {
+        label: 'color-text-customer',
+        value: '--lwc-colorTextCustomer',
+        color: '#fe9339'
+    },
+    {
+        label: 'color-text-error',
+        value: '--lwc-colorTextError',
+        color: '#ea001e'
+    }
+];
+
 let element;
 describe('Color Picker', () => {
     afterEach(() => {
@@ -207,7 +235,9 @@ describe('Color Picker', () => {
 
             expect(readOnly).toBeTruthy();
             expect(input).toBeFalsy();
-            expect(button.className).toBe('slds-button slds-swatch-read-only');
+            expect(button.className).toBe(
+                'slds-button avonni-color-picker__main-button slds-swatch-read-only'
+            );
         });
     });
 
@@ -241,19 +271,38 @@ describe('Color Picker', () => {
             });
     });
 
+    it('value with a token', () => {
+        element.tokens = tokens;
+        element.value = tokens[1].value;
+
+        return Promise.resolve()
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+                expect(input.value).toBe(tokens[1].label);
+            })
+            .then(() => {
+                const swatch = element.shadowRoot.querySelector(
+                    '[data-element-id="swatch"]'
+                );
+                expect(swatch.style.background).toBe(tokens[1].color);
+            });
+    });
+
     // variant
     it('variant standard', () => {
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
             const labelHidden = element.shadowRoot.querySelector(
-                '.slds-assistive-text'
+                '[data-element-id="label"].slds-assistive-text'
             );
             const labelStacked = element.shadowRoot.querySelector(
-                '.slds-form-element_stacked'
+                '[data-element-id="div-container"].slds-form-element_stacked'
             );
             const labelInline = element.shadowRoot.querySelector(
-                '.avonni-label-inline'
+                '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
             );
             expect(labelInline).toBeFalsy();
             expect(labelStacked).toBeFalsy();
@@ -266,13 +315,13 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const labelHidden = element.shadowRoot.querySelector(
-                '.slds-assistive-text'
+                '[data-element-id="label"].slds-assistive-text'
             );
             const labelStacked = element.shadowRoot.querySelector(
-                '.slds-form-element_stacked'
+                '[data-element-id="div-container"].slds-form-element_stacked'
             );
             const labelInline = element.shadowRoot.querySelector(
-                '.avonni-label-inline'
+                '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
             );
             expect(labelInline).toBeFalsy();
             expect(labelStacked).toBeTruthy();
@@ -286,13 +335,13 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const labelHidden = element.shadowRoot.querySelector(
-                '.slds-assistive-text'
+                '[data-element-id="label"].slds-assistive-text'
             );
             const labelStacked = element.shadowRoot.querySelector(
-                '.slds-form-element_stacked'
+                '[data-element-id="div-container"].slds-form-element_stacked'
             );
             const labelInline = element.shadowRoot.querySelector(
-                '.avonni-label-inline'
+                '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
             );
             expect(labelInline).toBeFalsy();
             expect(labelStacked).toBeFalsy();
@@ -306,13 +355,13 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const labelHidden = element.shadowRoot.querySelector(
-                '.slds-assistive-text'
+                '[data-element-id="label"].slds-assistive-text'
             );
             const labelStacked = element.shadowRoot.querySelector(
-                '.slds-form-element_stacked'
+                '[data-element-id="div-container"].slds-form-element_stacked'
             );
             const labelInline = element.shadowRoot.querySelector(
-                '.avonni-label-inline'
+                '[data-element-id="div-container"].slds-grid.slds-grid_vertical-align-center'
             );
             expect(labelInline).toBeTruthy();
             expect(labelStacked).toBeFalsy();
@@ -365,7 +414,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
+                'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-bare'
             );
         });
     });
@@ -378,7 +427,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-container-more'
+                'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more'
             );
         });
     });
@@ -391,7 +440,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-more'
+                'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more'
             );
         });
     });
@@ -404,7 +453,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
+                'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-more slds-button_icon-border-filled'
             );
         });
     });
@@ -417,7 +466,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
+                'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-bare slds-button_icon-container-more slds-button_icon-inverse'
             );
         });
     });
@@ -430,7 +479,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
+                'slds-button avonni-color-picker__main-button slds-button_icon slds-button_icon-container-more slds-button_icon-border-inverse'
             );
         });
     });
@@ -444,7 +493,9 @@ describe('Color Picker', () => {
             const button = element.shadowRoot.querySelector(
                 '[data-element-id="button"]'
             );
-            expect(button.className).toBe('slds-button slds-button_icon-bare');
+            expect(button.className).toBe(
+                'slds-button avonni-color-picker__main-button slds-button_icon-bare'
+            );
         });
     });
 
@@ -457,7 +508,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon-container'
+                'slds-button avonni-color-picker__main-button slds-button_icon-container'
             );
         });
     });
@@ -471,7 +522,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon-border'
+                'slds-button avonni-color-picker__main-button slds-button_icon-border'
             );
         });
     });
@@ -485,7 +536,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon-border-filled'
+                'slds-button avonni-color-picker__main-button slds-button_icon-border-filled'
             );
         });
     });
@@ -499,7 +550,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon-bare slds-button_icon-inverse'
+                'slds-button avonni-color-picker__main-button slds-button_icon-bare slds-button_icon-inverse'
             );
         });
     });
@@ -513,7 +564,7 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.className).toBe(
-                'slds-button slds-button_icon-border-inverse'
+                'slds-button avonni-color-picker__main-button slds-button_icon-border-inverse'
             );
         });
     });
@@ -638,8 +689,8 @@ describe('Color Picker', () => {
         });
     });
 
-    // Menu alignement & menu nubbin
-    it('menu alignement left', () => {
+    // Menu alignment & menu nubbin
+    it('menu alignment left', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -654,7 +705,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement left and menu nubbin', () => {
+    it('menu alignment left and menu nubbin', () => {
         element.menuNubbin = true;
 
         return Promise.resolve()
@@ -672,7 +723,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement right', () => {
+    it('menu alignment right', () => {
         element.menuAlignment = 'right';
 
         return Promise.resolve()
@@ -689,7 +740,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement right and menu nubbin', () => {
+    it('menu alignment right and menu nubbin', () => {
         element.menuAlignment = 'right';
         element.menuNubbin = true;
 
@@ -708,7 +759,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement center', () => {
+    it('menu alignment center', () => {
         element.menuAlignment = 'center';
 
         return Promise.resolve()
@@ -725,7 +776,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement center and menu nubbin', () => {
+    it('menu alignment center and menu nubbin', () => {
         element.menuAlignment = 'center';
         element.menuNubbin = true;
 
@@ -744,7 +795,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-center', () => {
+    it('menu alignment bottom-center', () => {
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
@@ -761,7 +812,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-center and menu nubbin', () => {
+    it('menu alignment bottom-center and menu nubbin', () => {
         element.menuAlignment = 'bottom-center';
         element.menuNubbin = true;
 
@@ -780,7 +831,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-left', () => {
+    it('menu alignment bottom-left', () => {
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
@@ -799,7 +850,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-left and menu nubbin', () => {
+    it('menu alignment bottom-left and menu nubbin', () => {
         element.menuAlignment = 'bottom-left';
         element.menuNubbin = true;
 
@@ -820,7 +871,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-right', () => {
+    it('menu alignment bottom-right', () => {
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
@@ -839,7 +890,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignement bottom-right and menu nubbin', () => {
+    it('menu alignment bottom-right and menu nubbin', () => {
         element.menuAlignment = 'bottom-right';
         element.menuNubbin = true;
 
@@ -970,33 +1021,6 @@ describe('Color Picker', () => {
 
     // tokens
     it('tokens', () => {
-        const tokens = [
-            {
-                label: 'brand-accessible',
-                value: '--lwc-brand-accessible',
-                color: '#0176d3'
-            },
-            {
-                label: 'brand-accessible-active',
-                value: '--lwc-brand-accessible-active',
-                color: '#014486'
-            },
-            {
-                label: 'color-text-action-label',
-                value: '--lwc-colorTextActionLabel',
-                color: '#3e3e3c'
-            },
-            {
-                label: 'color-text-customer',
-                value: '--lwc-colorTextCustomer',
-                color: '#fe9339'
-            },
-            {
-                label: 'color-text-error',
-                value: '--lwc-colorTextError',
-                color: '#ea001e'
-            }
-        ];
         element.tokens = tokens;
 
         const button = element.shadowRoot.querySelector(

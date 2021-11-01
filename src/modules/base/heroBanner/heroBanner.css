@@ -55,18 +55,18 @@
     text-align: center;
 }
 
-.avonni-hero-banner-vertical-alignement_top {
+.avonni-hero-banner-vertical-alignment_top {
     display: flex;
     flex-direction: column;
 }
 
-.avonni-hero-banner-vertical-alignement_bottom {
+.avonni-hero-banner-vertical-alignment_bottom {
     justify-content: flex-end;
     display: flex;
     flex-direction: column;
 }
 
-.avonni-hero-banner-vertical-alignement_center {
+.avonni-hero-banner-vertical-alignment_center {
     justify-content: center;
     display: flex;
     flex-direction: column;

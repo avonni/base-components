@@ -138,7 +138,7 @@ export default class PrimitiveCombobox extends LightningElement {
     _required = false;
     _search = this.computeSearch;
     _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
-    _showClearInput = false;
+    _hideClearIcon = false;
     _value = [];
     _variant = VARIANTS.default;
 
@@ -508,18 +508,18 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * If present, a value must be selected before the form can be submitted.
+     * If present, it is not possible to clear a selected option using the input clear icon.
      *
      * @type {boolean}
      * @default false
      * @public
      */
     @api
-    get showClearInput() {
-        return this._showClearInput;
+    get hideClearIcon() {
+        return this._hideClearIcon;
     }
-    set showClearInput(value) {
-        this._showClearInput = normalizeBoolean(value);
+    set hideClearIcon(value) {
+        this._hideClearIcon = normalizeBoolean(value);
     }
 
     /**
@@ -795,12 +795,12 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * True if show-clear-input is true, this.input and hide-selected-options is false.
+     * True if hide-clear-input is false and the input has a value.
      *
      * @type {boolean}
      */
     get showClearInputIcon() {
-        return this.showClearInput && this.inputValue !== '';
+        return !this.hideClearIcon && this.inputValue !== '';
     }
 
     /**

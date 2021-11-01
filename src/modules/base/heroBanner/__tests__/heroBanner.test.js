@@ -72,7 +72,9 @@ describe('Hero Banner', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('[data-element-id="h2"]');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
             expect(title.textContent).toBe('This is a title text');
         });
     });
@@ -82,7 +84,9 @@ describe('Hero Banner', () => {
         element.caption = 'This is a caption text';
 
         return Promise.resolve().then(() => {
-            const caption = element.shadowRoot.querySelector('[data-element-id="h1"]');
+            const caption = element.shadowRoot.querySelector(
+                '[data-element-id="h1"]'
+            );
             expect(caption.textContent).toBe('This is a caption text');
         });
     });
@@ -92,7 +96,9 @@ describe('Hero Banner', () => {
         element.subtitle = 'This is a subtitle text';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector('[data-element-id="p-subtitle"]');
+            const subtitle = element.shadowRoot.querySelector(
+                '[data-element-id="p-subtitle"]'
+            );
             expect(subtitle.textContent).toBe('This is a subtitle text');
         });
     });
@@ -194,13 +200,13 @@ describe('Hero Banner', () => {
                 '.avonni-hero-banner-content-container'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignement_center'
+                'avonni-hero-banner-vertical-alignment_center'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement_bottom'
+                'avonni-hero-banner-vertical-alignment_bottom'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement_top'
+                'avonni-hero-banner-vertical-alignment_top'
             );
         });
     });
@@ -214,13 +220,13 @@ describe('Hero Banner', () => {
                 '.avonni-hero-banner-content-container'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement_center'
+                'avonni-hero-banner-vertical-alignment_center'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement_bottom'
+                'avonni-hero-banner-vertical-alignment_bottom'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignement_top'
+                'avonni-hero-banner-vertical-alignment_top'
             );
         });
     });
@@ -234,13 +240,13 @@ describe('Hero Banner', () => {
                 '.avonni-hero-banner-content-container'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement_center'
+                'avonni-hero-banner-vertical-alignment_center'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignement_bottom'
+                'avonni-hero-banner-vertical-alignment_bottom'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignement_top'
+                'avonni-hero-banner-vertical-alignment_top'
             );
         });
     });

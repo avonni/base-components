@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class={computedContainerClass}>
+    <div class={computedContainerClass} data-element-id="div-container">
         <label class={computedLabelClass} data-element-id="label">
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
@@ -42,10 +42,11 @@
         </label>
         <lightning-helptext
             if:true={fieldLevelHelp}
+            class="slds-m-right_xx-small"
             content={fieldLevelHelp}
             data-element-id="lightning-helptext"
         ></lightning-helptext>
-        <div class="avonni-flex">
+        <div class="slds-grid">
             <div
                 class="slds-dropdown-trigger slds-dropdown-trigger_click"
                 data-element-id="div-dropdown-trigger"
@@ -101,7 +102,7 @@
                     >
                         <!-- Loading spinner -->
                         <template if:true={isLoading}>
-                            <div class="avonni-spinner-container">
+                            <div class="avonni-color-picker__spinner-container">
                                 <lightning-spinner
                                     size="small"
                                     data-element-id="lightning-spinner"
@@ -248,6 +249,9 @@
                             <footer class="slds-popover__footer">
                                 <div class="slds-color-picker__selector-footer">
                                     <lightning-button
+                                        class="
+                                            avonni-color-picker__popover-button
+                                        "
                                         label="Cancel"
                                         title="Cancel"
                                         data-element-id="lightning-button-cancel"
@@ -255,7 +259,10 @@
                                     ></lightning-button>
                                     <lightning-button
                                         variant="brand"
-                                        class="slds-m-left_x-small"
+                                        class="
+                                            slds-m-left_x-small
+                                            avonni-color-picker__popover-button
+                                        "
                                         label="Done"
                                         title="Done"
                                         data-element-id="lightning-button-done"

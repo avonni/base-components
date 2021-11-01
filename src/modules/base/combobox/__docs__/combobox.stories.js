@@ -135,6 +135,19 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        hideClearIcon: {
+            name: 'hide-clear-icon',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If present, it is not possible to clear a selected option.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         hideSelectedOptions: {
             name: 'hide-selected-options',
             control: {
