@@ -360,7 +360,7 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Computed container class styling for alignement attribute.
+     * Computed container class styling for alignment attribute.
      *
      * @type {string}
      */

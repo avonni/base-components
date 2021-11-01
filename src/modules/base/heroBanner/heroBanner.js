@@ -34,11 +34,11 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const horizontal_alignement_options = {
+const horizontal_alignment_options = {
     valid: ['left', 'center', 'right'],
     default: 'left'
 };
-const vertical_alignement_options = {
+const vertical_alignment_options = {
     valid: ['top', 'center', 'bottom'],
     default: 'center'
 };
@@ -102,8 +102,8 @@ export default class HeroBanner extends LightningElement {
      */
     @api secondaryButtonLabel;
 
-    _contentHorizontalAlignment = horizontal_alignement_options.default;
-    _contentVerticalAlignment = vertical_alignement_options.default;
+    _contentHorizontalAlignment = horizontal_alignment_options.default;
+    _contentVerticalAlignment = vertical_alignment_options.default;
     _height = DEFAULT_HEIGHT;
     _maxWidth = DEFAULT_MAX_WIDTH;
     _contentWidth = DEFAULT_CONTENT_WIDTH;
@@ -157,10 +157,10 @@ export default class HeroBanner extends LightningElement {
         return this._contentHorizontalAlignment;
     }
 
-    set contentHorizontalAlignment(alignement) {
-        this._contentHorizontalAlignment = normalizeString(alignement, {
-            fallbackValue: horizontal_alignement_options.default,
-            validValues: horizontal_alignement_options.valid
+    set contentHorizontalAlignment(alignment) {
+        this._contentHorizontalAlignment = normalizeString(alignment, {
+            fallbackValue: horizontal_alignment_options.default,
+            validValues: horizontal_alignment_options.valid
         });
     }
 
@@ -177,10 +177,10 @@ export default class HeroBanner extends LightningElement {
         return this._contentVerticalAlignment;
     }
 
-    set contentVerticalAlignment(alignement) {
-        this._contentVerticalAlignment = normalizeString(alignement, {
-            fallbackValue: vertical_alignement_options.default,
-            validValues: vertical_alignement_options.valid
+    set contentVerticalAlignment(alignment) {
+        this._contentVerticalAlignment = normalizeString(alignment, {
+            fallbackValue: vertical_alignment_options.default,
+            validValues: vertical_alignment_options.valid
         });
     }
 
@@ -271,15 +271,15 @@ export default class HeroBanner extends LightningElement {
     get computedContentContainer() {
         return classSet('avonni-hero-banner-content-container')
             .add({
-                'avonni-hero-banner-text-container-without-slot': !this
-                    .showFooterSlot,
-                'avonni-hero-banner-text-container-with-slot': this
-                    .showFooterSlot,
-                'avonni-hero-banner-vertical-alignement_bottom':
+                'avonni-hero-banner-text-container-without-slot':
+                    !this.showFooterSlot,
+                'avonni-hero-banner-text-container-with-slot':
+                    this.showFooterSlot,
+                'avonni-hero-banner-vertical-alignment_bottom':
                     this.contentVerticalAlignment === 'bottom',
-                'avonni-hero-banner-vertical-alignement_center':
+                'avonni-hero-banner-vertical-alignment_center':
                     this.contentVerticalAlignment === 'center',
-                'avonni-hero-banner-vertical-alignement_top':
+                'avonni-hero-banner-vertical-alignment_top':
                     this.contentVerticalAlignment === 'top'
             })
             .toString();

@@ -75,7 +75,9 @@ describe('Button Menu', () => {
     // access-key
     it('Button Menu access-key', () => {
         element.accessKey = 'K';
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.accessKey).toBe('K');
@@ -99,7 +101,9 @@ describe('Button Menu', () => {
     // disabled
     it('Button Menu disabled', () => {
         element.disabled = true;
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.disabled).toBeTruthy();
@@ -123,7 +127,9 @@ describe('Button Menu', () => {
     // icon name
     it('Button Menu icon name', () => {
         element.iconName = 'utility:close';
-        const icon = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-icon-main"]');
+        const icon = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-primitive-icon-main"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(icon.iconName).toBe('utility:close');
@@ -133,7 +139,9 @@ describe('Button Menu', () => {
     // icon size
     it('Button Menu icon size xx-small', () => {
         element.iconSize = 'xx-small';
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.className).toContain('slds-button_icon-xx-small');
@@ -142,7 +150,9 @@ describe('Button Menu', () => {
 
     it('Button Menu icon size x-small', () => {
         element.iconSize = 'x-small';
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.className).toContain('slds-button_icon-x-small');
@@ -151,7 +161,9 @@ describe('Button Menu', () => {
 
     it('Button Menu icon size small', () => {
         element.iconSize = 'small';
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.className).toContain('slds-button_icon-small');
@@ -160,7 +172,9 @@ describe('Button Menu', () => {
 
     it('Button Menu icon size medium', () => {
         element.iconSize = 'medium';
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.className).not.toContain('slds-button_icon-xx-small');
@@ -174,7 +188,9 @@ describe('Button Menu', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText =
             'This is a loading state alternative text';
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve()
             .then(() => {
@@ -195,178 +211,190 @@ describe('Button Menu', () => {
     it('Button Menu label', () => {
         element.label = 'This is a label';
 
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.textContent).toContain('This is a label');
         });
     });
 
-    // Menu alignement & menu nubbin
-    it('Button menu menu alignement left', () => {
+    // Menu alignment & menu nubbin
+    it('Button menu menu alignment left', () => {
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_left');
             });
     });
 
-    it('Button menu menu alignement left and menu nubbin', () => {
+    it('Button menu menu alignment left and menu nubbin', () => {
         element.nubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_left');
                 expect(dropdown.className).toContain('slds-nubbin_top-left');
             });
     });
 
-    it('Button menu menu alignement right', () => {
+    it('Button menu menu alignment right', () => {
         element.menuAlignment = 'right';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_right');
             });
     });
 
-    it('Button menu menu alignement right and menu nubbin', () => {
+    it('Button menu menu alignment right and menu nubbin', () => {
         element.menuAlignment = 'right';
         element.nubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_right');
                 expect(dropdown.className).toContain('slds-nubbin_top-right');
             });
     });
 
-    it('Button menu menu alignement center', () => {
+    it('Button menu menu alignment center', () => {
         element.menuAlignment = 'center';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_center');
             });
     });
 
-    it('Button menu menu alignement center and menu nubbin', () => {
+    it('Button menu menu alignment center and menu nubbin', () => {
         element.menuAlignment = 'center';
         element.nubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_center');
                 expect(dropdown.className).toContain('slds-nubbin_top');
             });
     });
 
-    it('Button menu menu alignement bottom-center', () => {
+    it('Button menu menu alignment bottom-center', () => {
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_bottom');
             });
     });
 
-    it('Button menu menu alignement bottom-center and menu nubbin', () => {
+    it('Button menu menu alignment bottom-center and menu nubbin', () => {
         element.menuAlignment = 'bottom-center';
         element.nubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain('slds-dropdown_bottom');
                 expect(dropdown.className).toContain('slds-nubbin_bottom');
             });
     });
 
-    it('Button menu menu alignement bottom-left', () => {
+    it('Button menu menu alignment bottom-left', () => {
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
                 );
             });
     });
 
-    it('Button menu menu alignement bottom-left and menu nubbin', () => {
+    it('Button menu menu alignment bottom-left and menu nubbin', () => {
         element.menuAlignment = 'bottom-left';
         element.nubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
                 );
@@ -374,37 +402,39 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignement bottom-right', () => {
+    it('Button menu menu alignment bottom-right', () => {
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
                 );
             });
     });
 
-    it('Button menu menu alignement bottom-right and menu nubbin', () => {
+    it('Button menu menu alignment bottom-right and menu nubbin', () => {
         element.menuAlignment = 'bottom-right';
         element.nubbin = true;
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown.className).toContain(
                     'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
                 );
@@ -418,7 +448,9 @@ describe('Button Menu', () => {
     it('Button Menu title', () => {
         element.title = 'This is a title';
 
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.title).toBe('This is a title');
@@ -429,7 +461,9 @@ describe('Button Menu', () => {
     it('Button Menu value', () => {
         element.value = 'This is a value';
 
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.value).toBe('This is a value');
@@ -441,7 +475,9 @@ describe('Button Menu', () => {
         element.variant = 'bare';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain('slds-button_icon-bare');
         });
     });
@@ -450,7 +486,9 @@ describe('Button Menu', () => {
         element.variant = 'container';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain('slds-button_icon-container');
         });
     });
@@ -459,7 +497,9 @@ describe('Button Menu', () => {
         element.variant = 'border-filled';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain(
                 'slds-button_icon-border-filled'
             );
@@ -470,7 +510,9 @@ describe('Button Menu', () => {
         element.variant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain('slds-button_icon-inverse');
         });
     });
@@ -479,7 +521,9 @@ describe('Button Menu', () => {
         element.variant = 'border-inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain(
                 'slds-button_icon-border-inverse'
             );
@@ -491,7 +535,9 @@ describe('Button Menu', () => {
         element.label = 'label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain('slds-button_inverse');
         });
     });
@@ -501,7 +547,9 @@ describe('Button Menu', () => {
         element.label = 'label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain('slds-button_neutral');
         });
     });
@@ -511,7 +559,9 @@ describe('Button Menu', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain(
                 'slds-button_icon-container-more'
             );
@@ -523,7 +573,9 @@ describe('Button Menu', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.className).toContain('slds-button_icon-bare');
             expect(button.className).toContain('slds-button_icon-more');
         });
@@ -544,7 +596,9 @@ describe('Button Menu', () => {
     });
 
     it('Button menu clicked', () => {
-        const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
 
         return Promise.resolve()
             .then(() => {

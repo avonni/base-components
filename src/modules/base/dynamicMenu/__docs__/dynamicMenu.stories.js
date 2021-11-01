@@ -179,7 +179,7 @@ export default {
             }
         },
         menuAlignment: {
-            name: 'menu-alignement',
+            name: 'menu-alignment',
             control: {
                 type: 'select'
             },
