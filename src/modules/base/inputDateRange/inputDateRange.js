@@ -148,7 +148,7 @@ export default class InputDateRange extends LightningElement {
 
     @api
     get value() {
-        return [{ startDate: this._startDate }, { endDate: this._endDate }];
+        return { startDate: this._startDate, endDate: this._endDate };
     }
 
     /**
@@ -981,6 +981,9 @@ export default class InputDateRange extends LightningElement {
 
         startDate = this.startDateString ? new Date(startDate) : startDate;
         endDate = this.endDateString ? new Date(endDate) : endDate;
+
+        this._startDate = startDate;
+        this._endDate = endDate;
 
         /**
          * The event fired when the value changed.

@@ -325,7 +325,8 @@ const columnsFL = [
             disabled: { fieldName: 'inputDateRangeDisabled' },
             dateStyle: 'short',
             labelStartDate: 'Start',
-            labelEndDate: 'End'
+            labelEndDate: 'End',
+            type: { fieldName: 'inputDateRangeType' }
         },
         editable: true
     },
@@ -656,8 +657,8 @@ const recordsFL = [
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
         inputDateRange: {
-            startDate: new Date('2021/09/12'),
-            endDate: new Date('2021/10/05')
+            startDate: new Date('2021/09/12, 13:00:00'),
+            endDate: new Date('2021/10/05, 14:00:00')
         },
         inputToggle: true,
         location: {
@@ -688,6 +689,7 @@ const recordsFL = [
             startDate: new Date('2021/09/17'),
             endDate: new Date('2021/09/25')
         },
+        inputDateRangeType: 'datetime',
         location: {
             latitude: '45.55',
             longitude: '-73.62'

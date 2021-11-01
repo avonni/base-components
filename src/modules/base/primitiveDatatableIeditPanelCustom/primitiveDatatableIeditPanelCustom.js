@@ -173,8 +173,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     editedFormattedValue(value) {
         if (this.isTypeInputDateRange) {
             return {
-                startDate: value[0].startDate,
-                endDate: value[1].endDate
+                startDate: value.startDate,
+                endDate: value.endDate
             };
         } else if (this.isTypeInputRichText) {
             return this.convertHTML(value);
@@ -269,7 +269,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     handlePanelLoosedFocus() {
-        if (this.visible) {
+        if (this.visible && this.columnDef.type !== 'input-date-range') {
             this.triggerEditFinished({
                 reason: 'loosed-focus'
             });
