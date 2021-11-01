@@ -197,11 +197,11 @@
                                             <c-color-palette
                                                 if:false={customTabIsSelected}
                                                 class="
-                                                    slds-show
-                                                    slds-scrollable_y
+                                                    slds-show slds-scrollable
                                                     avonni-color-picker__default-palette
                                                 "
                                                 colors={computedColors}
+                                                columns={columns}
                                                 tile-height="25"
                                                 tile-width="25"
                                                 read-only={readOnly}
@@ -237,6 +237,7 @@
                                 <c-color-palette
                                     if:true={isPredefined}
                                     colors={colors}
+                                    columns={columns}
                                     tile-height="25"
                                     tile-width="25"
                                     read-only={readOnly}

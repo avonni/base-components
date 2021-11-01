@@ -44,7 +44,7 @@ import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import { generateUUID } from 'c/utils';
 
-const validVariants = {
+const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
@@ -114,6 +114,8 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
+const DEFAULT_COLUMNS = 7;
+
 /**
  * @class
  * @descriptor avonni-color-picker
@@ -172,9 +174,10 @@ export default class ColorPicker extends LightningElement {
      */
     @api messageWhenValueMissing;
 
+    _columns = DEFAULT_COLUMNS;
     _value;
     _name;
-    _variant = validVariants.default;
+    _variant = VARIANTS.default;
     _type = LABEL_TYPES.default;
     _menuVariant = MENU_VARIANTS.default;
     _menuIconSize = MENU_ICON_SIZES.default;
@@ -214,6 +217,24 @@ export default class ColorPicker extends LightningElement {
             this.initSwatchColor();
             this._rendered = true;
         }
+    }
+
+    /**
+     * Number of columns in the palette.
+     *
+     * @public
+     * @type {number}
+     * @default 7
+     */
+    @api
+    get columns() {
+        return this._columns;
+    }
+
+    set columns(value) {
+        this._columns = !isNaN(parseInt(value, 10))
+            ? parseInt(value, 10)
+            : DEFAULT_COLUMNS;
     }
 
     /**
@@ -269,8 +290,8 @@ export default class ColorPicker extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
     }
 

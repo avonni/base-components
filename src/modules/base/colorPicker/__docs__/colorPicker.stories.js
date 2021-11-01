@@ -55,6 +55,15 @@ export default {
                 type: { summary: 'string[]' }
             }
         },
+        columns: {
+            control: {
+                type: 'number'
+            },
+            description: 'Number of columns in the palette.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'

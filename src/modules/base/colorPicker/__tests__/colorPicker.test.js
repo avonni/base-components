@@ -85,6 +85,7 @@ describe('Color Picker', () => {
     it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.colors).toMatchObject(colors);
+        expect(element.columns).toBe(7);
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.hideColorInput).toBeFalsy();
@@ -120,6 +121,39 @@ describe('Color Picker', () => {
                 '[data-element-id="button"]'
             );
             expect(button.accessKey).toBe('K');
+        });
+    });
+
+    // columns
+    // Depends on type
+    it('columns', () => {
+        element.columns = 5;
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const palette = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-color-palette-default"]'
+            );
+            expect(palette.columns).toBe(5);
+        });
+    });
+
+    it('columns for predefined type', () => {
+        element.columns = 9;
+        element.type = 'predefined';
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const palette = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-color-palette-custom"]'
+            );
+            expect(palette.columns).toBe(9);
         });
     });
 

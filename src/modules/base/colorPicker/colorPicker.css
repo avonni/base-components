@@ -35,21 +35,12 @@ lightning-input {
     width: 7rem;
 }
 
-/*button {
-    height: auto;
-    min-height: var(--lwc-squareIconMediumBoundary, 2rem);
-}*/
-
 div:focus {
     outline: none;
 }
 
 .slds-form-element_stacked .slds-form-element {
     padding-left: 0.5rem;
-}
-
-.slds-popover__body {
-    width: 16rem;
 }
 
 .slds-swatch {
