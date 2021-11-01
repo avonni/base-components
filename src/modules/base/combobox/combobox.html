@@ -126,6 +126,7 @@
                     role="presentation"
                 >
                     <lightning-pill
+                        if:false={readOnly}
                         label={option.label}
                         variant="plain"
                         name={option.value}
@@ -142,6 +143,9 @@
                             size="x-small"
                         ></c-avatar>
                     </lightning-pill>
+                    <div if:true={readOnly} class="slds-pill">
+                        <span class="slds-pill__label">{option.label}</span>
+                    </div>
                 </li>
             </template>
         </ul>
