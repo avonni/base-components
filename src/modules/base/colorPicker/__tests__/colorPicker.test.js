@@ -35,6 +35,7 @@ import ColorPicker from 'c/colorPicker';
 
 // not tested
 // Positioning of the dropdown menu.
+// Computed palette tile width and height.
 
 const colors = [
     '#e3abec',

@@ -110,3 +110,11 @@ div:focus {
 .avonni-color-picker__default-palette {
     max-height: 180px;
 }
+
+.avonni-color-picker__popover-body {
+    width: var(--avonni-color-picker-popover-width, 16rem);
+}
+
+.avonni-color-picker__dropdown {
+    max-width: none;
+}

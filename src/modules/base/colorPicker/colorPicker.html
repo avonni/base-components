@@ -112,7 +112,10 @@
 
                         <template if:false={isLoading}>
                             <div
-                                class="slds-popover__body"
+                                class="
+                                    slds-popover__body
+                                    avonni-color-picker__popover-body
+                                "
                                 oncolordblclick={handlerDone}
                                 onprivateblur={handlePrivateBlur}
                                 onprivatefocus={handlePrivateFocus}
@@ -198,13 +201,12 @@
                                             <c-color-palette
                                                 if:false={customTabIsSelected}
                                                 class="
-                                                    slds-show slds-scrollable
+                                                    slds-show
+                                                    slds-scrollable_y
                                                     avonni-color-picker__default-palette
                                                 "
                                                 colors={computedColors}
                                                 columns={columns}
-                                                tile-height="25"
-                                                tile-width="25"
                                                 read-only={readOnly}
                                                 data-element-id="avonni-color-palette-default"
                                             ></c-color-palette>
@@ -237,10 +239,13 @@
                                 <!-- Predefined type -->
                                 <c-color-palette
                                     if:true={isPredefined}
+                                    class="
+                                        slds-show
+                                        slds-scrollable_y
+                                        avonni-color-picker__default-palette
+                                    "
                                     colors={colors}
                                     columns={columns}
-                                    tile-height="25"
-                                    tile-width="25"
                                     read-only={readOnly}
                                     data-element-id="avonni-color-palette-custom"
                                 ></c-color-palette>

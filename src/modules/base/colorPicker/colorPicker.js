@@ -115,6 +115,7 @@ const DEFAULT_COLORS = [
 ];
 
 const DEFAULT_COLUMNS = 7;
+const MINIMUM_TILE_SIZE = 5;
 
 /**
  * @class
@@ -195,12 +196,12 @@ export default class ColorPicker extends LightningElement {
     _currentTab = 'default';
     _draftToken = {};
 
+    currentToken = {};
     dropdownOpened = false;
     dropdownVisible = false;
-    showError = false;
-    newValue;
     helpMessage;
-    currentToken = {};
+    newValue;
+    showError = false;
 
     _inputValue;
     _rendered = false;
@@ -215,6 +216,18 @@ export default class ColorPicker extends LightningElement {
         if (!this._rendered) {
             this.initSwatchColor();
             this._rendered = true;
+        }
+
+        const palette = this.template.querySelector(
+            '[data-element-id^="avonni-color-palette"]'
+        );
+        if (this.dropdownVisible && palette) {
+            const paletteWidth = palette.clientWidth;
+            const tileWidth = Math.floor(paletteWidth / this.columns - 8);
+            const tileSize =
+                tileWidth > MINIMUM_TILE_SIZE ? tileWidth : MINIMUM_TILE_SIZE;
+            palette.tileWidth = tileSize;
+            palette.tileHeight = tileSize;
         }
     }
 
@@ -231,9 +244,11 @@ export default class ColorPicker extends LightningElement {
     }
 
     set columns(value) {
-        this._columns = !isNaN(parseInt(value, 10))
-            ? parseInt(value, 10)
-            : DEFAULT_COLUMNS;
+        const normalizedValue = parseInt(value, 10);
+        this._columns =
+            !isNaN(normalizedValue) && normalizedValue
+                ? parseInt(value, 10)
+                : DEFAULT_COLUMNS;
     }
 
     /**
@@ -752,7 +767,7 @@ export default class ColorPicker extends LightningElement {
      */
     get computedDropdownClass() {
         return classSet(
-            'slds-color-picker__selector slds-p-around_none slds-dropdown'
+            'slds-color-picker__selector slds-p-around_none slds-dropdown avonni-color-picker__dropdown'
         )
             .add({
                 'slds-dropdown_left':
