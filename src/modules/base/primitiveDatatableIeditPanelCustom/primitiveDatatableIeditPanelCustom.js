@@ -163,17 +163,21 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     triggerEditFinished(detail) {
-        // for combobox we need to make sure that the value is only set if the there is a change or a submit.
-        if (
-            this.value &&
-            this.value.length !== 0 &&
-            typeof this.value !== 'string'
-        ) {
+        if (this.value) {
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
             detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.value = this.value;
-            detail.valid = this.validity.valid;
+            detail.valid =
+                this.columnDef.type === 'input-rich-text'
+                    ? true
+                    : this.validity.valid;
             detail.isMassEditChecked = this.isMassEditChecked;
+            detail.value =
+                this.columnDef.type === 'input-date-range'
+                    ? {
+                          startDate: this.value[0].startDate,
+                          endDate: this.value[1].endDate
+                      }
+                    : this.value;
         }
         this.dispatchEvent(
             new CustomEvent('ieditfinishedcustom', {
@@ -273,8 +277,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     processSubmission() {
+        this.triggerEditFinished({ reason: 'submit-action' });
         if (this.columnDef.type === 'input-rich-text') {
-            this.triggerEditFinished({ reason: 'submit-action' });
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {
                     detail: {
@@ -287,7 +291,6 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
                 })
             );
         } else if (this.validity.valid) {
-            this.triggerEditFinished({ reason: 'submit-action' });
             if (this.columnDef.type === 'input-date-range') {
                 this.dispatchEvent(
                     new CustomEvent('privateeditcustomcell', {

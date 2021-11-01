@@ -321,9 +321,10 @@ export default class Datatable extends LightningDatatable {
             this.handleEditButtonClickCustom
         );
 
-        this.template.addEventListener('ieditfinishedcustom', (event) => {
-            this.handleInlineEditFinishCustom(event);
-        });
+        this.template.addEventListener(
+            'ieditfinishedcustom',
+            this.handleInlineEditFinishCustom
+        );
 
         this.template.addEventListener(
             'getdatatablestateandcolumns',
