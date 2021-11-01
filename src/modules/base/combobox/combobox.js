@@ -132,6 +132,7 @@ export default class Combobox extends LightningElement {
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
     _dropdownLength = DROPDOWN_LENGTHS.default;
     _groups = [];
+    _hideClearIcon = false;
     _hideSelectedOptions = false;
     _isLoading = false;
     _isMultiSelect = false;
@@ -248,6 +249,21 @@ export default class Combobox extends LightningElement {
     }
     set groups(value) {
         this._groups = normalizeArray(value);
+    }
+
+    /**
+     * If present, it is not possible to clear a selected option using the input clear icon.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get hideClearIcon() {
+        return this._hideClearIcon;
+    }
+    set hideClearIcon(value) {
+        this._hideClearIcon = normalizeBoolean(value);
     }
 
     /**

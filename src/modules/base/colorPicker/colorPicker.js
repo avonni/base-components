@@ -193,16 +193,14 @@ export default class ColorPicker extends LightningElement {
     _tokens = [];
 
     _currentTab = 'default';
-    _draftToken;
+    _draftToken = {};
 
     dropdownOpened = false;
     dropdownVisible = false;
-    init = false;
     showError = false;
     newValue;
     helpMessage;
-    currentLabel;
-    currentToken;
+    currentToken = {};
 
     _inputValue;
     _rendered = false;
@@ -210,6 +208,7 @@ export default class ColorPicker extends LightningElement {
     connectedCallback() {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+        this.computeToken();
     }
 
     renderedCallback() {
@@ -264,14 +263,14 @@ export default class ColorPicker extends LightningElement {
     }
 
     set value(value) {
-        if (!value) {
-            this._value = null;
-            this._inputValue = null;
-            this.currentLabel = null;
-            this.currentToken = null;
-        } else {
+        if (value && typeof value === 'string') {
             this._value = value;
             this.inputValue = value;
+            if (this.isConnected) this.computeToken();
+        } else {
+            this._value = null;
+            this._inputValue = null;
+            this.currentToken = {};
         }
         this.initSwatchColor();
     }
@@ -513,6 +512,7 @@ export default class ColorPicker extends LightningElement {
 
     set tokens(value) {
         this._tokens = normalizeArray(value);
+        if (this.isConnected) this.computeToken();
     }
 
     /**
@@ -578,7 +578,7 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get inputValue() {
-        return this.currentLabel ? this.currentLabel : this._inputValue;
+        return this.currentToken.label || this._inputValue;
     }
 
     set inputValue(val) {
@@ -652,7 +652,8 @@ export default class ColorPicker extends LightningElement {
         return classSet()
             .add({
                 'slds-form-element_stacked': this.variant === 'label-stacked',
-                'avonni-label-inline': this.variant === 'label-inline'
+                'slds-grid slds-grid_vertical-align-center':
+                    this.variant === 'label-inline'
             })
             .toString();
     }
@@ -680,7 +681,9 @@ export default class ColorPicker extends LightningElement {
         const isBare =
             this.menuVariant === 'bare' || this.menuVariant === 'bare-inverse';
 
-        const classes = classSet('slds-button');
+        const classes = classSet(
+            'slds-button avonni-color-picker__main-button'
+        );
 
         const useMoreContainer =
             this.menuVariant === 'container' ||
@@ -748,7 +751,9 @@ export default class ColorPicker extends LightningElement {
      * @type {string}
      */
     get computedDropdownClass() {
-        return classSet('slds-color-picker__selector slds-dropdown')
+        return classSet(
+            'slds-color-picker__selector slds-p-around_none slds-dropdown'
+        )
             .add({
                 'slds-dropdown_left':
                     this.menuAlignment === 'left' || this.isAutoAlignment(),
@@ -882,8 +887,21 @@ export default class ColorPicker extends LightningElement {
      */
     initSwatchColor() {
         if (this.elementSwatch) {
-            this.elementSwatch.style.background = this.value;
+            const color = this.currentToken.color || this.value;
+            this.elementSwatch.style.background = color;
         }
+    }
+
+    computeToken() {
+        const isToken =
+            typeof this.value === 'string' && this.value.match(/^--.+/);
+        if (isToken) {
+            this.currentToken =
+                this.tokens.find((tok) => tok.value === this.value) || {};
+        } else {
+            this.currentToken = {};
+        }
+        this.initSwatchColor();
     }
 
     /**
@@ -900,9 +918,8 @@ export default class ColorPicker extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
         this.value = undefined;
         this.inputValue = null;
-        this.currentLabel = undefined;
-        this.currentToken = undefined;
-        this._draftToken = undefined;
+        this.currentToken = {};
+        this._draftToken = {};
         this.focus();
 
         this.dispatchClear();
@@ -933,8 +950,7 @@ export default class ColorPicker extends LightningElement {
         if (!this.readOnly && this.newValue) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
-            this.currentLabel = this._draftToken.label;
-            this.currentToken = this._draftToken.value;
+            this.currentToken = { ...this._draftToken };
             this.newValue = null;
 
             if (!this.menuIconName) {
@@ -1230,7 +1246,7 @@ export default class ColorPicker extends LightningElement {
                         rgb: colors.rgb,
                         rgba: colors.rgba,
                         alpha: colors.alpha,
-                        token: this.currentToken
+                        token: this.currentToken.value
                     },
                     bubbles: true,
                     cancelable: true,

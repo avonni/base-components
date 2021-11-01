@@ -122,7 +122,7 @@ export default {
             }
         },
         menuAlignment: {
-            name: 'menu-alignement',
+            name: 'menu-alignment',
             control: {
                 type: 'select'
             },
@@ -416,7 +416,7 @@ export const StandardWithTokens = Template.bind({});
 StandardWithTokens.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
-    value: '#419fec',
+    value: '--lwc-colorTextActionLabel',
     messageWhenBadInput: 'Please ensure value is correct',
     colors: colorsValue,
     tokens: tokens

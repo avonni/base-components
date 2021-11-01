@@ -192,7 +192,7 @@ export default class ButtonMenu extends LightningElement {
             }
         });
 
-        this.dispatchEvent(privatebuttonregister);        
+        this.dispatchEvent(privatebuttonregister);
         this._connected = true;
     }
 
@@ -371,7 +371,8 @@ export default class ButtonMenu extends LightningElement {
             // dom during initial rendering.
             this._tooltip = new Tooltip(value, {
                 root: this,
-                target: () => this.template.querySelector('[data-element-id="button"]')
+                target: () =>
+                    this.template.querySelector('[data-element-id="button"]')
             });
             this._tooltip.initialize();
         }
@@ -611,7 +612,9 @@ export default class ButtonMenu extends LightningElement {
             );
             if (dialog) {
                 dialog.show();
-                this.template.querySelector('[data-element-id="button"]').blur();
+                this.template
+                    .querySelector('[data-element-id="button"]')
+                    .blur();
             }
         }
 
@@ -720,7 +723,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Auto alignement handler.
+     * Auto alignment handler.
      *
      * @return {boolean}
      */
