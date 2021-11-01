@@ -263,6 +263,15 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         this.template.querySelector('[data-form-last-element="true"]').focus();
     }
 
+    convertHTML(str) {
+        return str
+            .replace(/"&amp;"/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&quot;/g, '"')
+            .replace(/&#039;/g, "'");
+    }
+
     processSubmission() {
         if (this.columnDef.type === 'input-rich-text') {
             this.triggerEditFinished({ reason: 'submit-action' });
@@ -271,7 +280,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
                     detail: {
                         rowKeyValue: this.rowKeyValue,
                         colKeyValue: this.colKeyValue,
-                        value: this.value
+                        value: this.convertHTML(this.value)
                     },
                     bubbles: true,
                     composed: true

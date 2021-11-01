@@ -361,6 +361,7 @@ export default class Datatable extends LightningDatatable {
         editCells.forEach((cell) => {
             cell.classList.add('slds-cell-edit');
         });
+        console.log(this.state);
     }
 
     disconnectedCallback() {

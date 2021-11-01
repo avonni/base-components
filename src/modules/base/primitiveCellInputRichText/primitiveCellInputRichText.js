@@ -45,11 +45,6 @@ export default class PrimitiveCellInputRichText extends LightningElement {
     readOnly = true;
 
     connectedCallback() {
-        // Dispatches the inline edit event to the parent component.
-        this.template.addEventListener('inlineeditchange', (event) => {
-            this.handleChange(event);
-        });
-
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
@@ -88,7 +83,6 @@ export default class PrimitiveCellInputRichText extends LightningElement {
             colKeyValue: this.colKeyValue,
             rowKeyValue: this.rowKeyValue
         };
-        console.log(detail);
         this.dispatchEvent(
             new CustomEvent('privateeditcustomcell', {
                 detail: detail,
