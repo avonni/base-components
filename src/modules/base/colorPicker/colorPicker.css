@@ -38,10 +38,6 @@ div:focus {
     padding-left: 0.5rem;
 }
 
-.slds-popover__body {
-    width: 16rem;
-}
-
 .slds-swatch {
     min-width: 20px;
     min-height: 20px;
@@ -113,4 +109,12 @@ div:focus {
 
 .avonni-color-picker__default-palette {
     max-height: 180px;
+}
+
+.avonni-color-picker__popover-body {
+    width: var(--avonni-color-picker-popover-width, 16rem);
+}
+
+.avonni-color-picker__dropdown {
+    max-width: none;
 }
