@@ -33,13 +33,13 @@
 import { Datatable } from '../__examples__/datatable';
 import {
     columnsAB,
-    columnsCE,
-    columnsFL,
+    columnsCD,
+    columnsEL,
     columnsNQ,
     columnsRZ,
     recordsAB,
-    recordsCE,
-    recordsFL,
+    recordsCD,
+    recordsEL,
     recordsNQ,
     recordsRZ
 } from './data';
@@ -381,10 +381,10 @@ DataTypesFromAToB.args = {
     columnWidthsMode: 'auto'
 };
 
-export const DataTypesFromCToE = Template.bind({});
-DataTypesFromCToE.args = {
-    columns: columnsCE,
-    records: recordsCE,
+export const DataTypesFromCToD = Template.bind({});
+DataTypesFromCToD.args = {
+    columns: columnsCD,
+    records: recordsCD,
     keyField: 'id',
     columnWidthsMode: 'auto',
     draftValues: [
@@ -407,10 +407,10 @@ DataTypesFromCToE.args = {
         }
     }
 };
-export const DataTypesFromFToL = Template.bind({});
-DataTypesFromFToL.args = {
-    columns: columnsFL,
-    records: recordsFL,
+export const DataTypesFromEToL = Template.bind({});
+DataTypesFromEToL.args = {
+    columns: columnsEL,
+    records: recordsEL,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };

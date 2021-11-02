@@ -190,7 +190,7 @@ const columnsAB = [
     }
 ];
 
-const columnsCE = [
+const columnsCD = [
     {
         label: 'Checkbox button',
         fieldName: 'checkboxButton',
@@ -274,17 +274,17 @@ const columnsCE = [
             alternativeText: { fieldName: 'dynamicIcon' },
             option: { fieldName: 'dynamicIconOption' }
         }
-    },
+    }
+];
+
+const columnsEL = [
     {
         label: 'Email',
         fieldName: 'email',
         type: 'email',
         editable: true,
         initialWidth: 225
-    }
-];
-
-const columnsFL = [
+    },
     {
         label: 'Image',
         fieldName: 'image',
@@ -579,7 +579,7 @@ const recordsAB = [
     }
 ];
 
-const recordsCE = [
+const recordsCD = [
     {
         id: 1,
         colorPicker: '#00a1e0',
@@ -588,7 +588,6 @@ const recordsCE = [
         date: new Date('2022/03/24'),
         dateLocal: new Date('2022/03/24'),
         combobox: 'no-avatar-burlington',
-        email: 'nina.gomez@email.com',
         options: options,
         isMultiSelect: true
     },
@@ -600,7 +599,6 @@ const recordsCE = [
         dynamicIconOption: 'negative',
         date: new Date('2022/03/21'),
         dateLocal: new Date('2022/03/21'),
-        email: 'dave.mckinsley@email.com',
         options: options
     },
     {
@@ -614,7 +612,6 @@ const recordsCE = [
         date: new Date('2022/05/04'),
         dateLocal: new Date('2022/05/04'),
         isMultiSelect: true,
-        email: 'jung.phung@email.com',
         options: options
     },
     {
@@ -624,7 +621,6 @@ const recordsCE = [
         dynamicIcon: 'eq',
         date: new Date('2021/02/14'),
         dateLocal: new Date('2021/02/14'),
-        email: 'lily.murray@email.com',
         options: options
     },
     {
@@ -639,9 +635,10 @@ const recordsCE = [
     }
 ];
 
-const recordsFL = [
+const recordsEL = [
     {
         id: 1,
+        email: 'nina.gomez@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputCounter: 1,
         inputDateRange: {
@@ -655,6 +652,7 @@ const recordsFL = [
     },
     {
         id: 2,
+        email: 'dave.mckinsley@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         inputCounter: 3,
         inputDateRange: {
@@ -669,6 +667,7 @@ const recordsFL = [
     },
     {
         id: 3,
+        email: 'jung.phung@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
         imageBlank: true,
         imageBlankColor: '#CCC',
@@ -683,6 +682,7 @@ const recordsFL = [
     },
     {
         id: 4,
+        email: 'lily.murray@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
         inputCounter: 5,
         inputDateRange: {
@@ -697,6 +697,7 @@ const recordsFL = [
     },
     {
         id: 5,
+        email: 'mike.mickelson@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
         inputCounterStep: 2,
         inputCounter: 0,
@@ -886,13 +887,13 @@ const recordsRZ = [
 
 export {
     columnsAB,
-    columnsCE,
-    columnsFL,
+    columnsCD,
+    columnsEL,
     columnsNQ,
     columnsRZ,
     recordsAB,
-    recordsCE,
-    recordsFL,
+    recordsCD,
+    recordsEL,
     recordsNQ,
     recordsRZ
 };

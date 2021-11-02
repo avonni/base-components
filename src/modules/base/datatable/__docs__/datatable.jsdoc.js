@@ -161,13 +161,13 @@
  */
 /**
  * @memberof examples
- * @name dataTypesFromCToE
- * @storyId example-datatable--data-types-from-c-to-e
+ * @name dataTypesFromCToD
+ * @storyId example-datatable--data-types-from-c-to-d
  */
 /**
  * @memberof examples
- * @name dataTypesFromFToL
- * @storyId example-datatable--data-types-from-f-to-l
+ * @name dataTypesFromEToL
+ * @storyId example-datatable--data-types-from-e-to-l
  */
 /**
  * @memberof examples

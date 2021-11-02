@@ -1,7 +1,14 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromFtoL extends LightningElement {
+export default class DataTypesFromEtoL extends LightningElement {
     columns = [
+        {
+            label: 'Email',
+            fieldName: 'email',
+            type: 'email',
+            editable: true,
+            initialWidth: 225
+        },
         {
             label: 'Image',
             fieldName: 'image',
@@ -46,7 +53,8 @@ export default class DataTypesFromFtoL extends LightningElement {
                 disabled: { fieldName: 'inputDateRangeDisabled' },
                 dateStyle: 'short',
                 labelStartDate: 'Start',
-                labelEndDate: 'End'
+                labelEndDate: 'End',
+                type: { fieldName: 'inputDateRangeType' }
             },
             editable: true
         },
@@ -75,6 +83,7 @@ export default class DataTypesFromFtoL extends LightningElement {
     records = [
         {
             id: 1,
+            email: 'nina.gomez@email.com',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
             inputCounter: 1,
             inputDateRange: {
@@ -88,11 +97,12 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 2,
+            email: 'dave.mckinsley@email.com',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
             inputCounter: 3,
             inputDateRange: {
-                startDate: new Date('2021/09/12'),
-                endDate: new Date('2021/10/05')
+                startDate: new Date('2021/09/12, 13:00:00'),
+                endDate: new Date('2021/10/05, 14:00:00')
             },
             inputToggle: true,
             location: {
@@ -102,6 +112,7 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 3,
+            email: 'jung.phung@email.com',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
             imageBlank: true,
             imageBlankColor: '#CCC',
@@ -116,12 +127,14 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 4,
+            email: 'lily.murray@email.com',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
             inputCounter: 5,
             inputDateRange: {
                 startDate: new Date('2021/09/17'),
                 endDate: new Date('2021/09/25')
             },
+            inputDateRangeType: 'datetime',
             location: {
                 latitude: '45.55',
                 longitude: '-73.62'
@@ -129,6 +142,7 @@ export default class DataTypesFromFtoL extends LightningElement {
         },
         {
             id: 5,
+            email: 'mike.mickelson@email.com',
             image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
             inputCounterStep: 2,
             inputCounter: 0,

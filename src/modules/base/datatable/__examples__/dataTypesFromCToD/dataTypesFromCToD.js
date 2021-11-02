@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromCToE extends LightningElement {
+export default class DataTypesFromCToD extends LightningElement {
     columns = [
         {
             label: 'Checkbox button',
@@ -29,7 +29,7 @@ export default class DataTypesFromCToE extends LightningElement {
                 label: 'Pick a color',
                 opacity: true
             },
-            fixedWidth: 190,
+            fixedWidth: 250,
             editable: true
         },
         {
@@ -38,32 +38,11 @@ export default class DataTypesFromCToE extends LightningElement {
             type: 'combobox',
             typeAttributes: {
                 label: 'Simple Combobox',
-                options: [
-                    {
-                        label: 'Burlington Textiles Corp of America',
-                        value: 'no-avatar-burlington'
-                    },
-                    {
-                        label: 'Dickenson plc',
-                        value: 'no-avatar-dickenson'
-                    },
-                    {
-                        label: 'United Oil SLA',
-                        value: 'no-avatar-oil-sla'
-                    },
-                    {
-                        label: 'United Oil Standby Generators',
-                        value: 'no-avatar-united-oil'
-                    },
-                    {
-                        label: 'Edge Communication',
-                        value: 'no-avatar-edge'
-                    }
-                ],
+                options: { fieldName: 'options' },
                 isMultiSelect: { fieldName: 'isMultiSelect' }
             },
             editable: true,
-            fixedWidth: 260
+            fixedWidth: 300
         },
         {
             label: 'Currency',
@@ -89,7 +68,7 @@ export default class DataTypesFromCToE extends LightningElement {
         },
         {
             label: 'Date local',
-            fieldName: 'date',
+            fieldName: 'dateLocal',
             type: 'date-local',
             typeAttributes: {
                 day: 'numeric',
@@ -106,13 +85,6 @@ export default class DataTypesFromCToE extends LightningElement {
                 alternativeText: { fieldName: 'dynamicIcon' },
                 option: { fieldName: 'dynamicIconOption' }
             }
-        },
-        {
-            label: 'Email',
-            fieldName: 'email',
-            type: 'email',
-            editable: true,
-            initialWidth: 225
         }
     ];
 
@@ -125,7 +97,29 @@ export default class DataTypesFromCToE extends LightningElement {
             date: new Date('2022/03/24'),
             dateLocal: new Date('2022/03/24'),
             combobox: 'no-avatar-burlington',
-            email: 'nina.gomez@email.com'
+            options: [
+                {
+                    label: 'Burlington Textiles Corp of America',
+                    value: 'no-avatar-burlington'
+                },
+                {
+                    label: 'Dickenson plc',
+                    value: 'no-avatar-dickenson'
+                },
+                {
+                    label: 'United Oil SLA',
+                    value: 'no-avatar-oil-sla'
+                },
+                {
+                    label: 'United Oil Standby Generators',
+                    value: 'no-avatar-united-oil'
+                },
+                {
+                    label: 'Edge Communication',
+                    value: 'no-avatar-edge'
+                }
+            ],
+            isMultiSelect: true
         },
         {
             id: 2,
@@ -135,7 +129,28 @@ export default class DataTypesFromCToE extends LightningElement {
             dynamicIconOption: 'negative',
             date: new Date('2022/03/21'),
             dateLocal: new Date('2022/03/21'),
-            email: 'dave.mckinsley@email.com'
+            options: [
+                {
+                    label: 'Burlington Textiles Corp of America',
+                    value: 'no-avatar-burlington'
+                },
+                {
+                    label: 'Dickenson plc',
+                    value: 'no-avatar-dickenson'
+                },
+                {
+                    label: 'United Oil SLA',
+                    value: 'no-avatar-oil-sla'
+                },
+                {
+                    label: 'United Oil Standby Generators',
+                    value: 'no-avatar-united-oil'
+                },
+                {
+                    label: 'Edge Communication',
+                    value: 'no-avatar-edge'
+                }
+            ]
         },
         {
             id: 3,
@@ -148,7 +163,28 @@ export default class DataTypesFromCToE extends LightningElement {
             date: new Date('2022/05/04'),
             dateLocal: new Date('2022/05/04'),
             isMultiSelect: true,
-            email: 'jung.phung@email.com'
+            options: [
+                {
+                    label: 'Burlington Textiles Corp of America',
+                    value: 'no-avatar-burlington'
+                },
+                {
+                    label: 'Dickenson plc',
+                    value: 'no-avatar-dickenson'
+                },
+                {
+                    label: 'United Oil SLA',
+                    value: 'no-avatar-oil-sla'
+                },
+                {
+                    label: 'United Oil Standby Generators',
+                    value: 'no-avatar-united-oil'
+                },
+                {
+                    label: 'Edge Communication',
+                    value: 'no-avatar-edge'
+                }
+            ]
         },
         {
             id: 4,
@@ -157,7 +193,28 @@ export default class DataTypesFromCToE extends LightningElement {
             dynamicIcon: 'eq',
             date: new Date('2021/02/14'),
             dateLocal: new Date('2021/02/14'),
-            email: 'lily.murray@email.com'
+            options: [
+                {
+                    label: 'Burlington Textiles Corp of America',
+                    value: 'no-avatar-burlington'
+                },
+                {
+                    label: 'Dickenson plc',
+                    value: 'no-avatar-dickenson'
+                },
+                {
+                    label: 'United Oil SLA',
+                    value: 'no-avatar-oil-sla'
+                },
+                {
+                    label: 'United Oil Standby Generators',
+                    value: 'no-avatar-united-oil'
+                },
+                {
+                    label: 'Edge Communication',
+                    value: 'no-avatar-edge'
+                }
+            ]
         },
         {
             id: 5,
@@ -166,7 +223,25 @@ export default class DataTypesFromCToE extends LightningElement {
             currency: '217',
             dynamicIcon: 'waffle',
             date: new Date('2021/02/14'),
-            dateLocal: new Date('2022/10/12')
+            dateLocal: new Date('2022/10/12'),
+            options: [
+                {
+                    label: 'Accounts',
+                    value: 'accounts'
+                },
+                {
+                    label: 'Opportunities',
+                    value: 'opportunities'
+                },
+                {
+                    label: 'Closed',
+                    value: 'closed'
+                },
+                {
+                    label: 'Won',
+                    value: 'won'
+                }
+            ]
         }
     ];
 
