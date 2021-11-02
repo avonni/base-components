@@ -215,4 +215,17 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
             })
         );
     }
+
+    handleColorPickerChange(event) {
+        this.dispatchEvent(
+            new CustomEvent('inlineeditchangecolorpicker', {
+                detail: {
+                    value: event.detail.hex,
+                    validity: this.validity.valid
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
 }

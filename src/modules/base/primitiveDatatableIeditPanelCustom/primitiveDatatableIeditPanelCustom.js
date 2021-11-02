@@ -305,7 +305,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     processOnChange = (event) => {
-        if (event.detail.validity && this.columnDef.type !== 'color-picker') {
+        if (event.detail.validity) {
             this.triggerEditFinished({ reason: 'on-change' });
         } else {
             this.inputableElement.showHelpMessageIfInvalid();
