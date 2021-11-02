@@ -29,6 +29,7 @@ do
     notRemoveFolders=(
         "avonniIllustration"
         "avonniButtonNavigation"
+        "avonniPrimitiveIcon"
     )
 
     for file in "${baseComponentsSfdxPath}/${moduleFolderName}/lwc/"*
@@ -62,6 +63,7 @@ do
         "messageDispatcher"
         "primitiveColorpickerButton"
         "primitiveCoordinateItem"
+        "primitiveIcon"
         "primitiveIframe"
         "primitiveSelect"
         "quillLib"
@@ -91,6 +93,7 @@ do
     notRenameFolders=(
         "avonniButtonNavigation"
         "avonniIllustration"
+        "avonniPrimitiveIcon"
         "configProvider"
         "iconUtils"
         "inputUtils"

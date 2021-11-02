@@ -38,6 +38,7 @@ customElements.define(
 );
 
 export const ColorPicker = ({
+    columns,
     disabled,
     readOnly,
     required,
@@ -62,6 +63,7 @@ export const ColorPicker = ({
     messageWhenValueMissing
 }) => {
     const element = document.createElement('ac-base-color-picker');
+    element.columns = columns;
     element.disabled = disabled;
     element.readOnly = readOnly;
     element.required = required;

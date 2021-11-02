@@ -44,7 +44,7 @@ import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import { generateUUID } from 'c/utils';
 
-const validVariants = {
+const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
     default: 'standard'
 };
@@ -114,6 +114,9 @@ const DEFAULT_COLORS = [
     '#b85d0d'
 ];
 
+const DEFAULT_COLUMNS = 7;
+const MINIMUM_TILE_SIZE = 5;
+
 /**
  * @class
  * @descriptor avonni-color-picker
@@ -172,9 +175,10 @@ export default class ColorPicker extends LightningElement {
      */
     @api messageWhenValueMissing;
 
+    _columns = DEFAULT_COLUMNS;
     _value;
     _name;
-    _variant = validVariants.default;
+    _variant = VARIANTS.default;
     _type = LABEL_TYPES.default;
     _menuVariant = MENU_VARIANTS.default;
     _menuIconSize = MENU_ICON_SIZES.default;
@@ -192,12 +196,12 @@ export default class ColorPicker extends LightningElement {
     _currentTab = 'default';
     _draftToken = {};
 
+    currentToken = {};
     dropdownOpened = false;
     dropdownVisible = false;
-    showError = false;
-    newValue;
     helpMessage;
-    currentToken = {};
+    newValue;
+    showError = false;
 
     _inputValue;
     _rendered = false;
@@ -213,6 +217,38 @@ export default class ColorPicker extends LightningElement {
             this.initSwatchColor();
             this._rendered = true;
         }
+
+        const palette = this.template.querySelector(
+            '[data-element-id^="avonni-color-palette"]'
+        );
+        if (this.dropdownVisible && palette) {
+            const paletteWidth = palette.clientWidth;
+            const tileWidth = Math.floor(paletteWidth / this.columns - 8);
+            const tileSize =
+                tileWidth > MINIMUM_TILE_SIZE ? tileWidth : MINIMUM_TILE_SIZE;
+            palette.tileWidth = tileSize;
+            palette.tileHeight = tileSize;
+        }
+    }
+
+    /**
+     * Number of columns in the palette.
+     *
+     * @public
+     * @type {number}
+     * @default 7
+     */
+    @api
+    get columns() {
+        return this._columns;
+    }
+
+    set columns(value) {
+        const normalizedValue = parseInt(value, 10);
+        this._columns =
+            !isNaN(normalizedValue) && normalizedValue
+                ? parseInt(value, 10)
+                : DEFAULT_COLUMNS;
     }
 
     /**
@@ -268,8 +304,8 @@ export default class ColorPicker extends LightningElement {
 
     set variant(variant) {
         this._variant = normalizeString(variant, {
-            fallbackValue: validVariants.default,
-            validValues: validVariants.valid
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
     }
 
@@ -731,7 +767,7 @@ export default class ColorPicker extends LightningElement {
      */
     get computedDropdownClass() {
         return classSet(
-            'slds-color-picker__selector slds-p-around_none slds-dropdown'
+            'slds-color-picker__selector slds-p-around_none slds-dropdown avonni-color-picker__dropdown'
         )
             .add({
                 'slds-dropdown_left':
