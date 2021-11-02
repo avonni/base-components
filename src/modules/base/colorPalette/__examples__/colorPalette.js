@@ -43,8 +43,10 @@ export const ColorPalette = ({
     isLoading,
     colors,
     columns,
+    groups,
     tileWidth,
-    tileHeight
+    tileHeight,
+    variant
 }) => {
     const element = document.createElement('ac-base-color-palette');
     element.disabled = disabled;
@@ -52,7 +54,9 @@ export const ColorPalette = ({
     element.isLoading = isLoading;
     element.colors = colors;
     element.columns = columns;
+    element.groups = groups;
     element.tileWidth = tileWidth;
     element.tileHeight = tileHeight;
+    element.variant = variant;
     return element;
 };
