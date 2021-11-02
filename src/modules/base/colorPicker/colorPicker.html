@@ -116,12 +116,11 @@
                                     slds-popover__body
                                     avonni-color-picker__popover-body
                                 "
-                                oncolordblclick={handlerDone}
                                 onprivateblur={handlePrivateBlur}
                                 onprivatefocus={handlePrivateFocus}
                                 onmouseover={cancelBlur}
                                 onmouseout={allowBlur}
-                                onchange={handlerChange}
+                                onchange={handleDefaultAndTokenChange}
                             >
                                 <!-- Base type -->
                                 <template if:true={isBase}>
@@ -147,7 +146,7 @@
                                                     role="tab"
                                                     data-group-name="tabs"
                                                     data-tab-name="default"
-                                                    onclick={handlerTabClick}
+                                                    onclick={handleTabClick}
                                                     onblur={handlePrivateBlur}
                                                     onfocus={handlePrivateFocus}
                                                     >Default</a
@@ -169,7 +168,7 @@
                                                     data-element-id="a-tokens-tab"
                                                     data-group-name="tabs"
                                                     data-tab-name="tokens"
-                                                    onclick={handlerTabClick}
+                                                    onclick={handleTabClick}
                                                     onblur={handlePrivateBlur}
                                                     onfocus={handlePrivateFocus}
                                                     >Tokens</a
@@ -188,7 +187,7 @@
                                                     role="tab"
                                                     data-group-name="tabs"
                                                     data-tab-name="custom"
-                                                    onclick={handlerTabClick}
+                                                    onclick={handleTabClick}
                                                     onblur={handlePrivateBlur}
                                                     onfocus={handlePrivateFocus}
                                                     >Custom</a
@@ -219,6 +218,7 @@
                                                 value={value}
                                                 read-only={readOnly}
                                                 data-element-id="avonni-color-gradient"
+                                                onchange={handleChange}
                                             ></c-color-gradient>
                                         </div>
                                     </div>
@@ -233,6 +233,7 @@
                                         value={value}
                                         read-only={readOnly}
                                         data-element-id="avonni-color-gradient"
+                                        onchange={handleChange}
                                     ></c-color-gradient>
                                 </template>
 
@@ -252,7 +253,10 @@
                             </div>
 
                             <!-- Footer -->
-                            <footer class="slds-popover__footer">
+                            <footer
+                                if:true={showButtons}
+                                class="slds-popover__footer"
+                            >
                                 <div class="slds-color-picker__selector-footer">
                                     <lightning-button
                                         class="
@@ -261,7 +265,7 @@
                                         label="Cancel"
                                         title="Cancel"
                                         data-element-id="lightning-button-cancel"
-                                        onclick={handlerCancel}
+                                        onclick={handleCancel}
                                     ></lightning-button>
                                     <lightning-button
                                         variant="brand"
@@ -272,7 +276,7 @@
                                         label="Done"
                                         title="Done"
                                         data-element-id="lightning-button-done"
-                                        onclick={handlerDone}
+                                        onclick={handleDone}
                                     ></lightning-button>
                                 </div>
                             </footer>

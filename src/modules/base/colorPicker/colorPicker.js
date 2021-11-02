@@ -796,6 +796,10 @@ export default class ColorPicker extends LightningElement {
             .toString();
     }
 
+    get showButtons() {
+        return this.isCustom || this.customTabIsSelected;
+    }
+
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
      *
@@ -945,7 +949,9 @@ export default class ColorPicker extends LightningElement {
      *
      * @param {Event} event
      */
-    handlerChange(event) {
+    handleChange(event) {
+        event.stopPropagation();
+
         if (event.detail) {
             this.newValue =
                 this.opacity && Number(event.detail.alpha) < 1
@@ -958,10 +964,15 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    handleDefaultAndTokenChange(event) {
+        this.handleChange(event);
+        this.handleDone();
+    }
+
     /**
      * Handle new value change and update ui.
      */
-    handlerDone() {
+    handleDone() {
         if (!this.readOnly && this.newValue) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
@@ -985,7 +996,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Handle new value canceled.
      */
-    handlerCancel() {
+    handleCancel() {
         this.newValue = null;
 
         if (this.colorGradient) {
@@ -1127,7 +1138,7 @@ export default class ColorPicker extends LightningElement {
      *
      * @param {Event} event
      */
-    handlerTabClick(event) {
+    handleTabClick(event) {
         event.preventDefault();
 
         this.template
