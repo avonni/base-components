@@ -15,6 +15,15 @@ export default class DataTypesFromRToZ extends LightningElement {
             initialWidth: 200
         },
         {
+            label: 'Rich Text',
+            fieldName: 'richText',
+            type: 'rich-text',
+            typeAttributes: {
+                disabled: { fieldName: 'richTextDisabled' }
+            },
+            editable: true
+        },
+        {
             label: 'Slider',
             fieldName: 'slider',
             type: 'slider',

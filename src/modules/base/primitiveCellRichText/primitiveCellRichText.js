@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 
-export default class PrimitiveCellInputRichText extends LightningElement {
+export default class PrimitiveCellRichText extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
     @api disabled;
@@ -119,9 +119,7 @@ export default class PrimitiveCellInputRichText extends LightningElement {
     // Checks if the column is editable.
     isEditable() {
         let richText = {};
-        richText = this.columns.find(
-            (column) => column.type === 'input-rich-text'
-        );
+        richText = this.columns.find((column) => column.type === 'rich-text');
         this.editable = richText.editable;
     }
 

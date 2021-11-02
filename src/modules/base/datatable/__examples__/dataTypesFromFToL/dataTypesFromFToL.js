@@ -51,15 +51,6 @@ export default class DataTypesFromFtoL extends LightningElement {
             editable: true
         },
         {
-            label: 'Input Rich Text',
-            fieldName: 'inputRichText',
-            type: 'input-rich-text',
-            typeAttributes: {
-                disabled: { fieldName: 'inputRichTextDisabled' }
-            },
-            editable: true
-        },
-        {
             label: 'Input Toggle',
             fieldName: 'inputToggle',
             type: 'input-toggle',

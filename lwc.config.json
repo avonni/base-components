@@ -287,8 +287,8 @@
             "path": "src/modules/base/primitiveCellInputDateRange/primitiveCellInputDateRange.js"
         },
         {
-            "name": "c/primitiveCellInputRichText",
-            "path": "src/modules/base/primitiveCellInputRichText/primitiveCellInputRichText.js"
+            "name": "c/primitiveCellRichText",
+            "path": "src/modules/base/primitiveCellRichText/primitiveCellRichText.js"
         },
         {
             "name": "c/primitiveCellInputToggle",

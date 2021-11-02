@@ -51,13 +51,13 @@ import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
 import inputCounter from './inputCounter.html';
 import inputDateRange from './inputDateRange.html';
-import inputRichText from './inputRichText.html';
 import inputToggle from './inputToggle.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
+import richText from './richText.html';
 import textarea from './textarea.html';
 import slider from './slider.html';
 import urls from './urls.html';
@@ -73,13 +73,13 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'image',
     'input-counter',
     'input-date-range',
-    'input-rich-text',
     'input-toggle',
     'progress-bar',
     'progress-circle',
     'progress-ring',
     'qrcode',
     'rating',
+    'rich-text',
     'slider',
     'textarea',
     'urls'
@@ -91,9 +91,9 @@ const CUSTOM_TYPES_EDITABLE = [
     'combobox',
     'input-counter',
     'input-date-range',
-    'input-rich-text',
     'input-toggle',
     'rating',
+    'rich-text',
     'slider'
 ];
 
@@ -208,10 +208,6 @@ export default class Datatable extends LightningDatatable {
                 'type'
             ]
         },
-        'input-rich-text': {
-            template: inputRichText,
-            typeAttributes: ['disabled', 'placeholder', 'variant']
-        },
         'input-toggle': {
             template: inputToggle,
             typeAttributes: [
@@ -278,6 +274,10 @@ export default class Datatable extends LightningDatatable {
                 'selection',
                 'valueHidden'
             ]
+        },
+        'rich-text': {
+            template: richText,
+            typeAttributes: ['disabled', 'placeholder', 'variant']
         },
         slider: {
             template: slider,

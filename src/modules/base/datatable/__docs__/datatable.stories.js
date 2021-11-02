@@ -420,7 +420,6 @@ DataTypesFromNToQ.args = {
     columns: columnsNQ,
     records: recordsNQ,
     keyField: 'id',
-    columnWidthsMode: 'auto',
     selectedRows: ['2']
 };
 

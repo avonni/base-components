@@ -46,7 +46,7 @@ const CUSTOM_TYPES_TPL = {
     combobox: ComboboxTpl,
     'input-counter': inputCounterTpl,
     'input-date-range': inputDateRangeTpl,
-    'input-rich-text': richTextTpl,
+    'rich-text': richTextTpl,
     textarea: textareaTpl
 };
 
@@ -119,7 +119,16 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         return CUSTOM_TYPES_TPL[this.columnType] || DefaultTpl;
     }
 
+    connectedCallback() {
+        this._blurHandler = this.handleComponentBlur.bind(this);
+        this._focusHandler = this.handleComponentFocus.bind(this);
+        this._changeHandler = this.handleComponentChange.bind(this);
+    }
+
     renderedCallback() {
+        this.concreteComponent.addEventListener('blur', this._blurHandler);
+        this.concreteComponent.addEventListener('focus', this._focusHandler);
+        this.concreteComponent.addEventListener('change', this._changeHandler);
         if (
             this.concreteComponent &&
             this.columnDef.type !== 'color-picker' &&
@@ -161,13 +170,6 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     }
 
     @api
-    focus() {
-        if (this.concreteComponent) {
-            this.concreteComponent.focus();
-        }
-    }
-
-    @api
     get value() {
         return this.concreteComponent.value;
     }
@@ -178,10 +180,27 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     }
 
     @api
+    focus() {
+        if (this.concreteComponent) {
+            this.concreteComponent.focus();
+        }
+    }
+
+    @api
     showHelpMessageIfInvalid() {
-        if (this.columnDef.type !== 'input-rich-text') {
+        if (this.columnDef.type !== 'rich-text') {
             this.concreteComponent.showHelpMessageIfInvalid();
         }
+    }
+
+    handleComponentFocus() {
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+    handleComponentBlur() {
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+    handleComponentChange() {
+        this.showHelpMessageIfInvalid();
     }
 
     handleOnChange(event) {

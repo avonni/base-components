@@ -331,15 +331,6 @@ const columnsFL = [
         editable: true
     },
     {
-        label: 'Input Rich Text',
-        fieldName: 'inputRichText',
-        type: 'input-rich-text',
-        typeAttributes: {
-            disabled: { fieldName: 'inputRichTextDisabled' }
-        },
-        editable: true
-    },
-    {
         label: 'Input Toggle',
         fieldName: 'inputToggle',
         type: 'input-toggle',
@@ -403,7 +394,8 @@ const columnsNQ = [
             thickness: 'large',
             size: 'small',
             color: { fieldName: 'progressCircleColor' }
-        }
+        },
+        initialWidth: 100
     },
     {
         label: 'Progress Ring',
@@ -438,6 +430,15 @@ const columnsRZ = [
         },
         editable: true,
         initialWidth: 200
+    },
+    {
+        label: 'Rich Text',
+        fieldName: 'richText',
+        type: 'rich-text',
+        typeAttributes: {
+            disabled: { fieldName: 'richTextDisabled' }
+        },
+        editable: true
     },
     {
         label: 'Slider',
@@ -643,10 +644,10 @@ const recordsFL = [
         id: 1,
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
         inputCounter: 1,
-        // inputDateRange: {
-        //     startDate: new Date('2021/10/02'),
-        //     endDate: new Date('2021/10/05')
-        // },
+        inputDateRange: {
+            startDate: new Date('2021/10/02'),
+            endDate: new Date('2021/10/05')
+        },
         location: {
             latitude: '45.53',
             longitude: '-73.61'
@@ -675,7 +676,6 @@ const recordsFL = [
         inputCounterDisabled: true,
         inputDateRangeDisabled: true,
         inputToggleDisabled: true,
-        inputRichTextDisabled: true,
         location: {
             latitude: '45.54',
             longitude: '-73.60'
@@ -790,6 +790,7 @@ const recordsRZ = [
     {
         id: 1,
         rating: '3',
+        richTextDisabled: true,
         slider: 36,
         text: 'Nina Gomez',
         url: 'https://www.avonnicomponents.com/',

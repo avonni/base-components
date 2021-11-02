@@ -109,10 +109,6 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             .toString();
     }
 
-    get inputKey() {
-        return this.rowKeyValue + this.colKeyValue;
-    }
-
     get massEditCheckboxLabel() {
         return `Update ${this.numberOfSelectedRows} selected items`;
     }
@@ -124,8 +120,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         );
     }
 
-    get isTypeInputRichText() {
-        return this.columnDef.type === 'input-rich-text';
+    get isTypeRichText() {
+        return this.columnDef.type === 'rich-text';
     }
 
     get isTypeInputDateRange() {
@@ -139,7 +135,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             this.columnDef.type === 'input-counter' ||
             this.columnDef.type === 'color-picker' ||
             this.isTypeInputDateRange ||
-            this.isTypeInputRichText ||
+            this.isTypeRichText ||
             this.columnDef.type === 'textarea'
         );
     }
@@ -171,24 +167,20 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     editedFormattedValue(value) {
-        if (this.isTypeInputDateRange) {
-            return {
-                startDate: value.startDate,
-                endDate: value.endDate
-            };
-        } else if (this.isTypeInputRichText) {
-            return this.convertHTML(value);
-        }
-        return value;
+        return this.isTypeInputDateRange
+            ? {
+                  startDate: value.startDate,
+                  endDate: value.endDate
+              }
+            : value;
     }
 
     triggerEditFinished(detail) {
-        if (this.value) {
+        // for combobox we need to make sure that the value is only set if the there is a change or a submit.
+        if (this.value && this.value.length !== 0) {
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
             detail.colKeyValue = detail.colKeyValue || this.colKeyValue;
-            detail.valid = this.isTypeInputRichText
-                ? true
-                : this.validity.valid;
+            detail.valid = this.isTypeRichText ? true : this.validity.valid;
             detail.isMassEditChecked = this.isMassEditChecked;
             detail.value = this.editedFormattedValue(this.value);
         }
@@ -216,7 +208,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
 
     @api
     get value() {
-        return this.inputableElement ? this.inputableElement.value : null;
+        return this.inputableElement.value;
     }
 
     @api
@@ -269,7 +261,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     handlePanelLoosedFocus() {
-        if (this.visible && this.columnDef.type !== 'input-date-range') {
+        if (this.visible) {
             this.triggerEditFinished({
                 reason: 'loosed-focus'
             });
@@ -280,25 +272,16 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         this.template.querySelector('[data-form-last-element="true"]').focus();
     }
 
-    convertHTML(str) {
-        return str
-            .replace(/"&amp;"/g, '&')
-            .replace(/&lt;/g, '<')
-            .replace(/&gt;/g, '>')
-            .replace(/&quot;/g, '"')
-            .replace(/&#039;/g, "'");
-    }
-
     processSubmission() {
         this.triggerEditFinished({ reason: 'submit-action' });
         // if type input rich text, there is no validity check.
-        if (this.isTypeInputRichText) {
+        if (this.isTypeRichText) {
             this.dispatchEvent(
                 new CustomEvent('privateeditcustomcell', {
                     detail: {
                         rowKeyValue: this.rowKeyValue,
                         colKeyValue: this.colKeyValue,
-                        value: this.editedFormattedValue(this.value)
+                        value: this.value
                     },
                     bubbles: true,
                     composed: true
