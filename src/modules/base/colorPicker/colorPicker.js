@@ -541,6 +541,12 @@ export default class ColorPicker extends LightningElement {
             : this.colors;
     }
 
+    get computedGradientValue() {
+        if (!this.value) return '#fff';
+        if (this.currentToken.color) return this.currentToken.color;
+        return this.value;
+    }
+
     /**
      * True if the selected tab is "Custom".
      *
