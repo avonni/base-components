@@ -132,7 +132,7 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         if (
             this.concreteComponent &&
             this.columnDef.type !== 'color-picker' &&
-            this.columnDef.type !== 'rich-text'
+            this.columnDef.type !== 'input-date-range'
         ) {
             this.concreteComponent.focus();
         }

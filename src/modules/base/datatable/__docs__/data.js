@@ -791,6 +791,8 @@ const recordsRZ = [
     {
         id: 1,
         rating: '3',
+        richText:
+            '<h2 style="text-align: center"> No Default <s>Value</s></h2>',
         richTextDisabled: true,
         slider: 36,
         text: 'Nina Gomez',

@@ -963,12 +963,18 @@ export default class InputDateRange extends LightningElement {
      * Dispatch changes from start-date input, end-date input, c-calendar for start-date and c-calendar for end-date.
      */
     dispatchChange() {
-        let startDate = this.startTime
-            ? `${this.startDateString} ${this.startTime}`
-            : this.startDateString;
-        let endDate = this.endTime
-            ? `${this.endDateString} ${this.endTime}`
-            : this.endDateString;
+        let startDate =
+            this.startTime && this._startDate
+                ? `${this.startDateString} ${this.startTime}`
+                : this.startDateString;
+        let endDate =
+            this.endTime && this._endDate
+                ? `${this.endDateString} ${this.endTime}`
+                : this.endDateString;
+
+        this.startTime =
+            this.startTime && this._startDate ? this.startTime : '';
+        this.endTime = this.endTime && this._endDate ? this.endTime : '';
 
         if (this.timezone) {
             startDate = new Date(startDate).toLocaleString('default', {
