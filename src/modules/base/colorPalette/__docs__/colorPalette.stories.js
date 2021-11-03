@@ -31,7 +31,7 @@
  */
 
 import { ColorPalette } from '../__examples__/colorPalette';
-import { colors, tokens, stringColors } from './data';
+import { colors, tokens, stringColors, groups } from './data';
 
 export default {
     title: 'Example/Color Palette',
@@ -211,15 +211,7 @@ ListWithGroups.args = {
 
 export const GridWithGroups = Template.bind({});
 GridWithGroups.args = {
-    colors: colors,
-    groups: [
-        {
-            name: 'pageColors',
-            label: 'Page Colors'
-        },
-        {
-            name: 'palette',
-            label: 'Palette'
-        }
-    ]
+    colors,
+    groups,
+    columns: 6
 };

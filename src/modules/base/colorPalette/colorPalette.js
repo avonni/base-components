@@ -293,7 +293,7 @@ export default class ColorPalette extends LightningElement {
      */
     get groupClass() {
         return this.computedGroups.length > 1
-            ? 'slds-m-bottom_small'
+            ? 'slds-m-bottom_x-small'
             : undefined;
     }
 
@@ -403,8 +403,11 @@ export default class ColorPalette extends LightningElement {
         });
 
         // Add the undefined group at the beginning of the array
-        computedGroups.unshift(undefinedGroup);
+        if (undefinedGroup.colors.length) {
+            computedGroups.unshift(undefinedGroup);
+        }
         this.computedGroups = computedGroups;
+        console.log(this.computedGroups);
     }
 
     /**
