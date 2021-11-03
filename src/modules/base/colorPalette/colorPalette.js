@@ -128,7 +128,8 @@ export default class ColorPalette extends LightningElement {
         return this._colors;
     }
     set colors(value) {
-        this._colors = deepCopy(normalizeArray(value));
+        const colors = deepCopy(normalizeArray(value));
+        this._colors = colors.length ? colors : DEFAULT_COLORS;
 
         if (this.isConnected) this.initGroups();
     }
