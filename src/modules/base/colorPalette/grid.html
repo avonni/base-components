@@ -44,7 +44,11 @@
         ></lightning-spinner>
         <template if:false={isLoading}>
             <template for:each={computedGroups} for:item="group">
-                <div key={group.name} class={groupClass}>
+                <div
+                    key={group.name}
+                    class={groupClass}
+                    data-element-id="div-group"
+                >
                     <div
                         if:true={group.label}
                         class="
@@ -52,6 +56,7 @@
                             slds-float_none
                             slds-m-horizontal_xx-small
                         "
+                        data-element-id="div-group-label"
                     >
                         {group.label}
                     </div>
@@ -74,7 +79,7 @@
                                     data-color={color.color}
                                     data-label={color.label}
                                     data-token={color.value}
-                                    data-element-id="a-base"
+                                    data-element-id="a-grid"
                                     onblur={handleBlur}
                                     onclick={handleClick}
                                     ondblclick={handleDblClick}
@@ -83,8 +88,7 @@
                                     <span
                                         class="slds-swatch"
                                         data-color={color.color}
-                                        data-element-id="span-base"
-                                        data-group-name="swatches"
+                                        data-element-id="span-swatch"
                                     >
                                         <span class="slds-assistive-text">
                                             {color.color}

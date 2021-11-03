@@ -333,7 +333,7 @@ export default class ColorPalette extends LightningElement {
         }
 
         [
-            ...this.template.querySelectorAll('[data-group-name="swatches"]')
+            ...this.template.querySelectorAll('[data-element-id="span-swatch"]')
         ].forEach((element) => {
             if (this.disabled) {
                 element.style.backgroundColor = '#dddbda';
@@ -408,7 +408,6 @@ export default class ColorPalette extends LightningElement {
             computedGroups.unshift(undefinedGroup);
         }
         this.computedGroups = computedGroups;
-        console.log(this.computedGroups);
     }
 
     /**
