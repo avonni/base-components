@@ -31,7 +31,7 @@
  */
 
 import { ColorPalette } from '../__examples__/colorPalette';
-import { colors, tokens, stringColors, groups } from './data';
+import { colors, tokens, groups } from './data';
 
 export default {
     title: 'Example/Color Palette',
@@ -159,27 +159,21 @@ export default {
 const Template = (args) => ColorPalette(args);
 
 export const Base = Template.bind({});
-Base.args = {
-    colors: stringColors
-};
 
 export const SmallTiles = Template.bind({});
 SmallTiles.args = {
-    colors: stringColors,
     tileWidth: 10,
     tileHeight: 10
 };
 
 export const LargeTiles = Template.bind({});
 LargeTiles.args = {
-    colors: stringColors,
     tileWidth: 30,
     tileHeight: 30
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-    colors: stringColors,
     disabled: true
 };
 

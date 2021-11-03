@@ -1,9 +1,17 @@
 /**
- * @typedef {Object} Color
+ * @typedef {Object} ColorPaletteColor
  * @name colors
- * @property {string} label Label of the color. (ex. 'brand-accessible')
- * @property {string} value Hex value of the color (ex. '#0176d3').
- * @property {string} token Name of the token associated with this value (ex. --lwc-brand-accessible )
+ * @property {string} label Color label. If the display is grid, it will be used as the alternative text.
+ * @property {string} value Value of the color, for example if the color represents a design token. If present, it will be send as the token in the change event.
+ * @property {string} color Required. Valid CSS color.
+ * @property {object[]} groups Array of group names the color belongs to. If empty, the color will appear at the top of the list.
+ */
+
+/**
+ * @typedef {Object} ColorPaletteGroups
+ * @name groups
+ * @property {string} name Unique name of the group.
+ * @property {string} label Label of the group.
  */
 
 /**
@@ -16,16 +24,31 @@
  */
 /**
  * @memberof examples
- * @name baseSmall
- * @storyId example-color-palette--base-small
+ * @name smallTiles
+ * @storyId example-color-palette--small-tiles
  */
 /**
  * @memberof examples
- * @name baseLarge
- * @storyId example-color-palette--base-large
+ * @name largeTiles
+ * @storyId example-color-palette--large-tiles
  */
 /**
  * @memberof examples
  * @name disabled
  * @storyId example-color-palette--disabled
+ */
+/**
+ * @memberof examples
+ * @name list
+ * @storyId example-color-palette--list
+ */
+/**
+ * @memberof examples
+ * @name listWithGroups
+ * @storyId example-color-palette--list-with-groups
+ */
+/**
+ * @memberof examples
+ * @name gridWithGroups
+ * @storyId example-color-palette--grid-with-groups
  */

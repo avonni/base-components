@@ -415,6 +415,15 @@ export default class ColorPalette extends LightningElement {
      */
     handleFocus() {
         /**
+         * The event fired when you focus the palette.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+
+        /**
          * @event
          * @name privatefocus
          * @bubbles
@@ -433,6 +442,7 @@ export default class ColorPalette extends LightningElement {
      */
     handleBlur() {
         /**
+         * The event fired when the focus is removed from the palette.
          * @event
          * @name blur
          * @public
@@ -496,6 +506,8 @@ export default class ColorPalette extends LightningElement {
              * @param {string} rgb Color in rgb format.
              * @param {string} rgba Color in rgba format.
              * @param {string} alpha Alpha value of the color.
+             * @param {string} label Color label.
+             * @param {string} token Token value.
              * @bubbles
              * @cancelable
              */
@@ -522,6 +534,15 @@ export default class ColorPalette extends LightningElement {
      *
      */
     handleDblClick() {
+        /**
+         * The event fired when a color is clicked twice.
+         *
+         * @event
+         * @name colordblclick
+         * @public
+         * @bubbles
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('colordblclick', {
                 bubbles: true,
