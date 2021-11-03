@@ -128,14 +128,24 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         return this.columnDef.type === 'input-date-range';
     }
 
+    get isTypeColorPicker() {
+        return this.columnDef.type === 'color-picker';
+    }
+
+    get isTypeWithMenu() {
+        return (
+            this.isTypeRichText ||
+            this.isTypeInputDateRange ||
+            this.isTypeColorPicker
+        );
+    }
+
     get showButtons() {
         return (
             this.isMassEditEnabled ||
             this.isMultiSelect ||
+            this.isTypeWithMenu ||
             this.columnDef.type === 'input-counter' ||
-            this.columnDef.type === 'color-picker' ||
-            this.isTypeInputDateRange ||
-            this.isTypeRichText ||
             this.columnDef.type === 'textarea'
         );
     }
@@ -235,7 +245,14 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     handleTypeElemBlur() {
-        if (this.visible && !this.template.activeElement) {
+        if (
+            this.visible &&
+            !this.template.activeElement &&
+            !this.isTypeWithMenu
+        ) {
+            this.interactingState.leave();
+        }
+        if (this.isTypeWithMenu && this._allowBlur) {
             this.interactingState.leave();
         }
     }
@@ -244,11 +261,19 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         this.interactingState.enter();
     }
 
+    handleTypeElemMouseLeave() {
+        this._allowBlur = true;
+    }
+
+    handleTypeElemMouseEnter() {
+        this._allowBlur = false;
+    }
+
     handleEditFormSubmit(event) {
         event.preventDefault();
         event.stopPropagation();
 
-        if (!this.isMassEditEnabled && this.columnDef.type !== 'color-picker') {
+        if (!this.isMassEditEnabled && !this.isTypeColorPicker) {
             this.processSubmission();
         }
 
