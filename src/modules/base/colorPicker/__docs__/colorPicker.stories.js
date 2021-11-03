@@ -31,6 +31,7 @@
  */
 
 import { ColorPicker } from '../__examples__/colorPicker';
+import { colors, groups, tokens, tokenGroups } from './data';
 
 export default {
     title: 'Example/Color Picker',
@@ -85,6 +86,16 @@ export default {
                 "Help text detailing the purpose and function of the input. This attribute isn't supported for file, radio, toggle, and checkbox-button types.",
             table: {
                 type: { summary: 'string' }
+            }
+        },
+        groups: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of group objects. Groups can be used by the tokens and the predefined palette.',
+            table: {
+                type: { summary: 'object[]' }
             }
         },
         hideColorInput: {
@@ -287,9 +298,10 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['base', 'custom', 'predefined'],
+            options: ['base', 'custom', 'predefined', 'tokens'],
             defaultValue: 'base',
-            description: 'Values include base, custom and predefined.',
+            description:
+                'Type of the color picker. The base type uses tabs for all the other types.Valid values include base, custom, predefined and tokens.',
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }
@@ -343,112 +355,54 @@ export default {
     }
 };
 
-const tokens = [
-    {
-        label: 'brand-accessible',
-        value: '--lwc-brand-accessible',
-        color: '#0176d3'
-    },
-    {
-        label: 'brand-accessible-active',
-        value: '--lwc-brand-accessible-active',
-        color: '#014486'
-    },
-    {
-        label: 'color-text-action-label',
-        value: '--lwc-colorTextActionLabel',
-        color: '#3e3e3c'
-    },
-    {
-        label: 'color-text-customer',
-        value: '--lwc-colorTextCustomer',
-        color: '#fe9339'
-    },
-    {
-        label: 'color-text-error',
-        value: '--lwc-colorTextError',
-        color: '#ea001e'
-    }
-];
-
-const colorsValue = [
-    '#e3abec',
-    '#c2dbf7',
-    '#9fd6ff',
-    '#9de7da',
-    '#9df0bf',
-    '#fff099',
-    '#fed49a',
-    '#d073df',
-    '#86b9f3',
-    '#5ebbff',
-    '#44d8be',
-    '#3be281',
-    '#ffe654',
-    '#ffb758',
-    '#bd35bd',
-    '#5778c1',
-    '#5ebbff',
-    '#00aea9',
-    '#3bba4c',
-    '#f4bc25',
-    '#f99120',
-    '#580d8c',
-    '#001870',
-    '#0a2399',
-    '#097476',
-    '#096a50',
-    '#b67d11',
-    '#b85d0d'
-];
-
 const Template = (args) => ColorPicker(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    colors: colorsValue
+    label: 'Base Color Picker'
 };
 
-export const StandardWithTokens = Template.bind({});
-StandardWithTokens.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
+export const Tokens = Template.bind({});
+Tokens.args = {
+    label: 'Base Color Picker With Tokens',
+    fieldLevelHelp: 'The tokens need to be defined for the tab to appear.',
     value: '--lwc-colorTextActionLabel',
-    messageWhenBadInput: 'Please ensure value is correct',
-    colors: colorsValue,
-    tokens: tokens
+    tokens
 };
 
-export const BaseWithIcon = Template.bind({});
-BaseWithIcon.args = {
+export const Groups = Template.bind({});
+Groups.args = {
+    label: 'Color label',
+    tokens,
+    groups: groups.concat(tokenGroups),
+    columns: 6,
+    colors
+};
+
+export const MenuIconAndLabel = Template.bind({});
+MenuIconAndLabel.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'Help text',
+    menuIconName: 'utility:down',
+    menuLabel: 'Pick a color',
+    value: '#419fec'
+};
+
+export const HiddenInput = Template.bind({});
+HiddenInput.args = {
     label: 'Color label',
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
     menuLabel: 'Pick a color',
-    colors: colorsValue
-};
-
-export const BaseWithIconWithoutColorInput = Template.bind({});
-BaseWithIconWithoutColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Read Only',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuLabel: 'Pick a color',
-    hideColorInput: 'true',
-    colors: colorsValue
+    hideColorInput: 'true'
 };
 
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
+    fieldLevelHelp: 'Read only',
     value: '#419fec',
-    colors: colorsValue,
     readOnly: true
 };
 
@@ -458,8 +412,7 @@ LabelInlineWithMenuVariantContainer.args = {
     fieldLevelHelp: 'Help text',
     value: '#0a2399',
     variant: 'label-inline',
-    menuVariant: 'container',
-    colors: colorsValue
+    menuVariant: 'container'
 };
 
 export const LabelInlineWithoutColorInput = Template.bind({});
@@ -469,8 +422,7 @@ LabelInlineWithoutColorInput.args = {
     value: '#096a50',
     variant: 'label-inline',
     menuVariant: 'container',
-    hideColorInput: 'true',
-    colorsValue: colorsValue
+    hideColorInput: 'true'
 };
 
 export const LabelHiddenWithoutHelpMessage = Template.bind({});
@@ -479,8 +431,7 @@ LabelHiddenWithoutHelpMessage.args = {
     value: '#ffb758',
     variant: 'label-hidden',
     hideColorInput: 'true',
-    menuVariant: 'bare-inverse',
-    colors: colorsValue
+    menuVariant: 'bare-inverse'
 };
 
 export const LabelHiddenWithoutHelpMessageBorderInverse = Template.bind({});
@@ -489,8 +440,7 @@ LabelHiddenWithoutHelpMessageBorderInverse.args = {
     value: '#3be281',
     variant: 'label-hidden',
     hideColorInput: 'true',
-    menuVariant: 'border-inverse',
-    colors: colorsValue
+    menuVariant: 'border-inverse'
 };
 
 export const LabelHiddenWithMenuLabel = Template.bind({});
@@ -500,8 +450,7 @@ LabelHiddenWithMenuLabel.args = {
     variant: 'label-hidden',
     hideColorInput: 'true',
     menuVariant: 'border-inverse',
-    menuLabel: 'Pick a color',
-    colors: colorsValue
+    menuLabel: 'Pick a color'
 };
 
 export const Xx_smallIconWithColorInput = Template.bind({});
@@ -510,8 +459,7 @@ Xx_smallIconWithColorInput.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
-    menuIconSize: 'xx-small',
-    colorsValue: colorsValue
+    menuIconSize: 'xx-small'
 };
 
 export const X_smallIconWithColorInput = Template.bind({});
@@ -520,8 +468,7 @@ X_smallIconWithColorInput.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
-    menuIconSize: 'x-small',
-    colors: colorsValue
+    menuIconSize: 'x-small'
 };
 
 export const SmallIconWithColorInput = Template.bind({});
@@ -530,8 +477,7 @@ SmallIconWithColorInput.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
-    menuIconSize: 'small',
-    colors: colorsValue
+    menuIconSize: 'small'
 };
 
 export const MediumIconWithColorInput = Template.bind({});
@@ -540,8 +486,7 @@ MediumIconWithColorInput.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
-    menuIconSize: 'medium',
-    colors: colorsValue
+    menuIconSize: 'medium'
 };
 
 export const LargeIconWithColorInput = Template.bind({});
@@ -550,6 +495,5 @@ LargeIconWithColorInput.args = {
     fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
-    menuIconSize: 'large',
-    colors: colorsValue
+    menuIconSize: 'large'
 };
