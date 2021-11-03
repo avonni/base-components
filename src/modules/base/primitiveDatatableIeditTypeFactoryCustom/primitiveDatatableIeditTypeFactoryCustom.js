@@ -132,7 +132,7 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
         if (
             this.concreteComponent &&
             this.columnDef.type !== 'color-picker' &&
-            this.columnDef.type !== 'input-date-range'
+            this.columnDef.type !== 'rich-text'
         ) {
             this.concreteComponent.focus();
         }
@@ -208,19 +208,6 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
             new CustomEvent('inlineeditchange', {
                 detail: {
                     value: event.detail.value,
-                    validity: this.validity.valid
-                },
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
-    handleColorPickerChange(event) {
-        this.dispatchEvent(
-            new CustomEvent('inlineeditchangecolorpicker', {
-                detail: {
-                    value: event.detail.hex,
                     validity: this.validity.valid
                 },
                 bubbles: true,
