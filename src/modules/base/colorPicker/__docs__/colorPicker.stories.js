@@ -69,7 +69,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -104,7 +103,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If true, hide the input color value.',
-            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -115,7 +113,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, a spinner is displayed to indicate that data is loading. ',
             table: {
@@ -146,7 +143,6 @@ export default {
                 'bottom-center',
                 'bottom-right'
             ],
-            defaultValue: 'left',
             description:
                 'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. ',
             table: {
@@ -171,7 +167,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'x-small',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
             table: {
@@ -196,7 +191,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
             table: {
@@ -218,7 +212,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
             table: {
@@ -263,7 +256,6 @@ export default {
                 type: 'boolean'
             },
             description: 'Defines whether the alpha slider will be displayed.',
-            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -274,7 +266,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the palette is read-only and cannot be edited by users.',
             table: {
@@ -286,7 +277,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
@@ -299,7 +289,6 @@ export default {
                 type: 'select'
             },
             options: ['base', 'custom', 'predefined', 'tokens'],
-            defaultValue: 'base',
             description:
                 'Type of the color picker. The base type uses tabs for all the other types.Valid values include base, custom, predefined and tokens.',
             table: {
@@ -326,7 +315,6 @@ export default {
                 'label-hidden',
                 'label-stacked'
             ],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
@@ -379,25 +367,6 @@ Groups.args = {
     colors
 };
 
-export const MenuIconAndLabel = Template.bind({});
-MenuIconAndLabel.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    menuIconName: 'utility:down',
-    menuLabel: 'Pick a color',
-    value: '#419fec'
-};
-
-export const HiddenInput = Template.bind({});
-HiddenInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuLabel: 'Pick a color',
-    hideColorInput: 'true'
-};
-
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
     label: 'Color label',
@@ -406,94 +375,68 @@ ReadOnly.args = {
     readOnly: true
 };
 
-export const LabelInlineWithMenuVariantContainer = Template.bind({});
-LabelInlineWithMenuVariantContainer.args = {
+export const Menu = Template.bind({});
+Menu.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
+    fieldLevelHelp: 'A menu icon name and a menu label have been set.',
+    menuIconName: 'utility:down',
+    menuLabel: 'Pick a color',
+    value: '#419fec'
+};
+
+export const MenuNoInput = Template.bind({});
+MenuNoInput.args = {
+    label: 'Color label',
+    fieldLevelHelp:
+        'A menu icon name and a menu label have been set. The color input is hidden.',
+    value: '#419fec',
+    menuIconName: 'utility:down',
+    menuLabel: 'Pick a color',
+    hideColorInput: true
+};
+
+export const Inline = Template.bind({});
+Inline.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'The variant is "label-inline".',
     value: '#0a2399',
     variant: 'label-inline',
     menuVariant: 'container'
 };
 
-export const LabelInlineWithoutColorInput = Template.bind({});
-LabelInlineWithoutColorInput.args = {
+export const InlineNoInput = Template.bind({});
+InlineNoInput.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
+    fieldLevelHelp:
+        'The variant is "label-inline" and the color input is hidden.',
     value: '#096a50',
     variant: 'label-inline',
     menuVariant: 'container',
-    hideColorInput: 'true'
+    hideColorInput: true
 };
 
-export const LabelHiddenWithoutHelpMessage = Template.bind({});
-LabelHiddenWithoutHelpMessage.args = {
-    label: 'Color label',
-    value: '#ffb758',
-    variant: 'label-hidden',
-    hideColorInput: 'true',
-    menuVariant: 'bare-inverse'
-};
-
-export const LabelHiddenWithoutHelpMessageBorderInverse = Template.bind({});
-LabelHiddenWithoutHelpMessageBorderInverse.args = {
-    label: 'Color label',
-    value: '#3be281',
-    variant: 'label-hidden',
-    hideColorInput: 'true',
-    menuVariant: 'border-inverse'
-};
-
-export const LabelHiddenWithMenuLabel = Template.bind({});
-LabelHiddenWithMenuLabel.args = {
+export const LabelHiddenBorderInverseMenu = Template.bind({});
+LabelHiddenBorderInverseMenu.args = {
     label: 'Color label',
     value: '#d073df',
     variant: 'label-hidden',
-    hideColorInput: 'true',
+    hideColorInput: true,
     menuVariant: 'border-inverse',
     menuLabel: 'Pick a color'
 };
 
-export const Xx_smallIconWithColorInput = Template.bind({});
-Xx_smallIconWithColorInput.args = {
+export const xxSmallMenuIcon = Template.bind({});
+xxSmallMenuIcon.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
     menuIconSize: 'xx-small'
 };
 
-export const X_smallIconWithColorInput = Template.bind({});
-X_smallIconWithColorInput.args = {
+export const mediumMenuIcon = Template.bind({});
+mediumMenuIcon.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuIconSize: 'x-small'
-};
-
-export const SmallIconWithColorInput = Template.bind({});
-SmallIconWithColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuIconSize: 'small'
-};
-
-export const MediumIconWithColorInput = Template.bind({});
-MediumIconWithColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
     menuIconSize: 'medium'
-};
-
-export const LargeIconWithColorInput = Template.bind({});
-LargeIconWithColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuIconSize: 'large'
 };

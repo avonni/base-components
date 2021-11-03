@@ -8,7 +8,7 @@
  */
 
 /**
- * @typedef {Object} ColorPaletteGroups
+ * @typedef {Object} ColorPaletteGroup
  * @name groups
  * @property {string} name Unique name of the group.
  * @property {string} label Label of the group.

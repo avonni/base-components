@@ -1294,6 +1294,9 @@ export default class ColorPicker extends LightningElement {
              * @param {string} rgb Color in rgb format.
              * @param {string} rgba Color in rgba format.
              * @param {string} alpha Alpha value of the color.
+             * @param {string} token Token value.
+             * @bubbles
+             * @cancelable
              */
             this.dispatchEvent(
                 new CustomEvent('change', {
@@ -1306,8 +1309,7 @@ export default class ColorPicker extends LightningElement {
                         token: this.currentToken.value
                     },
                     bubbles: true,
-                    cancelable: true,
-                    composed: false
+                    cancelable: true
                 })
             );
         }
