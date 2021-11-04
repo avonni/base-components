@@ -60,7 +60,8 @@ export const ColorPicker = ({
     opacity,
     messageWhenBadInput,
     tokens,
-    messageWhenValueMissing
+    messageWhenValueMissing,
+    groups
 }) => {
     const element = document.createElement('ac-base-color-picker');
     element.columns = columns;
@@ -86,5 +87,6 @@ export const ColorPicker = ({
     element.messageWhenBadInput = messageWhenBadInput;
     element.tokens = tokens;
     element.messageWhenValueMissing = messageWhenValueMissing;
+    element.groups = groups;
     return element;
 };

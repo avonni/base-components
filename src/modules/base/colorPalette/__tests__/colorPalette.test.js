@@ -36,17 +36,23 @@ import ColorPalette from 'c/colorPalette';
 // Not tested because not used:
 // value
 
-const TOKENS = [
+const COLORS = [
     {
-        label: 'brand-accessible',
+        label: 'fake token one',
         color: 'rgb(10, 35, 153)',
-        value: '--lwc-brandAccessible'
+        value: '--fake-token-one',
+        groups: ['firstGroup', 'secondGroup']
     },
     {
-        label: 'brand-active',
+        label: 'fake token two',
         color: 'rgb(9, 106, 80)',
-        value: '--lwc-brandAccessibleActive'
-    }
+        value: '--fake-token-two',
+        groups: ['firstGroup']
+    },
+    {
+        color: 'rgb(56, 10, 80)'
+    },
+    'rgb(0, 0, 0)'
 ];
 
 let element;
@@ -100,8 +106,10 @@ describe('Color Palette', () => {
             '#b85d0d'
         ]);
         expect(element.columns).toBe(7);
+        expect(element.groups).toMatchObject([]);
         expect(element.tileWidth).toBe(20);
         expect(element.tileHeight).toBe(20);
+        expect(element.variant).toBe('grid');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -153,42 +161,20 @@ describe('Color Palette', () => {
     });
 
     // colors
-    it('Color Palette colors', () => {
-        element.colors = [
-            'rgb(10, 35, 153)',
-            'rgb(9, 116, 118)',
-            'rgb(9, 106, 80)',
-            'rgb(182, 125, 17)',
-            'rgb(184, 93, 13)'
-        ];
-
-        return Promise.resolve().then(() => {
-            let colorsArray = [];
-            const colors = element.shadowRoot.querySelectorAll(
-                '[data-element-id="span-base"]'
-            );
-            expect(colors).toHaveLength(5);
-            colors.forEach((color) => {
-                colorsArray.push(color.style.backgroundColor);
-            });
-            expect(colorsArray.includes('rgb(10, 35, 153)')).toBeTruthy();
-            expect(colorsArray.includes('rgb(9, 116, 118)')).toBeTruthy();
-            expect(colorsArray.includes('rgb(9, 106, 80)')).toBeTruthy();
-            expect(colorsArray.includes('rgb(182, 125, 17)')).toBeTruthy();
-            expect(colorsArray.includes('rgb(184, 93, 13)')).toBeTruthy();
-        });
-    });
-
-    it('Color Palette colors as tokens', () => {
-        element.colors = TOKENS;
+    it('Color Palette color', () => {
+        element.colors = COLORS;
 
         return Promise.resolve().then(() => {
             const colorElements = element.shadowRoot.querySelectorAll(
-                '[data-element-id="span-list"]'
+                '[data-element-id="span-swatch"]'
             );
-            expect(colorElements).toHaveLength(2);
+            expect(colorElements).toHaveLength(COLORS.length);
             colorElements.forEach((color, index) => {
-                expect(color.style.backgroundColor).toBe(TOKENS[index].color);
+                const bgColor =
+                    COLORS[index] instanceof Object
+                        ? COLORS[index].color
+                        : COLORS[index];
+                expect(color.style.backgroundColor).toBe(bgColor);
             });
         });
     });
@@ -202,6 +188,60 @@ describe('Color Palette', () => {
                 '[data-element-id="div-palette-container"]'
             );
             expect(container.style.width).toBe('112px');
+        });
+    });
+
+    // groups
+    // Depends on colors
+    it('Color Palette groups', () => {
+        const groupsName = [
+            {
+                name: 'firstGroup',
+                label: 'First Group'
+            },
+            {
+                name: 'secondGroup',
+                label: 'Second Group'
+            }
+        ];
+        element.groups = groupsName;
+        element.colors = COLORS;
+
+        return Promise.resolve().then(() => {
+            const groups = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-group"]'
+            );
+            expect(groups).toHaveLength(3);
+
+            // Undefined group
+            const firstGroupLabel = groups[0].querySelector(
+                '[data-element-id="div-group-label"]'
+            );
+            expect(firstGroupLabel).toBeFalsy();
+            const firstGroupSwatches = groups[0].querySelectorAll(
+                '[data-element-id="span-swatch"]'
+            );
+            expect(firstGroupSwatches).toHaveLength(2);
+
+            // First group
+            const secondGroupLabel = groups[1].querySelector(
+                '[data-element-id="div-group-label"]'
+            );
+            expect(secondGroupLabel.textContent).toBe(groupsName[0].label);
+            const secondGroupSwatches = groups[1].querySelectorAll(
+                '[data-element-id="span-swatch"]'
+            );
+            expect(secondGroupSwatches).toHaveLength(2);
+
+            // Second group
+            const thirdGroupLabel = groups[2].querySelector(
+                '[data-element-id="div-group-label"]'
+            );
+            expect(thirdGroupLabel.textContent).toBe(groupsName[1].label);
+            const ThirdGroupSwatches = groups[2].querySelectorAll(
+                '[data-element-id="span-swatch"]'
+            );
+            expect(ThirdGroupSwatches).toHaveLength(1);
         });
     });
 
@@ -229,6 +269,41 @@ describe('Color Palette', () => {
             );
             colors.forEach((color) => {
                 expect(color.style.height).toBe('10px');
+            });
+        });
+    });
+
+    // variant
+    // Depends on colors
+    it('Color Palette grid variant', () => {
+        element.variant = 'grid';
+        element.colors = COLORS;
+
+        return Promise.resolve().then(() => {
+            const links = element.shadowRoot.querySelectorAll(
+                '[data-element-id="a-grid"]'
+            );
+            expect(links).toHaveLength(COLORS.length);
+            links.forEach((link, index) => {
+                expect(link.title).toBe(COLORS[index].label || '');
+                expect(link.getAttribute('aria-label')).toBe(
+                    COLORS[index].label || null
+                );
+            });
+        });
+    });
+
+    it('Color Palette list variant', () => {
+        element.variant = 'list';
+        element.colors = COLORS;
+
+        return Promise.resolve().then(() => {
+            const labels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="span-list-icon-wrapper"]'
+            );
+            expect(labels).toHaveLength(COLORS.length);
+            labels.forEach((label, index) => {
+                expect(label.textContent).toBe(COLORS[index].label || '');
             });
         });
     });
@@ -270,7 +345,7 @@ describe('Color Palette', () => {
 
         return Promise.resolve().then(() => {
             const a = element.shadowRoot.querySelectorAll(
-                '[data-element-id="span-base"]'
+                '[data-element-id="span-swatch"]'
             );
             a[0].click();
             expect(handler).toHaveBeenCalled();
@@ -292,11 +367,11 @@ describe('Color Palette', () => {
     it('Color Palette change event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
-        element.colors = TOKENS;
+        element.colors = COLORS;
 
         return Promise.resolve().then(() => {
             const a = element.shadowRoot.querySelectorAll(
-                '[data-element-id="span-list"]'
+                '[data-element-id="span-swatch"]'
             );
             a[0].click();
             expect(handler).toHaveBeenCalled();
@@ -316,13 +391,15 @@ describe('Color Palette', () => {
     });
 
     // color palette change
+    // Depends on variant and colors
     it('Color Palette double click event', () => {
         const handler = jest.fn();
         element.addEventListener('colordblclick', handler);
+        element.colors = COLORS;
 
         return Promise.resolve().then(() => {
             const a = element.shadowRoot.querySelector(
-                '[data-element-id="a-base"]'
+                '[data-element-id="a-grid"]'
             );
             a.dispatchEvent(new CustomEvent('dblclick'));
 
@@ -336,7 +413,8 @@ describe('Color Palette', () => {
     it('Color Palette double click event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('colordblclick', handler);
-        element.colors = TOKENS;
+        element.colors = COLORS;
+        element.variant = 'list';
 
         return Promise.resolve().then(() => {
             const a = element.shadowRoot.querySelector(
@@ -354,10 +432,11 @@ describe('Color Palette', () => {
     it('Color Palette focus event', () => {
         const handler = jest.fn();
         element.addEventListener('privatefocus', handler);
+        element.colors = COLORS;
 
         return Promise.resolve().then(() => {
             const color = element.shadowRoot.querySelector(
-                '[data-element-id="a-base"]'
+                '[data-element-id="a-grid"]'
             );
             color.dispatchEvent(new CustomEvent('focus'));
             expect(handler).toHaveBeenCalled();
@@ -370,7 +449,8 @@ describe('Color Palette', () => {
     it('Color Palette focus event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('privatefocus', handler);
-        element.colors = TOKENS;
+        element.colors = COLORS;
+        element.variant = 'list';
 
         return Promise.resolve().then(() => {
             const color = element.shadowRoot.querySelector(
@@ -387,11 +467,12 @@ describe('Color Palette', () => {
     it('Color Palette blur event', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
+        element.colors = COLORS;
 
         return Promise.resolve()
             .then(() => {
                 const color = element.shadowRoot.querySelector(
-                    '[data-element-id="a-base"]'
+                    '[data-element-id="a-grid"]'
                 );
                 color.dispatchEvent(new CustomEvent('blur'));
             })
@@ -406,7 +487,8 @@ describe('Color Palette', () => {
     it('Color Palette blur event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
-        element.colors = TOKENS;
+        element.colors = COLORS;
+        element.variant = 'list';
 
         return Promise.resolve()
             .then(() => {

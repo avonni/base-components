@@ -31,6 +31,7 @@
  */
 
 import { ColorPalette } from '../__examples__/colorPalette';
+import { colors, tokens, groups } from './data';
 
 export default {
     title: 'Example/Color Palette',
@@ -59,6 +60,15 @@ export default {
             table: {
                 defaultValue: { summary: 7 },
                 type: { summary: 'number' }
+            }
+        },
+        groups: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of group objects.',
+            table: {
+                type: { summary: 'object[]' }
             }
         },
         tileWidth: {
@@ -119,10 +129,23 @@ export default {
             },
             defaultValue: 0,
             description:
-                'If present, a spinner is displayed to indicate that data is loading. ',
+                'If present, a spinner is displayed to indicate that data is loading.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
+            }
+        },
+        variant: {
+            control: {
+                type: 'radio'
+            },
+            defaultValue: 'grid',
+            options: ['grid', 'list'],
+            description:
+                'Changes the appearance of the palette. Valid values include grid and list.',
+            table: {
+                defaultValue: { summary: 'grid' },
+                type: { summary: 'string' }
             }
         }
     },
@@ -133,104 +156,56 @@ export default {
     }
 };
 
-const colors = [
-    '#e3abec',
-    '#c2dbf7',
-    '#9fd6ff',
-    '#9de7da',
-    '#9df0bf',
-    '#fff099',
-    '#fed49a',
-    '#d073df',
-    '#86b9f3',
-    '#5ebbff',
-    '#44d8be',
-    '#3be281',
-    '#ffe654',
-    '#ffb758',
-    '#bd35bd',
-    '#5778c1',
-    '#5ebbff',
-    '#00aea9',
-    '#3bba4c',
-    '#f4bc25',
-    '#f99120',
-    '#580d8c',
-    '#001870',
-    '#0a2399',
-    '#097476',
-    '#096a50',
-    '#b67d11',
-    '#b85d0d'
-];
-
-const colorsWithLabel = [
-    {
-        label: 'brand-accessible',
-        color: '#0176d3',
-        value: '--lwc-brandAccessible'
-    },
-    {
-        label: 'brand-active',
-        color: '#014486',
-        value: '--lwc-brandAccessibleActive'
-    },
-    {
-        label: 'brand-dark',
-        color: '#014486',
-        value: '--lwc-brandBackgroundDark'
-    },
-    {
-        label: 'dark-transparent',
-        color: 'rgba(1, 68, 134, 0)',
-        value: '--lwc-brandBackgroundDarkTransparent'
-    },
-    {
-        label: 'background-primary',
-        color: '#eef4ff',
-        value: '--lwc-brandBackgroundPrimary'
-    },
-    {
-        label: 'primary-transparent',
-        color: 'rgba(176,196,223,0)',
-        value: '--lwc-brandBackgroundPrimaryTransparent'
-    },
-    {
-        label: 'brand-contrast',
-        color: 'rgb(26, 27, 30)',
-        value: '--lwc-brandContrast'
-    }
-];
-
 const Template = (args) => ColorPalette(args);
 
 export const Base = Template.bind({});
-Base.args = {
-    colors: colors
+
+export const SmallTiles = Template.bind({});
+SmallTiles.args = {
+    tileWidth: 10,
+    tileHeight: 10
 };
 
-export const WithLabels = Template.bind({});
-WithLabels.args = {
-    colors: colorsWithLabel
-};
-
-export const BaseSmall = Template.bind({});
-BaseSmall.args = {
-    colors: colors,
-    tileWidth: '10',
-    tileHeight: '10'
-};
-
-export const BaseLarge = Template.bind({});
-BaseLarge.args = {
-    colors: colors,
-    tileWidth: '30',
-    tileHeight: '30',
-    columns: '7'
+export const LargeTiles = Template.bind({});
+LargeTiles.args = {
+    tileWidth: 30,
+    tileHeight: 30
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-    colors: colors,
-    disabled: 'true'
+    disabled: true
+};
+
+export const List = Template.bind({});
+List.args = {
+    colors: tokens,
+    variant: 'list'
+};
+
+export const ListWithGroups = Template.bind({});
+ListWithGroups.args = {
+    colors: tokens,
+    variant: 'list',
+    groups: [
+        {
+            name: 'background',
+            label: 'Background'
+        },
+        {
+            name: 'text',
+            label: 'Text'
+        },
+        {
+            name: 'border',
+            label: 'Border'
+        }
+    ]
+};
+
+export const GridWithGroups = Template.bind({});
+GridWithGroups.args = {
+    colors,
+    groups,
+    columns: 6
 };

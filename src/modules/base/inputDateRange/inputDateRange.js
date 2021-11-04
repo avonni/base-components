@@ -990,7 +990,6 @@ export default class InputDateRange extends LightningElement {
 
         this._startDate = startDate;
         this._endDate = endDate;
-
         /**
          * The event fired when the value changed.
          *

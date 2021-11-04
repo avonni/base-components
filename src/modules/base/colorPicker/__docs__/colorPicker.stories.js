@@ -31,6 +31,7 @@
  */
 
 import { ColorPicker } from '../__examples__/colorPicker';
+import { colors, groups, tokens, tokenGroups } from './data';
 
 export default {
     title: 'Example/Color Picker',
@@ -68,7 +69,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -87,13 +87,22 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        groups: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of group objects. Groups can be used by the tokens and the predefined palette.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         hideColorInput: {
             name: 'hide-color-input',
             control: {
                 type: 'boolean'
             },
             description: 'If true, hide the input color value.',
-            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -104,7 +113,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, a spinner is displayed to indicate that data is loading. ',
             table: {
@@ -135,7 +143,6 @@ export default {
                 'bottom-center',
                 'bottom-right'
             ],
-            defaultValue: 'left',
             description:
                 'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. ',
             table: {
@@ -160,7 +167,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'x-small',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
             table: {
@@ -185,7 +191,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
             table: {
@@ -207,7 +212,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
             table: {
@@ -252,7 +256,6 @@ export default {
                 type: 'boolean'
             },
             description: 'Defines whether the alpha slider will be displayed.',
-            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -263,7 +266,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the palette is read-only and cannot be edited by users.',
             table: {
@@ -275,7 +277,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
@@ -287,9 +288,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['base', 'custom', 'predefined'],
-            defaultValue: 'base',
-            description: 'Values include base, custom and predefined.',
+            options: ['base', 'custom', 'predefined', 'tokens'],
+            description:
+                'Type of the color picker. The base type uses tabs for all the other types.Valid values include base, custom, predefined and tokens.',
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }
@@ -314,7 +315,6 @@ export default {
                 'label-hidden',
                 'label-stacked'
             ],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
@@ -343,213 +343,100 @@ export default {
     }
 };
 
-const tokens = [
-    {
-        label: 'brand-accessible',
-        value: '--lwc-brand-accessible',
-        color: '#0176d3'
-    },
-    {
-        label: 'brand-accessible-active',
-        value: '--lwc-brand-accessible-active',
-        color: '#014486'
-    },
-    {
-        label: 'color-text-action-label',
-        value: '--lwc-colorTextActionLabel',
-        color: '#3e3e3c'
-    },
-    {
-        label: 'color-text-customer',
-        value: '--lwc-colorTextCustomer',
-        color: '#fe9339'
-    },
-    {
-        label: 'color-text-error',
-        value: '--lwc-colorTextError',
-        color: '#ea001e'
-    }
-];
-
-const colorsValue = [
-    '#e3abec',
-    '#c2dbf7',
-    '#9fd6ff',
-    '#9de7da',
-    '#9df0bf',
-    '#fff099',
-    '#fed49a',
-    '#d073df',
-    '#86b9f3',
-    '#5ebbff',
-    '#44d8be',
-    '#3be281',
-    '#ffe654',
-    '#ffb758',
-    '#bd35bd',
-    '#5778c1',
-    '#5ebbff',
-    '#00aea9',
-    '#3bba4c',
-    '#f4bc25',
-    '#f99120',
-    '#580d8c',
-    '#001870',
-    '#0a2399',
-    '#097476',
-    '#096a50',
-    '#b67d11',
-    '#b85d0d'
-];
-
 const Template = (args) => ColorPicker(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    colors: colorsValue
+    label: 'Base Color Picker'
 };
 
-export const StandardWithTokens = Template.bind({});
-StandardWithTokens.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
+export const Tokens = Template.bind({});
+Tokens.args = {
+    label: 'Base Color Picker With Tokens',
+    fieldLevelHelp: 'The tokens need to be defined for the tab to appear.',
     value: '--lwc-colorTextActionLabel',
-    messageWhenBadInput: 'Please ensure value is correct',
-    colors: colorsValue,
-    tokens: tokens
+    tokens
 };
 
-export const BaseWithIcon = Template.bind({});
-BaseWithIcon.args = {
+export const Groups = Template.bind({});
+Groups.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuLabel: 'Pick a color',
-    colors: colorsValue
-};
-
-export const BaseWithIconWithoutColorInput = Template.bind({});
-BaseWithIconWithoutColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Read Only',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuLabel: 'Pick a color',
-    hideColorInput: 'true',
-    colors: colorsValue
+    tokens,
+    groups: groups.concat(tokenGroups),
+    columns: 6,
+    colors
 };
 
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
+    fieldLevelHelp: 'Read only',
     value: '#419fec',
-    colors: colorsValue,
     readOnly: true
 };
 
-export const LabelInlineWithMenuVariantContainer = Template.bind({});
-LabelInlineWithMenuVariantContainer.args = {
+export const Menu = Template.bind({});
+Menu.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#0a2399',
-    variant: 'label-inline',
-    menuVariant: 'container',
-    colors: colorsValue
+    fieldLevelHelp: 'A menu icon name and a menu label have been set.',
+    menuIconName: 'utility:down',
+    menuLabel: 'Pick a color',
+    value: '#419fec'
 };
 
-export const LabelInlineWithoutColorInput = Template.bind({});
-LabelInlineWithoutColorInput.args = {
+export const MenuNoInput = Template.bind({});
+MenuNoInput.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
+    fieldLevelHelp:
+        'A menu icon name and a menu label have been set. The color input is hidden.',
+    value: '#419fec',
+    menuIconName: 'utility:down',
+    menuLabel: 'Pick a color',
+    hideColorInput: true
+};
+
+export const Inline = Template.bind({});
+Inline.args = {
+    label: 'Color label',
+    fieldLevelHelp: 'The variant is "label-inline".',
+    value: '#0a2399',
+    variant: 'label-inline',
+    menuVariant: 'container'
+};
+
+export const InlineNoInput = Template.bind({});
+InlineNoInput.args = {
+    label: 'Color label',
+    fieldLevelHelp:
+        'The variant is "label-inline" and the color input is hidden.',
     value: '#096a50',
     variant: 'label-inline',
     menuVariant: 'container',
-    hideColorInput: 'true',
-    colorsValue: colorsValue
+    hideColorInput: true
 };
 
-export const LabelHiddenWithoutHelpMessage = Template.bind({});
-LabelHiddenWithoutHelpMessage.args = {
-    label: 'Color label',
-    value: '#ffb758',
-    variant: 'label-hidden',
-    hideColorInput: 'true',
-    menuVariant: 'bare-inverse',
-    colors: colorsValue
-};
-
-export const LabelHiddenWithoutHelpMessageBorderInverse = Template.bind({});
-LabelHiddenWithoutHelpMessageBorderInverse.args = {
-    label: 'Color label',
-    value: '#3be281',
-    variant: 'label-hidden',
-    hideColorInput: 'true',
-    menuVariant: 'border-inverse',
-    colors: colorsValue
-};
-
-export const LabelHiddenWithMenuLabel = Template.bind({});
-LabelHiddenWithMenuLabel.args = {
+export const LabelHiddenBorderInverseMenu = Template.bind({});
+LabelHiddenBorderInverseMenu.args = {
     label: 'Color label',
     value: '#d073df',
     variant: 'label-hidden',
-    hideColorInput: 'true',
+    hideColorInput: true,
     menuVariant: 'border-inverse',
-    menuLabel: 'Pick a color',
-    colors: colorsValue
+    menuLabel: 'Pick a color'
 };
 
-export const Xx_smallIconWithColorInput = Template.bind({});
-Xx_smallIconWithColorInput.args = {
+export const xxSmallMenuIcon = Template.bind({});
+xxSmallMenuIcon.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
-    menuIconSize: 'xx-small',
-    colorsValue: colorsValue
+    menuIconSize: 'xx-small'
 };
 
-export const X_smallIconWithColorInput = Template.bind({});
-X_smallIconWithColorInput.args = {
+export const mediumMenuIcon = Template.bind({});
+mediumMenuIcon.args = {
     label: 'Color label',
-    fieldLevelHelp: 'Help text',
     value: '#419fec',
     menuIconName: 'utility:down',
-    menuIconSize: 'x-small',
-    colors: colorsValue
-};
-
-export const SmallIconWithColorInput = Template.bind({});
-SmallIconWithColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuIconSize: 'small',
-    colors: colorsValue
-};
-
-export const MediumIconWithColorInput = Template.bind({});
-MediumIconWithColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuIconSize: 'medium',
-    colors: colorsValue
-};
-
-export const LargeIconWithColorInput = Template.bind({});
-LargeIconWithColorInput.args = {
-    label: 'Color label',
-    fieldLevelHelp: 'Help text',
-    value: '#419fec',
-    menuIconName: 'utility:down',
-    menuIconSize: 'large',
-    colors: colorsValue
+    menuIconSize: 'medium'
 };
