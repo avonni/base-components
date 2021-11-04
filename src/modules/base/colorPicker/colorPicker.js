@@ -49,8 +49,8 @@ const VARIANTS = {
     default: 'standard'
 };
 
-const LABEL_TYPES = {
-    valid: ['base', 'custom', 'predefined'],
+const TYPES = {
+    valid: ['base', 'custom', 'predefined', 'tokens'],
     default: 'base'
 };
 
@@ -115,6 +115,7 @@ const DEFAULT_COLORS = [
 ];
 
 const DEFAULT_COLUMNS = 7;
+const DEFAULT_TAB = 'default';
 const MINIMUM_TILE_SIZE = 5;
 
 /**
@@ -176,10 +177,11 @@ export default class ColorPicker extends LightningElement {
     @api messageWhenValueMissing;
 
     _columns = DEFAULT_COLUMNS;
+    _groups = [];
     _value;
     _name;
     _variant = VARIANTS.default;
-    _type = LABEL_TYPES.default;
+    _type = TYPES.default;
     _menuVariant = MENU_VARIANTS.default;
     _menuIconSize = MENU_ICON_SIZES.default;
     _menuAlignment = MENU_ALIGNMENTS.default;
@@ -193,7 +195,7 @@ export default class ColorPicker extends LightningElement {
     _opacity = false;
     _tokens = [];
 
-    _currentTab = 'default';
+    _currentTab = DEFAULT_TAB;
     _draftToken = {};
 
     currentToken = {};
@@ -249,6 +251,21 @@ export default class ColorPicker extends LightningElement {
             !isNaN(normalizedValue) && normalizedValue
                 ? parseInt(value, 10)
                 : DEFAULT_COLUMNS;
+    }
+
+    /**
+     * Array of group objects. Groups can be used by the tokens and the predefined palette.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get groups() {
+        return this._groups;
+    }
+
+    set groups(value) {
+        this._groups = normalizeArray(value);
     }
 
     /**
@@ -310,7 +327,8 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Values include base, custom, predefined.
+     * Type of the color picker. The base type uses tabs for all the other types.
+     * Valid values include base, custom, predefined and tokens.
      *
      * @public
      * @type {string}
@@ -323,8 +341,8 @@ export default class ColorPicker extends LightningElement {
 
     set type(type) {
         this._type = normalizeString(type, {
-            fallbackValue: LABEL_TYPES.default,
-            validValues: LABEL_TYPES.valid
+            fallbackValue: TYPES.default,
+            validValues: TYPES.valid
         });
     }
 
@@ -450,7 +468,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Color values displayed in the default palette.
+     * Array of colors displayed in the default palette. Each color can either be a string, or a color object. The color objects are used in conjunction with the groups attribute, to split the colors into different groups.
      *
      * @public
      * @type {string[]}
@@ -515,7 +533,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Array of token objects. If present, a token tab will be added in the menu.
+     * Array of token objects.
      *
      * @public
      * @type {object[]}
@@ -531,64 +549,61 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * Variant of the color palette.
+     *
+     * @type {string}
+     * @default grid
+     */
+    get colorPaletteVariant() {
+        return this._currentTab === 'tokens' || this.type === 'tokens'
+            ? 'list'
+            : 'grid';
+    }
+
+    /**
      * Tokens array or colors array, depending on the selected tab.
      *
      * @type {(object[]|string[])}
      */
     get computedColors() {
-        return this.tokens.length && this._currentTab === 'tokens'
+        return this._currentTab === 'tokens' || this.type === 'tokens'
             ? this.tokens
             : this.colors;
     }
 
     /**
-     * True if the selected tab is "Custom".
+     * Computed value for the gradient component. If the value is empty, the gradient is initialized with a white color.
      *
-     * @type {boolean}
-     * @default false
+     * @type {string}
+     * @default #fff
      */
-    get customTabIsSelected() {
-        return this._currentTab === 'custom';
+    get computedGradientValue() {
+        if (!this.value) return '#fff';
+        if (this.currentToken.color) return this.currentToken.color;
+        return this.value;
     }
 
     /**
-     * Verify if type is Base.
+     * True if the type is 'base'.
      *
-     * @returns {boolean}
+     * @type {boolean}
+     * @default true
      */
     get isBase() {
         return this.type === 'base';
     }
 
     /**
-     * Verify if type is Custom.
+     * Computed icon class.
      *
-     * @returns {boolean}
+     * @type {string}
      */
-    get isCustom() {
-        return this.type === 'custom';
-    }
-
-    /**
-     * Verify if type is Predefined.
-     *
-     * @returns {boolean}
-     */
-    get isPredefined() {
-        return this.type === 'predefined';
-    }
-
-    /**
-     * Get the icon class.
-     *
-     * @returns menuLabel
-     */
-    get iconClass() {
+    get computedIconClass() {
         return this.menuLabel ? 'slds-m-left_xx-small' : '';
     }
 
     /**
-     * Retrieve the input value.
+     * Value of the color input.
      *
      * @type {string}
      */
@@ -601,7 +616,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Whether the color input field contains a value.
+     * True if the input field contains a value.
      *
      * @type {string}
      */
@@ -614,7 +629,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Returns true if the input value is color type.
+     * True if the input value is color type.
      *
      * @type {boolean}
      */
@@ -629,18 +644,18 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Returns swatch element.
+     * HTML element for the swatch.
      *
-     * @type {element}
+     * @type {HTMLElement}
      */
     get elementSwatch() {
         return this.template.querySelector('[data-element-id="swatch"]');
     }
 
     /**
-     * Returns colorGradient element.
+     * HTML element for the color gradient.
      *
-     * @type {element}
+     * @type {HTMLElement}
      */
     get colorGradient() {
         return this.template.querySelector(
@@ -796,6 +811,18 @@ export default class ColorPicker extends LightningElement {
             .toString();
     }
 
+    get computedTabBodyClass() {
+        return classSet()
+            .add({
+                'slds-tabs_default__content': this.isBase
+            })
+            .toString();
+    }
+
+    get showColorGradient() {
+        return this.type === 'custom' || this._currentTab === 'custom';
+    }
+
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
      *
@@ -907,6 +934,9 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /**
+     * Set the current token value and initialize the swatch colors.
+     */
     computeToken() {
         const isToken =
             typeof this.value === 'string' && this.value.match(/^--.+/);
@@ -941,11 +971,13 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Change Handler.
+     * Handle a change in the value. Temporarily save the value, in case the user cancels the change.
      *
      * @param {Event} event
      */
-    handlerChange(event) {
+    handleChange(event) {
+        event.stopPropagation();
+
         if (event.detail) {
             this.newValue =
                 this.opacity && Number(event.detail.alpha) < 1
@@ -959,9 +991,19 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * Handle a change in the color palette. Save and close the popover right away.
+     *
+     * @param {Event} event
+     */
+    handleDefaultAndTokenChange(event) {
+        this.handleChange(event);
+        this.handleDone();
+    }
+
+    /**
      * Handle new value change and update ui.
      */
-    handlerDone() {
+    handleDone() {
         if (!this.readOnly && this.newValue) {
             // eslint-disable-next-line @lwc/lwc/no-api-reassignments
             this.value = this.newValue;
@@ -985,7 +1027,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Handle new value canceled.
      */
-    handlerCancel() {
+    handleCancel() {
         this.newValue = null;
 
         if (this.colorGradient) {
@@ -1127,7 +1169,7 @@ export default class ColorPicker extends LightningElement {
      *
      * @param {Event} event
      */
-    handlerTabClick(event) {
+    handleTabClick(event) {
         event.preventDefault();
 
         this.template
@@ -1252,6 +1294,9 @@ export default class ColorPicker extends LightningElement {
              * @param {string} rgb Color in rgb format.
              * @param {string} rgba Color in rgba format.
              * @param {string} alpha Alpha value of the color.
+             * @param {string} token Token value.
+             * @bubbles
+             * @cancelable
              */
             this.dispatchEvent(
                 new CustomEvent('change', {
@@ -1264,8 +1309,7 @@ export default class ColorPicker extends LightningElement {
                         token: this.currentToken.value
                     },
                     bubbles: true,
-                    cancelable: true,
-                    composed: false
+                    cancelable: true
                 })
             );
         }

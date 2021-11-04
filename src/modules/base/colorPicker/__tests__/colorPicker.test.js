@@ -37,7 +37,7 @@ import ColorPicker from 'c/colorPicker';
 // Positioning of the dropdown menu.
 // Computed palette tile width and height.
 
-const colors = [
+const defaultColors = [
     '#e3abec',
     '#c2dbf6',
     '#9fd6ff',
@@ -67,6 +67,7 @@ const colors = [
     '#b67d11',
     '#b85d0d'
 ];
+const colors = ['#fff', '#333', '#555'];
 
 const tokens = [
     {
@@ -113,10 +114,11 @@ describe('Color Picker', () => {
 
     it('Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
-        expect(element.colors).toMatchObject(colors);
+        expect(element.colors).toMatchObject(defaultColors);
         expect(element.columns).toBe(7);
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
+        expect(element.groups).toMatchObject([]);
         expect(element.hideColorInput).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.label).toBeUndefined();
@@ -164,25 +166,9 @@ describe('Color Picker', () => {
 
         return Promise.resolve().then(() => {
             const palette = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-color-palette-default"]'
+                '[data-element-id="avonni-color-palette"]'
             );
             expect(palette.columns).toBe(5);
-        });
-    });
-
-    it('columns for predefined type', () => {
-        element.columns = 9;
-        element.type = 'predefined';
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-        button.click();
-
-        return Promise.resolve().then(() => {
-            const palette = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-color-palette-custom"]'
-            );
-            expect(palette.columns).toBe(9);
         });
     });
 
@@ -208,6 +194,26 @@ describe('Color Picker', () => {
             );
             expect(helpText.content).toBe('This is a field level help text');
         });
+    });
+
+    // groups
+    it('groups', () => {
+        const groups = ['firstGroup', 'secondGroup'];
+        element.groups = groups;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette.groups).toMatchObject(groups);
+            });
     });
 
     // isLoading
@@ -405,6 +411,7 @@ describe('Color Picker', () => {
     });
 
     // type
+    // Depends on colors and tokens
     it('type base', () => {
         element.type = 'base';
 
@@ -416,14 +423,17 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
-                const palette =
-                    element.shadowRoot.querySelector('.slds-tabs_default');
-                expect(palette).toBeTruthy();
+                const tabs = element.shadowRoot.querySelector(
+                    '[data-element-id="ul-tabs"]'
+                );
+                expect(tabs).toBeTruthy();
             });
     });
 
     it('type predefined', () => {
         element.type = 'predefined';
+        element.colors = colors;
+        element.tokens = tokens;
 
         return Promise.resolve()
             .then(() => {
@@ -433,10 +443,67 @@ describe('Color Picker', () => {
                 button.click();
             })
             .then(() => {
+                const tabs = element.shadowRoot.querySelector(
+                    '[data-element-id="ul-tabs"]'
+                );
+                expect(tabs).toBeFalsy();
+
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette).toBeTruthy();
+                expect(palette.colors).toMatchObject(colors);
+                expect(palette.variant).toBe('grid');
+            });
+    });
+
+    it('type custom', () => {
+        element.type = 'custom';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const tabs = element.shadowRoot.querySelector(
+                    '[data-element-id="ul-tabs"]'
+                );
+                expect(tabs).toBeFalsy();
+
                 const gradient = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-color-palette-custom"]'
+                    '[data-element-id="avonni-color-gradient"]'
                 );
                 expect(gradient).toBeTruthy();
+            });
+    });
+
+    it('type tokens', () => {
+        element.type = 'tokens';
+        element.tokens = tokens;
+        element.colors = colors;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const tabs = element.shadowRoot.querySelector(
+                    '[data-element-id="ul-tabs"]'
+                );
+                expect(tabs).toBeFalsy();
+
+                const palette = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-palette"]'
+                );
+                expect(palette).toBeTruthy();
+                expect(palette.colors).toMatchObject(tokens);
+                expect(palette.variant).toBe('list');
             });
     });
 
@@ -949,7 +1016,7 @@ describe('Color Picker', () => {
     });
 
     // message when bad input
-    it('Color Picker message when bad input value', () => {
+    it('message when bad input value', () => {
         element.messageWhenBadInput = 'Something is wrong';
         element.value = 'hello';
         element.showHelpMessageIfInvalid();
@@ -963,7 +1030,7 @@ describe('Color Picker', () => {
     });
 
     // message when missing value
-    it('Color Picker message when missing value', () => {
+    it('message when missing value', () => {
         element.messageWhenValueMissing = 'Something is wrong';
         element.required = true;
         element.showHelpMessageIfInvalid();
@@ -978,8 +1045,7 @@ describe('Color Picker', () => {
 
     // colors
     it('colors', () => {
-        const simpleColors = ['#fff', '#333', '#555'];
-        element.colors = simpleColors;
+        element.colors = colors;
 
         return Promise.resolve()
             .then(() => {
@@ -990,9 +1056,9 @@ describe('Color Picker', () => {
             })
             .then(() => {
                 const palette = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-color-palette-default"]'
+                    '[data-element-id="avonni-color-palette"]'
                 );
-                expect(palette.colors).toMatchObject(simpleColors);
+                expect(palette.colors).toMatchObject(colors);
             });
     });
 
@@ -1023,63 +1089,6 @@ describe('Color Picker', () => {
             );
             expect(gradient.opacity).toBe(true);
         });
-    });
-
-    // swatch initialization
-    it('Color Picker swatch initialization', () => {
-        element.value = '#e3abec';
-        return Promise.resolve().then(() => {
-            const swatch = element.shadowRoot.querySelector(
-                '[data-element-id="swatch"]'
-            );
-            expect(swatch.style.background).toBe('rgb(227, 171, 236)');
-        });
-    });
-
-    // done button
-    it('Color Picker done button', () => {
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="button"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const doneButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-done"]'
-                );
-                expect(doneButton).toBeTruthy();
-                doneButton.click();
-            });
-    });
-
-    // tokens
-    it('tokens', () => {
-        element.tokens = tokens;
-
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-        button.click();
-
-        return Promise.resolve()
-            .then(() => {
-                const tabLink = element.shadowRoot.querySelector(
-                    '[data-element-id="a-tokens-tab"]'
-                );
-                tabLink.click();
-            })
-            .then(() => {
-                const tab = element.shadowRoot.querySelector(
-                    '[data-element-id="li-tokens-tab"]'
-                );
-                expect(tab.classList).toContain('slds-is-active');
-                const palette = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-color-palette-default"]'
-                );
-                expect(palette.colors).toMatchObject(tokens);
-            });
     });
 
     // focus and blur on tab
@@ -1147,7 +1156,7 @@ describe('Color Picker', () => {
 
     // checkValidity
     // Depends on required
-    it('Color picker checkValidity method, valid', () => {
+    it('checkValidity method, valid', () => {
         element.required = false;
 
         return Promise.resolve().then(() => {
@@ -1155,7 +1164,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('Color picker checkValidity method, invalid', () => {
+    it('checkValidity method, invalid', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -1165,7 +1174,7 @@ describe('Color Picker', () => {
 
     // reportValidity
     // Depends on required
-    it('Color picker reportValidity method', () => {
+    it('reportValidity method', () => {
         element.required = true;
         element.reportValidity();
 
@@ -1179,7 +1188,7 @@ describe('Color Picker', () => {
 
     // showHelpMessageIfInvalid
     // Depends on required
-    it('Color picker showHelpMessageIfInvalid method', () => {
+    it('showHelpMessageIfInvalid method', () => {
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -1193,8 +1202,62 @@ describe('Color Picker', () => {
 
     /* ----- EVENTS ----- */
 
+    // blur
+    it('close dropdown on button blur', () => {
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
+        button.click();
+
+        return Promise.resolve()
+            .then(() => {
+                const dropdownTrigger = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown-trigger"]'
+                );
+                expect(dropdownTrigger.classList).toContain('slds-is-open');
+                button.dispatchEvent(new CustomEvent('blur'));
+            })
+            .then(() => {
+                const dropdownTrigger = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown-trigger"]'
+                );
+                expect(dropdownTrigger.classList).not.toContain('slds-is-open');
+            });
+    });
+
+    it('do not close dropdown on button blur if focus is inside dropdown', () => {
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
+        button.click();
+
+        return Promise.resolve()
+            .then(() => {
+                const dropdownTrigger = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown-trigger"]'
+                );
+                expect(dropdownTrigger.classList).toContain('slds-is-open');
+
+                const event = new CustomEvent('mousedown');
+                event.button = 0;
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown"]'
+                );
+                dropdown.dispatchEvent(event);
+            })
+            .then(() => {
+                const dropdownTrigger = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown-trigger"]'
+                );
+                expect(dropdownTrigger.classList).toContain('slds-is-open');
+            });
+    });
+
     // cancel button
+    // Depends on type
     it('cancel button in the dropdown', () => {
+        element.type = 'custom';
+
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -1207,17 +1270,18 @@ describe('Color Picker', () => {
             token: '--lwc-brand-accessible-active'
         };
 
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-        button.click();
-
         return Promise.resolve()
             .then(() => {
-                const palette = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-color-palette-default"]'
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
                 );
-                palette.dispatchEvent(
+                button.click();
+            })
+            .then(() => {
+                const gradient = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-gradient"]'
+                );
+                gradient.dispatchEvent(
                     new CustomEvent('change', {
                         detail: color,
                         bubbles: true,
@@ -1283,7 +1347,7 @@ describe('Color Picker', () => {
         return Promise.resolve()
             .then(() => {
                 const palette = element.shadowRoot.querySelector(
-                    '[data-element-id="avonni-color-palette-default"]'
+                    '[data-element-id="avonni-color-palette"]'
                 );
                 palette.dispatchEvent(
                     new CustomEvent('change', {
@@ -1292,11 +1356,6 @@ describe('Color Picker', () => {
                         cancelable: true
                     })
                 );
-
-                const doneButton = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-done"]'
-                );
-                doneButton.click();
             })
             .then(() => {
                 expect(handler).toHaveBeenCalled();
@@ -1308,6 +1367,50 @@ describe('Color Picker', () => {
                 expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+
+                const dropdownTrigger = element.shadowRoot.querySelector(
+                    '[data-element-id="div-dropdown-trigger"]'
+                );
+                expect(dropdownTrigger.classList).not.toContain('slds-is-open');
+            });
+    });
+
+    // done button
+    // Depends on type
+    it('done button', () => {
+        element.type = 'custom';
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const doneButton = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-done"]'
+                );
+                expect(doneButton).toBeTruthy();
+
+                const gradient = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-color-gradient"]'
+                );
+
+                gradient.dispatchEvent(
+                    new CustomEvent('change', {
+                        detail: {
+                            hex: '#e3abec'
+                        }
+                    })
+                );
+                doneButton.click();
+            })
+            .then(() => {
+                expect(element.value).toBe('#e3abec');
+                expect(handler).toHaveBeenCalled();
             });
     });
 
@@ -1325,56 +1428,5 @@ describe('Color Picker', () => {
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-    });
-
-    // blur
-    it('close dropdown on button blur', () => {
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-        button.click();
-
-        return Promise.resolve()
-            .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
-                );
-                expect(dropdownTrigger.classList).toContain('slds-is-open');
-                button.dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
-                );
-                expect(dropdownTrigger.classList).not.toContain('slds-is-open');
-            });
-    });
-
-    it('do not close dropdown on button blur if focus is inside dropdown', () => {
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-        button.click();
-
-        return Promise.resolve()
-            .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
-                );
-                expect(dropdownTrigger.classList).toContain('slds-is-open');
-
-                const event = new CustomEvent('mousedown');
-                event.button = 0;
-                const dropdown = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown"]'
-                );
-                dropdown.dispatchEvent(event);
-            })
-            .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
-                );
-                expect(dropdownTrigger.classList).toContain('slds-is-open');
-            });
     });
 });

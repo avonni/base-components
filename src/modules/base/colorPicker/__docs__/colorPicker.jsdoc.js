@@ -3,8 +3,18 @@
  */
 /**
  * @memberof examples
- * @name standard
- * @storyId example-color-picker--standard
+ * @name base
+ * @storyId example-color-picker--base
+ */
+/**
+ * @memberof examples
+ * @name tokens
+ * @storyId example-color-picker--tokens
+ */
+/**
+ * @memberof examples
+ * @name groups
+ * @storyId example-color-picker--groups
  */
 /**
  * @memberof examples
@@ -13,69 +23,59 @@
  */
 /**
  * @memberof examples
- * @name standardWithIcon
- * @storyId example-color-picker--standard-with-icon
+ * @name menu
+ * @storyId example-color-picker--menu
  */
 /**
  * @memberof examples
- * @name standardWithIconWithoutColorInput
- * @storyId example-color-picker--example-color-picker--standard-with-icon-without-color-input
+ * @name menuNoInput
+ * @storyId example-color-picker--menu-no-input
  */
 /**
  * @memberof examples
- * @name labelInlineWithMenuVariantContainer
- * @storyId example-color-picker--label-inline-with-menu-variant-container
+ * @name inline
+ * @storyId example-color-picker--inline
  */
 /**
  * @memberof examples
- * @name labelInlineWithoutColorInput
- * @storyId example-color-picker--label-inline-without-color-input
+ * @name inlineNoInput
+ * @storyId example-color-picker--inline-no-input
  */
 /**
  * @memberof examples
- * @name labelHiddenWithoutHelpMessage
- * @storyId example-color-picker--label-hidden-without-help-message
+ * @name labelHiddenBorderInverseMenu
+ * @storyId example-color-picker--label-hidden-border-inverse-menu
  */
 /**
  * @memberof examples
- * @name labelHiddenWithoutHelpMessageBorderInverse
- * @storyId example-color-picker--label-hidden-without-help-message-border-inverse
+ * @name xxSmallMenuIcon
+ * @storyId example-color-picker--xx-small-menu-icon
  */
 /**
  * @memberof examples
- * @name labelHiddenWithMenuLabel
- * @storyId example-color-picker--label-hidden-with-menu-label
- */
-/**
- * @memberof examples
- * @name xx_smallIconWithColorInput
- * @storyId example-color-picker--xx-small-icon-with-color-input
- */
-/**
- * @memberof examples
- * @name x_smallIconWithColorInput
- * @storyId example-color-picker--x-small-icon-with-color-input
- */
-/**
- * @memberof examples
- * @name smallIconWithColorInput
- * @storyId example-color-picker--small-icon-with-color-input
- */
-/**
- * @memberof examples
- * @name mediumIconWithColorInput
- * @storyId example-color-picker--medium-icon-with-color-input
- */
-/**
- * @memberof examples
- * @name largeIconWithColorInput
- * @storyId example-color-picker--large-icon-with-color-input
+ * @name mediumMenuIcon
+ * @storyId example-color-picker--medium-menu-icon
  */
 
 /**
- * @typedef {Object} Token
+ * @typedef {Object} ColorPickerToken
  * @name tokens
  * @property {string} label Token label.
  * @property {string} value Token value (for example <code>--lwc-brandAccessible</code>).
  * @property {string} color Color represented by the token (for example <code>#0176d3</code>).
+ * @property {object[]} groups Array of group names the token belongs to. If empty, the token will appear at the top of the list.
+ */
+
+/**
+ * @typedef {Object} ColorPickerGroup
+ * @name groups
+ * @property {string} label Label of the group.
+ * @property {string} name Unique name of the group.
+ */
+
+/**
+ * @typedef {Object} ColorPickerColor
+ * @name colors
+ * @property {string} color Valid CSS color.
+ * @property {object[]} groups Array of group names the color belongs to. If empty, the color will appear at the top of the list.
  */
