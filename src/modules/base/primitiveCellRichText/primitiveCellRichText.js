@@ -77,21 +77,6 @@ export default class PrimitiveCellRichText extends LightningElement {
         }
     }
 
-    handleChange(event) {
-        const detail = {
-            value: event.detail.value,
-            colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
-        };
-        this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                detail: detail,
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
     /*----------- Inline Editing Functions -------------*/
 
     /**

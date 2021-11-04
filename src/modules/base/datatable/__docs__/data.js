@@ -438,7 +438,8 @@ const columnsRZ = [
         typeAttributes: {
             disabled: { fieldName: 'richTextDisabled' }
         },
-        editable: true
+        editable: true,
+        initialWidth: 275
     },
     {
         label: 'Slider',
@@ -791,9 +792,7 @@ const recordsRZ = [
     {
         id: 1,
         rating: '3',
-        richText:
-            '<h2 style="text-align: center"> No Default <s>Value</s></h2>',
-        richTextDisabled: true,
+        richText: '<h1 style="text-align: left">With Value Left</h1>',
         slider: 36,
         text: 'Nina Gomez',
         url: 'https://www.avonnicomponents.com/',
@@ -813,6 +812,7 @@ const recordsRZ = [
     {
         id: 2,
         rating: '2',
+        richText: '<h2 style="text-align: center">With Value Centered</h2>',
         slider: 78,
         text: 'Dave McKinsley',
         url: 'https://www.avonni.app/',
@@ -833,7 +833,11 @@ const recordsRZ = [
         id: 3,
         sliderDisabled: true,
         ratingDisabled: true,
+        richText:
+            '<h3 style="text-align: right">Disabled With Value Right</h3>',
+        richTextDisabled: true,
         text: 'Jung Phung',
+        textareaDisabled: true,
         url: 'https://developer.salesforce.com/docs/component-library/overview/components',
         urlLabel: 'Salesforce documentation',
         urls: [
@@ -851,6 +855,7 @@ const recordsRZ = [
     {
         id: 4,
         rating: '5',
+        richText: '<h4 style="text-align: center">With Value Centered</h4>',
         slider: 36,
         sliderStep: 4,
         text: 'Lily Murray',
@@ -871,9 +876,9 @@ const recordsRZ = [
     {
         id: 5,
         rating: '4',
+        richText: '<h5 style="text-align: left">With Value Left</h5>',
         slider: '0',
         text: 'Reginald Martin',
-        textareaDisabled: true,
         url: 'https://lwc.dev/',
         urlLabel: 'LWC Documentation',
         urls: [

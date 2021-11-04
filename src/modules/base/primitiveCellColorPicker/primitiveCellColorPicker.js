@@ -52,7 +52,8 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     readOnly = true;
 
     connectedCallback() {
-        this.template.addEventListener('ieditfinishedcustom', () => {
+        this.template.addEventListener('ieditfinishedcustom', (event) => {
+            console.log(event);
             this.toggleInlineEdit();
         });
 

@@ -94,7 +94,8 @@ const CUSTOM_TYPES_EDITABLE = [
     'input-toggle',
     'rating',
     'rich-text',
-    'slider'
+    'slider',
+    'textarea'
 ];
 
 const COLUMN_WIDTHS_MODES = { valid: ['fixed', 'auto'], default: 'fixed' };

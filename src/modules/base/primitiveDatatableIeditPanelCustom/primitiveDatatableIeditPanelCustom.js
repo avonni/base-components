@@ -143,7 +143,6 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     get showButtons() {
         return (
             this.isMassEditEnabled ||
-            this.isMultiSelect ||
             this.isTypeWithMenu ||
             this.columnDef.type === 'input-counter' ||
             this.columnDef.type === 'textarea'
