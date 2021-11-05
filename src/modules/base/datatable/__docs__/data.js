@@ -303,13 +303,13 @@ const columnsEL = [
         ]
     },
     {
-        label: 'Input Counter',
-        fieldName: 'inputCounter',
-        type: 'input-counter',
+        label: 'Counter',
+        fieldName: 'counter',
+        type: 'counter',
         typeAttributes: {
-            disabled: { fieldName: 'inputCounterDisabled' },
+            disabled: { fieldName: 'counterDisabled' },
             label: 'Counter',
-            step: { fieldName: 'inputCounterStep' }
+            step: { fieldName: 'counterStep' }
         },
         editable: true,
         cellAttributes: {
@@ -317,25 +317,25 @@ const columnsEL = [
         }
     },
     {
-        label: 'Input Date Range',
-        fieldName: 'inputDateRange',
-        type: 'input-date-range',
+        label: 'Date Range',
+        fieldName: 'dateRange',
+        type: 'date-range',
         typeAttributes: {
             label: 'Date range',
-            disabled: { fieldName: 'inputDateRangeDisabled' },
+            disabled: { fieldName: 'dateRangeDisabled' },
             dateStyle: 'short',
             labelStartDate: 'Start',
             labelEndDate: 'End',
-            type: { fieldName: 'inputDateRangeType' }
+            type: { fieldName: 'dateRangeType' }
         },
         editable: true
     },
     {
-        label: 'Input Toggle',
-        fieldName: 'inputToggle',
-        type: 'input-toggle',
+        label: 'Toggle',
+        fieldName: 'toggle',
+        type: 'toggle',
         typeAttributes: {
-            disabled: { fieldName: 'inputToggleDisabled' },
+            disabled: { fieldName: 'toggleDisabled' },
             size: 'large',
             label: 'Toggle'
         },
@@ -641,8 +641,8 @@ const recordsEL = [
         id: 1,
         email: 'nina.gomez@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        inputCounter: 1,
-        inputDateRange: {
+        counter: 1,
+        dateRange: {
             startDate: new Date('2021/10/02'),
             endDate: new Date('2021/10/05')
         },
@@ -655,12 +655,12 @@ const recordsEL = [
         id: 2,
         email: 'dave.mckinsley@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
-        inputCounter: 3,
-        inputDateRange: {
+        counter: 3,
+        dateRange: {
             startDate: new Date('2021/09/12, 13:00:00'),
             endDate: new Date('2021/10/05, 14:00:00')
         },
-        inputToggle: true,
+        toggle: true,
         location: {
             latitude: '45.53',
             longitude: '-73.58'
@@ -673,9 +673,9 @@ const recordsEL = [
         imageBlank: true,
         imageBlankColor: '#CCC',
         imageHeight: 50,
-        inputCounterDisabled: true,
-        inputDateRangeDisabled: true,
-        inputToggleDisabled: true,
+        counterDisabled: true,
+        dateRangeDisabled: true,
+        toggleDisabled: true,
         location: {
             latitude: '45.54',
             longitude: '-73.60'
@@ -685,12 +685,12 @@ const recordsEL = [
         id: 4,
         email: 'lily.murray@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
-        inputCounter: 5,
-        inputDateRange: {
+        counter: 5,
+        dateRange: {
             startDate: new Date('2021/09/17'),
             endDate: new Date('2021/09/25')
         },
-        inputDateRangeType: 'datetime',
+        dateRangeType: 'datetime',
         location: {
             latitude: '45.55',
             longitude: '-73.62'
@@ -700,9 +700,9 @@ const recordsEL = [
         id: 5,
         email: 'mike.mickelson@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
-        inputCounterStep: 2,
-        inputCounter: 0,
-        inputDateRange: {
+        counterStep: 2,
+        counter: 0,
+        dateRange: {
             startDate: new Date('2021/08/02'),
             endDate: new Date('2021/09/15')
         },

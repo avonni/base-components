@@ -279,20 +279,20 @@
             "path": "src/modules/base/primitiveCellEditableButton/primitiveCellEditableButton.js"
         },
         {
-            "name": "c/primitiveCellInputCounter",
-            "path": "src/modules/base/primitiveCellInputCounter/primitiveCellInputCounter.js"
+            "name": "c/primitiveCellCounter",
+            "path": "src/modules/base/primitiveCellCounter/primitiveCellCounter.js"
         },
         {
-            "name": "c/primitiveCellInputDateRange",
-            "path": "src/modules/base/primitiveCellInputDateRange/primitiveCellInputDateRange.js"
+            "name": "c/primitiveCellDateRange",
+            "path": "src/modules/base/primitiveCellDateRange/primitiveCellDateRange.js"
         },
         {
             "name": "c/primitiveCellRichText",
             "path": "src/modules/base/primitiveCellRichText/primitiveCellRichText.js"
         },
         {
-            "name": "c/primitiveCellInputToggle",
-            "path": "src/modules/base/primitiveCellInputToggle/primitiveCellInputToggle.js"
+            "name": "c/primitiveCellToggle",
+            "path": "src/modules/base/primitiveCellToggle/primitiveCellToggle.js"
         },
         {
             "name": "c/primitiveCellRating",

@@ -32,17 +32,15 @@
 
 import { LightningElement, api } from 'lwc';
 
-export default class PrimitiveCellInputDateRange extends LightningElement {
+export default class PrimitiveCellCounter extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
-    @api dateStyle;
-    @api timeStyle;
-    @api timezone;
-    @api disabled;
+    @api name;
     @api label;
-    @api labelStartDate;
-    @api labelEndDate;
-    @api type;
+    @api max;
+    @api min;
+    @api step;
+    @api disabled;
 
     _value;
     visible = false;
@@ -50,6 +48,11 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     readOnly = true;
 
     connectedCallback() {
+        // Dispatches the inline edit event to the parent component.
+        this.template.addEventListener('inlineeditchange', (event) => {
+            this.handleChange(event);
+        });
+
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
@@ -74,7 +77,7 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     set value(value) {
         // When data is first set, the value is an object containing the editable state
         // When the cell is edited, only the value is sent back
-        if (typeof value === 'object' && value.editable !== undefined) {
+        if (typeof value === 'object') {
             this.readOnly = !value.editable;
             this._value = value.value;
         } else {
@@ -82,14 +85,20 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
         }
     }
 
-    get startDate() {
-        return typeof this.value === 'object'
-            ? this.value.startDate
-            : undefined;
-    }
+    handleChange(event) {
+        const detail = {
+            value: event.detail.value,
+            colKeyValue: this.colKeyValue,
+            rowKeyValue: this.rowKeyValue
+        };
 
-    get endDate() {
-        return typeof this.value === 'object' ? this.value.endDate : undefined;
+        this.dispatchEvent(
+            new CustomEvent('privateeditcustomcell', {
+                detail: detail,
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     /*----------- Inline Editing Functions -------------*/
@@ -101,6 +110,17 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
      */
     get showEditButton() {
         return this.editable && !this.disabled;
+    }
+
+    /**
+     * Gets the inputable element inside the inline edit popover.
+     *
+     * @type {Element}
+     */
+    get inputableElement() {
+        return this.template.querySelector(
+            '[data-element-id^="primitive-cell-counter"]'
+        );
     }
 
     // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
@@ -118,11 +138,9 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
 
     // Checks if the column is editable.
     isEditable() {
-        let inputDateRange = {};
-        inputDateRange = this.columns.find(
-            (column) => column.type === 'input-date-range'
-        );
-        this.editable = inputDateRange.editable;
+        let inputCounter = {};
+        inputCounter = this.columns.find((column) => column.type === 'counter');
+        this.editable = inputCounter.editable;
     }
 
     // Handles the edit button click and dispatches the event.

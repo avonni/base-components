@@ -35,8 +35,8 @@ import { assert } from 'c/utilsPrivate';
 
 import ColorPickerTpl from './colorPicker.html';
 import ComboboxTpl from './combobox.html';
-import inputCounterTpl from './inputCounter.html';
-import inputDateRangeTpl from './inputDateRange.html';
+import counterTpl from './counter.html';
+import dateRangeTpl from './dateRange.html';
 import richTextTpl from './richText.html';
 import textareaTpl from './textarea.html';
 import DefaultTpl from './default.html';
@@ -44,8 +44,8 @@ import DefaultTpl from './default.html';
 const CUSTOM_TYPES_TPL = {
     'color-picker': ColorPickerTpl,
     combobox: ComboboxTpl,
-    'input-counter': inputCounterTpl,
-    'input-date-range': inputDateRangeTpl,
+    counter: counterTpl,
+    'date-range': dateRangeTpl,
     'rich-text': richTextTpl,
     textarea: textareaTpl
 };
@@ -78,12 +78,12 @@ export default class PrimitiveDatatableIeditTypeFactory extends LightningElement
     @api isMultiSelect;
     @api options;
 
-    // input-counter attributes
+    // counter attributes
     @api max;
     @api min;
     @api step;
 
-    // input-date-range attributes
+    // date-range attributes
     @api dateStyle;
     @api timeStyle;
     @api timezone;

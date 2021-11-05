@@ -64,12 +64,12 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     @api isMultiSelect;
     @api options;
 
-    // Primitive cell input-counter
+    // Primitive cell counter
     @api max;
     @api min;
     @api step;
 
-    // Primitive cell input-date-range
+    // Primitive cell date-range
     @api startDate;
     @api endDate;
     @api dateStyle;
@@ -124,8 +124,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         return this.columnDef.type === 'rich-text';
     }
 
-    get isTypeInputDateRange() {
-        return this.columnDef.type === 'input-date-range';
+    get isTypeDateRange() {
+        return this.columnDef.type === 'date-range';
     }
 
     get isTypeColorPicker() {
@@ -135,7 +135,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     get isTypeWithMenu() {
         return (
             this.isTypeRichText ||
-            this.isTypeInputDateRange ||
+            this.isTypeDateRange ||
             this.isTypeColorPicker
         );
     }
@@ -144,7 +144,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         return (
             this.isMassEditEnabled ||
             this.isTypeWithMenu ||
-            this.columnDef.type === 'input-counter' ||
+            this.columnDef.type === 'counter' ||
             this.columnDef.type === 'textarea'
         );
     }
@@ -176,7 +176,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     editedFormattedValue(value) {
-        return this.isTypeInputDateRange
+        return this.isTypeDateRange
             ? {
                   startDate: value.startDate,
                   endDate: value.endDate
@@ -348,7 +348,7 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     }
 
     handleMassEditCheckboxClick() {
-        if (this.inputableElement && !this.isTypeInputDateRange) {
+        if (this.inputableElement && !this.isTypeDateRange) {
             this.inputableElement.focus();
         }
     }

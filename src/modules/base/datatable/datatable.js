@@ -47,19 +47,19 @@ import badge from './badge.html';
 import checkboxButton from './checkboxButton.html';
 import colorPicker from './colorPicker.html';
 import combobox from './combobox.html';
+import counter from './counter.html';
+import dateRange from './dateRange.html';
 import dynamicIcon from './dynamicIcon.html';
 import image from './image.html';
-import inputCounter from './inputCounter.html';
-import inputDateRange from './inputDateRange.html';
-import inputToggle from './inputToggle.html';
 import progressBar from './progressBar.html';
 import progressCircle from './progressCircle.html';
 import progressRing from './progressRing.html';
 import qrcode from './qrcode.html';
 import rating from './rating.html';
 import richText from './richText.html';
-import textarea from './textarea.html';
 import slider from './slider.html';
+import textarea from './textarea.html';
+import toggle from './toggle.html';
 import urls from './urls.html';
 
 const CUSTOM_TYPES_ALWAYS_WRAPPED = [
@@ -69,11 +69,11 @@ const CUSTOM_TYPES_ALWAYS_WRAPPED = [
     'checkbox-button',
     'color-picker',
     'combobox',
+    'counter',
+    'date-range',
     'dynamic-icon',
     'image',
-    'input-counter',
-    'input-date-range',
-    'input-toggle',
+    'toggle',
     'progress-bar',
     'progress-circle',
     'progress-ring',
@@ -89,13 +89,13 @@ const CUSTOM_TYPES_EDITABLE = [
     'checkbox-button',
     'color-picker',
     'combobox',
-    'input-counter',
-    'input-date-range',
-    'input-toggle',
+    'counter',
+    'date-range',
     'rating',
     'rich-text',
     'slider',
-    'textarea'
+    'textarea',
+    'toggle'
 ];
 
 const COLUMN_WIDTHS_MODES = { valid: ['fixed', 'auto'], default: 'fixed' };
@@ -174,6 +174,23 @@ export default class Datatable extends LightningDatatable {
                 'options'
             ]
         },
+        counter: {
+            template: counter,
+            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step']
+        },
+        'date-range': {
+            template: dateRange,
+            typeAttributes: [
+                'dateStyle',
+                'disabled',
+                'label',
+                'labelStartDate',
+                'labelEndDate',
+                'timeStyle',
+                'timezone',
+                'type'
+            ]
+        },
         'dynamic-icon': {
             template: dynamicIcon,
             typeAttributes: ['alternativeText', 'option']
@@ -190,35 +207,6 @@ export default class Datatable extends LightningDatatable {
                 'srcset',
                 'thumbnail',
                 'width'
-            ]
-        },
-        'input-counter': {
-            template: inputCounter,
-            typeAttributes: ['disabled', 'label', 'max', 'min', 'name', 'step']
-        },
-        'input-date-range': {
-            template: inputDateRange,
-            typeAttributes: [
-                'dateStyle',
-                'disabled',
-                'label',
-                'labelStartDate',
-                'labelEndDate',
-                'timeStyle',
-                'timezone',
-                'type'
-            ]
-        },
-        'input-toggle': {
-            template: inputToggle,
-            typeAttributes: [
-                'disabled',
-                'hideMark',
-                'label',
-                'messageToggleActive',
-                'messageToggleInactive',
-                'name',
-                'size'
             ]
         },
         'progress-bar': {
@@ -292,6 +280,18 @@ export default class Datatable extends LightningDatatable {
                 'maxlength',
                 'name',
                 'placeholder'
+            ]
+        },
+        toggle: {
+            template: toggle,
+            typeAttributes: [
+                'disabled',
+                'hideMark',
+                'label',
+                'messageToggleActive',
+                'messageToggleInactive',
+                'name',
+                'size'
             ]
         },
         urls: {
