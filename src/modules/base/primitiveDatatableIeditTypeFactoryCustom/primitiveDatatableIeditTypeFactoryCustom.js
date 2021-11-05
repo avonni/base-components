@@ -53,7 +53,7 @@ const CUSTOM_TYPES_TPL = {
 const INVALID_TYPE_FOR_EDIT =
     'column custom type not supported for inline edit';
 
-export default class PrimitiveDatatableIeditTypeFactory extends LightningElement {
+export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningElement {
     @api editedValue;
     @api required;
 

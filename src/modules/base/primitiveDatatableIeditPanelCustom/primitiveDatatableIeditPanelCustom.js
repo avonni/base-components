@@ -34,7 +34,7 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { InteractingState } from 'c/inputUtils';
 
-export default class PrimitiveDatatableIeditPanel extends LightningElement {
+export default class PrimitiveDatatableIeditPanelCustom extends LightningElement {
     @api visible;
     @api rowKeyValue;
     @api colKeyValue;
@@ -109,10 +109,20 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             .toString();
     }
 
+    /**
+     * Returns the checkbox label when mass edit.
+     *
+     * @type {string}
+     */
     get massEditCheckboxLabel() {
         return `Update ${this.numberOfSelectedRows} selected items`;
     }
 
+    /**
+     * Returns true if column is required.
+     *
+     * @type {boolean}
+     */
     get required() {
         return (
             this.columnDef.typeAttributes &&
@@ -120,18 +130,47 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         );
     }
 
+    /**
+     * Returns true if column type is rich-text.
+     *
+     * @type {boolean}
+     */
     get isTypeRichText() {
         return this.columnDef.type === 'rich-text';
     }
 
+    /**
+     * Returns true if column type is date-range.
+     *
+     * @type {boolean}
+     */
     get isTypeDateRange() {
         return this.columnDef.type === 'date-range';
     }
 
+    /**
+     * Returns true if column type is color-picker.
+     *
+     * @type {boolean}
+     */
     get isTypeColorPicker() {
         return this.columnDef.type === 'color-picker';
     }
 
+    /**
+     * Returns true if column type is combobox.
+     *
+     * @type {boolean}
+     */
+    get isTypeCombobox() {
+        return this.columnDef.type === 'combobox';
+    }
+
+    /**
+     * Returns true if column type is type with menu.
+     *
+     * @type {boolean}
+     */
     get isTypeWithMenu() {
         return (
             this.isTypeRichText ||
@@ -140,6 +179,11 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         );
     }
 
+    /**
+     * Returns true if column type is a type that needs apply or cancel button for inline editing.
+     *
+     * @type {boolean}
+     */
     get showButtons() {
         return (
             this.isMassEditEnabled ||
@@ -187,8 +231,8 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
     triggerEditFinished(detail) {
         // for combobox we need to make sure that the value is only set if the there is a change, a submit or a valid value.
         if (
-            this.columnDef.type !== 'combobox' ||
-            (this.columnDef.type === 'combobox' &&
+            !this.isTypeCombobox ||
+            (this.isTypeCombobox &&
                 this.value.length !== 0 &&
                 typeof this.value !== 'string')
         ) {
@@ -216,20 +260,40 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
         }
     }
 
+    /**
+     * Returns element inputable element inside inline edit panel.
+     *
+     * @type {element}
+     */
     get inputableElement() {
-        return this.template.querySelector('.dt-type-edit-factory');
+        return this.template.querySelector('.dt-type-edit-factory-custom');
     }
 
+    /**
+     * Returns value of inputable element inside inline edit panel.
+     *
+     * @type {string || object}
+     */
     @api
     get value() {
         return this.inputableElement.value;
     }
 
+    /**
+     * Returns validity object of inputable element inside inline edit panel.
+     *
+     * @type {object}
+     */
     @api
     get validity() {
         return this.inputableElement.validity;
     }
 
+    /**
+     * Returns true if massEdit is enabled and checkbox is checked.
+     *
+     * @type {boolean}
+     */
     @api
     get isMassEditChecked() {
         return (

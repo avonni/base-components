@@ -269,7 +269,8 @@ const columnsDO = [
             hour: '2-digit',
             timeZone: 'Pacific/Honolulu'
         },
-        editable: true
+        editable: true,
+        initialWidth: 200
     },
     {
         label: 'Date local',
@@ -280,14 +281,14 @@ const columnsDO = [
             month: 'long',
             year: 'numeric'
         },
-        editable: true
+        editable: true,
+        initialWidth: 155
     },
     {
         label: 'Date Range',
         fieldName: 'dateRange',
         type: 'date-range',
         typeAttributes: {
-            label: 'Date range',
             disabled: { fieldName: 'dateRangeDisabled' },
             dateStyle: 'short',
             labelStartDate: 'Start',

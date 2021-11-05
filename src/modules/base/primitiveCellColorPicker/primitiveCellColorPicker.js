@@ -52,8 +52,7 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     readOnly = true;
 
     connectedCallback() {
-        this.template.addEventListener('ieditfinishedcustom', (event) => {
-            console.log(event);
+        this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
 
@@ -76,29 +75,7 @@ export default class PrimitiveCellColorPicker extends LightningElement {
     }
 
     set value(value) {
-        // When data is first set, the value is an object containing the editable state
-        // When the cell is edited, only the value is sent back
-        if (typeof value === 'object' && value !== null) {
-            this.readOnly = !value.editable;
-            this._value = value.value;
-        } else {
-            this._value = value;
-        }
-    }
-
-    handleChange(event) {
-        const detail = {
-            value: event.detail.value,
-            colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
-        };
-        this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                detail: detail,
-                bubbles: true,
-                composed: true
-            })
-        );
+        this._value = value;
     }
 
     /*----------- Inline Editing Functions -------------*/
