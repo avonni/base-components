@@ -38,7 +38,8 @@ export default class DataTypesFromDtoO extends LightningElement {
                 labelEndDate: 'End',
                 type: { fieldName: 'dateRangeType' }
             },
-            editable: true
+            editable: true,
+            initialWidth: 320
         },
         {
             label: 'Dynamic icon',

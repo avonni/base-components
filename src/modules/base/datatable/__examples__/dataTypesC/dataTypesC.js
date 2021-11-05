@@ -41,8 +41,7 @@ export default class DataTypesC extends LightningElement {
                 options: { fieldName: 'options' },
                 isMultiSelect: { fieldName: 'isMultiSelect' }
             },
-            editable: true,
-            fixedWidth: 300
+            editable: true
         },
         {
             label: 'Currency',

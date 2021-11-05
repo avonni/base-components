@@ -230,8 +230,7 @@ const columnsC = [
             options: { fieldName: 'options' },
             isMultiSelect: { fieldName: 'isMultiSelect' }
         },
-        editable: true,
-        fixedWidth: 300
+        editable: true
     },
     {
         label: 'Currency',
@@ -295,7 +294,8 @@ const columnsDO = [
             labelEndDate: 'End',
             type: { fieldName: 'dateRangeType' }
         },
-        editable: true
+        editable: true,
+        initialWidth: 320
     },
     {
         label: 'Dynamic icon',
