@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromCToD extends LightningElement {
+export default class DataTypesC extends LightningElement {
     columns = [
         {
             label: 'Checkbox button',
@@ -54,36 +54,17 @@ export default class DataTypesFromCToD extends LightningElement {
             editable: true
         },
         {
-            label: 'Date',
-            fieldName: 'date',
-            type: 'date',
+            label: 'Counter',
+            fieldName: 'counter',
+            type: 'counter',
             typeAttributes: {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                timeZone: 'Pacific/Honolulu'
+                disabled: { fieldName: 'counterDisabled' },
+                label: 'Counter',
+                step: { fieldName: 'counterStep' }
             },
-            editable: true
-        },
-        {
-            label: 'Date local',
-            fieldName: 'dateLocal',
-            type: 'date-local',
-            typeAttributes: {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric'
-            },
-            editable: true
-        },
-        {
-            label: 'Dynamic icon',
-            fieldName: 'dynamicIcon',
-            type: 'dynamic-icon',
-            typeAttributes: {
-                alternativeText: { fieldName: 'dynamicIcon' },
-                option: { fieldName: 'dynamicIconOption' }
+            editable: true,
+            cellAttributes: {
+                alignment: 'center'
             }
         }
     ];
@@ -91,12 +72,10 @@ export default class DataTypesFromCToD extends LightningElement {
     records = [
         {
             id: 1,
+            combobox: 'no-avatar-burlington',
             colorPicker: '#00a1e0',
             currency: '200',
-            dynamicIcon: 'ellie',
-            date: new Date('2022/03/24'),
-            dateLocal: new Date('2022/03/24'),
-            combobox: 'no-avatar-burlington',
+            isMultiSelect: true,
             options: [
                 {
                     label: 'Burlington Textiles Corp of America',
@@ -118,17 +97,13 @@ export default class DataTypesFromCToD extends LightningElement {
                     label: 'Edge Communication',
                     value: 'no-avatar-edge'
                 }
-            ],
-            isMultiSelect: true
+            ]
         },
         {
             id: 2,
-            currency: '230',
             colorPicker: '#e65cd1',
-            dynamicIcon: 'score',
-            dynamicIconOption: 'negative',
-            date: new Date('2022/03/21'),
-            dateLocal: new Date('2022/03/21'),
+            counter: 3,
+            currency: '230',
             options: [
                 {
                     label: 'Burlington Textiles Corp of America',
@@ -156,12 +131,10 @@ export default class DataTypesFromCToD extends LightningElement {
             id: 3,
             checkboxButton: true,
             checkboxButtonDisabled: true,
-            currency: '3045',
             colorPickerDisabled: true,
-            dynamicIcon: 'strength',
-            dynamicIconOption: -3,
-            date: new Date('2022/05/04'),
-            dateLocal: new Date('2022/05/04'),
+            counter: 1,
+            counterDisabled: true,
+            currency: '3045',
             isMultiSelect: true,
             options: [
                 {
@@ -189,10 +162,8 @@ export default class DataTypesFromCToD extends LightningElement {
         {
             id: 4,
             colorPicker: '#f4bc25',
+            counter: 5,
             currency: '432',
-            dynamicIcon: 'eq',
-            date: new Date('2021/02/14'),
-            dateLocal: new Date('2021/02/14'),
             options: [
                 {
                     label: 'Burlington Textiles Corp of America',
@@ -220,10 +191,9 @@ export default class DataTypesFromCToD extends LightningElement {
             id: 5,
             checkboxButton: true,
             colorPicker: '#f99120',
+            counterStep: 2,
+            counter: 0,
             currency: '217',
-            dynamicIcon: 'waffle',
-            date: new Date('2021/02/14'),
-            dateLocal: new Date('2022/10/12'),
             options: [
                 {
                     label: 'Accounts',

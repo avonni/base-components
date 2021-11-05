@@ -95,8 +95,7 @@ export default class DataTypesFromAToB extends LightningElement {
     records = [
         {
             id: 1,
-            avatar:
-                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             avatarInitials: 'NG',
             avatarSecondaryText: 'Approved',
             avatarStatus: 'approved',
@@ -106,15 +105,13 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'DM',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
                     alternativeText: 'Dave McKinsley'
                 },
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'RM',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
                     alternativeText: 'Reginald Martin'
                 },
                 {
@@ -130,8 +127,7 @@ export default class DataTypesFromAToB extends LightningElement {
         },
         {
             id: 2,
-            avatar:
-                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'DM',
             avatarSecondaryText: 'Declined',
@@ -141,8 +137,7 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'NG',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
                     alternativeText: 'Nina Gomez'
                 },
                 {
@@ -153,8 +148,7 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'RM',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
                     alternativeText: 'Reginald Martin'
                 },
                 {
@@ -180,15 +174,13 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'NG',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
                     alternativeText: 'Nina Gomez'
                 },
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'DM',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
                     alternativeText: 'Dave McKinsley'
                 },
                 {
@@ -213,8 +205,7 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'DM',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
                     alternativeText: 'Dave McKinsley'
                 },
                 {
@@ -225,8 +216,7 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'NG',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
                     alternativeText: 'Nina Gomez'
                 }
             ],
@@ -237,8 +227,7 @@ export default class DataTypesFromAToB extends LightningElement {
         },
         {
             id: 5,
-            avatar:
-                'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+            avatar: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
             avatarFallbackIconName: 'standard:person_account',
             avatarInitials: 'RM',
             avatarSecondaryText: 'Approved',
@@ -248,8 +237,7 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'RM',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
                     alternativeText: 'Reginald Martin'
                 },
                 {
@@ -260,8 +248,7 @@ export default class DataTypesFromAToB extends LightningElement {
                 {
                     fallbackIconName: 'standard:person_account',
                     initials: 'DM',
-                    src:
-                        'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
                     alternativeText: 'Dave McKinsley'
                 },
                 {

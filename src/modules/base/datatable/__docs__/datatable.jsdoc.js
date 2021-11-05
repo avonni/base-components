@@ -161,23 +161,23 @@
  */
 /**
  * @memberof examples
- * @name dataTypesFromCToD
- * @storyId example-datatable--data-types-from-c-to-d
+ * @name dataTypesC
+ * @storyId example-datatable--data-types-c
  */
 /**
  * @memberof examples
- * @name dataTypesFromEToL
- * @storyId example-datatable--data-types-from-e-to-l
+ * @name dataTypesFromDtoO
+ * @storyId example-datatable--data-types-from-d-to-o
  */
 /**
  * @memberof examples
- * @name dataTypesFromNToQ
- * @storyId example-datatable--data-types-from-n-to-q
+ * @name dataTypesFromPtoR
+ * @storyId example-datatable--data-types-from-p-to-r
  */
 /**
  * @memberof examples
- * @name dataTypesFromRToZ
- * @storyId example-datatable--data-types-from-r-to-z
+ * @name dataTypesFromSToZ
+ * @storyId example-datatable--data-types-from-s-to-z
  */
 
 // ------------------------- TYPE DEFINITIONS -------------------------
@@ -195,12 +195,14 @@
  * This option is not supported for the following data types:
  * * avatar
  * * avatar-group
+ * * badge
  * * dynamic-icon
  * * image
  * * progress-bar
  * * progress-circle
  * * progress-ring
  * * qrcode
+ * * URLS
  * @property {string} fieldName Required. The name that binds the columns attributes to the associated data. Each columns attribute must correspond to an item in the data array.
  * @property {integer} fixedWidth Specifies the width of a column in pixels and makes the column non-resizable. If both fixedWidth and initialWidth values are provided, initialWidth is ignored.
  * @property {boolean} hideDefaultActions Specifies whether to hide the default header actions on a column. Default header actions are “Wrap text” and “Clip text”.

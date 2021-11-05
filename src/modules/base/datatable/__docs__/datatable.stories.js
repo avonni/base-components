@@ -33,15 +33,15 @@
 import { Datatable } from '../__examples__/datatable';
 import {
     columnsAB,
-    columnsCD,
-    columnsEL,
-    columnsNQ,
-    columnsRZ,
+    columnsC,
+    columnsDO,
+    columnsPR,
+    columnsSZ,
     recordsAB,
-    recordsCD,
-    recordsEL,
-    recordsNQ,
-    recordsRZ
+    recordsC,
+    recordsDO,
+    recordsPR,
+    recordsSZ
 } from './data';
 
 export default {
@@ -381,10 +381,10 @@ DataTypesFromAToB.args = {
     columnWidthsMode: 'auto'
 };
 
-export const DataTypesFromCToD = Template.bind({});
-DataTypesFromCToD.args = {
-    columns: columnsCD,
-    records: recordsCD,
+export const DataTypesC = Template.bind({});
+DataTypesC.args = {
+    columns: columnsC,
+    records: recordsC,
     keyField: 'id',
     columnWidthsMode: 'auto',
     draftValues: [
@@ -407,26 +407,26 @@ DataTypesFromCToD.args = {
         }
     }
 };
-export const DataTypesFromEToL = Template.bind({});
-DataTypesFromEToL.args = {
-    columns: columnsEL,
-    records: recordsEL,
+export const DataTypesFromDToO = Template.bind({});
+DataTypesFromDToO.args = {
+    columns: columnsDO,
+    records: recordsDO,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };
 
-export const DataTypesFromNToQ = Template.bind({});
-DataTypesFromNToQ.args = {
-    columns: columnsNQ,
-    records: recordsNQ,
+export const DataTypesFromPToR = Template.bind({});
+DataTypesFromPToR.args = {
+    columns: columnsPR,
+    records: recordsPR,
     keyField: 'id',
     selectedRows: ['2']
 };
 
-export const DataTypesFromRToZ = Template.bind({});
-DataTypesFromRToZ.args = {
-    columns: columnsRZ,
-    records: recordsRZ,
+export const DataTypesFromSToZ = Template.bind({});
+DataTypesFromSToZ.args = {
+    columns: columnsSZ,
+    records: recordsSZ,
     keyField: 'id',
     columnWidthsMode: 'auto'
 };

@@ -1,16 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromNToQ extends LightningElement {
+export default class DataTypesFromPtoR extends LightningElement {
     columns = [
-        {
-            label: 'Number',
-            type: 'number',
-            fieldName: 'number',
-            editable: true,
-            typeAttributes: {
-                minimumFractionDigits: 2
-            }
-        },
         {
             label: 'Percent',
             fieldName: 'percent',
@@ -43,7 +34,8 @@ export default class DataTypesFromNToQ extends LightningElement {
                 thickness: 'large',
                 size: 'small',
                 color: { fieldName: 'progressCircleColor' }
-            }
+            },
+            initialWidth: 100
         },
         {
             label: 'Progress Ring',
@@ -63,13 +55,34 @@ export default class DataTypesFromNToQ extends LightningElement {
                 borderWidth: { fieldName: 'qrcodeBorderWidth' },
                 size: 50
             }
+        },
+        {
+            label: 'Rating',
+            fieldName: 'rating',
+            type: 'rating',
+            typeAttributes: {
+                iconName: 'utility:favorite',
+                label: 'Rating on 5',
+                disabled: { fieldName: 'ratingDisabled' }
+            },
+            editable: true,
+            initialWidth: 200
+        },
+        {
+            label: 'Rich Text',
+            fieldName: 'richText',
+            type: 'rich-text',
+            typeAttributes: {
+                disabled: { fieldName: 'richTextDisabled' }
+            },
+            editable: true,
+            initialWidth: 275
         }
     ];
 
     records = [
         {
             id: 1,
-            number: '1789',
             percent: 0.34,
             phone: '5142223333',
             progress: 34,
@@ -86,11 +99,12 @@ export default class DataTypesFromNToQ extends LightningElement {
                 }
             ],
             progressRingVariant: 'warning',
-            qrcode: 'https://www.avonni.app/'
+            qrcode: 'https://www.avonni.app/',
+            rating: '3',
+            richText: '<h1 style="text-align: left">With Value Left</h1>'
         },
         {
             id: 2,
-            number: '1',
             percent: 0.45,
             phone: '5144546767',
             progress: 100,
@@ -99,29 +113,34 @@ export default class DataTypesFromNToQ extends LightningElement {
             progressCircleColor: '#45c65a',
             qrcode: 'https://www.avonni.app/',
             qrcodeBorderColor: '#45c65a',
-            qrcodeBorderWidth: 5
+            qrcodeBorderWidth: 5,
+            rating: '2',
+            richText: '<h2 style="text-align: center">With Value Centered</h2>'
         },
         {
             id: 3,
-            number: '1,234',
             percent: 0.67,
             phone: '6785643214',
             progress: 43,
-            qrcode: 'https://www.avonni.app/'
+            qrcode: 'https://www.avonni.app/',
+            ratingDisabled: true,
+            richText:
+                '<h3 style="text-align: right">Disabled With Value Right</h3>',
+            richTextDisabled: true
         },
         {
             id: 4,
-            number: '345',
             percent: 4,
             phone: '3547789900',
             progress: 5,
             progressBarTheme: 'info',
             progressRingVariant: 'expired',
-            qrcode: 'https://www.avonni.app/'
+            qrcode: 'https://www.avonni.app/',
+            rating: '5',
+            richText: '<h4 style="text-align: center">With Value Centered</h4>'
         },
         {
             id: 5,
-            number: '9',
             percent: 0.05,
             phone: '5143245564',
             progress: 66,
@@ -138,7 +157,9 @@ export default class DataTypesFromNToQ extends LightningElement {
                     borderStyle: 'solid'
                 }
             ],
-            qrcode: 'https://www.avonni.app/'
+            qrcode: 'https://www.avonni.app/',
+            rating: '4',
+            richText: '<h5 style="text-align: left">With Value Left</h5>'
         }
     ];
 
