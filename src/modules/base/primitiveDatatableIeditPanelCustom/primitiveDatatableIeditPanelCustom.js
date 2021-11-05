@@ -346,4 +346,10 @@ export default class PrimitiveDatatableIeditPanel extends LightningElement {
             reason: 'edit-canceled'
         });
     }
+
+    handleMassEditCheckboxClick() {
+        if (this.inputableElement && !this.isTypeInputDateRange) {
+            this.inputableElement.focus();
+        }
+    }
 }
