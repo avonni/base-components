@@ -157,7 +157,7 @@ export default class Calendar extends LightningElement {
     }
 
     set max(max) {
-        this._max = new Date(max);
+        this._max = this.formattedWithTimezoneOffset(new Date(max));
         this._max.setHours(0, 0, 0, 0);
     }
 
@@ -174,7 +174,7 @@ export default class Calendar extends LightningElement {
     }
 
     set min(min) {
-        this._min = new Date(min);
+        this._min = this.formattedWithTimezoneOffset(new Date(min));
         this._min.setHours(0, 0, 0, 0);
     }
 
@@ -215,8 +215,14 @@ export default class Calendar extends LightningElement {
         if (value) {
             this._value =
                 typeof value === 'string' || !Array.isArray(value)
-                    ? [new Date(value)]
-                    : [...normalizeArray(value.map((x) => new Date(x)))];
+                    ? [this.formattedWithTimezoneOffset(new Date(value))]
+                    : [
+                          ...normalizeArray(
+                              value.map((x) =>
+                                  this.formattedWithTimezoneOffset(new Date(x))
+                              )
+                          )
+                      ];
             this._value = this._value.filter(
                 (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
             );
@@ -670,6 +676,10 @@ export default class Calendar extends LightningElement {
         }
 
         return timestamps.map((x) => new Date(x));
+    }
+
+    formattedWithTimezoneOffset(value) {
+        return new Date(value.getTime() + value.getTimezoneOffset() * 60000);
     }
 
     /**
