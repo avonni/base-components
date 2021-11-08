@@ -690,8 +690,14 @@ export default class Calendar extends LightningElement {
         return timestamps.map((x) => new Date(x));
     }
 
-    formattedWithTimezoneOffset(value) {
-        return new Date(value.getTime() + value.getTimezoneOffset() * 60000);
+    /**
+     * Returns a date formatted depending on the timezone offset.
+     *
+     * @param {string | Date} newDate - new date
+     * @returns array of dates
+     */
+    formattedWithTimezoneOffset(date) {
+        return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
     }
 
     /**

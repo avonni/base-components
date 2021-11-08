@@ -149,7 +149,7 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: 1636406327000
+    value: '05/08/2021'
 };
 
 export const Multiple = Template.bind({});

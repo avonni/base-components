@@ -8,6 +8,16 @@
  */
 /**
  * @memberof examples
+ * @name multiple
+ * @storyId example-calendar--multiple
+ */
+/**
+ * @memberof examples
+ * @name interval
+ * @storyId example-calendar--interval
+ */
+/**
+ * @memberof examples
  * @name disabled
  * @storyId example-calendar--disabled
  */
