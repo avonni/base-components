@@ -608,6 +608,9 @@ export default class PrimitiveCombobox extends LightningElement {
             }
             values.push(option.value);
         });
+        if(this.isMultiSelect) {
+            return this.hasBadValues
+        }
         return this._value.length === 0 || this._value[0] === ''
             ? true
             : values.some((e) => this._value.includes(e));
@@ -896,7 +899,11 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {string}
      */
     get readOnlyValue() {
-        return this.validity.valid ? this.inputValue : this.value[0];
+        return this.validity.valid ? this.inputValue : '';
+    }
+
+    get readOnlyLabel() {
+        return this.label ? this.label : 'Read Only Combobox'
     }
 
     /**
@@ -1284,6 +1291,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     computeSelection() {
         this.selectedOptions = this.getSelectedOptions();
+        this.hasBadValues = this._value.length === 0 ? true : this.selectedOptions.some((option) => option.value)
         this._value = this.selectedOptions.map((option) => option.value);
 
         this.dispatchEvent(
