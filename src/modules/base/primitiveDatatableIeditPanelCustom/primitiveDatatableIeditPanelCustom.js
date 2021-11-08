@@ -232,9 +232,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
         // for combobox we need to make sure that the value is only set if the there is a change, a submit or a valid value.
         if (
             !this.isTypeCombobox ||
-            (this.isTypeCombobox &&
-                this.value.length !== 0 &&
-                typeof this.value !== 'string')
+            (this.isTypeCombobox && this.value.length !== 0)
         ) {
             detail.rowKeyValue = detail.rowKeyValue || this.rowKeyValue;
             detail.colKeyValue = detail.colKeyValue || this.colKeyValue;

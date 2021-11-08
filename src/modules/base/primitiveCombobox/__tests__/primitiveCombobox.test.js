@@ -697,7 +697,7 @@ describe('PrimitiveCombobox', () => {
             const input = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-input-read-only"]'
             );
-            expect(input.value).toBe('no-avatarsss-oil-sla');
+            expect(input.value).toBe('');
         });
     });
 
