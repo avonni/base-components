@@ -144,7 +144,7 @@
                         onchange={handleChangeStartTime}
                     ></lightning-input>
                     <p data-element-id="start-time" if:true={readOnly}>
-                        {startTime}
+                        {startTimeString}
                     </p>
                 </div>
             </template>
@@ -246,7 +246,7 @@
                         onchange={handleChangeEndTime}
                     ></lightning-input>
                     <p data-element-id="end-time" if:true={readOnly}>
-                        {endTime}
+                        {endTimeString}
                     </p>
                 </div>
             </template>
