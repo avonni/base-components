@@ -769,39 +769,69 @@ export default class Calendar extends LightningElement {
         const timeArray = this._value
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
-        if (this._selectionMode === 'interval') {
+        if (this._selectionMode === 'interval' && day !== '') {
             if (timeArray.length === 1) {
                 if (day > timeArray[0]) {
                     dayCell.classList.add(
                         'avonni-calendar-cell__bordered_right'
                     );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') >= timeArray[0] &&
+                            x.getAttribute('data-cell-day') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
                 }
-                this.template.querySelectorAll('td').forEach((x) => {
-                    if (
-                        x.getAttribute('data-cell-day') >= timeArray[0] &&
-                        x.getAttribute('data-cell-day') <= day
-                    ) {
-                        x.classList.add(
-                            'avonni-calendar-cell__bordered_top_bottom'
-                        );
-                    }
-                });
+                if (day < timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar-cell__bordered_left'
+                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') <= timeArray[0] &&
+                            x.getAttribute('data-cell-day') >= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
+                }
             } else if (timeArray.length === 2) {
                 if (day > timeArray[1]) {
                     dayCell.classList.add(
                         'avonni-calendar-cell__bordered_right'
                     );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') >= timeArray[1] &&
+                            x.getAttribute('data-cell-day') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
                 }
-                this.template.querySelectorAll('td').forEach((x) => {
-                    if (
-                        x.getAttribute('data-cell-day') >= timeArray[1] &&
-                        x.getAttribute('data-cell-day') <= day
-                    ) {
-                        x.classList.add(
-                            'avonni-calendar-cell__bordered_top_bottom'
-                        );
-                    }
-                });
+                if (day < timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar-cell__bordered_left'
+                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') <= timeArray[0] &&
+                            x.getAttribute('data-cell-day') >= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
+                }
             }
         }
     }
@@ -810,6 +840,7 @@ export default class Calendar extends LightningElement {
         this.template.querySelectorAll('td').forEach((x) => {
             x.classList.remove('avonni-calendar-cell__bordered_top_bottom');
             x.classList.remove('avonni-calendar-cell__bordered_right');
+            x.classList.remove('avonni-calendar-cell__bordered_left');
         });
     }
 }

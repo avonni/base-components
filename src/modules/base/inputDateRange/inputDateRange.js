@@ -881,6 +881,9 @@ export default class InputDateRange extends LightningElement {
                 this._endDate = null;
                 this.endDateInput.focus();
             }
+            if (!this.startDate && this.endDate) {
+                this.startDateInput.focus();
+            }
 
             this.dispatchChange();
         }
