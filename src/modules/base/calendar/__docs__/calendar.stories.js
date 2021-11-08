@@ -149,13 +149,12 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: '2021-05-03',
-    min: '2021-05-02'
+    value: 1636406327000
 };
 
 export const Multiple = Template.bind({});
 Multiple.args = {
-    value: ['2021-05-03', '05/08/2021', '05/12/2021', '05/18/2021'],
+    value: ['05/03/2021', '05/08/2021', '05/12/2021', '05/18/2021'],
     selectionMode: 'multiple'
 };
 

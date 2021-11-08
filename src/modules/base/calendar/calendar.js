@@ -124,7 +124,13 @@ export default class Calendar extends LightningElement {
     }
 
     set disabledDates(value) {
-        this._disabledDates = value;
+        this._disabledDates = value.map((x) => {
+            const isDate =
+                x instanceof Date
+                    ? this.formattedWithTimezoneOffset(new Date(x))
+                    : x;
+            return isDate;
+        });
         this.updateDateParameters();
     }
 
@@ -140,7 +146,13 @@ export default class Calendar extends LightningElement {
     }
 
     set markedDates(value) {
-        this._markedDates = value;
+        this._markedDates = value.map((x) => {
+            const isDate =
+                x.date instanceof Date
+                    ? this.formattedWithTimezoneOffset(new Date(x.date))
+                    : x.date;
+            return { date: isDate, color: x.color };
+        });
         this.updateDateParameters();
     }
 
