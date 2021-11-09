@@ -512,9 +512,8 @@ describe('DualListbox', () => {
                 expect(optionValue).toBeTruthy();
             })
             .then(() => {
-                const label = element.shadowRoot.querySelector(
-                    '.slds-media__body'
-                );
+                const label =
+                    element.shadowRoot.querySelector('.slds-media__body');
                 expect(label.textContent).toBe('Option 1');
             });
     });
@@ -541,9 +540,8 @@ describe('DualListbox', () => {
                 expect(optionValue).toBeTruthy();
             })
             .then(() => {
-                const label = element.shadowRoot.querySelector(
-                    '.slds-media__body'
-                );
+                const label =
+                    element.shadowRoot.querySelector('.slds-media__body');
                 expect(label.textContent).toBe('Option 1');
             });
     });
@@ -617,6 +615,7 @@ describe('DualListbox', () => {
     // allow search
     it('Dual Listbox allow search', () => {
         element.allowSearch = true;
+        element.options = Options;
 
         return Promise.resolve().then(() => {
             const searchBox = element.shadowRoot.querySelector(

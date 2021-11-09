@@ -964,14 +964,7 @@ export default class DualListbox extends LightningElement {
 
         if (this.allowSearch) {
             if (this.computedSourceList.length > 0) {
-                this._sourceBoxHeight =
-                    sourceOptionsHeight +
-                    getListHeight(
-                        this.template.querySelector(
-                            '.avonni-dual-listbox-allow-search'
-                        )
-                    ) +
-                    overSourceHeight;
+                this._sourceBoxHeight = sourceOptionsHeight + overSourceHeight;
             } else if (this.computedSourceList.length === 0) {
                 this._sourceBoxHeight = this._maxVisibleOptions * 41;
             }
