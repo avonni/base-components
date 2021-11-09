@@ -521,7 +521,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * A list of options that are available for selection. Each option has the following attributes: label, description, value, iconName, iconSrc, initials and variant.
+     * A list of options that are available for selection. Each option has the following attributes: label, description, value, fallbackIconName, iconSrc, initials and variant.
      *
      * @type {object[]}
      * @public
@@ -869,8 +869,12 @@ export default class DualListbox extends LightningElement {
             selected: isSelected ? true : false,
             primaryText: option.description ? option.label : '',
             secondaryText: option.description ? option.description : '',
-            iconSize: option.iconSize
-                ? option.iconSize
+            iconSize: option.avatar
+                ? option.avatar.iconSize
+                    ? option.avatar.iconSize
+                    : hasDescription
+                    ? 'medium'
+                    : 'small'
                 : hasDescription
                 ? 'medium'
                 : 'small',
@@ -1094,8 +1098,8 @@ export default class DualListbox extends LightningElement {
         )
             .add({ 'slds-is-disabled': this._disabled })
             .add({
-                'avonni-dual-listbox-selected-list-with-search': this
-                    ._allowSearch
+                'avonni-dual-listbox-selected-list-with-search':
+                    this._allowSearch
             })
             .add({
                 'avonni-dual-listbox-empty-column': this.isSelectedBoxEmpty
@@ -1116,8 +1120,8 @@ export default class DualListbox extends LightningElement {
     get computedListItemClass() {
         return classSet('slds-listbox__item')
             .add({
-                'avonni-dual-listbox-option-border_bottom': !this
-                    .hideBottomDivider
+                'avonni-dual-listbox-option-border_bottom':
+                    !this.hideBottomDivider
             })
             .toString();
     }
