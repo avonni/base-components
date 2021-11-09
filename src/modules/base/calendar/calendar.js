@@ -791,6 +791,9 @@ export default class Calendar extends LightningElement {
         );
     }
 
+    /**
+     * Mouse over handler.
+     */
     handleMouseOver(event) {
         const day = event.target.getAttribute('data-day');
         const dayCell = this.template.querySelector(`[data-day="${day}"]`);
@@ -864,6 +867,9 @@ export default class Calendar extends LightningElement {
         }
     }
 
+    /**
+     * Mouse out handler.
+     */
     handleMouseOut() {
         this.template.querySelectorAll('td').forEach((x) => {
             x.classList.remove('avonni-calendar-cell__bordered_top_bottom');

@@ -660,6 +660,9 @@ export default class InputDateRange extends LightningElement {
         event.preventDefault();
         this.startTime = event.target.value;
         this.dispatchChange();
+        if (this.startDate && this.startTime) {
+            this.endDateInput.focus();
+        }
     }
 
     /**
@@ -746,7 +749,9 @@ export default class InputDateRange extends LightningElement {
             }
             this.toggleStartDateVisibility();
 
-            if (
+            if (this.type === 'datetime' && this.startDate && !this.startTime) {
+                this.startTimeInput.focus();
+            } else if (
                 this.startDate &&
                 (!this.endDate ||
                     this.startDate.getTime() > this.endDate.getTime())
@@ -754,7 +759,6 @@ export default class InputDateRange extends LightningElement {
                 this._endDate = null;
                 this.endDateInput.focus();
             }
-
             this.dispatchChange();
         }
     }
@@ -883,8 +887,12 @@ export default class InputDateRange extends LightningElement {
                 this._endDate = null;
                 this.endDateInput.focus();
             }
-            if (!this.startDate && this.endDate) {
+            if (this.type === 'datetime' && this.endDate && !this.endTime) {
+                this.endTimeInput.focus();
+            } else if (this.isOnlyEndDate) {
                 this.startDateInput.focus();
+            } else if (this.isOnlyStartDate) {
+                this.endDateInput.focus();
             }
 
             this.dispatchChange();
