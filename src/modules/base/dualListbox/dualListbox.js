@@ -89,30 +89,12 @@ const i18n = {
  */
 export default class DualListbox extends LightningElement {
     /**
-     * The name of the icon to be used in the format 'utility:right'.
-     *
-     * @type {string}
-     * @public
-     * @default utility:right
-     */
-    @api addButtonIconName = DEFAULT_ADD_BUTTON_ICON_NAME;
-
-    /**
      * Label for add button.
      *
      * @type {string}
      * @public
      */
     @api addButtonLabel;
-
-    /**
-     * The name of the icon to be used in the format ‘utility:down’.
-     *
-     * @type {string}
-     * @public
-     * @default utility:down
-     */
-    @api downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
 
     /**
      * Label for down button
@@ -156,15 +138,6 @@ export default class DualListbox extends LightningElement {
     @api name;
 
     /**
-     * The name of the icon to be used in the format ‘utility:left’.
-     *
-     * @type {string}
-     * @public
-     * @default utility:left
-     */
-    @api removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
-
-    /**
      * Label for remove button.
      *
      * @type {string}
@@ -197,15 +170,6 @@ export default class DualListbox extends LightningElement {
     @api sourceLabel;
 
     /**
-     * The name of the icon to be used in the format ‘utility:up’.
-     *
-     * @type {string}
-     * @public
-     * @default utility:up
-     */
-    @api upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
-
-    /**
      * Label for up button.
      *
      * @type {string}
@@ -215,19 +179,23 @@ export default class DualListbox extends LightningElement {
 
     _requiredOptions = [];
     _options = [];
+    _addButtonIconName = DEFAULT_ADD_BUTTON_ICON_NAME;
     _allowSearch = false;
     _buttonSize = BUTTON_SIZES.default;
     _buttonVariant = BUTTON_VARIANTS.default;
     _disabled;
     _disableReordering = false;
+    _downButtonIconName = DEFAULT_DOWN_BUTTON_ICON_NAME;
     _draggable = false;
     _hideBottomDivider = false;
     _isLoading = false;
     _max;
     _maxVisibleOptions = DEFAULT_MAX_VISIBLE_OPTIONS;
     _min = DEFAULT_MIN;
+    _removeButtonIconName = DEFAULT_REMOVE_BUTTON_ICON_NAME;
     _required = false;
     _size = BOXES_SIZES.default;
+    _upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
     _variant = LABEL_VARIANTS.default;
 
     _selectedValues = [];
@@ -298,6 +266,22 @@ export default class DualListbox extends LightningElement {
             this.getGroupValues();
         }
         this.rendered = true;
+    }
+
+    /**
+     * The name of the icon to be used in the format 'utility:right'.
+     *
+     * @type {string}
+     * @public
+     * @default utility:right
+     */
+    @api
+    get addButtonIconName() {
+        return this._addButtonIconName;
+    }
+
+    set addButtonIconName(value) {
+        this._addButtonIconName = value ? value : DEFAULT_ADD_BUTTON_ICON_NAME;
     }
 
     /**
@@ -383,6 +367,24 @@ export default class DualListbox extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * The name of the icon to be used in the format ‘utility:down’.
+     *
+     * @type {string}
+     * @public
+     * @default utility:down
+     */
+    @api
+    get downButtonIconName() {
+        return this._downButtonIconName;
+    }
+
+    set downButtonIconName(value) {
+        this._downButtonIconName = value
+            ? value
+            : DEFAULT_DOWN_BUTTON_ICON_NAME;
     }
 
     /**
@@ -542,6 +544,24 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
+     * The name of the icon to be used in the format ‘utility:left’.
+     *
+     * @type {string}
+     * @public
+     * @default utility:left
+     */
+    @api
+    get removeButtonIconName() {
+        return this._removeButtonIconName;
+    }
+
+    set removeButtonIconName(value) {
+        this._removeButtonIconName = value
+            ? value
+            : DEFAULT_REMOVE_BUTTON_ICON_NAME;
+    }
+
+    /**
      * If present, the user must add an item to the selected listbox before submitting the form.
      *
      * @type {boolean}
@@ -594,6 +614,22 @@ export default class DualListbox extends LightningElement {
             fallbackValue: BOXES_SIZES.default,
             validValues: BOXES_SIZES.valid
         });
+    }
+
+    /**
+     * The name of the icon to be used in the format ‘utility:up’.
+     *
+     * @type {string}
+     * @public
+     * @default utility:up
+     */
+    @api
+    get upButtonIconName() {
+        return this._upButtonIconName;
+    }
+
+    set upButtonIconName(value) {
+        this._upButtonIconName = value ? value : DEFAULT_UP_BUTTON_ICON_NAME;
     }
 
     /**
