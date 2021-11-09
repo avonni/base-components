@@ -463,6 +463,7 @@ export default class Carousel extends LightningElement {
      * @param {number} numberOfPanels
      */
     initializePaginationItems(numberOfPanels) {
+        this.paginationItems = [];
         for (let i = 0; i < numberOfPanels; i++) {
             const id = generateUUID();
             const isItemActive = i === this.activeIndexPanel;
