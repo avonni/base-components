@@ -249,7 +249,9 @@ export default class DynamicMenu extends LightningElement {
 
         value.forEach((item, key) => {
             let cloneItem = Object.assign({}, item);
-            cloneItem.metaJoin = cloneItem.meta.join(' • ');
+            cloneItem.metaJoin = cloneItem.meta
+                ? cloneItem.meta.join(' • ')
+                : null;
             cloneItem.key = `item-key-${key}`;
             result.push(cloneItem);
         });
@@ -375,9 +377,13 @@ export default class DynamicMenu extends LightningElement {
     click() {
         if (this._connected) {
             if (this.label) {
-                this.template.querySelector('[data-element-id="button"]').click();
+                this.template
+                    .querySelector('[data-element-id="button"]')
+                    .click();
             } else {
-                this.template.querySelector('[data-element-id="lightning-button-icon"]').click();
+                this.template
+                    .querySelector('[data-element-id="lightning-button-icon"]')
+                    .click();
             }
         }
     }
@@ -513,7 +519,9 @@ export default class DynamicMenu extends LightningElement {
         if (this.label) {
             this.template.querySelector('[data-element-id="button"]').focus();
         } else {
-            this.template.querySelector('[data-element-id="lightning-button-icon"]').focus();
+            this.template
+                .querySelector('[data-element-id="lightning-button-icon"]')
+                .focus();
         }
     }
 

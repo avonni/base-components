@@ -3,7 +3,6 @@
  * @name items
  * @property {string} label Item label.
  * @property {string[]} meta An array of descriptive meta tags text.
- * @property {number} id Item ID number.
  * @property {string} value Item text value.
  * @property {object} avatar An object with item fields to be rendered as an avatar.
  */

@@ -37,7 +37,6 @@ const items = [
     {
         label: 'Acme',
         meta: ['Account', 'San Francisco'],
-        id: 0,
         value: 'acme',
         avatar: {
             fallbackIconName: 'standard:account',
@@ -47,7 +46,6 @@ const items = [
     {
         label: 'Remo',
         meta: ['Contact', 'San Francisco'],
-        id: 1,
         value: 'remo',
         avatar: {
             fallbackIconName: 'standard:contact',
@@ -57,7 +55,6 @@ const items = [
     {
         label: 'Niko',
         meta: ['Lead', 'San Francisco'],
-        id: 2,
         value: 'niko',
         avatar: {
             fallbackIconName: 'standard:lead',
@@ -110,7 +107,9 @@ describe('Dynamic Menu', () => {
         element.buttonSize = 'auto';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.classList).not.toContain('slds-button_stretch');
             expect(element.classList).not.toContain('slds-button_stretch');
         });
@@ -121,7 +120,9 @@ describe('Dynamic Menu', () => {
         element.buttonSize = 'stretch';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.classList).toContain('slds-button_stretch');
             expect(element.classList).toContain('slds-button_stretch');
         });
@@ -132,7 +133,9 @@ describe('Dynamic Menu', () => {
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button).toBeTruthy();
             expect(button.textContent).toBe('This is a label');
         });
@@ -155,7 +158,9 @@ describe('Dynamic Menu', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon"]'
+            );
             expect(icon).toBeTruthy();
             expect(icon.iconName).toBe('utility:close');
         });
@@ -214,9 +219,8 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown '
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
                 expect(dropdown.className).toBe(
                     'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left slds-nubbin_top-left'
                 );
@@ -234,9 +238,8 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown '
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
                 expect(dropdown.className).toBe(
                     'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right slds-nubbin_top-right'
                 );
@@ -254,9 +257,8 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown '
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
                 expect(dropdown.className).toBe(
                     'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center slds-nubbin_top'
                 );
@@ -274,9 +276,8 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown '
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
                 expect(dropdown.className).toBe(
                     'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
                 );
@@ -294,9 +295,8 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown '
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
                 expect(dropdown.className).toBe(
                     'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
                 );
@@ -314,9 +314,8 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown '
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
                 expect(dropdown.className).toBe(
                     'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-nubbin_bottom'
                 );
@@ -340,7 +339,9 @@ describe('Dynamic Menu', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.disabled).toBeTruthy();
         });
     });
@@ -444,7 +445,9 @@ describe('Dynamic Menu', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.title).toBe('This is a title text');
         });
     });
@@ -488,7 +491,9 @@ describe('Dynamic Menu', () => {
         element.label = 'Some label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.classList).toContain('slds-button_brand');
         });
     });
@@ -543,7 +548,9 @@ describe('Dynamic Menu', () => {
         element.value = '1';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.value).toBe('1');
         });
     });
@@ -565,7 +572,9 @@ describe('Dynamic Menu', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
             expect(button.accessKey).toBe('K');
         });
     });
@@ -612,9 +621,8 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown = element.shadowRoot.querySelector(
-                    '.slds-dropdown'
-                );
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown');
                 expect(dropdown).toBeTruthy();
                 const item = element.shadowRoot.querySelector(
                     '.slds-listbox__item'
@@ -624,7 +632,6 @@ describe('Dynamic Menu', () => {
                 expect(handler.mock.calls[0][0].detail.item).toMatchObject({
                     label: 'Acme',
                     meta: ['Account', 'San Francisco'],
-                    id: 0,
                     value: 'acme',
                     avatar: {
                         fallbackIconName: 'standard:account',
