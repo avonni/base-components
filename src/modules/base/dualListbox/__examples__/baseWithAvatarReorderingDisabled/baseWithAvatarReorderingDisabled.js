@@ -8,52 +8,72 @@ export default class DualListboxBaseWithAvatarReorderingDisabled extends Lightni
         {
             value: '1',
             label: 'Jobs',
-            iconName: 'custom:custom91'
+            avatar: {
+                fallbackIconName: 'custom:custom91'
+            }
         },
         {
             value: '2',
             label: 'Leads & Referrals',
-            iconName: 'standard:lead'
+            avatar: {
+                fallbackIconName: 'standard:lead'
+            }
         },
         {
             value: '3',
             label: 'Legal Entities',
-            iconName: 'custom:custom87'
+            avatar: {
+                fallbackIconName: 'custom:custom87'
+            }
         },
         {
             value: '4',
             label: 'Contacts',
-            iconName: 'standard:contact'
+            avatar: {
+                fallbackIconName: 'standard:contact'
+            }
         },
         {
             value: '5',
             label: 'Cases',
-            iconName: 'standard:case'
+            avatar: {
+                fallbackIconName: 'standard:case'
+            }
         },
         {
             value: '6',
             label: 'Accounts',
-            iconName: 'standard:account'
+            avatar: {
+                fallbackIconName: 'standard:account'
+            }
         },
         {
             value: '7',
             label: 'Reports',
-            iconName: 'standard:report'
+            avatar: {
+                fallbackIconName: 'standard:report'
+            }
         },
         {
             value: '8',
             label: 'Knowledge',
-            iconName: 'standard:knowledge'
+            avatar: {
+                fallbackIconName: 'standard:knowledge'
+            }
         },
         {
             value: '9',
             label: 'List Emails',
-            iconName: 'standard:list_email'
+            avatar: {
+                fallbackIconName: 'standard:list_email'
+            }
         },
         {
             value: '10',
             label: 'Dashboards',
-            iconName: 'standard:dashboard'
+            avatar: {
+                fallbackIconName: 'standard:dashboard'
+            }
         }
     ];
 }
