@@ -207,6 +207,10 @@
     height: 1.25rem;
 }
 
+.avonni-avatar-group__border_color {
+    border-color: var(--avonni-avatar-group-border-color, #ffffff);
+}
+
 .circleBorder {
     border: 3px white solid;
 }
