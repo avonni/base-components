@@ -5,7 +5,6 @@ export default class DynamicMenuBase extends LightningElement {
         {
             label: 'Acme',
             meta: ['Account', 'San Francisco'],
-            id: 0,
             value: 'acme',
             avatar: {
                 fallbackIconName: 'standard:account',
@@ -15,7 +14,6 @@ export default class DynamicMenuBase extends LightningElement {
         {
             label: 'Remo',
             meta: ['Contact', 'San Francisco'],
-            id: 1,
             value: 'remo',
             avatar: {
                 fallbackIconName: 'standard:contact',
@@ -25,7 +23,6 @@ export default class DynamicMenuBase extends LightningElement {
         {
             label: 'Niko',
             meta: ['Lead', 'San Francisco'],
-            id: 2,
             value: 'niko',
             avatar: {
                 fallbackIconName: 'standard:lead',

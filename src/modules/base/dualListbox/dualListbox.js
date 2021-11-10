@@ -731,6 +731,9 @@ export default class DualListbox extends LightningElement {
         return String(this.disabled);
     }
 
+    /**
+     * Generated unique ID key.
+     */
     get generateKey() {
         return generateUUID();
     }
@@ -1094,8 +1097,8 @@ export default class DualListbox extends LightningElement {
         )
             .add({ 'slds-is-disabled': this._disabled })
             .add({
-                'avonni-dual-listbox-selected-list-with-search': this
-                    ._allowSearch
+                'avonni-dual-listbox-selected-list-with-search':
+                    this._allowSearch
             })
             .add({
                 'avonni-dual-listbox-empty-column': this.isSelectedBoxEmpty
@@ -1116,8 +1119,8 @@ export default class DualListbox extends LightningElement {
     get computedListItemClass() {
         return classSet('slds-listbox__item')
             .add({
-                'avonni-dual-listbox-option-border_bottom': !this
-                    .hideBottomDivider
+                'avonni-dual-listbox-option-border_bottom':
+                    !this.hideBottomDivider
             })
             .toString();
     }
