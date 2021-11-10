@@ -608,6 +608,9 @@ export default class PrimitiveCombobox extends LightningElement {
             }
             values.push(option.value);
         });
+        if(this.isMultiSelect) {
+            return this.hasBadValues
+        }
         return this._value.length === 0 || this._value[0] === ''
             ? true
             : values.some((e) => this._value.includes(e));
@@ -1288,6 +1291,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     computeSelection() {
         this.selectedOptions = this.getSelectedOptions();
+        this.hasBadValues = this._value.length === 0 ? true : this.selectedOptions.some((option) => option.value)
         this._value = this.selectedOptions.map((option) => option.value);
 
         this.dispatchEvent(
