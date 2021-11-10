@@ -73,7 +73,6 @@ const DEFAULT_STATUS_TITLE = 'Status';
 
 export default class PrimitiveAvatar extends LightningElement {
     @api entityInitials;
-    @api entityIconName;
     @api fallbackIconName;
     @api initials;
 
@@ -85,6 +84,7 @@ export default class PrimitiveAvatar extends LightningElement {
     fallbackIconClass;
 
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
+    _entityIconName;
     _entityPosition = POSITIONS.entityDefault;
     _entitySrc;
     _entityTitle = DEFAULT_ENTITY_TITLE;
@@ -157,89 +157,18 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     /**
-     * Status
-     */
-
-    @api
-    get status() {
-        return this._status;
-    }
-
-    set status(value) {
-        this._status = normalizeString(value, {
-            fallbackValue: STATUS.default,
-            validValues: STATUS.valid
-        });
-        this._computeStatus();
-    }
-
-    @api
-    get statusTitle() {
-        return this._statusTitle;
-    }
-
-    set statusTitle(value) {
-        this._statusTitle =
-            typeof value === 'string' ? value.trim() : DEFAULT_STATUS_TITLE;
-        this._computeStatus();
-    }
-
-    @api
-    get statusPosition() {
-        return this._statusPosition;
-    }
-
-    set statusPosition(value) {
-        this._statusPosition = normalizeString(value, {
-            fallbackValue: POSITIONS.statusDefault,
-            validValues: POSITIONS.valid
-        });
-        this._computeStatus();
-    }
-
-    /**
-     * Presence
-     */
-
-    @api
-    get presence() {
-        return this._presence;
-    }
-
-    set presence(value) {
-        this._presence = normalizeString(value, {
-            fallbackValue: PRESENCE.default,
-            validValues: PRESENCE.valid
-        });
-        this._computePresenceClasses();
-    }
-
-    @api
-    get presencePosition() {
-        return this._presencePosition;
-    }
-
-    set presencePosition(value) {
-        this._presencePosition = normalizeString(value, {
-            fallbackValue: POSITIONS.presenceDefault,
-            validValues: POSITIONS.valid
-        });
-        this._computePresenceClasses();
-    }
-
-    @api
-    get presenceTitle() {
-        return this._presenceTitle;
-    }
-
-    set presenceTitle(value) {
-        this._presenceTitle =
-            typeof value === 'string' ? value.trim() : DEFAULT_PRESENCE_TITLE;
-    }
-
-    /**
      * Entity
      */
+
+    @api
+    get entityIconName() {
+        return this._entityIconName;
+    }
+
+    set entityIconName(value) {
+        this._entityIconName = value;
+        this._computeEntityClasses();
+    }
 
     @api
     get entityPosition() {
@@ -286,6 +215,46 @@ export default class PrimitiveAvatar extends LightningElement {
         this._computeEntityClasses();
     }
 
+    /**
+     * Presence
+     */
+
+    @api
+    get presence() {
+        return this._presence;
+    }
+
+    set presence(value) {
+        this._presence = normalizeString(value, {
+            fallbackValue: PRESENCE.default,
+            validValues: PRESENCE.valid
+        });
+        this._computePresenceClasses();
+    }
+
+    @api
+    get presencePosition() {
+        return this._presencePosition;
+    }
+
+    set presencePosition(value) {
+        this._presencePosition = normalizeString(value, {
+            fallbackValue: POSITIONS.presenceDefault,
+            validValues: POSITIONS.valid
+        });
+        this._computePresenceClasses();
+    }
+
+    @api
+    get presenceTitle() {
+        return this._presenceTitle;
+    }
+
+    set presenceTitle(value) {
+        this._presenceTitle =
+            typeof value === 'string' ? value.trim() : DEFAULT_PRESENCE_TITLE;
+    }
+
     get computedInitialsClass() {
         return classSet('slds-avatar__initials')
             .add({
@@ -293,6 +262,47 @@ export default class PrimitiveAvatar extends LightningElement {
             })
             .add(computeSldsClass(this.fallbackIconName))
             .toString();
+    }
+
+    /**
+     * Status
+     */
+
+    @api
+    get status() {
+        return this._status;
+    }
+
+    set status(value) {
+        this._status = normalizeString(value, {
+            fallbackValue: STATUS.default,
+            validValues: STATUS.valid
+        });
+        this._computeStatus();
+    }
+
+    @api
+    get statusTitle() {
+        return this._statusTitle;
+    }
+
+    set statusTitle(value) {
+        this._statusTitle =
+            typeof value === 'string' ? value.trim() : DEFAULT_STATUS_TITLE;
+        this._computeStatus();
+    }
+
+    @api
+    get statusPosition() {
+        return this._statusPosition;
+    }
+
+    set statusPosition(value) {
+        this._statusPosition = normalizeString(value, {
+            fallbackValue: POSITIONS.statusDefault,
+            validValues: POSITIONS.valid
+        });
+        this._computeStatus();
     }
 
     get groupedAvatar() {
