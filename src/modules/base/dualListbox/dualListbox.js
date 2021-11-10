@@ -72,7 +72,10 @@ const BUTTON_SIZES = {
     default: 'medium'
 };
 
-const BOXES_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
+const BOXES_SIZES = {
+    valid: ['small', 'medium', 'large', 'responsive'],
+    default: 'medium'
+};
 
 const i18n = {
     optionLockAssistiveText: 'Option Lock AssistiveText',
@@ -1092,7 +1095,9 @@ export default class DualListbox extends LightningElement {
                 'avonni-dual-listbox-list__column_responsive_medium ':
                     this._size === 'medium',
                 'avonni-dual-listbox-list__column_responsive_large ':
-                    this._size === 'large'
+                    this._size === 'large',
+                'slds-dueling-list__column_responsive':
+                    this._size === 'responsive'
             })
             .toString();
     }
