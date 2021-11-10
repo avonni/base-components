@@ -150,7 +150,7 @@ const Template = (args) => Calendar(args);
 export const Base = Template.bind({});
 Base.args = {
     value: '05/08/2021',
-    disabledDates: ['05/09/2021']
+    disabledDates: '05/09/2021'
 };
 
 export const Multiple = Template.bind({});
