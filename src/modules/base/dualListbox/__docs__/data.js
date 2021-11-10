@@ -37,52 +37,72 @@ export const OptionsWithAvatar = [
     {
         value: '1',
         label: 'Jobs',
-        iconName: 'custom:custom91'
+        avatar: {
+            fallbackIconName: 'custom:custom91'
+        }
     },
     {
         value: '2',
         label: 'Leads & Referrals',
-        iconName: 'standard:lead'
+        avatar: {
+            fallbackIconName: 'standard:lead'
+        }
     },
     {
         value: '3',
         label: 'Legal Entities',
-        iconName: 'custom:custom87'
+        avatar: {
+            fallbackIconName: 'custom:custom87'
+        }
     },
     {
         value: '4',
         label: 'Contacts',
-        iconName: 'standard:contact'
+        avatar: {
+            fallbackIconName: 'standard:contact'
+        }
     },
     {
         value: '5',
         label: 'Cases',
-        iconName: 'standard:case'
+        avatar: {
+            fallbackIconName: 'standard:case'
+        }
     },
     {
         value: '6',
         label: 'Accounts',
-        iconName: 'standard:account'
+        avatar: {
+            fallbackIconName: 'standard:account'
+        }
     },
     {
         value: '7',
         label: 'Reports',
-        iconName: 'standard:report'
+        avatar: {
+            fallbackIconName: 'standard:report'
+        }
     },
     {
         value: '8',
         label: 'Knowledge',
-        iconName: 'standard:knowledge'
+        avatar: {
+            fallbackIconName: 'standard:knowledge'
+        }
     },
     {
         value: '9',
         label: 'List Emails',
-        iconName: 'standard:list_email'
+        avatar: {
+            fallbackIconName: 'standard:list_email'
+        }
     },
     {
         value: '10',
         label: 'Dashboards',
-        iconName: 'standard:dashboard'
+        avatar: {
+            fallbackIconName: 'standard:dashboard'
+        }
     }
 ];
 
@@ -90,62 +110,82 @@ export const OptionsWithAvatarSrc = [
     {
         value: '1',
         label: 'Carl Smith',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        }
     },
     {
         value: '2',
         label: 'Suzan White',
         description: 'SW',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        }
     },
     {
         value: '3',
         label: 'Philipp Johnson',
         description: 'PJ',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        }
     },
     {
         value: '4',
         label: 'Miles Williams',
         description: 'MW',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        }
     },
     {
         value: '5',
         label: 'Jane Doe',
         description: 'JD',
-        iconName: 'standard:account',
-        initials: 'JD'
+        avatar: {
+            fallbackIconName: 'standard:account',
+            initials: 'JD'
+        }
     },
     {
         value: '6',
         label: 'Gina Garcia',
         description: 'GG',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        }
     },
     {
         value: '7',
         label: 'John Smith',
-        iconName: 'standard:address',
-        initials: 'JS'
+        avatar: {
+            fallbackIconName: 'standard:address',
+            initials: 'JS'
+        }
     },
     {
         value: '8',
         label: 'Xavier Anderson',
         description: 'XA',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        }
     },
     {
         value: '9',
         label: 'James Jackson',
         description: 'JJ',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        }
     },
     {
         value: '10',
         label: 'Diane Wilson',
         description: 'DW',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        }
     }
 ];
 

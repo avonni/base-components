@@ -377,10 +377,10 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['small', 'medium', 'large'],
+            options: ['small', 'medium', 'large', 'responsive'],
             defaultValue: 'medium',
             description:
-                'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.',
+                'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium, large and responsive.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
@@ -527,6 +527,21 @@ BaseLarge.args = {
     options: Options,
     value: ['2', '3', '4', '5', '6'],
     size: 'large'
+};
+
+export const BaseResponsive = Template.bind({});
+BaseResponsive.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3', '4', '5', '6'],
+    size: 'responsive'
 };
 
 export const BaseNoBorder = Template.bind({});
