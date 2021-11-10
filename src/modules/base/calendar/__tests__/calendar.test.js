@@ -94,9 +94,9 @@ describe('Calendar', () => {
     // disabled dates
     it('Calendar disabled dates', () => {
         element.value = '05/09/2021';
-        element.disabledDates = [5, 10, 15, 20, 25];
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
+        element.disabledDates = '05/06/2021';
+        element.min = new Date('05/20/2021');
+        element.max = new Date('05/25/2021');
 
         return Promise.resolve().then(() => {
             const dates = [];
@@ -104,13 +104,9 @@ describe('Calendar', () => {
                 '.avonni-disabled-cell'
             );
             disabledDates.forEach((date) => {
-                dates.push(date.textContent);
+                dates.push(date.getAttribute('data-date'));
             });
-            expect(dates.includes('5')).toBeTruthy();
-            expect(dates.includes('10')).toBeTruthy();
-            expect(dates.includes('15')).toBeTruthy();
-            expect(dates.includes('20')).toBeTruthy();
-            expect(dates.includes('25')).toBeTruthy();
+            expect(dates.includes('6')).toBeTruthy();
         });
     });
 
