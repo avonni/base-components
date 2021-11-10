@@ -45,31 +45,31 @@
 }
 
 input.avonni-primitive-combobox__input {
-    border-color: var(--avonni-primitive-combobox-border-color, #dddbda);
+    border-color: var(--avonni-primitive-combobox-color-border, #dddbda);
     border-top-right-radius: var(
-        --avonni-primitive-combobox-border-top-right-radius,
+        --avonni-primitivei-combobox-radius-border-top-right,
         0.25rem
     );
     border-top-left-radius: var(
-        --avonni-primitive-combobox-border-top-left-radius,
+        --avonni-primitivei-combobox-radius-border-top-left,
         0.25rem
     );
     border-bottom-right-radius: var(
-        --avonni-primitive-combobox-border-bottom-right-radius,
+        --avonni-primitive-combobox-radius-border-bottom-right,
         0.25rem
     );
     border-bottom-left-radius: var(
-        --avonni-primitive-combobox-border-bottom-left-radius,
+        --avonni-primitive-combobox-radius-border-bottom-left,
         0.25rem
     );
-    border-top-width: var(--avonni-primitive-combobox-border-top-width, 1px);
+    border-top-width: var(--avonni-primitive-combobox-sizing-border-top, 1px);
     border-bottom-width: var(
-        --avonni-primitive-combobox-border-bottom-width,
+        --avonni-primitive-combobox-sizing-border-bottom,
         1px
     );
     border-right-width: var(
-        --avonni-primitive-combobox-border-right-width,
+        --avonni-primitive-combobox-sizing-border-right,
         1px
     );
-    border-left-width: var(--avonni-primitive-combobox-border-left-width, 1px);
+    border-left-width: var(--avonni-primitive-combobox-sizing-border-left, 1px);
 }
