@@ -33,10 +33,22 @@
 -->
 
 <template>
-    <c-input-rich-text
-        placeholder={placeholder}
+    <c-color-picker
+        name="dt-inline-edit-color-picker"
+        data-inputable="true"
         disabled={disabled}
-        variant={variant}
-        onchange={handleChange}
-    ></c-input-rich-text>
+        colors={colors}
+        hide-color-input={hideColorInput}
+        label={label}
+        menu-alignment="auto"
+        menu-icon-name={menuIconName}
+        menu-icon-size={menuIconSize}
+        menu-variant={menuVariant}
+        opacity={opacity}
+        required={required}
+        type={type}
+        value={editedValue}
+        variant="label-hidden"
+    >
+    </c-color-picker>
 </template>

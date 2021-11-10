@@ -896,7 +896,11 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {string}
      */
     get readOnlyValue() {
-        return this.validity.valid ? this.inputValue : this.value[0];
+        return this.validity.valid ? this.inputValue : '';
+    }
+
+    get readOnlyLabel() {
+        return this.label ? this.label : 'Read Only Combobox'
     }
 
     /**

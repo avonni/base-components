@@ -33,19 +33,17 @@
 -->
 
 <template>
-    <c-input-date-range
-        start-date={startDate}
-        end-date={endDate}
-        date-style={dateStyle}
-        time-style={timeStyle}
-        timezone={timezone}
-        disabled={disabled}
-        label={label}
-        label-start-date={labelStartDate}
-        label-end-date={labelEndDate}
-        read-only={readOnly}
-        type={type}
-        variant="label-hidden"
-        onchange={handleChange}
-    ></c-input-date-range>
+    <div class="slds-p-around_x-small">
+        <c-primitive-cell-counter
+            col-key-value={colKeyValue}
+            row-key-value={rowKeyValue}
+            value={value}
+            name={typeAttributes.name}
+            label={typeAttributes.label}
+            max={typeAttributes.max}
+            min={typeAttributes.min}
+            step={typeAttributes.step}
+            disabled={typeAttributes.disabled}
+        ></c-primitive-cell-counter>
+    </div>
 </template>

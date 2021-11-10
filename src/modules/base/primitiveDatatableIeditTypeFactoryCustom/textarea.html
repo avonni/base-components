@@ -33,16 +33,16 @@
 -->
 
 <template>
-    <c-input-counter
-        value={value}
-        name={name}
-        label={label}
-        max={max}
-        min={min}
-        read-only={readOnly}
-        step={step}
-        variant="label-hidden"
+    <lightning-textarea
+        name="dt-inline-edit-textarea"
+        data-inputable="true"
         disabled={disabled}
-        onchange={handleChange}
-    ></c-input-counter>
+        label={label}
+        max-length={maxLength}
+        min-length={minLength}
+        placeholder={placeholder}
+        required={required}
+        value={editedValue}
+    >
+    </lightning-textarea>
 </template>

@@ -146,6 +146,11 @@ export default class InputDateRange extends LightningElement {
         this.updateClassListWhenError();
     }
 
+    @api
+    get value() {
+        return { startDate: this._startDate, endDate: this._endDate };
+    }
+
     /**
      * Specifies the value of the start date input.
      *

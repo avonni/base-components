@@ -32,14 +32,11 @@
 
 import { LightningElement, api } from 'lwc';
 
-export default class PrimitiveCellCombobox extends LightningElement {
+export default class PrimitiveCellRichText extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
     @api disabled;
-    @api dropdownAlignment;
-    @api dropdownLength;
-    @api isMultiSelect;
-    @api options;
+    @api variant;
     @api placeholder;
 
     _value;
@@ -48,11 +45,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
     readOnly = true;
 
     connectedCallback() {
-        // Dispatches the inline edit event to the parent component.
-        this.template.addEventListener('inlineeditchange', (event) => {
-            this.handleChange(event);
-        });
-
         this.template.addEventListener('ieditfinishedcustom', () => {
             this.toggleInlineEdit();
         });
@@ -79,21 +71,6 @@ export default class PrimitiveCellCombobox extends LightningElement {
         this._value = value;
     }
 
-    handleChange(event) {
-        const detail = {
-            value: event.detail.value,
-            colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
-        };
-        this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                detail: detail,
-                bubbles: true,
-                composed: true
-            })
-        );
-    }
-
     /*----------- Inline Editing Functions -------------*/
 
     /**
@@ -105,7 +82,7 @@ export default class PrimitiveCellCombobox extends LightningElement {
         return this.editable && !this.disabled;
     }
 
-    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    // Toggles the visibility of the inline edit panel and the readOnly property of color-picker.
     toggleInlineEdit() {
         this.visible = !this.visible;
         this.readOnly = !this.readOnly;
@@ -120,9 +97,9 @@ export default class PrimitiveCellCombobox extends LightningElement {
 
     // Checks if the column is editable.
     isEditable() {
-        let combobox = {};
-        combobox = this.columns.find((column) => column.type === 'combobox');
-        this.editable = combobox.editable;
+        let richText = {};
+        richText = this.columns.find((column) => column.type === 'rich-text');
+        this.editable = richText.editable;
     }
 
     // Handles the edit button click and dispatches the event.

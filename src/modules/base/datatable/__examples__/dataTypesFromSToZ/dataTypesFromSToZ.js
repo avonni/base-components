@@ -1,19 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class DataTypesFromRToZ extends LightningElement {
+export default class DataTypesFromSToZ extends LightningElement {
     columns = [
-        {
-            label: 'Rating',
-            fieldName: 'rating',
-            type: 'rating',
-            typeAttributes: {
-                iconName: 'utility:favorite',
-                label: 'Rating on 5',
-                disabled: { fieldName: 'ratingDisabled' }
-            },
-            editable: true,
-            initialWidth: 200
-        },
         {
             label: 'Slider',
             fieldName: 'slider',
@@ -42,6 +30,20 @@ export default class DataTypesFromRToZ extends LightningElement {
             editable: true
         },
         {
+            label: 'Toggle',
+            fieldName: 'toggle',
+            type: 'toggle',
+            typeAttributes: {
+                disabled: { fieldName: 'toggleDisabled' },
+                size: 'large',
+                label: 'Toggle'
+            },
+            editable: true,
+            cellAttributes: {
+                alignment: 'center'
+            }
+        },
+        {
             label: 'URL',
             fieldName: 'url',
             type: 'url',
@@ -63,7 +65,6 @@ export default class DataTypesFromRToZ extends LightningElement {
     records = [
         {
             id: 1,
-            rating: '3',
             slider: 36,
             text: 'Nina Gomez',
             url: 'https://www.avonnicomponents.com/',
@@ -82,7 +83,6 @@ export default class DataTypesFromRToZ extends LightningElement {
         },
         {
             id: 2,
-            rating: '2',
             slider: 78,
             text: 'Dave McKinsley',
             url: 'https://www.avonni.app/',
@@ -102,8 +102,9 @@ export default class DataTypesFromRToZ extends LightningElement {
         {
             id: 3,
             sliderDisabled: true,
-            ratingDisabled: true,
             text: 'Jung Phung',
+            textareaDisabled: true,
+            toggleDisabled: true,
             url: 'https://developer.salesforce.com/docs/component-library/overview/components',
             urlLabel: 'Salesforce documentation',
             urls: [
@@ -120,7 +121,6 @@ export default class DataTypesFromRToZ extends LightningElement {
         },
         {
             id: 4,
-            rating: '5',
             slider: 36,
             sliderStep: 4,
             text: 'Lily Murray',
@@ -140,10 +140,8 @@ export default class DataTypesFromRToZ extends LightningElement {
         },
         {
             id: 5,
-            rating: '4',
             slider: '0',
             text: 'Reginald Martin',
-            textareaDisabled: true,
             url: 'https://lwc.dev/',
             urlLabel: 'LWC Documentation',
             urls: [

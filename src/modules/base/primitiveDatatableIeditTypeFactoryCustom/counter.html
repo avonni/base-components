@@ -33,14 +33,17 @@
 -->
 
 <template>
-    <div class="slds-p-around_x-small">
-        <c-primitive-cell-input-rich-text
-            col-key-value={colKeyValue}
-            row-key-value={rowKeyValue}
-            value={value}
-            disabled={typeAttributes.disabled}
-            placeholder={typeAttributes.placeholder}
-            variant={typeAttributes.variant}
-        ></c-primitive-cell-input-rich-text>
-    </div>
+    <c-input-counter
+        name="dt-inline-edit-input-counter"
+        data-inputable="true"
+        disabled={disabled}
+        label={label}
+        max={max}
+        min={min}
+        required={required}
+        step={step}
+        value={editedValue}
+        variant="label-hidden"
+        onchange={focus}
+    ></c-input-counter>
 </template>

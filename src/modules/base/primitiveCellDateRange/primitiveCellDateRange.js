@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 
-export default class PrimitiveCellInputDateRange extends LightningElement {
+export default class PrimitiveCellDateRange extends LightningElement {
     @api colKeyValue;
     @api rowKeyValue;
     @api dateStyle;
@@ -43,22 +43,37 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
     @api labelStartDate;
     @api labelEndDate;
     @api type;
+
     _value;
-    readOnly;
+    visible = false;
+    editable = false;
+    readOnly = true;
+
+    connectedCallback() {
+        this.template.addEventListener('ieditfinishedcustom', () => {
+            this.toggleInlineEdit();
+        });
+
+        this.dispatchEvent(
+            new CustomEvent('getdatatablestateandcolumns', {
+                detail: {
+                    callbacks: {
+                        getStateAndColumns: this.getStateAndColumns.bind(this)
+                    }
+                },
+                bubbles: true,
+                composed: true
+            })
+        );
+    }
 
     @api
     get value() {
         return this._value;
     }
+
     set value(value) {
-        // When data is first set, the value is an object containing the editable state
-        // When the cell is edited, only the value is sent back
-        if (typeof value === 'object' && value.editable !== undefined) {
-            this.readOnly = !value.editable;
-            this._value = value.value;
-        } else {
-            this._value = value;
-        }
+        this._value = value;
     }
 
     get startDate() {
@@ -71,22 +86,53 @@ export default class PrimitiveCellInputDateRange extends LightningElement {
         return typeof this.value === 'object' ? this.value.endDate : undefined;
     }
 
-    handleChange(event) {
-        const detail = {
-            value: {
-                startDate: event.detail.startDate,
-                endDate: event.detail.endDate
-            },
-            colKeyValue: this.colKeyValue,
-            rowKeyValue: this.rowKeyValue
-        };
+    /*----------- Inline Editing Functions -------------*/
 
+    /**
+     * Return true if cell is editable and not disabled.
+     *
+     * @type {Boolean}
+     */
+    get showEditButton() {
+        return this.editable && !this.disabled;
+    }
+
+    // Toggles the visibility of the inline edit panel and the readOnly property of combobox.
+    toggleInlineEdit() {
+        this.visible = !this.visible;
+        this.readOnly = !this.readOnly;
+    }
+
+    // Gets the state and columns information from the parent component with the dispatch event in the renderedCallback.
+    getStateAndColumns(state, columns) {
+        this.state = state;
+        this.columns = columns;
+        this.isEditable();
+    }
+
+    // Checks if the column is editable.
+    isEditable() {
+        let inputDateRange = {};
+        inputDateRange = this.columns.find(
+            (column) => column.type === 'date-range'
+        );
+        this.editable = inputDateRange.editable;
+    }
+
+    // Handles the edit button click and dispatches the event.
+    handleEditButtonClick() {
+        const { rowKeyValue, colKeyValue, state } = this;
         this.dispatchEvent(
-            new CustomEvent('privateeditcustomcell', {
-                detail: detail,
+            new CustomEvent('editbuttonclickcustom', {
                 bubbles: true,
-                composed: true
+                composed: true,
+                detail: {
+                    rowKeyValue,
+                    colKeyValue,
+                    state
+                }
             })
         );
+        this.toggleInlineEdit();
     }
 }

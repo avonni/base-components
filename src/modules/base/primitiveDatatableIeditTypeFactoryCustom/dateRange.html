@@ -33,10 +33,18 @@
 -->
 
 <template>
-    <div class="slds-p-around_x-small">
-        <lightning-formatted-rich-text
-            value={value}
-            disable-linkify={disableLinkify}
-        ></lightning-formatted-rich-text>
-    </div>
+    <c-input-date-range
+        data-inputable="true"
+        start-date={startDate}
+        end-date={endDate}
+        date-style={dateStyle}
+        time-style={timeStyle}
+        timezone={timezone}
+        disabled={disabled}
+        label={label}
+        label-start-date={labelStartDate}
+        label-end-date={labelEndDate}
+        required={required}
+        type={type}
+    ></c-input-date-range>
 </template>
