@@ -165,7 +165,6 @@ export default class InputCounter extends LightningElement {
     _constraintApiProxyInputUpdater;
     _value = null;
     _previousValue;
-    _inputStep;
     helpMessage;
     labelVariant;
     labelFieldLevelHelp;
@@ -198,8 +197,9 @@ export default class InputCounter extends LightningElement {
         return this._value;
     }
 
-    set value(value) {
-        this._value = typeof value === 'number' ? value : null;
+    set value(val) {
+        const value = Number(val);
+        this._value = !isNaN(value) ? value : null;
     }
 
     /**
@@ -213,8 +213,9 @@ export default class InputCounter extends LightningElement {
         return this._min;
     }
 
-    set min(min) {
-        this._min = typeof min === 'number' ? min : null;
+    set min(value) {
+        const min = Number(value);
+        this._min = !isNaN(min) ? min : null;
     }
 
     /**
@@ -228,8 +229,9 @@ export default class InputCounter extends LightningElement {
         return this._max;
     }
 
-    set max(max) {
-        this._max = typeof max === 'number' ? max : null;
+    set max(value) {
+        const max = Number(value);
+        this._max = !isNaN(max) ? max : null;
     }
 
     /**
@@ -243,21 +245,20 @@ export default class InputCounter extends LightningElement {
         return this._fractionDigits;
     }
 
-    set fractionDigits(digits) {
-        if (typeof digits === 'number') {
-            this._fractionDigits = Math.round(Math.abs(digits));
-            this._inputStep = 1 / Math.pow(10, this._fractionDigits);
-        } else {
-            this._fractionDigits = null;
-            this._inputStep = 1;
-        }
+    set fractionDigits(value) {
+        const digits = Number(value);
+        this._fractionDigits = !isNaN(digits)
+            ? Math.round(Math.abs(digits))
+            : null;
     }
 
     /**
      * Value sent to lightning-input step as a floating point number ( ex. 0.01 would result in 2 decimal places on the value ). Calculated from the fractionDigits.
      */
     get inputStep() {
-        return this._inputStep;
+        return this._fractionDigits
+            ? 1 / Math.pow(10, this._fractionDigits)
+            : 1;
     }
 
     /**
@@ -350,7 +351,7 @@ export default class InputCounter extends LightningElement {
     }
 
     set step(value) {
-        this._step = typeof value === 'number' ? value : DEFAULT_STEP;
+        this._step = Number(value) || DEFAULT_STEP;
     }
 
     /**
@@ -550,7 +551,7 @@ export default class InputCounter extends LightningElement {
      */
     handlePrecision(input) {
         if (!isNaN(input)) {
-            input = +input.toFixed(this._fractionDigits);
+            input = (+input).toFixed(this._fractionDigits);
         }
         return +input;
     }
@@ -559,11 +560,13 @@ export default class InputCounter extends LightningElement {
      * Updates the value in lightning-input, updates proxy for validation and dispatches change event.
      */
     updateValue() {
-        [...this.template.querySelectorAll('[data-element-id="lightning-input"]')].forEach(
-            (element) => {
-                element.value = this._value;
-            }
-        );
+        [
+            ...this.template.querySelectorAll(
+                '[data-element-id="lightning-input"]'
+            )
+        ].forEach((element) => {
+            element.value = this._value;
+        });
 
         this._updateProxyInputAttributes('value');
 
@@ -601,7 +604,9 @@ export default class InputCounter extends LightningElement {
      */
     @api
     focus() {
-        this.template.querySelector('[data-element-id="lightning-input"]').focus();
+        this.template
+            .querySelector('[data-element-id="lightning-input"]')
+            .focus();
     }
 
     /**
@@ -611,7 +616,9 @@ export default class InputCounter extends LightningElement {
      */
     @api
     blur() {
-        this.template.querySelector('[data-element-id="lightning-input"]').blur();
+        this.template
+            .querySelector('[data-element-id="lightning-input"]')
+            .blur();
     }
 
     /**
@@ -637,11 +644,11 @@ export default class InputCounter extends LightningElement {
         let key = event.key;
         switch (key) {
             case 'ArrowUp':
-                this._value = this.value - this._inputStep;
+                this._value = this.value - this.inputStep;
                 this.incrementValue();
                 break;
             case 'ArrowDown':
-                this._value = this.value + this._inputStep;
+                this._value = this.value + this.inputStep;
                 this.decrementValue();
                 break;
             default:
@@ -723,8 +730,8 @@ export default class InputCounter extends LightningElement {
                 () => this
             );
 
-            this._constraintApiProxyInputUpdater = this._constraintApi.setInputAttributes(
-                {
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
                     type: () => 'number',
                     value: () => this.value,
                     max: () => this.max,
@@ -732,8 +739,7 @@ export default class InputCounter extends LightningElement {
                     step: () => this.inputStep,
                     formatter: () => this.type,
                     disabled: () => this.disabled
-                }
-            );
+                });
         }
         return this._constraintApi;
     }
