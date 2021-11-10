@@ -1591,7 +1591,7 @@ export default class DualListbox extends LightningElement {
      */
     dispatchChangeEvent(values) {
         /**
-         * The event fired when an item is selected in the combobox.
+         * The event fired when an item is selected in the dual listbox.
          *
          * @event
          * @name change

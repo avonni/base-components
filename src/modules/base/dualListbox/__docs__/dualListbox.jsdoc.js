@@ -37,7 +37,12 @@
 /**
  * @memberof examples
  * @name baseLarge
- * @storyId example-dual-listbox--base
+ * @storyId example-dual-listbox--base-large
+ */
+/**
+ * @memberof examples
+ * @name baseLarge
+ * @storyId example-dual-listbox--base-responsive
  */
 /**
  * @memberof examples
