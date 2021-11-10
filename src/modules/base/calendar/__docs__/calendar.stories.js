@@ -55,7 +55,7 @@ export default {
                 'An array that will be used to determine which dates to be disabled in the calendar.',
             defaultValue: [],
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'string|string[]' }
             }
         },
         markedDates: {
@@ -115,7 +115,7 @@ export default {
             description:
                 'The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string|string[]' }
             }
         },
         weekNumber: {
@@ -149,7 +149,8 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: '05/08/2021'
+    value: '05/08/2021',
+    disabledDates: '05/09/2021'
 };
 
 export const Multiple = Template.bind({});

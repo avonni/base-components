@@ -621,6 +621,7 @@ export default class InputDateRange extends LightningElement {
 
             if (this.type === 'datetime') {
                 this.startTime = this._startDate.toTimeString().substr(0, 5);
+                this.startTimeString = this.timeFormat(this._startDate);
             }
 
             this._startDate.setHours(0, 0, 0, 0);
@@ -644,6 +645,7 @@ export default class InputDateRange extends LightningElement {
 
             if (this.type === 'datetime') {
                 this.endTime = this._endDate.toTimeString().substr(0, 5);
+                this.endTimeString = this.timeFormat(this._endDate);
             }
 
             this._endDate.setHours(0, 0, 0, 0);
@@ -658,6 +660,9 @@ export default class InputDateRange extends LightningElement {
         event.preventDefault();
         this.startTime = event.target.value;
         this.dispatchChange();
+        if (this.startDate && this.startTime) {
+            this.endDateInput.focus();
+        }
     }
 
     /**
@@ -744,7 +749,9 @@ export default class InputDateRange extends LightningElement {
             }
             this.toggleStartDateVisibility();
 
-            if (
+            if (this.type === 'datetime' && this.startDate && !this.startTime) {
+                this.startTimeInput.focus();
+            } else if (
                 this.startDate &&
                 (!this.endDate ||
                     this.startDate.getTime() > this.endDate.getTime())
@@ -752,7 +759,6 @@ export default class InputDateRange extends LightningElement {
                 this._endDate = null;
                 this.endDateInput.focus();
             }
-
             this.dispatchChange();
         }
     }
@@ -881,6 +887,13 @@ export default class InputDateRange extends LightningElement {
                 this._endDate = null;
                 this.endDateInput.focus();
             }
+            if (this.type === 'datetime' && this.endDate && !this.endTime) {
+                this.endTimeInput.focus();
+            } else if (this.isOnlyEndDate) {
+                this.startDateInput.focus();
+            } else if (this.isOnlyStartDate) {
+                this.endDateInput.focus();
+            }
 
             this.dispatchChange();
         }
@@ -934,7 +947,7 @@ export default class InputDateRange extends LightningElement {
      * Change the date format depending on date style.
      *
      * @param {date}
-     * @returns {date} formated date depending on the date style.
+     * @returns {date} formatted date depending on the date style.
      */
     dateFormat(value) {
         let date = value.getDate();
@@ -955,21 +968,34 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Change the time format depending on time style.
+     *
+     * @param {date}
+     * @returns {time} formatted time depending on the time style.
+     */
+    timeFormat(value) {
+        return this.timeStyle === 'short'
+            ? value.toLocaleString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit'
+              })
+            : value.toLocaleString('en-US', {
+                  hour: '2-digit',
+                  minute: '2-digit',
+                  second: '2-digit'
+              });
+    }
+
+    /**
      * Dispatch changes from start-date input, end-date input, c-calendar for start-date and c-calendar for end-date.
      */
     dispatchChange() {
-        let startDate =
-            this.startTime && this._startDate
-                ? `${this.startDateString} ${this.startTime}`
-                : this.startDateString;
-        let endDate =
-            this.endTime && this._endDate
-                ? `${this.endDateString} ${this.endTime}`
-                : this.endDateString;
-
-        this.startTime =
-            this.startTime && this._startDate ? this.startTime : '';
-        this.endTime = this.endTime && this._endDate ? this.endTime : '';
+        let startDate = this.startTime
+            ? `${this.startDateString} ${this.startTime}`
+            : this.startDateString;
+        let endDate = this.endTime
+            ? `${this.endDateString} ${this.endTime}`
+            : this.endDateString;
 
         if (this.timezone) {
             startDate = new Date(startDate).toLocaleString('default', {
@@ -980,11 +1006,6 @@ export default class InputDateRange extends LightningElement {
             });
         }
 
-        startDate = this.startDateString ? new Date(startDate) : startDate;
-        endDate = this.endDateString ? new Date(endDate) : endDate;
-
-        this._startDate = startDate;
-        this._endDate = endDate;
         /**
          * The event fired when the value changed.
          *

@@ -124,7 +124,16 @@ export default class Calendar extends LightningElement {
     }
 
     set disabledDates(value) {
-        this._disabledDates = value;
+        this._disabledDates =
+            typeof value === 'string' || !Array.isArray(value)
+                ? [this.formattedWithTimezoneOffset(new Date(value))]
+                : [
+                      ...normalizeArray(
+                          value.map((x) =>
+                              this.formattedWithTimezoneOffset(new Date(x))
+                          )
+                      )
+                  ];
         this.updateDateParameters();
     }
 
@@ -140,7 +149,13 @@ export default class Calendar extends LightningElement {
     }
 
     set markedDates(value) {
-        this._markedDates = value;
+        this._markedDates = value.map((x) => {
+            const isDate =
+                x.date instanceof Date
+                    ? this.formattedWithTimezoneOffset(new Date(x.date))
+                    : x.date;
+            return { date: isDate, color: x.color };
+        });
         this.updateDateParameters();
     }
 
@@ -157,7 +172,7 @@ export default class Calendar extends LightningElement {
     }
 
     set max(max) {
-        this._max = new Date(max);
+        this._max = this.formattedWithTimezoneOffset(new Date(max));
         this._max.setHours(0, 0, 0, 0);
     }
 
@@ -174,7 +189,7 @@ export default class Calendar extends LightningElement {
     }
 
     set min(min) {
-        this._min = new Date(min);
+        this._min = this.formattedWithTimezoneOffset(new Date(min));
         this._min.setHours(0, 0, 0, 0);
     }
 
@@ -215,8 +230,14 @@ export default class Calendar extends LightningElement {
         if (value) {
             this._value =
                 typeof value === 'string' || !Array.isArray(value)
-                    ? [new Date(value)]
-                    : [...normalizeArray(value.map((x) => new Date(x)))];
+                    ? [this.formattedWithTimezoneOffset(new Date(value))]
+                    : [
+                          ...normalizeArray(
+                              value.map((x) =>
+                                  this.formattedWithTimezoneOffset(new Date(x))
+                              )
+                          )
+                      ];
             this._value = this._value.filter(
                 (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
             );
@@ -673,6 +694,16 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Returns a date formatted depending on the timezone offset.
+     *
+     * @param {string | Date} newDate - new date
+     * @returns array of dates
+     */
+    formattedWithTimezoneOffset(date) {
+        return new Date(date.getTime() + date.getTimezoneOffset() * 60000);
+    }
+
+    /**
      * Date selection handler.
      *
      * @param {object} event
@@ -763,53 +794,90 @@ export default class Calendar extends LightningElement {
         );
     }
 
+    /**
+     * Mouse over handler.
+     */
     handleMouseOver(event) {
         const day = event.target.getAttribute('data-day');
         const dayCell = this.template.querySelector(`[data-day="${day}"]`);
         const timeArray = this._value
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
-        if (this._selectionMode === 'interval') {
+        if (this._selectionMode === 'interval' && day !== '') {
             if (timeArray.length === 1) {
                 if (day > timeArray[0]) {
                     dayCell.classList.add(
                         'avonni-calendar-cell__bordered_right'
                     );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') >= timeArray[0] &&
+                            x.getAttribute('data-cell-day') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
                 }
-                this.template.querySelectorAll('td').forEach((x) => {
-                    if (
-                        x.getAttribute('data-cell-day') >= timeArray[0] &&
-                        x.getAttribute('data-cell-day') <= day
-                    ) {
-                        x.classList.add(
-                            'avonni-calendar-cell__bordered_top_bottom'
-                        );
-                    }
-                });
+                if (day < timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar-cell__bordered_left'
+                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') <= timeArray[0] &&
+                            x.getAttribute('data-cell-day') >= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
+                }
             } else if (timeArray.length === 2) {
                 if (day > timeArray[1]) {
                     dayCell.classList.add(
                         'avonni-calendar-cell__bordered_right'
                     );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') >= timeArray[1] &&
+                            x.getAttribute('data-cell-day') <= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
                 }
-                this.template.querySelectorAll('td').forEach((x) => {
-                    if (
-                        x.getAttribute('data-cell-day') >= timeArray[1] &&
-                        x.getAttribute('data-cell-day') <= day
-                    ) {
-                        x.classList.add(
-                            'avonni-calendar-cell__bordered_top_bottom'
-                        );
-                    }
-                });
+                if (day < timeArray[0]) {
+                    dayCell.classList.add(
+                        'avonni-calendar-cell__bordered_left'
+                    );
+                    this.template.querySelectorAll('td').forEach((x) => {
+                        if (
+                            x.getAttribute('data-cell-day') <= timeArray[0] &&
+                            x.getAttribute('data-cell-day') >= day
+                        ) {
+                            x.classList.add(
+                                'avonni-calendar-cell__bordered_top_bottom'
+                            );
+                        }
+                    });
+                }
             }
         }
     }
 
+    /**
+     * Mouse out handler.
+     */
     handleMouseOut() {
         this.template.querySelectorAll('td').forEach((x) => {
             x.classList.remove('avonni-calendar-cell__bordered_top_bottom');
             x.classList.remove('avonni-calendar-cell__bordered_right');
+            x.classList.remove('avonni-calendar-cell__bordered_left');
         });
     }
 }
