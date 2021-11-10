@@ -905,9 +905,9 @@ export default class DualListbox extends LightningElement {
             selected: isSelected ? true : false,
             primaryText: option.description ? option.label : '',
             secondaryText: option.description ? option.description : '',
-            iconSize: option.avatar
-                ? option.avatar.iconSize
-                    ? option.avatar.iconSize
+            size: option.avatar
+                ? option.avatar.size
+                    ? option.avatar.size
                     : hasDescription
                     ? 'medium'
                     : 'small'
