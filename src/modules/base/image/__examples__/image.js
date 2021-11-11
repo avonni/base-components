@@ -35,51 +35,47 @@ import Component from '../../storybookWrappers/image/image';
 customElements.define('ac-base-image', Component.CustomElementConstructor);
 
 export const Image = ({
-    src,
-    srcset,
-    sizes,
     alt,
-    width,
-    height,
-    block,
-    fluid,
-    fluidGrow,
-    rounded,
-    thumbnail,
-    left,
-    right,
-    center,
     blank,
     blankColor,
-    cropSize,
+    block,
     cropFit,
     cropPositionX,
     cropPositionY,
+    cropSize,
+    fluid,
+    fluidGrow,
+    height,
+    lazyLoading,
+    position,
+    rounded,
+    sizes,
+    src,
+    srcset,
     staticImages,
-    lazyLoading
+    thumbnail,
+    width
 }) => {
     const element = document.createElement('ac-base-image');
-    element.src = src;
-    element.srcset = srcset;
-    element.sizes = sizes;
     element.alt = alt;
-    element.width = width;
-    element.height = height;
-    element.block = block;
-    element.fluid = fluid;
-    element.fluidGrow = fluidGrow;
-    element.rounded = rounded;
-    element.thumbnail = thumbnail;
-    element.left = left;
-    element.right = right;
-    element.center = center;
     element.blank = blank;
     element.blankColor = blankColor;
-    element.cropSize = cropSize;
+    element.block = block;
     element.cropFit = cropFit;
     element.cropPositionX = cropPositionX;
     element.cropPositionY = cropPositionY;
-    element.staticImages = staticImages;
+    element.cropSize = cropSize;
+    element.fluid = fluid;
+    element.fluidGrow = fluidGrow;
+    element.height = height;
     element.lazyLoading = lazyLoading;
+    element.position = position;
+    element.rounded = rounded;
+    element.sizes = sizes;
+    element.src = src;
+    element.srcset = srcset;
+    element.staticImages = staticImages;
+    element.thumbnail = thumbnail;
+    element.width = width;
     return element;
 };

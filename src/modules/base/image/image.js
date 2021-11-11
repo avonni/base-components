@@ -43,6 +43,10 @@ const CROP_SIZE = {
     valid: ['1x1', '4x3', '16x9', 'none'],
     default: 'none'
 };
+const POSITIONS = {
+    valid: ['left', 'right', 'center'],
+    default: 'left'
+};
 const BLANK_COLOR_DEFAULT = 'transparent';
 const CROP_POSITION_X_DEFAULT = '50';
 const CROP_POSITION_Y_DEFAULT = '50';
@@ -76,27 +80,26 @@ export default class Image extends LightningElement {
      */
     @api cropPositionY = CROP_POSITION_Y_DEFAULT;
 
-    _src;
-    _width;
-    _height;
+    _blank = false;
     _blankColor = BLANK_COLOR_DEFAULT;
-    _srcset;
-    _sizes;
     _block = false;
+    _cropFit = CROP_FIT.default;
+    _cropSize;
     _fluid = false;
     _fluidGrow = false;
+    _height;
+    _lazyLoading = false;
+    _position = POSITIONS.default;
     _rounded = false;
+    _sizes;
+    _src;
+    _srcset;
+    _staticImages = false;
     _thumbnail = false;
-    _left = false;
-    _right = false;
-    _center = false;
-    _blank = false;
-    _cropSize;
-    _cropFit = CROP_FIT.default;
+    _width;
+
     _imgWidth;
     _imgHeight;
-    _staticImages = false;
-    _lazyLoading = false;
     _widthPercent;
     _heightPercent;
     _aspectRatio;
@@ -106,34 +109,71 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Sets the image as static. Images retain their current dimensions and will no longer be responsive.
+     * Creates a blank/transparent image via an SVG data URI.
      *
      * @public
      * @type {boolean}
+     * @default false
      */
     @api
-    get staticImages() {
-        return this._staticImages;
+    get blank() {
+        return this._blank;
     }
 
-    set staticImages(value) {
-        this._staticImages = normalizeBoolean(value);
+    set blank(value) {
+        this._blank = normalizeBoolean(value);
+        this.initBlank();
     }
 
     /**
-     * Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them.
-     * Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.
+     * Sets the color of the blank image to the CSS color value specified. Default is transparent.
+     *
+     * @public
+     * @type {string}
+     * @default transparent
+     */
+    @api
+    get blankColor() {
+        return this._blankColor;
+    }
+
+    set blankColor(value) {
+        this._blankColor = value;
+        this.initBlank();
+    }
+
+    /**
+     * Forces the image to display as a block element rather than the browser default of inline-block element.
      *
      * @public
      * @type {boolean}
+     * @default false
      */
     @api
-    get lazyLoading() {
-        return this._lazyLoading ? 'lazy' : 'auto';
+    get block() {
+        return this._block;
     }
 
-    set lazyLoading(value) {
-        this._lazyLoading = normalizeBoolean(value);
+    set block(value) {
+        this._block = normalizeBoolean(value);
+    }
+
+    /**
+     * Image fit behaviour inside its container ( valid options : “cover”, “contain”, “fill”, “none” ). Default is cover.
+     *
+     * @public
+     * @type {string}
+     * @default cover
+     */
+    @api get cropFit() {
+        return this._cropFit;
+    }
+
+    set cropFit(value) {
+        this._cropFit = normalizeString(value, {
+            fallbackValue: CROP_FIT.default,
+            validValues: CROP_FIT.valid
+        });
     }
 
     /**
@@ -174,158 +214,6 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Image fit behaviour inside its container ( valid options : “cover”, “contain”, “fill”, “none” ). Default is cover.
-     *
-     * @public
-     * @type {string}
-     * @default cover
-     */
-    @api get cropFit() {
-        return this._cropFit;
-    }
-
-    set cropFit(value) {
-        this._cropFit = normalizeString(value, {
-            fallbackValue: CROP_FIT.default,
-            validValues: CROP_FIT.valid
-        });
-    }
-
-    /**
-     * URL to set for the 'src' attribute.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get src() {
-        return this._src;
-    }
-
-    set src(value) {
-        if (!this.blank) {
-            this._src = value;
-        }
-    }
-
-    /**
-     * The value to set on the image's 'width' attribute.
-     *
-     * @public
-     * @type {number | string} 
-     */
-    @api
-    get width() {
-        return this._width;
-    }
-
-    set width(value) {
-        this._width = value;
-        if (
-            value !== undefined &&
-            typeof value === 'string' &&
-            value.includes('%')
-        ) {
-            this._widthPercent = value;
-        }
-        this.initBlank();
-    }
-
-    /**
-     * The value to set on the image's 'height' attribute.
-     *
-     * @public
-     * @type {number | string} 
-     */
-    @api
-    get height() {
-        return this._height;
-    }
-
-    set height(value) {
-        this._height = value;
-        if (
-            value !== undefined &&
-            typeof value === 'string' &&
-            value.includes('%')
-        ) {
-            this._heightPercent = value;
-        }
-        this.initBlank();
-    }
-
-    /**
-     * Sets the color of the blank image to the CSS color value specified. Default is transparent.
-     *
-     * @public
-     * @type {string}
-     * @default transparent
-     */
-    @api
-    get blankColor() {
-        return this._blankColor;
-    }
-
-    set blankColor(value) {
-        this._blankColor = value;
-        this.initBlank();
-    }
-
-    /**
-     * One or more strings separated by commas (or an array of strings), indicating possible image sources for the user agent to use.
-     *
-     * @public
-     * @type {string | object[]}
-     */
-    @api
-    get srcset() {
-        return this._srcset;
-    }
-
-    set srcset(value) {
-        if (Array.isArray(value)) {
-            this._srcset = value.join(',');
-        } else {
-            this._srcset = value;
-        }
-    }
-
-    /**
-     * One or more strings separated by commas (or an array of strings), indicating a set of source sizes. Optionally used in combination with the srcset prop.
-     *
-     * @public
-     * @type {string | object[]}
-     */
-    @api
-    get sizes() {
-        return this._sizes;
-    }
-
-    set sizes(value) {
-        if (Array.isArray(value)) {
-            this._sizes = value.join(',');
-        } else {
-            this._sizes = value;
-        }
-    }
-
-    /**
-     * Forces the image to display as a block element rather than the browser default of inline-block element.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get block() {
-        return this._block;
-    }
-
-    set block(value) {
-        this._block = normalizeBoolean(value);
-    }
-
-    /**
      * Makes the image responsive. The image will shrink as needed or grow up the the image's native width.
      *
      * @public
@@ -358,6 +246,63 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * The value to set on the image's 'height' attribute.
+     *
+     * @public
+     * @type {number | string}
+     */
+    @api
+    get height() {
+        return this._height;
+    }
+
+    set height(value) {
+        this._height = value;
+        if (
+            value !== undefined &&
+            typeof value === 'string' &&
+            value.includes('%')
+        ) {
+            this._heightPercent = value;
+        }
+        this.initBlank();
+    }
+
+    /**
+     * Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them.
+     * Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.
+     *
+     * @public
+     * @type {boolean}
+     */
+    @api
+    get lazyLoading() {
+        return this._lazyLoading ? 'lazy' : 'auto';
+    }
+
+    set lazyLoading(value) {
+        this._lazyLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.
+     *
+     * @public
+     * @type {boolean|string}
+     */
+    @api
+    get position() {
+        return this._position;
+    }
+
+    set position(value) {
+        this._position = normalizeString(value, {
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    /**
      * If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.
      *
      * @public
@@ -382,6 +327,76 @@ export default class Image extends LightningElement {
     }
 
     /**
+     * One or more strings separated by commas (or an array of strings), indicating a set of source sizes. Optionally used in combination with the srcset prop.
+     *
+     * @public
+     * @type {string | object[]}
+     */
+    @api
+    get sizes() {
+        return this._sizes;
+    }
+
+    set sizes(value) {
+        if (Array.isArray(value)) {
+            this._sizes = value.join(',');
+        } else {
+            this._sizes = value;
+        }
+    }
+
+    /**
+     * URL to set for the 'src' attribute.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get src() {
+        return this._src;
+    }
+
+    set src(value) {
+        if (!this.blank) {
+            this._src = value;
+        }
+    }
+
+    /**
+     * One or more strings separated by commas (or an array of strings), indicating possible image sources for the user agent to use.
+     *
+     * @public
+     * @type {string | object[]}
+     */
+    @api
+    get srcset() {
+        return this._srcset;
+    }
+
+    set srcset(value) {
+        if (Array.isArray(value)) {
+            this._srcset = value.join(',');
+        } else {
+            this._srcset = value;
+        }
+    }
+
+    /**
+     * Sets the image as static. Images retain their current dimensions and will no longer be responsive.
+     *
+     * @public
+     * @type {boolean}
+     */
+    @api
+    get staticImages() {
+        return this._staticImages;
+    }
+
+    set staticImages(value) {
+        this._staticImages = normalizeBoolean(value);
+    }
+
+    /**
      * Adds a thumbnail border around the image.
      *
      * @public
@@ -398,67 +413,25 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Floats the image to the left when set.
+     * The value to set on the image's 'width' attribute.
      *
      * @public
-     * @type {boolean}
-     * @default false
+     * @type {number | string}
      */
     @api
-    get left() {
-        return this._left;
+    get width() {
+        return this._width;
     }
 
-    set left(value) {
-        this._left = normalizeBoolean(value);
-    }
-
-    /**
-     * Floats the image to the right when set.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get right() {
-        return this._right;
-    }
-
-    set right(value) {
-        this._right = normalizeBoolean(value);
-    }
-
-    /**
-     * Centers the image horizontally.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get center() {
-        return this._center;
-    }
-
-    set center(value) {
-        this._center = normalizeBoolean(value);
-    }
-
-    /**
-     * Creates a blank/transparent image via an SVG data URI.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get blank() {
-        return this._blank;
-    }
-
-    set blank(value) {
-        this._blank = normalizeBoolean(value);
+    set width(value) {
+        this._width = value;
+        if (
+            value !== undefined &&
+            typeof value === 'string' &&
+            value.includes('%')
+        ) {
+            this._widthPercent = value;
+        }
         this.initBlank();
     }
 
@@ -479,10 +452,10 @@ export default class Image extends LightningElement {
             'avonni-rounded-left': this.rounded === 'left',
             'avonni-rounded-circle': this.rounded === 'circle',
             'avonni-not-rounded': this.rounded === '0',
-            'avonni-float-left': this.left,
-            'avonni-float-right': this.right,
-            'avonni-margin-auto': this.center,
-            'avonni-display-block': this.center || this.block
+            'avonni-float-left': this._position === 'left',
+            'avonni-float-right': this._position === 'right',
+            'avonni-margin-auto': this._position === 'center',
+            'avonni-display-block': this._position === 'center' || this.block
         }).toString();
     }
 
@@ -510,7 +483,7 @@ export default class Image extends LightningElement {
     /**
      * Final Computed Image Style.
      *
-     * @type {boolean} 
+     * @type {boolean}
      */
     get computedImgStyle() {
         if (!this._cropSize) {

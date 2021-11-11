@@ -56,325 +56,112 @@ describe('Image', () => {
         document.body.appendChild(element);
     });
 
-    it('Image Default attributes', () => {
-        expect(element.src).toBeUndefined();
-        expect(element.srcset).toBeUndefined();
-        expect(element.sizes).toBeUndefined();
+    it('Image - Default attributes', () => {
         expect(element.alt).toBeUndefined();
-        expect(element.width).toBeUndefined();
-        expect(element.height).toBeUndefined();
-        expect(element.block).toBeFalsy();
-        expect(element.fluid).toBeFalsy();
-        expect(element.fluidGrow).toBeFalsy();
-        expect(element.rounded).toBeFalsy();
-        expect(element.thumbnail).toBeFalsy();
-        expect(element.left).toBeFalsy();
-        expect(element.right).toBeFalsy();
-        expect(element.center).toBeFalsy();
         expect(element.blank).toBeFalsy();
         expect(element.blankColor).toBe('transparent');
-        expect(element.cropSize).toBeUndefined();
+        expect(element.block).toBeFalsy();
         expect(element.cropFit).toBe('cover');
         expect(element.cropPositionX).toBe('50');
         expect(element.cropPositionY).toBe('50');
+        expect(element.cropSize).toBeUndefined();
+        expect(element.fluid).toBeFalsy();
+        expect(element.fluidGrow).toBeFalsy();
+        expect(element.height).toBeUndefined();
+        expect(element.lazyLoading).toBe('auto');
+        expect(element.sizes).toBeUndefined();
+        expect(element.position).toBe('left');
+        expect(element.rounded).toBeFalsy();
+        expect(element.src).toBeUndefined();
+        expect(element.srcset).toBeUndefined();
         expect(element.staticImages).toBeFalsy();
+        expect(element.thumbnail).toBeFalsy();
+        expect(element.width).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
 
-    // src
-    it('Image src', () => {
-        element.src = src;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.src).toBe(
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
-            );
-        });
-    });
-
-    // srcset
-    it('Image srcset string', () => {
-        element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.srcset).toBe(
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
-            );
-        });
-    });
-
-    it('Image srcset string[]', () => {
-        element.srcset = [
-            'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
-        ];
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.srcset).toBe(
-                'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
-            );
-        });
-    });
-
-    // sizes
-    it('Image sizes', () => {
-        element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
-        element.sizes =
-            '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.sizes).toBe(
-                '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
-            );
-        });
-    });
-
-    it('Image sizes[]', () => {
-        element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
-        element.sizes = [
-            '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
-        ];
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.sizes).toBe(
-                '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
-            );
-        });
-    });
-
     // alt
-    it('Image alt', () => {
+    it('Image - alt', () => {
         element.src = src;
         element.alt = 'This is an alt text';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.alt).toBe('This is an alt text');
         });
     });
 
-    // width & height
-    it('Image width & height numbers', () => {
-        element.src = src;
-        element.width = 120;
-        element.height = 100;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.width).toBe(120);
-            expect(img.height).toBe(100);
-        });
-    });
-
-    it('Image width & height strings', () => {
-        element.src = src;
-        element.width = '120';
-        element.height = '100';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.width).toBe(120);
-            expect(img.height).toBe(100);
-        });
-    });
-
     // block
-    it('Image block', () => {
+    it('Image - block', () => {
         element.src = src;
         element.block = true;
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-display-block');
-        });
-    });
-
-    // fluid
-    it('Image fluid', () => {
-        element.src = src;
-        element.fluid = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-img-fluid');
-        });
-    });
-
-    // fluid grow
-    it('Image fluid grow', () => {
-        element.src = src;
-        element.fluidGrow = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe(
-                'avonni-img-fluid avonni-img-fluid-grow'
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
             );
-        });
-    });
-
-    // rounded
-    it('Image rounded', () => {
-        element.src = src;
-        element.rounded = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-rounded');
-        });
-    });
-
-    it('Image rounded top', () => {
-        element.src = src;
-        element.rounded = 'top';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-rounded-top');
-        });
-    });
-
-    it('Image rounded right', () => {
-        element.src = src;
-        element.rounded = 'right';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-rounded-right');
-        });
-    });
-
-    it('Image rounded left', () => {
-        element.src = src;
-        element.rounded = 'left';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-rounded-left');
-        });
-    });
-
-    it('Image rounded bottom', () => {
-        element.src = src;
-        element.rounded = 'bottom';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-rounded-bottom');
-        });
-    });
-
-    it('Image rounded circle', () => {
-        element.src = src;
-        element.rounded = 'circle';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-rounded-circle');
-        });
-    });
-
-    // thumbnail
-    it('Image thumbnail', () => {
-        element.src = src;
-        element.thumbnail = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-img-thumbnail');
-        });
-    });
-
-    // left
-    it('Image left', () => {
-        element.src = src;
-        element.left = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-float-left');
-        });
-    });
-
-    // right
-    it('Image right', () => {
-        element.src = src;
-        element.right = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe('avonni-float-right');
-        });
-    });
-
-    // center
-    it('Image center', () => {
-        element.src = src;
-        element.center = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBe(
-                'avonni-margin-auto avonni-display-block'
-            );
+            expect(img.className).toContain('avonni-display-block');
         });
     });
 
     // Crop Fit
-    it('Crop Fit Cover', () => {
+    it('Image - Crop Fit Cover', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'cover';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.objectFit).toBe('cover');
         });
     });
 
-    it('Crop Fit Contain', () => {
+    it('Image - Crop Fit Contain', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'contain';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.objectFit).toBe('contain');
         });
     });
 
-    it('Crop Fit Fill', () => {
+    it('Image - Crop Fit Fill', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'fill';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.objectFit).toBe('fill');
         });
     });
 
-    it('Crop Fit None', () => {
+    it('Image - Crop Fit None', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'none';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.objectFit).toBe('none');
         });
     });
 
     // Crop Position
-    it('Crop Position', () => {
+    it('Image - Crop Position', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'none';
@@ -382,88 +169,321 @@ describe('Image', () => {
         element.cropPositionY = '75';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.objectPosition).toBe('25% 75%');
         });
     });
 
     // Cropped Img Alignment - left, right, centre
-    it('Cropped Image Left', () => {
+    it('Image - Cropped Image Left', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
-        element.left = true;
+        element.position = 'left';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.className).toBe('avonni-float-left');
         });
     });
 
-    it('Cropped Image Center', () => {
+    it('Image - Cropped Image Center', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
-        element.center = true;
+        element.position = 'center';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.className).toBe(
                 'avonni-margin-auto avonni-display-block'
             );
         });
     });
 
-    it('Cropped Image Right', () => {
+    it('Image - Cropped Image - Right', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
-        element.right = true;
+        element.position = 'right';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.className).toBe('avonni-float-right');
         });
     });
 
     // img NO Crop - Height Only
-    it('No crop - Height Only', () => {
+    it('Image - No crop - Height Only', () => {
         element.src = src;
         element.height = '225';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.width).toBeFalsy();
             expect(img.style.height).toBe('225px');
         });
     });
 
+    // fluid
+    it('Image - Fluid', () => {
+        element.src = src;
+        element.fluid = true;
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-img-fluid');
+        });
+    });
+
+    // fluid grow
+    it('Image - Fluid grow', () => {
+        element.src = src;
+        element.fluidGrow = true;
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain(
+                'avonni-img-fluid avonni-img-fluid-grow'
+            );
+        });
+    });
+
+    // position
+    it('Image - Position left', () => {
+        element.src = src;
+        element.positon = 'left';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toBe('avonni-float-left');
+        });
+    });
+
+    it('Image - Position right', () => {
+        element.src = src;
+        element.position = 'right';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toBe('avonni-float-right');
+        });
+    });
+
+    it('Image - Position center', () => {
+        element.src = src;
+        element.position = 'center';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toBe(
+                'avonni-margin-auto avonni-display-block'
+            );
+        });
+    });
+
+    // rounded
+    it('Image - Rounded', () => {
+        element.src = src;
+        element.rounded = true;
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-rounded');
+        });
+    });
+
+    it('Image - Rounded top', () => {
+        element.src = src;
+        element.rounded = 'top';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-rounded-top');
+        });
+    });
+
+    it('Image - Rounded right', () => {
+        element.src = src;
+        element.rounded = 'right';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-rounded-right');
+        });
+    });
+
+    it('Image - Rounded left', () => {
+        element.src = src;
+        element.rounded = 'left';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-rounded-left');
+        });
+    });
+
+    it('Image - Rounded bottom', () => {
+        element.src = src;
+        element.rounded = 'bottom';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-rounded-bottom');
+        });
+    });
+
+    it('Image - Rounded circle', () => {
+        element.src = src;
+        element.rounded = 'circle';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-rounded-circle');
+        });
+    });
+
+    // sizes
+    it('Image - Sizes', () => {
+        element.srcset =
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
+        element.sizes =
+            '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.sizes).toBe(
+                '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
+            );
+        });
+    });
+
+    it('Image - Sizes[]', () => {
+        element.srcset =
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
+        element.sizes = [
+            '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
+        ];
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.sizes).toBe(
+                '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
+            );
+        });
+    });
+
+    // src
+    it('Image - Src', () => {
+        element.src = src;
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.src).toBe(
+                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            );
+        });
+    });
+
+    // srcset
+    it('Image - Srcset string', () => {
+        element.srcset =
+            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.srcset).toBe(
+                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            );
+        });
+    });
+
+    it('Image - srcset string[]', () => {
+        element.srcset = [
+            'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+        ];
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.srcset).toBe(
+                'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            );
+        });
+    });
+
     // Static Images NO CROP
-    it('Static Image - No Crop - Width - No Height', () => {
+    it('Image - Static Image - No Crop - Width - No Height', () => {
         element.src = src;
         element.staticImages = true;
         element.width = '400';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.className).toBeFalsy();
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toBe('avonni-float-left');
             expect(img.style.maxWidth).toBe('400px');
             expect(img.style.height).toBeFalsy();
         });
     });
-    it('Static Image - No Crop - No Width - Height', () => {
+    it('Image - Static Image - No Crop - No Width - Height', () => {
         element.src = src;
         element.staticImages = true;
         element.height = '400';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.maxHeight).toBe('400px');
             expect(img.style.minHeight).toBe('400px');
             expect(img.style.height).toBe('400px');
         });
     });
-    it('Static Image - No Crop - No Width - No Height', () => {
+
+    it('Image - Static Image - No Crop - No Width - No Height', () => {
         element.src = src;
         element.staticImages = true;
         document.body.appendChild(element);
@@ -471,15 +491,18 @@ describe('Image', () => {
         return Promise.resolve()
             .then(() => {})
             .then(() => {
-                const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-                expect(img.className).toBeFalsy();
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
+                expect(img.className).toBe('avonni-float-left');
                 expect(img.style.minWidth).toBe('0px');
                 expect(img.style.minHeight).toBe('0px');
                 expect(img.style.maxWidth).toBe('0px');
                 expect(img.style.maxHeight).toBe('0px');
             });
     });
-    it('Static Image - No Crop - Width - Height', () => {
+
+    it('Image - Static Image - No Crop - Width - Height', () => {
         element.src = src;
         element.staticImages = true;
         element.height = 400;
@@ -488,7 +511,9 @@ describe('Image', () => {
         return Promise.resolve()
             .then(() => {})
             .then(() => {
-                const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+                const img = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
                 expect(img.style.minWidth).toBe('400px');
                 expect(img.style.minHeight).toBe('400px');
                 expect(img.style.maxWidth).toBe('400px');
@@ -497,14 +522,16 @@ describe('Image', () => {
     });
 
     // Static Images - Cropped
-    it('Static Image - Crop 1x1 - Width - No Height', () => {
+    it('Image - Static Image - Crop 1x1 - Width - No Height', () => {
         element.src = src;
         element.staticImages = true;
         element.width = '400';
         element.cropSize = '1x1';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.maxWidth).toBe('400px');
             expect(img.style.maxHeight).toBe('400px');
             expect(img.style.minWidth).toBe('400px');
@@ -513,22 +540,68 @@ describe('Image', () => {
         });
     });
 
-    it('% on width', () => {
+    // thumbnail
+    it('Image - Thumbnail', () => {
+        element.src = src;
+        element.thumbnail = true;
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.className).toContain('avonni-img-thumbnail');
+        });
+    });
+
+    // width & height
+    it('Image - Width & height numbers', () => {
+        element.src = src;
+        element.width = 120;
+        element.height = 100;
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.width).toBe(120);
+            expect(img.height).toBe(100);
+        });
+    });
+
+    it('Image - Width & height strings', () => {
+        element.src = src;
+        element.width = '120';
+        element.height = '100';
+
+        return Promise.resolve().then(() => {
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
+            expect(img.width).toBe(120);
+            expect(img.height).toBe(100);
+        });
+    });
+
+    it('Image - % on width', () => {
         element.src = src;
         element.width = '50%';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.width).toBe('50%');
         });
     });
 
-    it('% on height', () => {
+    it('Image - % on height', () => {
         element.src = src;
         element.height = '50%';
 
         return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const img = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(img.style.height).toBe('50%');
         });
     });
