@@ -33,7 +33,7 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Image extends LightningElement {
-    @api alt;
+    @api alternativeText;
     @api blank;
     @api blankColor;
     @api block;

@@ -35,7 +35,7 @@ import Component from '../../storybookWrappers/image/imageList';
 customElements.define('ac-image-list', Component.CustomElementConstructor);
 
 export const ImageList = ({
-    alt,
+    alternativeText,
     blank,
     blankColor,
     block,
@@ -56,7 +56,7 @@ export const ImageList = ({
     width
 }) => {
     const element = document.createElement('ac-image-list');
-    element.alt = alt;
+    element.alternativeText = alternativeText;
     element.blank = blank;
     element.blankColor = blankColor;
     element.block = block;

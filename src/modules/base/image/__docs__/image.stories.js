@@ -37,7 +37,8 @@ import { ImageList } from '../__examples__/imageList';
 export default {
     title: 'Example/Image',
     argTypes: {
-        alt: {
+        alternativeText: {
+            name: 'Alternative text',
             control: {
                 type: 'text'
             },
@@ -288,20 +289,20 @@ const ListTemplate = (args) => ImageList(args);
 export const Base = Template.bind({});
 Base.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text'
+    alternativeText: 'Alternative text'
 };
 
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
+    alternativeText: 'Alternative text',
     width: '150'
 };
 
 export const BaseLarge = Template.bind({});
 BaseLarge.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
+    alternativeText: 'Alternative text',
     width: '600'
 };
 
@@ -327,21 +328,21 @@ BaseWithLazyLoading.args = {
         'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
     ],
     width: '400',
-    alt: 'Alt text',
+    alternativeText: 'Alternative text',
     lazyLoading: true
 };
 
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
+    alternativeText: 'Alternative text',
     thumbnail: true
 };
 
 export const Center = Template.bind({});
 Center.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
+    alternativeText: 'Alternative text',
     position: 'center',
     width: '600'
 };
@@ -349,7 +350,7 @@ Center.args = {
 export const Right = Template.bind({});
 Right.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
+    alternativeText: 'Alternative text',
     position: 'right',
     width: '600'
 };
@@ -362,7 +363,7 @@ CropImageStaticThumbnailMobile.parameters = {
 };
 CropImageStaticThumbnailMobile.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
+    alternativeText: 'Alternative text',
     width: '280',
     cropSize: '1x1',
     cropFit: 'none',

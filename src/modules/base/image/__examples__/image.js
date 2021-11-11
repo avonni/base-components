@@ -35,7 +35,7 @@ import Component from '../../storybookWrappers/image/image';
 customElements.define('ac-base-image', Component.CustomElementConstructor);
 
 export const Image = ({
-    alt,
+    alternativeText,
     blank,
     blankColor,
     block,
@@ -56,7 +56,7 @@ export const Image = ({
     width
 }) => {
     const element = document.createElement('ac-base-image');
-    element.alt = alt;
+    element.alternativeText = alternativeText;
     element.blank = blank;
     element.blankColor = blankColor;
     element.block = block;

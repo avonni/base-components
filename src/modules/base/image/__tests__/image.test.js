@@ -57,7 +57,7 @@ describe('Image', () => {
     });
 
     it('Image - Default attributes', () => {
-        expect(element.alt).toBeUndefined();
+        expect(element.alternativeText).toBeUndefined();
         expect(element.blank).toBeFalsy();
         expect(element.blankColor).toBe('transparent');
         expect(element.block).toBeFalsy();
@@ -81,15 +81,15 @@ describe('Image', () => {
     /* ----- ATTRIBUTES ----- */
 
     // alt
-    it('Image - alt', () => {
+    it('Image - alternative text', () => {
         element.src = src;
-        element.alt = 'This is an alt text';
+        element.alternativeText = 'This is an Alternative text';
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.alt).toBe('This is an alt text');
+            expect(img.alt).toBe('This is an Alternative text');
         });
     });
 

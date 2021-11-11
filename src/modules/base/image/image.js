@@ -63,7 +63,7 @@ export default class Image extends LightningElement {
      * @public
      * @type  {string}
      */
-    @api alt;
+    @api alternativeText;
     /**
      * X-axis of the image position ( in percent ).
      *
