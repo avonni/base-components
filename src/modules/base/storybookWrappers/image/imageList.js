@@ -34,9 +34,6 @@ import { LightningElement, api } from 'lwc';
 
 export default class Image extends LightningElement {
     @api alternativeText;
-    @api blank;
-    @api blankColor;
-    @api block;
     @api cropFit;
     @api cropPositionX;
     @api cropPositionY;
@@ -62,13 +59,10 @@ export default class Image extends LightningElement {
                 alternativeText: this.alternativeText,
                 width: this.width,
                 height: this.height,
-                blankColor: this.blankColor,
-                block: this.block,
                 fluid: this.fluid,
                 fluidGrow: this.fluidGrow,
                 thumbnail: this.thumbnail,
                 position: this.position,
-                blank: this.blank,
                 staticImages: this.staticImages,
                 lazyLoading: this.lazyLoading,
                 cropSize: this.cropSize,

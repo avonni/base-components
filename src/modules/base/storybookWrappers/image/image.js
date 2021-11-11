@@ -34,9 +34,6 @@ import { LightningElement, api } from 'lwc';
 
 export default class Image extends LightningElement {
     @api alternativeText;
-    @api blank;
-    @api blankColor;
-    @api block;
     @api cropFit;
     @api cropPositionX;
     @api cropPositionY;

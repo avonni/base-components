@@ -36,9 +36,6 @@ customElements.define('ac-base-image', Component.CustomElementConstructor);
 
 export const Image = ({
     alternativeText,
-    blank,
-    blankColor,
-    block,
     cropFit,
     cropPositionX,
     cropPositionY,
@@ -57,9 +54,6 @@ export const Image = ({
 }) => {
     const element = document.createElement('ac-base-image');
     element.alternativeText = alternativeText;
-    element.blank = blank;
-    element.blankColor = blankColor;
-    element.block = block;
     element.cropFit = cropFit;
     element.cropPositionX = cropPositionX;
     element.cropPositionY = cropPositionY;

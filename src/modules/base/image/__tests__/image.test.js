@@ -34,7 +34,6 @@ import { createElement } from 'lwc';
 import Image from 'c/image';
 
 // not tested
-// blank and blankColor because of canvas
 // cannot test computed images based on layout ( e.g. static Images and certain image states that do not have assigned dimensions ). Jest does not provide a layout system.
 // cannot test aspect-ratio//most crop-size output. Jest/JS-Dom does not recognize its attribute within dom element. The JS function goes through, however since aspect-ratio computes only with 1 dimension ( e.g. width or height ) - we can only test the input dimension to match the same output dimension which is pointless.
 
@@ -58,9 +57,6 @@ describe('Image', () => {
 
     it('Image - Default attributes', () => {
         expect(element.alternativeText).toBeUndefined();
-        expect(element.blank).toBeFalsy();
-        expect(element.blankColor).toBe('transparent');
-        expect(element.block).toBeFalsy();
         expect(element.cropFit).toBe('cover');
         expect(element.cropPositionX).toBe('50');
         expect(element.cropPositionY).toBe('50');
@@ -90,19 +86,6 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.alt).toBe('This is an Alternative text');
-        });
-    });
-
-    // block
-    it('Image - block', () => {
-        element.src = src;
-        element.block = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.className).toContain('avonni-display-block');
         });
     });
 

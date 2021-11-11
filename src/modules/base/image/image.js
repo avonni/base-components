@@ -46,7 +46,6 @@ const POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: 'left'
 };
-const BLANK_COLOR_DEFAULT = 'transparent';
 const CROP_POSITION_X_DEFAULT = '50';
 const CROP_POSITION_Y_DEFAULT = '50';
 
@@ -79,9 +78,6 @@ export default class Image extends LightningElement {
      */
     @api cropPositionY = CROP_POSITION_Y_DEFAULT;
 
-    _blank = false;
-    _blankColor = BLANK_COLOR_DEFAULT;
-    _block = false;
     _cropFit = CROP_FIT.default;
     _cropSize;
     _fluid = false;
@@ -104,56 +100,6 @@ export default class Image extends LightningElement {
 
     renderedCallback() {
         this.getImageDimensions();
-    }
-
-    /**
-     * Creates a blank/transparent image via an SVG data URI.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get blank() {
-        return this._blank;
-    }
-
-    set blank(value) {
-        this._blank = normalizeBoolean(value);
-        this.initBlank();
-    }
-
-    /**
-     * Sets the color of the blank image to the CSS color value specified. Default is transparent.
-     *
-     * @public
-     * @type {string}
-     * @default transparent
-     */
-    @api
-    get blankColor() {
-        return this._blankColor;
-    }
-
-    set blankColor(value) {
-        this._blankColor = value;
-        this.initBlank();
-    }
-
-    /**
-     * Forces the image to display as a block element rather than the browser default of inline-block element.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get block() {
-        return this._block;
-    }
-
-    set block(value) {
-        this._block = normalizeBoolean(value);
     }
 
     /**
@@ -263,7 +209,6 @@ export default class Image extends LightningElement {
         ) {
             this._heightPercent = value;
         }
-        this.initBlank();
     }
 
     /**
@@ -331,9 +276,7 @@ export default class Image extends LightningElement {
     }
 
     set src(value) {
-        if (!this.blank) {
-            this._src = value;
-        }
+        this._src = value;
     }
 
     /**
@@ -406,7 +349,6 @@ export default class Image extends LightningElement {
         ) {
             this._widthPercent = value;
         }
-        this.initBlank();
     }
 
     /**
@@ -420,34 +362,13 @@ export default class Image extends LightningElement {
                 'avonni-image-fluid': this.fluid || this.fluidGrow,
                 'avonni-image-fluid-grow': this.fluidGrow,
                 'avonni-image-thumbnail': this.thumbnail,
-                'avonni-float-left': this._position === 'left',
+                'avonni-float-left':
+                    this._position === 'left' && !this._lazyLoading,
                 'avonni-float-right': this._position === 'right',
                 'avonni-margin-auto': this._position === 'center',
-                'avonni-display-block':
-                    this._position === 'center' || this.block
+                'avonni-display-block': this._position === 'center'
             })
             .toString();
-    }
-
-    /**
-     * Canvas render for blank image.
-     *
-     * @returns {HTMLCanvasElement} src
-     */
-    initBlank() {
-        if (this.blank) {
-            let canvas = document.createElement('canvas');
-            let ctx = canvas.getContext('2d');
-            canvas.width = this.width;
-            canvas.height = this.height;
-
-            ctx.beginPath();
-            ctx.rect(0, 0, this.width, this.height);
-            ctx.fillStyle = this.blankColor;
-            ctx.fill();
-
-            this._src = canvas.toDataURL('image/png', '');
-        }
     }
 
     /**
@@ -573,15 +494,8 @@ export default class Image extends LightningElement {
         }
         // No Crop - No Static Images
         else if (!this.staticImages) {
-            // Width px - Height px - blank
-            if (this._blank && this.width && this.height) {
-                return `
-                width: ${this.width}px;
-                ${imageFitPosition}
-                `;
-            }
             // Width px - Height %
-            else if (this.width && !this._widthPercent && this._heightPercent) {
+            if (this.width && !this._widthPercent && this._heightPercent) {
                 return `
                 width: ${this.width}px;
                 height: ${this._heightPercent};

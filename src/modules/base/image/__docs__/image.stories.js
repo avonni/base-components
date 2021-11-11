@@ -47,42 +47,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        blank: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'Creates a blank/transparent image via an SVG data URI.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        blankColor: {
-            name: 'blank-color',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Sets the color of the blank image to the CSS color value specified.',
-            table: {
-                defaultValue: { summary: 'transparent' },
-                type: { summary: 'string' }
-            }
-        },
-        block: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'Forces the image to display as a block element rather than the browser default of inline-block element.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
         cropFit: {
             name: 'crop-fit',
             control: {
@@ -272,11 +236,9 @@ export default {
         }
     },
     args: {
-        block: false,
         fluid: false,
         fluidGrow: false,
         thumbnail: false,
-        blank: false,
         staticImages: false,
         lazyLoading: false
     }
