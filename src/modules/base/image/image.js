@@ -46,6 +46,12 @@ const POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: 'left'
 };
+
+const LAZY_LOADING_VARIANTS = {
+    valid: ['auto', 'lazy'],
+    default: 'auto'
+};
+
 const CROP_POSITION_X_DEFAULT = '50';
 const CROP_POSITION_Y_DEFAULT = '50';
 
@@ -83,7 +89,7 @@ export default class Image extends LightningElement {
     _fluid = false;
     _fluidGrow = false;
     _height;
-    _lazyLoading = false;
+    _lazyLoading = LAZY_LOADING_VARIANTS.default;
     _position = POSITIONS.default;
     _sizes;
     _src;
@@ -212,7 +218,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them.
+     * Enables lazy loading for images that are offscreen. If set to lazy, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Valid values are 'auto' and 'lazy'.
      * Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.
      *
      * @public
@@ -220,11 +226,14 @@ export default class Image extends LightningElement {
      */
     @api
     get lazyLoading() {
-        return this._lazyLoading ? 'lazy' : 'auto';
+        return this._lazyLoading;
     }
 
     set lazyLoading(value) {
-        this._lazyLoading = normalizeBoolean(value);
+        this._lazyLoading = normalizeString(value, {
+            fallbackValue: LAZY_LOADING_VARIANTS.default,
+            validValues: LAZY_LOADING_VARIANTS.valid
+        });
     }
 
     /**
@@ -363,7 +372,7 @@ export default class Image extends LightningElement {
                 'avonni-image-fluid-grow': this.fluidGrow,
                 'avonni-image-thumbnail': this.thumbnail,
                 'avonni-float-left':
-                    this._position === 'left' && !this._lazyLoading,
+                    this._position === 'left' && this._lazyLoading === 'auto',
                 'avonni-float-right': this._position === 'right',
                 'avonni-margin-auto': this._position === 'center',
                 'avonni-display-block': this._position === 'center'

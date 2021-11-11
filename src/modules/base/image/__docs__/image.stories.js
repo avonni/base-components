@@ -149,11 +149,12 @@ export default {
         lazyLoading: {
             name: 'lazy-loading',
             control: {
-                type: 'boolean'
+                type: 'select'
             },
-            defaultValue: false,
+            options: ['auto', 'lazy'],
+            defaultValue: 'auto',
             description:
-                'Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
+                'Enables lazy loading for images that are offscreen. If set to lazy, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Valid values are auto and lazy. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
             table: {
                 default: { summary: false },
                 type: { summary: 'boolean' }
@@ -239,8 +240,7 @@ export default {
         fluid: false,
         fluidGrow: false,
         thumbnail: false,
-        staticImages: false,
-        lazyLoading: false
+        staticImages: false
     }
 };
 
@@ -291,7 +291,7 @@ BaseWithLazyLoading.args = {
     ],
     width: '400',
     alternativeText: 'Alternative text',
-    lazyLoading: true
+    lazyLoading: 'lazy'
 };
 
 export const Thumbnail = Template.bind({});
