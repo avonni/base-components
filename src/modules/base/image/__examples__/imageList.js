@@ -48,7 +48,6 @@ export const ImageList = ({
     height,
     lazyLoading,
     position,
-    rounded,
     sizes,
     src,
     srcset,
@@ -70,7 +69,6 @@ export const ImageList = ({
     element.height = height;
     element.lazyLoading = lazyLoading;
     element.position = position;
-    element.rounded = rounded;
     element.sizes = sizes;
     element.src = src;
     element.srcset = srcset;

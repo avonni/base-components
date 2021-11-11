@@ -202,7 +202,6 @@ export default class Datatable extends LightningDatatable {
                 'blank',
                 'blankColor',
                 'height',
-                'rounded',
                 'sizes',
                 'srcset',
                 'thumbnail',

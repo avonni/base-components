@@ -46,7 +46,6 @@ export default class Image extends LightningElement {
     @api height;
     @api lazyLoading;
     @api position;
-    @api rounded;
     @api src = [];
     @api srcset;
     @api staticImages;
@@ -64,14 +63,11 @@ export default class Image extends LightningElement {
                 width: this.width,
                 height: this.height,
                 blankColor: this.blankColor,
-                rounded: this.rounded,
                 block: this.block,
                 fluid: this.fluid,
                 fluidGrow: this.fluidGrow,
                 thumbnail: this.thumbnail,
-                left: this.left,
-                right: this.right,
-                center: this.center,
+                position: this.position,
                 blank: this.blank,
                 staticImages: this.staticImages,
                 lazyLoading: this.lazyLoading,
@@ -82,7 +78,6 @@ export default class Image extends LightningElement {
             };
             result.push(item);
         }
-
         return result;
     }
 }

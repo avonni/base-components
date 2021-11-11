@@ -46,7 +46,6 @@ export default class Image extends LightningElement {
     @api height;
     @api lazyLoading;
     @api position;
-    @api rounded;
     @api src;
     @api srcset;
     @api staticImages;

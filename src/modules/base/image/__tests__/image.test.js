@@ -71,7 +71,6 @@ describe('Image', () => {
         expect(element.lazyLoading).toBe('auto');
         expect(element.sizes).toBeUndefined();
         expect(element.position).toBe('left');
-        expect(element.rounded).toBeFalsy();
         expect(element.src).toBeUndefined();
         expect(element.srcset).toBeUndefined();
         expect(element.staticImages).toBeFalsy();
@@ -187,7 +186,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toBe('avonni-float-left');
+            expect(img.className).toBe('avonni-image avonni-float-left');
         });
     });
 
@@ -202,7 +201,7 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.className).toBe(
-                'avonni-margin-auto avonni-display-block'
+                'avonni-image avonni-margin-auto avonni-display-block'
             );
         });
     });
@@ -217,7 +216,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toBe('avonni-float-right');
+            expect(img.className).toBe('avonni-image avonni-float-right');
         });
     });
 
@@ -244,7 +243,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toContain('avonni-img-fluid');
+            expect(img.className).toContain('avonni-image-fluid');
         });
     });
 
@@ -258,7 +257,7 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.className).toContain(
-                'avonni-img-fluid avonni-img-fluid-grow'
+                'avonni-image-fluid avonni-image-fluid-grow'
             );
         });
     });
@@ -272,7 +271,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toBe('avonni-float-left');
+            expect(img.className).toBe('avonni-image avonni-float-left');
         });
     });
 
@@ -284,7 +283,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toBe('avonni-float-right');
+            expect(img.className).toBe('avonni-image avonni-float-right');
         });
     });
 
@@ -297,81 +296,8 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.className).toBe(
-                'avonni-margin-auto avonni-display-block'
+                'avonni-image avonni-margin-auto avonni-display-block'
             );
-        });
-    });
-
-    // rounded
-    it('Image - Rounded', () => {
-        element.src = src;
-        element.rounded = true;
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.className).toContain('avonni-rounded');
-        });
-    });
-
-    it('Image - Rounded top', () => {
-        element.src = src;
-        element.rounded = 'top';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.className).toContain('avonni-rounded-top');
-        });
-    });
-
-    it('Image - Rounded right', () => {
-        element.src = src;
-        element.rounded = 'right';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.className).toContain('avonni-rounded-right');
-        });
-    });
-
-    it('Image - Rounded left', () => {
-        element.src = src;
-        element.rounded = 'left';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.className).toContain('avonni-rounded-left');
-        });
-    });
-
-    it('Image - Rounded bottom', () => {
-        element.src = src;
-        element.rounded = 'bottom';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.className).toContain('avonni-rounded-bottom');
-        });
-    });
-
-    it('Image - Rounded circle', () => {
-        element.src = src;
-        element.rounded = 'circle';
-
-        return Promise.resolve().then(() => {
-            const img = element.shadowRoot.querySelector(
-                '[data-element-id="img"]'
-            );
-            expect(img.className).toContain('avonni-rounded-circle');
         });
     });
 
@@ -463,7 +389,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toBe('avonni-float-left');
+            expect(img.className).toBe('avonni-image avonni-float-left');
             expect(img.style.maxWidth).toBe('400px');
             expect(img.style.height).toBeFalsy();
         });
@@ -494,7 +420,7 @@ describe('Image', () => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                expect(img.className).toBe('avonni-float-left');
+                expect(img.className).toBe('avonni-image avonni-float-left');
                 expect(img.style.minWidth).toBe('0px');
                 expect(img.style.minHeight).toBe('0px');
                 expect(img.style.maxWidth).toBe('0px');
@@ -549,7 +475,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toContain('avonni-img-thumbnail');
+            expect(img.className).toContain('avonni-image-thumbnail');
         });
     });
 

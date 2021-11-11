@@ -1,10 +1,34 @@
 /**
- * @namespace examples
+ * @namespace stylingHooks
  */
 /**
- * @memberof examples
- * @name baseSmall
- * @storyId example-image--base-small
+/**
+ * @memberof stylingHooks
+ * @name --avonni-image-radius-border-bottom-left
+ * @default 0
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-image-radius-border-bottom-right
+ * @default 0
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-image-radius-border-top-left
+ * @default 0
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-image-radius-border-top-right
+ * @default 0
+ * @type radius
+ */
+
+/**
+ * @namespace examples
  */
 /**
  * @memberof examples
@@ -13,8 +37,8 @@
  */
 /**
  * @memberof examples
- * @name baseWithLazyLoading
- * @storyId example-image--base-with-lazy-loading
+ * @name baseSmall
+ * @storyId example-image--base-small
  */
 /**
  * @memberof examples
@@ -23,66 +47,27 @@
  */
 /**
  * @memberof examples
- * @name baseBlankGrayLarge
- * @storyId example-image--base-blank-gray-large
+ * @name baseWithLazyLoading
+ * @storyId example-image--base-with-lazy-loading
  */
 /**
  * @memberof examples
  * @name thumbnail
  * @storyId example-image--thumbnail
  */
+
 /**
  * @memberof examples
- * @name centerCornerRounded
- * @storyId example-image--center-corner-rounded
+ * @name Center
+ * @storyId example-image--center
  */
 /**
  * @memberof examples
- * @name rightCornerTop
- * @storyId example-image--right-corner-top
+ * @name Right
+ * @storyId example-image--right
  */
 /**
  * @memberof examples
- * @name cornerBottom
- * @storyId example-image--corner-bottom
- */
-/**
- * @memberof examples
- * @name cornerRight
- * @storyId example-image--corner-right
- */
-/**
- * @memberof examples
- * @name cornerLeft
- * @storyId example-image--corner-left
- */
-/**
- * @memberof examples
- * @name smallCircle
- * @storyId example-image--small-circle
- */
-/**
- * @memberof examples
- * @name mediumCircle
- * @storyId example-image--medium-circle
- */
-/**
- * @memberof examples
- * @name thumbnailMediumCircle
- * @storyId example-image--thumbnail-medium-circle
- */
-/**
- * @memberof examples
- * @name largeCircle
- * @storyId example-image--large-circle
- */
-/**
- * @memberof examples
- * @name largeBlankGrayCircle
- * @storyId example-image--large-blank-gray-circle
- */
-/**
- * @memberof examples
- * @name cropImageStaticCircleThumbnailMobile
- * @storyId example-image--crop-image-static-circle-thumbnail-mobile
+ * @name cropImageStaticThumbnailMobile
+ * @storyId example-image--crop-image-static-thumbnail-mobile
  */

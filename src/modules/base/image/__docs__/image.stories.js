@@ -207,19 +207,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        rounded: {
-            control: {
-                type: 'select'
-            },
-            options: ['top', 'right', 'bottom', 'left', 'circle', false, true],
-            defaultValue: false,
-            description:
-                'If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
         sizes: {
             control: {
                 type: 'text'
@@ -298,19 +285,24 @@ const Template = (args) => Image(args);
 
 const ListTemplate = (args) => ImageList(args);
 
+export const Base = Template.bind({});
+Base.args = {
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alt: 'Alt text'
+};
+
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
-    blankColor: 'transparent',
     width: '150'
 };
 
-export const Base = Template.bind({});
-Base.args = {
+export const BaseLarge = Template.bind({});
+BaseLarge.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
-    blankColor: 'transparent'
+    width: '600'
 };
 
 export const BaseWithLazyLoading = ListTemplate.bind({});
@@ -336,142 +328,43 @@ BaseWithLazyLoading.args = {
     ],
     width: '400',
     alt: 'Alt text',
-    lazyLoading: true,
-    blankColor: 'transparent'
-};
-
-export const BaseLarge = Template.bind({});
-BaseLarge.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    blankColor: 'transparent',
-    width: '600'
-};
-
-export const BaseBlankGrayLarge = Template.bind({});
-BaseBlankGrayLarge.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    blankColor: 'gray',
-    width: '600',
-    height: '300',
-    blank: true
+    lazyLoading: true
 };
 
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
-    blankColor: 'transparent',
     thumbnail: true
 };
 
-export const CenterCornerRounded = Template.bind({});
-CenterCornerRounded.args = {
+export const Center = Template.bind({});
+Center.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
-    rounded: 'true',
-    blankColor: 'transparent',
-    position: 'center'
+    position: 'center',
+    width: '600'
 };
 
-export const RightCornerTop = Template.bind({});
-RightCornerTop.args = {
+export const Right = Template.bind({});
+Right.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
-    rounded: 'top',
-    blankColor: 'transparent',
-    position: 'right'
+    position: 'right',
+    width: '600'
 };
 
-export const CornerBottom = Template.bind({});
-CornerBottom.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'bottom',
-    blankColor: 'transparent'
-};
-
-export const CornerRight = Template.bind({});
-CornerRight.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'right',
-    blankColor: 'transparent'
-};
-
-export const CornerLeft = Template.bind({});
-CornerLeft.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'left',
-    blankColor: 'transparent'
-};
-
-export const SmallCircle = Template.bind({});
-SmallCircle.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '50',
-    width: '50',
-    rounded: 'circle',
-    blankColor: 'transparent'
-};
-
-export const MediumCircle = Template.bind({});
-MediumCircle.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '150',
-    width: '150',
-    rounded: 'circle',
-    blankColor: 'transparent'
-};
-
-export const ThumbnailMediumCircle = Template.bind({});
-ThumbnailMediumCircle.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '150',
-    width: '150',
-    rounded: 'circle',
-    blankColor: 'transparent',
-    thumbnail: true
-};
-
-export const LargeCircle = Template.bind({});
-LargeCircle.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '300',
-    width: '300',
-    rounded: 'circle',
-    blankColor: 'transparent'
-};
-
-export const LargeBlankGrayCircle = Template.bind({});
-LargeBlankGrayCircle.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '300',
-    width: '300',
-    rounded: 'circle',
-    blank: true,
-    blankColor: 'gray'
-};
-
-export const CropImageStaticCircleThumbnailMobile = Template.bind({});
-CropImageStaticCircleThumbnailMobile.parameters = {
+export const CropImageStaticThumbnailMobile = Template.bind({});
+CropImageStaticThumbnailMobile.parameters = {
     viewport: {
         defaultViewport: 'mobile1'
     }
 };
-CropImageStaticCircleThumbnailMobile.args = {
+CropImageStaticThumbnailMobile.args = {
     src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
     alt: 'Alt text',
     width: '280',
     cropSize: '1x1',
-    rounded: 'circle',
     cropFit: 'none',
     cropPositionX: '23',
     cropPositionY: '80',

@@ -34,7 +34,6 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const IMAGE_ROUNDED = ['top', 'right', 'bottom', 'left', 'circle', '0'];
 const CROP_FIT = {
     valid: ['cover', 'contain', 'fill', 'none'],
     default: 'cover'
@@ -90,7 +89,6 @@ export default class Image extends LightningElement {
     _height;
     _lazyLoading = false;
     _position = POSITIONS.default;
-    _rounded = false;
     _sizes;
     _src;
     _srcset;
@@ -285,10 +283,10 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.
+     * Specifies the position of the image. Valid values include left, center and right.
      *
      * @public
-     * @type {boolean|string}
+     * @type {string}
      */
     @api
     get position() {
@@ -300,30 +298,6 @@ export default class Image extends LightningElement {
             fallbackValue: POSITIONS.default,
             validValues: POSITIONS.valid
         });
-    }
-
-    /**
-     * If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.
-     *
-     * @public
-     * @type {boolean|string}
-     */
-    @api
-    get rounded() {
-        return this._rounded;
-    }
-
-    set rounded(value) {
-        let roundedValue = normalizeString(value, {
-            fallbackValue: null,
-            validValues: IMAGE_ROUNDED
-        });
-
-        if (roundedValue !== null) {
-            this._rounded = value;
-        } else {
-            this._rounded = normalizeBoolean(value);
-        }
     }
 
     /**
@@ -441,22 +415,18 @@ export default class Image extends LightningElement {
      * @type {string}
      */
     get computedImageClass() {
-        return classSet({
-            'avonni-img-fluid': this.fluid || this.fluidGrow,
-            'avonni-img-fluid-grow': this.fluidGrow,
-            'avonni-img-thumbnail': this.thumbnail,
-            'avonni-rounded': this.rounded === true,
-            'avonni-rounded-top': this.rounded === 'top',
-            'avonni-rounded-right': this.rounded === 'right',
-            'avonni-rounded-bottom': this.rounded === 'bottom',
-            'avonni-rounded-left': this.rounded === 'left',
-            'avonni-rounded-circle': this.rounded === 'circle',
-            'avonni-not-rounded': this.rounded === '0',
-            'avonni-float-left': this._position === 'left',
-            'avonni-float-right': this._position === 'right',
-            'avonni-margin-auto': this._position === 'center',
-            'avonni-display-block': this._position === 'center' || this.block
-        }).toString();
+        return classSet('avonni-image')
+            .add({
+                'avonni-image-fluid': this.fluid || this.fluidGrow,
+                'avonni-image-fluid-grow': this.fluidGrow,
+                'avonni-image-thumbnail': this.thumbnail,
+                'avonni-float-left': this._position === 'left',
+                'avonni-float-right': this._position === 'right',
+                'avonni-margin-auto': this._position === 'center',
+                'avonni-display-block':
+                    this._position === 'center' || this.block
+            })
+            .toString();
     }
 
     /**
