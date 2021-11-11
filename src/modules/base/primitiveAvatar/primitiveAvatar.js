@@ -256,7 +256,9 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     get computedInitialsClass() {
-        return classSet('slds-avatar__initials')
+        return classSet(
+            'slds-avatar__initials avonni-avatar__initials_text-color'
+        )
             .add({
                 'slds-avatar-grouped__initials': this.groupedAvatar
             })
