@@ -41,8 +41,8 @@ const QR_RENDER_AS = { valid: ['canvas', 'svg'], default: 'svg' };
 const DEFAULT_BORDER_WIDTH = 0;
 const DEFAULT_PADDING = 0;
 const DEFAULT_SIZE = 200;
-const DEFAULT_COLOR = '#000';
-const DEFAULT_BACKGROUND_COLOR = '#fff';
+const DEFAULT_COLOR = '#000000';
+const DEFAULT_BACKGROUND_COLOR = '#ffffff';
 
 /**
  * @class
@@ -51,22 +51,81 @@ const DEFAULT_BACKGROUND_COLOR = '#fff';
  * @public
  */
 export default class Qrcode extends LightningElement {
-    _borderWidth = DEFAULT_BORDER_WIDTH;
-    _padding = DEFAULT_PADDING;
-    _value;
-    _size = DEFAULT_SIZE;
-    _encoding = QR_ENCODINGS.default;
-    _errorCorrection = QR_ERROR_CORRECTIONS.default;
-    _renderAs = QR_RENDER_AS.default;
     _background = DEFAULT_BACKGROUND_COLOR;
     _borderColor;
+    _borderWidth = DEFAULT_BORDER_WIDTH;
     _color = DEFAULT_COLOR;
+    _encoding = QR_ENCODINGS.default;
+    _errorCorrection = QR_ERROR_CORRECTIONS.default;
+    _padding = DEFAULT_PADDING;
+    _renderAs = QR_RENDER_AS.default;
+    _size = DEFAULT_SIZE;
+    _value;
 
-    rendered = false;
+    _rendered = false;
 
     renderedCallback() {
         this.redraw();
-        this.rendered = true;
+        this._rendered = true;
+    }
+
+    /**
+     * Background color of the qr-code. Accepts a valid CSS color string, including hex and rgb.
+     *
+     * @type {string}
+     * @public
+     * @default #ffffff
+     */
+    @api get background() {
+        return this._background;
+    }
+
+    set background(color) {
+        if (color && typeof color === 'string') {
+            let styles = new Option().style;
+            styles.color = color;
+
+            if (
+                styles.color === color ||
+                this.isHexColor(color.replace('#', ''))
+            ) {
+                this._background = color;
+            }
+        } else {
+            this._background = DEFAULT_BACKGROUND_COLOR;
+        }
+
+        if (this._rendered) {
+            this.redraw();
+        }
+    }
+
+    /**
+     * The color of the border. Accepts a valid CSS color string, including hex and rgb.
+     *
+     * @type {string}
+     * @public
+     */
+    @api get borderColor() {
+        return this._borderColor;
+    }
+
+    set borderColor(color) {
+        if (color && typeof color === 'string') {
+            let styles = new Option().style;
+            styles.color = color;
+
+            if (
+                styles.color === color ||
+                this.isHexColor(color.replace('#', ''))
+            ) {
+                this._borderColor = color;
+            }
+        }
+
+        if (this._rendered) {
+            this.redraw();
+        }
     }
 
     /**
@@ -85,73 +144,38 @@ export default class Qrcode extends LightningElement {
         this._borderWidth =
             typeof value === 'number' ? value : DEFAULT_BORDER_WIDTH;
 
-        if (this.rendered) {
+        if (this._rendered) {
             this.redraw();
         }
     }
 
     /**
-     * Sets the minimum distance in pixels that should be left between the border and the QR modules.
-     *
-     * @type {number}
-     * @public
-     * @default 0
-     */
-    @api
-    get padding() {
-        return this._padding;
-    }
-
-    set padding(value) {
-        this._padding = typeof value === 'number' ? value : DEFAULT_PADDING;
-
-        if (this.rendered) {
-            this.redraw();
-        }
-    }
-
-    /**
-     * The value of the QRCode.
+     * The color of the QR code. Accepts a valid CSS color string, including hex and rgb.
      *
      * @type {string}
      * @public
-     * @required
+     * @default #000000
      */
-    @api
-    get value() {
-        return this._value;
+    @api get color() {
+        return this._color;
     }
 
-    set value(value) {
-        this._value = value;
+    set color(color) {
+        if (color && typeof color === 'string') {
+            let styles = new Option().style;
+            styles.color = color;
 
-        if (this.rendered) {
-            this.redraw();
-        }
-    }
-
-    /**
-     * Specifies the size of a QR code in pixels (i.e. "200px").
-     * Numeric values are treated as pixels.
-     * If no size is specified, it will be determined from the element width and height. In case the element has width or height of zero, a default value of 200 pixels will be used.
-     *
-     * @type {number}
-     * @public
-     * @default 200
-     */
-    @api
-    get size() {
-        return this._size;
-    }
-
-    set size(value) {
-        if ((!isNaN(value) && Number(value) < 1) || isNaN(value)) {
-            this._size = DEFAULT_SIZE;
+            if (
+                styles.color === color ||
+                this.isHexColor(color.replace('#', ''))
+            ) {
+                this._color = color;
+            }
         } else {
-            this._size = Number(value);
+            this._color = DEFAULT_COLOR;
         }
 
-        if (this.rendered) {
+        if (this._rendered) {
             this.redraw();
         }
     }
@@ -176,7 +200,7 @@ export default class Qrcode extends LightningElement {
             toLowerCase: false
         });
 
-        if (this.rendered) {
+        if (this._rendered) {
             this.redraw();
         }
     }
@@ -203,7 +227,27 @@ export default class Qrcode extends LightningElement {
             toLowerCase: false
         });
 
-        if (this.rendered) {
+        if (this._rendered) {
+            this.redraw();
+        }
+    }
+
+    /**
+     * Sets the minimum distance in pixels that should be left between the border and the QR modules.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get padding() {
+        return this._padding;
+    }
+
+    set padding(value) {
+        this._padding = typeof value === 'number' ? value : DEFAULT_PADDING;
+
+        if (this._rendered) {
             this.redraw();
         }
     }
@@ -227,97 +271,53 @@ export default class Qrcode extends LightningElement {
             validValues: QR_RENDER_AS.valid
         });
 
-        if (this.rendered) {
+        if (this._rendered) {
             this.redraw();
         }
     }
 
     /**
-     * Background color of the qr-code. Accepts a valid CSS color string, including hex and rgb.
+     * Specifies the size of a QR code in pixels (i.e. "200px").
+     * Numeric values are treated as pixels.
+     * If no size is specified, it will be determined from the element width and height. In case the element has width or height of zero, a default value of 200 pixels will be used.
      *
-     * @type {string}
+     * @type {number}
      * @public
-     * @default #fff
+     * @default 200
      */
-    @api get background() {
-        return this._background;
+    @api
+    get size() {
+        return this._size;
     }
 
-    set background(color) {
-        if (typeof color === 'string') {
-            let styles = new Option().style;
-            styles.color = color;
-
-            if (
-                styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
-            ) {
-                this._background = color;
-            }
+    set size(value) {
+        if ((!isNaN(value) && Number(value) < 1) || isNaN(value)) {
+            this._size = DEFAULT_SIZE;
         } else {
-            this._background = DEFAULT_BACKGROUND_COLOR;
+            this._size = Number(value);
         }
 
-        if (this.rendered) {
+        if (this._rendered) {
             this.redraw();
         }
     }
 
     /**
-     * The color of the border. Accepts a valid CSS color string, including hex and rgb.
+     * The value of the QRCode.
      *
      * @type {string}
      * @public
+     * @required
      */
-    @api get borderColor() {
-        return this._borderColor;
+    @api
+    get value() {
+        return this._value;
     }
 
-    set borderColor(color) {
-        if (typeof color === 'string') {
-            let styles = new Option().style;
-            styles.color = color;
+    set value(value) {
+        this._value = value;
 
-            if (
-                styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
-            ) {
-                this._borderColor = color;
-            }
-        }
-
-        if (this.rendered) {
-            this.redraw();
-        }
-    }
-
-    /**
-     * The color of the QR code. Accepts a valid CSS color string, including hex and rgb.
-     *
-     * @type {string}
-     * @public
-     * @default #000
-     */
-    @api get color() {
-        return this._color;
-    }
-
-    set color(color) {
-        if (typeof color === 'string') {
-            let styles = new Option().style;
-            styles.color = color;
-
-            if (
-                styles.color === color ||
-                this.isHexColor(color.replace('#', ''))
-            ) {
-                this._color = color;
-            }
-        } else {
-            this._color = DEFAULT_COLOR;
-        }
-
-        if (this.rendered) {
+        if (this._rendered) {
             this.redraw();
         }
     }
@@ -347,7 +347,7 @@ export default class Qrcode extends LightningElement {
 
     /**
      * Redraws the QR code using the current value and options.
-     * 
+     *
      * @public
      */
     @api
