@@ -43,7 +43,6 @@ export const ProgressIndicator = ({
     errorSteps,
     warningSteps,
     currentStep,
-    type,
     variant,
     steps
 }) => {
@@ -53,7 +52,6 @@ export const ProgressIndicator = ({
     element.errorSteps = errorSteps;
     element.warningSteps = warningSteps;
     element.currentStep = currentStep;
-    element.type = type;
     element.variant = variant;
     element.steps = steps;
     return element;

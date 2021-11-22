@@ -34,8 +34,6 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const PROGRESS_INDICATOR_TYPES = { valid: ['base', 'arrow'], default: 'base' };
-
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 /**
@@ -57,8 +55,7 @@ export default class ProgressIndicator extends LightningElement {
     _disabledSteps = [];
     _warningSteps = [];
     _errorSteps = [];
-    _variant = PROGRESS_INDICATOR_TYPES.default;
-    _type = INDICATOR_VARIANTS.default;
+    _variant = INDICATOR_VARIANTS.default;
     _initialRender = true;
     _steps = [];
 
@@ -146,25 +143,6 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     /**
-     * Changes the visual pattern of the indicator. Valid values are base.
-     *
-     * @type {string}
-     * @public
-     * @default base
-     */
-    @api
-    get type() {
-        return this._type;
-    }
-
-    set type(type) {
-        this._type = normalizeString(type, {
-            fallbackValue: PROGRESS_INDICATOR_TYPES.default,
-            validValues: PROGRESS_INDICATOR_TYPES.valid
-        });
-    }
-
-    /**
      * Array of steps attributes.
      *
      * @type {object[]}
@@ -188,7 +166,7 @@ export default class ProgressIndicator extends LightningElement {
         return classSet('slds-progress slds-progress_horizontal')
             .add({
                 'slds-progress_shade':
-                    this._variant === 'shaded' && this._type === 'base'
+                    this._variant === 'shaded'
             })
             .toString();
     }
