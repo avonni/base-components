@@ -73,13 +73,6 @@ export default class ProfileCard extends LightningElement {
      */
     @api subtitle;
     /**
-     * Background color in hexadecimal.
-     *
-     * @type {string}
-     * @public
-     */
-    @api backgroundColor;
-    /**
      * URL for the optional image.
      *
      * @type {string}
@@ -128,10 +121,6 @@ export default class ProfileCard extends LightningElement {
     renderedCallback() {
         let header = this.template.querySelector('[data-element-id="header"]');
 
-        if (this.backgroundColor) {
-            header.style.backgroundColor = this.backgroundColor;
-        }
-
         if (this.backgroundSrc) {
             header.style.backgroundImage = `url(${this.backgroundSrc})`;
         }
@@ -148,28 +137,24 @@ export default class ProfileCard extends LightningElement {
                 this.showActions &&
                 this._avatarPosition.indexOf('right') > -1
             ) {
-                let actionsContainer = this.template.querySelector(
-                    '.avonni-actions'
-                );
+                let actionsContainer =
+                    this.template.querySelector('.avonni-actions');
                 actionsContainer.classList.add('avonni-actions-left');
             } else {
-                let actionsContainer = this.template.querySelector(
-                    '.avonni-actions'
-                );
+                let actionsContainer =
+                    this.template.querySelector('.avonni-actions');
                 actionsContainer.classList.add('avonni-actions-right');
             }
             if (
                 this.showActions &&
                 this._avatarMobilePosition.indexOf('right') > -1
             ) {
-                let actionsContainer = this.template.querySelector(
-                    '.avonni-actions'
-                );
+                let actionsContainer =
+                    this.template.querySelector('.avonni-actions');
                 actionsContainer.classList.add('avonni-mobile-actions-left');
             } else {
-                let actionsContainer = this.template.querySelector(
-                    '.avonni-actions'
-                );
+                let actionsContainer =
+                    this.template.querySelector('.avonni-actions');
                 actionsContainer.classList.add('avonni-mobile-actions-right');
             }
         }
@@ -181,7 +166,7 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Get the avatar action slot DOM element.
-     * 
+     *
      * @type {Element}
      */
     get avatarActionsSlot() {
@@ -190,7 +175,7 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Get the action slot DOM element.
-     * 
+     *
      * @type {Element}
      */
     get actionsSlot() {
@@ -199,7 +184,7 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Get the footer slot DOM element.
-     * 
+     *
      * @type {Element}
      */
     get footerSlot() {
@@ -309,7 +294,7 @@ export default class ProfileCard extends LightningElement {
 
     /**
      * Computed Main container class styling based on selected attributes.
-     * 
+     *
      * @type {string}
      */
     get computedMainContainerClass() {
@@ -345,7 +330,9 @@ export default class ProfileCard extends LightningElement {
      * @type {string}
      */
     get computedHeaderClass() {
-        return classSet('slds-media slds-media_center slds-has-flexi-truncate')
+        return classSet(
+            'slds-media slds-media_center slds-has-flexi-truncate avonni-profile-card-color-background'
+        )
             .add(`background-${this._size}`)
             .toString();
     }

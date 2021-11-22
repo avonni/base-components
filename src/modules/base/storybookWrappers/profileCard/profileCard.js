@@ -39,7 +39,6 @@ const DEFAULT_VARIANT = 'circle';
 export default class ProfileCard extends LightningElement {
     @api title;
     @api subtitle;
-    @api backgroundColor;
     @api backgroundSrc;
     @api backgroundAlternativeText;
     @api avatarSrc;

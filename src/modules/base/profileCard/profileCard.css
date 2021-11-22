@@ -30,9 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .avonni-flex-container {
+.avonni-flex-container {
     display: flex;
     flex-direction: column;
+}
+
+.avonni-profile-card-color-background {
+    background-color: var(--avonni-profile-card-color-background, #ffffff);
 }
 
 .slds-media {
