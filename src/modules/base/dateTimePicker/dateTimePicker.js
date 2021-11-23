@@ -176,7 +176,8 @@ export default class DateTimePicker extends LightningElement {
 
     connectedCallback() {
         this._processValue();
-        this.selectedTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        this.selectedTimeZone =
+            Intl.DateTimeFormat().resolvedOptions().timeZone;
         this._initTimeSlots();
         const now = new Date();
         this.today = now;
@@ -497,8 +498,7 @@ export default class DateTimePicker extends LightningElement {
             validValues: DATE_TIME_FORMATS.valid
         });
 
-        if (this._connected && this.variant === 'weekly')
-            this._generateTable();
+        if (this._connected && this.variant === 'weekly') this._generateTable();
     }
 
     /**
@@ -538,8 +538,7 @@ export default class DateTimePicker extends LightningElement {
             validValues: WEEKDAY_FORMATS.valid
         });
 
-        if (this._connected && this.variant === 'weekly')
-            this._generateTable();
+        if (this._connected && this.variant === 'weekly') this._generateTable();
     }
 
     /**
@@ -749,7 +748,9 @@ export default class DateTimePicker extends LightningElement {
         this.reportValidity();
 
         // Show errors on date picker
-        const datePicker = this.template.querySelector('[data-element-id="lightning-input"]');
+        const datePicker = this.template.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
         if (datePicker) datePicker.reportValidity();
     }
 
@@ -757,15 +758,17 @@ export default class DateTimePicker extends LightningElement {
      * Pushes all dates included in disabled-date-times to calendar-disabled-dates to be disabled on the calendar.
      */
     _disableMonthlyCalendarDates() {
-        this.disabledDateTimes.forEach((disabledDateTime) => {
-            const type = typeof disabledDateTime;
-            const isNumber = type === 'number';
-            const isWeekDay =
-                type === 'string' && DAYS.indexOf(disabledDateTime) > -1;
-            if (isNumber || isWeekDay) {
-                this.calendarDisabledDates.push(disabledDateTime);
-            }
-        });
+        if (this.disabledDateTimes) {
+            this.disabledDateTimes.forEach((disabledDateTime) => {
+                const type = typeof disabledDateTime;
+                const isNumber = type === 'number';
+                const isWeekDay =
+                    type === 'string' && DAYS.indexOf(disabledDateTime) > -1;
+                if (isNumber || isWeekDay) {
+                    this.calendarDisabledDates.push(disabledDateTime);
+                }
+            });
+        }
     }
 
     /**
@@ -1187,9 +1190,9 @@ export default class DateTimePicker extends LightningElement {
      * Handles the onchange event of the lightning-input to change the date.
      */
     handleDateChange(event) {
-        const dateString = event.detail.value.match(
-            /^(\d{4})-(\d{2})-(\d{2})$/
-        );
+        const dateString = event.detail.value
+            .toString()
+            .match(/^(\d{4})-(\d{2})-(\d{2})$/);
 
         if (dateString) {
             const year = dateString[1];

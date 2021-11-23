@@ -57,7 +57,7 @@ describe('DateTimePicker', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Date time picker: default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.label).toBeUndefined();
@@ -98,7 +98,7 @@ describe('DateTimePicker', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('Date time picker disabled daily', () => {
+    it('Date time picker: disabled daily', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -115,7 +115,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker disabled weekly', () => {
+    it('Date time picker: disabled weekly', () => {
         element.variant = 'weekly';
         element.disabled = true;
 
@@ -133,7 +133,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker disabled inline', () => {
+    it('Date time picker: disabled inline', () => {
         element.variant = 'inline';
         element.disabled = true;
 
@@ -151,7 +151,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker disabled timeline', () => {
+    it('Date time picker: disabled timeline', () => {
         element.variant = 'timeline';
         element.disabled = true;
 
@@ -169,7 +169,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker disabled monthly', () => {
+    it('Date time picker: disabled monthly', () => {
         element.variant = 'monthly';
         element.disabled = true;
 
@@ -190,7 +190,7 @@ describe('DateTimePicker', () => {
     });
 
     // field level help
-    it('Date time picker field level help', () => {
+    it('Date time picker: field level help', () => {
         element.fieldLevelHelp = 'This is a field level help text';
 
         return Promise.resolve().then(() => {
@@ -203,7 +203,7 @@ describe('DateTimePicker', () => {
     });
 
     // label
-    it('Date time picker label', () => {
+    it('Date time picker: label', () => {
         element.label = 'This is a label text';
 
         return Promise.resolve().then(() => {
@@ -216,7 +216,7 @@ describe('DateTimePicker', () => {
     });
 
     // hide label
-    it('Date time picker hide label', () => {
+    it('Date time picker: hide label', () => {
         element.label = 'This is a label text';
         element.hideLabel = true;
 
@@ -229,7 +229,7 @@ describe('DateTimePicker', () => {
     });
 
     // variant
-    it('Date time picker variant daily', () => {
+    it('Date time picker: variant daily', () => {
         element.variant = 'daily';
 
         return Promise.resolve().then(() => {
@@ -248,7 +248,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker variant weekly', () => {
+    it('Date time picker: variant weekly', () => {
         element.variant = 'weekly';
 
         return Promise.resolve().then(() => {
@@ -267,7 +267,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker variant inline', () => {
+    it('Date time picker: variant inline', () => {
         element.variant = 'inline';
 
         return Promise.resolve().then(() => {
@@ -286,7 +286,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker variant timeline', () => {
+    it('Date time picker: variant timeline', () => {
         element.variant = 'timeline';
 
         return Promise.resolve().then(() => {
@@ -309,7 +309,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker variant monthly', () => {
+    it('Date time picker: variant monthly', () => {
         element.variant = 'monthly';
 
         return Promise.resolve().then(() => {
@@ -333,7 +333,7 @@ describe('DateTimePicker', () => {
     });
 
     // read only
-    it('Date time picker read only daily', () => {
+    it('Date time picker: read only daily', () => {
         element.readOnly = true;
         const buttons = element.shadowRoot.querySelectorAll(
             '[data-element-id="button-default"]'
@@ -350,7 +350,7 @@ describe('DateTimePicker', () => {
     });
 
     // required
-    it('Date time picker required', () => {
+    it('Date time picker: required', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -362,7 +362,7 @@ describe('DateTimePicker', () => {
 
     // message when value is missing
     // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
-    it('Date time picker message when value is missing', () => {
+    it('Date time picker: message when value is missing', () => {
         element.required = true;
         element.messageWhenValueMissing = 'Missing value!';
 
@@ -381,7 +381,7 @@ describe('DateTimePicker', () => {
     });
 
     // name
-    it('Date time picker name', () => {
+    it('Date time picker: name', () => {
         element.name = 'a-string-name';
         const input = element.shadowRoot.querySelector(
             '[data-element-id="lightning-input"]'
@@ -393,7 +393,7 @@ describe('DateTimePicker', () => {
     });
 
     // start time
-    it('Date time picker start time', () => {
+    it('Date time picker: start time', () => {
         element.startTime = '10:00';
         const date = new Date(`1970-01-01T10:00`);
 
@@ -409,7 +409,7 @@ describe('DateTimePicker', () => {
 
     // end time
     // Depends on showEndTime and startTime
-    it('Date time picker end time', () => {
+    it('Date time picker: end time', () => {
         element.startTime = '09:00';
         element.endTime = '11:00';
         element.showEndTime = true;
@@ -428,7 +428,7 @@ describe('DateTimePicker', () => {
     });
 
     // time slot duration
-    it('Date time picker time slot duration', () => {
+    it('Date time picker: time slot duration', () => {
         element.timeSlotDuration = '01:00';
 
         return Promise.resolve().then(() => {
@@ -443,7 +443,7 @@ describe('DateTimePicker', () => {
     });
 
     // time format hour
-    it('Date time picker time format hour numeric', () => {
+    it('Date time picker: time format hour numeric', () => {
         const times = element.shadowRoot.querySelectorAll(
             '[data-element-id^="lightning-formatted-date-time-default"]'
         );
@@ -455,7 +455,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker time format hour 2-digit', () => {
+    it('Date time picker: time format hour 2-digit', () => {
         element.timeFormatHour = '2-digit';
 
         const times = element.shadowRoot.querySelectorAll(
@@ -470,7 +470,7 @@ describe('DateTimePicker', () => {
     });
 
     // time format hour 12
-    it('Date time picker time format hour 12', () => {
+    it('Date time picker: time format hour 12', () => {
         element.timeFormatHour12 = true;
 
         const times = element.shadowRoot.querySelectorAll(
@@ -485,7 +485,7 @@ describe('DateTimePicker', () => {
     });
 
     // time format minute
-    it('Date time picker time format minute numeric', () => {
+    it('Date time picker: time format minute numeric', () => {
         const times = element.shadowRoot.querySelectorAll(
             '[data-element-id^="lightning-formatted-date-time-default"]'
         );
@@ -499,7 +499,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker time format minute 2-digit', () => {
+    it('Date time picker: time format minute 2-digit', () => {
         const times = element.shadowRoot.querySelectorAll(
             '[data-element-id^="lightning-formatted-date-time-default"]'
         );
@@ -514,7 +514,7 @@ describe('DateTimePicker', () => {
     });
 
     // time format second
-    it('Date time picker time format second numeric', () => {
+    it('Date time picker: time format second numeric', () => {
         const times = element.shadowRoot.querySelectorAll(
             '[data-element-id^="lightning-formatted-date-time-default"]'
         );
@@ -528,7 +528,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker time format second 2-digit', () => {
+    it('Date time picker: time format second 2-digit', () => {
         const times = element.shadowRoot.querySelectorAll(
             '[data-element-id^="lightning-formatted-date-time-default"]'
         );
@@ -544,7 +544,7 @@ describe('DateTimePicker', () => {
 
     // show end time
     // Depends on startTime, endTime and timeSlotDuration
-    it('Date time picker show end time = false', () => {
+    it('Date time picker: show end time = false', () => {
         element.showEndTime = false;
 
         return Promise.resolve().then(() => {
@@ -555,7 +555,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker show end time = true', () => {
+    it('Date time picker: show end time = true', () => {
         element.showEndTime = true;
         element.timeSlotDuration = '01:00';
         element.startTime = '10:00';
@@ -570,7 +570,7 @@ describe('DateTimePicker', () => {
     });
 
     // show disabled dates
-    it('Date time picker show disabled dates daily', () => {
+    it('Date time picker: show disabled dates daily', () => {
         element.disabled = true;
         element.showDisabledDates = true;
 
@@ -584,7 +584,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker show disabled dates weekly', () => {
+    it('Date time picker: show disabled dates weekly', () => {
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'weekly';
@@ -599,7 +599,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker show disabled dates inline', () => {
+    it('Date time picker: show disabled dates inline', () => {
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'inline';
@@ -614,7 +614,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker show disabled dates timeline', () => {
+    it('Date time picker: show disabled dates timeline', () => {
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'timeline';
@@ -629,7 +629,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker show disabled dates monthly', () => {
+    it('Date time picker: show disabled dates monthly', () => {
         element.disabled = true;
         element.showDisabledDates = true;
         element.variant = 'monthly';
@@ -645,7 +645,7 @@ describe('DateTimePicker', () => {
     });
 
     // max and min
-    it('Date time picker max and min', () => {
+    it('Date time picker: max and min', () => {
         const maxDate = new Date(2021, 11, 30);
         const minDate = new Date(2021, 12, 1);
         element.max = maxDate;
@@ -662,7 +662,7 @@ describe('DateTimePicker', () => {
     });
 
     // type
-    it('Date time picker type checkbox', () => {
+    it('Date time picker: type checkbox', () => {
         element.type = 'checkbox';
 
         const buttons = element.shadowRoot.querySelectorAll(
@@ -682,7 +682,7 @@ describe('DateTimePicker', () => {
         });
     });
 
-    it('Date time picker type radio', () => {
+    it('Date time picker: type radio', () => {
         element.type = 'radio';
 
         const buttons = element.shadowRoot.querySelectorAll(
@@ -703,7 +703,7 @@ describe('DateTimePicker', () => {
     });
 
     // show time zone
-    it('Date time picker show time zone', () => {
+    it('Date time picker: show time zone', () => {
         element.showTimeZone = true;
 
         const timeZone = element.shadowRoot.querySelectorAll(
@@ -716,7 +716,7 @@ describe('DateTimePicker', () => {
     });
 
     // hide navigation
-    it('Date time picker hide navigation', () => {
+    it('Date time picker: hide navigation', () => {
         element.hideNavigation = true;
 
         return Promise.resolve().then(() => {
@@ -736,7 +736,7 @@ describe('DateTimePicker', () => {
     });
 
     // hide date picker
-    it('Date time picker hide date picker', () => {
+    it('Date time picker: hide date picker', () => {
         element.hideDatePicker = true;
 
         return Promise.resolve().then(() => {
@@ -749,7 +749,7 @@ describe('DateTimePicker', () => {
 
     /* ----- JS --------- */
     // checkValidity
-    it('checkValidity method', () => {
+    it('Date time picker: checkValidity method', () => {
         const spy = jest.spyOn(element, 'checkValidity');
 
         element.checkValidity();
@@ -757,7 +757,7 @@ describe('DateTimePicker', () => {
     });
 
     // reportValidity
-    it('reportValidity method', () => {
+    it('Date time picker: reportValidity method', () => {
         const spy = jest.spyOn(element, 'reportValidity');
 
         element.reportValidity();
@@ -765,7 +765,7 @@ describe('DateTimePicker', () => {
     });
 
     // setCustomValidity
-    it('setCustomValidity method', () => {
+    it('Date time picker: setCustomValidity method', () => {
         const spy = jest.spyOn(element, 'setCustomValidity');
 
         element.setCustomValidity('Something');
@@ -773,7 +773,7 @@ describe('DateTimePicker', () => {
     });
 
     // showHelpMessageIfInvalid
-    it('showHelpMessageIfInvalid method', () => {
+    it('Date time picker: showHelpMessageIfInvalid method', () => {
         const datePicker = element.shadowRoot.querySelector(
             '[data-element-id="lightning-input"]'
         );
@@ -786,7 +786,7 @@ describe('DateTimePicker', () => {
     /* ----- EVENTS ----- */
 
     // date time picker change
-    it('Date time picker change event', () => {
+    it('Date time picker: change event', () => {
         element.startTime = '08:30';
         const startTimeDate = new Date(`1970-01-01T08:30`);
         const now = new Date();
