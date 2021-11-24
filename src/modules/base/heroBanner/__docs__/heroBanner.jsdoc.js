@@ -23,7 +23,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-hero-banner-title-font-style
+ * @name --avonni-hero-banner-title-font-family
  * @default 'Salesforce Sans', Arial, sans-serif
  * @type font
  */
@@ -53,7 +53,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-hero-banner-caption-font-style
+ * @name --avonni-hero-banner-caption-font-family
  * @default 'Salesforce Sans', Arial, sans-serif
  * @type font
  */
@@ -83,7 +83,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-hero-banner-subtitle-font-style
+ * @name --avonni-hero-banner-subtitle-font-family
  * @default 'Salesforce Sans', Arial, sans-serif
  * @type font
  */

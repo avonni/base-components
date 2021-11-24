@@ -123,7 +123,7 @@
 .avonni-hero-banner-title-class {
     color: var(--avonni-hero-banner-title-text-color, #ffffff);
     font-family: var(
-        --avonni-hero-banner-title-font-style,
+        --avonni-hero-banner-title-font-family,
         'Salesforce Sans',
         Arial,
         sans-serif
@@ -139,7 +139,7 @@
 .avonni-hero-banner-caption-class {
     color: var(--avonni-hero-banner-caption-text-color, #ffffff);
     font-family: var(
-        --avonni-hero-banner-caption-font-style,
+        --avonni-hero-banner-caption-font-family,
         'Salesforce Sans',
         Arial,
         sans-serif
@@ -155,7 +155,7 @@
 .avonni-hero-banner-subtitle-class {
     color: var(--avonni-hero-banner-subtitle-text-color, #ffffff);
     font-family: var(
-        --avonni-hero-banner-subtitle-font-style,
+        --avonni-hero-banner-subtitle-font-family,
         'Salesforce Sans',
         Arial,
         sans-serif
