@@ -320,14 +320,6 @@ Base.args = {
     valueUpper: 73
 };
 
-export const Vertical = Template.bind({});
-Vertical.args = {
-    label: 'Vertical input',
-    valueLower: 28,
-    valueUpper: 73,
-    type: 'vertical'
-};
-
 export const ExtraSmallPercent = Template.bind({});
 ExtraSmallPercent.args = {
     label: 'Extra small percent input',
@@ -366,4 +358,30 @@ MinMaxStep.args = {
     min: 30,
     max: 80,
     step: 3
+};
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    label: 'Vertical input',
+    valueLower: 28,
+    valueUpper: 73,
+    type: 'vertical'
+};
+
+export const VerticalSmall = Template.bind({});
+VerticalSmall.args = {
+    label: 'Small vertical input',
+    valueLower: 28,
+    valueUpper: 73,
+    type: 'vertical',
+    size: 'small'
+};
+
+export const VerticalLarge = Template.bind({});
+VerticalLarge.args = {
+    label: 'Large vertical input',
+    valueLower: 28,
+    valueUpper: 73,
+    type: 'vertical',
+    size: 'large'
 };

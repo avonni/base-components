@@ -188,7 +188,9 @@ describe('Range', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.className).toBe('avonni-container_full');
+            expect(wrapper.className).toBe(
+                'avonni-range-container-horizontal-size_full'
+            );
         });
     });
 
@@ -199,7 +201,9 @@ describe('Range', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.classList).toContain('avonni-container_x-small');
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_x-small'
+            );
         });
     });
 
@@ -210,7 +214,9 @@ describe('Range', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.classList).toContain('avonni-container_small');
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_small'
+            );
         });
     });
 
@@ -221,7 +227,9 @@ describe('Range', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.classList).toContain('avonni-container_medium');
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_medium'
+            );
         });
     });
 
@@ -232,7 +240,9 @@ describe('Range', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
-            expect(wrapper.classList).toContain('avonni-container_large');
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_large'
+            );
         });
     });
 
@@ -323,7 +333,7 @@ describe('Range', () => {
                 '.avonni-vertical + .avonni-range-unit-container'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-container + .avonni-range-unit-container'
+                '.avonni-range-container + .avonni-range-unit-container'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
                 '.avonni-range-bubble'
@@ -342,16 +352,17 @@ describe('Range', () => {
         element.pin = true;
 
         return Promise.resolve().then(() => {
-            const wrapper =
-                element.shadowRoot.querySelector('.avonni-vertical');
+            const wrapper = element.shadowRoot.querySelector(
+                '.avonni-range-vertical'
+            );
             const verticalMaxLabel = element.shadowRoot.querySelector(
                 'label + .avonni-range-unit-container'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-vertical + .avonni-range-unit-container'
+                '.avonni-range-vertical + .avonni-range-unit-container'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-container + .avonni-range-unit-container'
+                '.avonni-range-container + .avonni-range-unit-container'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
                 '.avonni-range-bubble-vertical'

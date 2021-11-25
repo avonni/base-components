@@ -65,8 +65,7 @@
 .avonni-range-container-horizontal-size_large {
     width: var(--lwc-sizeLarge, 25rem);
 }
-.avonni-range-container-horizontal-size_full,
-:host {
+.avonni-range-container-horizontal-size_full {
     width: 100%;
 }
 .avonni-range-container-vertical-size_x-small {
@@ -81,9 +80,9 @@
 .avonni-range-container-vertical-size_large {
     height: var(--lwc-sizeLarge, 25rem);
 }
-.avonni-range-container-vertical-size_full,
-:host {
-    height: 100%;
+.avonni-range-container-vertical-size_full {
+    width: 40rem;
+    height: 40rem;
 }
 .avonni-range-unit-container {
     display: flex;
