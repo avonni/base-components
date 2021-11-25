@@ -58,7 +58,7 @@ const CHIP_VARIANTS = {
 export default class Chip extends LightningElement {
     /**
      * Label display in the chip.
-     * 
+     *
      * @public
      * @type {string}
      */
@@ -80,7 +80,7 @@ export default class Chip extends LightningElement {
 
     /**
      * The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
-     * 
+     *
      * @public
      * @type {string}
      * @default base
@@ -99,7 +99,7 @@ export default class Chip extends LightningElement {
 
     /**
      * If true, display an outline style button.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -115,7 +115,7 @@ export default class Chip extends LightningElement {
 
     /**
      * Get left slot dom element.
-     * 
+     *
      * @type {Element}
      */
     get leftSlot() {
@@ -124,7 +124,7 @@ export default class Chip extends LightningElement {
 
     /**
      * Get right slot dom element.
-     * 
+     *
      * @type {Element}
      */
     get rightSlot() {
@@ -133,18 +133,15 @@ export default class Chip extends LightningElement {
 
     /**
      * Compute chip class style.
-     * 
+     *
      * @type {string}
      */
     get chipClass() {
-        const classes = classSet('slds-badge');
-
-        if (this._outline) {
-            classes.add('avonni-outline');
-        }
-
-        classes.add(`slds-theme_${this._variant}`);
-
-        return classes.toString();
+        return classSet('avonni-chip')
+            .add({
+                'avonni-chip-outline': this._outline,
+                [`avonni-chip-theme_${this._variant}`]: this._variant
+            })
+            .toString();
     }
 }
