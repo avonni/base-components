@@ -179,7 +179,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-chip-font-size
+ * @name --avonni-chip-label-font-size
  * @default 0.75rem
  * @type font
  */
