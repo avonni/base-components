@@ -36,15 +36,15 @@ import { classSet } from 'c/utils';
 
 const CHIP_VARIANTS = {
     valid: [
+        'alt-inverse',
         'base',
         'brand',
-        'inverse',
-        'alt-inverse',
-        'success',
-        'info',
-        'warning',
         'error',
-        'offline'
+        'info',
+        'inverse',
+        'offline',
+        'success',
+        'warning'
     ],
     default: 'base'
 };
@@ -64,17 +64,18 @@ export default class Chip extends LightningElement {
      */
     @api label;
 
-    _variant = CHIP_VARIANTS.default;
     _outline = false;
-    renderLeft = true;
-    renderRight = true;
+    _variant = CHIP_VARIANTS.default;
+
+    showLeft = true;
+    showRight = true;
 
     renderedCallback() {
         if (this.leftSlot) {
-            this.renderLeft = this.leftSlot.assignedElements().length !== 0;
+            this.showLeft = this.leftSlot.assignedElements().length !== 0;
         }
         if (this.rightSlot) {
-            this.renderRight = this.rightSlot.assignedElements().length !== 0;
+            this.showRight = this.rightSlot.assignedElements().length !== 0;
         }
     }
 
