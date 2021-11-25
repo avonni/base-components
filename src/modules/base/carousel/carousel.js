@@ -206,13 +206,12 @@ export default class Carousel extends LightningElement {
         allItems = normalizeArray(value);
         this._carouselItems = [];
         allItems.forEach((item) => {
-            let href = item.href ? item.href : '';
             this._carouselItems.push({
                 key: item.id,
                 title: item.title,
                 description: item.description,
                 imageAssistiveText: item.imageAssistiveText || item.title,
-                href: href,
+                href: item.href ? item.href : '',
                 src: item.src,
                 actions: item.actions || []
             });
