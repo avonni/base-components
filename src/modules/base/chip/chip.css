@@ -92,7 +92,7 @@
 .avonni-chip-theme_warning {
     background-color: var(--avonni-chip-warning-color-background, #fe9339);
     border-color: var(--avonni-chip-warning-color-border, transparent);
-    color: var(--avonni-chip-warning-text-color, #ffffff);
+    color: var(--avonni-chip-warning-text-color, #080707);
 }
 .avonni-chip-outline.avonni-chip-theme_alt-inverse {
     color: var(--avonni-chip-alt-inverse-color-background, #032d60);
@@ -100,7 +100,7 @@
 }
 .avonni-chip-outline.avonni-chip-theme_base {
     border-color: var(--avonni-chip-base-color-background, #ecebea);
-    color: var(--avonni-chip-base-color-background, #ecebea);
+    color: var(--avonni-chip-base-color-background, #080707);
 }
 .avonni-chip-outline.avonni-chip-theme_brand {
     border-color: var(--avonni-chip-brand-color-background, #0070d1);
