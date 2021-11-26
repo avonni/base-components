@@ -8,14 +8,12 @@
 /**
  * @namespace stylingHooks
  */
-
 /**
  * @memberof stylingHooks
  * @name --avonni-avatar-color-border
  * @default transparent
  * @type color
  */
-
 /**
  * @memberof stylingHooks
  * @name --avonni-avatar-sizing-border
