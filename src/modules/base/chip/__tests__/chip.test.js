@@ -48,111 +48,143 @@ describe('Chip', () => {
         document.body.appendChild(element);
     });
 
-    it('Chip Default attributes', () => {
+    it('Chip: Default attributes', () => {
         expect(element.label).toBeUndefined();
-        expect(element.variant).toBe('base');
         expect(element.outline).toBeFalsy();
+        expect(element.variant).toBe('base');
     });
 
     /* ----- ATTRIBUTES ----- */
 
     // label
-    it('Chip label', () => {
+    it('Chip: label', () => {
         element.label = 'This is a label';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
             expect(span.textContent).toBe('This is a label');
         });
     });
 
     // variant
-    it('Chip variant base', () => {
+    it('Chip: variant base', () => {
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_base');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe('avonni-chip avonni-chip-theme_base');
         });
     });
 
-    it('Chip variant brand', () => {
+    it('Chip: variant brand', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_brand');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe('avonni-chip avonni-chip-theme_brand');
         });
     });
 
-    it('Chip variant inverse', () => {
+    it('Chip: variant inverse', () => {
         element.variant = 'inverse';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_inverse');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe(
+                'avonni-chip avonni-chip-theme_inverse'
+            );
         });
     });
 
-    it('Chip variant alt-inverse', () => {
+    it('Chip: variant alt-inverse', () => {
         element.variant = 'alt-inverse';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_alt-inverse');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe(
+                'avonni-chip avonni-chip-theme_alt-inverse'
+            );
         });
     });
 
-    it('Chip variant success', () => {
+    it('Chip: variant success', () => {
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_success');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe(
+                'avonni-chip avonni-chip-theme_success'
+            );
         });
     });
 
-    it('Chip variant info', () => {
+    it('Chip: variant info', () => {
         element.variant = 'info';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_info');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe('avonni-chip avonni-chip-theme_info');
         });
     });
 
-    it('Chip variant warning', () => {
+    it('Chip: variant warning', () => {
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_warning');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe(
+                'avonni-chip avonni-chip-theme_warning'
+            );
         });
     });
 
-    it('Chip variant error', () => {
+    it('Chip: variant error', () => {
         element.variant = 'error';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_error');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe('avonni-chip avonni-chip-theme_error');
         });
     });
 
-    it('Chip variant offline', () => {
+    it('Chip: variant offline', () => {
         element.variant = 'offline';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toBe('slds-badge slds-theme_offline');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toBe(
+                'avonni-chip avonni-chip-theme_offline'
+            );
         });
     });
 
     // outline
-    it('Chip outline', () => {
+    it('Chip: outline', () => {
         element.outline = true;
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-wrapper"]');
-            expect(span.className).toContain('avonni-outline');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-wrapper"]'
+            );
+            expect(span.className).toContain('avonni-chip-outline');
         });
     });
 });
