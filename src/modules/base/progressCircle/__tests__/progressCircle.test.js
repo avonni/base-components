@@ -50,7 +50,7 @@ describe('ProgressCircle', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Progress Circle: Default attributes', () => {
         expect(element.color).toBe('#1589ee');
         expect(element.direction).toBe('fill');
         expect(element.label).toBeUndefined();
@@ -65,7 +65,7 @@ describe('ProgressCircle', () => {
     /* ----- ATTRIBUTES ----- */
 
     // color
-    it('color', () => {
+    it('Progress Circle: color', () => {
         element.color = 'tomato';
 
         return Promise.resolve().then(() => {
@@ -76,7 +76,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('color number', () => {
+    it('Progress Circle: color number', () => {
         element.color = 3;
 
         return Promise.resolve().then(() => {
@@ -86,7 +86,7 @@ describe('ProgressCircle', () => {
     });
 
     // direction and value
-    it('direction = fill and value = 65', () => {
+    it('Progress Circle: direction = fill and value = 65', () => {
         element.direction = 'fill';
         element.value = 65;
 
@@ -100,7 +100,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('direction = drain and value = 43', () => {
+    it('Progress Circle: direction = drain and value = 43', () => {
         element.direction = 'drain';
         element.value = 43;
 
@@ -114,7 +114,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('value > 100', () => {
+    it('Progress Circle: value > 100', () => {
         element.value = 110;
 
         return Promise.resolve().then(() => {
@@ -122,7 +122,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('value < 0', () => {
+    it('Progress Circle: value < 0', () => {
         element.value = -110;
 
         return Promise.resolve().then(() => {
@@ -130,7 +130,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('value NaN', () => {
+    it('Progress Circle: value NaN', () => {
         element.value = 'a';
 
         return Promise.resolve().then(() => {
@@ -139,12 +139,12 @@ describe('ProgressCircle', () => {
     });
 
     // label
-    it('label', () => {
+    it('Progress Circle: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.avonni-progress-label-style'
+                '[data-element-id="label"]'
             );
             expect(label.textContent.trim()).toBe('A string label');
         });
@@ -152,9 +152,10 @@ describe('ProgressCircle', () => {
 
     // size
     // Depends on label
-    it('size = medium', () => {
+    it('Progress Circle: size = medium', () => {
         element.size = 'medium';
         element.label = 'A string label';
+        element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
@@ -164,10 +165,10 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-content'
             );
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             const label = element.shadowRoot.querySelector(
-                '.avonni-progress-label-style'
+                '[data-element-id="label"]'
             );
 
             SIZES.forEach((size) => {
@@ -200,9 +201,10 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('size = x-small', () => {
+    it('Progress Circle: size = x-small', () => {
         element.size = 'x-small';
         element.label = 'A string label';
+        element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
@@ -212,10 +214,10 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-content'
             );
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             const label = element.shadowRoot.querySelector(
-                '.avonni-progress-label-style'
+                '[data-element-id="label"]'
             );
 
             SIZES.forEach((size) => {
@@ -248,9 +250,10 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('size = small', () => {
+    it('Progress Circle: size = small', () => {
         element.size = 'small';
         element.label = 'A string label';
+        element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
@@ -260,10 +263,10 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-content'
             );
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             const label = element.shadowRoot.querySelector(
-                '.avonni-progress-label-style'
+                '[data-element-id="label"]'
             );
 
             SIZES.forEach((size) => {
@@ -296,9 +299,10 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('size = large', () => {
+    it('Progress Circle: size = large', () => {
         element.size = 'large';
         element.label = 'A string label';
+        element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
@@ -308,10 +312,10 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-content'
             );
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             const label = element.shadowRoot.querySelector(
-                '.avonni-progress-label-style'
+                '[data-element-id="label"]'
             );
 
             SIZES.forEach((size) => {
@@ -344,9 +348,10 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('size = x-large', () => {
+    it('Progress Circle: size = x-large', () => {
         element.size = 'x-large';
         element.label = 'A string label';
+        element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
@@ -356,10 +361,10 @@ describe('ProgressCircle', () => {
                 '.avonni-progress-content'
             );
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             const label = element.shadowRoot.querySelector(
-                '.avonni-progress-label-style'
+                '[data-element-id="label"]'
             );
 
             SIZES.forEach((size) => {
@@ -394,7 +399,7 @@ describe('ProgressCircle', () => {
 
     // thickness
     // Depends on size
-    it('thickness = medium and size = medium', () => {
+    it('Progress Circle: thickness = medium and size = medium', () => {
         const testedThickness = 'medium';
         const testedSize = 'medium';
 
@@ -420,7 +425,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = x-small and size = x-small', () => {
+    it('Progress Circle: thickness = x-small and size = x-small', () => {
         const testedThickness = 'x-small';
         const testedSize = 'x-small';
 
@@ -458,7 +463,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = small and size = x-small', () => {
+    it('Progress Circle: thickness = small and size = x-small', () => {
         const testedThickness = 'small';
         const testedSize = 'x-small';
 
@@ -496,7 +501,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = large and size = x-small', () => {
+    it('Progress Circle: thickness = large and size = x-small', () => {
         const testedThickness = 'large';
         const testedSize = 'x-small';
 
@@ -534,7 +539,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = x-large and size = x-small', () => {
+    it('Progress Circle: thickness = x-large and size = x-small', () => {
         const testedThickness = 'x-large';
         const testedSize = 'x-small';
 
@@ -572,7 +577,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = x-small and size = small', () => {
+    it('Progress Circle: thickness = x-small and size = small', () => {
         const testedThickness = 'x-small';
         const testedSize = 'small';
 
@@ -610,7 +615,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = small and size = small', () => {
+    it('Progress Circle: thickness = small and size = small', () => {
         const testedThickness = 'small';
         const testedSize = 'small';
 
@@ -648,7 +653,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = large and size = small', () => {
+    it('Progress Circle: thickness = large and size = small', () => {
         const testedThickness = 'large';
         const testedSize = 'small';
 
@@ -686,7 +691,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = x-large and size = small', () => {
+    it('Progress Circle: thickness = x-large and size = small', () => {
         const testedThickness = 'x-large';
         const testedSize = 'small';
 
@@ -724,7 +729,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = small and size = large', () => {
+    it('Progress Circle: thickness = small and size = large', () => {
         const testedThickness = 'small';
         const testedSize = 'large';
 
@@ -762,7 +767,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = large and size = large', () => {
+    it('Progress Circle: thickness = large and size = large', () => {
         const testedThickness = 'large';
         const testedSize = 'large';
 
@@ -800,7 +805,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = x-large and size = large', () => {
+    it('Progress Circle: thickness = x-large and size = large', () => {
         const testedThickness = 'x-large';
         const testedSize = 'large';
 
@@ -838,7 +843,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = small and size = x-large', () => {
+    it('Progress Circle: thickness = small and size = x-large', () => {
         const testedThickness = 'small';
         const testedSize = 'x-large';
 
@@ -876,7 +881,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = large and size = x-large', () => {
+    it('Progress Circle: thickness = large and size = x-large', () => {
         const testedThickness = 'large';
         const testedSize = 'x-large';
 
@@ -914,7 +919,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('thickness = x-large and size = x-large', () => {
+    it('Progress Circle: thickness = x-large and size = x-large', () => {
         const testedThickness = 'x-large';
         const testedSize = 'x-large';
 
@@ -953,24 +958,25 @@ describe('ProgressCircle', () => {
     });
 
     // title
-    it('title', () => {
+    it('Progress Circle: title', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             expect(title.textContent).toBe('A string title');
         });
     });
 
     // title-position
-    it('titlePosition = bottom', () => {
+    it('Progress Circle: titlePosition = bottom', () => {
         element.titlePosition = 'bottom';
+        element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             expect(title).toBeTruthy();
             expect(title.classList).not.toContain(
@@ -979,12 +985,13 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('titlePosition = top', () => {
+    it('Progress Circle: titlePosition = top', () => {
         element.titlePosition = 'top';
+        element.title = 'A string title';
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '.slds-grid.slds-grid_align-center.slds-text-align_center'
+                '[data-element-id="title"]'
             );
             expect(title).toBeTruthy();
             expect(title.classList).toContain(
@@ -994,7 +1001,7 @@ describe('ProgressCircle', () => {
     });
 
     // variant
-    it('variant = standard', () => {
+    it('Progress Circle: variant = standard', () => {
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
@@ -1003,7 +1010,7 @@ describe('ProgressCircle', () => {
         });
     });
 
-    it('variant = value-hidden', () => {
+    it('Progress Circle: variant = value-hidden', () => {
         element.variant = 'value-hidden';
 
         return Promise.resolve().then(() => {
