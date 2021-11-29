@@ -1,6 +1,10 @@
 <template for:each={itemList} for:item="item">
     <div key={item.key} class="slds-p-bottom_large">
-        <avonni-image src={item.src} alt="Alt text" lazy-loading="true">
+        <avonni-image
+            src={item.src}
+            alternative-text="Alternative text"
+            lazy-loading="true"
+        >
         </avonni-image>
     </div>
 </template>

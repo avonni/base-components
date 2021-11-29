@@ -44,6 +44,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        outline: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description: 'If true, display an outline style button.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         variant: {
             control: {
                 type: 'select'
@@ -65,17 +76,6 @@ export default {
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }
-            }
-        },
-        outline: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description: 'If true, display an outline style button.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
             }
         }
     },

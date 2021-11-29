@@ -18,7 +18,127 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-sizing-border
  * @default 0
- * @type dimension
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-primary-text-color
+ * @default #000000
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-secondary-text-color
+ * @default #696969
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-tertiary-text-color
+ * @default #696969
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-initials-text-color
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-initials-text-color-hover
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-entity-initials-text-color
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-color-border
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-radius-border
+ * @default 50%
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-away-color-background
+ * @default #ff9a3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-blocked-color-background
+ * @default #ecebea
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-busy-color-background
+ * @default #bf0201
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-focus-color-background
+ * @default #1589ee
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-offline-color-background
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-presence-online-color-background
+ * @default #04844b
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-status-color-border
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-status-radius-border
+ * @default 50%
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-status-approved-color-background
+ * @default #04844b
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-status-declined-color-background
+ * @default #c23934
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-status-locked-color-background
+ * @default #ecebea
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-status-unknwon-color-background
+ * @default #706e6b
+ * @type color
  */
 
 /**

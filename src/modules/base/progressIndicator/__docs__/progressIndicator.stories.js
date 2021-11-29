@@ -81,19 +81,6 @@ export default {
                 type: { summary: 'String' }
             }
         },
-        type: {
-            control: {
-                type: 'select'
-            },
-            options: ['base'],
-            description:
-                'Changes the visual pattern of the indicator. Valid values are base and arrow. The default is base.',
-            defaultValue: 'base',
-            table: {
-                defaultValue: { summary: 'base' },
-                type: { summary: 'String' }
-            }
-        },
         variant: {
             control: {
                 type: 'select'

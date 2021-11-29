@@ -109,55 +109,55 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-color
+ * @name --avonni-combobox-color-border
  * @default #dddbda
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-top-width
+ * @name --avonni-combobox-sizing-border-bottom
  * @default 1px
- * @type spacing
+ * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-bottom-width
+ * @name --avonni-combobox-sizing-border-left
  * @default 1px
- * @type spacing
+ * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-right-width
+ * @name --avonni-combobox-sizing-border-right
  * @default 1px
- * @type spacing
+ * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-left-width
+ * @name --avonni-combobox-sizing-border-top
  * @default 1px
- * @type spacing
+ * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-bottom-left-radius
+ * @name --avonni-combobox-radius-border-bottom-left
  * @default 0.25rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-bottom-right-radius
+ * @name --avonni-combobox-radius-border-bottom-right
  * @default 0.25rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-top-right-radius
+ * @name --avonni-combobox-radius-border-top-left
  * @default 0.25rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-border-top-left-radius
+ * @name --avonni-combobox-radius-border-top-right
  * @default 0.25rem
  * @type radius
  */

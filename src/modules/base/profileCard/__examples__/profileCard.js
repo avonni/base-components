@@ -40,7 +40,6 @@ customElements.define(
 export const ProfileCard = ({
     title,
     subtitle,
-    backgroundColor,
     backgroundSrc,
     backgroundAlternativeText,
     avatarSrc,
@@ -54,7 +53,6 @@ export const ProfileCard = ({
     const element = document.createElement('ac-base-profile-card');
     element.title = title;
     element.subtitle = subtitle;
-    element.backgroundColor = backgroundColor;
     element.backgroundSrc = backgroundSrc;
     element.backgroundAlternativeText = backgroundAlternativeText;
     element.avatarSrc = avatarSrc;

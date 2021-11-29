@@ -320,8 +320,6 @@ const columnsDO = [
         type: 'image',
         typeAttributes: {
             alt: { fieldName: 'avatarPrimaryText' },
-            blank: { fieldName: 'imageBlank' },
-            blankColor: { fieldName: 'imageBlankColor' },
             width: 100,
             height: { fieldName: 'imageHeight' }
         },
@@ -672,8 +670,6 @@ const recordsDO = [
         dynamicIconOption: -3,
         email: 'jung.phung@email.com',
         image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
-        imageBlank: true,
-        imageBlankColor: '#CCC',
         imageHeight: 50,
         location: {
             latitude: '45.54',

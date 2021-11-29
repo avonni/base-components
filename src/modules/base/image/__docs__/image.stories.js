@@ -37,57 +37,14 @@ import { ImageList } from '../__examples__/imageList';
 export default {
     title: 'Example/Image',
     argTypes: {
-        src: {
-            control: {
-                type: 'object'
-            },
-            description: "URL to set for the 'src' attribute.",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        srcset: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'One or more strings separated by commas (or an array of strings), indicating possible image sources for the user agent to use.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        sizes: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'One or more strings separated by commas (or an array of strings), indicating a set of source sizes. Optionally used in combination with the srcset prop.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        alt: {
+        alternativeText: {
+            name: 'Alternative text',
             control: {
                 type: 'text'
             },
             description: "The value to set for the 'alt' attribute.",
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        cropSize: {
-            name: 'crop-size',
-            control: {
-                type: 'select'
-            },
-            options: ['1x1', '4x3', '16x9', 'none'],
-            defaultValue: 'none',
-            description:
-                'Specifies the cropping ratio for the image, which is constrained to the parents width. Options : 1:1, 4:3, 16:9, none',
-            table: {
-                defaultValue: { summary: 'none' },
-                type: { summary: 'string' },
-                category: 'Crop'
             }
         },
         cropFit: {
@@ -108,7 +65,10 @@ export default {
         cropPositionX: {
             name: 'crop-position-X(%)',
             control: {
-                type: 'range'
+                type: 'number',
+                min: 0,
+                max: 100,
+                step: 1
             },
             defaultValue: '50',
             description:
@@ -123,7 +83,10 @@ export default {
         cropPositionY: {
             name: 'crop-position-Y(%)',
             control: {
-                type: 'range'
+                type: 'number',
+                min: 0,
+                max: 100,
+                step: 1
             },
             defaultValue: '50',
             description:
@@ -135,59 +98,19 @@ export default {
                 detail: 'Percent'
             }
         },
-        width: {
-            control: {
-                type: 'text'
-            },
-            description: "The value to set on the image's 'width' attribute.",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        height: {
-            control: {
-                type: 'text'
-            },
-            description: "The value to set on the image's 'height' attribute.",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        blankColor: {
-            name: 'blank-color',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Sets the color of the blank image to the CSS color value specified.',
-            table: {
-                defaultValue: { summary: 'transparent' },
-                type: { summary: 'string' }
-            }
-        },
-        rounded: {
+        cropSize: {
+            name: 'crop-size',
             control: {
                 type: 'select'
             },
-            options: ['top', 'right', 'bottom', 'left', 'circle', false, true],
-            defaultValue: false,
+            options: ['1x1', '4x3', '16x9', 'none'],
+            defaultValue: 'none',
             description:
-                'If present, makes the image corners slightly rounded. Can also be used to disable rounded corners or make the image a circle/oval. See docs for details.',
+                'Specifies the cropping ratio for the image, which is constrained to the parents width. Options : 1:1, 4:3, 16:9, none',
             table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        block: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'Forces the image to display as a block element rather than the browser default of inline-block element.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
+                defaultValue: { summary: 'none' },
+                type: { summary: 'string' },
+                category: 'Crop'
             }
         },
         fluid: {
@@ -214,60 +137,69 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        thumbnail: {
+        height: {
             control: {
-                type: 'boolean'
+                type: 'text'
             },
-            defaultValue: 0,
-            description: 'Adds a thumbnail border around the image.',
+            description: "The value to set on the image's 'height' attribute.",
             table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
+                type: { summary: 'string' }
             }
         },
-        left: {
+        lazyLoading: {
+            name: 'lazy-loading',
             control: {
-                type: 'boolean'
+                type: 'select'
             },
-            defaultValue: 0,
-            description: 'Floats the image to the left when set.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        right: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description: 'Floats the image to the right when set.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        center: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description: 'Centers the image horizontally.',
-            table: {
-                defaultValue: { summary: false },
-                type: { summary: 'boolean' }
-            }
-        },
-        blank: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
+            options: ['auto', 'lazy'],
+            defaultValue: 'auto',
             description:
-                'Creates a blank/transparent image via an SVG data URI.',
+                'Enables lazy loading for images that are offscreen. If set to lazy, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Valid values are auto and lazy. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
             table: {
-                defaultValue: { summary: false },
+                default: { summary: false },
                 type: { summary: 'boolean' }
+            }
+        },
+        position: {
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'right', 'center'],
+            defaultValue: 'left',
+            description:
+                'Specifies the position of the image. Valid values include left, center and right.',
+            table: {
+                defaultValue: { summary: 'left' },
+                type: { summary: 'string' }
+            }
+        },
+        sizes: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'One or more strings separated by commas (or an array of strings), indicating a set of source sizes. Optionally used in combination with the srcset prop.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        src: {
+            control: {
+                type: 'object'
+            },
+            description: "URL to set for the 'src' attribute.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        srcset: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'One or more strings separated by commas (or an array of strings), indicating possible image sources for the user agent to use.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         staticImages: {
@@ -283,31 +215,32 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        lazyLoading: {
-            name: 'lazy-loading',
+        thumbnail: {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
-            description:
-                'Enables lazy loading for images that are offscreen. If set to true, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
+            defaultValue: 0,
+            description: 'Adds a thumbnail border around the image.',
             table: {
-                default: { summary: false },
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
+            }
+        },
+        width: {
+            control: {
+                type: 'text'
+            },
+            description: "The value to set on the image's 'width' attribute.",
+            table: {
+                type: { summary: 'string' }
             }
         }
     },
     args: {
-        block: false,
         fluid: false,
         fluidGrow: false,
         thumbnail: false,
-        left: false,
-        right: false,
-        center: false,
-        blank: false,
-        staticImages: false,
-        lazyLoading: false
+        staticImages: false
     }
 };
 
@@ -315,21 +248,24 @@ const Template = (args) => Image(args);
 
 const ListTemplate = (args) => ImageList(args);
 
+export const Base = Template.bind({});
+Base.args = {
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alternativeText: 'Alternative text'
+};
+
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    blankColor: 'transparent',
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alternativeText: 'Alternative text',
     width: '150'
 };
 
-export const Base = Template.bind({});
-Base.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    blankColor: 'transparent'
+export const BaseLarge = Template.bind({});
+BaseLarge.args = {
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alternativeText: 'Alternative text',
+    width: '600'
 };
 
 export const BaseWithLazyLoading = ListTemplate.bind({});
@@ -354,157 +290,44 @@ BaseWithLazyLoading.args = {
         'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
     ],
     width: '400',
-    alt: 'Alt text',
-    lazyLoading: true,
-    blankColor: 'transparent'
-};
-
-export const BaseLarge = Template.bind({});
-BaseLarge.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    blankColor: 'transparent',
-    width: '600'
-};
-
-export const BaseBlankGrayLarge = Template.bind({});
-BaseBlankGrayLarge.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    blankColor: 'gray',
-    width: '600',
-    height: '300',
-    blank: true
+    alternativeText: 'Alternative text',
+    lazyLoading: 'lazy'
 };
 
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    blankColor: 'transparent',
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alternativeText: 'Alternative text',
     thumbnail: true
 };
 
-export const CenterCornerRounded = Template.bind({});
-CenterCornerRounded.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'true',
-    blankColor: 'transparent',
-    center: true
+export const Center = Template.bind({});
+Center.args = {
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alternativeText: 'Alternative text',
+    position: 'center',
+    width: '600'
 };
 
-export const RightCornerTop = Template.bind({});
-RightCornerTop.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'top',
-    blankColor: 'transparent',
-    right: true
+export const Right = Template.bind({});
+Right.args = {
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alternativeText: 'Alternative text',
+    position: 'right',
+    width: '600'
 };
 
-export const CornerBottom = Template.bind({});
-CornerBottom.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'bottom',
-    blankColor: 'transparent'
-};
-
-export const CornerRight = Template.bind({});
-CornerRight.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'right',
-    blankColor: 'transparent'
-};
-
-export const CornerLeft = Template.bind({});
-CornerLeft.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
-    rounded: 'left',
-    blankColor: 'transparent'
-};
-
-export const SmallCircle = Template.bind({});
-SmallCircle.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '50',
-    width: '50',
-    rounded: 'circle',
-    blankColor: 'transparent'
-};
-
-export const MediumCircle = Template.bind({});
-MediumCircle.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '150',
-    width: '150',
-    rounded: 'circle',
-    blankColor: 'transparent'
-};
-
-export const ThumbnailMediumCircle = Template.bind({});
-ThumbnailMediumCircle.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '150',
-    width: '150',
-    rounded: 'circle',
-    blankColor: 'transparent',
-    thumbnail: true
-};
-
-export const LargeCircle = Template.bind({});
-LargeCircle.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '300',
-    width: '300',
-    rounded: 'circle',
-    blankColor: 'transparent'
-};
-
-export const LargeBlankGrayCircle = Template.bind({});
-LargeBlankGrayCircle.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/circle_4_inspire_2x.jpg',
-    alt: 'Alt text',
-    height: '300',
-    width: '300',
-    rounded: 'circle',
-    blank: true,
-    blankColor: 'gray'
-};
-
-export const CropImageStaticCircleThumbnailMobile = Template.bind({});
-CropImageStaticCircleThumbnailMobile.parameters = {
+export const CropImageStaticThumbnailMobile = Template.bind({});
+CropImageStaticThumbnailMobile.parameters = {
     viewport: {
         defaultViewport: 'mobile1'
     }
 };
-CropImageStaticCircleThumbnailMobile.args = {
-    src:
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-    alt: 'Alt text',
+CropImageStaticThumbnailMobile.args = {
+    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    alternativeText: 'Alternative text',
     width: '280',
     cropSize: '1x1',
-    rounded: 'circle',
     cropFit: 'none',
     cropPositionX: '23',
     cropPositionY: '80',

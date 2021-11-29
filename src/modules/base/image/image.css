@@ -30,56 +30,31 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-img-fluid {
+.avonni-image {
+    border-bottom-left-radius: var(--avonni-image-radius-border-bottom-left, 0);
+    border-bottom-right-radius: var(
+        --avonni-image-radius-border-bottom-right,
+        0
+    );
+    border-top-left-radius: var(--avonni-image-radius-border-top-left, 0);
+    border-top-right-radius: var(--avonni-image-radius-border-top-right, 0);
+}
+
+.avonni-image-fluid {
     max-width: 100% !important;
     height: auto;
 }
 
-.avonni-img-fluid-grow {
+.avonni-image-fluid-grow {
     width: 100% !important;
     height: auto !important;
 }
 
-.avonni-img-thumbnail {
+.avonni-image-thumbnail {
     padding: 0.25rem;
     background-color: #fff;
     border: 1px solid #dee2e6;
     border-radius: 0.25rem;
-}
-
-.avonni-rounded {
-    border-radius: 0.25rem;
-}
-
-.avonni-rounded-right,
-.avonni-rounded-top {
-    border-top-right-radius: 0.25rem;
-}
-
-.avonni-rounded-top {
-    border-top-left-radius: 0.25rem;
-}
-
-.avonni-rounded-bottom,
-.avonni-rounded-right {
-    border-bottom-right-radius: 0.25rem;
-}
-
-.avonni-rounded-bottom,
-.avonni-rounded-left {
-    border-bottom-left-radius: 0.25rem;
-}
-
-.avonni-rounded-left {
-    border-top-left-radius: 0.25rem;
-}
-
-.avonni-rounded-circle {
-    border-radius: 50%;
-}
-
-.avonni-not-rounded {
-    border-radius: 0;
 }
 
 .avonni-float-left {

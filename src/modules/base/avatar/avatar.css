@@ -30,6 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-avatar__light-text {
-    color: #696969;
+.avonni-avatar__primary-text {
+    color: var(--avonni-avatar-primary-text-color, #000000);
+}
+
+.avonni-avatar__secondary-text {
+    color: var(--avonni-avatar-secondary-text-color, #696969);
+}
+
+.avonni-avatar__tertiary-text {
+    color: var(--avonni-avatar-tertiary-text-color, #696969);
 }
