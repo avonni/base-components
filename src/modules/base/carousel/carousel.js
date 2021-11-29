@@ -37,7 +37,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { generateUUID } from 'c/utils';
 
 const INDICATOR_ACTION = 'slds-carousel__indicator-action';
 const INDICATOR_ACTION_SHADED =
@@ -336,14 +336,6 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Sets the width of each item, depending on the number of items per panel
-     */
-    get carouselItemStyle() {
-        const flexBasis = 100 / this.itemsPerPanel;
-        return `flex-basis: ${flexBasis}%;`;
-    }
-
-    /**
      * If navigation is not infinite - set previous panel as disabled.
      *
      * @type {number}
@@ -373,15 +365,6 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Set actions variant button icon to bare if the action variant is bare, if not , set the button icon to border-filled.
-     *
-     * @type {string}
-     */
-    get computedActionsVariantButtonIcon() {
-        return this._actionsVariant === 'bare' ? 'bare' : 'border-filled';
-    }
-
-    /**
      * Change the button position depending if hideIndicator is true or false.
      *
      * @type {string}
@@ -390,71 +373,6 @@ export default class Carousel extends LightningElement {
         return this._hideIndicator
             ? 'avonni-carousel__autoscroll-button-without-indicator'
             : 'avonni-carousel__autoscroll-button-with-indicator';
-    }
-
-    /**
-     * Retrieve image class - set to relative if not in bottom position.
-     *
-     * @type {string}
-     */
-    get computedCarouselImageClass() {
-        return classSet('slds-carousel__image')
-            .add({
-                'slds-is-relative': !this.isBottomPosition
-            })
-            .toString();
-    }
-
-    /**
-     * Computed actions container class styling based on action position attributes.
-     *
-     * @type {string}
-     */
-    get computedActionsContainerClass() {
-        return classSet('avonni-carousel__actions')
-            .add({
-                'avonni-carousel__actions-bottom-center':
-                    this._actionsPosition === 'bottom-center',
-                'avonni-carousel__actions-right':
-                    this._actionsPosition === 'bottom-right' ||
-                    this._actionsPosition === 'top-right',
-                'avonni-carousel__actions-left':
-                    this._actionsPosition === 'bottom-left' ||
-                    this._actionsPosition === 'top-left'
-            })
-            .add({
-                'slds-p-around_small': !this.isBottomPosition,
-                'slds-is-absolute': !this.isBottomPosition
-            })
-            .toString();
-    }
-
-    /**
-     * Computed carousel content class - set to display content bottom if position is bottom.
-     *
-     * @type {string}
-     */
-    get computedCarouselContentClass() {
-        return classSet('slds-carousel__content')
-            .add({
-                'avonni-carousel__content-bottom': this.isBottomPosition
-            })
-            .toString();
-    }
-
-    /**
-     * Action button icon class styling based on attributes.
-     *
-     * @type {string}
-     */
-    get computedLightningButtonIconActionClass() {
-        return classSet('')
-            .add({
-                'slds-m-horizontal_xx-small': this._actionsVariant === 'border',
-                'slds-m-right_x-small slds-m-top_xx-small':
-                    this._actionsVariant === 'bare'
-            })
-            .toString();
     }
 
     /**
@@ -800,40 +718,19 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Action click event handler.
-     *
-     * @param {Event}
-     */
-    handleActionClick(event) {
-        const name = event.currentTarget.name;
-
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} name Name of the action clicked.
-         * @param {object} item Item clicked.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: name,
-                    item: this.panelItems[this.activeIndexPanel].items[
-                        this.activeIndexPanel
-                    ]
-                }
-            })
-        );
-    }
-
-    /**
      * Computed Carousle content size height styling.
      *
      * @type {string}
      */
     get computedCarouselContentSize() {
         return `height: ${this._carouselContentHeight}rem`;
+    }
+
+    /**
+     * Sets the width of each item, depending on the number of items per panel
+     */
+    get carouselItemStyle() {
+        const flexBasis = 100 / this.itemsPerPanel;
+        return `flex-basis: ${flexBasis}%;`;
     }
 }
