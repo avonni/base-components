@@ -35,158 +35,6 @@ import { Range } from '../__examples__/range';
 export default {
     title: 'Example/Range',
     argTypes: {
-        label: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'Text label to describe the slider. Provide your own label to describe the slider.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        size: {
-            control: {
-                type: 'select'
-            },
-            options: ['', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: '',
-            description:
-                'The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.',
-            table: {
-                defaultValue: { summary: '' },
-                type: { summary: 'string' }
-            }
-        },
-        type: {
-            control: {
-                type: 'select'
-            },
-            options: ['horizontal', 'vertical'],
-            defaultValue: 'horizontal',
-            description:
-                'The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.',
-            table: {
-                defaultValue: { summary: 'horizontal' },
-                type: { summary: 'string' }
-            }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: ['standard', 'label-hidden'],
-            defaultValue: 'standard',
-            description:
-                'The variant changes the appearance of the slider. Accepted variants include standard and label-hidden. The default is standard.',
-            table: {
-                defaultValue: { summary: 'standard' },
-                type: { summary: 'string' }
-            }
-        },
-        unit: {
-            control: {
-                type: 'select'
-            },
-            options: ['decimal', 'currency', 'percent'],
-            defaultValue: 'decimal',
-            description:
-                'Accepted unit include decimal, currency and percent. \nFormat the value displayed (lightning-formatted-number)',
-            table: {
-                defaultValue: { summary: 'decimal' },
-                type: { summary: 'string' },
-                category: 'Value'
-            }
-        },
-        unitAttributes: {
-            name: 'unit-attributes',
-            control: {
-                type: 'object'
-            },
-            description:
-                'Fields: \ncurrencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits',
-            table: {
-                type: { summary: 'object' },
-                category: 'Value'
-            }
-        },
-        valueLower: {
-            name: 'value-lower',
-            control: {
-                type: 'number'
-            },
-            description: 'The lower value of the range.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Value'
-            }
-        },
-        valueUpper: {
-            name: 'value-upper',
-            control: {
-                type: 'number'
-            },
-            description: 'The upper value of the range.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Value'
-            }
-        },
-        min: {
-            control: {
-                type: 'number',
-                min: 0
-            },
-            defaultValue: 0,
-            description:
-                'The minimum value of the input range. The default is 0.',
-            table: {
-                defaultValue: { summary: '0' },
-                type: { summary: 'number' },
-                category: 'Validation'
-            }
-        },
-        max: {
-            control: {
-                type: 'number',
-                min: 100
-            },
-            defaultValue: 100,
-            description:
-                'The maximum value of the input range. The default is 100.',
-            table: {
-                defaultValue: { summary: '100' },
-                type: { summary: 'number' },
-                category: 'Validation'
-            }
-        },
-        step: {
-            control: {
-                type: 'number',
-                min: 1
-            },
-            defaultValue: 1,
-            description:
-                'The step increment value of the input range. Example steps include 0.1, 1, or 10. The default is 1.',
-            table: {
-                defaultValue: { summary: '1' },
-                type: { summary: 'number' },
-                category: 'Validation'
-            }
-        },
-        pin: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, a pin with integer value is shown when the knob is pressed.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Value'
-            }
-        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -198,6 +46,16 @@ export default {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
                 category: 'Validation'
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Text label to describe the slider. Provide your own label to describe the slider.',
+            table: {
+                type: { summary: 'string' }
             }
         },
         messageWhenRangeOverflow: {
@@ -303,6 +161,148 @@ export default {
                 category: 'Validation',
                 subcategory: 'Error messages'
             }
+        },
+        min: {
+            control: {
+                type: 'number',
+                min: 0
+            },
+            defaultValue: 0,
+            description:
+                'The minimum value of the input range. The default is 0.',
+            table: {
+                defaultValue: { summary: '0' },
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
+        max: {
+            control: {
+                type: 'number',
+                min: 100
+            },
+            defaultValue: 100,
+            description:
+                'The maximum value of the input range. The default is 100.',
+            table: {
+                defaultValue: { summary: '100' },
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
+        pin: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description:
+                'If present, a pin with integer value is shown when the knob is pressed.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Value'
+            }
+        },
+        size: {
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large', 'full'],
+            defaultValue: 'full',
+            description:
+                'The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.',
+            table: {
+                defaultValue: { summary: 'full' },
+                type: { summary: 'string' }
+            }
+        },
+        step: {
+            control: {
+                type: 'number',
+                min: 1
+            },
+            defaultValue: 1,
+            description:
+                'The step increment value of the input range. Example steps include 0.1, 1, or 10. The default is 1.',
+            table: {
+                defaultValue: { summary: '1' },
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
+        type: {
+            control: {
+                type: 'select'
+            },
+            options: ['horizontal', 'vertical'],
+            defaultValue: 'horizontal',
+            description:
+                'The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.',
+            table: {
+                defaultValue: { summary: 'horizontal' },
+                type: { summary: 'string' }
+            }
+        },
+        unit: {
+            control: {
+                type: 'select'
+            },
+            options: ['decimal', 'currency', 'percent'],
+            defaultValue: 'decimal',
+            description:
+                'Accepted unit include decimal, currency and percent. \nFormat the value displayed (lightning-formatted-number)',
+            table: {
+                defaultValue: { summary: 'decimal' },
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
+        unitAttributes: {
+            name: 'unit-attributes',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Fields: \ncurrencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits',
+            table: {
+                type: { summary: 'object' },
+                category: 'Value'
+            }
+        },
+        valueLower: {
+            name: 'value-lower',
+            control: {
+                type: 'number'
+            },
+            description: 'The lower value of the range.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Value'
+            }
+        },
+        valueUpper: {
+            name: 'value-upper',
+            control: {
+                type: 'number'
+            },
+            description: 'The upper value of the range.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Value'
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['standard', 'label-hidden'],
+            defaultValue: 'standard',
+            description:
+                'The variant changes the appearance of the slider. Accepted variants include standard and label-hidden. The default is standard.',
+            table: {
+                defaultValue: { summary: 'standard' },
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
@@ -318,14 +318,6 @@ Base.args = {
     label: 'Text label',
     valueLower: 28,
     valueUpper: 73
-};
-
-export const Vertical = Template.bind({});
-Vertical.args = {
-    label: 'Vertical input',
-    valueLower: 28,
-    valueUpper: 73,
-    type: 'vertical'
 };
 
 export const ExtraSmallPercent = Template.bind({});
@@ -366,4 +358,30 @@ MinMaxStep.args = {
     min: 30,
     max: 80,
     step: 3
+};
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    label: 'Vertical input',
+    valueLower: 28,
+    valueUpper: 73,
+    type: 'vertical'
+};
+
+export const VerticalSmall = Template.bind({});
+VerticalSmall.args = {
+    label: 'Small vertical input',
+    valueLower: 28,
+    valueUpper: 73,
+    type: 'vertical',
+    size: 'small'
+};
+
+export const VerticalLarge = Template.bind({});
+VerticalLarge.args = {
+    label: 'Large vertical input',
+    valueLower: 28,
+    valueUpper: 73,
+    type: 'vertical',
+    size: 'large'
 };

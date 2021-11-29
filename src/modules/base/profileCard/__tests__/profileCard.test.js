@@ -56,7 +56,6 @@ describe('ProfileCard', () => {
         expect(element.avatarSrc).toBeUndefined();
         expect(element.avatarVariant).toBe('circle');
         expect(element.backgroundAlternativeText).toBeUndefined();
-        expect(element.backgroundColor).toBeUndefined();
         expect(element.backgroundSrc).toBeUndefined();
         expect(element.size).toBe('medium');
         expect(element.subtitle).toBeUndefined();
@@ -73,7 +72,9 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(image.alt).toBe('A string alternative text');
         });
     });
@@ -84,11 +85,15 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+                const icon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon"]'
+                );
                 expect(icon.alternativeText).toBe('A string alternative text');
             });
     });
@@ -99,14 +104,17 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const avatarWrapper = element.shadowRoot.querySelector(
-                    '.avatar-img'
+                const avatarWrapper =
+                    element.shadowRoot.querySelector('.avatar-img');
+                const icon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon"]'
                 );
-                const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
                 expect(icon.iconName).toBe('standard:user');
                 expect(avatarWrapper.classList).toContain(
                     'avonni-icon-container'
@@ -123,9 +131,8 @@ describe('ProfileCard', () => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '.top-left-desktop'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.top-left-desktop');
             expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
@@ -153,9 +160,8 @@ describe('ProfileCard', () => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '.top-right-desktop'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.top-right-desktop');
             expect(container.classList).toContain('avonni-flex-align-end');
             expect(mainContainer).toBeTruthy();
         });
@@ -216,9 +222,8 @@ describe('ProfileCard', () => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '.mobile-top-left'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.mobile-top-left');
             expect(container.className).toBe('avonni-flex-container');
             expect(mainContainer).toBeTruthy();
         });
@@ -233,9 +238,8 @@ describe('ProfileCard', () => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '.mobile-top-center'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.mobile-top-center');
             expect(container.classList).toContain(
                 'avonni-flex-mobile-align-center'
             );
@@ -252,9 +256,8 @@ describe('ProfileCard', () => {
             const container = element.shadowRoot.querySelector(
                 '.avonni-flex-container'
             );
-            const mainContainer = element.shadowRoot.querySelector(
-                '.mobile-top-right'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.mobile-top-right');
             expect(container.classList).toContain(
                 'avonni-flex-mobile-align-end'
             );
@@ -323,7 +326,9 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
+            );
             expect(image.src).toBe(
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
             );
@@ -338,10 +343,11 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const avatarWrapper = element.shadowRoot.querySelector(
-                '.avatar-img'
+            const avatarWrapper =
+                element.shadowRoot.querySelector('.avatar-img');
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
             );
-            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
 
             expect(avatarWrapper.classList).toContain('avatar-img-circle');
             expect(image.classList).toContain('avatar-img-circle');
@@ -354,16 +360,16 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const avatarWrapper = element.shadowRoot.querySelector(
-                    '.avatar-img'
-                );
-                const iconWrapper = element.shadowRoot.querySelector(
-                    '.avatar-img > div'
-                );
+                const avatarWrapper =
+                    element.shadowRoot.querySelector('.avatar-img');
+                const iconWrapper =
+                    element.shadowRoot.querySelector('.avatar-img > div');
 
                 expect(avatarWrapper.classList).toContain('avatar-img-circle');
                 expect(iconWrapper.classList).toContain('avatar-img-circle');
@@ -376,10 +382,11 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const avatarWrapper = element.shadowRoot.querySelector(
-                '.avatar-img'
+            const avatarWrapper =
+                element.shadowRoot.querySelector('.avatar-img');
+            const image = element.shadowRoot.querySelector(
+                '[data-element-id="img"]'
             );
-            const image = element.shadowRoot.querySelector('[data-element-id="img"]');
 
             expect(avatarWrapper.classList).not.toContain('avatar-img-circle');
             expect(image.classList).not.toContain('avatar-img-circle');
@@ -392,16 +399,16 @@ describe('ProfileCard', () => {
 
         return Promise.resolve()
             .then(() => {
-                const image = element.shadowRoot.querySelector('[data-element-id="img"]');
+                const image = element.shadowRoot.querySelector(
+                    '[data-element-id="img"]'
+                );
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const avatarWrapper = element.shadowRoot.querySelector(
-                    '.avatar-img'
-                );
-                const iconWrapper = element.shadowRoot.querySelector(
-                    '.avatar-img > div'
-                );
+                const avatarWrapper =
+                    element.shadowRoot.querySelector('.avatar-img');
+                const iconWrapper =
+                    element.shadowRoot.querySelector('.avatar-img > div');
 
                 expect(avatarWrapper.classList).not.toContain(
                     'avatar-img-circle'
@@ -424,21 +431,6 @@ describe('ProfileCard', () => {
         });
     });
 
-    // background-color
-    it('backgroundColor', () => {
-        element = createElement('base-profile-card', {
-            is: ProfileCard
-        });
-        document.body.appendChild(element);
-
-        element.backgroundColor = 'tomato';
-
-        return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector('[data-element-id="header"]');
-            expect(header.style.backgroundColor).toBe('tomato');
-        });
-    });
-
     // background-src
     it('backgroundSrc', () => {
         element = createElement('base-profile-card', {
@@ -450,7 +442,9 @@ describe('ProfileCard', () => {
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg';
 
         return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector('[data-element-id="header"]');
+            const header = element.shadowRoot.querySelector(
+                '[data-element-id="header"]'
+            );
             expect(header.style.backgroundImage).toBe(
                 'url(https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg)'
             );
@@ -462,12 +456,10 @@ describe('ProfileCard', () => {
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.card-medium'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.background-medium'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.card-medium');
+            const header =
+                element.shadowRoot.querySelector('.background-medium');
             const avatar = element.shadowRoot.querySelector('.avatar-medium');
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
@@ -479,9 +471,8 @@ describe('ProfileCard', () => {
         element.size = 'x-small';
 
         return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.card-x-small'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.card-x-small');
             const header = element.shadowRoot.querySelector(
                 '.background-x-small'
             );
@@ -496,12 +487,10 @@ describe('ProfileCard', () => {
         element.size = 'small';
 
         return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.card-small'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.background-small'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.card-small');
+            const header =
+                element.shadowRoot.querySelector('.background-small');
             const avatar = element.shadowRoot.querySelector('.avatar-small');
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
@@ -513,12 +502,10 @@ describe('ProfileCard', () => {
         element.size = 'large';
 
         return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.card-large'
-            );
-            const header = element.shadowRoot.querySelector(
-                '.background-large'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.card-large');
+            const header =
+                element.shadowRoot.querySelector('.background-large');
             const avatar = element.shadowRoot.querySelector('.avatar-large');
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
@@ -530,9 +517,8 @@ describe('ProfileCard', () => {
         element.size = 'x-large';
 
         return Promise.resolve().then(() => {
-            const mainContainer = element.shadowRoot.querySelector(
-                '.card-x-large'
-            );
+            const mainContainer =
+                element.shadowRoot.querySelector('.card-x-large');
             const header = element.shadowRoot.querySelector(
                 '.background-x-large'
             );
@@ -548,9 +534,8 @@ describe('ProfileCard', () => {
         element.subtitle = 'A string subtitle';
 
         return Promise.resolve().then(() => {
-            const subtitle = element.shadowRoot.querySelector(
-                '.avonni-subtitle'
-            );
+            const subtitle =
+                element.shadowRoot.querySelector('.avonni-subtitle');
             expect(subtitle.textContent).toBe('A string subtitle');
         });
     });

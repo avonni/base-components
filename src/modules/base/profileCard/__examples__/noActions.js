@@ -31,7 +31,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- import Component from '../../storybookWrappers/profileCard/noActions';
+import Component from '../../storybookWrappers/profileCard/noActions';
 
 customElements.define(
     'ac-avonni-no-actions-profile-card',
@@ -41,7 +41,6 @@ customElements.define(
 export const NoActionsProfileCard = ({
     title,
     subtitle,
-    backgroundColor,
     backgroundSrc,
     backgroundAlternativeText,
     avatarSrc,
@@ -55,7 +54,6 @@ export const NoActionsProfileCard = ({
     const element = document.createElement('ac-avonni-no-actions-profile-card');
     element.title = title;
     element.subtitle = subtitle;
-    element.backgroundColor = backgroundColor;
     element.backgroundSrc = backgroundSrc;
     element.backgroundAlternativeText = backgroundAlternativeText;
     element.avatarSrc = avatarSrc;

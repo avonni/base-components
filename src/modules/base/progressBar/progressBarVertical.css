@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .avonni-progress-bar-vertical-size_x-small {
+.avonni-progress-bar-vertical-size_x-small {
     height: var(--lwc-sizeXSmall, 12rem);
 }
 
@@ -46,7 +46,8 @@
     height: var(--lwc-sizeLarge, 25rem);
 }
 
-.avonni-progress-bar-vertical-size_full {
+.avonni-progress-bar-vertical-size_full,
+:host {
     height: 100%;
 }
 

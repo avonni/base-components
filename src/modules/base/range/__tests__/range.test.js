@@ -59,7 +59,7 @@ describe('Range', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Range: default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.max).toBe(100);
@@ -73,7 +73,7 @@ describe('Range', () => {
         expect(element.messageWhenTypeMismatch).toBeUndefined();
         expect(element.min).toBe(0);
         expect(element.pin).toBeFalsy();
-        expect(element.size).toBe('');
+        expect(element.size).toBe('full');
         expect(element.step).toBe(1);
         expect(element.unit).toBe('decimal');
         expect(element.unitAttributes).toMatchObject({});
@@ -87,22 +87,26 @@ describe('Range', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('disabled = false', () => {
+    it('Range: disabled = false', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeFalsy();
             });
         });
     });
 
-    it('disabled = true', () => {
+    it('Range: disabled = true', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -110,17 +114,19 @@ describe('Range', () => {
     });
 
     // label
-    it('label', () => {
+    it('Range: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
             expect(label.textContent).toBe('A string label');
         });
     });
 
     // max
-    it('max', () => {
+    it('Range: max', () => {
         element.max = 45;
 
         return Promise.resolve().then(() => {
@@ -136,7 +142,7 @@ describe('Range', () => {
     });
 
     // min
-    it('min', () => {
+    it('Range: min', () => {
         element.min = 34;
 
         return Promise.resolve().then(() => {
@@ -152,80 +158,102 @@ describe('Range', () => {
     });
 
     // pin
-    it('pin = false', () => {
+    it('Range: pin = false', () => {
         element.pin = false;
 
         return Promise.resolve().then(() => {
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-bubble'
+                '.avonni-range-bubble'
             );
             expect(bubbles).toHaveLength(0);
         });
     });
 
-    it('pin = true', () => {
+    it('Range: pin = true', () => {
         element.pin = true;
 
         return Promise.resolve().then(() => {
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-bubble'
+                '.avonni-range-bubble'
             );
             expect(bubbles).toHaveLength(2);
         });
     });
 
     // size
-    it('size = ""', () => {
-        element.size = '';
+    it('Range: size = full', () => {
+        element.size = 'full';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            expect(wrapper.classList).toHaveLength(0);
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.className).toBe(
+                'avonni-range-container-horizontal-size_full'
+            );
         });
     });
 
-    it('size = x-small', () => {
+    it('Range: size = x-small', () => {
         element.size = 'x-small';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            expect(wrapper.classList).toContain('avonni-container_x-small');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_x-small'
+            );
         });
     });
 
-    it('size = small', () => {
+    it('Range: size = small', () => {
         element.size = 'small';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            expect(wrapper.classList).toContain('avonni-container_small');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_small'
+            );
         });
     });
 
-    it('size = medium', () => {
+    it('Range: size = medium', () => {
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            expect(wrapper.classList).toContain('avonni-container_medium');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_medium'
+            );
         });
     });
 
-    it('size = large', () => {
+    it('Range: size = large', () => {
         element.size = 'large';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            expect(wrapper.classList).toContain('avonni-container_large');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-range-container-horizontal-size_large'
+            );
         });
     });
 
     // step
-    it('step', () => {
+    it('Range: step', () => {
         element.step = 3;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id^="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.step).toBe('3');
             });
@@ -233,7 +261,7 @@ describe('Range', () => {
     });
 
     // unit
-    it('unit', () => {
+    it('Range: unit', () => {
         element.unit = 'currency';
 
         return Promise.resolve().then(() => {
@@ -247,7 +275,7 @@ describe('Range', () => {
     });
 
     // unit-attributes
-    it('unitAttributes', () => {
+    it('Range: unitAttributes', () => {
         const unitAttributes = {
             currencyCode: 'CAD',
             currencyDisplayAs: 'name',
@@ -291,25 +319,24 @@ describe('Range', () => {
 
     // type
     // Depends on pin
-    it('type = horizontal', () => {
+    it('Range: type = horizontal', () => {
         element.type = 'horizontal';
         element.pin = true;
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.avonni-vertical'
-            );
+            const wrapper =
+                element.shadowRoot.querySelector('.avonni-vertical');
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-unit-container'
+                'label + .avonni-range-unit-container'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-vertical + .avonni-unit-container'
+                '.avonni-vertical + .avonni-range-unit-container'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-container + .avonni-unit-container'
+                '.avonni-range-container + .avonni-range-unit-container'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-bubble'
+                '.avonni-range-bubble'
             );
 
             expect(wrapper).toBeFalsy();
@@ -320,25 +347,25 @@ describe('Range', () => {
         });
     });
 
-    it('type = vertical', () => {
+    it('Range: type = vertical', () => {
         element.type = 'vertical';
         element.pin = true;
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '.avonni-vertical'
+                '.avonni-range-vertical'
             );
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-unit-container'
+                'label + .avonni-range-unit-container'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-vertical + .avonni-unit-container'
+                '.avonni-range-vertical + .avonni-range-unit-container'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-container + .avonni-unit-container'
+                '.avonni-range-container + .avonni-range-unit-container'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-bubble-vertical'
+                '.avonni-range-bubble-vertical'
             );
 
             expect(wrapper).toBeTruthy();
@@ -351,7 +378,7 @@ describe('Range', () => {
 
     // value-lower
     // Depends on pin
-    it('valueLower', () => {
+    it('Range: valueLower', () => {
         element.valueLower = 34;
         element.pin = true;
 
@@ -369,7 +396,7 @@ describe('Range', () => {
 
     // value-upper
     // Depends on pin
-    it('valueUpper', () => {
+    it('Range: valueUpper', () => {
         element.valueUpper = 34;
         element.pin = true;
 
@@ -387,7 +414,7 @@ describe('Range', () => {
 
     // variant
     // Depends on label
-    it('variant = standard', () => {
+    it('Range: variant = standard', () => {
         element.variant = 'standard';
         element.label = 'A string label';
 
@@ -400,7 +427,7 @@ describe('Range', () => {
         });
     });
 
-    it('variant = label-hidden', () => {
+    it('Range: variant = label-hidden', () => {
         element.variant = 'label-hidden';
         element.label = 'A string label';
 
@@ -415,7 +442,7 @@ describe('Range', () => {
 
     // inputs width
     // Depends on valueLower, valueUpper, min, max and step
-    it('inputs width', () => {
+    it('Range: inputs width', () => {
         element.valueLower = 34;
         element.valueUpper = 48;
         element.min = 10;
@@ -423,19 +450,17 @@ describe('Range', () => {
         element.step = 2;
 
         return Promise.resolve().then(() => {
-            const leftInputWrapper = element.shadowRoot.querySelector(
-                '.inverse-left'
-            );
-            const rightInputWrapper = element.shadowRoot.querySelector(
-                '.inverse-right'
-            );
+            const leftInputWrapper =
+                element.shadowRoot.querySelector('.inverse-left');
+            const rightInputWrapper =
+                element.shadowRoot.querySelector('.inverse-right');
             expect(leftInputWrapper.style.width).toBe('75%');
             expect(rightInputWrapper.style.width).toBe('25%');
         });
     });
 
     // checkValidity
-    it('checkValidity method', () => {
+    it('Range: checkValidity method', () => {
         return Promise.resolve().then(() => {
             expect(element.checkValidity()).toBeTruthy();
         });
@@ -445,7 +470,7 @@ describe('Range', () => {
 
     // change
     // Depends on valueLower and valueUpper
-    it('change event on left input', () => {
+    it('Range: change event on left input', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -467,7 +492,7 @@ describe('Range', () => {
         });
     });
 
-    it('change event on right input', () => {
+    it('Range: change event on right input', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 

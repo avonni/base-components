@@ -34,6 +34,66 @@
  * @memberof slots
  * @name footer
  */
+
+/**
+ * @namespace stylingHooks
+ */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-title-text-color
+ * @default #000000
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-title-font-size
+ * @default 18px
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-title-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-title-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-subtitle-text-color
+ * @default #000000
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-subtitle-font-size
+ * @default 14px
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-subtitle-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-profile-card-subtitle-font-weight
+ * @default 400
+ * @type font
+ */
+
 /**
  * @namespace examples
  */

@@ -33,25 +33,19 @@
 import { LightningElement, api } from 'lwc';
 
 export default class Image extends LightningElement {
-    @api src;
-    @api srcset;
-    @api alt;
-    @api width;
-    @api height;
-    @api blankColor;
-    @api rounded;
-    @api block;
-    @api fluid;
-    @api fluidGrow;
-    @api thumbnail;
-    @api left;
-    @api right;
-    @api center;
-    @api blank;
-    @api staticImages;
-    @api lazyLoading;
-    @api cropSize;
+    @api alternativeText;
     @api cropFit;
     @api cropPositionX;
     @api cropPositionY;
+    @api cropSize;
+    @api fluid;
+    @api fluidGrow;
+    @api height;
+    @api lazyLoading;
+    @api position;
+    @api src;
+    @api srcset;
+    @api staticImages;
+    @api thumbnail;
+    @api width;
 }

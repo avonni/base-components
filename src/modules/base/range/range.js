@@ -39,11 +39,11 @@ const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_STEP = 1;
 
-const ICON_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large'],
-    default: ''
+const RANGE_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large', 'full'],
+    default: 'full'
 };
-const RATING_TYPES = {
+const RANGE_TYPES = {
     valid: ['horizontal', 'vertical'],
     default: 'horizontal'
 };
@@ -51,7 +51,7 @@ const LABEL_VARIANTS = {
     valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
     default: 'standard'
 };
-const RATING_UNITS = {
+const RANGE_UNITS = {
     valid: ['decimal', 'currency', 'percent'],
     default: 'decimal'
 };
@@ -135,26 +135,42 @@ export default class Range extends LightningElement {
      */
     @api unitAttributes = {};
 
+    _disabled = false;
     _min = DEFAULT_MIN;
     _max = DEFAULT_MAX;
+    _pin = false;
+    _size = RANGE_SIZES.default;
     _step = DEFAULT_STEP;
+    _type = RANGE_TYPES.default;
+    _unit = RANGE_UNITS.default;
     _valueLower;
     _valueUpper;
-    _size = ICON_SIZES.default;
-    _type = RATING_TYPES.default;
     _variant = LABEL_VARIANTS.default;
-    _unit = RATING_UNITS.default;
-    _pin = false;
-    _disabled = false;
+
     _helpMessage;
 
-    init;
+    _rendered = false;
 
     renderedCallback() {
-        if (!this.init) {
+        if (!this._rendered) {
             this.initRange();
-            this.init = true;
+            this._rendered = true;
         }
+    }
+
+    /**
+     * If present, the slider is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
     }
 
     /**
@@ -171,10 +187,6 @@ export default class Range extends LightningElement {
 
     set min(value) {
         this._min = Number(value);
-
-        if (this.init) {
-            this.initRange();
-        }
     }
 
     /**
@@ -191,10 +203,38 @@ export default class Range extends LightningElement {
 
     set max(value) {
         this._max = Number(value);
+    }
 
-        if (this.init) {
-            this.initRange();
-        }
+    /**
+     * If present, a pin with integer value is shown when the knob is pressed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api get pin() {
+        return this._pin;
+    }
+
+    set pin(value) {
+        this._pin = normalizeBoolean(value);
+    }
+
+    /**
+     * The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.
+     *
+     * @type {string}
+     * @public
+     */
+    @api get size() {
+        return this._size;
+    }
+
+    set size(size) {
+        this._size = normalizeString(size, {
+            fallbackValue: RANGE_SIZES.default,
+            validValues: RANGE_SIZES.valid
+        });
     }
 
     /**
@@ -212,9 +252,46 @@ export default class Range extends LightningElement {
     set step(value) {
         this._step = Number(value);
 
-        if (this.init) {
+        if (this._rendered) {
             this.initRange();
         }
+    }
+
+    /**
+     * The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.
+     *
+     * @type {string}
+     * @public
+     * @default horizontal
+     */
+    @api get type() {
+        return this._type;
+    }
+
+    set type(type) {
+        this._type = normalizeString(type, {
+            fallbackValue: RANGE_TYPES.default,
+            validValues: RANGE_TYPES.valid
+        });
+    }
+
+    /**
+     * Accepted unit include decimal, currency and percent.
+     * Format the value displayed (lightning-formatted-number)
+     *
+     * @type {string}
+     * @public
+     * @default decimal
+     */
+    @api get unit() {
+        return this._unit;
+    }
+
+    set unit(unit) {
+        this._unit = normalizeString(unit, {
+            fallbackValue: RANGE_UNITS.default,
+            validValues: RANGE_UNITS.valid
+        });
     }
 
     /**
@@ -231,10 +308,6 @@ export default class Range extends LightningElement {
 
     set valueLower(value) {
         this._valueLower = Number(value);
-
-        if (this.init) {
-            this.initRange();
-        }
     }
 
     /**
@@ -256,53 +329,6 @@ export default class Range extends LightningElement {
 
     set valueUpper(value) {
         this._valueUpper = Number(value);
-
-        if (this.init) {
-            this.initRange();
-        }
-    }
-
-    /**
-     * The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.
-     *
-     * @type {string}
-     * @public
-     */
-    @api get size() {
-        return this._size;
-    }
-
-    set size(size) {
-        this._size = normalizeString(size, {
-            fallbackValue: ICON_SIZES.default,
-            validValues: ICON_SIZES.valid
-        });
-
-        if (this.init) {
-            this.initRange();
-        }
-    }
-
-    /**
-     * The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.
-     *
-     * @type {string}
-     * @public
-     * @default horizontal
-     */
-    @api get type() {
-        return this._type;
-    }
-
-    set type(type) {
-        this._type = normalizeString(type, {
-            fallbackValue: RATING_TYPES.default,
-            validValues: RATING_TYPES.valid
-        });
-
-        if (this.init) {
-            this.initRange();
-        }
     }
 
     /**
@@ -321,71 +347,6 @@ export default class Range extends LightningElement {
             fallbackValue: LABEL_VARIANTS.default,
             validValues: LABEL_VARIANTS.valid
         });
-
-        if (this.init) {
-            this.initRange();
-        }
-    }
-
-    /**
-     * Accepted unit include decimal, currency and percent.
-     * Format the value displayed (lightning-formatted-number)
-     *
-     * @type {string}
-     * @public
-     * @default decimal
-     */
-    @api get unit() {
-        return this._unit;
-    }
-
-    set unit(unit) {
-        this._unit = normalizeString(unit, {
-            fallbackValue: RATING_UNITS.default,
-            validValues: RATING_UNITS.valid
-        });
-
-        if (this.init) {
-            this.initRange();
-        }
-    }
-
-    /**
-     * If present, a pin with integer value is shown when the knob is pressed.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api get pin() {
-        return this._pin;
-    }
-
-    set pin(value) {
-        this._pin = normalizeBoolean(value);
-
-        if (this.init) {
-            this.initRange();
-        }
-    }
-
-    /**
-     * If present, the slider is disabled and users cannot interact with it.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api get disabled() {
-        return this._disabled;
-    }
-
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
-
-        if (this.init) {
-            this.initRange();
-        }
     }
 
     /**
@@ -473,18 +434,15 @@ export default class Range extends LightningElement {
      * @type {string}
      */
     get computedContainerClass() {
-        const { size, type } = this;
-        const classes = classSet('');
-
-        if (size) {
-            classes.add(`avonni-container_${size}`);
-        }
-
-        if (type === 'vertical') {
-            classes.add('avonni-vertical');
-        }
-
-        return classes.toString();
+        return classSet('')
+            .add({
+                [`avonni-range-container-horizontal-size_${this._size}`]:
+                    this._size,
+                'avonni-range-vertical': this._type === 'vertical',
+                [`avonni-range-container-vertical-size_${this._size}`]:
+                    this._size && this._type === 'vertical'
+            })
+            .toString();
     }
 
     /**
@@ -494,8 +452,8 @@ export default class Range extends LightningElement {
      */
     get computedBubbleLeftClass() {
         return this._type === 'vertical'
-            ? 'avonni-bubble-vertical left-bubble'
-            : 'avonni-bubble left-bubble';
+            ? 'avonni-range-bubble-vertical left-bubble'
+            : 'avonni-range-bubble left-bubble';
     }
 
     /**
@@ -505,8 +463,8 @@ export default class Range extends LightningElement {
      */
     get computedBubbleRightClass() {
         return this._type === 'vertical'
-            ? 'avonni-bubble-vertical right-bubble'
-            : 'avonni-bubble right-bubble';
+            ? 'avonni-range-bubble-vertical right-bubble'
+            : 'avonni-range-bubble right-bubble';
     }
 
     /**
@@ -805,16 +763,15 @@ export default class Range extends LightningElement {
                 () => this
             );
 
-            this._constraintApiProxyInputLeftUpdater = this._constraintApiLeft.setInputAttributes(
-                {
+            this._constraintApiProxyInputLeftUpdater =
+                this._constraintApiLeft.setInputAttributes({
                     type: () => 'range',
                     value: () => this.valueLower,
                     max: () => this.max,
                     min: () => this.min,
                     step: () => this.step,
                     disabled: () => this.disabled
-                }
-            );
+                });
         }
         return this._constraintApiLeft;
     }
@@ -830,16 +787,15 @@ export default class Range extends LightningElement {
                 () => this
             );
 
-            this._constraintApiProxyInputRightUpdater = this._constraintRight.setInputAttributes(
-                {
+            this._constraintApiProxyInputRightUpdater =
+                this._constraintRight.setInputAttributes({
                     type: () => 'range',
                     value: () => this.valueUpper,
                     max: () => this.max,
                     min: () => this.min,
                     step: () => this.step,
                     disabled: () => this.disabled
-                }
-            );
+                });
         }
         return this._constraintApiRight;
     }

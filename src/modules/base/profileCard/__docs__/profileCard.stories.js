@@ -78,17 +78,6 @@ export default {
                 category: 'Background'
             }
         },
-        backgroundColor: {
-            name: 'background-color',
-            control: {
-                type: 'color'
-            },
-            description: 'Background color in hexadecimal',
-            table: {
-                type: { summary: 'string' },
-                category: 'Background'
-            }
-        },
         avatarSrc: {
             name: 'avatar-src',
             control: {
@@ -242,7 +231,6 @@ ExtraSmallBottomCenter.args = {
     avatarSrc:
         'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
     size: 'x-small',
-    backgroundColor: '#4A4A4A',
     avatarPosition: 'bottom-center'
 };
 
@@ -274,7 +262,6 @@ export const NoImage = Template.bind({});
 NoImage.args = {
     title: 'Rosalyn Franklin (rffranklin)',
     subtitle: 'Manager',
-    backgroundColor: '#E0E0E0',
     avatarFallbackIconName: 'standard:user',
     avatarSrc: 'wrong path'
 };
