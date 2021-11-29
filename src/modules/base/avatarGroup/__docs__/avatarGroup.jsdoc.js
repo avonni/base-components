@@ -72,3 +72,12 @@
  * @name listWithXxLargeAvatars
  * @storyId example-avatar-group--list-double-extra-large
  */
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-group-avatar-stack-color-border
+ * @default #ffffff
+ * @type color
+ */
