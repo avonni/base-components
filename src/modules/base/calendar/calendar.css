@@ -124,3 +124,7 @@ div:focus {
     transform: translateX(-50%);
     margin-top: -8px;
 }
+
+.avonni-calendar__background_color {
+    background-color: var(--avonni-calendar-color-background, #ffffff);
+}
