@@ -88,21 +88,17 @@
                                         <c-primitive-carousel-item
                                             title={item.title}
                                             description={item.description}
-                                            infos={item.infos}
                                             image-assistive-text={item.imageAssistiveText}
                                             href={item.href}
                                             src={item.src}
                                             actions={item.actions}
-                                            item-index={itemIndex}
-                                            panel-index={panelIndex}
-                                            is-bottom-position={isBottomPosition}
                                             actions-position={actionsPosition}
                                             actions-variant={actionsVariant}
-                                            has-actions={hasActions}
-                                            is-menu-variant={isMenuVariant}
-                                            computed-carousel-content-size={computedCarouselContentSize}
+                                            panel-index={panelIndex}
+                                            item-index={itemIndex}
                                             panel-items={panelItems}
-                                            active-index-panel={activeIndexPanel}
+                                            onitemclick={handleItemClicked}
+                                            onactionclick={handleActionClicked}
                                         >
                                         </c-primitive-carousel-item>
                                     </div>

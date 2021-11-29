@@ -32,6 +32,23 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
+import { normalizeString } from 'c/utilsPrivate';
+
+const ACTIONS_POSITIONS = {
+    valid: [
+        'top-left',
+        'top-right',
+        'bottom-left',
+        'bottom-right',
+        'bottom-center'
+    ],
+    default: 'bottom-center'
+};
+
+const ACTIONS_VARIANTS = {
+    valid: ['bare', 'border', 'menu'],
+    default: 'border'
+};
 
 export default class PrimitiveCarouselItem extends LightningElement {
     @api title;
@@ -40,18 +57,70 @@ export default class PrimitiveCarouselItem extends LightningElement {
     @api imageAssistiveText;
     @api href;
     @api src;
-    @api actions;
+
     @api itemIndex;
     @api panelIndex;
-    @api isBottomPosition;
-    @api actionsPosition;
-    @api actionsVariant;
-    @api hasActions;
-    @api isMenuVariant;
-    @api computedCarouselContentSize;
-
     @api panelItems;
-    @api activeIndexPanel;
+
+    _actions = [];
+    _actionsPosition = ACTIONS_POSITIONS.default;
+    _actionsVariant = ACTIONS_VARIANTS.default;
+    _carouselContentHeight = 6.625;
+
+    /**
+     * Valid values include bare, border and menu.
+     *
+     * @type {string}
+     * @public
+     * @default border
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+
+    set actions(actions) {
+        this._actions = actions;
+        this.initializeCarouselHeight();
+    }
+
+    /**
+     * Valid values include bare, border and menu.
+     *
+     * @type {string}
+     * @public
+     * @default border
+     */
+    @api
+    get actionsVariant() {
+        return this._actionsVariant;
+    }
+
+    set actionsVariant(variant) {
+        this._actionsVariant = normalizeString(variant, {
+            fallbackValue: ACTIONS_VARIANTS.default,
+            validValues: ACTIONS_VARIANTS.valid
+        });
+    }
+
+    /**
+     * Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
+     *
+     * @type {string}
+     * @public
+     * @default bottom-center
+     */
+    @api
+    get actionsPosition() {
+        return this._actionsPosition;
+    }
+
+    set actionsPosition(position) {
+        this._actionsPosition = normalizeString(position, {
+            fallbackValue: ACTIONS_POSITIONS.default,
+            validValues: ACTIONS_POSITIONS.valid
+        });
+    }
 
     /**
      * Retrieve image class - set to relative if not in bottom position.
@@ -128,17 +197,60 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
+     * Set actions variant button to base if the action variant is bare, if not , set the button to neutral.
+     *
+     * @type {string}
+     */
+    get computedActionsVariantButton() {
+        return this._actionsVariant === 'bare' ? 'base' : 'neutral';
+    }
+
+    /**
+     * Verify if actions position is at the bottom.
+     */
+    get isBottomPosition() {
+        return this._actionsPosition.indexOf('bottom') > -1;
+    }
+
+    /**
+     * Verify if actions are present.
+     */
+    get hasActions() {
+        return this._actions.length > 0;
+    }
+
+    /**
+     * Verify if the actions variant is menu.
+     */
+    get isMenuVariant() {
+        return this._actionsVariant === 'menu';
+    }
+
+    /**
+     * Computed Carousle content size height styling.
+     *
+     * @type {string}
+     */
+    get computedCarouselContentSize() {
+        return `height: ${this._carouselContentHeight}rem`;
+    }
+
+    /**
+     * Carousel height initialization.
+     */
+    initializeCarouselHeight() {
+        this._carouselContentHeight =
+            this.actions.length > 0 && this.isBottomPosition ? 7.5 : 6.625;
+    }
+
+    /**
      * Item clicked event handler.
      *
      * @param {event}
      */
-    handleItemClicked(event) {
-        const panelNumber = parseInt(
-            event.currentTarget.dataset.panelIndex,
-            10
-        );
-        const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
-        const itemData = this.panelItems[panelNumber].items[itemNumber];
+    handleItemClicked() {
+        const { title, description, src, href, actions, imageAssistiveText } =
+            this;
         /**
          * The event fired when an item is clicked.
          *
@@ -150,7 +262,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: itemData
+                    item: {
+                        title,
+                        description,
+                        src,
+                        href,
+                        actions,
+                        imageAssistiveText
+                    }
                 }
             })
         );
@@ -163,6 +282,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
     handleActionClick(event) {
         const name = event.currentTarget.name;
+        const { title, description, src, href, actions, imageAssistiveText } =
+            this;
 
         /**
          * The event fired when a user clicks on an action.
@@ -177,9 +298,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: name,
-                    item: this.panelItems[this.activeIndexPanel].items[
-                        this.activeIndexPanel
-                    ]
+                    item: {
+                        title,
+                        description,
+                        src,
+                        href,
+                        actions,
+                        imageAssistiveText
+                    }
                 }
             })
         );

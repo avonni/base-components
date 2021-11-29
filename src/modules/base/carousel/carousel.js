@@ -211,7 +211,7 @@ export default class Carousel extends LightningElement {
                 title: item.title,
                 description: item.description,
                 imageAssistiveText: item.imageAssistiveText || item.title,
-                href: item.href ? item.href : '',
+                href: item.href,
                 src: item.src,
                 actions: item.actions || []
             });
@@ -322,20 +322,6 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Verify if the actions variant is menu.
-     */
-    get isMenuVariant() {
-        return this._actionsVariant === 'menu';
-    }
-
-    /**
-     * Verify if actions position is at the bottom.
-     */
-    get isBottomPosition() {
-        return this._actionsPosition.indexOf('bottom') > -1;
-    }
-
-    /**
      * If navigation is not infinite - set previous panel as disabled.
      *
      * @type {number}
@@ -353,15 +339,6 @@ export default class Carousel extends LightningElement {
         return !this.isInfinite
             ? this.activeIndexPanel === this.paginationItems.length - 1
             : null;
-    }
-
-    /**
-     * Set actions variant button to base if the action variant is bare, if not , set the button to neutral.
-     *
-     * @type {string}
-     */
-    get computedActionsVariantButton() {
-        return this._actionsVariant === 'bare' ? 'base' : 'neutral';
     }
 
     /**
@@ -501,12 +478,6 @@ export default class Carousel extends LightningElement {
      * @param {event}
      */
     handleItemClicked(event) {
-        const panelNumber = parseInt(
-            event.currentTarget.dataset.panelIndex,
-            10
-        );
-        const itemNumber = parseInt(event.currentTarget.dataset.itemIndex, 10);
-        const itemData = this.panelItems[panelNumber].items[itemNumber];
         /**
          * The event fired when an item is clicked.
          *
@@ -518,7 +489,32 @@ export default class Carousel extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: itemData
+                    item: event.detail.item
+                }
+            })
+        );
+    }
+
+    /**
+     * Item clicked event handler.
+     *
+     * @param {event}
+     */
+    handleActionClicked(event) {
+        console.log(event);
+        /**
+         * The event fired when an item is clicked.
+         *
+         * @event
+         * @name itemclick
+         * @param {object} item The item data clicked.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: event.detail.name,
+                    item: event.detail.item
                 }
             })
         );
@@ -715,15 +711,6 @@ export default class Carousel extends LightningElement {
     toggleAutoScroll() {
         /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
         this.autoScrollOn ? this.pause() : this.play();
-    }
-
-    /**
-     * Computed Carousle content size height styling.
-     *
-     * @type {string}
-     */
-    get computedCarouselContentSize() {
-        return `height: ${this._carouselContentHeight}rem`;
     }
 
     /**
