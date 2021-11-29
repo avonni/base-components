@@ -109,9 +109,11 @@
                 ></c-primitive-avatar>
             </div>
         </template>
-        <p class="slds-text-title_bold">{primaryText}</p>
-        <p class="avonni-avatar__light-text">{secondaryText}</p>
-        <p if:true={showTertiaryText} class="avonni-avatar__light-text">
+        <p class="slds-text-title_bold avonni-avatar__primary-text">
+            {primaryText}
+        </p>
+        <p class="avonni-avatar__secondary-text">{secondaryText}</p>
+        <p if:true={showTertiaryText} class="avonni-avatar__tertiary-text">
             {tertiaryText}
         </p>
         <div if:true={tags} class="slds-m-top_xx-small">
