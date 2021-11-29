@@ -30,9 +30,13 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .avonni-flex-container {
+.avonni-flex-container {
     display: flex;
     flex-direction: column;
+}
+
+.avonni-profile-card-color-background {
+    background-color: var(--avonni-profile-card-color-background, #ffffff);
 }
 
 .slds-media {
@@ -121,8 +125,10 @@
 .avonni-title {
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 18px;
-    color: black;
+    font-size: var(--avonni-profile-card-title-font-size, 18px);
+    font-style: var(--avonni-profile-card-title-font-style, normal);
+    font-weight: var(--avonni-profile-card-title-font-weight, 400);
+    color: var(--avonni-profile-card-title-text-color, #000000);
     line-height: 1.33333em;
     overflow: hidden;
 }
@@ -130,8 +136,10 @@
 .avonni-subtitle {
     text-overflow: ellipsis;
     white-space: nowrap;
-    font-size: 14px;
-    color: black;
+    font-size: var(--avonni-profile-card-subtitle-font-size, 14px);
+    font-weight: var(--avonni-profile-card-subtitle-font-weight, 400);
+    font-style: var(--avonni-profile-card-subtitle-font-style, normal);
+    color: var(--avonni-profile-card-subtitle-text-color, #000000);
     line-height: 1.71429em;
     overflow: hidden;
 }
