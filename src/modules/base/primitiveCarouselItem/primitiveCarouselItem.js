@@ -85,25 +85,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     /**
-     * Valid values include bare, border and menu.
-     *
-     * @type {string}
-     * @public
-     * @default border
-     */
-    @api
-    get actionsVariant() {
-        return this._actionsVariant;
-    }
-
-    set actionsVariant(variant) {
-        this._actionsVariant = normalizeString(variant, {
-            fallbackValue: ACTIONS_VARIANTS.default,
-            validValues: ACTIONS_VARIANTS.valid
-        });
-    }
-
-    /**
      * Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
      *
      * @type {string}
@@ -119,6 +100,25 @@ export default class PrimitiveCarouselItem extends LightningElement {
         this._actionsPosition = normalizeString(position, {
             fallbackValue: ACTIONS_POSITIONS.default,
             validValues: ACTIONS_POSITIONS.valid
+        });
+    }
+
+    /**
+     * Valid values include bare, border and menu.
+     *
+     * @type {string}
+     * @public
+     * @default border
+     */
+    @api
+    get actionsVariant() {
+        return this._actionsVariant;
+    }
+
+    set actionsVariant(variant) {
+        this._actionsVariant = normalizeString(variant, {
+            fallbackValue: ACTIONS_VARIANTS.default,
+            validValues: ACTIONS_VARIANTS.valid
         });
     }
 
