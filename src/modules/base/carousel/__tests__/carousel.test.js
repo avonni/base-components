@@ -57,8 +57,7 @@ const items = [
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -68,8 +67,7 @@ const items = [
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
         imageAssistiveText: 'Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -78,8 +76,7 @@ const items = [
         title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -88,8 +85,7 @@ const items = [
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -98,8 +94,7 @@ const items = [
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -108,8 +103,7 @@ const items = [
         title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     },
@@ -118,42 +112,20 @@ const items = [
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Apps',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         href: 'https://www.salesforce.com',
         actions: bareActions
     }
 ];
 
-const example = [
+const ex = [
     {
-        actions: [{ name: 'action-add', iconName: 'utility:add' }],
-        id: 1,
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com/'
-    }
-];
-
-const secondExample = [
-    {
-        actions: [
-            {
-                name: 'action-add',
-                iconName: 'utility:add',
-                label: 'add'
-            }
-        ],
-        id: 1,
-        title: 'Visit App Exchange',
-        description: 'Extend Salesforce with the #1 business marketplace.',
-        imageAssistiveText: 'Appy',
-        src:
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com/'
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        href: 'https://www.salesforce.com',
+        actions: bareActions
     }
 ];
 
@@ -195,6 +167,32 @@ describe('Carousel', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // actions variant
+    it('Carousel actions variant bare without label', () => {
+        element.items = items;
+        element.actionsVariant = 'bare';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
+            );
+            expect(action.actionsVariant).toBe('bare');
+        });
+    });
+
+    // actions position
+    it('Carousel actions position top-center', () => {
+        element.items = items;
+        element.actionsPosition = 'top-left';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
+            );
+            expect(action.actionsPosition).toBe('top-left');
+        });
+    });
 
     // assistive-text
     it('Carousel assistive-text with indicator', () => {
@@ -299,9 +297,8 @@ describe('Carousel', () => {
         element.hideIndicator = false;
 
         return Promise.resolve().then(() => {
-            const activeIndicator = element.shadowRoot.querySelector(
-                '.slds-is-active'
-            );
+            const activeIndicator =
+                element.shadowRoot.querySelector('.slds-is-active');
             expect(activeIndicator.className).not.toContain(
                 'avonni-carousel-progress-indicator-shaded-active'
             );
@@ -358,7 +355,9 @@ describe('Carousel', () => {
         element.hideIndicator = true;
 
         return Promise.resolve().then(() => {
-            const indicators = element.shadowRoot.querySelectorAll('[data-element-id^="li-pagination"]');
+            const indicators = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="li-pagination"]'
+            );
             expect(indicators).toHaveLength(0);
         });
     });
@@ -372,8 +371,7 @@ describe('Carousel', () => {
                 description:
                     'Extend Salesforce with the #1 business marketplace.',
                 imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+                src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
                 href: 'https://www.salesforce.com'
             }
         ];
@@ -411,189 +409,6 @@ describe('Carousel', () => {
                 '.avonni-carousel__panel'
             );
             expect(panels).toHaveLength(4);
-        });
-    });
-
-    // items
-    it('Carousel items', () => {
-        element.items = example;
-
-        return Promise.resolve().then(() => {
-            const item = example[0];
-            const a = element.shadowRoot.querySelector(
-                '.slds-carousel__panel-action'
-            );
-            expect(a.href).toBe(item.href);
-            const description = element.shadowRoot.querySelector(
-                '.avonni-carousel__content-description'
-            );
-            expect(description.textContent).toBe(
-                'Extend Salesforce with the #1 business marketplace.'
-            );
-            const title = element.shadowRoot.querySelector(
-                '.slds-carousel__content-title'
-            );
-            expect(title.textContent).toBe('Visit App Exchange');
-            const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-            expect(img.src).toBe(
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
-            );
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon-actions"]'
-            );
-            expect(action.name).toBe('action-add');
-            expect(action.iconName).toBe('utility:add');
-        });
-    });
-
-    // actions variant
-    it('Carousel actions variant bare without label', () => {
-        element.items = example;
-        element.actionsVariant = 'bare';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon-actions"]'
-            );
-            expect(action.variant).toBe('bare');
-        });
-    });
-
-    it('Carousel actions variant border without label', () => {
-        element.items = example;
-        element.actionsVariant = 'border';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon-actions"]'
-            );
-            expect(action.variant).toBe('border-filled');
-        });
-    });
-
-    it('Carousel actions variant bare with label', () => {
-        element.items = secondExample;
-        element.actionsVariant = 'bare';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-actions"]'
-            );
-            expect(action.variant).toBe('base');
-        });
-    });
-
-    it('Carousel actions variant border with label', () => {
-        element.items = secondExample;
-        element.actionsVariant = 'border';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-actions"]'
-            );
-            expect(action.variant).toBe('neutral');
-        });
-    });
-
-    it('Carousel actions variant menu', () => {
-        element.items = secondExample;
-        element.actionsVariant = 'menu';
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-menu"]'
-            );
-            expect(action).toBeTruthy();
-            expect(action.menuAlignment).toBe('auto');
-        });
-    });
-
-    // actions position
-    it('Carousel actions position bottom-center', () => {
-        element.items = example;
-        element.actionsPosition = 'bottom-center';
-
-        return Promise.resolve().then(() => {
-            const contentContainer = element.shadowRoot.querySelector(
-                '.slds-carousel__content'
-            );
-            expect(contentContainer.className).toContain(
-                'avonni-carousel__content-bottom'
-            );
-            const actionContainer = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions'
-            );
-            expect(actionContainer.className).toContain(
-                'avonni-carousel__actions-bottom-center'
-            );
-        });
-    });
-
-    it('Carousel actions position bottom-right', () => {
-        element.items = example;
-        element.actionsPosition = 'bottom-right';
-
-        return Promise.resolve().then(() => {
-            const contentContainer = element.shadowRoot.querySelector(
-                '.slds-carousel__content'
-            );
-            expect(contentContainer.className).toContain(
-                'avonni-carousel__content-bottom'
-            );
-            const actionContainer = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions'
-            );
-            expect(actionContainer.className).toContain(
-                'avonni-carousel__actions-right'
-            );
-        });
-    });
-
-    it('Carousel actions position bottom-left', () => {
-        element.items = example;
-        element.actionsPosition = 'bottom-left';
-
-        return Promise.resolve().then(() => {
-            const contentContainer = element.shadowRoot.querySelector(
-                '.slds-carousel__content'
-            );
-            expect(contentContainer.className).toContain(
-                'avonni-carousel__content-bottom'
-            );
-            const actionContainer = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions'
-            );
-            expect(actionContainer.className).toContain(
-                'avonni-carousel__actions-left'
-            );
-        });
-    });
-
-    it('Carousel actions position top-left', () => {
-        element.items = example;
-        element.actionsPosition = 'top-left';
-
-        return Promise.resolve().then(() => {
-            const actionContainer = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions'
-            );
-            expect(actionContainer.className).toContain(
-                'avonni-carousel__actions-left'
-            );
-        });
-    });
-
-    it('Carousel actions position top-right', () => {
-        element.items = example;
-        element.actionsPosition = 'top-right';
-
-        return Promise.resolve().then(() => {
-            const actionContainer = element.shadowRoot.querySelector(
-                '.avonni-carousel__actions'
-            );
-            expect(actionContainer.className).toContain(
-                'avonni-carousel__actions-right'
-            );
         });
     });
 
@@ -730,7 +545,9 @@ describe('Carousel', () => {
 
         return Promise.resolve()
             .then(() => {
-                const indicators = element.shadowRoot.querySelectorAll('[data-element-id="li-pagination"]');
+                const indicators = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-pagination"]'
+                );
                 const secondIndicator = indicators[1];
                 secondIndicator.click();
             })
@@ -819,72 +636,26 @@ describe('Carousel', () => {
             });
     });
 
-    // Carousel content height based on actions or not
-    it('Carousel content height with actions', () => {
-        element.items = secondExample;
-        element.actionsVariant = 'menu';
-
-        return Promise.resolve().then(() => {
-            const carouselContent = element.shadowRoot.querySelector(
-                '.slds-carousel__content'
-            );
-            expect(carouselContent.style.height).toBe('7.5rem');
-        });
-    });
-
-    it('Carousel content height without actions', () => {
-        const ex = [
-            {
-                id: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com/'
-            }
-        ];
-
-        element.items = ex;
-        element.actionsVariant = 'menu';
-
-        return Promise.resolve().then(() => {
-            const carouselContent = element.shadowRoot.querySelector(
-                '.slds-carousel__content'
-            );
-            expect(carouselContent.style.height).toBe('6.625rem');
-        });
-    });
-
     /* ----- EVENTS ----- */
 
     // carousel itemclick
     it('Carousel item click', () => {
-        const ex = [
-            {
-                key: 1,
-                title: 'Visit App Exchange',
-                description:
-                    'Extend Salesforce with the #1 business marketplace.',
-                imageAssistiveText: 'Appy',
-                src:
-                    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-                href: 'https://www.salesforce.com',
-                actions: bareActions
-            }
-        ];
-
-        element.items = items;
-
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
+        element.items = items;
 
         return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector('[data-element-id="a-actions"]');
-            item.click();
-            expect(handler).toHaveBeenCalled();
-            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
+            );
+            item.dispatchEvent(
+                new CustomEvent('itemclick', {
+                    detail: {
+                        item: ex
+                    }
+                })
+            );
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -893,29 +664,25 @@ describe('Carousel', () => {
 
     // carousel actionclick
     it('Carousel actionclick', () => {
-        const ex = {
-            key: 1,
-            title: 'Visit App Exchange',
-            description: 'Extend Salesforce with the #1 business marketplace.',
-            imageAssistiveText: 'Appy',
-            src:
-                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-            href: 'https://www.salesforce.com',
-            actions: bareActions
-        };
-
         element.items = items;
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
 
         return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon-actions"]'
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
             );
-            action.click();
+            item.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    detail: {
+                        name: 'action-name',
+                        item: ex
+                    }
+                })
+            );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('action-add');
+            expect(handler.mock.calls[0][0].detail.name).toBe('action-name');
             expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();

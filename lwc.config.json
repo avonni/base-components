@@ -255,6 +255,10 @@
             "path": "src/modules/base/primitiveBubble/primitiveBubble.js"
         },
         {
+            "name": "c/primitiveCarouselItem",
+            "path": "src/modules/base/primitiveCarouselItem/primitiveCarouselItem.js"
+        },
+        {
             "name": "c/primitiveCellAvatarGroup",
             "path": "src/modules/base/primitiveCellAvatarGroup/primitiveCellAvatarGroup.js"
         },
