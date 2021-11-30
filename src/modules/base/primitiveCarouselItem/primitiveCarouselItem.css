@@ -1,0 +1,31 @@
+.avonni-carousel__content-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: pre-line;
+}
+
+.avonni-carousel__actions {
+    display: flex;
+    width: 100%;
+}
+
+.avonni-carousel__actions-bottom-center {
+    justify-content: center;
+}
+
+.avonni-carousel__actions-right {
+    justify-content: flex-end;
+}
+
+.avonni-carousel__actions-left {
+    justify-content: flex-start;
+}
+
+.avonni-carousel__content-bottom {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
