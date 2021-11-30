@@ -86,7 +86,7 @@ describe('Calendar', () => {
                 '[data-element-id^="span-day-label"]'
             );
             tds.forEach((td) => {
-                expect(td.className).toBe('avonni-disabled-cell');
+                expect(td.className).toBe('avonni-calendar__disabled-cell');
             });
         });
     });
@@ -101,7 +101,7 @@ describe('Calendar', () => {
         return Promise.resolve().then(() => {
             const dates = [];
             const disabledDates = element.shadowRoot.querySelectorAll(
-                '.avonni-disabled-cell'
+                '.avonni-calendar__disabled-cell'
             );
             disabledDates.forEach((date) => {
                 dates.push(date.getAttribute('data-date'));
@@ -323,8 +323,9 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const weekNumbers = [];
-            const weeks =
-                element.shadowRoot.querySelectorAll('.avonni-week-cell');
+            const weeks = element.shadowRoot.querySelectorAll(
+                '.avonni-calendar__week-cell'
+            );
             expect(weeks).toHaveLength(6);
 
             weeks.forEach((week) => {

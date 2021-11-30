@@ -451,7 +451,7 @@ export default class Calendar extends LightningElement {
 
                 weekData.push({
                     label: week,
-                    class: 'avonni-week-cell',
+                    class: 'avonni-calendar__week-cell',
                     dayClass: '',
                     selected: false,
                     currentDate: false,
@@ -481,10 +481,10 @@ export default class Calendar extends LightningElement {
                     }
 
                     dateClass = 'slds-day_adjacent-month';
-                    dayClass = 'avonni-disabled-cell';
+                    dayClass = 'avonni-calendar__disabled-cell';
                 } else if (this.disabled) {
                     dateClass = 'slds-day_adjacent-month';
-                    dayClass = 'avonni-disabled-cell';
+                    dayClass = 'avonni-calendar__disabled-cell';
                 } else {
                     fullDate = time;
                 }
@@ -524,7 +524,7 @@ export default class Calendar extends LightningElement {
                 if (time >= this.min.getTime() && time <= this.max.getTime()) {
                     label = date.getDate();
                 } else {
-                    dayClass = 'avonni-disabled-cell';
+                    dayClass = 'avonni-calendar__disabled-cell';
                     fullDate = '';
                 }
 
@@ -715,7 +715,7 @@ export default class Calendar extends LightningElement {
     handlerSelectDate(event) {
         let date = new Date(Number(event.target.dataset.day));
         const disabledDate = Array.from(event.target.classList).includes(
-            'avonni-disabled-cell'
+            'avonni-calendar__disabled-cell'
         );
 
         if (date && !disabledDate) {
@@ -811,7 +811,7 @@ export default class Calendar extends LightningElement {
             if (timeArray.length === 1) {
                 if (day > timeArray[0]) {
                     dayCell.classList.add(
-                        'avonni-calendar-cell__bordered_right'
+                        'avonni-calendar__cell_bordered-right'
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
@@ -819,14 +819,14 @@ export default class Calendar extends LightningElement {
                             x.getAttribute('data-cell-day') <= day
                         ) {
                             x.classList.add(
-                                'avonni-calendar-cell__bordered_top_bottom'
+                                'avonni-calendar__cell_bordered-top_bottom'
                             );
                         }
                     });
                 }
                 if (day < timeArray[0]) {
                     dayCell.classList.add(
-                        'avonni-calendar-cell__bordered_left'
+                        'avonni-calendar__cell_bordered-left'
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
@@ -834,7 +834,7 @@ export default class Calendar extends LightningElement {
                             x.getAttribute('data-cell-day') >= day
                         ) {
                             x.classList.add(
-                                'avonni-calendar-cell__bordered_top_bottom'
+                                'avonni-calendar__cell_bordered-top_bottom'
                             );
                         }
                     });
@@ -842,7 +842,7 @@ export default class Calendar extends LightningElement {
             } else if (timeArray.length === 2) {
                 if (day > timeArray[1]) {
                     dayCell.classList.add(
-                        'avonni-calendar-cell__bordered_right'
+                        'avonni-calendar__cell_bordered-right'
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
@@ -850,14 +850,14 @@ export default class Calendar extends LightningElement {
                             x.getAttribute('data-cell-day') <= day
                         ) {
                             x.classList.add(
-                                'avonni-calendar-cell__bordered_top_bottom'
+                                'avonni-calendar__cell_bordered-top_bottom'
                             );
                         }
                     });
                 }
                 if (day < timeArray[0]) {
                     dayCell.classList.add(
-                        'avonni-calendar-cell__bordered_left'
+                        'avonni-calendar__cell_bordered-left'
                     );
                     this.template.querySelectorAll('td').forEach((x) => {
                         if (
@@ -865,7 +865,7 @@ export default class Calendar extends LightningElement {
                             x.getAttribute('data-cell-day') >= day
                         ) {
                             x.classList.add(
-                                'avonni-calendar-cell__bordered_top_bottom'
+                                'avonni-calendar__cell_bordered-top_bottom'
                             );
                         }
                     });
@@ -879,9 +879,9 @@ export default class Calendar extends LightningElement {
      */
     handleMouseOut() {
         this.template.querySelectorAll('td').forEach((x) => {
-            x.classList.remove('avonni-calendar-cell__bordered_top_bottom');
-            x.classList.remove('avonni-calendar-cell__bordered_right');
-            x.classList.remove('avonni-calendar-cell__bordered_left');
+            x.classList.remove('avonni-calendar__cell_bordered-top_bottom');
+            x.classList.remove('avonni-calendar__cell_bordered-right');
+            x.classList.remove('avonni-calendar__cell_bordered-left');
         });
     }
 }
