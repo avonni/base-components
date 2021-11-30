@@ -738,7 +738,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                '.slds-text-title_bold'
+                '[data-element-id="avonni-avatar-primary-text"]'
             );
             expect(text.textContent).toBe('This is a primary text');
         });
@@ -752,7 +752,7 @@ describe('Avatar', () => {
 
         return Promise.resolve().then(() => {
             const text = element.shadowRoot.querySelector(
-                '.avonni-avatar__light-text'
+                '[data-element-id="avonni-avatar-secondary-text"]'
             );
             expect(text.textContent).toBe('This is a secondary text');
         });
@@ -768,11 +768,14 @@ describe('Avatar', () => {
         element.size = 'xx-large';
 
         return Promise.resolve().then(() => {
-            const text = element.shadowRoot.querySelectorAll(
-                '.avonni-avatar__light-text'
+            const secondaryText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-avatar-secondary-text"]'
             );
-            expect(text[0].textContent).toBe('This is a secondary text');
-            expect(text[1].textContent).toBe('This is a tertiary text');
+            const tertiaryText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-avatar-tertiary-text"]'
+            );
+            expect(secondaryText.textContent).toBe('This is a secondary text');
+            expect(tertiaryText.textContent).toBe('This is a tertiary text');
         });
     });
 
@@ -816,7 +819,9 @@ describe('Avatar', () => {
         element.tags = tags;
 
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+            const badge = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-badge"]'
+            );
             expect(badge.className).toBe('slds-badge');
             expect(badge.label).toBe('default');
         });
@@ -827,7 +832,9 @@ describe('Avatar', () => {
         element.tags = tags;
 
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+            const badge = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-badge"]'
+            );
             expect(badge.className).toBe('slds-badge_inverse');
             expect(badge.label).toBe('inverse');
         });
@@ -838,7 +845,9 @@ describe('Avatar', () => {
         element.tags = tags;
 
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+            const badge = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-badge"]'
+            );
             expect(badge.className).toBe('slds-badge_lightest');
             expect(badge.label).toBe('lightest');
         });
@@ -849,7 +858,9 @@ describe('Avatar', () => {
         element.tags = tags;
 
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+            const badge = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-badge"]'
+            );
             expect(badge.className).toBe('slds-theme_success');
             expect(badge.label).toBe('success');
         });
@@ -860,7 +871,9 @@ describe('Avatar', () => {
         element.tags = tags;
 
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+            const badge = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-badge"]'
+            );
             expect(badge.className).toBe('slds-theme_warning');
             expect(badge.label).toBe('warning');
         });
@@ -871,7 +884,9 @@ describe('Avatar', () => {
         element.tags = tags;
 
         return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+            const badge = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-badge"]'
+            );
             expect(badge.className).toBe('slds-theme_error');
             expect(badge.label).toBe('error');
         });
