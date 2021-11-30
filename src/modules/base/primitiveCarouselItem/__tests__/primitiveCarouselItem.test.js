@@ -105,7 +105,7 @@ describe('Primitive Carousel Item', () => {
     });
 
     // actions variant
-    it('Carousel actions variant bare without label', () => {
+    it('Primitive Carousel Item: actions variant bare without label', () => {
         element.actions = bareActions;
         element.actionsVariant = 'bare';
 
@@ -117,7 +117,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions variant border without label', () => {
+    it('Primitive Carousel Item: actions variant border without label', () => {
         element.actions = bareActions;
         element.actionsVariant = 'border';
 
@@ -129,7 +129,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions variant bare with label', () => {
+    it('Primitive Carousel Item:actions variant bare with label', () => {
         element.actions = menuActions;
         element.actionsVariant = 'bare';
 
@@ -141,7 +141,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions variant border with label', () => {
+    it('Primitive Carousel Item: actions variant border with label', () => {
         element.actions = menuActions;
         element.actionsVariant = 'border';
 
@@ -153,7 +153,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions variant menu', () => {
+    it('Primitive Carousel Item: actions variant menu', () => {
         element.actions = menuActions;
         element.actionsVariant = 'menu';
 
@@ -167,7 +167,7 @@ describe('Primitive Carousel Item', () => {
     });
 
     // actions position
-    it('Carousel actions position bottom-center', () => {
+    it('Primitive Carousel Item: actions position bottom-center', () => {
         element.actions = bareActions;
         element.actionsPosition = 'bottom-center';
 
@@ -187,7 +187,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions position bottom-right', () => {
+    it('Primitive Carousel Item: actions position bottom-right', () => {
         element.actions = bareActions;
         element.actionsPosition = 'bottom-right';
 
@@ -207,7 +207,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions position bottom-left', () => {
+    it('Primitive Carousel Item: actions position bottom-left', () => {
         element.actions = bareActions;
         element.actionsPosition = 'bottom-left';
 
@@ -227,7 +227,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions position top-left', () => {
+    it('Primitive Carousel Item: actions position top-left', () => {
         element.actions = bareActions;
         element.actionsPosition = 'top-left';
 
@@ -241,7 +241,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel actions position top-right', () => {
+    it('Primitive Carousel Item: actions position top-right', () => {
         element.actions = bareActions;
         element.actionsPosition = 'top-right';
 
@@ -255,9 +255,8 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    // Carousel content height based on actions or not
-    it('Carousel content height with actions', () => {
-        // element.actionsVariant = 'menu';
+    // Content height based on actions or not
+    it('Primitive Carousel Item: content height with actions', () => {
         element.actions = bareActions;
 
         return Promise.resolve().then(() => {
@@ -268,7 +267,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    it('Carousel content height without actions', () => {
+    it('Primitive Carousel Item: content height without actions', () => {
         element.actionsVariant = 'menu';
 
         return Promise.resolve().then(() => {
@@ -281,8 +280,8 @@ describe('Primitive Carousel Item', () => {
 
     /* ----- EVENTS ----- */
 
-    // carousel itemclick
-    it('Carousel item click', () => {
+    // Itemclick
+    it('Primitive Carousel Item: item click', () => {
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
         element.title = 'Visit App Exchange';
@@ -307,8 +306,8 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    // carousel actionclick
-    it('Carousel actionclick', () => {
+    // Actionclick
+    it('Primitive Carousel Item: actionclick', () => {
         element.title = 'Visit App Exchange';
         element.description =
             'Extend Salesforce with the #1 business marketplace.';

@@ -144,7 +144,6 @@ export default class Carousel extends LightningElement {
     _initialRender = false;
     _indicatorVariant = INDICATOR_VARIANTS.default;
     _hideIndicator = false;
-    _carouselContentHeight = 6.625;
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
 
@@ -353,6 +352,14 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Sets the width of each item, depending on the number of items per panel
+     */
+    get carouselItemStyle() {
+        const flexBasis = 100 / this.itemsPerPanel;
+        return `flex-basis: ${flexBasis}%;`;
+    }
+
+    /**
      * Initialize Pagination items method.
      *
      * @param {number} numberOfPanels
@@ -501,7 +508,6 @@ export default class Carousel extends LightningElement {
      * @param {event}
      */
     handleActionClicked(event) {
-        console.log(event);
         /**
          * The event fired when an item is clicked.
          *
@@ -566,16 +572,6 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Carousel height initialization.
-     */
-    initializeCarouselHeight() {
-        let carouselContentHeights = this.hasActions.map((item) => {
-            return item && this.isBottomPosition ? 7.5 : 6.625;
-        });
-        this._carouselContentHeight = Math.max(...carouselContentHeights);
-    }
-
-    /**
      * Initialize Carousel method.
      */
     initCarousel() {
@@ -586,7 +582,6 @@ export default class Carousel extends LightningElement {
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
         this.initializePanels();
-        this.initializeCarouselHeight();
     }
 
     /**
@@ -711,13 +706,5 @@ export default class Carousel extends LightningElement {
     toggleAutoScroll() {
         /*eslint no-unused-expressions: ["error", { "allowTernary": true }]*/
         this.autoScrollOn ? this.pause() : this.play();
-    }
-
-    /**
-     * Sets the width of each item, depending on the number of items per panel
-     */
-    get carouselItemStyle() {
-        const flexBasis = 100 / this.itemsPerPanel;
-        return `flex-basis: ${flexBasis}%;`;
     }
 }

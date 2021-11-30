@@ -118,6 +118,17 @@ const items = [
     }
 ];
 
+const ex = [
+    {
+        title: 'Visit App Exchange',
+        description: 'Extend Salesforce with the #1 business marketplace.',
+        imageAssistiveText: 'Appy',
+        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
+        href: 'https://www.salesforce.com',
+        actions: bareActions
+    }
+];
+
 let element;
 describe('Carousel', () => {
     afterEach(() => {
@@ -156,6 +167,32 @@ describe('Carousel', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // actions variant
+    it('Carousel actions variant bare without label', () => {
+        element.items = items;
+        element.actionsVariant = 'bare';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
+            );
+            expect(action.actionsVariant).toBe('bare');
+        });
+    });
+
+    // actions position
+    it('Carousel actions position top-center', () => {
+        element.items = items;
+        element.actionsPosition = 'top-left';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
+            );
+            expect(action.actionsPosition).toBe('top-left');
+        });
+    });
 
     // assistive-text
     it('Carousel assistive-text with indicator', () => {
@@ -374,38 +411,6 @@ describe('Carousel', () => {
             expect(panels).toHaveLength(4);
         });
     });
-
-    // // items
-    // it('Carousel items', () => {
-    //     element.items = example;
-
-    //     return Promise.resolve().then(() => {
-    //         const item = example[0];
-    //         const a = element.shadowRoot.querySelector(
-    //             '.slds-carousel__panel-action'
-    //         );
-    //         expect(a.href).toBe(item.href);
-    //         const description = element.shadowRoot.querySelector(
-    //             '.avonni-carousel__content-description'
-    //         );
-    //         expect(description.textContent).toBe(
-    //             'Extend Salesforce with the #1 business marketplace.'
-    //         );
-    //         const title = element.shadowRoot.querySelector(
-    //             '.slds-carousel__content-title'
-    //         );
-    //         expect(title.textContent).toBe('Visit App Exchange');
-    //         const img = element.shadowRoot.querySelector('[data-element-id="img"]');
-    //         expect(img.src).toBe(
-    //             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
-    //         );
-    //         const action = element.shadowRoot.querySelector(
-    //             '[data-element-id="lightning-button-icon-actions"]'
-    //         );
-    //         expect(action.name).toBe('action-add');
-    //         expect(action.iconName).toBe('utility:add');
-    //     });
-    // });
 
     // carousel infinite last goes back to first
     it('Carousel infinite last goes back to first', () => {
@@ -629,5 +634,59 @@ describe('Carousel', () => {
                 expect(secondPanel.ariaHidden).toBe('true');
                 expect(firstPanel.ariaHidden).toBe('false');
             });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // carousel itemclick
+    it('Carousel item click', () => {
+        const handler = jest.fn();
+        element.addEventListener('itemclick', handler);
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
+            );
+            item.dispatchEvent(
+                new CustomEvent('itemclick', {
+                    detail: {
+                        item: ex
+                    }
+                })
+            );
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // carousel actionclick
+    it('Carousel actionclick', () => {
+        element.items = items;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-carousel-item'
+            );
+            item.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    detail: {
+                        name: 'action-name',
+                        item: ex
+                    }
+                })
+            );
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('action-name');
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
     });
 });
