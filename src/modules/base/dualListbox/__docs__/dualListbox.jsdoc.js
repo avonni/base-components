@@ -16,6 +16,131 @@
  * @property {string} src Image URL for the avatar of the group. If present, the avatar is displayed before the label.
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. The value defaults to square.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-text-color
+ * @default #706e6b
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-color-background-hover
+ * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-text-color-hover
+ * @default #706e6b
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-color-background-selected
+ * @default #edeceb
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-text-color-selected
+ * @default #706e6b
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-color-border
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-option-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-color-border
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-boxes-label-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dual-listbox-header-font-weight
+ * @default 700
+ * @type font
+ */
+
 /**
  * @namespace examples
  */

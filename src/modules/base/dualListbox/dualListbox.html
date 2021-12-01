@@ -47,19 +47,22 @@
         ></lightning-helptext>
         <div class="slds-form-element__control">
             <div
-                class="avonni-dual-listbox-list"
+                class="avonni-dual-listbox__list"
                 onfocusin={handleFocus}
                 onfocusout={handleBlur}
             >
                 <div class={computedListboxColumnsClass}>
                     <span
-                        class="slds-form-element__label"
+                        class="
+                            slds-form-element__label
+                            avonni-dual-listbox__boxes-label
+                        "
                         id="source-list-label"
                         >{sourceLabel}</span
                     >
                     <div
                         if:true={allowSearch}
-                        class="avonni-dual-listbox-allow-search"
+                        class="avonni-dual-listbox__search-container"
                     >
                         <lightning-input
                             name="search"
@@ -183,8 +186,8 @@
                 </div>
                 <div
                     class="
-                        avonni-dual-listbox-list__column
-                        avonni-dual-listbox-buttons-centered
+                        avonni-dual-listbox__list-column
+                        avonni-dual-listbox__buttons_centered
                     "
                 >
                     <lightning-button-icon
@@ -214,7 +217,10 @@
                 </div>
                 <div class={computedListboxColumnsClass}>
                     <span
-                        class="slds-form-element__label"
+                        class="
+                            slds-form-element__label
+                            avonni-dual-listbox__boxes-label
+                        "
                         id="selected-list-label"
                         >{selectedLabel}</span
                     >
@@ -343,8 +349,8 @@
                 <template if:false={disableReordering}>
                     <div
                         class="
-                            avonni-dual-listbox-list__column
-                            avonni-dual-listbox-buttons-centered
+                            avonni-dual-listbox__list-column
+                            avonni-dual-listbox__buttons_centered
                         "
                     >
                         <lightning-button-icon
