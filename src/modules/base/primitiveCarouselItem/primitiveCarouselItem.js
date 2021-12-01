@@ -189,7 +189,9 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @type {string}
      */
     get computedCarouselContentClass() {
-        return classSet('slds-carousel__content')
+        return classSet(
+            'slds-carousel__content avonni-primitive-carousel-item__content_background'
+        )
             .add({
                 'avonni-carousel__content-bottom': this.isBottomPosition
             })

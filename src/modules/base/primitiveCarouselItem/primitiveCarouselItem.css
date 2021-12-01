@@ -29,3 +29,7 @@
     flex-direction: column;
     justify-content: space-between;
 }
+
+.avonni-primitive-carousel-item__content_background {
+    background-color: var(--avonni-carousel-item-color-background, #ffffff);
+}
