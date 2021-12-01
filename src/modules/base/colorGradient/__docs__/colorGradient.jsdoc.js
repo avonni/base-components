@@ -1,4 +1,13 @@
 /**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-color-gradient-color-background
+ * @default transparent
+ * @type color
+ */
+/**
  * @namespace examples
  */
 /**
