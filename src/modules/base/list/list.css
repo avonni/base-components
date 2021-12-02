@@ -35,7 +35,7 @@
     background-color: var(--avonni-list-item-color-background, transparent);
 }
 
-.avonni-list__header {
+.avonni-list__header_font {
     color: var(--avonni-list-header-text-color, #080707);
     font-size: var(--avonni-list-header-font-size, 14px);
     font-style: var(--avonni-list-header-font-style, normal);
