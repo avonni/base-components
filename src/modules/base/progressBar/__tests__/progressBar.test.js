@@ -68,7 +68,7 @@ describe('ProgressBar', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Progress Bar: Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.showValue).toBeFalsy();
         expect(element.orientation).toBe('horizontal');
@@ -86,35 +86,35 @@ describe('ProgressBar', () => {
     /* ----- ATTRIBUTES ----- */
 
     // label
-    it('label', () => {
+    it('Progress Bar: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.progress-bar-label'
+                '.avonni-progress-bar__label_font'
             );
             expect(label.textContent).toBe('A string label');
         });
     });
 
     // show-value
-    it('showValue = false', () => {
+    it('Progress Bar: showValue = false', () => {
         element.showValue = false;
 
         return Promise.resolve().then(() => {
             const value = element.shadowRoot.querySelector(
-                '.avonni-progress-bar_value'
+                '.avonni-progress-bar__value_font'
             );
             expect(value).toBeFalsy();
         });
     });
 
-    it('showValue = true', () => {
+    it('Progress Bar: showValue = true', () => {
         element.showValue = true;
 
         return Promise.resolve().then(() => {
             const value = element.shadowRoot.querySelector(
-                '.avonni-progress-bar_value'
+                '.avonni-progress-bar__value_font'
             );
             expect(value).toBeTruthy();
         });
@@ -122,7 +122,7 @@ describe('ProgressBar', () => {
 
     // orientation
     // Depends on referenceLines
-    it('orientation = horizontal', () => {
+    it('Progress Bar: orientation = horizontal', () => {
         element.orientation = 'horizontal';
         element.referenceLines = REFERENCE_LINES;
 
@@ -131,7 +131,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]'
@@ -148,7 +148,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('orientation = vertical', () => {
+    it('Progress Bar: orientation = vertical', () => {
         element.orientation = 'vertical';
         element.referenceLines = REFERENCE_LINES;
 
@@ -157,7 +157,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]'
@@ -175,7 +175,7 @@ describe('ProgressBar', () => {
     });
 
     // reference-lines
-    it('referenceLines', () => {
+    it('Progress Bar: referenceLines', () => {
         element.referenceLines = REFERENCE_LINES;
 
         return Promise.resolve().then(() => {
@@ -198,20 +198,20 @@ describe('ProgressBar', () => {
 
     // size
     // Depends on orientation
-    it('size = full, with horizontal orientation', () => {
+    it('Progress Bar: size = full, with horizontal orientation', () => {
         element.size = 'full';
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size !== 'full') {
@@ -223,20 +223,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = full, with vertical orientation', () => {
+    it('Progress Bar: size = full, with vertical orientation', () => {
         element.size = 'full';
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'full') {
@@ -250,20 +250,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = x-small, with horizontal orientation', () => {
+    it('Progress Bar: size = x-small, with horizontal orientation', () => {
         element.size = 'x-small';
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'x-small') {
@@ -279,20 +279,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = x-small, with vertical orientation', () => {
+    it('Progress Bar: size = x-small, with vertical orientation', () => {
         element.size = 'x-small';
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'x-small') {
@@ -308,20 +308,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = small, with horizontal orientation', () => {
+    it('Progress Bar: size = small, with horizontal orientation', () => {
         element.size = 'small';
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'small') {
@@ -337,20 +337,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = small, with vertical orientation', () => {
+    it('Progress Bar: size = small, with vertical orientation', () => {
         element.size = 'small';
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'small') {
@@ -366,20 +366,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = medium, with horizontal orientation', () => {
+    it('Progress Bar: size = medium, with horizontal orientation', () => {
         element.size = 'medium';
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'medium') {
@@ -395,20 +395,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = medium, with vertical orientation', () => {
+    it('Progress Bar: size = medium, with vertical orientation', () => {
         element.size = 'medium';
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'medium') {
@@ -424,20 +424,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = large, with horizontal orientation', () => {
+    it('Progress Bar: size = large, with horizontal orientation', () => {
         element.size = 'large';
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'large') {
@@ -453,20 +453,20 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('size = large, with vertical orientation', () => {
+    it('Progress Bar: size = large, with vertical orientation', () => {
         element.size = 'large';
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             SIZES.forEach((size) => {
                 const wrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
                 const wrapperHorizontal = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-horizontal-size_${size}`
+                    `.avonni-progress-bar__bar-horizontal_size-${size}`
                 );
                 const innerWrapperVertical = element.shadowRoot.querySelector(
-                    `.avonni-progress-bar-vertical-size_${size}`
+                    `.avonni-progress-bar__vertical-bar_size-${size}`
                 );
 
                 if (size === 'large') {
@@ -483,12 +483,12 @@ describe('ProgressBar', () => {
     });
 
     // textured
-    it('textured = false', () => {
+    it('Progress Bar: textured = false', () => {
         element.textured = false;
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'slds-theme_alert-texture'
@@ -496,12 +496,12 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('textured = true', () => {
+    it('Progress Bar: textured = true', () => {
         element.textured = true;
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).toContain(
                 'slds-theme_alert-texture'
@@ -510,175 +510,178 @@ describe('ProgressBar', () => {
     });
 
     // theme
-    it('theme = base', () => {
+    it('Progress Bar: theme = base', () => {
         element.theme = 'base';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
+            );
+            expect(innerWrapper.classList).toContain(
+                'avonni-progress-bar__bar_theme-base'
             );
             expect(innerWrapper.classList).not.toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_inverse');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
             expect(innerWrapper.classList).not.toContain(
-                'slds-theme_alt-inverse'
+                'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_warning');
-            expect(innerWrapper.classList).not.toContain('slds-theme_info');
-            expect(innerWrapper.classList).not.toContain('slds-theme_error');
-            expect(innerWrapper.classList).not.toContain('slds-theme_offline');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
-    it('theme = success', () => {
+    it('Progress Bar: theme = success', () => {
         element.theme = 'success';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_inverse');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
             expect(innerWrapper.classList).not.toContain(
-                'slds-theme_alt-inverse'
+                'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_warning');
-            expect(innerWrapper.classList).not.toContain('slds-theme_info');
-            expect(innerWrapper.classList).not.toContain('slds-theme_error');
-            expect(innerWrapper.classList).not.toContain('slds-theme_offline');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
-    it('theme = inverse', () => {
+    it('Progress Bar: theme = inverse', () => {
         element.theme = 'inverse';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).not.toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).toContain('slds-theme_inverse');
+            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-inverse');
             expect(innerWrapper.classList).not.toContain(
-                'slds-theme_alt-inverse'
+                'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_warning');
-            expect(innerWrapper.classList).not.toContain('slds-theme_info');
-            expect(innerWrapper.classList).not.toContain('slds-theme_error');
-            expect(innerWrapper.classList).not.toContain('slds-theme_offline');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
-    it('theme = alt-inverse', () => {
+    it('Progress Bar: theme = alt-inverse', () => {
         element.theme = 'alt-inverse';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).not.toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_inverse');
-            expect(innerWrapper.classList).toContain('slds-theme_alt-inverse');
-            expect(innerWrapper.classList).not.toContain('slds-theme_warning');
-            expect(innerWrapper.classList).not.toContain('slds-theme_info');
-            expect(innerWrapper.classList).not.toContain('slds-theme_error');
-            expect(innerWrapper.classList).not.toContain('slds-theme_offline');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
+            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-alt-inverse');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
-    it('theme = warning', () => {
+    it('Progress Bar: theme = warning', () => {
         element.theme = 'warning';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).not.toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_inverse');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
             expect(innerWrapper.classList).not.toContain(
-                'slds-theme_alt-inverse'
+                'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).toContain('slds-theme_warning');
-            expect(innerWrapper.classList).not.toContain('slds-theme_info');
-            expect(innerWrapper.classList).not.toContain('slds-theme_error');
-            expect(innerWrapper.classList).not.toContain('slds-theme_offline');
+            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
-    it('theme = info', () => {
+    it('Progress Bar: theme = info', () => {
         element.theme = 'info';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).not.toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_inverse');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
             expect(innerWrapper.classList).not.toContain(
-                'slds-theme_alt-inverse'
+                'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_warning');
-            expect(innerWrapper.classList).toContain('slds-theme_info');
-            expect(innerWrapper.classList).not.toContain('slds-theme_error');
-            expect(innerWrapper.classList).not.toContain('slds-theme_offline');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
-    it('theme = error', () => {
+    it('Progress Bar: theme = error', () => {
         element.theme = 'error';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).not.toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_inverse');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
             expect(innerWrapper.classList).not.toContain(
-                'slds-theme_alt-inverse'
+                'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_warning');
-            expect(innerWrapper.classList).not.toContain('slds-theme_info');
-            expect(innerWrapper.classList).toContain('slds-theme_error');
-            expect(innerWrapper.classList).not.toContain('slds-theme_offline');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
-    it('theme = offline', () => {
+    it('Progress Bar: theme = offline', () => {
         element.theme = 'offline';
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
             expect(innerWrapper.classList).not.toContain(
-                'slds-progress-bar__value_success'
+                'avonni-progress-bar__bar_theme-success'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_inverse');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-inverse');
             expect(innerWrapper.classList).not.toContain(
-                'slds-theme_alt-inverse'
+                'avonni-progress-bar__bar_theme-alt-inverse'
             );
-            expect(innerWrapper.classList).not.toContain('slds-theme_warning');
-            expect(innerWrapper.classList).not.toContain('slds-theme_info');
-            expect(innerWrapper.classList).not.toContain('slds-theme_error');
-            expect(innerWrapper.classList).toContain('slds-theme_offline');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-warning');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-info');
+            expect(innerWrapper.classList).not.toContain('avonni-progress-bar__bar_theme-error');
+            expect(innerWrapper.classList).toContain('avonni-progress-bar__bar_theme-offline');
         });
     });
 
     // thickness
     // Depends on referenceLines
-    it('thickness = medium', () => {
+    it('Progress Bar: thickness = medium', () => {
         element.thickness = 'medium';
         element.referenceLines = REFERENCE_LINES;
 
@@ -705,7 +708,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('thickness = x-small', () => {
+    it('Progress Bar: thickness = x-small', () => {
         element.thickness = 'x-small';
         element.referenceLines = REFERENCE_LINES;
 
@@ -732,7 +735,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('thickness = small', () => {
+    it('Progress Bar: thickness = small', () => {
         element.thickness = 'small';
         element.referenceLines = REFERENCE_LINES;
 
@@ -757,7 +760,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('thickness = large', () => {
+    it('Progress Bar: thickness = large', () => {
         element.thickness = 'large';
         element.referenceLines = REFERENCE_LINES;
 
@@ -784,19 +787,19 @@ describe('ProgressBar', () => {
 
     // value
     // Depends on showValue
-    it('value', () => {
+    it('Progress Bar: value', () => {
         element.value = 56;
         element.showValue = true;
 
         return Promise.resolve().then(() => {
             const value = element.shadowRoot.querySelector(
-                '.avonni-progress-bar_value'
+                '.avonni-progress-bar__value_font'
             );
             const assistiveText = element.shadowRoot.querySelector(
                 '.slds-assistive-text'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
 
             expect(value.textContent.trim()).toBe('56%');
@@ -805,19 +808,19 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('value > 100', () => {
+    it('Progress Bar: value > 100', () => {
         element.value = 156;
         element.showValue = true;
 
         return Promise.resolve().then(() => {
             const value = element.shadowRoot.querySelector(
-                '.avonni-progress-bar_value'
+                '.avonni-progress-bar__value_font'
             );
             const assistiveText = element.shadowRoot.querySelector(
                 '.slds-assistive-text'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
 
             expect(value.textContent.trim()).toBe('100%');
@@ -826,19 +829,19 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('value NaN', () => {
+    it('Progress Bar: value NaN', () => {
         element.value = 'a';
         element.showValue = true;
 
         return Promise.resolve().then(() => {
             const value = element.shadowRoot.querySelector(
-                '.avonni-progress-bar_value'
+                '.avonni-progress-bar__value_font'
             );
             const assistiveText = element.shadowRoot.querySelector(
                 '.slds-assistive-text'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.slds-progress-bar__value'
+                '.avonni-progress-bar__bar-value'
             );
 
             expect(value.textContent.trim()).toBe('0%');
@@ -849,13 +852,13 @@ describe('ProgressBar', () => {
 
     // value-label
     // Depends on showValue
-    it('valueLabel', () => {
+    it('Progress Bar: valueLabel', () => {
         element.valueLabel = 'A string label';
         element.showValue = true;
 
         return Promise.resolve().then(() => {
             const value = element.shadowRoot.querySelector(
-                '.avonni-progress-bar_value'
+                '.avonni-progress-bar__value_font'
             );
             expect(value.textContent.trim()).toBe('0% A string label');
         });
@@ -863,7 +866,7 @@ describe('ProgressBar', () => {
 
     // value-position
     // Depends on showValue
-    it('valuePosition = top-right', () => {
+    it('Progress Bar: valuePosition = top-right', () => {
         element.showValue = true;
         element.valuePosition = 'top-right';
 
@@ -896,7 +899,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('valuePosition = left', () => {
+    it('Progress Bar: valuePosition = left', () => {
         element.showValue = true;
         element.valuePosition = 'left';
 
@@ -929,7 +932,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('valuePosition = top-left', () => {
+    it('Progress Bar: valuePosition = top-left', () => {
         element.showValue = true;
         element.valuePosition = 'top-left';
 
@@ -962,7 +965,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('valuePosition = bottom-right', () => {
+    it('Progress Bar: valuePosition = bottom-right', () => {
         element.showValue = true;
         element.valuePosition = 'bottom-right';
 
@@ -995,7 +998,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('valuePosition = bottom-left', () => {
+    it('Progress Bar: valuePosition = bottom-left', () => {
         element.showValue = true;
         element.valuePosition = 'bottom-left';
 
@@ -1028,7 +1031,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('valuePosition = right', () => {
+    it('Progress Bar: valuePosition = right', () => {
         element.showValue = true;
         element.valuePosition = 'right';
 
@@ -1062,7 +1065,7 @@ describe('ProgressBar', () => {
     });
 
     // variant
-    it('variant = base', () => {
+    it('Progress Bar: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -1075,7 +1078,7 @@ describe('ProgressBar', () => {
         });
     });
 
-    it('variant = circular', () => {
+    it('Progress Bar: variant = circular', () => {
         element.variant = 'circular';
 
         return Promise.resolve().then(() => {
