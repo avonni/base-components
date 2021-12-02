@@ -71,11 +71,6 @@
     width: var(--lwc-sizeLarge, 25rem);
 }
 
-.avonni-progress-bar__bar-value {
-    display: block;
-    height: 100%;
-}
-
 .avonni-progress-bar__bar_theme-alt-inverse {
     background-color: var(--avonni-progress-bar-bar-value-alt-inverse-color-background, #032d60);
 }

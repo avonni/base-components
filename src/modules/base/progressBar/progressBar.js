@@ -390,7 +390,7 @@ export default class ProgressBar extends LightningElement {
      */
     get computedInnerClass() {
         // for the progressBar in vertical we need to set a height on the outer div and inner div
-        return classSet('avonni-progress-bar__bar-value')
+        return classSet('slds-progress-bar__value')
             .add({
                 'avonni-progress-bar__bar_theme-base': this._theme === 'base',
                 'avonni-progress-bar__bar_theme-success': this._theme === 'success',
@@ -400,7 +400,6 @@ export default class ProgressBar extends LightningElement {
                 'avonni-progress-bar__bar_theme-info': this._theme === 'info',
                 'avonni-progress-bar__bar_theme-error': this._theme === 'error',
                 'avonni-progress-bar__bar_theme-offline': this._theme === 'offline',
-                'slds-progress-bar__value': this._orientation === 'vertical',
                 'avonni-progress-bar__vertical-bar_size-x-small':
                     this._size === 'x-small' &&
                     this._orientation === 'vertical',

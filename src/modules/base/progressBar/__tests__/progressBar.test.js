@@ -131,7 +131,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]'
@@ -157,7 +157,7 @@ describe('ProgressBar', () => {
                 '.slds-progress-bar'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             const primitives = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-reference-line"]'
@@ -488,7 +488,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'slds-theme_alert-texture'
@@ -501,7 +501,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).toContain(
                 'slds-theme_alert-texture'
@@ -515,7 +515,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).toContain(
                 'avonni-progress-bar__bar_theme-base'
@@ -539,7 +539,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).toContain(
                 'avonni-progress-bar__bar_theme-success'
@@ -560,7 +560,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
@@ -581,7 +581,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
@@ -600,7 +600,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
@@ -621,7 +621,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
@@ -642,7 +642,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
@@ -663,7 +663,7 @@ describe('ProgressBar', () => {
 
         return Promise.resolve().then(() => {
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
             expect(innerWrapper.classList).not.toContain(
                 'avonni-progress-bar__bar_theme-success'
@@ -799,7 +799,7 @@ describe('ProgressBar', () => {
                 '.slds-assistive-text'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
 
             expect(value.textContent.trim()).toBe('56%');
@@ -820,7 +820,7 @@ describe('ProgressBar', () => {
                 '.slds-assistive-text'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
 
             expect(value.textContent.trim()).toBe('100%');
@@ -841,7 +841,7 @@ describe('ProgressBar', () => {
                 '.slds-assistive-text'
             );
             const innerWrapper = element.shadowRoot.querySelector(
-                '.avonni-progress-bar__bar-value'
+                '.slds-progress-bar__value'
             );
 
             expect(value.textContent.trim()).toBe('0%');
