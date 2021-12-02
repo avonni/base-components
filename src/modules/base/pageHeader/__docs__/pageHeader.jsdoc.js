@@ -39,6 +39,29 @@
  * @memberof slots
  * @name controls
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-base-header-color-background
+ * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-object-home-header-color-background
+ * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-record-home-header-color-background
+ * @default #f3f2f2
+ * @type color
+ */
+
 /**
  * @namespace examples
  */

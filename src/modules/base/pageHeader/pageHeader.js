@@ -203,8 +203,11 @@ export default class PageHeader extends LightningElement {
     get computedOuterClass() {
         return classSet('slds-page-header')
             .add({
-                'slds-page-header_object-home': this._variant === 'object-home',
-                'slds-page-header_record-home': this._variant === 'record-home'
+                'avonni-page-header__header_base': this._variant === 'base',
+                'avonni-page-header__header_object-home':
+                    this._variant === 'object-home',
+                'avonni-page-header__header_record-home':
+                    this._variant === 'record-home'
             })
             .toString();
     }
