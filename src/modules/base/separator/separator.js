@@ -163,7 +163,7 @@ export default class Separator extends LightningElement {
      */
     get computedContainerClass() {
         return classSet(
-            'avonni-separator_container slds-grid slds-grid_vertical-align-center slds-nowrap'
+            'avonni-separator__container slds-grid slds-grid_vertical-align-center slds-nowrap'
         )
             .add({
                 'slds-grid_vertical slds-grid_align-center':
@@ -178,7 +178,9 @@ export default class Separator extends LightningElement {
      * @type {string}
      */
     get computedLineOneClass() {
-        return classSet('avonni-separator_line-one')
+        return classSet(
+            'avonni-separator__line-one avonni-separator__lines_styling'
+        )
             .add({
                 'slds-border_bottom slds-col':
                     this.orientation === 'horizontal',
@@ -195,7 +197,9 @@ export default class Separator extends LightningElement {
      * @type {string}
      */
     get computedLineTwoClass() {
-        return classSet('avonni-separator_line-two')
+        return classSet(
+            'avonni-separator__line-two avonni-separator__lines_styling'
+        )
             .add({
                 'slds-border_bottom slds-col':
                     this.orientation === 'horizontal',
