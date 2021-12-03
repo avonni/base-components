@@ -159,10 +159,10 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
-                '.avonni-progress-ring'
+                '.avonni-progress-circle'
             );
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
             const title = element.shadowRoot.querySelector(
                 '[data-element-id="title"]'
@@ -173,28 +173,28 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'medium') {
-                    expect(ring.classList).toContain(`avonni-progress-${size}`);
+                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
                     expect(content.classList).toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 } else {
                     expect(ring.classList).not.toContain(
-                        `avonni-progress-${size}`
+                        `avonni-progress-circle_size-${size}`
                     );
                     expect(content.classList).not.toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).not.toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).not.toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 }
             });
@@ -208,10 +208,10 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
-                '.avonni-progress-ring'
+                '.avonni-progress-circle'
             );
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
             const title = element.shadowRoot.querySelector(
                 '[data-element-id="title"]'
@@ -222,28 +222,28 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'x-small') {
-                    expect(ring.classList).toContain(`avonni-progress-${size}`);
+                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
                     expect(content.classList).toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 } else {
                     expect(ring.classList).not.toContain(
-                        `avonni-progress-${size}`
+                        `avonni-progress-circle_size-${size}`
                     );
                     expect(content.classList).not.toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).not.toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).not.toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 }
             });
@@ -257,10 +257,10 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
-                '.avonni-progress-ring'
+                '.avonni-progress-circle'
             );
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
             const title = element.shadowRoot.querySelector(
                 '[data-element-id="title"]'
@@ -271,28 +271,28 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'small') {
-                    expect(ring.classList).toContain(`avonni-progress-${size}`);
+                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
                     expect(content.classList).toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 } else {
                     expect(ring.classList).not.toContain(
-                        `avonni-progress-${size}`
+                        `avonni-progress-circle_size-${size}`
                     );
                     expect(content.classList).not.toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).not.toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).not.toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 }
             });
@@ -306,10 +306,10 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
-                '.avonni-progress-ring'
+                '.avonni-progress-circle'
             );
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
             const title = element.shadowRoot.querySelector(
                 '[data-element-id="title"]'
@@ -320,28 +320,28 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'large') {
-                    expect(ring.classList).toContain(`avonni-progress-${size}`);
+                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
                     expect(content.classList).toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 } else {
                     expect(ring.classList).not.toContain(
-                        `avonni-progress-${size}`
+                        `avonni-progress-circle_size-${size}`
                     );
                     expect(content.classList).not.toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).not.toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).not.toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 }
             });
@@ -355,10 +355,10 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const ring = element.shadowRoot.querySelector(
-                '.avonni-progress-ring'
+                '.avonni-progress-circle'
             );
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
             const title = element.shadowRoot.querySelector(
                 '[data-element-id="title"]'
@@ -369,28 +369,28 @@ describe('ProgressCircle', () => {
 
             SIZES.forEach((size) => {
                 if (size === 'x-large') {
-                    expect(ring.classList).toContain(`avonni-progress-${size}`);
+                    expect(ring.classList).toContain(`avonni-progress-circle_size-${size}`);
                     expect(content.classList).toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 } else {
                     expect(ring.classList).not.toContain(
-                        `avonni-progress-${size}`
+                        `avonni-progress-circle_size-${size}`
                     );
                     expect(content.classList).not.toContain(
-                        `avonni-progress-content-${size}`
+                        `avonni-progress-circle__content_size-${size}`
                     );
                     expect(title.classList).not.toContain(
-                        `avonni-progress-title-${size}`
+                        `avonni-progress-circle__title_size-${size}`
                     );
                     expect(label.classList).not.toContain(
-                        `avonni-progress-label-style-${size}`
+                        `avonni-progress-circle__label_size-${size}`
                     );
                 }
             });
@@ -408,17 +408,17 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 expect(content.classList).not.toContain(
-                    `avonni-progress-thickness-${thickness}`
+                    `avonni-progress-circle_thickness-${thickness}`
                 );
 
                 SIZES.forEach((size) => {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}-size-${size}`
+                        `avonni-progress-circle_thickness-${thickness}-size-${size}`
                     );
                 });
             });
@@ -434,28 +434,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -472,28 +472,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -510,28 +510,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -548,28 +548,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -586,28 +586,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -624,28 +624,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -662,28 +662,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -700,28 +700,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -738,28 +738,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -776,28 +776,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -814,28 +814,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -852,28 +852,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -890,28 +890,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -928,28 +928,28 @@ describe('ProgressCircle', () => {
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
-                '.avonni-progress-content'
+                '.avonni-progress-circle__content'
             );
 
             SIZES.forEach((thickness) => {
                 if (thickness === testedThickness) {
                     expect(content.classList).toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 } else {
                     expect(content.classList).not.toContain(
-                        `avonni-progress-thickness-${thickness}`
+                        `avonni-progress-circle_thickness-${thickness}`
                     );
                 }
 
                 SIZES.forEach((size) => {
                     if (size === testedSize && thickness === testedThickness) {
                         expect(content.classList).toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     } else {
                         expect(content.classList).not.toContain(
-                            `avonni-progress-thickness-${thickness}-size-${size}`
+                            `avonni-progress-circle_thickness-${thickness}-size-${size}`
                         );
                     }
                 });
@@ -980,7 +980,7 @@ describe('ProgressCircle', () => {
             );
             expect(title).toBeTruthy();
             expect(title.classList).not.toContain(
-                'avonni-progress-title-position-top'
+                'avonni-progress-circle__title-top_position'
             );
         });
     });
@@ -995,7 +995,7 @@ describe('ProgressCircle', () => {
             );
             expect(title).toBeTruthy();
             expect(title.classList).toContain(
-                'avonni-progress-title-position-top'
+                'avonni-progress-circle__title-top_position'
             );
         });
     });
