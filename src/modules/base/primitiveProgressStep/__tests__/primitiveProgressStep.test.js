@@ -48,7 +48,7 @@ describe('PrimitiveProgressStep', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive progress step: Default attributes', () => {
         expect(element.assistiveText).toBeUndefined();
         expect(element.buttonLabel).toBeUndefined();
         expect(element.buttonName).toBeUndefined();
@@ -78,7 +78,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     // assistive-text
-    it('assistiveText', () => {
+    it('Primitive progress step: assistiveText', () => {
         element.assistiveText = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -90,7 +90,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     // button-label
-    it('buttonLabel', () => {
+    it('Primitive progress step: buttonLabel', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -103,7 +103,7 @@ describe('PrimitiveProgressStep', () => {
 
     // button-name
     // Depends on buttonLabel
-    it('buttonName', () => {
+    it('Primitive progress step: buttonName', () => {
         element.buttonName = 'a-string-name';
         element.buttonLabel = 'A string label';
 
@@ -117,7 +117,7 @@ describe('PrimitiveProgressStep', () => {
 
     // button-icon-name
     // Depends on buttonLabel
-    it('buttonIconName', () => {
+    it('Primitive progress step: buttonIconName', () => {
         element.buttonIconName = 'utility:apps';
         element.buttonLabel = 'A string label';
 
@@ -131,7 +131,7 @@ describe('PrimitiveProgressStep', () => {
 
     // button-icon-position
     // Depends on buttonLabel
-    it('buttonIconPosition', () => {
+    it('Primitive progress step: buttonIconPosition', () => {
         element.buttonIconPosition = 'right';
         element.buttonLabel = 'A string label';
 
@@ -145,7 +145,7 @@ describe('PrimitiveProgressStep', () => {
 
     // button-disabled
     // Depends on buttonLabel
-    it('buttonDisabled', () => {
+    it('Primitive progress step: buttonDisabled', () => {
         element.buttonDisabled = true;
         element.buttonLabel = 'A string label';
 
@@ -159,7 +159,7 @@ describe('PrimitiveProgressStep', () => {
 
     // button-title
     // Depends on buttonLabel
-    it('buttonTitle', () => {
+    it('Primitive progress step: buttonTitle', () => {
         element.buttonTitle = 'A string title';
         element.buttonLabel = 'A string label';
 
@@ -173,7 +173,7 @@ describe('PrimitiveProgressStep', () => {
 
     // button-variant
     // Depends on buttonLabel
-    it('buttonVariant', () => {
+    it('Primitive progress step: buttonVariant', () => {
         element.buttonVariant = 'destructive';
         element.buttonLabel = 'A string label';
 
@@ -187,7 +187,7 @@ describe('PrimitiveProgressStep', () => {
 
     // completed-steps
     // Depends on value and popoverLabel
-    it('completedSteps includes this step', () => {
+    it('Primitive progress step: completedSteps includes this step', () => {
         element.completedSteps = ['3', '4'];
         element.value = '3';
         element.popoverLabel = 'A string label';
@@ -195,12 +195,12 @@ describe('PrimitiveProgressStep', () => {
         return Promise.resolve().then(() => {
             const popover = element.shadowRoot.querySelector('.slds-popover');
             expect(popover.classList).toContain(
-                'avonni-progress-step-popover-completed'
+                'avonni-progress-step__popover-completed'
             );
         });
     });
 
-    it('completedSteps excludes this step', () => {
+    it('Primitive progress step: completedSteps excludes this step', () => {
         element.completedSteps = ['3', '4'];
         element.value = '18';
         element.popoverLabel = 'A string label';
@@ -208,13 +208,13 @@ describe('PrimitiveProgressStep', () => {
         return Promise.resolve().then(() => {
             const popover = element.shadowRoot.querySelector('.slds-popover');
             expect(popover.classList).not.toContain(
-                'avonni-progress-step-popover-completed'
+                'avonni-progress-step__popover-completed'
             );
         });
     });
 
     // description
-    it('description', () => {
+    it('Primitive progress step: description', () => {
         element.description = 'A string description';
 
         return Promise.resolve().then(() => {
@@ -227,7 +227,7 @@ describe('PrimitiveProgressStep', () => {
 
     // description-position
     // Depends on description
-    it('descriptionPosition = top', () => {
+    it('Primitive progress step: descriptionPosition = top', () => {
         element.description = 'A string description';
         element.descriptionPosition = 'top';
 
@@ -244,7 +244,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('descriptionPosition = bottom', () => {
+    it('Primitive progress step: descriptionPosition = bottom', () => {
         element.description = 'A string description';
         element.descriptionPosition = 'bottom';
 
@@ -263,7 +263,7 @@ describe('PrimitiveProgressStep', () => {
 
     // disabled-steps
     // Depends on value and buttonLabel
-    it('disabledSteps includes this step', () => {
+    it('Primitive progress step: disabledSteps includes this step', () => {
         element.value = '5';
         element.disabledSteps = ['2', '5', '12'];
         element.buttonLabel = 'A string label';
@@ -284,7 +284,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('disabledSteps excludes this step', () => {
+    it('Primitive progress step: disabledSteps excludes this step', () => {
         element.value = '5';
         element.disabledSteps = ['2', '8', '12'];
         element.buttonLabel = 'A string label';
@@ -306,7 +306,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     // label
-    it('label', () => {
+    it('Primitive progress step: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -320,7 +320,7 @@ describe('PrimitiveProgressStep', () => {
 
     // label-position
     // Depends on label
-    it('label-position = top', () => {
+    it('Primitive progress step: label-position = top', () => {
         element.label = 'A string label';
         element.labelPosition = 'top';
 
@@ -337,7 +337,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('label-position = bottom', () => {
+    it('Primitive progress step: label-position = bottom', () => {
         element.label = 'A string label';
         element.labelPosition = 'bottom';
 
@@ -355,7 +355,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     // popover-description
-    it('popoverDescription', () => {
+    it('Primitive progress step: popoverDescription', () => {
         element.popoverDescription = 'A string description';
 
         return Promise.resolve().then(() => {
@@ -368,7 +368,7 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-hidden
     // Depends on popoverLabel
-    it('popoverHidden = false', () => {
+    it('Primitive progress step: popoverHidden = false', () => {
         element.popoverHidden = false;
         element.popoverLabel = 'A string label';
 
@@ -378,7 +378,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('popoverHidden = true', () => {
+    it('Primitive progress step: popoverHidden = true', () => {
         element.popoverHidden = true;
         element.popoverLabel = 'A string label';
 
@@ -389,7 +389,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     // popover-icon-name
-    it('popoverIconName', () => {
+    it('Primitive progress step: popoverIconName', () => {
         element.popoverIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -402,7 +402,7 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-icon-name-when-hover
     // Depends on popoverVariant and popoverIconName
-    it('popoverIconNameWhenHover', () => {
+    it('Primitive progress step: popoverIconNameWhenHover', () => {
         element.popoverIconNameWhenHover = 'utility:apps';
         element.popoverIconName = 'utility:user';
         element.popoverVariant = 'button';
@@ -416,7 +416,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     // popover-icon-src
-    it('popoverIconSrc', () => {
+    it('Primitive progress step: popoverIconSrc', () => {
         element.popoverIconSrc =
             '/assets/icons/standard-sprite/svg/test.svg#icon-heart';
         element.popoverIconName = 'utility:user';
@@ -433,7 +433,7 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-icon-src-when-hover
     // Depends on popoverVariant and popoverIconName
-    it('popoverIconSrcWhenHover', () => {
+    it('Primitive progress step: popoverIconSrcWhenHover', () => {
         element.popoverIconSrcWhenHover =
             '/assets/icons/standard-sprite/svg/test.svg#icon-heart';
         element.popoverIconName = 'utility:user';
@@ -450,7 +450,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     // popover-label
-    it('popoverLabel', () => {
+    it('Primitive progress step: popoverLabel', () => {
         element.popoverLabel = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -463,7 +463,7 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-ratio
     // Depends on popoverLabel
-    it('popoverRatio = 1-by-1', () => {
+    it('Primitive progress step: popoverRatio = 1-by-1', () => {
         element.popoverRatio = '1-by-1';
         element.popoverLabel = 'A string label';
 
@@ -473,7 +473,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('popoverRatio = 4-by-3', () => {
+    it('Primitive progress step: popoverRatio = 4-by-3', () => {
         element.popoverRatio = '4-by-3';
         element.popoverLabel = 'A string label';
 
@@ -483,7 +483,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('popoverRatio = 16-by-9', () => {
+    it('Primitive progress step: popoverRatio = 16-by-9', () => {
         element.popoverRatio = '16-by-9';
         element.popoverLabel = 'A string label';
 
@@ -493,7 +493,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('popoverRatio is not in the valid list', () => {
+    it('Primitive progress step: popoverRatio is not in the valid list', () => {
         element.popoverRatio = 'Not a valid entry';
         element.popoverLabel = 'A string label';
 
@@ -505,20 +505,20 @@ describe('PrimitiveProgressStep', () => {
 
     // popover-size
     // Depends on popoverLabel and popoverIconName
-    it('popoverSize = small', () => {
+    it('Primitive progress step: popoverSize = small', () => {
         element.popoverSize = 'small';
         element.popoverLabel = 'A string label';
         element.popoverIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
             const popoverSmall = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_small'
+                '.avonni-progress-step__popover_size-small'
             );
             const popoverMedium = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_medium'
+                '.avonni-progress-step__popover_size-medium'
             );
             const popoverLarge = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_large'
+                '.avonni-progress-step__popover_size-large'
             );
             const popoverIcon = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-popover-no-button"]'
@@ -530,20 +530,20 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('popoverSize = medium', () => {
+    it('Primitive progress step: popoverSize = medium', () => {
         element.popoverSize = 'medium';
         element.popoverLabel = 'A string label';
         element.popoverIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
             const popoverSmall = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_small'
+                '.avonni-progress-step__popover_size-small'
             );
             const popoverMedium = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_medium'
+                '.avonni-progress-step__popover_size-medium'
             );
             const popoverLarge = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_large'
+                '.avonni-progress-step__popover_size-large'
             );
             const popoverIcon = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-popover-no-button"]'
@@ -555,20 +555,20 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('popoverSize = large', () => {
+    it('Primitive progress step: popoverSize = large', () => {
         element.popoverSize = 'large';
         element.popoverLabel = 'A string label';
         element.popoverIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
             const popoverSmall = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_small'
+                '.avonni-progress-step__popover_size-small'
             );
             const popoverMedium = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_medium'
+                '.avonni-progress-step__popover_size-medium'
             );
             const popoverLarge = element.shadowRoot.querySelector(
-                '.avonni-progress-step-popover_large'
+                '.avonni-progress-step__popover_size-large'
             );
             const popoverIcon = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-icon-popover-no-button"]'
@@ -582,33 +582,33 @@ describe('PrimitiveProgressStep', () => {
 
     // popoverVariant
     // Depends on popoverLabel
-    it('popoverVariant = base', () => {
+    it('Primitive progress step: popoverVariant = base', () => {
         element.popoverVariant = 'base';
         element.popoverLabel = 'A string label';
 
         return Promise.resolve().then(() => {
             const popover = element.shadowRoot.querySelector('.slds-popover');
             expect(popover.classList).not.toContain(
-                'avonni-progress-step-popover-button'
+                'avonni-progress-step__popover-button'
             );
         });
     });
 
-    it('popoverVariant = button', () => {
+    it('Primitive progress step: popoverVariant = button', () => {
         element.popoverVariant = 'button';
         element.popoverLabel = 'A string label';
 
         return Promise.resolve().then(() => {
             const popover = element.shadowRoot.querySelector('.slds-popover');
             expect(popover.classList).toContain(
-                'avonni-progress-step-popover-button'
+                'avonni-progress-step__popover-button'
             );
         });
     });
 
     // waring-steps
     // Depends on value and setIcon
-    it('warningSteps', () => {
+    it('Primitive progress step: warningSteps', () => {
         element.warningSteps = ['2', '3', '12'];
         element.value = '3';
         element.setIcon('utility:apps');
@@ -622,7 +622,7 @@ describe('PrimitiveProgressStep', () => {
     });
 
     /* ----- EVENTS ----- */
-    it('step click', () => {
+    it('Primitive progress step: step click', () => {
         const handler = jest.fn();
         element.addEventListener('stepclick', handler);
 
@@ -639,7 +639,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('step mouseenter', () => {
+    it('Primitive progress step: step mouseenter', () => {
         const handler = jest.fn();
         element.addEventListener('stepmouseenter', handler);
 
@@ -656,7 +656,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('step mouseleave', () => {
+    it('Primitive progress step: step mouseleave', () => {
         const handler = jest.fn();
         element.addEventListener('stepmouseleave', handler);
 
@@ -673,7 +673,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('step focus', () => {
+    it('Primitive progress step: step focus', () => {
         const handler = jest.fn();
         element.addEventListener('stepfocus', handler);
 
@@ -690,7 +690,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('step blur', () => {
+    it('Primitive progress step: step blur', () => {
         const handler = jest.fn();
         element.addEventListener('stepblur', handler);
 
@@ -707,7 +707,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('popover click', () => {
+    it('Primitive progress step: popover click', () => {
         const handler = jest.fn();
         element.popoverHidden = false;
         element.popoverLabel = 'A string label';
@@ -724,7 +724,7 @@ describe('PrimitiveProgressStep', () => {
         });
     });
 
-    it('button click', () => {
+    it('Primitive progress step: button click', () => {
         const handler = jest.fn();
         element.buttonLabel = 'A string label';
         element.addEventListener('stepbuttonclick', handler);

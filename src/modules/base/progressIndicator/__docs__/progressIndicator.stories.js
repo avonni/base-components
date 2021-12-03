@@ -336,7 +336,6 @@ const Template = (args) => ProgressIndicator(args);
 
 export const BaseWithPopoverHidden = Template.bind({});
 BaseWithPopoverHidden.args = {
-    type: 'base',
     variant: 'base',
     steps: BaseStepsWithPopoverHidden,
     currentStep: '4',
@@ -348,7 +347,6 @@ BaseWithPopoverHidden.args = {
 
 export const BaseWithPopoverVisible = Template.bind({});
 BaseWithPopoverVisible.args = {
-    type: 'base',
     variant: 'base',
     steps: BaseStepsWithPopoverVisible,
     currentStep: '4',
@@ -360,7 +358,6 @@ BaseWithPopoverVisible.args = {
 
 export const withButtons = Template.bind({});
 withButtons.args = {
-    type: 'base',
     variant: 'base',
     steps: stepsWithButtons,
     currentStep: '4',
@@ -372,7 +369,6 @@ withButtons.args = {
 
 export const milestones = Template.bind({});
 milestones.args = {
-    type: 'base',
     variant: 'base',
     steps: milestonesSteps,
     errorSteps: [],
@@ -383,7 +379,6 @@ milestones.args = {
 
 export const milestonesShaded = Template.bind({});
 milestonesShaded.args = {
-    type: 'base',
     variant: 'shaded',
     steps: milestonesSteps,
     errorSteps: [],
