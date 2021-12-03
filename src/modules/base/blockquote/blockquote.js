@@ -134,13 +134,13 @@ export default class Blockquote extends LightningElement {
      * @type {string}
      */
     get blockquoteClass() {
-        return classSet('doc')
+        return classSet('avonni-blockquote__container')
             .add({
-                'blockquote-default': this._variant === 'default',
-                'blockquote-brand': this._variant === 'brand',
-                'blockquote-warning': this._variant === 'warning',
-                'blockquote-error': this._variant === 'error',
-                'blockquote-success': this._variant === 'success'
+                'avonni-blockquote__theme-default': this._variant === 'default',
+                'avonni-blockquote__theme-brand': this._variant === 'brand',
+                'avonni-blockquote__theme-warning': this._variant === 'warning',
+                'avonni-blockquote__theme-error': this._variant === 'error',
+                'avonni-blockquote__theme-success': this._variant === 'success'
             })
             .toString();
     }

@@ -140,8 +140,8 @@ export default class Chip extends LightningElement {
     get chipClass() {
         return classSet('avonni-chip')
             .add({
-                'avonni-chip-outline': this._outline,
-                [`avonni-chip-theme_${this._variant}`]: this._variant
+                'avonni-chip_outline': this._outline,
+                [`avonni-chip_theme-${this._variant}`]: this._variant
             })
             .toString();
     }
