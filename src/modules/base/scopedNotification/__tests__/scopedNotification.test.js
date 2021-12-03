@@ -48,7 +48,7 @@ describe('ScopedNotification', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Scoped notification: Default attributes', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.iconSize).toBe('medium');
         expect(element.title).toBeUndefined();
@@ -58,11 +58,13 @@ describe('ScopedNotification', () => {
     /* ----- ATTRIBUTES ----- */
 
     // icon-name
-    it('iconName', () => {
+    it('Scoped notification: iconName', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             expect(icon).toBeTruthy();
             expect(icon.iconName).toBe('utility:apps');
         });
@@ -70,18 +72,20 @@ describe('ScopedNotification', () => {
 
     // icon-size
     // Depends on iconName
-    it('iconSize', () => {
+    it('Scoped notification: iconSize', () => {
         element.iconName = 'utility:apps';
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             expect(icon.size).toBe('large');
         });
     });
 
     // title
-    it('title', () => {
+    it('Scoped notification: title', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -94,7 +98,7 @@ describe('ScopedNotification', () => {
 
     // variant
     // Depends on iconName
-    it('variant = base', () => {
+    it('Scoped notification: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -103,18 +107,24 @@ describe('ScopedNotification', () => {
             );
 
             expect(wrapper.classList).toContain(
-                'slds-scoped-notification_light'
+                'avonni-scoped-notification_theme-base'
             );
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_dark'
+                'avonni-scoped-notification_theme-dark'
             );
-            expect(wrapper.classList).not.toContain('slds-theme_warning');
-            expect(wrapper.classList).not.toContain('slds-theme_error');
-            expect(wrapper.classList).not.toContain('slds-theme_success');
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-warning'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-error'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-success'
+            );
         });
     });
 
-    it('variant = dark', () => {
+    it('Scoped notification: variant = dark', () => {
         element.variant = 'dark';
         element.iconName = 'utility:favorite';
 
@@ -122,22 +132,30 @@ describe('ScopedNotification', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-scoped-notification'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_light'
+                'avonni-scoped-notification_theme-base'
             );
             expect(wrapper.classList).toContain(
-                'slds-scoped-notification_dark'
+                'avonni-scoped-notification_theme-dark'
             );
-            expect(wrapper.classList).not.toContain('slds-theme_warning');
-            expect(wrapper.classList).not.toContain('slds-theme_error');
-            expect(wrapper.classList).not.toContain('slds-theme_success');
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-warning'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-error'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-success'
+            );
             expect(icon.variant).toBe('inverse');
         });
     });
 
-    it('variant = warning', () => {
+    it('Scoped notification: variant = warning', () => {
         element.variant = 'warning';
         element.iconName = 'utility:favorite';
 
@@ -147,18 +165,24 @@ describe('ScopedNotification', () => {
             );
 
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_light'
+                'avonni-scoped-notification_theme-base'
             );
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_dark'
+                'avonni-scoped-notification_theme-dark'
             );
-            expect(wrapper.classList).toContain('slds-theme_warning');
-            expect(wrapper.classList).not.toContain('slds-theme_error');
-            expect(wrapper.classList).not.toContain('slds-theme_success');
+            expect(wrapper.classList).toContain(
+                'avonni-scoped-notification_theme-warning'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-error'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-success'
+            );
         });
     });
 
-    it('variant = error', () => {
+    it('Scoped notification: variant = error', () => {
         element.variant = 'error';
         element.iconName = 'utility:favorite';
 
@@ -166,22 +190,30 @@ describe('ScopedNotification', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-scoped-notification'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_light'
+                'avonni-scoped-notification_theme-base'
             );
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_dark'
+                'avonni-scoped-notification_theme-dark'
             );
-            expect(wrapper.classList).not.toContain('slds-theme_warning');
-            expect(wrapper.classList).toContain('slds-theme_error');
-            expect(wrapper.classList).not.toContain('slds-theme_success');
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-warning'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-scoped-notification_theme-error'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-success'
+            );
             expect(icon.variant).toBe('inverse');
         });
     });
 
-    it('variant = success', () => {
+    it('Scoped notification: variant = success', () => {
         element.variant = 'success';
         element.iconName = 'utility:favorite';
 
@@ -189,17 +221,25 @@ describe('ScopedNotification', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-scoped-notification'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_light'
+                'avonni-scoped-notification_theme-base'
             );
             expect(wrapper.classList).not.toContain(
-                'slds-scoped-notification_dark'
+                'avonni-scoped-notification_theme-dark'
             );
-            expect(wrapper.classList).not.toContain('slds-theme_warning');
-            expect(wrapper.classList).not.toContain('slds-theme_error');
-            expect(wrapper.classList).toContain('slds-theme_success');
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-warning'
+            );
+            expect(wrapper.classList).not.toContain(
+                'avonni-scoped-notification_theme-error'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-scoped-notification_theme-success'
+            );
             expect(icon.variant).toBe('inverse');
         });
     });
