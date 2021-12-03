@@ -91,6 +91,7 @@ const NoSlotTemplate = (args) => NoSlotScopedNotification(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    title: 'base',
     iconName: 'utility:info'
 };
 
