@@ -163,7 +163,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range-bubble'
+                '.avonni-range__bubble'
             );
             expect(bubbles).toHaveLength(0);
         });
@@ -174,7 +174,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range-bubble'
+                '.avonni-range__bubble'
             );
             expect(bubbles).toHaveLength(2);
         });
@@ -189,7 +189,7 @@ describe('Range', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-range-container-horizontal-size_full'
+                'avonni-range__container-horizontal-size_full'
             );
         });
     });
@@ -202,7 +202,7 @@ describe('Range', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range-container-horizontal-size_x-small'
+                'avonni-range__container-horizontal-size_x-small'
             );
         });
     });
@@ -215,7 +215,7 @@ describe('Range', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range-container-horizontal-size_small'
+                'avonni-range__container-horizontal-size_small'
             );
         });
     });
@@ -228,7 +228,7 @@ describe('Range', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range-container-horizontal-size_medium'
+                'avonni-range__container-horizontal-size_medium'
             );
         });
     });
@@ -241,7 +241,7 @@ describe('Range', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range-container-horizontal-size_large'
+                'avonni-range__container-horizontal-size_large'
             );
         });
     });
@@ -327,16 +327,16 @@ describe('Range', () => {
             const wrapper =
                 element.shadowRoot.querySelector('.avonni-vertical');
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-range-unit-container'
+                'label + .avonni-range__unit-container'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-vertical + .avonni-range-unit-container'
+                '.avonni-vertical + .avonni-range__unit-container'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-range-container + .avonni-range-unit-container'
+                '.avonni-range__container + .avonni-range__unit-container'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range-bubble'
+                '.avonni-range__bubble'
             );
 
             expect(wrapper).toBeFalsy();
@@ -353,19 +353,19 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '.avonni-range-vertical'
+                '.avonni-range__vertical'
             );
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-range-unit-container'
+                'label + .avonni-range__unit-container'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-range-vertical + .avonni-range-unit-container'
+                '.avonni-range__vertical + .avonni-range__unit-container'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-range-container + .avonni-range-unit-container'
+                '.avonni-range__container + .avonni-range__unit-container'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range-bubble-vertical'
+                '.avonni-range__bubble-vertical'
             );
 
             expect(wrapper).toBeTruthy();
