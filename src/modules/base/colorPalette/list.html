@@ -39,7 +39,10 @@
         data-element-id="lightning-spinner"
     ></lightning-spinner>
 
-    <div if:false={isLoading} class="list-container slds-scrollable">
+    <div
+        if:false={isLoading}
+        class="avonni-color-palette__list-container slds-scrollable"
+    >
         <template for:each={computedGroups} for:item="group">
             <div
                 key={group.name}
