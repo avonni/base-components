@@ -8,6 +8,24 @@
  * @name default
  */
 /**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-progress-step-item-content-color-border
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-progress-step-item-content-sizing-border
+ * @default 1px
+ * @type sizing
+ */
+/**
  * @namespace examples
  */
 /**
