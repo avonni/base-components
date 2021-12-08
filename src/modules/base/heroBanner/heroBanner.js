@@ -271,15 +271,15 @@ export default class HeroBanner extends LightningElement {
     get computedContentContainer() {
         return classSet('avonni-hero-banner-content-container')
             .add({
-                'avonni-hero-banner-text-container-without-slot':
+                'avonni-hero-banner__text-container-without-slot_height':
                     !this.showFooterSlot,
-                'avonni-hero-banner-text-container-with-slot':
+                'avonni-hero-banner__text-container-with-slot_height':
                     this.showFooterSlot,
-                'avonni-hero-banner-vertical-alignment_bottom':
+                'avonni-hero-banner__vertical-alignment_bottom':
                     this.contentVerticalAlignment === 'bottom',
-                'avonni-hero-banner-vertical-alignment_center':
+                'avonni-hero-banner__vertical-alignment_center':
                     this.contentVerticalAlignment === 'center',
-                'avonni-hero-banner-vertical-alignment_top':
+                'avonni-hero-banner__vertical-alignment_top':
                     this.contentVerticalAlignment === 'top'
             })
             .toString();
@@ -295,9 +295,9 @@ export default class HeroBanner extends LightningElement {
             .add({
                 'avonni-hero-banner-horizontal-alignment_left':
                     this.contentHorizontalAlignment === 'left',
-                'avonni-hero-banner-horizontal-alignment_center':
+                'avonni-hero-banner__horizontal-alignment_center':
                     this.contentHorizontalAlignment === 'center',
-                'avonni-hero-banner-horizontal-alignment_right':
+                'avonni-hero-banner__horizontal-alignment_right':
                     this.contentHorizontalAlignment === 'right'
             })
             .toString();
@@ -311,9 +311,9 @@ export default class HeroBanner extends LightningElement {
     get computedButtonClass() {
         return classSet('slds-grid slds-m-top_small')
             .add({
-                'avonni-hero-banner-horizontal-alignment_right':
+                'avonni-hero-banner__horizontal-alignment_right':
                     this.contentHorizontalAlignment === 'right',
-                'avonni-hero-banner-horizontal-alignment_center':
+                'avonni-hero-banner__horizontal-alignment_center':
                     this.contentHorizontalAlignment === 'center'
             })
             .toString();

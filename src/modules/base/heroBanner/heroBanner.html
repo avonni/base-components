@@ -33,9 +33,9 @@
 -->
 
 <template>
-    <div class="avonni-hero-banner-background-class" style={imgSrc}>
+    <div class="avonni-hero-banner__background" style={imgSrc}>
         <div class={computedContentContainer}>
-            <div class="slds-grid avonni-hero-banner-justify_center">
+            <div class="slds-grid avonni-hero-banner__justify-content_center">
                 <div class={computedWidthContainer} style={computedMaxWidth}>
                     <div
                         class="avonni-hero-banner-content"
@@ -43,7 +43,7 @@
                     >
                         <template if:true={caption}>
                             <h1
-                                class="avonni-hero-banner-caption-class"
+                                class="avonni-hero-banner__caption"
                                 data-element-id="h1"
                             >
                                 {caption}
@@ -51,7 +51,7 @@
                         </template>
                         <template if:true={title}>
                             <h2
-                                class="avonni-hero-banner-title-class"
+                                class="avonni-hero-banner__title"
                                 data-element-id="h2"
                             >
                                 {title}
@@ -59,7 +59,7 @@
                         </template>
                         <template if:true={subtitle}>
                             <p
-                                class="avonni-hero-banner-subtitle-class"
+                                class="avonni-hero-banner__subtitle"
                                 data-element-id="p-subtitle"
                             >
                                 {subtitle}
@@ -70,13 +70,19 @@
                                 <div class="slds-grid">
                                     <template if:true={primaryButtonLabel}>
                                         <a
-                                            class="slds-button slds-truncate avonni-hero-banner-primary-button"
+                                            class="
+                                                slds-button slds-truncate
+                                                avonni-hero-banner__primary-button
+                                            "
                                             >{primaryButtonLabel}</a
                                         >
                                     </template>
                                     <template if:true={hasButtons}>
                                         <a
-                                            class="slds-button slds-truncate avonni-hero-banner-secondary-button"
+                                            class="
+                                                slds-button slds-truncate
+                                                avonni-hero-banner__secondary-button
+                                            "
                                             >{secondaryButtonLabel}</a
                                         >
                                     </template>
