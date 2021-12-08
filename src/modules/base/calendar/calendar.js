@@ -113,7 +113,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * An array that will be used to determine which dates to be disabled in the calendar.
+     * Array of disabled dates. The dates should be a Date object, a timestamp, or an ISO8601 formatted string.
      *
      * @public
      * @type {object[]}
@@ -141,7 +141,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * An array that will be used to determine which dates to be marked in the calendar.
+     * Array of marked date objects.
      *
      * @public
      * @type {object[]}
@@ -747,7 +747,7 @@ export default class Calendar extends LightningElement {
          * @event
          * @public
          * @name change
-         * @param {string} value dateStr ( the selected date )
+         * @param {string} value Selected date.
          */
         this.dispatchEvent(
             new CustomEvent('change', {

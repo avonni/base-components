@@ -60,7 +60,7 @@ export default class Blockquote extends LightningElement {
      */
     @api title;
     /**
-     * Icon display next to the title.
+     * Icon displayed to the left of the title.
      *
      * @public
      * @type {string}

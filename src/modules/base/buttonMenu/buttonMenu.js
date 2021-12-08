@@ -82,6 +82,7 @@ const DEFAULT_ICON_NAME = 'utility:down';
 /**
  * @class
  * @descriptor avonni-button-menu
+ * @storyId example-button-menu--base
  * @public
  */
 export default class ButtonMenu extends LightningElement {
@@ -253,7 +254,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * If present, the menu can be opened by users.
+     * If present, the menu can't be opened by users.
      *
      * @public
      * @type {boolean}
@@ -379,7 +380,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Sets focus on the button.
+     * Set focus on the button.
      *
      * @public
      */
@@ -391,7 +392,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Simulates a mouse click on the button.
+     * Simulate a mouse click on the button.
      *
      * @public
      */
