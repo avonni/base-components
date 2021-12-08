@@ -49,11 +49,11 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#000',
+            defaultValue: '#000000',
             description:
                 'The color of the QR code. Accepts a valid CSS color string, including hex and rgb.',
             table: {
-                defaultValue: { summary: '#000' },
+                defaultValue: { summary: '#000000' },
                 type: { summary: 'string' }
             }
         },
@@ -63,9 +63,9 @@ export default {
             },
             description:
                 'Background color of the qr-code. Accepts a valid CSS color string, including hex and rgb.',
-            defaultValue: '#fff',
+            defaultValue: '#ffffff',
             table: {
-                defaultValue: { summary: '#fff' },
+                defaultValue: { summary: '#ffffff' },
                 type: { summary: 'string' }
             }
         },

@@ -41,6 +41,8 @@ const QR_RENDER_AS = { valid: ['canvas', 'svg'], default: 'svg' };
 const DEFAULT_BORDER_WIDTH = 0;
 const DEFAULT_PADDING = 0;
 const DEFAULT_SIZE = 200;
+const DEFAULT_COLOR = '#000000';
+const DEFAULT_BACKGROUND_COLOR = '#ffffff';
 
 /**
  * @class
@@ -49,8 +51,10 @@ const DEFAULT_SIZE = 200;
  * @public
  */
 export default class Qrcode extends LightningElement {
+    _background = DEFAULT_BACKGROUND_COLOR;
     _borderColor;
     _borderWidth = DEFAULT_BORDER_WIDTH;
+    _color = DEFAULT_COLOR;
     _encoding = QR_ENCODINGS.default;
     _errorCorrection = QR_ERROR_CORRECTIONS.default;
     _padding = DEFAULT_PADDING;
@@ -63,10 +67,6 @@ export default class Qrcode extends LightningElement {
     renderedCallback() {
         this.redraw();
         this._rendered = true;
-        console.log(this.isBackgroundNull);
-        console.log(this._background);
-        console.log(this.isColorNull);
-        console.log(this._color);
     }
 
     /**
@@ -92,8 +92,6 @@ export default class Qrcode extends LightningElement {
             ) {
                 this._background = color;
             }
-        } else {
-            // this._background = DEFAULT_BACKGROUND_COLOR;
         }
 
         if (this._rendered) {
@@ -107,7 +105,8 @@ export default class Qrcode extends LightningElement {
      * @type {string}
      * @public
      */
-    @api get borderColor() {
+    @api
+    get borderColor() {
         return this._borderColor;
     }
 
@@ -157,7 +156,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default #000000
      */
-    @api get color() {
+    @api
+    get color() {
         return this._color;
     }
 
@@ -172,8 +172,6 @@ export default class Qrcode extends LightningElement {
             ) {
                 this._color = color;
             }
-        } else {
-            // this._color = DEFAULT_COLOR;
         }
 
         if (this._rendered) {
@@ -190,7 +188,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default ISO_8859_1
      */
-    @api get encoding() {
+    @api
+    get encoding() {
         return this._encoding;
     }
 
@@ -217,7 +216,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default L
      */
-    @api get errorCorrection() {
+    @api
+    get errorCorrection() {
         return this._errorCorrection;
     }
 
@@ -262,7 +262,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default svg
      */
-    @api get renderAs() {
+    @api
+    get renderAs() {
         return this._renderAs;
     }
 
