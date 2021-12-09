@@ -391,10 +391,11 @@ export default class InputCounter extends LightningElement {
     get buttonIncrementClass() {
         return classSet('slds-input__button_increment')
             .add({
-                'avonni-standart-top':
+                'avonni-input-counter_standard-top':
                     this._variant !== 'label-inline' &&
                     this._variant !== 'label-hidden',
-                'avonni-hidden-top': this._variant === 'label-hidden'
+                'avonni-input-counter_hidden-top':
+                    this._variant === 'label-hidden'
             })
             .toString();
     }
@@ -407,10 +408,11 @@ export default class InputCounter extends LightningElement {
     get buttonDecrementClass() {
         return classSet('slds-input__button_decrement')
             .add({
-                'avonni-standart-top':
+                'avonni-input-counter_standard-top':
                     this._variant !== 'label-inline' &&
                     this._variant !== 'label-hidden',
-                'avonni-hidden-top': this._variant === 'label-hidden'
+                'avonni-input-counter_hidden-top':
+                    this._variant === 'label-hidden'
             })
             .toString();
     }
