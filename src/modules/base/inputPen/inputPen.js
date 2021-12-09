@@ -115,14 +115,17 @@ export default class InputPen extends LightningElement {
 
     renderedCallback() {
         if (!this.init) {
-            this.canvasElement = this.template.querySelector('[data-element-id="canvas"]');
+            this.canvasElement = this.template.querySelector(
+                '[data-element-id="canvas"]'
+            );
             this.ctx = this.canvasElement.getContext('2d');
 
             if (this.value) {
                 this.initSrc();
             }
 
-            this.canvasElement.width = this.canvasElement.parentElement.offsetWidth;
+            this.canvasElement.width =
+                this.canvasElement.parentElement.offsetWidth;
             this.canvasElement.height =
                 this.canvasElement.parentElement.offsetWidth / 2;
 
@@ -130,11 +133,11 @@ export default class InputPen extends LightningElement {
 
             if (!this.hideControls && this.showSize) {
                 let srcElement = this.template.querySelector(
-                    '.avonni-combobox'
+                    '.avonni-input-pen__combobox'
                 );
                 const style = document.createElement('style');
                 style.innerText =
-                    '.avonni-combobox .slds-dropdown_fluid {min-width: 100px;}';
+                    '.avonni-input-pen__combobox .slds-dropdown_fluid {min-width: 100px;}';
                 srcElement.appendChild(style);
             }
 
@@ -460,7 +463,9 @@ export default class InputPen extends LightningElement {
      * Initialize Cursor styling.
      */
     initCursorStyles() {
-        this.cursor = this.template.querySelector('.avonni-cursor');
+        this.cursor = this.template.querySelector(
+            '[data-element-id="input-pen-cursor"]'
+        );
 
         if (this.cursor) {
             this.cursor.style.setProperty('--size', this.size);
