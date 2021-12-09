@@ -182,8 +182,8 @@ export default class Qrcode extends LightningElement {
 
     /**
      * The encoding mode used to encode the value.The possible values are:
-     * "ISO_8859_1" - supports all characters from the ISO/IEC 8859-1 character set.
-     * "UTF_8" - supports all Unicode characters.
+     * * "ISO_8859_1" - supports all characters from the ISO/IEC 8859-1 character set.
+     * * "UTF_8" - supports all Unicode characters.
      *
      * @type {string}
      * @public
@@ -207,10 +207,10 @@ export default class Qrcode extends LightningElement {
 
     /**
      * The error correction level used to encode the value. The possible values are:
-     * "L" - approximately 7% of the codewords can be restored.
-     * "M" - approximately 15% of the codewords can be restored.
-     * "Q" - approximately 25% of the codewords can be restored.
-     * "H" - approximately 30% of the codewords can be restored.
+     * * "L" - approximately 7% of the codewords can be restored.
+     * * "M" - approximately 15% of the codewords can be restored.
+     * * "Q" - approximately 25% of the codewords can be restored.
+     * * "H" - approximately 30% of the codewords can be restored.
      *
      * @type {string}
      * @public
@@ -254,8 +254,8 @@ export default class Qrcode extends LightningElement {
 
     /**
      * Sets the preferred rendering engine. If it is not supported by the browser, the QRCode will switch to the first available mode. The supported values are:
-     * "canvas" - renders the widget as a Canvas element, if available.
-     * "svg" - renders the widget as inline SVG document, if available
+     * * "canvas" - renders the widget as a Canvas element, if available.
+     * * "svg" - renders the widget as inline SVG document, if available
      *
      * @type {string}
      * @public
@@ -277,8 +277,7 @@ export default class Qrcode extends LightningElement {
     }
 
     /**
-     * Specifies the size of a QR code in pixels (i.e. "200px").
-     * Numeric values are treated as pixels.
+     * Specifies the size of a QR code in pixels (i.e. "200px"). Numeric values are treated as pixels.
      * If no size is specified, it will be determined from the element width and height. In case the element has width or height of zero, a default value of 200 pixels will be used.
      *
      * @type {number}

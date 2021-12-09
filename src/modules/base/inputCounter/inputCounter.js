@@ -71,7 +71,7 @@ export default class InputCounter extends LightningElement {
      */
     @api messageWhenBadInput;
     /**
-     * 'Error message to be displayed when a pattern mismatch is detected.'
+     * Error message to be displayed when a pattern mismatch is detected.
      * @type {string}
      * @public
      */
@@ -193,7 +193,8 @@ export default class InputCounter extends LightningElement {
      * @default null
      * @public
      */
-    @api get value() {
+    @api
+    get value() {
         return this._value;
     }
 
@@ -203,13 +204,14 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * The minimum acceptable value for the input. Constrains the decrementer to stop at the specified min. If an entered value is below the min, incrementing or decrementing will then set the value to the specified min.
+     * The minimum acceptable value for the input. Constrains the decrementer to stop at the specified minimum. If an entered value is below the minimum, incrementing or decrementing will then set the value to the specified minimum.
      *
      * @type {number}
      * @default null
      * @public
      */
-    @api get min() {
+    @api
+    get min() {
         return this._min;
     }
 
@@ -219,13 +221,14 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * The maximum acceptable value for the input. Constrains the incrementer to stop at the specified max. If the entered value is above the max, incrementing or decrementing will then set the value to the specified max.
+     * The maximum acceptable value for the input. Constrains the incrementer to stop at the specified maximum. If the entered value is above the maximum, incrementing or decrementing will then set the value to the specified maximum.
      *
      * @type {number}
      * @default null
      * @public
      */
-    @api get max() {
+    @api
+    get max() {
         return this._max;
     }
 
@@ -235,13 +238,14 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Granularity of the value - precision of significant decimal digits ( specified as a positive integer. ex: 2 formats the value to 2 digits after the decimal ).
+     * Granularity of the value - number of significant decimal digits specified as a positive integer. For example, 2 formats the value to 2 digits after the decimal.
      *
      * @type {number}
      * @default null
      * @public
      */
-    @api get fractionDigits() {
+    @api
+    get fractionDigits() {
         return this._fractionDigits;
     }
 
@@ -268,7 +272,8 @@ export default class InputCounter extends LightningElement {
      * @default standard
      * @public
      */
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -289,13 +294,14 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Input counter type. Valid values include number (default), currency, percent.
+     * Input counter type. Valid values include number, currency and percent.
      *
      * @type {string}
      * @default number
      * @public
      */
-    @api get type() {
+    @api
+    get type() {
         return this._type;
     }
 
@@ -658,17 +664,20 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Get validation for custom proxy input.
+     * Represents the validity states that an element can be in, with respect to constraint validation.
      *
+     * @type {string}
      * @public
      */
-    @api get validity() {
+    @api
+    get validity() {
         return this._constraint.validity;
     }
 
     /**
-     * Check validation against constraints.
+     * Checks if the input is valid.
      *
+     * @returns {boolean} True if the element meets all constraint validations.
      * @public
      */
     @api
@@ -677,9 +686,9 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Displays the error messages and returns false if the input is invalid. If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
-     * @returns {string} helpMessage
+     * @returns {boolean} False if invalid, true if valid.
      * @public
      */
     @api
@@ -692,7 +701,7 @@ export default class InputCounter extends LightningElement {
     /**
      * Sets a custom error message to be displayed when a form is submitted.
      *
-     * @param {string} message
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
      */
     @api
@@ -701,7 +710,8 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Displays error messages on invalid fields. An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
      *
      * @public
      */

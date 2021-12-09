@@ -1,4 +1,4 @@
-## Recurrence
+### Recurrence
 
 | **Recurrence** | **Description**               | **Supported attributes**  |
 | -------------- | ----------------------------- | ------------------------- |
@@ -13,7 +13,7 @@
 | sameDaySameWeek          | boolean  | If true, the event will be repeated every month, on the same occurrence of this week day. For example “Monthly, on the third Saturday”.                                                                                                                                                                                                                                  |
 | weekdays                 | number[] | Array of days on which the event will be repeated. For example, repeat every week on Mondays and Thursdays.<br/>The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.<br/>If weekdays is present, each occurrence of the event can only span on one day. Only the times of the from and to dates will be taken into account. |
 
-## Palettes
+### Palettes
 
 | **Name**    | **Colors**                                                           |
 | ----------- | -------------------------------------------------------------------- |

@@ -110,7 +110,7 @@ export default class Carousel extends LightningElement {
      */
     @api disableAutoScroll;
     /**
-     * Boolean for displaying the navigation indicators (left/right arrows) of the carousel.
+     * If present, the left and right arrows of the carousel are hidden.
      *
      * @type {boolean}
      * @public
@@ -118,7 +118,7 @@ export default class Carousel extends LightningElement {
      */
     @api hidePreviousNextPanelNavigation;
     /**
-     * Boolean for infinite loop navigation. Note: if not true autoplay will stop automatically at the last panel.
+     * If present, the carousel will loop when reaching the last panel.
      *
      * @type {boolean}
      * @public
@@ -126,7 +126,7 @@ export default class Carousel extends LightningElement {
      */
     @api isInfinite;
     /**
-     * The auto scroll duration. The default is 5 seconds, after that the next image is displayed.
+     * Auto scroll delay. The default is 5 seconds, after which the next image is displayed.
      *
      * @type {number}
      * @public
@@ -170,7 +170,7 @@ export default class Carousel extends LightningElement {
      *
      * @type {object}
      * @public
-     * @default {autoplayButton: Play / Stop auto-play, nextPanel: Next Panel, previousPanel: Previous Panel,}
+     * @default <code>{ autoplayButton: 'Play / Stop auto-play', nextPanel: 'Next Panel', previousPanel: 'Previous Panel' }</code>
      */
     @api
     get assistiveText() {
@@ -189,7 +189,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Array of item objects used by the default carousel item renderer.
+     * Array of item objects to display in the carousel.
      *
      * @type {object[]}
      * @public
@@ -258,7 +258,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Boolean for displaying the progress indicators.
+     * If present, the progress indicator is hidden.
      *
      * @type {boolean}
      * @public
@@ -274,7 +274,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Valid values include bare, border and menu.
+     * Changes the appearance of the actions. Valid values include bare, border and menu.
      *
      * @type {string}
      * @public
@@ -293,7 +293,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
+     * Position of the actions. Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
      *
      * @type {string}
      * @public
@@ -432,7 +432,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Play the slide cycling.
+     * Play the slide cycle.
      *
      * @public
      */
@@ -468,7 +468,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Pause the slide cycling.
+     * Pause the slide cycle.
      *
      * @public
      */
@@ -509,11 +509,12 @@ export default class Carousel extends LightningElement {
      */
     handleActionClicked(event) {
         /**
-         * The event fired when an item is clicked.
+         * The event fired when a user clicks on an action.
          *
          * @event
-         * @name itemclick
-         * @param {object} item The item data clicked.
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {object} item Item clicked.
          * @public
          */
         this.dispatchEvent(

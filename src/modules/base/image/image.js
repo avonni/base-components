@@ -70,17 +70,17 @@ export default class Image extends LightningElement {
      */
     @api alternativeText;
     /**
-     * X-axis of the image position ( in percent ).
+     * Position of the image on the X axis (in percent).
      *
      * @public
-     * @type {string}
+     * @type {number}
      */
     @api cropPositionX = CROP_POSITION_X_DEFAULT;
     /**
-     * Y-axis of the image position ( in percent ).
+     * Position of the image on the Y axix (in percent).
      *
      * @public
-     * @type {string}
+     * @type {number}
      */
     @api cropPositionY = CROP_POSITION_Y_DEFAULT;
 
@@ -109,7 +109,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Image fit behaviour inside its container ( valid options : “cover”, “contain”, “fill”, “none” ). Default is cover.
+     * Image fit behaviour inside its container. Valid values include cover, contain, fill and none.
      *
      * @public
      * @type {string}
@@ -127,18 +127,16 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Crops the image to desired aspect ratio ( valid options : “1x1”, “4x3”, “16x9”, “none” ).
+     * Cropping ratio of the image. Valid values are “1x1”, “4x3”, “16x9” or “none”.
      *
      * @public
      * @type {string}
+     * @default none
      */
     @api get cropSize() {
         return this._cropSize;
     }
 
-    /**
-     * Assign cropSize numerical value and aspectRatio fraction based on user input.
-     */
     set cropSize(value) {
         const cropSize = normalizeString(value, {
             fallbackValue: CROP_SIZE.default,
@@ -164,7 +162,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Makes the image responsive. The image will shrink as needed or grow up the the image's native width.
+     * If present, the image is responsive and will take up 100% of its container width, to a maximum of its original width.
      *
      * @public
      * @type {boolean}
@@ -180,7 +178,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Similar to the 'fluid' prop, but allows the image to scale up past its native width.
+     * If present, the image is reponsive and will take up 100% of its container width.
      *
      * @public
      * @type {boolean}
@@ -196,7 +194,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * The value to set on the image's 'height' attribute.
+     * Height of the image.
      *
      * @public
      * @type {number | string}
@@ -222,7 +220,8 @@ export default class Image extends LightningElement {
      * Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.
      *
      * @public
-     * @type {boolean}
+     * @type {string}
+     * @default auto
      */
     @api
     get lazyLoading() {

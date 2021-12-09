@@ -88,7 +88,6 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Help text detailing the purpose and function of the input.
-     * This attribute isn't supported for file, radio, toggle, and checkbox-button types.
      *
      * @type {string}
      * @public
@@ -122,7 +121,6 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Error message to be displayed when the value is missing.
-     * The valueMissing error can be returned when you specify the required attribute for any input type.
      *
      * @type {string}
      * @public
@@ -254,7 +252,7 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * If present, the toggle is selected.
+     * If present, the toggle is checked.
      *
      * @type {boolean}
      * @default false
@@ -290,7 +288,7 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * If present, hides the mark.
+     * If present, hides the check mark.
      *
      * @type {boolean}
      * @default false
@@ -403,7 +401,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Checks if the input is valid.
      *
-     * @returns {boolean} Indicates whether the element meets all constraint validations.
+     * @returns {boolean} True if the element meets all constraint validations.
      * @public
      */
     @api
@@ -424,10 +422,9 @@ export default class InputToggle extends LightningElement {
     }
 
     /**
-     * Displays the error messages and returns false if the input is invalid.
-     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
-     * @returns {boolean} - The validity status of the input fields.
+     * @returns {boolean} False if invalid, true if valid.
      * @public
      */
     @api
@@ -440,8 +437,7 @@ export default class InputToggle extends LightningElement {
     /**
      * Sets a custom error message to be displayed when a form is submitted.
      *
-     * @param {string} message - The string that describes the error.
-     * If message is an empty string, the error message is reset.
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
      */
     @api
@@ -451,7 +447,7 @@ export default class InputToggle extends LightningElement {
 
     /**
      * Displays error messages on invalid fields.
-     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
      *
      * @public
      */
@@ -648,11 +644,11 @@ export default class InputToggle extends LightningElement {
         this._updateProxyInputAttributes('checked');
 
         /**
-         * The event fired when a value is changed in the input toggle.
+         * The event fired when the input is toggled.
          *
          * @event
          * @name change
-         * @param {boolean} checked For input types checkbox and checkbox-button, the value of checked attribute.
+         * @param {boolean} checked True if the toggle is checked.
          * @bubbles
          * @composed
          * @public
@@ -663,7 +659,6 @@ export default class InputToggle extends LightningElement {
                     checked: event.target.checked
                 },
                 bubbles: true,
-                cancelable: false,
                 composed: true
             })
         );

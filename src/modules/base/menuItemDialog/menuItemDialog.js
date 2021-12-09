@@ -43,7 +43,7 @@ const DEFAULT_TAB_INDEX = '0';
  */
 export default class MenuItemDialog extends LightningElement {
     /**
-     * A value associated with the menu item. This value will be the same with dialog (dialog-name === value)
+     * A value associated with the menu item.
      *
      * @type {string}
      * @public
@@ -57,7 +57,7 @@ export default class MenuItemDialog extends LightningElement {
      */
     @api accessKey;
     /**
-     * Describes the reason for showing the draft indicator. This is required when is-draft is present on the lightning-menu-item tag.
+     * Describes the reason for showing the draft indicator. This is required when is-draft is present.
      *
      * @type {string}
      * @public

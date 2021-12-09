@@ -64,7 +64,7 @@ const RANGE_UNITS = {
  */
 export default class Range extends LightningElement {
     /**
-     * Text label to describe the slider. Provide your own label to describe the slider.
+     * Text label to describe the range.
      *
      * @type {string}
      * @public
@@ -174,7 +174,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * The minimum value of the input range. The default is 0.
+     * The minimum value of the input range.
      *
      * @type {number}
      * @public
@@ -190,7 +190,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * The maximum value of the input range. The default is 100.
+     * The maximum value of the input range.
      *
      * @type {number}
      * @public
@@ -206,7 +206,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * If present, a pin with integer value is shown when the knob is pressed.
+     * If present, a pin containing the value is shown when the knob is pressed.
      *
      * @type {boolean}
      * @public
@@ -221,10 +221,11 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.
+     * Size of the slider. Accepted values are full, x-small, small, medium, and large.
      *
      * @type {string}
      * @public
+     * @default full
      */
     @api get size() {
         return this._size;
@@ -238,7 +239,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * The step increment value of the input range. Example steps include 0.1, 1, or 10. The default is 1.
+     * The step increment value of the input range. Example steps include 0.1, 1, or 10.
      *
      * @type {number}
      * @public
@@ -258,7 +259,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.
+     * The type determines the orientation of the slider. Accepted values are vertical and horizontal.
      *
      * @type {string}
      * @public
@@ -276,8 +277,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Accepted unit include decimal, currency and percent.
-     * Format the value displayed (lightning-formatted-number)
+     * Format the value displayed. Valid values include decimal, currency and percent.
      *
      * @type {string}
      * @public
@@ -332,7 +332,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of the slider. Accepted variants include standard and label-hidden. The default is standard.
+     * The variant changes the appearance of the slider. Accepted variants include standard and label-hidden.
      *
      * @type {string}
      * @public
@@ -397,8 +397,8 @@ export default class Range extends LightningElement {
          *
          * @event
          * @name change
-         * @param {string} valueLower The lower value of the range.
-         * @param {string} valueUpper The upper value of the range.
+         * @param {number} valueLower The lower value of the range.
+         * @param {number} valueUpper The upper value of the range.
          * @public
          */
         const selectedEvent = new CustomEvent('change', {
@@ -668,10 +668,10 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Returns the valid attribute value (Boolean) on the ValidityState object.
+     * Checks if the input is valid.
      *
+     * @returns {boolean} True if the element meets all constraint validations.
      * @public
-     * @returns {boolean}
      */
     @api
     checkValidity() {
@@ -682,10 +682,10 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Displays the error messages and returns false if the input is invalid. If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
+     * @returns {boolean} False if invalid, true if valid.
      * @public
-     * @returns {string | boolean}
      */
     @api
     reportValidity() {
@@ -709,10 +709,10 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Sets a custom error message to be displayed when the input value is submitted.
+     * Sets a custom error message to be displayed when a form is submitted.
      *
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
-     * @param {string} message
      */
     @api
     setCustomValidity(message) {
@@ -721,7 +721,8 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Displays an error message if the input value is required and no option is selected.
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
      *
      * @public
      */

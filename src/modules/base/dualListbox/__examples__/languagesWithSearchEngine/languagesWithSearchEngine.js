@@ -3,7 +3,7 @@ import { LightningElement } from 'lwc';
 export default class DualListboxLanguagesWithSearchEngine extends LightningElement {
     values = ['en', 'fr'];
 
-    languagesOptions = [
+    languageOptions = [
         {
             value: 'fr',
             label: 'French'

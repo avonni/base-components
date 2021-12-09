@@ -57,7 +57,7 @@ const CHIP_VARIANTS = {
  */
 export default class Chip extends LightningElement {
     /**
-     * Label display in the chip.
+     * Label displayed in the chip.
      *
      * @public
      * @type {string}

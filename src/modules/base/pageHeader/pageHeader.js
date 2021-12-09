@@ -58,21 +58,21 @@ export default class PageHeader extends LightningElement {
      */
     @api iconName;
     /**
-     * The label can include text. To include additional markup or another component, use the label slot.
+     * Label to display above the title. To include additional markup or another component, use the label slot.
      *
      * @type {string}
      * @public
      */
     @api label;
     /**
-     * The title can include text. To include additional markup or another component, use the title slot.
+     * Title of the page header. To include additional markup or another component, use the title slot.
      *
      * @type {string}
      * @public
      */
     @api title;
     /**
-     * The info can include text. To include additional markup or another component, use the info slot.
+     * Text to display below the title. To include additional markup or another component, use the info slot.
      *
      * @type {string}
      * @public

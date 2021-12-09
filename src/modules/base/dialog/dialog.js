@@ -44,7 +44,7 @@ const DIALOG_SIZES = { valid: ['small', 'medium', 'large'], default: 'medium' };
  */
 export default class Dialog extends LightningElement {
     /**
-     * Name of dialog.
+     * Dialog name.
      *
      * @type {string}
      * @public
@@ -140,7 +140,7 @@ export default class Dialog extends LightningElement {
     }
 
     /**
-     * Show Dialog - boolean to show or hide the dialog.
+     * If present, the dialog is open by default.
      *
      * @type {boolean}
      * @default false

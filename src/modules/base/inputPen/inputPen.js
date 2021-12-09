@@ -50,7 +50,7 @@ const DEFAULT_SIZE = 2;
  */
 export default class InputPen extends LightningElement {
     /**
-     * Help text detailing the purpose and function of the input. This attribute isn't supported for file, radio, toggle, and checkbox-button types.
+     * Help text detailing the purpose and function of the input.
      *
      * @type {string}
      * @public
@@ -64,7 +64,7 @@ export default class InputPen extends LightningElement {
      */
     @api label;
     /**
-     * A comma-separated list of buttons to remove from the toolbar. Values include pen, eraser, clear, size, color
+     * Array of buttons to remove from the toolbar. Values include pen, eraser, clear, size, color
      *
      * @type {string[]}
      * @public
@@ -168,7 +168,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Defines the color of the pen.
+     * Color of the pen.
      *
      * @type {string}
      * @public
@@ -185,7 +185,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Defines the size of the pen.
+     * Size of the pen.
      *
      * @type {string}
      * @public
@@ -208,7 +208,8 @@ export default class InputPen extends LightningElement {
      * @public
      * @default bottom-toolbar
      */
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -323,7 +324,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Specifies whether the editor content is valid. If invalid, the slds-has-error class is added. This value defaults to false.
+     * If true, the editor is considered invalid.
      *
      * @type {boolean}
      * @public
@@ -394,7 +395,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Clear method to reset canvas.
+     * Clear the canvas.
      *
      * @public
      */
@@ -413,7 +414,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Drawing mode method - Mode: draw, erase
+     * Set the drawing mode. Valid modes include draw and erase.
      *
      * @param {string} modeName
      * @public
@@ -422,7 +423,7 @@ export default class InputPen extends LightningElement {
     setMode(modeName) {
         this._mode = normalizeString(modeName, {
             fallbackValue: this._mode,
-            validValues: PEN_MODES
+            validValues: PEN_MODES.valid
         });
     }
 

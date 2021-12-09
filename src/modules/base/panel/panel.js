@@ -49,7 +49,7 @@ const PANEL_SIZES = {
  */
 export default class Pagination extends LightningElement {
     /**
-     * The title can include text, and is displayed in the panel header. To include additional markup or another component, use the title slot.
+     * The title is displayed in the panel header. To include additional markup or another component, use the title slot.
      *
      * @type {string}
      * @public
@@ -113,7 +113,7 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * It defines the width of the panel. Valid values include small, medium, large, x-large and full.
+     * Width of the panel. Valid values include small, medium, large, x-large and full.
      *
      * @type {string}
      * @public
@@ -132,7 +132,7 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * Attribute that toggles displaying the Panel.
+     * If present, the panel is visible by default.
      *
      * @type {boolean}
      * @public

@@ -146,15 +146,21 @@ export default class InputDateRange extends LightningElement {
         this.updateClassListWhenError();
     }
 
+    /**
+    * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>.
+    *
+    * @type {object}
+    * @public
+    */
     @api
     get value() {
         return { startDate: this._startDate, endDate: this._endDate };
     }
 
     /**
-     * Specifies the value of the start date input.
+     * Specifies the value of the start date input, which can be a Date object, timestamp, or an ISO8601 formatted string.
      *
-     * @type {string}
+     * @type {(string|Date|number)}
      * @public
      */
     @api
@@ -169,9 +175,9 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Specifies the value of the end date input.
+     * Specifies the value of the end date input, which can be a Date object, timestamp, or an ISO8601 formatted string.
      *
-     * @type {string}
+     * @type {(string|Date|number)}
      * @public
      */
     @api
@@ -186,7 +192,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Specifies the time zone used when type='datetime' only.
+     * Specifies the time zone used when the type is <code>datetime</code> only.
      * This value defaults to the user's Salesforce time zone setting.
      *
      * @type {string}
@@ -204,7 +210,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * The display style of the date when type='date' or type='datetime'.
+     * The display style of the date.
      * Valid values are short, medium and long. The format of each style is specific to the locale.
      * On mobile devices this attribute has no effect.
      *
@@ -549,7 +555,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Checks if the input is valid.
      *
-     * @returns {boolean} Indicates whether the element meets all constraint validations.
+     * @returns {boolean} True if the element meets all constraint validations.
      * @public
      */
     @api
@@ -558,10 +564,9 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Displays the error messages and returns false if the input is invalid.
-     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
-     * @returns {boolean} - The validity status of the input fields.
+     * @returns {boolean} False if invalid, true if valid.
      * @public
      */
     @api
@@ -574,8 +579,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Sets a custom error message to be displayed when a form is submitted.
      *
-     * @param {string} message - The string that describes the error.
-     * If message is an empty string, the error message is reset.
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
      */
     @api
@@ -585,7 +589,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Displays error messages on invalid fields.
-     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
      *
      * @public
      */
@@ -1017,7 +1021,7 @@ export default class InputDateRange extends LightningElement {
          * @event
          * @name change
          * @param {string} startDate Start date value.
-         * @param {string} endDate End date value
+         * @param {string} endDate End date value.
          * @public
          */
         this.dispatchEvent(

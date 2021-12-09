@@ -307,7 +307,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * The name of the icon to be used in the format 'utility:down'. For the horizontal variant, if an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon. This value defaults to utility:down.
+     * The name of the icon to be used in the format 'utility:down'. For the horizontal variant, if an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.
      *
      * @type {string}
      * @public
@@ -783,7 +783,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Focus method.
+     * Set the focus on the menu.
      *
      * @public
      */
@@ -799,7 +799,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Apply method.
+     * Simulate a click on the apply button.
      *
      * @public
      */
@@ -810,7 +810,7 @@ export default class FilterMenu extends LightningElement {
     }
 
     /**
-     * Clear Method.
+     * Clear the selected items.
      *
      * @public
      */
@@ -998,6 +998,14 @@ export default class FilterMenu extends LightningElement {
             }
             if (this._dropdownVisible) {
                 this.startPositioning();
+
+                /**
+                * The event fired when the dropdown is opened.
+                *
+                * @event
+                * @name open
+                * @public
+                */
                 this.dispatchEvent(new CustomEvent('open'));
 
                 // update the bounding rect when the menu is toggled
@@ -1006,6 +1014,14 @@ export default class FilterMenu extends LightningElement {
                 this.pollBoundingRect();
             } else {
                 this.stopPositioning();
+
+                /**
+                * The event fired when the dropdown is closed.
+                *
+                * @event
+                * @name close
+                * @public
+                */
                 this.dispatchEvent(new CustomEvent('close'));
             }
 
@@ -1230,7 +1246,7 @@ export default class FilterMenu extends LightningElement {
      */
     handleResetClick() {
         /**
-         * Reset event.
+         * The event fired when the selection is resetted.
          *
          * @event
          * @name reset
@@ -1256,11 +1272,11 @@ export default class FilterMenu extends LightningElement {
         });
 
         /**
-         * Search event.
+         * The event fired when the search input value is changed.
          *
          * @event
          * @name search
-         * @param {string} value : searchTerm
+         * @param {string} value The value of the search input.
          * @public
          */
         this.dispatchEvent(
@@ -1277,11 +1293,11 @@ export default class FilterMenu extends LightningElement {
      */
     dispatchApply() {
         /**
-         * Apply event.
+         * The event fired when a user clicks on the “Apply” button or removes a pill from the selected items.
          *
          * @event
          * @name apply
-         * @param {string[]} value : this.value
+         * @param {string[]} value Array of selected items' values.
          * @public
          */
         this.dispatchEvent(
@@ -1300,11 +1316,11 @@ export default class FilterMenu extends LightningElement {
         // Dispatch the event with the same properties as LWC button-menu
         this.dispatchEvent(
             /**
-             * Select event.
+             * The event fired when a user clicks on a menu item.
              *
              * @event
              * @name select
-             * @param {string[]} value: this.value
+             * @param {string[]} value Value of the selected item.
              * @public
              * @cancelable
              */

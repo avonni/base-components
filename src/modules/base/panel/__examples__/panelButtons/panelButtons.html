@@ -1,27 +1,29 @@
-<div class="slds-grid slds-is-relative slds-scrollable_none" style="background-color: rgb(250, 250, 249); height: 600px;">
-    <div class="slds-col slds-p-around_medium">
-        <lightning-button
-            onclick={toggle}
-            label="toggle"
-            class="slds-m-around_small"
-        ></lightning-button>
-        <lightning-button
-            onclick={open}
-            label="open"
-            class="slds-m-around_small"
-        >
-        </lightning-button>
-        <lightning-button
-            onclick={close}
-            label="close"
-            class="slds-m-around_small"
-        ></lightning-button>
-    </div>
-    <avonni-panel data-element-id="avonni-panel">
-        <div slot="title">Slot title</div>
-        <div slot="panel-body">
-            A panel body accepts any layout or component
+<template>
+    <div class="slds-grid slds-is-relative slds-scrollable_none" style="background-color: rgb(250, 250, 249); height: 600px;">
+        <div class="slds-col slds-p-around_medium">
+            <lightning-button
+                onclick={toggle}
+                label="toggle"
+                class="slds-m-around_small"
+            ></lightning-button>
+            <lightning-button
+                onclick={open}
+                label="open"
+                class="slds-m-around_small"
+            >
+            </lightning-button>
+            <lightning-button
+                onclick={close}
+                label="close"
+                class="slds-m-around_small"
+            ></lightning-button>
         </div>
-        <p>A panel main body accepts any layout or component</p>
-    </avonni-panel>
-</div>
+        <avonni-panel data-element-id="avonni-panel">
+            <div slot="title">Slot title</div>
+            <div slot="panel-body">
+                A panel body accepts any layout or component
+            </div>
+            <p>A panel main body accepts any layout or component</p>
+        </avonni-panel>
+    </div>
+</template>

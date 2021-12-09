@@ -186,7 +186,7 @@ export default class Rating extends LightningElement {
     }
 
     /**
-     * Specifies the value of the Rating.
+     * Specifies the value of the rating.
      *
      * @type {string}
      * @public
@@ -388,7 +388,7 @@ export default class Rating extends LightningElement {
              *
              * @event
              * @name change
-             * @param {string} The value of the selected rating.
+             * @param {string} value Value of the selected rating.
              * @public
              */
             const selectedEvent = new CustomEvent('change', {

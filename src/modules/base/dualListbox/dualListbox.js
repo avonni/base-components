@@ -92,7 +92,7 @@ const i18n = {
  */
 export default class DualListbox extends LightningElement {
     /**
-     * Label for add button.
+     * Label of the add button.
      *
      * @type {string}
      * @public
@@ -100,7 +100,7 @@ export default class DualListbox extends LightningElement {
     @api addButtonLabel;
 
     /**
-     * Label for down button
+     * Label of the down button
      *
      * @type {string}
      * @public
@@ -116,7 +116,7 @@ export default class DualListbox extends LightningElement {
     @api fieldLevelHelp;
 
     /**
-     * Label for the dual listbox.
+     * Label of the dual listbox.
      *
      * @type {string}
      * @public
@@ -141,7 +141,7 @@ export default class DualListbox extends LightningElement {
     @api name;
 
     /**
-     * Label for remove button.
+     * Label of the remove button.
      *
      * @type {string}
      * @public
@@ -149,7 +149,7 @@ export default class DualListbox extends LightningElement {
     @api removeButtonLabel;
 
     /**
-     * Label for the selected options listbox.
+     * Label of the Selected options list.
      *
      * @type {string}
      * @public
@@ -165,7 +165,7 @@ export default class DualListbox extends LightningElement {
     @api selectedPlaceholder;
 
     /**
-     * Label for the source options listbox.
+     * Label of the Source options list.
      *
      * @type {string}
      * @public
@@ -173,7 +173,7 @@ export default class DualListbox extends LightningElement {
     @api sourceLabel;
 
     /**
-     * Label for up button.
+     * Label of the up button.
      *
      * @type {string}
      * @public
@@ -272,7 +272,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * The name of the icon to be used in the format 'utility:right'.
+     * Name of the add button icon, in the format 'utility:right'.
      *
      * @type {string}
      * @public
@@ -373,7 +373,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * The name of the icon to be used in the format ‘utility:down’.
+     *Name of the down button icon to be used in the format ‘utility:down’.
      *
      * @type {string}
      * @public
@@ -442,7 +442,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Number of options that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.
+     * Number of options displayed in the listboxes before vertical scrollbars are displayed. Determines the height of the listbox.
      *
      * @type {number}
      * @public
@@ -526,7 +526,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * A list of options that are available for selection. Each option has the following attributes: label, description, value, fallbackIconName, iconSrc, initials and variant.
+     * Array of option objects that are available for selection.
      *
      * @type {object[]}
      * @public
@@ -547,7 +547,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * The name of the icon to be used in the format ‘utility:left’.
+     * Name of the remove button icon in the format ‘utility:left’.
      *
      * @type {string}
      * @public
@@ -601,7 +601,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium and large.
+     * Width of the source options listbox and the selected options listbox. Valid values include small, medium and large.
      *
      * @type {string}
      * @public
@@ -620,7 +620,7 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * The name of the icon to be used in the format ‘utility:up’.
+     * Name of the up button icon to be used in the format ‘utility:up’.
      *
      * @type {string}
      * @public
@@ -697,10 +697,10 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Returns the valid attribute value (Boolean) on the ValidityState object.
+     * Checks if the input is valid.
      *
+     * @returns {boolean} True if the element meets all constraint validations.
      * @public
-     * @returns {boolean}
      */
     @api
     checkValidity() {
@@ -708,10 +708,10 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Displays the error messages and returns false if the input is invalid. If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
+     * @returns {boolean} False if invalid, true if valid.
      * @public
-     * @returns {string} errorMessage
      */
     @api
     reportValidity() {
@@ -721,9 +721,9 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Sets a custom error message to be displayed when the dual listbox value is submitted.
+     * Sets a custom error message to be displayed when a form is submitted.
      *
-     * @param {string} message
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
      */
     @api

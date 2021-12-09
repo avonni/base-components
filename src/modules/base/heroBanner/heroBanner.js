@@ -145,7 +145,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Defines the horizontal alignment of the title, caption and description.
+     * Horizontal alignment of the title, caption and description.
      * Valid values include left, center and right.
      *
      * @type {string}
@@ -165,7 +165,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Defines the vertical alignment of the title, caption and description.
+     * Vertical alignment of the title, caption and description.
      * Valid values include top, center and bottom.
      *
      * @type {string}
@@ -185,7 +185,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Defines the height of the banner in px.
+     * Height of the banner in px.
      *
      * @type {number}
      * @default 400
@@ -202,7 +202,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Defines the width inside of the banner in px.
+     * Width inside of the banner in px.
      *
      * @type {number}
      * @default 960
@@ -219,7 +219,7 @@ export default class HeroBanner extends LightningElement {
     }
 
     /**
-     * Defines the width of the content inside of the banner in percentage.
+     * Width of the content inside of the banner in percentage.
      *
      * @type {number}
      * @default 100

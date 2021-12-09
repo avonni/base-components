@@ -306,7 +306,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Clears the color value of the ColorPalette.
+     * Clear the value.
      *
      * @public
      */
@@ -415,7 +415,7 @@ export default class ColorPalette extends LightningElement {
      */
     handleFocus() {
         /**
-         * The event fired when you focus the palette.
+         * The event fired when the focus is set on the palette.
          *
          * @event
          * @name focus
@@ -498,6 +498,8 @@ export default class ColorPalette extends LightningElement {
 
         if (!this.disabled && !this.readOnly) {
             /**
+             * The event fired when the value is changed.
+             * 
              * @event
              * @public
              * @name change
