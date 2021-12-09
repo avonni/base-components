@@ -74,3 +74,10 @@
 .avonni-input-pen__label-container {
     padding: 0 0.25rem 0.25rem 0.25rem;
 }
+
+.avonni-input-pen__label-container label {
+    color: var(--avonni-input-pen-header-text-color, #3e3e3c);
+    font-size: var(--avonni-input-pen-header-font-size, 0.75rem);
+    font-weight: var(--avonni-input-pen-header-font-weight, 400);
+    font-style: var(--avonni-input-pen-header-font-style, normal);
+}
