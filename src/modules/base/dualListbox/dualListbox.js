@@ -1116,11 +1116,7 @@ export default class DualListbox extends LightningElement {
         return classSet('slds-dueling-list__options avonni-dual-listbox__boxes')
             .add({ 'slds-is-disabled': this._disabled })
             .add({ 'slds-is-relative': this._isLoading })
-            .add({
-                'avonni-dual-listbox__box_size-small': this._size === 'small',
-                'avonni-dual-listbox__box_size-medium': this._size === 'medium',
-                'avonni-dual-listbox__box_size-large': this._size === 'large'
-            })
+            .add(`avonni-dual-listbox__box_size-${this._size}`)
             .toString();
     }
 
@@ -1139,11 +1135,7 @@ export default class DualListbox extends LightningElement {
             .add({
                 'avonni-dual-listbox__empty-column': this.isSelectedBoxEmpty
             })
-            .add({
-                'avonni-dual-listbox__box_size-small': this._size === 'small',
-                'avonni-dual-listbox__box_size-medium': this._size === 'medium',
-                'avonni-dual-listbox__box_size-large': this._size === 'large'
-            })
+            .add(`avonni-dual-listbox__box_size-${this._size}`)
             .toString();
     }
 

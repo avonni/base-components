@@ -34,17 +34,24 @@
 
 <template>
     <div class="avonni-hero-banner__background" style={imgSrc}>
-        <div class={computedContentContainer}>
+        <div
+            data-element-id="avonni-hero-banner-content-container"
+            class={computedContentContainer}
+        >
             <div class="slds-grid avonni-hero-banner__justify-content_center">
-                <div class={computedWidthContainer} style={computedMaxWidth}>
+                <div
+                    data-element-id="avonni-hero-banner-content-width"
+                    class={computedWidthContainer}
+                    style={computedMaxWidth}
+                >
                     <div
-                        class="avonni-hero-banner-content"
+                        data-element-id="avonni-hero-banner-content"
                         style={computedContentStyling}
                     >
                         <template if:true={caption}>
                             <h1
                                 class="avonni-hero-banner__caption"
-                                data-element-id="h1"
+                                data-element-id="avonni-hero-banner-caption"
                             >
                                 {caption}
                             </h1>
@@ -52,7 +59,7 @@
                         <template if:true={title}>
                             <h2
                                 class="avonni-hero-banner__title"
-                                data-element-id="h2"
+                                data-element-id="avonni-hero-banner-title"
                             >
                                 {title}
                             </h2>
@@ -60,7 +67,7 @@
                         <template if:true={subtitle}>
                             <p
                                 class="avonni-hero-banner__subtitle"
-                                data-element-id="p-subtitle"
+                                data-element-id="avonni-hero-banner-subtitle"
                             >
                                 {subtitle}
                             </p>

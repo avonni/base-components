@@ -431,12 +431,10 @@ export default class ButtonPopover extends LightningElement {
                 'slds-popover_error': this._popoverVariant === 'error',
                 'slds-popover_walkthrough':
                     this._popoverVariant === 'walkthrough',
-                'slds-popover_small': this._popoverSize === 'small',
-                'slds-popover_medium': this._popoverSize === 'medium',
-                'slds-popover_large': this._popoverSize === 'large',
                 'slds-show': this.popoverVisible,
                 'slds-hide': !this.popoverVisible
             })
+            .add(`slds-popover_${this._popoverSize}`)
             .toString();
     }
 
