@@ -280,7 +280,7 @@ export default class InputCounter extends LightningElement {
 
         if (this._variant === 'label-inline') {
             this.labelVariant = 'label-hidden';
-            this.classList.add('avonni-flex-container');
+            this.classList.add('avonni-input-counter__flex-container');
         } else {
             this.labelVariant = this._variant;
             this.labelFieldLevelHelp =
