@@ -131,7 +131,7 @@ export default class Pagination extends LightningElement {
     renderedCallback() {
         if (!this.init) {
             let container = this.template.querySelector(
-                '.avonni-pagination-container'
+                '.avonni-pagination__container'
             );
             let style = document.createElement('style');
 
@@ -153,11 +153,11 @@ export default class Pagination extends LightningElement {
                     background-color: #1b5297;
                     color: #ffffff;
                 }
-                .avonni-pagination-container-fill .avonni-pagination-button {
+                .avonni-pagination__container_fill .avonni-pagination-button {
                     flex: auto;
                     display: flex;
                 }   
-                .avonni-pagination-container-fill .avonni-pagination-button button {
+                .avonni-pagination__container_fill .avonni-pagination-button button {
                     flex: 1;
                 }                 
             `;
@@ -365,8 +365,8 @@ export default class Pagination extends LightningElement {
      * @type {string}
      */
     get computedContainerClass() {
-        return classSet('avonni-pagination-container')
-            .add(`avonni-pagination-container-${this._align}`)
+        return classSet('avonni-pagination__container')
+            .add(`avonni-pagination__container_${this._align}`)
             .toString();
     }
 
