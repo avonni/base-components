@@ -48,7 +48,7 @@ describe('MediaObject', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Media object: Default attributes', () => {
         expect(element.verticalAlign).toBe('start');
         expect(element.responsive).toBeFalsy();
         expect(element.inline).toBeFalsy();
@@ -56,44 +56,44 @@ describe('MediaObject', () => {
     });
 
     // vertical-align
-    it('verticalAlign = start', () => {
+    it('Media object: VerticalAlign = start', () => {
         element.verticalAlign = 'start';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).not.toContain('slds-media_center');
             expect(wrapper.classList).not.toContain(
-                'avonni-media-object-alignment-end'
+                'avonni-media-object_alignment-end'
             );
         });
     });
 
-    it('verticalAlign = center', () => {
+    it('Media object: VerticalAlign = center', () => {
         element.verticalAlign = 'center';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).toContain('slds-media_center');
             expect(wrapper.classList).not.toContain(
-                'avonni-media-object-alignment-end'
+                'avonni-media-object_alignment-end'
             );
         });
     });
 
-    it('verticalAlign = end', () => {
+    it('Media object: VerticalAlign = end', () => {
         element.verticalAlign = 'end';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).not.toContain('slds-media_center');
             expect(wrapper.classList).toContain(
-                'avonni-media-object-alignment-end'
+                'avonni-media-object_alignment-end'
             );
         });
     });
 
     // responsive
-    it('responsive = false', () => {
+    it('Media object: Responsive = false', () => {
         element.responsive = false;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -102,7 +102,7 @@ describe('MediaObject', () => {
         });
     });
 
-    it('responsive = true', () => {
+    it('Media object: Responsive = true', () => {
         element.responsive = true;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -112,30 +112,30 @@ describe('MediaObject', () => {
     });
 
     // inline
-    it('inline = false', () => {
+    it('Media object: Inline = false', () => {
         element.inline = false;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).not.toContain(
-                'avonni-media-object-display-inline'
+                'avonni-media-object_display-inline'
             );
         });
     });
 
-    it('inline = true', () => {
+    it('Media object: Inline = true', () => {
         element.inline = true;
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).toContain(
-                'avonni-media-object-display-inline'
+                'avonni-media-object_display-inline'
             );
         });
     });
 
     // size
-    it('size = medium', () => {
+    it('Media object: Size = medium', () => {
         element.size = 'medium';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -145,7 +145,7 @@ describe('MediaObject', () => {
         });
     });
 
-    it('size = small', () => {
+    it('Media object: Size = small', () => {
         element.size = 'small';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
@@ -155,7 +155,7 @@ describe('MediaObject', () => {
         });
     });
 
-    it('size = large', () => {
+    it('Media object: Size = large', () => {
         element.size = 'large';
         const wrapper = element.shadowRoot.querySelector('.slds-media');
 
