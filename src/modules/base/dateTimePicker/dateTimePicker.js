@@ -1133,7 +1133,7 @@ export default class DateTimePicker extends LightningElement {
      * @type {boolean}
      */
     get entirePeriodIsDisabled() {
-        return this.table.every((day) => day.disabled === true);
+        return this.table.every((day) => day.disabled);
     }
 
     /**

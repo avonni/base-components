@@ -137,8 +137,8 @@ export default class MediaObject extends LightningElement {
                 'slds-media_center': this._verticalAlign === 'center',
                 'avonni-media-object_alignment-end':
                     this._verticalAlign === 'end',
-                'slds-media_responsive': this._responsive === true,
-                'avonni-media-object_display-inline': this._inline === true
+                'slds-media_responsive': this._responsive,
+                'avonni-media-object_display-inline': this._inline
             })
             .toString();
     }
