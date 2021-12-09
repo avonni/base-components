@@ -235,14 +235,7 @@ export default class ProgressStep extends LightningElement {
                     !this.completedSteps.includes(this.value) &&
                     this._popoverVariant === 'button'
             })
-            .add({
-                'avonni-progress-step__popover_size-small':
-                    this._popoverSize === 'small',
-                'avonni-progress-step__popover_size-medium':
-                    this._popoverSize === 'medium',
-                'avonni-progress-step__popover_size-large':
-                    this._popoverSize === 'large'
-            })
+            .add(`avonni-progress-step__popover_size-${this._popoverSize}`)
             .add({
                 'avonni-progress-step__popover-body':
                     this._popoverVariant !== 'button',

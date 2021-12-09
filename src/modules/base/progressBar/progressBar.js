@@ -367,16 +367,9 @@ export default class ProgressBar extends LightningElement {
                 'slds-progress-bar_circular': this._variant === 'circular',
                 'slds-progress-bar_x-small': this._thickness === 'x-small',
                 'slds-progress-bar_small': this._thickness === 'small',
-                'slds-progress-bar_large': this._thickness === 'large',
-                'avonni-progress-bar__bar-background_theme-base': this._theme === 'base',
-                'avonni-progress-bar__bar-background_theme-success': this._theme === 'success',
-                'avonni-progress-bar__bar-background_theme-inverse': this._theme === 'inverse',
-                'avonni-progress-bar__bar-background_theme-alt-inverse': this._theme === 'alt-inverse',
-                'avonni-progress-bar__bar-background_theme-warning': this.theme === 'warning',
-                'avonni-progress-bar__bar-background_theme-info': this._theme === 'info',
-                'avonni-progress-bar__bar-background_theme-error': this._theme === 'error',
-                'avonni-progress-bar__bar-background_theme-offline': this._theme === 'offline',
+                'slds-progress-bar_large': this._thickness === 'large'
             })
+            .add(`avonni-progress-bar__bar-background_theme-${this._theme}`)
             .add({
                 'slds-m-bottom_large': this._referenceLines.length > 0
             })
@@ -391,15 +384,8 @@ export default class ProgressBar extends LightningElement {
     get computedInnerClass() {
         // for the progressBar in vertical we need to set a height on the outer div and inner div
         return classSet('slds-progress-bar__value')
+            .add(`avonni-progress-bar__bar_theme-${this._theme}`)
             .add({
-                'avonni-progress-bar__bar_theme-base': this._theme === 'base',
-                'avonni-progress-bar__bar_theme-success': this._theme === 'success',
-                'avonni-progress-bar__bar_theme-inverse': this._theme === 'inverse',
-                'avonni-progress-bar__bar_theme-alt-inverse': this._theme === 'alt-inverse',
-                'avonni-progress-bar__bar_theme-warning': this.theme === 'warning',
-                'avonni-progress-bar__bar_theme-info': this._theme === 'info',
-                'avonni-progress-bar__bar_theme-error': this._theme === 'error',
-                'avonni-progress-bar__bar_theme-offline': this._theme === 'offline',
                 'avonni-progress-bar__vertical-bar_size-x-small':
                     this._size === 'x-small' &&
                     this._orientation === 'vertical',

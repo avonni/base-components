@@ -489,7 +489,7 @@ export default class InputToggle extends LightningElement {
             'faux_x-small': this.size === 'x-small',
             faux_small: this.size === 'small',
             faux_large: this.size === 'large',
-            'faux_hide-mark': this.hideMark === true
+            'faux_hide-mark': this.hideMark
         });
     }
 

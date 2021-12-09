@@ -126,18 +126,7 @@ export default class ScopedNotification extends LightningElement {
      */
     get computedNotificationClass() {
         return classSet('slds-scoped-notification slds-media slds-media_center')
-            .add({
-                'avonni-scoped-notification_theme-base':
-                    this.variant === 'base',
-                'avonni-scoped-notification_theme-dark':
-                    this.variant === 'dark',
-                'avonni-scoped-notification_theme-warning':
-                    this.variant === 'warning',
-                'avonni-scoped-notification_theme-error':
-                    this.variant === 'error',
-                'avonni-scoped-notification_theme-success':
-                    this.variant === 'success'
-            })
+            .add(`avonni-scoped-notification_theme-${this._variant}`)
             .toString();
     }
 
