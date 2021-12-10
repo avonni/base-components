@@ -48,7 +48,7 @@ describe('Separator', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Separator: Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.iconPosition.default).toBe('left');
@@ -57,25 +57,29 @@ describe('Separator', () => {
         expect(element.alignContent.default).toBe('center');
     });
 
-    it('Label', () => {
+    it('Separator: Label', () => {
         element.label = 'Today';
 
         return Promise.resolve().then(() => {
-            const header = element.shadowRoot.querySelector('[data-element-id="h1"]');
+            const header = element.shadowRoot.querySelector(
+                '[data-element-id="h1"]'
+            );
             expect(header.textContent).toBe('Today');
         });
     });
 
-    it('IconName', () => {
+    it('Separator: IconName', () => {
         element.iconName = 'utility:check';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             expect(icon.iconName).toBe('utility:check');
         });
     });
 
-    it('IconPosition', () => {
+    it('Separator: IconPosition', () => {
         element.iconName = 'utility:check';
         element.iconPosition = 'right';
 
@@ -87,73 +91,79 @@ describe('Separator', () => {
         });
     });
 
-    it('IconSize', () => {
+    it('Separator: IconSize', () => {
         element.iconName = 'utility:check';
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            const content = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const content = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             expect(content.size).toBe('x-small');
         });
     });
 
-    it('Orientation', () => {
+    it('Separator: Orientation', () => {
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-separator_container'
+                '.avonni-separator__container'
             );
             expect(container.classList).toContain('slds-grid_vertical');
         });
     });
 
-    it('Align Content start', () => {
+    it('Separator: Align Content start', () => {
         element.iconName = 'utility:check';
         element.iconSize = 'x-small';
         element.alignContent = 'start';
 
         return Promise.resolve().then(() => {
             const lineOne = element.shadowRoot.querySelector(
-                '.avonni-separator_line-one'
+                '.avonni-separator__line-one'
             );
             expect(lineOne.classList).toContain('slds-hide');
         });
     });
 
-    it('Align Content end', () => {
+    it('Separator: Align Content end', () => {
         element.iconName = 'utility:check';
         element.iconSize = 'x-small';
         element.alignContent = 'end';
 
         return Promise.resolve().then(() => {
             const lineTwo = element.shadowRoot.querySelector(
-                '.avonni-separator_line-two'
+                '.avonni-separator__line-two'
             );
             expect(lineTwo.classList).toContain('slds-hide');
         });
     });
 
-    it('Icon Margin left', () => {
+    it('Separator: Icon Margin left', () => {
         element.label = 'Tester';
         element.iconName = 'utility:check';
         element.iconSize = 'small';
         element.iconPosition = 'left';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             expect(icon.classList).toContain('slds-m-right_x-small');
         });
     });
 
-    it('Icon Margin Right', () => {
+    it('Separator: Icon Margin Right', () => {
         element.label = 'Tester';
         element.iconName = 'utility:check';
         element.iconSize = 'small';
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             expect(icon.classList).toContain('slds-m-left_x-small');
         });
     });

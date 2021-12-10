@@ -148,10 +148,10 @@ describe('PageHeader', () => {
             expect(details).toBeFalsy();
 
             expect(wrapper.classList).not.toContain(
-                'slds-page-header_object-home'
+                'avonni-page-header__header_object-home'
             );
             expect(wrapper.classList).not.toContain(
-                'slds-page-header_record-home'
+                'avonni-page-header__header_record-home'
             );
             expect(wrapper.classList).not.toContain(
                 'slds-page-header_vertical'
@@ -184,9 +184,9 @@ describe('PageHeader', () => {
             expect(headerInfo).toBeFalsy();
             expect(details).toBeFalsy();
 
-            expect(wrapper.classList).toContain('slds-page-header_object-home');
+            expect(wrapper.classList).toContain('avonni-page-header__header_object-home');
             expect(wrapper.classList).not.toContain(
-                'slds-page-header_record-home'
+                'avonni-page-header__header_record-home'
             );
             expect(wrapper.classList).not.toContain(
                 'slds-page-header_vertical'
@@ -220,9 +220,9 @@ describe('PageHeader', () => {
             expect(details).toBeTruthy();
 
             expect(wrapper.classList).not.toContain(
-                'slds-page-header_object-home'
+                'avonni-page-header__header_object-home'
             );
-            expect(wrapper.classList).toContain('slds-page-header_record-home');
+            expect(wrapper.classList).toContain('avonni-page-header__header_record-home');
             expect(wrapper.classList).not.toContain(
                 'slds-page-header_vertical'
             );
@@ -255,10 +255,10 @@ describe('PageHeader', () => {
             expect(details).toBeTruthy();
 
             expect(wrapper.classList).not.toContain(
-                'slds-page-header_object-home'
+                'avonni-page-header__header_object-home'
             );
             expect(wrapper.classList).not.toContain(
-                'slds-page-header_record-home'
+                'avonni-page-header__header_record-home'
             );
             expect(wrapper.classList).toContain('slds-page-header_vertical');
         });

@@ -23,16 +23,125 @@
  * @property {string} popoverDescription Text description to describe the popover.
  * @property {string} popoverHidden If true, the popover is displayed only when the progress-step receives focus. Default to false.
  */
+
 /**
  * @namespace stylingHooks
  */
 /**
- * Background color of the popover.
- *
  * @memberof stylingHooks
- * @name --avonni-progress-indicator-step-color-background
- * @type {color}
+ * @name --avonni-progress-indicator-bar-color-background
+ * @default #dddbda
+ * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-bar-completed-color-background
+ * @default #60b4ff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-color-background
+ * @default #e8e8e8
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-completed-color-background
+ * @default #006dcc
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-completed-text-color
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-button-color-background
+ * @default #e8e8e8
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-button-icon-color-background
+ * @default #706e6b
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-button-color-background-hover
+ * @default #f4f6fe
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-button-completed-color-background
+ * @default #006dcc
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-popover-button-icon-completed-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-label-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-label-font-size
+ * @default 0.875rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-label-font-weight
+ * @default 700
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-description-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-description-font-size
+ * @default 0.815rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-description-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-progress-indicator-step-description-font-weight
+ * @default 400
+ * @type font
+ */
+
 /**
  * @namespace examples
  */

@@ -39,12 +39,13 @@ import {
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
 
-const INDICATOR_ACTION = 'slds-carousel__indicator-action';
+const INDICATOR_ACTION =
+    'slds-carousel__indicator-action avonni-carousel__progress-indicator_inactive';
 const INDICATOR_ACTION_SHADED =
-    'slds-carousel__indicator-action avonni-carousel-progress-indicator-shaded-inactive';
-const SLDS_ACTIVE = 'slds-is-active';
+    'slds-carousel__indicator-action avonni-carousel__progress-indicator_shaded-inactive';
+const SLDS_ACTIVE = 'slds-is-active avonni-carousel__progress-indicator_active';
 const SLDS_ACTIVE_SHADED =
-    'slds-is-active avonni-carousel-progress-indicator-shaded-active';
+    'slds-is-active avonni-carousel__progress-indicator_shaded-active';
 const FALSE_STRING = 'false';
 const TRUE_STRING = 'true';
 
@@ -578,7 +579,6 @@ export default class Carousel extends LightningElement {
         const numberOfPanels = Math.ceil(
             this._carouselItems.length / this.itemsPerPanel
         );
-
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
         this.initializePanels();

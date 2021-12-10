@@ -356,7 +356,7 @@ export default class Rating extends LightningElement {
         return classSet()
             .add({
                 'slds-form-element_stacked': this.variant === 'label-stacked',
-                'avonni-label-inline': this.variant === 'label-inline'
+                'avonni-rating__label_inline': this.variant === 'label-inline'
             })
             .toString();
     }
@@ -367,7 +367,7 @@ export default class Rating extends LightningElement {
      * @type {string}
      */
     get computedLegendClass() {
-        return classSet('slds-form-element__label slds-no-flex')
+        return classSet('slds-form-element__label slds-no-flex avonni-rating__label')
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden'
             })

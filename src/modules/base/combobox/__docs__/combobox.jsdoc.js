@@ -109,55 +109,97 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-color-border
+ * @name --avonni-combobox-option-color-background
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-option-color-background-hover
+ * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-input-color-border
  * @default #dddbda
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-sizing-border-bottom
- * @default 1px
- * @type sizing
+ * @name --avonni-combobox-label-text-color
+ * @default #3e3e3c
+ * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-sizing-border-left
- * @default 1px
- * @type sizing
+ * @name --avonni-combobox-label-font-size
+ * @default 0.75rem
+ * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-sizing-border-right
- * @default 1px
- * @type sizing
+ * @name --avonni-combobox-label-font-style
+ * @default normal
+ * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-sizing-border-top
- * @default 1px
- * @type sizing
+ * @name --avonni-combobox-label-font-weight
+ * @default 400
+ * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-radius-border-bottom-left
+ * @name --avonni-combobox-input-radius-border-bottom-left
  * @default 0.25rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-radius-border-bottom-right
+ * @name --avonni-combobox-input-radius-border-bottom-right
  * @default 0.25rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-radius-border-top-left
+ * @name --avonni-combobox-input-radius-border-top-left
  * @default 0.25rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-combobox-radius-border-top-right
+ * @name --avonni-combobox-input-radius-border-top-right
  * @default 0.25rem
  * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-input-styling-border
+ * @default solid
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni--combobox-input-sizing-border-bottom
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni--combobox-input-sizing-border-left
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni--combobox-input-sizing-border-right
+ * @default 1px
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni--combobox-input-sizing-border-top
+ * @default 1px
+ * @type sizing
  */

@@ -128,10 +128,7 @@ export default class Illustration extends LightningElement {
      */
     get illustrationClass() {
         return classSet('slds-illustration')
-            .add({
-                'slds-illustration_small': this._size === 'small',
-                'slds-illustration_large': this._size === 'large'
-            })
+            .add(`slds-illustration_${this._size}`)
             .toString();
     }
 

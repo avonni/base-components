@@ -398,7 +398,7 @@ export default class ButtonPopover extends LightningElement {
     get computedPopoverHeaderClass() {
         return classSet('slds-popover__header')
             .add({
-                'avonni-button-popover-space-between': !this.hideCloseButton
+                'avonni-button-popover_space-between': !this.hideCloseButton
             })
             .toString();
     }
@@ -431,12 +431,10 @@ export default class ButtonPopover extends LightningElement {
                 'slds-popover_error': this._popoverVariant === 'error',
                 'slds-popover_walkthrough':
                     this._popoverVariant === 'walkthrough',
-                'slds-popover_small': this._popoverSize === 'small',
-                'slds-popover_medium': this._popoverSize === 'medium',
-                'slds-popover_large': this._popoverSize === 'large',
                 'slds-show': this.popoverVisible,
                 'slds-hide': !this.popoverVisible
             })
+            .add(`slds-popover_${this._popoverSize}`)
             .toString();
     }
 
@@ -452,7 +450,7 @@ export default class ButtonPopover extends LightningElement {
         }
         /**
          * The event fired when the popover is clicked.
-         * 
+         *
          * @event
          * @name click
          * @public
@@ -494,7 +492,7 @@ export default class ButtonPopover extends LightningElement {
         }
         /**
          * The event fired when the popover is closed.
-         * 
+         *
          * @event
          * @name close
          * @public
@@ -523,7 +521,9 @@ export default class ButtonPopover extends LightningElement {
      */
     focusOnButton() {
         this.allowBlur();
-        this.template.querySelector('[data-element-id="lightning-button"]').focus();
+        this.template
+            .querySelector('[data-element-id="lightning-button"]')
+            .focus();
         if (
             this._triggers === 'focus' &&
             !this.popoverVisible &&

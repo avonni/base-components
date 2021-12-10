@@ -430,8 +430,8 @@ export default class ButtonIconPopover extends LightningElement {
     get computedPopoverHeaderClass() {
         return classSet('slds-popover__header')
             .add({
-                'avonni-button-icon-popover-space-between': !this
-                    .hideCloseButton
+                'avonni-button-icon-popover_space-between':
+                    !this.hideCloseButton
             })
             .toString();
     }
@@ -459,17 +459,17 @@ export default class ButtonIconPopover extends LightningElement {
                 'slds-nubbin_bottom-left': this._placement === 'bottom-left',
                 'slds-nubbin_bottom-right': this._placement === 'bottom-right',
                 'slds-nubbin_bottom': this._placement === 'bottom-center',
-                'slds-p-vertical_large': this._isLoading,
+                'slds-p-vertical_large': this._isLoading
+            })
+            .add({
                 'slds-popover_warning': this._popoverVariant === 'warning',
                 'slds-popover_error': this._popoverVariant === 'error',
                 'slds-popover_walkthrough':
                     this._popoverVariant === 'walkthrough',
-                'slds-popover_small': this._popoverSize === 'small',
-                'slds-popover_medium': this._popoverSize === 'medium',
-                'slds-popover_large': this._popoverSize === 'large',
                 'slds-show': this.popoverVisible,
                 'slds-hide': !this.popoverVisible
             })
+            .add(`slds-popover_${this._popoverSize}`)
             .toString();
     }
 
@@ -558,7 +558,9 @@ export default class ButtonIconPopover extends LightningElement {
      */
     focusOnButton() {
         this.allowBlur();
-        this.template.querySelector('[data-element-id="lightning-button-icon-main"]').focus();
+        this.template
+            .querySelector('[data-element-id="lightning-button-icon-main"]')
+            .focus();
         if (
             this._triggers === 'focus' &&
             !this.popoverVisible &&

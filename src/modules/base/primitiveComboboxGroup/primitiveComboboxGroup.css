@@ -30,58 +30,40 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.slds-progress__item {
-    width: 100%;
+.avonni-primitive-combobox__action_background {
+    background: var(
+        --avonni-primitive-combobox-action-color-background,
+        transparent
+    );
 }
 
-.slds-progress__marker_icon {
-    width: 16px;
-    height: 16px;
-    border: none;
-    box-shadow: #ffffff 0 0 0 3px !important;
+.avonni-primitive-combobox__option_background {
+    background: var(
+        --avonni-primitive-combobox-option-color-background,
+        transparent
+    );
 }
 
-:host(.avonni-spread) .slds-progress__marker_icon {
-    box-shadow: rgb(243, 242, 242) 0 0 0 3px !important;
+.avonni-primitive-combobox__action_background:hover,
+.avonni-primitive-combobox__action_background:focus {
+    background: var(
+        --avonni-primitive-combobox-action-color-background-hover,
+        #f3f2f2
+    );
 }
 
-:host(.slds-is-active) .slds-progress__marker {
-    border: none;
+.avonni-primitive-combobox__option_background:hover,
+.avonni-primitive-combobox__option_background:focus {
+    background: var(
+        --avonni-primitive-combobox-option-color-background-hover,
+        #f3f2f2
+    );
 }
 
-:host(.avonni-spread) .slds-progress__marker_icon:focus,
-.slds-progress__marker:focus {
-    outline: none;
-    box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
-}
-
-:host(.slds-is-active) .avonni-marker {
-    width: 14px;
-    height: 14px;
-    border: 3px solid #1589ee;
-    border-radius: 50%;
-    margin: 1px;
-    background-color: #ffffff;
-}
-
-.slds-progress__item_content {
-    flex: 1;
-    align-items: center;
-    margin-top: 13px;
-    padding-bottom: var(--lwc-spacingSmall, 0.75rem);
-}
-
-:host(.avonni-content-in-line) .slds-progress__item_content {
-    margin-top: var(--lwc-spacingSmall, 0.75rem);
-}
-
-.avonni-vertical-progress-step__content-in-line_border-bottom {
-    border-bottom-color: var(
-        --avonni-vertical-progress-step-item-content-color-border,
-        #dddbda
-    ) !important;
-    border-bottom-width: var(
-        --avonni-vertical-progress-step-item-content-sizing-border,
-        1px
-    ) !important;
+.avonni-primitive-combobox__option_background_focused {
+    background: var(
+        --avonni-primitive-combobox-option-color-background-hover,
+        #f3f2f2
+    );
+    text-decoration: none;
 }

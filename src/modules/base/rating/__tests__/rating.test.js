@@ -48,7 +48,7 @@ describe('Rating', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Rating: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -67,7 +67,7 @@ describe('Rating', () => {
 
     // disabled
     // Depends on iconName
-    it('disabled = false', () => {
+    it('Rating: Disabled = false', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -78,7 +78,7 @@ describe('Rating', () => {
         });
     });
 
-    it('disabled = false, with icon', () => {
+    it('Rating: Disabled = false, with icon', () => {
         element.disabled = false;
         element.iconName = 'standard:user';
 
@@ -90,7 +90,7 @@ describe('Rating', () => {
         });
     });
 
-    it('disabled = true', () => {
+    it('Rating: Disabled = true', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -101,7 +101,7 @@ describe('Rating', () => {
         });
     });
 
-    it('disabled = true, with icon', () => {
+    it('Rating: Disabled = true, with icon', () => {
         element.disabled = true;
         element.iconName = 'standard:apps';
 
@@ -117,7 +117,7 @@ describe('Rating', () => {
 
     // field-level-help
     // Depends on label
-    it('fieldLevelHelp', () => {
+    it('Rating: FieldLevelHelp', () => {
         element.fieldLevelHelp = 'A string help';
         element.label = 'A string label';
 
@@ -131,7 +131,7 @@ describe('Rating', () => {
     });
 
     // icon-name
-    it('iconName', () => {
+    it('Rating: IconName', () => {
         element.iconName = 'utility:location';
 
         return Promise.resolve().then(() => {
@@ -146,7 +146,7 @@ describe('Rating', () => {
 
     // icon-size
     // Depends on iconName
-    it('iconSize', () => {
+    it('Rating: IconSize', () => {
         element.iconName = 'utility:location';
         element.iconSize = 'small';
 
@@ -161,7 +161,7 @@ describe('Rating', () => {
     });
 
     // label
-    it('label', () => {
+    it('Rating: Label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -172,7 +172,7 @@ describe('Rating', () => {
     });
 
     // max
-    it('max', () => {
+    it('Rating: Max', () => {
         element.max = 8;
 
         return Promise.resolve().then(() => {
@@ -183,7 +183,7 @@ describe('Rating', () => {
     });
 
     // min
-    it('min', () => {
+    it('Rating: Min', () => {
         element.min = 2;
 
         return Promise.resolve().then(() => {
@@ -195,7 +195,7 @@ describe('Rating', () => {
 
     // read-only
     // Depends on value
-    it('readOnly = false', () => {
+    it('Rating: ReadOnly = false', () => {
         element.readOnly = false;
         element.value = 3;
 
@@ -206,7 +206,7 @@ describe('Rating', () => {
         });
     });
 
-    it('readOnly = true', () => {
+    it('Rating: ReadOnly = true', () => {
         element.readOnly = true;
         element.value = 3;
 
@@ -219,7 +219,7 @@ describe('Rating', () => {
 
     // selection
     // Depends on iconName
-    it('selection = continuous', () => {
+    it('Rating: Selection = continuous', () => {
         element.selection = 'continuous';
 
         return Promise.resolve().then(() => {
@@ -230,7 +230,7 @@ describe('Rating', () => {
         });
     });
 
-    it('selection = continuous, with icon', () => {
+    it('Rating: Selection = continuous, with icon', () => {
         element.selection = 'continuous';
         element.iconName = 'utility:favorite';
 
@@ -244,7 +244,7 @@ describe('Rating', () => {
         });
     });
 
-    it('selection = single', () => {
+    it('Rating: Selection = single', () => {
         element.selection = 'single';
 
         return Promise.resolve().then(() => {
@@ -255,7 +255,7 @@ describe('Rating', () => {
         });
     });
 
-    it('selection = single, with icon', () => {
+    it('Rating: Selection = single, with icon', () => {
         element.selection = 'single';
 
         return Promise.resolve().then(() => {
@@ -272,7 +272,7 @@ describe('Rating', () => {
 
     // value
     // Depends on iconName
-    it('value', () => {
+    it('Rating: Value', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
@@ -293,7 +293,7 @@ describe('Rating', () => {
         });
     });
 
-    it('value, with icon', () => {
+    it('Rating: Value, with icon', () => {
         element.value = 2;
         element.iconName = 'utility:apps';
 
@@ -317,18 +317,18 @@ describe('Rating', () => {
 
     // value-hidden
     // Depends on value
-    it('valueHidden = false', () => {
+    it('Rating: ValueHidden = false', () => {
         element.valueHidden = false;
         element.value = 2;
 
         return Promise.resolve().then(() => {
-            const rating = element.shadowRoot.querySelector('.rating');
+            const rating = element.shadowRoot.querySelector('[data-element-id="avonni-rating-value"]');
             expect(rating).toBeTruthy();
             expect(rating.textContent).toBe('2/5');
         });
     });
 
-    it('valueHidden = true', () => {
+    it('Rating: ValueHidden = true', () => {
         element.valueHidden = true;
         element.value = 2;
 
@@ -340,7 +340,7 @@ describe('Rating', () => {
 
     // variant
     // Depends on label
-    it('variant = standard', () => {
+    it('Rating: Variant = standard', () => {
         element.variant = 'standard';
         element.label = 'A string label';
 
@@ -351,12 +351,12 @@ describe('Rating', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).not.toContain('avonni-label-inline');
+            expect(wrapper.classList).not.toContain('avonni-rating__label_inline');
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
 
-    it('variant = label-inline', () => {
+    it('Rating: Variant = label-inline', () => {
         element.variant = 'label-inline';
         element.label = 'A string label';
 
@@ -367,12 +367,12 @@ describe('Rating', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).toContain('avonni-label-inline');
+            expect(wrapper.classList).toContain('avonni-rating__label_inline');
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
 
-    it('variant = label-hidden', () => {
+    it('Rating: Variant = label-hidden', () => {
         element.variant = 'label-hidden';
         element.label = 'A string label';
 
@@ -383,12 +383,12 @@ describe('Rating', () => {
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).not.toContain('avonni-label-inline');
+            expect(wrapper.classList).not.toContain('avonni-rating__label_inline');
             expect(label.classList).toContain('slds-assistive-text');
         });
     });
 
-    it('variant = label-stacked', () => {
+    it('Rating: Variant = label-stacked', () => {
         element.variant = 'label-stacked';
         element.label = 'A string label';
 
@@ -397,7 +397,7 @@ describe('Rating', () => {
             const label = element.shadowRoot.querySelector('[data-element-id="label"]');
 
             expect(wrapper.classList).toContain('slds-form-element_stacked');
-            expect(wrapper.classList).not.toContain('avonni-label-inline');
+            expect(wrapper.classList).not.toContain('avonni-rating__label_inline');
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
@@ -406,7 +406,7 @@ describe('Rating', () => {
 
     // change
     // Depends on iconName
-    it('change event', () => {
+    it('Rating: Change event', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -422,7 +422,7 @@ describe('Rating', () => {
         });
     });
 
-    it('change event, with icon', () => {
+    it('Rating: Change event, with icon', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.iconName = 'utility:apps';

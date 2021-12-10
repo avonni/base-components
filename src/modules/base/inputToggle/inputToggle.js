@@ -489,7 +489,7 @@ export default class InputToggle extends LightningElement {
             'faux_x-small': this.size === 'x-small',
             faux_small: this.size === 'small',
             faux_large: this.size === 'large',
-            'faux_hide-mark': this.hideMark === true
+            'faux_hide-mark': this.hideMark
         });
     }
 
@@ -500,7 +500,7 @@ export default class InputToggle extends LightningElement {
      */
     get computedLabelClass() {
         return classSet(
-            'slds-form-element slds-form-element__label slds-m-bottom_none'
+            'slds-form-element slds-form-element__label slds-m-bottom_none avonni-input-toggle__label'
         ).add({
             'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
             'slds-p-top_xx-small slds-m-top_xxx-small': this.size === 'large'
@@ -579,13 +579,12 @@ export default class InputToggle extends LightningElement {
                 () => this
             );
 
-            this._constraintApiProxyInputUpdater = this._constraintApi.setInputAttributes(
-                {
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
                     type: () => 'checkbox',
                     checked: () => this.checked,
                     required: () => this.required
-                }
-            );
+                });
         }
         return this._constraintApi;
     }

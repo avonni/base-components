@@ -40,41 +40,36 @@
     border-top-right-radius: var(--avonni-image-radius-border-top-right, 0);
 }
 
-.avonni-image-fluid {
+.avonni-image_fluid {
     max-width: 100% !important;
     height: auto;
 }
 
-.avonni-image-fluid-grow {
+.avonni-image_fluid-grow {
     width: 100% !important;
     height: auto !important;
 }
 
-.avonni-image-thumbnail {
+.avonni-image_thumbnail {
     padding: 0.25rem;
     background-color: #fff;
     border: 1px solid #dee2e6;
     border-radius: 0.25rem;
 }
 
-.avonni-float-left {
+.avonni-image_float-left {
     float: left;
 }
 
-.avonni-float-right {
+.avonni-image_float-right {
     float: right;
 }
 
-.avonni-margin-left-auto,
-.avonni-margin-auto {
+.avonni-image_margin-auto {
+    margin-right: auto;
     margin-left: auto;
 }
 
-.avonni-margin-right-auto,
-.avonni-margin-auto {
-    margin-right: auto;
-}
-
-.avonni-display-block {
+.avonni-image_display-block {
     display: block;
 }

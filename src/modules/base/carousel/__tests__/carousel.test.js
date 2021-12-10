@@ -300,14 +300,14 @@ describe('Carousel', () => {
             const activeIndicator =
                 element.shadowRoot.querySelector('.slds-is-active');
             expect(activeIndicator.className).not.toContain(
-                'avonni-carousel-progress-indicator-shaded-active'
+                'avonni-carousel__progress-indicator_shaded-active'
             );
             const indicators = element.shadowRoot.querySelectorAll(
                 '.slds-carousel__indicator-action'
             );
             indicators.forEach((indicator) => {
                 expect(indicator.className).not.toContain(
-                    'avonni-carousel-progress-indicator-shaded-inactive'
+                    'avonni-carousel__progress-indicator_shaded-inactive'
                 );
             });
         });
@@ -319,7 +319,7 @@ describe('Carousel', () => {
 
         return Promise.resolve().then(() => {
             const activeIndicator = element.shadowRoot.querySelector(
-                '.avonni-carousel-progress-indicator-shaded-active'
+                '.avonni-carousel__progress-indicator_shaded-active'
             );
             expect(activeIndicator.className).toBeTruthy();
             const indicators = element.shadowRoot.querySelectorAll(
@@ -327,7 +327,7 @@ describe('Carousel', () => {
             );
             indicators.forEach((indicator) => {
                 expect(indicator.className).toContain(
-                    'avonni-carousel-progress-indicator-shaded-inactive'
+                    'avonni-carousel__progress-indicator_shaded-inactive'
                 );
             });
         });

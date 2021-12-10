@@ -42,7 +42,9 @@
                 class="slds-m-right_x-small"
                 data-element-id="lightning-icon-left"
             ></lightning-icon>
-            <p class="doc lead">{title}</p>
+            <p class="avonni-blockquote__container avonni-blockquote__title">
+                {title}
+            </p>
             <lightning-icon
                 if:true={rightIcon}
                 icon-name={iconName}
@@ -51,7 +53,7 @@
                 data-element-id="lightning-icon-right"
             ></lightning-icon>
         </div>
-        <p class="doc">
+        <p class="avonni-blockquote__container">
             <slot></slot>
         </p>
     </blockquote>

@@ -116,7 +116,7 @@ describe('DualListbox', () => {
             );
             li.forEach((item) => {
                 expect(item.className).not.toContain(
-                    'avonni-dual-listbox-option-border_bottom'
+                    'avonni-dual-listbox__option_border-bottom'
                 );
             });
         });
@@ -720,7 +720,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const columns = element.shadowRoot.querySelectorAll(
-                '.avonni-dual-listbox-list__column'
+                '.avonni-dual-listbox__list-column'
             );
             const boxes = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options'
@@ -729,20 +729,20 @@ describe('DualListbox', () => {
             const sourceListColumn = columns[0];
             const selectedListColumn = columns[2];
             expect(sourceListColumn.className).toBe(
-                'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive_small'
+                'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_small'
             );
             expect(selectedListColumn.className).toBe(
-                'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive_small'
+                'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_small'
             );
             boxes.forEach((box) => {
                 expect(box.className).toContain(
-                    'avonni-dual-listbox-size_small'
+                    'avonni-dual-listbox__box_size-small'
                 );
                 expect(box.className).not.toContain(
-                    'avonni-dual-listbox-size_medium'
+                    'avonni-dual-listbox__box_size-medium'
                 );
                 expect(box.className).not.toContain(
-                    'avonni-dual-listbox-size_large'
+                    'avonni-dual-listbox__box_size-large'
                 );
             });
         });
@@ -753,7 +753,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const columns = element.shadowRoot.querySelectorAll(
-                '.avonni-dual-listbox-list__column'
+                '.avonni-dual-listbox__list-column'
             );
             const boxes = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options'
@@ -762,20 +762,20 @@ describe('DualListbox', () => {
             const sourceListColumn = columns[0];
             const selectedListColumn = columns[2];
             expect(sourceListColumn.className).toBe(
-                'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive_medium'
+                'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_medium'
             );
             expect(selectedListColumn.className).toBe(
-                'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive_medium'
+                'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_medium'
             );
             boxes.forEach((box) => {
                 expect(box.className).not.toContain(
-                    'avonni-dual-listbox-size_small'
+                    'avonni-dual-listbox__box_size-small'
                 );
                 expect(box.className).toContain(
-                    'avonni-dual-listbox-size_medium'
+                    'avonni-dual-listbox__box_size-medium'
                 );
                 expect(box.className).not.toContain(
-                    'avonni-dual-listbox-size_large'
+                    'avonni-dual-listbox__box_size-large'
                 );
             });
         });
@@ -786,7 +786,7 @@ describe('DualListbox', () => {
 
         return Promise.resolve().then(() => {
             const columns = element.shadowRoot.querySelectorAll(
-                '.avonni-dual-listbox-list__column'
+                '.avonni-dual-listbox__list-column'
             );
             const boxes = element.shadowRoot.querySelectorAll(
                 '.slds-dueling-list__options'
@@ -795,20 +795,20 @@ describe('DualListbox', () => {
             const sourceListColumn = columns[0];
             const selectedListColumn = columns[2];
             expect(sourceListColumn.className).toBe(
-                'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive_large'
+                'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_large'
             );
             expect(selectedListColumn.className).toBe(
-                'avonni-dual-listbox-list__column avonni-dual-listbox-list__column_responsive_large'
+                'avonni-dual-listbox__list-column avonni-dual-listbox__list-column_responsive_large'
             );
             boxes.forEach((box) => {
                 expect(box.className).not.toContain(
-                    'avonni-dual-listbox-size_small'
+                    'avonni-dual-listbox__box_size-small'
                 );
                 expect(box.className).not.toContain(
-                    'avonni-dual-listbox-size_medium'
+                    'avonni-dual-listbox__box_size-medium'
                 );
                 expect(box.className).toContain(
-                    'avonni-dual-listbox-size_large'
+                    'avonni-dual-listbox__box_size-large'
                 );
             });
         });

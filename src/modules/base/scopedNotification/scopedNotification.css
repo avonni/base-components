@@ -18,7 +18,7 @@
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
  *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS∫ AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
@@ -30,58 +30,42 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.slds-progress__item {
-    width: 100%;
+.avonni-scoped-notification_theme-base {
+    background-color: var(
+        --avonni-scoped-notification-base-color-background,
+        #f3f2f2
+    );
+    color: var(--avonni-scoped-notification-base-text-color, #080707);
 }
 
-.slds-progress__marker_icon {
-    width: 16px;
-    height: 16px;
-    border: none;
-    box-shadow: #ffffff 0 0 0 3px !important;
+.avonni-scoped-notification_theme-dark {
+    background-color: var(
+        --avonni-scoped-notification-dark-color-background,
+        #706e6b
+    );
+    color: var(--avonni-scoped-notification-dark-text-color, #ffffff);
 }
 
-:host(.avonni-spread) .slds-progress__marker_icon {
-    box-shadow: rgb(243, 242, 242) 0 0 0 3px !important;
+.avonni-scoped-notification_theme-error {
+    background-color: var(
+        --avonni-scoped-notification-error-color-background,
+        #ea001e
+    );
+    color: var(--avonni-scoped-notification-error-text-color, #ffffff);
 }
 
-:host(.slds-is-active) .slds-progress__marker {
-    border: none;
+.avonni-scoped-notification_theme-success {
+    background-color: var(
+        --avonni-scoped-notification-success-color-background,
+        #2e844a
+    );
+    color: var(--avonni-scoped-notification-success-text-color, #ffffff);
 }
 
-:host(.avonni-spread) .slds-progress__marker_icon:focus,
-.slds-progress__marker:focus {
-    outline: none;
-    box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
-}
-
-:host(.slds-is-active) .avonni-marker {
-    width: 14px;
-    height: 14px;
-    border: 3px solid #1589ee;
-    border-radius: 50%;
-    margin: 1px;
-    background-color: #ffffff;
-}
-
-.slds-progress__item_content {
-    flex: 1;
-    align-items: center;
-    margin-top: 13px;
-    padding-bottom: var(--lwc-spacingSmall, 0.75rem);
-}
-
-:host(.avonni-content-in-line) .slds-progress__item_content {
-    margin-top: var(--lwc-spacingSmall, 0.75rem);
-}
-
-.avonni-vertical-progress-step__content-in-line_border-bottom {
-    border-bottom-color: var(
-        --avonni-vertical-progress-step-item-content-color-border,
-        #dddbda
-    ) !important;
-    border-bottom-width: var(
-        --avonni-vertical-progress-step-item-content-sizing-border,
-        1px
-    ) !important;
+.avonni-scoped-notification_theme-warning {
+    background-color: var(
+        --avonni-scoped-notification-warning-color-background,
+        #fe9339
+    );
+    color: var(--avonni-scoped-notification-warning-text-color, #080707);
 }

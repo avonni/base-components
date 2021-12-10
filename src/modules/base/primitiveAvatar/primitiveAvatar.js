@@ -340,10 +340,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _updateClassList() {
         const { size, variant, groupedAvatar } = this;
         const wrapperClass = classSet('avonni-avatar slds-is-relative')
-            .add({
-                'avonni-avatar_square': variant === 'square',
-                'avonni-avatar_circle': variant === 'circle'
-            })
+            .add(`avonni-avatar_${variant}`)
             .add({
                 'avonni-avatar_xx-small': size === 'xx-small',
                 'slds-avatar_x-small': size === 'x-small',
@@ -370,18 +367,8 @@ export default class PrimitiveAvatar extends LightningElement {
     _computeStatus() {
         const { status, statusPosition, statusTitle } = this;
         const classes = classSet('avonni-avatar__status slds-current-color')
-            .add({
-                'avonni-avatar__status_approved': status === 'approved',
-                'avonni-avatar__status_locked': status === 'locked',
-                'avonni-avatar__status_declined': status === 'declined',
-                'avonni-avatar__status_unknown': status === 'unknown'
-            })
-            .add({
-                'avonni-avatar_top-right': statusPosition === 'top-right',
-                'avonni-avatar_top-left': statusPosition === 'top-left',
-                'avonni-avatar_bottom-left': statusPosition === 'bottom-left',
-                'avonni-avatar_bottom-right': statusPosition === 'bottom-right'
-            });
+            .add(`avonni-avatar__status_${status}`)
+            .add(`avonni-avatar_${statusPosition}`);
 
         let iconName;
         switch (status) {
@@ -411,21 +398,8 @@ export default class PrimitiveAvatar extends LightningElement {
         const { presence, presencePosition } = this;
 
         this.presenceClass = classSet('avonni-avatar__presence')
-            .add({
-                'avonni-avatar__presence_online': presence === 'online',
-                'avonni-avatar__presence_busy': presence === 'busy',
-                'avonni-avatar__presence_focus': presence === 'focus',
-                'avonni-avatar__presence_offline': presence === 'offline',
-                'avonni-avatar__presence_blocked': presence === 'blocked',
-                'avonni-avatar__presence_away': presence === 'away'
-            })
-            .add({
-                'avonni-avatar_top-right': presencePosition === 'top-right',
-                'avonni-avatar_top-left': presencePosition === 'top-left',
-                'avonni-avatar_bottom-left': presencePosition === 'bottom-left',
-                'avonni-avatar_bottom-right':
-                    presencePosition === 'bottom-right'
-            });
+            .add(`avonni-avatar__presence_${presence}`)
+            .add(`avonni-avatar_${presencePosition}`);
     }
 
     _computeEntityClasses() {
@@ -439,12 +413,7 @@ export default class PrimitiveAvatar extends LightningElement {
         this.entityClass = classSet(
             `slds-avatar slds-current-color avonni-avatar__entity slds-icon-${iconCategory}-${iconName}`
         )
-            .add({
-                'avonni-avatar_top-right': entityPosition === 'top-right',
-                'avonni-avatar_top-left': entityPosition === 'top-left',
-                'avonni-avatar_bottom-left': entityPosition === 'bottom-left',
-                'avonni-avatar_bottom-right': entityPosition === 'bottom-right'
-            })
+            .add(`avonni-avatar_${entityPosition}`)
             .add({
                 'slds-avatar_circle': entityVariant === 'circle'
             });

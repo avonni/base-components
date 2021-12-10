@@ -269,19 +269,16 @@ export default class HeroBanner extends LightningElement {
      * @type {string}
      */
     get computedContentContainer() {
-        return classSet('avonni-hero-banner-content-container')
+        return classSet('')
             .add({
-                'avonni-hero-banner-text-container-without-slot':
+                'avonni-hero-banner__text-container-without-slot_height':
                     !this.showFooterSlot,
-                'avonni-hero-banner-text-container-with-slot':
-                    this.showFooterSlot,
-                'avonni-hero-banner-vertical-alignment_bottom':
-                    this.contentVerticalAlignment === 'bottom',
-                'avonni-hero-banner-vertical-alignment_center':
-                    this.contentVerticalAlignment === 'center',
-                'avonni-hero-banner-vertical-alignment_top':
-                    this.contentVerticalAlignment === 'top'
+                'avonni-hero-banner__text-container-with-slot_height':
+                    this.showFooterSlot
             })
+            .add(
+                `avonni-hero-banner__vertical-alignment_${this._contentVerticalAlignment}`
+            )
             .toString();
     }
 
@@ -291,15 +288,10 @@ export default class HeroBanner extends LightningElement {
      * @type {string}
      */
     get computedWidthContainer() {
-        return classSet('slds-grid avonni-hero-banner-width-container')
-            .add({
-                'avonni-hero-banner-horizontal-alignment_left':
-                    this.contentHorizontalAlignment === 'left',
-                'avonni-hero-banner-horizontal-alignment_center':
-                    this.contentHorizontalAlignment === 'center',
-                'avonni-hero-banner-horizontal-alignment_right':
-                    this.contentHorizontalAlignment === 'right'
-            })
+        return classSet('slds-grid')
+            .add(
+                `avonni-hero-banner__horizontal-alignment_${this._contentHorizontalAlignment}`
+            )
             .toString();
     }
 
@@ -310,12 +302,9 @@ export default class HeroBanner extends LightningElement {
      */
     get computedButtonClass() {
         return classSet('slds-grid slds-m-top_small')
-            .add({
-                'avonni-hero-banner-horizontal-alignment_right':
-                    this.contentHorizontalAlignment === 'right',
-                'avonni-hero-banner-horizontal-alignment_center':
-                    this.contentHorizontalAlignment === 'center'
-            })
+            .add(
+                `avonni-hero-banner__horizontal-alignment_${this._contentHorizontalAlignment}`
+            )
             .toString();
     }
 

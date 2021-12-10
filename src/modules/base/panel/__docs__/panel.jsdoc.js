@@ -19,6 +19,17 @@
  * @memberof slots
  * @name default
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-panel-header-color-background
+ * @default transparent
+ * @type color
+ */
+
 /**
  * @namespace examples
  */

@@ -74,7 +74,7 @@ describe('Chip', () => {
             const span = element.shadowRoot.querySelector(
                 '[data-element-id="span-wrapper"]'
             );
-            expect(span.className).toBe('avonni-chip avonni-chip-theme_base');
+            expect(span.className).toBe('avonni-chip avonni-chip_theme-base');
         });
     });
 
@@ -85,7 +85,7 @@ describe('Chip', () => {
             const span = element.shadowRoot.querySelector(
                 '[data-element-id="span-wrapper"]'
             );
-            expect(span.className).toBe('avonni-chip avonni-chip-theme_brand');
+            expect(span.className).toBe('avonni-chip avonni-chip_theme-brand');
         });
     });
 
@@ -97,7 +97,7 @@ describe('Chip', () => {
                 '[data-element-id="span-wrapper"]'
             );
             expect(span.className).toBe(
-                'avonni-chip avonni-chip-theme_inverse'
+                'avonni-chip avonni-chip_theme-inverse'
             );
         });
     });
@@ -110,7 +110,7 @@ describe('Chip', () => {
                 '[data-element-id="span-wrapper"]'
             );
             expect(span.className).toBe(
-                'avonni-chip avonni-chip-theme_alt-inverse'
+                'avonni-chip avonni-chip_theme-alt-inverse'
             );
         });
     });
@@ -123,7 +123,7 @@ describe('Chip', () => {
                 '[data-element-id="span-wrapper"]'
             );
             expect(span.className).toBe(
-                'avonni-chip avonni-chip-theme_success'
+                'avonni-chip avonni-chip_theme-success'
             );
         });
     });
@@ -135,7 +135,7 @@ describe('Chip', () => {
             const span = element.shadowRoot.querySelector(
                 '[data-element-id="span-wrapper"]'
             );
-            expect(span.className).toBe('avonni-chip avonni-chip-theme_info');
+            expect(span.className).toBe('avonni-chip avonni-chip_theme-info');
         });
     });
 
@@ -147,7 +147,7 @@ describe('Chip', () => {
                 '[data-element-id="span-wrapper"]'
             );
             expect(span.className).toBe(
-                'avonni-chip avonni-chip-theme_warning'
+                'avonni-chip avonni-chip_theme-warning'
             );
         });
     });
@@ -159,7 +159,7 @@ describe('Chip', () => {
             const span = element.shadowRoot.querySelector(
                 '[data-element-id="span-wrapper"]'
             );
-            expect(span.className).toBe('avonni-chip avonni-chip-theme_error');
+            expect(span.className).toBe('avonni-chip avonni-chip_theme-error');
         });
     });
 
@@ -171,7 +171,7 @@ describe('Chip', () => {
                 '[data-element-id="span-wrapper"]'
             );
             expect(span.className).toBe(
-                'avonni-chip avonni-chip-theme_offline'
+                'avonni-chip avonni-chip_theme-offline'
             );
         });
     });
@@ -184,7 +184,7 @@ describe('Chip', () => {
             const span = element.shadowRoot.querySelector(
                 '[data-element-id="span-wrapper"]'
             );
-            expect(span.className).toContain('avonni-chip-outline');
+            expect(span.className).toContain('avonni-chip_outline');
         });
     });
 });
