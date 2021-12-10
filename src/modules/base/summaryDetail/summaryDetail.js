@@ -60,7 +60,7 @@ export default class SummaryDetail extends LightningElement {
     _hideIcon;
 
     /**
-     * Icon used to close the summary detail.
+     * Name of the icon used to close the summary detail, in the format utility:down.
      *
      * @type {string}
      * @public
@@ -75,7 +75,7 @@ export default class SummaryDetail extends LightningElement {
     }
 
     /**
-     * Icon used to expand the summary detail.
+     * Name of the icon used to expand the summary detail, in the format utility:down.
      *
      * @type {string}
      * @public
@@ -120,7 +120,7 @@ export default class SummaryDetail extends LightningElement {
     }
 
     /**
-     * If present, hide details.
+     * If present, the summary detail is closed by default.
      *
      * @type {boolean}
      * @public
@@ -222,7 +222,7 @@ export default class SummaryDetail extends LightningElement {
          *
          * @event
          * @name toggle
-         * @param {boolean} closed Boolean representing the new state of the summary detail: true if it is closed, false if it is open.
+         * @param {boolean} closed True if the summary is closed.
          * @public
          */
         this.dispatchEvent(

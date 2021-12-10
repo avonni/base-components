@@ -1,11 +1,13 @@
 <template>
-    <avonni-progress-indicator
-        variant="shaded"
-        steps={milestonesSteps}
-        current-step="4"
-        error-steps={errorSteps}
-        warning-steps={warningSteps}
-        completed-steps={completedSteps}
-        disabled-steps={disabledSteps}
-    ></avonni-progress-indicator>
+    <div class="slds-scrollable_x">
+        <avonni-progress-indicator
+            variant="shaded"
+            steps={milestonesSteps}
+            current-step="4"
+            error-steps={errorSteps}
+            warning-steps={warningSteps}
+            completed-steps={completedSteps}
+            disabled-steps={disabledSteps}
+        ></avonni-progress-indicator>
+    </div>
 </template>

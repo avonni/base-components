@@ -1,43 +1,45 @@
-<avonni-button-dialog label="Open Wizard Modal">
-    <avonni-wizard
-        indicator-position="top"
-        title="Modal Wizard Example"
-        variant="modal"
-        indicator-type="path"
-        previous-button-label="Back"
-        previous-button-icon-name="utility:back"
-        next-button-icon-name="utility:forward"
-        next-button-icon-position="right"
-        next-button-label="Continue"
-        next-button-variant="brand"
-        finish-button-icon-name="utility:check"
-        finish-button-label="Done"
-        finish-button-variant="success"
-    >
-        <avonni-wizard-step label="First step">
-            <h2>This step has these properties set:</h2>
-            <ul>
-                <li><strong>label:</strong> "First step"</li>
-            </ul>
-        </avonni-wizard-step>
-        <avonni-wizard-step label="Second step" name="second-step">
-            <h2>This step has these properties set:</h2>
-            <ul>
-                <li><strong>label:</strong> "Second step"</li>
-                <li><strong>name:</strong> "second-step"</li>
-            </ul>
-        </avonni-wizard-step>
-        <avonni-wizard-step label="Third step">
-            <h2>This step has these properties set:</h2>
-            <ul>
-                <li><strong>label:</strong> "Third step"</li>
-            </ul>
-        </avonni-wizard-step>
-        <avonni-wizard-step label="Last step">
-            <h2>This step has these properties set:</h2>
-            <ul>
-                <li><strong>label:</strong> "Last step"</li>
-            </ul>
-        </avonni-wizard-step>
-    </avonni-wizard>
-</avonni-button-dialog>
+<template>
+    <avonni-button-dialog label="Open Wizard Modal">
+        <avonni-wizard
+            indicator-position="top"
+            title="Modal Wizard Example"
+            variant="modal"
+            indicator-type="path"
+            previous-button-label="Back"
+            previous-button-icon-name="utility:back"
+            next-button-icon-name="utility:forward"
+            next-button-icon-position="right"
+            next-button-label="Continue"
+            next-button-variant="brand"
+            finish-button-icon-name="utility:check"
+            finish-button-label="Done"
+            finish-button-variant="success"
+        >
+            <avonni-wizard-step label="First step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "First step"</li>
+                </ul>
+            </avonni-wizard-step>
+            <avonni-wizard-step label="Second step" name="second-step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "Second step"</li>
+                    <li><strong>name:</strong> "second-step"</li>
+                </ul>
+            </avonni-wizard-step>
+            <avonni-wizard-step label="Third step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "Third step"</li>
+                </ul>
+            </avonni-wizard-step>
+            <avonni-wizard-step label="Last step">
+                <h2>This step has these properties set:</h2>
+                <ul>
+                    <li><strong>label:</strong> "Last step"</li>
+                </ul>
+            </avonni-wizard-step>
+        </avonni-wizard>
+    </avonni-button-dialog>
+</template>

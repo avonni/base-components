@@ -36,6 +36,8 @@ import { normalizeBoolean, keyCodes } from 'c/utilsPrivate';
 const DEFAULT_TAB_INDEX = '0';
 
 /**
+ * The Menu Item Dialog is used inside an Avonni Button Menu. On click on the item, a modal box is opened.
+ *
  * @class
  * @descriptor avonni-menu-item-dialog
  * @storyId example-menu-item-dialog-only-with-avonni-button-menu--base

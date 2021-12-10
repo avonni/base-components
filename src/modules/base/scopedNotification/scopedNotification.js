@@ -51,7 +51,7 @@ const ICON_SIZES = {
  */
 export default class ScopedNotification extends LightningElement {
     /**
-     * The heading of the section message.
+     * Title of the notification.
      *
      * @type {string}
      * @public

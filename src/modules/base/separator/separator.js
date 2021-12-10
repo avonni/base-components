@@ -82,7 +82,8 @@ export default class Separator extends LightningElement {
      * @public
      * @default center
      */
-    @api get alignContent() {
+    @api
+    get alignContent() {
         return this._alignContent;
     }
 
@@ -100,7 +101,8 @@ export default class Separator extends LightningElement {
      * @public
      * @default small
      */
-    @api get iconSize() {
+    @api
+    get iconSize() {
         return this._iconSize;
     }
 
@@ -112,13 +114,14 @@ export default class Separator extends LightningElement {
     }
 
     /**
-     * Valid values include horizontal and vertical.
+     * Orientation of the separator. Valid values include horizontal and vertical.
      *
      * @type {string}
      * @public
      * @default horizontal
      */
-    @api get orientation() {
+    @api
+    get orientation() {
         return this._orientation;
     }
 
