@@ -35,9 +35,10 @@
     line-height: 0;
 }
 .avonni-avatar .slds-avatar:first-child {
-    border-style: solid;
-    border-color: var(--avonni-c-avatar-color-border, transparent);
-    border-width: var(--avonni-c-avatar-sizing-border, 0);
+    border-style: var(--avonni-avatar-styling-border, solid);
+    border-color: var(--avonni-avatar-color-border, transparent);
+    border-width: var(--avonni-avatar-sizing-border, 0);
+    border-radius: var(--avonni-avatar-sizing-border-radius, 0.25rem);
 }
 /* If the avatar is in a group, the cursor changes for a pointer */
 :host(.avonni-avatar-group__avatar) .slds-avatar,
@@ -289,6 +290,8 @@
     align-items: center;
     justify-content: center;
     color: var(--avonni-avatar-entity-initials-text-color, #ffffff);
+    font-style: var(--avonni-avatar-entity-initials-text-font-style, normal);
+    font-weight: var(--avonni-avatar-entity-initials-text-font-weight, 400);
 }
 /* Makes the icon size change with its container's */
 .avonni-avatar__entity-icon {
@@ -335,8 +338,12 @@
 */
 .avonni-avatar__initials_text-color {
     color: var(--avonni-avatar-initials-text-color, #ffffff);
+    font-style: var(--avonni-avatar-initials-text-font-style, normal);
+    font-weight: var(--avonni-avatar-initials-text-font-weight, 400);
 }
 
 .avonni-avatar__initials_text-color:hover {
     color: var(--avonni-avatar-initials-text-color-hover, #ffffff);
+    font-style: var(--avonni-avatar-initials-text-font-style-hover, normal);
+    font-weight: var(--avonni-avatar-initials-text-font-weight-hover, 400);
 }
