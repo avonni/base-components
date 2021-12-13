@@ -63,14 +63,14 @@ describe('List', () => {
     });
 
     it('Default attributes', () => {
+        expect(element.actions).toMatchObject([]);
         expect(element.alternativeText).toBeUndefined();
+        expect(element.imageWidth).toBe('large');
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
         expect(element.sortable).toBeFalsy();
         expect(element.sortableIconName).toBeUndefined();
         expect(element.sortableIconPosition).toBe('right');
-        expect(element.actions).toMatchObject([]);
-        expect(element.imageWidth).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -123,11 +123,12 @@ describe('List', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '.slds-text-heading_small'
+                '.avonni-list__header_font'
             );
             expect(label.textContent).toBe('A string label');
         });
     });
+
     // divider
     it('divider = around', () => {
         element.divider = 'around';

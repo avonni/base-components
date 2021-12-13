@@ -18,3 +18,109 @@
 * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
 * @property {boolean} disabled If present, the action item is shown as disabled. Defaults to false.
 */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-item-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-color-background
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-color-background-hover
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-color-border
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-color-border-hover
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-shaded-color-background
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-shaded-color-background-hover
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-shaded-color-border
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-active-indicator-shaded-color-border-hover
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-color-background-hover
+ * @default #fafaf9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-color-border
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-color-border-hover
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-shaded-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-shaded-color-background-hover
+ * @default #fafaf9
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-shaded-color-border
+ * @default #dddbda
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-carousel-inactive-indicator-shaded-color-border-hover
+ * @default #dddbda
+ * @type color
+ */

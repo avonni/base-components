@@ -154,17 +154,8 @@ export default class Pagination extends LightningElement {
      */
     get computedOuterClass() {
         return classSet('slds-panel slds-panel_docked')
-            .add({
-                'slds-size_small': this._size === 'small',
-                'slds-size_medium': this._size === 'medium',
-                'slds-size_large': this._size === 'large',
-                'slds-size_x-large': this._size === 'x-large',
-                'slds-size_full': this._size === 'full'
-            })
-            .add({
-                'slds-panel_docked-right': this._position === 'right',
-                'slds-panel_docked-left': this._position === 'left'
-            })
+            .add(`slds-size_${this._size}`)
+            .add(`slds-panel_docked-${this._position}`)
             .add({
                 'slds-is-open': this._showPanel,
                 'slds-is-hidden': !this._showPanel

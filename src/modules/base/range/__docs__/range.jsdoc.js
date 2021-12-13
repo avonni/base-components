@@ -10,3 +10,54 @@
  * @property {number} minimumSignificantDigits The minimum number of significant digits that are required. Possible values are from 1 to 21.
  * @property {number} maximumSignificantDigits The maximum number of significant digits that are allowed. Possible values are from 1 to 21.
  */
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-label-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-label-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-label-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-font-weight
+ * @default 400
+ * @type font
+ */

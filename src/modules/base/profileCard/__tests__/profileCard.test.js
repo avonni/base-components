@@ -110,14 +110,15 @@ describe('ProfileCard', () => {
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const avatarWrapper =
-                    element.shadowRoot.querySelector('.avatar-img');
+                const avatarWrapper = element.shadowRoot.querySelector(
+                    '.avonni-profile-card__avatar-img'
+                );
                 const icon = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-icon"]'
                 );
                 expect(icon.iconName).toBe('standard:user');
                 expect(avatarWrapper.classList).toContain(
-                    'avonni-icon-container'
+                    'avonni-profile-card__icon-container'
                 );
             });
     });
@@ -129,11 +130,13 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer =
                 element.shadowRoot.querySelector('.top-left-desktop');
-            expect(container.className).toBe('avonni-flex-container');
+            expect(container.className).toBe(
+                'avonni-profile-card__flex-container'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -143,12 +146,14 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
                 '.top-center-desktop'
             );
-            expect(container.classList).toContain('avonni-flex-align-center');
+            expect(container.classList).toContain(
+                'avonni-profile-card__flex-container_align-center'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -158,11 +163,13 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer =
                 element.shadowRoot.querySelector('.top-right-desktop');
-            expect(container.classList).toContain('avonni-flex-align-end');
+            expect(container.classList).toContain(
+                'avonni-profile-card__flex-container_align-end'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -172,12 +179,14 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
                 '.bottom-left-desktop'
             );
-            expect(container.className).toBe('avonni-flex-container');
+            expect(container.className).toBe(
+                'avonni-profile-card__flex-container'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -187,12 +196,14 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
                 '.bottom-center-desktop'
             );
-            expect(container.classList).toContain('avonni-flex-align-center');
+            expect(container.classList).toContain(
+                'avonni-profile-card__flex-container_align-center'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -202,12 +213,14 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
                 '.bottom-right-desktop'
             );
-            expect(container.classList).toContain('avonni-flex-align-end');
+            expect(container.classList).toContain(
+                'avonni-profile-card__flex-container_align-end'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -220,11 +233,13 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer =
                 element.shadowRoot.querySelector('.mobile-top-left');
-            expect(container.className).toBe('avonni-flex-container');
+            expect(container.className).toBe(
+                'avonni-profile-card__flex-container'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -236,12 +251,12 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer =
                 element.shadowRoot.querySelector('.mobile-top-center');
             expect(container.classList).toContain(
-                'avonni-flex-mobile-align-center'
+                'avonni-profile-card__flex-container-mobile_align-center'
             );
             expect(mainContainer).toBeTruthy();
         });
@@ -254,12 +269,12 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer =
                 element.shadowRoot.querySelector('.mobile-top-right');
             expect(container.classList).toContain(
-                'avonni-flex-mobile-align-end'
+                'avonni-profile-card__flex-container-mobile_align-end'
             );
             expect(mainContainer).toBeTruthy();
         });
@@ -272,12 +287,14 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
                 '.mobile-bottom-left'
             );
-            expect(container.className).toBe('avonni-flex-container');
+            expect(container.className).toBe(
+                'avonni-profile-card__flex-container'
+            );
             expect(mainContainer).toBeTruthy();
         });
     });
@@ -289,13 +306,13 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
                 '.mobile-bottom-center'
             );
             expect(container.classList).toContain(
-                'avonni-flex-mobile-align-center'
+                'avonni-profile-card__flex-container-mobile_align-center'
             );
             expect(mainContainer).toBeTruthy();
         });
@@ -308,13 +325,13 @@ describe('ProfileCard', () => {
 
         return Promise.resolve().then(() => {
             const container = element.shadowRoot.querySelector(
-                '.avonni-flex-container'
+                '.avonni-profile-card__flex-container'
             );
             const mainContainer = element.shadowRoot.querySelector(
                 '.mobile-bottom-right'
             );
             expect(container.classList).toContain(
-                'avonni-flex-mobile-align-end'
+                'avonni-profile-card__flex-container-mobile_align-end'
             );
             expect(mainContainer).toBeTruthy();
         });
@@ -343,14 +360,19 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const avatarWrapper =
-                element.shadowRoot.querySelector('.avatar-img');
+            const avatarWrapper = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar-img'
+            );
             const image = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
 
-            expect(avatarWrapper.classList).toContain('avatar-img-circle');
-            expect(image.classList).toContain('avatar-img-circle');
+            expect(avatarWrapper.classList).toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
+            expect(image.classList).toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
         });
     });
 
@@ -366,13 +388,19 @@ describe('ProfileCard', () => {
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const avatarWrapper =
-                    element.shadowRoot.querySelector('.avatar-img');
-                const iconWrapper =
-                    element.shadowRoot.querySelector('.avatar-img > div');
+                const avatarWrapper = element.shadowRoot.querySelector(
+                    '.avonni-profile-card__avatar-img'
+                );
+                const iconWrapper = element.shadowRoot.querySelector(
+                    '.avonni-profile-card__avatar-img > div'
+                );
 
-                expect(avatarWrapper.classList).toContain('avatar-img-circle');
-                expect(iconWrapper.classList).toContain('avatar-img-circle');
+                expect(avatarWrapper.classList).toContain(
+                    'avonni-profile-card__avatar-img-circle'
+                );
+                expect(iconWrapper.classList).toContain(
+                    'avonni-profile-card__avatar-img-circle'
+                );
             });
     });
 
@@ -382,14 +410,19 @@ describe('ProfileCard', () => {
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
         return Promise.resolve().then(() => {
-            const avatarWrapper =
-                element.shadowRoot.querySelector('.avatar-img');
+            const avatarWrapper = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar-img'
+            );
             const image = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
 
-            expect(avatarWrapper.classList).not.toContain('avatar-img-circle');
-            expect(image.classList).not.toContain('avatar-img-circle');
+            expect(avatarWrapper.classList).not.toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
+            expect(image.classList).not.toContain(
+                'avonni-profile-card__avatar-img-circle'
+            );
         });
     });
 
@@ -405,16 +438,18 @@ describe('ProfileCard', () => {
                 image.dispatchEvent(new CustomEvent('error'));
             })
             .then(() => {
-                const avatarWrapper =
-                    element.shadowRoot.querySelector('.avatar-img');
-                const iconWrapper =
-                    element.shadowRoot.querySelector('.avatar-img > div');
+                const avatarWrapper = element.shadowRoot.querySelector(
+                    '.avonni-profile-card__avatar-img'
+                );
+                const iconWrapper = element.shadowRoot.querySelector(
+                    '.avonni-profile-card__avatar-img > div'
+                );
 
                 expect(avatarWrapper.classList).not.toContain(
-                    'avatar-img-circle'
+                    'avonni-profile-card__avatar-img-circle'
                 );
                 expect(iconWrapper.classList).not.toContain(
-                    'avatar-img-circle'
+                    'avonni-profile-card__avatar-img-circle'
                 );
             });
     });
@@ -456,11 +491,15 @@ describe('ProfileCard', () => {
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
-            const mainContainer =
-                element.shadowRoot.querySelector('.card-medium');
-            const header =
-                element.shadowRoot.querySelector('.background-medium');
-            const avatar = element.shadowRoot.querySelector('.avatar-medium');
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-medium'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-medium'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-medium'
+            );
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
             expect(avatar).toBeTruthy();
@@ -471,12 +510,15 @@ describe('ProfileCard', () => {
         element.size = 'x-small';
 
         return Promise.resolve().then(() => {
-            const mainContainer =
-                element.shadowRoot.querySelector('.card-x-small');
-            const header = element.shadowRoot.querySelector(
-                '.background-x-small'
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-x-small'
             );
-            const avatar = element.shadowRoot.querySelector('.avatar-x-small');
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-x-small'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-x-small'
+            );
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
             expect(avatar).toBeTruthy();
@@ -487,11 +529,15 @@ describe('ProfileCard', () => {
         element.size = 'small';
 
         return Promise.resolve().then(() => {
-            const mainContainer =
-                element.shadowRoot.querySelector('.card-small');
-            const header =
-                element.shadowRoot.querySelector('.background-small');
-            const avatar = element.shadowRoot.querySelector('.avatar-small');
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-small'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-small'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-small'
+            );
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
             expect(avatar).toBeTruthy();
@@ -502,11 +548,15 @@ describe('ProfileCard', () => {
         element.size = 'large';
 
         return Promise.resolve().then(() => {
-            const mainContainer =
-                element.shadowRoot.querySelector('.card-large');
-            const header =
-                element.shadowRoot.querySelector('.background-large');
-            const avatar = element.shadowRoot.querySelector('.avatar-large');
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-large'
+            );
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-large'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-large'
+            );
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
             expect(avatar).toBeTruthy();
@@ -517,12 +567,15 @@ describe('ProfileCard', () => {
         element.size = 'x-large';
 
         return Promise.resolve().then(() => {
-            const mainContainer =
-                element.shadowRoot.querySelector('.card-x-large');
-            const header = element.shadowRoot.querySelector(
-                '.background-x-large'
+            const mainContainer = element.shadowRoot.querySelector(
+                '.avonni-profile-card__card_size-x-large'
             );
-            const avatar = element.shadowRoot.querySelector('.avatar-x-large');
+            const header = element.shadowRoot.querySelector(
+                '.avonni-profile-card__background_size-x-large'
+            );
+            const avatar = element.shadowRoot.querySelector(
+                '.avonni-profile-card__avatar_size-x-large'
+            );
             expect(mainContainer).toBeTruthy();
             expect(header).toBeTruthy();
             expect(avatar).toBeTruthy();
@@ -534,8 +587,9 @@ describe('ProfileCard', () => {
         element.subtitle = 'A string subtitle';
 
         return Promise.resolve().then(() => {
-            const subtitle =
-                element.shadowRoot.querySelector('.avonni-subtitle');
+            const subtitle = element.shadowRoot.querySelector(
+                '.avonni-profile-card__subtitle'
+            );
             expect(subtitle.textContent).toBe('A string subtitle');
         });
     });
@@ -545,7 +599,9 @@ describe('ProfileCard', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('.avonni-title');
+            const title = element.shadowRoot.querySelector(
+                '.avonni-profile-card__title'
+            );
             expect(title.textContent).toBe('A string title');
         });
     });

@@ -48,7 +48,7 @@ describe('SummaryDetail', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Summary detail: Default attributes', () => {
         expect(element.closed).toBeFalsy();
         expect(element.expandIconName).toBe('utility:chevronright');
         expect(element.hideIcon).toBeFalsy();
@@ -61,7 +61,7 @@ describe('SummaryDetail', () => {
     /* ----- ATTRIBUTES ----- */
 
     // closed
-    it('closed = false', () => {
+    it('Summary detail: closed = false', () => {
         element.closed = false;
 
         return Promise.resolve().then(() => {
@@ -77,7 +77,7 @@ describe('SummaryDetail', () => {
         });
     });
 
-    it('closed = true', () => {
+    it('Summary detail: closed = true', () => {
         element.closed = true;
 
         return Promise.resolve().then(() => {
@@ -95,7 +95,7 @@ describe('SummaryDetail', () => {
 
     // expand-icon-name
     // Depends on closed
-    it('expandIconName', () => {
+    it('Summary detail: expandIconName', () => {
         element.expandIconName = 'utility:apps';
         element.closed = true;
 
@@ -108,7 +108,7 @@ describe('SummaryDetail', () => {
     });
 
     // hide-icon
-    it('hideIcon = false', () => {
+    it('Summary detail: hideIcon = false', () => {
         element.hideIcon = false;
 
         return Promise.resolve().then(() => {
@@ -119,7 +119,7 @@ describe('SummaryDetail', () => {
         });
     });
 
-    it('hideIcon = true', () => {
+    it('Summary detail: hideIcon = true', () => {
         element.hideIcon = true;
 
         return Promise.resolve().then(() => {
@@ -131,7 +131,7 @@ describe('SummaryDetail', () => {
     });
 
     // full-width
-    it('fullWidth = false', () => {
+    it('Summary detail: fullWidth = false', () => {
         element.fullWidth = false;
 
         return Promise.resolve().then(() => {
@@ -147,7 +147,7 @@ describe('SummaryDetail', () => {
         });
     });
 
-    it('fullWidth = true', () => {
+    it('Summary detail: fullWidth = true', () => {
         element.fullWidth = true;
 
         return Promise.resolve().then(() => {
@@ -164,30 +164,34 @@ describe('SummaryDetail', () => {
     });
 
     // remove-body-indentation
-    it('removeBodyIndentation = false', () => {
+    it('Summary detail: removeBodyIndentation = false', () => {
         element.removeBodyIndentation = false;
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
                 '.slds-summary-detail__content'
             );
-            expect(content.classList).not.toContain('content_no-indent');
+            expect(content.classList).not.toContain(
+                'avonni-summary-detail__content_no-indent'
+            );
         });
     });
 
-    it('removeBodyIndentation = true', () => {
+    it('Summary detail: removeBodyIndentation = true', () => {
         element.removeBodyIndentation = true;
 
         return Promise.resolve().then(() => {
             const content = element.shadowRoot.querySelector(
                 '.slds-summary-detail__content'
             );
-            expect(content.classList).toContain('content_no-indent');
+            expect(content.classList).toContain(
+                'avonni-summary-detail__content_no-indent'
+            );
         });
     });
 
     // shrink-icon-name
-    it('shrinkIconName', () => {
+    it('Summary detail: shrinkIconName', () => {
         element.shrinkIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -199,11 +203,13 @@ describe('SummaryDetail', () => {
     });
 
     // title
-    it('title', () => {
+    it('Summary detail: title', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('[data-element-id="h3"]');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="h3"]'
+            );
             expect(title).toBeTruthy();
             expect(title.textContent).toBe('A string title');
         });
@@ -212,10 +218,12 @@ describe('SummaryDetail', () => {
     /* ----- EVENTS ----- */
 
     // toggle
-    it('toggle event', () => {
+    it('Summary detail: toggle event', () => {
         const handler = jest.fn();
         element.addEventListener('toggle', handler);
-        const icon = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon"]');
+        const icon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon"]'
+        );
         icon.click();
 
         expect(handler).toHaveBeenCalled();

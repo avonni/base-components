@@ -899,7 +899,7 @@ export default class DualListbox extends LightningElement {
         const isSelected = this.highlightedOptions.indexOf(option.value) > -1;
         const hasDescription = option.description;
         const classList = classSet(
-            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline avonni-dual-listbox-list-item-min_height '
+            'slds-listbox__option slds-listbox__option_plain slds-media slds-media_center slds-media_inline avonni-dual-listbox__list-item_min-height avonni-dual-listbox__option'
         )
             .add({ 'slds-media_small': !hasDescription })
             .add({ 'slds-is-selected': isSelected })
@@ -1080,7 +1080,9 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      */
     get computedGroupLabelClass() {
-        return classSet('slds-form-element__label slds-form-element__legend')
+        return classSet(
+            'slds-form-element__label slds-form-element__legend avonni-dual-listbox__header'
+        )
             .add({ 'slds-assistive-text': this.isLabelHidden })
             .toString();
     }
@@ -1091,13 +1093,13 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      */
     get computedListboxColumnsClass() {
-        return classSet('avonni-dual-listbox-list__column')
+        return classSet('avonni-dual-listbox__list-column')
             .add({
-                'avonni-dual-listbox-list__column_responsive_small ':
+                'avonni-dual-listbox__list-column_responsive_small ':
                     this._size === 'small',
-                'avonni-dual-listbox-list__column_responsive_medium ':
+                'avonni-dual-listbox__list-column_responsive_medium ':
                     this._size === 'medium',
-                'avonni-dual-listbox-list__column_responsive_large ':
+                'avonni-dual-listbox__list-column_responsive_large ':
                     this._size === 'large',
                 'slds-dueling-list__column_responsive':
                     this._size === 'responsive'
@@ -1111,16 +1113,10 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      */
     get computedListboxSourceContainerClass() {
-        return classSet(
-            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
-        )
+        return classSet('slds-dueling-list__options avonni-dual-listbox__boxes')
             .add({ 'slds-is-disabled': this._disabled })
             .add({ 'slds-is-relative': this._isLoading })
-            .add({
-                'avonni-dual-listbox-size_small': this._size === 'small',
-                'avonni-dual-listbox-size_medium': this._size === 'medium',
-                'avonni-dual-listbox-size_large': this._size === 'large'
-            })
+            .add(`avonni-dual-listbox__box_size-${this._size}`)
             .toString();
     }
 
@@ -1130,22 +1126,16 @@ export default class DualListbox extends LightningElement {
      * @type {string}
      */
     get computedListboxSelectedContainerClass() {
-        return classSet(
-            'slds-dueling-list__options avonni-dual-listbox-option-is-selected'
-        )
+        return classSet('slds-dueling-list__options avonni-dual-listbox__boxes')
             .add({ 'slds-is-disabled': this._disabled })
             .add({
-                'avonni-dual-listbox-selected-list-with-search':
+                'avonni-dual-listbox__selected-list-with-search':
                     this._allowSearch
             })
             .add({
-                'avonni-dual-listbox-empty-column': this.isSelectedBoxEmpty
+                'avonni-dual-listbox__empty-column': this.isSelectedBoxEmpty
             })
-            .add({
-                'avonni-dual-listbox-size_small': this._size === 'small',
-                'avonni-dual-listbox-size_medium': this._size === 'medium',
-                'avonni-dual-listbox-size_large': this._size === 'large'
-            })
+            .add(`avonni-dual-listbox__box_size-${this._size}`)
             .toString();
     }
 
@@ -1157,7 +1147,7 @@ export default class DualListbox extends LightningElement {
     get computedListItemClass() {
         return classSet('slds-listbox__item')
             .add({
-                'avonni-dual-listbox-option-border_bottom':
+                'avonni-dual-listbox__option_border-bottom':
                     !this.hideBottomDivider
             })
             .toString();
@@ -1759,22 +1749,26 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Drag Start add "avonni-dual-listbox-dragging" class to current SourceList element.
+     * Drag Start add "avonni-dual-listbox__option_dragging" class to current SourceList element.
      *
      * @param {Event} event
      */
     handleDragStartSource(event) {
-        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+        event.currentTarget.classList.add(
+            'avonni-dual-listbox__option_dragging'
+        );
     }
 
     /**
-     * Drag end event SourceList element handler ( remove "avonni-dual-listbox-dragging" ).
+     * Drag end event SourceList element handler ( remove "avonni-dual-listbox__option_dragging" ).
      *
      * @param {Event} event
      */
     handleDragEndSource(event) {
         event.preventDefault();
-        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        event.currentTarget.classList.remove(
+            'avonni-dual-listbox__option_dragging'
+        );
         if (this._dropItSelected) {
             if (
                 this.highlightedOptions.includes(
@@ -1787,22 +1781,26 @@ export default class DualListbox extends LightningElement {
     }
 
     /**
-     * Drag Start add "avonni-dual-listbox-dragging" class to current SelectedList element.
+     * Drag Start add "avonni-dual-listbox__option_dragging" class to current SelectedList element.
      *
      * @param {Event} event
      */
     handleDragStartSelected(event) {
-        event.currentTarget.classList.add('avonni-dual-listbox-dragging');
+        event.currentTarget.classList.add(
+            'avonni-dual-listbox__option_dragging'
+        );
     }
 
     /**
-     * Drag end event SourceList element handler ( remove "avonni-dual-listbox-dragging" ) - reorder list and index.
+     * Drag end event SourceList element handler ( remove "avonni-dual-listbox__option_dragging" ) - reorder list and index.
      *
      * @param {Event} event
      */
     handleDragEndSelected(event) {
         event.preventDefault();
-        event.currentTarget.classList.remove('avonni-dual-listbox-dragging');
+        event.currentTarget.classList.remove(
+            'avonni-dual-listbox__option_dragging'
+        );
         if (this._dropItSource) {
             if (
                 this.highlightedOptions.includes(

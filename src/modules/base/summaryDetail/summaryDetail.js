@@ -177,7 +177,7 @@ export default class SummaryDetail extends LightningElement {
      * @type {string}
      */
     get titleClass() {
-        return classSet('avonni-min-width_0').add({
+        return classSet('avonni-summary-detail_min-width').add({
             'slds-col': this.fullWidth
         });
     }
@@ -188,7 +188,7 @@ export default class SummaryDetail extends LightningElement {
      * @type {string}
      */
     get bodyClass() {
-        return classSet('avonni-min-width_0').add({
+        return classSet('avonni-summary-detail_min-width').add({
             'slds-col': this.fullWidth
         });
     }
@@ -200,7 +200,8 @@ export default class SummaryDetail extends LightningElement {
      */
     get contentClass() {
         return classSet('slds-summary-detail__content').add({
-            'content_no-indent': this.removeBodyIndentation && !this.hideIcon
+            'avonni-summary-detail__content_no-indent':
+                this.removeBodyIndentation && !this.hideIcon
         });
     }
 

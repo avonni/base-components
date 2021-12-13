@@ -71,52 +71,52 @@ describe('Pagination', () => {
     // align
     it('align = left', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination-container'
+            '.avonni-pagination__container'
         );
         element.align = 'left';
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).toContain(
-                'avonni-pagination-container-left'
+                'avonni-pagination__container_left'
             );
         });
     });
 
     it('align = center', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination-container'
+            '.avonni-pagination__container'
         );
         element.align = 'center';
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).toContain(
-                'avonni-pagination-container-center'
+                'avonni-pagination__container_center'
             );
         });
     });
 
     it('align = right', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination-container'
+            '.avonni-pagination__container'
         );
         element.align = 'right';
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).toContain(
-                'avonni-pagination-container-right'
+                'avonni-pagination__container_right'
             );
         });
     });
 
     it('align = fill', () => {
         const wrapper = element.shadowRoot.querySelector(
-            '.avonni-pagination-container'
+            '.avonni-pagination__container'
         );
         element.align = 'fill';
 
         return Promise.resolve().then(() => {
             expect(wrapper.classList).toContain(
-                'avonni-pagination-container-fill'
+                'avonni-pagination__container_fill'
             );
         });
     });

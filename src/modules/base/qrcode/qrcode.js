@@ -76,7 +76,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default #ffffff
      */
-    @api get background() {
+    @api
+    get background() {
         return this._background;
     }
 
@@ -91,8 +92,6 @@ export default class Qrcode extends LightningElement {
             ) {
                 this._background = color;
             }
-        } else {
-            this._background = DEFAULT_BACKGROUND_COLOR;
         }
 
         if (this._rendered) {
@@ -106,7 +105,8 @@ export default class Qrcode extends LightningElement {
      * @type {string}
      * @public
      */
-    @api get borderColor() {
+    @api
+    get borderColor() {
         return this._borderColor;
     }
 
@@ -156,7 +156,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default #000000
      */
-    @api get color() {
+    @api
+    get color() {
         return this._color;
     }
 
@@ -171,8 +172,6 @@ export default class Qrcode extends LightningElement {
             ) {
                 this._color = color;
             }
-        } else {
-            this._color = DEFAULT_COLOR;
         }
 
         if (this._rendered) {
@@ -189,7 +188,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default ISO_8859_1
      */
-    @api get encoding() {
+    @api
+    get encoding() {
         return this._encoding;
     }
 
@@ -216,7 +216,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default L
      */
-    @api get errorCorrection() {
+    @api
+    get errorCorrection() {
         return this._errorCorrection;
     }
 
@@ -261,7 +262,8 @@ export default class Qrcode extends LightningElement {
      * @public
      * @default svg
      */
-    @api get renderAs() {
+    @api
+    get renderAs() {
         return this._renderAs;
     }
 
@@ -330,6 +332,14 @@ export default class Qrcode extends LightningElement {
         return this._renderAs === 'svg';
     }
 
+    get isColorNull() {
+        return !this._color;
+    }
+
+    get isBackgroundNull() {
+        return !this._background;
+    }
+
     /**
      * Verify if color is hexadecimal.
      *
@@ -369,7 +379,10 @@ export default class Qrcode extends LightningElement {
                     fill: this._background
                 },
                 margin: 0,
-                svgSize: this.size
+                svgSize: this.size,
+                renderAsSvg: this.renderAsSvg,
+                isColorNull: this.isColorNull,
+                isBackgroundNull: this.isBackgroundNull
             });
 
             if (this.renderAsSvg) {

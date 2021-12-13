@@ -50,7 +50,8 @@ const DIVIDER = {
 const DEFAULT_ITEM_HEIGHT = 44;
 
 const IMAGE_WIDTH = {
-    valid: ['small', 'medium', 'large']
+    valid: ['small', 'medium', 'large'],
+    default: 'large'
 };
 
 /**
@@ -99,6 +100,7 @@ export default class List extends LightningElement {
     _hasActions = false;
     _divider;
     _imageSrc = [];
+    _imageWidth = IMAGE_WIDTH.default;
     computedActions = [];
     computedItems = [];
     _hasImages;
@@ -135,7 +137,8 @@ export default class List extends LightningElement {
 
     set imageWidth(width) {
         this._imageWidth = normalizeString(width, {
-            validValues: IMAGE_WIDTH.valid
+            validValues: IMAGE_WIDTH.valid,
+            defaultValue: IMAGE_WIDTH.default
         });
 
         switch (this._imageWidth) {
@@ -332,8 +335,11 @@ export default class List extends LightningElement {
             .add({
                 'avonni-list__item-sortable': this.sortable,
                 'avonni-list__item-expanded': this._hasActions,
-                'slds-p-vertical_x-small': !this.divider,
-                'slds-p-horizontal_none': this.divider === 'top' || 'bottom'
+                'slds-p-vertical_x-small': !this._divider,
+                'slds-p-horizontal_none': this._divider === 'top' || 'bottom',
+                'avonni-list__item-divider_top': this._divider === 'top',
+                'avonni-list__item-divider_bottom': this._divider === 'bottom',
+                'avonni-list__item-divider_around': this._divider === 'around'
             })
             .toString();
     }
@@ -455,7 +461,11 @@ export default class List extends LightningElement {
         ).textContent = '';
 
         // Clean the tracked variables
-        this._draggedElement = this._draggedIndex = this._initialY = this._savedComputedItems = undefined;
+        this._draggedElement =
+            this._draggedIndex =
+            this._initialY =
+            this._savedComputedItems =
+                undefined;
     }
 
     /**

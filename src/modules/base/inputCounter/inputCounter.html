@@ -34,13 +34,20 @@
 
 <template>
     <template if:true={isInline}>
-        <label class="slds-form-element__label slds-no-flex">
+        <label
+            class="
+                slds-form-element__label
+                slds-no-flex
+                avonni-input-counter__label
+            "
+        >
             <abbr
                 if:true={required}
                 title="required"
                 class="slds-required"
                 data-element-id="abbr"
-            >*</abbr>
+                >*</abbr
+            >
             {label}
         </label>
         <lightning-helptext

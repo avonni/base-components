@@ -565,7 +565,9 @@ export default class Combobox extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        return classSet('slds-form-element__label')
+        return classSet(
+            'slds-form-element__label avonni-combobox__label_styling'
+        )
             .add({ 'slds-assistive-text': this.variant === 'label-hidden' })
             .toString();
     }

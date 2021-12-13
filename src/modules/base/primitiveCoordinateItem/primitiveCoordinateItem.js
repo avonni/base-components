@@ -64,7 +64,7 @@ export default class PrimitiveCoordinateItem extends LightningElement {
     }
 
     get computedAssistiveText() {
-        if (this.selected === true) {
+        if (this.selected) {
             return `${this.itemTitle} ${i18n.labelSelectedItemString}`;
         }
         return '';

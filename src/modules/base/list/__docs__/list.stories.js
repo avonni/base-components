@@ -35,13 +35,13 @@ import { List } from '../__examples__/list';
 export default {
     title: 'Example/List',
     argTypes: {
-        label: {
+        action: {
             control: {
-                type: 'text'
+                type: 'object'
             },
-            description: 'Label of the list.',
+            description: 'Array of actions',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'object[]' }
             }
         },
         alternativeText: {
@@ -55,6 +55,32 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        divider: {
+            name: 'divider',
+            control: {
+                type: 'select'
+            },
+            options: ['top', 'bottom', 'around'],
+            description:
+                'Position of the sortable icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        imageWidth: {
+            name: 'image-width',
+            control: {
+                type: 'select'
+            },
+            options: ['small', 'medium', 'large'],
+            defaultValue: 'large',
+            description:
+                'Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px)',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'large' }
+            }
+        },
         items: {
             control: {
                 type: 'object'
@@ -64,13 +90,13 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        action: {
+        label: {
             control: {
-                type: 'object'
+                type: 'text'
             },
-            description: 'Array of actions',
+            description: 'Label of the list.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'string' }
             }
         },
         sortable: {
@@ -108,30 +134,6 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'right' }
-            }
-        },
-        divider: {
-            name: 'divider',
-            control: {
-                type: 'select'
-            },
-            options: ['top', 'bottom', 'around'],
-            description:
-                'Position of the sortable icon. Valid values include left and right.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        imageWidth: {
-            name: 'image-width',
-            control: {
-                type: 'select'
-            },
-            options: ['small', 'medium', 'large'],
-            description:
-                'Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px)',
-            table: {
-                type: { summary: 'string' }
             }
         }
     }
@@ -350,8 +352,7 @@ const action = [
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items,
-    divider: 'around'
+    items: items
 };
 
 export const BaseWithDividerOnTop = Template.bind({});

@@ -608,8 +608,8 @@ export default class PrimitiveCombobox extends LightningElement {
             }
             values.push(option.value);
         });
-        if(this.isMultiSelect) {
-            return this.hasBadValues
+        if (this.isMultiSelect) {
+            return this.hasBadValues;
         }
         return this._value.length === 0 || this._value[0] === ''
             ? true
@@ -903,7 +903,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     get readOnlyLabel() {
-        return this.label ? this.label : 'Read Only Combobox'
+        return this.label ? this.label : 'Read Only Combobox';
     }
 
     /**
@@ -1289,7 +1289,10 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     computeSelection() {
         this.selectedOptions = this.getSelectedOptions();
-        this.hasBadValues = this._value.length === 0 ? true : this.selectedOptions.some((option) => option.value)
+        this.hasBadValues =
+            this._value.length === 0
+                ? true
+                : this.selectedOptions.some((option) => option.value);
         this._value = this.selectedOptions.map((option) => option.value);
 
         this.dispatchEvent(
@@ -1413,9 +1416,13 @@ export default class PrimitiveCombobox extends LightningElement {
         if (!this._optionElements[index]) return;
 
         if (this._highlightedOption)
-            this._highlightedOption.classList.remove('slds-has-focus');
+            this._highlightedOption.classList.remove(
+                'avonni-primitive-combobox__option_background_focused'
+            );
         this._highlightedOptionIndex = index;
-        this._highlightedOption.classList.add('slds-has-focus');
+        this._highlightedOption.classList.add(
+            'avonni-primitive-combobox__option_background_focused'
+        );
         const listboxElement = this.template.querySelector(
             '.slds-listbox [role="listbox"]'
         );

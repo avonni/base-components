@@ -62,8 +62,10 @@ describe('Blockquote', () => {
         element.title = 'Blockquote Title';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('.doc');
-            expect(div.className).toContain('blockquote-default');
+            const div = element.shadowRoot.querySelector(
+                '.avonni-blockquote__container'
+            );
+            expect(div.className).toContain('avonni-blockquote__theme-default');
         });
     });
 
@@ -71,8 +73,10 @@ describe('Blockquote', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('.doc');
-            expect(div.className).toContain('blockquote-brand');
+            const div = element.shadowRoot.querySelector(
+                '.avonni-blockquote__container'
+            );
+            expect(div.className).toContain('avonni-blockquote__theme-brand');
         });
     });
 
@@ -80,8 +84,10 @@ describe('Blockquote', () => {
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('.doc');
-            expect(div.className).toContain('blockquote-warning');
+            const div = element.shadowRoot.querySelector(
+                '.avonni-blockquote__container'
+            );
+            expect(div.className).toContain('avonni-blockquote__theme-warning');
         });
     });
 
@@ -89,8 +95,10 @@ describe('Blockquote', () => {
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('.doc');
-            expect(div.className).toContain('blockquote-success');
+            const div = element.shadowRoot.querySelector(
+                '.avonni-blockquote__container'
+            );
+            expect(div.className).toContain('avonni-blockquote__theme-success');
         });
     });
 
@@ -98,8 +106,10 @@ describe('Blockquote', () => {
         element.variant = 'error';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('.doc');
-            expect(div.className).toContain('blockquote-error');
+            const div = element.shadowRoot.querySelector(
+                '.avonni-blockquote__container'
+            );
+            expect(div.className).toContain('avonni-blockquote__theme-error');
         });
     });
 
@@ -108,7 +118,9 @@ describe('Blockquote', () => {
         element.title = 'Blockquote Title';
 
         return Promise.resolve().then(() => {
-            const div = element.shadowRoot.querySelector('.doc.lead');
+            const div = element.shadowRoot.querySelector(
+                '.avonni-blockquote__container.avonni-blockquote__title'
+            );
             expect(div.textContent).toBe('Blockquote Title');
         });
     });
@@ -118,7 +130,9 @@ describe('Blockquote', () => {
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.iconName).toBe('utility:error');
         });
     });
@@ -129,7 +143,9 @@ describe('Blockquote', () => {
         element.iconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.size).toBe('xx-small');
         });
     });
@@ -139,7 +155,9 @@ describe('Blockquote', () => {
         element.iconSize = 'x-small';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.size).toBe('x-small');
         });
     });
@@ -148,7 +166,9 @@ describe('Blockquote', () => {
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.size).toBe('small');
         });
     });
@@ -158,7 +178,9 @@ describe('Blockquote', () => {
         element.iconSize = 'medium';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.size).toBe('medium');
         });
     });
@@ -168,7 +190,9 @@ describe('Blockquote', () => {
         element.iconSize = 'large';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.size).toBe('large');
         });
     });
@@ -179,7 +203,9 @@ describe('Blockquote', () => {
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.className).toContain('slds-m-left_x-small');
         });
     });
@@ -189,7 +215,9 @@ describe('Blockquote', () => {
         element.iconPosition = 'left';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id^="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id^="lightning-icon"]'
+            );
             expect(icon.className).toContain('slds-m-right_x-small');
         });
     });

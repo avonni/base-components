@@ -73,7 +73,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const title = element.shadowRoot.querySelector(
-                '[data-element-id="h2"]'
+                '[data-element-id="avonni-hero-banner-title"]'
             );
             expect(title.textContent).toBe('This is a title text');
         });
@@ -85,7 +85,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const caption = element.shadowRoot.querySelector(
-                '[data-element-id="h1"]'
+                '[data-element-id="avonni-hero-banner-caption"]'
             );
             expect(caption.textContent).toBe('This is a caption text');
         });
@@ -97,7 +97,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const subtitle = element.shadowRoot.querySelector(
-                '[data-element-id="p-subtitle"]'
+                '[data-element-id="avonni-hero-banner-subtitle"]'
             );
             expect(subtitle.textContent).toBe('This is a subtitle text');
         });
@@ -110,7 +110,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const background = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-background-class'
+                '.avonni-hero-banner__background'
             );
             expect(background.style.height).toBe(height);
         });
@@ -123,7 +123,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const background = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-width-container'
+                '[data-element-id="avonni-hero-banner-content-width"]'
             );
             expect(background.style.width).toBe(maxWidth);
         });
@@ -136,16 +136,16 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-width-container'
+                '[data-element-id="avonni-hero-banner-content-width"]'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-horizontal-alignment_center'
+                'avonni-hero-banner__horizontal-alignment_center'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-horizontal-alignment_right'
+                'avonni-hero-banner__horizontal-alignment_right'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-horizontal-alignment_left'
+                'avonni-hero-banner__horizontal-alignment_left'
             );
         });
     });
@@ -156,16 +156,16 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-width-container'
+                '[data-element-id="avonni-hero-banner-content-width"]'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-horizontal-alignment_center'
+                'avonni-hero-banner__horizontal-alignment_center'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-horizontal-alignment_right'
+                'avonni-hero-banner__horizontal-alignment_right'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-horizontal-alignment_left'
+                'avonni-hero-banner__horizontal-alignment_left'
             );
         });
     });
@@ -176,16 +176,16 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-width-container'
+                '[data-element-id="avonni-hero-banner-content-width"]'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-horizontal-alignment_center'
+                'avonni-hero-banner__horizontal-alignment_center'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-horizontal-alignment_right'
+                'avonni-hero-banner__horizontal-alignment_right'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-horizontal-alignment_left'
+                'avonni-hero-banner__horizontal-alignment_left'
             );
         });
     });
@@ -197,16 +197,16 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-content-container'
+                '[data-element-id="avonni-hero-banner-content-container"]'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignment_center'
+                'avonni-hero-banner__vertical-alignment_center'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignment_bottom'
+                'avonni-hero-banner__vertical-alignment_bottom'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignment_top'
+                'avonni-hero-banner__vertical-alignment_top'
             );
         });
     });
@@ -217,16 +217,16 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-content-container'
+                '[data-element-id="avonni-hero-banner-content-container"]'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignment_center'
+                'avonni-hero-banner__vertical-alignment_center'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignment_bottom'
+                'avonni-hero-banner__vertical-alignment_bottom'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignment_top'
+                'avonni-hero-banner__vertical-alignment_top'
             );
         });
     });
@@ -237,16 +237,16 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-content-container'
+                '[data-element-id="avonni-hero-banner-content-container"]'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignment_center'
+                'avonni-hero-banner__vertical-alignment_center'
             );
             expect(textContainer.className).toContain(
-                'avonni-hero-banner-vertical-alignment_bottom'
+                'avonni-hero-banner__vertical-alignment_bottom'
             );
             expect(textContainer.className).not.toContain(
-                'avonni-hero-banner-vertical-alignment_top'
+                'avonni-hero-banner__vertical-alignment_top'
             );
         });
     });
@@ -259,7 +259,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const textContainer = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-content'
+                '[data-element-id="avonni-hero-banner-content"]'
             );
             expect(textContainer.style.width).toBe(contentWidth);
         });
@@ -271,7 +271,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const primaryButton = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-primary-button'
+                '.avonni-hero-banner__primary-button'
             );
             expect(primaryButton.textContent).toBe(
                 'This is a primary button label'
@@ -287,7 +287,7 @@ describe('Hero Banner', () => {
 
         return Promise.resolve().then(() => {
             const secondaryButton = element.shadowRoot.querySelector(
-                '.avonni-hero-banner-secondary-button'
+                '.avonni-hero-banner__secondary-button'
             );
             expect(secondaryButton.textContent).toBe(
                 'This is a secondary button label'

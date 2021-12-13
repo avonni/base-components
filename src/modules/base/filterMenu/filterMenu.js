@@ -747,13 +747,9 @@ export default class FilterMenu extends LightningElement {
                 'slds-nubbin_bottom':
                     this.dropdownNubbin &&
                     this.dropdownAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading,
-                'slds-dropdown_xx-small': this.dropdownWidth === 'xx-small',
-                'slds-dropdown_x-small': this.dropdownWidth === 'x-small',
-                'slds-dropdown_small': this.dropdownWidth === 'small',
-                'slds-dropdown_medium': this.dropdownWidth === 'medium',
-                'slds-dropdown_large': this.dropdownWidth === 'large'
+                'slds-p-vertical_large': this.isLoading
             })
+            .add(`slds-dropdown_${this._dropdownWidth}`)
             .toString();
     }
 

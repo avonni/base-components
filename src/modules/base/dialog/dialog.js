@@ -222,11 +222,7 @@ export default class Dialog extends LightningElement {
      */
     get computedModalClass() {
         return classSet('slds-modal slds-fade-in-open')
-            .add({
-                'slds-modal_small': this._size === 'small',
-                'slds-modal_medium': this._size === 'medium',
-                'slds-modal_large': this._size === 'large'
-            })
+            .add(`slds-modal_${this._size}`)
             .toString();
     }
 }

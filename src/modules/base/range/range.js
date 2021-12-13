@@ -436,10 +436,10 @@ export default class Range extends LightningElement {
     get computedContainerClass() {
         return classSet('')
             .add({
-                [`avonni-range-container-horizontal-size_${this._size}`]:
+                [`avonni-range__container-horizontal-size_${this._size}`]:
                     this._size,
-                'avonni-range-vertical': this._type === 'vertical',
-                [`avonni-range-container-vertical-size_${this._size}`]:
+                'avonni-range__vertical': this._type === 'vertical',
+                [`avonni-range__container-vertical-size_${this._size}`]:
                     this._size && this._type === 'vertical'
             })
             .toString();
@@ -452,8 +452,8 @@ export default class Range extends LightningElement {
      */
     get computedBubbleLeftClass() {
         return this._type === 'vertical'
-            ? 'avonni-range-bubble-vertical left-bubble'
-            : 'avonni-range-bubble left-bubble';
+            ? 'avonni-range__bubble-vertical left-bubble'
+            : 'avonni-range__bubble left-bubble';
     }
 
     /**
@@ -463,8 +463,8 @@ export default class Range extends LightningElement {
      */
     get computedBubbleRightClass() {
         return this._type === 'vertical'
-            ? 'avonni-range-bubble-vertical right-bubble'
-            : 'avonni-range-bubble right-bubble';
+            ? 'avonni-range__bubble-vertical right-bubble'
+            : 'avonni-range__bubble right-bubble';
     }
 
     /**
@@ -549,8 +549,12 @@ export default class Range extends LightningElement {
      */
     addProgressLine() {
         if (!this._disabled) {
-            let leftInput = this.template.querySelector('.slider-left');
-            let rightInput = this.template.querySelector('.slider-right');
+            let leftInput = this.template.querySelector(
+                '.avonni-range__slider-left'
+            );
+            let rightInput = this.template.querySelector(
+                '.avonni-range__slider-right'
+            );
 
             let leftProgressLine =
                 ((this.calculateMax - this.valueLower) /

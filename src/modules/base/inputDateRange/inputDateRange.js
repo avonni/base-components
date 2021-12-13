@@ -442,7 +442,7 @@ export default class InputDateRange extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        return classSet('avonni-label-container')
+        return classSet('avonni-date-range__label-container')
             .add({
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
@@ -503,13 +503,9 @@ export default class InputDateRange extends LightningElement {
         if (!this._valid && !this._readOnly) {
             this.classList.remove('slds-has-error');
             this.startDateInput.classList.add('slds-has-error');
-            this.startDateInput.classList.add(
-                'avonni-input-date-rage-input-error'
-            );
+            this.startDateInput.classList.add('avonni-date-range__input_error');
             this.endDateInput.classList.add('slds-has-error');
-            this.endDateInput.classList.add(
-                'avonni-input-date-rage-input-error'
-            );
+            this.endDateInput.classList.add('avonni-date-range__input_error');
             if (this.showTime) {
                 this.startTimeInput.classList.add('slds-has-error');
                 this.endTimeInput.classList.add('slds-has-error');
@@ -518,11 +514,11 @@ export default class InputDateRange extends LightningElement {
         if (this._valid && !this._readOnly) {
             this.startDateInput.classList.remove('slds-has-error');
             this.startDateInput.classList.remove(
-                'avonni-input-date-rage-input-error'
+                'avonni-date-range__input_error'
             );
             this.endDateInput.classList.remove('slds-has-error');
             this.endDateInput.classList.remove(
-                'avonni-input-date-rage-input-error'
+                'avonni-date-range__input_error'
             );
             if (this.showTime) {
                 this.startTimeInput.classList.remove('slds-has-error');

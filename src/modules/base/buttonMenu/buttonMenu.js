@@ -527,13 +527,7 @@ export default class ButtonMenu extends LightningElement {
             });
         }
 
-        return classes
-            .add({
-                'slds-button_first': this._order === 'first',
-                'slds-button_middle': this._order === 'middle',
-                'slds-button_last': this._order === 'last'
-            })
-            .toString();
+        return classes.add(`slds-button_${this._order}`).toString();
     }
 
     /**

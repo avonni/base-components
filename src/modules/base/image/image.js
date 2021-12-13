@@ -375,14 +375,14 @@ export default class Image extends LightningElement {
     get computedImageClass() {
         return classSet('avonni-image')
             .add({
-                'avonni-image-fluid': this.fluid || this.fluidGrow,
-                'avonni-image-fluid-grow': this.fluidGrow,
-                'avonni-image-thumbnail': this.thumbnail,
-                'avonni-float-left':
+                'avonni-image_fluid': this.fluid || this.fluidGrow,
+                'avonni-image_fluid-grow': this.fluidGrow,
+                'avonni-image_thumbnail': this.thumbnail,
+                'avonni-image_float-left':
                     this._position === 'left' && this._lazyLoading === 'auto',
-                'avonni-float-right': this._position === 'right',
-                'avonni-margin-auto': this._position === 'center',
-                'avonni-display-block': this._position === 'center'
+                'avonni-image_float-right': this._position === 'right',
+                'avonni-image_margin-auto': this._position === 'center',
+                'avonni-image_display-block': this._position === 'center'
             })
             .toString();
     }
