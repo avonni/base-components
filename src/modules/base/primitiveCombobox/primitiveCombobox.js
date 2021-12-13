@@ -1619,6 +1619,8 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     handleClearInput(event) {
         event.stopPropagation();
+        if (this.disabled) return;
+
         this.inputValue = '';
 
         // Clear the value
