@@ -96,12 +96,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-blockquote-success-color-background
- * @default #fafaf9
- * @type color
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-blockquote-success-color-border-left
  * @default #d47500
  * @type color
