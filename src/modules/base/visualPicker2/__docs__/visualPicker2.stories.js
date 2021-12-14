@@ -35,6 +35,39 @@ import { VisualPicker } from '../__examples__/visualPicker2';
 export default {
     title: 'Example/VisualPicker2',
     argTypes: {
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description: 'If present, the visual picker is disabled.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Validations'
+            }
+        },
+        hideCheckMark: {
+            name: 'hide-check-mark',
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: 0,
+            description: 'If present, hide the check mark.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        items: {
+            control: {
+                type: 'object'
+            },
+            description: '',
+            table: {
+                type: { summary: 'object' }
+            }
+        },
         label: {
             control: {
                 type: 'text'
@@ -56,41 +89,13 @@ export default {
                 category: 'Validations'
             }
         },
-        variant: {
+        name: {
             control: {
-                type: 'select'
+                type: 'text'
             },
-            options: ['coverable', 'non-coverable', 'vertical'],
-            defaultValue: 'non-coverable',
-            description:
-                'Allowed values are coverable, non-coverable and vertical.',
+            description: 'The name of the visual picker.',
+            type: { required: true },
             table: {
-                defaultValue: { summary: 'non-coverable' },
-                type: { summary: 'string' }
-            }
-        },
-        type: {
-            control: {
-                type: 'select'
-            },
-            options: ['radio', 'checkbox'],
-            defaultValue: 'radio',
-            description: 'Valid values include radio and checkbox.',
-            table: {
-                defaultValue: { summary: 'radio' },
-                type: { summary: 'string' }
-            }
-        },
-        size: {
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
-            description:
-                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
-            table: {
-                defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
             }
         },
@@ -107,53 +112,41 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        hideCheckMark: {
-            name: 'hide-check-mark',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description: 'If present, hide the check mark.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
-        hideBorder: {
-            name: 'hide-border',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, hide the border and box-shadow on item picker. Still displayed border on hover.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description: 'If present, the visual picker is disabled.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Validations'
-            }
-        },
         required: {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description: 'If present, at least one item must be selected.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
                 category: 'Validations'
+            }
+        },
+        size: {
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            defaultValue: 'medium',
+            description:
+                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
+            table: {
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
+            }
+        },
+        type: {
+            control: {
+                type: 'select'
+            },
+            options: ['radio', 'checkbox'],
+            defaultValue: 'radio',
+            description: 'Valid values include radio and checkbox.',
+            table: {
+                defaultValue: { summary: 'radio' },
+                type: { summary: 'string' }
             }
         },
         value: {
@@ -166,29 +159,21 @@ export default {
                 type: { summary: 'string | string[]' }
             }
         },
-        items: {
+        variant: {
             control: {
-                type: 'object'
+                type: 'select'
             },
-            description: '',
+            options: ['coverable', 'non-coverable'],
+            defaultValue: 'non-coverable',
+            description: 'Allowed values are coverable and non-coverable.',
             table: {
-                type: { summary: 'object' }
-            }
-        },
-        name: {
-            control: {
-                type: 'text'
-            },
-            description: 'The name of the visual picker.',
-            type: { required: true },
-            table: {
+                defaultValue: { summary: 'non-coverable' },
                 type: { summary: 'string' }
             }
         }
     },
     args: {
         hideCheckMark: false,
-        hideBorder: false,
         disabled: false,
         required: false
     }
@@ -202,8 +187,20 @@ const items = [
         figure: {
             title: '$30',
             description: 'USD/user/month *',
-            iconName: 'standard:user'
-        }
+            iconName: 'standard:user',
+            iconSize: 'small',
+            iconPosition: 'left'
+        },
+        tags: [
+            {
+                label: 'Best Value',
+                variant: 'success'
+            },
+            {
+                label: 'Most Popular',
+                variant: 'info'
+            }
+        ]
     },
     {
         title: 'Lightning Enterprise',
@@ -212,8 +209,19 @@ const items = [
         figure: {
             title: '$150',
             description: 'USD/user/month *',
-            iconName: 'standard:groups'
-        }
+            iconName: 'standard:groups',
+            iconPosition: 'right'
+        },
+        tags: [
+            {
+                label: 'Best Value',
+                variant: 'success'
+            },
+            {
+                label: 'Most Popular',
+                variant: 'info'
+            }
+        ]
     },
     {
         title: 'Lightning Enterprise Plus',
@@ -223,8 +231,19 @@ const items = [
         figure: {
             title: '$220',
             description: 'USD/user/month *',
-            iconName: 'standard:account'
-        }
+            iconName: 'standard:account',
+            iconPosition: 'top'
+        },
+        tags: [
+            {
+                label: 'Best Value',
+                variant: 'success'
+            },
+            {
+                label: 'Most Popular',
+                variant: 'info'
+            }
+        ]
     },
     {
         title: 'Lightning Unlimited',
@@ -233,8 +252,19 @@ const items = [
         figure: {
             title: '$300',
             description: 'USD/user/month *',
-            iconName: 'custom:custom68'
-        }
+            iconName: 'custom:custom68',
+            iconPosition: 'bottom'
+        },
+        tags: [
+            {
+                label: 'Best Value',
+                variant: 'success'
+            },
+            {
+                label: 'Most Popular',
+                variant: 'info'
+            }
+        ]
     }
 ];
 

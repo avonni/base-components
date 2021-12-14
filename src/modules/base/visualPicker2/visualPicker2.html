@@ -32,4 +32,141 @@
  */
 -->
 
-<template> </template>
+<template>
+    <fieldset
+        class="slds-form-element"
+        aria-required={required}
+        data-element-id="fieldset"
+    >
+        <legend class="slds-form-element__legend slds-form-element__label">
+            <template if:true={required}>
+                <abbr
+                    class="slds-required"
+                    title="Required"
+                    data-element-id="abbr"
+                    >*</abbr
+                >
+            </template>
+            {label}
+        </legend>
+        <div class="slds-form-element__control slds-grid slds-wrap">
+            <template for:each={listItems} for:item="item">
+                <div class={visualPickerClass} key={item.key}>
+                    <input
+                        type={type}
+                        id={item.value}
+                        value={item.value}
+                        name={name}
+                        disabled={item.disabled}
+                        data-element-id="input"
+                        onchange={handleChange}
+                    />
+                    <label for={item.value} data-element-id="label">
+                        <span class={visualPickerTypeClass}>
+                            <div>
+                                <template if:false={hideCheckMark}>
+                                    <span
+                                        if:true={isCoverable}
+                                        class={selectedClass}
+                                    >
+                                        <lightning-icon
+                                            icon-name="utility:check"
+                                            size="medium"
+                                            variant="inverse"
+                                        ></lightning-icon>
+                                    </span>
+                                </template>
+                                <span class={notSelectedClass}>
+                                    <template if:true={item.iconIsTop}>
+                                        <lightning-icon
+                                            icon-name={item.figure.iconName}
+                                            size={item.figure.iconSize}
+                                            alternative-text={item.figure.iconAlternativeText}
+                                            src={item.figure.iconSrc}
+                                        ></lightning-icon>
+                                    </template>
+                                    <div class="slds-media slds-media_center">
+                                        <template if:true={item.iconIsLeft}>
+                                            <lightning-icon
+                                                icon-name={item.figure.iconName}
+                                                size={item.figure.iconSize}
+                                                alternative-text={item.figure.iconAlternativeText}
+                                                src={item.figure.iconSrc}
+                                            ></lightning-icon>
+                                        </template>
+                                        <div class="slds-media__body">
+                                            <span
+                                                class="slds-text-heading_large"
+                                            >
+                                                {item.figure.title}
+                                            </span>
+                                        </div>
+                                        <template if:true={item.iconIsRight}>
+                                            <lightning-icon
+                                                icon-name={item.figure.iconName}
+                                                size={item.figure.iconSize}
+                                                alternative-text={item.figure.iconAlternativeText}
+                                                src={item.figure.iconSrc}
+                                            ></lightning-icon>
+                                        </template>
+                                    </div>
+                                    <span class="slds-text-title"
+                                        >{item.figure.description}</span
+                                    >
+                                    <template if:true={item.iconIsBottom}>
+                                        <lightning-icon
+                                            icon-name={item.figure.iconName}
+                                            size={item.figure.iconSize}
+                                            alternative-text={item.figure.iconAlternativeText}
+                                            src={item.figure.iconSrc}
+                                            class="slds-m-top_x-small"
+                                        ></lightning-icon>
+                                    </template>
+                                </span>
+                                <div
+                                    if:true={isBiggerThanSmall}
+                                    class="avonni-visual-picker__tags-container"
+                                >
+                                    <template
+                                        for:each={item.tags}
+                                        for:item="tag"
+                                        for:index="index"
+                                    >
+                                        <avonni-chip
+                                            key={tag.index}
+                                            label={tag.label}
+                                            variant={tag.variant}
+                                            class="avonni-visual-picker__tags"
+                                        ></avonni-chip>
+                                    </template>
+                                </div>
+                            </div>
+                        </span>
+                        <span class="slds-visual-picker__body">
+                            <span class="slds-text-heading_small"
+                                >{item.title}</span
+                            >
+                            <span class="slds-text-title"
+                                >{item.description}</span
+                            >
+                        </span>
+                        <span
+                            if:false={isCoverable}
+                            class="
+                                slds-icon_container
+                                slds-visual-picker__text-check
+                            "
+                        >
+                            <lightning-icon
+                                icon-name="utility:check"
+                                size="x-small"
+                                class="slds-icon-text-check"
+                                variant="inverse"
+                            ></lightning-icon>
+                        </span>
+                    </label>
+                </div>
+            </template>
+        </div>
+    </fieldset>
+</template>
