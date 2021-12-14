@@ -108,7 +108,7 @@ export default class List extends LightningElement {
     itemRole;
 
     /**
-     * Position of the sortable icon. Valid values include left and right.
+     * Position of the item divider. Valid valus include top, bottom and around.
      *
      * @type {string}
      * @public
@@ -124,7 +124,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px).
+     * Width of the item images. Valid values include small, medium and large.
      *
      * @type {string}
      * @public
@@ -147,9 +147,6 @@ export default class List extends LightningElement {
                 break;
             case 'medium':
                 this._imageWidth = '72';
-                break;
-            case 'large':
-                this._imageWidth = '128';
                 break;
             default:
                 this._imageWidth = '128';
@@ -215,7 +212,7 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Array of actions.
+     * Array of action objects.
      *
      * @type {object}
      * @public
@@ -595,7 +592,7 @@ export default class List extends LightningElement {
              *
              * @event
              * @name reorder
-             * @param {object} items
+             * @param {object} items The items in their new order.
              * @public
              */
             this.dispatchEvent(
@@ -693,7 +690,7 @@ export default class List extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name  Name of the action clicked.
-         * @param {object} items Item clicked.
+         * @param {object} item Item clicked.
          * @public
          */
         this.dispatchEvent(

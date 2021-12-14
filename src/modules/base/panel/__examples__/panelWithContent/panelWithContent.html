@@ -1,15 +1,17 @@
-<avonni-panel show-panel="true" data-element-id="avonni-panel">
-    <div slot="title">
-        <div class="slds-text-heading_small">Panel Header</div>
-    </div>
-    <div slot="panel-body">
-        <lightning-input
-            name="enter-search"
-            label="Search"
-            type="search"
-        ></lightning-input>
-    </div>
-    <div class="slds-grid slds-grid_align-center">
-        <avonni-calendar></avonni-calendar>
-    </div>
-</avonni-panel>
+<template>
+    <avonni-panel show-panel="true" data-element-id="avonni-panel">
+        <div slot="title">
+            <div class="slds-text-heading_small">Panel Header</div>
+        </div>
+        <div slot="panel-body">
+            <lightning-input
+                name="enter-search"
+                label="Search"
+                type="search"
+            ></lightning-input>
+        </div>
+        <div class="slds-grid slds-grid_align-center">
+            <avonni-calendar></avonni-calendar>
+        </div>
+    </avonni-panel>
+</template>

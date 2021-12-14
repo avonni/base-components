@@ -12,7 +12,7 @@
  * @name headers
  * @property {string} unit The date/time unit of this header. Valid values include year, month, week, day, hour and minute.
  * @property {number} span The number of units in one column of this header. For example, if the unit is ‘hour’ and the span is '2', one column of this header will contain two hours.
- * @property {number} label The header label. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format. If you want to insert text in the label, you need to escape it using single quote.
+ * @property {number} label The header label. See <a href="https://moment.github.io/luxon/#/formatting?id=table-of-tokens">Luxon’s documentation</a> for accepted format. If you want to insert text in the label, you need to escape it using single quote.
  * For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'".
  */
 
@@ -84,38 +84,4 @@
  * @name --avonni-scheduler-datatable-column-width
  * @default 300px
  * @type width
- */
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-scheduler--base
- */
-/**
- * @memberof examples
- * @name bigDataSet
- * @storyId example-scheduler--big-data-set
- */
-/**
- * @memberof examples
- * @name availableAndDisabledTimes
- * @storyId example-scheduler--available-and-disabled-times
- */
-/**
- * @memberof examples
- * @name readOnly
- * @storyId example-scheduler--read-only
- */
-/**
- * @memberof examples
- * @name labels
- * @storyId example-scheduler--labels
- */
-/**
- * @memberof examples
- * @name themesAndColors
- * @storyId example-scheduler--themes-and-colors
  */

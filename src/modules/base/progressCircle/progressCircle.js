@@ -137,7 +137,6 @@ export default class ProgressCircle extends LightningElement {
 
     /**
      * Accepted variants include standard, value-hidden.
-     * value-hidden: Hide the value in the progress circle (ex: 75%)
      *
      * @type {string}
      * @public

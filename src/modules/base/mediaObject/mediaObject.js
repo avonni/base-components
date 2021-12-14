@@ -75,7 +75,7 @@ export default class MediaObject extends LightningElement {
     }
 
     /**
-     * figure and body stack on smaller screens.
+     * If present, figure and body stack on smaller screens.
      *
      * @type {boolean}
      * @public
@@ -91,7 +91,7 @@ export default class MediaObject extends LightningElement {
     }
 
     /**
-     * Aligns the figure and body to be inline-block of each other.
+     * If present, the figures and body are stacked on each other.
      *
      * @type {boolean}
      * @public
@@ -113,7 +113,8 @@ export default class MediaObject extends LightningElement {
      * @public
      * @default medium
      */
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 

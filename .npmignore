@@ -15,10 +15,7 @@ package-lock.json
 jest-mock/**
 
 # LWC Docs
-**/__docs__/**
-
-# LWC Examples
-**/__examples__/**
+**/__docs__/*.stories.js
 
 #LWC wrappers
 **/storybookWrappers/**

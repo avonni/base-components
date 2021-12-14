@@ -1,25 +1,27 @@
-<avonni-profile-card
-    title="Title"
-    subtitle="Subtitle"
-    avatar-src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"
-    background-src="https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg"
-    avatar-mobile-position="top-center"
->
-    <lightning-button-icon
-        slot="actions"
-        icon-name="utility:settings"
-        variant="border-filled"
-        alternative-text="Settings"
-        title="Settings"
-    ></lightning-button-icon>
-    <lightning-button-icon
-        slot="avataractions"
-        icon-name="utility:photo"
-        variant="border-filled"
-        alternative-text="photo"
-        title="photo"
-    ></lightning-button-icon>
-    <div slot="header">Header slot item</div>
-    <div>Anything can go into the card body</div>
-    <div slot="footer">Footer slot item</div>
-</avonni-profile-card>
+<template>
+    <avonni-profile-card
+        title="Title"
+        subtitle="Subtitle"
+        avatar-src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"
+        background-src="https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg"
+        avatar-mobile-position="top-center"
+    >
+        <lightning-button-icon
+            slot="actions"
+            icon-name="utility:settings"
+            variant="border-filled"
+            alternative-text="Settings"
+            title="Settings"
+        ></lightning-button-icon>
+        <lightning-button-icon
+            slot="avataractions"
+            icon-name="utility:photo"
+            variant="border-filled"
+            alternative-text="photo"
+            title="photo"
+        ></lightning-button-icon>
+        <div slot="header">Header slot item</div>
+        <div>Anything can go into the card body</div>
+        <div slot="footer">Footer slot item</div>
+    </avonni-profile-card>
+</template>

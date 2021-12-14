@@ -17,48 +17,5 @@
  * Placeholder for avonni-wizard-step.
  *
  * @memberof slots
- * @name defaults
- */
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-wizard--base
- */
-/**
- * @memberof examples
- * @name indicatorRight
- * @storyId example-wizard--indicator-right
- */
-/**
- * @memberof examples
- * @name pathLeft
- * @storyId example-wizard--path-left
- */
-/**
- * @memberof examples
- * @name modalLeft
- * @storyId example-wizard--modal-left
- */
-/**
- * @memberof examples
- * @name modal
- * @storyId example-wizard--modal
- */
-/**
- * @memberof examples
- * @name card
- * @storyId example-wizard--card
- */
-/**
- * @memberof examples
- * @name cardRight
- * @storyId example-wizard--card-right
- */
-/**
- * @memberof examples
- * @name beforeChangeOnSteps
- * @storyId example-wizard--before-change-on-steps
+ * @name default
  */

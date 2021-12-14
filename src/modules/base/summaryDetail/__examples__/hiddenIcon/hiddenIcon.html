@@ -1,21 +1,26 @@
-<avonni-summary-detail title="Summary detail with hidden icon" hide-icon="true">
-    <div slot="actions">
-        <lightning-button-icon
-            icon-name="utility:settings"
-            alternative-text="Settings"
-            variant="bare"
-            tooltip="Button icon in actions slot"
-        ></lightning-button-icon>
-    </div>
-    <h3
-        slot="title"
-        class="slds-text-heading_small slds-truncate slds-p-right_small"
-        title="summary title"
+<template>
+    <avonni-summary-detail
+        title="Summary detail with hidden icon"
+        hide-icon="true"
     >
-        Slot title
-    </h3>
-    <p>
-        Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis
-        vestibulum.
-    </p>
-</avonni-summary-detail>
+        <div slot="actions">
+            <lightning-button-icon
+                icon-name="utility:settings"
+                alternative-text="Settings"
+                variant="bare"
+                tooltip="Button icon in actions slot"
+            ></lightning-button-icon>
+        </div>
+        <h3
+            slot="title"
+            class="slds-text-heading_small slds-truncate slds-p-right_small"
+            title="summary title"
+        >
+            Slot title
+        </h3>
+        <p>
+            Aenean eu leo quam. Pellentesque ornare sem lacinia quam venenatis
+            vestibulum.
+        </p>
+    </avonni-summary-detail>
+</template>

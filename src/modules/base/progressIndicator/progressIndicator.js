@@ -67,7 +67,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     /**
-     * All completed steps values.
+     * Array of completed steps values.
      *
      * @type {string[]}
      * @public
@@ -81,7 +81,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     /**
-     * All disabled steps values.
+     * Array of disabled steps values.
      *
      * @type {string[]}
      * @public
@@ -95,7 +95,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     /**
-     * All warning steps values.
+     * Array of warning steps values.
      *
      * @type {string[]}
      * @public
@@ -109,7 +109,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     /**
-     * All error steps values.
+     * Array of error steps values.
      *
      * @type {string[]}
      * @public
@@ -143,7 +143,7 @@ export default class ProgressIndicator extends LightningElement {
     }
 
     /**
-     * Array of steps attributes.
+     * Array of step bjects.
      *
      * @type {object[]}
      * @public
@@ -248,7 +248,7 @@ export default class ProgressIndicator extends LightningElement {
      */
     dispatchStepClick() {
         /**
-         * Event that fires when clicking on step.
+         * The event fired when a step is clicked.
          *
          * @event
          * @name stepclick
@@ -262,7 +262,7 @@ export default class ProgressIndicator extends LightningElement {
      */
     dispatchStepBlur() {
         /**
-         * Event that fires when step loses focus.
+         * The event fired when a step looses focus.
          *
          * @event
          * @name stepblur
@@ -276,7 +276,7 @@ export default class ProgressIndicator extends LightningElement {
      */
     dispatchStepFocus() {
         /**
-         * Event that fires when focusing on step.
+         * The event fired when a step receives focus.
          *
          * @event
          * @name stepfocus
@@ -290,7 +290,7 @@ export default class ProgressIndicator extends LightningElement {
      */
     dispatchStepMouseEnter() {
         /**
-         * Event that fires when mouse enters step.
+         * The event fired when the mouse enters a step.
          *
          * @event
          * @name stepmouseenter
@@ -318,7 +318,7 @@ export default class ProgressIndicator extends LightningElement {
      */
     dispatchStepButtonClick() {
         /**
-         * Event that fires when clicking on step button.
+         * The event fired when a step button is clicked.
          *
          * @event
          * @name stepbuttonclick
@@ -332,7 +332,7 @@ export default class ProgressIndicator extends LightningElement {
      */
     dispatchStepPopoverClick() {
         /**
-         * Event that fires when clicking on step popover.
+         * The event fired when a step popover is clicked.
          *
          * @event
          * @name steppopoverclick

@@ -84,7 +84,7 @@ export default class Illustration extends LightningElement {
     _variant = ILLUSTRATION_VARIANTS.default;
 
     /**
-     * The variant types of illustrations.
+     * The variant types of illustrations. Valid values include text-only, going-camping, gone_fishing, maintenance, desert, open-road, no-access, no-connection, not-available-in-lightning page-not-available, walkthrough-not-available, fishing-deals, lake-mountain, no-events, no-events-2, no-task, no-task-2, setup, gone-fishing, no-access-2, no-content, no-preview, preview and research
      *
      * @type {string}
      * @public
@@ -103,7 +103,7 @@ export default class Illustration extends LightningElement {
     }
 
     /**
-     * The illustration sizes. Valid options include 'small', 'large'.
+     * The illustration size. Valid options include 'small', 'large'.
      *
      * @type {string}
      * @public

@@ -119,7 +119,7 @@ export default class ColorPalette extends LightningElement {
     /**
      * Array of colors displayed in the default palette. Each color can either be a string or a color object.
      *
-     * @type {(string|object)[]}
+     * @type {(string[]|object[])}
      * @default [“#e3abec”, “#c2dbf7”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
      * @public
      */
@@ -306,7 +306,7 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Clears the color value of the ColorPalette.
+     * Clear the value.
      *
      * @public
      */
@@ -415,7 +415,7 @@ export default class ColorPalette extends LightningElement {
      */
     handleFocus() {
         /**
-         * The event fired when you focus the palette.
+         * The event fired when the focus is set on the palette.
          *
          * @event
          * @name focus
@@ -498,6 +498,8 @@ export default class ColorPalette extends LightningElement {
 
         if (!this.disabled && !this.readOnly) {
             /**
+             * The event fired when the value is changed.
+             * 
              * @event
              * @public
              * @name change

@@ -198,7 +198,7 @@ export default class Datatable extends LightningDatatable {
         image: {
             template: image,
             typeAttributes: [
-                'alt',
+                'alternativeText',
                 'height',
                 'sizes',
                 'srcset',
@@ -413,8 +413,7 @@ export default class Datatable extends LightningDatatable {
 
     /**
      * Specifies the default sorting direction on an unsorted column.
-     * Valid options include 'asc' and 'desc'.
-     * The default is 'asc' for sorting in ascending order.
+     * Valid options include 'asc' and 'desc'. The default is 'asc' for sorting in ascending order.
      * @public
      * @type {string}
      * @default asc
@@ -432,8 +431,7 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * Determines when to trigger infinite loading based on
-     * how many pixels the table's scroll position is from the bottom of the table.
+     * Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table.
      * @public
      * @type {number}
      * @default 20
@@ -466,8 +464,7 @@ export default class Datatable extends LightningDatatable {
 
     /**
      * The maximum number of rows that can be selected.
-     * Checkboxes are used for selection by default,
-     * and radio buttons are used when maxRowSelection is 1.
+     * Checkboxes are used for selection by default, and radio buttons are used when maxRowSelection is 1.
      * @public
      * @type {number}
      */
@@ -559,9 +556,7 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * Specifies the sorting direction.
-     * Sort the data using the onsort event handler.
-     * Valid options include 'asc' and 'desc'.
+     * Specifies the sorting direction. Sort the data using the onsort event handler. Valid options include 'asc' and 'desc'.
      * @public
      * @type {string}
      */
@@ -578,8 +573,7 @@ export default class Datatable extends LightningDatatable {
     }
 
     /**
-     * This value specifies the number of lines after which the
-     * content will be cut off and hidden. It must be at least 1 or more.
+     * This value specifies the number of lines after which the content will be cut off and hidden. It must be at least 1 or more.
      * The text in the last line is truncated and shown with an ellipsis.
      * @public
      * @type {integer}

@@ -19,36 +19,3 @@
  * @memberof slots
  * @name default
  */
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-media-object--base
- */
-/**
- * @memberof examples
- * @name inverse
- * @storyId example-media-object--inverse
- */
-/**
- * @memberof examples
- * @name double
- * @storyId example-media-object--double
- */
-/**
- * @memberof examples
- * @name centerSmall
- * @storyId example-media-object--center-small
- */
-/**
- * @memberof examples
- * @name endLarge
- * @storyId example-media-object--end-large
- */
-/**
- * @memberof examples
- * @name inLine
- * @storyId example-media-object--in-line
- */

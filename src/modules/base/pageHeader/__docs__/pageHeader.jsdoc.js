@@ -61,38 +61,3 @@
  * @default #f3f2f2
  * @type color
  */
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-page-header--base
- */
-/**
- * @memberof examples
- * @name objectHome
- * @storyId example-page-header--object-home
- */
-/**
- * @memberof examples
- * @name recordHome
- * @storyId example-page-header--record-home
- */
-/**
-/**
-* @memberof examples
-* @name recordHomeVertical
-* @storyId example-page-header--record-home-vertical
-*/
-/**
- * @memberof examples
- * @name mobileRecordHome
- * @storyId example-page-header--mobile-record-home
- */
-/**
- * @memberof examples
- * @name mobileRecordHomeVertical
- * @storyId example-page-header--mobile-record-home-vertical
- */

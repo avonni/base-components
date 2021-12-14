@@ -75,7 +75,7 @@ export default class ExpandableSection extends LightningElement {
     }
 
     /**
-     * If the section is not collapsible, the left icon is hidden.
+     * If present, the section is collapsible.
      *
      * @type {boolean}
      * @public

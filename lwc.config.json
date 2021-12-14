@@ -749,6 +749,10 @@
         {
             "name": "avonni/wizard",
             "path": "src/modules/base/wizard/wizard.js"
+        },
+        {
+            "name": "avonni/wizardStep",
+            "path": "src/modules/base/wizardStep/wizardStep.js"
         }
     ],
     "expose": [
@@ -818,6 +822,7 @@
         "avonni/verticalProgressStep",
         "avonni/visualPicker",
         "avonni/visualPickerLink",
-        "avonni/wizard"
+        "avonni/wizard",
+        "avonni/wizardStep"
     ]
 }

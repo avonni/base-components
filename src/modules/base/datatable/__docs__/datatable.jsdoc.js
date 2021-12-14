@@ -8,8 +8,7 @@
  */
 
 /**
- * If present, you can load a subset of data and then display more
- * when users scroll to the end of the table.
+ * If present, you can load a subset of data and then display more when users scroll to the end of the table.
  * Use with the onloadmore event handler to retrieve more data.
  * @name enableInfiniteLoading
  * @public
@@ -149,41 +148,10 @@
  * @public
  */
 
-// ------------------------- EXAMPLES -------------------------
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name dataTypesFromAToB
- * @storyId example-datatable--data-types-from-a-to-b
- */
-/**
- * @memberof examples
- * @name dataTypesC
- * @storyId example-datatable--data-types-c
- */
-/**
- * @memberof examples
- * @name dataTypesFromDtoO
- * @storyId example-datatable--data-types-from-d-to-o
- */
-/**
- * @memberof examples
- * @name dataTypesFromPtoR
- * @storyId example-datatable--data-types-from-p-to-r
- */
-/**
- * @memberof examples
- * @name dataTypesFromSToZ
- * @storyId example-datatable--data-types-from-s-to-z
- */
-
 // ------------------------- TYPE DEFINITIONS -------------------------
 
 /**
- * @typedef {Object} Column
+ * @typedef {Object} DatatableColumn
  * @name Columns
  * @property {object} actions Appends a dropdown menu of actions to a column. See table below.
  * @property {object} cellAttributes Provides additional customization, such as appending an icon to the output. See table below for valid keys.
@@ -202,9 +170,10 @@
  * * progress-circle
  * * progress-ring
  * * qrcode
+ * * URL
  * * URLS
  * @property {string} fieldName Required. The name that binds the columns attributes to the associated data. Each columns attribute must correspond to an item in the data array.
- * @property {integer} fixedWidth Specifies the width of a column in pixels and makes the column non-resizable. If both fixedWidth and initialWidth values are provided, initialWidth is ignored.
+ * @property {integer} fixedWidth Specifies the width of a column in pixels and makes the column non-resizable. If both <code>fixedWidth</code> and <code>initialWidth</code> values are provided, <code>initialWidth</code> is ignored.
  * @property {boolean} hideDefaultActions Specifies whether to hide the default header actions on a column. Default header actions are “Wrap text” and “Clip text”.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the header label.
  * @property {integer} initialWidth The width of the column when it's initialized, which must be within the min-column-width and max-column-width values, or within 50px and 1000px if they are not provided.
@@ -226,7 +195,7 @@
  */
 
 /**
- * @typedef {Object} Action
+ * @typedef {Object} DatatableAction
  * @name Actions
  * @property {string} label Required. The label that's displayed for the action.
  * @property {string} name Required. The name of the action, which identifies the selected action.
@@ -237,12 +206,12 @@
  */
 
 /**
- * @typedef {Object} CellAttribute
+ * @typedef {Object} DatatableCellAttribute
  * @name CellAttributes
  * @property {string} alignment Alignment of the text. Valid options include left, center and right.
  * @property {string} class Pass Lightning Design System classes to the cell.
  * @property {string | object} iconName The Lightning Design System name of the icon, for example, utility:down.
- * To use a custom icon for each row, pass an object with a key fieldName. The value of fieldName will be the data objects key containing the icon name.
+ * To use a custom icon for each row, pass an object with a key <code>fieldName</code>. The value of <code>fieldName</code> will be the data objects key containing the icon name.
  * @property {string} iconLabel The label for the icon to be displayed on the right of the icon.
  * @property {string} iconPosition The position of the icon relative to the data. Valid options include left and right. This value defaults to left.
  * @property {string} iconAlternativeText Descriptive text for the icon.

@@ -7,6 +7,8 @@
  * @memberof slots
  * @name default
  */
+
+
 /**
  * @namespace stylingHooks
  */
@@ -93,23 +95,4 @@
  * @name --avonni-expandable-section-shaded-header-spacing-block-end
  * @default 0.75rem
  * @type spacing
- */
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-expandable-section--base
- */
-/**
- * @memberof examples
- * @name collapsible
- * @storyId example-expandable-section--collapsible
- */
-/**
- * @memberof examples
- * @name collapsibleClosed
- * @storyId example-expandable-section--collapsible-closed
  */
