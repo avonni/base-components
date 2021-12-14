@@ -30,20 +30,12 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.verticalContainer {
-    display: flex;
-    align-items: center;
-    height: -webkit-fill-available;
-}
-
-.verticalContainer > span {
-    flex: 1;
-}
-
 .slds-visual-picker {
     margin-right: var(--lwc-spacingMedium, 1rem);
     margin-left: 0;
 }
+
+/*-- xx-small --*/
 .avonni-visual-picker_xx-small {
     width: 4rem;
 }
@@ -62,7 +54,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* width: 3.75rem; */
 }
 
 .avonni-visual-picker_xx-small
@@ -78,7 +69,6 @@
     color: var(--lwc-colorTextWeak, rgb(62, 62, 60));
     overflow: hidden;
     text-overflow: ellipsis;
-    /* width: 3.75rem; */
 }
 
 .avonni-visual-picker_xx-small .slds-visual-picker__body .slds-text-title {
@@ -91,6 +81,11 @@
     padding: 0.2rem;
 }
 
+.avonni-visual-picker_xx-small .slds-visual-picker__body {
+    padding: 0.4rem;
+}
+
+/*-- x-small --*/
 .avonni-visual-picker_x-small {
     width: 6rem;
 }
@@ -109,7 +104,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* width: 5.75rem; */
 }
 
 .avonni-visual-picker_x-small
@@ -126,7 +120,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* width: 5.75rem; */
 }
 
 .avonni-visual-picker_x-small .slds-visual-picker__body .slds-text-title {
@@ -139,6 +132,7 @@
     padding: 0.3rem;
 }
 
+/*-- small --*/
 .avonni-visual-picker_small {
     width: 8rem;
 }
@@ -157,7 +151,6 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* width: 7.75rem; */
 }
 
 .avonni-visual-picker_small .slds-visual-picker__figure .slds-text-title {
@@ -167,16 +160,36 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    /* width: 7.75rem; */
 }
 
-.avonni-visual-picker_xx-small .slds-visual-picker__body {
-    padding: 0.4rem;
+/*-- x-large --*/
+.avonni-visual-picker_x-large {
+    width: 18rem;
 }
 
-.avonni-hide-border {
-    box-shadow: none;
-    border: none;
+.avonni-visual-picker_x-large .slds-visual-picker__figure {
+    width: 18rem;
+    height: 18rem;
+}
+
+.avonni-visual-picker_x-large
+    .slds-visual-picker__figure
+    .slds-text-heading_large {
+    font-weight: var(--lwc-fontWeightLight, 400);
+    font-size: 1.75rem;
+    line-height: var(--lwc-lineHeightHeading, 1.25);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.avonni-visual-picker_x-large .slds-visual-picker__figure .slds-text-title {
+    font-size: 0.75rem;
+    line-height: 1.25;
+    color: var(--lwc-colorTextWeak, rgb(62, 62, 60));
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .slds-visual-picker
@@ -210,6 +223,15 @@ input:checked ~ label .avonni-is-not-selected span {
     color: #ffffff !important;
 }
 
+.slds-icon-action-check {
+    border: var(--lwc-borderWidthThick, 2px) solid #ffffff;
+}
+
+input[disabled] ~ label .slds-icon-action-check {
+    border: var(--lwc-borderWidthThick, 2px) solid #ecebea;
+}
+
+/*-- ratio 4-by-3 --*/
 .avonni-visual-picker_xx-small.ratio-4-by-3 .slds-visual-picker__figure {
     height: 3rem;
     overflow: hidden;
@@ -235,6 +257,7 @@ input:checked ~ label .avonni-is-not-selected span {
     overflow: hidden;
 }
 
+/*-- ratio 16-by-9 --*/
 .avonni-visual-picker_xx-small.ratio-16-by-9 .slds-visual-picker__figure {
     height: 2.25rem;
     overflow: hidden;
@@ -260,24 +283,69 @@ input:checked ~ label .avonni-is-not-selected span {
     overflow: hidden;
 }
 
-.slds-icon-action-check {
-    border: var(--lwc-borderWidthThick, 2px) solid #ffffff;
+/*-- ratio 3-by-4 --*/
+.avonni-visual-picker_xx-small.ratio-3-by-4 .slds-visual-picker__figure {
+    height: 5.33rem;
+    overflow: hidden;
 }
 
-input[disabled] ~ label .slds-icon-action-check {
-    border: var(--lwc-borderWidthThick, 2px) solid #ecebea;
+.avonni-visual-picker_x-small.ratio-3-by-4 .slds-visual-picker__figure {
+    height: 8rem;
+    overflow: hidden;
 }
 
-.slds-box {
-    display: flex;
-    align-items: center;
+.avonni-visual-picker_small.ratio-3-by-4 .slds-visual-picker__figure {
+    height: 10.66rem;
+    overflow: hidden;
 }
 
-.slds-box .slds-p-around_small {
-    text-align: left;
-    flex: 1;
+.slds-visual-picker_medium.ratio-3-by-4 .slds-visual-picker__figure {
+    height: 16rem;
+    overflow: hidden;
 }
 
+.slds-visual-picker_large.ratio-3-by-4 .slds-visual-picker__figure {
+    height: 20rem;
+    overflow: hidden;
+}
+
+.avonni-visual-picker_x-large.ratio-3-by-4 .slds-visual-picker__figure {
+    height: 24rem;
+    overflow: hidden;
+}
+
+/*-- ratio 9-by-16 --*/
+.avonni-visual-picker_xx-small.ratio-9-by-16 .slds-visual-picker__figure {
+    height: 7.11rem;
+    overflow: hidden;
+}
+
+.avonni-visual-picker_x-small.ratio-9-by-16 .slds-visual-picker__figure {
+    height: 10.66rem;
+    overflow: hidden;
+}
+
+.avonni-visual-picker_small.ratio-9-by-16 .slds-visual-picker__figure {
+    height: 14.22rem;
+    overflow: hidden;
+}
+
+.slds-visual-picker_medium.ratio-9-by-16 .slds-visual-picker__figure {
+    height: 21.3rem;
+    overflow: hidden;
+}
+
+.slds-visual-picker_large.ratio-9-by-16 .slds-visual-picker__figure {
+    height: 26.66rem;
+    overflow: hidden;
+}
+
+.avonni-visual-picker_x-large.ratio-9-by-16 .slds-visual-picker__figure {
+    height: 32rem;
+    overflow: hidden;
+}
+
+/*-- tags --*/
 .avonni-visual-picker__tags-container {
     display: flex;
     position: absolute;

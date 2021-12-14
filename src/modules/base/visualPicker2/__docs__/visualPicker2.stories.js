@@ -103,10 +103,10 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['1-by-1', '4-by-3', '16-by-9'],
+            options: ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'],
             defaultValue: '1-by-1',
             description:
-                'The ratio of the items. Valid values include 1-by-1, 4-by-3 and 16-by-9.',
+                'The ratio of the items. Valid values include 1-by-1, 4-by-3, 16-by-9, 3-by-4 and 9-by-16.',
             table: {
                 defaultValue: { summary: '1-by-1' },
                 type: { summary: 'string' }
@@ -128,10 +128,17 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            options: [
+                'xx-small',
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large'
+            ],
             defaultValue: 'medium',
             description:
-                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.',
+                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem) and x-large (18rem x 18rem).',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
@@ -189,18 +196,14 @@ const items = [
             description: 'USD/user/month *',
             iconName: 'standard:user',
             iconSize: 'small',
-            iconPosition: 'left'
-        },
-        tags: [
-            {
-                label: 'Best Value',
-                variant: 'success'
-            },
-            {
-                label: 'Most Popular',
-                variant: 'info'
-            }
-        ]
+            iconPosition: 'left',
+            tags: [
+                {
+                    label: 'Most Popular',
+                    variant: 'info'
+                }
+            ]
+        }
     },
     {
         title: 'Lightning Enterprise',
@@ -210,40 +213,29 @@ const items = [
             title: '$150',
             description: 'USD/user/month *',
             iconName: 'standard:groups',
-            iconPosition: 'right'
-        },
-        tags: [
-            {
-                label: 'Best Value',
-                variant: 'success'
-            },
-            {
-                label: 'Most Popular',
-                variant: 'info'
-            }
-        ]
+            iconPosition: 'right',
+            tags: [
+                {
+                    label: 'Best Value',
+                    variant: 'success'
+                }
+            ]
+            // imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
+            // imgPosition: 'top'
+        }
     },
     {
         title: 'Lightning Enterprise Plus',
         description: 'Example of a disabled tile',
         value: 'lightning-enterprise-plus',
-        disabled: true,
         figure: {
             title: '$220',
             description: 'USD/user/month *',
             iconName: 'standard:account',
-            iconPosition: 'top'
-        },
-        tags: [
-            {
-                label: 'Best Value',
-                variant: 'success'
-            },
-            {
-                label: 'Most Popular',
-                variant: 'info'
-            }
-        ]
+            iconPosition: 'top',
+            imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
+            imgPosition: 'top'
+        }
     },
     {
         title: 'Lightning Unlimited',
@@ -254,17 +246,7 @@ const items = [
             description: 'USD/user/month *',
             iconName: 'custom:custom68',
             iconPosition: 'bottom'
-        },
-        tags: [
-            {
-                label: 'Best Value',
-                variant: 'success'
-            },
-            {
-                label: 'Most Popular',
-                variant: 'info'
-            }
-        ]
+        }
     }
 ];
 
@@ -274,5 +256,6 @@ export const Base = Template.bind({});
 Base.args = {
     label: 'This is a label',
     name: 'base',
-    items: items
+    items: items,
+    size: 'large'
 };

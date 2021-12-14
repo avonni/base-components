@@ -77,6 +77,12 @@
                                     </span>
                                 </template>
                                 <span class={notSelectedClass}>
+                                    <template if:true={item.imgIsTop}>
+                                        <img
+                                            src={item.figure.imgSrc}
+                                            alt={item.imgAlt}
+                                        />
+                                    </template>
                                     <template if:true={item.iconIsTop}>
                                         <lightning-icon
                                             icon-name={item.figure.iconName}
@@ -94,7 +100,10 @@
                                                 src={item.figure.iconSrc}
                                             ></lightning-icon>
                                         </template>
-                                        <div class="slds-media__body">
+                                        <div
+                                            class="slds-media__body"
+                                            if:true={isBiggerThanXSmall}
+                                        >
                                             <span
                                                 class="slds-text-heading_large"
                                             >
@@ -110,7 +119,9 @@
                                             ></lightning-icon>
                                         </template>
                                     </div>
-                                    <span class="slds-text-title"
+                                    <span
+                                        if:true={isBiggerThanXSmall}
+                                        class="slds-text-title"
                                         >{item.figure.description}</span
                                     >
                                     <template if:true={item.iconIsBottom}>
@@ -119,27 +130,32 @@
                                             size={item.figure.iconSize}
                                             alternative-text={item.figure.iconAlternativeText}
                                             src={item.figure.iconSrc}
-                                            class="slds-m-top_x-small"
+                                            class={computedBottomIconClass}
                                         ></lightning-icon>
                                     </template>
                                 </span>
-                                <div
-                                    if:true={isBiggerThanSmall}
-                                    class="avonni-visual-picker__tags-container"
-                                >
-                                    <template
-                                        for:each={item.tags}
-                                        for:item="tag"
-                                        for:index="index"
+                                <template if:true={item.figure.tags}>
+                                    <div
+                                        if:true={displayTags}
+                                        class="
+                                            avonni-visual-picker__tags-container
+                                        "
                                     >
-                                        <avonni-chip
-                                            key={tag.index}
-                                            label={tag.label}
-                                            variant={tag.variant}
-                                            class="avonni-visual-picker__tags"
-                                        ></avonni-chip>
-                                    </template>
-                                </div>
+                                        <template
+                                            for:each={item.figure.tags}
+                                            for:item="tag"
+                                        >
+                                            <avonni-chip
+                                                key={tag.label}
+                                                label={tag.label}
+                                                variant={tag.variant}
+                                                class="
+                                                    avonni-visual-picker__tags
+                                                "
+                                            ></avonni-chip>
+                                        </template>
+                                    </div>
+                                </template>
                             </div>
                         </span>
                         <span class="slds-visual-picker__body">

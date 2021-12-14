@@ -40,11 +40,11 @@ const VISUAL_PICKER_VARIANTS = {
 };
 const INPUT_TYPES = { valid: ['radio', 'checkbox'], default: 'radio' };
 const VISUAL_PICKER_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large'],
     default: 'medium'
 };
 const VISUAL_PICKER_RATIOS = {
-    valid: ['1-by-1', '4-by-3', '16-by-9'],
+    valid: ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'],
     default: '1-by-1'
 };
 
@@ -242,10 +242,25 @@ export default class VisualPicker extends LightningElement {
             const { title, description, disabled, figure, value, tags } = item;
             const checked = this._value.includes(value);
             const key = `visual-picker-key-${index}`;
-            const iconIsTop = figure.iconPosition === 'top';
-            const iconIsBottom = figure.iconPosition === 'bottom';
-            const iconIsLeft = figure.iconPosition === 'left';
-            const iconIsRight = figure.iconPosition === 'right';
+            const iconIsTop =
+                figure.iconPosition === 'top' &&
+                figure.iconName &&
+                this.isBiggerThanXSmall;
+            const iconIsBottom =
+                (figure.iconPosition === 'bottom' && figure.iconName) ||
+                this._size === 'x-small' ||
+                (this._size === 'xx-small' && figure.iconName);
+            const iconIsLeft =
+                figure.iconPosition === 'left' &&
+                figure.iconName &&
+                this.isBiggerThanXSmall;
+            const iconIsRight =
+                figure.iconPosition === 'right' &&
+                figure.iconName &&
+                this.isBiggerThanXSmall;
+            const imgIsTop = figure.imgPosition === 'top' && figure.imgSrc;
+            const imgIsBottom =
+                figure.imgPosition === 'bottom' && figure.imgSrc;
 
             return {
                 title,
@@ -259,7 +274,9 @@ export default class VisualPicker extends LightningElement {
                 iconIsBottom,
                 iconIsLeft,
                 iconIsRight,
-                tags
+                tags,
+                imgIsTop,
+                imgIsBottom
             };
         });
     }
@@ -276,7 +293,8 @@ export default class VisualPicker extends LightningElement {
                 'avonni-visual-picker_x-small': this._size === 'x-small',
                 'avonni-visual-picker_small': this._size === 'small',
                 'slds-visual-picker_medium': this._size === 'medium',
-                'slds-visual-picker_large': this._size === 'large'
+                'slds-visual-picker_large': this._size === 'large',
+                'avonni-visual-picker_x-large': this._size === 'x-large'
             })
             .add(`ratio-${this._ratio}`)
             .toString();
@@ -324,8 +342,25 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
-    get isBiggerThanSmall() {
-        return this._size === 'medium' || this._size === 'large';
+    get computedBottomIconClass() {
+        return classSet('')
+            .add({
+                'slds-m-top_x-small': this.isBiggerThanXSmall
+            })
+            .toString();
+    }
+
+    get displayTags() {
+        return (
+            (this._size === 'medium' ||
+                this._size === 'large' ||
+                this._size === 'x-large') &&
+            (this._ratio === '1-by-1' || this._ratio === '4-by-3')
+        );
+    }
+
+    get isBiggerThanXSmall() {
+        return !(this._size === 'x-small' || this._size === 'xx-small');
     }
 
     /**
