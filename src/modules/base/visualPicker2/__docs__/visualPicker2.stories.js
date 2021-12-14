@@ -219,9 +219,9 @@ const items = [
                     label: 'Best Value',
                     variant: 'success'
                 }
-            ]
-            // imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
-            // imgPosition: 'top'
+            ],
+            imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
+            imgPosition: 'top'
         }
     },
     {
@@ -234,7 +234,7 @@ const items = [
             iconName: 'standard:account',
             iconPosition: 'top',
             imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
-            imgPosition: 'top'
+            imgPosition: 'bottom'
         }
     },
     {

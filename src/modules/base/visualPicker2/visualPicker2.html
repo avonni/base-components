@@ -77,11 +77,21 @@
                                     </span>
                                 </template>
                                 <span class={notSelectedClass}>
-                                    <template if:true={item.imgIsTop}>
-                                        <img
-                                            src={item.figure.imgSrc}
-                                            alt={item.imgAlt}
-                                        />
+                                    <template if:true={displayImg}>
+                                        <div
+                                            if:true={item.imgIsTop}
+                                            class="
+                                                avonni-visual-picker__figure-image-top-container
+                                            "
+                                        >
+                                            <img
+                                                src={item.figure.imgSrc}
+                                                alt={item.imgAlt}
+                                                class="
+                                                    avonni-visual-picker__figure-image-top
+                                                "
+                                            />
+                                        </div>
                                     </template>
                                     <template if:true={item.iconIsTop}>
                                         <lightning-icon
@@ -154,6 +164,22 @@
                                                 "
                                             ></avonni-chip>
                                         </template>
+                                    </div>
+                                </template>
+                                <template if:true={displayImg}>
+                                    <div
+                                        if:true={item.imgIsBottom}
+                                        class="
+                                            avonni-visual-picker__figure-image-bottom-container
+                                        "
+                                    >
+                                        <img
+                                            src={item.figure.imgSrc}
+                                            alt={item.imgAlt}
+                                            class="
+                                                avonni-visual-picker__figure-image-bottom
+                                            "
+                                        />
                                     </div>
                                 </template>
                             </div>

@@ -307,7 +307,7 @@ export default class VisualPicker extends LightningElement {
      */
     get visualPickerTypeClass() {
         return classSet(
-            'slds-visual-picker__figure slds-align_absolute-center slds-is-relative'
+            'slds-visual-picker__figure slds-align_absolute-center slds-is-relative avonni-visual-picker__figure'
         )
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',
@@ -355,7 +355,23 @@ export default class VisualPicker extends LightningElement {
             (this._size === 'medium' ||
                 this._size === 'large' ||
                 this._size === 'x-large') &&
-            (this._ratio === '1-by-1' || this._ratio === '4-by-3')
+            (this._ratio === '1-by-1' ||
+                this._ratio === '4-by-3' ||
+                this._ratio === '3-by-4' ||
+                this._ratio === '9-by-16')
+        );
+    }
+
+    get displayImg() {
+        return (
+            (this._size === 'small' ||
+                this._size === 'medium' ||
+                this._size === 'large' ||
+                this._size === 'x-large') &&
+            (this._ratio === '1-by-1' ||
+                this._ratio === '4-by-3' ||
+                this._ratio === '3-by-4' ||
+                this._ratio === '9-by-16')
         );
     }
 
