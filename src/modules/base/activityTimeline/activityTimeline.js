@@ -119,7 +119,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the items will be grouped by the value. Valid values include week, month or year.
+     * If present, the value will define how the items will be grouped. Valid values include week, month or year.
      *
      * @public
      * @type {string}
@@ -152,7 +152,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Array of action objects. The actions are displayed at the top right of each item. 
+     * Array of action objects. The actions are displayed at the top right of each item.
      *
      * @public
      * @type {object[]}
@@ -332,5 +332,65 @@ export default class ActivityTimeline extends LightningElement {
      */
     get noGroupBy() {
         return !this.groupBy;
+    }
+
+    /**
+    * Handle the click on an action. Dispatch the actionclick event.
+    * 
+    * @param {Event} event
+    */
+    handleActionClick(event) {
+        /**
+        * The event fired when a user clicks on an action.
+        *
+        * @event
+        * @name actionclick
+        * @param {string} name Name of the action clicked.
+        * @param {string} targetName Unique name of the item the action belongs to.
+        * @param {object[]} fieldData Value of the item's fields.
+        * @public
+        */
+        this.dispatchEvent(new CustomEvent('actionclick', {
+            detail: {
+                ...event.detail,
+                targetName: event.currentTarget.dataset.name
+            }
+        }));
+    }
+
+    handleButtonClick(event) {
+        /**
+        * The event fired when the button in the details section is clicked.
+        *
+        * @event
+        * @name buttonclick
+        * @param {string} targetName Unique name of the item the button belongs to.
+        * @public
+        */
+        this.dispatchEvent(new CustomEvent('buttonclick', {
+            detail: {
+                targetName: event.currentTarget.dataset.name
+            }
+        }));
+    }
+
+    handleCheck(event) {
+        event.stopPropagation();
+
+        /**
+        * The event fired when an item is checked or unchecked.
+        *
+        * @event
+        * @name check
+        * @param {boolean} checked True if the item is checked, false otherwise.
+        * @param {string} targetName Unique name of the item.
+        * @public
+        */        
+        this.dispatchEvent(new CustomEvent('check', {
+            detail: {
+                checked: event.detail.checked,
+                targetName: event.currentTarget.dataset.name
+            }
+        }));
     }
 }

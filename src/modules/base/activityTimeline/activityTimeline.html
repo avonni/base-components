@@ -51,8 +51,8 @@
     <template if:true={noGroupBy}>
         <ul class="slds-timeline">
             <template for:each={ungroupedItems} for:item="item">
-                <li key={item.title}>
-                    <c-activity-timeline-item
+                <li key={item.name}>
+                    <c-primitive-activity-timeline-item
                         title={item.title}
                         description={item.description}
                         datetime-value={item.datetimeValue}
@@ -71,8 +71,13 @@
                         is-loading={item.isLoading}
                         loading-state-alternative-text={item.loadingStateAlternativeText}
                         actions={actions}
+                        name={item.name}
+                        data-name={item.name}
+                        onactionclick={handleActionClick}
+                        onbuttonclick={handleButtonClick}
+                        oncheck={handleCheck}
                     >
-                    </c-activity-timeline-item>
+                    </c-primitive-activity-timeline-item>
                 </li>
             </template>
         </ul>
@@ -88,8 +93,8 @@
                 >
                     <ul class="slds-timeline">
                         <template for:each={date.items} for:item="item">
-                            <li key={item.title}>
-                                <c-activity-timeline-item
+                            <li key={item.name}>
+                                <c-primitive-activity-timeline-item
                                     title={item.title}
                                     description={item.description}
                                     datetime-value={item.datetimeValue}
@@ -108,8 +113,13 @@
                                     is-loading={item.isLoading}
                                     loading-state-alternative-text={item.loadingStateAlternativeText}
                                     actions={actions}
+                                    name={item.name}
+                                    data-name={item.name}
+                                    onactionclick={handleActionClick}
+                                    onbuttonclick={handleButtonClick}
+                                    oncheck={handleCheck}
                                 >
-                                </c-activity-timeline-item>
+                                </c-primitive-activity-timeline-item>
                             </li>
                         </template>
                     </ul>

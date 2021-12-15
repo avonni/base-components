@@ -3,6 +3,7 @@ import { LightningElement } from 'lwc';
 export default class ActivityTimelineBase extends LightningElement {
     items = [
         {
+            name: 'item1',
             title:
                 'Review proposals for EBC deck with larger team and have marketing review this',
             description: 'You created a task with Charlie Gomez',
@@ -37,6 +38,7 @@ export default class ActivityTimelineBase extends LightningElement {
             ]
         },
         {
+            name: 'item2',
             title: 'Mobile conversation on Monday',
             description: 'You logged a call with Adam Chan',
             href: '#',
@@ -68,6 +70,7 @@ export default class ActivityTimelineBase extends LightningElement {
             ]
         },
         {
+            name: 'item3',
             title: 'Re: Mobile conversation on Monday with the new global team',
             description: 'You emailed Lea Chan',
             datetimeValue: 1619013600000,
@@ -102,6 +105,7 @@ export default class ActivityTimelineBase extends LightningElement {
             buttonIconName: 'utility:world'
         },
         {
+            name: 'item4',
             title: 'EBC Follow up call',
             description: 'You created an event with Aida Lee and 5 others',
             icons: ['utility:world'],
@@ -145,6 +149,7 @@ export default class ActivityTimelineBase extends LightningElement {
             closed: true
         },
         {
+            name: 'item5',
             title: 'Create one task',
             description: 'Fields are loading',
             datetimeValue: 1621605600000,
@@ -157,6 +162,7 @@ export default class ActivityTimelineBase extends LightningElement {
             buttonIconName: 'utility:world'
         },
         {
+            name: 'item6',
             title: 'Create another task',
             datetimeValue: 1621611000000,
             href: '#',

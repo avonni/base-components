@@ -74,7 +74,7 @@
                                 type="checkbox"
                                 label="checkbox"
                                 variant="label-hidden"
-                                onclick={handleCheck}
+                                onchange={handleCheck}
                             >
                             </lightning-input>
                         </template>
@@ -94,6 +94,7 @@
                                     variant="bare"
                                     size="small"
                                     class="slds-p-left_x-small"
+                                    value={icon}
                                     onclick={handleActionClick}
                                 ></lightning-button-icon>
                             </template>

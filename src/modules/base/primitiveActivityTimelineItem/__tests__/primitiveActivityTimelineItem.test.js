@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import ActivityTimelineItem from '../activityTimelineItem';
+import ActivityTimelineItem from '../primitiveActivityTimelineItem';
 
 // not tested
 // event action clicked because actions come from parent
@@ -61,7 +61,7 @@ const FIELDS = [
     }
 ];
 
-describe('Activity Timeline Item', () => {
+describe('Primitive Activity Timeline Item', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);

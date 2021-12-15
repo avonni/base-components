@@ -34,7 +34,8 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeArray,
-    normalizeString
+    normalizeString,
+    deepCopy
 } from 'c/utilsPrivate';
 
 import { classSet } from 'c/utils';
@@ -61,7 +62,7 @@ const DEFAULT_LOADING_TEXT = 'Loading';
  * @class
  * @descriptor avonni-activity-timeline-item
  */
-export default class ActivityTimelineItem extends LightningElement {
+export default class PrimitiveActivityTimelineItem extends LightningElement {
     /**
      * The title can include text, and is displayed in the header.
      * 
@@ -126,6 +127,14 @@ export default class ActivityTimelineItem extends LightningElement {
      * @default "Loading"
      */
     @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
+    /**
+    * Unique name of the item.
+    *
+    * @type {string}
+    * @required
+    * @public
+    */
+    @api name;
     /**
      * Actions object sent from Activity Timeline
      * 
@@ -363,7 +372,7 @@ export default class ActivityTimelineItem extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: name,
-                    fieldData: this._fields
+                    fieldData: deepCopy(this._fields)
                 }
             })
         );
@@ -388,19 +397,23 @@ export default class ActivityTimelineItem extends LightningElement {
      * @param {Event} event
      */
     handleCheck(event) {
+        event.stopPropagation();
+        
         /**
          * The check event returns the following parameters.
          * 
          * @event
          * @name check
          * @public
-         * @param {boolean} checked For input types checkbox and checkbox-button, the value of checked attribute.
+         * @param {boolean} checked True if the item is checked, false otherwise.
          * @bubbles
          * @composed
          */
         this.dispatchEvent(
             new CustomEvent('check', {
-                detail: event.target.checked,
+                detail: {
+                    checked: event.detail.checked
+                },
                 bubbles: true,
                 cancelable: false,
                 composed: true
