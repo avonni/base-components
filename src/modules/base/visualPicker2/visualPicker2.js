@@ -261,6 +261,9 @@ export default class VisualPicker extends LightningElement {
             const imgIsTop = figure.imgPosition === 'top' && figure.imgSrc;
             const imgIsBottom =
                 figure.imgPosition === 'bottom' && figure.imgSrc;
+            const displayFigureTitle =
+                (this.isBiggerThanXSmall && figure.iconName) ||
+                !figure.iconName;
 
             return {
                 title,
@@ -276,7 +279,8 @@ export default class VisualPicker extends LightningElement {
                 iconIsRight,
                 tags,
                 imgIsTop,
-                imgIsBottom
+                imgIsBottom,
+                displayFigureTitle
             };
         });
     }
@@ -377,6 +381,15 @@ export default class VisualPicker extends LightningElement {
 
     get isBiggerThanXSmall() {
         return !(this._size === 'x-small' || this._size === 'xx-small');
+    }
+
+    /**
+     * Verify if variant is coverable.
+     *
+     * @type {string}
+     */
+    get isCoverable() {
+        return this._variant === 'coverable';
     }
 
     /**
