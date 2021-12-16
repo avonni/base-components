@@ -54,7 +54,7 @@ const DEFAULT_EXPAND_ICON_NAME = 'utility:chevronright';
 /**
  * @class
  * @descriptor avonni-relationship-graph
- * @storyId data-relationship-graph--base
+ * @storyId example-relationship-graph--base
  * @public
  */
 export default class RelationshipGraph extends LightningElement {
@@ -132,7 +132,7 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
-     * Valid values include horizontal, vertical.
+     * The variant changes the appearance of the graph. Valid values include horizontal and vertical.
      *
      * @type {string}
      * @public
@@ -181,7 +181,7 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
-     * Array of item groups.
+     * Array of group objects.
      *
      * @type {object[]}
      * @public
@@ -213,7 +213,7 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
-     * Position of the group actions. Valid options include ‘top’ and ‘bottom’.
+     * Position of the group actions. Valid options include top and bottom.
      *
      * @type {string}
      * @public
@@ -245,7 +245,7 @@ export default class RelationshipGraph extends LightningElement {
     }
 
     /**
-     * If true, the number of items per group is hidden.
+     * If present, the number of items per group is hidden.
      *
      * @type {boolean}
      * @public
@@ -468,7 +468,7 @@ export default class RelationshipGraph extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name Name of the action clicked.
-         * @param {string} targetName Name of the group or item the action is related to. If the action is a root action, the value of targetName will be ‘root’.
+         * @param {string} targetName Name of the group or item the action is related to. If the action is a root action, the value of <code>targetName</code> will be ‘root’.
          * @param {object} itemData For an item action, data of the item.
          * @public
          */

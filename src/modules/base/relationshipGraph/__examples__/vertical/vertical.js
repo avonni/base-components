@@ -22,6 +22,19 @@ const customItemActions = [
 ];
 
 export default class RelationshipGraphVertical extends LightningElement {
+    actions = [
+        {
+            label: 'Add relationship',
+            name: 'add-relationship',
+            iconName: 'utility:add'
+        },
+        {
+            label: 'Remove relationship',
+            name: 'remove-relationship',
+            disabled: true
+        }
+    ];
+
     groupActions = [
         {
             label: 'New',
@@ -126,13 +139,11 @@ export default class RelationshipGraphVertical extends LightningElement {
                     groups: [
                         {
                             label: 'Group relationships',
-                            name:
-                                'related-accounts-cumulus-restaurants-group-relationships'
+                            name: 'related-accounts-cumulus-restaurants-group-relationships'
                         },
                         {
                             label: 'Related contacts',
-                            name:
-                                'related-accounts-cumulus-restaurants-related-contacts'
+                            name: 'related-accounts-cumulus-restaurants-related-contacts'
                         }
                     ]
                 }
@@ -185,8 +196,7 @@ export default class RelationshipGraphVertical extends LightningElement {
                     groups: [
                         {
                             label: 'Group Relationships',
-                            name:
-                                'northern-trails-outfitter-group-relationships',
+                            name: 'northern-trails-outfitter-group-relationships',
                             avatarSrc:
                                 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
                             avatarFallbackIconName: 'standard:account',
@@ -203,60 +213,44 @@ export default class RelationshipGraphVertical extends LightningElement {
                                     groups: [
                                         {
                                             label: 'Related Accounts',
-                                            name:
-                                                'related-accounts-adams-household',
+                                            name: 'related-accounts-adams-household',
                                             items: [
                                                 {
                                                     label: 'Lin Akwan',
                                                     name: 'lin-akwan'
                                                 },
                                                 {
-                                                    label:
-                                                        'Northern Trails Outfitter',
-                                                    name:
-                                                        'related-accounts-adams-household-northern-trails-outfitter',
+                                                    label: 'Northern Trails Outfitter',
+                                                    name: 'related-accounts-adams-household-northern-trails-outfitter',
                                                     groups: [
                                                         {
-                                                            label:
-                                                                'Group Relationships',
-                                                            name:
-                                                                'northern-trails-outfitter-group-relationships2',
+                                                            label: 'Group Relationships',
+                                                            name: 'northern-trails-outfitter-group-relationships2',
                                                             items: [
                                                                 {
-                                                                    label:
-                                                                        'Neil Symonds',
-                                                                    name:
-                                                                        'northern-trails-outfitter-neil-symonds',
+                                                                    label: 'Neil Symonds',
+                                                                    name: 'northern-trails-outfitter-neil-symonds',
                                                                     avatarFallbackIconName:
                                                                         'standard:user',
-                                                                    href:
-                                                                        'https://www.avonni.app/',
+                                                                    href: 'https://www.avonni.app/',
                                                                     data: [
                                                                         {
-                                                                            label:
-                                                                                'Account name',
-                                                                            value:
-                                                                                'Neil Symonds'
+                                                                            label: 'Account name',
+                                                                            value: 'Neil Symonds'
                                                                         },
                                                                         {
-                                                                            label:
-                                                                                'Account phone number',
-                                                                            value:
-                                                                                '(628) 391-9393'
+                                                                            label: 'Account phone number',
+                                                                            value: '(628) 391-9393'
                                                                         }
                                                                     ],
                                                                     groups: [
                                                                         {
-                                                                            label:
-                                                                                'Related Accounts',
-                                                                            name:
-                                                                                'northern-trails-outfitter-neil-symonds-related-accounts',
+                                                                            label: 'Related Accounts',
+                                                                            name: 'northern-trails-outfitter-neil-symonds-related-accounts',
                                                                             items: [
                                                                                 {
-                                                                                    label:
-                                                                                        'Mary James',
-                                                                                    name:
-                                                                                        'mary-james'
+                                                                                    label: 'Mary James',
+                                                                                    name: 'mary-james'
                                                                                 }
                                                                             ]
                                                                         }
@@ -265,15 +259,12 @@ export default class RelationshipGraphVertical extends LightningElement {
                                                             ]
                                                         },
                                                         {
-                                                            label:
-                                                                'Related Accounts',
-                                                            name:
-                                                                'northern-trails-outfitter-related-accounts2'
+                                                            label: 'Related Accounts',
+                                                            name: 'northern-trails-outfitter-related-accounts2'
                                                         },
                                                         {
                                                             label: 'Members',
-                                                            name:
-                                                                'northern-trails-outfitter-members'
+                                                            name: 'northern-trails-outfitter-members'
                                                         }
                                                     ]
                                                 }
