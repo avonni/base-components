@@ -46,12 +46,10 @@
     padding-right: var(--avonni-alert-spacing-inline-end, 2rem);
     padding-bottom: var(--avonni-alert-spacing-block-end, 0.5rem);
     padding-left: var(--avonni-alert-spacing-inline-start, 0.5rem);
-    color: var(--avonni-alert-base-text-color, #ffffff);
     font-weight: var(--avonni-alert-font-weight, 400);
     font-size: var(--avonni-alert-font-size, 1em);
     font-style: var(--avonni-alert-font-style, normal);
     text-align: center;
-    background-color: var(--avonni-alert-base-color-background, #706e6b);
     background-image: var(
         --avonni-alert-image-background,
         linear-gradient(
@@ -68,9 +66,28 @@
     background-size: var(--avonni-alert-size-background, 64px 64px);
 }
 
+.avonni-notify_alert .avonni-alert__primitive-icon_color {
+    border-radius: var(--avonni-alert-warning-icon-radius-border, 0.25rem);
+}
+
+.avonni-alert_base {
+    background-color: var(--avonni-alert-base-color-background, #706e6b);
+    color: var(--avonni-alert-base-text-color, #ffffff);
+}
+
+.avonni-alert_base .avonni-alert__primitive-icon_color {
+    fill: var(--avonni-alert-base-icon-color-foreground, #ffffff);
+    background: var(--avonni-alert-base-icon-color-background, transparent);
+}
+
 .avonni-alert_warning {
     background-color: var(--avonni-alert-warning-color-background, #fe9339);
     color: var(--avonni-alert-warning-text-color, #080707);
+}
+
+.avonni-alert_warning .avonni-alert__primitive-icon_color {
+    fill: var(--avonni-alert-warning-icon-color-foreground, #514f4d);
+    background: var(--avonni-alert-warning-icon-color-background, transparent);
 }
 
 .avonni-alert_error {
@@ -78,7 +95,17 @@
     color: var(--avonni-alert-error-text-color, #ffffff);
 }
 
+.avonni-alert_error .avonni-alert__primitive-icon_color {
+    fill: var(--avonni-alert-error-icon-color-foreground, #ffffff);
+    background: var(--avonni-alert-error-icon-color-background, transparent);
+}
+
 .avonni-alert_offline {
     background-color: var(--avonni-alert-offline-color-background, #444);
     color: var(--avonni-alert-offline-text-color, #ffffff);
+}
+
+.avonni-alert_offline .avonni-alert__primitive-icon_color {
+    fill: var(--avonni-alert-offline-icon-color-foreground, #ffffff);
+    background: var(--avonni-alert-offline-icon-color-background, transparent);
 }

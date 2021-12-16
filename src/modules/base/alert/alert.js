@@ -99,14 +99,6 @@ export default class Alert extends LightningElement {
     }
 
     /**
-     * Inverse variant, depending on the variant value.
-     * @type {string}
-     */
-    get variantInverse() {
-        return this.variant === 'warning' ? 'bare' : 'inverse';
-    }
-
-    /**
      * Icon class, depending on the variant value.
      * @type {string}
      */
@@ -120,12 +112,7 @@ export default class Alert extends LightningElement {
      */
     get variantClass() {
         return classSet('avonni-notify_alert')
-            .add({
-                'avonni-alert_error': this.variant === 'error',
-                'avonni-alert_offline': this.variant === 'offline',
-                'avonni-alert_warning slds-alert_warning':
-                    this.variant === 'warning'
-            })
+            .add(`avonni-alert_${this._variant}`)
             .toString();
     }
 

@@ -56,7 +56,11 @@ describe('Alert', () => {
 
     it('Alert variant base', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        expect(div.classList).toContain('slds-theme_info');
+        expect(div.classList).toContain('avonni-notify_alert');
+        expect(div.classList).toContain('avonni-alert_base');
+        expect(div.classList).not.toContain('avonni-alert_error');
+        expect(div.classList).not.toContain('avonni-alert_offline');
+        expect(div.classList).not.toContain('avonni-alert_warning');
     });
 
     it('Alert variant error', () => {
@@ -66,7 +70,11 @@ describe('Alert', () => {
 
         return Promise.resolve().then(() => {
             expect(element.variant).toBe('error');
-            expect(div.classList).toContain('slds-theme_error');
+            expect(div.classList).toContain('avonni-notify_alert');
+            expect(div.classList).not.toContain('avonni-alert_base');
+            expect(div.classList).toContain('avonni-alert_error');
+            expect(div.classList).not.toContain('avonni-alert_offline');
+            expect(div.classList).not.toContain('avonni-alert_warning');
         });
     });
 
@@ -77,7 +85,11 @@ describe('Alert', () => {
 
         return Promise.resolve().then(() => {
             expect(element.variant).toBe('offline');
-            expect(div.classList).toContain('slds-theme_offline');
+            expect(div.classList).toContain('avonni-notify_alert');
+            expect(div.classList).not.toContain('avonni-alert_base');
+            expect(div.classList).not.toContain('avonni-alert_error');
+            expect(div.classList).toContain('avonni-alert_offline');
+            expect(div.classList).not.toContain('avonni-alert_warning');
         });
     });
 
@@ -86,20 +98,19 @@ describe('Alert', () => {
         const lightningButtonIcon = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon"]'
         );
-        const lightningIcon = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-icon"]'
-        );
 
         expect(lightningButtonIcon.iconClass).toBe('slds-button_icon-inverse');
-        expect(lightningIcon.variant).toBe('inverse');
 
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
             expect(element.variant).toBe('warning');
-            expect(div.classList).toContain('slds-theme_warning');
+            expect(div.classList).toContain('avonni-notify_alert');
+            expect(div.classList).not.toContain('avonni-alert_base');
+            expect(div.classList).not.toContain('avonni-alert_error');
+            expect(div.classList).not.toContain('avonni-alert_offline');
+            expect(div.classList).toContain('avonni-alert_warning');
             expect(lightningButtonIcon.iconClass).toBe('');
-            expect(lightningIcon.variant).toBe('bare');
         });
     });
 
@@ -122,7 +133,9 @@ describe('Alert', () => {
     });
 
     it('Alert iconName', () => {
-        let lightningIcon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+        let lightningIcon = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-icon"]'
+        );
 
         expect(element.iconName).toBeUndefined();
         expect(lightningIcon.iconName).toBeUndefined();
@@ -130,7 +143,9 @@ describe('Alert', () => {
         element.iconName = 'utility:user';
 
         return Promise.resolve().then(() => {
-            lightningIcon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            lightningIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             expect(element.iconName).toBe('utility:user');
             expect(lightningIcon.iconName).toBe('utility:user');
         });
