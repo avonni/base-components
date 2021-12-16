@@ -1,0 +1,15 @@
+### Types and Type Attributes
+
+| **Type** | **Description** | **Supported type attributes** |
+| --- | --- | --- |
+| boolean | Displays the checkbox input in read-only. | N/A |
+| currency | Displays a currency using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-number/" target="_blank">lightning-formatted-number</a> | currencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits |
+| date | Displays a date and time based on the locale using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-date-time/" target="_blank">lightning-formatted-date-time</a>. | day, era, hour, hour12, minute, month, second, timeZone, timeZoneName, weekday, year |
+| date-local | Displays a date that is formatted based on the locale using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-date-time/" target="_blank">lightning-formatted-date-time</a>. To include a time value, use the `date` type instead. The value passed is assumed to be in the browser local time zone and there is no time zone transformation. | day, month, year |
+| email | Displays an email address using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-email/" target="_blank">lightning-formatted-email</a> | N/A |
+| location | Displays a latitude and longitude of a location using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-location/" target="_blank">lightning-formatted-location</a> | latitude, longitude |
+| number | Displays a number using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-number/" target="_blank">lightning-formatted-number</a> | minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits |
+| percent | Displays a percentage using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-number/" target="_blank">lightning-formatted-number</a> | Same as number type |
+| phone | Displays a phone number using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-phone/" target="_blank">lightning-formatted-phone</a> | N/A |
+| text | Displays text using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-text/" target="_blank">lightning-formatted-text</a> | linkify |
+| url | Displays a URL using <a href="https://developer.salesforce.com/docs/component-library/bundle/lightning-datatable/bundle/lightning-formatted-url/" target="_blank">lightning-formatted-url</a> | label, target, tooltip |

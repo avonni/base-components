@@ -1,4 +1,4 @@
-lightning-formatted-number {
+.avonni-kanban__summary-amount {
     font-size: 1.25rem;
     font-weight: var(--lwc-fontWeightLight, 300);
     color: var(--lwc-pipelineAggregateColumnColor, #10aa52);
@@ -15,6 +15,7 @@ lightning-formatted-number {
 .slds-path__link,
 div {
     cursor: default;
+    user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     -o-user-select: none;
@@ -25,7 +26,7 @@ div {
     background-color: #ffffff;
 }
 
-.draggable .slds-tile__detail {
+.avonni-kanban__draggable .slds-tile__detail {
     cursor: move;
 }
 
@@ -57,7 +58,7 @@ div {
     }
 }
 
-.avonni-kanban-container {
+.avonni-kanban__container {
     display: flex;
     min-height: 100%;
     padding-left: 0.5rem;
@@ -65,14 +66,14 @@ div {
     padding-top: 0.5rem;
 }
 
-.avonni-kanban-column {
+.avonni-kanban__column {
     display: flex;
     flex-direction: column;
     align-items: center;
     flex: 1;
 }
 
-.avonni-card-container {
+.avonni-kanban__card-container {
     width: 100%;
     height: 100%;
     overflow-x: hidden;
@@ -83,39 +84,39 @@ div {
         var(--lwc-borderWidthThin, 1px) solid;
 }
 
-.avonni-kanban-container
-    .avonni-kanban-column:last-of-type
-    .avonni-card-container {
+.avonni-kanban__container
+    .avonni-kanban__column:last-of-type
+    .avonni-kanban__card-container {
     border-right: var(--lwc-colorBorder, rgb(221, 219, 218))
         var(--lwc-borderWidthThin, 1px) solid;
 }
 
-.avonni-action-container {
+.avonni-kanban__action-container {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
 }
 
-.avonni-action-container span {
+.avonni-kanban__action-container span {
     width: max-content;
 }
 
-.avonni-action-container span lightning-icon {
+.avonni-kanban__action-container span lightning-icon {
     padding-right: 0.1rem;
     padding-left: 0.25rem;
 }
 
-.avonni-action {
+.avonni-kanban__action {
     flex: 1;
 }
 
-.avonni-status-container {
+.avonni-kanban__status-container {
     display: flex;
     align-items: center;
 }
 
-.avonni-spinner {
+.avonni-kanban__spinner {
     position: relative;
     display: inline-block;
     height: 200px;
@@ -123,7 +124,7 @@ div {
     width: -moz-fill-available;
 }
 
-.avonni-drop-target-before::before {
+.avonni-kanban__drop-target-before::before {
     content: '';
     display: block;
     height: 8rem;
@@ -136,47 +137,47 @@ div {
     background-color: var(--lwc-colorBackgroundRowHover, rgb(243, 242, 242));
 }
 
-:host(.avonni-drag-start) .draggable * {
+:host(.avonni-kanban__drag-start) .avonni-kanban__draggable * {
     pointer-events: none;
 }
 
-.avonni-amount-container {
+.avonni-kanban__amount-container {
     width: 100%;
     text-align: center;
     padding: var(--lwc-spacingXSmall, 0.5rem) 0;
 }
 
-.avonni-kanban-header {
+.avonni-kanban__header {
     width: 100%;
 }
 
-.avonni-kanban-header .uiTooltip.tooltip-trigger {
+.avonni-kanban__header .avonni-kanban__ui-tooltip.avonni-kanban__ui-tooltip_trigger {
     z-index: 1;
     display: block;
     outline: none;
 }
 
-.uiTooltip.tooltip-trigger {
+.avonni-kanban__ui-tooltip.avonni-kanban__ui-tooltip_trigger {
     display: inline;
     position: relative;
 }
 
-.avonni-kanban-container
-    .avonni-kanban-column:first-of-type
+.avonni-kanban__container
+    .avonni-kanban__column:first-of-type
     .avonni-pipeline-header {
     border-radius: var(--lwc-pipelineHeaderBorderRadius, 15rem) 0 0
         var(--lwc-pipelineHeaderBorderRadius, 15rem);
 }
 
-.avonni-kanban-container
-    .avonni-kanban-column:last-of-type
+.avonni-kanban__container
+    .avonni-kanban__column:last-of-type
     .avonni-pipeline-header {
     border-radius: 0 var(--lwc-pipelineHeaderBorderRadius, 15rem)
         var(--lwc-pipelineHeaderBorderRadius, 15rem) 0;
 }
 
-.avonni-kanban-container
-    .avonni-kanban-column:not(:first-of-type)
+.avonni-kanban__container
+    .avonni-kanban__column:not(:first-of-type)
     .avonni-pipeline-header:before {
     content: '';
     position: absolute;
@@ -191,7 +192,7 @@ div {
     transform: rotate(45deg);
 }
 
-.avonni-kanban-header .avonni-stage-header {
+.avonni-kanban__header .avonni-stage-header {
     display: block;
     position: relative;
     width: 100%;
@@ -207,7 +208,7 @@ div {
     word-wrap: normal;
 }
 
-.avonni-kanban-header .avonni-stage-header-label {
+.avonni-kanban__header .avonni-stage-header-label {
     display: inline-block;
     max-width: var(--lwc-pipelineStageMaxWidth, calc(100% - 2.5rem));
     text-overflow: ellipsis;
@@ -221,14 +222,14 @@ div {
     font-weight: 600;
 }
 
-.avonni-kanban-header .uiTooltip .avonni-pipeline-header-tooltip .tooltip-body {
+.avonni-kanban__header .avonni-kanban__ui-tooltip .avonni-pipeline-header-tooltip .avonni-kanban__tooltip-body {
     bottom: var(--lwc-pipelineHeaderTooltipBottom, -30px);
     min-width: var(--lwc-pipelineHeaderTooltipMinWidth, 200px);
     min-height: var(--lwc-pipelineHeaderTooltipMinHeight, 40px);
     text-align: center;
 }
 
-.uiTooltip.tooltip-basic .tooltip {
+.avonni-kanban__ui-tooltip.avonni-kanban__ui-tooltip_basic .avonni-kanban__tooltip {
     pointer-events: none;
     position: absolute;
     top: 0;
@@ -238,22 +239,24 @@ div {
     opacity: 0;
 }
 
-.avonni-kanban-header .uiTooltip .avonni-pipeline-header-tooltip {
+.avonni-kanban__header .avonni-kanban__ui-tooltip .avonni-pipeline-header-tooltip {
     top: auto;
 }
 
-.uiTooltip.tooltip-basic:hover .tooltip, .uiTooltip.tooltip-basic:focus .tooltip, .uiTooltip.tooltip-basic .tooltip.visible {
+.avonni-kanban__ui-tooltip.avonni-kanban__ui-tooltip_basic:hover .avonni-kanban__tooltip,
+.avonni-kanban__ui-tooltip.avonni-kanban__ui-tooltip_basic:focus .avonni-kanban__tooltip,
+.avonni-kanban__ui-tooltip.avonni-kanban__ui-tooltip_basic .avonni-kanban__tooltip.visible {
     opacity: .999;
 }
 
-.uiTooltip .south .pointer {
+.avonni-kanban__ui-tooltip .avonni-kanban__tooltip-south .avonni-kanban__pointer {
     border-top: none;
     border-right: 13px solid transparent;
     border-left: 13px solid transparent;
     border-bottom: 13px solid #16325c;
 }
 
-.uiTooltip .pointer {
+.avonni-kanban__ui-tooltip .avonni-kanban__pointer {
     border-bottom: none;
     border-left: 13px solid transparent;
     border-right: 13px solid transparent;
@@ -261,7 +264,7 @@ div {
     z-index: 9100;
 }
 
-.uiTooltip .pointer-basic {
+.avonni-kanban__ui-tooltip .avonni-kanban__pointer-basic {
     display: block;
     position: absolute;
     width: 0;
@@ -272,7 +275,7 @@ div {
     transform: translateX(-50%) translateY(-5px);
 }
 
-.uiTooltip .tooltip-body {
+.avonni-kanban__ui-tooltip .avonni-kanban__tooltip-body {
     padding: 12px;
     border-radius: 5px;
     background-color: #16325c;
@@ -280,14 +283,14 @@ div {
     font-size: 12px;
 }
 
-.uiTooltip .body-basic {
+.avonni-kanban__ui-tooltip .avonni-kanban__tooltip-body-basic {
     bottom: 100%;
     left: 50%;
     transform-origin: bottom left;
     transform: translateX(-50%) translateY(-10px);
 }
 
-.uiTooltip .tooltip-body {
+.avonni-kanban__ui-tooltip .avonni-kanban__tooltip-body {
     z-index: 9100;
     display: block;
     position: absolute;
