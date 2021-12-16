@@ -234,9 +234,8 @@ export default class Carousel extends LightningElement {
     }
 
     set itemsPerPanel(value) {
-        const number =
-            typeof value === 'number' ? value : DEFAULT_ITEMS_PER_PANEL;
-        this._itemsPerPanel = parseInt(number, 10);
+        const number = parseInt(value, 10);
+        this._itemsPerPanel = isNaN(number) ? DEFAULT_ITEMS_PER_PANEL : number;
     }
 
     /**
