@@ -119,12 +119,12 @@ export default class Alert extends LightningElement {
      * @type {string}
      */
     get variantClass() {
-        return classSet('slds-notify slds-notify_alert')
+        return classSet('avonni-notify_alert')
             .add({
-                'slds-theme_info': this.variant === 'base',
-                'slds-theme_error': this.variant === 'error',
-                'slds-theme_offline': this.variant === 'offline',
-                'slds-theme_warning': this.variant === 'warning'
+                'avonni-alert_error': this.variant === 'error',
+                'avonni-alert_offline': this.variant === 'offline',
+                'avonni-alert_warning slds-alert_warning':
+                    this.variant === 'warning'
             })
             .toString();
     }
