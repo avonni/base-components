@@ -239,7 +239,7 @@ export default class VisualPicker extends LightningElement {
      */
     get listItems() {
         return this.items.map((item, index) => {
-            const { title, description, disabled, figure, value, tags } = item;
+            let { title, description, disabled, figure, value } = item;
             const checked = this._value.includes(value);
             const key = `visual-picker-key-${index}`;
             const iconIsTop =
@@ -264,23 +264,31 @@ export default class VisualPicker extends LightningElement {
             const displayFigureTitle =
                 (this.isBiggerThanXSmall && figure.iconName) ||
                 !figure.iconName;
+            const displayCheckCoverable =
+                !this.hideCheckMark && checked && this._variant === 'coverable';
+            const displayCheckNonCoverable =
+                !this.hideCheckMark &&
+                checked &&
+                this._variant === 'non-coverable';
+            disabled = this._disabled ? true : disabled;
 
             return {
+                key,
                 title,
                 description,
                 disabled,
                 figure,
                 value,
                 checked,
-                key,
                 iconIsTop,
                 iconIsBottom,
                 iconIsLeft,
                 iconIsRight,
-                tags,
                 imgIsTop,
                 imgIsBottom,
-                displayFigureTitle
+                displayFigureTitle,
+                displayCheckCoverable,
+                displayCheckNonCoverable
             };
         });
     }
@@ -296,8 +304,8 @@ export default class VisualPicker extends LightningElement {
                 'avonni-visual-picker_xx-small': this._size === 'xx-small',
                 'avonni-visual-picker_x-small': this._size === 'x-small',
                 'avonni-visual-picker_small': this._size === 'small',
-                'slds-visual-picker_medium': this._size === 'medium',
-                'slds-visual-picker_large': this._size === 'large',
+                'avonni-visual-picker_medium': this._size === 'medium',
+                'avonni-visual-picker_large': this._size === 'large',
                 'avonni-visual-picker_x-large': this._size === 'x-large'
             })
             .add(`ratio-${this._ratio}`)
@@ -311,7 +319,7 @@ export default class VisualPicker extends LightningElement {
      */
     get visualPickerTypeClass() {
         return classSet(
-            'slds-visual-picker__figure slds-align_absolute-center slds-is-relative avonni-visual-picker__figure'
+            'slds-align_absolute-center slds-is-relative avonni-visual-picker__figure'
         )
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',

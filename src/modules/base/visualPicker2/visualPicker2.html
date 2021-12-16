@@ -38,7 +38,12 @@
         aria-required={required}
         data-element-id="fieldset"
     >
-        <legend class="slds-form-element__legend slds-form-element__label">
+        <legend
+            class="
+                slds-form-element__legend slds-form-element__label
+                avonni-visual-picker__label
+            "
+        >
             <template if:true={required}>
                 <abbr
                     class="slds-required"
@@ -64,11 +69,8 @@
                     <label for={item.value} data-element-id="label">
                         <span class={visualPickerTypeClass}>
                             <div>
-                                <template if:false={hideCheckMark}>
-                                    <span
-                                        if:true={isCoverable}
-                                        class={selectedClass}
-                                    >
+                                <template if:true={item.displayCheckCoverable}>
+                                    <span class={selectedClass}>
                                         <lightning-icon
                                             icon-name="utility:check"
                                             size="medium"
@@ -101,37 +103,47 @@
                                             src={item.figure.iconSrc}
                                         ></lightning-icon>
                                     </template>
-                                    <div class="slds-media slds-media_center">
-                                        <template if:true={item.iconIsLeft}>
-                                            <lightning-icon
-                                                icon-name={item.figure.iconName}
-                                                size={item.figure.iconSize}
-                                                alternative-text={item.figure.iconAlternativeText}
-                                                src={item.figure.iconSrc}
-                                            ></lightning-icon>
-                                        </template>
-                                        <div class="slds-media__body">
-                                            <span
-                                                class="slds-text-heading_large"
-                                                if:true={item.displayFigureTitle}
+                                    <div>
+                                        <div
+                                            class="slds-media slds-media_center"
+                                        >
+                                            <template if:true={item.iconIsLeft}>
+                                                <lightning-icon
+                                                    icon-name={item.figure.iconName}
+                                                    size={item.figure.iconSize}
+                                                    alternative-text={item.figure.iconAlternativeText}
+                                                    src={item.figure.iconSrc}
+                                                ></lightning-icon>
+                                            </template>
+                                            <div class="slds-media__body">
+                                                <span
+                                                    class="
+                                                        avonni-visual-picker__figure-title
+                                                    "
+                                                    if:true={item.displayFigureTitle}
+                                                >
+                                                    {item.figure.title}
+                                                </span>
+                                            </div>
+                                            <template
+                                                if:true={item.iconIsRight}
                                             >
-                                                {item.figure.title}
-                                            </span>
+                                                <lightning-icon
+                                                    icon-name={item.figure.iconName}
+                                                    size={item.figure.iconSize}
+                                                    alternative-text={item.figure.iconAlternativeText}
+                                                    src={item.figure.iconSrc}
+                                                ></lightning-icon>
+                                            </template>
                                         </div>
-                                        <template if:true={item.iconIsRight}>
-                                            <lightning-icon
-                                                icon-name={item.figure.iconName}
-                                                size={item.figure.iconSize}
-                                                alternative-text={item.figure.iconAlternativeText}
-                                                src={item.figure.iconSrc}
-                                            ></lightning-icon>
-                                        </template>
+                                        <span
+                                            if:true={isBiggerThanXSmall}
+                                            class="
+                                                avonni-visual-picker__figure-description
+                                            "
+                                            >{item.figure.description}
+                                        </span>
                                     </div>
-                                    <span
-                                        if:true={isBiggerThanXSmall}
-                                        class="slds-text-title"
-                                        >{item.figure.description}</span
-                                    >
                                     <template if:true={item.iconIsBottom}>
                                         <lightning-icon
                                             icon-name={item.figure.iconName}
@@ -183,16 +195,15 @@
                             </div>
                         </span>
                         <span class="slds-visual-picker__body">
-                            <span class="slds-text-heading_small"
+                            <span class="avonni-visual-picker__item-title"
                                 >{item.title}</span
                             >
-                            <span class="slds-text-title"
+                            <span class="avonni-visual-picker__item-description"
                                 >{item.description}</span
                             >
                         </span>
-                        <template if:true={item.checked}>
+                        <template if:true={item.displayCheckNonCoverable}>
                             <span
-                                if:false={isCoverable}
                                 class="
                                     slds-icon_container
                                     slds-visual-picker__text-check

@@ -235,7 +235,8 @@ const items = [
             iconPosition: 'top',
             imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
             imgPosition: 'bottom'
-        }
+        },
+        disabled: true
     },
     {
         title: 'Lightning Unlimited',
@@ -245,7 +246,13 @@ const items = [
             title: '$300',
             description: 'USD/user/month *',
             iconName: 'custom:custom68',
-            iconPosition: 'bottom'
+            iconPosition: 'bottom',
+            tags: [
+                {
+                    label: 'Best Value',
+                    variant: 'success'
+                }
+            ]
         }
     }
 ];
