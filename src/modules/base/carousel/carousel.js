@@ -64,6 +64,8 @@ const ACTIONS_VARIANTS = {
     default: 'border'
 };
 
+const ITEMS_PER_PANEL = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
 const DEFAULT_ITEMS_PER_PANEL = 1;
@@ -222,7 +224,7 @@ export default class Carousel extends LightningElement {
     }
 
     /**
-     * Number of items to be displayed at a time in the carousel.
+     * Number of items to be displayed at a time in the carousel. Maximum of 10 items per panel.
      *
      * @type {number}
      * @public
@@ -234,8 +236,15 @@ export default class Carousel extends LightningElement {
     }
 
     set itemsPerPanel(value) {
-        const number = parseInt(value, 10);
-        this._itemsPerPanel = isNaN(number) ? DEFAULT_ITEMS_PER_PANEL : number;
+        this._itemsPerPanel = Number(
+            normalizeString(
+                typeof value === 'number' ? value.toString() : value,
+                {
+                    fallbackValue: '1',
+                    validValues: ITEMS_PER_PANEL
+                }
+            )
+        );
     }
 
     /**
