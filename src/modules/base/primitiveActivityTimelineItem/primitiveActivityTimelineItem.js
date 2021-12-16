@@ -60,84 +60,84 @@ const DEFAULT_LOADING_TEXT = 'Loading';
 
 /**
  * @class
- * @descriptor avonni-activity-timeline-item
+ * @descriptor c-primitive-activity-timeline-item
  */
 export default class PrimitiveActivityTimelineItem extends LightningElement {
     /**
      * The title can include text, and is displayed in the header.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api title;
     /**
      * The description can include text, and is displayed under the title.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api description;
     /**
      * The value to be formatted, which can be a Date object, timestamp, or an ISO8601 formatted string. Use lightning-formatted-date-time.
-     * 
+     *
      * @public
      * @type {datetime}
      */
     @api datetimeValue;
     /**
      * URL for the title link.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api href;
     /**
      * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api iconName;
     /**
      * Icon or list of icons next to the title.
-     * 
+     *
      * @public
      * @type {string[]}
      */
     @api icons;
     /**
      * The name for the button element. This value is optional and can be used to identify the button in a callback.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api buttonLabel;
     /**
      * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
-     * 
+     *
      * @public
      * @type {string}
      */
     @api buttonIconName;
     /**
      * Message displayed while the detail section is in the loading state.
-     * 
+     *
      * @public
      * @type {string}
      * @default "Loading"
      */
     @api loadingStateAlternativeText = DEFAULT_LOADING_TEXT;
     /**
-    * Unique name of the item.
-    *
-    * @type {string}
-    * @required
-    * @public
-    */
+     * Unique name of the item.
+     *
+     * @type {string}
+     * @required
+     * @public
+     */
     @api name;
     /**
      * Actions object sent from Activity Timeline
-     * 
+     *
      * @type {object[]}
      */
     @api actions = [];
@@ -150,7 +150,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
     _buttonDisabled = false;
-    _rendered = false;
     _color;
 
     renderedCallback() {
@@ -159,7 +158,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * If true, a checkbox is present before the label.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -175,7 +174,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * if true, display an error message in the details section.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -191,7 +190,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * if true, close the section.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -207,7 +206,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Array of output data objects (see Output Data for valid keys). It is displayed in the details section.
-     * 
+     *
      * @public
      * @type {object[]}
      */
@@ -222,7 +221,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Describes the position of the icon with respect to the button label. Options include left and right.
-     * 
+     *
      * @public
      * @type {string}
      * @default left
@@ -241,7 +240,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.
-     * 
+     *
      * @public
      * @type {string}
      * @default neutral
@@ -260,7 +259,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * If true, the button is disabled.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -276,7 +275,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * If present, the detail section is in a loading state and shows a spinner.
-     * 
+     *
      * @public
      * @type {boolean}
      * @default false
@@ -292,7 +291,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Check if fields is populated.
-     * 
+     *
      * @type {boolean}
      */
     get hasFields() {
@@ -301,7 +300,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Check if actions exist.
-     * 
+     *
      * @type {boolean}
      */
     get hasActions() {
@@ -310,7 +309,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Return styling for item background color.
-     * 
+     *
      * @type {string}
      */
     get backgroundColor() {
@@ -319,7 +318,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Toggle for item expansion.
-     * 
+     *
      * @type {string}
      */
     get activityTimelineItemOuterClass() {
@@ -332,14 +331,14 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Computed styling class for item without fields.
-     * 
+     *
      * @type {string}
      */
     get computedSldsMedia() {
         return classSet('slds-media')
             .add({
-                'avonni-activity-timeline-item-no-fields_margin': !this
-                    .hasFields
+                'avonni-activity-timeline-item-no-fields_margin':
+                    !this.hasFields
             })
             .toString();
     }
@@ -353,7 +352,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Actionclick handler.
-     * 
+     *
      * @param {Event} event
      */
     handleActionClick(event) {
@@ -361,7 +360,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
         /**
          * The event fired when a user clicks on an action.
-         * 
+         *
          * @event
          * @name actionclick
          * @param {string} name Name of the action clicked
@@ -393,15 +392,15 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Check event handler.
-     * 
+     *
      * @param {Event} event
      */
     handleCheck(event) {
         event.stopPropagation();
-        
+
         /**
          * The check event returns the following parameters.
-         * 
+         *
          * @event
          * @name check
          * @public
@@ -423,7 +422,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     /**
      * Takes computed style for icon color and sets it to the line color.
-     * 
+     *
      * @returns {string} line background color
      */
     setLineColor() {
