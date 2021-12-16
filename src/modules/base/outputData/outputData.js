@@ -50,6 +50,8 @@ const DATA_TYPES = {
 };
 
 /**
+ * The output data displays data depending on its type. 
+ * 
  * @class
  * @descriptor avonni-output-data
  * @storyId example-output-data--base

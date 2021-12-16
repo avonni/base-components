@@ -1,0 +1,306 @@
+lightning-formatted-number {
+    font-size: 1.25rem;
+    font-weight: var(--lwc-fontWeightLight, 300);
+    color: var(--lwc-pipelineAggregateColumnColor, #10aa52);
+}
+
+.slds-path__item,
+.slds-path__item:before,
+.slds-path__item:after {
+    background-color: var(--lwc-brandAccessible, rgb(0, 112, 210));
+    color: #ffffff;
+    cursor: default;
+}
+
+.slds-path__link,
+div {
+    cursor: default;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    -webkit-user-select: none;
+}
+
+.slds-item {
+    background-color: #ffffff;
+}
+
+.draggable .slds-tile__detail {
+    cursor: move;
+}
+
+.slds-tile_board,
+.slds-tile--board {
+    display: flex;
+    justify-content: space-between;
+}
+
+.slds-has-dividers_around-space li {
+    margin: var(--lwc-spacingXSmall, 0.5rem);
+    border-radius: 5px;
+    margin-top: 0;
+}
+
+.slds-has-dividers_around-space .slds-item,
+.slds-has-dividers--around-space .slds-item {
+    border: var(--lwc-borderWidthThin, 1px) solid
+        var(--lwc-colorBorder, rgb(221, 219, 218));
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+    background-clip: padding-box;
+    padding: var(--lwc-spacingSmall, 0.75rem);
+}
+
+@media (min-width: 30em) {
+    .slds-has-dividers_around-space .slds-item,
+    .slds-has-dividers--around-space .slds-item {
+        padding: var(--lwc-spacingXSmall, 0.5rem);
+    }
+}
+
+.avonni-kanban-container {
+    display: flex;
+    min-height: 100%;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    padding-top: 0.5rem;
+}
+
+.avonni-kanban-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.avonni-card-container {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 0;
+    margin: 0;
+    border-left: var(--lwc-colorBorder, rgb(221, 219, 218))
+        var(--lwc-borderWidthThin, 1px) solid;
+}
+
+.avonni-kanban-container
+    .avonni-kanban-column:last-of-type
+    .avonni-card-container {
+    border-right: var(--lwc-colorBorder, rgb(221, 219, 218))
+        var(--lwc-borderWidthThin, 1px) solid;
+}
+
+.avonni-action-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+}
+
+.avonni-action-container span {
+    width: max-content;
+}
+
+.avonni-action-container span lightning-icon {
+    padding-right: 0.1rem;
+    padding-left: 0.25rem;
+}
+
+.avonni-action {
+    flex: 1;
+}
+
+.avonni-status-container {
+    display: flex;
+    align-items: center;
+}
+
+.avonni-spinner {
+    position: relative;
+    display: inline-block;
+    height: 200px;
+    width: -webkit-fill-available;
+    width: -moz-fill-available;
+}
+
+.avonni-drop-target-before::before {
+    content: '';
+    display: block;
+    height: 8rem;
+    width: 100%;
+    margin: 0;
+    margin-bottom: 0.5rem;
+    border: var(--lwc-brandAccessible, rgb(0, 112, 210))
+        var(--lwc-borderWidthThin, 1px) dashed;
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
+    background-color: var(--lwc-colorBackgroundRowHover, rgb(243, 242, 242));
+}
+
+:host(.avonni-drag-start) .draggable * {
+    pointer-events: none;
+}
+
+.avonni-amount-container {
+    width: 100%;
+    text-align: center;
+    padding: var(--lwc-spacingXSmall, 0.5rem) 0;
+}
+
+.avonni-kanban-header {
+    width: 100%;
+}
+
+.avonni-kanban-header .uiTooltip.tooltip-trigger {
+    z-index: 1;
+    display: block;
+    outline: none;
+}
+
+.uiTooltip.tooltip-trigger {
+    display: inline;
+    position: relative;
+}
+
+.avonni-kanban-container
+    .avonni-kanban-column:first-of-type
+    .avonni-pipeline-header {
+    border-radius: var(--lwc-pipelineHeaderBorderRadius, 15rem) 0 0
+        var(--lwc-pipelineHeaderBorderRadius, 15rem);
+}
+
+.avonni-kanban-container
+    .avonni-kanban-column:last-of-type
+    .avonni-pipeline-header {
+    border-radius: 0 var(--lwc-pipelineHeaderBorderRadius, 15rem)
+        var(--lwc-pipelineHeaderBorderRadius, 15rem) 0;
+}
+
+.avonni-kanban-container
+    .avonni-kanban-column:not(:first-of-type)
+    .avonni-pipeline-header:before {
+    content: '';
+    position: absolute;
+    left: -1rem;
+    top: 0.19rem;
+    display: block;
+    width: var(--lwc-pipelineHeaderChevronSize, 1.85rem);
+    height: var(--lwc-pipelineHeaderChevronSize, 1.85rem);
+    border: var(--lwc-borderWidthThick, 2px) solid #fff;
+    border-left: none;
+    border-bottom: none;
+    transform: rotate(45deg);
+}
+
+.avonni-kanban-header .avonni-stage-header {
+    display: block;
+    position: relative;
+    width: 100%;
+    padding: var(--lwc-spacingXSmall, 0.5rem) var(--lwc-spacingXSmall, 0.5rem)
+        var(--lwc-spacingXSmall, 0.5rem) var(--lwc-spacingLarge, 1.5rem);
+    background: var(--lwc-brandAccessible, rgb(0, 112, 210));
+    color: var(--lwc-pipelineHeaderColor, #fff);
+    font-size: 0.8125rem;
+    text-align: center;
+    letter-spacing: var(--lwc-pipelineHeaderLetterSpacing, 0.9px);
+    white-space: nowrap;
+    overflow: hidden;
+    word-wrap: normal;
+}
+
+.avonni-kanban-header .avonni-stage-header-label {
+    display: inline-block;
+    max-width: var(--lwc-pipelineStageMaxWidth, calc(100% - 2.5rem));
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    word-wrap: normal;
+    vertical-align: middle;
+}
+
+.avonni-kanban__field-label {
+    font-weight: 600;
+}
+
+.avonni-kanban-header .uiTooltip .avonni-pipeline-header-tooltip .tooltip-body {
+    bottom: var(--lwc-pipelineHeaderTooltipBottom, -30px);
+    min-width: var(--lwc-pipelineHeaderTooltipMinWidth, 200px);
+    min-height: var(--lwc-pipelineHeaderTooltipMinHeight, 40px);
+    text-align: center;
+}
+
+.uiTooltip.tooltip-basic .tooltip {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.avonni-kanban-header .uiTooltip .avonni-pipeline-header-tooltip {
+    top: auto;
+}
+
+.uiTooltip.tooltip-basic:hover .tooltip, .uiTooltip.tooltip-basic:focus .tooltip, .uiTooltip.tooltip-basic .tooltip.visible {
+    opacity: .999;
+}
+
+.uiTooltip .south .pointer {
+    border-top: none;
+    border-right: 13px solid transparent;
+    border-left: 13px solid transparent;
+    border-bottom: 13px solid #16325c;
+}
+
+.uiTooltip .pointer {
+    border-bottom: none;
+    border-left: 13px solid transparent;
+    border-right: 13px solid transparent;
+    border-top: 13px solid #16325c;
+    z-index: 9100;
+}
+
+.uiTooltip .pointer-basic {
+    display: block;
+    position: absolute;
+    width: 0;
+    height: 0;
+    bottom: 12px;
+    left: 50%;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(-5px);
+}
+
+.uiTooltip .tooltip-body {
+    padding: 12px;
+    border-radius: 5px;
+    background-color: #16325c;
+    color: white;
+    font-size: 12px;
+}
+
+.uiTooltip .body-basic {
+    bottom: 100%;
+    left: 50%;
+    transform-origin: bottom left;
+    transform: translateX(-50%) translateY(-10px);
+}
+
+.uiTooltip .tooltip-body {
+    z-index: 9100;
+    display: block;
+    position: absolute;
+    max-width: 300px;
+    min-width: 100px;
+    width: intrinsic;
+    width: -moz-max-content;
+    width: -webkit-max-content;
+    pointer-events: none;
+    display: inline-block;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+    hyphens: auto;
+}
