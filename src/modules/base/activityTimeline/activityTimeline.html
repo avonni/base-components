@@ -72,6 +72,7 @@
                         loading-state-alternative-text={item.loadingStateAlternativeText}
                         actions={actions}
                         name={item.name}
+                        data-element-id="avonni-primitive-activity-timeline-item"
                         data-name={item.name}
                         onactionclick={handleActionClick}
                         onbuttonclick={handleButtonClick}
@@ -85,11 +86,12 @@
     <template if:true={hasDates}>
         <template for:each={orderedDates} for:item="date">
             <template if:false={noGroupBy}>
-                <avonni-expandable-section
+                <c-expandable-section
                     key={date.label}
                     title={date.label}
                     collapsible={collapsible}
                     closed={closed}
+                    data-element-id="avonni-expandable-section"
                 >
                     <ul class="slds-timeline">
                         <template for:each={date.items} for:item="item">
@@ -114,6 +116,7 @@
                                     loading-state-alternative-text={item.loadingStateAlternativeText}
                                     actions={actions}
                                     name={item.name}
+                                    data-element-id="avonni-primitive-activity-timeline-item"
                                     data-name={item.name}
                                     onactionclick={handleActionClick}
                                     onbuttonclick={handleButtonClick}
@@ -123,7 +126,7 @@
                             </li>
                         </template>
                     </ul>
-                </avonni-expandable-section>
+                </c-expandable-section>
             </template>
         </template>
     </template>

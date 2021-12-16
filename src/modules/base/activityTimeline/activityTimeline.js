@@ -80,10 +80,7 @@ export default class ActivityTimeline extends LightningElement {
     @track orderedDates = [];
 
     connectedCallback() {
-        if (!this._connected) {
-            this.initActivityTimeline();
-        }
-        this.connected = true;
+        this.initActivityTimeline();
     }
 
     /**
@@ -134,6 +131,8 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: GROUP_BY_OPTIONS.default,
             validValues: GROUP_BY_OPTIONS.valid
         });
+
+        if (this.isConnected) this.initActivityTimeline();
     }
 
     /**
@@ -149,6 +148,7 @@ export default class ActivityTimeline extends LightningElement {
 
     set items(value) {
         this._items = normalizeArray(value);
+        if (this.isConnected) this.initActivityTimeline();
     }
 
     /**
@@ -192,6 +192,9 @@ export default class ActivityTimeline extends LightningElement {
      * Sort the item dates by year, month, week.
      */
     sortDates() {
+        this._upcomingDates = [];
+        this._beforeDates = [];
+
         this._sortedItems.forEach((item) => {
             const date = new Date(item.datetimeValue);
             const today = new Date();
@@ -226,6 +229,8 @@ export default class ActivityTimeline extends LightningElement {
      * Group upcomingDates and beforeDates by year, month, week.
      */
     groupDates() {
+        this.orderedDates = [];
+
         this._upcomingDates = this._upcomingDates.reduce((prev, cur) => {
             this._key = 'Upcoming';
             if (!prev[this._key]) {

@@ -29,7 +29,6 @@ const COMPLETED_OPTIONS = [
 ];
 
 export default class PathCompletedOptionsForEachStep extends LightningElement {
-
     steps = [
         {
             name: 'open',

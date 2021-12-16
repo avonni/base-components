@@ -31,10 +31,11 @@
  */
 
 import { createElement } from 'lwc';
-import ActivityTimeline from 'c/activityTimeline';
+import ActivityTimeline from '../activityTimeline';
 
 const ITEMS = [
     {
+        name: 'item1',
         title:
             'Review proposals for EBC deck with larger team and have marketing review this',
         description: 'You created a task with Charlie Gomez',
@@ -42,9 +43,10 @@ const ITEMS = [
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
-        hasCheckbox: true
+        hasCheckbox: true,
     },
     {
+        name: 'item2',
         title: 'Mobile conversation on Monday',
         description: 'You logged a call with Adam Chan',
         href: '#',
@@ -76,6 +78,7 @@ const ITEMS = [
         ]
     },
     {
+        name: 'item3',
         title: 'Re: Mobile conversation on Monday with the new global team',
         description: 'You emailed Lea Chan',
         datetimeValue: 1619013600000,
@@ -110,6 +113,7 @@ const ITEMS = [
         buttonIconName: 'utility:world'
     },
     {
+        name: 'item4',
         title: 'EBC Follow up call',
         description: 'You created an event with Aida Lee and 5 others',
         icons: ['utility:world'],
@@ -153,6 +157,7 @@ const ITEMS = [
         closed: true
     },
     {
+        name: 'item5',
         title: 'Create one task',
         datetimeValue: 1621605600000,
         href: '#',
@@ -187,6 +192,7 @@ const ITEMS = [
         closed: true
     },
     {
+        name: 'item6',
         title: 'Create another task',
         datetimeValue: 1621611000000,
         href: '#',
@@ -209,18 +215,22 @@ const ACTIONS = [
     }
 ];
 
-describe('ActivityTimeline', () => {
+let element;
+describe('Activity Timeline', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('avonni-activity-timeline', {
+    beforeEach(() => {
+        element = createElement('avonni-activity-timeline', {
             is: ActivityTimeline
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.collapsible).toBeFalsy();
@@ -233,12 +243,7 @@ describe('ActivityTimeline', () => {
     /* ----- ATTRIBUTES ----- */
 
     // title
-    it('Activity timeline title', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-        document.body.appendChild(element);
-
+    it('title', () => {
         element.title = 'This is an title text';
 
         return Promise.resolve().then(() => {
@@ -250,12 +255,7 @@ describe('ActivityTimeline', () => {
     });
 
     // icon name
-    it('Activity timeline icon name', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-        document.body.appendChild(element);
-
+    it('icon name', () => {
         element.iconName = 'standard:case';
 
         return Promise.resolve().then(() => {
@@ -268,20 +268,14 @@ describe('ActivityTimeline', () => {
 
     // collapsible
     // needs to specify the group by to have sections
-    it('Activity timeline collapsible', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-
-        document.body.appendChild(element);
-
+    it('collapsible', () => {
         element.items = ITEMS;
         element.groupBy = 'week';
         element.collapsible = true;
 
         return Promise.resolve().then(() => {
             const expandableSection = element.shadowRoot.querySelector(
-                'avonni-expandable-section'
+                'c-expandable-section'
             );
             expect(expandableSection.collapsible).toBeTruthy();
         });
@@ -289,52 +283,34 @@ describe('ActivityTimeline', () => {
 
     // closed
     // needs to specify the group by to have sections
-    it('Activity timeline closed', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-
-        document.body.appendChild(element);
-
+    it('closed', () => {
         element.items = ITEMS;
         element.groupBy = 'week';
         element.closed = true;
 
         return Promise.resolve().then(() => {
             const expandableSection = element.shadowRoot.querySelector(
-                'avonni-expandable-section'
+                '[data-element-id="avonni-expandable-section"]'
             );
             expect(expandableSection.closed).toBeTruthy();
         });
     });
 
     // group by
-    it('Activity timeline group by undefined', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-
-        document.body.appendChild(element);
-
+    it('group by undefined', () => {
         element.items = ITEMS;
 
         return Promise.resolve()
             .then(() => {})
             .then(() => {
                 const expandableSection = element.shadowRoot.querySelectorAll(
-                    'avonni-expandable-section'
+                    '[data-element-id="avonni-expandable-section"]'
                 );
                 expect(expandableSection).toHaveLength(0);
             });
     });
 
-    it('Activity timeline group by week', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-
-        document.body.appendChild(element);
-
+    it('group by week', () => {
         element.items = ITEMS;
         element.groupBy = 'week';
         const firstSection = 'Upcoming';
@@ -344,7 +320,7 @@ describe('ActivityTimeline', () => {
 
         return Promise.resolve().then(() => {
             const expandableSection = element.shadowRoot.querySelectorAll(
-                'avonni-expandable-section'
+                '[data-element-id="avonni-expandable-section"]'
             );
             expect(expandableSection).toHaveLength(4);
             expect(expandableSection[0].title).toBe(firstSection);
@@ -354,13 +330,7 @@ describe('ActivityTimeline', () => {
         });
     });
 
-    it('Activity timeline group by year', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-
-        document.body.appendChild(element);
-
+    it('group by year', () => {
         element.groupBy = 'year';
         element.items = ITEMS;
         const firstSection = 'Upcoming';
@@ -368,7 +338,7 @@ describe('ActivityTimeline', () => {
 
         return Promise.resolve().then(() => {
             const expandableSection = element.shadowRoot.querySelectorAll(
-                'avonni-expandable-section'
+                '[data-element-id="avonni-expandable-section"]'
             );
             expect(expandableSection).toHaveLength(2);
             expect(expandableSection[0].title).toBe(firstSection);
@@ -376,13 +346,7 @@ describe('ActivityTimeline', () => {
         });
     });
 
-    it('Activity timeline group by month', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-
-        document.body.appendChild(element);
-
+    it('group by month', () => {
         element.groupBy = 'month';
         element.items = ITEMS;
         const firstSection = 'Upcoming';
@@ -391,7 +355,7 @@ describe('ActivityTimeline', () => {
 
         return Promise.resolve().then(() => {
             const expandableSection = element.shadowRoot.querySelectorAll(
-                'avonni-expandable-section'
+                '[data-element-id="avonni-expandable-section"]'
             );
             expect(expandableSection).toHaveLength(3);
             expect(expandableSection[0].title).toBe(firstSection);
@@ -401,12 +365,10 @@ describe('ActivityTimeline', () => {
     });
 
     // items
-    it('Activity timeline items', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
+    it('items', () => {
         const ITEM = [
             {
+                name: 'item1',
                 title: 'Mobile conversation on Monday',
                 description: 'You logged a call with Adam Chan',
                 href: '#',
@@ -438,6 +400,7 @@ describe('ActivityTimeline', () => {
                 ]
             },
             {
+                name: 'item2',
                 title:
                     'Re: Mobile conversation on Monday with the new global team',
                 description: 'You emailed Lea Chan',
@@ -474,12 +437,10 @@ describe('ActivityTimeline', () => {
             }
         ];
 
-        document.body.appendChild(element);
-
         element.items = ITEM;
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
-                'c-activity-timeline-item'
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
 
             expect(items).toHaveLength(2);
@@ -514,19 +475,13 @@ describe('ActivityTimeline', () => {
     });
 
     // actions
-    it('Activity timeline actions', () => {
-        const element = createElement('avonni-activity-timeline', {
-            is: ActivityTimeline
-        });
-
-        document.body.appendChild(element);
-
+    it('actions', () => {
         element.items = ITEMS;
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelector(
-                'c-activity-timeline-item'
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
 
             expect(items.actions).toMatchObject(ACTIONS);

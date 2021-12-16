@@ -61,6 +61,7 @@ const FIELDS = [
     }
 ];
 
+let element;
 describe('Primitive Activity Timeline Item', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -68,11 +69,14 @@ describe('Primitive Activity Timeline Item', () => {
         }
     });
 
-    it('Default attributes', () => {
-        const element = createElement('avonni-activity-timeline-item', {
+    beforeEach(() => {
+        element = createElement('avonni-activity-timeline-item', {
             is: ActivityTimelineItem
         });
+        document.body.appendChild(element);
+    });
 
+    it('Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.description).toBeUndefined();
         expect(element.datetimeValue).toBeUndefined();
@@ -95,11 +99,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // title
     it('Activity timeline item title', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.title = 'This is an title text';
 
         return Promise.resolve().then(() => {
@@ -110,11 +109,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // description
     it('Activity timeline item description', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.description = 'This is an description text';
 
         return Promise.resolve().then(() => {
@@ -125,11 +119,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // datetime value
     it('Activity timeline item datetimeValue', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.datetimeValue = 1621605600000;
 
         return Promise.resolve().then(() => {
@@ -142,11 +131,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // href
     it('Activity timeline item href', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.title = 'This is an title link text';
         element.href = 'salesforce.com';
 
@@ -159,11 +143,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // icon name
     it('Activity timeline item icon name', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.iconName = 'standard:case';
 
         return Promise.resolve().then(() => {
@@ -176,15 +155,10 @@ describe('Primitive Activity Timeline Item', () => {
 
     // fields
     it('Activity timeline item fields', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.fields = FIELDS;
 
         return Promise.resolve().then(() => {
-            const fields = element.shadowRoot.querySelectorAll('avonni-output-data');
+            const fields = element.shadowRoot.querySelectorAll('[data-element-id="avonni-output-data"]');
 
             expect(fields).toHaveLength(3);
 
@@ -205,11 +179,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // has checkbox
     it('Activity timeline item has checkbox', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.hasCheckbox = true;
 
         return Promise.resolve().then(() => {
@@ -223,11 +192,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // has error
     it('Activity timeline item has error', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.hasError = true;
 
         return Promise.resolve().then(() => {
@@ -248,11 +212,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // is loading and loading text
     it('Activity timeline item is loading', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.isLoading = true;
         element.loadingStateAlternativeText = 'This is a loading text';
 
@@ -267,11 +226,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // closed
     it('Activity timeline item closed', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.fields = FIELDS;
         element.closed = true;
 
@@ -286,11 +240,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // button label
     it('Activity timeline item button label', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
 
         return Promise.resolve().then(() => {
@@ -302,11 +251,6 @@ describe('Primitive Activity Timeline Item', () => {
     // button icon name
     // needs a label
     it('Activity timeline item button icon name', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonIconName = 'utility:close';
 
@@ -320,11 +264,6 @@ describe('Primitive Activity Timeline Item', () => {
     // button icon position
     // needs a label
     it('Activity timeline item button icon position', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonIconName = 'utility:close';
         element.buttonIconPosition = 'right';
@@ -338,11 +277,6 @@ describe('Primitive Activity Timeline Item', () => {
     // button variant
     // needs a label
     it('Activity timeline item button variant neutral', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'neutral';
 
@@ -353,11 +287,6 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity timeline item button variant base', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'base';
 
@@ -368,11 +297,6 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity timeline item button variant brand', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'brand';
 
@@ -383,11 +307,6 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity timeline item button variant brand-outline', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'brand-outline';
 
@@ -398,11 +317,6 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity timeline item button variant destructive', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'destructive';
 
@@ -413,11 +327,6 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity timeline item button variant destructive-text', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'destructive-text';
 
@@ -428,11 +337,6 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity timeline item button variant inverse', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'inverse';
 
@@ -443,11 +347,6 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     it('Activity timeline item button variant success', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'success';
 
@@ -459,11 +358,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // button disabled
     it('Activity timeline item button disabled', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'This is a button label';
         element.buttonDisabled = true;
 
@@ -477,11 +371,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // check
     it('check event', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.hasCheckbox = true;
 
         const handler = jest.fn();
@@ -489,10 +378,15 @@ describe('Primitive Activity Timeline Item', () => {
 
         return Promise.resolve().then(() => {
             const checkbox = element.shadowRoot.querySelector(
-                'lightning-input'
+                '[data-element-id="lightning-input-checkbox"]'
             );
-            checkbox.click();
+            checkbox.dispatchEvent(new CustomEvent('change', {
+                detail: {
+                    checked: true
+                }
+            }));
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -501,11 +395,6 @@ describe('Primitive Activity Timeline Item', () => {
 
     // button clicked
     it('button clicked event', () => {
-        const element = createElement('avonni-activity-timeline-item', {
-            is: ActivityTimelineItem
-        });
-        document.body.appendChild(element);
-
         element.buttonLabel = 'button';
 
         const handler = jest.fn();

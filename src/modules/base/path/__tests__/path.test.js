@@ -360,7 +360,7 @@ describe('Path', () => {
             });
 
             const fieldValues = element.shadowRoot.querySelectorAll(
-                'avonni-output-data'
+                '[data-element-id="avonni-output-data"]'
             );
             expect(fieldValues).toHaveLength(STEPS[2].keyFields.length);
             fieldValues.forEach((field, index) => {

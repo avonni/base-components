@@ -1,7 +1,6 @@
 import { LightningElement } from 'lwc';
 
 export default class PathBase extends LightningElement {
-
     steps = [
         {
             name: 'open',
