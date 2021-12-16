@@ -67,7 +67,7 @@
 }
 
 .avonni-notify_alert .avonni-alert__primitive-icon_color {
-    border-radius: var(--avonni-alert-warning-icon-radius-border, 0.25rem);
+    border-radius: var(--avonni-alert-icon-radius-border, 0.25rem);
 }
 
 .avonni-alert_base {
