@@ -31,13 +31,7 @@
  */
 
 .avonni-image {
-    border-bottom-left-radius: var(--avonni-image-radius-border-bottom-left, 0);
-    border-bottom-right-radius: var(
-        --avonni-image-radius-border-bottom-right,
-        0
-    );
-    border-top-left-radius: var(--avonni-image-radius-border-top-left, 0);
-    border-top-right-radius: var(--avonni-image-radius-border-top-right, 0);
+    border-radius: var(--avonni-image-radius-border, 0);
 }
 
 .avonni-image_fluid {
