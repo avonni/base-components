@@ -66,7 +66,7 @@ describe('Image', () => {
         expect(element.height).toBeUndefined();
         expect(element.lazyLoading).toBe('auto');
         expect(element.sizes).toBeUndefined();
-        expect(element.position).toBe('left');
+        expect(element.position).toBeUndefined();
         expect(element.src).toBeUndefined();
         expect(element.srcset).toBeUndefined();
         expect(element.staticImages).toBeFalsy();
@@ -212,7 +212,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.style.width).toBeFalsy();
+            expect(img.style.width).toBe('auto');
             expect(img.style.height).toBe('225px');
         });
     });
@@ -248,7 +248,7 @@ describe('Image', () => {
     // position
     it('Image - Position left', () => {
         element.src = src;
-        element.positon = 'left';
+        element.position = 'left';
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector(
@@ -372,7 +372,7 @@ describe('Image', () => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
-            expect(img.className).toBe('avonni-image avonni-image_float-left');
+            expect(img.className).toBe('avonni-image');
             expect(img.style.maxWidth).toBe('400px');
             expect(img.style.height).toBeFalsy();
         });
@@ -404,7 +404,7 @@ describe('Image', () => {
                     '[data-element-id="img"]'
                 );
                 expect(img.className).toBe(
-                    'avonni-image avonni-image_float-left'
+                    'avonni-image'
                 );
                 expect(img.style.minWidth).toBe('0px');
                 expect(img.style.minHeight).toBe('0px');

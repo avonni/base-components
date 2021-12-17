@@ -96,13 +96,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-blockquote-success-color-border-left
+ * @name --avonni-blockquote-warning-color-border-left
  * @default #d47500
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-blockquote-success-title-text-color
+ * @name --avonni-blockquote-warning-title-text-color
  * @default #d47500
  * @type color
  */
