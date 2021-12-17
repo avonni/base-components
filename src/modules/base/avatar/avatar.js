@@ -538,11 +538,11 @@ export default class Avatar extends LightningElement {
             case 'lightest':
                 return 'slds-badge_lightest';
             case 'success':
-                return 'slds-theme_success';
+                return 'slds-badge slds-theme_success';
             case 'warning':
-                return 'slds-theme_warning';
+                return 'slds-badge slds-theme_warning';
             case 'error':
-                return 'slds-theme_error';
+                return 'slds-badge slds-theme_error';
             default:
                 return 'slds-badge';
         }
