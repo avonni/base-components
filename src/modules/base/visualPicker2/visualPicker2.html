@@ -64,6 +64,8 @@
                         name={name}
                         disabled={item.disabled}
                         data-element-id="input"
+                        onblur={handleBlur}
+                        onfocus={handleFocus}
                         onchange={handleChange}
                     />
                     <label for={item.value} data-element-id="label">
@@ -222,4 +224,14 @@
             </template>
         </div>
     </fieldset>
+    <template if:false={valid}>
+        <div
+            id="help-message"
+            class="slds-form-element__help"
+            data-help-message
+            role="alert"
+        >
+            {helpMessage}
+        </div>
+    </template>
 </template>

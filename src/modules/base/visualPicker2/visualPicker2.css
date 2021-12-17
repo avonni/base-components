@@ -468,7 +468,7 @@ input[disabled] ~ label .slds-icon-action-check {
     width: 100%;
     justify-content: var(
         --avonni-visual-picker-figure-tags-horizontal-alignment,
-        flex-start
+        center
     );
     margin-bottom: 0.5rem;
 }
