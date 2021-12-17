@@ -245,6 +245,9 @@ export default class Carousel extends LightningElement {
                 }
             )
         );
+        if (this._initialRender) {
+            this.initCarousel();
+        }
     }
 
     /**
