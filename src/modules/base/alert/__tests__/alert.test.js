@@ -48,13 +48,13 @@ describe('Alert', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Alert: Default attributes', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.variant).toBe('base');
         expect(element.isDismissible).toBe(false);
     });
 
-    it('Alert variant base', () => {
+    it('Alert: variant base', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
         expect(div.classList).toContain('avonni-notify_alert');
         expect(div.classList).toContain('avonni-alert_base');
@@ -63,7 +63,7 @@ describe('Alert', () => {
         expect(div.classList).not.toContain('avonni-alert_warning');
     });
 
-    it('Alert variant error', () => {
+    it('Alert: variant error', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.variant = 'error';
@@ -78,7 +78,7 @@ describe('Alert', () => {
         });
     });
 
-    it('Alert variant offline', () => {
+    it('Alert: variant offline', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.variant = 'offline';
@@ -93,14 +93,8 @@ describe('Alert', () => {
         });
     });
 
-    it('Alert variant warning', () => {
+    it('Alert: variant warning', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        const lightningButtonIcon = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon"]'
-        );
-
-        expect(lightningButtonIcon.iconClass).toBe('slds-button_icon-inverse');
-
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
@@ -110,11 +104,10 @@ describe('Alert', () => {
             expect(div.classList).not.toContain('avonni-alert_error');
             expect(div.classList).not.toContain('avonni-alert_offline');
             expect(div.classList).toContain('avonni-alert_warning');
-            expect(lightningButtonIcon.iconClass).toBe('');
         });
     });
 
-    it('Alert isDismissible', () => {
+    it('Alert: isDismissible', () => {
         let lightningButtonIcon = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon"]'
         );
@@ -132,7 +125,7 @@ describe('Alert', () => {
         });
     });
 
-    it('Alert iconName', () => {
+    it('Alert: iconName', () => {
         let lightningIcon = element.shadowRoot.querySelector(
             '[data-element-id="lightning-icon"]'
         );
@@ -151,12 +144,12 @@ describe('Alert', () => {
         });
     });
 
-    it('Alert closeAction', () => {
+    it('Alert: closeAction', () => {
         const mockCallBack = jest.fn();
 
         let div = element.shadowRoot.querySelector('[data-element-id="div"]');
         let lightningButtonIcon = element.shadowRoot.querySelector(
-            'lightning-button-icon'
+            '[data-element-id="lightning-button-icon"]'
         );
 
         expect(div).toBeTruthy();
