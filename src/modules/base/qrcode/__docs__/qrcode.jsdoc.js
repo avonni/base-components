@@ -3,13 +3,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-qr-code-color
+ * @name --avonni-qrcode-color
  * @default #000000
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-qr-code-color-background
+ * @name --avonni-qrcode-color-background
  * @default #ffffff
  * @type color
  */
