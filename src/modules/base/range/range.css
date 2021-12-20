@@ -168,7 +168,7 @@
     transform: rotate(90deg);
 }
 
-.avonni-range__label_styling {
+.avonni-range__label {
     color: var(--avonni-range-label-text-color, #080707);
     font-size: var(--avonni-range-label-font-size, 0.75rem);
     font-style: var(--avonni-range-label-font-style, normal);
