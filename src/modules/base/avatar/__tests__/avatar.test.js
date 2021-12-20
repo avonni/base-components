@@ -861,7 +861,7 @@ describe('Avatar', () => {
             const badge = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-badge"]'
             );
-            expect(badge.className).toBe('slds-theme_success');
+            expect(badge.className).toBe('slds-badge slds-theme_success');
             expect(badge.label).toBe('success');
         });
     });
@@ -874,7 +874,7 @@ describe('Avatar', () => {
             const badge = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-badge"]'
             );
-            expect(badge.className).toBe('slds-theme_warning');
+            expect(badge.className).toBe('slds-badge slds-theme_warning');
             expect(badge.label).toBe('warning');
         });
     });
@@ -887,7 +887,7 @@ describe('Avatar', () => {
             const badge = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-badge"]'
             );
-            expect(badge.className).toBe('slds-theme_error');
+            expect(badge.className).toBe('slds-badge slds-theme_error');
             expect(badge.label).toBe('error');
         });
     });
