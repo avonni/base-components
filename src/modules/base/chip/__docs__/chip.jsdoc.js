@@ -35,6 +35,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-chip-alt-inverse-outline-color
+ * @default #032d60
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-chip-base-color-background
  * @default #032d60
  * @type color
@@ -49,6 +55,12 @@
  * @memberof stylingHooks
  * @name --avonni-chip-base-text-color
  * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-base-outline-color
+ * @default #032d60
  * @type color
  */
 /**
@@ -71,6 +83,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-chip-brand-outline-color
+ * @default #0070d1
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-chip-error-color-background
  * @default #ea001e
  * @type color
@@ -85,6 +103,12 @@
  * @memberof stylingHooks
  * @name --avonni-chip-error-text-color
  * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-error-outline-color
+ * @default #ea001e
  * @type color
  */
 /**
@@ -107,6 +131,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-chip-info-outline-color
+ * @default #706e6b
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-chip-inverse-color-background
  * @default #001639
  * @type color
@@ -121,6 +151,12 @@
  * @memberof stylingHooks
  * @name --avonni-chip-inverse-text-color
  * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-inverse-outline-color
+ * @default #001639
  * @type color
  */
 /**
@@ -143,6 +179,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-chip-offline-outline-color
+ * @default #444444
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-chip-success-color-background
  * @default #2e844a
  * @type color
@@ -161,6 +203,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-chip-success-outline-color
+ * @default #2e844a
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-chip-warning-color-background
  * @default #fe9339
  * @type color
@@ -175,6 +223,12 @@
  * @memberof stylingHooks
  * @name --avonni-chip-warning-text-color
  * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-warning-outline-color
+ * @default #fe9339
  * @type color
  */
 /**
