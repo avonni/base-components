@@ -99,14 +99,6 @@ export default class Alert extends LightningElement {
     }
 
     /**
-     * Icon class, depending on the variant value.
-     * @type {string}
-     */
-    get iconClass() {
-        return this.variant === 'warning' ? '' : 'slds-button_icon-inverse';
-    }
-
-    /**
      * Wrapper div class, depending on the variant value.
      * @type {string}
      */
