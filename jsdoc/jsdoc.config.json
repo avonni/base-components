@@ -3,5 +3,11 @@
     "recurseDepth": 2,
     "markdown": {
         "hardwrap": "true"
+    },
+    "opts": {
+        "template": "./jsdoc/",
+        "destination": "console",
+        "recurse": true,
+        "access": "public"
     }
 }

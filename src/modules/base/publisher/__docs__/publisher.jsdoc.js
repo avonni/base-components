@@ -14,31 +14,3 @@
  * @memberof slots
  * @name actions
  */
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name variantBase
- * @storyId example-publisher--variant-base
- */
-/**
- * @memberof examples
- * @name variantComment
- * @storyId example-publisher--variant-comment
- */
-/**
- * @memberof examples
- * @name disabled
- * @storyId example-publisher--disabled
- */
-/**
- * @memberof examples
- * @name withActionsSlot
- * @storyId example-publisher--with-actions-slot
- */
-/**
- * @memberof examples
- * @name withFigureSlot
- * @storyId example-publisher--with-figure-slot
- */

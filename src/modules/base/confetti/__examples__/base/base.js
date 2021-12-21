@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 
 export default class ConfettiBase extends LightningElement {
-    colors =[
+    colors = [
         '#529EE0',
         '#F0E442',
         '#FFB03B',
@@ -9,5 +9,10 @@ export default class ConfettiBase extends LightningElement {
         '#4FD2D2',
         '#006699',
         '#E287B2'
-    ]
+    ];
+
+    fireTheConfetti() {
+        const confetti = this.template.querySelector('avonni-confetti');
+        confetti.fire();
+    }
 }

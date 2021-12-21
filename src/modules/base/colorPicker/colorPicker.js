@@ -121,7 +121,7 @@ const MINIMUM_TILE_SIZE = 5;
 /**
  * @class
  * @descriptor avonni-color-picker
- * @storyId example-color-picker--standard
+ * @storyId example-color-picker--base
  * @public
  */
 export default class ColorPicker extends LightningElement {
@@ -133,7 +133,7 @@ export default class ColorPicker extends LightningElement {
      */
     @api accessKey;
     /**
-     * Help text detailing the purpose and function of the input. This attribute isn't supported for file, radio, toggle, and checkbox-button types.
+     * Help text detailing the purpose and function of the input.
      *
      * @public
      * @type {string}
@@ -148,7 +148,7 @@ export default class ColorPicker extends LightningElement {
      */
     @api label;
     /**
-     * If no icon-name specified, display default dropdown icon and color box.
+     * The Lightning Design System name of the icon to use as a button icon, instead of the color dropdown. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
      *
      * @public
      * @type {string}
@@ -366,7 +366,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * The size of the icon. Options include xx-small, x-small, small, medium, or large.
+     * Size of the icon. Options include xx-small, x-small, small, medium, or large.
      *
      * @public
      * @type {string}
@@ -517,7 +517,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Defines whether the alpha slider will be displayed.
+     * If present, the alpha slider will be displayed.
      *
      * @public
      * @type {boolean}
@@ -853,9 +853,9 @@ export default class ColorPicker extends LightningElement {
     /*-------- Public methods --------*/
 
     /**
-     * Indicates whether the element meets all constraint validations.
+     * Checks if the input is valid.
      *
-     * @returns {boolean} the valid attribute value on the ValidityState object.
+     * @returns {boolean} True if the element meets all constraint validations.
      * @public
      */
     @api
@@ -864,10 +864,9 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Displays the error messages and returns false if the input is invalid.
-     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
-     * @returns {boolean} - The validity status of the input fields.
+     * @returns {boolean} False if invalid, true if valid.
      * @public
      */
     @api
@@ -880,8 +879,7 @@ export default class ColorPicker extends LightningElement {
     /**
      * Sets a custom error message to be displayed when a form is submitted.
      *
-     * @param {string} message - The string that describes the error.
-     * If message is an empty string, the error message is reset.
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
      */
     @api
@@ -891,7 +889,7 @@ export default class ColorPicker extends LightningElement {
 
     /**
      * Displays error messages on invalid fields.
-     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
      *
      * @public
      */
@@ -1251,7 +1249,7 @@ export default class ColorPicker extends LightningElement {
     handleInputFocus() {
         this.interactingState.enter();
         /**
-         * The event fired when you focus the color picker input.
+         * The event fired when the focus is set on the color picker input.
          *
          * @event
          * @name focus

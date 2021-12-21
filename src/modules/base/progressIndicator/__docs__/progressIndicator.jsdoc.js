@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} Steps
+ * @typedef {Object} ProgressIndicatorSteps
  * @name step
  * @property {string} assistiveText Description of the step for screen-readers.
  * @property {string} label Text label to title the step.
@@ -16,7 +16,9 @@
  * @property {string} buttonVariant The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. This value defaults to neutral.
  * @property {string} popoverVariant Valid values include base and button. Default to base.
  * @property {string} popoverIconName The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
- * @property {string} popoverIconSrcWhenHover The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {string} popoverIconSrc The URL for the icon.
+ * @property {string} popoverIconNameWhenHover The Lightning Design System name of the icon displayed on hover. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {string} popoverIconSrcWhenHover The URL for the icon displayed on hover.
  * @property {string} popoverSize Valid values include small, medium and large. Default to medium.
  * @property {string} popoverRatio Valid values include 1-by-1, 4-by-3 and 16-by-9. Default to 1-by-1.
  * @property {string} popoverLabel Text label to title the popover.
@@ -140,33 +142,4 @@
  * @name --avonni-progress-indicator-step-description-font-weight
  * @default 400
  * @type font
- */
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name baseWithPopoverHidden
- * @storyId example-progress-indicator--base-with-popover-hidden
- */
-/**
- * @memberof examples
- * @name baseWithPopoverVisible
- * @storyId example-progress-indicator--base-with-popover-visible
- */
-/**
- * @memberof examples
- * @name baseWithButtons
- * @storyId example-progress-indicator--with-buttons
- */
-/**
- * @memberof examples
- * @name milestones
- * @storyId example-progress-indicator--milestones
- */
-/**
- * @memberof examples
- * @name milestonesShaded
- * @storyId example-progress-indicator--milestones-shaded
  */

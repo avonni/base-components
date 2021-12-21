@@ -44,7 +44,7 @@ const CROP_SIZE = {
 };
 const POSITIONS = {
     valid: ['left', 'right', 'center'],
-    default: 'left'
+    default: undefined
 };
 
 const LAZY_LOADING_VARIANTS = {
@@ -70,17 +70,17 @@ export default class Image extends LightningElement {
      */
     @api alternativeText;
     /**
-     * X-axis of the image position ( in percent ).
+     * Position of the image on the X axis (in percent).
      *
      * @public
-     * @type {string}
+     * @type {number}
      */
     @api cropPositionX = CROP_POSITION_X_DEFAULT;
     /**
-     * Y-axis of the image position ( in percent ).
+     * Position of the image on the Y axix (in percent).
      *
      * @public
-     * @type {string}
+     * @type {number}
      */
     @api cropPositionY = CROP_POSITION_Y_DEFAULT;
 
@@ -109,7 +109,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Image fit behaviour inside its container ( valid options : “cover”, “contain”, “fill”, “none” ). Default is cover.
+     * Image fit behaviour inside its container. Valid values include cover, contain, fill and none.
      *
      * @public
      * @type {string}
@@ -127,18 +127,16 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Crops the image to desired aspect ratio ( valid options : “1x1”, “4x3”, “16x9”, “none” ).
+     * Cropping ratio of the image. Valid values are “1x1”, “4x3”, “16x9” or “none”.
      *
      * @public
      * @type {string}
+     * @default none
      */
     @api get cropSize() {
         return this._cropSize;
     }
 
-    /**
-     * Assign cropSize numerical value and aspectRatio fraction based on user input.
-     */
     set cropSize(value) {
         const cropSize = normalizeString(value, {
             fallbackValue: CROP_SIZE.default,
@@ -164,7 +162,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Makes the image responsive. The image will shrink as needed or grow up the the image's native width.
+     * If present, the image is responsive and will take up 100% of its container width, to a maximum of its original width.
      *
      * @public
      * @type {boolean}
@@ -180,7 +178,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * Similar to the 'fluid' prop, but allows the image to scale up past its native width.
+     * If present, the image is reponsive and will take up 100% of its container width.
      *
      * @public
      * @type {boolean}
@@ -196,7 +194,7 @@ export default class Image extends LightningElement {
     }
 
     /**
-     * The value to set on the image's 'height' attribute.
+     * Height of the image.
      *
      * @public
      * @type {number | string}
@@ -222,7 +220,8 @@ export default class Image extends LightningElement {
      * Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.
      *
      * @public
-     * @type {boolean}
+     * @type {string}
+     * @default auto
      */
     @api
     get lazyLoading() {
@@ -360,6 +359,14 @@ export default class Image extends LightningElement {
         }
     }
 
+    get computedHeight() {
+        return !isNaN(Number(this.height)) ? `${this.height}px` : 'auto';
+    }
+
+    get computedWidth() {
+        return !isNaN(Number(this.width)) ? `${this.width}px` : 'auto';
+    }
+
     /**
      * Computed Image class styling.
      *
@@ -392,8 +399,8 @@ export default class Image extends LightningElement {
             return this.imgHandlerCropped();
         }
         return `
-        width: ${this.width}px;
-        height: ${this.height}px;        
+        width: ${this.computedWidth};
+        height: ${this.computedHeight};        
         `;
     }
 
@@ -419,18 +426,18 @@ export default class Image extends LightningElement {
             ) {
                 return `
                 min-width: ${this.width}px;
-                min-height: ${this.height}px;
+                min-height: ${this.computedHeight};
                 max-width: ${this.width}px;
-                max-height: ${this.height}px;
+                max-height: ${this.computedHeight};
                 ${imageFitPosition}      
                 `;
             }
             // No width - Height px
             else if (!this.width && this.height && !this._heightPercent) {
                 return `
-                min-height: ${this.height}px;
-                height: ${this.height}px;
-                max-height: ${this.height}px;
+                min-height: ${this.computedHeight};
+                height: ${this.computedHeight};
+                max-height: ${this.computedHeight};
                 max-width: ${this._imgWidth}px;
                 width: ${this._imgWidth}px;
                 min-width: ${this._imgWidth}px;
@@ -440,7 +447,7 @@ export default class Image extends LightningElement {
             // Width px - No height
             else if (this.width && !this._widthPercent && !this.height) {
                 return `
-                max-width: ${this.width}px;
+                max-width: ${this.computedWidth};
                 ${imageFitPosition}
                 `;
             }
@@ -468,18 +475,18 @@ export default class Image extends LightningElement {
             ) {
                 return `
                 max-width: ${this._imgWidth}px;
-                max-height: ${this.height}px;
+                max-height: ${this.computedHeight};
                 min-width: ${this._imgWidth}px;
-                min-height: ${this.height}px;
+                min-height: ${this.computedHeight};
                 ${imageFitPosition}
                 `;
             }
             // Width px - Height %
             else if (this.width && !this._widthPercent && this._heightPercent) {
                 return `
-                max-width: ${this.width}px;
+                max-width: ${this.computedWidth};
                 max-height: ${this._imgHeight}px;
-                min-width: ${this.width}px;
+                min-width: ${this.computedWidth};
                 min-height: ${this._imgHeight}px;
                 ${imageFitPosition}    
                 `;
@@ -506,7 +513,7 @@ export default class Image extends LightningElement {
             // Width px - Height %
             if (this.width && !this._widthPercent && this._heightPercent) {
                 return `
-                width: ${this.width}px;
+                width: ${this.computedWidth};
                 height: ${this._heightPercent};
                 ${imageFitPosition}        
                 `;
@@ -523,7 +530,7 @@ export default class Image extends LightningElement {
             else if (this._widthPercent && this.height) {
                 return `
                 width: ${this._widthPercent};
-                height: ${this.height}px;
+                height: ${this.computedHeight};
                 ${imageFitPosition}        
                 `;
             }
@@ -543,8 +550,8 @@ export default class Image extends LightningElement {
             }
         }
         return `
-        width: ${this.width}px;
-        height: ${this.height}px;
+        width: ${this.computedWidth};
+        height: ${this.computedHeight};
         ${imageFitPosition}            
         `;
     }
@@ -584,14 +591,14 @@ export default class Image extends LightningElement {
                 (this.width && !this._widthPercent && this._heightPercent)
             ) {
                 return `
-                width: ${this.width}px;
+                width: ${this.computedWidth};
                 ${imageFitPositionAspectRatio}
                 `;
             }
             // No Width - Height px
             else if (!this.width && this.height && !this._heightPercent) {
                 return `
-                height: ${this.height}px;
+                height: ${this.computedHeight};
                 ${imageFitPositionAspectRatio}
                 `;
             }
@@ -634,9 +641,9 @@ export default class Image extends LightningElement {
             // Width px
             else if (this.width && !this._widthPercent) {
                 return `
-                max-width: ${this.width}px;
+                max-width: ${this.computedWidth};
                 max-height: ${this.width * (this._cropSize / 100)}px;
-                min-width: ${this.width}px;
+                min-width: ${this.computedWidth};
                 min-height: ${this.width * (this._cropSize / 100)}px;
                 ${imageFitPositionAspectRatio} 
                 `;
@@ -648,9 +655,9 @@ export default class Image extends LightningElement {
                 (this._widthPercent && this.height)
             ) {
                 return `
-                max-height: ${this.height}px;
+                max-height: ${this.computedHeight};
                 max-width: ${this.height / (this._cropSize / 100)}px;
-                min-height: ${this.height}px;
+                min-height: ${this.computedHeight};
                 min-width: ${this.height / (this._cropSize / 100)}px;
                 ${imageFitPositionAspectRatio} 
                 `;
@@ -682,8 +689,8 @@ export default class Image extends LightningElement {
             }
         }
         return `
-        width: ${this.width}px;
-        height: ${this.height}px;
+        width: ${this.computedWidth};
+        height: ${this.computedHeight};
         ${imageFitPositionAspectRatio}        
         `;
     }

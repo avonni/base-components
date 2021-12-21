@@ -263,13 +263,14 @@ export default class Pagination extends LightningElement {
     }
 
     /**
-     * When set to 'true', disables the component's functionality and places it in a disabled state.
+     * If present, the pagination is disabled and the user cannot interact with it.
      *
      * @type {boolean}
      * @public
      * @default false
      */
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
 
@@ -482,7 +483,7 @@ export default class Pagination extends LightningElement {
     /**
      * Go to page at index.
      *
-     * @param {number} index
+     * @param {number} index Index of the page.
      */
     @api
     goto(index) {

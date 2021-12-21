@@ -1,5 +1,5 @@
 /**
- * @typedef {Object} UnitAttribute
+ * @typedef {Object} RangeUnitAttribute
  * @name unitAttributes
  * @property {string} currencyCode Only used if format-style='currency', this attribute determines which currency is
  * displayed. Possible values are the ISO 4217 currency codes, such as 'USD' for the US dollar.
@@ -60,48 +60,4 @@
  * @name --avonni-range-unit-font-weight
  * @default 400
  * @type font
- */
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-range--base
- */
-/**
- * @memberof examples
- * @name extraSmallPercent
- * @storyId example-range--extra-small-percent
- */
-/**
- * @memberof examples
- * @name small
- * @storyId example-range--small
- */
-/**
- * @memberof examples
- * @name currencyLarge
- * @storyId example-range--currency-large
- */
-/**
- * @memberof examples
- * @name minMaxStep
- * @storyId example-range--min-max-step
- */
-/**
- * @memberof examples
- * @name vertical
- * @storyId example-range--vertical
- */
-/**
- * @memberof examples
- * @name verticalSmall
- * @storyId example-range--vertical-small
- */
-/**
- * @memberof examples
- * @name verticalLarge
- * @storyId example-range--vertical-large
  */

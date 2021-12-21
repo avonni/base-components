@@ -87,6 +87,7 @@ const DEFAULT_STATUS_TITLE = 'Status';
  */
 export default class Avatar extends LightningElement {
     /**
+     * The Lightning Design System name of the icon used as a fallback for the entity icon when the image fails to load. The initials fallback relies on this for its background color.
      * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
      *
      * @public
@@ -94,7 +95,7 @@ export default class Avatar extends LightningElement {
      */
     @api entityIconName;
     /**
-     * If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter. Placed inside the entity.
+     * Entity initials. If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
      *
      * @public
      * @type {string}
@@ -409,7 +410,7 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Properties for the badge tags of the avatar.
+     * Array of tag objects. The tags are displayed as badges in the details.
      *
      * @public
      * @type {object[]}
@@ -537,11 +538,11 @@ export default class Avatar extends LightningElement {
             case 'lightest':
                 return 'slds-badge_lightest';
             case 'success':
-                return 'slds-theme_success';
+                return 'slds-badge slds-theme_success';
             case 'warning':
-                return 'slds-theme_warning';
+                return 'slds-badge slds-theme_warning';
             case 'error':
-                return 'slds-theme_error';
+                return 'slds-badge slds-theme_error';
             default:
                 return 'slds-badge';
         }

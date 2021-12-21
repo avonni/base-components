@@ -36,7 +36,7 @@
 }
 
 .avonni-profile-card_color-background {
-    background-color: var(--avonni-profile-card_color-background, #ffffff);
+    background-color: var(--avonni-profile-card-color-background, #ffffff);
 }
 
 .slds-media {

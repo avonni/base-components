@@ -1,4 +1,7 @@
-<avonni-confetti
-    colors={colors}
-    variant="base"
-></avonni-confetti>
+<template>
+    <lightning-button
+        label="Fire!"
+        onclick={fireTheConfetti}
+    ></lightning-button>
+    <avonni-confetti colors={colors} variant="base"></avonni-confetti>
+</template>

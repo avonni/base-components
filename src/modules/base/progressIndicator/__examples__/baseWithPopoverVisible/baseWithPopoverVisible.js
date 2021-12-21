@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 
 export default class ProgressIndicatorBaseWithPopoverVisible extends LightningElement {
-    BaseStepsWithPopoverVisible = [
+    baseStepsWithPopoverVisible = [
         {
             value: '1',
             label: '1',

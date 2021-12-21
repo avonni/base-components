@@ -234,7 +234,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * An Array of item fields.
+     * Array of item objects.
      *
      * @type {object[]}
      * @public
@@ -369,7 +369,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * Click method on the button.
+     * Simulate a click on the button.
      *
      * @public
      */

@@ -93,7 +93,7 @@ const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
  * @class
  * @name ButtonIconPopover
  * @public
- * @storyId example-button-icon-popover--border-with-popover-base
+ * @storyId example-button-icon-popover--base-with-popover-base
  * @descriptor avonni-button-icon-popover
  */
 export default class ButtonIconPopover extends LightningElement {
@@ -123,9 +123,7 @@ export default class ButtonIconPopover extends LightningElement {
     @api title;
 
     /**
-     * The Lightning Design System name of the icon.
-     * Names are written in the format 'utility:down' where 'utility' is the category,
-     * and 'down' is the specific icon to be displayed.
+     * The Lightning Design System name of the icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      * Only utility icons can be used in this component.
      *
      * @type {string}
@@ -211,7 +209,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * The size of the buttonIcon. For the bare variant,
+     * The size of the button icon. For the bare variant,
      * options include x-small, small, medium, and large.
      * For non-bare variants, options include xx-small, x-small, small, and medium.
      *
@@ -260,7 +258,7 @@ export default class ButtonIconPopover extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of buttonIcon.
+     * The variant changes the appearance of button icon.
      * Accepted variants include bare, container, brand, border,
      * border-filled, bare-inverse, and border-inverse.
      *

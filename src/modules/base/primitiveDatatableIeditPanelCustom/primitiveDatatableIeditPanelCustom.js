@@ -270,7 +270,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     /**
      * Returns value of inputable element inside inline edit panel.
      *
-     * @type {string || object}
+     * @type {(string|object)}
      */
     @api
     get value() {

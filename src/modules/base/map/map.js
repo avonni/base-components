@@ -87,10 +87,11 @@
  * @class
  * @descriptor avonni-map
  * @storyId example-map--single-marker
+ * @public
  */
  export default class Map extends LightningElement {
      /**
-     * If present, the footer element is displayed below the map. The footer shows an 'Open in Google Maps' link that opens an external window to display the selected marker location in Google Maps. Default value is false.
+     * If present, the footer element is displayed below the map. The footer shows an 'Open in Google Maps' link that opens an external window to display the selected marker location in Google Maps.
      *
      * @type {boolean}
      * @public
@@ -397,24 +398,23 @@
       */
      dispatchSelectedMarkerValue() {
          /**
-         * Event fired when the marker value changes.
+         * The event fired when the marker value changes.
          *
          * @event
          * @name change
-         * @param {string} selectedMarkerValue
+         * @param {string} selectedMarkerValue Value of the selected marker.
          * @public
          * @bubbles
          * @composed
          */
          this.dispatchEvent(
-             new CustomEvent('change', {
-                 composed: true,
-                 bubbles: true,
-                 detail: {
-                     selectedMarkerValue: this.selectedMarkerValue
-                 }
-                })
-                );
+            new CustomEvent('change', {
+                composed: true,
+                bubbles: true,
+                detail: {
+                    selectedMarkerValue: this.selectedMarkerValue
+                }
+            }));
      }
  
      /**
@@ -437,11 +437,11 @@
          });
  
          /**
-         * The event that fires when the marker is selected.
+         * The event fired when the marker is selected.
          *
          * @event
          * @name markerselect
-         * @param {string} selectedMarkerValue
+         * @param {string} selectedMarkerValue Selected marker.
          * @public
          * @bubbles
          * @composed

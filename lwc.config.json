@@ -35,6 +35,14 @@
             "path": "src/modules/base/utilsPrivate/utilsPrivate.js"
         },
         {
+            "name": "c/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
+        },
+        {
+            "name": "c/primitiveActivityTimelineItem",
+            "path": "src/modules/base/primitiveActivityTimelineItem/primitiveActivityTimelineItem.js"
+        },
+        {
             "name": "c/alert",
             "path": "src/modules/base/alert/alert.js"
         },
@@ -243,6 +251,10 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
+            "name": "c/path",
+            "path": "src/modules/base/path/path.js"
+        },
+        {
             "name": "c/positionLibrary",
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
@@ -355,6 +367,18 @@
             "path": "src/modules/base/primitiveReferenceLine/primitiveReferenceLine.js"
         },
         {
+            "name": "c/primitiveRelationshipGraphGroup",
+            "path": "src/modules/base/primitiveRelationshipGraphGroup/primitiveRelationshipGraphGroup.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphItem",
+            "path": "src/modules/base/primitiveRelationshipGraphItem/primitiveRelationshipGraphItem.js"
+        },
+        {
+            "name": "c/primitiveRelationshipGraphLevel",
+            "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
+        },
+        {
             "name": "c/primitiveProgressStep",
             "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
         },
@@ -409,6 +433,10 @@
         {
             "name": "c/rating",
             "path": "src/modules/base/rating/rating.js"
+        },
+        {
+            "name": "c/relationshipGraph",
+            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
         },
         {
             "name": "c/scheduler",
@@ -477,6 +505,10 @@
         {
             "name": "c/wizardStep",
             "path": "src/modules/base/wizardStep/wizardStep.js"
+        },
+        {
+            "name": "avonni/activityTimeline",
+            "path": "src/modules/base/activityTimeline/activityTimeline.js"
         },
         {
             "name": "avonni/alert",
@@ -655,6 +687,10 @@
             "path": "src/modules/base/panel/panel.js"
         },
         {
+            "name": "avonni/path",
+            "path": "src/modules/base/path/path.js"
+        },
+        {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -697,6 +733,10 @@
         {
             "name": "avonni/rating",
             "path": "src/modules/base/rating/rating.js"
+        },
+        {
+            "name": "avonni/relationshipGraph",
+            "path": "src/modules/base/relationshipGraph/relationshipGraph.js"
         },
         {
             "name": "avonni/scheduler",
@@ -753,9 +793,14 @@
         {
             "name": "avonni/wizard",
             "path": "src/modules/base/wizard/wizard.js"
+        },
+        {
+            "name": "avonni/wizardStep",
+            "path": "src/modules/base/wizardStep/wizardStep.js"
         }
     ],
     "expose": [
+        "avonni/activityTimeline",
         "avonni/alert",
         "avonni/avatar",
         "avonni/avatarGroup",
@@ -800,6 +845,7 @@
         "avonni/pageHeader",
         "avonni/pagination",
         "avonni/panel",
+        "avonni/path",
         "avonni/primitiveIcon",
         "avonni/profileCard",
         "avonni/progressBar",
@@ -810,6 +856,7 @@
         "avonni/qrcode",
         "avonni/range",
         "avonni/rating",
+        "avonni/relationshipGraph",
         "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/separator",
@@ -823,6 +870,7 @@
         "avonni/visualPicker",
         "avonni/visualPicker2",
         "avonni/visualPickerLink",
-        "avonni/wizard"
+        "avonni/wizard",
+        "avonni/wizardStep"
     ]
 }

@@ -63,7 +63,7 @@ export default class DataTypesFromDtoO extends LightningElement {
             fieldName: 'image',
             type: 'image',
             typeAttributes: {
-                alt: { fieldName: 'avatarPrimaryText' },
+                alternativeText: { fieldName: 'avatarPrimaryText' },
                 width: 100,
                 height: { fieldName: 'imageHeight' }
             },
