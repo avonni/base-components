@@ -63,10 +63,10 @@ describe('Qrcode', () => {
     });
 
     it('Qrcode: Default attributes', () => {
-        expect(element.background).toBe('#ffffff');
+        expect(element.background).toBeUndefined();
         expect(element.borderColor).toBeUndefined();
         expect(element.borderWidth).toBe(0);
-        expect(element.color).toBe('#000000');
+        expect(element.color).toBeUndefined();
         expect(element.encoding).toBe('ISO_8859_1');
         expect(element.errorCorrection).toBe('L');
         expect(element.padding).toBe(0);
@@ -77,14 +77,6 @@ describe('Qrcode', () => {
 
     /* ----- ATTRIBUTES ----- */
     // background
-    it('Qrcode: background null', () => {
-        element.background = null;
-
-        return Promise.resolve().then(() => {
-            expect(element.background).toBe('#ffffff');
-        });
-    });
-
     it('Qrcode: background', () => {
         element.background = '#000000';
 
@@ -110,14 +102,6 @@ describe('Qrcode', () => {
     });
 
     // color
-    it('Qrcode: color null', () => {
-        element.color = null;
-
-        return Promise.resolve().then(() => {
-            expect(element.color).toBe('#000000');
-        });
-    });
-
     it('Qrcode: color', () => {
         element.color = '#ffffff';
 
