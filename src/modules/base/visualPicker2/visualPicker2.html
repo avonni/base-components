@@ -81,6 +81,21 @@
                                     </span>
                                 </template>
                                 <span class={notSelectedClass}>
+                                    <div
+                                        class="
+                                            avonni-visual-picker__figure-title-top
+                                        "
+                                        if:true={item.titleIsTop}
+                                    >
+                                        <span
+                                            class="
+                                                avonni-visual-picker__figure-title
+                                            "
+                                            if:true={item.displayFigureTitle}
+                                        >
+                                            {item.figure.title}
+                                        </span>
+                                    </div>
                                     <template if:true={displayImg}>
                                         <div
                                             if:true={item.imgIsTop}
@@ -90,7 +105,7 @@
                                         >
                                             <img
                                                 src={item.figure.imgSrc}
-                                                alt={item.imgAlt}
+                                                alt={item.imgAlternativeText}
                                                 class="
                                                     avonni-visual-picker__figure-image-top
                                                 "
@@ -103,6 +118,7 @@
                                             size={item.figure.iconSize}
                                             alternative-text={item.figure.iconAlternativeText}
                                             src={item.figure.iconSrc}
+                                            class="slds-m-bottom_small"
                                         ></lightning-icon>
                                     </template>
                                     <div>
@@ -115,9 +131,13 @@
                                                     size={item.figure.iconSize}
                                                     alternative-text={item.figure.iconAlternativeText}
                                                     src={item.figure.iconSrc}
+                                                    class="slds-m-right_small"
                                                 ></lightning-icon>
                                             </template>
-                                            <div class="slds-media__body">
+                                            <div
+                                                class="slds-media__body"
+                                                if:true={item.titleIsCenter}
+                                            >
                                                 <span
                                                     class="
                                                         avonni-visual-picker__figure-title
@@ -155,6 +175,23 @@
                                             class={computedBottomIconClass}
                                         ></lightning-icon>
                                     </template>
+                                    <template if:true={item.titleIsBottom}>
+                                        <div
+                                            class="
+                                                slds-media__body
+                                                avonni-visual-picker__tags-container
+                                            "
+                                        >
+                                            <span
+                                                class="
+                                                    avonni-visual-picker__figure-title
+                                                "
+                                                if:true={item.displayFigureTitle}
+                                            >
+                                                {item.figure.title}
+                                            </span>
+                                        </div>
+                                    </template>
                                     <template if:true={item.figure.tags}>
                                         <div
                                             if:true={displayTags}
@@ -186,7 +223,7 @@
                                         >
                                             <img
                                                 src={item.figure.imgSrc}
-                                                alt={item.imgAlt}
+                                                alt={item.imgAlternativeText}
                                                 class="
                                                     avonni-visual-picker__figure-image-bottom
                                                 "

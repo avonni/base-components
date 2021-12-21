@@ -33,10 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import {
-    InteractingState,
-    FieldConstraintApiWithProxyInput
-} from 'c/inputUtils';
+import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 
 const VISUAL_PICKER_VARIANTS = {
     valid: ['coverable', 'non-coverable'],
@@ -102,6 +99,20 @@ export default class VisualPicker extends LightningElement {
     _variant = VISUAL_PICKER_VARIANTS.default;
 
     helpMessage;
+
+    renderedCallback() {
+        const inputs = this.template.querySelectorAll(
+            '[data-element-id="input"]'
+        );
+
+        if (inputs) {
+            Array.from(inputs).forEach((item) => {
+                if (this._value.indexOf(item.value) > -1) {
+                    item.checked = true;
+                }
+            });
+        }
+    }
 
     connectedCallback() {
         this.interactingState = new InteractingState();
@@ -250,7 +261,10 @@ export default class VisualPicker extends LightningElement {
             const checked = this._value.includes(value);
             const key = `visual-picker-key-${index}`;
             const iconIsTop =
-                figure.iconPosition === 'top' &&
+                (figure.iconPosition === 'top' ||
+                    (figure.iconPosition !== 'bottom' &&
+                        figure.iconPosition !== 'right' &&
+                        figure.iconPosition !== 'left')) &&
                 figure.iconName &&
                 this.isBiggerThanXSmall;
             const iconIsBottom =
@@ -265,7 +279,11 @@ export default class VisualPicker extends LightningElement {
                 figure.iconPosition === 'right' &&
                 figure.iconName &&
                 this.isBiggerThanXSmall;
-            const imgIsTop = figure.imgPosition === 'top' && figure.imgSrc;
+            const imgIsTop =
+                (figure.imgPosition === 'top' ||
+                    (figure.imgPosition !== 'bottom' &&
+                        figure.imgPosition !== 'center')) &&
+                figure.imgSrc;
             const imgIsBottom =
                 figure.imgPosition === 'bottom' && figure.imgSrc;
             const displayFigureTitle =
@@ -278,7 +296,11 @@ export default class VisualPicker extends LightningElement {
                 checked &&
                 this._variant === 'non-coverable';
             disabled = this._disabled ? true : disabled;
-
+            const titleIsTop = figure.titlePosition === 'top';
+            const titleIsCenter =
+                figure.titlePosition !== 'top' &&
+                figure.titlePosition !== 'bottom';
+            const titleIsBottom = figure.titlePosition === 'bottom';
             return {
                 key,
                 title,
@@ -295,7 +317,10 @@ export default class VisualPicker extends LightningElement {
                 imgIsBottom,
                 displayFigureTitle,
                 displayCheckCoverable,
-                displayCheckNonCoverable
+                displayCheckNonCoverable,
+                titleIsTop,
+                titleIsBottom,
+                titleIsCenter
             };
         });
     }
@@ -307,14 +332,7 @@ export default class VisualPicker extends LightningElement {
      */
     get visualPickerClass() {
         return classSet('slds-visual-picker')
-            .add({
-                'avonni-visual-picker_xx-small': this._size === 'xx-small',
-                'avonni-visual-picker_x-small': this._size === 'x-small',
-                'avonni-visual-picker_small': this._size === 'small',
-                'avonni-visual-picker_medium': this._size === 'medium',
-                'avonni-visual-picker_large': this._size === 'large',
-                'avonni-visual-picker_x-large': this._size === 'x-large'
-            })
+            .add(`avonni-visual-picker_${this._size}`)
             .add(`ratio-${this._ratio}`)
             .toString();
     }
@@ -326,7 +344,7 @@ export default class VisualPicker extends LightningElement {
      */
     get visualPickerTypeClass() {
         return classSet(
-            'slds-align_absolute-center slds-is-relative avonni-visual-picker__figure'
+            'avonni-visual-picker__figure_alignment slds-is-relative avonni-visual-picker__figure'
         )
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',
@@ -364,12 +382,12 @@ export default class VisualPicker extends LightningElement {
     get computedBottomIconClass() {
         return classSet('')
             .add({
-                'slds-m-top_x-small': this.isBiggerThanXSmall
+                'slds-m-top_small': this.isBiggerThanXSmall
             })
             .toString();
     }
 
-    get displayTags() {
+    get displayTagsAndImg() {
         return (
             (this._size === 'medium' ||
                 this._size === 'large' ||
@@ -491,21 +509,16 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Gets FieldConstraintApi.
+     * Validation with constraint Api.
      *
      * @type {object}
      */
     get _constraint() {
         if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApiWithProxyInput(
-                () => this
-            );
-
-            this._constraintApiProxyInputUpdater =
-                this._constraintApi.setInputAttributes({
-                    type: () => 'checkbox',
-                    required: () => this.required
-                });
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0
+            });
         }
         return this._constraintApi;
     }

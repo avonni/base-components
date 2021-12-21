@@ -31,6 +31,7 @@
  */
 
 import { VisualPicker } from '../__examples__/visualPicker2';
+import { items, iconTiles, itemsWithPictures } from './data';
 
 export default {
     title: 'Example/VisualPicker2',
@@ -186,77 +187,6 @@ export default {
     }
 };
 
-const items = [
-    {
-        title: 'Lightning Professional',
-        description: 'Complete service CRM for teams of any size',
-        value: 'lightning-professional',
-        figure: {
-            title: '$30',
-            description: 'USD/user/month *',
-            iconName: 'standard:user',
-            iconSize: 'small',
-            iconPosition: 'left',
-            tags: [
-                {
-                    label: 'Most Popular',
-                    variant: 'info'
-                }
-            ]
-        }
-    },
-    {
-        title: 'Lightning Enterprise',
-        description: 'Everything you need to take support to the next level',
-        value: 'lightning-enterprise',
-        figure: {
-            title: '$150',
-            description: 'USD/user/month *',
-            iconName: 'standard:groups',
-            iconPosition: 'right',
-            tags: [
-                {
-                    label: 'Best Value',
-                    variant: 'success'
-                }
-            ],
-            imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
-            imgPosition: 'top'
-        }
-    },
-    {
-        title: 'Lightning Enterprise Plus',
-        description: 'Example of a disabled tile',
-        value: 'lightning-enterprise-plus',
-        figure: {
-            title: '$220',
-            description: 'USD/user/month *',
-            iconName: 'standard:account',
-            iconPosition: 'top',
-            imgSrc: 'https://www.outsideonline.com/wp-content/uploads/2021/09/illimani-mountain-bolivia_h.jpg?width=1200',
-            imgPosition: 'bottom'
-        },
-        disabled: true
-    },
-    {
-        title: 'Lightning Unlimited',
-        description: 'Complete support with enterprise-grade customization',
-        value: 'lightning-unlimited',
-        figure: {
-            title: '$300',
-            description: 'USD/user/month *',
-            iconName: 'custom:custom68',
-            iconPosition: 'bottom',
-            tags: [
-                {
-                    label: 'Best Value',
-                    variant: 'success'
-                }
-            ]
-        }
-    }
-];
-
 const Template = (args) => VisualPicker(args);
 
 export const Base = Template.bind({});
@@ -265,4 +195,32 @@ Base.args = {
     name: 'base',
     items: items,
     size: 'large'
+};
+
+export const NoMarkDoubleExtraSmall = Template.bind({});
+NoMarkDoubleExtraSmall.args = {
+    name: 'xx-small',
+    label: 'Double extra small input with no check mark',
+    value: ['lightning-enterprise'],
+    items: items,
+    size: 'xx-small',
+    hideCheckMark: true
+};
+
+export const IconTiles = Template.bind({});
+IconTiles.args = {
+    label: 'Choose an icon',
+    name: 'Icon Tiles',
+    items: iconTiles,
+    size: 'small',
+    ratio: '3-by-4'
+};
+
+export const ItemsWithPictures = Template.bind({});
+ItemsWithPictures.args = {
+    label: 'Choose an icon',
+    name: 'Icon Tiles',
+    items: itemsWithPictures,
+    size: 'medium',
+    ratio: '1-by-1'
 };
