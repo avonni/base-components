@@ -15,25 +15,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-range-label-text-color
+ * @name --avonni-range-header-text-color
  * @default #080707
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-range-label-font-size
+ * @name --avonni-range-header-font-size
  * @default 0.75rem
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-range-label-font-style
+ * @name --avonni-range-header-font-style
  * @default normal
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-range-label-font-weight
+ * @name --avonni-range-header-font-weight
  * @default 400
  * @type font
  */

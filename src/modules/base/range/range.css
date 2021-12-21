@@ -169,8 +169,8 @@
 }
 
 .avonni-range__label {
-    color: var(--avonni-range-label-text-color, #080707);
-    font-size: var(--avonni-range-label-font-size, 0.75rem);
-    font-style: var(--avonni-range-label-font-style, normal);
-    font-weight: var(--avonni-range-label-font-weight, 400);
+    color: var(--avonni-range-header-text-color, #080707);
+    font-size: var(--avonni-range-header-font-size, 0.75rem);
+    font-style: var(--avonni-range-header-font-style, normal);
+    font-weight: var(--avonni-range-header-font-weight, 400);
 }
