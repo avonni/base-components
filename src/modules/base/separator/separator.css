@@ -52,3 +52,15 @@
 .avonni-separator__line-two.slds-border_left {
     height: 100%;
 }
+
+.avonni-separator__icon {
+    --sds-c-icon-color-foreground: var(
+        --avonni-separator-icon-color-foreground
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-separator-icon-color-foreground-default
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-separator-icon-color-background
+    );
+}

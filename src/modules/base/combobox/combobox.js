@@ -565,9 +565,7 @@ export default class Combobox extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        return classSet(
-            'slds-form-element__label avonni-combobox__label_styling'
-        )
+        return classSet('slds-form-element__label avonni-combobox__label')
             .add({ 'slds-assistive-text': this.variant === 'label-hidden' })
             .toString();
     }
@@ -710,7 +708,7 @@ export default class Combobox extends LightningElement {
     handleSearch(event) {
         /**
          * The event fired when a user types into the combobox input.
-         * 
+         *
          * @event
          * @name search
          * @param {string} value The value of the search input.

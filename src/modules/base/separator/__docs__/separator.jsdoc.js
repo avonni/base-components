@@ -43,7 +43,21 @@
  * @default solid
  * @type styling
  */
-
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-separator-icon-color-foreground-default
+ * @type color
+ */
 /**
  * @namespace examples
  */
