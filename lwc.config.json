@@ -487,6 +487,10 @@
             "path": "src/modules/base/verticalProgressStep/verticalProgressStep.js"
         },
         {
+            "name": "c/verticalVisualPicker",
+            "path": "src/modules/base/verticalVisualPicker/verticalVisualPicker.js"
+        },
+        {
             "name": "c/visualPicker",
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
@@ -779,6 +783,10 @@
             "path": "src/modules/base/verticalProgressStep/verticalProgressStep.js"
         },
         {
+            "name": "avonni/verticalVisualPicker",
+            "path": "src/modules/base/verticalVisualPicker/verticalVisualPicker.js"
+        },
+        {
             "name": "avonni/visualPicker",
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
@@ -863,6 +871,7 @@
         "avonni/timer",
         "avonni/verticalProgressIndicator",
         "avonni/verticalProgressStep",
+        "avonni/verticalVisualPicker",
         "avonni/visualPicker",
         "avonni/visualPickerLink",
         "avonni/wizard",
