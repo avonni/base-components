@@ -196,36 +196,45 @@ const items = [
 const itemsWithAvatars = [
     {
         label: 'Item 1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5'
+        avatar: {
+            fallbackIconName: 'custom:custom5',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        }
     },
     {
         label: 'Item 2',
-        avatarFallbackIconName: 'custom:custom9'
+        avatar: {
+            fallbackIconName: 'custom:custom9'
+        }
     },
     {
         label: 'Item 3',
-        avatarFallbackIconName: 'custom:custom1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        avatar: {
+            fallbackIconName: 'custom:custom1',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        }
     },
     {
         label: 'Item 4',
-        avatarFallbackIconName: 'custom:custom11'
+        avatar: {
+            fallbackIconName: 'custom:custom11'
+        }
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom51'
+        avatar: {
+            fallbackIconName: 'custom:custom51'
+        }
     }
 ];
 
 const itemsWithImagesAndAvatars = [
     {
         label: 'Item 1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5',
+        avatar: {
+            fallbackIconName: 'custom:custom5',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -234,9 +243,10 @@ const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 2',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom9',
+        avatar: {
+            fallbackIconName: 'custom:custom9',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         href: '/path/to_somewhere',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -253,9 +263,10 @@ const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 4',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom11',
+        avatar: {
+            fallbackIconName: 'custom:custom11',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -269,9 +280,10 @@ const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        avatar: {
+            fallbackIconName: 'custom:custom1',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        },
         href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',

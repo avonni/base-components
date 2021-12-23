@@ -112,12 +112,17 @@
                         "
                     >
                         <!-- Avatar -->
+
                         <c-avatar
-                            if:true={item.avatarSrc}
+                            if:true={item.avatar}
                             class="slds-m-right_x-small"
-                            fallback-icon-name={item.avatarFallbackIconName}
-                            src={item.avatarSrc}
-                            size="small"
+                            fallback-icon-name={item.avatar.fallbackIconName}
+                            src={item.avatar.src}
+                            size={item.avatar.size}
+                            initials={item.avatar.initials}
+                            variant={item.avatar.variant}
+                            secondary-text={item.secondaryText}
+                            primary-text={item.primaryText}
                             hide-avatar-details="true"
                             data-element-id="avonni-avatar"
                         ></c-avatar>

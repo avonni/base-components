@@ -15,6 +15,8 @@
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
  * @property {string} src Image URL.
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
+ * @property {string} primaryText Primary text to display, usually the name of the person.
+ * @property {string} secondaryText Secondary text to display, usually the role of the user.
  */
 
 /**
