@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { classSet } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const ITEM_SIZES = {
@@ -196,5 +197,137 @@ export default class VerticalVisualPicker extends LightningElement {
             fallbackValue: ITEM_VARIANTS.default,
             validValues: ITEM_VARIANTS.valid
         });
+    }
+
+    /**
+     * Verify if variant is coverable.
+     *
+     * @type {string}
+     */
+    get isCoverable() {
+        return this._variant === 'coverable';
+    }
+
+    get listItems() {
+        return this.items.map((item, index) => {
+            const {
+                title,
+                description,
+                iconName,
+                iconPosition,
+                iconSize,
+                value
+            } = item;
+            const key = `vertical-visual-picker-key-${index}`;
+            const iconIsLeft = iconPosition !== 'right' && iconName;
+            const iconIsRight = iconPosition === 'right' && iconName;
+            const bodyClass = classSet('slds-p-around_small').add({
+                'slds-border_left': iconIsLeft,
+                'slds-border_right': iconIsRight
+            });
+            return {
+                key,
+                title,
+                description,
+                iconName,
+                iconPosition,
+                iconSize,
+                value,
+                iconIsLeft,
+                iconIsRight,
+                bodyClass
+            };
+        });
+    }
+
+    /**
+     * Compute visual picker type class styling based on selected attributes.
+     *
+     * @type {string}
+     */
+    get visualPickerTypeClass() {
+        return classSet(
+            'slds-visual-picker__figure avonni-vertical-visual-picker__figure slds-align_absolute-left'
+        )
+            .add({
+                'slds-visual-picker__text': this._variant === 'non-coverable',
+                'slds-visual-picker__icon': this._variant === 'coverable',
+                'avonni-hide-check-mark': this._hideCheckMark
+            })
+            .toString();
+    }
+
+    /**
+     * Compute NOT selected class styling.
+     *
+     * @type {string}
+     */
+    get notSelectedClass() {
+        return classSet('avonni-vertical-visual-picker__content_container')
+            .add({
+                'slds-is-not-selected':
+                    this._variant === 'coverable' && !this._hideCheckMark,
+                'avonni-is-not-selected':
+                    this._variant === 'coverable' && this._hideCheckMark
+            })
+            .toString();
+    }
+
+    /**
+     * Compute selected class styling.
+     *
+     * @type {string}
+     */
+    get selectedClass() {
+        return this._variant === 'coverable' ? 'slds-is-selected' : '';
+    }
+
+    /**
+     * Change event handler.
+     *
+     * @param {Event} event
+     */
+    handleChange(event) {
+        event.stopPropagation();
+
+        if (this._variant === 'coverable' && this._hideCheckMark) {
+            const labels = this.template.querySelectorAll(
+                '[data-element-id="label"]'
+            );
+
+            labels.forEach((label) => {
+                let icon = label.querySelector('lightning-icon');
+                if (label.previousSibling.checked) {
+                    icon.variant = 'inverse';
+                } else {
+                    icon.variant = '';
+                }
+            });
+        }
+
+        const inputs = this.template.querySelectorAll(
+            '[data-element-id="input"]'
+        );
+        const value = Array.from(inputs)
+            .filter((input) => input.checked)
+            .map((input) => input.value);
+
+        this._value = value;
+
+        /**
+         * The event fired when the value changed.
+         *
+         * @event
+         * @name change
+         * @param {string[]} value The visual picker value.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value
+                }
+            })
+        );
     }
 }
