@@ -175,18 +175,7 @@ const items = [
             { label: 'info 1', href: '' },
             { label: 'info 2', href: '' }
         ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ],
+        icons: ['utility:share', 'utility:refresh'],
         imageSrc:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
@@ -199,18 +188,7 @@ const items = [
             { label: 'info 1', href: '' },
             { label: 'info 2', href: '' }
         ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ],
+        icons: ['utility:share', 'utility:refresh'],
         imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
     }
 ];
@@ -285,18 +263,7 @@ const itemsWithImagesAndAvatars = [
             { label: 'info 1', href: '' },
             { label: 'info 2', href: '' }
         ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ],
+        icons: ['utility:share', 'utility:refresh'],
         imageSrc:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
@@ -309,13 +276,7 @@ const itemsWithImagesAndAvatars = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [{ label: 'info 1', href: '' }],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            }
-        ],
+        icons: ['utility:share'],
         imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
     }
 ];
