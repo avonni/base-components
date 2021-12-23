@@ -160,7 +160,8 @@ export const OptionsWithAvatarSrc = [
         label: 'John Smith',
         avatar: {
             fallbackIconName: 'standard:address',
-            initials: 'JS'
+            initials: 'JS',
+            presence: 'offline'
         }
     },
     {
