@@ -140,18 +140,6 @@ export default class List extends LightningElement {
             validValues: IMAGE_WIDTH.valid,
             defaultValue: IMAGE_WIDTH.default
         });
-
-        switch (this._imageWidth) {
-            case 'small':
-                this._imageWidth = '48';
-                break;
-            case 'medium':
-                this._imageWidth = '72';
-                break;
-            default:
-                this._imageWidth = '128';
-                break;
-        }
     }
 
     /**
@@ -233,9 +221,21 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedImageContainerStyle() {
+        let width;
+        switch (this.imageWidth) {
+            case 'small':
+                width = 48;
+                break;
+            case 'medium':
+                width = 72;
+                break;
+            default:
+                width = 128;
+                break;
+        }
         return `
-        width : ${this._imageWidth}px;
-        min-width : ${this._imageWidth}px;
+            width : ${width}px;
+            min-width : ${width}px;
         `;
     }
 
