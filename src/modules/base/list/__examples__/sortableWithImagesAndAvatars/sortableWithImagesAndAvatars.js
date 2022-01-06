@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ListWithActions extends LightningElement {
+export default class ListSortableWithImagesAndAvatars extends LightningElement {
     actions = [
         {
             label: 'Completed',
@@ -25,7 +25,10 @@ export default class ListWithActions extends LightningElement {
     items = [
         {
             label: 'Item 1',
-            href: '',
+            avatar: {
+                fallbackIconName: 'custom:custom5',
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            },
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             imageSrc:
@@ -33,6 +36,10 @@ export default class ListWithActions extends LightningElement {
         },
         {
             label: 'Item 2',
+            avatar: {
+                fallbackIconName: 'custom:custom9',
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            },
             href: '/path/to_somewhere',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -41,7 +48,6 @@ export default class ListWithActions extends LightningElement {
         },
         {
             label: 'Item 3',
-            href: '',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             imageSrc:
@@ -49,51 +55,31 @@ export default class ListWithActions extends LightningElement {
         },
         {
             label: 'Item 4',
-            href: '',
+            avatar: {
+                fallbackIconName: 'custom:custom11',
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+            },
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             infos: [
                 { label: 'info 1', href: '' },
                 { label: 'info 2', href: '' }
             ],
-            icons: [
-                {
-                    iconName: 'utility:share',
-                    alternativeText: 'share button',
-                    title: 'Share'
-                },
-                {
-                    iconName: 'utility:refresh',
-                    alternativeText: 'refresh button',
-                    title: 'Refresh'
-                }
-            ],
+            icons: ['utility:share', 'utility:refresh'],
             imageSrc:
                 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
         },
         {
             label: 'Item 5',
-            href: '',
+            avatar: {
+                fallbackIconName: 'custom:custom1',
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+            },
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            infos: [
-                { label: 'info 1', href: '' },
-                { label: 'info 2', href: '' }
-            ],
-            icons: [
-                {
-                    iconName: 'utility:share',
-                    alternativeText: 'share button',
-                    title: 'Share'
-                },
-                {
-                    iconName: 'utility:refresh',
-                    alternativeText: 'refresh button',
-                    title: 'Refresh'
-                }
-            ],
-            imageSrc:
-                'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+            infos: [{ label: 'info 1', href: '' }],
+            icons: ['utility:share'],
+            imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
         }
     ];
 }

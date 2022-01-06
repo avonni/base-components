@@ -1,6 +1,27 @@
 import { LightningElement } from 'lwc';
 
-export default class ListBase extends LightningElement {
+export default class ListActions extends LightningElement {
+    actions = [
+        {
+            label: 'Completed',
+            name: 'completed-action',
+            iconName: 'utility:check',
+            disabled: false
+        },
+        {
+            label: 'Pending',
+            name: 'prending-action',
+            iconName: 'utility:spinner',
+            disabled: false
+        },
+        {
+            label: 'Delete',
+            name: 'delete-action',
+            iconName: 'utility:delete',
+            disabled: true
+        }
+    ];
+
     items = [
         {
             label: 'Item 1',

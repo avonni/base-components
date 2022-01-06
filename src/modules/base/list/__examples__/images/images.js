@@ -1,10 +1,9 @@
 import { LightningElement } from 'lwc';
 
-export default class ListSortableList extends LightningElement {
+export default class ListImages extends LightningElement {
     items = [
         {
             label: 'Item 1',
-            href: '',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             imageSrc:
@@ -20,7 +19,6 @@ export default class ListSortableList extends LightningElement {
         },
         {
             label: 'Item 3',
-            href: '',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             imageSrc:
@@ -28,51 +26,26 @@ export default class ListSortableList extends LightningElement {
         },
         {
             label: 'Item 4',
-            href: '',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             infos: [
                 { label: 'info 1', href: '' },
                 { label: 'info 2', href: '' }
             ],
-            icons: [
-                {
-                    iconName: 'utility:share',
-                    alternativeText: 'share button',
-                    title: 'Share'
-                },
-                {
-                    iconName: 'utility:refresh',
-                    alternativeText: 'refresh button',
-                    title: 'Refresh'
-                }
-            ],
+            icons: ['utility:share', 'utility:refresh'],
             imageSrc:
                 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
         },
         {
             label: 'Item 5',
-            href: '',
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             infos: [
                 { label: 'info 1', href: '' },
                 { label: 'info 2', href: '' }
             ],
-            icons: [
-                {
-                    iconName: 'utility:share',
-                    alternativeText: 'share button',
-                    title: 'Share'
-                },
-                {
-                    iconName: 'utility:refresh',
-                    alternativeText: 'refresh button',
-                    title: 'Refresh'
-                }
-            ],
-            imageSrc:
-                'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+            icons: ['utility:share', 'utility:refresh'],
+            imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
         }
     ];
 }

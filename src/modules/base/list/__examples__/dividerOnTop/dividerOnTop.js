@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ListBase extends LightningElement {
+export default class ListDividerOnTop extends LightningElement {
     items = [
         {
             label: 'Item 1',

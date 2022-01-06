@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ListBase extends LightningElement {
+export default class ListSortable extends LightningElement {
     items = [
         {
             label: 'Item 1',
