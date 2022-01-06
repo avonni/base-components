@@ -33,12 +33,14 @@
 -->
 
 <template>
+    <div
+        if:true={showPositionTop}
+        class={progressTitleClassTop}
+        data-element-id="title"
+    >
+        {title}
+    </div>
     <div class={progressRingClass}>
-        <template if:true={showPositionTop}>
-            <div class={progressTitleClassTop} data-element-id="title">
-                {title}
-            </div>
-        </template>
         <div
             class="slds-progress-ring__progress"
             role="progressbar"
@@ -68,7 +70,7 @@
                 >{label}</span
             >
         </div>
-        <template if:true={showPositionBottom}>
+        <template if:false={showPositionTop}>
             <div class={progressTitleClass} data-element-id="title">
                 {title}
             </div>
