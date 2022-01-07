@@ -221,22 +221,27 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedImageContainerStyle() {
-        let width;
+        return `
+            width : ${this.computedImageWidth}px;
+            min-width : ${this.computedImageWidth}px;
+        `;
+    }
+
+    /**
+    * Computed image width in pixels.
+    *
+    * @type {number}
+    * @default 128
+    */
+    get computedImageWidth() {
         switch (this.imageWidth) {
             case 'small':
-                width = 48;
-                break;
+                return 48;
             case 'medium':
-                width = 72;
-                break;
+                return 72;
             default:
-                width = 128;
-                break;
+                return 128;
         }
-        return `
-            width : ${width}px;
-            min-width : ${width}px;
-        `;
     }
 
     /**
