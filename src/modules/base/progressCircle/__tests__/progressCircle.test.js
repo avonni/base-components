@@ -995,7 +995,7 @@ describe('ProgressCircle', () => {
             );
             expect(title).toBeTruthy();
             expect(title.classList).toContain(
-                'avonni-progress-circle__title-top_position'
+                'avonni-progress-circle__title-top_size-medium'
             );
         });
     });
