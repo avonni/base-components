@@ -4,10 +4,9 @@ export default class ActivityTimelineWeekly extends LightningElement {
     items = [
         {
             name: 'item1',
-            title:
-                'Review proposals for EBC deck with larger team and have marketing review this',
+            title: 'Review proposals for EBC deck with larger team and have marketing review this',
             description: 'You created a task with Charlie Gomez',
-            datetimeValue: 1620648000000,
+            datetimeValue: '01/01/2022',
             href: 'salesforce.com',
             iconName: 'standard:task',
             icons: ['utility:refresh'],
@@ -31,8 +30,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
                 },
                 {
                     label: 'Description',
-                    value:
-                        'Need to finalize proposals and brand details before the meeting',
+                    value: 'Need to finalize proposals and brand details before the meeting',
                     type: 'text'
                 }
             ]
@@ -42,7 +40,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
             title: 'Mobile conversation on Monday',
             description: 'You logged a call with Adam Chan',
             href: '#',
-            datetimeValue: 1653141600000,
+            datetimeValue: new Date(),
             iconName: 'standard:log_a_call',
             fields: [
                 {
@@ -63,8 +61,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
                 },
                 {
                     label: 'Description',
-                    value:
-                        'Adam seemed interested in closing this deal quickly! Let’s move.',
+                    value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
                     type: 'text'
                 }
             ]
@@ -73,7 +70,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
             name: 'item3',
             title: 'Re: Mobile conversation on Monday with the new global team',
             description: 'You emailed Lea Chan',
-            datetimeValue: 1619013600000,
+            datetimeValue: '02/20/2022 08:00',
             href: '#',
             iconName: 'standard:email',
             icons: ['utility:groups', 'utility:attach'],
@@ -96,8 +93,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
                 },
                 {
                     label: 'Text Body',
-                    value:
-                        'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                    value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
                     type: 'text'
                 }
             ],
@@ -109,7 +105,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
             title: 'EBC Follow up call',
             description: 'You created an event with Aida Lee and 5 others',
             icons: ['utility:world'],
-            datetimeValue: 1619006400000,
+            datetimeValue: '04/21/2021 8:00',
             href: '#',
             iconName: 'standard:event',
             fields: [
@@ -139,8 +135,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
                 },
                 {
                     label: 'Description',
-                    value:
-                        "Let's discuss the 2017 product roadmap and address any questions",
+                    value: "Let's discuss the 2017 product roadmap and address any questions",
                     type: 'text'
                 }
             ],
@@ -152,7 +147,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
             name: 'item5',
             title: 'Create one task',
             description: 'Fields are loading',
-            datetimeValue: 1621605600000,
+            datetimeValue: '05/21/2022 10:00',
             href: '#',
             iconName: 'standard:dashboard',
             loadingStateAlternativeText: 'Is Loading',
@@ -164,7 +159,7 @@ export default class ActivityTimelineWeekly extends LightningElement {
         {
             name: 'item6',
             title: 'Create another task',
-            datetimeValue: 1621611000000,
+            datetimeValue: '05/21/2022 11:30',
             href: '#',
             iconName: 'standard:case',
             hasCheckbox: true,
