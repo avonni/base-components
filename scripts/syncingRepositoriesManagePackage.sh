@@ -4,7 +4,7 @@
 baseComponentsPath="/Users/jeanbaptisteverge/Documents/GitHub/base-components/src/modules"
 
 # Full path to base-components-sfdx modules as exemple: (/Users/Documents/AVONNI/base-components-sfdx/src/modules): 
-baseComponentsSfdxPath="/Users/jeanbaptisteverge/Documents/GitHub/base-components-sfdx/src/modules"
+baseComponentsSfdxPath="/Users/jeanbaptisteverge/Documents/GitHub/base-components-managed-package-sfdx/src/modules"
 
 containsElement () {
   local e match="$1"
@@ -27,9 +27,9 @@ do
     # 2. Clearing base-components-sfdx lwc folder (excluding folders from "notRemoveFolders")
 
     notRemoveFolders=(
-        "avonniIllustration"
-        "avonniButtonNavigation"
-        "avonniPrimitiveIcon"
+        "illustration"
+        "buttonNavigation"
+        "primitiveIcon"
     )
 
     for file in "${baseComponentsSfdxPath}/${moduleFolderName}/lwc/"*
@@ -91,9 +91,9 @@ do
     # 5. Adding the avonni prefix (excluding folders from "notRenameFolders")
 
     notRenameFolders=(
-        "avonniButtonNavigation"
-        "avonniIllustration"
-        "avonniPrimitiveIcon"
+        "buttonNavigation"
+        "illustration"
+        "primitiveIcon"
         "configProvider"
         "iconUtils"
         "inputUtils"
@@ -119,48 +119,42 @@ do
 
             if [[ $valNumResult -ne 0 ]]
             then
-                prefix="avonni"
+                prefix=""
 
                 if [[ ${moduleFolderName} != "base" ]];
                 then
-                    prefix="${prefix}$(tr '[:lower:]' '[:upper:]' <<< ${moduleFolderName:0:1})${moduleFolderName:1}"
+                    prefix="$(tr '[:lower:]' '[:upper:]' <<< ${moduleFolderName:0:1})${moduleFolderName:1}"
                 fi
 
-                folderName="${prefix}$(tr '[:lower:]' '[:upper:]' <<< ${folderName:0:1})${folderName:1}"
-                mv "$folder" "$(dirname "$folder")/${folderName}"
+                folderName="$(tr '[:lower:]' '[:upper:]' <<< ${folderName:0:1})${folderName:1}"
+                # mv "$folder" "$(dirname "$folder")/${folderName}"
 
                 # Adding avonni prefix
 
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.js' -exec sed -i '' "s/export default class /export default class $(tr '[:lower:]' '[:upper:]' <<< ${prefix:0:1})${prefix:1}/g" {} \;
-                find "$(dirname "$folder")/${folderName}" -type f -name '*.js' -exec sed -i '' "s/querySelector('c-/querySelector('c-avonni-/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/c-input-rich-text/lightning-input-rich-text/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<avonni-/<c-/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<\/avonni-/<\/c-/g" {} \;
-                find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<c-/<c-avonni-/g" {} \;
-                find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<\/c-/<\/c-avonni-/g" {} \;
 
-                for file in "$(dirname "$folder")/${folderName}"/*
-                do 
-                    if [[ "$(dirname "$folder")/${folderName}/*" != ${file} ]]; 
-                    then
-                        fileName=${file##*/}
-                        fileNameWithPrefix="${prefix}$(tr '[:lower:]' '[:upper:]' <<< ${fileName:0:1})${fileName:1}"
+                # for file in "$(dirname "$folder")/${folderName}"/*
+                # do 
+                #     if [[ "$(dirname "$folder")/${folderName}/*" != ${file} ]]; 
+                #     then
+                #         fileName=${file##*/}
+                #         fileNameWithPrefix="$(tr '[:lower:]' '[:upper:]' <<< ${fileName:0:1})${fileName:1}"
 
-                        fileNameWithoutExtension="${fileName%.*}"
-                        fileNameWithoutExtensionWithPrefix="${prefix}$(tr '[:lower:]' '[:upper:]' <<< ${fileNameWithoutExtension:0:1})${fileNameWithoutExtension:1}"
+                #         fileNameWithoutExtension="${fileName%.*}"
+                #         fileNameWithoutExtensionWithPrefix="$(tr '[:lower:]' '[:upper:]' <<< ${fileNameWithoutExtension:0:1})${fileNameWithoutExtension:1}"
 
-                        find "$(dirname "$folder")/${folderName}" -type f -name '*.js' -exec sed -i '' "s/\.\/${fileNameWithoutExtension}/.\/${fileNameWithoutExtensionWithPrefix}/g" {} \;
-                        find "$(dirname "$folder")/${folderName}" -type f -name '*.css' -exec sed -i '' "s/\.\/${fileNameWithoutExtension}/.\/${fileNameWithoutExtensionWithPrefix}/g" {} \;
+                #         containsElement "${fileName}" "${notRenameFiles[@]}"
+                #         valFileNumResult=$?
 
-                        containsElement "${fileName}" "${notRenameFiles[@]}"
-                        valFileNumResult=$?
-
-                        if [[ $valFileNumResult -ne 0 ]]
-                        then
-                            mv "$file" "$(dirname "$file")/${fileNameWithPrefix}"
-                        fi
-                    fi
-                done
+                #         if [[ $valFileNumResult -ne 0 ]]
+                #         then
+                #             mv "$file" "$(dirname "$file")/${fileNameWithPrefix}"
+                #         fi
+                #     fi
+                # done
             fi
         fi
     done
