@@ -49,14 +49,6 @@ const GROUP_BY_OPTIONS = {
  */
 export default class ActivityTimeline extends LightningElement {
     /**
-     * Title of the timeline, displayed in the header.
-     *
-     * @public
-     * @type {string}
-     */
-    @api title;
-
-    /**
      * The Lightning Design System name of the icon displayed in the header, before the title. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      *
      * @public
@@ -64,11 +56,19 @@ export default class ActivityTimeline extends LightningElement {
      */
     @api iconName;
 
-    _collapsible = false;
+    /**
+     * Title of the timeline, displayed in the header.
+     *
+     * @public
+     * @type {string}
+     */
+    @api title;
+
+    _actions = [];
     _closed = false;
+    _collapsible = false;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
-    _actions = [];
 
     _key;
     _sortedItems = [];
@@ -83,19 +83,18 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If present, the section is collapsible and the collapse icon is visible.
+     * Array of action objects. The actions are displayed at the top right of each item.
      *
      * @public
-     * @type {boolean}
-     * @default false
+     * @type {object[]}
      */
     @api
-    get collapsible() {
-        return this._collapsible;
+    get actions() {
+        return this._actions;
     }
 
-    set collapsible(value) {
-        this._collapsible = normalizeBoolean(value);
+    set actions(value) {
+        this._actions = normalizeArray(value);
     }
 
     /**
@@ -112,6 +111,22 @@ export default class ActivityTimeline extends LightningElement {
 
     set closed(value) {
         this._closed = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the section is collapsible and the collapse icon is visible.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get collapsible() {
+        return this._collapsible;
+    }
+
+    set collapsible(value) {
+        this._collapsible = normalizeBoolean(value);
     }
 
     /**
@@ -151,18 +166,30 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Array of action objects. The actions are displayed at the top right of each item.
+     * Verify if dates exist.
      *
-     * @public
-     * @type {object[]}
+     * @type {boolean}
      */
-    @api
-    get actions() {
-        return this._actions;
+    get hasDates() {
+        return this.orderedDates.length > 0;
     }
 
-    set actions(value) {
-        this._actions = normalizeArray(value);
+    /**
+     * Assign header by title or icon-name.
+     *
+     * @type {boolean}
+     */
+    get hasHeader() {
+        return this.title || this.iconName;
+    }
+
+    /**
+     * Toggle for grouping dates.
+     *
+     * @type {boolean}
+     */
+    get noGroupBy() {
+        return !this.groupBy;
     }
 
     /**
@@ -199,24 +226,26 @@ export default class ActivityTimeline extends LightningElement {
             const today = new Date();
             if (date.getFullYear() > today.getFullYear()) {
                 this._upcomingDates.push(item);
-            } else if (date.getFullYear() <= today.getFullYear()) {
+            } else {
                 if (this._groupBy === 'month') {
-                    if (date.getMonth() > today.getMonth()) {
+                    if (
+                        date.getMonth() > today.getMonth() &&
+                        date.getFullYear() > today.getFullYear()
+                    ) {
                         this._upcomingDates.push(item);
-                    } else if (date.getMonth() <= today.getMonth()) {
+                    } else {
                         this._beforeDates.push(item);
                     }
                 } else if (this._groupBy === 'year') {
                     this._beforeDates.push(item);
                 } else if (this._groupBy === 'week' || !this._groupBy) {
                     if (
-                        this.getNumberOfWeek(date) > this.getNumberOfWeek(today)
+                        this.getNumberOfWeek(date) >
+                            this.getNumberOfWeek(today) &&
+                        date.getFullYear() > today.getFullYear()
                     ) {
                         this._upcomingDates.push(item);
-                    } else if (
-                        this.getNumberOfWeek(date) <=
-                        this.getNumberOfWeek(today)
-                    ) {
+                    } else {
                         this._beforeDates.push(item);
                     }
                 }
@@ -309,33 +338,6 @@ export default class ActivityTimeline extends LightningElement {
         this.groupDates();
         this.sortHours();
         this.createUngroupedItems();
-    }
-
-    /**
-     * Verify if dates exist.
-     *
-     * @type {boolean}
-     */
-    get hasDates() {
-        return this.orderedDates.length > 0;
-    }
-
-    /**
-     * Assign header by title or icon-name.
-     *
-     * @type {boolean}
-     */
-    get hasHeader() {
-        return this.title || this.iconName;
-    }
-
-    /**
-     * Toggle for grouping dates.
-     *
-     * @type {boolean}
-     */
-    get noGroupBy() {
-        return !this.groupBy;
     }
 
     /**
