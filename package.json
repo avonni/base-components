@@ -67,6 +67,7 @@
         "syncingRepositories": "bash ./scripts/syncingRepositories.sh",
         "syncingRepositoriesManagePackage": "bash ./scripts/syncingRepositoriesManagePackage.sh",
         "chromatic": "npx chromatic build-storybook --project-token df555afc6c3b",
-        "doc": "./node_modules/jsdoc/jsdoc.js ./src/modules/base/$npm_config_comp --configure ./jsdoc/jsdoc.config.json"
+        "doc": "./node_modules/jsdoc/jsdoc.js ./src/modules/base/$npm_config_comp --configure ./jsdoc/jsdoc.config.json",
+        "newComponent": "node ./scripts/createNewComponent.js"
     }
 }
