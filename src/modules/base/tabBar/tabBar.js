@@ -4,11 +4,10 @@ import { generateUUID } from 'c/utils';
 import { normalizeArray } from 'c/utilsPrivate';
 
 /**
- * The Tab Bar component allows the user to separate information into logical sections based on functionality or use case.
- *
  * @class
+ * @description The Tab Bar component allows the user to separate information into logical sections based on functionality or use case.
  * @descriptor avonni-tab-bar
- * @example example-tab-bar--base
+ * @storyId example-tab-bar--base
  * @public
  */
 export default class TabBar extends LightningElement {
@@ -250,6 +249,14 @@ export default class TabBar extends LightningElement {
      * @param {string} tab - The name of the selected tab.
      */
     dispatchTabChange(tab) {
+        /**
+         * The event fired when a tab is selected.
+         *
+         * @event
+         * @name select
+         * @param {string} tab Name of the selected tab.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('select', {
                 detail: {

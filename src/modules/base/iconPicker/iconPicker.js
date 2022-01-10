@@ -1,7 +1,7 @@
 import { LightningElement, api, track } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import { ICON_TYPES } from './salesforceIcons.js';
+import { ICON_TYPES } from './icons/salesforceIcons.js';
 
 const VARIANTS = {
     valid: ['standard', 'label-inline', 'label-hidden', 'label-stacked'],
@@ -35,9 +35,8 @@ const TABS = {
 const DEFAULT_HIDDEN_CATEGORIES = ['Utility', 'Doctype', 'Action'];
 
 /**
- * Icon picker for Salesforce Lightning Design System's icons.
- *
  * @class
+ * @description Icon picker for Salesforce Lightning Design System's icons.
  * @descriptor avonni-icon-picker
  * @storyId example-icon-picker--standard
  * @public

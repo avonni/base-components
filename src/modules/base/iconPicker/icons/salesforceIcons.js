@@ -1,3 +1,6 @@
+// This file needs to be in a separate folder,
+// because it is too long to be processed by JSDoc.
+// Else it will throw an error when the doc website runs its script.
 const ICON_TYPES = [
     {
         title: 'Standard',
