@@ -117,10 +117,9 @@ export default {
 const items = [
     {
         name: 'item1',
-        title:
-            'Review proposals for EBC deck with larger team and have marketing review this',
+        title: 'Review proposals for EBC deck with larger team and have marketing review this',
         description: 'You created a task with Charlie Gomez',
-        datetimeValue: 1620648000000,
+        datetimeValue: '01/01/2022',
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
@@ -144,8 +143,7 @@ const items = [
             },
             {
                 label: 'Description',
-                value:
-                    'Need to finalize proposals and brand details before the meeting',
+                value: 'Need to finalize proposals and brand details before the meeting',
                 type: 'text'
             }
         ]
@@ -155,7 +153,7 @@ const items = [
         title: 'Mobile conversation on Monday',
         description: 'You logged a call with Adam Chan',
         href: '#',
-        datetimeValue: 1653141600000,
+        datetimeValue: '01/10/2022',
         iconName: 'standard:log_a_call',
         fields: [
             {
@@ -176,8 +174,7 @@ const items = [
             },
             {
                 label: 'Description',
-                value:
-                    'Adam seemed interested in closing this deal quickly! Let’s move.',
+                value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
                 type: 'text'
             }
         ]
@@ -186,7 +183,7 @@ const items = [
         name: 'item3',
         title: 'Re: Mobile conversation on Monday with the new global team',
         description: 'You emailed Lea Chan',
-        datetimeValue: 1619013600000,
+        datetimeValue: '01/20/2022 8:00',
         href: '#',
         iconName: 'standard:email',
         icons: ['utility:groups', 'utility:attach'],
@@ -209,8 +206,7 @@ const items = [
             },
             {
                 label: 'Text Body',
-                value:
-                    'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
                 type: 'text'
             }
         ],
@@ -252,8 +248,7 @@ const items = [
             },
             {
                 label: 'Description',
-                value:
-                    "Let's discuss the 2017 product roadmap and address any questions",
+                value: "Let's discuss the 2017 product roadmap and address any questions",
                 type: 'text'
             }
         ],

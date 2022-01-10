@@ -36,14 +36,13 @@ import ActivityTimeline from '../activityTimeline';
 const ITEMS = [
     {
         name: 'item1',
-        title:
-            'Review proposals for EBC deck with larger team and have marketing review this',
+        title: 'Review proposals for EBC deck with larger team and have marketing review this',
         description: 'You created a task with Charlie Gomez',
         datetimeValue: 1620648000000,
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
-        hasCheckbox: true,
+        hasCheckbox: true
     },
     {
         name: 'item2',
@@ -71,8 +70,7 @@ const ITEMS = [
             },
             {
                 label: 'Description',
-                value:
-                    'Adam seemed interested in closing this deal quickly! Let’s move.',
+                value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
                 type: 'text'
             }
         ]
@@ -104,8 +102,7 @@ const ITEMS = [
             },
             {
                 label: 'Text Body',
-                value:
-                    'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
                 type: 'text'
             }
         ],
@@ -147,8 +144,7 @@ const ITEMS = [
             },
             {
                 label: 'Description',
-                value:
-                    "Let's discuss the 2017 product roadmap and address any questions",
+                value: "Let's discuss the 2017 product roadmap and address any questions",
                 type: 'text'
             }
         ],
@@ -182,8 +178,7 @@ const ITEMS = [
             },
             {
                 label: 'Description',
-                value:
-                    'Need to finalize proposals and brand details before the meeting',
+                value: 'Need to finalize proposals and brand details before the meeting',
                 type: 'text'
             }
         ],
@@ -230,7 +225,7 @@ describe('Activity Timeline', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Activity Timeline: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.collapsible).toBeFalsy();
@@ -243,7 +238,7 @@ describe('Activity Timeline', () => {
     /* ----- ATTRIBUTES ----- */
 
     // title
-    it('title', () => {
+    it('Activity Timeline: title', () => {
         element.title = 'This is an title text';
 
         return Promise.resolve().then(() => {
@@ -255,7 +250,7 @@ describe('Activity Timeline', () => {
     });
 
     // icon name
-    it('icon name', () => {
+    it('Activity Timeline: icon name', () => {
         element.iconName = 'standard:case';
 
         return Promise.resolve().then(() => {
@@ -268,7 +263,7 @@ describe('Activity Timeline', () => {
 
     // collapsible
     // needs to specify the group by to have sections
-    it('collapsible', () => {
+    it('Activity Timeline: collapsible', () => {
         element.items = ITEMS;
         element.groupBy = 'week';
         element.collapsible = true;
@@ -283,7 +278,7 @@ describe('Activity Timeline', () => {
 
     // closed
     // needs to specify the group by to have sections
-    it('closed', () => {
+    it('Activity Timeline: closed', () => {
         element.items = ITEMS;
         element.groupBy = 'week';
         element.closed = true;
@@ -297,7 +292,7 @@ describe('Activity Timeline', () => {
     });
 
     // group by
-    it('group by undefined', () => {
+    it('Activity Timeline: group by undefined', () => {
         element.items = ITEMS;
 
         return Promise.resolve()
@@ -310,7 +305,7 @@ describe('Activity Timeline', () => {
             });
     });
 
-    it('group by week', () => {
+    it('Activity Timeline: group by week', () => {
         element.items = ITEMS;
         element.groupBy = 'week';
         const firstSection = 'Upcoming';
@@ -330,7 +325,7 @@ describe('Activity Timeline', () => {
         });
     });
 
-    it('group by year', () => {
+    it('Activity Timeline: group by year', () => {
         element.groupBy = 'year';
         element.items = ITEMS;
         const firstSection = 'Upcoming';
@@ -346,7 +341,7 @@ describe('Activity Timeline', () => {
         });
     });
 
-    it('group by month', () => {
+    it('Activity Timeline: group by month', () => {
         element.groupBy = 'month';
         element.items = ITEMS;
         const firstSection = 'Upcoming';
@@ -365,7 +360,7 @@ describe('Activity Timeline', () => {
     });
 
     // items
-    it('items', () => {
+    it('Activity Timeline: items', () => {
         const ITEM = [
             {
                 name: 'item1',
@@ -393,16 +388,14 @@ describe('Activity Timeline', () => {
                     },
                     {
                         label: 'Description',
-                        value:
-                            'Adam seemed interested in closing this deal quickly! Let’s move.',
+                        value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
                         type: 'text'
                     }
                 ]
             },
             {
                 name: 'item2',
-                title:
-                    'Re: Mobile conversation on Monday with the new global team',
+                title: 'Re: Mobile conversation on Monday with the new global team',
                 description: 'You emailed Lea Chan',
                 datetimeValue: 1619013600000,
                 href: '#',
@@ -427,8 +420,7 @@ describe('Activity Timeline', () => {
                     },
                     {
                         label: 'Text Body',
-                        value:
-                            'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                        value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
                         type: 'text'
                     }
                 ],
@@ -475,7 +467,7 @@ describe('Activity Timeline', () => {
     });
 
     // actions
-    it('actions', () => {
+    it('Activity Timeline: actions', () => {
         element.items = ITEMS;
         element.actions = ACTIONS;
 
