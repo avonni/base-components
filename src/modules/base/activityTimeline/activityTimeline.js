@@ -189,7 +189,7 @@ export default class ActivityTimeline extends LightningElement {
      * @type {boolean}
      */
     get noGroupBy() {
-        return !this.groupBy;
+        return !this._groupBy;
     }
 
     /**
@@ -235,7 +235,15 @@ export default class ActivityTimeline extends LightningElement {
                 } else {
                     this._pastDates.push(item);
                 }
-            } else if (this._groupBy === 'week' || !this._groupBy) {
+            } else if (this._groupBy === 'year') {
+                if (isUpcomingYear) {
+                    this._upcomingDates.push(item);
+                } else if (isPastYear) {
+                    this._pastDates.push(item);
+                } else {
+                    this._presentDates.push(item);
+                }
+            } else {
                 if (
                     (this.getNumberOfWeek(date) > this.getNumberOfWeek(today) &&
                         !isPastYear) ||
@@ -251,18 +259,13 @@ export default class ActivityTimeline extends LightningElement {
                 } else {
                     this._pastDates.push(item);
                 }
-            } else if (this._groupBy === 'year') {
-                if (isUpcomingYear) {
-                    this._upcomingDates.push(item);
-                } else if (isPastYear) {
-                    this._pastDates.push(item);
-                } else {
-                    this._presentDates.push(item);
-                }
             }
         });
     }
 
+    /**
+     * Create section's label for each group.
+     */
     displayDates(array, isUpcoming) {
         array.sort((a, b) => {
             return new Date(b.datetimeValue) - new Date(a.datetimeValue);
@@ -274,7 +277,7 @@ export default class ActivityTimeline extends LightningElement {
                     this._key = `${date.toLocaleString('en-EN', {
                         month: 'long'
                     })} ${date.getFullYear()}`;
-                } else if (this._groupBy === 'week' || !this._groupBy) {
+                } else if (this._groupBy === 'week') {
                     this._key = `Week: ${this.getNumberOfWeek(
                         date
                     )}, ${date.getFullYear()}`;
@@ -294,6 +297,9 @@ export default class ActivityTimeline extends LightningElement {
         }, []);
     }
 
+    /**
+     * Regroup each groups in order.
+     */
     regroupDates(array) {
         Object.keys(array).forEach((date) => {
             this.orderedDates.push({
@@ -304,7 +310,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Group upcomingDates and beforeDates by year, month, week.
+     * Group upcomingDates presentDates and beforeDates by year, month or week.
      */
     groupDates() {
         this.orderedDates = [];
@@ -315,15 +321,6 @@ export default class ActivityTimeline extends LightningElement {
         this.regroupDates(this._upcomingDates);
         this.regroupDates(this._presentDates);
         this.regroupDates(this._pastDates);
-    }
-
-    /**
-     * Sort the orderedDates by hours.
-     */
-    sortHours() {
-        this.orderedDates.forEach((object) => {
-            object.items.sort((a, b) => a.datetimeValue - b.datetimeValue);
-        });
     }
 
     /**
@@ -346,7 +343,6 @@ export default class ActivityTimeline extends LightningElement {
     initActivityTimeline() {
         this.sortDates();
         this.groupDates();
-        this.sortHours();
         this.createUngroupedItems();
     }
 
