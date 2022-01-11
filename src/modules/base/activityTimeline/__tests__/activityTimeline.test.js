@@ -50,53 +50,28 @@ describe('Activity Timeline', () => {
     });
 
     it('Activity Timeline: Default attributes', () => {
-        expect(element.title).toBeUndefined();
-        expect(element.iconName).toBeUndefined();
-        expect(element.collapsible).toBeFalsy();
-        expect(element.closed).toBeFalsy();
-        expect(element.groupBy).toBeUndefined();
-        expect(element.items).toMatchObject([]);
         expect(element.actions).toMatchObject([]);
+        expect(element.closed).toBeFalsy();
+        expect(element.collapsible).toBeFalsy();
+        expect(element.groupBy).toBeUndefined();
+        expect(element.iconName).toBeUndefined();
+        expect(element.items).toMatchObject([]);
+        expect(element.sortedDirection).toBe('desc');
+        expect(element.title).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
-
-    // title
-    it('Activity Timeline: title', () => {
-        element.title = 'This is an title text';
-
-        return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector(
-                '.slds-section__title'
-            );
-            expect(title.textContent).toBe('This is an title text');
-        });
-    });
-
-    // icon name
-    it('Activity Timeline: icon name', () => {
-        element.iconName = 'standard:case';
-
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
-            );
-            expect(icon.iconName).toBe('standard:case');
-        });
-    });
-
-    // collapsible
-    // needs to specify the group by to have sections
-    it('Activity Timeline: collapsible', () => {
+    // actions
+    it('Activity Timeline: actions', () => {
         element.items = testItems;
-        element.groupBy = 'week';
-        element.collapsible = true;
+        element.actions = actions;
 
         return Promise.resolve().then(() => {
-            const expandableSection = element.shadowRoot.querySelector(
-                'c-expandable-section'
+            const timelineItems = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
-            expect(expandableSection.collapsible).toBeTruthy();
+
+            expect(timelineItems.actions).toMatchObject(actions);
         });
     });
 
@@ -112,6 +87,21 @@ describe('Activity Timeline', () => {
                 '[data-element-id="avonni-expandable-section"]'
             );
             expect(expandableSection.closed).toBeTruthy();
+        });
+    });
+
+    // collapsible
+    // needs to specify the group by to have sections
+    it('Activity Timeline: collapsible', () => {
+        element.items = testItems;
+        element.groupBy = 'week';
+        element.collapsible = true;
+
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelector(
+                'c-expandable-section'
+            );
+            expect(expandableSection.collapsible).toBeTruthy();
         });
     });
 
@@ -180,6 +170,18 @@ describe('Activity Timeline', () => {
             expect(expandableSection[0].title).toBe(firstSection);
             expect(expandableSection[1].title).toBe(secondSection);
             expect(expandableSection[2].title).toBe(thirdSection);
+        });
+    });
+
+    // icon name
+    it('Activity Timeline: icon name', () => {
+        element.iconName = 'standard:case';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
+            expect(icon.iconName).toBe('standard:case');
         });
     });
 
@@ -290,17 +292,71 @@ describe('Activity Timeline', () => {
         });
     });
 
-    // actions
-    it('Activity Timeline: actions', () => {
+    // sorted direction
+    it('Activity Timeline: sorted direction desc', () => {
         element.items = testItems;
-        element.actions = actions;
+        const firstDateContent = '05/21/2025';
+        const secondDateContent = '05/21/2022';
+        const thirdDateContent = '01/01/2022';
+        const fourthDateContent = '05/21/2021';
 
         return Promise.resolve().then(() => {
-            const timelineItems = element.shadowRoot.querySelector(
+            const firstDate = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-activity-timeline-item"]'
-            );
+            )[0];
+            const secondDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[1];
+            const thirdDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[2];
+            const fourthDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[3];
+            expect(firstDate.datetimeValue).toContain(firstDateContent);
+            expect(secondDate.datetimeValue).toContain(secondDateContent);
+            expect(thirdDate.datetimeValue).toContain(thirdDateContent);
+            expect(fourthDate.datetimeValue).toContain(fourthDateContent);
+        });
+    });
 
-            expect(timelineItems.actions).toMatchObject(actions);
+    it('Activity Timeline: sorted direction asc', () => {
+        element.items = testItems;
+        element.sortedDirection = 'asc';
+        const firstDateContent = '05/21/2021';
+        const secondDateContent = '01/01/2022';
+        const thirdDateContent = '05/21/2022';
+        const fourthDateContent = '05/21/2025';
+
+        return Promise.resolve().then(() => {
+            const firstDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[0];
+            const secondDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[1];
+            const thirdDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[2];
+            const fourthDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[3];
+            expect(firstDate.datetimeValue).toContain(firstDateContent);
+            expect(secondDate.datetimeValue).toContain(secondDateContent);
+            expect(thirdDate.datetimeValue).toContain(thirdDateContent);
+            expect(fourthDate.datetimeValue).toContain(fourthDateContent);
+        });
+    });
+
+    // title
+    it('Activity Timeline: title', () => {
+        element.title = 'This is an title text';
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector(
+                '.slds-section__title'
+            );
+            expect(title.textContent).toBe('This is an title text');
         });
     });
 

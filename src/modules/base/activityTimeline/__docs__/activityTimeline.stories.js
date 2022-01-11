@@ -36,45 +36,33 @@ import { actions, items, yearlyItems } from './data';
 export default {
     title: 'Example/Activity Timeline',
     argTypes: {
-        title: {
+        actions: {
             control: {
-                type: 'text'
+                type: 'object'
             },
-            description:
-                'The title can include text, and is displayed in the header.',
+            description: 'A list of different actions for dropdown menu.',
             table: {
-                type: { summary: 'string' }
-            }
-        },
-        iconName: {
-            name: 'icon-name',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        collapsible: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If true, the section is collapsible, the left icon is present.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                type: { summary: 'object[]' }
             }
         },
         closed: {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
+            defaultValue: false,
             description: 'If true, close the section.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        collapsible: {
+            control: {
+                type: 'boolean'
+            },
+            defaultValue: false,
+            description:
+                'If true, the section is collapsible, the left icon is present.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -91,6 +79,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        iconName: {
+            name: 'icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed. The icon is displayed in the header before the title.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         items: {
             control: {
                 type: 'object'
@@ -99,13 +98,28 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        actions: {
+        sortedDirection: {
+            name: 'sorted-direction',
             control: {
-                type: 'object'
+                type: 'select'
             },
-            description: 'A list of different actions for dropdown menu.',
+            defaultValue: 'desc',
+            options: ['desc', 'asc'],
+            description:
+                'Specifies the sorting direction.  Valid values include asc and desc.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'desc' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header.',
+            table: {
+                type: { summary: 'string' }
             }
         }
     },
@@ -124,6 +138,16 @@ Base.args = {
     items: items,
     collapsible: true,
     actions: actions
+};
+
+export const Ascending = Template.bind({});
+Ascending.args = {
+    title: 'Activity Timeline',
+    iconName: 'standard:timesheet_entry',
+    items: items,
+    collapsible: true,
+    actions: actions,
+    sortedDirection: 'asc'
 };
 
 export const Weekly = Template.bind({});

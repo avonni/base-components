@@ -41,6 +41,11 @@ const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
     default: undefined
 };
+
+const SORTED_DIRECTIONS = {
+    valid: ['asc', 'desc'],
+    default: 'desc'
+};
 /**
  * @class
  * @descriptor avonni-activity-timeline
@@ -69,13 +74,13 @@ export default class ActivityTimeline extends LightningElement {
     _collapsible = false;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
+    _sortedDirection = SORTED_DIRECTIONS.default;
 
     _key;
     _presentDates = [];
     _pastDates = [];
     _upcomingDates = [];
 
-    @track ungroupedItems = [];
     @track orderedDates = [];
 
     connectedCallback() {
@@ -166,6 +171,24 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * If present, the value will define how the items will be grouped. Valid values include week, month or year.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get sortedDirection() {
+        return this._sortedDirection;
+    }
+
+    set sortedDirection(value) {
+        this._sortedDirection = normalizeString(value, {
+            fallbackValue: SORTED_DIRECTIONS.default,
+            validValues: SORTED_DIRECTIONS.valid
+        });
+    }
+
+    /**
      * Verify if dates exist.
      *
      * @type {boolean}
@@ -193,6 +216,21 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Compute sortedItems and ungrouped array.
+     */
+    get sortedItems() {
+        return this._sortedDirection === 'desc'
+            ? [...this.items].sort(
+                  (a, b) =>
+                      new Date(b.datetimeValue) - new Date(a.datetimeValue)
+              )
+            : [...this.items].sort(
+                  (a, b) =>
+                      new Date(a.datetimeValue) - new Date(b.datetimeValue)
+              );
+    }
+
+    /**
      * Compute Number of the week in the year.
      *
      * @param {Date} date
@@ -214,7 +252,7 @@ export default class ActivityTimeline extends LightningElement {
         this._presentDates = [];
         this._pastDates = [];
 
-        this._items.forEach((item) => {
+        this.sortedItems.forEach((item) => {
             const date = new Date(item.datetimeValue);
             const dateYear = date.getFullYear();
             const today = new Date();
@@ -267,9 +305,6 @@ export default class ActivityTimeline extends LightningElement {
      * Create section's label for each group.
      */
     displayDates(array, isUpcoming) {
-        array.sort((a, b) => {
-            return new Date(b.datetimeValue) - new Date(a.datetimeValue);
-        });
         return array.reduce((prev, cur) => {
             if (!isUpcoming) {
                 const date = new Date(cur.datetimeValue);
@@ -324,26 +359,11 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * UngroupedItems ordered by dates and hours.
-     */
-    createUngroupedItems() {
-        this.ungroupedItems = [];
-        this.orderedDates.forEach((group) => {
-            this.ungroupedItems.push(group.items);
-        });
-        this.ungroupedItems = this.ungroupedItems.reduce(
-            (acc, val) => acc.concat(val),
-            []
-        );
-    }
-
-    /**
      * Component initialized states.
      */
     initActivityTimeline() {
         this.sortDates();
         this.groupDates();
-        this.createUngroupedItems();
     }
 
     /**
