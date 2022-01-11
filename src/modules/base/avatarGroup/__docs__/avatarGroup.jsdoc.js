@@ -1,5 +1,5 @@
 /**
- * @typedef Item
+ * @typedef AvatarGroupItem
  * @name Items
  * @property {string} alternativeText The alternative text used to describe the avatar.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
@@ -21,6 +21,12 @@
  * @property {string} secondaryText Secondary text displayed next to the avatar.
  * @property {string} tertiaryText Tertiary text displayed next to the avatar.
  * @property {object[]} tags Array of tag objects. The tags will be displayed as badges in the avatar’s details. See <a href="/components/avatar/">Avatar</a> for allowed keys.
+ */
+/**
+ * @typedef {Object} AvatarGroupTag
+ * @name tags
+ * @property {string} label Tag label.
+ * @property {string} variant The variant changes the style of the badge. Valid values include default, warning, error, success, lightest, inverse. Defaults to default.
  */
 
 /**

@@ -213,9 +213,11 @@ export default class VerticalVisualPicker extends LightningElement {
             const {
                 title,
                 description,
+                disabled,
                 iconName,
                 iconPosition,
                 iconSize,
+                tags,
                 value
             } = item;
             const key = `vertical-visual-picker-key-${index}`;
@@ -229,9 +231,11 @@ export default class VerticalVisualPicker extends LightningElement {
                 key,
                 title,
                 description,
+                disabled,
                 iconName,
                 iconPosition,
                 iconSize,
+                tags,
                 value,
                 iconIsLeft,
                 iconIsRight,

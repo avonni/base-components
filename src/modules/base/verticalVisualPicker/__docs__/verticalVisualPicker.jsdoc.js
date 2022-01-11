@@ -10,6 +10,12 @@
  * @property {string} title Title of the item.
  * @property {string} value Unique value of the item.
  */
+/**
+ * @typedef {Object} VerticalVisualPickerTag
+ * @name tags
+ * @property {string} label Tag label.
+ * @property {string} variant The variant changes the style of the badge. Valid values include default, warning, error, success, lightest, inverse. Defaults to default.
+ */
 
 /**
  * @namespace stylingHooks
