@@ -144,3 +144,12 @@
         1.25
     );
 }
+
+/*-- description --*/
+.avonni-vertical-visual-picker__tags-container {
+    margin-top: 0.25rem;
+}
+
+.avonni-vertical-visual-picker__tags:not(:first-child) {
+    margin-left: 0.25rem;
+}

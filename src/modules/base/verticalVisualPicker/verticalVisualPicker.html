@@ -109,6 +109,26 @@
                                         "
                                         >{item.description}</span
                                     >
+                                    <div
+                                        if:true={item.tags}
+                                        class="
+                                            avonni-vertical-visual-picker__tags-container
+                                        "
+                                    >
+                                        <template
+                                            for:each={item.tags}
+                                            for:item="tag"
+                                        >
+                                            <avonni-chip
+                                                key={tag.label}
+                                                label={tag.label}
+                                                variant={tag.variant}
+                                                class="
+                                                    avonni-vertical-visual-picker__tags
+                                                "
+                                            ></avonni-chip>
+                                        </template>
+                                    </div>
                                 </span>
                                 <template if:true={item.iconIsRight}>
                                     <lightning-icon

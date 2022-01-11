@@ -173,7 +173,17 @@ const itemsWithIcons = [
         title: 'Lightning Professional',
         description: 'Complete service CRM for teams of any size',
         value: 'lightning-professional',
-        iconName: 'standard:user'
+        iconName: 'standard:user',
+        tags: [
+            {
+                label: 'hello',
+                variant: 'success'
+            },
+            {
+                label: 'world',
+                variant: 'warning'
+            }
+        ]
     },
     {
         title: 'Lightning Enterprise',
