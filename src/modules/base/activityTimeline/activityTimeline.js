@@ -193,13 +193,33 @@ export default class ActivityTimeline extends LightningElement {
     sortDates() {
         this._upcomingDates = [];
         this._beforeDates = [];
-        const today = new Date();
 
         this._sortedItems.forEach((item) => {
-            if (item.datetimeValue > today) {
+            const date = new Date(item.datetimeValue);
+            const today = new Date();
+            if (date.getFullYear() > today.getFullYear()) {
                 this._upcomingDates.push(item);
-            } else {
-                this._beforeDates.push(item);
+            } else if (date.getFullYear() <= today.getFullYear()) {
+                if (this._groupBy === 'month') {
+                    if (date.getMonth() > today.getMonth()) {
+                        this._upcomingDates.push(item);
+                    } else if (date.getMonth() <= today.getMonth()) {
+                        this._beforeDates.push(item);
+                    }
+                } else if (this._groupBy === 'year') {
+                    this._beforeDates.push(item);
+                } else if (this._groupBy === 'week' || !this._groupBy) {
+                    if (
+                        this.getNumberOfWeek(date) > this.getNumberOfWeek(today)
+                    ) {
+                        this._upcomingDates.push(item);
+                    } else if (
+                        this.getNumberOfWeek(date) <=
+                        this.getNumberOfWeek(today)
+                    ) {
+                        this._beforeDates.push(item);
+                    }
+                }
             }
         });
     }
