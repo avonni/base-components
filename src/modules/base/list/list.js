@@ -104,8 +104,6 @@ export default class List extends LightningElement {
     computedActions = [];
     computedItems = [];
     _hasImages;
-    menuRole;
-    itemRole;
 
     /**
      * Position of the item divider. Valid valus include top, bottom and around.
@@ -174,11 +172,6 @@ export default class List extends LightningElement {
     }
     set sortable(bool) {
         this._sortable = normalizeBoolean(bool);
-
-        if (this._sortable) {
-            this.menuRole = 'listbox';
-            this.itemRole = 'option';
-        }
     }
 
     /**
@@ -267,6 +260,24 @@ export default class List extends LightningElement {
     }
 
     /**
+     * ARIA role of the items, if the list is sortable.
+     *
+     * @type {string|undefined}
+     */
+    get itemRole() {
+        return this.sortable ? 'option' : undefined;
+    }
+
+    /**
+     * ARIA role of the menu, if the list is sortable.
+     *
+     * @type {string|undefined}
+     */
+    get menuRole() {
+        return this.sortable ? 'listbox' : undefined;
+    }
+
+    /**
      * Check if Icon is to be shown to the right.
      *
      * @type {boolean}
@@ -347,15 +358,6 @@ export default class List extends LightningElement {
                 'avonni-list__item-divider_around': this._divider === 'around'
             })
             .toString();
-    }
-
-    /**
-     * Get current tab index based on if list is sortable.
-     *
-     * @type {boolean}
-     */
-    get tabindex() {
-        return this.sortable ? '0' : '-1';
     }
 
     /**
@@ -613,21 +615,24 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Handler for keyboard access controls to sortable list.
+     * Handle a key pressed on an item.
      *
      * @param {Event} event
      */
     handleKeyDown(event) {
-        if (!this.sortable) return;
-
         // If space bar is pressed, select or drop the item
-        if (event.key === ' ' || event.key === 'Spacebar') {
+        if (event.key === 'Enter') {
+            this.handleItemClick(event);
+        } else if (
+            (this.sortable && event.key === ' ') ||
+            event.key === 'Spacebar'
+        ) {
             if (this._draggedElement) {
                 this.dragEnd();
             } else {
                 this.dragStart(event);
             }
-        } else if (this._draggedElement) {
+        } else if (this.sortable && this._draggedElement) {
             // If escape is pressed, cancel the move
             if (event.key === 'Escape' || event.key === 'Esc') {
                 this.computedItems = [...this._savedComputedItems];
