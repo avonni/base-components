@@ -3,9 +3,13 @@
  * @name items
  * @property {string} description Description displayed under the title.
  * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
+ * @property {string} iconAlternativeText The assistive text for the icon.
  * @property {string} iconName The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
- * @property {string} iconPosition If present, sets the position of the icon. Valid values include right and left.
- * @property {string} iconSize The size of the icon.
+ * @property {string} iconPosition If present, sets the position of the icon. Valid values include right and left. Default is left.
+ * @property {string} iconSize The size of the icon. Valid values include xx-small, x-small, small, medium and large. Default is medium.
+ * @property {string} imgSrc The URL of the image.
+ * @property {string} imgPosition Sets the position of the image if present. Valid values include right and left. Default is left.
+ * @property {string} imgAlternativeText The assistive text for the image.
  * @property {string[]} tags Array of tags.
  * @property {string} title Title of the item.
  * @property {string} value Unique value of the item.
@@ -14,7 +18,7 @@
  * @typedef {Object} VerticalVisualPickerTag
  * @name tags
  * @property {string} label Tag label.
- * @property {string} variant The variant changes the style of the badge. Valid values include default, warning, error, success, lightest, inverse. Defaults to default.
+ * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
  */
 
 /**

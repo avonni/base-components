@@ -247,20 +247,27 @@ export default class VerticalVisualPicker extends LightningElement {
                 title,
                 description,
                 disabled,
+                iconAlternativeText,
                 iconName,
                 iconPosition,
                 iconSize,
+                imgAlternativeText,
+                imgPosition,
+                imgSrc,
                 tags,
                 value
             } = item;
             iconSize = iconSize || 'medium';
             iconPosition = iconPosition || 'left';
+            imgPosition = imgPosition || 'left';
             const key = `vertical-visual-picker-key-${index}`;
             const iconIsLeft = iconPosition === 'left' && iconName;
             const iconIsRight = iconPosition === 'right' && iconName;
+            const imgIsLeft = imgPosition === 'left' && imgSrc;
+            const imgIsRight = imgPosition === 'right' && imgSrc;
             const bodyClass = classSet('slds-p-around_small').add({
-                'slds-border_left': iconIsLeft,
-                'slds-border_right': iconIsRight
+                'slds-border_left': iconIsLeft || imgIsLeft,
+                'slds-border_right': iconIsRight || imgIsRight
             });
             if (this.disabled) {
                 disabled = true;
@@ -270,13 +277,19 @@ export default class VerticalVisualPicker extends LightningElement {
                 title,
                 description,
                 disabled,
+                iconAlternativeText,
                 iconName,
                 iconPosition,
                 iconSize,
+                imgAlternativeText,
+                imgPosition,
+                imgSrc,
                 tags,
                 value,
                 iconIsLeft,
                 iconIsRight,
+                imgIsLeft,
+                imgIsRight,
                 bodyClass
             };
         });

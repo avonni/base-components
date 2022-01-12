@@ -31,7 +31,13 @@
  */
 
 import { VerticalVisualPicker } from '../__examples__/verticalVisualPicker';
-import { itemsWithIcons, itemsWithoutIcon } from './data';
+import {
+    itemsWithIcons,
+    itemsWithoutIcon,
+    itemsWithImages,
+    itemsWithImagesAndTags,
+    itemsWithImagesRight
+} from './data';
 
 export default {
     title: 'Example/VerticalVisualPicker',
@@ -173,15 +179,47 @@ const Template = (args) => VerticalVisualPicker(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    name: 'base',
-    label: 'Base',
+    name: 'Vertical Visual Picker',
+    label: 'Base with icons',
     items: itemsWithIcons,
     value: 'lightning-professional'
 };
 
 export const BaseWithoutIcon = Template.bind({});
 BaseWithoutIcon.args = {
-    name: 'base',
-    label: 'Base',
+    name: 'Vertical Visual Picker',
+    label: 'Base without icons',
     items: itemsWithoutIcon
+};
+
+export const BaseWithImages = Template.bind({});
+BaseWithImages.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Base with images',
+    items: itemsWithImages,
+    value: 'lightning-professional'
+};
+
+export const LargeWithImages = Template.bind({});
+LargeWithImages.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Large with images',
+    items: itemsWithImagesRight,
+    size: 'large'
+};
+
+export const ResponsiveWithImages = Template.bind({});
+ResponsiveWithImages.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Responsive with images',
+    items: itemsWithImages,
+    size: 'responsive'
+};
+
+export const ResponsiveWithImagesAndTags = Template.bind({});
+ResponsiveWithImagesAndTags.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Responsive with images and tags',
+    items: itemsWithImagesAndTags,
+    size: 'responsive'
 };

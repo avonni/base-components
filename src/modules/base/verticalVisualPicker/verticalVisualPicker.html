@@ -87,8 +87,19 @@
                                     <lightning-icon
                                         icon-name={item.iconName}
                                         size={item.iconSize}
+                                        alternative-text={item.iconAlternativeText}
                                         class="slds-m-right_small"
                                     ></lightning-icon>
+                                </template>
+                                <template if:true={item.imgIsLeft}>
+                                    <img
+                                        src={item.imgSrc}
+                                        alt={item.imgAlternativeText}
+                                        class="
+                                            slds-m-right_small
+                                            avonni-vertical-visual-picker__image
+                                        "
+                                    />
                                 </template>
                                 <span class={item.bodyClass}>
                                     <span
@@ -121,7 +132,7 @@
                                                 label={tag.label}
                                                 variant={tag.variant}
                                                 class="
-                                                    avonni-vertical-visual-picker__tags
+                                                    avonni-vertical-visual-picker__tag
                                                 "
                                             ></avonni-chip>
                                         </template>
@@ -133,6 +144,16 @@
                                         size={item.iconSize}
                                         class="slds-m-left_small"
                                     ></lightning-icon>
+                                </template>
+                                <template if:true={item.imgIsRight}>
+                                    <img
+                                        src={item.imgSrc}
+                                        alt={item.imgAlternativeText}
+                                        class="
+                                            slds-m-left_small
+                                            avonni-vertical-visual-picker__image
+                                        "
+                                    />
                                 </template>
                             </span>
                         </span>

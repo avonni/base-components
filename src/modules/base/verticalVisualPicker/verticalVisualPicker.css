@@ -149,12 +149,12 @@
     );
 }
 
-/*-- tags --*/
+/*-- tag --*/
 .avonni-vertical-visual-picker__tags-container {
     margin-top: 0.25rem;
 }
 
-.avonni-vertical-visual-picker__tags:not(:first-child) {
+.avonni-vertical-visual-picker__tag:not(:first-child) {
     margin-left: 0.25rem;
 }
 
@@ -173,4 +173,10 @@
 
 .avonni-vertical-visual-picker__item_size-responsive {
     width: 100%;
+}
+
+/*-- image --*/
+.avonni-vertical-visual-picker__image {
+    height: 100%;
+    width: 10%;
 }
