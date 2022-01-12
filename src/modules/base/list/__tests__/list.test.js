@@ -41,11 +41,8 @@ import {
 import List from 'c/list';
 
 // Not tested:
-// Keyboard navigation (we can't artificially dispatch an event with a key code)
 // Mouse move and all actions related to it (dragging the item and reorganizing the list)
 // Touch events (we can't artificially give a touch position to save in _initialY)
-// Partial test of reset() (we can't check if it would reorder the items, we only check that it unselects the currently dragged item)
-// reorder event
 
 let element;
 describe('List', () => {
@@ -92,7 +89,9 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('[data-element-id^="li-main"');
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="li-main"'
+            );
             expect(items).toHaveLength(5);
 
             items.forEach((item, index) => {
@@ -101,18 +100,25 @@ describe('List', () => {
                 expect(item.dataset.index).toBe(index.toString());
                 expect(item.ariaLabel).toBe(originalItem.label);
                 expect(item.textContent).toBe(originalItem.label);
+            });
 
-                const avatar = item.querySelector('[data-element-id="avonni-avatar"]');
-                if (avatar) {
-                    if (originalItem.avatarFallbackIconName) {
-                        expect(avatar.fallbackIconName).toBe(
-                            originalItem.avatarFallbackIconName
-                        );
-                    }
-                    if (originalItem.avatarSrc) {
-                        expect(avatar.src).toBe(originalItem.avatarSrc);
-                    }
-                }
+            [0, 2].forEach((index) => {
+                const item = items[index];
+                const avatar = item.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar.fallbackIconName).toBe(
+                    ITEMS[index].avatarFallbackIconName
+                );
+                expect(avatar.src).toBe(ITEMS[index].avatarSrc);
+            });
+
+            [1, 3, 4].forEach((index) => {
+                const item = items[index];
+                const avatar = item.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
+                expect(avatar).toBeNull();
             });
         });
     });
@@ -197,7 +203,9 @@ describe('List', () => {
         element.actions = ACTION;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
 
             expect(button.label).toBe('Completed');
             expect(button.iconName).toBe('utility:check');
@@ -228,7 +236,9 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
             const menu = element.shadowRoot.querySelector(
                 '.avonni-list__item-menu'
             );
@@ -237,7 +247,6 @@ describe('List', () => {
 
             items.forEach((item) => {
                 expect(item.role).toBeFalsy();
-                expect(item.tabIndex).toBe(-1);
             });
 
             // Item is clicked on
@@ -253,7 +262,9 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
             const menu = element.shadowRoot.querySelector(
                 '.avonni-list__item-menu'
             );
@@ -262,7 +273,6 @@ describe('List', () => {
 
             items.forEach((item) => {
                 expect(item.role).toBe('option');
-                expect(item.tabIndex).toBe(0);
             });
 
             // Item is clicked on
@@ -289,7 +299,9 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const icons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-icon-sort"]');
+            const icons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-icon-sort"]'
+            );
             expect(icons).toHaveLength(0);
         });
     });
@@ -300,7 +312,9 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const icons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-icon-sort"]');
+            const icons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-icon-sort"]'
+            );
             expect(icons).toHaveLength(4);
 
             icons.forEach((icon) => {
@@ -318,9 +332,8 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const iconsRight = element.shadowRoot.querySelectorAll(
-                '.icon-right'
-            );
+            const iconsRight =
+                element.shadowRoot.querySelectorAll('.icon-right');
             const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(4);
             expect(iconsLeft).toHaveLength(0);
@@ -334,9 +347,8 @@ describe('List', () => {
         element.items = ITEMS_WITHOUT_ICONS;
 
         return Promise.resolve().then(() => {
-            const iconsRight = element.shadowRoot.querySelectorAll(
-                '.icon-right'
-            );
+            const iconsRight =
+                element.shadowRoot.querySelectorAll('.icon-right');
             const iconsLeft = element.shadowRoot.querySelectorAll('.icon-left');
             expect(iconsRight).toHaveLength(0);
             expect(iconsLeft).toHaveLength(4);
@@ -347,7 +359,9 @@ describe('List', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="img"]'
+            );
             expect(images).toHaveLength(3);
         });
     });
@@ -357,7 +371,9 @@ describe('List', () => {
         element.imageWidth = 'small';
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="img"]'
+            );
             expect(images[0].width).toBe(48);
             expect(images[1].width).toBe(48);
             expect(images[2].width).toBe(48);
@@ -369,7 +385,9 @@ describe('List', () => {
         element.imageWidth = 'medium';
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="img"]'
+            );
             expect(images[0].width).toBe(72);
             expect(images[1].width).toBe(72);
             expect(images[2].width).toBe(72);
@@ -381,7 +399,9 @@ describe('List', () => {
         element.imageWidth = 'large';
 
         return Promise.resolve().then(() => {
-            const images = element.shadowRoot.querySelectorAll('[data-element-id^="img"]');
+            const images = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="img"]'
+            );
             expect(images[0].width).toBe(128);
             expect(images[1].width).toBe(128);
             expect(images[2].width).toBe(128);
@@ -415,20 +435,45 @@ describe('List', () => {
     /* ----- METHOD ----- */
 
     // reset
-    // Depends on items and sortable
+    // Depends on items, sortable and the keyboard reorder
     it('reset method', () => {
         element.items = ITEMS;
         element.sortable = true;
 
-        return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
+        return Promise.resolve()
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-main"]'
+                );
 
-            items[2].dispatchEvent(new CustomEvent('mousedown'));
-            element.reset();
-            expect(items[2].classList).not.toContain(
-                'avonni-list__item-sortable_dragged'
-            );
-        });
+                // Reorder
+                const spaceEvent = new CustomEvent('keydown');
+                spaceEvent.key = ' ';
+                const downEvent = new CustomEvent('keydown');
+                downEvent.key = 'ArrowDown';
+                items[1].dispatchEvent(spaceEvent);
+                items[1].dispatchEvent(downEvent);
+                items[1].dispatchEvent(spaceEvent);
+            })
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-main"]'
+                );
+                const label = items[1].querySelector(
+                    '[data-element-id="div-item-label"]'
+                );
+                expect(label.textContent).toBe(ITEMS[2].label);
+                element.reset();
+            })
+            .then(() => {
+                const items = element.shadowRoot.querySelectorAll(
+                    '[data-element-id="li-main"]'
+                );
+                const label = items[1].querySelector(
+                    '[data-element-id="div-item-label"]'
+                );
+                expect(label.textContent).toBe(ITEMS[1].label);
+            });
     });
 
     /* ----- EVENT ----- */
@@ -512,15 +557,17 @@ describe('List', () => {
         });
     });
 
-    // reorder
+    // itemclick
     // Depends on items
-    it('reorder event', () => {
+    it('itemclick event', () => {
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('[data-element-id="li-main"]');
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
 
             items[2].dispatchEvent(new CustomEvent('click'));
             expect(handler).toHaveBeenCalled();
@@ -531,6 +578,105 @@ describe('List', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('itemclick event, fired with keyboard', () => {
+        const handler = jest.fn();
+        element.addEventListener('itemclick', handler);
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
+
+            const event = new CustomEvent('keydown');
+            event.key = 'Enter';
+            items[1].dispatchEvent(event);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[1]
+            );
+            expect(handler.mock.calls[0][0].detail.bounds).not.toBeUndefined();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    // reorder
+    // Depends on items and sortable
+    it('reorder event, fired with keyboard', () => {
+        const newOrder = [ITEMS[0], ITEMS[2], ITEMS[1], ITEMS[3], ITEMS[4]];
+        const handler = jest.fn();
+        element.addEventListener('reorder', handler);
+        element.items = ITEMS;
+        element.sortable = true;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
+
+            // Start dragging
+            const spaceEvent = new CustomEvent('keydown');
+            spaceEvent.key = ' ';
+            items[1].dispatchEvent(spaceEvent);
+
+            // Move the item up and down
+            const upDownEvent = new CustomEvent('keydown');
+            upDownEvent.key = 'ArrowDown';
+            items[1].dispatchEvent(upDownEvent);
+            items[1].dispatchEvent(upDownEvent);
+            upDownEvent.key = 'ArrowUp';
+            items[1].dispatchEvent(upDownEvent);
+
+            expect(items[2].classList).toContain(
+                'avonni-list__item-sortable_moved'
+            );
+
+            // Stop dragging
+            items[1].dispatchEvent(spaceEvent);
+
+            expect(handler).toHaveBeenCalledTimes(1);
+            expect(handler.mock.calls[0][0].detail.items).toMatchObject(
+                newOrder
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('reorder event, cancel a move with escape key', () => {
+        const handler = jest.fn();
+        element.addEventListener('reorder', handler);
+        element.items = ITEMS;
+        element.sortable = true;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
+
+            // Start dragging
+            const spaceEvent = new CustomEvent('keydown');
+            spaceEvent.key = ' ';
+            items[1].dispatchEvent(spaceEvent);
+
+            // Move the item
+            const upDownEvent = new CustomEvent('keydown');
+            upDownEvent.key = 'ArrowDown';
+            items[1].dispatchEvent(upDownEvent);
+            items[1].dispatchEvent(upDownEvent);
+
+            // Cancel
+            const escEvent = new CustomEvent('keydown');
+            escEvent.key = 'Escape';
+            items[1].dispatchEvent(escEvent);
+
+            expect(handler).toHaveBeenCalledTimes(0);
         });
     });
 });

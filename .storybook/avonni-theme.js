@@ -7,7 +7,7 @@ export default create({
     brandTitle: 'Avonni Components',
     brandUrl: 'https://avonnicomponents.com',
     brandImage:
-        'https://avonni-components-website.onrender.com/assets/avonni-logo.svg',
+        'https://avonni-components-site.onrender.com/assets/images/logo.svg',
     appBg: 'white',
     appContentBg: 'white'
 });

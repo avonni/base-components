@@ -1,16 +1,16 @@
 /**
- * @typedef {Object} Item
+ * @typedef {Object} ListItem
  * @name items
- * @property {object} avatar An object with item fields to be rendered as an avatar.
+ * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
  * @property {string} description Description of the item.
  * @property {string} href The URL of the page the link goes to.
  * @property {string[]} icons List of iconName display next to the label.
- * @property {string} imageSrc Image URL for the list item image. If present, the image is presented to the left of the list item.
+ * @property {string} imageSrc Image URL for the list item image. If present, the image is disaplyed to the left of the item.
  * @property {object} infos List of additional information to display. Fields:- label: string- href: string
  * @property {string} label Required. Label of the item.
  */
 /**
- * @typedef {Object} Action
+ * @typedef {Object} ListAction
  * @name actions
  * @property {string} label Required. The action label.
  * @property {string} name Required. The name of the action, which identifies the selected action.
@@ -145,48 +145,4 @@
  * @name --avonni-list-item-around-border-radius
  * @default 0.25rem
  * @type radius
- */
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-list--base
- */
-/**
- * @memberof examples
- * @name baseWithDividerOnTop
- * @storyId example-list--base-with-divider-on-top
- */
-/**
- * @memberof examples
- * @name listWithAvatars
- * @storyId example-list--list-with-avatars
- */
-/**
- * @memberof examples
- * @name sortableList
- * @storyId example-list--sortable-list
- */
-/**
- * @memberof examples
- * @name sortableListWithAvatars
- * @storyId example-list--sortable-list-with-avatars
- */
-/**
- * @memberof examples
- * @name sortableListWithAvatarsAndSingleAction
- * @storyId example-list--sortable-list-with-avatars-and-single-action
- */
-/**
- * @memberof examples
- * @name listWithActions
- * @storyId example-list--list-with-actions
- */
-/**
- * @memberof examples
- * @name sortableListWithImagesAndAvatars
- * @storyId example-list--sortable-list-with-images-and-avatars
  */

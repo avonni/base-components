@@ -66,7 +66,7 @@
                 data-index={index}
                 data-position="0"
                 role={itemRole}
-                tabindex={tabindex}
+                tabindex="0"
                 aria-label={item.label}
                 aria-describedby="instructions"
                 data-element-id="li-main"
@@ -93,11 +93,10 @@
                     >
                         <img
                             key={item.imageSrc}
-                            src={item.imageSrc}
                             class="avonni-list__item-img"
-                            width={imageWidth}
-                            min-width={imageWidth}
-                            height="100%"
+                            alt=""
+                            width={computedImageWidth}
+                            src={item.imageSrc}
                             draggable="false"
                             data-element-id="img"
                         />
@@ -139,6 +138,7 @@
                                         slds-truncate
                                         avonni-list__item-header_font
                                     "
+                                    data-element-id="div-item-label"
                                 >
                                     <template if:true={item.href}>
                                         <a href={item.href}>{item.label}</a>
