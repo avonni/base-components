@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/confetti';
+import Component from '../../storybookWrappers/confetti/base';
 
 customElements.define('ac-base-confetti', Component.CustomElementConstructor);
 

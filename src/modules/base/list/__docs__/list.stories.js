@@ -144,7 +144,35 @@ const Template = (args) => List(args);
 const items = [
     {
         label: 'Item 1',
-        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 2',
+        href: '/path/to_somewhere',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 3',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 4',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 5',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    }
+];
+
+const itemsWithImages = [
+    {
+        label: 'Item 1',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -160,7 +188,6 @@ const items = [
     },
     {
         label: 'Item 3',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -168,7 +195,6 @@ const items = [
     },
     {
         label: 'Item 4',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
@@ -181,7 +207,6 @@ const items = [
     },
     {
         label: 'Item 5',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
@@ -235,7 +260,6 @@ const itemsWithImagesAndAvatars = [
             fallbackIconName: 'custom:custom5',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -255,7 +279,6 @@ const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 3',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -267,7 +290,6 @@ const itemsWithImagesAndAvatars = [
             fallbackIconName: 'custom:custom11',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
@@ -284,7 +306,6 @@ const itemsWithImagesAndAvatars = [
             fallbackIconName: 'custom:custom1',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
         },
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [{ label: 'info 1', href: '' }],
@@ -314,78 +335,75 @@ const actions = [
     }
 ];
 
-const action = [
-    {
-        label: 'Completed',
-        name: 'completed-action',
-        iconName: 'utility:check',
-        disabled: false
-    }
-];
-
 export const Base = Template.bind({});
 Base.args = {
-    items: items
+    items
 };
 
-export const BaseWithDividerOnTop = Template.bind({});
-BaseWithDividerOnTop.args = {
-    items: items,
+export const DividerOnTop = Template.bind({});
+DividerOnTop.args = {
+    items,
     divider: 'top'
 };
 
-export const ListWithAvatars = Template.bind({});
-ListWithAvatars.args = {
+export const Images = Template.bind({});
+Images.args = {
+    items: itemsWithImages
+};
+
+export const Avatars = Template.bind({});
+Avatars.args = {
     label: 'List with icons',
     items: itemsWithAvatars,
     divider: 'around'
 };
 
-export const SortableList = Template.bind({});
-SortableList.args = {
-    label: 'Sortable list',
-    sortable: true,
-    items: items,
+export const Actions = Template.bind({});
+Actions.args = {
+    label: 'List with actions menu',
+    items,
+    actions,
     divider: 'around'
 };
 
-export const SortableListWithAvatars = Template.bind({});
-SortableListWithAvatars.args = {
-    label: 'Sortable list with Icons',
+export const Sortable = Template.bind({});
+Sortable.args = {
+    label: 'Sortable list',
+    sortable: true,
+    items,
+    divider: 'around'
+};
+
+export const SortableWithAvatars = Template.bind({});
+SortableWithAvatars.args = {
+    label: 'Sortable list with icons',
     items: itemsWithAvatars,
-    actions: actions,
+    actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around'
 };
 
-export const SortableListWithAvatarsAndSingleAction = Template.bind({});
-SortableListWithAvatarsAndSingleAction.args = {
+export const SortableWithAvatarsAndSingleAction = Template.bind({});
+SortableWithAvatarsAndSingleAction.args = {
     label: 'Sortable list with Icons and Single Action',
     items: itemsWithAvatars,
-    actions: action,
+    actions: [actions[0]],
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'top'
 };
 
-export const ListWithActions = Template.bind({});
-ListWithActions.args = {
-    label: 'List with actions menu',
-    items: items,
-    actions: actions,
-    divider: 'around'
-};
-
-export const SortableListWithImagesAndAvatars = Template.bind({});
-SortableListWithImagesAndAvatars.args = {
+export const SortableWithImagesAndAvatars = Template.bind({});
+SortableWithImagesAndAvatars.args = {
     label: 'Sortable list Images and Avatars with Icons',
     items: itemsWithImagesAndAvatars,
     actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,
-    divider: 'around'
+    divider: 'around',
+    imageWidth: 'medium'
 };
