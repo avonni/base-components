@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const ITEM_SIZES = {
@@ -88,7 +88,7 @@ export default class VerticalVisualPicker extends LightningElement {
      * @public
      * @required
      */
-    @api name;
+    @api name = generateUUID();
 
     _disabled = DEFAULT_DISABLED;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
@@ -96,6 +96,21 @@ export default class VerticalVisualPicker extends LightningElement {
     _size = ITEM_SIZES.default;
     _type = ITEM_TYPES.default;
     _variant = ITEM_VARIANTS.default;
+    _value = [];
+
+    renderedCallback() {
+        const inputs = this.template.querySelectorAll(
+            '[data-element-id="input"]'
+        );
+
+        if (inputs) {
+            Array.from(inputs).forEach((item) => {
+                if (this._value.indexOf(item.value) > -1) {
+                    item.checked = true;
+                }
+            });
+        }
+    }
 
     /**
      * If present, the virtual visual picker is disabled.
@@ -152,7 +167,8 @@ export default class VerticalVisualPicker extends LightningElement {
      * @public
      * @default medium
      */
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 
@@ -170,7 +186,8 @@ export default class VerticalVisualPicker extends LightningElement {
      * @public
      * @default radio
      */
-    @api get type() {
+    @api
+    get type() {
         return this._type;
     }
 
@@ -182,13 +199,29 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
+     * Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2]
+     *
+     * @type {(string|string[])}
+     * @public
+     */
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value instanceof Array ? value : [value];
+    }
+
+    /**
      * Changes the appearance of the vertical visual picker. Valid values include coverable and non-coverable.
      *
      * @type {string}
      * @public
      * @default non-coverable
      */
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -210,7 +243,7 @@ export default class VerticalVisualPicker extends LightningElement {
 
     get listItems() {
         return this.items.map((item, index) => {
-            const {
+            let {
                 title,
                 description,
                 disabled,
@@ -220,13 +253,18 @@ export default class VerticalVisualPicker extends LightningElement {
                 tags,
                 value
             } = item;
+            iconSize = iconSize || 'medium';
+            iconPosition = iconPosition || 'left';
             const key = `vertical-visual-picker-key-${index}`;
-            const iconIsLeft = iconPosition !== 'right' && iconName;
+            const iconIsLeft = iconPosition === 'left' && iconName;
             const iconIsRight = iconPosition === 'right' && iconName;
             const bodyClass = classSet('slds-p-around_small').add({
                 'slds-border_left': iconIsLeft,
                 'slds-border_right': iconIsRight
             });
+            if (this.disabled) {
+                disabled = true;
+            }
             return {
                 key,
                 title,
@@ -249,10 +287,22 @@ export default class VerticalVisualPicker extends LightningElement {
      *
      * @type {string}
      */
-    get visualPickerTypeClass() {
+    get verticalVisualPickerClass() {
+        return classSet('slds-visual-picker slds-visual-picker_vertical')
+            .add(`avonni-vertical-visual-picker__item_size-${this._size}`)
+            .toString();
+    }
+
+    /**
+     * Compute visual picker type class styling based on selected attributes.
+     *
+     * @type {string}
+     */
+    get verticalVisualPickerTypeClass() {
         return classSet(
             'slds-visual-picker__figure avonni-vertical-visual-picker__figure slds-align_absolute-left'
         )
+            .add(`avonni-vertical-visual-picker__item_size-${this._size}`)
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',
                 'slds-visual-picker__icon': this._variant === 'coverable',

@@ -56,10 +56,7 @@
         </legend>
         <div class="slds-form-element__control">
             <template for:each={listItems} for:item="item">
-                <div
-                    class="slds-visual-picker slds-visual-picker_vertical"
-                    key={item.key}
-                >
+                <div class={verticalVisualPickerClass} key={item.key}>
                     <input
                         type={type}
                         id={item.value}
@@ -72,7 +69,7 @@
                         onchange={handleChange}
                     />
                     <label for={item.value} data-element-id="label">
-                        <span class={visualPickerTypeClass}>
+                        <span class={verticalVisualPickerTypeClass}>
                             <template if:false={hideCheckMark}>
                                 <span
                                     if:true={isCoverable}
