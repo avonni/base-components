@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class ActivityTimelineWeekly extends LightningElement {
+export default class ActivityTimelineAscending extends LightningElement {
     items = [
         {
             name: 'item1',

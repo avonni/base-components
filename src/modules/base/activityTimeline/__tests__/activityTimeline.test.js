@@ -32,188 +32,7 @@
 
 import { createElement } from 'lwc';
 import ActivityTimeline from '../activityTimeline';
-
-const ITEMS = [
-    {
-        name: 'item1',
-        title:
-            'Review proposals for EBC deck with larger team and have marketing review this',
-        description: 'You created a task with Charlie Gomez',
-        datetimeValue: 1620648000000,
-        href: 'salesforce.com',
-        iconName: 'standard:task',
-        icons: ['utility:refresh'],
-        hasCheckbox: true,
-    },
-    {
-        name: 'item2',
-        title: 'Mobile conversation on Monday',
-        description: 'You logged a call with Adam Chan',
-        href: '#',
-        datetimeValue: 1653141600000,
-        iconName: 'standard:log_a_call',
-        fields: [
-            {
-                label: 'Name',
-                value: 'Adam Chan',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Adam Chan'
-                }
-            },
-            {
-                label: 'Related To',
-                value: 'Tesla Cloudhub + Anypoint Connectors',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Tesla Cloudhub + Anypoint Connectors'
-                }
-            },
-            {
-                label: 'Description',
-                value:
-                    'Adam seemed interested in closing this deal quickly! Let’s move.',
-                type: 'text'
-            }
-        ]
-    },
-    {
-        name: 'item3',
-        title: 'Re: Mobile conversation on Monday with the new global team',
-        description: 'You emailed Lea Chan',
-        datetimeValue: 1619013600000,
-        href: '#',
-        iconName: 'standard:email',
-        icons: ['utility:groups', 'utility:attach'],
-        fields: [
-            {
-                label: 'Name',
-                value: 'Jackie Dewar',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Jackie Dewar'
-                }
-            },
-            {
-                label: 'To Address',
-                value: 'Lea Chan',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Lea Chan'
-                }
-            },
-            {
-                label: 'Text Body',
-                value:
-                    'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
-                type: 'text'
-            }
-        ],
-        buttonLabel: 'Public Sharing',
-        buttonIconName: 'utility:world'
-    },
-    {
-        name: 'item4',
-        title: 'EBC Follow up call',
-        description: 'You created an event with Aida Lee and 5 others',
-        icons: ['utility:world'],
-        datetimeValue: 1619006400000,
-        href: '#',
-        iconName: 'standard:event',
-        fields: [
-            {
-                label: 'Location',
-                value: 'Westen St. Francis, San Francisco, CA, 94622',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Westen St. Francis, San Francisco, CA, 94622'
-                }
-            },
-            {
-                label: 'Attendees',
-                value: 'Jason Dewar (Organizer) + 5 others',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Jason Dewar (Organizer) + 5 others'
-                }
-            },
-            {
-                label: 'When',
-                value: 'March 26, 10:00 AM - 11:00 AM',
-                type: 'url',
-                typeAttributes: {
-                    label: 'March 26, 10:00 AM - 11:00 AM'
-                }
-            },
-            {
-                label: 'Description',
-                value:
-                    "Let's discuss the 2017 product roadmap and address any questions",
-                type: 'text'
-            }
-        ],
-        buttonLabel: 'Public Sharing',
-        buttonIconName: 'utility:world',
-        closed: true
-    },
-    {
-        name: 'item5',
-        title: 'Create one task',
-        datetimeValue: 1621605600000,
-        href: '#',
-        iconName: 'standard:dashboard',
-        loadingStateAlternativeText: 'Is Loading',
-        fields: [
-            {
-                label: 'Name',
-                value: 'Charlie Gomez',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Charlie Gomez'
-                }
-            },
-            {
-                label: 'Related To',
-                value: 'Tesla Cloudhub + Anypoint Connectors',
-                type: 'url',
-                typeAttributes: {
-                    label: 'Tesla Cloudhub + Anypoint Connectors'
-                }
-            },
-            {
-                label: 'Description',
-                value:
-                    'Need to finalize proposals and brand details before the meeting',
-                type: 'text'
-            }
-        ],
-        hasCheckbox: true,
-        isLoading: true,
-        closed: true
-    },
-    {
-        name: 'item6',
-        title: 'Create another task',
-        datetimeValue: 1621611000000,
-        href: '#',
-        iconName: 'standard:case',
-        hasCheckbox: true,
-        hasError: true
-    }
-];
-
-const ACTIONS = [
-    {
-        label: 'Add item',
-        name: 'add-item',
-        iconName: 'utility:add'
-    },
-    {
-        label: 'Edit item',
-        name: 'edit-item',
-        iconName: 'utility:edit'
-    }
-];
+import { actions, testItems } from '../__docs__/data';
 
 let element;
 describe('Activity Timeline', () => {
@@ -230,61 +49,36 @@ describe('Activity Timeline', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
-        expect(element.title).toBeUndefined();
-        expect(element.iconName).toBeUndefined();
-        expect(element.collapsible).toBeFalsy();
-        expect(element.closed).toBeFalsy();
-        expect(element.groupBy).toBeUndefined();
-        expect(element.items).toMatchObject([]);
+    it('Activity Timeline: Default attributes', () => {
         expect(element.actions).toMatchObject([]);
+        expect(element.closed).toBeFalsy();
+        expect(element.collapsible).toBeFalsy();
+        expect(element.groupBy).toBeUndefined();
+        expect(element.iconName).toBeUndefined();
+        expect(element.items).toMatchObject([]);
+        expect(element.sortedDirection).toBe('desc');
+        expect(element.title).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
-
-    // title
-    it('title', () => {
-        element.title = 'This is an title text';
-
-        return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector(
-                '.slds-section__title'
-            );
-            expect(title.textContent).toBe('This is an title text');
-        });
-    });
-
-    // icon name
-    it('icon name', () => {
-        element.iconName = 'standard:case';
+    // actions
+    it('Activity Timeline: actions', () => {
+        element.items = testItems;
+        element.actions = actions;
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+            const timelineItems = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
-            expect(icon.iconName).toBe('standard:case');
-        });
-    });
 
-    // collapsible
-    // needs to specify the group by to have sections
-    it('collapsible', () => {
-        element.items = ITEMS;
-        element.groupBy = 'week';
-        element.collapsible = true;
-
-        return Promise.resolve().then(() => {
-            const expandableSection = element.shadowRoot.querySelector(
-                'c-expandable-section'
-            );
-            expect(expandableSection.collapsible).toBeTruthy();
+            expect(timelineItems.actions).toMatchObject(actions);
         });
     });
 
     // closed
     // needs to specify the group by to have sections
-    it('closed', () => {
-        element.items = ITEMS;
+    it('Activity Timeline: closed', () => {
+        element.items = testItems;
         element.groupBy = 'week';
         element.closed = true;
 
@@ -296,9 +90,24 @@ describe('Activity Timeline', () => {
         });
     });
 
+    // collapsible
+    // needs to specify the group by to have sections
+    it('Activity Timeline: collapsible', () => {
+        element.items = testItems;
+        element.groupBy = 'week';
+        element.collapsible = true;
+
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelector(
+                'c-expandable-section'
+            );
+            expect(expandableSection.collapsible).toBeTruthy();
+        });
+    });
+
     // group by
-    it('group by undefined', () => {
-        element.items = ITEMS;
+    it('Activity Timeline: group by undefined', () => {
+        element.items = testItems;
 
         return Promise.resolve()
             .then(() => {})
@@ -310,48 +119,12 @@ describe('Activity Timeline', () => {
             });
     });
 
-    it('group by week', () => {
-        element.items = ITEMS;
+    it('Activity Timeline: group by week', () => {
+        element.items = testItems;
         element.groupBy = 'week';
         const firstSection = 'Upcoming';
-        const secondSection = 'Week: 21, 2021';
-        const thirdSection = 'Week: 20, 2021';
-        const fourthSection = 'Week: 17, 2021';
-
-        return Promise.resolve().then(() => {
-            const expandableSection = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-expandable-section"]'
-            );
-            expect(expandableSection).toHaveLength(4);
-            expect(expandableSection[0].title).toBe(firstSection);
-            expect(expandableSection[1].title).toBe(secondSection);
-            expect(expandableSection[2].title).toBe(thirdSection);
-            expect(expandableSection[3].title).toBe(fourthSection);
-        });
-    });
-
-    it('group by year', () => {
-        element.groupBy = 'year';
-        element.items = ITEMS;
-        const firstSection = 'Upcoming';
-        const secondSection = '2021';
-
-        return Promise.resolve().then(() => {
-            const expandableSection = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-expandable-section"]'
-            );
-            expect(expandableSection).toHaveLength(2);
-            expect(expandableSection[0].title).toBe(firstSection);
-            expect(expandableSection[1].title).toBe(secondSection);
-        });
-    });
-
-    it('group by month', () => {
-        element.groupBy = 'month';
-        element.items = ITEMS;
-        const firstSection = 'Upcoming';
-        const secondSection = 'May 2021';
-        const thirdSection = 'April 2021';
+        const secondSection = 'Week: 2, 2022';
+        const thirdSection = 'Week: 21, 2021';
 
         return Promise.resolve().then(() => {
             const expandableSection = element.shadowRoot.querySelectorAll(
@@ -364,8 +137,56 @@ describe('Activity Timeline', () => {
         });
     });
 
+    it('Activity Timeline: group by year', () => {
+        element.groupBy = 'year';
+        element.items = testItems;
+        const firstSection = 'Upcoming';
+        const secondSection = '2022';
+        const thirdSection = '2021';
+
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-expandable-section"]'
+            );
+            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+        });
+    });
+
+    it('Activity Timeline: group by month', () => {
+        element.groupBy = 'month';
+        element.items = testItems;
+        const firstSection = 'Upcoming';
+        const secondSection = 'January 2022';
+        const thirdSection = 'May 2021';
+
+        return Promise.resolve().then(() => {
+            const expandableSection = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-expandable-section"]'
+            );
+            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection[0].title).toBe(firstSection);
+            expect(expandableSection[1].title).toBe(secondSection);
+            expect(expandableSection[2].title).toBe(thirdSection);
+        });
+    });
+
+    // icon name
+    it('Activity Timeline: icon name', () => {
+        element.iconName = 'standard:case';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
+            expect(icon.iconName).toBe('standard:case');
+        });
+    });
+
     // items
-    it('items', () => {
+    it('Activity Timeline: items', () => {
         const ITEM = [
             {
                 name: 'item1',
@@ -393,16 +214,14 @@ describe('Activity Timeline', () => {
                     },
                     {
                         label: 'Description',
-                        value:
-                            'Adam seemed interested in closing this deal quickly! Let’s move.',
+                        value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
                         type: 'text'
                     }
                 ]
             },
             {
                 name: 'item2',
-                title:
-                    'Re: Mobile conversation on Monday with the new global team',
+                title: 'Re: Mobile conversation on Monday with the new global team',
                 description: 'You emailed Lea Chan',
                 datetimeValue: 1619013600000,
                 href: '#',
@@ -427,8 +246,7 @@ describe('Activity Timeline', () => {
                     },
                     {
                         label: 'Text Body',
-                        value:
-                            'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                        value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
                         type: 'text'
                     }
                 ],
@@ -439,13 +257,13 @@ describe('Activity Timeline', () => {
 
         element.items = ITEM;
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll(
+            const timelineItems = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
 
-            expect(items).toHaveLength(2);
+            expect(timelineItems).toHaveLength(2);
 
-            items.forEach((item, index) => {
+            timelineItems.forEach((item, index) => {
                 expect(item.title).toBe(ITEM[index].title);
                 expect(item.description).toBe(ITEM[index].description);
                 expect(item.datetimeValue).toBe(ITEM[index].datetimeValue);
@@ -474,17 +292,169 @@ describe('Activity Timeline', () => {
         });
     });
 
-    // actions
-    it('actions', () => {
-        element.items = ITEMS;
-        element.actions = ACTIONS;
+    // sorted direction
+    it('Activity Timeline: sorted direction desc', () => {
+        element.items = testItems;
+        const firstDateContent = '05/21/2025';
+        const secondDateContent = '05/21/2022';
+        const thirdDateContent = '01/01/2022';
+        const fourthDateContent = '05/21/2021';
 
         return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelector(
+            const firstDate = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-activity-timeline-item"]'
-            );
+            )[0];
+            const secondDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[1];
+            const thirdDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[2];
+            const fourthDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[3];
+            expect(firstDate.datetimeValue).toContain(firstDateContent);
+            expect(secondDate.datetimeValue).toContain(secondDateContent);
+            expect(thirdDate.datetimeValue).toContain(thirdDateContent);
+            expect(fourthDate.datetimeValue).toContain(fourthDateContent);
+        });
+    });
 
-            expect(items.actions).toMatchObject(ACTIONS);
+    it('Activity Timeline: sorted direction asc', () => {
+        element.items = testItems;
+        element.sortedDirection = 'asc';
+        const firstDateContent = '05/21/2021';
+        const secondDateContent = '01/01/2022';
+        const thirdDateContent = '05/21/2022';
+        const fourthDateContent = '05/21/2025';
+
+        return Promise.resolve().then(() => {
+            const firstDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[0];
+            const secondDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[1];
+            const thirdDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[2];
+            const fourthDate = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            )[3];
+            expect(firstDate.datetimeValue).toContain(firstDateContent);
+            expect(secondDate.datetimeValue).toContain(secondDateContent);
+            expect(thirdDate.datetimeValue).toContain(thirdDateContent);
+            expect(fourthDate.datetimeValue).toContain(fourthDateContent);
+        });
+    });
+
+    // title
+    it('Activity Timeline: title', () => {
+        element.title = 'This is an title text';
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector(
+                '.slds-section__title'
+            );
+            expect(title.textContent).toBe('This is an title text');
+        });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // check
+    it('Activity Timeline: check event', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call'
+            }
+        ];
+        element.items = ITEM;
+        const handler = jest.fn();
+        element.addEventListener('check', handler);
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-activity-timeline-item'
+            );
+            item.dispatchEvent(
+                new CustomEvent('check', {
+                    detail: {
+                        checked: true
+                    }
+                })
+            );
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
+            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('Activity Timeline: button clicked event', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call',
+                buttonLabel: 'button'
+            }
+        ];
+        element.items = ITEM;
+
+        const handler = jest.fn();
+        element.addEventListener('buttonclick', handler);
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-activity-timeline-item'
+            );
+            item.dispatchEvent(new CustomEvent('buttonclick'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // action clicked
+    it('Activity Timeline: action clicked event', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call'
+            }
+        ];
+        element.items = ITEM;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                'c-primitive-activity-timeline-item'
+            );
+            item.dispatchEvent(new CustomEvent('actionclick'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });
