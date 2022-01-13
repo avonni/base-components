@@ -55,7 +55,7 @@
             {label}
         </legend>
         <div class="slds-form-element__control">
-            <template for:each={listItems} for:item="item">
+            <template for:each={computedListItems} for:item="item">
                 <div class={verticalVisualPickerClass} key={item.key}>
                     <input
                         type={type}
@@ -73,7 +73,7 @@
                             <template if:false={hideCheckMark}>
                                 <span
                                     if:true={isCoverable}
-                                    class={selectedClass}
+                                    class="slds-is-selected"
                                 >
                                     <lightning-icon
                                         icon-name="utility:check"

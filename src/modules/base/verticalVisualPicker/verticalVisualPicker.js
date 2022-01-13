@@ -249,7 +249,12 @@ export default class VerticalVisualPicker extends LightningElement {
         return this._variant === 'coverable';
     }
 
-    get listItems() {
+    /**
+     * Computed list of items for vertical visual picker.
+     *
+     * @return {object[]} result
+     */
+    get computedListItems() {
         return this.items.map((item, index) => {
             let {
                 title,
@@ -346,15 +351,6 @@ export default class VerticalVisualPicker extends LightningElement {
                     this._variant === 'coverable' && this._hideCheckMark
             })
             .toString();
-    }
-
-    /**
-     * Compute selected class styling.
-     *
-     * @type {string}
-     */
-    get selectedClass() {
-        return this._variant === 'coverable' ? 'slds-is-selected' : '';
     }
 
     /**

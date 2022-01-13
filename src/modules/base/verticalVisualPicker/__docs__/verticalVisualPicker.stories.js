@@ -188,16 +188,17 @@ Base.args = {
 export const BaseWithoutIcon = Template.bind({});
 BaseWithoutIcon.args = {
     name: 'Vertical Visual Picker',
-    label: 'Base without icons',
-    items: itemsWithoutIcon
+    label: 'Base without icon',
+    items: itemsWithoutIcon,
+    variant: 'coverable',
+    value: 'lightning-professional'
 };
 
 export const BaseWithImages = Template.bind({});
 BaseWithImages.args = {
     name: 'Vertical Visual Picker',
     label: 'Base with images',
-    items: itemsWithImages,
-    value: 'lightning-professional'
+    items: itemsWithImages
 };
 
 export const LargeWithImages = Template.bind({});
@@ -205,7 +206,9 @@ LargeWithImages.args = {
     name: 'Vertical Visual Picker',
     label: 'Large with images',
     items: itemsWithImagesRight,
-    size: 'large'
+    size: 'large',
+    type: 'checkbox',
+    value: ['sales-cloud', 'einstein-analytics']
 };
 
 export const ResponsiveWithImages = Template.bind({});

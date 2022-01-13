@@ -3,8 +3,7 @@ export const itemsWithIcons = [
         title: 'Lightning Professional',
         description: 'Complete service CRM for teams of any size.',
         value: 'lightning-professional',
-        iconName: 'standard:user',
-        iconSize: 'medium'
+        iconName: 'standard:user'
     },
     {
         title: 'Lightning Enterprise',
