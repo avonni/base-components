@@ -3,19 +3,28 @@ export const ITEMS = [
         label: 'Item 1',
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5',
+        avatar: {
+            fallbackIconName: 'custom:custom5',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         imageSrc:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 2',
-        avatarFallbackIconName: 'custom:custom9',
+        avatar: {
+            fallbackIconName: 'custom:custom9',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         imageSrc:
             'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg'
     },
     {
         label: 'Item 3',
-        avatarFallbackIconName: 'custom:custom1',
+        avatar: {
+            fallbackIconName: 'custom:custom1',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        },
         avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
     },
@@ -24,7 +33,10 @@ export const ITEMS = [
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom51',
+        avatar: {
+            fallbackIconName: 'custom:custom11',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         imageSrc:
             'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
     }

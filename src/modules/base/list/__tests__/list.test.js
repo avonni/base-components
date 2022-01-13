@@ -59,7 +59,7 @@ describe('List', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('List: Default attributes', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.alternativeText).toBeUndefined();
         expect(element.imageWidth).toBe('large');
@@ -73,7 +73,7 @@ describe('List', () => {
     /* ----- ATTRIBUTES ----- */
 
     // alternative-text
-    it('alternativeText', () => {
+    it('List: AlternativeText', () => {
         element.alternativeText = 'A string alternative text';
 
         return Promise.resolve().then(() => {
@@ -85,7 +85,7 @@ describe('List', () => {
     });
 
     // items
-    it('items', () => {
+    it('List: Items', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -108,23 +108,28 @@ describe('List', () => {
                     '[data-element-id="avonni-avatar"]'
                 );
                 expect(avatar.fallbackIconName).toBe(
-                    ITEMS[index].avatarFallbackIconName
+                    ITEMS[index].avatar.fallbackIconName
                 );
-                expect(avatar.src).toBe(ITEMS[index].avatarSrc);
+                expect(avatar.src).toBe(ITEMS[index].avatar.src);
             });
 
-            [1, 3, 4].forEach((index) => {
+            [0, 1, 2, 4].forEach((index) => {
                 const item = items[index];
                 const avatar = item.querySelector(
                     '[data-element-id="avonni-avatar"]'
                 );
-                expect(avatar).toBeNull();
+                expect(avatar).toBeTruthy();
             });
+            const item = items[3];
+            const avatar = item.querySelector(
+                '[data-element-id="avonni-avatar"]'
+            );
+            expect(avatar).toBeNull();
         });
     });
 
     // label
-    it('label', () => {
+    it('List: Label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -136,7 +141,7 @@ describe('List', () => {
     });
 
     // divider
-    it('divider = around', () => {
+    it('List: Divider = around', () => {
         element.divider = 'around';
 
         return Promise.resolve().then(() => {
@@ -146,7 +151,7 @@ describe('List', () => {
             expect(menu.classList).toContain('slds-has-dividers_around');
         });
     });
-    it('divider = top', () => {
+    it('List: Divider = top', () => {
         element.divider = 'top';
 
         return Promise.resolve().then(() => {
@@ -156,7 +161,7 @@ describe('List', () => {
             expect(menu.classList).toContain('slds-has-dividers_top-space');
         });
     });
-    it('divider = bottom', () => {
+    it('List: Divider = bottom', () => {
         element.divider = 'bottom';
 
         return Promise.resolve().then(() => {
@@ -168,7 +173,7 @@ describe('List', () => {
     });
 
     // ACTIONS with BUTTON-MENU / BUTTON / BUTTON-ICON
-    it('actions button-menu', () => {
+    it('List: Actions button-menu', () => {
         element.items = ITEMS;
         element.actions = ACTIONS;
 
@@ -198,7 +203,7 @@ describe('List', () => {
             });
     });
 
-    it('action lightning-button', () => {
+    it('List: Action lightning-button', () => {
         element.items = ITEMS;
         element.actions = ACTION;
 
@@ -214,7 +219,7 @@ describe('List', () => {
         });
     });
 
-    it('action lightning-button-icon', () => {
+    it('List: Action lightning-button-icon', () => {
         element.items = ITEMS;
         element.actions = ACTION_NO_LABEL;
 
@@ -231,7 +236,7 @@ describe('List', () => {
 
     // sortable
     // Depends on items
-    it('sortable = false', () => {
+    it('List: Sortable = false', () => {
         element.sortable = false;
         element.items = ITEMS;
 
@@ -257,7 +262,7 @@ describe('List', () => {
         });
     });
 
-    it('sortable = true', () => {
+    it('List: Sortable = true', () => {
         element.sortable = true;
         element.items = ITEMS;
 
@@ -293,7 +298,7 @@ describe('List', () => {
 
     // sortable-icon-name
     // Depends on items and sortable
-    it('sortableIconName, with sortable = false', () => {
+    it('List: SortableIconName, with sortable = false', () => {
         element.sortableIconName = 'utility:apps';
         element.sortable = false;
         element.items = ITEMS_WITHOUT_ICONS;
@@ -306,7 +311,7 @@ describe('List', () => {
         });
     });
 
-    it('sortableIconName, with sortable = true', () => {
+    it('List: SortableIconName, with sortable = true', () => {
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
         element.items = ITEMS_WITHOUT_ICONS;
@@ -325,7 +330,7 @@ describe('List', () => {
 
     // sortable-icon-position
     // Depends on items, sortable and sortableIconName
-    it('sortableIconPosition = right', () => {
+    it('List: SortableIconPosition = right', () => {
         element.sortableIconName = 'utility:drag_and_drop';
         element.sortable = true;
         element.sortableIconPosition = 'right';
@@ -340,7 +345,7 @@ describe('List', () => {
         });
     });
 
-    it('sortableIconPosition = left', () => {
+    it('List: SortableIconPosition = left', () => {
         element.sortableIconName = 'utility:apps';
         element.sortable = true;
         element.sortableIconPosition = 'left';
@@ -355,7 +360,7 @@ describe('List', () => {
         });
     });
     /* images */
-    it('images presence', () => {
+    it('List: Images presence', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -366,7 +371,7 @@ describe('List', () => {
         });
     });
 
-    it('images width small', () => {
+    it('List: Images width small', () => {
         element.items = ITEMS;
         element.imageWidth = 'small';
 
@@ -380,7 +385,7 @@ describe('List', () => {
         });
     });
 
-    it('images width medium', () => {
+    it('List: Images width medium', () => {
         element.items = ITEMS;
         element.imageWidth = 'medium';
 
@@ -394,7 +399,7 @@ describe('List', () => {
         });
     });
 
-    it('images width large', () => {
+    it('List: Images width large', () => {
         element.items = ITEMS;
         element.imageWidth = 'large';
 
@@ -408,7 +413,7 @@ describe('List', () => {
         });
     });
 
-    it('images rounded on sortable icon right', () => {
+    it('List: Images rounded on sortable icon right', () => {
         element.items = ITEMS;
         element.imageWidth = 'large';
         element.divider = 'around';
@@ -436,7 +441,7 @@ describe('List', () => {
 
     // reset
     // Depends on items, sortable and the keyboard reorder
-    it('reset method', () => {
+    it('List: Reset method', () => {
         element.items = ITEMS;
         element.sortable = true;
 
@@ -480,7 +485,7 @@ describe('List', () => {
 
     // actionclick
     // Depends on items and actions
-    it('actionclick event, one action', () => {
+    it('List: Actionclick event, one action', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
@@ -503,7 +508,7 @@ describe('List', () => {
         });
     });
 
-    it('actionclick event, one icon action', () => {
+    it('List: Actionclick event, one icon action', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
@@ -528,7 +533,7 @@ describe('List', () => {
         });
     });
 
-    it('actionclick event, multiple action', () => {
+    it('List: Actionclick event, multiple action', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
         element.items = ITEMS;
@@ -559,7 +564,7 @@ describe('List', () => {
 
     // itemclick
     // Depends on items
-    it('itemclick event', () => {
+    it('List: Itemclick event', () => {
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
         element.items = ITEMS;
@@ -581,7 +586,7 @@ describe('List', () => {
         });
     });
 
-    it('itemclick event, fired with keyboard', () => {
+    it('List: Itemclick event, fired with keyboard', () => {
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
         element.items = ITEMS;
@@ -607,7 +612,7 @@ describe('List', () => {
 
     // reorder
     // Depends on items and sortable
-    it('reorder event, fired with keyboard', () => {
+    it('List: Reorder event, fired with keyboard', () => {
         const newOrder = [ITEMS[0], ITEMS[2], ITEMS[1], ITEMS[3], ITEMS[4]];
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
@@ -649,7 +654,7 @@ describe('List', () => {
         });
     });
 
-    it('reorder event, cancel a move with escape key', () => {
+    it('List: Reorder event, cancel a move with escape key', () => {
         const handler = jest.fn();
         element.addEventListener('reorder', handler);
         element.items = ITEMS;
