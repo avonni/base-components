@@ -282,6 +282,13 @@ export default class VerticalVisualPicker extends LightningElement {
                 'slds-border_left': iconIsLeft || imgIsLeft,
                 'slds-border_right': iconIsRight || imgIsRight
             });
+            console.log(tags);
+            const descriptionClass = classSet(
+                'slds-text-title avonni-vertical-visual-picker__item-description'
+            ).add({
+                'slds-line-clamp_x-small': tags,
+                'slds-line-clamp_small': !tags
+            });
             if (this.disabled) {
                 disabled = true;
             }
@@ -303,7 +310,8 @@ export default class VerticalVisualPicker extends LightningElement {
                 iconIsRight,
                 imgIsLeft,
                 imgIsRight,
-                bodyClass
+                bodyClass,
+                descriptionClass
             };
         });
     }

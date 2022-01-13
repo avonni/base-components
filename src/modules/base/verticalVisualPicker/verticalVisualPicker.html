@@ -102,21 +102,19 @@
                                     />
                                 </template>
                                 <span class={item.bodyClass}>
-                                    <span
+                                    <p
                                         class="
                                             slds-text-heading_medium
                                             avonni-vertical-visual-picker__item-title
                                             slds-m-bottom_x-small
+                                            slds-truncate
                                         "
-                                        >{item.title}</span
                                     >
-                                    <span
-                                        class="
-                                            slds-text-title
-                                            avonni-vertical-visual-picker__item-description
-                                        "
-                                        >{item.description}</span
-                                    >
+                                        {item.title}
+                                    </p>
+                                    <p class={item.descriptionClass}>
+                                        {item.description}
+                                    </p>
                                     <div
                                         if:true={item.tags}
                                         class="
