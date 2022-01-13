@@ -32,6 +32,7 @@
 
 import { VerticalVisualPicker } from '../__examples__/verticalVisualPicker';
 import {
+    items,
     itemsWithIcons,
     itemsWithoutIcon,
     itemsWithImages,
@@ -149,7 +150,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2])',
+                'Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2]',
             table: {
                 type: { summary: 'string | string[]' }
             }
@@ -161,7 +162,7 @@ export default {
             options: ['coverable', 'non-coverable'],
             defaultValue: 'non-coverable',
             description:
-                'Changes the appearance of the vertical visual picker. Valid values include coverable and non-coverable.',
+                'Changes the appearance of the vertical visual picker when selected. Valid values include coverable and non-coverable.',
             table: {
                 defaultValue: { summary: 'non-coverable' },
                 type: { summary: 'string' }
@@ -180,6 +181,14 @@ const Template = (args) => VerticalVisualPicker(args);
 export const Base = Template.bind({});
 Base.args = {
     name: 'Vertical Visual Picker',
+    label: 'Select an option',
+    items: items,
+    value: 'item-3'
+};
+
+export const BaseWithIcons = Template.bind({});
+BaseWithIcons.args = {
+    name: 'Vertical Visual Picker',
     label: 'Base with icons',
     items: itemsWithIcons,
     value: 'lightning-professional'
@@ -191,7 +200,9 @@ BaseWithoutIcon.args = {
     label: 'Base without icon',
     items: itemsWithoutIcon,
     variant: 'coverable',
-    value: 'lightning-professional'
+    value: 'lightning-professional',
+    type: 'checkbox',
+    required: true
 };
 
 export const BaseWithImages = Template.bind({});
@@ -224,5 +235,8 @@ ResponsiveWithImagesAndTags.args = {
     name: 'Vertical Visual Picker',
     label: 'Responsive with images and tags',
     items: itemsWithImagesAndTags,
-    size: 'responsive'
+    size: 'responsive',
+    variant: 'coverable',
+    hideCheckMark: true,
+    value: 'sales-cloud'
 };

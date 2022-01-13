@@ -1,8 +1,6 @@
 import { LightningElement } from 'lwc';
 
 export default class VerticalVisualPickerResponsiveWithImagesAndTags extends LightningElement {
-    value = ['sales-cloud', 'einstein-analytics'];
-
     items = [
         {
             title: 'Sales Cloud',

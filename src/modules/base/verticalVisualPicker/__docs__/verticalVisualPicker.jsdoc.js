@@ -5,14 +5,14 @@
  * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
  * @property {string} iconAlternativeText The assistive text for the icon.
  * @property {string} iconName The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
- * @property {string} iconPosition If present, sets the position of the icon. Valid values include right and left. Default is left.
+ * @property {string} iconPosition Sets the position of the icon. Valid values include right and left. Default is left.
  * @property {string} iconSize The size of the icon. Valid values include xx-small, x-small, small, medium and large. Default is medium.
  * @property {string} imgSrc The URL of the image.
  * @property {string} imgPosition Sets the position of the image if present. Valid values include right and left. Default is left.
  * @property {string} imgAlternativeText The assistive text for the image.
  * @property {string[]} tags Array of tags.
  * @property {string} title Title of the item.
- * @property {string} value Unique value of the item.
+ * @property {string} value Required. A unique value for the item.
  */
 /**
  * @typedef {Object} VerticalVisualPickerTag

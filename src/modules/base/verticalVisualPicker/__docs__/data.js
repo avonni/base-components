@@ -1,3 +1,24 @@
+export const items = [
+    {
+        title: 'Item Text',
+        description:
+            'Some optional item description to help the user better understand what this option is about.',
+        value: 'item-1'
+    },
+    {
+        title: 'Item Text',
+        description:
+            'Some optional item description to help the user better understand what this option is about.',
+        value: 'item-2'
+    },
+    {
+        title: 'Item Text',
+        description:
+            'Some optional item description to help the user better understand what this option is about.',
+        value: 'item-3'
+    }
+];
+
 export const itemsWithIcons = [
     {
         title: 'Lightning Professional',
