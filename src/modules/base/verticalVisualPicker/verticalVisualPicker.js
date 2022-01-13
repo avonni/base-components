@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 
 const ITEM_SIZES = {
     valid: ['small', 'medium', 'large', 'responsive'],
@@ -97,6 +98,13 @@ export default class VerticalVisualPicker extends LightningElement {
     _type = ITEM_TYPES.default;
     _variant = ITEM_VARIANTS.default;
     _value = [];
+
+    helpMessage;
+
+    connectedCallback() {
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+    }
 
     renderedCallback() {
         const inputs = this.template.querySelectorAll(
@@ -350,27 +358,138 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        this.template.querySelector('[data-element-id="input"]').blur();
+    }
+
+    /**
+     * Checks if the input is valid.
+     *
+     * @returns {boolean} Indicates whether the element meets all constraint validations.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.template.querySelector('[data-element-id="input"]').focus();
+    }
+
+    /**
+     * Displays the error messages and returns false if the input is invalid.
+     * If the input is valid, reportValidity() clears displayed error messages and returns true.
+     *
+     * @returns {boolean} - The validity status of the input fields.
+     * @public
+     */
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
+        });
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     *
+     * @param {string} message - The string that describes the error.
+     * If message is an empty string, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when checkValidity() is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    /**
+     * Validation with constraint Api.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /**
+     * Dispatches the blur event.
+     */
+    handleBlur() {
+        this.interactingState.leave();
+
+        /**
+         * The event fired when the focus is removed from the input toggle.
+         *
+         * @event
+         * @name blur
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('blur'));
+    }
+
+    /**
+     * Dispatches the focus event.
+     */
+    handleFocus() {
+        this.interactingState.enter();
+
+        /**
+         * The event fired when you focus the input toggle.
+         *
+         * @event
+         * @name focus
+         * @public
+         */
+        this.dispatchEvent(new CustomEvent('focus'));
+    }
+
+    /**
      * Change event handler.
      *
      * @param {Event} event
      */
     handleChange(event) {
         event.stopPropagation();
-
-        if (this._variant === 'coverable' && this._hideCheckMark) {
-            const labels = this.template.querySelectorAll(
-                '[data-element-id="label"]'
-            );
-
-            labels.forEach((label) => {
-                let icon = label.querySelector('lightning-icon');
-                if (label.previousSibling.checked) {
-                    icon.variant = 'inverse';
-                } else {
-                    icon.variant = '';
-                }
-            });
-        }
 
         const inputs = this.template.querySelectorAll(
             '[data-element-id="input"]'

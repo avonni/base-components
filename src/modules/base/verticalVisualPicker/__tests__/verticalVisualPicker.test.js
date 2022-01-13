@@ -59,6 +59,7 @@ describe('VerticalVisualPicker', () => {
         expect(element.required).toBeFalsy();
         expect(element.size).toBe('medium');
         expect(element.type).toBe('radio');
+        expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('non-coverable');
     });
@@ -176,6 +177,27 @@ describe('VerticalVisualPicker', () => {
             );
             expect(label.textContent).toBe('A string label');
         });
+    });
+
+    // message-when-value-missing
+    // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
+    it('Vertical visual picker: messageWhenValueMissing', () => {
+        element.required = true;
+        element.items = itemsWithIcons;
+        element.messageWhenValueMissing = 'Missing value!';
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const message = element.shadowRoot.querySelector(
+                    '.slds-form-element__help'
+                );
+                expect(message.textContent).toBe('Missing value!');
+            });
     });
 
     // name
@@ -496,6 +518,89 @@ describe('VerticalVisualPicker', () => {
             );
             expect(coverableClass).toHaveLength(4);
         });
+    });
+
+    /* ----- METHODS ----- */
+
+    // Method focus
+    it('Vertical visual picker: method: focus', () => {
+        let focusEvent = false;
+        element.items = itemsWithIcons;
+
+        return Promise.resolve().then(() => {
+            const item = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            item.addEventListener('focus', () => {
+                focusEvent = true;
+            });
+            item.focus();
+            expect(focusEvent).toBeTruthy();
+        });
+    });
+
+    // Method blur
+    it('Vertical visual picker: method: blur', () => {
+        let blurEvent = false;
+        element.items = itemsWithIcons;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll('input');
+            const item = items[0];
+
+            item.focus();
+
+            item.addEventListener('blur', () => {
+                blurEvent = true;
+            });
+
+            item.blur();
+            expect(blurEvent).toBeTruthy();
+        });
+    });
+
+    // reportValidity
+    // Depends on required
+    it('Vertical visual picker: reportValidity method', () => {
+        element.required = true;
+        element.reportValidity();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('Vertical visual picker: showHelpMessageIfInvalid method', () => {
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // checkValidity
+    it('Vertical visual picker: checkValidity method', () => {
+        const spy = jest.spyOn(element, 'checkValidity');
+
+        element.checkValidity();
+        expect(spy).toHaveBeenCalled();
+    });
+
+    // setCustomValidity
+    it('Vertical visual picker: setCustomValidity method', () => {
+        const spy = jest.spyOn(element, 'setCustomValidity');
+
+        element.setCustomValidity('Something');
+        expect(spy).toHaveBeenCalled();
     });
 
     /* ----- EVENTS ----- */
