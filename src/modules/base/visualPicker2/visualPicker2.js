@@ -355,15 +355,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Compute selected class styling.
-     *
-     * @type {string}
-     */
-    get selectedClass() {
-        return this._variant === 'coverable' ? 'slds-is-selected' : '';
-    }
-
-    /**
      * Compute NOT selected class styling.
      *
      * @type {string}

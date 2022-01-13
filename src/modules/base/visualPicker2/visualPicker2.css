@@ -155,7 +155,12 @@
 
 .avonni-visual-picker__figure-title-top {
     width: 100%;
-    border-bottom: 1px solid black;
+    border-bottom: 0px solid #dddbda;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
 }
 
 /*-- figure description --*/
