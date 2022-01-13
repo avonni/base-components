@@ -1,4 +1,4 @@
-export const items = [
+export const baseItems = [
     {
         title: 'Item Text',
         description:

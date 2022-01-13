@@ -1,6 +1,8 @@
 import { LightningElement } from 'lwc';
 
 export default class VerticalVisualPickerBaseWithoutIcon extends LightningElement {
+    value = ['lightning-professional', 'lightning-unlimited'];
+
     items = [
         {
             title: 'Lightning Professional',

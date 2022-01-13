@@ -32,7 +32,7 @@
 
 import { VerticalVisualPicker } from '../__examples__/verticalVisualPicker';
 import {
-    items,
+    baseItems,
     itemsWithIcons,
     itemsWithoutIcon,
     itemsWithImages,
@@ -182,7 +182,7 @@ export const Base = Template.bind({});
 Base.args = {
     name: 'Vertical Visual Picker',
     label: 'Select an option',
-    items: items,
+    items: baseItems,
     value: 'item-3'
 };
 
@@ -194,22 +194,22 @@ BaseWithIcons.args = {
     value: 'lightning-professional'
 };
 
-export const BaseWithoutIcon = Template.bind({});
-BaseWithoutIcon.args = {
-    name: 'Vertical Visual Picker',
-    label: 'Base without icon',
-    items: itemsWithoutIcon,
-    variant: 'coverable',
-    value: 'lightning-professional',
-    type: 'checkbox',
-    required: true
-};
-
 export const BaseWithImages = Template.bind({});
 BaseWithImages.args = {
     name: 'Vertical Visual Picker',
     label: 'Base with images',
     items: itemsWithImages
+};
+
+export const CoverableCheckbox = Template.bind({});
+CoverableCheckbox.args = {
+    name: 'Vertical Visual Picker',
+    label: 'Coverable Checkbox',
+    items: itemsWithoutIcon,
+    variant: 'coverable',
+    value: ['lightning-professional', 'lightning-unlimited'],
+    type: 'checkbox',
+    required: true
 };
 
 export const LargeWithImages = Template.bind({});
