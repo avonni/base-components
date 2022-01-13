@@ -167,6 +167,10 @@
             "path": "src/modules/base/heroBanner/heroBanner.js"
         },
         {
+            "name": "c/iconPicker",
+            "path": "src/modules/base/iconPicker/iconPicker.js"
+        },
+        {
             "name": "c/iconUtils",
             "path": "src/modules/base/iconUtils/iconUtils.js"
         },
@@ -471,6 +475,10 @@
             "path": "src/modules/base/summaryDetail/summaryDetail.js"
         },
         {
+            "name": "c/tabBar",
+            "path": "src/modules/base/tabBar/tabBar.js"
+        },
+        {
             "name": "c/timer",
             "path": "src/modules/base/timer/timer.js"
         },
@@ -617,6 +625,10 @@
         {
             "name": "avonni/heroBanner",
             "path": "src/modules/base/heroBanner/heroBanner.js"
+        },
+        {
+            "name": "avonni/iconPicker",
+            "path": "src/modules/base/iconPicker/iconPicker.js"
         },
         {
             "name": "avonni/illustration",
@@ -767,6 +779,10 @@
             "path": "src/modules/base/summaryDetail/summaryDetail.js"
         },
         {
+            "name": "avonni/tabBar",
+            "path": "src/modules/base/tabBar/tabBar.js"
+        },
+        {
             "name": "avonni/timer",
             "path": "src/modules/base/timer/timer.js"
         },
@@ -828,6 +844,7 @@
         "avonni/filterMenu",
         "avonni/filterMenuGroup",
         "avonni/heroBanner",
+        "avonni/iconPicker",
         "avonni/illustration",
         "avonni/image",
         "avonni/inputChoiceSet",
@@ -864,6 +881,7 @@
         "avonni/splitterPane",
         "avonni/submenu",
         "avonni/summaryDetail",
+        "avonni/tabBar",
         "avonni/timer",
         "avonni/verticalProgressIndicator",
         "avonni/verticalProgressStep",

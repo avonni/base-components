@@ -144,7 +144,35 @@ const Template = (args) => List(args);
 const items = [
     {
         label: 'Item 1',
-        href: '',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 2',
+        href: '/path/to_somewhere',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 3',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 4',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    },
+    {
+        label: 'Item 5',
+        description:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    }
+];
+
+const itemsWithImages = [
+    {
+        label: 'Item 1',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -160,7 +188,6 @@ const items = [
     },
     {
         label: 'Item 3',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -168,49 +195,25 @@ const items = [
     },
     {
         label: 'Item 4',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
             { label: 'info 1', href: '' },
             { label: 'info 2', href: '' }
         ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ],
+        icons: ['utility:share', 'utility:refresh'],
         imageSrc:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 5',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
             { label: 'info 1', href: '' },
             { label: 'info 2', href: '' }
         ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ],
+        icons: ['utility:share', 'utility:refresh'],
         imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
     }
 ];
@@ -218,37 +221,45 @@ const items = [
 const itemsWithAvatars = [
     {
         label: 'Item 1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5'
+        avatar: {
+            fallbackIconName: 'custom:custom5',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        }
     },
     {
         label: 'Item 2',
-        avatarFallbackIconName: 'custom:custom9'
+        avatar: {
+            fallbackIconName: 'custom:custom9'
+        }
     },
     {
         label: 'Item 3',
-        avatarFallbackIconName: 'custom:custom1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        avatar: {
+            fallbackIconName: 'custom:custom1',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
+        }
     },
     {
         label: 'Item 4',
-        avatarFallbackIconName: 'custom:custom11'
+        avatar: {
+            fallbackIconName: 'custom:custom11'
+        }
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom51'
+        avatar: {
+            fallbackIconName: 'custom:custom51'
+        }
     }
 ];
 
 const itemsWithImagesAndAvatars = [
     {
         label: 'Item 1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom5',
-        href: '',
+        avatar: {
+            fallbackIconName: 'custom:custom5',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -256,9 +267,10 @@ const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 2',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom9',
+        avatar: {
+            fallbackIconName: 'custom:custom9',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         href: '/path/to_somewhere',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
@@ -267,7 +279,6 @@ const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 3',
-        href: '',
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
@@ -275,47 +286,30 @@ const itemsWithImagesAndAvatars = [
     },
     {
         label: 'Item 4',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        avatarFallbackIconName: 'custom:custom11',
-        href: '',
+        avatar: {
+            fallbackIconName: 'custom:custom11',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
+        },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [
             { label: 'info 1', href: '' },
             { label: 'info 2', href: '' }
         ],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            },
-            {
-                iconName: 'utility:refresh',
-                alternativeText: 'refresh button',
-                title: 'Refresh'
-            }
-        ],
+        icons: ['utility:share', 'utility:refresh'],
         imageSrc:
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 5',
-        avatarFallbackIconName: 'custom:custom1',
-        avatarSrc:
-            'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-        href: '',
+        avatar: {
+            fallbackIconName: 'custom:custom1',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+        },
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         infos: [{ label: 'info 1', href: '' }],
-        icons: [
-            {
-                iconName: 'utility:share',
-                alternativeText: 'share button',
-                title: 'Share'
-            }
-        ],
+        icons: ['utility:share'],
         imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
     }
 ];
@@ -341,78 +335,75 @@ const actions = [
     }
 ];
 
-const action = [
-    {
-        label: 'Completed',
-        name: 'completed-action',
-        iconName: 'utility:check',
-        disabled: false
-    }
-];
-
 export const Base = Template.bind({});
 Base.args = {
-    items: items
+    items
 };
 
-export const BaseWithDividerOnTop = Template.bind({});
-BaseWithDividerOnTop.args = {
-    items: items,
+export const DividerOnTop = Template.bind({});
+DividerOnTop.args = {
+    items,
     divider: 'top'
 };
 
-export const ListWithAvatars = Template.bind({});
-ListWithAvatars.args = {
+export const Images = Template.bind({});
+Images.args = {
+    items: itemsWithImages
+};
+
+export const Avatars = Template.bind({});
+Avatars.args = {
     label: 'List with icons',
     items: itemsWithAvatars,
     divider: 'around'
 };
 
-export const SortableList = Template.bind({});
-SortableList.args = {
-    label: 'Sortable list',
-    sortable: true,
-    items: items,
+export const Actions = Template.bind({});
+Actions.args = {
+    label: 'List with actions menu',
+    items,
+    actions,
     divider: 'around'
 };
 
-export const SortableListWithAvatars = Template.bind({});
-SortableListWithAvatars.args = {
-    label: 'Sortable list with Icons',
+export const Sortable = Template.bind({});
+Sortable.args = {
+    label: 'Sortable list',
+    sortable: true,
+    items,
+    divider: 'around'
+};
+
+export const SortableWithAvatars = Template.bind({});
+SortableWithAvatars.args = {
+    label: 'Sortable list with icons',
     items: itemsWithAvatars,
-    actions: actions,
+    actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'around'
 };
 
-export const SortableListWithAvatarsAndSingleAction = Template.bind({});
-SortableListWithAvatarsAndSingleAction.args = {
+export const SortableWithAvatarsAndSingleAction = Template.bind({});
+SortableWithAvatarsAndSingleAction.args = {
     label: 'Sortable list with Icons and Single Action',
     items: itemsWithAvatars,
-    actions: action,
+    actions: [actions[0]],
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,
     divider: 'top'
 };
 
-export const ListWithActions = Template.bind({});
-ListWithActions.args = {
-    label: 'List with actions menu',
-    items: items,
-    actions: actions,
-    divider: 'around'
-};
-
-export const SortableListWithImagesAndAvatars = Template.bind({});
-SortableListWithImagesAndAvatars.args = {
+export const SortableWithImagesAndAvatars = Template.bind({});
+SortableWithImagesAndAvatars.args = {
     label: 'Sortable list Images and Avatars with Icons',
     items: itemsWithImagesAndAvatars,
     actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',
     sortable: true,
-    divider: 'around'
+    divider: 'around',
+    imageWidth: 'medium'
 };

@@ -1,22 +1,32 @@
 /**
- * @typedef {Object} Item
+ * @typedef {Object} ListItem
  * @name items
- * @property {string} label Required. Label of the item.
- * @property {string} href The URL of the page the link goes to.
+ * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
  * @property {string} description Description of the item.
- * @property {object} infos List of additional information to display. Fields:- label: string- href: string
+ * @property {string} href The URL of the page the link goes to.
  * @property {string[]} icons List of iconName display next to the label.
- * @property {string} avatarSrc Image URL for the item avatar. If present, the avatar is displayed before the label.
- * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the avatar image fails to load. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
- * @property {string} imageSrc Image URL for the list item image. If present, the image is presented to the left of the list item.
+ * @property {string} imageSrc Image URL for the list item image. If present, the image is disaplyed to the left of the item.
+ * @property {object} infos List of additional information to display. Fields:- label: string- href: string
+ * @property {string} label Required. Label of the item.
  */
 /**
- * @typedef {Object} Action
+ * @typedef {Object} ListAction
  * @name actions
  * @property {string} label Required. The action label.
  * @property {string} name Required. The name of the action, which identifies the selected action.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format standard:opportunity. The icon is appended to the left of the label.
  * @property {boolean} disabled Specifies whether the action can be selected. If true, the action item is shown as disabled. This value defaults to false.
+ */
+/**
+ * @typedef {Object} ListAvatar
+ * @name avatar
+ * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
+ * @property {string} size Size of the avatar icon. Valid values are x-small, small, medium, large, x-large and xx-large. Defaults to medium.
+ * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
+ * @property {string} src Image URL.
+ * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
+ * @property {string} presence Presence of the user to display. Valid values include online, busy, focus, offline, blocked and away.
+ * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
  */
 
 /**
@@ -135,48 +145,4 @@
  * @name --avonni-list-item-around-border-radius
  * @default 0.25rem
  * @type radius
- */
-
-/**
- * @namespace examples
- */
-/**
- * @memberof examples
- * @name base
- * @storyId example-list--base
- */
-/**
- * @memberof examples
- * @name baseWithDividerOnTop
- * @storyId example-list--base-with-divider-on-top
- */
-/**
- * @memberof examples
- * @name listWithAvatars
- * @storyId example-list--list-with-avatars
- */
-/**
- * @memberof examples
- * @name sortableList
- * @storyId example-list--sortable-list
- */
-/**
- * @memberof examples
- * @name sortableListWithAvatars
- * @storyId example-list--sortable-list-with-avatars
- */
-/**
- * @memberof examples
- * @name sortableListWithAvatarsAndSingleAction
- * @storyId example-list--sortable-list-with-avatars-and-single-action
- */
-/**
- * @memberof examples
- * @name listWithActions
- * @storyId example-list--list-with-actions
- */
-/**
- * @memberof examples
- * @name sortableListWithImagesAndAvatars
- * @storyId example-list--sortable-list-with-images-and-avatars
  */

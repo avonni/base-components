@@ -1,7 +1,7 @@
 {
     "name": "@avonni/base-components",
     "description": "Base components",
-    "version": "0.0.22",
+    "version": "0.0.24",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
@@ -65,7 +65,9 @@
         "test:unit:debug": "lwc-services test:unit --debug",
         "test:unit:watch": "lwc-services test:unit --watch",
         "syncingRepositories": "bash ./scripts/syncingRepositories.sh",
+        "syncingRepositoriesManagePackage": "bash ./scripts/syncingRepositoriesManagePackage.sh",
         "chromatic": "npx chromatic build-storybook --project-token df555afc6c3b",
-        "doc": "./node_modules/jsdoc/jsdoc.js ./src/modules/base/$npm_config_comp --configure ./jsdoc/jsdoc.config.json"
+        "doc": "./node_modules/jsdoc/jsdoc.js ./src/modules/base/$npm_config_comp --configure ./jsdoc/jsdoc.config.json",
+        "newComponent": "node ./scripts/createNewComponent.js"
     }
 }

@@ -31,9 +31,9 @@
  */
 
 .avonni-qrcode__svg_color {
-    fill: var(--avonni-qr-code-color, #000000);
+    fill: var(--avonni-qrcode-color, #000000);
 }
 
 .avonni-qrcode__svg_background {
-    fill: var(--avonni-qr-code-color-background, #ffffff);
+    fill: var(--avonni-qrcode-color-background, #ffffff);
 }

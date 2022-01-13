@@ -76,8 +76,24 @@
 }
 
 .avonni-alert_base .avonni-alert__primitive-icon_color {
-    fill: var(--avonni-alert-base-icon-color-foreground, #ffffff);
+    --sds-c-icon-color-foreground: var(
+        --avonni-alert-base-icon-color-foreground
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-base-icon-color-foreground-default,
+        #ffffff
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-alert-base-icon-color-background
+    );
     background: var(--avonni-alert-base-icon-color-background, transparent);
+}
+
+.avonni-alert_base .avonni-alert__button-icon {
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-base-close-icon-color-foreground-default,
+        #ffffff
+    );
 }
 
 .avonni-alert_warning {
@@ -86,8 +102,24 @@
 }
 
 .avonni-alert_warning .avonni-alert__primitive-icon_color {
-    fill: var(--avonni-alert-warning-icon-color-foreground, #514f4d);
+    --sds-c-icon-color-foreground: var(
+        --avonni-alert-warning-icon-color-foreground
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-warning-icon-color-foreground-default,
+        #514f4d
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-alert-warning-icon-color-background
+    );
     background: var(--avonni-alert-warning-icon-color-background, transparent);
+}
+
+.avonni-alert_warning .avonni-alert__button-icon {
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-warning-close-icon-color-foreground-default,
+        #514f4d
+    );
 }
 
 .avonni-alert_error {
@@ -96,8 +128,24 @@
 }
 
 .avonni-alert_error .avonni-alert__primitive-icon_color {
-    fill: var(--avonni-alert-error-icon-color-foreground, #ffffff);
+    --sds-c-icon-color-foreground: var(
+        --avonni-alert-error-icon-color-foreground
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-error-icon-color-foreground-default,
+        #ffffff
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-alert-error-icon-color-background
+    );
     background: var(--avonni-alert-error-icon-color-background, transparent);
+}
+
+.avonni-alert_error .avonni-alert__button-icon {
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-error-close-icon-color-foreground-default,
+        #ffffff
+    );
 }
 
 .avonni-alert_offline {
@@ -106,6 +154,22 @@
 }
 
 .avonni-alert_offline .avonni-alert__primitive-icon_color {
-    fill: var(--avonni-alert-offline-icon-color-foreground, #ffffff);
+    --sds-c-icon-color-foreground: var(
+        --avonni-alert-offline-icon-color-foreground
+    );
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-offline-icon-color-foreground-default,
+        #ffffff
+    );
+    --sds-c-icon-color-background: var(
+        --avonni-alert-offline-icon-color-background
+    );
     background: var(--avonni-alert-offline-icon-color-background, transparent);
+}
+
+.avonni-alert_offline .avonni-alert__button-icon {
+    --sds-c-icon-color-foreground-default: var(
+        --avonni-alert-offline-close-icon-color-foreground-default,
+        #ffffff
+    );
 }

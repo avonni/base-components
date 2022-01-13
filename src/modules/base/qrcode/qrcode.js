@@ -51,10 +51,10 @@ const DEFAULT_BACKGROUND_COLOR = '#ffffff';
  * @public
  */
 export default class Qrcode extends LightningElement {
-    _background = DEFAULT_BACKGROUND_COLOR;
+    _background;
     _borderColor;
     _borderWidth = DEFAULT_BORDER_WIDTH;
-    _color = DEFAULT_COLOR;
+    _color;
     _encoding = QR_ENCODINGS.default;
     _errorCorrection = QR_ERROR_CORRECTIONS.default;
     _padding = DEFAULT_PADDING;
@@ -272,6 +272,13 @@ export default class Qrcode extends LightningElement {
             fallbackValue: QR_RENDER_AS.default,
             validValues: QR_RENDER_AS.valid
         });
+
+        this._color =
+            this._renderAs === 'canvas' && !this._color ? DEFAULT_COLOR : null;
+        this._background =
+            this._renderAs === 'canvas' && !this._background
+                ? DEFAULT_BACKGROUND_COLOR
+                : null;
 
         if (this._rendered) {
             this.redraw();

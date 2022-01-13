@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
 # Full path to base-components modules as exemple: (/Users/Documents/AVONNI/base-components/src/modules): 
-baseComponentsPath="/Users/jeanbaptisteverge/Documents/AvonniProjects/avonni-components/src/modules"
+baseComponentsPath="/Users/jeanbaptisteverge/Documents/GitHub/base-components/src/modules"
 
 # Full path to base-components-sfdx modules as exemple: (/Users/Documents/AVONNI/base-components-sfdx/src/modules): 
-baseComponentsSfdxPath="/Users/jeanbaptisteverge/Documents/AvonniProjects/base-components-sfdx/src/modules"
+baseComponentsSfdxPath="/Users/jeanbaptisteverge/Documents/GitHub/base-components-sfdx/src/modules"
 
 containsElement () {
   local e match="$1"
@@ -134,6 +134,8 @@ do
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.js' -exec sed -i '' "s/export default class /export default class $(tr '[:lower:]' '[:upper:]' <<< ${prefix:0:1})${prefix:1}/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.js' -exec sed -i '' "s/querySelector('c-/querySelector('c-avonni-/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/c-input-rich-text/lightning-input-rich-text/g" {} \;
+                find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<avonni-/<c-/g" {} \;
+                find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<\/avonni-/<\/c-/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<c-/<c-avonni-/g" {} \;
                 find "$(dirname "$folder")/${folderName}" -type f -name '*.html' -exec sed -i '' "s/<\/c-/<\/c-avonni-/g" {} \;
 

@@ -38,21 +38,23 @@ customElements.define(
 );
 
 export const ActivityTimeline = ({
-    title,
-    iconName,
-    collapsible,
+    actions,
     closed,
-    groupBy,
+    collapsible,
+    iconName,
     items,
-    actions
+    groupBy,
+    sortedDirection,
+    title
 }) => {
     const element = document.createElement('ac-activity-timeline');
-    element.title = title;
-    element.iconName = iconName;
-    element.collapsible = collapsible;
-    element.closed = closed;
-    element.groupBy = groupBy;
-    element.items = items;
     element.actions = actions;
+    element.closed = closed;
+    element.collapsible = collapsible;
+    element.groupBy = groupBy;
+    element.iconName = iconName;
+    element.items = items;
+    element.sortedDirection = sortedDirection;
+    element.title = title;
     return element;
 };

@@ -115,25 +115,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni--combobox-input-sizing-border-bottom
+ * @name --avonni-combobox-input-sizing-border-bottom
  * @default 1px
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni--combobox-input-sizing-border-left
+ * @name --avonni-combobox-input-sizing-border-left
  * @default 1px
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni--combobox-input-sizing-border-right
+ * @name --avonni-combobox-input-sizing-border-right
  * @default 1px
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni--combobox-input-sizing-border-top
+ * @name --avonni-combobox-input-sizing-border-top
  * @default 1px
  * @type sizing
  */

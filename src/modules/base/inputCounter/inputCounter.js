@@ -166,8 +166,6 @@ export default class InputCounter extends LightningElement {
     _value = null;
     _previousValue;
     helpMessage;
-    labelVariant;
-    labelFieldLevelHelp;
     init = false;
 
     renderedCallback() {
@@ -284,12 +282,7 @@ export default class InputCounter extends LightningElement {
         });
 
         if (this._variant === 'label-inline') {
-            this.labelVariant = 'label-hidden';
             this.classList.add('avonni-input-counter__flex-container');
-        } else {
-            this.labelVariant = this._variant;
-            this.labelFieldLevelHelp =
-                this._variant !== 'label-hidden' ? this.fieldLevelHelp : null;
         }
     }
 
@@ -390,40 +383,6 @@ export default class InputCounter extends LightningElement {
     }
 
     /**
-     * Button Increment class styling.
-     *
-     * @type {string}
-     */
-    get buttonIncrementClass() {
-        return classSet('slds-input__button_increment')
-            .add({
-                'avonni-input-counter_standard-top':
-                    this._variant !== 'label-inline' &&
-                    this._variant !== 'label-hidden',
-                'avonni-input-counter_hidden-top':
-                    this._variant === 'label-hidden'
-            })
-            .toString();
-    }
-
-    /**
-     * Button Decrement class styling.
-     *
-     * @type {string}
-     */
-    get buttonDecrementClass() {
-        return classSet('slds-input__button_decrement')
-            .add({
-                'avonni-input-counter_standard-top':
-                    this._variant !== 'label-inline' &&
-                    this._variant !== 'label-hidden',
-                'avonni-input-counter_hidden-top':
-                    this._variant === 'label-hidden'
-            })
-            .toString();
-    }
-
-    /**
      * Input class if readOnly.
      *
      * @type {string}
@@ -437,8 +396,8 @@ export default class InputCounter extends LightningElement {
      *
      * @type {boolean}
      */
-    get isInline() {
-        return this.variant === 'label-inline';
+    get hasLabel() {
+        return this.label && this._variant !== 'label-hidden';
     }
 
     /**

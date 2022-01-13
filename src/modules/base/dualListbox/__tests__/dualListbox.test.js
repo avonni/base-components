@@ -1015,4 +1015,53 @@ describe('DualListbox', () => {
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
+
+    // optionclick
+    it('optionclick event', () => {
+        const handler = jest.fn();
+        element.addEventListener('optionclick', handler);
+        element.options = Options;
+        element.value = [Options[0].value, Options[1].value];
+
+        return Promise.resolve().then(() => {
+            const options = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-source"]'
+            );
+            const selectedOptions = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-selected"]'
+            );
+            options[2].dispatchEvent(new CustomEvent('mouseup'));
+            selectedOptions[1].dispatchEvent(new CustomEvent('mouseup'));
+
+            expect(handler).toHaveBeenCalledTimes(2);
+            expect(handler.mock.calls[0][0].detail.value).toBe('5');
+            expect(handler.mock.calls[1][0].detail.value).toBe('2');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('optionclick event using the keyboard', () => {
+        const handler = jest.fn();
+        element.addEventListener('optionclick', handler);
+        element.options = Options;
+
+        return Promise.resolve().then(() => {
+            const options = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-source"]'
+            );
+
+            const event = new CustomEvent('keydown');
+            event.key = ' ';
+            event.keyCode = 32;
+            options[1].dispatchEvent(event);
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe('2');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
 });

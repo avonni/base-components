@@ -25,13 +25,23 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-base-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-base-icon-color-foreground-default
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-base-close-icon-color-foreground-default
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-base-icon-color-background
- * @default transparent
  * @type color
  */
 /**
@@ -49,13 +59,23 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-warning-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-warning-icon-color-foreground-default
  * @default #514f4d
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-warning-icon-color-background
- * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-warning-close-icon-color-foreground-default
+ * @default #514f4d
  * @type color
  */
 /**
@@ -73,13 +93,23 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-error-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-error-icon-color-foreground-default
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-error-icon-color-background
- * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-error-close-icon-color-foreground-default
+ * @default #ffffff
  * @type color
  */
 /**
@@ -97,13 +127,23 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-offline-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-offline-icon-color-foreground-default
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-offline-icon-color-background
- * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-alert-offline-close-icon-color-foreground-default
+ * @default #ffffff
  * @type color
  */
 /**

@@ -31,10 +31,6 @@
  */
 
 import { Confetti } from '../__examples__/confetti';
-import { html } from 'lit-html';
-import Button from 'lightning/button';
-
-customElements.define('ac-lightning-button', Button.CustomElementConstructor);
 
 export default {
     title: 'Example/Confetti',
@@ -103,26 +99,32 @@ export default {
     }
 };
 
-const Template = (args) => {
-    let component = Confetti(args);
-
-    const element = document.createElement('ac-lightning-button');
-    element.onclick = () => component.fire();
-    element.label = 'FIRE';
-
-    return html` <div style="">${component} ${element}</div> `;
-};
+const Template = (args) => Confetti(args);
 
 export const Base = Template.bind({});
 
-Base.args = {
-    colors: [
-        '#529EE0',
-        '#F0E442',
-        '#FFB03B',
-        '#E16032',
-        '#4FD2D2',
-        '#006699',
-        '#E287B2'
-    ]
+export const RandomDirection = Template.bind({});
+RandomDirection.args = {
+    variant: 'random-direction'
+};
+
+export const Realistic = Template.bind({});
+Realistic.args = {
+    variant: 'realistic'
+};
+
+export const Fireworks = Template.bind({});
+Fireworks.args = {
+    variant: 'fireworks'
+};
+
+export const Snow = Template.bind({});
+Snow.args = {
+    colors: ["e63946","f1faee","a8dadc","457b9d","1d3557"],
+    variant: 'snow'
+};
+
+export const Pride = Template.bind({});
+Pride.args = {
+    variant: 'pride'
 };

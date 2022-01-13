@@ -96,7 +96,9 @@ describe('Input Counter', () => {
         element.name = 'This is a name text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.name).toBe('This is a name text');
         });
     });
@@ -106,8 +108,10 @@ describe('Input Counter', () => {
         element.label = 'This is a label text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
-            expect(input.label).toBe('This is a label text');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="input-counter-label"]'
+            );
+            expect(label.textContent).toBe('This is a label text');
         });
     });
 
@@ -116,10 +120,8 @@ describe('Input Counter', () => {
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
-            expect(input.label).toBe('This is a label text');
             const label = element.shadowRoot.querySelector(
-                '.slds-form-element__label'
+                '[data-element-id="input-counter-label"]'
             );
             expect(label.textContent).toBe('This is a label text');
         });
@@ -130,7 +132,9 @@ describe('Input Counter', () => {
         element.ariaLabel = 'Aria-label';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.ariaLabel).toBe('Aria-label');
         });
     });
@@ -158,7 +162,9 @@ describe('Input Counter', () => {
         element.step = 5;
         element.value = 0;
         element.fractionDigits = null;
-        const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
 
         return Promise.resolve()
             .then(() => {
@@ -178,7 +184,9 @@ describe('Input Counter', () => {
         element.step = 5;
         element.value = 0;
         element.fractionDigits = 2;
-        const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
 
         return Promise.resolve()
             .then(() => {
@@ -198,7 +206,9 @@ describe('Input Counter', () => {
         element.step = 5.55;
         element.value = 0;
         element.fractionDigits = 2;
-        const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
 
         return Promise.resolve()
             .then(() => {
@@ -219,7 +229,9 @@ describe('Input Counter', () => {
         element.step = 55.3658;
         element.value = 1256.789;
         element.fractionDigits = 3;
-        const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-input"]'
+        );
 
         return Promise.resolve()
             .then(() => {
@@ -260,7 +272,9 @@ describe('Input Counter', () => {
         element.type = 'number';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.formatter).toBe('number');
         });
     });
@@ -269,7 +283,9 @@ describe('Input Counter', () => {
         element.type = 'percent';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.formatter).toBe('percent');
         });
     });
@@ -278,7 +294,9 @@ describe('Input Counter', () => {
         element.type = 'currency';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.formatter).toBe('currency');
         });
     });
@@ -288,7 +306,9 @@ describe('Input Counter', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.disabled).toBeTruthy();
         });
     });
@@ -302,7 +322,9 @@ describe('Input Counter', () => {
                 '[data-element-id^="lightning-button-icon"]'
             );
             expect(buttonIcon).toHaveLength(0);
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
             expect(input.className).toBe('');
         });
     });
@@ -310,10 +332,11 @@ describe('Input Counter', () => {
     // required needs to be label inline
     it('Input Counter required', () => {
         element.required = true;
-        element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
-            const required = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const required = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
             expect(required).toBeTruthy();
             expect(required.textContent).toBe('*');
         });
@@ -330,18 +353,6 @@ describe('Input Counter', () => {
             );
             expect(helpText).toBeTruthy();
             expect(helpText.content).toBe('This is a field level help');
-        });
-    });
-
-    it('Input Counter field level help label hidden', () => {
-        element.fieldLevelHelp = 'This is a field level help';
-        element.variant = 'label-hidden';
-
-        return Promise.resolve().then(() => {
-            const helpText = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-helptext"]'
-            );
-            expect(helpText).toBeNull();
         });
     });
 
