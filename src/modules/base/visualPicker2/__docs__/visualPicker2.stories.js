@@ -31,7 +31,7 @@
  */
 
 import { VisualPicker } from '../__examples__/visualPicker2';
-import { items, iconTiles, itemsWithPictures } from './data';
+import { items, iconTiles, itemsWithPictures, itemsWithTags } from './data';
 
 export default {
     title: 'Example/VisualPicker2',
@@ -201,7 +201,7 @@ export const NoMarkDoubleExtraSmall = Template.bind({});
 NoMarkDoubleExtraSmall.args = {
     name: 'xx-small',
     label: 'Double extra small input with no check mark',
-    value: ['lightning-enterprise'],
+    value: 'lightning-enterprise',
     items: items,
     size: 'xx-small',
     hideCheckMark: true
@@ -221,6 +221,15 @@ ItemsWithPictures.args = {
     label: 'Choose an icon',
     name: 'Icon Tiles',
     items: itemsWithPictures,
+    size: 'medium',
+    ratio: '1-by-1'
+};
+
+export const ItemsWithTags = Template.bind({});
+ItemsWithTags.args = {
+    label: 'Choose an icon',
+    name: 'Icon Tiles',
+    items: itemsWithTags,
     size: 'medium',
     ratio: '1-by-1'
 };

@@ -126,7 +126,8 @@ export default class VisualPicker extends LightningElement {
      * @public
      * @default false
      */
-    @api get disabled() {
+    @api
+    get disabled() {
         return this._disabled;
     }
 
@@ -141,7 +142,8 @@ export default class VisualPicker extends LightningElement {
      * @public
      * @default false
      */
-    @api get hideCheckMark() {
+    @api
+    get hideCheckMark() {
         return this._hideCheckMark;
     }
 
@@ -156,7 +158,8 @@ export default class VisualPicker extends LightningElement {
      * @public
      * @default 1-by-1
      */
-    @api get ratio() {
+    @api
+    get ratio() {
         return this._ratio;
     }
 
@@ -174,7 +177,8 @@ export default class VisualPicker extends LightningElement {
      * @public
      * @default false
      */
-    @api get required() {
+    @api
+    get required() {
         return this._required;
     }
 
@@ -189,7 +193,8 @@ export default class VisualPicker extends LightningElement {
      * @public
      * @default medium
      */
-    @api get size() {
+    @api
+    get size() {
         return this._size;
     }
 
@@ -207,7 +212,8 @@ export default class VisualPicker extends LightningElement {
      * @public
      * @default radio
      */
-    @api get type() {
+    @api
+    get type() {
         return this._type;
     }
 
@@ -240,7 +246,8 @@ export default class VisualPicker extends LightningElement {
      * @public
      * @default non-coverable
      */
-    @api get variant() {
+    @api
+    get variant() {
         return this._variant;
     }
 
@@ -344,7 +351,7 @@ export default class VisualPicker extends LightningElement {
      */
     get visualPickerTypeClass() {
         return classSet(
-            'avonni-visual-picker__figure_alignment slds-is-relative avonni-visual-picker__figure'
+            'slds-visual-picker__figure avonni-visual-picker__figure slds-align_absolute-center'
         )
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',
