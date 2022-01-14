@@ -278,15 +278,17 @@ export default class VerticalVisualPicker extends LightningElement {
             const iconIsRight = iconPosition === 'right' && iconName;
             const imgIsLeft = imgPosition === 'left' && imgSrc;
             const imgIsRight = imgPosition === 'right' && imgSrc;
-            const bodyClass = classSet('slds-p-around_small').add({
+            const bodyClass = classSet(
+                'slds-p-around_small slds-has-flexi-truncate'
+            ).add({
                 'slds-border_left': iconIsLeft || imgIsLeft,
                 'slds-border_right': iconIsRight || imgIsRight
             });
-            console.log(tags);
             const descriptionClass = classSet(
                 'slds-text-title avonni-vertical-visual-picker__item-description'
             ).add({
-                'slds-line-clamp_x-small': tags,
+                'slds-truncate': tags && this._size === 'small',
+                'slds-line-clamp_x-small': tags && this._size !== 'small',
                 'slds-line-clamp_small': !tags
             });
             if (this.disabled) {

@@ -149,6 +149,10 @@
     );
 }
 
+.avonni-vertical-visual-picker_line-clamp {
+    line-clamp: 1;
+}
+
 /*-- tag --*/
 .avonni-vertical-visual-picker__tags-container {
     margin-top: 0.25rem;
