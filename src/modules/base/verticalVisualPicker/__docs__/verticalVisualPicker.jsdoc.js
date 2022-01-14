@@ -16,7 +16,7 @@
  */
 /**
  * @typedef {Object} VerticalVisualPickerTag
- * @name tags
+ * @name itemsTags
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
  */
