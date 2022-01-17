@@ -499,6 +499,10 @@
             "path": "src/modules/base/visualPicker/visualPicker.js"
         },
         {
+            "name": "c/visualPicker2",
+            "path": "src/modules/base/visualPicker2/visualPicker2.js"
+        },
+        {
             "name": "c/visualPickerLink",
             "path": "src/modules/base/visualPickerLink/visualPickerLink.js"
         },

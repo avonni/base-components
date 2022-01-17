@@ -29,3 +29,38 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+
+import { createElement } from 'lwc';
+import VisualPicker from 'c/visualPicker2';
+
+let element;
+describe('VisualPicker', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
+
+    beforeEach(() => {
+        element = createElement('base-visual-picker', {
+            is: VisualPicker
+        });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
+        expect(element.disabled).toBeFalsy();
+        expect(element.hideBorder).toBeFalsy();
+        expect(element.hideCheckMark).toBeFalsy();
+        expect(element.items).toMatchObject([]);
+        expect(element.label).toBeUndefined();
+        expect(element.messageWhenValueMissing).toBeUndefined();
+        expect(element.name).not.toBeUndefined();
+        expect(element.ratio).toBe('1-by-1');
+        expect(element.required).toBeFalsy();
+        expect(element.size).toBe('medium');
+        expect(element.type).toBe('radio');
+        expect(element.value).toMatchObject([]);
+        expect(element.variant).toBe('non-coverable');
+    });
+});

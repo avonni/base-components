@@ -193,8 +193,7 @@ export const Base = Template.bind({});
 Base.args = {
     label: 'This is a label',
     name: 'base',
-    items: items,
-    size: 'large'
+    items: items
 };
 
 export const NoMarkDoubleExtraSmall = Template.bind({});

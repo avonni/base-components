@@ -273,6 +273,10 @@
     font-size: var(--avonni-visual-picker-figure-title-font-size, 1.125rem);
 }
 
+.avonni-visual-picker_small .avonni-visual-picker__height {
+    height: 8rem;
+}
+
 .avonni-visual-picker_small
     .avonni-visual-picker__figure
     .avonni-visual-picker__item-description {
@@ -289,6 +293,10 @@
 
 .avonni-visual-picker_medium .avonni-visual-picker__figure {
     width: 12rem;
+    height: 12rem;
+}
+
+.avonni-visual-picker_medium .avonni-visual-picker__height {
     height: 12rem;
 }
 
@@ -311,6 +319,10 @@
     height: 15rem;
 }
 
+.avonni-visual-picker_large .avonni-visual-picker__height {
+    height: 15rem;
+}
+
 .avonni-visual-picker_large
     .avonni-visual-picker__figure
     .avonni-visual-picker__item-description {
@@ -327,6 +339,10 @@
 
 .avonni-visual-picker_x-large .avonni-visual-picker__figure {
     width: 18rem;
+    height: 18rem;
+}
+
+.avonni-visual-picker_x-large .avonni-visual-picker__height {
     height: 18rem;
 }
 
@@ -504,7 +520,7 @@ input[disabled] ~ label .slds-icon-action-check {
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 5px;
+    padding: var(--avonni-visual-picker-figure-image-padding-around, 5px);
     border-top: var(--avonni-visual-picker-figure-image-sizing-border, 1px)
         var(--avonni-visual-picker-figure-image-styling-border, solid)
         var(--avonni-visual-picker-figure-image-color-border, transparent);
@@ -529,4 +545,8 @@ input[disabled] ~ label .slds-icon-action-check {
     ~ label
     .avonni-visual-picker__figure:hover {
     cursor: not-allowed;
+}
+
+.avonni-visual-picker__items {
+    height: 33%;
 }

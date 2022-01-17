@@ -267,32 +267,27 @@ export default class VisualPicker extends LightningElement {
             let { title, description, disabled, figure, value } = item;
             const checked = this._value.includes(value);
             const key = `visual-picker-key-${index}`;
+            const iconPosition = figure.iconPosition || 'left';
+            const imgPosition = figure.imgPosition || 'top';
+            const titlePosition = figure.titlePosition || 'center';
             const iconIsTop =
-                (figure.iconPosition === 'top' ||
-                    (figure.iconPosition !== 'bottom' &&
-                        figure.iconPosition !== 'right' &&
-                        figure.iconPosition !== 'left')) &&
+                (iconPosition === 'top' || !this.isBiggerThanXSmall) &&
+                figure.iconName;
+            const iconIsBottom =
+                iconPosition === 'bottom' &&
                 figure.iconName &&
                 this.isBiggerThanXSmall;
-            const iconIsBottom =
-                (figure.iconPosition === 'bottom' && figure.iconName) ||
-                this._size === 'x-small' ||
-                (this._size === 'xx-small' && figure.iconName);
             const iconIsLeft =
-                figure.iconPosition === 'left' &&
+                iconPosition === 'left' &&
                 figure.iconName &&
                 this.isBiggerThanXSmall;
             const iconIsRight =
-                figure.iconPosition === 'right' &&
+                iconPosition === 'right' &&
                 figure.iconName &&
                 this.isBiggerThanXSmall;
-            const imgIsTop =
-                (figure.imgPosition === 'top' ||
-                    (figure.imgPosition !== 'bottom' &&
-                        figure.imgPosition !== 'center')) &&
-                figure.imgSrc;
-            const imgIsBottom =
-                figure.imgPosition === 'bottom' && figure.imgSrc;
+            const imgIsTop = imgPosition === 'top' && figure.imgSrc;
+            const imgIsBottom = imgPosition === 'bottom' && figure.imgSrc;
+            const imgIsCenter = imgPosition === 'center' && figure.imgSrc;
             const displayFigureTitle =
                 (this.isBiggerThanXSmall && figure.iconName) ||
                 !figure.iconName;
@@ -303,11 +298,11 @@ export default class VisualPicker extends LightningElement {
                 checked &&
                 this._variant === 'non-coverable';
             disabled = this._disabled ? true : disabled;
-            const titleIsTop = figure.titlePosition === 'top';
-            const titleIsCenter =
-                figure.titlePosition !== 'top' &&
-                figure.titlePosition !== 'bottom';
-            const titleIsBottom = figure.titlePosition === 'bottom';
+            const titleIsTop = titlePosition === 'top' && figure.title;
+            const titleIsCenter = titlePosition === 'center' && figure.title;
+            const titleIsBottom = titlePosition === 'bottom' && figure.title;
+            const displayDescription =
+                figure.description && this.isBiggerThanXSmall;
             return {
                 key,
                 title,
@@ -322,12 +317,14 @@ export default class VisualPicker extends LightningElement {
                 iconIsRight,
                 imgIsTop,
                 imgIsBottom,
+                imgIsCenter,
                 displayFigureTitle,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
                 titleIsTop,
                 titleIsBottom,
-                titleIsCenter
+                titleIsCenter,
+                displayDescription
             };
         });
     }
@@ -367,20 +364,12 @@ export default class VisualPicker extends LightningElement {
      * @type {string}
      */
     get notSelectedClass() {
-        return classSet()
+        return classSet('avonni-visual-picker__height')
             .add({
                 'slds-is-not-selected':
                     this._variant === 'coverable' && !this._hideCheckMark,
                 'avonni-is-not-selected':
                     this._variant === 'coverable' && this._hideCheckMark
-            })
-            .toString();
-    }
-
-    get computedBottomIconClass() {
-        return classSet('')
-            .add({
-                'slds-m-top_small': this.isBiggerThanXSmall
             })
             .toString();
     }

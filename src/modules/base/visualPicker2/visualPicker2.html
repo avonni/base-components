@@ -83,59 +83,31 @@
                             <span class={notSelectedClass}>
                                 <div
                                     class="
-                                        avonni-visual-picker__figure-title-top
+                                        avonni-visual-picker__items
+                                        slds-align_absolute-center
                                     "
-                                    if:true={item.titleIsTop}
                                 >
-                                    <span
-                                        class="
-                                            avonni-visual-picker__figure-title
-                                        "
-                                        if:true={item.displayFigureTitle}
-                                    >
-                                        {item.figure.title}
-                                    </span>
-                                </div>
-                                <template if:true={displayImg}>
-                                    <div
-                                        if:true={item.imgIsTop}
-                                        class="
-                                            avonni-visual-picker__figure-image-top-container
-                                        "
-                                    >
-                                        <img
-                                            src={item.figure.imgSrc}
-                                            alt={item.imgAlternativeText}
-                                            class="
-                                                avonni-visual-picker__figure-image-top
-                                            "
-                                        />
-                                    </div>
-                                </template>
-                                <template if:true={item.iconIsTop}>
-                                    <lightning-icon
-                                        icon-name={item.figure.iconName}
-                                        size={item.figure.iconSize}
-                                        alternative-text={item.figure.iconAlternativeText}
-                                        src={item.figure.iconSrc}
-                                        class="slds-m-bottom_small"
-                                    ></lightning-icon>
-                                </template>
-                                <div>
-                                    <div class="slds-media slds-media_center">
-                                        <template if:true={item.iconIsLeft}>
+                                    <div style="display: block">
+                                        <template if:true={item.iconIsTop}>
+                                            <lightning-icon
+                                                icon-name={item.figure.iconName}
+                                                size={item.figure.iconSize}
+                                                alternative-text={item.figure.iconAlternativeText}
+                                                src={item.figure.iconSrc}
+                                            ></lightning-icon>
+                                        </template>
+                                        <div
+                                            style="display: flex"
+                                            if:true={item.titleIsTop}
+                                        >
                                             <lightning-icon
                                                 icon-name={item.figure.iconName}
                                                 size={item.figure.iconSize}
                                                 alternative-text={item.figure.iconAlternativeText}
                                                 src={item.figure.iconSrc}
                                                 class="slds-m-right_small"
+                                                if:true={item.iconIsLeft}
                                             ></lightning-icon>
-                                        </template>
-                                        <div
-                                            class="slds-media__body"
-                                            if:true={item.titleIsCenter}
-                                        >
                                             <span
                                                 class="
                                                     avonni-visual-picker__figure-title
@@ -144,40 +116,96 @@
                                             >
                                                 {item.figure.title}
                                             </span>
-                                        </div>
-                                        <template if:true={item.iconIsRight}>
                                             <lightning-icon
                                                 icon-name={item.figure.iconName}
                                                 size={item.figure.iconSize}
                                                 alternative-text={item.figure.iconAlternativeText}
                                                 src={item.figure.iconSrc}
+                                                class="slds-m-left_x-small"
+                                                if:true={item.iconIsRight}
                                             ></lightning-icon>
+                                        </div>
+                                        <template if:true={displayImg}>
+                                            <div
+                                                if:true={item.imgIsTop}
+                                                class="
+                                                    avonni-visual-picker__figure-image-top-container
+                                                "
+                                            >
+                                                <img
+                                                    src={item.figure.imgSrc}
+                                                    alt={item.imgAlternativeText}
+                                                    class="
+                                                        avonni-visual-picker__figure-image-top
+                                                    "
+                                                />
+                                            </div>
                                         </template>
                                     </div>
-                                    <span
-                                        if:true={isBiggerThanXSmall}
-                                        class="
-                                            avonni-visual-picker__figure-description
-                                        "
-                                        >{item.figure.description}
-                                    </span>
                                 </div>
-                                <template if:true={item.iconIsBottom}>
-                                    <lightning-icon
-                                        icon-name={item.figure.iconName}
-                                        size={item.figure.iconSize}
-                                        alternative-text={item.figure.iconAlternativeText}
-                                        src={item.figure.iconSrc}
-                                        class={computedBottomIconClass}
-                                    ></lightning-icon>
-                                </template>
-                                <template if:true={item.titleIsBottom}>
+                                <div
+                                    class="
+                                        avonni-visual-picker__items
+                                        slds-align_absolute-center
+                                    "
+                                >
+                                    <div style="display: block">
+                                        <div
+                                            style="display: flex"
+                                            if:true={item.titleIsCenter}
+                                        >
+                                            <lightning-icon
+                                                icon-name={item.figure.iconName}
+                                                size={item.figure.iconSize}
+                                                alternative-text={item.figure.iconAlternativeText}
+                                                src={item.figure.iconSrc}
+                                                class="slds-m-right_small"
+                                                if:true={item.iconIsLeft}
+                                            ></lightning-icon>
+                                            <span
+                                                class="
+                                                    avonni-visual-picker__figure-title
+                                                "
+                                                if:true={item.displayFigureTitle}
+                                            >
+                                                {item.figure.title}
+                                            </span>
+                                            <lightning-icon
+                                                icon-name={item.figure.iconName}
+                                                size={item.figure.iconSize}
+                                                alternative-text={item.figure.iconAlternativeText}
+                                                src={item.figure.iconSrc}
+                                                class="slds-m-left_x-small"
+                                                if:true={item.iconIsRight}
+                                            ></lightning-icon>
+                                        </div>
+                                        <span
+                                            if:true={isBiggerThanXSmall}
+                                            class="
+                                                avonni-visual-picker__figure-description
+                                            "
+                                            >{item.figure.description}
+                                        </span>
+                                    </div>
+                                </div>
+                                <div
+                                    class="
+                                        avonni-visual-picker__items
+                                        slds-align_absolute-center
+                                    "
+                                >
                                     <div
-                                        class="
-                                            slds-media__body
-                                            avonni-visual-picker__tags-container
-                                        "
+                                        style="display: flex"
+                                        if:true={item.titleIsBottom}
                                     >
+                                        <lightning-icon
+                                            icon-name={item.figure.iconName}
+                                            size={item.figure.iconSize}
+                                            alternative-text={item.figure.iconAlternativeText}
+                                            src={item.figure.iconSrc}
+                                            class="slds-m-right_small"
+                                            if:true={item.iconIsLeft}
+                                        ></lightning-icon>
                                         <span
                                             class="
                                                 avonni-visual-picker__figure-title
@@ -186,46 +214,47 @@
                                         >
                                             {item.figure.title}
                                         </span>
+                                        <lightning-icon
+                                            icon-name={item.figure.iconName}
+                                            size={item.figure.iconSize}
+                                            alternative-text={item.figure.iconAlternativeText}
+                                            src={item.figure.iconSrc}
+                                            class="slds-m-left_x-small"
+                                            if:true={item.iconIsRight}
+                                        ></lightning-icon>
                                     </div>
-                                </template>
-                                <template if:true={displayTagsAndImg}>
-                                    <div
-                                        if:true={item.figure.tags}
-                                        class="
-                                            avonni-visual-picker__tags-container
-                                        "
-                                    >
-                                        <template
-                                            for:each={item.figure.tags}
-                                            for:item="tag"
-                                        >
-                                            <avonni-chip
-                                                key={tag.label}
-                                                label={tag.label}
-                                                variant={tag.variant}
-                                                class="
-                                                    avonni-visual-picker__tags
-                                                "
-                                            ></avonni-chip>
-                                        </template>
-                                    </div>
-                                </template>
-                                <template if:true={displayImg}>
-                                    <div
-                                        if:true={item.imgIsBottom}
-                                        class="
-                                            avonni-visual-picker__figure-image-bottom-container
-                                        "
-                                    >
-                                        <img
-                                            src={item.figure.imgSrc}
-                                            alt={item.imgAlternativeText}
+                                    <template if:true={item.iconIsBottom}>
+                                        <lightning-icon
+                                            icon-name={item.figure.iconName}
+                                            size={item.figure.iconSize}
+                                            alternative-text={item.figure.iconAlternativeText}
+                                            src={item.figure.iconSrc}
+                                            class="slds-m-top_small"
+                                        ></lightning-icon>
+                                    </template>
+                                    <template if:true={displayTagsAndImg}>
+                                        <div
+                                            if:true={item.figure.tags}
                                             class="
-                                                avonni-visual-picker__figure-image-bottom
+                                                avonni-visual-picker__tags-container
                                             "
-                                        />
-                                    </div>
-                                </template>
+                                        >
+                                            <template
+                                                for:each={item.figure.tags}
+                                                for:item="tag"
+                                            >
+                                                <avonni-chip
+                                                    key={tag.label}
+                                                    label={tag.label}
+                                                    variant={tag.variant}
+                                                    class="
+                                                        avonni-visual-picker__tags
+                                                    "
+                                                ></avonni-chip>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
                             </span>
                         </span>
                         <span class="slds-visual-picker__body">
