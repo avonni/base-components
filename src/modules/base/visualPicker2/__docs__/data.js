@@ -169,15 +169,21 @@ export const itemsWithTags = [
         description: 'Complete service CRM for teams of any size',
         value: 'lightning-professional',
         figure: {
+            titleAlignment: 'left',
             title: '$30',
+            titlePosition: 'top',
             description: 'USD/user/month *',
+            descriptionAlignment: 'right',
+            descriptionPosition: 'top',
             iconName: 'standard:user',
             iconPosition: 'right',
+            iconSize: 'small',
             tags: [
                 {
                     label: 'Best Value'
                 }
-            ]
+            ],
+            tagsAlignment: 'right'
         }
     },
     {

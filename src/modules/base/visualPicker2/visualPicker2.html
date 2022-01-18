@@ -81,6 +81,7 @@
                                 ></lightning-icon>
                             </span>
                             <span class={notSelectedClass}>
+                                <!-- Position Top -->
                                 <div class="avonni-visual-picker__items">
                                     <lightning-icon
                                         icon-name={item.figure.iconName}
@@ -103,9 +104,7 @@
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsTop}
-                                        class="
-                                            avonni-visual-picker__figure-description
-                                        "
+                                        class={item.descriptionClass}
                                         >{item.figure.description}
                                     </span>
                                     <template if:true={displayImg}>
@@ -125,6 +124,7 @@
                                         </div>
                                     </template>
                                 </div>
+                                <!-- Position Center -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
                                         title={item.figure.title}
@@ -140,12 +140,11 @@
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsCenter}
-                                        class="
-                                            avonni-visual-picker__figure-description
-                                        "
+                                        class={item.descriptionClass}
                                         >{item.figure.description}
                                     </span>
                                 </div>
+                                <!-- Position Bottom -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
                                         title={item.figure.title}
@@ -161,9 +160,7 @@
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsBottom}
-                                        class="
-                                            avonni-visual-picker__figure-description
-                                        "
+                                        class={item.descriptionClass}
                                         >{item.figure.description}
                                     </span>
                                     <lightning-icon
@@ -174,12 +171,10 @@
                                         class="slds-m-top_small"
                                         if:true={item.iconIsBottom}
                                     ></lightning-icon>
-                                    <template if:true={displayTagsAndImg}>
+                                    <template if:true={isBiggerThanXSmall}>
                                         <div
                                             if:true={item.figure.tags}
-                                            class="
-                                                avonni-visual-picker__tags-container
-                                            "
+                                            class={item.tagsClass}
                                         >
                                             <template
                                                 for:each={item.figure.tags}
@@ -199,7 +194,10 @@
                                 </div>
                             </span>
                         </span>
-                        <span class="slds-visual-picker__body">
+                        <span
+                            if:true={item.hasTitleOrDescription}
+                            class="slds-visual-picker__body"
+                        >
                             <span class="avonni-visual-picker__item-title"
                                 >{item.title}</span
                             >

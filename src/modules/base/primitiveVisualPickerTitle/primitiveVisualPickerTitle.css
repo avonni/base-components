@@ -38,6 +38,7 @@
     line-height: var(--lwc-lineHeightHeading, 1.25);
     white-space: nowrap;
     text-overflow: ellipsis;
+    align-self: center;
 }
 
 .avonni-visual-picker__figure-title_small {
@@ -45,19 +46,21 @@
     font-size: var(--avonni-visual-picker-figure-title-font-size, 1.125rem);
 }
 
-.avonni-visual-picker__figure-title_alignement-left {
+.avonni-visual-picker__figure-content_alignement-left {
     display: flex;
     justify-content: left;
-    margin-left: 0.25rem;
 }
 
-.avonni-visual-picker__figure-title_alignement-right {
+.avonni-visual-picker__figure-content_alignement-right {
     display: flex;
     justify-content: right;
-    margin-right: 0.25rem;
 }
 
-.avonni-visual-picker__figure-title_alignement-center {
+.avonni-visual-picker__figure-content_alignement-center {
     display: flex;
     justify-content: center;
+}
+
+.avonni-primitive-visual-picker-title__icon {
+    align-self: center;
 }

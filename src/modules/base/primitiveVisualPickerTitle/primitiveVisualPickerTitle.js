@@ -54,7 +54,7 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
     get computedContainerClass() {
         return classSet('')
             .add(
-                `avonni-visual-picker__figure-title_alignement-${this.titleAlignment}`
+                `avonni-visual-picker__figure-content_alignement-${this.titleAlignment}`
             )
             .toString();
     }

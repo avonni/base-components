@@ -267,9 +267,13 @@ export default class VisualPicker extends LightningElement {
             let { title, description, disabled, figure, value } = item;
             const key = `visual-picker-key-${index}`;
             const checked = this._value.includes(value);
+            const hasTitleOrDescription = !!(title || description);
             const iconPosition = figure.iconPosition || 'left';
             const titlePosition = figure.titlePosition || 'center';
             const titleAlignment = figure.titleAlignment || 'center';
+            const descriptionAlignment =
+                figure.descriptionAlignment || 'center';
+            const tagsAlignment = figure.tagsAlignment || 'center';
             const descriptionPosition = figure.descriptionPosition || 'center';
             const iconIsTop =
                 (iconPosition === 'top' || !this.isBiggerThanXSmall) &&
@@ -309,6 +313,16 @@ export default class VisualPicker extends LightningElement {
                 descriptionPosition === 'bottom' &&
                 figure.description &&
                 this.isBiggerThanXSmall;
+            let descriptionClass = classSet(
+                'avonni-visual-picker__figure-description'
+            ).add(
+                `avonni-visual-picker__figure-content_alignement-${descriptionAlignment}`
+            );
+            let tagsClass = classSet(
+                'avonni-visual-picker__tags-container'
+            ).add(
+                `avonni-visual-picker__figure-content_alignement-${tagsAlignment}`
+            );
             return {
                 key,
                 title,
@@ -318,6 +332,7 @@ export default class VisualPicker extends LightningElement {
                 figure,
                 value,
                 checked,
+                hasTitleOrDescription,
                 iconPosition,
                 iconIsTop,
                 iconIsBottom,
@@ -328,7 +343,9 @@ export default class VisualPicker extends LightningElement {
                 titleIsCenter,
                 descriptionIsTop,
                 descriptionIsBottom,
-                descriptionIsCenter
+                descriptionIsCenter,
+                descriptionClass,
+                tagsClass
             };
         });
     }
@@ -377,18 +394,6 @@ export default class VisualPicker extends LightningElement {
                     this._variant === 'coverable' && this._hideCheckMark
             })
             .toString();
-    }
-
-    get displayTagsAndImg() {
-        return (
-            (this._size === 'medium' ||
-                this._size === 'large' ||
-                this._size === 'x-large') &&
-            (this._ratio === '1-by-1' ||
-                this._ratio === '4-by-3' ||
-                this._ratio === '3-by-4' ||
-                this._ratio === '9-by-16')
-        );
     }
 
     get displayImg() {
