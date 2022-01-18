@@ -265,11 +265,12 @@ export default class VisualPicker extends LightningElement {
     get listItems() {
         return this.items.map((item, index) => {
             let { title, description, disabled, figure, value } = item;
-            const checked = this._value.includes(value);
             const key = `visual-picker-key-${index}`;
+            const checked = this._value.includes(value);
             const iconPosition = figure.iconPosition || 'left';
-            const imgPosition = figure.imgPosition || 'top';
             const titlePosition = figure.titlePosition || 'center';
+            const titleAlignment = figure.titleAlignment || 'center';
+            const descriptionPosition = figure.descriptionPosition || 'center';
             const iconIsTop =
                 (iconPosition === 'top' || !this.isBiggerThanXSmall) &&
                 figure.iconName;
@@ -277,20 +278,6 @@ export default class VisualPicker extends LightningElement {
                 iconPosition === 'bottom' &&
                 figure.iconName &&
                 this.isBiggerThanXSmall;
-            const iconIsLeft =
-                iconPosition === 'left' &&
-                figure.iconName &&
-                this.isBiggerThanXSmall;
-            const iconIsRight =
-                iconPosition === 'right' &&
-                figure.iconName &&
-                this.isBiggerThanXSmall;
-            const imgIsTop = imgPosition === 'top' && figure.imgSrc;
-            const imgIsBottom = imgPosition === 'bottom' && figure.imgSrc;
-            const imgIsCenter = imgPosition === 'center' && figure.imgSrc;
-            const displayFigureTitle =
-                (this.isBiggerThanXSmall && figure.iconName) ||
-                !figure.iconName;
             const displayCheckCoverable =
                 !this.hideCheckMark && checked && this._variant === 'coverable';
             const displayCheckNonCoverable =
@@ -298,33 +285,50 @@ export default class VisualPicker extends LightningElement {
                 checked &&
                 this._variant === 'non-coverable';
             disabled = this._disabled ? true : disabled;
-            const titleIsTop = titlePosition === 'top' && figure.title;
-            const titleIsCenter = titlePosition === 'center' && figure.title;
-            const titleIsBottom = titlePosition === 'bottom' && figure.title;
-            const displayDescription =
-                figure.description && this.isBiggerThanXSmall;
+            const titleIsTop =
+                titlePosition === 'top' &&
+                figure.title &&
+                this.isBiggerThanXSmall;
+            const titleIsCenter =
+                titlePosition === 'center' &&
+                figure.title &&
+                this.isBiggerThanXSmall;
+            const titleIsBottom =
+                titlePosition === 'bottom' &&
+                figure.title &&
+                this.isBiggerThanXSmall;
+            const descriptionIsTop =
+                descriptionPosition === 'top' &&
+                figure.description &&
+                this.isBiggerThanXSmall;
+            const descriptionIsCenter =
+                descriptionPosition === 'center' &&
+                figure.description &&
+                this.isBiggerThanXSmall;
+            const descriptionIsBottom =
+                descriptionPosition === 'bottom' &&
+                figure.description &&
+                this.isBiggerThanXSmall;
             return {
                 key,
                 title,
+                titleAlignment,
                 description,
                 disabled,
                 figure,
                 value,
                 checked,
+                iconPosition,
                 iconIsTop,
                 iconIsBottom,
-                iconIsLeft,
-                iconIsRight,
-                imgIsTop,
-                imgIsBottom,
-                imgIsCenter,
-                displayFigureTitle,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
                 titleIsTop,
                 titleIsBottom,
                 titleIsCenter,
-                displayDescription
+                descriptionIsTop,
+                descriptionIsBottom,
+                descriptionIsCenter
             };
         });
     }
@@ -348,12 +352,13 @@ export default class VisualPicker extends LightningElement {
      */
     get visualPickerTypeClass() {
         return classSet(
-            'slds-visual-picker__figure avonni-visual-picker__figure slds-align_absolute-center'
+            'slds-visual-picker__figure avonni-visual-picker__figure'
         )
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',
                 'slds-visual-picker__icon': this._variant === 'coverable',
-                'avonni-hide-check-mark': this._hideCheckMark
+                'avonni-hide-check-mark': this._hideCheckMark,
+                'slds-align_absolute-center': !this.isBiggerThanXSmall
             })
             .toString();
     }

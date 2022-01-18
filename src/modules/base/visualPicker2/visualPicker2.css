@@ -167,7 +167,6 @@
         1.25
     );
     white-space: nowrap;
-    overflow: hidden;
     text-overflow: ellipsis;
 }
 
@@ -179,22 +178,6 @@
 .avonni-visual-picker_xx-small .avonni-visual-picker__figure {
     width: 4rem;
     height: 4rem;
-}
-
-.avonni-visual-picker_xx-small
-    .avonni-visual-picker__figure
-    .avonni-visual-picker__figure-title {
-    font-weight: var(--avonni-visual-picker-figure-title-font-weight, 300);
-    font-size: var(--avonni-visual-picker-figure-title-font-size, 0.75rem);
-}
-
-.avonni-visual-picker_xx-small
-    .avonni-visual-picker__figure
-    .avonni-visual-picker__figure-description {
-    font-size: var(
-        --avonni-visual-picker-figure-description-font-size,
-        0.625rem
-    );
 }
 
 .avonni-visual-picker_xx-small
@@ -222,22 +205,6 @@
 .avonni-visual-picker_x-small .avonni-visual-picker__figure {
     width: 6rem;
     height: 6rem;
-}
-
-.avonni-visual-picker_x-small
-    .avonni-visual-picker__figure
-    .avonni-visual-picker__figure-title {
-    font-weight: var(--avonni-visual-picker-figure-title-font-weight, 300);
-    font-size: var(--avonni-visual-picker-figure-title-font-size, 1rem);
-}
-
-.avonni-visual-picker_x-small
-    .avonni-visual-picker__figure
-    .avonni-visual-picker__figure-description {
-    font-size: var(
-        --avonni-visual-picker-figure-description-font-size,
-        0.625rem
-    );
 }
 
 .avonni-visual-picker_x-small
@@ -273,7 +240,7 @@
     font-size: var(--avonni-visual-picker-figure-title-font-size, 1.125rem);
 }
 
-.avonni-visual-picker_small .avonni-visual-picker__height {
+.avonni-visual-picker_small.ratio-1-by-1 .avonni-visual-picker__height {
     height: 8rem;
 }
 
@@ -296,7 +263,7 @@
     height: 12rem;
 }
 
-.avonni-visual-picker_medium .avonni-visual-picker__height {
+.avonni-visual-picker_medium.ratio-1-by-1 .avonni-visual-picker__height {
     height: 12rem;
 }
 
@@ -319,7 +286,7 @@
     height: 15rem;
 }
 
-.avonni-visual-picker_large .avonni-visual-picker__height {
+.avonni-visual-picker_large.ratio-1-by-1 .avonni-visual-picker__height {
     height: 15rem;
 }
 
@@ -337,12 +304,9 @@
     width: 18rem;
 }
 
-.avonni-visual-picker_x-large .avonni-visual-picker__figure {
+.avonni-visual-picker_x-large .avonni-visual-picker__figure,
+.avonni-visual-picker_x-large.ratio-1-by-1 .avonni-visual-picker__height {
     width: 18rem;
-    height: 18rem;
-}
-
-.avonni-visual-picker_x-large .avonni-visual-picker__height {
     height: 18rem;
 }
 
@@ -403,15 +367,18 @@ input[disabled] ~ label .slds-icon-action-check {
     height: 4.5rem;
 }
 
-.avonni-visual-picker_small.ratio-4-by-3 .avonni-visual-picker__figure {
+.avonni-visual-picker_small.ratio-4-by-3 .avonni-visual-picker__figure,
+.avonni-visual-picker_small.ratio-4-by-3 .avonni-visual-picker__height {
     height: 6rem;
 }
 
-.avonni-visual-picker_medium.ratio-4-by-3 .avonni-visual-picker__figure {
+.avonni-visual-picker_medium.ratio-4-by-3 .avonni-visual-picker__figure,
+.avonni-visual-picker_medium.ratio-4-by-3 .avonni-visual-picker__height {
     height: 7.5rem;
 }
 
-.avonni-visual-picker_large.ratio-4-by-3 .avonni-visual-picker__figure {
+.avonni-visual-picker_large.ratio-4-by-3 .avonni-visual-picker__figure,
+.avonni-visual-picker_large.ratio-4-by-3 .avonni-visual-picker__height {
     height: 9rem;
 }
 
@@ -424,15 +391,18 @@ input[disabled] ~ label .slds-icon-action-check {
     height: 3.375rem;
 }
 
-.avonni-visual-picker_small.ratio-16-by-9 .avonni-visual-picker__figure {
+.avonni-visual-picker_small.ratio-16-by-9 .avonni-visual-picker__figure,
+.avonni-visual-picker_small.ratio-16-by-9 .avonni-visual-picker__height {
     height: 4.5rem;
 }
 
-.avonni-visual-picker_medium.ratio-16-by-9 .avonni-visual-picker__figure {
+.avonni-visual-picker_medium.ratio-16-by-9 .avonni-visual-picker__figure,
+.avonni-visual-picker_medium.ratio-16-by-9 .avonni-visual-picker__height {
     height: 5.625rem;
 }
 
-.avonni-visual-picker_large.ratio-16-by-9 .avonni-visual-picker__figure {
+.avonni-visual-picker_large.ratio-16-by-9 .avonni-visual-picker__figure,
+.avonni-visual-picker_large.ratio-16-by-9 .avonni-visual-picker__height {
     height: 6.75rem;
 }
 
@@ -445,19 +415,23 @@ input[disabled] ~ label .slds-icon-action-check {
     height: 8rem;
 }
 
-.avonni-visual-picker_small.ratio-3-by-4 .avonni-visual-picker__figure {
+.avonni-visual-picker_small.ratio-3-by-4 .avonni-visual-picker__figure,
+.avonni-visual-picker_small.ratio-3-by-4 .avonni-visual-picker__height {
     height: 10.66rem;
 }
 
-.avonni-visual-picker_medium.ratio-3-by-4 .avonni-visual-picker__figure {
+.avonni-visual-picker_medium.ratio-3-by-4 .avonni-visual-picker__figure,
+.avonni-visual-picker_medium.ratio-3-by-4 .avonni-visual-picker__height {
     height: 16rem;
 }
 
-.avonni-visual-picker_large.ratio-3-by-4 .avonni-visual-picker__figure {
+.avonni-visual-picker_large.ratio-3-by-4 .avonni-visual-picker__figure,
+.avonni-visual-picker_large.ratio-3-by-4 .avonni-visual-picker__height {
     height: 20rem;
 }
 
-.avonni-visual-picker_x-large.ratio-3-by-4 .avonni-visual-picker__figure {
+.avonni-visual-picker_x-large.ratio-3-by-4 .avonni-visual-picker__figure,
+.avonni-visual-picker_x-large.ratio-3-by-4 .avonni-visual-picker__height {
     height: 24rem;
 }
 
@@ -470,19 +444,23 @@ input[disabled] ~ label .slds-icon-action-check {
     height: 10.66rem;
 }
 
-.avonni-visual-picker_small.ratio-9-by-16 .avonni-visual-picker__figure {
+.avonni-visual-picker_small.ratio-9-by-16 .avonni-visual-picker__figure,
+.avonni-visual-picker_small.ratio-9-by-16 .avonni-visual-picker__height {
     height: 14.22rem;
 }
 
-.avonni-visual-picker_medium.ratio-9-by-16 .avonni-visual-picker__figure {
+.avonni-visual-picker_medium.ratio-9-by-16 .avonni-visual-picker__figure,
+.avonni-visual-picker_medium.ratio-9-by-16 .avonni-visual-picker__height {
     height: 21.3rem;
 }
 
-.avonni-visual-picker_large.ratio-9-by-16 .avonni-visual-picker__figure {
+.avonni-visual-picker_large.ratio-9-by-16 .avonni-visual-picker__figure,
+.avonni-visual-picker_large.ratio-9-by-16 .avonni-visual-picker__height {
     height: 26.66rem;
 }
 
-.avonni-visual-picker_x-large.ratio-9-by-16 .avonni-visual-picker__figure {
+.avonni-visual-picker_x-large.ratio-9-by-16 .avonni-visual-picker__figure,
+.avonni-visual-picker_x-large.ratio-9-by-16 .avonni-visual-picker__height {
     height: 32rem;
 }
 
@@ -549,4 +527,7 @@ input[disabled] ~ label .slds-icon-action-check {
 
 .avonni-visual-picker__items {
     height: 33%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

@@ -110,12 +110,11 @@ export const itemsWithPictures = [
         value: 'City',
         figure: {
             title: 'City',
-            titlePosition: 'top',
+            titlePosition: 'bottom',
             iconName: 'utility:company',
             iconPosition: 'left',
             imgSrc: 'https://media.architecturaldigest.com/photos/58f918044f42bd463db36a3f/16:9/w_1280,c_limit/1%20-%2010%20Greenest%20Cities%20in%20America%20in%202017.jpg',
-            imgAlternativeText: 'City',
-            imgPosition: 'top'
+            imgAlternativeText: 'City'
         }
     },
     {
@@ -126,8 +125,7 @@ export const itemsWithPictures = [
             iconName: 'utility:company',
             iconPosition: 'left',
             imgSrc: 'https://i.guim.co.uk/img/media/8eba2de427742ba2600eac3826faf1caa7fc773a/0_355_5608_3365/master/5608.jpg?width=300&quality=45&auto=format&fit=max&dpr=2&s=c53c6491f4b95159d400070a6468ca5e',
-            imgAlternativeText: 'Village',
-            imgPosition: 'top'
+            imgAlternativeText: 'Village'
         }
     },
     {
