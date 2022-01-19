@@ -8,8 +8,7 @@ export const items = [
             description: 'USD/user/month *',
             avatar: {
                 iconName: 'standard:user'
-            },
-            avatarPosition: 'top'
+            }
         }
     },
     {
@@ -21,8 +20,7 @@ export const items = [
             description: 'USD/user/month *',
             avatar: {
                 iconName: 'standard:groups'
-            },
-            avatarPosition: 'bottom'
+            }
         }
     },
     {

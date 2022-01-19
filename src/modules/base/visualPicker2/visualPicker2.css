@@ -41,7 +41,7 @@
         var(--avonni-visual-picker-figure-styling-border, solid)
         var(--avonni-visual-picker-figure-color-border, #dddbda);
     box-shadow: var(
-        --avonni-visual-picker-figure-shadow-box,
+        --avonni-visual-picker-figure-shadow,
         0 2px 2px rgb(0 0 0 / 5%)
     );
     background-color: var(
@@ -49,7 +49,6 @@
         #ffffff
     );
     overflow: hidden;
-    padding: var(--avonni-visual-picker-figure-body-padding, 0px);
 }
 
 .avonni-visual-picker__figure:hover {
@@ -114,6 +113,7 @@
     font-size: var(--avonni-visual-picker-title-font-size, 1rem);
     font-style: var(--avonni-visual-picker-title-font-style, normal);
     font-weight: var(--avonni-visual-picker-title-font-weight, 400);
+    text-align: var(--avonni-visual-picker-title-alignment, center);
 }
 
 /*-- description --*/

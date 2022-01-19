@@ -40,7 +40,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, the visual picker is disabled.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -53,7 +52,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, hide the check mark.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -64,7 +62,8 @@ export default {
             control: {
                 type: 'object'
             },
-            description: '',
+            description:
+                'Array of items with attributes populating the visual picker.',
             table: {
                 type: { summary: 'object' }
             }
@@ -105,7 +104,6 @@ export default {
                 type: 'select'
             },
             options: ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'],
-            defaultValue: '1-by-1',
             description:
                 'The ratio of the items. Valid values include 1-by-1, 4-by-3, 16-by-9, 3-by-4 and 9-by-16.',
             table: {
@@ -117,7 +115,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, at least one item must be selected.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -137,7 +134,6 @@ export default {
                 'large',
                 'x-large'
             ],
-            defaultValue: 'medium',
             description:
                 'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem) and x-large (18rem x 18rem).',
             table: {
@@ -150,7 +146,6 @@ export default {
                 type: 'select'
             },
             options: ['radio', 'checkbox'],
-            defaultValue: 'radio',
             description: 'Valid values include radio and checkbox.',
             table: {
                 defaultValue: { summary: 'radio' },
@@ -172,7 +167,6 @@ export default {
                 type: 'select'
             },
             options: ['coverable', 'non-coverable'],
-            defaultValue: 'non-coverable',
             description: 'Allowed values are coverable and non-coverable.',
             table: {
                 defaultValue: { summary: 'non-coverable' },
@@ -181,9 +175,13 @@ export default {
         }
     },
     args: {
-        hideCheckMark: false,
         disabled: false,
-        required: false
+        hideCheckMark: false,
+        ratio: '1-by-1',
+        required: false,
+        size: 'medium',
+        type: 'radio',
+        variant: 'non-coverable'
     }
 };
 
