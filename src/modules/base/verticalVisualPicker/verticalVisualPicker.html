@@ -83,15 +83,19 @@
                                 </span>
                             </template>
                             <span class={notSelectedClass}>
-                                <template if:true={item.iconIsLeft}>
-                                    <lightning-icon
-                                        icon-name={item.iconName}
-                                        size={item.iconSize}
-                                        alternative-text={item.iconAlternativeText}
+                                <template if:true={item.mediaIsLeft}>
+                                    <c-primitive-avatar
+                                        alternative-text={item.avatar.alternativeText}
+                                        fallback-icon-name={item.avatar.iconName}
+                                        initials={item.avatar.initials}
+                                        presence={item.avatar.presence}
+                                        presence-position={item.avatar.presencePosition}
+                                        size={item.avatar.size}
+                                        src={item.avatar.imgSrc}
+                                        variant={item.avatar.variant}
                                         class="slds-m-right_small"
-                                    ></lightning-icon>
-                                </template>
-                                <template if:true={item.imgIsLeft}>
+                                        if:false={item.imgSrc}
+                                    ></c-primitive-avatar>
                                     <img
                                         src={item.imgSrc}
                                         alt={item.imgAlternativeText}
@@ -99,6 +103,7 @@
                                             slds-m-right_small
                                             avonni-vertical-visual-picker__image
                                         "
+                                        if:true={item.imgSrc}
                                     />
                                 </template>
                                 <span class={item.bodyClass}>
@@ -136,22 +141,18 @@
                                         </template>
                                     </div>
                                 </span>
-                                <template if:true={item.iconIsRight}>
-                                    <lightning-icon
-                                        icon-name={item.iconName}
-                                        size={item.iconSize}
+                                <template if:true={item.mediaIsRight}>
+                                    <c-primitive-avatar
+                                        alternative-text={item.avatar.alternativeText}
+                                        fallback-icon-name={item.avatar.iconName}
+                                        initials={item.avatar.initials}
+                                        presence={item.avatar.presence}
+                                        presence-position={item.avatar.presencePosition}
+                                        size={item.avatar.size}
+                                        src={item.avatar.imgSrc}
+                                        variant={item.avatar.variant}
                                         class="slds-m-left_small"
-                                    ></lightning-icon>
-                                </template>
-                                <template if:true={item.imgIsRight}>
-                                    <img
-                                        src={item.imgSrc}
-                                        alt={item.imgAlternativeText}
-                                        class="
-                                            slds-m-left_small
-                                            avonni-vertical-visual-picker__image
-                                        "
-                                    />
+                                    ></c-primitive-avatar>
                                 </template>
                             </span>
                         </span>

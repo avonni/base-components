@@ -56,6 +56,10 @@
     );
 }
 
+.avonni-vertical-visual-picker__figure-with-tags {
+    height: 7rem;
+}
+
 .avonni-vertical-visual-picker__content_container {
     display: flex;
     align-items: center;
@@ -147,10 +151,6 @@
         --avonni-vertical-visual-picker-description-line-height,
         1.25
     );
-}
-
-.avonni-vertical-visual-picker_line-clamp {
-    line-clamp: 1;
 }
 
 /*-- tag --*/

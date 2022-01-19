@@ -241,15 +241,6 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Verify if variant is coverable.
-     *
-     * @type {string}
-     */
-    get isCoverable() {
-        return this._variant === 'coverable';
-    }
-
-    /**
      * Computed list of items for vertical visual picker.
      *
      * @return {object[]} result
@@ -257,32 +248,25 @@ export default class VerticalVisualPicker extends LightningElement {
     get computedListItems() {
         return this.items.map((item, index) => {
             let {
-                title,
+                avatar,
                 description,
                 disabled,
-                iconAlternativeText,
-                iconName,
-                iconPosition,
-                iconSize,
-                imgAlternativeText,
-                imgPosition,
                 imgSrc,
+                mediaPosition,
                 tags,
+                title,
                 value
             } = item;
-            iconSize = iconSize || 'medium';
-            iconPosition = iconPosition || 'left';
-            imgPosition = imgPosition || 'left';
+            mediaPosition = mediaPosition || 'left';
             const key = `vertical-visual-picker-key-${index}`;
-            const iconIsLeft = iconPosition === 'left' && iconName;
-            const iconIsRight = iconPosition === 'right' && iconName;
-            const imgIsLeft = imgPosition === 'left' && imgSrc;
-            const imgIsRight = imgPosition === 'right' && imgSrc;
+            const mediaIsLeft = mediaPosition === 'left' && (avatar || imgSrc);
+            const mediaIsRight =
+                mediaPosition === 'right' && (avatar || imgSrc);
             const bodyClass = classSet(
                 'slds-p-around_small slds-has-flexi-truncate'
             ).add({
-                'slds-border_left': iconIsLeft || imgIsLeft,
-                'slds-border_right': iconIsRight || imgIsRight
+                'slds-border_left': mediaIsLeft,
+                'slds-border_right': mediaIsRight
             });
             const descriptionClass = classSet(
                 'slds-text-title avonni-vertical-visual-picker__item-description'
@@ -296,26 +280,37 @@ export default class VerticalVisualPicker extends LightningElement {
             }
             return {
                 key,
-                title,
+                avatar,
                 description,
                 disabled,
-                iconAlternativeText,
-                iconName,
-                iconPosition,
-                iconSize,
-                imgAlternativeText,
-                imgPosition,
                 imgSrc,
+                title,
                 tags,
                 value,
-                iconIsLeft,
-                iconIsRight,
-                imgIsLeft,
-                imgIsRight,
+                mediaIsLeft,
+                mediaIsRight,
                 bodyClass,
                 descriptionClass
             };
         });
+    }
+
+    /**
+     * Verify if variant is coverable.
+     *
+     * @type {boolean}
+     */
+    get isCoverable() {
+        return this._variant === 'coverable';
+    }
+
+    /**
+     * Returns true if one of the items has tags.
+     *
+     * @type {boolean}
+     */
+    get hasTags() {
+        return this.items.some((item) => item.tags);
     }
 
     /**
@@ -342,7 +337,8 @@ export default class VerticalVisualPicker extends LightningElement {
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',
                 'slds-visual-picker__icon': this._variant === 'coverable',
-                'avonni-hide-check-mark': this._hideCheckMark
+                'avonni-hide-check-mark': this._hideCheckMark,
+                'avonni-vertical-visual-picker__figure-with-tags': this.hasTags
             })
             .toString();
     }

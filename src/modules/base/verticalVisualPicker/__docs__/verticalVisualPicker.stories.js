@@ -37,7 +37,8 @@ import {
     itemsWithoutIcon,
     itemsWithImages,
     itemsWithImagesAndTags,
-    itemsWithImagesRight
+    itemsWithImagesRight,
+    employerTags
 } from './data';
 
 export default {
@@ -212,8 +213,8 @@ CoverableCheckbox.args = {
     required: true
 };
 
-export const LargeWithImages = Template.bind({});
-LargeWithImages.args = {
+export const LargeWithImageAvatars = Template.bind({});
+LargeWithImageAvatars.args = {
     name: 'Vertical Visual Picker',
     label: 'Large with images',
     items: itemsWithImagesRight,
@@ -239,4 +240,11 @@ ResponsiveWithImagesAndTags.args = {
     variant: 'coverable',
     hideCheckMark: true,
     value: 'sales-cloud'
+};
+
+export const EmployerTag = Template.bind({});
+EmployerTag.args = {
+    name: 'Vertical Visual Picker',
+    label: "Employer's tag",
+    items: employerTags
 };
