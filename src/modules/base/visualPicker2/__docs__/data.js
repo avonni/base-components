@@ -110,7 +110,10 @@ export const itemsWithPictures = [
         value: 'City',
         figure: {
             title: 'City',
-            titlePosition: 'bottom',
+            titlePosition: 'top',
+            description: 'hello',
+            descriptionPosition: 'bottom',
+            descriptionAlignment: 'left',
             iconName: 'utility:company',
             iconPosition: 'left',
             imgSrc: 'https://media.architecturaldigest.com/photos/58f918044f42bd463db36a3f/16:9/w_1280,c_limit/1%20-%2010%20Greenest%20Cities%20in%20America%20in%202017.jpg',
@@ -169,21 +172,14 @@ export const itemsWithTags = [
         description: 'Complete service CRM for teams of any size',
         value: 'lightning-professional',
         figure: {
-            titleAlignment: 'left',
             title: '$30',
-            titlePosition: 'top',
             description: 'USD/user/month *',
-            descriptionAlignment: 'right',
-            descriptionPosition: 'top',
             iconName: 'standard:user',
-            iconPosition: 'right',
-            iconSize: 'small',
             tags: [
                 {
                     label: 'Best Value'
                 }
-            ],
-            tagsAlignment: 'right'
+            ]
         }
     },
     {

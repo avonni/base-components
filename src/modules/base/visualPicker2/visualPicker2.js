@@ -314,15 +314,21 @@ export default class VisualPicker extends LightningElement {
                 figure.description &&
                 this.isBiggerThanXSmall;
             let descriptionClass = classSet(
-                'avonni-visual-picker__figure-description'
-            ).add(
-                `avonni-visual-picker__figure-content_alignement-${descriptionAlignment}`
-            );
+                'avonni-visual-picker__figure-description slds-truncate'
+            ).add({
+                'avonni-visual-picker__figure-content_alignement-left':
+                    descriptionAlignment === 'left',
+                'avonni-visual-picker__figure-content_alignement-right':
+                    descriptionAlignment === 'right'
+            });
             let tagsClass = classSet(
                 'avonni-visual-picker__tags-container'
             ).add(
                 `avonni-visual-picker__figure-content_alignement-${tagsAlignment}`
             );
+            const displayImgCenter = this.displayImg && titleIsTop;
+            const displayImgTop =
+                this.displayImg && (titleIsCenter || titleIsBottom);
             return {
                 key,
                 title,
@@ -345,7 +351,9 @@ export default class VisualPicker extends LightningElement {
                 descriptionIsBottom,
                 descriptionIsCenter,
                 descriptionClass,
-                tagsClass
+                tagsClass,
+                displayImgCenter,
+                displayImgTop
             };
         });
     }

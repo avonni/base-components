@@ -144,8 +144,6 @@
         --avonni-visual-picker-figure-description-line-height,
         1.25
     );
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
 /*-- xx-small --*/
@@ -237,7 +235,8 @@
 }
 
 /*-- medium --*/
-.avonni-visual-picker_medium {
+.avonni-visual-picker_medium,
+.avonni-visual-picker_medium .avonni-visual-picker__figure-description {
     width: 12rem;
 }
 
@@ -479,36 +478,28 @@ input[disabled] ~ label .slds-icon-action-check {
 
 /*-- images --*/
 .avonni-visual-picker__figure-image-top-container {
-    height: 45%;
-    position: absolute;
-    top: 0;
-    left: 0;
+    height: 95%;
     width: 100%;
-    padding: var(--avonni-visual-picker-figure-image-padding-around, 5px);
+    border-bottom: var(--avonni-visual-picker-figure-image-sizing-border, 1px)
+        var(--avonni-visual-picker-figure-image-styling-border, solid)
+        var(--avonni-visual-picker-figure-image-color-border, transparent);
+}
+
+.avonni-visual-picker__figure-image-center {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.avonni-visual-picker__figure-image-center-container {
+    height: 75%;
+    width: 100%;
     border-bottom: var(--avonni-visual-picker-figure-image-sizing-border, 1px)
         var(--avonni-visual-picker-figure-image-styling-border, solid)
         var(--avonni-visual-picker-figure-image-color-border, transparent);
 }
 
 .avonni-visual-picker__figure-image-top {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
-.avonni-visual-picker__figure-image-bottom-container {
-    height: 45%;
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    padding: var(--avonni-visual-picker-figure-image-padding-around, 5px);
-    border-top: var(--avonni-visual-picker-figure-image-sizing-border, 1px)
-        var(--avonni-visual-picker-figure-image-styling-border, solid)
-        var(--avonni-visual-picker-figure-image-color-border, transparent);
-}
-
-.avonni-visual-picker__figure-image-bottom {
     height: 100%;
     width: 100%;
     object-fit: cover;
@@ -530,23 +521,13 @@ input[disabled] ~ label .slds-icon-action-check {
 }
 
 .avonni-visual-picker__items {
-    height: 33%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    height: 33.333333%;
 }
 
 .avonni-visual-picker__figure-content_alignement-left {
-    display: flex;
-    justify-content: left;
+    text-align: left;
 }
 
 .avonni-visual-picker__figure-content_alignement-right {
-    display: flex;
-    justify-content: right;
-}
-
-.avonni-visual-picker__figure-content_alignement-center {
-    display: flex;
-    justify-content: center;
+    text-align: right;
 }

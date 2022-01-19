@@ -107,7 +107,7 @@
                                         class={item.descriptionClass}
                                         >{item.figure.description}
                                     </span>
-                                    <template if:true={displayImg}>
+                                    <template if:true={item.displayImgTop}>
                                         <div
                                             if:true={item.figure.imgSrc}
                                             class="
@@ -143,6 +143,22 @@
                                         class={item.descriptionClass}
                                         >{item.figure.description}
                                     </span>
+                                    <template if:true={item.displayImgCenter}>
+                                        <div
+                                            if:true={item.figure.imgSrc}
+                                            class="
+                                                avonni-visual-picker__figure-image-center-container
+                                            "
+                                        >
+                                            <img
+                                                src={item.figure.imgSrc}
+                                                alt={item.imgAlternativeText}
+                                                class="
+                                                    avonni-visual-picker__figure-image-center
+                                                "
+                                            />
+                                        </div>
+                                    </template>
                                 </div>
                                 <!-- Position Bottom -->
                                 <div class="avonni-visual-picker__items">
