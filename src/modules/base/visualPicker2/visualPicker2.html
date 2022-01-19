@@ -83,28 +83,31 @@
                             <span class={notSelectedClass}>
                                 <!-- Position Top -->
                                 <div class="avonni-visual-picker__items">
-                                    <lightning-icon
-                                        icon-name={item.figure.iconName}
-                                        size={item.figure.iconSize}
-                                        alternative-text={item.figure.iconAlternativeText}
-                                        src={item.figure.iconSrc}
-                                        if:true={item.iconIsTop}
-                                    ></lightning-icon>
+                                    <c-primitive-avatar
+                                        alternative-text="avatar"
+                                        fallback-icon-name={item.avatar.iconName}
+                                        initials={item.avatar.initials}
+                                        presence={item.avatar.presence}
+                                        presence-position={item.avatar.presencePosition}
+                                        size={item.avatar.size}
+                                        src={item.avatar.imgSrc}
+                                        variant={item.avatar.variant}
+                                        if:true={item.avatarIsTop}
+                                    ></c-primitive-avatar>
                                     <c-primitive-visual-picker-title
-                                        title={item.figure.title}
-                                        title-alignment={item.titleAlignment}
-                                        icon-name={item.figure.iconName}
-                                        icon-size={item.figure.iconSize}
-                                        icon-alternative-text={item.figure.iconAlternativeText}
-                                        icon-src={item.figure.iconSrc}
-                                        icon-position={item.iconPosition}
+                                        avatar={item.figure.avatar}
+                                        avatar-position={item.avatarPosition}
                                         size={size}
+                                        title={item.figure.title}
                                         if:true={item.titleIsTop}
                                     >
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsTop}
-                                        class={item.descriptionClass}
+                                        class="
+                                            avonni-visual-picker__figure-description
+                                            slds-truncate
+                                        "
                                         >{item.figure.description}
                                     </span>
                                     <template if:true={item.displayImgTop}>
@@ -127,20 +130,19 @@
                                 <!-- Position Center -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
-                                        title={item.figure.title}
-                                        title-alignment={item.titleAlignment}
-                                        icon-name={item.figure.iconName}
-                                        icon-size={item.figure.iconSize}
-                                        icon-alternative-text={item.figure.iconAlternativeText}
-                                        icon-src={item.figure.iconSrc}
-                                        icon-position={item.iconPosition}
+                                        avatar={item.figure.avatar}
+                                        avatar-position={item.avatarPosition}
                                         size={size}
+                                        title={item.figure.title}
                                         if:true={item.titleIsCenter}
                                     >
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsCenter}
-                                        class={item.descriptionClass}
+                                        class="
+                                            avonni-visual-picker__figure-description
+                                            slds-truncate
+                                        "
                                         >{item.figure.description}
                                     </span>
                                     <template if:true={item.displayImgCenter}>
@@ -163,34 +165,38 @@
                                 <!-- Position Bottom -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
-                                        title={item.figure.title}
-                                        title-alignment={item.titleAlignment}
-                                        icon-name={item.figure.iconName}
-                                        icon-size={item.figure.iconSize}
-                                        icon-alternative-text={item.figure.iconAlternativeText}
-                                        icon-src={item.figure.iconSrc}
-                                        icon-position={item.iconPosition}
+                                        avatar={item.figure.avatar}
+                                        avatar-position={item.avatarPosition}
                                         size={size}
+                                        title={item.figure.title}
                                         if:true={item.titleIsBottom}
                                     >
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsBottom}
-                                        class={item.descriptionClass}
+                                        class="
+                                            avonni-visual-picker__figure-description
+                                            slds-truncate
+                                        "
                                         >{item.figure.description}
                                     </span>
-                                    <lightning-icon
-                                        icon-name={item.figure.iconName}
-                                        size={item.figure.iconSize}
-                                        alternative-text={item.figure.iconAlternativeText}
-                                        src={item.figure.iconSrc}
-                                        class="slds-m-top_small"
-                                        if:true={item.iconIsBottom}
-                                    ></lightning-icon>
+                                    <c-primitive-avatar
+                                        alternative-text="avatar"
+                                        fallback-icon-name={item.avatar.iconName}
+                                        initials={item.avatar.initials}
+                                        presence={item.avatar.presence}
+                                        presence-position={item.avatar.presencePosition}
+                                        size={item.avatar.size}
+                                        src={item.avatar.imgSrc}
+                                        variant={item.avatar.variant}
+                                        if:true={item.avatarIsBottom}
+                                    ></c-primitive-avatar>
                                     <template if:true={isBiggerThanXSmall}>
                                         <div
                                             if:true={item.figure.tags}
-                                            class={item.tagsClass}
+                                            class="
+                                                avonni-visual-picker__tags-container
+                                            "
                                         >
                                             <template
                                                 for:each={item.figure.tags}

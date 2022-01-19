@@ -6,7 +6,10 @@ export const items = [
         figure: {
             title: '$30',
             description: 'USD/user/month *',
-            iconName: 'standard:user'
+            avatar: {
+                iconName: 'standard:user'
+            },
+            avatarPosition: 'top'
         }
     },
     {
@@ -16,7 +19,10 @@ export const items = [
         figure: {
             title: '$150',
             description: 'USD/user/month *',
-            iconName: 'standard:groups'
+            avatar: {
+                iconName: 'standard:groups'
+            },
+            avatarPosition: 'bottom'
         }
     },
     {
@@ -27,7 +33,9 @@ export const items = [
         figure: {
             title: '$220',
             description: 'USD/user/month *',
-            iconName: 'standard:account'
+            avatar: {
+                iconName: 'standard:account'
+            }
         }
     },
     {
@@ -37,7 +45,9 @@ export const items = [
         figure: {
             title: '$300',
             description: 'USD/user/month *',
-            iconName: 'custom:custom68'
+            avatar: {
+                iconName: 'custom:custom68'
+            }
         }
     }
 ];
@@ -48,9 +58,11 @@ export const iconTiles = [
         figure: {
             title: 'Email',
             titlePosition: 'bottom',
-            iconName: 'utility:email',
-            iconSize: 'large',
-            iconPosition: 'top'
+            avatar: {
+                iconName: 'utility:email',
+                size: 'large'
+            },
+            avatarPosition: 'top'
         }
     },
     {
@@ -58,9 +70,11 @@ export const iconTiles = [
         figure: {
             title: 'Favorite',
             titlePosition: 'bottom',
-            iconName: 'utility:favorite',
-            iconSize: 'large',
-            iconPosition: 'top'
+            avatar: {
+                iconName: 'utility:favorite',
+                size: 'large'
+            },
+            avatarPosition: 'top'
         }
     },
     {
@@ -68,9 +82,11 @@ export const iconTiles = [
         figure: {
             title: 'Bookmark',
             titlePosition: 'bottom',
-            iconName: 'utility:bookmark',
-            iconSize: 'large',
-            iconPosition: 'top'
+            avatar: {
+                iconName: 'utility:bookmark',
+                size: 'large'
+            },
+            avatarPosition: 'top'
         }
     },
     {
@@ -78,9 +94,11 @@ export const iconTiles = [
         figure: {
             title: 'Call',
             titlePosition: 'bottom',
-            iconName: 'utility:call',
-            iconSize: 'large',
-            iconPosition: 'top'
+            avatar: {
+                iconName: 'utility:call',
+                size: 'large'
+            },
+            avatarPosition: 'top'
         }
     },
     {
@@ -88,9 +106,11 @@ export const iconTiles = [
         figure: {
             title: 'Comment',
             titlePosition: 'bottom',
-            iconName: 'utility:comments',
-            iconSize: 'large',
-            iconPosition: 'top'
+            avatar: {
+                iconName: 'utility:comments',
+                size: 'large'
+            },
+            avatarPosition: 'top'
         }
     },
     {
@@ -98,9 +118,11 @@ export const iconTiles = [
         figure: {
             title: 'Chat',
             titlePosition: 'bottom',
-            iconName: 'utility:chat',
-            iconSize: 'large',
-            iconPosition: 'top'
+            avatar: {
+                iconName: 'utility:chat',
+                size: 'large'
+            },
+            avatarPosition: 'top'
         }
     }
 ];
@@ -114,8 +136,10 @@ export const itemsWithPictures = [
             description: 'hello',
             descriptionPosition: 'bottom',
             descriptionAlignment: 'left',
-            iconName: 'utility:company',
-            iconPosition: 'left',
+            avatar: {
+                iconName: 'utility:company'
+            },
+            avatarPosition: 'left',
             imgSrc: 'https://media.architecturaldigest.com/photos/58f918044f42bd463db36a3f/16:9/w_1280,c_limit/1%20-%2010%20Greenest%20Cities%20in%20America%20in%202017.jpg',
             imgAlternativeText: 'City'
         }
@@ -125,8 +149,10 @@ export const itemsWithPictures = [
         figure: {
             title: 'Village',
             titlePosition: 'bottom',
-            iconName: 'utility:company',
-            iconPosition: 'left',
+            avatar: {
+                iconName: 'utility:company'
+            },
+            avatarPosition: 'left',
             imgSrc: 'https://i.guim.co.uk/img/media/8eba2de427742ba2600eac3826faf1caa7fc773a/0_355_5608_3365/master/5608.jpg?width=300&quality=45&auto=format&fit=max&dpr=2&s=c53c6491f4b95159d400070a6468ca5e',
             imgAlternativeText: 'Village'
         }
@@ -136,8 +162,10 @@ export const itemsWithPictures = [
         figure: {
             title: 'Mountain',
             titlePosition: 'bottom',
-            iconName: 'utility:trailhead',
-            iconPosition: 'left',
+            avatar: {
+                iconName: 'utility:trailhead'
+            },
+            avatarPosition: 'left',
             imgSrc: 'https://www.worldatlas.com/r/w1200/upload/56/fb/ee/alaska-mountain-range-csnafzger.jpg',
             imgAlternativeText: 'Mountain'
         }
@@ -147,8 +175,10 @@ export const itemsWithPictures = [
         figure: {
             title: 'Beach',
             titlePosition: 'bottom',
-            iconName: 'utility:world',
-            iconPosition: 'left',
+            avatar: {
+                iconName: 'utility:world'
+            },
+            avatarPosition: 'left',
             imgSrc: 'https://atlantis.nyc3.digitaloceanspaces.com/media/legacy/atlantis/Things_To_Do/Water_Park/Beaches/Hero/Experiences_Beach.jpg',
             imgAlternativeText: 'Beach'
         }
@@ -158,8 +188,10 @@ export const itemsWithPictures = [
         figure: {
             title: 'Forest',
             titlePosition: 'bottom',
-            iconName: 'utility:trail',
-            iconPosition: 'left',
+            avatar: {
+                iconName: 'utility:trail'
+            },
+            avatarPosition: 'left',
             imgSrc: 'https://cdn2.wanderlust.co.uk/media/1037/forest-web.jpg?anchor=center&mode=crop&width=1200&height=0&rnd=132605629110000000',
             imgAlternativeText: 'Forest'
         }
@@ -174,7 +206,9 @@ export const itemsWithTags = [
         figure: {
             title: '$30',
             description: 'USD/user/month *',
-            iconName: 'standard:user',
+            avatar: {
+                iconName: 'standard:user'
+            },
             tags: [
                 {
                     label: 'Best Value'
@@ -189,7 +223,9 @@ export const itemsWithTags = [
         figure: {
             title: '$150',
             description: 'USD/user/month *',
-            iconName: 'standard:groups'
+            avatar: {
+                iconName: 'standard:groups'
+            }
         }
     },
     {
@@ -200,7 +236,9 @@ export const itemsWithTags = [
         figure: {
             title: '$220',
             description: 'USD/user/month *',
-            iconName: 'standard:account'
+            avatar: {
+                iconName: 'standard:account'
+            }
         }
     },
     {
@@ -210,7 +248,9 @@ export const itemsWithTags = [
         figure: {
             title: '$300',
             description: 'USD/user/month *',
-            iconName: 'custom:custom68'
+            avatar: {
+                iconName: 'custom:custom68'
+            }
         }
     }
 ];

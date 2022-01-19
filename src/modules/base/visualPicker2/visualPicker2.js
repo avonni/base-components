@@ -265,22 +265,25 @@ export default class VisualPicker extends LightningElement {
     get listItems() {
         return this.items.map((item, index) => {
             let { title, description, disabled, figure, value } = item;
+
+            disabled = this._disabled ? true : disabled;
+
             const key = `visual-picker-key-${index}`;
             const checked = this._value.includes(value);
             const hasTitleOrDescription = !!(title || description);
-            const iconPosition = figure.iconPosition || 'left';
+            const avatarPosition = figure.avatarPosition || 'left';
             const titlePosition = figure.titlePosition || 'center';
-            const titleAlignment = figure.titleAlignment || 'center';
-            const descriptionAlignment =
-                figure.descriptionAlignment || 'center';
-            const tagsAlignment = figure.tagsAlignment || 'center';
+            const displayTitle = figure.title && this.isBiggerThanXSmall;
             const descriptionPosition = figure.descriptionPosition || 'center';
-            const iconIsTop =
-                (iconPosition === 'top' || !this.isBiggerThanXSmall) &&
-                figure.iconName;
-            const iconIsBottom =
-                iconPosition === 'bottom' &&
-                figure.iconName &&
+            const displayDescription =
+                figure.description && this.isBiggerThanXSmall;
+            const avatar = figure.avatar;
+            const avatarIsTop =
+                (avatarPosition === 'top' || !this.isBiggerThanXSmall) &&
+                figure.avatar;
+            const avatarIsBottom =
+                avatarPosition === 'bottom' &&
+                figure.avatar &&
                 this.isBiggerThanXSmall;
             const displayCheckCoverable =
                 !this.hideCheckMark && checked && this._variant === 'coverable';
@@ -288,60 +291,31 @@ export default class VisualPicker extends LightningElement {
                 !this.hideCheckMark &&
                 checked &&
                 this._variant === 'non-coverable';
-            disabled = this._disabled ? true : disabled;
-            const titleIsTop =
-                titlePosition === 'top' &&
-                figure.title &&
-                this.isBiggerThanXSmall;
-            const titleIsCenter =
-                titlePosition === 'center' &&
-                figure.title &&
-                this.isBiggerThanXSmall;
-            const titleIsBottom =
-                titlePosition === 'bottom' &&
-                figure.title &&
-                this.isBiggerThanXSmall;
+            const titleIsTop = titlePosition === 'top' && displayTitle;
+            const titleIsCenter = titlePosition === 'center' && displayTitle;
+            const titleIsBottom = titlePosition === 'bottom' && displayTitle;
             const descriptionIsTop =
-                descriptionPosition === 'top' &&
-                figure.description &&
-                this.isBiggerThanXSmall;
+                descriptionPosition === 'top' && displayDescription;
             const descriptionIsCenter =
-                descriptionPosition === 'center' &&
-                figure.description &&
-                this.isBiggerThanXSmall;
+                descriptionPosition === 'center' && displayDescription;
             const descriptionIsBottom =
-                descriptionPosition === 'bottom' &&
-                figure.description &&
-                this.isBiggerThanXSmall;
-            let descriptionClass = classSet(
-                'avonni-visual-picker__figure-description slds-truncate'
-            ).add({
-                'avonni-visual-picker__figure-content_alignement-left':
-                    descriptionAlignment === 'left',
-                'avonni-visual-picker__figure-content_alignement-right':
-                    descriptionAlignment === 'right'
-            });
-            let tagsClass = classSet(
-                'avonni-visual-picker__tags-container'
-            ).add(
-                `avonni-visual-picker__figure-content_alignement-${tagsAlignment}`
-            );
+                descriptionPosition === 'bottom' && displayDescription;
             const displayImgCenter = this.displayImg && titleIsTop;
             const displayImgTop =
                 this.displayImg && (titleIsCenter || titleIsBottom);
             return {
                 key,
                 title,
-                titleAlignment,
+                avatar,
                 description,
                 disabled,
                 figure,
                 value,
                 checked,
                 hasTitleOrDescription,
-                iconPosition,
-                iconIsTop,
-                iconIsBottom,
+                avatarPosition,
+                avatarIsTop,
+                avatarIsBottom,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
                 titleIsTop,
@@ -350,8 +324,6 @@ export default class VisualPicker extends LightningElement {
                 descriptionIsTop,
                 descriptionIsBottom,
                 descriptionIsCenter,
-                descriptionClass,
-                tagsClass,
                 displayImgCenter,
                 displayImgTop
             };

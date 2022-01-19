@@ -33,29 +33,37 @@
 -->
 
 <template>
-    <div class={computedContainerClass}>
-        <lightning-icon
-            icon-name={iconName}
-            size={iconSize}
-            alternative-text={iconAlternativeText}
-            src={iconSrc}
+    <div class="avonni-visual-picker__figure-content_alignement">
+        <c-primitive-avatar
+            alternative-text="avatar"
+            fallback-icon-name={avatar.iconName}
+            initials={avatar.initials}
+            presence={avatar.presence}
+            presence-position={avatar.presencePosition}
+            size={avatar.size}
+            src={avatar.imgSrc}
+            variant={avatar.variant}
             class="
-                slds-m-right_small
+                slds-m-right_x-small
                 avonni-primitive-visual-picker-title__icon
             "
-            if:true={iconIsLeft}
-        ></lightning-icon>
+            if:true={avatarIsLeft}
+        ></c-primitive-avatar>
         <span class={computedTitleClass}> {title} </span>
-        <lightning-icon
-            icon-name={iconName}
-            size={iconSize}
-            alternative-text={iconAlternativeText}
-            src={iconSrc}
+        <c-primitive-avatar
+            alternative-text="avatar"
+            fallback-icon-name={avatar.iconName}
+            initials={avatar.initials}
+            presence={avatar.presence}
+            presence-position={avatar.presencePosition}
+            size={avatar.size}
+            src={avatar.imgSrc}
+            variant={avatar.variant}
             class="
                 slds-m-left_x-small
                 avonni-primitive-visual-picker-title__icon
             "
-            if:true={iconIsRight}
-        ></lightning-icon>
+            if:true={avatarIsRight}
+        ></c-primitive-avatar>
     </div>
 </template>

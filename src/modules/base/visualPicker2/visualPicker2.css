@@ -144,6 +144,10 @@
         --avonni-visual-picker-figure-description-line-height,
         1.25
     );
+    text-align: var(
+        --avonni-visual-picker-figure-description-alignment,
+        center
+    );
 }
 
 /*-- xx-small --*/
@@ -470,6 +474,7 @@ input[disabled] ~ label .slds-icon-action-check {
 /*-- tags --*/
 .avonni-visual-picker__tags-container {
     margin-top: 0.5rem;
+    text-align: var(--avonni-visual-picker-tags-alignment, center);
 }
 
 .avonni-visual-picker__tags:not(:first-child) {
@@ -522,12 +527,7 @@ input[disabled] ~ label .slds-icon-action-check {
 
 .avonni-visual-picker__items {
     height: 33.333333%;
-}
-
-.avonni-visual-picker__figure-content_alignement-left {
-    text-align: left;
-}
-
-.avonni-visual-picker__figure-content_alignement-right {
-    text-align: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }

@@ -34,29 +34,17 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 
 export default class PrimitiveVisualPickerTitle extends LightningElement {
-    @api title;
-    @api titleAlignment;
-    @api iconAlternativeText;
-    @api iconName;
-    @api iconPosition;
-    @api iconSize;
-    @api iconSrc;
+    @api avatarPosition;
+    @api avatar;
     @api size;
+    @api title;
 
-    get iconIsLeft() {
-        return this.iconPosition === 'left';
+    get avatarIsLeft() {
+        return this.avatarPosition === 'left';
     }
 
-    get iconIsRight() {
-        return this.iconPosition === 'right';
-    }
-
-    get computedContainerClass() {
-        return classSet('')
-            .add(
-                `avonni-visual-picker__figure-content_alignement-${this.titleAlignment}`
-            )
-            .toString();
+    get avatarIsRight() {
+        return this.avatarPosition === 'right';
     }
 
     get computedTitleClass() {

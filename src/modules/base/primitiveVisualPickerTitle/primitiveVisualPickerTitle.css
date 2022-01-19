@@ -46,21 +46,11 @@
     font-size: var(--avonni-visual-picker-figure-title-font-size, 1.125rem);
 }
 
-.avonni-visual-picker__figure-content_alignement-left {
-    display: flex;
-    justify-content: left;
-}
-
-.avonni-visual-picker__figure-content_alignement-right {
-    display: flex;
-    justify-content: right;
-}
-
-.avonni-visual-picker__figure-content_alignement-center {
-    display: flex;
-    justify-content: center;
-}
-
 .avonni-primitive-visual-picker-title__icon {
     align-self: center;
+}
+
+.avonni-visual-picker__figure-content_alignement {
+    display: flex;
+    justify-content: var(--avonni-visual-picker-figure-title-alignment, center);
 }
