@@ -13,7 +13,7 @@
  */
 /**
  * @typedef {Object} VerticalVisualPickerAvatar
- * @name avatar
+ * @name itemsAvatar
  * @property {string} alternativeText Required. The alternative text used to describe the avatar, which is displayed as hover text on the image.
  * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
  * @property {string} imgSrc Image URL for the avatar.
@@ -83,6 +83,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-title-alignment
+ * @default left
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-vertical-visual-picker-description-text-color
  * @default #3e3e3c
  * @type color
@@ -104,6 +110,12 @@
  * @name --avonni-vertical-visual-picker-description-font-weight
  * @default 400
  * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-description-alignment
+ * @default left
+ * @type alignment
  */
 /**
  * @memberof stylingHooks
@@ -170,4 +182,10 @@
  * @name --avonni-vertical-visual-picker-shadow
  * @default 0 2px 2px rgb(0 0 0 / 5%)
  * @type shadow
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-vertical-visual-picker-tags-alignment
+ * @default left
+ * @type alignment
  */

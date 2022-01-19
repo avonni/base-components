@@ -144,8 +144,8 @@ describe('VerticalVisualPicker', () => {
             const inputs = element.shadowRoot.querySelectorAll(
                 '[data-element-id="input"]'
             );
-            const figureIcons = element.shadowRoot.querySelectorAll(
-                '.avonni-vertical-visual-picker__figure lightning-icon'
+            const figureAvatar = element.shadowRoot.querySelectorAll(
+                '.avonni-vertical-visual-picker__figure c-primitive-avatar'
             );
             const figureTitles = element.shadowRoot.querySelectorAll(
                 '.avonni-vertical-visual-picker__item-title'
@@ -157,8 +157,10 @@ describe('VerticalVisualPicker', () => {
             itemsWithIcons.forEach((item, index) => {
                 expect(inputs[index].value).toBe(item.value);
                 expect(inputs[index].disabled).toBe(item.disabled || false);
-                expect(figureIcons[index].iconName).toBe(item.iconName);
-                expect(figureIcons[index].size).toBe(item.iconSize || 'medium');
+                expect(figureAvatar[index].iconName).toBe(item.iconName);
+                expect(figureAvatar[index].size).toBe(
+                    item.iconSize || 'medium'
+                );
                 expect(figureTitles[index].textContent).toBe(item.title);
                 expect(figureDescriptions[index].textContent).toBe(
                     item.description

@@ -130,6 +130,8 @@
     font-size: var(--avonni-vertical-visual-picker-title-font-size, 1.25rem);
     font-style: var(--avonni-vertical-visual-picker-title-font-style, normal);
     font-weight: var(--avonni-vertical-visual-picker-title-font-weight, 400);
+    text-align: var(--avonni-vertical-visual-picker-title-alignment, left);
+    line-height: 1.25;
 }
 
 /*-- description --*/
@@ -151,11 +153,16 @@
         --avonni-vertical-visual-picker-description-line-height,
         1.25
     );
+    text-align: var(
+        --avonni-vertical-visual-picker-description-alignment,
+        left
+    );
 }
 
 /*-- tag --*/
 .avonni-vertical-visual-picker__tags-container {
     margin-top: 0.25rem;
+    text-align: var(--avonni-vertical-visual-picker-tags-alignment, left);
 }
 
 .avonni-vertical-visual-picker__tag:not(:first-child) {
