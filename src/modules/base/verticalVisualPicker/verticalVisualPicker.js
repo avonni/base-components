@@ -32,7 +32,11 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeArray
+} from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 
 const ITEM_SIZES = {
@@ -58,14 +62,6 @@ const DEFAULT_REQUIRED = false;
  * @public
  */
 export default class VerticalVisualPicker extends LightningElement {
-    /**
-     * Array of item objects.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api items = [];
-
     /**
      * Text label to title the visual picker.
      *
@@ -93,6 +89,7 @@ export default class VerticalVisualPicker extends LightningElement {
 
     _disabled = DEFAULT_DISABLED;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
+    _items = [];
     _required = DEFAULT_REQUIRED;
     _size = ITEM_SIZES.default;
     _type = ITEM_TYPES.default;
@@ -150,6 +147,21 @@ export default class VerticalVisualPicker extends LightningElement {
 
     set hideCheckMark(value) {
         this._hideCheckMark = normalizeBoolean(value);
+    }
+
+    /**
+     * Array of item objects.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get items() {
+        return this._items;
+    }
+
+    set items(value) {
+        this._items = normalizeArray(value);
     }
 
     /**
