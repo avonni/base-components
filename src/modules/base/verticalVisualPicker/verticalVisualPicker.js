@@ -470,15 +470,6 @@ export default class VerticalVisualPicker extends LightningElement {
      */
     handleBlur() {
         this.interactingState.leave();
-
-        /**
-         * The event fired when the focus is removed from the input toggle.
-         *
-         * @event
-         * @name blur
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
@@ -486,15 +477,6 @@ export default class VerticalVisualPicker extends LightningElement {
      */
     handleFocus() {
         this.interactingState.enter();
-
-        /**
-         * The event fired when you focus the input toggle.
-         *
-         * @event
-         * @name focus
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
