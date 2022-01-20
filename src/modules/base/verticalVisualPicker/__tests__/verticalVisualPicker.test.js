@@ -523,42 +523,18 @@ describe('VerticalVisualPicker', () => {
     });
 
     /* ----- METHODS ----- */
-
-    // Method focus
-    it('Vertical visual picker: method: focus', () => {
-        let focusEvent = false;
+    // Blur and focus methods
+    it('Vertical visual picker: Transfer focus and blur', () => {
         element.items = itemsWithIcons;
 
-        return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector(
-                '[data-element-id="input"]'
-            );
-            item.addEventListener('focus', () => {
-                focusEvent = true;
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+            })
+            .then(() => {
+                expect(element.shadowRoot.activeElement).toBeNull();
             });
-            item.focus();
-            expect(focusEvent).toBeTruthy();
-        });
-    });
-
-    // Method blur
-    it('Vertical visual picker: method: blur', () => {
-        let blurEvent = false;
-        element.items = itemsWithIcons;
-
-        return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll('input');
-            const item = items[0];
-
-            item.focus();
-
-            item.addEventListener('blur', () => {
-                blurEvent = true;
-            });
-
-            item.blur();
-            expect(blurEvent).toBeTruthy();
-        });
     });
 
     // reportValidity
