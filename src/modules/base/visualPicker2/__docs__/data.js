@@ -130,14 +130,10 @@ export const itemsWithPictures = [
         value: 'City',
         figure: {
             title: 'City',
-            titlePosition: 'top',
-            description: 'hello',
-            descriptionPosition: 'bottom',
-            descriptionAlignment: 'left',
+            titlePosition: 'bottom',
             avatar: {
                 iconName: 'utility:company'
             },
-            avatarPosition: 'left',
             imgSrc: 'https://media.architecturaldigest.com/photos/58f918044f42bd463db36a3f/16:9/w_1280,c_limit/1%20-%2010%20Greenest%20Cities%20in%20America%20in%202017.jpg',
             imgAlternativeText: 'City'
         }
@@ -148,9 +144,8 @@ export const itemsWithPictures = [
             title: 'Village',
             titlePosition: 'bottom',
             avatar: {
-                iconName: 'utility:company'
+                iconName: 'utility:home'
             },
-            avatarPosition: 'left',
             imgSrc: 'https://i.guim.co.uk/img/media/8eba2de427742ba2600eac3826faf1caa7fc773a/0_355_5608_3365/master/5608.jpg?width=300&quality=45&auto=format&fit=max&dpr=2&s=c53c6491f4b95159d400070a6468ca5e',
             imgAlternativeText: 'Village'
         }
@@ -163,7 +158,6 @@ export const itemsWithPictures = [
             avatar: {
                 iconName: 'utility:trailhead'
             },
-            avatarPosition: 'left',
             imgSrc: 'https://www.worldatlas.com/r/w1200/upload/56/fb/ee/alaska-mountain-range-csnafzger.jpg',
             imgAlternativeText: 'Mountain'
         }
@@ -176,7 +170,6 @@ export const itemsWithPictures = [
             avatar: {
                 iconName: 'utility:world'
             },
-            avatarPosition: 'left',
             imgSrc: 'https://atlantis.nyc3.digitaloceanspaces.com/media/legacy/atlantis/Things_To_Do/Water_Park/Beaches/Hero/Experiences_Beach.jpg',
             imgAlternativeText: 'Beach'
         }
@@ -189,7 +182,6 @@ export const itemsWithPictures = [
             avatar: {
                 iconName: 'utility:trail'
             },
-            avatarPosition: 'left',
             imgSrc: 'https://cdn2.wanderlust.co.uk/media/1037/forest-web.jpg?anchor=center&mode=crop&width=1200&height=0&rnd=132605629110000000',
             imgAlternativeText: 'Forest'
         }
@@ -249,6 +241,269 @@ export const itemsWithTags = [
             avatar: {
                 iconName: 'custom:custom68'
             }
+        }
+    }
+];
+
+export const analyticsItems = [
+    {
+        value: 'appointment-analytics',
+        figure: {
+            title: 'Appointment Analytics',
+            description:
+                'Bring the power of Tableau CRM to Lightning Scheduler customer appointments data. Analyze past appointment volumes across accounts, work tpes and territories.',
+            avatar: {
+                iconName: 'standard:service_appointment',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Lightning'
+                },
+                {
+                    label: 'Scheduler'
+                },
+                {
+                    label: 'Appointment'
+                }
+            ],
+            imgSrc: 'https://markmargolis.files.wordpress.com/2013/05/oppanalytics.jpg'
+        }
+    },
+    {
+        value: 'approval-analytics',
+        figure: {
+            title: 'Approval Analytics',
+            description:
+                'The Salesforce Approval Analytics Template will give managers and leaders more visibility into approval process and identify bottlenecks.',
+            avatar: {
+                iconName: 'standard:approval',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Sales'
+                },
+                {
+                    label: 'Service'
+                },
+                {
+                    label: 'Marketing'
+                }
+            ],
+            imgSrc: 'https://sergeluca.files.wordpress.com/2018/11/categories.png'
+        }
+    },
+    {
+        value: 'commerce-analytics',
+        figure: {
+            title: 'Commerce Analytics',
+            description:
+                'The B2B Commerce Analytics Template gives you a fast wat to apply the power of Tableau CRM to your B2B ecommerce data.',
+            avatar: {
+                iconName: 'standard:checkout',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Commerce'
+                }
+            ],
+            imgSrc: 'https://www.bigcommerce.com/blog/wp-content/uploads/2020/05/GenericBlog_Metrics_CD909_SJ.png'
+        }
+    },
+    {
+        value: 'sales-analytics',
+        figure: {
+            title: 'Sales Analytics',
+            description:
+                'The latest version of the app, which helps your entire sales team unlock the full power of Sales Cloud data. With clear visibility into pipeline and historical trends.',
+            avatar: {
+                iconName: 'standard:default',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Sales'
+                },
+                {
+                    label: 'Lightning'
+                }
+            ],
+            imgSrc: 'https://www.salesforce.com/content/dam/web/en_us/www/images/sales-cloud/sales-related-product-sales-analytics.png'
+        }
+    }
+];
+
+export const topAnalyticsItems = [
+    {
+        value: 'appointment-analytics',
+        figure: {
+            title: 'Appointment Analytics',
+            titlePosition: 'top',
+            description:
+                'Bring the power of Tableau CRM to Lightning Scheduler customer appointments data. Analyze past appointment volumes across accounts, work tpes and territories.',
+            descriptionPosition: 'bottom',
+            avatar: {
+                iconName: 'standard:service_appointment',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Lightning'
+                },
+                {
+                    label: 'Scheduler'
+                },
+                {
+                    label: 'Appointment'
+                }
+            ],
+            imgSrc: 'https://markmargolis.files.wordpress.com/2013/05/oppanalytics.jpg'
+        }
+    },
+    {
+        value: 'approval-analytics',
+        figure: {
+            title: 'Approval Analytics',
+            titlePosition: 'top',
+            description:
+                'The Salesforce Approval Analytics Template will give managers and leaders more visibility into approval process and identify bottlenecks.',
+            descriptionPosition: 'bottom',
+            avatar: {
+                iconName: 'standard:approval',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Sales'
+                },
+                {
+                    label: 'Service'
+                },
+                {
+                    label: 'Marketing'
+                }
+            ],
+            imgSrc: 'https://sergeluca.files.wordpress.com/2018/11/categories.png'
+        }
+    },
+    {
+        value: 'commerce-analytics',
+        figure: {
+            title: 'Commerce Analytics',
+            titlePosition: 'top',
+            description:
+                'The B2B Commerce Analytics Template gives you a fast wat to apply the power of Tableau CRM to your B2B ecommerce data.',
+            descriptionPosition: 'bottom',
+            avatar: {
+                iconName: 'standard:checkout',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Commerce'
+                }
+            ],
+            imgSrc: 'https://www.bigcommerce.com/blog/wp-content/uploads/2020/05/GenericBlog_Metrics_CD909_SJ.png'
+        }
+    },
+    {
+        value: 'sales-analytics',
+        figure: {
+            title: 'Sales Analytics',
+            titlePosition: 'top',
+            description:
+                'The latest version of the app, which helps your entire sales team unlock the full power of Sales Cloud data. With clear visibility into pipeline and historical trends.',
+            descriptionPosition: 'bottom',
+            avatar: {
+                iconName: 'standard:default',
+                size: 'medium'
+            },
+            tags: [
+                {
+                    label: 'Sales'
+                },
+                {
+                    label: 'Lightning'
+                }
+            ],
+            imgSrc: 'https://www.salesforce.com/content/dam/web/en_us/www/images/sales-cloud/sales-related-product-sales-analytics.png'
+        }
+    }
+];
+
+export const goalStories = [
+    {
+        value: 'dataset',
+        figure: {
+            title: 'Create from Dataset',
+            titlePosition: 'top',
+            description:
+                'Choose the dataset and columns to build your custom analysis.',
+            avatar: {
+                iconName: 'utility:add'
+            }
+        }
+    },
+    {
+        value: 'customer-revenue',
+        figure: {
+            title: 'Maximize Customer Revenue',
+            titlePosition: 'top',
+            description:
+                'Analyze which types of accounts are leading to higher sales. Use a regression model to predict which accounts might bring additional revenue.',
+            avatar: {
+                iconName: 'standard:account'
+            },
+            tags: [
+                {
+                    label: 'Sales'
+                },
+                {
+                    label: 'Einstein Discovery'
+                }
+            ]
+        }
+    },
+    {
+        value: 'win-rate',
+        figure: {
+            title: 'Maximize Win Rate',
+            titlePosition: 'top',
+            description:
+                'Explore the key drivers for winning deals wihtout the hassle of prepping your data.',
+            avatar: {
+                iconName: 'standard:opportunity'
+            },
+            tags: [
+                {
+                    label: 'Sales'
+                },
+                {
+                    label: 'Einstein Discovery'
+                }
+            ]
+        }
+    },
+    {
+        value: 'time-to-close',
+        figure: {
+            title: 'Minimize Time To Close',
+            titlePosition: 'top',
+            description:
+                'understand the key factors that drive shorter deal cycles without having to worry about where to begin',
+            avatar: {
+                iconName: 'standard:account'
+            },
+            tags: [
+                {
+                    label: 'Sales'
+                },
+                {
+                    label: 'Einstein Discovery'
+                }
+            ]
         }
     }
 ];

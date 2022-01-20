@@ -31,7 +31,15 @@
  */
 
 import { VisualPicker } from '../__examples__/visualPicker2';
-import { items, iconTiles, itemsWithPictures, itemsWithTags } from './data';
+import {
+    items,
+    iconTiles,
+    itemsWithPictures,
+    itemsWithTags,
+    analyticsItems,
+    topAnalyticsItems,
+    goalStories
+} from './data';
 
 export default {
     title: 'Example/VisualPicker2',
@@ -132,10 +140,12 @@ export default {
                 'small',
                 'medium',
                 'large',
-                'x-large'
+                'x-large',
+                'xx-large',
+                'responsive'
             ],
             description:
-                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem) and x-large (18rem x 18rem).',
+                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem), x-large (18rem x 18rem), xx-large (21rem x 21rem) and responsive.',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
@@ -215,8 +225,7 @@ IconTiles.args = {
 
 export const ItemsWithPictures = Template.bind({});
 ItemsWithPictures.args = {
-    label: 'Choose an icon',
-    name: 'Icon Tiles',
+    name: 'Items with pictures',
     items: itemsWithPictures,
     size: 'medium',
     ratio: '1-by-1'
@@ -224,9 +233,32 @@ ItemsWithPictures.args = {
 
 export const ItemsWithTags = Template.bind({});
 ItemsWithTags.args = {
-    label: 'Choose an icon',
-    name: 'Icon Tiles',
+    name: 'Items with tags',
     items: itemsWithTags,
-    size: 'medium',
-    ratio: '1-by-1'
+    size: 'medium'
+};
+
+export const analyticItems = Template.bind({});
+analyticItems.args = {
+    label: 'All Templates',
+    name: 'Analytic Items',
+    items: analyticsItems,
+    size: 'xx-large'
+};
+
+export const analyticItemsTop = Template.bind({});
+analyticItemsTop.args = {
+    label: 'All Templates',
+    name: 'Analytic Items',
+    items: topAnalyticsItems,
+    size: 'xx-large',
+    ratio: '3-by-4'
+};
+
+export const goalStory = Template.bind({});
+goalStory.args = {
+    label: 'What is the goal of your story',
+    name: 'Goal Stories',
+    items: goalStories,
+    size: 'responsive'
 };

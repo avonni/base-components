@@ -36,15 +36,16 @@ import { classSet } from 'c/utils';
 export default class PrimitiveVisualPickerTitle extends LightningElement {
     @api avatarPosition;
     @api avatar;
+    @api displayAvatar;
     @api size;
     @api title;
 
     get avatarIsLeft() {
-        return this.avatarPosition === 'left';
+        return this.avatarPosition === 'left' && this.displayAvatar;
     }
 
     get avatarIsRight() {
-        return this.avatarPosition === 'right';
+        return this.avatarPosition === 'right' && this.displayAvatar;
     }
 
     get computedTitleClass() {

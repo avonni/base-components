@@ -32,7 +32,11 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeArray
+} from 'c/utilsPrivate';
 import { InteractingState, FieldConstraintApi } from 'c/inputUtils';
 
 const VISUAL_PICKER_VARIANTS = {
@@ -41,7 +45,16 @@ const VISUAL_PICKER_VARIANTS = {
 };
 const INPUT_TYPES = { valid: ['radio', 'checkbox'], default: 'radio' };
 const VISUAL_PICKER_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large', 'x-large'],
+    valid: [
+        'xx-small',
+        'x-small',
+        'small',
+        'medium',
+        'large',
+        'x-large',
+        'xx-large',
+        'responsive'
+    ],
     default: 'medium'
 };
 const VISUAL_PICKER_RATIOS = {
@@ -60,13 +73,6 @@ const DEFAULT_HIDE_CHECK_MARK = false;
  * @public
  */
 export default class VisualPicker extends LightningElement {
-    /**
-     * Array of items with attributes populating the visual picker.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api items = [];
     /**
      * Text label to title the visual picker.
      *
@@ -92,6 +98,7 @@ export default class VisualPicker extends LightningElement {
 
     _disabled = DEFAULT_DISABLED;
     _hideCheckMark = DEFAULT_HIDE_CHECK_MARK;
+    _items = [];
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
     _size = VISUAL_PICKER_SIZES.default;
@@ -149,6 +156,21 @@ export default class VisualPicker extends LightningElement {
 
     set hideCheckMark(value) {
         this._hideCheckMark = normalizeBoolean(value);
+    }
+
+    /**
+     * Array of items with attributes populating the visual picker.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get items() {
+        return this._items;
+    }
+
+    set items(value) {
+        this._items = normalizeArray(value);
     }
 
     /**
@@ -265,12 +287,9 @@ export default class VisualPicker extends LightningElement {
     get listItems() {
         return this.items.map((item, index) => {
             let { title, description, disabled, figure, value } = item;
-
             disabled = this._disabled ? true : disabled;
-
             const key = `visual-picker-key-${index}`;
             const checked = this._value.includes(value);
-            const hasTitleOrDescription = !!(title || description);
             const avatarPosition = figure.avatarPosition || 'left';
             const titlePosition = figure.titlePosition || 'center';
             const displayTitle = figure.title && this.isBiggerThanXSmall;
@@ -278,13 +297,13 @@ export default class VisualPicker extends LightningElement {
             const displayDescription =
                 figure.description && this.isBiggerThanXSmall;
             const avatar = figure.avatar;
-            const avatarIsTop =
-                (avatarPosition === 'top' || !this.isBiggerThanXSmall) &&
-                figure.avatar;
-            const avatarIsBottom =
-                avatarPosition === 'bottom' &&
-                figure.avatar &&
-                this.isBiggerThanXSmall;
+            const displayAvatar = avatar && this.isBiggerThanXSmall;
+            console.log(displayAvatar);
+            const avatarIsCenter =
+                (avatarPosition === 'center' || !this.isBiggerThanXSmall) &&
+                avatar;
+            const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
+            const avatarIsTop = avatarPosition === 'top' && displayAvatar;
             const displayCheckCoverable =
                 !this.hideCheckMark && checked && this._variant === 'coverable';
             const displayCheckNonCoverable =
@@ -300,9 +319,9 @@ export default class VisualPicker extends LightningElement {
                 descriptionPosition === 'center' && displayDescription;
             const descriptionIsBottom =
                 descriptionPosition === 'bottom' && displayDescription;
-            const displayImgCenter = this.displayImg && titleIsTop;
+            const displayImgCenter = this.isBiggerThanXSmall && titleIsTop;
             const displayImgTop =
-                this.displayImg && (titleIsCenter || titleIsBottom);
+                this.isBiggerThanXSmall && (titleIsCenter || titleIsBottom);
             return {
                 key,
                 title,
@@ -312,9 +331,9 @@ export default class VisualPicker extends LightningElement {
                 figure,
                 value,
                 checked,
-                hasTitleOrDescription,
                 avatarPosition,
                 avatarIsTop,
+                avatarIsCenter,
                 avatarIsBottom,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
@@ -325,7 +344,8 @@ export default class VisualPicker extends LightningElement {
                 descriptionIsBottom,
                 descriptionIsCenter,
                 displayImgCenter,
-                displayImgTop
+                displayImgTop,
+                displayAvatar
             };
         });
     }
@@ -374,19 +394,6 @@ export default class VisualPicker extends LightningElement {
                     this._variant === 'coverable' && this._hideCheckMark
             })
             .toString();
-    }
-
-    get displayImg() {
-        return (
-            (this._size === 'small' ||
-                this._size === 'medium' ||
-                this._size === 'large' ||
-                this._size === 'x-large') &&
-            (this._ratio === '1-by-1' ||
-                this._ratio === '4-by-3' ||
-                this._ratio === '3-by-4' ||
-                this._ratio === '9-by-16')
-        );
     }
 
     get isBiggerThanXSmall() {

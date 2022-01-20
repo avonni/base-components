@@ -34,7 +34,7 @@
     color: var(--avonni-visual-picker-figure-title-text-color, #080707);
     font-style: var(--avonni-visual-picker-figure-title-font-style, normal);
     font-weight: var(--avonni-visual-picker-figure-title-font-weight, 400);
-    font-size: var(--avonni-visual-picker-figure-title-font-size, 1.75rem);
+    font-size: var(--avonni-visual-picker-figure-title-font-size, 1.5rem);
     line-height: var(--lwc-lineHeightHeading, 1.25);
     white-space: nowrap;
     text-overflow: ellipsis;

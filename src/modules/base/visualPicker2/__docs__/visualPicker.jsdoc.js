@@ -195,6 +195,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-figure-title-margin-around
+ * @default 0.5rem
+ * @type margin
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-figure-description-text-color
  * @default #3e3e3c
  * @type color
@@ -228,6 +234,12 @@
  * @name --avonni-visual-picker-figure-description-alignment
  * @default center
  * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-figure-description-margin-around
+ * @default 0.25rem
+ * @type margin
  */
 /**
  * @memberof stylingHooks

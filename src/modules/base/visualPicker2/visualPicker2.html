@@ -95,10 +95,14 @@
                                         if:true={item.avatarIsTop}
                                     ></c-primitive-avatar>
                                     <c-primitive-visual-picker-title
-                                        avatar={item.figure.avatar}
+                                        avatar={item.avatar}
                                         avatar-position={item.avatarPosition}
+                                        display-avatar={item.displayAvatar}
                                         size={size}
                                         title={item.figure.title}
+                                        class="
+                                            avonni-visual-picker__figure-title_margin
+                                        "
                                         if:true={item.titleIsTop}
                                     >
                                     </c-primitive-visual-picker-title>
@@ -121,7 +125,7 @@
                                                 src={item.figure.imgSrc}
                                                 alt={item.imgAlternativeText}
                                                 class="
-                                                    avonni-visual-picker__figure-image-top
+                                                    avonni-visual-picker__figure-image
                                                 "
                                             />
                                         </div>
@@ -130,10 +134,14 @@
                                 <!-- Position Center -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
-                                        avatar={item.figure.avatar}
+                                        avatar={item.avatar}
                                         avatar-position={item.avatarPosition}
+                                        display-avatar={item.displayAvatar}
                                         size={size}
                                         title={item.figure.title}
+                                        class="
+                                            avonni-visual-picker__figure-title_margin
+                                        "
                                         if:true={item.titleIsCenter}
                                     >
                                     </c-primitive-visual-picker-title>
@@ -141,10 +149,20 @@
                                         if:true={item.descriptionIsCenter}
                                         class="
                                             avonni-visual-picker__figure-description
-                                            slds-truncate
                                         "
                                         >{item.figure.description}
                                     </span>
+                                    <c-primitive-avatar
+                                        alternative-text="avatar"
+                                        fallback-icon-name={item.avatar.iconName}
+                                        initials={item.avatar.initials}
+                                        presence={item.avatar.presence}
+                                        presence-position={item.avatar.presencePosition}
+                                        size={item.avatar.size}
+                                        src={item.avatar.imgSrc}
+                                        variant={item.avatar.variant}
+                                        if:true={item.avatarIsCenter}
+                                    ></c-primitive-avatar>
                                     <template if:true={item.displayImgCenter}>
                                         <div
                                             if:true={item.figure.imgSrc}
@@ -156,7 +174,7 @@
                                                 src={item.figure.imgSrc}
                                                 alt={item.imgAlternativeText}
                                                 class="
-                                                    avonni-visual-picker__figure-image-center
+                                                    avonni-visual-picker__figure-image
                                                 "
                                             />
                                         </div>
@@ -165,10 +183,14 @@
                                 <!-- Position Bottom -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
-                                        avatar={item.figure.avatar}
+                                        avatar={item.avatar}
                                         avatar-position={item.avatarPosition}
+                                        display-avatar={item.displayAvatar}
                                         size={size}
                                         title={item.figure.title}
+                                        class="
+                                            avonni-visual-picker__figure-title_margin
+                                        "
                                         if:true={item.titleIsBottom}
                                     >
                                     </c-primitive-visual-picker-title>
@@ -176,7 +198,6 @@
                                         if:true={item.descriptionIsBottom}
                                         class="
                                             avonni-visual-picker__figure-description
-                                            slds-truncate
                                         "
                                         >{item.figure.description}
                                     </span>
@@ -216,10 +237,7 @@
                                 </div>
                             </span>
                         </span>
-                        <span
-                            if:true={item.hasTitleOrDescription}
-                            class="slds-visual-picker__body"
-                        >
+                        <span class="slds-visual-picker__body">
                             <span class="avonni-visual-picker__item-title"
                                 >{item.title}</span
                             >
