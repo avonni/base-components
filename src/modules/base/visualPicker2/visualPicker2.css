@@ -379,8 +379,13 @@
     padding: 0.75rem;
 }
 
-.avonni-visual-picker_responsive.ratio-1-by-1 .avonni-visual-picker__height {
-    height: 100%;
+.avonni-visual-picker_responsive .avonni-visual-picker__height {
+    /* width: 100%;
+    height: 100%; */
+    /* max-width: 31rem;
+    min-width: 12rem;
+    max-height: 31rem; */
+    min-height: 100%;
 }
 
 .avonni-visual-picker_x-large

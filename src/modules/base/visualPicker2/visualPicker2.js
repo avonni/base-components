@@ -102,6 +102,7 @@ export default class VisualPicker extends LightningElement {
     _ratio = VISUAL_PICKER_RATIOS.default;
     _required = DEFAULT_REQUIRED;
     _size = VISUAL_PICKER_SIZES.default;
+    _type = INPUT_TYPES.default;
     _value = [];
     _variant = VISUAL_PICKER_VARIANTS.default;
 
@@ -298,7 +299,6 @@ export default class VisualPicker extends LightningElement {
                 figure.description && this.isBiggerThanXSmall;
             const avatar = figure.avatar;
             const displayAvatar = avatar && this.isBiggerThanXSmall;
-            console.log(displayAvatar);
             const avatarIsCenter =
                 (avatarPosition === 'center' || !this.isBiggerThanXSmall) &&
                 avatar;
@@ -373,9 +373,11 @@ export default class VisualPicker extends LightningElement {
         )
             .add({
                 'slds-visual-picker__text': this._variant === 'non-coverable',
-                'slds-visual-picker__icon': this._variant === 'coverable',
+                'slds-visual-picker__icon': this.isCoverable,
                 'avonni-hide-check-mark': this._hideCheckMark,
-                'slds-align_absolute-center': !this.isBiggerThanXSmall
+                'slds-align_absolute-center':
+                    !this.isBiggerThanXSmall ||
+                    (this.isBiggerThanXSmall && this._size !== 'responsive')
             })
             .toString();
     }
@@ -389,9 +391,9 @@ export default class VisualPicker extends LightningElement {
         return classSet('avonni-visual-picker__height')
             .add({
                 'slds-is-not-selected':
-                    this._variant === 'coverable' && !this._hideCheckMark,
+                    this.isCoverable && !this._hideCheckMark,
                 'avonni-is-not-selected':
-                    this._variant === 'coverable' && this._hideCheckMark
+                    this.isCoverable && this._hideCheckMark
             })
             .toString();
     }
@@ -427,9 +429,7 @@ export default class VisualPicker extends LightningElement {
      */
     @api
     blur() {
-        if (this._rendered) {
-            this.template.querySelector('[data-element-id="input"]').blur();
-        }
+        this.template.querySelector('[data-element-id="input"]').blur();
     }
 
     /**
@@ -450,9 +450,7 @@ export default class VisualPicker extends LightningElement {
      */
     @api
     focus() {
-        if (this._rendered) {
-            this.template.querySelector('[data-element-id="input"]').focus();
-        }
+        this.template.querySelector('[data-element-id="input"]').focus();
     }
 
     /**
@@ -512,15 +510,6 @@ export default class VisualPicker extends LightningElement {
      */
     handleBlur() {
         this.interactingState.leave();
-
-        /**
-         * The event fired when the focus is removed from the input toggle.
-         *
-         * @event
-         * @name blur
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
@@ -528,15 +517,6 @@ export default class VisualPicker extends LightningElement {
      */
     handleFocus() {
         this.interactingState.enter();
-
-        /**
-         * The event fired when you focus the input toggle.
-         *
-         * @event
-         * @name focus
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
@@ -546,22 +526,6 @@ export default class VisualPicker extends LightningElement {
      */
     handleChange(event) {
         event.stopPropagation();
-
-        if (this._variant === 'coverable' && this._hideCheckMark) {
-            const labels = this.template.querySelectorAll(
-                '[data-element-id="label"]'
-            );
-
-            labels.forEach((label) => {
-                let icon = label.querySelector('lightning-icon');
-                if (label.previousSibling.checked) {
-                    icon.variant = 'inverse';
-                } else {
-                    icon.variant = '';
-                }
-            });
-        }
-
         const inputs = this.template.querySelectorAll(
             '[data-element-id="input"]'
         );
