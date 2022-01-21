@@ -262,7 +262,6 @@ export default class VerticalVisualPicker extends LightningElement {
             let {
                 avatar,
                 description,
-                disabled,
                 imgSrc,
                 mediaPosition,
                 tags,
@@ -287,9 +286,7 @@ export default class VerticalVisualPicker extends LightningElement {
                 'slds-line-clamp_x-small': tags && this._size !== 'small',
                 'slds-line-clamp_small': !tags
             });
-            if (this.disabled) {
-                disabled = true;
-            }
+            const disabled = this._disabled || item.disabled;
             return {
                 key,
                 avatar,
@@ -347,8 +344,8 @@ export default class VerticalVisualPicker extends LightningElement {
         )
             .add(`avonni-vertical-visual-picker__item_size-${this._size}`)
             .add({
-                'slds-visual-picker__text': this._variant === 'non-coverable',
-                'slds-visual-picker__icon': this._variant === 'coverable',
+                'slds-visual-picker__text': !this.isCoverable,
+                'slds-visual-picker__icon': this.isCoverable,
                 'avonni-hide-check-mark': this._hideCheckMark,
                 'avonni-vertical-visual-picker__figure-with-tags': this.hasTags
             })
@@ -364,9 +361,9 @@ export default class VerticalVisualPicker extends LightningElement {
         return classSet('avonni-vertical-visual-picker__content_container')
             .add({
                 'slds-is-not-selected':
-                    this._variant === 'coverable' && !this._hideCheckMark,
+                    this.isCoverable && !this._hideCheckMark,
                 'avonni-is-not-selected':
-                    this._variant === 'coverable' && this._hideCheckMark
+                    this.isCoverable && this._hideCheckMark
             })
             .toString();
     }
@@ -380,16 +377,6 @@ export default class VerticalVisualPicker extends LightningElement {
     @api
     get validity() {
         return this._constraint.validity;
-    }
-
-    /**
-     * Removes keyboard focus from the input element.
-     *
-     * @public
-     */
-    @api
-    blur() {
-        this.template.querySelector('[data-element-id="input"]').blur();
     }
 
     /**
@@ -411,6 +398,16 @@ export default class VerticalVisualPicker extends LightningElement {
     @api
     focus() {
         this.template.querySelector('[data-element-id="input"]').focus();
+    }
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        this.template.querySelector('[data-element-id="input"]').blur();
     }
 
     /**
