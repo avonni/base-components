@@ -81,7 +81,7 @@ export default class VisualPicker extends LightningElement {
      */
     @api label;
     /**
-     * Optional message to be displayed when no checkbox is selected and the required attribute is set.
+     * Error message to be displayed when no item is selected and the required attribute is set to true.
      *
      * @type {string}
      * @public
@@ -128,7 +128,7 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * If present, the visual picker is disabled.
+     * If present, the visual picker is disabled and the user cannot with it.
      *
      * @type {boolean}
      * @public
@@ -142,9 +142,8 @@ export default class VisualPicker extends LightningElement {
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
     }
-
     /**
-     * If present, hide the check mark.
+     * If present, hide the check mark when selected.
      *
      * @type {boolean}
      * @public
@@ -158,7 +157,6 @@ export default class VisualPicker extends LightningElement {
     set hideCheckMark(value) {
         this._hideCheckMark = normalizeBoolean(value);
     }
-
     /**
      * Array of items with attributes populating the visual picker.
      *
@@ -173,9 +171,8 @@ export default class VisualPicker extends LightningElement {
     set items(value) {
         this._items = normalizeArray(value);
     }
-
     /**
-     * The ratio of the items. Valid values include 1-by-1, 4-by-3 and 16-by-9.
+     * The ratio of the items. Valid values include 1-by-1, 4-by-3, 16-by-9, 3-by-4 and 9-by-16.
      *
      * @type {string}
      * @public
@@ -192,7 +189,6 @@ export default class VisualPicker extends LightningElement {
             validValues: VISUAL_PICKER_RATIOS.valid
         });
     }
-
     /**
      * If present, at least one item must be selected.
      *
@@ -208,9 +204,8 @@ export default class VisualPicker extends LightningElement {
     set required(value) {
         this._required = normalizeBoolean(value);
     }
-
     /**
-     * The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium and large.
+     * The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem), x-large (18rem x 18rem), xx-large (21rem x 21rem) and responsive. Only avatar appears when x-small and xx-small.
      *
      * @type {string}
      * @public
@@ -227,7 +222,6 @@ export default class VisualPicker extends LightningElement {
             validValues: VISUAL_PICKER_SIZES.valid
         });
     }
-
     /**
      * Valid values include radio and checkbox.
      *
@@ -246,9 +240,8 @@ export default class VisualPicker extends LightningElement {
             validValues: INPUT_TYPES.valid
         });
     }
-
     /**
-     * Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2]
+     * Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2], 'value1' or ['value1']
      *
      * @type {(string|string[])}
      * @public
@@ -261,9 +254,8 @@ export default class VisualPicker extends LightningElement {
     set value(value) {
         this._value = value instanceof Array ? value : [value];
     }
-
     /**
-     * Changes the appearance of the visual picker. Valid values include coverable, non-coverable and vertical.
+     * Changes the appearance of the item when selected. Valid values include coverable and non-coverable.
      *
      * @type {string}
      * @public
@@ -393,6 +385,11 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
+    /**
+     * Verify if size is bigger than x-small.
+     *
+     * @type {boolean}
+     */
     get isBiggerThanXSmall() {
         return !(this._size === 'x-small' || this._size === 'xx-small');
     }
@@ -400,7 +397,7 @@ export default class VisualPicker extends LightningElement {
     /**
      * Verify if variant is coverable.
      *
-     * @type {string}
+     * @type {boolean}
      */
     get isCoverable() {
         return this._variant === 'coverable';

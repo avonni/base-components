@@ -48,7 +48,8 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, the visual picker is disabled.',
+            description:
+                'If present, the visual picker is disabled and the user cannot with it. ',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -60,7 +61,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, hide the check mark.',
+            description: 'If present, hide the check mark when selected.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -91,7 +92,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Optional message to be displayed when no checkbox is selected and the required attribute is set.',
+                'Error message to be displayed when no item is selected and the required attribute is set to true.',
             table: {
                 type: { summary: 'string' },
                 category: 'Validations'
@@ -145,7 +146,7 @@ export default {
                 'responsive'
             ],
             description:
-                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem), x-large (18rem x 18rem), xx-large (21rem x 21rem) and responsive.',
+                'The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem), x-large (18rem x 18rem), xx-large (21rem x 21rem) and responsive. Only avatar appears when x-small and xx-small.',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
@@ -167,7 +168,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2])',
+                "Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2], 'value1' or ['value1']",
             table: {
                 type: { summary: 'string | string[]' }
             }
@@ -177,7 +178,8 @@ export default {
                 type: 'select'
             },
             options: ['coverable', 'non-coverable'],
-            description: 'Allowed values are coverable and non-coverable.',
+            description:
+                'Changes the appearance of the item when selected. Valid values include coverable and non-coverable.',
             table: {
                 defaultValue: { summary: 'non-coverable' },
                 type: { summary: 'string' }

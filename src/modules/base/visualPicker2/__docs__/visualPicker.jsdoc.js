@@ -8,12 +8,6 @@
  * @property {string} value Required. A unique value for the item.
  */
 /**
- * @typedef {Object} VisualPickerTag
- * @name itemsTags
- * @property {string} label Tag label.
- * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
- */
-/**
  * @typedef {Object} VisualPickerFigure
  * @name itemsFigure
  * @property {object{}} avatar An object with item fields to be rendered as an avatar.
@@ -38,6 +32,12 @@
  * @property {string} presencePosition Position of the presence icon. Valid values include top-left, top-right, bottom-left and bottom-right.
  * @property {string} size Size of the avatar icon. Valid values are x-small, small, medium, large, x-large and xx-large. Defaults to medium.
  * @property {string} variant The variant changes the shape of the avatar. Valid values are empty, circle, and square. Defaults to square.
+ */
+/**
+ * @typedef {Object} VisualPickerTag
+ * @name figureTags
+ * @property {string} label Tag label.
+ * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
  */
 
 /**
@@ -306,4 +306,10 @@
  * @name --avonni-visual-picker-figure-image-padding-around
  * @default 0px
  * @type padding
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-figure-image-object-fit
+ * @default scale-down
+ * @type object-fit
  */
