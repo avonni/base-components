@@ -49,7 +49,8 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If present, the visual picker is disabled.',
+            description:
+                'If present, the visual picker is disabled and the user cannot interact with it. ',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -62,7 +63,7 @@ export default {
                 type: 'boolean'
             },
             defaultValue: false,
-            description: 'If present, hide the check mark.',
+            description: 'If present, hide the check mark when selected.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -73,7 +74,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Array of items with attributes populating the visual picker.',
+                'Array of items with attributes populating the vertical visual picker.',
             table: {
                 type: { summary: 'object' }
             }
@@ -82,7 +83,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'Text label for the vertical visual picker',
+            description: 'Text label to title the vertical visual picker.',
             table: {
                 type: { summary: 'string' }
             }
@@ -93,7 +94,7 @@ export default {
                 type: 'text'
             },
             description:
-                'Optional message to be displayed when no checkbox is selected and the required attribute is set.',
+                'Error message to be displayed when no item is selected and the required attribute is set to true.',
             table: {
                 type: { summary: 'string' },
                 category: 'Validations'
@@ -103,7 +104,7 @@ export default {
             control: {
                 type: 'text'
             },
-            description: 'The name of the visual picker.',
+            description: 'The name of the vertical visual picker.',
             type: { required: true },
             table: {
                 type: { summary: 'string' }
@@ -140,7 +141,8 @@ export default {
             },
             options: ['radio', 'checkbox'],
             defaultValue: 'radio',
-            description: 'Valid values include radio and checkbox.',
+            description:
+                'It defines the type of input. Valid values include radio and checkbox.',
             table: {
                 defaultValue: { summary: 'radio' },
                 type: { summary: 'string' }
@@ -151,7 +153,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2]',
+                "Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2], 'value1' or ['value1'].",
             table: {
                 type: { summary: 'string | string[]' }
             }

@@ -63,7 +63,7 @@ const DEFAULT_REQUIRED = false;
  */
 export default class VerticalVisualPicker extends LightningElement {
     /**
-     * Text label to title the visual picker.
+     * Text label to title the vertical visual picker.
      *
      * @type {string}
      * @public
@@ -71,7 +71,7 @@ export default class VerticalVisualPicker extends LightningElement {
     @api label;
 
     /**
-     * Optional message to be displayed when no checkbox is selected and the required attribute is set.
+     * Error message to be displayed when no item is selected and the required attribute is set to true.
      *
      * @type {string}
      * @public
@@ -79,7 +79,7 @@ export default class VerticalVisualPicker extends LightningElement {
     @api messageWhenValueMissing;
 
     /**
-     * The name of the visual picker.
+     * The name of the vertical visual picker.
      *
      * @type {string}
      * @public
@@ -118,7 +118,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * If present, the virtual visual picker is disabled.
+     * If present, the visual picker is disabled and the user cannot interact with it.
      *
      * @type {boolean}
      * @public
@@ -134,7 +134,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * If present, hide the check mark.
+     * If present, hide the check mark when selected.
      *
      * @type {boolean}
      * @public
@@ -150,7 +150,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Array of item objects.
+     * Array of items with attributes populating the vertical visual picker.
      *
      * @type {object[]}
      * @public
@@ -181,7 +181,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * The size of the items. Valid values include xx-small, x-small, small, medium and large.
+     * It defines the width of the item. Valid values include small, medium, large and responsive.
      *
      * @type {string}
      * @public
@@ -200,7 +200,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Valid values include radio and checkbox.
+     * It defines the type of input. Valid values include radio and checkbox.
      *
      * @type {string}
      * @public
@@ -219,7 +219,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Value of the selected item. For the checkbox type, the value is an array (Ex: [value1, value2]
+     * Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2], 'value1' or ['value1'].
      *
      * @type {(string|string[])}
      * @public
@@ -234,7 +234,7 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Changes the appearance of the vertical visual picker. Valid values include coverable and non-coverable.
+     * It changes the appearance of the item when selected. Valid values include coverable and non-coverable.
      *
      * @type {string}
      * @public
