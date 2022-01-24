@@ -223,7 +223,7 @@ export default class VisualPicker extends LightningElement {
         });
     }
     /**
-     * Valid values include radio and checkbox.
+     * It defines the type of input. Valid values include radio and checkbox.
      *
      * @type {string}
      * @public

@@ -157,7 +157,8 @@ export default {
                 type: 'select'
             },
             options: ['radio', 'checkbox'],
-            description: 'Valid values include radio and checkbox.',
+            description:
+                'It defines the type of input. Valid values include radio and checkbox.',
             table: {
                 defaultValue: { summary: 'radio' },
                 type: { summary: 'string' }
