@@ -38,7 +38,8 @@ import {
     itemsWithTags,
     analyticsItems,
     topAnalyticsItems,
-    goalStories
+    goalStories,
+    botStories
 } from './data';
 
 export default {
@@ -282,10 +283,18 @@ analyticItemsTop.args = {
     value: ['approval-analytics', 'commerce-analytics']
 };
 
-export const goalStory = Template.bind({});
-goalStory.args = {
+export const GoalStory = Template.bind({});
+GoalStory.args = {
     items: goalStories,
     label: 'What is the goal of your story',
     name: 'goal-story',
     size: 'responsive'
+};
+
+export const BotStory = Template.bind({});
+BotStory.args = {
+    items: botStories,
+    label: 'Select a bot',
+    name: 'bot-story',
+    size: 'large'
 };

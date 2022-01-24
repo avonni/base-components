@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="avonni-visual-picker__figure-content_alignement">
+    <div class={computedContainerClass}>
         <c-primitive-avatar
             alternative-text="avatar"
             fallback-icon-name={avatar.iconName}
@@ -49,7 +49,9 @@
             "
             if:true={avatarIsLeft}
         ></c-primitive-avatar>
-        <span class={computedTitleClass}> {title} </span>
+        <span class="avonni-visual-picker__figure-title slds-truncate">
+            {title}
+        </span>
         <c-primitive-avatar
             alternative-text="avatar"
             fallback-icon-name={avatar.iconName}

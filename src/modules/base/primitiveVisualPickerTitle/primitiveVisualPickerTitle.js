@@ -35,12 +35,12 @@ import { classSet } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const AVATAR_POSITIONS = {
-    valid: ['left', 'right'],
+    valid: ['left', 'right', 'top', 'bottom'],
     default: 'left'
 };
 
 const VISUAL_PICKER_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
+    valid: ['small', 'medium', 'large', 'x-large', 'xx-large', 'responsive'],
     default: 'medium'
 };
 
@@ -61,8 +61,8 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
 
     set avatarPosition(position) {
         this._avatarPosition = normalizeString(position, {
-            fallbackValue: AVATAR_POSITIONS,
-            validValues: AVATAR_POSITIONS.default
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
         });
     }
 
@@ -82,8 +82,8 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
 
     set size(size) {
         this._size = normalizeString(size, {
-            fallbackValue: VISUAL_PICKER_SIZES,
-            validValues: VISUAL_PICKER_SIZES.default
+            fallbackValue: VISUAL_PICKER_SIZES.default,
+            validValues: VISUAL_PICKER_SIZES.valid
         });
     }
 
@@ -95,12 +95,9 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
         return this._avatarPosition === 'right' && this._displayAvatar;
     }
 
-    get computedTitleClass() {
-        return classSet('avonni-visual-picker__figure-title slds-truncate')
-            .add({
-                'avonni-visual-picker__figure-title_small':
-                    this.size === 'small'
-            })
+    get computedContainerClass() {
+        return classSet('avonni-visual-picker__figure-content_alignement')
+            .add(`avonni-visual-picker__figure-content_${this._size}`)
             .toString();
     }
 }
