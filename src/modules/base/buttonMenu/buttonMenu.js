@@ -623,9 +623,12 @@ export default class ButtonMenu extends LightningElement {
      */
     dispatchSelect(event) {
         /**
+         * The event fired when a menu item is selected.
+         *
          * @event
          * @name select
-         * @param {string} value
+         * @param {string} value Value of the selected option.
+         * @public
          * @cancelable
          */
         this.dispatchEvent(
@@ -745,8 +748,11 @@ export default class ButtonMenu extends LightningElement {
             }
             if (this._dropdownVisible) {
                 /**
+                 * The event fired when the dropdown menu is opened.
+                 *
                  * @event
                  * @name open
+                 * @public
                  */
                 this.dispatchEvent(new CustomEvent('open'));
 
