@@ -32,20 +32,67 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+
+const AVATAR_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+
+const VISUAL_PICKER_SIZES = {
+    valid: ['x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'],
+    default: 'medium'
+};
+
+const DEFAULT_DISPLAY_AVATAR = false;
 
 export default class PrimitiveVisualPickerTitle extends LightningElement {
-    @api avatarPosition;
     @api avatar;
-    @api displayAvatar;
-    @api size;
     @api title;
 
+    _avatarPosition = AVATAR_POSITIONS.default;
+    _displayAvatar = DEFAULT_DISPLAY_AVATAR;
+    _size = VISUAL_PICKER_SIZES.default;
+
+    @api
+    get avatarPosition() {
+        return this._avatarPosition;
+    }
+
+    set avatarPosition(position) {
+        this._avatarPosition = normalizeString(position, {
+            fallbackValue: AVATAR_POSITIONS,
+            validValues: AVATAR_POSITIONS.default
+        });
+    }
+
+    @api
+    get displayAvatar() {
+        return this._displayAvatar;
+    }
+
+    set displayAvatar(value) {
+        this._displayAvatar = normalizeBoolean(value);
+    }
+
+    @api
+    get size() {
+        return this._size;
+    }
+
+    set size(size) {
+        this._size = normalizeString(size, {
+            fallbackValue: VISUAL_PICKER_SIZES,
+            validValues: VISUAL_PICKER_SIZES.default
+        });
+    }
+
     get avatarIsLeft() {
-        return this.avatarPosition === 'left' && this.displayAvatar;
+        return this._avatarPosition === 'left' && this._displayAvatar;
     }
 
     get avatarIsRight() {
-        return this.avatarPosition === 'right' && this.displayAvatar;
+        return this._avatarPosition === 'right' && this._displayAvatar;
     }
 
     get computedTitleClass() {

@@ -375,9 +375,7 @@ export default class VisualPicker extends LightningElement {
                 'slds-visual-picker__text': this._variant === 'non-coverable',
                 'slds-visual-picker__icon': this.isCoverable,
                 'avonni-hide-check-mark': this._hideCheckMark,
-                'slds-align_absolute-center':
-                    !this.isBiggerThanXSmall ||
-                    (this.isBiggerThanXSmall && this._size !== 'responsive')
+                'slds-align_absolute-center': this._size !== 'responsive'
             })
             .toString();
     }
@@ -390,10 +388,7 @@ export default class VisualPicker extends LightningElement {
     get notSelectedClass() {
         return classSet('avonni-visual-picker__height')
             .add({
-                'slds-is-not-selected':
-                    this.isCoverable && !this._hideCheckMark,
-                'avonni-is-not-selected':
-                    this.isCoverable && this._hideCheckMark
+                'slds-is-not-selected': this.isCoverable && !this._hideCheckMark
             })
             .toString();
     }
