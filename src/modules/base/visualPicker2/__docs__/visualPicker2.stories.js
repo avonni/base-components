@@ -199,66 +199,90 @@ const Template = (args) => VisualPicker(args);
 
 export const Base = Template.bind({});
 Base.args = {
+    items: items,
     label: 'This is a label',
     name: 'base',
-    items: items
+    value: 'lightning-professional'
+};
+
+export const Coverable = Template.bind({});
+Coverable.args = {
+    items: items,
+    label: 'Coverable 4-by-3',
+    name: 'coverable',
+    ratio: '4-by-3',
+    value: 'lightning-professional',
+    variant: 'coverable'
+};
+
+export const CoverableNoMark = Template.bind({});
+CoverableNoMark.args = {
+    hideCheckMark: true,
+    items: items,
+    label: 'Coverable 16-by-9 no mark',
+    name: 'coverable',
+    ratio: '16-by-9',
+    size: 'large',
+    value: 'lightning-professional',
+    variant: 'coverable'
 };
 
 export const NoMarkDoubleExtraSmall = Template.bind({});
 NoMarkDoubleExtraSmall.args = {
-    name: 'xx-small',
-    label: 'Double extra small input with no check mark',
-    value: 'lightning-enterprise',
+    hideCheckMark: true,
     items: items,
+    label: 'Double extra small no mark',
+    name: 'xx-small',
     size: 'xx-small',
-    hideCheckMark: true
+    value: 'lightning-enterprise'
 };
 
 export const IconTiles = Template.bind({});
 IconTiles.args = {
-    label: 'Choose an icon',
-    name: 'Icon Tiles',
     items: iconTiles,
-    size: 'small',
-    ratio: '3-by-4'
+    label: 'Choose an icon',
+    name: 'icon-tiles',
+    ratio: '3-by-4',
+    size: 'small'
 };
 
 export const ItemsWithPictures = Template.bind({});
 ItemsWithPictures.args = {
-    name: 'Items with pictures',
     items: itemsWithPictures,
-    size: 'medium',
-    ratio: '1-by-1'
+    name: 'with-pictures',
+    ratio: '3-by-4'
 };
 
 export const ItemsWithTags = Template.bind({});
 ItemsWithTags.args = {
-    name: 'Items with tags',
+    name: 'with-tags',
     items: itemsWithTags,
-    size: 'medium'
+    size: 'large'
 };
 
 export const analyticItems = Template.bind({});
 analyticItems.args = {
-    label: 'All Templates',
-    name: 'Analytic Items',
     items: analyticsItems,
+    label: 'All Templates',
+    name: 'analytic-items',
     size: 'xx-large'
 };
 
 export const analyticItemsTop = Template.bind({});
 analyticItemsTop.args = {
-    label: 'All Templates',
-    name: 'Analytic Items',
     items: topAnalyticsItems,
+    label: 'All Templates',
+    name: 'analytic-items',
+    ratio: '3-by-4',
     size: 'xx-large',
-    ratio: '3-by-4'
+    type: 'checkbox',
+    value: ['approval-analytics', 'commerce-analytics']
 };
 
 export const goalStory = Template.bind({});
 goalStory.args = {
-    label: 'What is the goal of your story',
-    name: 'Goal Stories',
     items: goalStories,
+    label: 'What is the goal of your story',
+    name: 'goal-story',
     size: 'responsive'
 };

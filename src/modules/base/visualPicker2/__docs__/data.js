@@ -215,7 +215,13 @@ export const itemsWithTags = [
             description: 'USD/user/month *',
             avatar: {
                 iconName: 'standard:groups'
-            }
+            },
+            tags: [
+                {
+                    label: 'Best Seller',
+                    variant: 'success'
+                }
+            ]
         }
     },
     {
@@ -228,7 +234,13 @@ export const itemsWithTags = [
             description: 'USD/user/month *',
             avatar: {
                 iconName: 'standard:account'
-            }
+            },
+            tags: [
+                {
+                    label: 'Unavailable',
+                    variant: 'error'
+                }
+            ]
         }
     },
     {
