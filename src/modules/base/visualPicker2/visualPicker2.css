@@ -111,6 +111,13 @@
     );
 }
 
+.slds-visual-picker.avonni-visual-picker_responsive
+    input:checked
+    ~ label
+    .slds-visual-picker__text:after {
+    right: 0.75rem;
+}
+
 .slds-visual-picker input:checked ~ label .slds-visual-picker__icon {
     background-color: var(
         --avonni-visual-picker-figure-color-background-selected,
@@ -120,6 +127,17 @@
         --avonni-visual-picker-figure-color-border-selected,
         #1b96ff
     );
+}
+
+.avonni-visual-picker__chek-icon {
+    right: 1.375rem;
+}
+
+.avonni-visual-picker__check_absolute-center {
+    height: 100%;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
 }
 
 .avonni-hide-check-mark:after {
@@ -272,21 +290,15 @@
 
 /*-- responsive --*/
 .avonni-visual-picker_responsive {
-    width: 100%;
     height: 100%;
-    min-width: 12rem;
-    max-width: 35rem;
-    min-height: 12rem;
-    max-height: 35rem;
+    min-height: 15rem;
+    max-height: 21rem;
 }
 
 .avonni-visual-picker_responsive .avonni-visual-picker__figure {
     height: 1px;
-    min-width: 12rem;
-    max-width: 35rem;
-    min-height: 12rem;
-    max-height: 35rem;
-    padding: 0.5rem;
+    min-height: 15rem;
+    max-height: 21rem;
 }
 
 .avonni-visual-picker_responsive .avonni-visual-picker__height {
@@ -476,13 +488,13 @@
 .avonni-visual-picker__figure-image-top-container {
     height: 90%;
     width: 100%;
-    padding: var(--avonni-visual-picker-figure-image-padding-around, 0px);
+    padding: var(--avonni-visual-picker-figure-image-padding-around, 5px);
 }
 
 .avonni-visual-picker__figure-image-center-container {
     height: 75%;
     width: 100%;
-    padding: var(--avonni-visual-picker-figure-image-padding-around, 0px);
+    padding: var(--avonni-visual-picker-figure-image-padding-around, 5px);
 }
 
 .avonni-visual-picker__figure-image {

@@ -54,9 +54,21 @@
             </template>
             {label}
         </legend>
-        <div class="slds-form-element__control slds-grid slds-wrap">
+        <lightning-layout
+            pull-to-boundary={responsivePullBoundary}
+            multiple-rows="true"
+            class="slds-form-element__control slds-grid slds-wrap"
+        >
             <template for:each={listItems} for:item="item">
-                <div class={visualPickerClass} key={item.key}>
+                <lightning-layout-item
+                    size="12"
+                    small-device-size="12"
+                    medium-device-size="4"
+                    large-device-size="3"
+                    padding={responsivePadding}
+                    class={visualPickerClass}
+                    key={item.key}
+                >
                     <input
                         type={type}
                         id={item.value}
@@ -72,7 +84,7 @@
                         <span class={visualPickerTypeClass}>
                             <span
                                 if:true={item.displayCheckCoverable}
-                                class="slds-is-selected"
+                                class={item.computedSelectedClass}
                             >
                                 <lightning-icon
                                     icon-name="utility:check"
@@ -246,12 +258,7 @@
                             >
                         </span>
                         <template if:true={item.displayCheckNonCoverable}>
-                            <span
-                                class="
-                                    slds-icon_container
-                                    slds-visual-picker__text-check
-                                "
-                            >
+                            <span class={computedCheckIconClass}>
                                 <lightning-icon
                                     icon-name="utility:check"
                                     size="x-small"
@@ -261,9 +268,9 @@
                             </span>
                         </template>
                     </label>
-                </div>
+                </lightning-layout-item>
             </template>
-        </div>
+        </lightning-layout>
     </fieldset>
     <template if:false={valid}>
         <div
