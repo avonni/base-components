@@ -35,7 +35,7 @@
 <template>
     <div class={computedContainerClass}>
         <c-primitive-avatar
-            alternative-text="avatar"
+            alternative-text={alternativeText}
             fallback-icon-name={avatar.iconName}
             initials={avatar.initials}
             presence={avatar.presence}
@@ -53,7 +53,7 @@
             {title}
         </span>
         <c-primitive-avatar
-            alternative-text="avatar"
+            alternative-text={alternativeText}
             fallback-icon-name={avatar.iconName}
             initials={avatar.initials}
             presence={avatar.presence}

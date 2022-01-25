@@ -96,7 +96,7 @@
                                 <!-- Position Top -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-avatar
-                                        alternative-text="avatar"
+                                        alternative-text={item.avatarAltText}
                                         fallback-icon-name={item.avatar.iconName}
                                         initials={item.avatar.initials}
                                         presence={item.avatar.presence}
@@ -107,6 +107,7 @@
                                         if:true={item.avatarIsTop}
                                     ></c-primitive-avatar>
                                     <c-primitive-visual-picker-title
+                                        alternative-text={item.avatarAltText}
                                         avatar={item.avatar}
                                         avatar-position={item.avatarPosition}
                                         display-avatar={item.displayAvatar}
@@ -146,6 +147,7 @@
                                 <!-- Position Center -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
+                                        alternative-text={item.avatarAltText}
                                         avatar={item.avatar}
                                         avatar-position={item.avatarPosition}
                                         display-avatar={item.displayAvatar}
@@ -165,7 +167,7 @@
                                         >{item.figure.description}
                                     </span>
                                     <c-primitive-avatar
-                                        alternative-text="avatar"
+                                        alternative-text={item.avatarAltText}
                                         fallback-icon-name={item.avatar.iconName}
                                         initials={item.avatar.initials}
                                         presence={item.avatar.presence}
@@ -195,6 +197,7 @@
                                 <!-- Position Bottom -->
                                 <div class="avonni-visual-picker__items">
                                     <c-primitive-visual-picker-title
+                                        alternative-text={item.avatarAltText}
                                         avatar={item.avatar}
                                         avatar-position={item.avatarPosition}
                                         display-avatar={item.displayAvatar}
@@ -214,7 +217,7 @@
                                         >{item.figure.description}
                                     </span>
                                     <c-primitive-avatar
-                                        alternative-text="avatar"
+                                        alternative-text={item.avatarAltText}
                                         fallback-icon-name={item.avatar.iconName}
                                         initials={item.avatar.initials}
                                         presence={item.avatar.presence}

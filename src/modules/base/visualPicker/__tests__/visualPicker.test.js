@@ -135,47 +135,6 @@ describe('VisualPicker', () => {
         });
     });
 
-    // items
-    // it('Visual Picker: items', () => {
-    //     element.items = testItems;
-
-    //     return Promise.resolve().then(() => {
-    //         const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
-    //         const figureIcons = element.shadowRoot.querySelectorAll(
-    //             '.slds-visual-picker__figure lightning-icon'
-    //         );
-    //         const figureTitles = element.shadowRoot.querySelectorAll(
-    //             '.slds-visual-picker__figure .slds-text-heading_large'
-    //         );
-    //         const figureDescriptions = element.shadowRoot.querySelectorAll(
-    //             '.slds-visual-picker__figure .slds-text-title'
-    //         );
-    //         const titles = element.shadowRoot.querySelectorAll(
-    //             '.slds-visual-picker__body .slds-text-heading_small'
-    //         );
-    //         const descriptions = element.shadowRoot.querySelectorAll(
-    //             '.slds-visual-picker__body .slds-text-title'
-    //         );
-
-    //         testItems.forEach((item, index) => {
-    //             expect(inputs[index].value).toBe(item.value);
-    //             expect(inputs[index].disabled).toBe(item.disabled || false);
-    //             expect(figureIcons[index].iconName).toBe(item.figure.iconName);
-    //             expect(figureIcons[index].size).toBe(item.iconSize || 'medium');
-    //             expect(figureIcons[index].alternativeText).toBe(
-    //                 item.figure.iconAlternativeText
-    //             );
-    //             expect(figureIcons[index].src).toBe(item.figure.iconSrc);
-    //             expect(figureTitles[index].textContent).toBe(item.figure.title);
-    //             expect(figureDescriptions[index].textContent).toBe(
-    //                 item.figure.description
-    //             );
-    //             expect(titles[index].textContent).toBe(item.title);
-    //             expect(descriptions[index].textContent).toBe(item.description);
-    //         });
-    //     });
-    // });
-
     // label
     it('Visual Picker: label', () => {
         element.label = 'A string label';

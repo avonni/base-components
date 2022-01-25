@@ -49,6 +49,7 @@ const DEFAULT_DISPLAY_AVATAR = false;
 export default class PrimitiveVisualPickerTitle extends LightningElement {
     @api avatar;
     @api title;
+    @api alternativeText;
 
     _avatarPosition = AVATAR_POSITIONS.default;
     _displayAvatar = DEFAULT_DISPLAY_AVATAR;

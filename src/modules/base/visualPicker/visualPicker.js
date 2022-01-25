@@ -302,6 +302,7 @@ export default class VisualPicker extends LightningElement {
                 avatar;
             const avatarIsTop = avatarPosition === 'top' && displayAvatar;
             const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
+            const avatarAltText = displayAvatar ? avatar.iconName || avatar.initials || 'avatar' : '';
 
             // Title management
             const titlePosition = figure.titlePosition || 'center';
@@ -339,6 +340,7 @@ export default class VisualPicker extends LightningElement {
                 avatarIsTop,
                 avatarIsCenter,
                 avatarIsBottom,
+                avatarAltText,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
                 titleIsTop,
