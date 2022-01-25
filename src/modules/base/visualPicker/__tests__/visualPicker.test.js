@@ -32,47 +32,7 @@
 
 import { createElement } from 'lwc';
 import VisualPicker from 'c/visualPicker';
-
-const ITEMS = [
-    {
-        title: 'Item 1',
-        description: 'Some description for item 1',
-        value: 'item-1',
-        disabled: true,
-        figure: {
-            title: 'Figure 1',
-            description: 'Some description for figure 1',
-            iconName: 'standard:user',
-            iconSize: 'large',
-            iconAlternativeText: 'Alternative text for icon',
-            iconPosition: 'bottom',
-            iconSrc: '/assets/fakeicon.ico'
-        }
-    },
-    {
-        title: 'Item 2',
-        description: 'Some description for item 2',
-        value: 'item-2',
-        figure: {
-            title: 'Figure 2',
-            description: 'Some description for figure 2',
-            iconName: 'standard:apps',
-            iconSize: 'medium',
-            iconAlternativeText: 'Alternative text for icon',
-            iconPosition: 'left'
-        }
-    },
-    {
-        title: 'Item 3',
-        description: 'Some description for item 3',
-        value: 'item-3',
-        figure: {
-            title: 'Figure 3',
-            description: 'Some description for figure 3',
-            iconName: 'standard:apps'
-        }
-    }
-];
+import { testItems } from '../__docs__/data';
 
 let element;
 describe('VisualPicker', () => {
@@ -89,9 +49,8 @@ describe('VisualPicker', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Visual Picker: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
-        expect(element.hideBorder).toBeFalsy();
         expect(element.hideCheckMark).toBeFalsy();
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
@@ -101,6 +60,7 @@ describe('VisualPicker', () => {
         expect(element.required).toBeFalsy();
         expect(element.size).toBe('medium');
         expect(element.type).toBe('radio');
+        expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('non-coverable');
     });
@@ -109,61 +69,39 @@ describe('VisualPicker', () => {
 
     // disabled
     // Depends on items
-    it('disabled = false', () => {
+    it('Visual Picker: disabled = false', () => {
         element.disabled = false;
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
             inputs.forEach((input, index) => {
-                expect(input.disabled).toBe(ITEMS[index].disabled || false);
+                expect(input.disabled).toBe(testItems[index].disabled || false);
             });
         });
     });
 
-    it('disabled = true', () => {
+    it('Visual Picker: disabled = true', () => {
         element.disabled = true;
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
         });
     });
 
-    // hide-border
-    // Depends on items
-    it('hideBorder = false', () => {
-        element.hideBorder = false;
-        element.items = ITEMS;
-
-        return Promise.resolve().then(() => {
-            const type = element.shadowRoot.querySelector(
-                '.slds-visual-picker__figure'
-            );
-            expect(type.classList).not.toContain('avonni-hide-border');
-        });
-    });
-
-    it('hideBorder = true', () => {
-        element.hideBorder = true;
-        element.items = ITEMS;
-
-        return Promise.resolve().then(() => {
-            const type = element.shadowRoot.querySelector(
-                '.slds-visual-picker__figure'
-            );
-            expect(type.classList).toContain('avonni-hide-border');
-        });
-    });
-
     // hide-check-mark
     // Depends on variant, value and items
-    it('hideCheckMark = false', () => {
+    it('Visual Picker: hideCheckMark = false', () => {
         element.hideCheckMark = false;
-        element.items = ITEMS;
+        element.items = testItems;
         element.variant = 'coverable';
 
         return Promise.resolve().then(() => {
@@ -179,9 +117,9 @@ describe('VisualPicker', () => {
         });
     });
 
-    it('hideCheckMark = true', () => {
+    it('Visual Picker: hideCheckMark = true', () => {
         element.hideCheckMark = true;
-        element.items = ITEMS;
+        element.items = testItems;
         element.variant = 'coverable';
 
         return Promise.resolve().then(() => {
@@ -198,48 +136,48 @@ describe('VisualPicker', () => {
     });
 
     // items
-    it('items', () => {
-        element.items = ITEMS;
+    // it('Visual Picker: items', () => {
+    //     element.items = testItems;
 
-        return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
-            const figureIcons = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__figure lightning-icon'
-            );
-            const figureTitles = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__figure .slds-text-heading_large'
-            );
-            const figureDescriptions = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__figure .slds-text-title'
-            );
-            const titles = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__body .slds-text-heading_small'
-            );
-            const descriptions = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__body .slds-text-title'
-            );
+    //     return Promise.resolve().then(() => {
+    //         const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+    //         const figureIcons = element.shadowRoot.querySelectorAll(
+    //             '.slds-visual-picker__figure lightning-icon'
+    //         );
+    //         const figureTitles = element.shadowRoot.querySelectorAll(
+    //             '.slds-visual-picker__figure .slds-text-heading_large'
+    //         );
+    //         const figureDescriptions = element.shadowRoot.querySelectorAll(
+    //             '.slds-visual-picker__figure .slds-text-title'
+    //         );
+    //         const titles = element.shadowRoot.querySelectorAll(
+    //             '.slds-visual-picker__body .slds-text-heading_small'
+    //         );
+    //         const descriptions = element.shadowRoot.querySelectorAll(
+    //             '.slds-visual-picker__body .slds-text-title'
+    //         );
 
-            ITEMS.forEach((item, index) => {
-                expect(inputs[index].value).toBe(item.value);
-                expect(inputs[index].disabled).toBe(item.disabled || false);
-                expect(figureIcons[index].iconName).toBe(item.figure.iconName);
-                expect(figureIcons[index].size).toBe(item.iconSize || 'medium');
-                expect(figureIcons[index].alternativeText).toBe(
-                    item.figure.iconAlternativeText
-                );
-                expect(figureIcons[index].src).toBe(item.figure.iconSrc);
-                expect(figureTitles[index].textContent).toBe(item.figure.title);
-                expect(figureDescriptions[index].textContent).toBe(
-                    item.figure.description
-                );
-                expect(titles[index].textContent).toBe(item.title);
-                expect(descriptions[index].textContent).toBe(item.description);
-            });
-        });
-    });
+    //         testItems.forEach((item, index) => {
+    //             expect(inputs[index].value).toBe(item.value);
+    //             expect(inputs[index].disabled).toBe(item.disabled || false);
+    //             expect(figureIcons[index].iconName).toBe(item.figure.iconName);
+    //             expect(figureIcons[index].size).toBe(item.iconSize || 'medium');
+    //             expect(figureIcons[index].alternativeText).toBe(
+    //                 item.figure.iconAlternativeText
+    //             );
+    //             expect(figureIcons[index].src).toBe(item.figure.iconSrc);
+    //             expect(figureTitles[index].textContent).toBe(item.figure.title);
+    //             expect(figureDescriptions[index].textContent).toBe(
+    //                 item.figure.description
+    //             );
+    //             expect(titles[index].textContent).toBe(item.title);
+    //             expect(descriptions[index].textContent).toBe(item.description);
+    //         });
+    //     });
+    // });
 
     // label
-    it('label', () => {
+    it('Visual Picker: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -251,11 +189,13 @@ describe('VisualPicker', () => {
     });
 
     // name
-    it('name', () => {
+    it('Visual Picker: name', () => {
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.name).toBe('a-string-name');
             });
@@ -264,12 +204,12 @@ describe('VisualPicker', () => {
 
     // ratio
     // Depends on items
-    it('ratio = 1-by-1', () => {
-        const ratios = ['1-by-1', '4-by-3', '16-by-9'];
+    it('Visual Picker: ratio = 1-by-1', () => {
+        const ratios = ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'];
         const pickedRatio = '1-by-1';
 
         element.ratio = pickedRatio;
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
@@ -290,12 +230,12 @@ describe('VisualPicker', () => {
         });
     });
 
-    it('ratio = 4-by-3', () => {
-        const ratios = ['1-by-1', '4-by-3', '16-by-9'];
+    it('Visual Picker: ratio = 4-by-3', () => {
+        const ratios = ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'];
         const pickedRatio = '4-by-3';
 
         element.ratio = pickedRatio;
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
@@ -316,12 +256,64 @@ describe('VisualPicker', () => {
         });
     });
 
-    it('ratio = 16-by-9', () => {
-        const ratios = ['1-by-1', '4-by-3', '16-by-9'];
+    it('Visual Picker: ratio = 16-by-9', () => {
+        const ratios = ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'];
         const pickedRatio = '16-by-9';
 
         element.ratio = pickedRatio;
-        element.items = ITEMS;
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const wrappers = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker'
+            );
+
+            wrappers.forEach((wrapper) => {
+                ratios.forEach((ratio) => {
+                    if (ratio === pickedRatio) {
+                        expect(wrapper.classList).toContain(`ratio-${ratio}`);
+                    } else {
+                        expect(wrapper.classList).not.toContain(
+                            `ratio-${ratio}`
+                        );
+                    }
+                });
+            });
+        });
+    });
+
+    it('Visual Picker: ratio = 3-by-4', () => {
+        const ratios = ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'];
+        const pickedRatio = '3-by-4';
+
+        element.ratio = pickedRatio;
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const wrappers = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker'
+            );
+
+            wrappers.forEach((wrapper) => {
+                ratios.forEach((ratio) => {
+                    if (ratio === pickedRatio) {
+                        expect(wrapper.classList).toContain(`ratio-${ratio}`);
+                    } else {
+                        expect(wrapper.classList).not.toContain(
+                            `ratio-${ratio}`
+                        );
+                    }
+                });
+            });
+        });
+    });
+
+    it('Visual Picker: ratio = 9-by-16', () => {
+        const ratios = ['1-by-1', '4-by-3', '16-by-9', '3-by-4', '9-by-16'];
+        const pickedRatio = '9-by-16';
+
+        element.ratio = pickedRatio;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
             const wrappers = element.shadowRoot.querySelectorAll(
@@ -343,24 +335,32 @@ describe('VisualPicker', () => {
     });
 
     // required
-    it('required = false', () => {
+    it('Visual Picker: required = false', () => {
         element.required = false;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
-            const fieldset = element.shadowRoot.querySelector('[data-element-id="fieldset"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
+            const fieldset = element.shadowRoot.querySelector(
+                '[data-element-id="fieldset"]'
+            );
 
             expect(abbr).toBeFalsy();
             expect(fieldset.ariaRequired).toBe('false');
         });
     });
 
-    it('required = true', () => {
+    it('Visual Picker: required = true', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
-            const fieldset = element.shadowRoot.querySelector('[data-element-id="fieldset"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
+            const fieldset = element.shadowRoot.querySelector(
+                '[data-element-id="fieldset"]'
+            );
 
             expect(abbr).toBeTruthy();
             expect(fieldset.ariaRequired).toBe('true');
@@ -369,93 +369,46 @@ describe('VisualPicker', () => {
 
     // size
     // Depends on items
-    it('size = medium', () => {
-        element.size = 'medium';
-        element.items = ITEMS;
-
-        return Promise.resolve().then(() => {
-            const visualPickers = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker'
-            );
-            visualPickers.forEach((visualPicker) => {
-                expect(visualPicker.classList).toContain(
-                    'slds-visual-picker_medium'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_large'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_small'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_x-small'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_xx-small'
-                );
-            });
-        });
-    });
-
-    it('size = large', () => {
-        element.size = 'large';
-        element.items = ITEMS;
-
-        return Promise.resolve().then(() => {
-            const visualPickers = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker'
-            );
-            visualPickers.forEach((visualPicker) => {
-                expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_medium'
-                );
-                expect(visualPicker.classList).toContain(
-                    'slds-visual-picker_large'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_small'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_x-small'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_xx-small'
-                );
-            });
-        });
-    });
-
-    it('size = xx-small', () => {
+    it('Visual Picker: size = xx-small', () => {
         element.size = 'xx-small';
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
                 '.slds-visual-picker'
             );
             visualPickers.forEach((visualPicker) => {
-                expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_medium'
+                expect(visualPicker.classList).toContain(
+                    'avonni-visual-picker_xx-small'
                 );
                 expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_large'
+                    'avonni-visual-picker_x-small'
                 );
                 expect(visualPicker.classList).not.toContain(
                     'avonni-visual-picker_small'
                 );
                 expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_x-small'
+                    'avonni-visual-picker_medium'
                 );
-                expect(visualPicker.classList).toContain(
-                    'avonni-visual-picker_xx-small'
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_responsive'
                 );
             });
         });
     });
 
-    it('size = x-small', () => {
+    it('Visual Picker: size = x-small', () => {
         element.size = 'x-small';
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -463,27 +416,36 @@ describe('VisualPicker', () => {
             );
             visualPickers.forEach((visualPicker) => {
                 expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_medium'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_large'
-                );
-                expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_small'
+                    'avonni-visual-picker_xx-small'
                 );
                 expect(visualPicker.classList).toContain(
                     'avonni-visual-picker_x-small'
                 );
                 expect(visualPicker.classList).not.toContain(
-                    'avonni-visual-picker_xx-small'
+                    'avonni-visual-picker_small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_medium'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_responsive'
                 );
             });
         });
     });
 
-    it('size = small', () => {
+    it('Visual Picker: size = small', () => {
         element.size = 'small';
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
             const visualPickers = element.shadowRoot.querySelectorAll(
@@ -491,19 +453,176 @@ describe('VisualPicker', () => {
             );
             visualPickers.forEach((visualPicker) => {
                 expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_medium'
+                    'avonni-visual-picker_xx-small'
                 );
                 expect(visualPicker.classList).not.toContain(
-                    'slds-visual-picker_large'
+                    'avonni-visual-picker_x-small'
                 );
                 expect(visualPicker.classList).toContain(
                     'avonni-visual-picker_small'
                 );
                 expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_medium'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_responsive'
+                );
+            });
+        });
+    });
+
+    it('Visual Picker: size = medium', () => {
+        element.size = 'medium';
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const visualPickers = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker'
+            );
+            visualPickers.forEach((visualPicker) => {
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-small'
+                );
+                expect(visualPicker.classList).not.toContain(
                     'avonni-visual-picker_x-small'
                 );
                 expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_small'
+                );
+                expect(visualPicker.classList).toContain(
+                    'avonni-visual-picker_medium'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_responsive'
+                );
+            });
+        });
+    });
+
+    it('Visual Picker: size = large', () => {
+        element.size = 'large';
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const visualPickers = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker'
+            );
+            visualPickers.forEach((visualPicker) => {
+                expect(visualPicker.classList).not.toContain(
                     'avonni-visual-picker_xx-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_medium'
+                );
+                expect(visualPicker.classList).toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_responsive'
+                );
+            });
+        });
+    });
+
+    it('Visual Picker: size = x-large', () => {
+        element.size = 'x-large';
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const visualPickers = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker'
+            );
+            visualPickers.forEach((visualPicker) => {
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_medium'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_responsive'
+                );
+            });
+        });
+    });
+
+    it('Visual Picker: size = xx-large', () => {
+        element.size = 'xx-large';
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const visualPickers = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker'
+            );
+            visualPickers.forEach((visualPicker) => {
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_medium'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_responsive'
                 );
             });
         });
@@ -511,24 +630,28 @@ describe('VisualPicker', () => {
 
     // type
     // Depends on items
-    it('type = radio', () => {
+    it('Visual Picker: type = radio', () => {
         element.type = 'radio';
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.type).toBe('radio');
             });
         });
     });
 
-    it('type = checkbox', () => {
+    it('Visual Picker: type = checkbox', () => {
         element.type = 'checkbox';
-        element.items = ITEMS;
+        element.items = testItems;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.type).toBe('checkbox');
             });
@@ -537,26 +660,28 @@ describe('VisualPicker', () => {
 
     // value
     // Depends on items and type
-    it('value, with radio type', () => {
-        element.value = 'item-1';
-        element.items = ITEMS;
+    it('Visual Picker: value, with radio type', () => {
+        element.value = 'lightning-professional';
+        element.items = testItems;
         element.type = 'radio';
 
         return Promise.resolve().then(() => {
             const checkedItem = element.shadowRoot.querySelector(
-                'input[value="item-1"]'
+                'input[value="lightning-professional"]'
             );
             expect(checkedItem.checked).toBeTruthy();
         });
     });
 
-    it('value, with checkbox type', () => {
-        element.value = ['item-1', 'item-3'];
-        element.items = ITEMS;
+    it('Visual Picker: value, with checkbox type', () => {
+        element.value = ['lightning-professional', 'lightning-enterprise-plus'];
+        element.items = testItems;
         element.type = 'checkbox';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
             expect(inputs[0].checked).toBeTruthy();
             expect(inputs[1].checked).toBeFalsy();
             expect(inputs[2].checked).toBeTruthy();
@@ -565,214 +690,125 @@ describe('VisualPicker', () => {
 
     // variant
     // Depends on items
-    it('variant = non-coverable', () => {
+    it('Visual picker: variant = non-coverable', () => {
         element.variant = 'non-coverable';
-        element.items = ITEMS;
+        element.items = testItems;
+        element.value = 'lightning-professional';
 
         return Promise.resolve().then(() => {
-            const verticalVisualPickers = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker_vertical'
+            const selected =
+                element.shadowRoot.querySelector('.slds-is-selected');
+            expect(selected).toBeFalsy();
+            const nonCoverableClass = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker__text'
             );
-            const figures = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__figure'
+            expect(nonCoverableClass).toHaveLength(4);
+            const coverableClass = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker__icon'
             );
-            const iconWrappers = element.shadowRoot.querySelectorAll(
-                '.slds-icon_container'
-            );
-            const controls = element.shadowRoot.querySelectorAll(
-                '.slds-form-element__control'
-            );
-            const largeHeadings = element.shadowRoot.querySelectorAll(
-                '.slds-text-heading_large'
-            );
-            const mediumHeadings = element.shadowRoot.querySelectorAll(
-                '.slds-text-heading_medium'
-            );
-            const selectedIcons = element.shadowRoot.querySelectorAll(
-                '.slds-is-selected'
-            );
-            const notSelectedIcons = element.shadowRoot.querySelectorAll(
-                '.slds-is-not-selected'
-            );
-            const verticalIconContainers = element.shadowRoot.querySelectorAll(
-                '.verticalContainer'
-            );
-
-            expect(verticalVisualPickers).toHaveLength(0);
-            expect(largeHeadings).toHaveLength(3);
-            expect(mediumHeadings).toHaveLength(0);
-            expect(selectedIcons).toHaveLength(0);
-            expect(notSelectedIcons).toHaveLength(0);
-            expect(verticalIconContainers).toHaveLength(0);
-
-            figures.forEach((figure) => {
-                expect(figure.classList).toContain('slds-visual-picker__text');
-                expect(figure.classList).toContain(
-                    'slds-align_absolute-center'
-                );
-                expect(figure.classList).not.toContain(
-                    'slds-visual-picker__icon'
-                );
-                expect(figure.classList).not.toContain(
-                    'slds-align_absolute-left'
-                );
-            });
-            iconWrappers.forEach((icon) => {
-                expect(icon.classList).toContain(
-                    'slds-visual-picker__text-check'
-                );
-            });
-            controls.forEach((control) => {
-                expect(control.classList).toContain('slds-grid');
-                expect(control.classList).toContain('slds-wrap');
-            });
+            expect(coverableClass).toHaveLength(0);
         });
     });
 
-    it('variant = coverable', () => {
+    it('Visual picker: variant = coverable', () => {
         element.variant = 'coverable';
-        element.items = ITEMS;
+        element.items = testItems;
+        element.value = 'lightning-professional';
 
         return Promise.resolve().then(() => {
-            const verticalVisualPickers = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker_vertical'
+            const selected =
+                element.shadowRoot.querySelector('.slds-is-selected');
+            expect(selected).toBeTruthy();
+            const nonCoverableClass = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker__text'
             );
-            const figures = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__figure'
+            expect(nonCoverableClass).toHaveLength(0);
+            const coverableClass = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker__icon'
             );
-            const iconWrappers = element.shadowRoot.querySelectorAll(
-                '.slds-icon_container'
-            );
-            const controls = element.shadowRoot.querySelectorAll(
-                '.slds-form-element__control'
-            );
-            const largeHeadings = element.shadowRoot.querySelectorAll(
-                '.slds-text-heading_large'
-            );
-            const mediumHeadings = element.shadowRoot.querySelectorAll(
-                '.slds-text-heading_medium'
-            );
-            const selectedIcons = element.shadowRoot.querySelectorAll(
-                '.slds-is-selected'
-            );
-            const notSelectedIcons = element.shadowRoot.querySelectorAll(
-                '.slds-is-not-selected'
-            );
-            const verticalIconContainers = element.shadowRoot.querySelectorAll(
-                '.verticalContainer'
-            );
-
-            expect(verticalVisualPickers).toHaveLength(0);
-            expect(largeHeadings).toHaveLength(3);
-            expect(mediumHeadings).toHaveLength(0);
-            expect(selectedIcons).toHaveLength(3);
-            expect(notSelectedIcons).toHaveLength(3);
-            expect(verticalIconContainers).toHaveLength(0);
-
-            figures.forEach((figure) => {
-                expect(figure.classList).not.toContain(
-                    'slds-visual-picker__text'
-                );
-                expect(figure.classList).toContain(
-                    'slds-align_absolute-center'
-                );
-                expect(figure.classList).toContain('slds-visual-picker__icon');
-                expect(figure.classList).not.toContain(
-                    'slds-align_absolute-left'
-                );
-            });
-            iconWrappers.forEach((icon) => {
-                expect(icon.classList).not.toContain(
-                    'slds-visual-picker__text-check'
-                );
-            });
-            controls.forEach((control) => {
-                expect(control.classList).toContain('slds-grid');
-                expect(control.classList).toContain('slds-wrap');
-            });
+            expect(coverableClass).toHaveLength(4);
         });
     });
 
-    it('variant = vertical', () => {
-        element.variant = 'vertical';
-        element.items = ITEMS;
+    /* ----- METHODS ----- */
+
+    it('Visual Picker: Transfer focus and blur', () => {
+        element.items = testItems;
+
+        return Promise.resolve()
+            .then(() => {
+                element.focus();
+                element.blur();
+            })
+            .then(() => {
+                expect(element.shadowRoot.activeElement).toBeNull();
+            });
+    });
+
+    // reportValidity
+    // Depends on required
+    it('Visual picker: reportValidity method', () => {
+        element.required = true;
+        element.reportValidity();
 
         return Promise.resolve().then(() => {
-            const verticalVisualPickers = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker_vertical'
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
             );
-            const figures = element.shadowRoot.querySelectorAll(
-                '.slds-visual-picker__figure'
-            );
-            const iconWrappers = element.shadowRoot.querySelectorAll(
-                '.slds-icon_container'
-            );
-            const controls = element.shadowRoot.querySelectorAll(
-                '.slds-form-element__control'
-            );
-            const largeHeadings = element.shadowRoot.querySelectorAll(
-                '.slds-text-heading_large'
-            );
-            const mediumHeadings = element.shadowRoot.querySelectorAll(
-                '.slds-text-heading_medium'
-            );
-            const selectedIcons = element.shadowRoot.querySelectorAll(
-                '.slds-is-selected'
-            );
-            const notSelectedIcons = element.shadowRoot.querySelectorAll(
-                '.slds-is-not-selected'
-            );
-            const verticalIconContainers = element.shadowRoot.querySelectorAll(
-                '.verticalContainer'
-            );
-
-            expect(verticalVisualPickers).toHaveLength(3);
-            expect(largeHeadings).toHaveLength(0);
-            expect(mediumHeadings).toHaveLength(3);
-            expect(selectedIcons).toHaveLength(0);
-            expect(notSelectedIcons).toHaveLength(0);
-            expect(verticalIconContainers).toHaveLength(3);
-
-            figures.forEach((figure) => {
-                expect(figure.classList).toContain('slds-visual-picker__text');
-                expect(figure.classList).not.toContain(
-                    'slds-align_absolute-center'
-                );
-                expect(figure.classList).not.toContain(
-                    'slds-visual-picker__icon'
-                );
-                expect(figure.classList).toContain('slds-align_absolute-left');
-            });
-            iconWrappers.forEach((icon) => {
-                expect(icon.classList).toContain(
-                    'slds-visual-picker__text-check'
-                );
-            });
-            controls.forEach((control) => {
-                expect(control.classList).not.toContain('slds-grid');
-                expect(control.classList).not.toContain('slds-wrap');
-            });
+            expect(help).toBeTruthy();
         });
+    });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('Visual picker: showHelpMessageIfInvalid method', () => {
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // checkValidity
+    it('Visual picker: checkValidity method', () => {
+        const spy = jest.spyOn(element, 'checkValidity');
+
+        element.checkValidity();
+        expect(spy).toHaveBeenCalled();
+    });
+
+    // setCustomValidity
+    it('Visual picker: setCustomValidity method', () => {
+        const spy = jest.spyOn(element, 'setCustomValidity');
+
+        element.setCustomValidity('Something');
+        expect(spy).toHaveBeenCalled();
     });
 
     /* ----- EVENTS ----- */
 
     // change
     // Depends on items and type
-    it('change event, with radio type', () => {
+    it('Visual picker: change event, with radio type', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
-        element.items = ITEMS;
+        element.items = testItems;
         element.type = 'radio';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
-            inputs[2].click();
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs[0].click();
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-                'item-3'
+                'lightning-professional'
             ]);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -780,22 +816,24 @@ describe('VisualPicker', () => {
         });
     });
 
-    it('change event, with checkbox type', () => {
+    it('Visual picker: change event, with checkbox type', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
-        element.items = ITEMS;
+        element.items = testItems;
         element.type = 'checkbox';
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('[data-element-id="input"]');
-            inputs[2].click();
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-element-id="input"]'
+            );
+            inputs[0].click();
             inputs[1].click();
 
             expect(handler).toHaveBeenCalledTimes(2);
             expect(handler.mock.calls[1][0].detail.value).toMatchObject([
-                'item-2',
-                'item-3'
+                'lightning-professional',
+                'lightning-enterprise'
             ]);
             expect(handler.mock.calls[1][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[1][0].cancelable).toBeFalsy();

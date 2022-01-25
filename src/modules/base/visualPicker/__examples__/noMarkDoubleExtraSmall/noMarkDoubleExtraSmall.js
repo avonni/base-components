@@ -1,8 +1,6 @@
 import { LightningElement } from 'lwc';
 
 export default class VisualPickerNoMarkDoubleExtraSmall extends LightningElement {
-    value = ['lightning-enterprise'];
-
     items = [
         {
             title: 'Lightning Professional',
@@ -11,7 +9,9 @@ export default class VisualPickerNoMarkDoubleExtraSmall extends LightningElement
             figure: {
                 title: '$30',
                 description: 'USD/user/month *',
-                iconName: 'standard:user'
+                avatar: {
+                    iconName: 'standard:user'
+                }
             }
         },
         {
@@ -22,7 +22,9 @@ export default class VisualPickerNoMarkDoubleExtraSmall extends LightningElement
             figure: {
                 title: '$150',
                 description: 'USD/user/month *',
-                iconName: 'standard:groups'
+                avatar: {
+                    iconName: 'standard:groups'
+                }
             }
         },
         {
@@ -33,7 +35,9 @@ export default class VisualPickerNoMarkDoubleExtraSmall extends LightningElement
             figure: {
                 title: '$220',
                 description: 'USD/user/month *',
-                iconName: 'standard:account'
+                avatar: {
+                    iconName: 'standard:account'
+                }
             }
         },
         {
@@ -43,7 +47,9 @@ export default class VisualPickerNoMarkDoubleExtraSmall extends LightningElement
             figure: {
                 title: '$300',
                 description: 'USD/user/month *',
-                iconName: 'custom:custom68'
+                avatar: {
+                    iconName: 'custom:custom68'
+                }
             }
         }
     ];

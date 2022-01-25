@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { VisualPicker } from '../__examples__/visualPicker2';
+import { VisualPicker } from '../__examples__/visualPicker';
 import {
     items,
     iconTiles,
@@ -43,7 +43,7 @@ import {
 } from './data';
 
 export default {
-    title: 'Example/VisualPicker2',
+    title: 'Example/VisualPicker',
     argTypes: {
         disabled: {
             control: {
