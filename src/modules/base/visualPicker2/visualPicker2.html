@@ -62,7 +62,7 @@
             <template for:each={listItems} for:item="item">
                 <lightning-layout-item
                     size="12"
-                    small-device-size="12"
+                    small-device-size="6"
                     medium-device-size="4"
                     large-device-size="3"
                     padding={responsivePadding}
@@ -258,7 +258,7 @@
                             >
                         </span>
                         <template if:true={item.displayCheckNonCoverable}>
-                            <span class={computedCheckIconClass}>
+                            <span class={computedCheckIconContainerClass}>
                                 <lightning-icon
                                     icon-name="utility:check"
                                     size="x-small"

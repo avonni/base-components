@@ -296,5 +296,5 @@ BotStory.args = {
     items: botStories,
     label: 'Select a bot',
     name: 'bot-story',
-    size: 'large'
+    size: 'responsive'
 };

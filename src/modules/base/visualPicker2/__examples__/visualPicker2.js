@@ -46,7 +46,6 @@ export const VisualPicker = ({
     size,
     ratio,
     hideCheckMark,
-    hideBorder,
     disabled,
     required,
     messageWhenValueMissing,
@@ -61,7 +60,6 @@ export const VisualPicker = ({
     element.size = size;
     element.ratio = ratio;
     element.hideCheckMark = hideCheckMark;
-    element.hideBorder = hideBorder;
     element.disabled = disabled;
     element.required = required;
     element.messageWhenValueMissing = messageWhenValueMissing;

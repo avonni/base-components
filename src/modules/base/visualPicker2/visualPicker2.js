@@ -280,41 +280,52 @@ export default class VisualPicker extends LightningElement {
     get listItems() {
         return this.items.map((item, index) => {
             let { title, description, disabled, figure, value } = item;
-            disabled = this._disabled ? true : disabled;
             const key = `visual-picker-key-${index}`;
+            disabled = this._disabled ? true : disabled;
+
+            // Check management
             const checked = this._value.includes(value);
+            const displayCheckCoverable =
+                !this.hideCheckMark && checked && this.isCoverable;
+            const displayCheckNonCoverable =
+                !this.hideCheckMark && checked && !this.isCoverable;
+            const computedSelectedClass = this.isResponsive
+                ? 'slds-is-selected avonni-visual-picker__check_absolute-center'
+                : 'slds-is-selected';
+
+            // Avatar management
             const avatarPosition = figure.avatarPosition || 'left';
-            const titlePosition = figure.titlePosition || 'center';
-            const displayTitle = figure.title && this.isBiggerThanXSmall;
-            const descriptionPosition = figure.descriptionPosition || 'center';
-            const displayDescription =
-                figure.description && this.isBiggerThanXSmall;
             const avatar = figure.avatar;
             const displayAvatar = avatar && this.isBiggerThanXSmall;
             const avatarIsCenter =
                 (avatarPosition === 'center' || !this.isBiggerThanXSmall) &&
                 avatar;
-            const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
             const avatarIsTop = avatarPosition === 'top' && displayAvatar;
-            const displayCheckCoverable =
-                !this.hideCheckMark && checked && this.isCoverable;
-            const displayCheckNonCoverable =
-                !this.hideCheckMark && checked && !this.isCoverable;
+            const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
+
+            // Title management
+            const titlePosition = figure.titlePosition || 'center';
+            const displayTitle = figure.title && this.isBiggerThanXSmall;
             const titleIsTop = titlePosition === 'top' && displayTitle;
             const titleIsCenter = titlePosition === 'center' && displayTitle;
             const titleIsBottom = titlePosition === 'bottom' && displayTitle;
+
+            // Description management
+            const descriptionPosition = figure.descriptionPosition || 'center';
+            const displayDescription =
+                figure.description && this.isBiggerThanXSmall;
             const descriptionIsTop =
                 descriptionPosition === 'top' && displayDescription;
             const descriptionIsCenter =
                 descriptionPosition === 'center' && displayDescription;
             const descriptionIsBottom =
                 descriptionPosition === 'bottom' && displayDescription;
+
+            // Image management
             const displayImgCenter = this.isBiggerThanXSmall && titleIsTop;
             const displayImgTop =
                 this.isBiggerThanXSmall && (titleIsCenter || titleIsBottom);
-            const computedSelectedClass = this.isResponsive
-                ? 'slds-is-selected avonni-visual-picker__check_absolute-center'
-                : 'slds-is-selected';
+
             return {
                 key,
                 title,
@@ -376,7 +387,7 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Compute NOT selected class styling.
+     * Computed NOT selected class styling.
      *
      * @type {string}
      */
@@ -388,7 +399,12 @@ export default class VisualPicker extends LightningElement {
             .toString();
     }
 
-    get computedCheckIconClass() {
+    /**
+     * Computed check icon container class styling.
+     *
+     * @type {string}
+     */
+    get computedCheckIconContainerClass() {
         return classSet('slds-icon_container slds-visual-picker__text-check')
             .add({
                 'avonni-visual-picker__chek-icon': this.isResponsive
@@ -423,10 +439,20 @@ export default class VisualPicker extends LightningElement {
         return this._size === 'responsive';
     }
 
+    /**
+     * Add horizontal padding when size is responsive.
+     *
+     * @type {string}
+     */
     get responsivePadding() {
         return this.isResponsive ? 'horizontal-small' : '';
     }
 
+    /**
+     * Pull boundary small if size is responsive.
+     *
+     * @type {string}
+     */
     get responsivePullBoundary() {
         return this.isResponsive ? 'small' : '';
     }
