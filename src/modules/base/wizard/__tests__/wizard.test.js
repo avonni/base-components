@@ -404,7 +404,7 @@ describe('Wizard', () => {
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="article"]'
+                '[data-element-id="article-base"]'
             );
 
             expect(footerNavigation.indicatorPosition).toBe('bottom');
@@ -430,7 +430,7 @@ describe('Wizard', () => {
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="article"]'
+                '[data-element-id="article-base"]'
             );
 
             expect(footerNavigation.indicatorPosition).toBe('top');
@@ -457,7 +457,7 @@ describe('Wizard', () => {
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="article"]'
+                '[data-element-id="article-base"]'
             );
 
             expect(footerNavigation.indicatorPosition).toBe('right');
@@ -484,7 +484,7 @@ describe('Wizard', () => {
             );
             const mainCol = element.shadowRoot.querySelector('.main-col');
             const wrapper = element.shadowRoot.querySelector(
-                '[data-element-id="article"]'
+                '[data-element-id="article-base"]'
             );
 
             expect(footerNavigation.indicatorPosition).toBe('left');
@@ -514,7 +514,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const base = element.shadowRoot.querySelector(
-                '[data-element-id="article"]'
+                '[data-element-id="article-base"]'
             );
             const card = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-card"]'
@@ -522,10 +522,14 @@ describe('Wizard', () => {
             const modal = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-dialog"]'
             );
+            const quickActionPanel = element.shadowRoot.querySelector(
+                '[data-element-id="article-quick-action-panel"]'
+            );
 
             expect(base).toBeTruthy();
             expect(card).toBeFalsy();
             expect(modal).toBeFalsy();
+            expect(quickActionPanel).toBeFalsy();
         });
     });
 
@@ -534,7 +538,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const base = element.shadowRoot.querySelector(
-                '[data-element-id="article"]'
+                '[data-element-id="article-base"]'
             );
             const card = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-card"]'
@@ -542,10 +546,14 @@ describe('Wizard', () => {
             const modal = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-dialog"]'
             );
+            const quickActionPanel = element.shadowRoot.querySelector(
+                '[data-element-id="article-quick-action-panel"]'
+            );
 
             expect(base).toBeFalsy();
             expect(card).toBeTruthy();
             expect(modal).toBeFalsy();
+            expect(quickActionPanel).toBeFalsy();
         });
     });
 
@@ -554,7 +562,7 @@ describe('Wizard', () => {
 
         return Promise.resolve().then(() => {
             const base = element.shadowRoot.querySelector(
-                '[data-element-id="article"]'
+                '[data-element-id="article-base"]'
             );
             const card = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-card"]'
@@ -562,10 +570,38 @@ describe('Wizard', () => {
             const modal = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-dialog"]'
             );
+            const quickActionPanel = element.shadowRoot.querySelector(
+                '[data-element-id="article-quick-action-panel"]'
+            );
 
             expect(base).toBeFalsy();
             expect(card).toBeFalsy();
             expect(modal).toBeTruthy();
+            expect(quickActionPanel).toBeFalsy();
+        });
+    });
+
+    it('variant = quickActionPanel', () => {
+        element.variant = 'quickActionPanel';
+
+        return Promise.resolve().then(() => {
+            const base = element.shadowRoot.querySelector(
+                '[data-element-id="article-base"]'
+            );
+            const card = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-card"]'
+            );
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-dialog"]'
+            );
+            const quickActionPanel = element.shadowRoot.querySelector(
+                '[data-element-id="article-quick-action-panel"]'
+            );
+
+            expect(base).toBeFalsy();
+            expect(card).toBeFalsy();
+            expect(modal).toBeFalsy();
+            expect(quickActionPanel).toBeTruthy();
         });
     });
 
@@ -574,7 +610,7 @@ describe('Wizard', () => {
     // show and hide
     it('show and hide methods', () => {
         const article = element.shadowRoot.querySelector(
-            '[data-element-id="article"]'
+            '[data-element-id="article-base"]'
         );
         expect(article).toBeTruthy();
 
@@ -583,7 +619,7 @@ describe('Wizard', () => {
         return Promise.resolve()
             .then(() => {
                 const articleAfterHide = element.shadowRoot.querySelector(
-                    '[data-element-id="article"]'
+                    '[data-element-id="article-base"]'
                 );
                 expect(articleAfterHide).toBeFalsy();
 
@@ -591,7 +627,7 @@ describe('Wizard', () => {
             })
             .then(() => {
                 const articleAfterShow = element.shadowRoot.querySelector(
-                    '[data-element-id="article"]'
+                    '[data-element-id="article-base"]'
                 );
                 expect(articleAfterShow).toBeTruthy();
             });
