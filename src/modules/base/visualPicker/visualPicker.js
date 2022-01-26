@@ -293,17 +293,6 @@ export default class VisualPicker extends LightningElement {
                 ? 'slds-is-selected avonni-visual-picker__check_absolute-center'
                 : 'slds-is-selected';
 
-            // Avatar management
-            const avatarPosition = figure.avatarPosition || 'left';
-            const avatar = figure.avatar;
-            const displayAvatar = avatar && this.isBiggerThanXSmall;
-            const avatarIsCenter =
-                (avatarPosition === 'center' || !this.isBiggerThanXSmall) &&
-                avatar;
-            const avatarIsTop = avatarPosition === 'top' && displayAvatar;
-            const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
-            const avatarAltText = displayAvatar ? avatar.iconName || avatar.initials || 'avatar' : '';
-
             // Title management
             const titlePosition = figure.titlePosition || 'center';
             const displayTitle = figure.title && this.isBiggerThanXSmall;
@@ -322,8 +311,24 @@ export default class VisualPicker extends LightningElement {
             const descriptionIsBottom =
                 descriptionPosition === 'bottom' && displayDescription;
 
+            // Avatar management
+            const avatarPosition = figure.avatarPosition || 'left';
+            const avatar = figure.avatar;
+            const displayAvatar = avatar && this.isBiggerThanXSmall;
+            const avatarIsTop = avatarPosition === 'top' && displayAvatar;
+            const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
+            const avatarAltText = displayAvatar
+                ? avatar.iconName || avatar.initials || 'avatar'
+                : '';
+            const avatarIsCenter =
+                avatarPosition === 'center' ||
+                !this.isBiggerThanXSmall ||
+                (!avatarIsBottom && !avatarIsTop && !displayTitle && avatar);
+
             // Image management
-            const displayImgCenter = this.isBiggerThanXSmall && titleIsTop;
+            const displayImgCenter =
+                (this.isBiggerThanXSmall && titleIsTop) ||
+                (!this.isBiggerThanXSmall && !avatarIsCenter);
             const displayImgTop =
                 this.isBiggerThanXSmall && (titleIsCenter || titleIsBottom);
 

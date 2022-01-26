@@ -39,7 +39,9 @@ import {
     analyticsItems,
     topAnalyticsItems,
     goalStories,
-    botStories
+    botStories,
+    avatarStories,
+    smallAvatarStories
 } from './data';
 
 export default {
@@ -297,4 +299,21 @@ BotStory.args = {
     label: 'Select a bot',
     name: 'bot-story',
     size: 'responsive'
+};
+
+export const AvatarStory = Template.bind({});
+AvatarStory.args = {
+    items: avatarStories,
+    label: 'Select an avatar',
+    name: 'avatar-story',
+    ratio: '16-by-9',
+    size: 'large'
+};
+
+export const SmallAvatarStory = Template.bind({});
+SmallAvatarStory.args = {
+    items: smallAvatarStories,
+    label: 'Select an avatar',
+    name: 'small-avatar-story',
+    size: 'xx-small'
 };
