@@ -298,7 +298,7 @@ BotStory.args = {
     items: botStories,
     label: 'Select a bot',
     name: 'bot-story',
-    size: 'responsive'
+    size: 'x-small'
 };
 
 export const AvatarStory = Template.bind({});

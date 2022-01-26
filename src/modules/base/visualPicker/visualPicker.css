@@ -502,3 +502,10 @@
     width: 100%;
     object-fit: var(--avonni-visual-picker-figure-image-object-fit, scale-down);
 }
+
+.avonni-visual-picker_x-small
+    .avonni-visual-picker__figure-image-center-container,
+.avonni-visual-picker_xx-small
+    .avonni-visual-picker__figure-image-center-container {
+    padding: var(--avonni-visual-picker-figure-image-padding-around, 15px);
+}

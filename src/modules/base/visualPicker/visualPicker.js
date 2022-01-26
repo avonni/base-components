@@ -312,14 +312,18 @@ export default class VisualPicker extends LightningElement {
             const avatar = figure.avatar;
             const displayAvatar = avatar && this.isBiggerThanXSmall;
             const avatarAltText = displayAvatar
-                ? avatar.alternativeText || avatar.iconName || avatar.initials
+                ? avatar.alternativeText ||
+                  avatar.iconName ||
+                  avatar.initials ||
+                  'avatar'
                 : '';
             const avatarIsTop = avatarPosition === 'top' && displayAvatar;
             const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
             const avatarIsCenter =
-                avatarPosition === 'center' ||
-                !this.isBiggerThanXSmall ||
-                (!avatarIsBottom && !avatarIsTop && !displayTitle && avatar);
+                avatar &&
+                (avatarPosition === 'center' ||
+                    !this.isBiggerThanXSmall ||
+                    (!avatarIsBottom && !avatarIsTop && !displayTitle));
 
             // Image management
             const displayImgCenter =
