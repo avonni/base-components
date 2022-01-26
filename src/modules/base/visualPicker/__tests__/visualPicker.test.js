@@ -587,6 +587,43 @@ describe('VisualPicker', () => {
         });
     });
 
+    it('Visual Picker: size = responsive', () => {
+        element.size = 'responsive';
+        element.items = testItems;
+
+        return Promise.resolve().then(() => {
+            const visualPickers = element.shadowRoot.querySelectorAll(
+                '.slds-visual-picker'
+            );
+            visualPickers.forEach((visualPicker) => {
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_small'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_medium'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_x-large'
+                );
+                expect(visualPicker.classList).not.toContain(
+                    'avonni-visual-picker_xx-large'
+                );
+                expect(visualPicker.classList).toContain(
+                    'avonni-visual-picker_responsive'
+                );
+            });
+        });
+    });
+
     // type
     // Depends on items
     it('Visual Picker: type = radio', () => {

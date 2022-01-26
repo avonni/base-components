@@ -637,7 +637,7 @@ export const avatarStories = [
     }
 ];
 
-export const smallAvatarStories = [
+export const xSmallAvatarStories = [
     {
         value: 'garret-jones',
         title: 'Garret Jones',

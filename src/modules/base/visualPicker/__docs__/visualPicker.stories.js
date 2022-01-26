@@ -41,7 +41,7 @@ import {
     goalStories,
     botStories,
     avatarStories,
-    smallAvatarStories
+    xSmallAvatarStories
 } from './data';
 
 export default {
@@ -233,6 +233,13 @@ CoverableNoMark.args = {
     variant: 'coverable'
 };
 
+export const ItemsWithTags = Template.bind({});
+ItemsWithTags.args = {
+    name: 'with-tags',
+    items: itemsWithTags,
+    size: 'large'
+};
+
 export const NoMarkDoubleExtraSmall = Template.bind({});
 NoMarkDoubleExtraSmall.args = {
     hideCheckMark: true,
@@ -257,13 +264,6 @@ ItemsWithPictures.args = {
     items: itemsWithPictures,
     name: 'with-pictures',
     ratio: '3-by-4'
-};
-
-export const ItemsWithTags = Template.bind({});
-ItemsWithTags.args = {
-    name: 'with-tags',
-    items: itemsWithTags,
-    size: 'large'
 };
 
 export const analyticItems = Template.bind({});
@@ -310,10 +310,10 @@ AvatarStory.args = {
     size: 'large'
 };
 
-export const SmallAvatarStory = Template.bind({});
-SmallAvatarStory.args = {
-    items: smallAvatarStories,
+export const X_SmallAvatarStory = Template.bind({});
+X_SmallAvatarStory.args = {
+    items: xSmallAvatarStories,
     label: 'Select an avatar',
     name: 'small-avatar-story',
-    size: 'xx-small'
+    size: 'x-small'
 };

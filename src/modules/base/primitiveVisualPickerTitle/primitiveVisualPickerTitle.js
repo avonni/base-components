@@ -47,14 +47,33 @@ const VISUAL_PICKER_SIZES = {
 const DEFAULT_DISPLAY_AVATAR = false;
 
 export default class PrimitiveVisualPickerTitle extends LightningElement {
+    /**
+     * An object with item fields to be rendered as an avatar.
+     *
+     * @type {object{}}
+     */
     @api avatar;
+    /**
+     * The title can include text and is displayed inside the figure.
+     *
+     * @type {string}
+     */
     @api title;
+    /**
+     * The alternative text used to describe the avatar, which is displayed as hover text on the image.
+     *
+     * @type {string}
+     */
     @api alternativeText;
 
     _avatarPosition = AVATAR_POSITIONS.default;
     _displayAvatar = DEFAULT_DISPLAY_AVATAR;
     _size = VISUAL_PICKER_SIZES.default;
-
+    /**
+     * If present, sets the position of the avatar. Valid values include top, bottom, center, right and left. The value defaults to left.
+     *
+     * @type {string}
+     */
     @api
     get avatarPosition() {
         return this._avatarPosition;
@@ -67,6 +86,11 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
         });
     }
 
+    /**
+     * Verify if should display avatar.
+     *
+     * @type {boolean}
+     */
     @api
     get displayAvatar() {
         return this._displayAvatar;
@@ -75,7 +99,11 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
     set displayAvatar(value) {
         this._displayAvatar = normalizeBoolean(value);
     }
-
+    /**
+     * The size of the items. Valid values include xx-small (4rem x 4 rem), x-small (6rem x 6 rem), small (8rem x 8rem), medium (12rem x 12rem), large (15rem x 15rem), x-large (18rem x 18rem), xx-large (21rem x 21rem) and responsive. Only avatar appears when x-small and xx-small.
+     *
+     * @type {string}
+     */
     @api
     get size() {
         return this._size;
@@ -88,14 +116,29 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
         });
     }
 
+    /**
+     * Verify if avatar position is left and should display avatar.
+     *
+     * @type {boolean}
+     */
     get avatarIsLeft() {
         return this._avatarPosition === 'left' && this._displayAvatar;
     }
 
+    /**
+     * Verify if avatar position is right and should display avatar.
+     *
+     * @type {boolean}
+     */
     get avatarIsRight() {
         return this._avatarPosition === 'right' && this._displayAvatar;
     }
 
+    /**
+     * Computed container class styling.
+     *
+     * @type {string}
+     */
     get computedContainerClass() {
         return classSet('avonni-visual-picker__figure-content_alignement')
             .add(`avonni-visual-picker__figure-content_${this._size}`)

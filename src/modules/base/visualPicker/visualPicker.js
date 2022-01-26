@@ -109,12 +109,8 @@ export default class VisualPicker extends LightningElement {
     helpMessage;
 
     renderedCallback() {
-        const inputs = this.template.querySelectorAll(
-            '[data-element-id="input"]'
-        );
-
-        if (inputs) {
-            Array.from(inputs).forEach((item) => {
+        if (this.inputs) {
+            this.inputs.forEach((item) => {
                 if (this._value.indexOf(item.value) > -1) {
                     item.checked = true;
                 }
@@ -318,7 +314,7 @@ export default class VisualPicker extends LightningElement {
             const avatarIsTop = avatarPosition === 'top' && displayAvatar;
             const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
             const avatarAltText = displayAvatar
-                ? avatar.iconName || avatar.initials || 'avatar'
+                ? avatar.alternativeText || avatar.iconName || avatar.initials
                 : '';
             const avatarIsCenter =
                 avatarPosition === 'center' ||
@@ -465,6 +461,46 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Get all inputs.
+     *
+     * @type {Element}
+     */
+    get inputs() {
+        return Array.from(
+            this.template.querySelectorAll('[data-element-id="input"]')
+        );
+    }
+
+    /**
+     * Get input.
+     *
+     * @type {Element}
+     */
+    get input() {
+        return this.template.querySelector('[data-element-id="input"]');
+    }
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        this.input.blur();
+    }
+
+    /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.input.focus();
+    }
+
+    /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
      *
      * @type {string}
@@ -476,16 +512,6 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
-     * Removes keyboard focus from the input element.
-     *
-     * @public
-     */
-    @api
-    blur() {
-        this.template.querySelector('[data-element-id="input"]').blur();
-    }
-
-    /**
      * Checks if the input is valid.
      *
      * @returns {boolean} Indicates whether the element meets all constraint validations.
@@ -494,16 +520,6 @@ export default class VisualPicker extends LightningElement {
     @api
     checkValidity() {
         return this._constraint.checkValidity();
-    }
-
-    /**
-     * Sets focus on the input element.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        this.template.querySelector('[data-element-id="input"]').focus();
     }
 
     /**
@@ -579,10 +595,7 @@ export default class VisualPicker extends LightningElement {
      */
     handleChange(event) {
         event.stopPropagation();
-        const inputs = this.template.querySelectorAll(
-            '[data-element-id="input"]'
-        );
-        const value = Array.from(inputs)
+        const value = this.inputs
             .filter((input) => input.checked)
             .map((input) => input.value);
 

@@ -24,7 +24,7 @@
 /**
  * @typedef {Object} VisualPickerAvatar
  * @name figureAvatar
- * @property {string} alternativeText Required. The alternative text used to describe the avatar, which is displayed as hover text on the image.
+ * @property {string} alternativeText The alternative text used to describe the avatar, which is displayed as hover text on the image.
  * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
  * @property {string} imgSrc Image URL for the avatar.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
