@@ -311,11 +311,11 @@ export default class VisualPicker extends LightningElement {
             const avatarPosition = figure.avatarPosition || 'left';
             const avatar = figure.avatar;
             const displayAvatar = avatar && this.isBiggerThanXSmall;
-            const avatarIsTop = avatarPosition === 'top' && displayAvatar;
-            const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
             const avatarAltText = displayAvatar
                 ? avatar.alternativeText || avatar.iconName || avatar.initials
                 : '';
+            const avatarIsTop = avatarPosition === 'top' && displayAvatar;
+            const avatarIsBottom = avatarPosition === 'bottom' && displayAvatar;
             const avatarIsCenter =
                 avatarPosition === 'center' ||
                 !this.isBiggerThanXSmall ||
