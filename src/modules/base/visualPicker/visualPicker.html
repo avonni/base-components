@@ -94,7 +94,10 @@
                             </span>
                             <span class={notSelectedClass}>
                                 <!-- Position Top -->
-                                <div class="avonni-visual-picker__items">
+                                <div
+                                    class="avonni-visual-picker__items"
+                                    data-element-id="figure-position-top"
+                                >
                                     <c-primitive-avatar
                                         alternative-text={item.avatarAltText}
                                         fallback-icon-name={item.avatar.iconName}
@@ -104,6 +107,7 @@
                                         size={item.avatar.size}
                                         src={item.avatar.imgSrc}
                                         variant={item.avatar.variant}
+                                        data-element-id="c-primitive-avatar-top"
                                         if:true={item.avatarIsTop}
                                     ></c-primitive-avatar>
                                     <c-primitive-visual-picker-title
@@ -116,6 +120,7 @@
                                         class="
                                             avonni-visual-picker__figure-title_margin
                                         "
+                                        data-element-id="c-primitive-visual-picker-title-top"
                                         if:true={item.titleIsTop}
                                     >
                                     </c-primitive-visual-picker-title>
@@ -145,7 +150,10 @@
                                     </template>
                                 </div>
                                 <!-- Position Center -->
-                                <div class="avonni-visual-picker__items">
+                                <div
+                                    class="avonni-visual-picker__items"
+                                    data-element-id="figure-position-center"
+                                >
                                     <c-primitive-visual-picker-title
                                         alternative-text={item.avatarAltText}
                                         avatar={item.avatar}
@@ -156,6 +164,7 @@
                                         class="
                                             avonni-visual-picker__figure-title_margin
                                         "
+                                        data-element-id="c-primitive-visual-picker-title-center"
                                         if:true={item.titleIsCenter}
                                     >
                                     </c-primitive-visual-picker-title>
@@ -175,6 +184,7 @@
                                         size={item.avatar.size}
                                         src={item.avatar.imgSrc}
                                         variant={item.avatar.variant}
+                                        data-element-id="c-primitive-avatar-center"
                                         if:true={item.avatarIsCenter}
                                     ></c-primitive-avatar>
                                     <template if:true={item.displayImgCenter}>
@@ -195,7 +205,10 @@
                                     </template>
                                 </div>
                                 <!-- Position Bottom -->
-                                <div class="avonni-visual-picker__items">
+                                <div
+                                    class="avonni-visual-picker__items"
+                                    data-element-id="figure-position-bottom"
+                                >
                                     <c-primitive-visual-picker-title
                                         alternative-text={item.avatarAltText}
                                         avatar={item.avatar}
@@ -206,6 +219,7 @@
                                         class="
                                             avonni-visual-picker__figure-title_margin
                                         "
+                                        data-element-id="c-primitive-visual-picker-title-bottom"
                                         if:true={item.titleIsBottom}
                                     >
                                     </c-primitive-visual-picker-title>
@@ -225,6 +239,7 @@
                                         size={item.avatar.size}
                                         src={item.avatar.imgSrc}
                                         variant={item.avatar.variant}
+                                        data-element-id="c-primitive-avatar-bottom"
                                         if:true={item.avatarIsBottom}
                                     ></c-primitive-avatar>
                                     <template if:true={isBiggerThanXSmall}>
