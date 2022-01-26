@@ -85,7 +85,7 @@
                             <span class={notSelectedClass}>
                                 <template if:true={item.mediaIsLeft}>
                                     <c-primitive-avatar
-                                        alternative-text={item.avatar.alternativeText}
+                                        alternative-text={item.alternativeText}
                                         fallback-icon-name={item.avatar.iconName}
                                         initials={item.avatar.initials}
                                         presence={item.avatar.presence}
@@ -142,7 +142,7 @@
                                 </span>
                                 <template if:true={item.mediaIsRight}>
                                     <c-primitive-avatar
-                                        alternative-text={item.avatar.alternativeText}
+                                        alternative-text={item.alternativeText}
                                         fallback-icon-name={item.avatar.iconName}
                                         initials={item.avatar.initials}
                                         presence={item.avatar.presence}

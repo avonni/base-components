@@ -287,6 +287,9 @@ export default class VerticalVisualPicker extends LightningElement {
                 'slds-line-clamp_small': !tags
             });
             const disabled = this._disabled || item.disabled;
+            const alternativeText = avatar
+                ? avatar.alternativeText || avatar.iconName || avatar.initials
+                : '';
             return {
                 key,
                 avatar,
@@ -299,7 +302,8 @@ export default class VerticalVisualPicker extends LightningElement {
                 mediaIsLeft,
                 mediaIsRight,
                 bodyClass,
-                descriptionClass
+                descriptionClass,
+                alternativeText
             };
         });
     }
