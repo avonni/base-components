@@ -73,6 +73,11 @@ const ICON_SIZES = {
     default: 'medium'
 };
 
+const ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 
 /**
@@ -83,19 +88,12 @@ const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
  */
 export default class DynamicMenu extends LightningElement {
     /**
-     * The name of the icon to be used in the format 'utility:down'.
+     * The keyboard shortcut for the button menu.
      *
      * @type {string}
      * @public
      */
-    @api iconName;
-    /**
-     * The value for the button element. This value is optional and can be used when submitting a form.
-     *
-     * @type {string}
-     * @public
-     */
-    @api value;
+    @api accessKey;
     /**
      * The assistive text for the button.
      *
@@ -104,12 +102,12 @@ export default class DynamicMenu extends LightningElement {
      */
     @api alternativeText;
     /**
-     * Message displayed while the menu is in the loading state.
+     * The name of the icon to be used in the format 'utility:down'.
      *
      * @type {string}
      * @public
      */
-    @api loadingStateAlternativeText;
+    @api iconName;
     /**
      * Optional text to be shown on the button.
      *
@@ -118,27 +116,12 @@ export default class DynamicMenu extends LightningElement {
      */
     @api label;
     /**
-     * If present, display search box.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api withSearch;
-    /**
-     * The keyboard shortcut for the button menu.
+     * Message displayed while the menu is in the loading state.
      *
      * @type {string}
      * @public
      */
-    @api accessKey;
-    /**
-     * Displays tooltip text when the mouse moves over the button menu.
-     *
-     * @type {string}
-     * @public
-     */
-    @api title;
+    @api loadingStateAlternativeText;
     /**
      * Text that is displayed when the field is empty, to prompt the user for a valid entry.
      *
@@ -147,27 +130,45 @@ export default class DynamicMenu extends LightningElement {
      */
     @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     /**
+     * Displays tooltip text when the mouse moves over the button menu.
+     *
+     * @type {string}
+     * @public
+     */
+    @api title;
+    /**
      * Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.
      *
      * @type {string}
      * @public
      */
     @api tooltip;
+    /**
+     * The value for the button element. This value is optional and can be used when submitting a form.
+     *
+     * @type {string}
+     * @public
+     */
+    @api value;
 
     _buttonSize = BUTTON_SIZES.default;
-    _items = [];
-    _isLoading;
-    _variant = BUTTON_VARIANTS.default;
-    _menuAlignment = MENU_ALIGNMENTS.default;
     _disabled;
+    _iconPosition = ICON_POSITIONS.default;
+    _iconSize = ICON_SIZES.default;
+    _isLoading;
+    _items = [];
+    _menuAlignment = MENU_ALIGNMENTS.default;
+    _variant = BUTTON_VARIANTS.default;
+    _withSearch = false;
+
     queryTerm;
-    _dropdownVisible = false;
-    _dropdownOpened = false;
-    _order;
     showFooter = true;
     filteredItems = [];
+
+    _dropdownOpened = false;
+    _dropdownVisible = false;
+    _order;
     _boundingRect = {};
-    _iconSize = ICON_SIZES.default;
 
     connectedCallback() {
         this.classList.add(
@@ -204,6 +205,11 @@ export default class DynamicMenu extends LightningElement {
         }
     }
 
+    /**
+     * Footer Slot DOM element
+     *
+     * @type {HTMLElement}
+     */
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
     }
@@ -234,6 +240,76 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * If present, the menu cannot be opened by users.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * The size of the button-icon. Valid values include xx-small, x-small, medium, or large.
+     *
+     * @type {string}
+     * @public
+     * @default left
+     */
+    @api
+    get iconPosition() {
+        return this._iconPosition;
+    }
+
+    set iconPosition(iconPosition) {
+        this._iconPosition = normalizeString(iconPosition, {
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
+        });
+    }
+
+    /**
+     * The size of the icon. Options include xx-small, x-small, medium, or large.
+     *
+     * @type {string}
+     * @public
+     * @default medium
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(iconSize) {
+        this._iconSize = normalizeString(iconSize, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * If present, the menu is in a loading state and shows a spinner.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Array of item objects.
      *
      * @type {object[]}
@@ -261,43 +337,6 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
-     *
-     * @type {string}
-     * @public
-     * @default border
-     */
-    @api
-    get variant() {
-        return this._variant;
-    }
-
-    set variant(variant) {
-        this._variant = normalizeString(variant, {
-            fallbackValue: BUTTON_VARIANTS.default,
-            validValues: BUTTON_VARIANTS.valid
-        });
-    }
-
-    /**
-     * The size of the icon. Options include xx-small, x-small, medium, or large.
-     *
-     * @type {string}
-     * @public
-     * @default medium
-     */
-    @api get iconSize() {
-        return this._iconSize;
-    }
-
-    set iconSize(iconSize) {
-        this._iconSize = normalizeString(iconSize, {
-            fallbackValue: ICON_SIZES.default,
-            validValues: ICON_SIZES.valid
-        });
-    }
-
-    /**
      * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.
      *
      * @type {string}
@@ -317,35 +356,110 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * If present, the menu cannot be opened by users.
+     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
      *
-     * @type {boolean}
+     * @type {string}
      * @public
-     * @default false
+     * @default border
      */
     @api
-    get disabled() {
-        return this._disabled;
+    get variant() {
+        return this._variant;
     }
 
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
     }
 
     /**
-     * If present, the menu is in a loading state and shows a spinner.
+     * If present, display search box.
      *
      * @type {boolean}
      * @public
      * @default false
      */
     @api
-    get isLoading() {
-        return this._isLoading;
+    get withSearch() {
+        return this._withSearch;
     }
 
-    set isLoading(value) {
-        this._isLoading = normalizeBoolean(value);
+    set withSearch(value) {
+        this._withSearch = normalizeBoolean(value);
+    }
+
+    /**
+     * Computed Aria Expanded from dropdown menu.
+     *
+     * @type {string}
+     */
+    get computedAriaExpanded() {
+        return String(this._dropdownVisible);
+    }
+
+    /**
+     * Computed button class, when the dynamic menu has a label.
+     *
+     * @type {string}
+     * @default slds-button
+     */
+    get computedButtonClass() {
+        const { variant, order, buttonSize } = this;
+        return classSet('slds-button')
+            .add({
+                'slds-button_stretch': buttonSize === 'stretch'
+            })
+            .add(`slds-button_${variant}`)
+            .add(`slds-button_${order}`)
+            .toString();
+    }
+
+    /**
+     * Computed Dropdown class styling.
+     *
+     * @type {string}
+     */
+    get computedDropdownClass() {
+        return classSet('slds-dropdown slds-popover slds-dynamic-menu')
+            .add({
+                'slds-dropdown_left':
+                    this.menuAlignment === 'left' || this.isAutoAlignment(),
+                'slds-dropdown_center': this.menuAlignment === 'center',
+                'slds-dropdown_right': this.menuAlignment === 'right',
+                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
+                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
+                    this.menuAlignment === 'bottom-right',
+                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
+                    this.menuAlignment === 'bottom-left',
+                'slds-nubbin_top-left': this.menuAlignment === 'left',
+                'slds-nubbin_top-right': this.menuAlignment === 'right',
+                'slds-nubbin_top': this.menuAlignment === 'center',
+                'slds-nubbin_bottom-left': this.menuAlignment === 'bottom-left',
+                'slds-nubbin_bottom-right':
+                    this.menuAlignment === 'bottom-right',
+                'slds-nubbin_bottom': this.menuAlignment === 'bottom-center',
+                'slds-p-vertical_large': this.isLoading
+            })
+            .toString();
+    }
+
+    /**
+     * Check if there's Items to display.
+     *
+     * @type {boolean}
+     */
+    get showItems() {
+        return this.filteredItems.length > 0;
+    }
+
+    get iconIsLeft() {
+        return this._iconPosition === 'left' && this.iconName;
+    }
+
+    get iconIsRight() {
+        return this._iconPosition === 'right' && this.iconName;
     }
 
     /**
@@ -386,73 +500,6 @@ export default class DynamicMenu extends LightningElement {
                     .click();
             }
         }
-    }
-
-    /**
-     * Computed Aria Expanded from dropdown menu.
-     *
-     * @type {string}
-     */
-    get computedAriaExpanded() {
-        return String(this._dropdownVisible);
-    }
-
-    /**
-     * Computed button class, when the dynamic menu has a label.
-     *
-     * @type {string}
-     * @default slds-button
-     */
-    get computedButtonClass() {
-        const { variant, _order, buttonSize } = this;
-        return classSet('slds-button')
-            .add({
-                'slds-button_neutral': variant !== 'brand',
-                'slds-button_brand': variant === 'brand',
-                'slds-button_first': _order === 'first',
-                'slds-button_middle': _order === 'middle',
-                'slds-button_last': _order === 'last',
-                'slds-button_stretch': buttonSize === 'stretch'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Dropdown class styling.
-     *
-     * @type {string}
-     */
-    get computedDropdownClass() {
-        return classSet('slds-dropdown slds-popover slds-dynamic-menu')
-            .add({
-                'slds-dropdown_left':
-                    this.menuAlignment === 'left' || this.isAutoAlignment(),
-                'slds-dropdown_center': this.menuAlignment === 'center',
-                'slds-dropdown_right': this.menuAlignment === 'right',
-                'slds-dropdown_bottom': this.menuAlignment === 'bottom-center',
-                'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right':
-                    this.menuAlignment === 'bottom-right',
-                'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
-                    this.menuAlignment === 'bottom-left',
-                'slds-nubbin_top-left': this.menuAlignment === 'left',
-                'slds-nubbin_top-right': this.menuAlignment === 'right',
-                'slds-nubbin_top': this.menuAlignment === 'center',
-                'slds-nubbin_bottom-left': this.menuAlignment === 'bottom-left',
-                'slds-nubbin_bottom-right':
-                    this.menuAlignment === 'bottom-right',
-                'slds-nubbin_bottom': this.menuAlignment === 'bottom-center',
-                'slds-p-vertical_large': this.isLoading
-            })
-            .toString();
-    }
-
-    /**
-     * Check if there's Items to display.
-     *
-     * @type {boolean}
-     */
-    get showItems() {
-        return this.filteredItems.length > 0;
     }
 
     /**

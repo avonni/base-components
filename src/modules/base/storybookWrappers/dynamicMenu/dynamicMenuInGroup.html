@@ -36,23 +36,24 @@
     <lightning-button-group>
         <lightning-button label="First button"></lightning-button>
         <c-dynamic-menu
+            access-key={accessKey}
+            alternative-text={alternativeText}
             button-size={buttonSize}
+            disabled={disabled}
             icon-name={iconName}
             icon-size={iconSize}
-            value={value}
-            alternative-text={alternativeText}
-            loading-state-alternative-text={loadingStateAlternativeText}
-            label={label}
-            with-search={withSearch}
-            access-key={accessKey}
-            title={title}
-            search-input-placeholder={searchInputPlaceholder}
-            tooltip={tooltip}
-            items={items}
+            icon-position={iconPosition}
             is-loading={isLoading}
-            variant={variant}
+            items={items}
+            label={label}
+            loading-state-alternative-text={loadingStateAlternativeText}
             menu-alignment={menuAlignment}
-            disabled={disabled}
+            search-input-placeholder={searchInputPlaceholder}
+            title={title}
+            tooltip={tooltip}
+            value={value}
+            variant={variant}
+            with-search={withSearch}
         >
             <div class="slds-p-vertical_x-small slds-p-horizontal_small">
                 <h3

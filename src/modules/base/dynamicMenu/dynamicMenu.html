@@ -49,13 +49,20 @@
         onmousedown={handleButtonMouseDown}
     >
         <c-primitive-icon
-            if:true={iconName}
+            if:true={iconIsLeft}
             icon-name={iconName}
             svg-class="slds-button__icon slds-button__icon_left"
             variant="bare"
             data-element-id="avonni-primitive-icon"
         ></c-primitive-icon>
         {label}
+        <c-primitive-icon
+            if:true={iconIsRight}
+            icon-name={iconName}
+            svg-class="slds-button__icon slds-button__icon_right"
+            variant="bare"
+            data-element-id="avonni-primitive-icon"
+        ></c-primitive-icon>
     </button>
 
     <lightning-button-icon
