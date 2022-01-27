@@ -38,41 +38,43 @@ customElements.define(
 );
 
 export const DynamicMenu = ({
-    buttonSize,
-    iconName,
-    value,
-    alternativeText,
-    loadingStateAlternativeText,
-    label,
-    withSearch,
     accessKey,
-    title,
-    searchInputPlaceholder,
-    tooltip,
-    items,
-    isLoading,
-    variant,
-    menuAlignment,
+    alternativeText,
+    buttonSize,
     disabled,
-    iconSize
+    iconName,
+    iconPosition,
+    iconSize,
+    isLoading,
+    items,
+    label,
+    loadingStateAlternativeText,
+    menuAlignment,
+    searchInputPlaceholder,
+    title,
+    tooltip,
+    value,
+    variant,
+    withSearch
 }) => {
     const element = document.createElement('ac-base-dynamic-menu');
-    element.buttonSize = buttonSize;
-    element.iconName = iconName;
-    element.value = value;
-    element.alternativeText = alternativeText;
-    element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.label = label;
-    element.withSearch = withSearch;
     element.accessKey = accessKey;
-    element.title = title;
-    element.searchInputPlaceholder = searchInputPlaceholder;
-    element.tooltip = tooltip;
-    element.items = items;
-    element.isLoading = isLoading;
-    element.variant = variant;
-    element.menuAlignment = menuAlignment;
+    element.alternativeText = alternativeText;
+    element.buttonSize = buttonSize;
     element.disabled = disabled;
+    element.iconName = iconName;
+    element.iconPosition = iconPosition;
     element.iconSize = iconSize;
+    element.isLoading = isLoading;
+    element.items = items;
+    element.label = label;
+    element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.menuAlignment = menuAlignment;
+    element.searchInputPlaceholder = searchInputPlaceholder;
+    element.title = title;
+    element.tooltip = tooltip;
+    element.value = value;
+    element.variant = variant;
+    element.withSearch = withSearch;
     return element;
 };

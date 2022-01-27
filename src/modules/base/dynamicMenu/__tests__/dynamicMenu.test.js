@@ -78,7 +78,7 @@ describe('Dynamic Menu', () => {
         document.body.appendChild(element);
     });
 
-    it('Dynamic Menu Default attributes', () => {
+    it('Dynamic Menu: Default attributes', () => {
         expect(element.buttonSize).toBe('auto');
         expect(element.label).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -100,9 +100,45 @@ describe('Dynamic Menu', () => {
 
     /* ----- ATTRIBUTES ----- */
 
+    // accesskey
+    it('Dynamic Menu: accesskey without label', () => {
+        element.accessKey = 'K';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            expect(button.accessKey).toBe('K');
+        });
+    });
+
+    it('Dynamic Menu: accesskey with label', () => {
+        element.label = 'label';
+        element.accessKey = 'K';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.accessKey).toBe('K');
+        });
+    });
+
+    // alternative text
+    it('Dynamic Menu: alternative text', () => {
+        element.alternativeText = 'This is an alternative text';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            expect(button.alternativeText).toBe('This is an alternative text');
+        });
+    });
+
     // button-size
     // Depends on label
-    it('Dynamic Menu buttonSize = auto', () => {
+    it('Dynamic Menu: buttonSize = auto', () => {
         element.label = 'Some label';
         element.buttonSize = 'auto';
 
@@ -115,7 +151,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu buttonSize = stretch', () => {
+    it('Dynamic Menu: buttonSize = stretch', () => {
         element.label = 'Some label';
         element.buttonSize = 'stretch';
 
@@ -128,21 +164,32 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    // label
-    it('Dynamic Menu label', () => {
-        element.label = 'This is a label';
+    // disabled
+    it('Dynamic Menu: disabled without label', () => {
+        element.disabled = true;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            expect(button.disabled).toBeTruthy();
+        });
+    });
+
+    it('Dynamic Menu: disabled with label', () => {
+        element.label = 'label';
+        element.disabled = true;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
                 '[data-element-id="button"]'
             );
-            expect(button).toBeTruthy();
-            expect(button.textContent).toBe('This is a label');
+            expect(button.disabled).toBeTruthy();
         });
     });
 
     // icon name
-    it('Dynamic Menu icon name without label', () => {
+    it('Dynamic Menu: icon name without label', () => {
         element.iconName = 'utility:close';
 
         return Promise.resolve().then(() => {
@@ -153,7 +200,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu icon name with label', () => {
+    it('Dynamic Menu: icon name with label', () => {
         element.label = 'Label';
         element.iconName = 'utility:close';
 
@@ -166,8 +213,38 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    //icon position
+    // depends on label
+    it('Dynamic Menu: icon position left', () => {
+        element.iconName = 'utility:add';
+        element.label = 'label';
+        element.iconPosition = 'left';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon"]'
+            );
+            expect(icon).toBeTruthy();
+            expect(icon.svgClass).toContain('slds-button__icon_left');
+        });
+    });
+
+    it('Dynamic Menu: icon position right', () => {
+        element.iconName = 'utility:add';
+        element.label = 'label';
+        element.iconPosition = 'right';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon"]'
+            );
+            expect(icon).toBeTruthy();
+            expect(icon.svgClass).toContain('slds-button__icon_right');
+        });
+    });
+
     //icon size
-    it('Dynamic Menu icon size without label', () => {
+    it('Dynamic Menu: icon size without label', () => {
         element.iconName = 'utility:add';
         element.iconSize = 'medium';
 
@@ -180,174 +257,8 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    // items
-    it('Dynamic Menu items', () => {
-        element.items = items;
-
-        return Promise.resolve().then(() => {
-            items.forEach((item, index) => {
-                const correspondingItem = items[index];
-                expect(correspondingItem).toBeTruthy();
-                expect(item.label).toBe(correspondingItem.label);
-                expect(item.value).toBe(correspondingItem.value);
-                expect(item.meta).toBe(correspondingItem.meta);
-                expect(item.id).toBe(correspondingItem.id);
-                expect(item.avatar).toBe(correspondingItem.avatar);
-            });
-        });
-    });
-
-    // alternative text
-    it('Dynamic Menu alternative text', () => {
-        element.alternativeText = 'This is an alternative text';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-            expect(button.alternativeText).toBe('This is an alternative text');
-        });
-    });
-
-    // menu alignment
-    it('Dynamic Menu menu alignment left', () => {
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left slds-nubbin_top-left'
-                );
-            });
-    });
-
-    it('Dynamic Menu menu alignment right', () => {
-        element.menuAlignment = 'right';
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right slds-nubbin_top-right'
-                );
-            });
-    });
-
-    it('Dynamic Menu menu alignment center', () => {
-        element.menuAlignment = 'center';
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center slds-nubbin_top'
-                );
-            });
-    });
-
-    it('Dynamic Menu menu alignment bottom-left', () => {
-        element.menuAlignment = 'bottom-left';
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
-                );
-            });
-    });
-
-    it('Dynamic Menu menu alignment bottom-right', () => {
-        element.menuAlignment = 'bottom-right';
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
-                );
-            });
-    });
-
-    it('Dynamic Menu menu alignment bottom-center', () => {
-        element.menuAlignment = 'bottom-center';
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-nubbin_bottom'
-                );
-            });
-    });
-
-    // disabled
-    it('Dynamic Menu disabled without label', () => {
-        element.disabled = true;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-            expect(button.disabled).toBeTruthy();
-        });
-    });
-
-    it('Dynamic Menu disabled with label', () => {
-        element.label = 'label';
-        element.disabled = true;
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            expect(button.disabled).toBeTruthy();
-        });
-    });
-
     // is loading
-    it('Dynamic Menu is loading', () => {
+    it('Dynamic Menu: is loading', () => {
         element.isLoading = true;
 
         return Promise.resolve()
@@ -365,8 +276,38 @@ describe('Dynamic Menu', () => {
             });
     });
 
+    // items
+    it('Dynamic Menu: items', () => {
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            items.forEach((item, index) => {
+                const correspondingItem = items[index];
+                expect(correspondingItem).toBeTruthy();
+                expect(item.label).toBe(correspondingItem.label);
+                expect(item.value).toBe(correspondingItem.value);
+                expect(item.meta).toBe(correspondingItem.meta);
+                expect(item.id).toBe(correspondingItem.id);
+                expect(item.avatar).toBe(correspondingItem.avatar);
+            });
+        });
+    });
+
+    // label
+    it('Dynamic Menu: label', () => {
+        element.label = 'This is a label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button).toBeTruthy();
+            expect(button.textContent).toBe('This is a label');
+        });
+    });
+
     // loading state alternative text
-    it('Dynamic Menu loading state alternative text', () => {
+    it('Dynamic Menu: loading state alternative text', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText = 'This is a loading text';
 
@@ -385,9 +326,26 @@ describe('Dynamic Menu', () => {
             });
     });
 
-    // with search
-    it('Dynamic Menu with search', () => {
-        element.withSearch = true;
+    // menu alignment
+    it('Dynamic Menu: menu alignment left', () => {
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left slds-nubbin_top-left'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment right', () => {
+        element.menuAlignment = 'right';
 
         return Promise.resolve()
             .then(() => {
@@ -397,16 +355,92 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const searchInput = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right slds-nubbin_top-right'
                 );
-                expect(searchInput).toBeTruthy();
-                expect(searchInput.type).toBe('search');
+            });
+    });
+
+    it('Dynamic Menu: menu alignment center', () => {
+        element.menuAlignment = 'center';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center slds-nubbin_top'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment bottom-left', () => {
+        element.menuAlignment = 'bottom-left';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment bottom-right', () => {
+        element.menuAlignment = 'bottom-right';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment bottom-center', () => {
+        element.menuAlignment = 'bottom-center';
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown =
+                    element.shadowRoot.querySelector('.slds-dropdown ');
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-nubbin_bottom'
+                );
             });
     });
 
     // search input placeholder
-    it('Dynamic Menu search input placeholder', () => {
+    it('Dynamic Menu: search input placeholder', () => {
         element.withSearch = true;
         element.searchInputPlaceholder = 'This is a search input placeholder';
 
@@ -429,7 +463,7 @@ describe('Dynamic Menu', () => {
     });
 
     // title
-    it('Dynamic Menu title without label', () => {
+    it('Dynamic Menu: title without label', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
@@ -440,7 +474,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu title with label', () => {
+    it('Dynamic Menu: title with label', () => {
         element.label = 'label';
         element.title = 'This is a title text';
 
@@ -452,8 +486,44 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    // tooltip
+    it('Dynamic Menu: tooltip without label', () => {
+        element.tooltip = 'This is a tooltip text';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            expect(button.tooltip).toBe('This is a tooltip text');
+        });
+    });
+
+    // value
+    it('Dynamic Menu: value without label', () => {
+        element.value = '1';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            expect(button.value).toBe('1');
+        });
+    });
+
+    it('Dynamic Menu: value with label', () => {
+        element.label = 'label';
+        element.value = '1';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.value).toBe('1');
+        });
+    });
+
     // variant
-    it('Dynamic Menu variant bare without label', () => {
+    it('Dynamic Menu: variant bare without label', () => {
         element.variant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -464,7 +534,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu variant container without label', () => {
+    it('Dynamic Menu: variant container without label', () => {
         element.variant = 'container';
 
         return Promise.resolve().then(() => {
@@ -475,7 +545,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu variant brand without label', () => {
+    it('Dynamic Menu: variant brand without label', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -486,7 +556,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu variant brand with label', () => {
+    it('Dynamic Menu: variant brand with label', () => {
         element.variant = 'brand';
         element.label = 'Some label';
 
@@ -498,7 +568,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu variant border-filled without label', () => {
+    it('Dynamic Menu: variant border-filled without label', () => {
         element.variant = 'border-filled';
 
         return Promise.resolve().then(() => {
@@ -509,7 +579,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu variant bare-inverse without label', () => {
+    it('Dynamic Menu: variant bare-inverse without label', () => {
         element.variant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
@@ -520,7 +590,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu variant border-inverse without label', () => {
+    it('Dynamic Menu: variant border-inverse without label', () => {
         element.variant = 'border-inverse';
 
         return Promise.resolve().then(() => {
@@ -531,69 +601,29 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    // value
-    it('Dynamic Menu value without label', () => {
-        element.value = '1';
+    // with search
+    it('Dynamic Menu: with search', () => {
+        element.withSearch = true;
 
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-            expect(button.value).toBe('1');
-        });
-    });
-
-    it('Dynamic Menu value with label', () => {
-        element.label = 'label';
-        element.value = '1';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            expect(button.value).toBe('1');
-        });
-    });
-
-    // accesskey
-    it('Dynamic Menu accesskey without label', () => {
-        element.accessKey = 'K';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-            expect(button.accessKey).toBe('K');
-        });
-    });
-
-    it('Dynamic Menu accesskey with label', () => {
-        element.label = 'label';
-        element.accessKey = 'K';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
-            );
-            expect(button.accessKey).toBe('K');
-        });
-    });
-
-    // tooltip
-    it('Dynamic Menu tooltip without label', () => {
-        element.tooltip = 'This is a tooltip text';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
-            );
-            expect(button.tooltip).toBe('This is a tooltip text');
-        });
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const searchInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(searchInput).toBeTruthy();
+                expect(searchInput.type).toBe('search');
+            });
     });
 
     /* ---- JS ----- */
     // blur
-    it('Dynamic Menu blur without label', () => {
+    it('Dynamic Menu: blur without label', () => {
         const button = element.shadowRoot.querySelector(
             'lightning-button-icon'
         );
@@ -606,7 +636,7 @@ describe('Dynamic Menu', () => {
 
     /* ---- EVENTS ----- */
 
-    it('Dynamic Menu event: click on item', () => {
+    it('Dynamic Menu: event: click on item', () => {
         element.items = items;
 
         const button = element.shadowRoot.querySelector(
@@ -644,7 +674,7 @@ describe('Dynamic Menu', () => {
             });
     });
 
-    it('Dynamic Menu event: privatebuttonregister', () => {
+    it('Dynamic Menu: event: privatebuttonregister', () => {
         const handler = jest.fn();
         element.addEventListener('privatebuttonregister', handler);
         document.body.appendChild(element);
@@ -664,7 +694,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu event: open', () => {
+    it('Dynamic Menu: event: open', () => {
         const handler = jest.fn();
         element.addEventListener('open', handler);
         element.click();
@@ -676,7 +706,7 @@ describe('Dynamic Menu', () => {
     });
 
     /* ---- METHODS ----- */
-    it('Dynamic Menu method: click with label', () => {
+    it('Dynamic Menu: method: click with label', () => {
         let clickEvent = false;
         element.addEventListener('click', () => {
             clickEvent = true;
@@ -692,7 +722,7 @@ describe('Dynamic Menu', () => {
             });
     });
 
-    it('Dynamic Menu method: click without label', () => {
+    it('Dynamic Menu: method: click without label', () => {
         let clickEvent = false;
         element.addEventListener('click', () => {
             clickEvent = true;
@@ -705,7 +735,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu method: focus without label', () => {
+    it('Dynamic Menu: method: focus without label', () => {
         let focusEvent = false;
 
         element.addEventListener('focus', () => {
@@ -719,7 +749,7 @@ describe('Dynamic Menu', () => {
         });
     });
 
-    it('Dynamic Menu method: focus with label', () => {
+    it('Dynamic Menu: method: focus with label', () => {
         let focusEvent = false;
 
         element.addEventListener('focus', () => {

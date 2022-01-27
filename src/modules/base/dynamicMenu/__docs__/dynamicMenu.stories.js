@@ -36,12 +36,12 @@ import { DynamicMenuInGroup } from '../__examples__/dynamicMenuInGroup';
 export default {
     title: 'Example/Dynamic Menu',
     argTypes: {
-        value: {
+        accessKey: {
+            name: 'access-key',
             control: {
                 type: 'text'
             },
-            description:
-                'The value for the button element. This value is optional and can be used when submitting a form.',
+            description: 'The keyboard shortcut for the button.',
             table: {
                 type: { summary: 'string' }
             }
@@ -52,6 +52,97 @@ export default {
                 type: 'text'
             },
             description: 'The assistive text for the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        buttonSize: {
+            name: 'button-size',
+            control: {
+                type: 'radio'
+            },
+            options: ['auto', 'stretch'],
+            description:
+                'Size of the button. Available options include auto and stretch.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'auto' }
+            }
+        },
+        disabled: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the menu can be opened by users.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        iconName: {
+            name: 'icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The name of the icon to be used in the format 'utility:down'.",
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        iconPosition: {
+            name: 'icon-position',
+            control: {
+                type: 'select'
+            },
+            options: ['left', 'right'],
+            description:
+                'The position of the icon if present with label. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            description:
+                'The size of the button-icon. Valid values include xx-small, x-small, medium, or large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'medium' }
+            }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the menu is in a loading state and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
+        items: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'Fields: label, meta, value, avatar : {fallbackIconName, initials, src, alternativeText, size, variant}',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
             table: {
                 type: { summary: 'string' }
             }
@@ -67,22 +158,35 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        label: {
+        menuAlignment: {
+            name: 'menu-alignment',
             control: {
-                type: 'text'
+                type: 'select'
             },
-            description: 'Optional text to be shown on the button.',
+            options: [
+                'left',
+                'center',
+                'right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
+            description:
+                'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
             }
         },
-        accessKey: {
-            name: 'access-key',
+        searchInputPlaceholder: {
+            name: 'search-input-placeholder',
             control: {
                 type: 'text'
             },
-            description: 'The keyboard shortcut for the button.',
+            description:
+                'Text that is displayed when the field is empty, to prompt the user for a valid entry.',
             table: {
+                defaultValue: { summary: 'Search…' },
                 type: { summary: 'string' }
             }
         },
@@ -96,19 +200,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        searchInputPlaceholder: {
-            name: 'search-input-placeholder',
-            control: {
-                type: 'text'
-            },
-            defaultValue: 'Search…',
-            description:
-                'Text that is displayed when the field is empty, to prompt the user for a valid entry.',
-            table: {
-                defaultValue: { summary: 'Search…' },
-                type: { summary: 'string' }
-            }
-        },
         tooltip: {
             control: {
                 type: 'text'
@@ -119,42 +210,14 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        iconName: {
-            name: 'icon-name',
+        value: {
             control: {
                 type: 'text'
             },
             description:
-                "The name of the icon to be used in the format 'utility:down'.",
+                'The value for the button element. This value is optional and can be used when submitting a form.',
             table: {
                 type: { summary: 'string' }
-            }
-        },
-        iconSize: {
-            name: 'icon-size',
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
-            description: 'The size of the icon',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
-            }
-        },
-        buttonSize: {
-            name: 'button-size',
-            control: {
-                type: 'radio'
-            },
-            options: ['auto', 'stretch'],
-            defaultValue: 'auto',
-            description:
-                'Size of the button. Available options include auto and stretch.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'auto' }
             }
         },
         variant: {
@@ -170,7 +233,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
             table: {
@@ -178,78 +240,28 @@ export default {
                 defaultValue: { summary: 'border' }
             }
         },
-        menuAlignment: {
-            name: 'menu-alignment',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'left',
-                'center',
-                'right',
-                'bottom-left',
-                'bottom-center',
-                'bottom-right'
-            ],
-            defaultValue: 'left',
-            description:
-                'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'left' }
-            }
-        },
         withSearch: {
             name: 'with-search',
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, display search box.',
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
             }
-        },
-        isLoading: {
-            name: 'is-loading',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, the menu is in a loading state and shows a spinner.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description: 'If present, the menu can be opened by users.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        items: {
-            control: {
-                type: 'object'
-            },
-            description:
-                'Fields: label, meta, value, avatar : {fallbackIconName, initials, src, alternativeText, size, variant}',
-            table: {
-                type: { summary: 'object[]' }
-            }
         }
     },
     args: {
-        withSearch: false,
+        buttonSize: 'auto',
+        disabled: false,
+        iconPosition: 'left',
+        iconSize: 'medium',
         isLoading: false,
-        disabled: false
+        menuAlignment: 'left',
+        searchInputPlaceholder: 'Search…',
+        variant: 'border',
+        withSearch: false
     }
 };
 
@@ -318,7 +330,8 @@ export const BaseWithLabel = Template.bind({});
 BaseWithLabel.args = {
     items: items,
     label: 'Menu',
-    iconName: 'utility:favorite'
+    iconName: 'utility:favorite',
+    iconPosition: 'right'
 };
 
 export const Stretched = Template.bind({});
