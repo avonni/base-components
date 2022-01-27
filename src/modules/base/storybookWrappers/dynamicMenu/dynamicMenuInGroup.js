@@ -42,19 +42,20 @@ export default class DynamicMenuInGroup extends LightningElement {
     @api accessKey;
     @api alternativeText;
     @api buttonSize;
-    @api disabled;
+    @api disabled = false;
     @api iconName;
     @api iconPosition = DEFAULT_ICON_POSITION;
     @api iconSize = DEFAULT_ICON_SIZE;
     @api isLoading;
     @api items = [];
     @api label;
-    @api menuAlignment = DEFAULT_MENU_ALIGNMENT;
     @api loadingStateAlternativeText;
+    @api menuAlignment = DEFAULT_MENU_ALIGNMENT;
+    @api nubbin = false;
     @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     @api title;
     @api tooltip;
     @api value;
     @api variant = DEFAULT_BUTTON_VARIANT;
-    @api withSearch;
+    @api withSearch = false;
 }

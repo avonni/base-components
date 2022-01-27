@@ -50,6 +50,7 @@ export const DynamicMenu = ({
     label,
     loadingStateAlternativeText,
     menuAlignment,
+    nubbin,
     searchInputPlaceholder,
     title,
     tooltip,
@@ -70,6 +71,7 @@ export const DynamicMenu = ({
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.menuAlignment = menuAlignment;
+    element.nubbin = nubbin;
     element.searchInputPlaceholder = searchInputPlaceholder;
     element.title = title;
     element.tooltip = tooltip;

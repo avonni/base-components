@@ -63,7 +63,8 @@ const BUTTON_VARIANTS = {
         'brand',
         'bare',
         'bare-inverse',
-        'container'
+        'container',
+        'reset'
     ],
     default: 'border'
 };
@@ -356,6 +357,22 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get nubbin() {
+        return this._nubbin;
+    }
+
+    set nubbin(value) {
+        this._nubbin = normalizeBoolean(value);
+    }
+
+    /**
      * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
      *
      * @type {string}
@@ -407,12 +424,27 @@ export default class DynamicMenu extends LightningElement {
      */
     get computedButtonClass() {
         const { variant, order, buttonSize } = this;
-        return classSet('slds-button')
+        return classSet('')
             .add({
-                'slds-button_stretch': buttonSize === 'stretch'
+                'slds-button': variant !== 'reset',
+                'slds-button_reset avonni-dynamic-menu__button_display':
+                    variant === 'reset',
+                'slds-button_stretch': buttonSize === 'stretch',
+                'slds-button_first': order === 'first',
+                'slds-button_middle': order === 'middle',
+                'slds-button_last': order === 'last',
+                'slds-button_neutral':
+                    variant !== 'brand' && variant !== 'reset',
+                'slds-button_brand': variant === 'brand'
             })
-            .add(`slds-button_${variant}`)
-            .add(`slds-button_${order}`)
+            .toString();
+    }
+
+    get computedLabelClass() {
+        return classSet('')
+            .add({
+                'avonni-dynamic-menu__label_reset': this.variant === 'reset'
+            })
             .toString();
     }
 
@@ -433,20 +465,25 @@ export default class DynamicMenu extends LightningElement {
                     this.menuAlignment === 'bottom-right',
                 'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left':
                     this.menuAlignment === 'bottom-left',
-                'slds-nubbin_top-left': this.menuAlignment === 'left',
-                'slds-nubbin_top-right': this.menuAlignment === 'right',
-                'slds-nubbin_top': this.menuAlignment === 'center',
-                'slds-nubbin_bottom-left': this.menuAlignment === 'bottom-left',
+                'slds-nubbin_top-left':
+                    this.menuAlignment === 'left' && this.nubbin,
+                'slds-nubbin_top-right':
+                    this.menuAlignment === 'right' && this.nubbin,
+                'slds-nubbin_top':
+                    this.menuAlignment === 'center' && this.nubbin,
+                'slds-nubbin_bottom-left':
+                    this.menuAlignment === 'bottom-left' && this.nubbin,
                 'slds-nubbin_bottom-right':
-                    this.menuAlignment === 'bottom-right',
-                'slds-nubbin_bottom': this.menuAlignment === 'bottom-center',
+                    this.menuAlignment === 'bottom-right' && this.nubbin,
+                'slds-nubbin_bottom':
+                    this.menuAlignment === 'bottom-center' && this.nubbin,
                 'slds-p-vertical_large': this.isLoading
             })
             .toString();
     }
 
     /**
-     * Check if there's Items to display.
+     * Verify if there's Items to display.
      *
      * @type {boolean}
      */
@@ -454,10 +491,20 @@ export default class DynamicMenu extends LightningElement {
         return this.filteredItems.length > 0;
     }
 
+    /**
+     * Verify if the icon position is left.
+     *
+     * @type {boolean}
+     */
     get iconIsLeft() {
         return this._iconPosition === 'left' && this.iconName;
     }
 
+    /**
+     * Verify if the icon position is right.
+     *
+     * @type {boolean}
+     */
     get iconIsRight() {
         return this._iconPosition === 'right' && this.iconName;
     }
@@ -477,13 +524,12 @@ export default class DynamicMenu extends LightningElement {
          *
          * @event
          * @name focus
-         * @public
          */
         this.dispatchEvent(new CustomEvent('focus'));
     }
 
     /**
-     * Simulate a click on the button.
+     * Simulates a mouse click on the button.
      *
      * @public
      */
@@ -591,7 +637,7 @@ export default class DynamicMenu extends LightningElement {
 
             if (this._dropdownVisible) {
                 /**
-                 * Event fires when opening dropdown menu.
+                 * The event fired when you open the dropdown menu.
                  *
                  * @event
                  * @name open
@@ -601,6 +647,14 @@ export default class DynamicMenu extends LightningElement {
                 this._boundingRect = this.getBoundingClientRect();
                 this.pollBoundingRect();
             } else {
+                /**
+                 * The event fired when you close the dropdown menu.
+                 *
+                 * @event
+                 * @name close
+                 * @public
+                 */
+                this.dispatchEvent(new CustomEvent('close'));
                 this.filteredItems = this.items;
             }
 
@@ -619,14 +673,6 @@ export default class DynamicMenu extends LightningElement {
         if (this._dropdownVisible) {
             this.toggleMenuVisibility();
         }
-        /**
-         * Blur event
-         *
-         * @event
-         * @name blur
-         * @public
-         */
-        this.dispatchEvent(new CustomEvent('blur'));
     }
 
     /**
@@ -697,14 +743,17 @@ export default class DynamicMenu extends LightningElement {
          * @event
          * @name select
          * @param {object[]} item
+         * @cancelable
          * @public
          */
-        const selectedEvent = new CustomEvent('select', {
-            detail: {
-                item
-            }
-        });
-        this.dispatchEvent(selectedEvent);
+        this.dispatchEvent(
+            new CustomEvent('select', {
+                cancelable: true,
+                detail: {
+                    item
+                }
+            })
+        );
 
         this.toggleMenuVisibility();
     }

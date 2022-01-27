@@ -237,5 +237,7 @@ export default {
 const Template = (args) => ButtonMenuBase(args);
 const TemplateIllustration = (args) => ButtonMenuIllustration(args);
 
-export const Base = Template.bind({});
+export const Base = Template.bind({
+    label: 'gello'
+});
 export const Illustration = TemplateIllustration.bind({});
