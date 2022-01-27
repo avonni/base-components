@@ -178,6 +178,17 @@ export default {
                 defaultValue: { summary: 'left' }
             }
         },
+        nubbin: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         searchInputPlaceholder: {
             name: 'search-input-placeholder',
             control: {
@@ -231,7 +242,8 @@ export default {
                 'border',
                 'border-filled',
                 'bare-inverse',
-                'border-inverse'
+                'border-inverse',
+                'reset'
             ],
             description:
                 'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
@@ -259,6 +271,7 @@ export default {
         iconSize: 'medium',
         isLoading: false,
         menuAlignment: 'left',
+        nubbin: false,
         searchInputPlaceholder: 'Search…',
         variant: 'border',
         withSearch: false
@@ -330,8 +343,7 @@ export const BaseWithLabel = Template.bind({});
 BaseWithLabel.args = {
     items: items,
     label: 'Menu',
-    iconName: 'utility:favorite',
-    iconPosition: 'right'
+    iconName: 'utility:favorite'
 };
 
 export const Stretched = Template.bind({});
@@ -369,6 +381,15 @@ Container.args = {
     alternativeText: 'Display Menu',
     iconName: 'utility:add',
     variant: 'container'
+};
+
+export const ListView = Template.bind({});
+ListView.args = {
+    items: items,
+    label: 'Recently Viewed',
+    iconName: 'utility:down',
+    iconPosition: 'right',
+    variant: 'reset'
 };
 
 export const InButtonGroup = TemplateInGroup.bind({});

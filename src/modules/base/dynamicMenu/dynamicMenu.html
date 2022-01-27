@@ -55,7 +55,7 @@
             variant="bare"
             data-element-id="avonni-primitive-icon"
         ></c-primitive-icon>
-        {label}
+        <span class={computedLabelClass}>{label}</span>
         <c-primitive-icon
             if:true={iconIsRight}
             icon-name={iconName}
@@ -94,6 +94,7 @@
             onscroll={handleDropdownScroll}
             onblur={handleBlur}
             tabindex="0"
+            data-element-id="dropdown"
         >
             <template if:true={isLoading}>
                 <lightning-spinner

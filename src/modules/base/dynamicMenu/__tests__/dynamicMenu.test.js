@@ -79,23 +79,25 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu: Default attributes', () => {
+        expect(element.accessKey).toBeUndefined();
+        expect(element.alternativeText).toBeUndefined();
         expect(element.buttonSize).toBe('auto');
-        expect(element.label).toBeUndefined();
+        expect(element.disabled).toBeFalsy();
         expect(element.iconName).toBeUndefined();
         expect(element.iconSize).toBe('medium');
-        expect(element.items).toMatchObject([]);
-        expect(element.alternativeText).toBeUndefined();
-        expect(element.menuAlignment).toBe('left');
-        expect(element.disabled).toBeFalsy();
+        expect(element.iconPosition).toBe('left');
         expect(element.isLoading).toBeFalsy();
+        expect(element.items).toMatchObject([]);
+        expect(element.label).toBeUndefined();
         expect(element.loadingStateAlternativeText).toBeUndefined();
-        expect(element.withSearch).toBeFalsy();
+        expect(element.menuAlignment).toBe('left');
+        expect(element.nubbin).toBeFalsy();
         expect(element.searchInputPlaceholder).toBe('Search…');
         expect(element.title).toBeUndefined();
-        expect(element.variant).toBe('border');
-        expect(element.value).toBeUndefined();
-        expect(element.accessKey).toBeUndefined();
         expect(element.tooltip).toBeUndefined();
+        expect(element.value).toBeUndefined();
+        expect(element.variant).toBe('border');
+        expect(element.withSearch).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -326,8 +328,10 @@ describe('Dynamic Menu', () => {
             });
     });
 
-    // menu alignment
+    // menu alignment with nubbin
+    // depends on nubbin
     it('Dynamic Menu: menu alignment left', () => {
+        element.nubbin = true;
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -336,8 +340,9 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
                 expect(dropdown.className).toBe(
                     'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left slds-nubbin_top-left'
                 );
@@ -345,6 +350,131 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu: menu alignment right', () => {
+        element.menuAlignment = 'right';
+        element.nubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right slds-nubbin_top-right'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment center', () => {
+        element.menuAlignment = 'center';
+        element.nubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center slds-nubbin_top'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment bottom-left', () => {
+        element.menuAlignment = 'bottom-left';
+        element.nubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment bottom-right', () => {
+        element.menuAlignment = 'bottom-right';
+        element.nubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment bottom-center', () => {
+        element.menuAlignment = 'bottom-center';
+        element.nubbin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-nubbin_bottom'
+                );
+            });
+    });
+
+    // menu alignment with nubbin
+    // depends on nubbin
+    it('Dynamic Menu: menu alignment without nubbin left', () => {
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toBe(
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left'
+                );
+            });
+    });
+
+    it('Dynamic Menu: menu alignment without nubbin right', () => {
         element.menuAlignment = 'right';
 
         return Promise.resolve()
@@ -355,15 +485,16 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
                 expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right slds-nubbin_top-right'
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right'
                 );
             });
     });
 
-    it('Dynamic Menu: menu alignment center', () => {
+    it('Dynamic Menu: menu alignment without nubbin center', () => {
         element.menuAlignment = 'center';
 
         return Promise.resolve()
@@ -374,15 +505,16 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
                 expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center slds-nubbin_top'
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center'
                 );
             });
     });
 
-    it('Dynamic Menu: menu alignment bottom-left', () => {
+    it('Dynamic Menu: menu alignment without nubbin bottom-left', () => {
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
@@ -393,15 +525,16 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
                 expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
                 );
             });
     });
 
-    it('Dynamic Menu: menu alignment bottom-right', () => {
+    it('Dynamic Menu: menu alignment without nubbin bottom-right', () => {
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
@@ -412,15 +545,16 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
                 expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
                 );
             });
     });
 
-    it('Dynamic Menu: menu alignment bottom-center', () => {
+    it('Dynamic Menu: menu alignment without nubbin bottom-center', () => {
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
@@ -431,10 +565,11 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown ');
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
                 expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-nubbin_bottom'
+                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom'
                 );
             });
     });
@@ -634,6 +769,61 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    /* ---- METHODS ----- */
+    it('Dynamic Menu: method: click with label', () => {
+        let clickEvent = false;
+        element.label = 'label';
+        element.addEventListener('click', () => {
+            clickEvent = true;
+        });
+        return Promise.resolve().then(() => {
+            element.click();
+            expect(clickEvent).toBeTruthy();
+            expect(element.classList).toContain('slds-is-open');
+        });
+    });
+
+    it('Dynamic Menu: method: click without label', () => {
+        let clickEvent = false;
+        element.addEventListener('click', () => {
+            clickEvent = true;
+        });
+
+        return Promise.resolve().then(() => {
+            element.click();
+            expect(clickEvent).toBeTruthy();
+            expect(element.classList).toContain('slds-is-open');
+        });
+    });
+
+    it('Dynamic Menu: method: focus without label', () => {
+        let focusEvent = false;
+
+        element.addEventListener('focus', () => {
+            focusEvent = true;
+        });
+
+        element.focus();
+
+        return Promise.resolve().then(() => {
+            expect(focusEvent).toBeTruthy();
+        });
+    });
+
+    it('Dynamic Menu: method: focus with label', () => {
+        let focusEvent = false;
+        element.label = 'label';
+
+        element.addEventListener('focus', () => {
+            focusEvent = true;
+        });
+
+        return Promise.resolve().then(() => {
+            element.focus();
+            expect(focusEvent).toBeTruthy();
+        });
+    });
+
     /* ---- EVENTS ----- */
 
     it('Dynamic Menu: event: click on item', () => {
@@ -651,8 +841,9 @@ describe('Dynamic Menu', () => {
                 button.click();
             })
             .then(() => {
-                const dropdown =
-                    element.shadowRoot.querySelector('.slds-dropdown');
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
                 expect(dropdown).toBeTruthy();
                 const item = element.shadowRoot.querySelector(
                     '.slds-listbox__item'
@@ -670,7 +861,7 @@ describe('Dynamic Menu', () => {
                 });
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+                expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             });
     });
 
@@ -705,65 +896,25 @@ describe('Dynamic Menu', () => {
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
 
-    /* ---- METHODS ----- */
-    it('Dynamic Menu: method: click with label', () => {
-        let clickEvent = false;
-        element.addEventListener('click', () => {
-            clickEvent = true;
-        });
-
-        element.click();
-        return Promise.resolve()
-            .then(() => {
-                element.label = 'label';
-            })
-            .then(() => {
-                expect(clickEvent).toBeTruthy();
-            });
-    });
-
-    it('Dynamic Menu: method: click without label', () => {
-        let clickEvent = false;
-        element.addEventListener('click', () => {
-            clickEvent = true;
-        });
-
+    it('Dynamic Menu: event: close after close', () => {
+        element.items = items;
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
         element.click();
         return Promise.resolve().then(() => {
-            expect(clickEvent).toBeTruthy();
-            expect(element.classList).toContain('slds-is-open');
+            const dropdown = element.shadowRoot.querySelector(
+                '[data-element-id="dropdown"]'
+            );
+            expect(dropdown).toBeTruthy();
+            const item = element.shadowRoot.querySelector(
+                '.slds-listbox__item'
+            );
+            item.click();
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
         });
-    });
-
-    it('Dynamic Menu: method: focus without label', () => {
-        let focusEvent = false;
-
-        element.addEventListener('focus', () => {
-            focusEvent = true;
-        });
-
-        element.focus();
-
-        return Promise.resolve().then(() => {
-            expect(focusEvent).toBeTruthy();
-        });
-    });
-
-    it('Dynamic Menu: method: focus with label', () => {
-        let focusEvent = false;
-
-        element.addEventListener('focus', () => {
-            focusEvent = true;
-        });
-
-        element.focus();
-
-        return Promise.resolve()
-            .then(() => {
-                element.label = 'label';
-            })
-            .then(() => {
-                expect(focusEvent).toBeTruthy();
-            });
     });
 });

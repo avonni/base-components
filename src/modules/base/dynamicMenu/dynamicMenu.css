@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .slds-nubbin_top {
+.slds-nubbin_top {
     margin-top: 1rem;
 }
 
@@ -60,4 +60,14 @@
 
 div:focus {
     outline: none;
+}
+
+.avonni-dynamic-menu__button_display {
+    display: flex;
+}
+
+.avonni-dynamic-menu__label_reset {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.25;
 }
