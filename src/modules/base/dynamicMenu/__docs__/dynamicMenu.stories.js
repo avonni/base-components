@@ -32,6 +32,7 @@
 
 import { DynamicMenu } from '../__examples__/dynamicMenu';
 import { DynamicMenuInGroup } from '../__examples__/dynamicMenuInGroup';
+import { ListView } from '../__examples__/listView';
 
 export default {
     title: 'Example/Dynamic Menu',
@@ -308,8 +309,32 @@ const items = [
     }
 ];
 
+const listViewItems = [
+    {
+        label: 'All Accounts',
+        value: 'all-accounts'
+    },
+    {
+        label: 'All Accounts 2',
+        value: 'all-accounts-2'
+    },
+    {
+        label: 'My Accounts',
+        value: 'my-accounts'
+    },
+    {
+        label: 'New Last Week',
+        value: 'last-week'
+    },
+    {
+        label: 'New This Week',
+        value: 'this-week'
+    }
+];
+
 const Template = (args) => DynamicMenu(args);
 const TemplateInGroup = (args) => DynamicMenuInGroup(args);
+const TemplateListView = (args) => ListView(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -383,9 +408,9 @@ Container.args = {
     variant: 'container'
 };
 
-export const ListView = Template.bind({});
-ListView.args = {
-    items: items,
+export const ListViewStory = TemplateListView.bind({});
+ListViewStory.args = {
+    items: listViewItems,
     label: 'Recently Viewed',
     iconName: 'utility:down',
     iconPosition: 'right',
