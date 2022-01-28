@@ -323,15 +323,16 @@ export default class DynamicMenu extends LightningElement {
 
     set items(value) {
         let result = [];
-
-        value.forEach((item, key) => {
-            let cloneItem = Object.assign({}, item);
-            cloneItem.metaJoin = cloneItem.meta
-                ? cloneItem.meta.join(' • ')
-                : null;
-            cloneItem.key = `item-key-${key}`;
-            result.push(cloneItem);
-        });
+        if (value) {
+            value.forEach((item, key) => {
+                let cloneItem = Object.assign({}, item);
+                cloneItem.metaJoin = cloneItem.meta
+                    ? cloneItem.meta.join(' • ')
+                    : null;
+                cloneItem.key = `item-key-${key}`;
+                result.push(cloneItem);
+            });
+        }
 
         this._items = result;
         this.filteredItems = result;
