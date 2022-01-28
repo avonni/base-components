@@ -35,7 +35,8 @@ import { classSet } from 'c/utils';
 import {
     normalizeBoolean,
     normalizeString,
-    observePosition
+    observePosition,
+    normalizeArray
 } from 'c/utilsPrivate';
 
 const MENU_ALIGNMENTS = {
@@ -144,21 +145,16 @@ export default class DynamicMenu extends LightningElement {
      * @public
      */
     @api tooltip;
-    /**
-     * The value for the button element. This value is optional and can be used when submitting a form.
-     *
-     * @type {string}
-     * @public
-     */
-    @api value;
 
     _buttonSize = BUTTON_SIZES.default;
-    _disabled;
+    _disabled = false;
+    _hideCheckMark = false;
     _iconPosition = ICON_POSITIONS.default;
     _iconSize = ICON_SIZES.default;
     _isLoading;
     _items = [];
     _menuAlignment = MENU_ALIGNMENTS.default;
+    _value;
     _variant = BUTTON_VARIANTS.default;
     _withSearch = false;
 
@@ -257,6 +253,22 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * If present, the menu cannot be opened by users.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideCheckMark() {
+        return this._hideCheckMark;
+    }
+
+    set hideCheckMark(value) {
+        this._hideCheckMark = normalizeBoolean(value);
+    }
+
+    /**
      * The size of the button-icon. Valid values include xx-small, x-small, medium, or large.
      *
      * @type {string}
@@ -322,20 +334,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     set items(value) {
-        let result = [];
-        if (value) {
-            value.forEach((item, key) => {
-                let cloneItem = Object.assign({}, item);
-                cloneItem.metaJoin = cloneItem.meta
-                    ? cloneItem.meta.join(' • ')
-                    : null;
-                cloneItem.key = `item-key-${key}`;
-                result.push(cloneItem);
-            });
-        }
-
-        this._items = result;
-        this.filteredItems = result;
+        this._items = normalizeArray(value);
     }
 
     /**
@@ -374,6 +373,21 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
+     * Value of the selected item.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value;
+    }
+
+    /**
      * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
      *
      * @type {string}
@@ -408,13 +422,21 @@ export default class DynamicMenu extends LightningElement {
         this._withSearch = normalizeBoolean(value);
     }
 
-    /**
-     * Computed Aria Expanded from dropdown menu.
-     *
-     * @type {string}
-     */
-    get computedAriaExpanded() {
-        return String(this._dropdownVisible);
+    get computedListItems() {
+        return this._items.map((item, index) => {
+            let { avatar, label, meta, value } = item;
+            const key = `item-key-${index}`;
+            const metaJoin = meta ? meta.join(' • ') : null;
+            const selected = this.value === value;
+            return {
+                avatar,
+                label,
+                metaJoin,
+                key,
+                selected,
+                value
+            };
+        });
     }
 
     /**
@@ -489,7 +511,7 @@ export default class DynamicMenu extends LightningElement {
      * @type {boolean}
      */
     get showItems() {
-        return this.filteredItems.length > 0;
+        return this.computedListItems.length > 0;
     }
 
     /**
@@ -508,6 +530,15 @@ export default class DynamicMenu extends LightningElement {
      */
     get iconIsRight() {
         return this._iconPosition === 'right' && this.iconName;
+    }
+
+    /**
+     * Computed Aria Expanded from dropdown menu.
+     *
+     * @type {string}
+     */
+    get computedAriaExpanded() {
+        return String(this._dropdownVisible);
     }
 
     /**
@@ -737,6 +768,7 @@ export default class DynamicMenu extends LightningElement {
     handleClick(event) {
         let index = event.currentTarget.id.split('-')[0];
         let item = this.items[index];
+        this._value = item.value;
 
         /**
          * Select event.
