@@ -120,52 +120,80 @@
                             ></lightning-input>
                         </div>
                     </template>
-                    <div class="slds-popover__body slds-p-horizontal_none">
+                    <div class="slds-popover__body slds-p-around_none">
                         <slot></slot>
                         <div
                             if:true={showItems}
-                            class="
-                                slds-p-vertical_x-small
-                                slds-listbox slds-listbox_vertical
-                                slds-dropdown_length-5
-                            "
+                            class="slds-listbox slds-listbox_vertical"
                         >
                             <template
-                                for:each={filteredItems}
+                                for:each={computedListItems}
                                 for:item="item"
                                 for:index="index"
                             >
                                 <div
-                                    class="slds-listbox__item"
+                                    class="slds-listbox__option"
                                     key={item.key}
                                     id={index}
                                     onclick={handleClick}
                                 >
                                     <div
                                         class="
-                                            slds-media slds-media_center
                                             slds-listbox__option
-                                            slds-listbox__option_entity
+                                            slds-media slds-media_center
+                                            slds-listbox__option_plain
+                                            slds-is-selected
                                         "
-                                        role="option"
                                     >
-                                        <lightning-icon
-                                            if:true={item.avatar}
-                                            icon-name={item.avatar.fallbackIconName}
-                                            size="small"
-                                            class="slds-media__figure"
-                                            alternative-text={item.avatar.alternativeText}
-                                            variant={variantInverse}
-                                        ></lightning-icon>
-                                        <span class="slds-media__body">
-                                            <span
+                                        <div
+                                            class="
+                                                slds-media__figure
+                                                slds-listbox__option-icon
+                                            "
+                                        >
+                                            <template if:false={hideCheckMark}>
+                                                <lightning-icon
+                                                    if:true={item.selected}
+                                                    class="
+                                                        slds-icon-utility-check
+                                                        slds-current-color
+                                                        slds-icon_container
+                                                    "
+                                                    icon-name="utility:check"
+                                                    size="x-small"
+                                                    aria-hidden="true"
+                                                ></lightning-icon>
+                                            </template>
+                                            <template if:true={hideCheckMark}>
+                                                <lightning-icon
+                                                    if:true={item.avatar.fallbackIconName}
+                                                    icon-name={item.avatar.fallbackIconName}
+                                                    size="small"
+                                                    alternative-text={item.avatar.alternativeText}
+                                                    variant={variantInverse}
+                                                ></lightning-icon>
+                                            </template>
+                                        </div>
+                                        <template if:true={item.avatar}>
+                                            <div
+                                                if:false={hideCheckMark}
                                                 class="
-                                                    slds-listbox__option-text
-                                                    slds-listbox__option-text_entity
+                                                    slds-media__figure
+                                                    slds-listbox__option-icon
                                                 "
                                             >
-                                                {item.label}
-                                            </span>
+                                                <lightning-icon
+                                                    icon-name={item.avatar.fallbackIconName}
+                                                    size="small"
+                                                    alternative-text={item.avatar.alternativeText}
+                                                    variant={variantInverse}
+                                                ></lightning-icon>
+                                            </div>
+                                        </template>
+                                        <span class="slds-media__body">
+                                            <span class="slds-truncate"
+                                                >{item.label}</span
+                                            >
                                             <span
                                                 if:true={item.metaJoin}
                                                 class="

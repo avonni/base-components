@@ -42,6 +42,7 @@ export const DynamicMenu = ({
     alternativeText,
     buttonSize,
     disabled,
+    hideCheckMark,
     iconName,
     iconPosition,
     iconSize,
@@ -63,6 +64,7 @@ export const DynamicMenu = ({
     element.alternativeText = alternativeText;
     element.buttonSize = buttonSize;
     element.disabled = disabled;
+    element.hideCheckMark = hideCheckMark;
     element.iconName = iconName;
     element.iconPosition = iconPosition;
     element.iconSize = iconSize;

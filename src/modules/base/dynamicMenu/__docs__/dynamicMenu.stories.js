@@ -80,6 +80,17 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        hideCheckMark: {
+            name: 'hide-check-mark',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, hide the check mark.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         iconName: {
             name: 'icon-name',
             control: {
@@ -268,6 +279,7 @@ export default {
     args: {
         buttonSize: 'auto',
         disabled: false,
+        hideCheckMark: false,
         iconPosition: 'left',
         iconSize: 'medium',
         isLoading: false,
@@ -414,7 +426,8 @@ ListViewStory.args = {
     label: 'Recently Viewed',
     iconName: 'utility:down',
     iconPosition: 'right',
-    variant: 'reset'
+    variant: 'reset',
+    value: 'all-accounts'
 };
 
 export const InButtonGroup = TemplateInGroup.bind({});

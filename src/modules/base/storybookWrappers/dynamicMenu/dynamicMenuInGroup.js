@@ -43,6 +43,7 @@ export default class DynamicMenuInGroup extends LightningElement {
     @api alternativeText;
     @api buttonSize;
     @api disabled = false;
+    @api hideCheckMark = false;
     @api iconName;
     @api iconPosition = DEFAULT_ICON_POSITION;
     @api iconSize = DEFAULT_ICON_SIZE;
