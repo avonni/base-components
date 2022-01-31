@@ -190,7 +190,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-title-margin-around
- * @default 0rem
+ * @default 0.25rem
  * @type margin
  */
 /**

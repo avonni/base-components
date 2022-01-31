@@ -322,8 +322,9 @@ export default class VisualPicker extends LightningElement {
             const computedDescriptionClass = classSet(
                 'avonni-visual-picker__figure-description'
             ).add({
-                'slds-truncate slds-p-around_xx-small slds-m-around_none':
-                    this._ratio === '4-by-3' || this._ratio === '16-by-9'
+                'slds-truncate slds-p-horizontal_x-small': this.truncateRatio,
+                'slds-p-around_small slds-m-around_none':
+                    descriptionPosition === titlePosition && this.truncateRatio
             });
 
             // Avatar management
@@ -485,6 +486,18 @@ export default class VisualPicker extends LightningElement {
      */
     get responsivePullBoundary() {
         return this.isResponsive ? 'small' : '';
+    }
+
+    /**
+     * Verify if is a truncate description ratio.
+     *
+     * @type {boolean}
+     */
+    get truncateRatio() {
+        return (
+            (this._ratio === '4-by-3' || this._ratio === '16-by-9') &&
+            !this.isResponsive
+        );
     }
 
     /**

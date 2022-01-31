@@ -229,7 +229,7 @@ export const analyticsItems = [
             'Bring the power of Tableau CRM to Lightning Scheduler customer appointments data. Analyze past appointment volumes across accounts, work tpes and territories.',
         avatar: {
             iconName: 'standard:service_appointment',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
@@ -251,7 +251,7 @@ export const analyticsItems = [
             'The Salesforce Approval Analytics Template will give managers and leaders more visibility into approval process and identify bottlenecks.',
         avatar: {
             iconName: 'standard:approval',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
@@ -273,7 +273,7 @@ export const analyticsItems = [
             'The B2B Commerce Analytics Template gives you a fast wat to apply the power of Tableau CRM to your B2B ecommerce data.',
         avatar: {
             iconName: 'standard:checkout',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
@@ -289,7 +289,7 @@ export const analyticsItems = [
             'The latest version of the app, which helps your entire sales team unlock the full power of Sales Cloud data. With clear visibility into pipeline and historical trends.',
         avatar: {
             iconName: 'standard:default',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
@@ -313,7 +313,7 @@ export const topAnalyticsItems = [
         descriptionPosition: 'bottom',
         avatar: {
             iconName: 'standard:service_appointment',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
@@ -337,7 +337,7 @@ export const topAnalyticsItems = [
         descriptionPosition: 'bottom',
         avatar: {
             iconName: 'standard:approval',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
@@ -361,7 +361,7 @@ export const topAnalyticsItems = [
         descriptionPosition: 'bottom',
         avatar: {
             iconName: 'standard:checkout',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
@@ -379,7 +379,7 @@ export const topAnalyticsItems = [
         descriptionPosition: 'bottom',
         avatar: {
             iconName: 'standard:default',
-            size: 'medium'
+            size: 'small'
         },
         tags: [
             {
