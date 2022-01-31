@@ -48,6 +48,7 @@ export default {
             }
         },
         iconName: {
+            name: 'icon-name',
             control: {
                 type: 'text'
             },
@@ -59,15 +60,15 @@ export default {
         },
         variant: {
             control: false,
-            defaultValue: 'base',
             description:
-                'Variant of the wizard. Valid values include base, modal and card.',
+                'Variant of the wizard. Valid values include base, modal, quickActionPanel and card.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' }
             }
         },
         currentStep: {
+            name: 'current-step',
             control: {
                 type: 'text'
             },
@@ -78,6 +79,7 @@ export default {
             }
         },
         hideNavigation: {
+            name: 'hide-navigation',
             control: {
                 type: 'boolean'
             },
@@ -90,6 +92,7 @@ export default {
             }
         },
         indicatorType: {
+            name: 'indicator-type',
             control: {
                 type: 'select'
             },
@@ -101,7 +104,6 @@ export default {
                 'fractions',
                 'bar'
             ],
-            defaultValue: 'base',
             description:
                 'Changes the visual pattern of the indicator. Valid values are base, base-shaded, path, bullet, fractions, bar.',
             table: {
@@ -112,11 +114,11 @@ export default {
             }
         },
         indicatorPosition: {
+            name: 'indicator-position',
             control: {
                 type: 'select'
             },
             options: ['bottom', 'top', 'right', 'left'],
-            defaultValue: 'bottom',
             description:
                 'Changes the indicator position. Valid values are footer and header.',
             table: {
@@ -127,11 +129,11 @@ export default {
             }
         },
         hideIndicator: {
+            name: 'hide-indicator',
             control: {
                 type: 'boolean'
             },
             description: 'If true, hide the indicator.',
-            defaultValue: false,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -140,6 +142,7 @@ export default {
             }
         },
         previousButtonIconName: {
+            name: 'previous-button-icon-name',
             control: {
                 type: 'text'
             },
@@ -152,11 +155,11 @@ export default {
             }
         },
         previousButtonIconPosition: {
+            name: 'previous-button-icon-position',
             control: {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
@@ -167,10 +170,10 @@ export default {
             }
         },
         previousButtonLabel: {
+            name: 'previous-button-label',
             control: {
                 type: 'text'
             },
-            defaultValue: 'Previous',
             description: 'Label for the previous button.',
             table: {
                 defaultValue: { summary: 'Previous' },
@@ -180,6 +183,7 @@ export default {
             }
         },
         previousButtonVariant: {
+            name: 'previous-button-variant',
             control: {
                 type: 'select'
             },
@@ -193,7 +197,6 @@ export default {
                 'destructive-text',
                 'success'
             ],
-            defaultValue: 'neutral',
             description:
                 'Change the appearance of the previous button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
@@ -204,6 +207,7 @@ export default {
             }
         },
         nextButtonIconName: {
+            name: 'next-button-icon-name',
             control: {
                 type: 'text'
             },
@@ -215,11 +219,11 @@ export default {
             }
         },
         nextButtonIconPosition: {
+            name: 'next-button-icon-position',
             control: {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
@@ -230,10 +234,10 @@ export default {
             }
         },
         nextButtonLabel: {
+            name: 'next-button-label',
             control: {
                 type: 'text'
             },
-            defaultValue: 'Next',
             description: 'Label for the next button.',
             table: {
                 defaultValue: { summary: 'Next' },
@@ -243,6 +247,7 @@ export default {
             }
         },
         nextButtonVariant: {
+            name: 'next-button-variant',
             control: {
                 type: 'select'
             },
@@ -256,7 +261,6 @@ export default {
                 'destructive-text',
                 'success'
             ],
-            defaultValue: 'neutral',
             description:
                 'Change the appearance of the next button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
@@ -267,6 +271,7 @@ export default {
             }
         },
         finishButtonIconName: {
+            name: 'finish-button-icon-name',
             control: {
                 type: 'text'
             },
@@ -279,11 +284,11 @@ export default {
             }
         },
         finishButtonIconPosition: {
+            name: 'finish-button-icon-position',
             control: {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
@@ -294,10 +299,10 @@ export default {
             }
         },
         finishButtonLabel: {
+            name: 'finish-button-label',
             control: {
                 type: 'text'
             },
-            defaultValue: 'Finish',
             description: 'Label for the finish button.',
             table: {
                 defaultValue: { summary: 'Finish' },
@@ -307,6 +312,7 @@ export default {
             }
         },
         finishButtonVariant: {
+            name: 'finish-button-variant',
             control: {
                 type: 'select'
             },
@@ -320,7 +326,6 @@ export default {
                 'destructive-text',
                 'success'
             ],
-            defaultValue: 'neutral',
             description:
                 'Change the appearance of the finish button. Valid values include bare, neutral, brand, brand-outline, inverse, destructive, destructive-text, success.',
             table: {
@@ -331,6 +336,7 @@ export default {
             }
         },
         buttonAlignmentBump: {
+            name: 'button-alignment-bump',
             control: {
                 type: 'select'
             },
@@ -342,11 +348,11 @@ export default {
             }
         },
         actionPosition: {
+            name: 'action-position',
             control: {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description: 'Valid values include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
@@ -355,10 +361,10 @@ export default {
             }
         },
         fractionPrefixLabel: {
+            name: 'fraction-prefix-label',
             control: {
                 type: 'text'
             },
-            defaultValue: 'Step',
             description:
                 'Label displayed in front of fraction. Example: fraction-prefix-label == “Step” => Step 1 of 3',
             table: {
@@ -369,10 +375,10 @@ export default {
             }
         },
         fractionLabel: {
+            name: 'fraction-label',
             control: {
                 type: 'text'
             },
-            defaultValue: 'of',
             description:
                 'Label displayed between current index and max number of slides. Example: fraction-label == “of” => 1 of 3',
             table: {
@@ -384,8 +390,23 @@ export default {
         }
     },
     args: {
+        actionPosition: 'left',
+        finishButtonIconPosition: 'left',
+        finishButtonLabel: 'Finish',
+        finishButtonVariant: 'neutral',
+        fractionLabel: 'of',
+        fractionPrefixLabel: 'Step',
         hideNavigation: false,
-        hideIndicator: false
+        hideIndicator: false,
+        indicatorType: 'base',
+        indicatorPosition: 'bottom',
+        nextButtonIconPosition: 'left',
+        nextButtonLabel: 'Next',
+        nextButtonVariant: 'neutral',
+        previousButtonIconPosition: 'left',
+        previousButtonLabel: 'Previous',
+        previousButtonVariant: 'neutral',
+        variant: 'base'
     }
 };
 
@@ -396,6 +417,7 @@ const BeforeChangeTemplate = (args) => BeforeChangeWizard(args);
 export const Base = Template.bind({});
 export const IndicatorRight = Template.bind({});
 export const PathLeft = Template.bind({});
+export const QuickActionPanel = Template.bind({});
 export const Modal = ModalTemplate.bind({});
 export const ModalLeft = ModalTemplate.bind({});
 export const Card = Template.bind({});
@@ -441,6 +463,12 @@ Modal.args = {
     finishButtonIconName: 'utility:check',
     finishButtonLabel: 'Done',
     finishButtonVariant: 'success'
+};
+
+QuickActionPanel.args = {
+    title: 'Quick Action Panel Wizard Example',
+    variant: 'quickActionPanel',
+    iconName: 'custom:custom61'
 };
 
 Card.args = {
