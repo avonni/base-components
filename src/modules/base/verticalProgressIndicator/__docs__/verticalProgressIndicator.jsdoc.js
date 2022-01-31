@@ -17,9 +17,6 @@
  * @type color
  */
 /**
- * @namespace stylingHooks
- */
-/**
  * @memberof stylingHooks
  * @name --avonni-vertical-progress-step-item-content-sizing-border
  * @default 1px
