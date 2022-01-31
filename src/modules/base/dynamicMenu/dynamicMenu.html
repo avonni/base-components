@@ -129,13 +129,14 @@
                             <template
                                 for:each={computedListItems}
                                 for:item="item"
-                                for:index="index"
                             >
                                 <div
                                     class="slds-listbox__option"
                                     key={item.key}
-                                    id={index}
+                                    data-value={item.value}
                                     onclick={handleClick}
+                                    data-element-id="item"
+                                    aria-selected={item.selected}
                                 >
                                     <div
                                         class="
@@ -162,6 +163,7 @@
                                                     icon-name="utility:check"
                                                     size="x-small"
                                                     aria-hidden="true"
+                                                    data-element-id="check-mark"
                                                 ></lightning-icon>
                                             </template>
                                             <template if:true={hideCheckMark}>

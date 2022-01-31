@@ -335,6 +335,7 @@ export default class DynamicMenu extends LightningElement {
 
     set items(value) {
         this._items = normalizeArray(value);
+        this.filteredItems = this._items;
     }
 
     /**
@@ -422,17 +423,21 @@ export default class DynamicMenu extends LightningElement {
         this._withSearch = normalizeBoolean(value);
     }
 
+    /**
+     * Computed list items.
+     * @type {object[]}
+     */
     get computedListItems() {
-        return this._items.map((item, index) => {
+        return this.filteredItems.map((item, index) => {
             let { avatar, label, meta, value } = item;
             const key = `item-key-${index}`;
             const metaJoin = meta ? meta.join(' • ') : null;
             const selected = this.value === value;
             return {
                 avatar,
+                key,
                 label,
                 metaJoin,
-                key,
                 selected,
                 value
             };
@@ -443,7 +448,6 @@ export default class DynamicMenu extends LightningElement {
      * Computed button class, when the dynamic menu has a label.
      *
      * @type {string}
-     * @default slds-button
      */
     get computedButtonClass() {
         const { variant, order, buttonSize } = this;
@@ -463,6 +467,11 @@ export default class DynamicMenu extends LightningElement {
             .toString();
     }
 
+    /**
+     * Computed label class, when the dynamic menu has a label.
+     *
+     * @type {string}
+     */
     get computedLabelClass() {
         return classSet('')
             .add({
@@ -511,7 +520,7 @@ export default class DynamicMenu extends LightningElement {
      * @type {boolean}
      */
     get showItems() {
-        return this.computedListItems.length > 0;
+        return this.computedListItems.length;
     }
 
     /**
@@ -766,16 +775,14 @@ export default class DynamicMenu extends LightningElement {
      * @param {Event} event
      */
     handleClick(event) {
-        let index = event.currentTarget.id.split('-')[0];
-        let item = this.items[index];
-        this._value = item.value;
-
+        let value = event.currentTarget.getAttribute('data-value');
+        this._value = value;
         /**
          * Select event.
          *
          * @event
          * @name select
-         * @param {object[]} item
+         * @param {string} value The value of the selected item.
          * @cancelable
          * @public
          */
@@ -783,7 +790,7 @@ export default class DynamicMenu extends LightningElement {
             new CustomEvent('select', {
                 cancelable: true,
                 detail: {
-                    item
+                    value
                 }
             })
         );
