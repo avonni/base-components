@@ -33,6 +33,7 @@
 import { DynamicMenu } from '../__examples__/dynamicMenu';
 import { DynamicMenuInGroup } from '../__examples__/dynamicMenuInGroup';
 import { ListView } from '../__examples__/listView';
+import { baseItems, listViewItems } from '../__docs__/data';
 
 export default {
     title: 'Example/Dynamic Menu',
@@ -291,101 +292,48 @@ export default {
     }
 };
 
-const items = [
-    {
-        label: 'Acme',
-        meta: ['Account', 'San Francisco'],
-        value: 'acme',
-        avatar: {
-            fallbackIconName: 'standard:account',
-            alternativeText: 'Account'
-        }
-    },
-    {
-        label: 'Remo',
-        meta: ['Contact', 'San Francisco'],
-        value: 'remo',
-        avatar: {
-            fallbackIconName: 'standard:contact',
-            alternativeText: 'Contact'
-        }
-    },
-    {
-        label: 'Niko',
-        meta: ['Lead', 'San Francisco'],
-        value: 'niko',
-        avatar: {
-            fallbackIconName: 'standard:lead',
-            alternativeText: 'Lead'
-        }
-    }
-];
-
-const listViewItems = [
-    {
-        label: 'All Accounts',
-        value: 'all-accounts'
-    },
-    {
-        label: 'All Accounts 2',
-        value: 'all-accounts-2'
-    },
-    {
-        label: 'My Accounts',
-        value: 'my-accounts'
-    },
-    {
-        label: 'New Last Week',
-        value: 'last-week'
-    },
-    {
-        label: 'New This Week',
-        value: 'this-week'
-    }
-];
-
 const Template = (args) => DynamicMenu(args);
 const TemplateInGroup = (args) => DynamicMenuInGroup(args);
 const TemplateListView = (args) => ListView(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: items,
+    items: baseItems,
     iconName: 'utility:favorite',
     buttonSize: 'stretch'
 };
 
 export const BaseWithSearch = Template.bind({});
 BaseWithSearch.args = {
-    items: items,
+    items: baseItems,
     iconName: 'utility:favorite',
     withSearch: 'true'
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
-    items: items,
+    items: baseItems,
     iconName: 'utility:favorite',
     disabled: 'true'
 };
 
 export const IsLoading = Template.bind({});
 IsLoading.args = {
-    items: items,
+    items: baseItems,
     iconName: 'utility:favorite',
     isLoading: 'true'
 };
 
 export const BaseWithLabel = Template.bind({});
 BaseWithLabel.args = {
-    items: items,
+    items: baseItems,
     label: 'Menu',
     iconName: 'utility:favorite'
 };
 
 export const Stretched = Template.bind({});
 Stretched.args = {
-    items: items,
+    items: baseItems,
     label: 'Menu',
     iconName: 'utility:alert',
     buttonSize: 'stretch'
@@ -393,28 +341,28 @@ Stretched.args = {
 
 export const BorderFilled = Template.bind({});
 BorderFilled.args = {
-    items: items,
+    items: baseItems,
     iconName: 'utility:add',
     variant: 'border-filled'
 };
 
 export const Bare = Template.bind({});
 Bare.args = {
-    items: items,
+    items: baseItems,
     iconName: 'utility:add',
     variant: 'bare'
 };
 
 export const BareInverse = Template.bind({});
 BareInverse.args = {
-    items: items,
+    items: baseItems,
     iconName: 'utility:favorite',
     variant: 'bare-inverse'
 };
 
 export const Container = Template.bind({});
 Container.args = {
-    items: items,
+    items: baseItems,
     alternativeText: 'Display Menu',
     iconName: 'utility:add',
     variant: 'container'
@@ -432,6 +380,6 @@ ListViewStory.args = {
 
 export const InButtonGroup = TemplateInGroup.bind({});
 InButtonGroup.args = {
-    items: items,
+    items: baseItems,
     label: 'Dynamic menu'
 };

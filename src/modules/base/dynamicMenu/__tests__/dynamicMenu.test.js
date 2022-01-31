@@ -32,36 +32,7 @@
 
 import { createElement } from 'lwc';
 import DynamicMenu from 'c/dynamicMenu';
-
-const items = [
-    {
-        label: 'Acme',
-        meta: ['Account', 'San Francisco'],
-        value: 'acme',
-        avatar: {
-            fallbackIconName: 'standard:account',
-            alternativeText: 'Account'
-        }
-    },
-    {
-        label: 'Remo',
-        meta: ['Contact', 'San Francisco'],
-        value: 'remo',
-        avatar: {
-            fallbackIconName: 'standard:contact',
-            alternativeText: 'Contact'
-        }
-    },
-    {
-        label: 'Niko',
-        meta: ['Lead', 'San Francisco'],
-        value: 'niko',
-        avatar: {
-            fallbackIconName: 'standard:lead',
-            alternativeText: 'Lead'
-        }
-    }
-];
+import { baseItems } from '../__docs__/data';
 
 let element;
 describe('Dynamic Menu', () => {
@@ -83,6 +54,7 @@ describe('Dynamic Menu', () => {
         expect(element.alternativeText).toBeUndefined();
         expect(element.buttonSize).toBe('auto');
         expect(element.disabled).toBeFalsy();
+        expect(element.hideCheckMark).toBeFalsy();
         expect(element.iconName).toBeUndefined();
         expect(element.iconSize).toBe('medium');
         expect(element.iconPosition).toBe('left');
@@ -190,6 +162,34 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    // hideCheckMark
+    it('Dynamic Menu: hide check mark false', () => {
+        element.items = baseItems;
+        element.value = 'acme';
+        element.click();
+
+        return Promise.resolve().then(() => {
+            const checkMark = element.shadowRoot.querySelector(
+                '[data-element-id="check-mark"]'
+            );
+            expect(checkMark).toBeTruthy();
+        });
+    });
+
+    it('Dynamic Menu: hide check mark true', () => {
+        element.items = baseItems;
+        element.value = 'acme';
+        element.hideCheckMark = true;
+        element.click();
+
+        return Promise.resolve().then(() => {
+            const checkMark = element.shadowRoot.querySelector(
+                '[data-element-id="check-mark"]'
+            );
+            expect(checkMark).toBeFalsy();
+        });
+    });
+
     // icon name
     it('Dynamic Menu: icon name without label', () => {
         element.iconName = 'utility:close';
@@ -280,11 +280,11 @@ describe('Dynamic Menu', () => {
 
     // items
     it('Dynamic Menu: items', () => {
-        element.items = items;
+        element.items = baseItems;
 
         return Promise.resolve().then(() => {
-            items.forEach((item, index) => {
-                const correspondingItem = items[index];
+            baseItems.forEach((item, index) => {
+                const correspondingItem = baseItems[index];
                 expect(correspondingItem).toBeTruthy();
                 expect(item.label).toBe(correspondingItem.label);
                 expect(item.value).toBe(correspondingItem.value);
@@ -635,25 +635,23 @@ describe('Dynamic Menu', () => {
 
     // value
     it('Dynamic Menu: value without label', () => {
-        element.value = '1';
+        element.items = baseItems;
+        element.value = 'acme';
+        element.click();
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-icon"]'
+            const dropdown = element.shadowRoot.querySelector(
+                '[data-element-id="dropdown"]'
             );
-            expect(button.value).toBe('1');
-        });
-    });
-
-    it('Dynamic Menu: value with label', () => {
-        element.label = 'label';
-        element.value = '1';
-
-        return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '[data-element-id="button"]'
+            expect(dropdown).toBeTruthy();
+            const checkMark = element.shadowRoot.querySelector(
+                '[data-element-id="check-mark"]'
             );
-            expect(button.value).toBe('1');
+            expect(checkMark).toBeTruthy();
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="item"]'
+            );
+            expect(items[0].ariaSelected).toBeTruthy();
         });
     });
 
@@ -826,8 +824,8 @@ describe('Dynamic Menu', () => {
 
     /* ---- EVENTS ----- */
 
-    it('Dynamic Menu: event: click on item', () => {
-        element.items = items;
+    it('Dynamic Menu: event: select item', () => {
+        element.items = baseItems;
 
         const button = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon"]'
@@ -846,19 +844,11 @@ describe('Dynamic Menu', () => {
                 );
                 expect(dropdown).toBeTruthy();
                 const item = element.shadowRoot.querySelector(
-                    '.slds-listbox__item'
+                    '[data-element-id="item"]'
                 );
                 item.click();
                 expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.item).toMatchObject({
-                    label: 'Acme',
-                    meta: ['Account', 'San Francisco'],
-                    value: 'acme',
-                    avatar: {
-                        fallbackIconName: 'standard:account',
-                        alternativeText: 'Account'
-                    }
-                });
+                expect(handler.mock.calls[0][0].detail.value).toBe('acme');
                 expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
                 expect(handler.mock.calls[0][0].composed).toBeFalsy();
                 expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
@@ -897,7 +887,7 @@ describe('Dynamic Menu', () => {
     });
 
     it('Dynamic Menu: event: close after close', () => {
-        element.items = items;
+        element.items = baseItems;
         const handler = jest.fn();
         element.addEventListener('close', handler);
         element.click();
@@ -907,7 +897,7 @@ describe('Dynamic Menu', () => {
             );
             expect(dropdown).toBeTruthy();
             const item = element.shadowRoot.querySelector(
-                '.slds-listbox__item'
+                '[data-element-id="item"]'
             );
             item.click();
 
