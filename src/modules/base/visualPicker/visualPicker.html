@@ -116,7 +116,7 @@
                                         avatar-position={item.avatarPosition}
                                         display-avatar={item.displayAvatar}
                                         size={size}
-                                        title={item.figure.title}
+                                        title={item.title}
                                         class="
                                             avonni-visual-picker__figure-title_margin
                                         "
@@ -130,17 +130,17 @@
                                             avonni-visual-picker__figure-description
                                             slds-truncate
                                         "
-                                        >{item.figure.description}
+                                        >{item.description}
                                     </span>
                                     <template if:true={item.displayImgTop}>
                                         <div
-                                            if:true={item.figure.imgSrc}
+                                            if:true={item.imgSrc}
                                             class="
                                                 avonni-visual-picker__figure-image-top-container
                                             "
                                         >
                                             <img
-                                                src={item.figure.imgSrc}
+                                                src={item.imgSrc}
                                                 alt={item.imgAlternativeText}
                                                 class="
                                                     avonni-visual-picker__figure-image
@@ -160,7 +160,7 @@
                                         avatar-position={item.avatarPosition}
                                         display-avatar={item.displayAvatar}
                                         size={size}
-                                        title={item.figure.title}
+                                        title={item.title}
                                         class="
                                             avonni-visual-picker__figure-title_margin
                                         "
@@ -173,7 +173,7 @@
                                         class="
                                             avonni-visual-picker__figure-description
                                         "
-                                        >{item.figure.description}
+                                        >{item.description}
                                     </span>
                                     <c-primitive-avatar
                                         alternative-text={item.avatarAltText}
@@ -189,13 +189,13 @@
                                     ></c-primitive-avatar>
                                     <template if:true={item.displayImgCenter}>
                                         <div
-                                            if:true={item.figure.imgSrc}
+                                            if:true={item.imgSrc}
                                             class="
                                                 avonni-visual-picker__figure-image-center-container
                                             "
                                         >
                                             <img
-                                                src={item.figure.imgSrc}
+                                                src={item.imgSrc}
                                                 alt={item.imgAlternativeText}
                                                 class="
                                                     avonni-visual-picker__figure-image
@@ -215,7 +215,7 @@
                                         avatar-position={item.avatarPosition}
                                         display-avatar={item.displayAvatar}
                                         size={size}
-                                        title={item.figure.title}
+                                        title={item.title}
                                         class="
                                             avonni-visual-picker__figure-title_margin
                                         "
@@ -228,7 +228,7 @@
                                         class="
                                             avonni-visual-picker__figure-description
                                         "
-                                        >{item.figure.description}
+                                        >{item.description}
                                     </span>
                                     <c-primitive-avatar
                                         alternative-text={item.avatarAltText}
@@ -244,13 +244,13 @@
                                     ></c-primitive-avatar>
                                     <template if:true={isBiggerThanXSmall}>
                                         <div
-                                            if:true={item.figure.tags}
+                                            if:true={item.tags}
                                             class="
                                                 avonni-visual-picker__tags-container
                                             "
                                         >
                                             <template
-                                                for:each={item.figure.tags}
+                                                for:each={item.tags}
                                                 for:item="tag"
                                             >
                                                 <avonni-chip
@@ -269,10 +269,10 @@
                         </span>
                         <span class="slds-visual-picker__body">
                             <span class="avonni-visual-picker__item-title"
-                                >{item.title}</span
+                                >{item.itemTitle}</span
                             >
                             <span class="avonni-visual-picker__item-description"
-                                >{item.description}</span
+                                >{item.itemDescription}</span
                             >
                         </span>
                         <template if:true={item.displayCheckNonCoverable}>

@@ -1,29 +1,23 @@
 /**
  * @typedef {Object} VisualPickerItem
  * @name items
- * @property {string} description The description can include text, and is displayed under the title.
- * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
- * @property {object} figure Figure object inside the item.
- * @property {string} title The title can include text and is displayed under the item.
- * @property {string} value Required. A unique value for the item.
- */
-/**
- * @typedef {Object} VisualPickerFigure
- * @name itemsFigure
  * @property {object{}} avatar An object with item fields to be rendered as an avatar.
  * @property {string} avatarPosition If present, sets the position of the avatar. Valid values include top, bottom, right, left. The value defaults to left.
  * @property {string} description The description can include text, and is displayed under the title inside the figure.
  * @property {string} descriptionPosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
+ * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
  * @property {string} imgAlternativeText The assistive text for the image in the figure.
- * @property {string} imgPosition Sets the position of the image if present. Valid values include right and left. Default is left.
  * @property {string} imgSrc The URL of the image in the figure.
+ * @property {string} itemDescription The description can include text, and is displayed under the title.
+ * @property {string} itemTitle The title can include text and is displayed under the item.
  * @property {string[]} tags Array of tag objects. The tags will be displayed as badges in the visual picker item figure.
  * @property {string} title The title can include text and is displayed inside the figure.
  * @property {string} titlePosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
+ * @property {string} value Required. A unique value for the item.
  */
 /**
  * @typedef {Object} VisualPickerAvatar
- * @name figureAvatar
+ * @name itemAvatar
  * @property {string} alternativeText The alternative text used to describe the avatar, which is displayed as hover text on the image.
  * @property {string} iconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
  * @property {string} imgSrc Image URL for the avatar.
@@ -35,7 +29,7 @@
  */
 /**
  * @typedef {Object} VisualPickerTag
- * @name figureTags
+ * @name itemTags
  * @property {string} label Tag label.
  * @property {string} variant The variant changes the appearance of the tag. Valid values include base, brand, inverse, alt-inverse, success, info, warning, error, offline. Defaults to base.
  */

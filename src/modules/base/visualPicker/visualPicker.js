@@ -274,8 +274,22 @@ export default class VisualPicker extends LightningElement {
      * @type {object[]}
      */
     get listItems() {
-        return this.items.map((item, index) => {
-            let { title, description, disabled, figure, value } = item;
+        return this._items.map((item, index) => {
+            let {
+                avatar,
+                avatarPosition,
+                description,
+                descriptionPosition,
+                disabled,
+                imgAlternativeText,
+                imgSrc,
+                itemDescription,
+                itemTitle,
+                tags,
+                title,
+                titlePosition,
+                value
+            } = item;
             const key = `visual-picker-key-${index}`;
             disabled = this._disabled ? true : disabled;
 
@@ -290,16 +304,15 @@ export default class VisualPicker extends LightningElement {
                 : 'slds-is-selected';
 
             // Title management
-            const titlePosition = figure.titlePosition || 'center';
-            const displayTitle = figure.title && this.isBiggerThanXSmall;
+            titlePosition = titlePosition || 'center';
+            const displayTitle = title && this.isBiggerThanXSmall;
             const titleIsTop = titlePosition === 'top' && displayTitle;
             const titleIsCenter = titlePosition === 'center' && displayTitle;
             const titleIsBottom = titlePosition === 'bottom' && displayTitle;
 
             // Description management
-            const descriptionPosition = figure.descriptionPosition || 'center';
-            const displayDescription =
-                figure.description && this.isBiggerThanXSmall;
+            descriptionPosition = descriptionPosition || 'center';
+            const displayDescription = description && this.isBiggerThanXSmall;
             const descriptionIsTop =
                 descriptionPosition === 'top' && displayDescription;
             const descriptionIsCenter =
@@ -308,8 +321,7 @@ export default class VisualPicker extends LightningElement {
                 descriptionPosition === 'bottom' && displayDescription;
 
             // Avatar management
-            const avatarPosition = figure.avatarPosition || 'left';
-            const avatar = figure.avatar;
+            avatarPosition = avatarPosition || 'left';
             const displayAvatar = avatar && this.isBiggerThanXSmall;
             const avatarAltText = displayAvatar
                 ? avatar.alternativeText ||
@@ -334,11 +346,10 @@ export default class VisualPicker extends LightningElement {
 
             return {
                 key,
-                title,
+                itemTitle,
                 avatar,
-                description,
+                itemDescription,
                 disabled,
-                figure,
                 value,
                 checked,
                 avatarPosition,
@@ -348,15 +359,20 @@ export default class VisualPicker extends LightningElement {
                 avatarAltText,
                 displayCheckCoverable,
                 displayCheckNonCoverable,
+                title,
                 titleIsTop,
                 titleIsBottom,
                 titleIsCenter,
+                description,
                 descriptionIsTop,
                 descriptionIsBottom,
                 descriptionIsCenter,
                 displayImgCenter,
                 displayImgTop,
                 displayAvatar,
+                tags,
+                imgAlternativeText,
+                imgSrc,
                 computedSelectedClass
             };
         });

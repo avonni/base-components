@@ -37,32 +37,23 @@
 
 /*-- Figure and items --*/
 .avonni-visual-picker__figure {
-    border-radius: var(--avonni-visual-picker-figure-radius-border, 0.25rem);
-    border: var(--avonni-visual-picker-figure-sizing-border, 1px)
-        var(--avonni-visual-picker-figure-styling-border, solid)
-        var(--avonni-visual-picker-figure-color-border, #dddbda);
-    box-shadow: var(
-        --avonni-visual-picker-figure-shadow,
-        0 2px 2px rgb(0 0 0 / 5%)
-    );
-    background-color: var(
-        --avonni-visual-picker-figure-color-background,
-        #ffffff
-    );
+    border-radius: var(--avonni-visual-picker-radius-border, 0.25rem);
+    border: var(--avonni-visual-picker-sizing-border, 1px)
+        var(--avonni-visual-picker-styling-border, solid)
+        var(--avonni-visual-picker-color-border, #dddbda);
+    box-shadow: var(--avonni-visual-picker-shadow, 0 2px 2px rgb(0 0 0 / 5%));
+    background-color: var(--avonni-visual-picker-color-background, #ffffff);
     overflow: hidden;
 }
 
 .avonni-visual-picker__figure:hover {
-    border-color: var(
-        --avonni-visual-picker-figure-color-border-hover,
-        #1b96ff
-    );
+    border-color: var(--avonni-visual-picker-color-border-hover, #1b96ff);
     -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-figure-color-border-hover, #1b96ff) inset;
+        var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
     box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-figure-color-border-hover, #1b96ff) inset;
+        var(--avonni-visual-picker-color-border-hover, #1b96ff) inset;
     background-color: var(
-        --avonni-visual-picker-figure-color-background-hover,
+        --avonni-visual-picker-color-background-hover,
         #ffffff
     );
 }
@@ -91,22 +82,21 @@
 
 /*-- Checked --*/
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text {
-    border: 1px solid
-        var(--avonni-visual-picker-figure-color-border-selected, #1b96ff);
+    border: 1px solid var(--avonni-visual-picker-color-border-selected, #1b96ff);
     -webkit-box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-figure-color-border-selected, #1b96ff) inset;
+        var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
     box-shadow: 0 0 0 1px
-        var(--avonni-visual-picker-figure-color-border-selected, #1b96ff) inset;
+        var(--avonni-visual-picker-color-border-selected, #1b96ff) inset;
 }
 
 .slds-visual-picker input:checked ~ label .slds-visual-picker__text:after {
     content: '';
     border-right-color: var(
-        --avonni-visual-picker-figure-color-border-selected,
+        --avonni-visual-picker-color-border-selected,
         #1b96ff
     );
     border-top-color: var(
-        --avonni-visual-picker-figure-color-border-selected,
+        --avonni-visual-picker-color-border-selected,
         #1b96ff
     );
 }
@@ -120,13 +110,10 @@
 
 .slds-visual-picker input:checked ~ label .slds-visual-picker__icon {
     background-color: var(
-        --avonni-visual-picker-figure-color-background-selected,
+        --avonni-visual-picker-color-background-selected,
         #1b96ff
     );
-    border-color: var(
-        --avonni-visual-picker-figure-color-border-selected,
-        #1b96ff
-    );
+    border-color: var(--avonni-visual-picker-color-border-selected, #1b96ff);
 }
 
 .avonni-visual-picker__chek-icon {
@@ -154,54 +141,36 @@
 
 /*-- title --*/
 .avonni-visual-picker__item-title {
-    color: var(--avonni-visual-picker-title-text-color, #080707);
-    font-size: var(--avonni-visual-picker-title-font-size, 1rem);
-    font-style: var(--avonni-visual-picker-title-font-style, normal);
-    font-weight: var(--avonni-visual-picker-title-font-weight, 400);
-    text-align: var(--avonni-visual-picker-title-alignment, center);
+    color: var(--avonni-visual-picker-item-title-text-color, #080707);
+    font-size: var(--avonni-visual-picker-item-title-font-size, 1rem);
+    font-style: var(--avonni-visual-picker-item-title-font-style, normal);
+    font-weight: var(--avonni-visual-picker-item-title-font-weight, 400);
+    text-align: var(--avonni-visual-picker-item-title-alignment, center);
 }
 
 /*-- figure title --*/
 .avonni-visual-picker__figure-title_margin {
-    margin: var(--avonni-visual-picker-figure-title-margin-around, 0.5rem);
+    margin: var(--avonni-visual-picker-title-margin-around, 0.5rem);
 }
 
 /*-- description --*/
 .avonni-visual-picker__item-description {
-    color: var(--avonni-visual-picker-description-text-color, #3e3e3c);
-    font-size: var(--avonni-visual-picker-description-font-size, 0.75rem);
-    font-style: var(--avonni-visual-picker-description-font-style, normal);
-    font-weight: var(--avonni-visual-picker-description-font-weight, 400);
-    line-height: var(--avonni-visual-picker-description-line-height, 1.25);
+    color: var(--avonni-visual-picker-item-description-text-color, #3e3e3c);
+    font-size: var(--avonni-visual-picker-item-description-font-size, 0.75rem);
+    font-style: var(--avonni-visual-picker-item-description-font-style, normal);
+    font-weight: var(--avonni-visual-picker-item-description-font-weight, 400);
+    line-height: var(--avonni-visual-picker-item-description-line-height, 1.25);
 }
 
 /*-- figure description --*/
 .avonni-visual-picker__figure-description {
-    color: var(--avonni-visual-picker-figure-description-text-color, #3e3e3c);
-    font-style: var(
-        --avonni-visual-picker-figure-description-font-style,
-        normal
-    );
-    font-weight: var(
-        --avonni-visual-picker-figure-description-font-weight,
-        400
-    );
-    font-size: var(
-        --avonni-visual-picker-figure-description-font-size,
-        0.75rem
-    );
-    line-height: var(
-        --avonni-visual-picker-figure-description-line-height,
-        1.25
-    );
-    text-align: var(
-        --avonni-visual-picker-figure-description-alignment,
-        center
-    );
-    margin: var(
-        --avonni-visual-picker-figure-description-margin-around,
-        0.25rem
-    );
+    color: var(--avonni-visual-picker-description-text-color, #3e3e3c);
+    font-style: var(--avonni-visual-picker-description-font-style, normal);
+    font-weight: var(--avonni-visual-picker-description-font-weight, 400);
+    font-size: var(--avonni-visual-picker-description-font-size, 0.75rem);
+    line-height: var(--avonni-visual-picker-description-line-height, 1.25);
+    text-align: var(--avonni-visual-picker-description-alignment, center);
+    margin: var(--avonni-visual-picker-description-margin-around, 0.25rem);
 }
 
 /*-- xx-small --*/
@@ -255,17 +224,14 @@
 .avonni-visual-picker_small
     .avonni-visual-picker__figure
     .avonni-visual-picker__figure-title {
-    font-weight: var(--avonni-visual-picker-figure-title-font-weight, 300);
-    font-size: var(--avonni-visual-picker-figure-title-font-size, 1.125rem);
+    font-weight: var(--avonni-visual-picker-title-font-weight, 300);
+    font-size: var(--avonni-visual-picker-title-font-size, 1.125rem);
 }
 
 .avonni-visual-picker_small
     .avonni-visual-picker__figure
     .avonni-visual-picker__item-description {
-    font-size: var(
-        --avonni-visual-picker-figure-description-font-size,
-        0.625rem
-    );
+    font-size: var(--avonni-visual-picker-description-font-size, 0.625rem);
 }
 
 /*-- medium --*/
@@ -488,24 +454,24 @@
 .avonni-visual-picker__figure-image-top-container {
     height: 90%;
     width: 100%;
-    padding: var(--avonni-visual-picker-figure-image-padding-around, 5px);
+    padding: var(--avonni-visual-picker-image-padding-around, 5px);
 }
 
 .avonni-visual-picker__figure-image-center-container {
     height: 75%;
     width: 100%;
-    padding: var(--avonni-visual-picker-figure-image-padding-around, 5px);
+    padding: var(--avonni-visual-picker-image-padding-around, 5px);
 }
 
 .avonni-visual-picker__figure-image {
     height: 100%;
     width: 100%;
-    object-fit: var(--avonni-visual-picker-figure-image-object-fit, scale-down);
+    object-fit: var(--avonni-visual-picker-image-object-fit, scale-down);
 }
 
 .avonni-visual-picker_x-small
     .avonni-visual-picker__figure-image-center-container,
 .avonni-visual-picker_xx-small
     .avonni-visual-picker__figure-image-center-container {
-    padding: var(--avonni-visual-picker-figure-image-padding-around, 15px);
+    padding: var(--avonni-visual-picker-image-padding-around, 15px);
 }
