@@ -36,15 +36,6 @@ import { ButtonMenuBase } from '../__examples__/buttonMenuBase';
 export default {
     title: 'Example/Button Menu',
     argTypes: {
-        label: {
-            control: {
-                type: 'text'
-            },
-            description: 'Optional text to be shown on the button.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         accessKey: {
             name: 'access-key',
             control: {
@@ -62,38 +53,18 @@ export default {
             },
             description: 'The assistive text for the button menu.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show Menu' }
             }
         },
-        menuAlignment: {
-            name: 'menu-alignment',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'auto',
-                'left',
-                'center',
-                'right',
-                'bottom-left',
-                'bottom-center',
-                'bottom-right'
-            ],
-            defaultValue: 'left',
-            description:
-                'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.',
-            table: {
-                type: { summary: 'string' }
-            }
-        },
-        nubbin: {
+        disabled: {
             control: {
                 type: 'boolean'
             },
-            description:
-                'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
+            description: "If present, the popover can't be opened by users.",
             table: {
-                type: { summary: 'boolean' }
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         draftAlternativeText: {
@@ -107,17 +78,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        title: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'Displays title text when the mouse moves over the button menu.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Popover'
-            }
-        },
         iconName: {
             name: 'icon-name',
             control: {
@@ -126,7 +86,8 @@ export default {
             description:
                 "The name of the icon to be used in the format 'utility:down'. If an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.",
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string' },
+                defaultValue: { summary: 'utility:down' }
             }
         },
         iconSize: {
@@ -134,7 +95,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'medium',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, or medium.',
             table: {
@@ -154,6 +114,28 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the popover is in a loading state and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Popover'
+            }
+        },
+        label: {
+            control: {
+                type: 'text'
+            },
+            description: 'Optional text to be shown on the button.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
         loadingStateAlternativeText: {
             name: 'loading-state-alternative-text',
             control: {
@@ -166,12 +148,65 @@ export default {
                 category: 'Popover'
             }
         },
+        menuAlignment: {
+            name: 'menu-alignment',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'auto',
+                'left',
+                'center',
+                'right',
+                'bottom-left',
+                'bottom-center',
+                'bottom-right'
+            ],
+            description:
+                'Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' }
+            }
+        },
+        nubbin: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Displays title text when the mouse moves over the button menu.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Popover'
+            }
+        },
         tooltip: {
             control: {
                 type: 'text'
             },
             description:
                 'Text to display when the user mouses over or focuses on the button. The tooltip is auto-positioned relative to the button and screen space.',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The value for the button element. This value is optional and can be used when submitting a form.',
             table: {
                 type: { summary: 'string' }
             }
@@ -188,49 +223,25 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
             }
-        },
-        isLoading: {
-            name: 'is-loading',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description:
-                'If present, the popover is in a loading state and shows a spinner.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' },
-                category: 'Popover'
-            }
-        },
-        disabled: {
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: false,
-            description: "If present, the popover can't be opened by users.",
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
-            }
-        },
-        value: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'The value for the button element. This value is optional and can be used when submitting a form.',
-            table: {
-                type: { summary: 'string' }
-            }
         }
+    },
+    args: {
+        alternativeText: 'Show Menu',
+        disabled: false,
+        iconName: 'utility:down',
+        iconSize: 'medium',
+        isDraft: false,
+        isLoading: false,
+        loadingStateAlternativeText: 'Loading',
+        menuAlignment: 'left',
+        nubbin: false,
+        variant: 'border'
     }
 };
 

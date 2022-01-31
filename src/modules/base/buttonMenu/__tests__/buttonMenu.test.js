@@ -35,6 +35,7 @@ import ButtonMenu from 'c/buttonMenu';
 
 // not tested
 // tooltip
+// selected event
 
 let element;
 describe('Button Menu', () => {
@@ -595,20 +596,6 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu clicked', () => {
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-
-        return Promise.resolve()
-            .then(() => {
-                button.click();
-            })
-            .then(() => {
-                expect(element.classList).toContain('slds-is-open');
-            });
-    });
-
     /* ---- METHODS ----- */
     it('Button menu method: click', () => {
         let clickEvent = false;
@@ -619,6 +606,7 @@ describe('Button Menu', () => {
         element.click();
         return Promise.resolve().then(() => {
             expect(clickEvent).toBeTruthy();
+            expect(element.classList).toContain('slds-is-open');
         });
     });
 
@@ -632,5 +620,32 @@ describe('Button Menu', () => {
         return Promise.resolve().then(() => {
             expect(focusEvent).toBeTruthy();
         });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // Button menu close
+    it('Button menu event close', () => {
+        const handler = jest.fn();
+        element.addEventListener('close', handler);
+        element.click();
+        element.blur();
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+    });
+
+    // Button menu open
+    it('Button menu event open', () => {
+        const handler = jest.fn();
+        element.addEventListener('open', handler);
+        element.click();
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
 });
