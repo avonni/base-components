@@ -35,7 +35,7 @@ import { classSet } from 'c/utils';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const AVATAR_POSITIONS = {
-    valid: ['left', 'right', 'top', 'bottom'],
+    valid: ['left', 'right', 'top', 'bottom', 'center'],
     default: 'left'
 };
 

@@ -95,8 +95,10 @@
                             <span class={notSelectedClass}>
                                 <!-- Position Top -->
                                 <div
-                                    class="avonni-visual-picker__items"
-                                    data-element-id="figure-position-top"
+                                    class="
+                                        avonni-visual-picker__items
+                                        slds-has-flexi-truncate
+                                    "
                                 >
                                     <c-primitive-avatar
                                         alternative-text={item.avatarAltText}
@@ -126,10 +128,7 @@
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsTop}
-                                        class="
-                                            avonni-visual-picker__figure-description
-                                            slds-truncate
-                                        "
+                                        class={item.computedDescriptionClass}
                                         >{item.description}
                                     </span>
                                     <template if:true={item.displayImgTop}>
@@ -151,8 +150,10 @@
                                 </div>
                                 <!-- Position Center -->
                                 <div
-                                    class="avonni-visual-picker__items"
-                                    data-element-id="figure-position-center"
+                                    class="
+                                        avonni-visual-picker__items
+                                        slds-has-flexi-truncate
+                                    "
                                 >
                                     <c-primitive-visual-picker-title
                                         alternative-text={item.avatarAltText}
@@ -170,9 +171,7 @@
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsCenter}
-                                        class="
-                                            avonni-visual-picker__figure-description
-                                        "
+                                        class={item.computedDescriptionClass}
                                         >{item.description}
                                     </span>
                                     <c-primitive-avatar
@@ -206,8 +205,10 @@
                                 </div>
                                 <!-- Position Bottom -->
                                 <div
-                                    class="avonni-visual-picker__items"
-                                    data-element-id="figure-position-bottom"
+                                    class="
+                                        avonni-visual-picker__items
+                                        slds-has-flexi-truncate
+                                    "
                                 >
                                     <c-primitive-visual-picker-title
                                         alternative-text={item.avatarAltText}
@@ -225,9 +226,7 @@
                                     </c-primitive-visual-picker-title>
                                     <span
                                         if:true={item.descriptionIsBottom}
-                                        class="
-                                            avonni-visual-picker__figure-description
-                                        "
+                                        class={item.computedDescriptionClass}
                                         >{item.description}
                                     </span>
                                     <c-primitive-avatar

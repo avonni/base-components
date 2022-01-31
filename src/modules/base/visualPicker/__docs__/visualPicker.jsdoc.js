@@ -87,6 +87,78 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-title-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-title-font-size
+ * @default 1rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-title-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-title-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-title-alignment
+ * @default center
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-line-height
+ * @default 1.25
+ * @type line-height
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-item-description-alignment
+ * @default center
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-tags-alignment
+ * @default center
+ * @type alignment
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-title-text-color
  * @default #080707
  * @type color
@@ -94,7 +166,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-title-font-size
- * @default 1rem
+ * @default 1.75rem
  * @type font
  */
 /**
@@ -114,6 +186,12 @@
  * @name --avonni-visual-picker-title-alignment
  * @default center
  * @type alignment
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-title-margin-around
+ * @default 0rem
+ * @type margin
  */
 /**
  * @memberof stylingHooks
@@ -153,157 +231,79 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-tags-alignment
- * @default center
- * @type alignment
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-title-text-color
- * @default #080707
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-title-font-size
- * @default 1.75rem
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-title-font-style
- * @default normal
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-title-font-weight
- * @default 400
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-title-alignment
- * @default center
- * @type alignment
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-title-margin-around
- * @default 0.5rem
- * @type margin
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-description-text-color
- * @default #3e3e3c
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-description-font-size
- * @default 0.75rem
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-description-font-style
- * @default normal
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-description-font-weight
- * @default 400
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-description-line-height
- * @default 1.25
- * @type line-height
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-description-alignment
- * @default center
- * @type alignment
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-description-margin-around
+ * @name --avonni-visual-picker-description-margin-around
  * @default 0.25rem
  * @type margin
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-color-background
+ * @name --avonni-visual-picker-color-background
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-color-background-hover
+ * @name --avonni-visual-picker-color-background-hover
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-color-background-selected
+ * @name --avonni-visual-picker-color-background-selected
  * @default #1b96ff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-color-border
+ * @name --avonni-visual-picker-color-border
  * @default #dddbda
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-color-border-hover
+ * @name --avonni-visual-picker-color-border-hover
  * @default #1b96ff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-color-border-selected
+ * @name --avonni-visual-picker-color-border-selected
  * @default #1b96ff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-sizing-border
+ * @name --avonni-visual-picker-sizing-border
  * @default 1px
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-styling-border
+ * @name --avonni-visual-picker-styling-border
  * @default solid
  * @type styling
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-radius-border
+ * @name --avonni-visual-picker-radius-border
  * @default 0.25rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-shadow
+ * @name --avonni-visual-picker-shadow
  * @default 0 2px 2px rgb(0 0 0 / 5%)
  * @type shadow
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-image-padding-around
- * @default 0px
+ * @name --avonni-visual-picker-image-padding-around
+ * @default 0rem
  * @type padding
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-figure-image-object-fit
+ * @name --avonni-visual-picker-image-object-fit
  * @default scale-down
  * @type object-fit
  */

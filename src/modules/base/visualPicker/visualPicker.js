@@ -319,6 +319,12 @@ export default class VisualPicker extends LightningElement {
                 descriptionPosition === 'center' && displayDescription;
             const descriptionIsBottom =
                 descriptionPosition === 'bottom' && displayDescription;
+            const computedDescriptionClass = classSet(
+                'avonni-visual-picker__figure-description'
+            ).add({
+                'slds-truncate slds-p-around_xx-small slds-m-around_none':
+                    this._ratio === '4-by-3' || this._ratio === '16-by-9'
+            });
 
             // Avatar management
             avatarPosition = avatarPosition || 'left';
@@ -373,7 +379,8 @@ export default class VisualPicker extends LightningElement {
                 tags,
                 imgAlternativeText,
                 imgSrc,
-                computedSelectedClass
+                computedSelectedClass,
+                computedDescriptionClass
             };
         });
     }
