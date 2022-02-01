@@ -39,6 +39,7 @@ customElements.define(
 
 export const DynamicMenuInGroup = ({
     accessKey,
+    allowSearch,
     alternativeText,
     buttonSize,
     disabled,
@@ -56,11 +57,11 @@ export const DynamicMenuInGroup = ({
     title,
     tooltip,
     value,
-    variant,
-    withSearch
+    variant
 }) => {
     const element = document.createElement('ac-base-dynamic-menu-in-group');
     element.accessKey = accessKey;
+    element.allowSearch = allowSearch;
     element.alternativeText = alternativeText;
     element.buttonSize = buttonSize;
     element.disabled = disabled;
@@ -79,6 +80,5 @@ export const DynamicMenuInGroup = ({
     element.tooltip = tooltip;
     element.value = value;
     element.variant = variant;
-    element.withSearch = withSearch;
     return element;
 };

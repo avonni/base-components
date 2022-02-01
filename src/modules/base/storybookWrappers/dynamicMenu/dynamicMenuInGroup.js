@@ -40,6 +40,7 @@ const DEFAULT_ICON_POSITION = 'left';
 
 export default class DynamicMenuInGroup extends LightningElement {
     @api accessKey;
+    @api allowSearch = false;
     @api alternativeText;
     @api buttonSize;
     @api disabled = false;
@@ -58,5 +59,4 @@ export default class DynamicMenuInGroup extends LightningElement {
     @api tooltip;
     @api value;
     @api variant = DEFAULT_BUTTON_VARIANT;
-    @api withSearch = false;
 }

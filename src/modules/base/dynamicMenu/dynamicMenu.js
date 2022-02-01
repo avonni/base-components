@@ -146,6 +146,7 @@ export default class DynamicMenu extends LightningElement {
      */
     @api tooltip;
 
+    _allowSearch = false;
     _buttonSize = BUTTON_SIZES.default;
     _disabled = false;
     _hideCheckMark = false;
@@ -156,7 +157,6 @@ export default class DynamicMenu extends LightningElement {
     _menuAlignment = MENU_ALIGNMENTS.default;
     _value;
     _variant = BUTTON_VARIANTS.default;
-    _withSearch = false;
 
     queryTerm;
     showFooter = true;
@@ -209,6 +209,22 @@ export default class DynamicMenu extends LightningElement {
      */
     get footerSlot() {
         return this.template.querySelector('slot[name=footer]');
+    }
+
+    /**
+     * If present, display search box.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get allowSearch() {
+        return this._allowSearch;
+    }
+
+    set allowSearch(value) {
+        this._allowSearch = normalizeBoolean(value);
     }
 
     /**
@@ -389,7 +405,7 @@ export default class DynamicMenu extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
+     * The variant changes the look of the button. Accepted variants when no label include bare, container, border, border-filled, bare-inverse, and border-inverse. Accepted variants when label include bare, border, brand and reset.
      *
      * @type {string}
      * @public
@@ -405,22 +421,6 @@ export default class DynamicMenu extends LightningElement {
             fallbackValue: BUTTON_VARIANTS.default,
             validValues: BUTTON_VARIANTS.valid
         });
-    }
-
-    /**
-     * If present, display search box.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get withSearch() {
-        return this._withSearch;
-    }
-
-    set withSearch(value) {
-        this._withSearch = normalizeBoolean(value);
     }
 
     /**
