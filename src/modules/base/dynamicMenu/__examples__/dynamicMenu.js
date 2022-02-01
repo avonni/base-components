@@ -39,6 +39,7 @@ customElements.define(
 
 export const DynamicMenu = ({
     accessKey,
+    allowSearch,
     alternativeText,
     buttonSize,
     disabled,
@@ -56,11 +57,11 @@ export const DynamicMenu = ({
     title,
     tooltip,
     value,
-    variant,
-    withSearch
+    variant
 }) => {
     const element = document.createElement('ac-base-dynamic-menu');
     element.accessKey = accessKey;
+    element.allowSearch = allowSearch;
     element.alternativeText = alternativeText;
     element.buttonSize = buttonSize;
     element.disabled = disabled;
@@ -79,6 +80,5 @@ export const DynamicMenu = ({
     element.tooltip = tooltip;
     element.value = value;
     element.variant = variant;
-    element.withSearch = withSearch;
     return element;
 };

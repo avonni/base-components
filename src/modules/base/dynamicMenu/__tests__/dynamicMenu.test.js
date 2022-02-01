@@ -69,7 +69,7 @@ describe('Dynamic Menu', () => {
         expect(element.tooltip).toBeUndefined();
         expect(element.value).toBeUndefined();
         expect(element.variant).toBe('border');
-        expect(element.withSearch).toBeFalsy();
+        expect(element.allowSearch).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -98,8 +98,28 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    // allow search
+    it('Dynamic Menu: allow search', () => {
+        element.allowSearch = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const searchInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-input"]'
+                );
+                expect(searchInput).toBeTruthy();
+                expect(searchInput.type).toBe('search');
+            });
+    });
+
     // alternative text
-    it('Dynamic Menu: alternative text', () => {
+    it('Dynamic Menu: alternative text without label', () => {
         element.alternativeText = 'This is an alternative text';
 
         return Promise.resolve().then(() => {
@@ -568,7 +588,7 @@ describe('Dynamic Menu', () => {
 
     // search input placeholder
     it('Dynamic Menu: search input placeholder', () => {
-        element.withSearch = true;
+        element.allowSearch = true;
         element.searchInputPlaceholder = 'This is a search input placeholder';
 
         return Promise.resolve()
@@ -756,26 +776,6 @@ describe('Dynamic Menu', () => {
                 'avonni-dynamic-menu__button_reset'
             );
         });
-    });
-
-    // with search
-    it('Dynamic Menu: with search', () => {
-        element.withSearch = true;
-
-        return Promise.resolve()
-            .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
-            })
-            .then(() => {
-                const searchInput = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-input"]'
-                );
-                expect(searchInput).toBeTruthy();
-                expect(searchInput.type).toBe('search');
-            });
     });
 
     /* ---- JS ----- */

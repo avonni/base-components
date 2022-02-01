@@ -48,6 +48,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        allowSearch: {
+            name: 'allow-search',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, display search box.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         alternativeText: {
             name: 'alternative-text',
             control: {
@@ -259,21 +270,10 @@ export default {
                 'reset'
             ],
             description:
-                'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
+                'The variant changes the look of the button. Accepted variants when no label include bare, container, border, border-filled, bare-inverse, and border-inverse. Accepted variants when label include bare, border, brand and reset.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
-            }
-        },
-        withSearch: {
-            name: 'with-search',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, display search box.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
             }
         }
     },
@@ -288,7 +288,7 @@ export default {
         nubbin: false,
         searchInputPlaceholder: 'Search…',
         variant: 'border',
-        withSearch: false
+        allowSearch: false
     }
 };
 
@@ -307,7 +307,7 @@ export const BaseWithSearch = Template.bind({});
 BaseWithSearch.args = {
     items: baseItems,
     iconName: 'utility:favorite',
-    withSearch: 'true'
+    allowSearch: 'true'
 };
 
 export const Disabled = Template.bind({});
@@ -396,7 +396,7 @@ ListViewStoryBare.args = {
     label: 'Recently Viewed',
     value: 'all-accounts',
     variant: 'bare',
-    withSearch: true
+    allowSearch: true
 };
 
 export const InButtonGroup = TemplateInGroup.bind({});
