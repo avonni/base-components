@@ -343,8 +343,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left slds-nubbin_top-left'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_left slds-nubbin_top-left'
                 );
             });
     });
@@ -364,8 +364,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right slds-nubbin_top-right'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_right slds-nubbin_top-right'
                 );
             });
     });
@@ -385,8 +385,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center slds-nubbin_top'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_center slds-nubbin_top'
                 );
             });
     });
@@ -406,8 +406,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left slds-nubbin_bottom-left'
                 );
             });
     });
@@ -427,8 +427,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right slds-nubbin_bottom-right'
                 );
             });
     });
@@ -448,8 +448,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-nubbin_bottom'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-nubbin_bottom'
                 );
             });
     });
@@ -468,9 +468,7 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_left'
-                );
+                expect(dropdown.className).toContain('slds-dropdown_left');
             });
     });
 
@@ -488,9 +486,7 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_right'
-                );
+                expect(dropdown.className).toContain('slds-dropdown_right');
             });
     });
 
@@ -508,9 +504,7 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_center'
-                );
+                expect(dropdown.className).toContain('slds-dropdown_center');
             });
     });
 
@@ -528,8 +522,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_left slds-dropdown_bottom-left'
                 );
             });
     });
@@ -548,8 +542,8 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
+                expect(dropdown.className).toContain(
+                    'slds-dropdown_bottom slds-dropdown_right slds-dropdown_bottom-right'
                 );
             });
     });
@@ -568,9 +562,7 @@ describe('Dynamic Menu', () => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
-                expect(dropdown.className).toBe(
-                    'slds-dropdown slds-popover slds-dynamic-menu slds-dropdown_bottom'
-                );
+                expect(dropdown.className).toContain('slds-dropdown_bottom');
             });
     });
 
@@ -667,6 +659,20 @@ describe('Dynamic Menu', () => {
         });
     });
 
+    it('Dynamic Menu: variant bare with label', () => {
+        element.variant = 'bare';
+        element.label = 'Some label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.classList).toContain(
+                'avonni-dynamic-menu__button_bare'
+            );
+        });
+    });
+
     it('Dynamic Menu: variant container without label', () => {
         element.variant = 'container';
 
@@ -698,6 +704,9 @@ describe('Dynamic Menu', () => {
                 '[data-element-id="button"]'
             );
             expect(button.classList).toContain('slds-button_brand');
+            expect(button.classList).toContain(
+                'avonni-dynamic-menu__button_brand'
+            );
         });
     });
 
@@ -731,6 +740,21 @@ describe('Dynamic Menu', () => {
                 '[data-element-id="lightning-button-icon"]'
             );
             expect(button.variant).toBe('border-inverse');
+        });
+    });
+
+    it('Dynamic Menu: variant reset with label', () => {
+        element.variant = 'reset';
+        element.label = 'Some label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.classList).toContain('slds-button_reset');
+            expect(button.classList).toContain(
+                'avonni-dynamic-menu__button_reset'
+            );
         });
     });
 

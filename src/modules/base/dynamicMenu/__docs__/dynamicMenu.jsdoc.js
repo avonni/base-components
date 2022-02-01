@@ -36,6 +36,90 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-color-background
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-color-border
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-text-color
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-font-size
+ * @default 0.8125rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-color-background-hover
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-color-border-hover
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-text-color-hover
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-font-size-hover
+ * @default 0.8125rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-font-style-hover
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-label-font-weight-hover
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-color-background-active
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-bare-color-border-active
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-dynamic-menu-border-color-background
  * @default white
  * @type color
