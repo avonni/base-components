@@ -138,18 +138,12 @@
                                     data-element-id="item"
                                     aria-selected={item.selected}
                                 >
-                                    <div
-                                        class="
-                                            slds-listbox__option
-                                            slds-media slds-media_center
-                                            slds-listbox__option_plain
-                                            slds-is-selected
-                                        "
-                                    >
+                                    <div class={item.computedItemClass}>
                                         <div
                                             class="
                                                 slds-media__figure
                                                 slds-listbox__option-icon
+                                                avonni-dynamic-menu__check-mark_color
                                             "
                                         >
                                             <template if:false={hideCheckMark}>
