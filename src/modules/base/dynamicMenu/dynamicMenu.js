@@ -765,7 +765,10 @@ export default class DynamicMenu extends LightningElement {
     handleKeyUp(event) {
         let filter = event.target.value.toLowerCase();
         this.filteredItems = this.items.filter((item) => {
-            return item.label.toLowerCase().indexOf(filter) > -1;
+            return (
+                item.label.toLowerCase().indexOf(filter) > -1 ||
+                item.value.toLowerCase().indexOf(filter) > -1
+            );
         });
     }
 
