@@ -466,8 +466,12 @@ export default class DynamicMenu extends LightningElement {
                 'slds-button_first': order === 'first',
                 'slds-button_middle': order === 'middle',
                 'slds-button_last': order === 'last',
-                'slds-button_neutral avonni-dynamic-menu__button_bare':
-                    variant !== 'brand' && variant !== 'reset',
+                'slds-button_neutral':
+                    variant !== 'brand' &&
+                    variant !== 'reset' &&
+                    variant !== 'bare',
+                'avonni-dynamic-menu__button_border': variant === 'border',
+                'avonni-dynamic-menu__button_bare': variant === 'bare',
                 'slds-button_brand avonni-dynamic-menu__button_brand':
                     variant === 'brand'
             })
@@ -708,7 +712,7 @@ export default class DynamicMenu extends LightningElement {
         }
 
         if (this._dropdownVisible) {
-            // this.toggleMenuVisibility();
+            this.toggleMenuVisibility();
         }
     }
 

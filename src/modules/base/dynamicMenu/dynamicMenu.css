@@ -193,3 +193,41 @@ div:focus {
     );
     border-color: var(--avonni-dynamic-menu-border-color-border-hover, #dddbda);
 }
+
+.avonni-dynamic-menu__button_bare {
+    background-color: var(
+        --avonni-dynamic-menu-bare-color-background,
+        transparent
+    );
+    border-color: var(--avonni-dynamic-menu-bare-color-border, transparent);
+    color: var(--avonni-dynamic-menu-bare-label-text-color, #0176d3);
+    font-size: var(--avonni-dynamic-menu-bare-label-font-size, 0.8125rem);
+    font-style: var(--avonni-dynamic-menu-bare-label-font-style, normal);
+    font-weight: var(--avonni-dynamic-menu-bare-label-font-weight, 400);
+}
+
+.avonni-dynamic-menu__button_bare:hover {
+    background-color: var(
+        --avonni-dynamic-menu-bare-color-background,
+        transparent
+    );
+    border-color: var(
+        --avonni-dynamic-menu-bare-color-border-hover,
+        transparent
+    );
+    color: var(--avonni-dynamic-menu-bare-label-text-color-hover, #014486);
+    font-size: var(--avonni-dynamic-menu-bare-label-font-size-hover, 0.8125rem);
+    font-style: var(--avonni-dynamic-menu-bare-label-font-style-hover, normal);
+    font-weight: var(--avonni-dynamic-menu-bare-label-font-weight-hover, 400);
+}
+
+.avonni-dynamic-menu__button_bare:active {
+    background-color: var(
+        --avonni-dynamic-menu-bare-color-background,
+        transparent
+    );
+    border-color: var(
+        --avonni-dynamic-menu-bare-color-border-hover,
+        transparent
+    );
+}
