@@ -454,28 +454,16 @@ export default class DynamicMenu extends LightningElement {
         return classSet('')
             .add({
                 'slds-button': variant !== 'reset',
-                'slds-button_reset avonni-dynamic-menu__button_display':
+                'slds-button_reset avonni-dynamic-menu__button_reset':
                     variant === 'reset',
                 'slds-button_stretch': buttonSize === 'stretch',
                 'slds-button_first': order === 'first',
                 'slds-button_middle': order === 'middle',
                 'slds-button_last': order === 'last',
-                'slds-button_neutral':
+                'slds-button_neutral avonni-dynamic-menu__button_bare':
                     variant !== 'brand' && variant !== 'reset',
-                'slds-button_brand': variant === 'brand'
-            })
-            .toString();
-    }
-
-    /**
-     * Computed label class, when the dynamic menu has a label.
-     *
-     * @type {string}
-     */
-    get computedLabelClass() {
-        return classSet('')
-            .add({
-                'avonni-dynamic-menu__label_reset': this.variant === 'reset'
+                'slds-button_brand avonni-dynamic-menu__button_brand':
+                    variant === 'brand'
             })
             .toString();
     }
