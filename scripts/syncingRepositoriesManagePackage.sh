@@ -4,7 +4,7 @@
 baseComponentsPath="/Users/jeanbaptisteverge/Documents/GitHub/base-components/src/modules"
 
 # Full path to base-components-sfdx modules as exemple: (/Users/Documents/AVONNI/base-components-sfdx/src/modules): 
-baseComponentsSfdxPath="/Users/jeanbaptisteverge/Documents/GitHub/base-components-managed-package-sfdx/src/modules"
+baseComponentsSfdxPath="/Users/jeanbaptisteverge/Documents/GitHub/components-sfdx/src/modules"
 
 containsElement () {
   local e match="$1"
