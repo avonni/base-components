@@ -433,13 +433,19 @@ export default class DynamicMenu extends LightningElement {
             const key = `item-key-${index}`;
             const metaJoin = meta ? meta.join(' • ') : null;
             const selected = this.value === value;
+            const computedItemClass = classSet(
+                'slds-listbox__option slds-media slds-media_center slds-listbox__option_plain avonni-dynamic-menu__item_color-background'
+            ).add({
+                'slds-is-selected': selected
+            });
             return {
                 avatar,
                 key,
                 label,
                 metaJoin,
                 selected,
-                value
+                value,
+                computedItemClass
             };
         });
     }
@@ -474,7 +480,9 @@ export default class DynamicMenu extends LightningElement {
      * @type {string}
      */
     get computedDropdownClass() {
-        return classSet('slds-dropdown slds-popover slds-dynamic-menu')
+        return classSet(
+            'slds-dropdown slds-popover slds-dynamic-menu avonni-dynamic-menu__dropdown_color-background'
+        )
             .add({
                 'slds-dropdown_left':
                     this.menuAlignment === 'left' || this.isAutoAlignment(),
@@ -700,7 +708,7 @@ export default class DynamicMenu extends LightningElement {
         }
 
         if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
+            // this.toggleMenuVisibility();
         }
     }
 

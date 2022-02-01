@@ -36,85 +36,85 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-color-background
+ * @name --avonni-dynamic-menu-border-color-background
  * @default white
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-color-border
+ * @name --avonni-dynamic-menu-border-color-border
  * @default #dddbda
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-text-color
+ * @name --avonni-dynamic-menu-border-label-text-color
  * @default #0176d3
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-font-size
+ * @name --avonni-dynamic-menu-border-label-font-size
  * @default 0.8125rem
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-font-style
+ * @name --avonni-dynamic-menu-border-label-font-style
  * @default normal
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-font-weight
+ * @name --avonni-dynamic-menu-border-label-font-weight
  * @default 400
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-color-background-hover
+ * @name --avonni-dynamic-menu-border-color-background-hover
  * @default #fafaf9
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-color-border-hover
+ * @name --avonni-dynamic-menu-border-color-border-hover
  * @default #dddbda
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-text-color-hover
+ * @name --avonni-dynamic-menu-border-label-text-color-hover
  * @default #014486
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-font-size-hover
+ * @name --avonni-dynamic-menu-border-label-font-size-hover
  * @default 0.8125rem
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-font-style-hover
+ * @name --avonni-dynamic-menu-border-label-font-style-hover
  * @default normal
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-label-font-weight-hover
+ * @name --avonni-dynamic-menu-border-label-font-weight-hover
  * @default 400
  * @type font
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-color-background-active
+ * @name --avonni-dynamic-menu-border-color-background-active
  * @default #f3f2f2
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-dynamic-menu-bare-color-border-active
+ * @name --avonni-dynamic-menu-border-color-border-active
  * @default #dddbda
  * @type color
  */
@@ -284,5 +284,29 @@
  * @memberof stylingHooks
  * @name --avonni-dynamic-menu-reset-color-border-active
  * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-dropdown-color-background
+ * @default white
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-color-background-hover
+ * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-dynamic-menu-item-check-mark-color
+ * @default #0176d3
  * @type color
  */
