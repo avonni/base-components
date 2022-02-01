@@ -370,12 +370,33 @@ Container.args = {
 
 export const ListViewStory = TemplateListView.bind({});
 ListViewStory.args = {
-    items: listViewItems,
-    label: 'Recently Viewed',
     iconName: 'utility:down',
     iconPosition: 'right',
+    items: listViewItems,
+    label: 'Recently Viewed',
     variant: 'reset',
     value: 'all-accounts'
+};
+
+export const ListViewStoryBorder = TemplateListView.bind({});
+ListViewStoryBorder.args = {
+    iconName: 'utility:down',
+    iconPosition: 'right',
+    items: listViewItems,
+    label: 'Recently Viewed',
+    nubbin: true,
+    value: 'all-accounts'
+};
+
+export const ListViewStoryBare = TemplateListView.bind({});
+ListViewStoryBare.args = {
+    iconName: 'utility:down',
+    iconPosition: 'right',
+    items: listViewItems,
+    label: 'Recently Viewed',
+    value: 'all-accounts',
+    variant: 'bare',
+    withSearch: true
 };
 
 export const InButtonGroup = TemplateInGroup.bind({});
