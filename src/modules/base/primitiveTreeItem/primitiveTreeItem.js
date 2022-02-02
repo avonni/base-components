@@ -14,7 +14,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api nodeKey;
     @api isLeaf;
 
-    _ariaLevel;
+    _level;
     _childItems = [];
     _focusedChild = null;
     _href;
@@ -50,7 +50,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
         this.addEventListener('keydown', this.handleKeydown);
         this.addEventListener('mousedown', this.handleMouseDown);
-        this.updateAriaLevel();
+        this.updateLevel();
     }
 
     renderedCallback() {
@@ -92,12 +92,12 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
 
     @api
-    get ariaLevel() {
-        return this._ariaLevel;
+    get level() {
+        return this._level;
     }
-    set ariaLevel(value) {
-        this._ariaLevel = value;
-        this.updateAriaLevel();
+    set level(value) {
+        this._level = value;
+        this.updateLevel();
     }
 
     @api
@@ -271,9 +271,10 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.itemElement.classList.remove(
             'avonni-primitive-tree-item__item_border'
         );
+        this.itemElement.style = '';
     };
 
-    setBorder = (position) => {
+    setBorder = (position, level) => {
         if (!this.itemElement) return;
 
         this.removeBorder();
@@ -287,6 +288,9 @@ export default class PrimitiveTreeItem extends LightningElement {
                 this.itemElement.classList.add(
                     'avonni-primitive-tree-item__item_border-bottom'
                 );
+                if (level) {
+                    this.itemElement.style = `--avonni-tree-item-border-offset-left: ${level}rem;`;
+                }
                 break;
             default:
                 this.itemElement.classList.add(
@@ -323,9 +327,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.hideBranchButtons();
     }
 
-    updateAriaLevel() {
+    updateLevel() {
         let style = this.template.host.style.cssText;
-        style += `--avonni-primitive-tree-item-offset-left: ${this.ariaLevel}rem;`;
+        style += `--avonni-tree-item-offset-left: ${this.level}rem;`;
         this.template.host.style.cssText = style;
     }
 

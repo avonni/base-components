@@ -96,37 +96,6 @@ export default class Tree extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    initDragState(item) {
-        const prevItem = this.treedata.findPrevNodeToFocus(item.index);
-        const nextItem = this.treedata.findNextNodeToFocus(item.index);
-        const bounds = this.callbackMap[item.key].bounds();
-
-        this._dragState = {
-            centerBottomLimit: bounds.bottom - bounds.height / 3,
-            centerTopLimit: bounds.top + bounds.height / 3,
-            item,
-            key: item.key,
-            nextItem,
-            prevItem
-        };
-
-        if (prevItem) {
-            const prevBounds = this.callbackMap[prevItem.key].bounds();
-            this._dragState.topLimit =
-                prevBounds.bottom - prevBounds.height / 3;
-        } else {
-            this._dragState.topLimit = null;
-        }
-
-        if (nextItem) {
-            const nextBounds = this.callbackMap[nextItem.key].bounds();
-            this._dragState.bottomLimit =
-                nextBounds.top + nextBounds.height / 3;
-        } else {
-            this._dragState.bottomLimit = Infinity;
-        }
-    }
-
     /**
      * Check the input data for circular references or cycles,
      * Build a list of items in depth-first manner for traversing the tree by keyboard
@@ -150,6 +119,39 @@ export default class Tree extends LightningElement {
         if (this.rootElement) this.syncCurrentFocused();
     }
 
+    circleAndExpandHoveredItem() {
+        if (
+            !this._dragState ||
+            this._dragState.key === this._dragState.item.key
+        )
+            return;
+
+        const { key, treeNode, index } = this._dragState.item;
+        const borderedKey = this._dragState.borderedItem
+            ? this._dragState.borderedItem.key
+            : key;
+        this.callbackMap[borderedKey].removeBorder();
+        this.callbackMap[key].setBorder();
+        this._dragState.borderedItem = null;
+
+        if (treeNode.children.length && !treeNode.nodeRef.expanded) {
+            // Expand the hovered item after 500ms
+            this._mouseOverItemTimeout = setTimeout(() => {
+                this.expandBranch(treeNode);
+
+                // Find the nested next item after the expansion happens
+                // and elements are rerendered
+                setTimeout(() => {
+                    const nextItem = this.treedata.findNextNodeToFocus(index);
+                    this._dragState.nextItem = nextItem;
+                    const nextBounds = this.callbackMap[nextItem.key].bounds();
+                    this._dragState.bottomLimit =
+                        nextBounds.top + nextBounds.height / 3;
+                }, 0);
+            }, 500);
+        }
+    }
+
     collapseBranch(node) {
         if (!node.isLeaf && !node.isDisabled) {
             node.nodeRef.expanded = false;
@@ -162,6 +164,44 @@ export default class Tree extends LightningElement {
         const { index, items } = this.getPositionInBranch(key);
 
         return items.splice(index, 1)[0];
+    }
+
+    dragTo(item) {
+        if (!this._dragState) return;
+
+        if (this._dragState.item) {
+            const borderedKey = this._dragState.borderedItem
+                ? this._dragState.borderedItem.key
+                : this._dragState.item.key;
+            this.callbackMap[borderedKey].removeBorder();
+        }
+
+        const prevItem = this.treedata.findPrevNodeToFocus(item.index);
+        const nextItem = this.treedata.findNextNodeToFocus(item.index);
+        const bounds = this.callbackMap[item.key].bounds();
+
+        this._dragState.centerBottomLimit = bounds.bottom - bounds.height / 3;
+        this._dragState.centerTopLimit = bounds.top + bounds.height / 3;
+        this._dragState.item = item;
+        this._dragState.nextItem = nextItem;
+        this._dragState.prevItem = prevItem;
+        this._dragState.borderedItem = null;
+
+        if (prevItem) {
+            const prevBounds = this.callbackMap[prevItem.key].bounds();
+            this._dragState.topLimit =
+                prevBounds.bottom - prevBounds.height / 3;
+        } else {
+            this._dragState.topLimit = null;
+        }
+
+        if (nextItem) {
+            const nextBounds = this.callbackMap[nextItem.key].bounds();
+            this._dragState.bottomLimit =
+                nextBounds.top + nextBounds.height / 3;
+        } else {
+            this._dragState.bottomLimit = Infinity;
+        }
     }
 
     duplicateItem(key) {
@@ -303,6 +343,89 @@ export default class Tree extends LightningElement {
             }
             if (shouldSelect) {
                 child.ariaSelected = true;
+            }
+        }
+    }
+
+    showBottomBorderOnHoveredItem(x) {
+        if (!this._dragState) return;
+
+        const { initialX, item } = this._dragState;
+        const hasMovedLeft = x < initialX - 10;
+        const hasMovedRight = x > initialX + 10;
+        const { children, isExpanded } = item.treeNode;
+
+        if (isNaN(initialX)) {
+            // Show the bottom border
+            this._dragState.position = 'bottom';
+            this._dragState.initialX = x;
+            this.callbackMap[item.key].removeBorder();
+            const level =
+                isExpanded && children.length ? item.level + 1 : item.level;
+            this.callbackMap[item.key].setBorder('bottom', level);
+        } else if (hasMovedLeft) {
+            this._dragState.initialX = x;
+            const parent = this.treedata.getItem(item.parent);
+            const siblings = parent && parent.treeNode.children;
+            const isLastChild =
+                siblings && siblings[siblings.length - 1].key === item.key;
+            if (!isLastChild) return;
+
+            // Move left, outward from the most nested item
+            this._dragState.item = parent;
+            if (!this._dragState.borderedItem) {
+                this._dragState.borderedItem = item;
+            }
+            const borderedItemKey = this._dragState.borderedItem.key;
+            this.callbackMap[borderedItemKey].setBorder('bottom', parent.level);
+        } else if (hasMovedRight) {
+            // Move right, towards the most nested item
+            this._dragState.initialX = x;
+            const lastChild = children[children.length - 1];
+
+            if (isExpanded && lastChild && lastChild.isExpanded) {
+                this._dragState.item = this.treedata.getItem(lastChild.key);
+
+                if (!this._dragState.borderedItem) {
+                    this._dragState.borderedItem = item;
+                }
+                const borderedItemKey = this._dragState.borderedItem.key;
+                this.callbackMap[borderedItemKey].setBorder(
+                    'bottom',
+                    lastChild.level
+                );
+            }
+        }
+    }
+
+    showTopBorderOnHoveredItem(x) {
+        if (!this._dragState) return;
+
+        const { initialX, item } = this._dragState;
+        const hasMovedRight = x > initialX + 10;
+
+        if (isNaN(initialX)) {
+            // Show the top border
+            this._dragState.position = 'top';
+            this._dragState.initialX = x;
+            this.callbackMap[item.key].removeBorder();
+            this.callbackMap[item.key].setBorder('top');
+        } else if (hasMovedRight) {
+            this._dragState.initialX = x;
+            const prevItemInSameBranch = this.treedata.findPrevNodeInSameBranch(
+                item.key
+            );
+
+            if (prevItemInSameBranch) {
+                // Move right, to the most nested item
+                const { children, isExpanded } = prevItemInSameBranch.treeNode;
+
+                if (isExpanded && children.length) {
+                    const lastChildKey = children[children.length - 1].key;
+                    const lastChild = this.treedata.getItem(lastChildKey);
+                    this.dragTo(lastChild);
+                    this._dragState.initialX = undefined;
+                }
             }
         }
     }
@@ -486,7 +609,8 @@ export default class Tree extends LightningElement {
                 this.collapseBranch(item.treeNode);
             }
 
-            this.initDragState(item);
+            this._dragState = { key };
+            this.dragTo(item);
             this._selectedItem = name;
             this.setFocusToItem(item);
 
@@ -505,137 +629,56 @@ export default class Tree extends LightningElement {
             bottomLimit,
             centerBottomLimit,
             centerTopLimit,
-            item,
-            key,
+            nextItem,
             position,
+            prevItem,
             topLimit
         } = this._dragState;
         const y = event.clientY;
 
-        if (y < topLimit) {
-            // Set the previous item as the current item
-            this.handleMouseMoveToPreviousItem();
-        } else if (position !== 'top' && y >= topLimit && y < centerTopLimit) {
-            // Show the top border
-            this._dragState.position = 'top';
-            this.callbackMap[item.key].removeBorder();
-            this.callbackMap[item.key].setBorder('top');
-        } else if (
+        const isAbove = y < topLimit;
+        const isOnTop = y >= topLimit && y < centerTopLimit;
+        const isInCenter =
             position !== 'center' &&
             y >= centerTopLimit &&
-            y <= centerBottomLimit
-        ) {
-            // Expand the current item
+            y <= centerBottomLimit;
+        const isOnBottom = y > centerBottomLimit && y <= bottomLimit;
+        const isBelow = y > bottomLimit;
+
+        if (isAbove) {
+            this.dragTo(prevItem);
+        } else if (isOnTop) {
+            this.showTopBorderOnHoveredItem(event.clientX);
+        } else if (isInCenter) {
             this._dragState.position = 'center';
-            if (item.key !== key) this.handleMouseMoveToCenterOfItem();
-        } else if (
-            position !== 'bottom' &&
-            y > centerBottomLimit &&
-            y <= bottomLimit
-        ) {
-            // Show the bottom border
-            this._dragState.position = 'bottom';
-            this.callbackMap[item.key].removeBorder();
-            this.callbackMap[item.key].setBorder('bottom');
-        } else if (y > bottomLimit) {
-            // Set the next item as the current item
-            this.handleMouseMoveToNextItem();
+            this.circleAndExpandHoveredItem();
+        } else if (isOnBottom) {
+            this.showBottomBorderOnHoveredItem(event.clientX);
+        } else if (isBelow) {
+            this.dragTo(nextItem);
         }
 
         if (this._dragState.position !== 'center') {
             // If the mouse has moved from the center,
             // prevent the item expansion
             clearTimeout(this._mouseOverItemTimeout);
+
+            if (this._dragState.position !== position) {
+                this._dragState.initialX = undefined;
+            }
+        } else {
+            this._dragState.initialX = undefined;
         }
     };
-
-    handleMouseMoveToCenterOfItem() {
-        const { key, treeNode, index } = this._dragState.item;
-        this.callbackMap[key].removeBorder();
-        this.callbackMap[key].setBorder();
-
-        if (treeNode.children.length && !treeNode.nodeRef.expanded) {
-            // Expand the hovered item after 500ms
-            this._mouseOverItemTimeout = setTimeout(() => {
-                this.expandBranch(treeNode);
-
-                // Find the nested next item after the expansion happens
-                // and elements are rerendered
-                setTimeout(() => {
-                    const nextItem = this.treedata.findNextNodeToFocus(index);
-                    this._dragState.nextItem = nextItem;
-                    const nextBounds = this.callbackMap[nextItem.key].bounds();
-                    this._dragState.bottomLimit =
-                        nextBounds.top + nextBounds.height / 3;
-                }, 0);
-            }, 500);
-        }
-    }
-
-    handleMouseMoveToNextItem() {
-        if (!this._dragState) return;
-
-        // Set the current item to the next item
-        this._dragState.prevItem = this._dragState.item;
-        this._dragState.item = this._dragState.nextItem;
-        const { bottomLimit, centerBottomLimit, item, prevItem } =
-            this._dragState;
-        this.callbackMap[prevItem.key].removeBorder();
-
-        // Find the new next item
-        const nextItem = this.treedata.findNextNodeToFocus(item.index);
-        this._dragState.nextItem = nextItem;
-
-        // Set the new dragging limits
-        this._dragState.topLimit = centerBottomLimit;
-        this._dragState.centerTopLimit = bottomLimit;
-        const bounds = this.callbackMap[item.key].bounds();
-        this._dragState.centerBottomLimit = bounds.bottom - bounds.height / 3;
-
-        if (nextItem) {
-            const nextBounds = this.callbackMap[nextItem.key].bounds();
-            this._dragState.bottomLimit =
-                nextBounds.top + nextBounds.height / 3;
-        } else {
-            this._dragState.bottomLimit = Infinity;
-        }
-    }
-
-    handleMouseMoveToPreviousItem() {
-        if (!this._dragState) return;
-
-        // Set the current item to the previous item
-        this._dragState.nextItem = this._dragState.item;
-        this._dragState.item = this._dragState.prevItem;
-        const { centerTopLimit, topLimit, item, nextItem } = this._dragState;
-        this.callbackMap[nextItem.key].removeBorder();
-
-        // Find the new previous item
-        const prevItem = this.treedata.findPrevNodeToFocus(item.index);
-        this._dragState.prevItem = prevItem;
-
-        // Set the new dragging limits
-        this._dragState.bottomLimit = centerTopLimit;
-        this._dragState.centerBottomLimit = topLimit;
-        const bounds = this.callbackMap[item.key].bounds();
-        this._dragState.centerTopLimit = bounds.top + bounds.height / 3;
-
-        if (prevItem) {
-            const prevBounds = this.callbackMap[prevItem.key].bounds();
-            this._dragState.topLimit =
-                prevBounds.bottom - prevBounds.height / 3;
-        } else {
-            this._dragState.topLimit = null;
-        }
-    }
 
     handleMouseUp = () => {
         clearTimeout(this._mouseDownTimeout);
         clearTimeout(this._mouseOverItemTimeout);
         if (!this._dragState) return;
 
-        const { item, key, position } = this._dragState;
-        this.callbackMap[item.key].removeBorder();
+        const { borderedItem, item, key, position } = this._dragState;
+        const borderedKey = borderedItem ? borderedItem.key : item.key;
+        this.callbackMap[borderedKey].removeBorder();
 
         if (item.key !== key) {
             // Get the item, and its initial position in the tree
@@ -657,7 +700,11 @@ export default class Tree extends LightningElement {
                     items.splice(index, 0, initialItem);
                     break;
                 case 'bottom':
-                    if (items[index].items.length && index === 0) {
+                    if (
+                        item.treeNode.isExpanded &&
+                        item.treeNode.children.length &&
+                        !borderedItem
+                    ) {
                         items[index].items.unshift(initialItem);
                     } else {
                         items.splice(index + 1, 0, initialItem);
@@ -679,7 +726,6 @@ export default class Tree extends LightningElement {
             this.dispatchChange();
         }
 
-        this.callbackMap[item.key].removeBorder();
         this._dragState = null;
 
         // Reset item hover color

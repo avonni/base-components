@@ -32,13 +32,15 @@
     height: 2px;
     background-color: #747474;
     position: absolute;
-    left: var(--avonni-tree-item-offset-left, 0);
+    left: var(
+        --avonni-tree-item-border-offset-left,
+        var(--avonni-tree-item-offset-left, 0)
+    );
     right: 0;
 }
 .avonni-primitive-tree-item__item_border-bottom::after {
     bottom: 0;
 }
-
 .avonni-primitive-tree-item__item_border-top::before {
     top: 0;
 }
