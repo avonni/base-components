@@ -30,39 +30,43 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/visualPicker';
+.avonni-visual-picker__figure-content_small {
+    width: 8rem;
+}
 
-customElements.define(
-    'ac-base-visual-picker',
-    Component.CustomElementConstructor
-);
+.avonni-visual-picker__figure-content_medium {
+    width: 12rem;
+}
 
-export const VisualPicker = ({
-    label,
-    value,
-    items,
-    variant,
-    type,
-    size,
-    ratio,
-    hideCheckMark,
-    disabled,
-    required,
-    messageWhenValueMissing,
-    name
-}) => {
-    const element = document.createElement('ac-base-visual-picker');
-    element.label = label;
-    element.value = value;
-    element.items = items;
-    element.variant = variant;
-    element.type = type;
-    element.size = size;
-    element.ratio = ratio;
-    element.hideCheckMark = hideCheckMark;
-    element.disabled = disabled;
-    element.required = required;
-    element.messageWhenValueMissing = messageWhenValueMissing;
-    element.name = name;
-    return element;
-};
+.avonni-visual-picker__figure-content_large {
+    width: 15rem;
+}
+
+.avonni-visual-picker__figure-content_x-large {
+    width: 18rem;
+}
+
+.avonni-visual-picker__figure-content_xx-large {
+    width: 21rem;
+}
+
+.avonni-visual-picker__figure-content_xx-large {
+    width: 100%;
+}
+
+.avonni-visual-picker__figure-title {
+    color: var(--avonni-visual-picker-title-text-color, #080707);
+    font-style: var(--avonni-visual-picker-title-font-style, normal);
+    font-weight: var(--avonni-visual-picker-title-font-weight, 400);
+    font-size: var(--avonni-visual-picker-title-font-size, 1.5rem);
+    line-height: var(--lwc-lineHeightHeading, 1.25);
+}
+
+.avonni-primitive-visual-picker-title__icon {
+    align-self: center;
+}
+
+.avonni-visual-picker__figure-content_alignement {
+    display: flex;
+    justify-content: var(--avonni-visual-picker-title-alignment, center);
+}

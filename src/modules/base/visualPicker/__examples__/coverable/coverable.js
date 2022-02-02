@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class VisualPickerNoMarkDoubleExtraSmall extends LightningElement {
+export default class VisualPickerCoverable extends LightningElement {
     items = [
         {
             itemTitle: 'Lightning Professional',

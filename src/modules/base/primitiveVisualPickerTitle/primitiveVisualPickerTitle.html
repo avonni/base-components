@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,40 +30,42 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-import Component from 'avonni/visualPicker';
-
-customElements.define(
-    'ac-base-visual-picker',
-    Component.CustomElementConstructor
-);
-
-export const VisualPicker = ({
-    label,
-    value,
-    items,
-    variant,
-    type,
-    size,
-    ratio,
-    hideCheckMark,
-    disabled,
-    required,
-    messageWhenValueMissing,
-    name
-}) => {
-    const element = document.createElement('ac-base-visual-picker');
-    element.label = label;
-    element.value = value;
-    element.items = items;
-    element.variant = variant;
-    element.type = type;
-    element.size = size;
-    element.ratio = ratio;
-    element.hideCheckMark = hideCheckMark;
-    element.disabled = disabled;
-    element.required = required;
-    element.messageWhenValueMissing = messageWhenValueMissing;
-    element.name = name;
-    return element;
-};
+<template>
+    <div class={computedContainerClass}>
+        <c-primitive-avatar
+            alternative-text={alternativeText}
+            fallback-icon-name={avatar.iconName}
+            initials={avatar.initials}
+            presence={avatar.presence}
+            presence-position={avatar.presencePosition}
+            size={avatar.size}
+            src={avatar.imgSrc}
+            variant={avatar.variant}
+            class="
+                slds-m-right_x-small
+                avonni-primitive-visual-picker-title__icon
+            "
+            if:true={avatarIsLeft}
+        ></c-primitive-avatar>
+        <span class="avonni-visual-picker__figure-title slds-truncate">
+            {title}
+        </span>
+        <c-primitive-avatar
+            alternative-text={alternativeText}
+            fallback-icon-name={avatar.iconName}
+            initials={avatar.initials}
+            presence={avatar.presence}
+            presence-position={avatar.presencePosition}
+            size={avatar.size}
+            src={avatar.imgSrc}
+            variant={avatar.variant}
+            class="
+                slds-m-left_x-small
+                avonni-primitive-visual-picker-title__icon
+            "
+            if:true={avatarIsRight}
+        ></c-primitive-avatar>
+    </div>
+</template>
