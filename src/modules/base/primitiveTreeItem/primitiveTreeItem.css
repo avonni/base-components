@@ -1,0 +1,97 @@
+:host {
+    outline: none;
+}
+
+.avonni-primitive-tree-item__item a {
+    color: #080707;
+}
+
+.avonni-primitive-tree-item__item a:hover {
+    text-decoration: none;
+}
+
+.avonni-primitive-tree-item__item a:focus {
+    outline: 0;
+    text-decoration: underline;
+}
+
+.avonni-primitive-tree-item__item {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    padding: 0.125rem 0 0.125rem var(--avonni-tree-item-offset-left, 1rem);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+.avonni-primitive-tree-item__item_border-bottom::after,
+.avonni-primitive-tree-item__item_border-top::before {
+    content: '';
+    display: block;
+    height: 2px;
+    background-color: #747474;
+    position: absolute;
+    left: var(--avonni-tree-item-offset-left, 0);
+    right: 0;
+}
+.avonni-primitive-tree-item__item_border-bottom::after {
+    bottom: 0;
+}
+
+.avonni-primitive-tree-item__item_border-top::before {
+    top: 0;
+}
+
+.avonni-primitive-tree-item__item.slds-is-hovered,
+.avonni-primitive-tree-item__item:hover {
+    background: var(--avonni-tree-item-color-hover, #f3f2f2);
+    cursor: pointer;
+}
+
+.avonni-primitive-tree-item__item_border {
+    -webkit-box-shadow: #c9c9c9 0 0 0 1px inset;
+    box-shadow: inset 0 0 0 1px #c9c9c9;
+}
+
+.avonni-primitive-tree-item__item-label {
+    display: block;
+}
+
+.avonni-primitive-tree-item__item-meta {
+    display: block;
+    color: #3e3e3c;
+}
+
+:host[aria-selected='true'] > div > .avonni-primitive-tree-item__item {
+    background: rgba(21, 137, 238, 0.1);
+    -webkit-box-shadow: #1b96ff 4px 0 0 inset;
+    box-shadow: inset 4px 0 0 #1b96ff;
+}
+
+.avonni-primitive-tree-item__options {
+    transition: 1s;
+}
+
+.avonni-primitive-tree-item__branch-buttons {
+    opacity: 0;
+    transition: 0.17s;
+}
+
+.avonni-primitive-tree-item__popover {
+    left: 0;
+    width: 100%;
+}
+
+.avonni-primitive-tree-item__chevron {
+    transition: transform 300ms;
+    -ms-flex-item-align: start;
+    align-self: flex-start;
+}
+.avonni-primitive-tree-item__chevron_expanded {
+    transform: rotate(90deg);
+}
+
+.avonni-primitive-tree-item__edit-label-button {
+    --sds-c-icon-color-foreground: #969492;
+}

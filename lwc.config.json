@@ -367,6 +367,10 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitiveProgressStep",
+            "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
+        },
+        {
             "name": "c/primitiveReferenceLine",
             "path": "src/modules/base/primitiveReferenceLine/primitiveReferenceLine.js"
         },
@@ -383,10 +387,6 @@
             "path": "src/modules/base/primitiveRelationshipGraphLevel/primitiveRelationshipGraphLevel.js"
         },
         {
-            "name": "c/primitiveProgressStep",
-            "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
-        },
-        {
             "name": "c/primitiveSchedulerEventOccurrence",
             "path": "src/modules/base/primitiveSchedulerEventOccurrence/primitiveSchedulerEventOccurrence.js"
         },
@@ -397,6 +397,10 @@
         {
             "name": "c/primitiveSelect",
             "path": "src/modules/base/primitiveSelect/primitiveSelect.js"
+        },
+        {
+            "name": "c/primitiveTreeItem",
+            "path": "src/modules/base/primitiveTreeItem/primitiveTreeItem.js"
         },
         {
             "name": "c/primitiveVisualPickerTitle",
@@ -489,6 +493,10 @@
         {
             "name": "c/tooltipLibrary",
             "path": "src/modules/base/tooltipLibrary/tooltipLibrary.js"
+        },
+        {
+            "name": "c/tree",
+            "path": "src/modules/base/tree/tree.js"
         },
         {
             "name": "c/verticalProgressIndicator",
@@ -795,6 +803,10 @@
             "path": "src/modules/base/timer/timer.js"
         },
         {
+            "name": "avonni/tree",
+            "path": "src/modules/base/tree/tree.js"
+        },
+        {
             "name": "avonni/verticalProgressIndicator",
             "path": "src/modules/base/verticalProgressIndicator/verticalProgressIndicator.js"
         },
@@ -891,6 +903,7 @@
         "avonni/summaryDetail",
         "avonni/tabBar",
         "avonni/timer",
+        "avonni/tree",
         "avonni/verticalProgressIndicator",
         "avonni/verticalProgressStep",
         "avonni/verticalVisualPicker",
