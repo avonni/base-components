@@ -211,6 +211,14 @@ export class TreeData {
         return this.indices[nextNode];
     }
 
+    findPrevNodeInSameBranch(key) {
+        const path = key.split('.');
+        const index = Number(path.pop()) - 1;
+        path.push(index);
+        const prevKey = path.join('.');
+        return this.getItem(prevKey);
+    }
+
     findPrevNodeToFocus(current = this.currentFocusedItemIndex) {
         const treeitems = this.treeItemsInTraversalOrder;
         let prevNode = null;
