@@ -7,6 +7,7 @@ export default class Tree extends LightningElement {
     @api items;
     @api loadingStateAlternativeText;
     @api selectedItem;
+    @api sortable;
 
     handleSelect(event) {
         event.preventDefault();

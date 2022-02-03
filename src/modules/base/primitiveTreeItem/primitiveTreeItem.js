@@ -26,6 +26,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _label;
     _metatext;
     _nodename;
+    _sortable = false;
 
     buttonActions = [];
     menuActions = [];
@@ -176,6 +177,14 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._nodename = value;
     }
 
+    @api
+    get sortable() {
+        return this._sortable;
+    }
+    set sortable(value) {
+        this._sortable = normalizeBoolean(value);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -208,9 +217,11 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     get computedLabelClass() {
-        return classSet('slds-show slds-truncate').add({
-            'slds-p-vertical_xx-small': !this.actions.length
-        }).toString();
+        return classSet('slds-show slds-truncate')
+            .add({
+                'slds-p-vertical_xx-small': !this.actions.length
+            })
+            .toString();
     }
 
     get itemElement() {
@@ -333,7 +344,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     splitActions() {
         const buttonActions = [];
         const menuActions = [];
-        this._actions.forEach(action => {
+        this._actions.forEach((action) => {
             if (action.alwaysVisible) {
                 buttonActions.push(action);
             } else {
@@ -361,7 +372,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
         this.popoverVisible = !this.popoverVisible;
         this.hideBranchButtons();
-    }
+    };
 
     updateLevel() {
         let style = this.template.host.style.cssText;
@@ -546,7 +557,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             bubbles: true
         });
         this.dispatchEvent(actionClickEvent);
-        
+
         if (name === 'edit' && !actionClickEvent.defaultPrevented) {
             this.togglePopoverVisibility();
         }
@@ -560,9 +571,16 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._menuIsOpen = true;
     }
 
-    handleMouseDown = (event) => {
-        if (this.isDisabled) return;
+    handleLinkMouseDown(event) {
+        if (!this.sortable) return;
 
+        // Prevent the link from being dragged,
+        // to allow for dragging the whole item
+        event.preventDefault();
+    }
+
+    handleMouseDown = (event) => {
+        if (!this.sortable) return;
         event.stopPropagation();
 
         this.dispatchEvent(

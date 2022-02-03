@@ -8,7 +8,8 @@ export const Tree = ({
     isLoading,
     items,
     loadingStateAlternativeText,
-    selectedItem
+    selectedItem,
+    sortable
 }) => {
     const element = document.createElement('avonni-tree');
     element.actions = actions;
@@ -17,5 +18,6 @@ export const Tree = ({
     element.items = items;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.selectedItem = selectedItem;
+    element.sortable = sortable;
     return element;
 };
