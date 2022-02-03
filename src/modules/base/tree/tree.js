@@ -303,7 +303,11 @@ export default class Tree extends LightningElement {
             this.treedata.currentFocusedItemIndex
         );
 
-        if (currentFocused && currentFocused.key !== item.key) {
+        if (
+            currentFocused &&
+            currentFocused.key !== item.key &&
+            this.callbackMap[currentFocused.key]
+        ) {
             this.callbackMap[currentFocused.key].unfocus();
         }
         if (item) {

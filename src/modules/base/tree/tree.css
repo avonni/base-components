@@ -1,4 +1,4 @@
-.avonni-tree .avonni-tree__item .slds-is-disabled {
+.avonni-tree__item .slds-is-disabled {
     visibility: hidden;
 }
 
@@ -17,38 +17,6 @@
 .avonni-tree_container > .slds-text-heading--label,
 .avonni-tree_container > .slds-text-heading_label {
     margin-bottom: 0.5rem;
-}
-
-.avonni-tree [role='treeitem']:focus {
-    outline: 0;
-}
-
-.avonni-tree [role='treeitem']:focus > .avonni-tree__item {
-    background: #f3f2f2;
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.avonni-tree [aria-disabled='true'] {
-    color: #dddbda;
-}
-
-.avonni-tree [aria-disabled='true'] .avonni-tree__item.slds-is-hovered,
-.avonni-tree [aria-disabled='true'] .avonni-tree__item:hover {
-    background-color: transparent;
-    cursor: default;
-}
-
-.avonni-tree [aria-disabled='true'] .avonni-tree__item-meta {
-    color: inherit;
-}
-
-.avonni-tree [role='treeitem'] > [role='group'] {
-    display: none;
-}
-
-.avonni-tree [role='treeitem'][aria-expanded='true'] > [role='group'] {
-    display: block;
 }
 
 .avonni-tree__group-header {

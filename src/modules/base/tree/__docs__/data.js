@@ -4,6 +4,7 @@ export const ITEMS = [
         href: '#record1',
         name: 'node1',
         metatext: 'example of metatext',
+        disabled: true,
         items: [
             {
                 label: 'Go to Record 1.1',
