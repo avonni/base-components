@@ -1,7 +1,7 @@
 <template>
     <div class="slds-is-relative">
         <div
-            class="avonni-primitive-tree-item__item slds-is-relative"
+            class="avonni-primitive-tree-item__item slds-is-relative slds-grid"
             data-element-id="div-item"
             onclick={handleClick}
         >
@@ -30,20 +30,9 @@
                     onmouseenter={showBranchButtons}
                     onmouseleave={hideBranchButtons}
                 >
-                    <!-- Label input or text -->
-                    <lightning-input
-                        if:true={isLabelInlineEditable}
-                        label="Label"
-                        variant="label-hidden"
-                        value={label}
-                        data-element-id="lightning-input-inline-label"
-                        onchange={stopPropagation}
-                        onkeydown={handleLabelInlineEdit}
-                    ></lightning-input>
-                    <div if:false={isLabelInlineEditable} class="slds-truncate">
+                    <div class={computedLabelClass}>
                         <a
                             if:true={showLink}
-                            class="slds-m-top_xx-small"
                             href={href}
                             data-element-id="a-label-link"
                         >
@@ -51,9 +40,9 @@
                         </a>
                         <span if:false={showLink}>{label}</span>
                     </div>
-
+    
                     <div
-                        if:true={showEditButtons}
+                        if:true={actions.length}
                         class="
                             avonni-primitive-tree-item__branch-buttons
                             slds-grid slds-grid_vertical-align-center
@@ -61,70 +50,48 @@
                         data-element-id="div-branch-buttons"
                         onmousedown={stopPropagation}
                     >
-                        <!-- Edit label button -->
-                        <lightning-button-icon
-                            if:false={isLabelInlineEditable}
-                            class="
-                                slds-m-left_x-small
-                                slds-m-vertical_xx-small
-                                avonni-primitive-tree-item__edit-label-button
-                            "
-                            alternative-text="Edit label"
-                            icon-name="utility:edit"
-                            title="Edit label"
-                            variant="bare"
-                            onclick={handleEditInlineLabel}
-                        ></lightning-button-icon>
-
-                        <!-- Save label button -->
-                        <lightning-button-icon
-                            if:true={isLabelInlineEditable}
-                            class="slds-m-left_x-small slds-m-vertical_xx-small"
-                            icon-name="utility:check"
-                            variant="bare"
-                            onclick={handleSaveInlineLabel}
-                        ></lightning-button-icon>
-
-                        <!-- Button menu -->
-                        <div
-                            class="
-                                slds-p-horizontal_x-small
-                                slds-p-vertical_xx-small
-                            "
-                        >
-                            <lightning-button-menu
-                                alternative-text="Show menu"
-                                menu-alignment="right"
+    
+                        <!-- Action icons -->
+                        <template for:each={buttonActions} for:item="action">
+                            <lightning-button-icon
+                                key={action.name}
+                                class="slds-m-left_x-small slds-m-vertical_xx-small"
+                                alternative-text={action.label}
+                                disabled={isDisabled}
+                                icon-name={action.iconName}
+                                name={action.name}
                                 variant="bare"
-                                data-element-id="lightning-button-menu"
-                                onblur={hideBranchButtons}
-                                onclick={stopPropagation}
-                                onclose={handleMenuClose}
-                                onfocusout={stopPropagation}
-                                onopen={handleMenuOpen}
-                                onselect={handleMenuSelect}
-                            >
+                                onclick={handleActionClick}
+                            ></lightning-button-icon> 
+                        </template>
+    
+                        <!-- Action menu -->
+                        <lightning-button-menu
+                            class="slds-p-horizontal_x-small"
+                            alternative-text="Show menu"
+                            disabled={isDisabled}
+                            menu-alignment="right"
+                            variant="bare"
+                            data-element-id="lightning-button-menu"
+                            onblur={hideBranchButtons}
+                            onclick={stopPropagation}
+                            onclose={handleActionMenuClose}
+                            onfocusout={stopPropagation}
+                            onopen={handleActionMenuOpen}
+                            onselect={handleActionClick}
+                        >
+                            <template for:each={menuActions} for:item="action">
                                 <lightning-menu-item
-                                    value="edit"
-                                    label="Edit"
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    label={action.label}
+                                    value={action.name}
                                 ></lightning-menu-item>
-                                <lightning-menu-item
-                                    value="add"
-                                    label="Add"
-                                ></lightning-menu-item>
-                                <lightning-menu-item
-                                    value="duplicate"
-                                    label="Duplicate"
-                                ></lightning-menu-item>
-                                <lightning-menu-item
-                                    value="delete"
-                                    label="Delete"
-                                ></lightning-menu-item>
-                            </lightning-button-menu>
-                        </div>
+                            </template>
+                        </lightning-button-menu>
                     </div>
                 </div>
-
+    
                 <!-- Metatext -->
                 <div
                     if:true={metatext}
@@ -257,8 +224,9 @@
         <div if:true={showExpanded} role="group">
             <template for:each={childItems} for:item="item">
                 <c-primitive-tree-item
-                    class="avonni-primitive-tree-item__child-item"
+                    class="avonni-primitive-tree-item__child-item slds-is-relative"
                     key={item.key}
+                    actions={actions}
                     aria-disabled={item.isDisabled}
                     aria-expanded={item.strexpanded}
                     aria-label={item.label}
@@ -271,7 +239,6 @@
                     is-expanded={item.isExpanded}
                     is-leaf={item.isLeaf}
                     is-loading={item.isLoading}
-                    is-read-only={isReadOnly}
                     label={item.label}
                     level={item.level}
                     loading-state-alternative-text={loadingStateAlternativeText}

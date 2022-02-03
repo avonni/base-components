@@ -1,9 +1,18 @@
 import { Tree } from '../__examples__/tree';
-import { ITEMS } from './data';
+import { ACTIONS, ITEMS } from './data';
 
 export default {
     title: 'Example/Tree',
     argTypes: {
+        actions: {
+            control: {
+                type: 'object'
+            },
+            description: 'Array of action objects to display to the right of each item.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         header: {
             control: {
                 type: 'text'
@@ -33,17 +42,6 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        readOnly: {
-            name: 'read-only',
-            control: {
-                type: 'boolean'
-            },
-            description: 'If true, the tree is read only and cannot be edited.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false }
-            }
-        },
         isLoading: {
             name: 'is-loading',
             control: {
@@ -70,8 +68,7 @@ export default {
     },
     args: {
         isLoading: false,
-        loadingStateAlternativeText: 'Loading...',
-        readOnly: false
+        loadingStateAlternativeText: 'Loading...'
     }
 };
 
@@ -81,12 +78,12 @@ export const Base = Template.bind({});
 Base.args = {
     items: ITEMS,
     header: 'Base tree with a selected item',
-    selectedItem: 'node1-1-1'
+    // selectedItem: 'node1-1-1'
 };
 
-export const ReadOnly = Template.bind({});
-ReadOnly.args = {
+export const Actions = Template.bind({});
+Actions.args = {
+    actions: ACTIONS,
     items: ITEMS,
-    header: 'Read-only tree',
-    readOnly: true
+    header: 'Tree with all standard actions'
 };

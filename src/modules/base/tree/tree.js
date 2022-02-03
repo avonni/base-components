@@ -8,6 +8,7 @@ import {
     normalizeBoolean
 } from 'c/utilsPrivate';
 
+const DEFAULT_ACTION_NAMES = ['add', 'edit', 'delete', 'duplicate'];
 const DEFAULT_FOCUSED = { key: '1', parent: '0' };
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 
@@ -22,6 +23,7 @@ export default class Tree extends LightningElement {
      */
     @api header;
 
+    _actions = [];
     _isLoading = false;
     @track _items = [];
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -64,6 +66,20 @@ export default class Tree extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Array of action objects to display to the right of each item.
+     *
+     * @type {object[]}
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+
+    set actions(value) {
+        this._actions = normalizeArray(value);
+    }
 
     /**
      * If present, the tree is loading and shows a spinner.
@@ -134,29 +150,14 @@ export default class Tree extends LightningElement {
         if (this.isConnected) this.syncSelected();
     }
 
-    /**
-     * If true, the tree is read only and cannot be edited.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get readOnly() {
-        return this._readOnly;
-    }
-
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
 
-    get showAddButton() {
-        return !this.readOnly && !this.isLoading;
+    get addAction() {
+        return this.actions.find((action) => action.name === 'add');
     }
 
     /*
@@ -186,6 +187,27 @@ export default class Tree extends LightningElement {
         this._computedSelectedItem = treeRoot.selectedItem;
         this.rootElement = this.children.length > 0 ? treeRoot.key : null;
         if (this.rootElement) this.syncCurrentFocused();
+    }
+
+    addItem(parentKey) {
+        const name = generateUUID();
+        const newItem = {
+            label: 'New branch',
+            name,
+            items: []
+        };
+
+        if (parentKey) {
+            // Add a new item in a nested branch
+            const path = parentKey.split('.');
+            const branch = this.getBranch(path);
+            branch.items.unshift(newItem);
+        } else {
+            // Add a new item in the main branch
+            this.items.push(newItem);
+        }
+
+        this._selectedItem = name;
     }
 
     circleAndExpandHoveredItem() {
@@ -545,48 +567,50 @@ export default class Tree extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    handleAddBranch(event) {
-        const name = generateUUID();
-        const key = event.detail.key;
-        const newItem = {
-            label: 'New branch',
-            name,
-            items: [],
-            expanded: false
-        };
-
-        if (key) {
-            // Add a new item in a nested branch
-            const path = key.split('.');
-            const branch = this.getBranch(path);
-            branch.items.unshift(newItem);
-        } else {
-            // Add a new item in the main branch
-            this.items.push(newItem);
-        }
-
-        this._selectedItem = name;
-        this.initItems();
-        this.dispatchChange(name, 'add');
-        this._setFocus = true;
-    }
-
-    handleBranchAction(event) {
+    handleActionClick(event) {
         event.stopPropagation();
-
-        const { action, key } = event.detail;
+        const action = event.detail.name || 'add';
+        const key = event.detail.key;
         const item = this.treedata.getItem(key);
-        let previousName, name;
+        let name = item ? item.treeNode.name : null;
 
-        if (action === 'duplicate') {
-            previousName = item.treeNode.name;
-            this.duplicateItem(key);
-            name = this._selectedItem;
-        } else if (action === 'delete') {
-            const prevItem = this.treedata.findPrevNodeToFocus();
-            this._selectedItem = prevItem.treeNode.name;
-            this.deleteItem(key);
-            name = item.treeNode.name;
+        const actionClickEvent = new CustomEvent('actionclick', {
+            detail: {
+                name: action,
+                targetName: name
+            },
+            cancelable: true
+        })
+        this.dispatchEvent(actionClickEvent);
+
+        if (actionClickEvent.defaultPrevented || !DEFAULT_ACTION_NAMES.includes(action)) return;
+        
+        let previousName;
+        switch (action) {
+            case 'add': {
+                this.addItem(key);
+                break;
+            }
+            case 'edit': {
+                return;
+            }
+            case 'delete': {
+                const prevItem = this.treedata.findPrevNodeToFocus(item.index);
+                if (prevItem) {
+                    this._selectedItem = prevItem.treeNode.name;
+                }
+                this.deleteItem(key);
+                break;
+            }
+            case 'duplicate': {
+                previousName = item.treeNode.name;
+                this.duplicateItem(key);
+                name = this._selectedItem;
+                break;
+            }
+            default: {
+                break;
+            }
         }
 
         this.initItems();
@@ -833,14 +857,14 @@ export default class Tree extends LightningElement {
 
     handleRegistration(event) {
         event.stopPropagation();
-        const { bounds, key, focus, setBorder, removeBorder, unfocus } =
+        const { bounds, key, focus, removeBorder, setBorder, unfocus } =
             event.detail;
 
         this.callbackMap[key] = {
             bounds,
             focus,
-            setBorder,
             removeBorder,
+            setBorder,
             unfocus
         };
         this.treedata.addVisible(key);
