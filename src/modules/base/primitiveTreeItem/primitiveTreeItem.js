@@ -15,6 +15,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api nodeRef;
     @api nodeKey;
 
+    _actions = [];
     _level;
     _childItems = [];
     _focusedChild = null;
@@ -22,17 +23,16 @@ export default class PrimitiveTreeItem extends LightningElement {
     _isDisabled = false;
     _isExpanded = false;
     _isLoading = false;
-    _isReadOnly = false;
     _label;
     _metatext;
     _nodename;
 
+    buttonActions = [];
+    menuActions = [];
     draftValues;
     hasError = false;
-    isLabelInlineEditable = false;
     popoverVisible = false;
     _focusOnFirstPopoverElement = false;
-    _focusOnInlineLabelInput = false;
     _menuIsOpen = false;
 
     connectedCallback() {
@@ -43,8 +43,8 @@ export default class PrimitiveTreeItem extends LightningElement {
                 detail: {
                     bounds: this.getBounds,
                     focus: this.handleChildFocus,
-                    setBorder: this.setBorder,
                     removeBorder: this.removeBorder,
+                    setBorder: this.setBorder,
                     unfocus: this.handleChildUnfocus,
                     key: this.nodeKey
                 }
@@ -72,14 +72,6 @@ export default class PrimitiveTreeItem extends LightningElement {
             this._focusOnFirstPopoverElement = false;
         }
 
-        if (this._focusOnInlineLabelInput) {
-            this._focusOnInlineLabelInput = false;
-            const input = this.template.querySelector(
-                '[data-element-id="lightning-input-inline-label"]'
-            );
-            if (input) input.focus();
-        }
-
         if (this.popoverVisible) this.positionPopover();
     }
 
@@ -93,6 +85,15 @@ export default class PrimitiveTreeItem extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(value) {
+        this._actions = normalizeArray(value);
+        this.splitActions();
+    }
 
     @api
     get level() {
@@ -175,14 +176,6 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._nodename = value;
     }
 
-    @api
-    get isReadOnly() {
-        return this._isReadOnly;
-    }
-    set isReadOnly(value) {
-        this._isReadOnly = normalizeBoolean(value);
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -214,12 +207,14 @@ export default class PrimitiveTreeItem extends LightningElement {
             : 'utility:chevronright';
     }
 
-    get itemElement() {
-        return this.template.querySelector('[data-element-id="div-item"]');
+    get computedLabelClass() {
+        return classSet('slds-show slds-truncate').add({
+            'slds-p-vertical_xx-small': !this.actions.length
+        }).toString();
     }
 
-    get showEditButtons() {
-        return !this.isReadOnly && !this.isDisabled;
+    get itemElement() {
+        return this.template.querySelector('[data-element-id="div-item"]');
     }
 
     get showExpanded() {
@@ -228,7 +223,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     get showLink() {
-        return this.isReadOnly && this.href;
+        return !this.isDisabled && this.href;
     }
 
     /*
@@ -257,7 +252,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     hideBranchButtons() {
-        if (!this.popoverVisible && this.showEditButtons) {
+        if (!this.popoverVisible && this.actions.length) {
             this.template.querySelector(
                 '[data-element-id="div-branch-buttons"]'
             ).style.opacity = 0;
@@ -328,14 +323,28 @@ export default class PrimitiveTreeItem extends LightningElement {
     };
 
     showBranchButtons() {
-        if (!this.popoverVisible && this.showEditButtons) {
+        if (!this.popoverVisible && this.actions.length) {
             this.template.querySelector(
                 '[data-element-id="div-branch-buttons"]'
             ).style.opacity = 1;
         }
     }
 
-    togglePopoverVisibility() {
+    splitActions() {
+        const buttonActions = [];
+        const menuActions = [];
+        this._actions.forEach(action => {
+            if (action.alwaysVisible) {
+                buttonActions.push(action);
+            } else {
+                menuActions.push(action);
+            }
+        });
+        this.buttonActions = buttonActions;
+        this.menuActions = menuActions;
+    }
+
+    togglePopoverVisibility = () => {
         if (this.popoverVisible) {
             this.draftValues = undefined;
         } else {
@@ -469,11 +478,6 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.togglePopoverVisibility();
     }
 
-    handleEditInlineLabel() {
-        this.isLabelInlineEditable = true;
-        this._focusOnInlineLabelInput = true;
-    }
-
     handleExpandedEdit(event) {
         event.stopPropagation();
         this.draftValues.isExpanded = event.detail.checked;
@@ -525,60 +529,40 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.draftValues.label = event.detail.value;
     }
 
-    handleLabelInlineEdit(event) {
-        event.stopPropagation();
-        if (event.key === 'Enter') this.handleSaveInlineLabel();
-    }
-
     handleMetatextEdit(event) {
         event.stopPropagation();
         this.draftValues.metatext = event.detail.value;
     }
 
-    handleMenuClose() {
-        this._menuIsOpen = false;
-    }
-
-    handleMenuOpen() {
-        this._menuIsOpen = true;
-    }
-
-    handleMenuSelect(event) {
-        const action = event.detail.value;
-
-        switch (action) {
-            case 'add':
-                this.dispatchEvent(
-                    new CustomEvent('addbranch', {
-                        composed: true,
-                        bubbles: true,
-                        detail: {
-                            key: this.nodeKey
-                        }
-                    })
-                );
-                break;
-
-            case 'edit':
-                this.togglePopoverVisibility();
-                break;
-
-            default:
-                this.dispatchEvent(
-                    new CustomEvent('branchaction', {
-                        composed: true,
-                        bubbles: true,
-                        detail: {
-                            action,
-                            key: this.nodeKey
-                        }
-                    })
-                );
-                break;
+    handleActionClick(event) {
+        const name = event.detail.value || event.currentTarget.name;
+        const actionClickEvent = new CustomEvent('privateactionclick', {
+            detail: {
+                key: this.nodeKey,
+                name
+            },
+            cancelable: true,
+            composed: true,
+            bubbles: true
+        });
+        this.dispatchEvent(actionClickEvent);
+        
+        if (name === 'edit' && !actionClickEvent.defaultPrevented) {
+            this.togglePopoverVisibility();
         }
     }
 
+    handleActionMenuClose() {
+        this._menuIsOpen = false;
+    }
+
+    handleActionMenuOpen() {
+        this._menuIsOpen = true;
+    }
+
     handleMouseDown = (event) => {
+        if (this.isDisabled) return;
+
         event.stopPropagation();
 
         this.dispatchEvent(
@@ -618,31 +602,6 @@ export default class PrimitiveTreeItem extends LightningElement {
                 .focus();
             event.preventDefault();
         }
-    }
-
-    handleSaveInlineLabel() {
-        const labelInlineInput = this.template.querySelector(
-            '[data-element-id="lightning-input-inline-label"]'
-        );
-
-        if (!labelInlineInput || !this.validate(labelInlineInput)) return;
-
-        this._label = labelInlineInput.value;
-
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    values: {
-                        label: this.label
-                    },
-                    key: this.nodeKey
-                },
-                composed: true,
-                bubbles: true
-            })
-        );
-
-        this.isLabelInlineEditable = false;
     }
 
     stopPropagation(event) {

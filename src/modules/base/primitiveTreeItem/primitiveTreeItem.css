@@ -35,9 +35,6 @@
 }
 
 .avonni-primitive-tree-item__item {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     padding: 0.25rem 0 0.25rem var(--avonni-tree-item-offset-left, 1rem);
     -webkit-touch-callout: none;
     -webkit-user-select: none;
@@ -98,10 +95,15 @@
     transform: rotate(90deg);
 }
 
+.avonni-primitive-tree-item__child-item {
+    z-index: 1;
+}
+
 .avonni-primitive-tree-item__edit-label-button {
     --sds-c-icon-color-foreground: #969492;
 }
 
 .avonni-primitive-tree-item__loading-spinner {
     height: 3rem;
+    z-index: 0;
 }

@@ -8,11 +8,11 @@
     >
         <div class="slds-theme_default slds-box">
             <c-tree
+                actions={actions}
                 header={header}
                 is-loading={isLoading}
                 items={items}
                 loading-state-alternative-text={loadingStateAlternativeText}
-                read-only={readOnly}
                 selected-item={selectedItem}
                 onselect={handleSelect}
             ></c-tree>

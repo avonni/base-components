@@ -1,3 +1,28 @@
+export const ACTIONS = [
+    {
+        name: 'edit',
+        label: 'Edit',
+        iconName: 'utility:edit',
+        alwaysVisible: true
+    },
+    {
+        name: 'add',
+        label: 'Add'
+    },
+    {
+        name: 'duplicate',
+        label: 'Duplicate'
+    },
+    {
+        name: 'delete',
+        label: 'Delete'
+    },
+    {
+        name: 'customAction',
+        label: 'Custom action'
+    },
+];
+
 export const ITEMS = [
     {
         label: 'Go to Record 1',

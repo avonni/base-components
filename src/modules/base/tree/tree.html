@@ -2,9 +2,8 @@
     <div
         class="avonni-tree_container"
         data-element-id="div-tree-wrapper"
-        onaddbranch={handleAddBranch}
-        onbranchaction={handleBranchAction}
         onchange={handleChange}
+        onprivateactionclick={handleActionClick}
         onprivatemousedown={handleMouseDown}
         onprivateitemclick={handleClick}
         onprivateitemkeydown={handleKeydown}
@@ -26,6 +25,7 @@
             <template for:each={children} for:item="item" for:index="index">
                 <c-primitive-tree-item
                     key={item.key}
+                    actions={actions}
                     aria-disabled={item.isDisabled}
                     aria-expanded={item.strexpanded}
                     aria-label={item.label}
@@ -37,7 +37,6 @@
                     is-disabled={item.isDisabled}
                     is-expanded={item.isExpanded}
                     is-loading={item.isLoading}
-                    is-read-only={readOnly}
                     is-leaf={item.isLeaf}
                     label={item.label}
                     level={item.level}
@@ -54,14 +53,21 @@
     </div>
 
     <button
-        if:true={showAddButton}
+        if:true={addAction}
         class="
             slds-button slds-button_neutral slds-button_stretch
             slds-m-top_xx-small
             slds-m-left_none
         "
-        onclick={handleAddBranch}
+        onclick={handleActionClick}
     >
+        <lightning-icon
+            if:true={addAction.iconName}
+            class="slds-m-right_x-small slds-current-color"
+            icon-name={addAction.iconName}
+            size="xx-small"
+            variant="brand"
+        ></lightning-icon>
         Add item
     </button>
 </template>
