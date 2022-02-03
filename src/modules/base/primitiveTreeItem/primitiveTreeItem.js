@@ -418,6 +418,9 @@ export default class PrimitiveTreeItem extends LightningElement {
                 }
             });
             this.dispatchEvent(customEvent);
+            if (customEvent.defaultPrevented) {
+                event.preventDefault();
+            }
         }
     }
 
@@ -626,19 +629,6 @@ export default class PrimitiveTreeItem extends LightningElement {
         );
 
         this.isLabelInlineEditable = false;
-    }
-
-    dispatchCustomEvent(eventName, item) {
-        const eventObject = {
-            bubbles: true,
-            composed: true,
-            cancelable: false
-        };
-        if (item !== undefined) {
-            eventObject.detail = { key: item };
-        }
-
-        this.dispatchEvent(new CustomEvent(eventName, eventObject));
     }
 
     stopPropagation(event) {

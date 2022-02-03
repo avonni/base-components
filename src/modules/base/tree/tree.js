@@ -178,7 +178,7 @@ export default class Tree extends LightningElement {
         if (!node.isLeaf && !node.isDisabled) {
             node.nodeRef.expanded = false;
             this.treedata.updateVisibleTreeItemsOnCollapse(node.key);
-            this.dispatchChange();
+            this.dispatchChange(node.name, 'collapse');
         }
     }
 
@@ -250,7 +250,7 @@ export default class Tree extends LightningElement {
             }
 
             // Need to dispatch a change event specifically for interop to pick up the change to node.expanded
-            this.dispatchChange();
+            this.dispatchChange(node.name, 'expand');
         }
     }
 
@@ -516,7 +516,7 @@ export default class Tree extends LightningElement {
 
         this._selectedItem = name;
         this.initItems();
-        this.dispatchChange();
+        this.dispatchChange(name, 'add');
         this._setFocus = true;
     }
 
@@ -524,17 +524,22 @@ export default class Tree extends LightningElement {
         event.stopPropagation();
 
         const { action, key } = event.detail;
+        const item = this.treedata.getItem(key);
+        let previousName, name;
 
         if (action === 'duplicate') {
+            previousName = item.treeNode.name;
             this.duplicateItem(key);
+            name = this._selectedItem;
         } else if (action === 'delete') {
             const prevItem = this.treedata.findPrevNodeToFocus();
             this._selectedItem = prevItem.treeNode.name;
             this.deleteItem(key);
+            name = item.treeNode.name;
         }
 
         this.initItems();
-        this.dispatchChange();
+        this.dispatchChange(name, action, previousName);
         this._setFocus = true;
     }
 
@@ -544,13 +549,15 @@ export default class Tree extends LightningElement {
         const { key, values } = event.detail;
         const path = key.split('.');
         const item = this.getBranch(path);
+        const previousName =
+            values.name && item.name !== values.name ? item.name : null;
 
         Object.entries(values).forEach(([property, value]) => {
             item[property] = value;
         });
 
         this.initItems();
-        this.dispatchChange();
+        this.dispatchChange(item.name, 'edit', previousName);
         this._setFocus = true;
     }
 
@@ -573,7 +580,7 @@ export default class Tree extends LightningElement {
                 }
             } else if (target === 'anchor') {
                 this._computedSelectedItem = item;
-                this.dispatchSelectEvent(item.treeNode);
+                this.dispatchSelectEvent(item.treeNode, event);
                 this.setFocusToItem(item);
             }
         }
@@ -745,7 +752,7 @@ export default class Tree extends LightningElement {
             );
             initialPosition.items.splice(initialItemNewIndex, 1);
             this.initItems();
-            this.dispatchChange();
+            this.dispatchChange(initialItem.name, 'move');
         }
 
         this._dragState = null;
@@ -788,17 +795,20 @@ export default class Tree extends LightningElement {
         this.treedata.addVisible(key);
     }
 
-    dispatchChange() {
+    dispatchChange(name, action, previousName) {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    items: deepCopy(this.items)
+                    action,
+                    items: deepCopy(this.items),
+                    name,
+                    previousName
                 }
             })
         );
     }
 
-    dispatchSelectEvent(node) {
+    dispatchSelectEvent(node, event) {
         if (!node.isDisabled) {
             const customEvent = new CustomEvent('select', {
                 bubbles: true,
@@ -807,6 +817,10 @@ export default class Tree extends LightningElement {
                 detail: { name: node.name }
             });
             this.dispatchEvent(customEvent);
+
+            if (customEvent.defaultPrevented) {
+                event.preventDefault();
+            }
         }
     }
 }
