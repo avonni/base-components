@@ -40,21 +40,30 @@
                         onchange={stopPropagation}
                         onkeydown={handleLabelInlineEdit}
                     ></lightning-input>
-                    <a
-                        if:false={isLabelInlineEditable}
-                        class="
-                            avonni-primitive-tree-item__item-label
-                            slds-truncate
-                        "
-                        href={href}
-                        data-element-id="a-label-link"
-                        onclick={handleLinkClick}
-                        onmousedown={handleLinkMouseDown}
-                    >
-                        {label}
-                    </a>
+                    <template if:false={isLabelInlineEditable}>
+                        <a
+                            if:true={showLink}
+                            class="
+                                avonni-primitive-tree-item__item-label
+                                slds-truncate
+                            "
+                            href={href}
+                            data-element-id="a-label-link"
+                        >
+                            {label}
+                        </a>
+                        <span
+                            if:false={showLink}
+                            class="
+                                avonni-primitive-tree-item__item-label
+                                slds-truncate
+                            "
+                            >{label}</span
+                        >
+                    </template>
 
                     <div
+                        if:false={readOnly}
                         class="
                             avonni-primitive-tree-item__branch-buttons
                             slds-grid slds-grid_vertical-align-center
@@ -126,22 +135,28 @@
                 </div>
 
                 <!-- Metatext -->
-                <a
-                    if:true={metatext}
-                    href={href}
-                    onclick={handleLinkClick}
-                    onmousedown={handleLinkMouseDown}
-                >
+                <template if:true={metatext}>
+                    <a if:true={showLink} href={href}>
+                        <span
+                            class="
+                                avonni-primitive-tree-item__item-meta
+                                slds-truncate
+                            "
+                            title={metatext}
+                            >{metatext}</span
+                        >
+                    </a>
+
                     <span
+                        if:false={showLink}
                         class="
                             avonni-primitive-tree-item__item-meta
                             slds-truncate
                         "
                         title={metatext}
+                        >{metatext}</span
                     >
-                        <span class="slds-assistive-text">:</span>{metatext}
-                    </span>
-                </a>
+                </template>
             </div>
         </div>
 
@@ -279,10 +294,10 @@
                     node-key={item.key}
                     node-ref={item.nodeRef}
                     nodename={item.name}
+                    read-only={readOnly}
                     role="treeitem"
                     data-element-id="avonni-primitive-tree-item"
                     data-key={item.key}
-                    style="background: tomato"
                 ></c-primitive-tree-item>
             </template>
         </div>

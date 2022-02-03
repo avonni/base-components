@@ -1,7 +1,12 @@
 import { LightningElement, api, track } from 'lwc';
 import { TreeData } from './treeData';
 import { generateUUID } from 'c/utils';
-import { keyCodes, deepCopy, normalizeArray } from 'c/utilsPrivate';
+import {
+    keyCodes,
+    deepCopy,
+    normalizeArray,
+    normalizeBoolean
+} from 'c/utilsPrivate';
 
 const DEFAULT_FOCUSED = { key: '1', parent: '0' };
 
@@ -15,7 +20,10 @@ export default class Tree extends LightningElement {
      * @type {string}
      */
     @api header;
+
     @track _items = [];
+    _readOnly = false;
+    _selectedItem;
 
     callbackMap = {};
     @track children = [];
@@ -25,7 +33,6 @@ export default class Tree extends LightningElement {
     _computedSelectedItem;
     _currentFocusedItem;
     _dragState;
-    _selectedItem;
     _setFocus = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
@@ -88,6 +95,21 @@ export default class Tree extends LightningElement {
     set selectedItem(value) {
         this._selectedItem = value;
         if (this.isConnected) this.syncSelected();
+    }
+
+    /**
+     * If true, the tree is read only and cannot be edited.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
     }
 
     /*

@@ -23,6 +23,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _label;
     _metatext;
     _nodename;
+    _readOnly = false;
 
     draftValues;
     hasError = false;
@@ -164,6 +165,14 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._nodename = value;
     }
 
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -204,6 +213,10 @@ export default class PrimitiveTreeItem extends LightningElement {
         return !this.isDisabled && this.nodeRef.expanded;
     }
 
+    get showLink() {
+        return this.readOnly && this.href;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -230,7 +243,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     hideBranchButtons() {
-        if (!this.popoverVisible) {
+        if (!this.popoverVisible && !this.readOnly) {
             this.template.querySelector(
                 '[data-element-id="div-branch-buttons"]'
             ).style.opacity = 0;
@@ -301,7 +314,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     };
 
     showBranchButtons() {
-        if (!this.popoverVisible) {
+        if (!this.popoverVisible && !this.readOnly) {
             this.template.querySelector(
                 '[data-element-id="div-branch-buttons"]'
             ).style.opacity = 1;
@@ -498,16 +511,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     handleLabelInlineEdit(event) {
         event.stopPropagation();
         if (event.key === 'Enter') this.handleSaveInlineLabel();
-    }
-
-    handleLinkClick(event) {
-        if (!this.href) event.preventDefault();
-    }
-
-    handleLinkMouseDown(event) {
-        // Prevent the link from being dragged,
-        // to allow for dragging the whole item
-        event.preventDefault();
     }
 
     handleMetatextEdit(event) {
