@@ -52,6 +52,7 @@ export const ListView = ({
     label,
     loadingStateAlternativeText,
     menuAlignment,
+    menuLength,
     nubbin,
     searchInputPlaceholder,
     title,
@@ -74,6 +75,7 @@ export const ListView = ({
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.menuAlignment = menuAlignment;
+    element.menuLength = menuLength;
     element.nubbin = nubbin;
     element.searchInputPlaceholder = searchInputPlaceholder;
     element.title = title;

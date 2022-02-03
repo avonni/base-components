@@ -202,6 +202,20 @@ export default {
                 defaultValue: { summary: 'left' }
             }
         },
+        menuLength: {
+            name: 'menu-length',
+            control: {
+                type: 'select'
+            },
+            options: ['5-items', '7-items', '10-items'],
+            defaultValue: '7-items',
+            description:
+                'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '7-items' }
+            }
+        },
         nubbin: {
             control: {
                 type: 'boolean'
@@ -285,6 +299,7 @@ export default {
         iconSize: 'medium',
         isLoading: false,
         menuAlignment: 'left',
+        menuLength: '7-items',
         nubbin: false,
         searchInputPlaceholder: 'Search…',
         variant: 'border',

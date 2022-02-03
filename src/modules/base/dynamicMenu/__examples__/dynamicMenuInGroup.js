@@ -51,8 +51,9 @@ export const DynamicMenuInGroup = ({
     items,
     label,
     loadingStateAlternativeText,
-    menuAlignment,
     nubbin,
+    menuAlignment,
+    menuLength,
     searchInputPlaceholder,
     title,
     tooltip,
@@ -65,16 +66,17 @@ export const DynamicMenuInGroup = ({
     element.alternativeText = alternativeText;
     element.buttonSize = buttonSize;
     element.disabled = disabled;
-    element.iconName = iconName;
     element.hideCheckMark = hideCheckMark;
+    element.iconName = iconName;
     element.iconPosition = iconPosition;
     element.iconSize = iconSize;
     element.isLoading = isLoading;
     element.items = items;
     element.label = label;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
-    element.menuAlignment = menuAlignment;
     element.nubbin = nubbin;
+    element.menuAlignment = menuAlignment;
+    element.menuLength = menuLength;
     element.searchInputPlaceholder = searchInputPlaceholder;
     element.title = title;
     element.tooltip = tooltip;
