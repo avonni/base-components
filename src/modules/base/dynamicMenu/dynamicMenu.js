@@ -39,18 +39,6 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 
-const MENU_ALIGNMENTS = {
-    valid: [
-        'left',
-        'center',
-        'right',
-        'bottom-left',
-        'bottom-center',
-        'bottom-right'
-    ],
-    default: 'left'
-};
-
 const BUTTON_SIZES = {
     valid: ['auto', 'stretch'],
     default: 'auto'
@@ -78,6 +66,23 @@ const ICON_SIZES = {
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
     default: 'left'
+};
+
+const MENU_ALIGNMENTS = {
+    valid: [
+        'left',
+        'center',
+        'right',
+        'bottom-left',
+        'bottom-center',
+        'bottom-right'
+    ],
+    default: 'left'
+};
+
+const MENU_LENGTHS = {
+    valid: ['5-items', '7-items', '10-items'],
+    default: '7-items'
 };
 
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
@@ -155,6 +160,7 @@ export default class DynamicMenu extends LightningElement {
     _isLoading;
     _items = [];
     _menuAlignment = MENU_ALIGNMENTS.default;
+    _menuLength = MENU_LENGTHS.default;
     _value;
     _variant = BUTTON_VARIANTS.default;
 
@@ -370,6 +376,25 @@ export default class DynamicMenu extends LightningElement {
         this._menuAlignment = normalizeString(value, {
             fallbackValue: MENU_ALIGNMENTS.default,
             validValues: MENU_ALIGNMENTS.valid
+        });
+    }
+
+    /**
+     * Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.
+     *
+     * @type {string}
+     * @default 7-items
+     * @public
+     */
+    @api
+    get menuLength() {
+        return this._menuLength;
+    }
+
+    set menuLength(value) {
+        this._menuLength = normalizeString(value, {
+            fallbackValue: MENU_LENGTHS.default,
+            validValues: MENU_LENGTHS.valid
         });
     }
 

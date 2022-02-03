@@ -34,9 +34,10 @@ import { LightningElement, api } from 'lwc';
 
 const DEFAULT_SEARCH_INPUT_PLACEHOLDER = 'Search…';
 const DEFAULT_BUTTON_VARIANT = 'border';
-const DEFAULT_MENU_ALIGNMENT = 'left';
 const DEFAULT_ICON_SIZE = 'medium';
 const DEFAULT_ICON_POSITION = 'left';
+const DEFAULT_MENU_ALIGNMENT = 'left';
+const DEFAULT_MENU_LENGTH = '7-items';
 
 export default class DynamicMenuInGroup extends LightningElement {
     @api accessKey;
@@ -53,6 +54,7 @@ export default class DynamicMenuInGroup extends LightningElement {
     @api label;
     @api loadingStateAlternativeText;
     @api menuAlignment = DEFAULT_MENU_ALIGNMENT;
+    @api menuLength = DEFAULT_MENU_LENGTH;
     @api nubbin = false;
     @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     @api title;
