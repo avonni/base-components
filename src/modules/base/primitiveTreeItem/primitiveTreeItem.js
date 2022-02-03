@@ -20,10 +20,10 @@ export default class PrimitiveTreeItem extends LightningElement {
     _href;
     _isDisabled = false;
     _isExpanded = false;
+    _isReadOnly = false;
     _label;
     _metatext;
     _nodename;
-    _readOnly = false;
 
     draftValues;
     hasError = false;
@@ -166,11 +166,11 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
-    get readOnly() {
-        return this._readOnly;
+    get isReadOnly() {
+        return this._isReadOnly;
     }
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
+    set isReadOnly(value) {
+        this._isReadOnly = normalizeBoolean(value);
     }
 
     /*
@@ -208,13 +208,17 @@ export default class PrimitiveTreeItem extends LightningElement {
         return this.template.querySelector('[data-element-id="div-item"]');
     }
 
+    get showEditButtons() {
+        return !this.isReadOnly && !this.isDisabled;
+    }
+
     get showExpanded() {
         if (!this.nodeRef) return false;
         return !this.isDisabled && this.nodeRef.expanded;
     }
 
     get showLink() {
-        return this.readOnly && this.href;
+        return this.isReadOnly && this.href;
     }
 
     /*
@@ -243,7 +247,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     hideBranchButtons() {
-        if (!this.popoverVisible && !this.readOnly) {
+        if (!this.popoverVisible && this.showEditButtons) {
             this.template.querySelector(
                 '[data-element-id="div-branch-buttons"]'
             ).style.opacity = 0;
@@ -314,7 +318,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     };
 
     showBranchButtons() {
-        if (!this.popoverVisible && !this.readOnly) {
+        if (!this.popoverVisible && this.showEditButtons) {
             this.template.querySelector(
                 '[data-element-id="div-branch-buttons"]'
             ).style.opacity = 1;

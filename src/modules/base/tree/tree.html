@@ -26,6 +26,7 @@
                 href={item.href}
                 is-disabled={item.isDisabled}
                 is-expanded={item.isExpanded}
+                is-read-only={readOnly}
                 is-leaf={item.isLeaf}
                 label={item.label}
                 level={item.level}
@@ -33,7 +34,6 @@
                 node-key={item.key}
                 node-ref={item.nodeRef}
                 nodename={item.name}
-                read-only={readOnly}
                 role="treeitem"
                 data-key={item.key}
             ></c-primitive-tree-item>

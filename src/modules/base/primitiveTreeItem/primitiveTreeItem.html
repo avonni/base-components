@@ -40,31 +40,20 @@
                         onchange={stopPropagation}
                         onkeydown={handleLabelInlineEdit}
                     ></lightning-input>
-                    <template if:false={isLabelInlineEditable}>
+                    <div if:false={isLabelInlineEditable} class="slds-truncate">
                         <a
                             if:true={showLink}
-                            class="
-                                avonni-primitive-tree-item__item-label
-                                slds-truncate
-                                slds-m-top_xx-small
-                            "
+                            class="slds-m-top_xx-small"
                             href={href}
                             data-element-id="a-label-link"
                         >
                             {label}
                         </a>
-                        <span
-                            if:false={showLink}
-                            class="
-                                avonni-primitive-tree-item__item-label
-                                slds-truncate
-                            "
-                            >{label}</span
-                        >
-                    </template>
+                        <span if:false={showLink}>{label}</span>
+                    </div>
 
                     <div
-                        if:false={readOnly}
+                        if:true={showEditButtons}
                         class="
                             avonni-primitive-tree-item__branch-buttons
                             slds-grid slds-grid_vertical-align-center
@@ -136,28 +125,18 @@
                 </div>
 
                 <!-- Metatext -->
-                <template if:true={metatext}>
-                    <a if:true={showLink} href={href}>
-                        <span
-                            class="
-                                avonni-primitive-tree-item__item-meta
-                                slds-truncate
-                            "
-                            title={metatext}
-                            >{metatext}</span
-                        >
-                    </a>
-
-                    <span
-                        if:false={showLink}
-                        class="
-                            avonni-primitive-tree-item__item-meta
-                            slds-truncate
-                        "
-                        title={metatext}
-                        >{metatext}</span
-                    >
-                </template>
+                <div
+                    if:true={metatext}
+                    class="
+                        slds-truncate
+                        slds-text-color_weak
+                        avonni-primitive-tree-item__metatext
+                    "
+                    title={metatext}
+                >
+                    <a if:true={showLink} href={href}> {metatext} </a>
+                    <span if:false={showLink}>{metatext}</span>
+                </div>
             </div>
         </div>
 
@@ -277,6 +256,7 @@
         <div if:true={showExpanded} role="group">
             <template for:each={childItems} for:item="item">
                 <c-primitive-tree-item
+                    class="avonni-primitive-tree-item__child-item"
                     key={item.key}
                     aria-disabled={item.isDisabled}
                     aria-expanded={item.strexpanded}
@@ -289,13 +269,13 @@
                     is-disabled={item.isDisabled}
                     is-expanded={item.isExpanded}
                     is-leaf={item.isLeaf}
+                    is-read-only={isReadOnly}
                     label={item.label}
                     level={item.level}
                     metatext={item.metatext}
                     node-key={item.key}
                     node-ref={item.nodeRef}
                     nodename={item.name}
-                    read-only={readOnly}
                     role="treeitem"
                     data-element-id="avonni-primitive-tree-item"
                     data-key={item.key}
