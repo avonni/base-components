@@ -34,6 +34,8 @@ import { createElement } from 'lwc';
 import DynamicMenu from 'c/dynamicMenu';
 import { baseItems } from '../__docs__/data';
 
+// not tested menuLength because of offsetHeight in the DOM
+
 let element;
 describe('Dynamic Menu', () => {
     afterEach(() => {
@@ -63,6 +65,7 @@ describe('Dynamic Menu', () => {
         expect(element.label).toBeUndefined();
         expect(element.loadingStateAlternativeText).toBeUndefined();
         expect(element.menuAlignment).toBe('left');
+        expect(element.menuLength).toBe('7-items');
         expect(element.nubbin).toBeFalsy();
         expect(element.searchInputPlaceholder).toBe('Search…');
         expect(element.title).toBeUndefined();
