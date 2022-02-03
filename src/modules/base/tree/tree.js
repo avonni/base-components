@@ -29,6 +29,7 @@ export default class Tree extends LightningElement {
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
     _selectedItem;
+    _sortable = false;
 
     callbackMap = {};
     @track children = [];
@@ -150,6 +151,22 @@ export default class Tree extends LightningElement {
         if (this.isConnected) this.syncSelected();
     }
 
+    /**
+     * If present, the tree item are sortable.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get sortable() {
+        return this._sortable;
+    }
+
+    set sortable(value) {
+        this._sortable = value;
+        if (this.isConnected) this.syncSelected();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -217,6 +234,12 @@ export default class Tree extends LightningElement {
         )
             return;
 
+        if (this._dragState.item.treeNode.isDisabled) {
+            this._dragState.initialX = undefined;
+            return;
+        }
+
+        this._dragState.position = 'center';
         const { key, treeNode, index } = this._dragState.item;
         const borderedKey = this._dragState.borderedItem
             ? this._dragState.borderedItem.key
@@ -580,11 +603,15 @@ export default class Tree extends LightningElement {
                 targetName: name
             },
             cancelable: true
-        })
+        });
         this.dispatchEvent(actionClickEvent);
 
-        if (actionClickEvent.defaultPrevented || !DEFAULT_ACTION_NAMES.includes(action)) return;
-        
+        if (
+            actionClickEvent.defaultPrevented ||
+            !DEFAULT_ACTION_NAMES.includes(action)
+        )
+            return;
+
         let previousName;
         switch (action) {
             case 'add': {
@@ -701,6 +728,7 @@ export default class Tree extends LightningElement {
 
     handleMouseDown(event) {
         event.stopPropagation();
+        if (!this.sortable) return;
 
         // Start the dragging process only if the button is pressed long enough
         clearTimeout(this._mouseDownTimeout);
@@ -727,7 +755,7 @@ export default class Tree extends LightningElement {
     }
 
     handleMouseMove = (event) => {
-        if (!this._dragState) return;
+        if (!this._dragState || !this.sortable) return;
 
         const {
             bottomLimit,
@@ -754,7 +782,6 @@ export default class Tree extends LightningElement {
         } else if (isOnTop) {
             this.showTopBorderOnHoveredItem(event.clientX);
         } else if (isInCenter) {
-            this._dragState.position = 'center';
             this.circleAndExpandHoveredItem();
         } else if (isOnBottom) {
             this.showBottomBorderOnHoveredItem(event.clientX);
@@ -778,7 +805,7 @@ export default class Tree extends LightningElement {
     handleMouseUp = () => {
         clearTimeout(this._mouseDownTimeout);
         clearTimeout(this._mouseOverItemTimeout);
-        if (!this._dragState) return;
+        if (!this._dragState || !this.sortable) return;
 
         const { borderedItem, item, key, position } = this._dragState;
         const borderedKey = borderedItem ? borderedItem.key : item.key;

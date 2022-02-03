@@ -1,12 +1,9 @@
 <template>
-    <div
-        class="
-            slds-grid slds-grid_align-end
-            slds-theme_shade
-            slds-p-around_medium
-        "
-    >
-        <div class="slds-theme_default slds-box">
+    <div class="slds-theme_shade slds-p-around_medium">
+        <div
+            class="slds-theme_default slds-box"
+            style="max-width: 300px; margin: 0 auto"
+        >
             <c-tree
                 actions={actions}
                 header={header}
@@ -14,6 +11,7 @@
                 items={items}
                 loading-state-alternative-text={loadingStateAlternativeText}
                 selected-item={selectedItem}
+                sortable={sortable}
                 onselect={handleSelect}
             ></c-tree>
         </div>

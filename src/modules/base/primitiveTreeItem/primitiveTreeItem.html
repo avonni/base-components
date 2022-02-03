@@ -35,12 +35,13 @@
                             if:true={showLink}
                             href={href}
                             data-element-id="a-label-link"
+                            onmousedown={handleLinkMouseDown}
                         >
                             {label}
                         </a>
                         <span if:false={showLink}>{label}</span>
                     </div>
-    
+
                     <div
                         if:true={actions.length}
                         class="
@@ -50,21 +51,23 @@
                         data-element-id="div-branch-buttons"
                         onmousedown={stopPropagation}
                     >
-    
                         <!-- Action icons -->
                         <template for:each={buttonActions} for:item="action">
                             <lightning-button-icon
                                 key={action.name}
-                                class="slds-m-left_x-small slds-m-vertical_xx-small"
+                                class="
+                                    slds-m-left_x-small
+                                    slds-m-vertical_xx-small
+                                "
                                 alternative-text={action.label}
                                 disabled={isDisabled}
                                 icon-name={action.iconName}
                                 name={action.name}
                                 variant="bare"
                                 onclick={handleActionClick}
-                            ></lightning-button-icon> 
+                            ></lightning-button-icon>
                         </template>
-    
+
                         <!-- Action menu -->
                         <lightning-button-menu
                             class="slds-p-horizontal_x-small"
@@ -91,7 +94,7 @@
                         </lightning-button-menu>
                     </div>
                 </div>
-    
+
                 <!-- Metatext -->
                 <div
                     if:true={metatext}
@@ -102,7 +105,12 @@
                     "
                     title={metatext}
                 >
-                    <a if:true={showLink} href={href}> {metatext} </a>
+                    <a
+                        if:true={showLink}
+                        href={href}
+                        onmousedown={handleLinkMouseDown}
+                        >{metatext}</a
+                    >
                     <span if:false={showLink}>{metatext}</span>
                 </div>
             </div>
@@ -224,7 +232,10 @@
         <div if:true={showExpanded} role="group">
             <template for:each={childItems} for:item="item">
                 <c-primitive-tree-item
-                    class="avonni-primitive-tree-item__child-item slds-is-relative"
+                    class="
+                        avonni-primitive-tree-item__child-item
+                        slds-is-relative
+                    "
                     key={item.key}
                     actions={actions}
                     aria-disabled={item.isDisabled}
@@ -247,6 +258,7 @@
                     node-ref={item.nodeRef}
                     nodename={item.name}
                     role="treeitem"
+                    sortable={sortable}
                     data-element-id="avonni-primitive-tree-item"
                     data-key={item.key}
                 ></c-primitive-tree-item>
