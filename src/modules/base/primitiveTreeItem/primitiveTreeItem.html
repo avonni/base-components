@@ -69,6 +69,7 @@
                                 slds-m-vertical_xx-small
                                 avonni-primitive-tree-item__edit-label-button
                             "
+                            alternative-text="Edit label"
                             icon-name="utility:edit"
                             title="Edit label"
                             variant="bare"
@@ -269,9 +270,11 @@
                     is-disabled={item.isDisabled}
                     is-expanded={item.isExpanded}
                     is-leaf={item.isLeaf}
+                    is-loading={item.isLoading}
                     is-read-only={isReadOnly}
                     label={item.label}
                     level={item.level}
+                    loading-state-alternative-text={loadingStateAlternativeText}
                     metatext={item.metatext}
                     node-key={item.key}
                     node-ref={item.nodeRef}
@@ -281,6 +284,19 @@
                     data-key={item.key}
                 ></c-primitive-tree-item>
             </template>
+
+            <div
+                if:true={isLoading}
+                class="
+                    avonni-primitive-tree-item__loading-spinner
+                    slds-is-relative
+                "
+            >
+                <lightning-spinner
+                    alternative-text={loadingStateAlternativeText}
+                    size="small"
+                ></lightning-spinner>
+            </div>
         </div>
     </div>
 </template>

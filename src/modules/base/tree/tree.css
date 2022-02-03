@@ -1,25 +1,8 @@
-.avonni-tree__item .slds-is-disabled {
-    visibility: hidden;
-}
-
-.avonni-tree .slds-is-focused {
-    text-decoration: underline;
-}
-
-.avonni-tree-container,
-.avonni-tree_container {
-    min-width: 7.5rem;
-    max-width: var(--sds-c-tree-sizing-max-width, 25rem);
-}
-
-.avonni-tree-container > .slds-text-heading--label,
-.avonni-tree-container > .slds-text-heading_label,
-.avonni-tree_container > .slds-text-heading--label,
-.avonni-tree_container > .slds-text-heading_label {
-    margin-bottom: 0.5rem;
-}
-
 .avonni-tree__group-header {
     font-size: 0.875rem;
     font-weight: 700;
+}
+
+.avonni-tree__loading-spinner {
+    height: 3rem;
 }

@@ -10,9 +10,10 @@ const i18n = {
 const POPOVER_FOOTER_HEIGHT = 55;
 
 export default class PrimitiveTreeItem extends LightningElement {
+    @api isLeaf;
+    @api loadingStateAlternativeText;
     @api nodeRef;
     @api nodeKey;
-    @api isLeaf;
 
     _level;
     _childItems = [];
@@ -20,6 +21,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _href;
     _isDisabled = false;
     _isExpanded = false;
+    _isLoading = false;
     _isReadOnly = false;
     _label;
     _metatext;
@@ -131,6 +133,14 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set isDisabled(value) {
         this._isDisabled = normalizeBoolean(value);
+    }
+
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     @api

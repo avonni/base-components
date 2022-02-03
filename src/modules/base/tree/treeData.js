@@ -62,6 +62,7 @@ export class TreeData {
             metatext: item.metatext,
             href: item.href,
             disabled: item.disabled,
+            isLoading: item.isLoading,
             items: []
         };
 
