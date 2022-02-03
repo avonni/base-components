@@ -33,14 +33,15 @@
                 node-key={item.key}
                 node-ref={item.nodeRef}
                 nodename={item.name}
+                read-only={readOnly}
                 role="treeitem"
                 data-key={item.key}
-                style="background: tomato"
             ></c-primitive-tree-item>
         </template>
     </div>
 
     <button
+        if:false={readOnly}
         class="
             slds-button slds-button_neutral slds-button_stretch
             slds-m-top_xx-small
