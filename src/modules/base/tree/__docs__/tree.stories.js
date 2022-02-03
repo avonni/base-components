@@ -43,9 +43,34 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false }
             }
+        },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the tree is loading and shows a spinner.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false }
+            }
+        },
+        loadingStateAlternativeText: {
+            name: 'loading-state-alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the reason for the wait and need for a spinner.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Loading...' }
+            }
         }
     },
     args: {
+        isLoading: false,
+        loadingStateAlternativeText: 'Loading...',
         readOnly: false
     }
 };

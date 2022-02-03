@@ -4,7 +4,6 @@ export const ITEMS = [
         href: '#record1',
         name: 'node1',
         metatext: 'example of metatext',
-        disabled: true,
         items: [
             {
                 label: 'Go to Record 1.1',
@@ -48,9 +47,16 @@ export const ITEMS = [
         ]
     },
     {
-        label: 'Go to Record 2',
+        label: 'Loading Record',
         href: '#record2',
-        name: 'node2'
+        isLoading: true,
+        name: 'node2',
+        items: [
+            {
+                label: 'Already loaded record',
+                name: 'loaded-record'
+            }
+        ]
     },
     {
         label: 'Go to Record 3',
@@ -58,9 +64,11 @@ export const ITEMS = [
         name: 'node3'
     },
     {
-        label: 'Go to Record 4',
+        label: 'Disabled Record',
         href: '#record4',
-        name: 'node4'
+        name: 'node4',
+        disabled: true,
+        isLoading: true
     },
     {
         label: 'Go to Record 5',

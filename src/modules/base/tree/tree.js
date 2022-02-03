@@ -9,6 +9,7 @@ import {
 } from 'c/utilsPrivate';
 
 const DEFAULT_FOCUSED = { key: '1', parent: '0' };
+const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 
 /**
  * Editable tree of nested items. Used to display a visualization of a structural hierarchy.
@@ -21,7 +22,9 @@ export default class Tree extends LightningElement {
      */
     @api header;
 
+    _isLoading = false;
     @track _items = [];
+    _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
     _selectedItem;
 
@@ -63,6 +66,21 @@ export default class Tree extends LightningElement {
      */
 
     /**
+     * If present, the tree is loading and shows a spinner.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
      * Array of item objects.
      *
      * @type {object[]}
@@ -79,6 +97,25 @@ export default class Tree extends LightningElement {
         });
 
         if (this.isConnected) this.initItems();
+    }
+
+    /**
+     * The alternative text used to describe the reason for the wait and need for a spinner.
+     *
+     * @type {string}
+     * @default Loading...
+     * @public
+     */
+    @api
+    get loadingStateAlternativeText() {
+        return this._loadingStateAlternativeText;
+    }
+
+    set loadingStateAlternativeText(value) {
+        this._loadingStateAlternativeText =
+            typeof value === 'string'
+                ? value
+                : DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     }
 
     /**
@@ -110,6 +147,16 @@ export default class Tree extends LightningElement {
 
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get showAddButton() {
+        return !this.readOnly && !this.isLoading;
     }
 
     /*

@@ -101,3 +101,7 @@
 .avonni-primitive-tree-item__edit-label-button {
     --sds-c-icon-color-foreground: #969492;
 }
+
+.avonni-primitive-tree-item__loading-spinner {
+    height: 3rem;
+}

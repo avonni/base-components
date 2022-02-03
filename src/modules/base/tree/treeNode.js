@@ -18,15 +18,19 @@ export function getTreeNode(node, level, parentKey, childNum) {
         // eslint-disable-next-line no-script-url
         href: node.href,
         isDisabled: node.disabled || false,
+        isLoading: node.isLoading || false,
         visible: level === 1,
         children: [],
         visibleItems: [],
         nodeRef: node,
         isLeaf:
-            !node.items ||
-            (Array.isArray(node.items) && node.items.length === 0),
+            !node.isLoading &&
+            (!node.items ||
+                (Array.isArray(node.items) && node.items.length === 0)),
         get isExpanded() {
-            return this.isLeaf ? true : node.expanded || false;
+            return this.isLeaf && !this.isLoading
+                ? true
+                : node.expanded || false;
         },
         focusedChild: null,
         get strexpanded() {
