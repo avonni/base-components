@@ -8,7 +8,7 @@
             <lightning-button-icon
                 class={computedButtonClass}
                 alternative-text={buttonLabel}
-                aria-expanded={isExpanded}
+                aria-expanded={expanded}
                 icon-name={computedIconName}
                 size="small"
                 tabindex="-1"
@@ -60,7 +60,7 @@
                                     slds-m-vertical_xx-small
                                 "
                                 alternative-text={action.label}
-                                disabled={isDisabled}
+                                disabled={disabled}
                                 icon-name={action.iconName}
                                 name={action.name}
                                 variant="bare"
@@ -72,7 +72,7 @@
                         <lightning-button-menu
                             class="slds-p-horizontal_x-small"
                             alternative-text="Show menu"
-                            disabled={isDisabled}
+                            disabled={disabled}
                             menu-alignment="right"
                             variant="bare"
                             data-element-id="lightning-button-menu"
@@ -145,63 +145,23 @@
                 class="slds-popover__body slds-scrollable_y"
                 data-element-id="div-popover-body"
             >
-                <!-- Label -->
-                <lightning-input
-                    type="text"
-                    label="Label"
-                    value={draftValues.label}
-                    data-element-id="lightning-input-label"
-                    onblur={handleLabelBlur}
-                    onchange={handleLabelEdit}
-                ></lightning-input>
-
-                <!-- Name -->
-                <lightning-input
-                    type="text"
-                    label="Name"
-                    value={draftValues.nodename}
-                    data-element-id="lightning-input-name"
-                    onchange={handleNameEdit}
-                ></lightning-input>
-
-                <!-- Href -->
-                <lightning-input
-                    type="text"
-                    label="Link"
-                    value={draftValues.href}
-                    data-element-id="lightning-input-href"
-                    onchange={handleHrefEdit}
-                ></lightning-input>
-
-                <!-- Metatext -->
-                <lightning-input
-                    class="metatext-input slds-m-bottom_small"
-                    type="text"
-                    label="Metatext"
-                    value={draftValues.metatext}
-                    data-element-id="lightning-input-metatext"
-                    onchange={handleMetatextEdit}
-                ></lightning-input>
-
-                <!-- Expanded toggle -->
-                <lightning-input
-                    class="expanded-toggle slds-m-bottom_xx-small"
-                    type="toggle"
-                    label="Expanded"
-                    checked={draftValues.isExpanded}
-                    data-element-id="lightning-input-expanded"
-                    onchange={handleExpandedEdit}
-                ></lightning-input>
-
-                <!-- Disabled toggle -->
-                <lightning-input
-                    class="disabled-toggle"
-                    type="toggle"
-                    label="Disabled"
-                    checked={draftValues.isDisabled}
-                    data-element-id="lightning-input-disabled"
-                    onchange={handleDisabledEdit}
-                ></lightning-input>
+                <!-- Edit inputs -->
+                <template for:each={computedEditFields} for:item="field">
+                    <lightning-input
+                        key={field.name}
+                        class="slds-m-bottom_x-small"
+                        checked={field.checked}
+                        label={field.label}
+                        message-toggle-active=""
+                        message-toggle-inactive=""
+                        name={field.name}
+                        required={field.required}
+                        type={field.type}
+                        value={field.value}
+                        onblur={handleEditInputBlur}
+                        onchange={handleInputChange}
+                    ></lightning-input>
+                </template>
             </div>
 
             <div
@@ -238,25 +198,25 @@
                     "
                     key={item.key}
                     actions={actions}
-                    aria-disabled={item.isDisabled}
+                    aria-disabled={item.disabled}
                     aria-expanded={item.strexpanded}
                     aria-label={item.label}
                     aria-level={item.level}
                     aria-selected={item.selected}
                     child-items={item.children}
+                    disabled={item.disabled}
+                    expanded={item.expanded}
                     focused-child={item.focusedChild}
                     href={item.href}
-                    is-disabled={item.isDisabled}
-                    is-expanded={item.isExpanded}
                     is-leaf={item.isLeaf}
                     is-loading={item.isLoading}
                     label={item.label}
                     level={item.level}
                     loading-state-alternative-text={loadingStateAlternativeText}
                     metatext={item.metatext}
+                    name={item.name}
                     node-key={item.key}
                     node-ref={item.nodeRef}
-                    nodename={item.name}
                     role="treeitem"
                     sortable={sortable}
                     data-element-id="avonni-primitive-tree-item"
