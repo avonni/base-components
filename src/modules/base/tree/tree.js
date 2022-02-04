@@ -298,12 +298,9 @@ export default class Tree extends LightningElement {
 
         this._dragState.position = 'center';
         const { key, treeNode, index } = this._dragState.item;
-        const borderedKey = this._dragState.borderedItem
-            ? this._dragState.borderedItem.key
-            : key;
-        this.callbackMap[borderedKey].removeBorder();
+        this.callbackMap[key].removeBorder();
         this.callbackMap[key].setBorder();
-        this._dragState.borderedItem = null;
+        this._dragState.currentLevelItem = null;
 
         if (treeNode.children.length && !treeNode.nodeRef.expanded) {
             // Expand the hovered item after 500ms
@@ -341,10 +338,7 @@ export default class Tree extends LightningElement {
         if (!this._dragState) return;
 
         if (this._dragState.item) {
-            const borderedKey = this._dragState.borderedItem
-                ? this._dragState.borderedItem.key
-                : this._dragState.item.key;
-            this.callbackMap[borderedKey].removeBorder();
+            this.callbackMap[this._dragState.item.key].removeBorder();
         }
 
         const prevItem = this.treedata.findPrevNodeToFocus(item.index);
@@ -356,7 +350,7 @@ export default class Tree extends LightningElement {
         this._dragState.item = item;
         this._dragState.nextItem = nextItem;
         this._dragState.prevItem = prevItem;
-        this._dragState.borderedItem = null;
+        this._dragState.currentLevelItem = null;
 
         if (prevItem) {
             const prevBounds = this.callbackMap[prevItem.key].bounds();
@@ -525,7 +519,7 @@ export default class Tree extends LightningElement {
     showBottomBorderOnHoveredItem(x) {
         if (!this._dragState) return;
 
-        const { initialX, item } = this._dragState;
+        const { initialX, item, currentLevelItem } = this._dragState;
         const hasMovedLeft = x < initialX - 10;
         const hasMovedRight = x > initialX + 10;
         const { children, expanded } = item.treeNode;
@@ -540,34 +534,38 @@ export default class Tree extends LightningElement {
             this.callbackMap[item.key].setBorder('bottom', level);
         } else if (hasMovedLeft) {
             this._dragState.initialX = x;
-            const parent = this.treedata.getItem(item.parent);
-            const siblings = parent && parent.treeNode.children;
+            // If the hovered item is not expanded...
+            if (children.length && expanded) return;
+
+            // ... it has a parent...
+            const currentItem = currentLevelItem || item;
+            const parentItem = this.treedata.getItem(currentItem.parent);
+            if (!parentItem) return;
+
+            // ... and it is the last child of its parent...
+            const siblings = parentItem.treeNode.children;
             const isLastChild =
-                siblings && siblings[siblings.length - 1].key === item.key;
+                currentItem.key === siblings[siblings.length - 1].key;
             if (!isLastChild) return;
 
-            // Move left, outward from the most nested item
-            this._dragState.item = parent;
-            if (!this._dragState.borderedItem) {
-                this._dragState.borderedItem = item;
-            }
-            const borderedItemKey = this._dragState.borderedItem.key;
-            this.callbackMap[borderedItemKey].setBorder('bottom', parent.level);
+            // ...move the border left, outward from the most nested item
+            this._dragState.currentLevelItem = parentItem;
+            const level = parentItem ? parentItem.level : 1;
+            this.callbackMap[item.key].setBorder('bottom', level);
         } else if (hasMovedRight) {
             // Move right, towards the most nested item
             this._dragState.initialX = x;
-            const lastChild = children[children.length - 1];
+            const node = currentLevelItem
+                ? currentLevelItem.treeNode.children
+                : children;
+            const lastChild = node[node.length - 1];
 
-            if (expanded && lastChild && lastChild.expanded) {
-                this._dragState.item = this.treedata.getItem(lastChild.key);
-
-                if (!this._dragState.borderedItem) {
-                    this._dragState.borderedItem = item;
-                }
-                const borderedItemKey = this._dragState.borderedItem.key;
-                this.callbackMap[borderedItemKey].setBorder(
+            if (expanded && lastChild) {
+                const lastChildItem = this.treedata.getItem(lastChild.key);
+                this._dragState.currentLevelItem = lastChildItem;
+                this.callbackMap[item.key].setBorder(
                     'bottom',
-                    lastChild.level
+                    lastChildItem.level
                 );
             }
         }
@@ -864,11 +862,11 @@ export default class Tree extends LightningElement {
         clearTimeout(this._mouseOverItemTimeout);
         if (!this._dragState || !this.sortable) return;
 
-        const { borderedItem, item, key, position } = this._dragState;
-        const borderedKey = borderedItem ? borderedItem.key : item.key;
-        this.callbackMap[borderedKey].removeBorder();
+        const { currentLevelItem, item, key, position } = this._dragState;
+        this.callbackMap[item.key].removeBorder();
+        const currentItem = currentLevelItem || item;
 
-        if (item.key !== key) {
+        if (currentItem.key !== key) {
             // Get the item, and its initial position in the tree
             const initialPosition = this.getPositionInBranch(key);
             const initialBranch = initialPosition.items;
@@ -880,7 +878,7 @@ export default class Tree extends LightningElement {
             initialBranch[initialIndex].name = temporaryName;
 
             // Get the new position of the item in the tree
-            const { items, index } = this.getPositionInBranch(item.key);
+            const { items, index } = this.getPositionInBranch(currentItem.key);
 
             // Copy the item in the new position
             switch (position) {
@@ -890,8 +888,7 @@ export default class Tree extends LightningElement {
                 case 'bottom':
                     if (
                         item.treeNode.expanded &&
-                        item.treeNode.children.length &&
-                        !borderedItem
+                        item.treeNode.children.length
                     ) {
                         items[index].items.unshift(initialItem);
                     } else {

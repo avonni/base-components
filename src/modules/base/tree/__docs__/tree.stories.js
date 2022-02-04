@@ -147,10 +147,6 @@ Actions.args = {
 
 export const Sortable = Template.bind({});
 Sortable.args = {
-    allowInlineEdit: true,
-    actions: ACTIONS,
-    actionsWhenDisabled: ACTIONS_WHEN_DISABLED,
-    editFields: ['label', 'metatext'],
     items: ITEMS,
     header: 'Tree with sortable items',
     sortable: true

@@ -91,8 +91,8 @@ export class TreeData {
                 if (
                     parent &&
                     parent.visible &&
-                    parent.isExpanded &&
-                    !parent.isDisabled
+                    parent.expanded &&
+                    !parent.disabled
                 ) {
                     node.visible = true;
                 }
