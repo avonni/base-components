@@ -7,7 +7,9 @@ export const ACTIONS = [
     },
     {
         name: 'add',
-        label: 'Add'
+        label: 'Add',
+        alwaysVisible: true,
+        iconName: 'utility:add'
     },
     {
         name: 'duplicate',
@@ -20,7 +22,21 @@ export const ACTIONS = [
     {
         name: 'customAction',
         label: 'Custom action'
+    }
+];
+
+export const ACTIONS_WHEN_DISABLED = [
+    {
+        name: 'edit',
+        label: 'Edit',
+        iconName: 'utility:edit',
+        alwaysVisible: true
     },
+    {
+        name: 'enable',
+        label: 'Custom action for disabled items',
+        iconName: 'utility:all'
+    }
 ];
 
 export const ITEMS = [

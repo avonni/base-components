@@ -43,7 +43,7 @@
                     </div>
 
                     <div
-                        if:true={actions.length}
+                        if:true={visibleActions.length}
                         class="
                             avonni-primitive-tree-item__branch-buttons
                             slds-grid slds-grid_vertical-align-center
@@ -60,7 +60,6 @@
                                     slds-m-vertical_xx-small
                                 "
                                 alternative-text={action.label}
-                                disabled={disabled}
                                 icon-name={action.iconName}
                                 name={action.name}
                                 variant="bare"
@@ -72,7 +71,6 @@
                         <lightning-button-menu
                             class="slds-p-horizontal_x-small"
                             alternative-text="Show menu"
-                            disabled={disabled}
                             menu-alignment="right"
                             variant="bare"
                             data-element-id="lightning-button-menu"
@@ -198,6 +196,7 @@
                     "
                     key={item.key}
                     actions={actions}
+                    actions-when-disabled={actionsWhenDisabled}
                     aria-disabled={item.disabled}
                     aria-expanded={item.strexpanded}
                     aria-label={item.label}

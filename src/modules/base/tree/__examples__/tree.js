@@ -4,6 +4,7 @@ customElements.define('avonni-tree', Component.CustomElementConstructor);
 
 export const Tree = ({
     actions,
+    actionsWhenDisabled,
     editFields,
     header,
     isLoading,
@@ -14,6 +15,7 @@ export const Tree = ({
 }) => {
     const element = document.createElement('avonni-tree');
     element.actions = actions;
+    element.actionsWhenDisabled = actionsWhenDisabled;
     element.editFields = editFields;
     element.header = header;
     element.isLoading = isLoading;
