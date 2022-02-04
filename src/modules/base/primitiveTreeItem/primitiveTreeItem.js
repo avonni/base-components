@@ -10,7 +10,6 @@ const i18n = {
 const POPOVER_FOOTER_HEIGHT = 55;
 
 export default class PrimitiveTreeItem extends LightningElement {
-    @api isLeaf;
     @api loadingStateAlternativeText;
     @api nodeRef;
     @api nodeKey;
@@ -18,19 +17,21 @@ export default class PrimitiveTreeItem extends LightningElement {
     _actions = [];
     _level;
     _childItems = [];
+    _editFields = [];
     _focusedChild = null;
     _href;
-    _isDisabled = false;
-    _isExpanded = false;
+    _disabled = false;
+    _expanded = false;
+    _isLeaf = false;
     _isLoading = false;
     _label;
     _metatext;
-    _nodename;
+    _name;
     _sortable = false;
 
     buttonActions = [];
     menuActions = [];
-    draftValues;
+    draftValues = {};
     hasError = false;
     popoverVisible = false;
     _focusOnFirstPopoverElement = false;
@@ -97,20 +98,20 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
-    get level() {
-        return this._level;
-    }
-    set level(value) {
-        this._level = value;
-        this.updateLevel();
-    }
-
-    @api
     get childItems() {
         return this._childItems;
     }
     set childItems(value) {
         this._childItems = normalizeArray(value);
+    }
+
+    @api
+    get editFields() {
+        return this._editFields;
+    }
+    set editFields(value) {
+        this._editFields = normalizeArray(value);
+        if (this.popoverVisible) this.togglePopoverVisibility();
     }
 
     @api
@@ -130,11 +131,11 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
-    get isDisabled() {
-        return this._isDisabled;
+    get disabled() {
+        return this._disabled;
     }
-    set isDisabled(value) {
-        this._isDisabled = normalizeBoolean(value);
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
     }
 
     @api
@@ -146,11 +147,19 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
-    get isExpanded() {
-        return this._isExpanded;
+    get expanded() {
+        return this._expanded;
     }
-    set isExpanded(value) {
-        this._isExpanded = normalizeBoolean(value);
+    set expanded(value) {
+        this._expanded = normalizeBoolean(value);
+    }
+
+    @api
+    get isLeaf() {
+        return this._isLeaf;
+    }
+    set isLeaf(value) {
+        this._isLeaf = normalizeBoolean(value);
     }
 
     @api
@@ -162,6 +171,15 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
+    get level() {
+        return this._level;
+    }
+    set level(value) {
+        this._level = value;
+        this.updateLevel();
+    }
+
+    @api
     get metatext() {
         return this._metatext;
     }
@@ -170,11 +188,11 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
-    get nodename() {
-        return this._nodename;
+    get name() {
+        return this._name;
     }
-    set nodename(value) {
-        this._nodename = value;
+    set name(value) {
+        this._name = value;
     }
 
     @api
@@ -203,11 +221,27 @@ export default class PrimitiveTreeItem extends LightningElement {
             'slds-m-right_x-small slds-p-vertical_xx-small avonni-primitive-tree-item__chevron'
         )
             .add({
-                'slds-hidden': this.isLeaf || this.isDisabled,
-                'avonni-primitive-tree-item__chevron_expanded': this.isExpanded,
+                'slds-hidden': this.isLeaf || this.disabled,
+                'avonni-primitive-tree-item__chevron_expanded': this.expanded,
                 'slds-p-top_xx-small': this.metatext
             })
             .toString();
+    }
+
+    get computedEditFields() {
+        return this.editFields.map((field) => {
+            return {
+                checked: this.draftValues[field],
+                label: this.camelCaseToStartCase(field),
+                name: field,
+                required: field === 'name' || field === 'label',
+                type:
+                    typeof this.draftValues[field] === 'boolean'
+                        ? 'toggle'
+                        : 'text',
+                value: this.draftValues[field]
+            };
+        });
     }
 
     get computedIconName() {
@@ -219,7 +253,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     get computedLabelClass() {
         return classSet('slds-show slds-truncate')
             .add({
-                'slds-p-vertical_xx-small': !this.actions.length
+                'slds-p-vertical_xx-small': !this.buttonActions.length
             })
             .toString();
     }
@@ -230,11 +264,11 @@ export default class PrimitiveTreeItem extends LightningElement {
 
     get showExpanded() {
         if (!this.nodeRef) return false;
-        return !this.isDisabled && this.nodeRef.expanded;
+        return !this.disabled && this.nodeRef.expanded;
     }
 
     get showLink() {
-        return !this.isDisabled && this.href;
+        return !this.disabled && this.href;
     }
 
     /*
@@ -242,6 +276,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    camelCaseToStartCase(string) {
+        const result = string.replace(/([A-Z])/g, ' $1');
+        return result.charAt(0).toUpperCase() + result.slice(1);
+    }
 
     getBounds = () => {
         if (this.itemElement) {
@@ -357,17 +396,12 @@ export default class PrimitiveTreeItem extends LightningElement {
 
     togglePopoverVisibility = () => {
         if (this.popoverVisible) {
-            this.draftValues = undefined;
+            this.draftValues = {};
         } else {
             this._focusOnFirstPopoverElement = true;
-            this.draftValues = {
-                label: this.label,
-                nodename: this.nodename,
-                href: this.href,
-                metatext: this.metatext,
-                isExpanded: this.isExpanded,
-                isDisabled: this.isDisabled
-            };
+            this.editFields.forEach((field) => {
+                this.draftValues[field] = this[field];
+            });
         }
 
         this.popoverVisible = !this.popoverVisible;
@@ -429,7 +463,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     };
 
     handleClick(event) {
-        if (!this.isDisabled) {
+        if (!this.disabled) {
             let target = 'anchor';
             if (event.target.dataset.type === 'chevron') {
                 target = 'chevron';
@@ -446,7 +480,7 @@ export default class PrimitiveTreeItem extends LightningElement {
                 composed: true,
                 cancelable: true,
                 detail: {
-                    name: this.nodename,
+                    name: this.name,
                     key: this.nodeKey,
                     target
                 }
@@ -472,12 +506,12 @@ export default class PrimitiveTreeItem extends LightningElement {
             new CustomEvent('change', {
                 detail: {
                     values: {
-                        disabled: this.isDisabled,
-                        expanded: this.isExpanded,
+                        disabled: this.disabled,
+                        expanded: this.expanded,
                         href: this.href,
                         label: this.label,
                         metatext: this.metatext,
-                        name: this.nodename
+                        name: this.name
                     },
                     key: this.nodeKey
                 },
@@ -486,17 +520,31 @@ export default class PrimitiveTreeItem extends LightningElement {
             })
         );
 
+        this._isLeaf = !this.isLoading && this.childItems.length === 0;
         this.togglePopoverVisibility();
     }
 
     handleExpandedEdit(event) {
         event.stopPropagation();
-        this.draftValues.isExpanded = event.detail.checked;
+        this.draftValues.expanded = event.detail.checked;
     }
 
     handleHrefEdit(event) {
         event.stopPropagation();
         this.draftValues.href = event.value;
+        console.log(event);
+    }
+
+    handleInputChange(event) {
+        event.stopPropagation();
+        const name = event.currentTarget.name;
+        const { checked, value } = event.detail;
+        this.draftValues[name] = checked !== undefined ? checked : value;
+    }
+
+    handleIsLoadingEdit(event) {
+        event.stopPropagation();
+        this.draftValues.isLoading = event.detail.checked;
     }
 
     handleKeydown = (event) => {
@@ -531,8 +579,10 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     };
 
-    handleLabelBlur(event) {
-        this.validate(event.currentTarget);
+    handleEditInputBlur(event) {
+        if (event.currentTarget.required) {
+            this.validate(event.currentTarget);
+        }
     }
 
     handleLabelEdit(event) {
@@ -587,7 +637,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             new CustomEvent('privatemousedown', {
                 detail: {
                     key: this.nodeKey,
-                    name: this.nodename
+                    name: this.name
                 },
                 bubbles: true,
                 composed: true
@@ -597,7 +647,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
     handleNameEdit(event) {
         event.stopPropagation();
-        this.draftValues.nodename = event.detail.value;
+        this.draftValues.name = event.detail.value;
     }
 
     handlePopoverCloseKeyDown(event) {

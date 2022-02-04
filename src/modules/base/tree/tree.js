@@ -9,6 +9,15 @@ import {
 } from 'c/utilsPrivate';
 
 const DEFAULT_ACTION_NAMES = ['add', 'edit', 'delete', 'duplicate'];
+const DEFAULT_EDIT_FIELDS = [
+    'label',
+    'metatext',
+    'name',
+    'href',
+    'expanded',
+    'disabled',
+    'isLoading'
+];
 const DEFAULT_FOCUSED = { key: '1', parent: '0' };
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 
@@ -24,6 +33,7 @@ export default class Tree extends LightningElement {
     @api header;
 
     _actions = [];
+    _editFields = DEFAULT_EDIT_FIELDS;
     _isLoading = false;
     @track _items = [];
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -80,6 +90,21 @@ export default class Tree extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
+    }
+
+    /**
+     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.
+     *
+     * @type {string[]}
+     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
+     */
+    @api
+    get editFields() {
+        return this._editFields;
+    }
+
+    set editFields(value) {
+        this._editFields = normalizeArray(value);
     }
 
     /**
@@ -234,7 +259,7 @@ export default class Tree extends LightningElement {
         )
             return;
 
-        if (this._dragState.item.treeNode.isDisabled) {
+        if (this._dragState.item.treeNode.disabled) {
             this._dragState.initialX = undefined;
             return;
         }
@@ -267,7 +292,7 @@ export default class Tree extends LightningElement {
     }
 
     collapseBranch(node) {
-        if (!node.isLeaf && !node.isDisabled) {
+        if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = false;
             this.treedata.updateVisibleTreeItemsOnCollapse(node.key);
             this.dispatchChange(node.name, 'collapse');
@@ -328,7 +353,7 @@ export default class Tree extends LightningElement {
     }
 
     expandBranch(node) {
-        if (!node.isLeaf && !node.isDisabled) {
+        if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = true;
             if (
                 this._computedSelectedItem &&
@@ -471,7 +496,7 @@ export default class Tree extends LightningElement {
         const { initialX, item } = this._dragState;
         const hasMovedLeft = x < initialX - 10;
         const hasMovedRight = x > initialX + 10;
-        const { children, isExpanded } = item.treeNode;
+        const { children, expanded } = item.treeNode;
 
         if (isNaN(initialX)) {
             // Show the bottom border
@@ -479,7 +504,7 @@ export default class Tree extends LightningElement {
             this._dragState.initialX = x;
             this.callbackMap[item.key].removeBorder();
             const level =
-                isExpanded && children.length ? item.level + 1 : item.level;
+                expanded && children.length ? item.level + 1 : item.level;
             this.callbackMap[item.key].setBorder('bottom', level);
         } else if (hasMovedLeft) {
             this._dragState.initialX = x;
@@ -501,7 +526,7 @@ export default class Tree extends LightningElement {
             this._dragState.initialX = x;
             const lastChild = children[children.length - 1];
 
-            if (isExpanded && lastChild && lastChild.isExpanded) {
+            if (expanded && lastChild && lastChild.expanded) {
                 this._dragState.item = this.treedata.getItem(lastChild.key);
 
                 if (!this._dragState.borderedItem) {
@@ -536,9 +561,9 @@ export default class Tree extends LightningElement {
 
             if (prevItemInSameBranch) {
                 // Move right, to the most nested item
-                const { children, isExpanded } = prevItemInSameBranch.treeNode;
+                const { children, expanded } = prevItemInSameBranch.treeNode;
 
-                if (isExpanded && children.length) {
+                if (expanded && children.length) {
                     const lastChildKey = children[children.length - 1].key;
                     const lastChild = this.treedata.getItem(lastChildKey);
                     this.dragTo(lastChild);
@@ -832,7 +857,7 @@ export default class Tree extends LightningElement {
                     break;
                 case 'bottom':
                     if (
-                        item.treeNode.isExpanded &&
+                        item.treeNode.expanded &&
                         item.treeNode.children.length &&
                         !borderedItem
                     ) {
@@ -911,7 +936,7 @@ export default class Tree extends LightningElement {
     }
 
     dispatchSelectEvent(node, event) {
-        if (!node.isDisabled) {
+        if (!node.disabled) {
             const customEvent = new CustomEvent('select', {
                 bubbles: true,
                 composed: true,
