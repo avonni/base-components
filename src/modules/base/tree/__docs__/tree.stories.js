@@ -25,6 +25,18 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        allowInlineEdit: {
+            name: 'allow-inline-edit',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                "If present, the items' label can be edited by double-clicking on it. NB: If inline editing is allowed, the label link will be disabled.",
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         editFields: {
             name: 'edit-fields',
             control: {
@@ -73,7 +85,7 @@ export default {
             description: 'If present, the tree is loading and shows a spinner.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: false }
+                defaultValue: { summary: 'false' }
             }
         },
         loadingStateAlternativeText: {
@@ -100,6 +112,7 @@ export default {
         }
     },
     args: {
+        allowInlineEdit: false,
         editFields: [
             'label',
             'metatext',
@@ -134,6 +147,10 @@ Actions.args = {
 
 export const Sortable = Template.bind({});
 Sortable.args = {
+    allowInlineEdit: true,
+    actions: ACTIONS,
+    actionsWhenDisabled: ACTIONS_WHEN_DISABLED,
+    editFields: ['label', 'metatext'],
     items: ITEMS,
     header: 'Tree with sortable items',
     sortable: true
@@ -150,4 +167,11 @@ CustomEditFields.args = {
     items: ITEMS,
     header: 'Tree with custom edit fields',
     editFields: ['label', 'metatext']
+};
+
+export const InlineEditing = Template.bind({});
+InlineEditing.args = {
+    items: ITEMS,
+    header: 'Tree with inline editing',
+    allowInlineEdit: true
 };
