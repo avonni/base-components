@@ -33,6 +33,7 @@ export default class Tree extends LightningElement {
     @api header;
 
     _actions = [];
+    _actionsWhenDisabled = [];
     _editFields = DEFAULT_EDIT_FIELDS;
     _isLoading = false;
     @track _items = [];
@@ -79,7 +80,7 @@ export default class Tree extends LightningElement {
      */
 
     /**
-     * Array of action objects to display to the right of each item.
+     * Array of action objects to display to the right of each item. These actions are not visible on disabled items.
      *
      * @type {object[]}
      */
@@ -90,6 +91,20 @@ export default class Tree extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
+    }
+
+    /**
+     * Array of action objects to display to the right of disabled items.
+     *
+     * @type {object[]}
+     */
+    @api
+    get actionsWhenDisabled() {
+        return this._actionsWhenDisabled;
+    }
+
+    set actionsWhenDisabled(value) {
+        this._actionsWhenDisabled = normalizeArray(value);
     }
 
     /**

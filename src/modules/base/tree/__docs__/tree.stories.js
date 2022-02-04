@@ -1,5 +1,5 @@
 import { Tree } from '../__examples__/tree';
-import { ACTIONS, ITEMS } from './data';
+import { ACTIONS, ACTIONS_WHEN_DISABLED, ITEMS } from './data';
 
 export default {
     title: 'Example/Tree',
@@ -9,7 +9,18 @@ export default {
                 type: 'object'
             },
             description:
-                'Array of action objects to display to the right of each item.',
+                'Array of action objects to display to the right of each item. These actions are not visible on disabled items.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        actionsWhenDisabled: {
+            name: 'actions-when-disabled',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Array of action objects to display to the right of disabled items.',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -116,6 +127,7 @@ Base.args = {
 export const Actions = Template.bind({});
 Actions.args = {
     actions: ACTIONS,
+    actionsWhenDisabled: ACTIONS_WHEN_DISABLED,
     items: ITEMS,
     header: 'Tree with all standard actions'
 };
