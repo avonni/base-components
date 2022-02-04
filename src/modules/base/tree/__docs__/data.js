@@ -33,6 +33,12 @@ export const ACTIONS_WHEN_DISABLED = [
         alwaysVisible: true
     },
     {
+        name: 'delete',
+        label: 'Delete',
+        iconName: 'utility:delete',
+        alwaysVisible: true
+    },
+    {
         name: 'enable',
         label: 'Custom action for disabled items',
         iconName: 'utility:all'
