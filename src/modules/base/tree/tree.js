@@ -51,9 +51,10 @@ export default class Tree extends LightningElement {
     _computedSelectedItem;
     _currentFocusedItem;
     _dragState;
-    _setFocus = false;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
+    _selectTimeout;
+    _setFocus = false;
 
     connectedCallback() {
         this.initItems();
@@ -743,6 +744,10 @@ export default class Tree extends LightningElement {
         }
     }
 
+    handleDblClick() {
+        clearTimeout(this._selectTimeout);
+    }
+
     handleKeydown(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -972,10 +977,18 @@ export default class Tree extends LightningElement {
                 cancelable: true,
                 detail: { name: node.name }
             });
-            this.dispatchEvent(customEvent);
 
-            if (customEvent.defaultPrevented) {
-                event.preventDefault();
+            if (this.allowInlineEdit) {
+                clearTimeout(this._selectTimeout);
+                this._selectTimeout = setTimeout(() => {
+                    this.dispatchEvent(customEvent);
+                }, 300);
+            } else {
+                this.dispatchEvent(customEvent);
+
+                if (customEvent.defaultPrevented) {
+                    event.preventDefault();
+                }
             }
         }
     }

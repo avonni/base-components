@@ -543,7 +543,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     handleHrefEdit(event) {
         event.stopPropagation();
         this.draftValues.href = event.value;
-        console.log(event);
     }
 
     handleInputChange(event) {
@@ -641,6 +640,16 @@ export default class PrimitiveTreeItem extends LightningElement {
     handleLabelDoubleClick() {
         if (!this.allowInlineEdit || this.disabled) return;
 
+        this.dispatchEvent(
+            new CustomEvent('privateitemdblclick', {
+                bubbles: true,
+                composed: true,
+                cancelable: true,
+                detail: {
+                    key: this.nodeKey
+                }
+            })
+        );
         if (this.popoverVisible) this.togglePopoverVisibility();
         this.labelIsEdited = true;
         this.draftValues.label = this.label;
