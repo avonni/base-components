@@ -30,7 +30,7 @@
                     onmouseenter={showBranchButtons}
                     onmouseleave={hideBranchButtons}
                 >
-                    <div class={computedLabelClass}>
+                    <div if:false={labelIsEdited} class={computedLabelClass}>
                         <a
                             if:true={showLink}
                             href={href}
@@ -39,8 +39,31 @@
                         >
                             {label}
                         </a>
-                        <span if:false={showLink}>{label}</span>
+                        <span
+                            if:false={showLink}
+                            ondblclick={handleLabelDoubleClick}
+                            >{label}</span
+                        >
                     </div>
+
+                    <lightning-input
+                        if:true={labelIsEdited}
+                        label="Edit Label"
+                        variant="label-hidden"
+                        value={label}
+                        data-element-id="lightning-input-inline-label"
+                        onchange={stopPropagation}
+                        onkeydown={handleLabelInlineKeyDown}
+                    ></lightning-input>
+
+                    <lightning-button-icon
+                        if:true={labelIsEdited}
+                        alternative-text="Save Label"
+                        class="slds-m-left_x-small slds-m-vertical_xx-small"
+                        icon-name="utility:check"
+                        variant="bare"
+                        onclick={handleSaveLabelInlineEdit}
+                    ></lightning-button-icon>
 
                     <div
                         if:true={visibleActions.length}
@@ -197,6 +220,7 @@
                     key={item.key}
                     actions={actions}
                     actions-when-disabled={actionsWhenDisabled}
+                    allow-inline-edit={allowInlineEdit}
                     aria-disabled={item.disabled}
                     aria-expanded={item.strexpanded}
                     aria-label={item.label}

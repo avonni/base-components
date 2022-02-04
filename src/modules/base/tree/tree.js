@@ -34,6 +34,7 @@ export default class Tree extends LightningElement {
 
     _actions = [];
     _actionsWhenDisabled = [];
+    _allowInlineEdit = false;
     _editFields = DEFAULT_EDIT_FIELDS;
     _isLoading = false;
     @track _items = [];
@@ -105,6 +106,22 @@ export default class Tree extends LightningElement {
 
     set actionsWhenDisabled(value) {
         this._actionsWhenDisabled = normalizeArray(value);
+    }
+
+    /**
+     * If present, the items' label can be edited by double-clicking on it.
+     * NB: If inline editing is allowed, the label link will be disabled.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get allowInlineEdit() {
+        return this._allowInlineEdit;
+    }
+
+    set allowInlineEdit(value) {
+        this._allowInlineEdit = normalizeBoolean(value);
     }
 
     /**

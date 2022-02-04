@@ -16,6 +16,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
     _actions = [];
     _actionsWhenDisabled = [];
+    _allowInlineEdit = false;
     _level;
     _childItems = [];
     _editFields = [];
@@ -31,11 +32,12 @@ export default class PrimitiveTreeItem extends LightningElement {
     _sortable = false;
 
     buttonActions = [];
+    labelIsEdited = false;
     menuActions = [];
     draftValues = {};
     hasError = false;
     popoverVisible = false;
-    _focusOnFirstPopoverElement = false;
+    _focusOn = false;
     _menuIsOpen = false;
 
     connectedCallback() {
@@ -68,12 +70,12 @@ export default class PrimitiveTreeItem extends LightningElement {
             }
         }
 
-        if (this._focusOnFirstPopoverElement) {
-            const closeButton = this.template.querySelector(
-                '[data-element-id="lightning-button-icon-close"]'
+        if (this._focusOn) {
+            const focusedElement = this.template.querySelector(
+                `[data-element-id="${this._focusOn}"]`
             );
-            if (closeButton) closeButton.focus();
-            this._focusOnFirstPopoverElement = false;
+            if (focusedElement) focusedElement.focus();
+            this._focusOn = null;
         }
 
         if (this.popoverVisible) this.positionPopover();
@@ -106,6 +108,14 @@ export default class PrimitiveTreeItem extends LightningElement {
     set actionsWhenDisabled(value) {
         this._actionsWhenDisabled = normalizeArray(value);
         if (this.isConnected) this.splitActions();
+    }
+
+    @api
+    get allowInlineEdit() {
+        return this._allowInlineEdit;
+    }
+    set allowInlineEdit(value) {
+        this._allowInlineEdit = normalizeBoolean(value);
     }
 
     @api
@@ -280,7 +290,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     get showLink() {
-        return !this.disabled && this.href;
+        return !this.disabled && !this.allowInlineEdit && this.href;
     }
 
     get visibleActions() {
@@ -414,7 +424,8 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.popoverVisible) {
             this.draftValues = {};
         } else {
-            this._focusOnFirstPopoverElement = true;
+            this.labelIsEdited = false;
+            this._focusOn = 'lightning-button-icon-close';
             this.editFields.forEach((field) => {
                 this.draftValues[field] = this[field];
             });
@@ -518,24 +529,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             this[`_${key}`] = value;
         });
 
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    values: {
-                        disabled: this.disabled,
-                        expanded: this.expanded,
-                        href: this.href,
-                        label: this.label,
-                        metatext: this.metatext,
-                        name: this.name
-                    },
-                    key: this.nodeKey
-                },
-                composed: true,
-                bubbles: true
-            })
-        );
-
+        this.dispatchChange();
         this._isLeaf = !this.isLoading && this.childItems.length === 0;
         this.togglePopoverVisibility();
         this.splitActions();
@@ -566,12 +560,18 @@ export default class PrimitiveTreeItem extends LightningElement {
 
     handleKeydown = (event) => {
         switch (event.keyCode) {
-            case keyCodes.enter:
+            case keyCodes.enter: {
                 this.preventDefaultAndStopPropagation(event);
-                this.template
-                    .querySelector('[data-element-id="a-label-link"]')
-                    .click();
+                const link = this.template.querySelector(
+                    '[data-element-id="a-label-link"]'
+                );
+                if (link) {
+                    link.click();
+                } else if (this.allowInlineEdit) {
+                    this.handleLabelDoubleClick();
+                }
                 break;
+            }
             case keyCodes.up:
             case keyCodes.down:
             case keyCodes.right:
@@ -638,6 +638,39 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._menuIsOpen = true;
     }
 
+    handleLabelDoubleClick() {
+        if (!this.allowInlineEdit || this.disabled) return;
+
+        if (this.popoverVisible) this.togglePopoverVisibility();
+        this.labelIsEdited = true;
+        this.draftValues.label = this.label;
+        this._focusOn = 'lightning-input-inline-label';
+    }
+
+    handleLabelInlineKeyDown(event) {
+        event.stopPropagation();
+        this.draftValues.label = event.currentTarget.value;
+
+        if (event.key === 'Enter') {
+            this.handleSaveLabelInlineEdit();
+        } else if (event.key === 'Escape') {
+            this.draftValues = {};
+            this.labelIsEdited = false;
+        }
+    }
+
+    handleSaveLabelInlineEdit() {
+        const labelInput = this.template.querySelector(
+            '[data-element-id="lightning-input-inline-label"]'
+        );
+        if (!labelInput || !this.validate(labelInput)) return;
+
+        this._label = this.draftValues.label;
+        this.draftValues = {};
+        this.labelIsEdited = false;
+        this.dispatchChange();
+    }
+
     handleLinkMouseDown(event) {
         if (!this.sortable) return;
 
@@ -687,6 +720,27 @@ export default class PrimitiveTreeItem extends LightningElement {
                 .focus();
             event.preventDefault();
         }
+    }
+
+    dispatchChange() {
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    values: {
+                        disabled: this.disabled,
+                        expanded: this.expanded,
+                        isLoading: this.isLoading,
+                        href: this.href,
+                        label: this.label,
+                        metatext: this.metatext,
+                        name: this.name
+                    },
+                    key: this.nodeKey
+                },
+                composed: true,
+                bubbles: true
+            })
+        );
     }
 
     stopPropagation(event) {
