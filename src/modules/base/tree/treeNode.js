@@ -10,6 +10,7 @@ function computeKey(parentKey, childNum) {
 
 export function getTreeNode(node, level, parentKey, childNum) {
     return {
+        avatar: node.avatar,
         name: node.name,
         label: node.label,
         metatext: node.metatext,

@@ -145,10 +145,20 @@ export const ITEMS_WITH_FIELDS = [
                 type: 'percent'
             }
         ],
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            size: 'small',
+            variant: 'circle'
+        },
         items: [
             {
                 label: 'Service 1.1',
                 name: 'service1-1',
+                avatar: {
+                    src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+                    size: 'small',
+                    variant: 'circle'
+                },
                 fields: [
                     {
                         label: 'Product',
@@ -163,11 +173,21 @@ export const ITEMS_WITH_FIELDS = [
             },
             {
                 label: 'Service 1.2',
-                name: 'service1-2'
+                name: 'service1-2',
+                avatar: {
+                    fallbackIconName: 'standard:account',
+                    size: 'small',
+                    variant: 'circle'
+                }
             },
             {
                 label: 'Service 1.3',
                 name: 'service1-3',
+                avatar: {
+                    size: 'small',
+                    variant: 'circle',
+                    fallbackIconName: 'standard:user'
+                },
                 fields: [
                     {
                         label: 'Product',
@@ -190,6 +210,11 @@ export const ITEMS_WITH_FIELDS = [
         label: 'Service 2',
         name: 'service2',
         metatext: 'Metatext is always visible',
+        avatar: {
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            size: 'small',
+            variant: 'circle'
+        },
         fields: [
             {
                 label: 'Status',

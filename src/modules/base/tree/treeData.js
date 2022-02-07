@@ -56,6 +56,7 @@ export class TreeData {
 
     cloneItems(item) {
         const newItem = {
+            avatar: item.avatar,
             label: item.label,
             name: item.name,
             expanded: item.expanded,

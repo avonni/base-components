@@ -177,10 +177,9 @@ InlineEditing.args = {
     allowInlineEdit: true
 };
 
-export const Fields = Template.bind({});
-Fields.args = {
+export const FieldsAndAvatars = Template.bind({});
+FieldsAndAvatars.args = {
     items: ITEMS_WITH_FIELDS,
-    header: 'Tree with fields',
-    selectedItem: 'service1-3',
-    actions: ACTIONS
+    header: 'Tree with fields and avatars',
+    selectedItem: 'service1-3'
 };
