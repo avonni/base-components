@@ -134,6 +134,25 @@
                     >
                     <span if:false={showLink}>{metatext}</span>
                 </div>
+
+                <!-- Fields -->
+                <div if:true={showFields} class="slds-p-top_xx-small">
+                    <template for:each={fields} for:item="field">
+                        <c-output-data
+                            key={uniqueKey}
+                            class="
+                                avonni-primitive-tree-item__field
+                                slds-show
+                                slds-m-bottom_xx-small
+                            "
+                            label={field.label}
+                            type={field.type}
+                            type-attributes={field.typeAttributes}
+                            value={field.value}
+                            variant="label-inline"
+                        ></c-output-data>
+                    </template>
+                </div>
             </div>
         </div>
 
@@ -209,8 +228,9 @@
             </div>
         </div>
 
-        <!-- Child items -->
-        <div if:true={showExpanded} role="group">
+        <!-- Expanded -->
+        <div if:true={showChildren} role="group">
+            <!-- Child items -->
             <template for:each={childItems} for:item="item">
                 <c-primitive-tree-item
                     class="
@@ -229,6 +249,7 @@
                     child-items={item.children}
                     disabled={item.disabled}
                     expanded={item.expanded}
+                    fields={item.fields}
                     focused-child={item.focusedChild}
                     href={item.href}
                     is-leaf={item.isLeaf}
@@ -239,7 +260,6 @@
                     metatext={item.metatext}
                     name={item.name}
                     node-key={item.key}
-                    node-ref={item.nodeRef}
                     role="treeitem"
                     sortable={sortable}
                     data-element-id="avonni-primitive-tree-item"

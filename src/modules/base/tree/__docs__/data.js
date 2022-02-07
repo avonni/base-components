@@ -133,3 +133,91 @@ export const ITEMS = [
         name: 'node7'
     }
 ];
+
+export const ITEMS_WITH_FIELDS = [
+    {
+        label: 'Service 1',
+        name: 'service1',
+        fields: [
+            {
+                label: 'Status',
+                value: 40,
+                type: 'percent'
+            }
+        ],
+        items: [
+            {
+                label: 'Service 1.1',
+                name: 'service1-1',
+                fields: [
+                    {
+                        label: 'Product',
+                        value: 'Super Software'
+                    },
+                    {
+                        label: 'Start Date',
+                        value: new Date(2022, 0, 28),
+                        type: 'date'
+                    }
+                ]
+            },
+            {
+                label: 'Service 1.2',
+                name: 'service1-2'
+            },
+            {
+                label: 'Service 1.3',
+                name: 'service1-3',
+                fields: [
+                    {
+                        label: 'Product',
+                        value: 'Another Software'
+                    },
+                    {
+                        label: 'Contact',
+                        value: '+15145550000',
+                        type: 'phone'
+                    },
+                    {
+                        label: 'Start Date',
+                        value: new Date(2021, 10, 10)
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        label: 'Service 2',
+        name: 'service2',
+        metatext: 'Metatext is always visible',
+        fields: [
+            {
+                label: 'Status',
+                value: 60,
+                type: 'percent'
+            }
+        ],
+        items: [
+            {
+                label: 'Service 2.1',
+                name: 'service2-1'
+            },
+            {
+                label: 'Service 2.2',
+                name: 'service2-2',
+                fields: [
+                    {
+                        label: 'Employees Assigned',
+                        value: 56,
+                        type: 'number'
+                    },
+                    {
+                        label: 'Employees Available',
+                        value: 32,
+                        type: 'number'
+                    }
+                ]
+            }
+        ]
+    }
+];

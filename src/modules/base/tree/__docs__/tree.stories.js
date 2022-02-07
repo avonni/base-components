@@ -1,5 +1,10 @@
 import { Tree } from '../__examples__/tree';
-import { ACTIONS, ACTIONS_WHEN_DISABLED, ITEMS } from './data';
+import {
+    ACTIONS,
+    ACTIONS_WHEN_DISABLED,
+    ITEMS,
+    ITEMS_WITH_FIELDS
+} from './data';
 
 export default {
     title: 'Example/Tree',
@@ -170,4 +175,12 @@ InlineEditing.args = {
     items: ITEMS,
     header: 'Tree with inline editing',
     allowInlineEdit: true
+};
+
+export const Fields = Template.bind({});
+Fields.args = {
+    items: ITEMS_WITH_FIELDS,
+    header: 'Tree with fields',
+    selectedItem: 'service1-3',
+    actions: ACTIONS
 };

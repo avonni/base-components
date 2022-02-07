@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 import { keyCodes, normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 
 const i18n = {
@@ -11,7 +11,6 @@ const POPOVER_FOOTER_HEIGHT = 55;
 
 export default class PrimitiveTreeItem extends LightningElement {
     @api loadingStateAlternativeText;
-    @api nodeRef;
     @api nodeKey;
 
     _actions = [];
@@ -20,6 +19,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _level;
     _childItems = [];
     _editFields = [];
+    _fields = [];
     _focusedChild = null;
     _href;
     _disabled = false;
@@ -136,6 +136,14 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
+    get fields() {
+        return this._fields;
+    }
+    set fields(value) {
+        this._fields = normalizeArray(value);
+    }
+
+    @api
     get focusedChild() {
         return this._focusedChild;
     }
@@ -232,7 +240,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
 
     get buttonLabel() {
-        if (this.nodeRef && this.nodeRef.expanded) {
+        if (this.expanded) {
             return i18n.collapseBranch;
         }
         return i18n.expandBranch;
@@ -284,13 +292,20 @@ export default class PrimitiveTreeItem extends LightningElement {
         return this.template.querySelector('[data-element-id="div-item"]');
     }
 
-    get showExpanded() {
-        if (!this.nodeRef) return false;
-        return !this.disabled && this.nodeRef.expanded;
+    get showChildren() {
+        return !this.disabled && this.expanded;
+    }
+
+    get showFields() {
+        return this.fields.length && !this.disabled && this.expanded;
     }
 
     get showLink() {
         return !this.disabled && !this.allowInlineEdit && this.href;
+    }
+
+    get uniqueKey() {
+        return generateUUID();
     }
 
     get visibleActions() {

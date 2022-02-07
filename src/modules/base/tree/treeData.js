@@ -63,7 +63,8 @@ export class TreeData {
             href: item.href,
             disabled: item.disabled,
             isLoading: item.isLoading,
-            items: []
+            items: [],
+            fields: item.fields
         };
 
         if (item.items && item.items.length > 0) {
