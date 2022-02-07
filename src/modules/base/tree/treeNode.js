@@ -20,6 +20,7 @@ export function getTreeNode(node, level, parentKey, childNum) {
         disabled: node.disabled || false,
         isLoading: node.isLoading || false,
         visible: level === 1,
+        fields: node.fields,
         children: [],
         visibleItems: [],
         nodeRef: node,
