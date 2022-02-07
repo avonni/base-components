@@ -30,6 +30,22 @@
                     onmouseenter={showBranchButtons}
                     onmouseleave={hideBranchButtons}
                 >
+                    <!-- Avatar -->
+                    <avonni-avatar
+                        if:true={avatar}
+                        class="slds-m-right_x-small"
+                        alternative-text={avatar.alternativeText}
+                        fallback-icon-name={avatar.fallbackIconName}
+                        hide-avatar-details
+                        initials={avatar.initials}
+                        presence={avatar.presence}
+                        presence-position={avatar.presencePosition}
+                        size={avatar.size}
+                        src={avatar.src}
+                        variant={avatar.variant}
+                    ></avonni-avatar>
+
+                    <!-- Label -->
                     <div if:false={labelIsEdited} class={computedLabelClass}>
                         <a
                             if:true={showLink}
@@ -246,6 +262,7 @@
                     aria-label={item.label}
                     aria-level={item.level}
                     aria-selected={item.selected}
+                    avatar={item.avatar}
                     child-items={item.children}
                     disabled={item.disabled}
                     expanded={item.expanded}

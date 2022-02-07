@@ -8,6 +8,15 @@ const i18n = {
 };
 
 const POPOVER_FOOTER_HEIGHT = 55;
+const DEFAULT_EDIT_FIELDS = [
+    'label',
+    'metatext',
+    'name',
+    'href',
+    'expanded',
+    'disabled',
+    'isLoading'
+];
 
 export default class PrimitiveTreeItem extends LightningElement {
     @api loadingStateAlternativeText;
@@ -16,9 +25,10 @@ export default class PrimitiveTreeItem extends LightningElement {
     _actions = [];
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
+    _avatar;
     _level;
     _childItems = [];
-    _editFields = [];
+    _editFields = DEFAULT_EDIT_FIELDS;
     _fields = [];
     _focusedChild = null;
     _href;
@@ -116,6 +126,14 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set allowInlineEdit(value) {
         this._allowInlineEdit = normalizeBoolean(value);
+    }
+
+    @api
+    get avatar() {
+        return this._avatar;
+    }
+    set avatar(value) {
+        this._avatar = value instanceof Object ? value : null;
     }
 
     @api
