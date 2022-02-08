@@ -537,8 +537,6 @@ export default class Carousel extends LightningElement {
                 }
             })
         );
-
-        console.log(event.detail.name);
     }
 
     /**
