@@ -11,6 +11,7 @@ export const Tree = ({
     isLoading,
     items,
     loadingStateAlternativeText,
+    isMultiSelect,
     selectedItem,
     sortable
 }) => {
@@ -23,6 +24,7 @@ export const Tree = ({
     element.isLoading = isLoading;
     element.items = items;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
+    element.isMultiSelect = isMultiSelect;
     element.selectedItem = selectedItem;
     element.sortable = sortable;
     return element;

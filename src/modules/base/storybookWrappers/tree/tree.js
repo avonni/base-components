@@ -7,6 +7,7 @@ export default class Tree extends LightningElement {
     @api editFields;
     @api header;
     @api isLoading;
+    @api isMultiSelect;
     @api items;
     @api loadingStateAlternativeText;
     @api selectedItem;

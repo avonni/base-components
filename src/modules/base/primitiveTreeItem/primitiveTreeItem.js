@@ -19,6 +19,7 @@ const DEFAULT_EDIT_FIELDS = [
 ];
 
 export default class PrimitiveTreeItem extends LightningElement {
+    @api focusedChild;
     @api loadingStateAlternativeText;
     @api nodeKey;
 
@@ -30,7 +31,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     _childItems = [];
     _editFields = DEFAULT_EDIT_FIELDS;
     _fields = [];
-    _focusedChild = null;
     _href;
     _disabled = false;
     _expanded = false;
@@ -39,6 +39,8 @@ export default class PrimitiveTreeItem extends LightningElement {
     _label;
     _metatext;
     _name;
+    _selected = false;
+    _showCheckbox = false;
     _sortable = false;
 
     buttonActions = [];
@@ -47,6 +49,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     draftValues = {};
     hasError = false;
     popoverVisible = false;
+    _checkboxIsIndeterminate = false;
     _focusOn = false;
     _menuIsOpen = false;
 
@@ -60,6 +63,7 @@ export default class PrimitiveTreeItem extends LightningElement {
                     focus: this.handleChildFocus,
                     removeBorder: this.removeBorder,
                     setBorder: this.setBorder,
+                    setSelected: this.setSelected,
                     unfocus: this.handleChildUnfocus,
                     key: this.nodeKey
                 }
@@ -70,6 +74,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.addEventListener('mousedown', this.handleMouseDown);
         this.updateLevel();
         this.splitActions();
+        this.computeSelection();
     }
 
     renderedCallback() {
@@ -89,6 +94,8 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
 
         if (this.popoverVisible) this.positionPopover();
+
+        this.updateCheckboxStatus();
     }
 
     disconnectedCallback() {
@@ -142,6 +149,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set childItems(value) {
         this._childItems = normalizeArray(value);
+        if (this.isConnected) this.computeSelection();
     }
 
     @api
@@ -159,14 +167,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set fields(value) {
         this._fields = normalizeArray(value);
-    }
-
-    @api
-    get focusedChild() {
-        return this._focusedChild;
-    }
-    set focusedChild(value) {
-        this._focusedChild = value;
     }
 
     @api
@@ -244,6 +244,24 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     @api
+    get selected() {
+        return this._selected;
+    }
+    set selected(value) {
+        this._selected = normalizeBoolean(value);
+        if (this.isConnected) this.computeSelection();
+    }
+
+    @api
+    get showCheckbox() {
+        return this._showCheckbox;
+    }
+    set showCheckbox(value) {
+        this._showCheckbox = normalizeBoolean(value);
+        if (this.isConnected) this.computeSelection();
+    }
+
+    @api
     get sortable() {
         return this._sortable;
     }
@@ -306,6 +324,15 @@ export default class PrimitiveTreeItem extends LightningElement {
             .toString();
     }
 
+    get computedWrapperClass() {
+        return classSet('slds-is-relative')
+            .add({
+                'avonni-primitive-tree-item__single-selection':
+                    !this.showCheckbox
+            })
+            .toString();
+    }
+
     get itemElement() {
         return this.template.querySelector('[data-element-id="div-item"]');
     }
@@ -339,6 +366,28 @@ export default class PrimitiveTreeItem extends LightningElement {
     camelCaseToStartCase(string) {
         const result = string.replace(/([A-Z])/g, ' $1');
         return result.charAt(0).toUpperCase() + result.slice(1);
+    }
+
+    computeSelection() {
+        if (!this.selected && this.showCheckbox && this.childItems.length) {
+            const selectedChildren = this.childItems.filter(
+                (child) => child.selected
+            );
+
+            if (selectedChildren.length === this.childItems.length) {
+                // All children are selected
+                this._selected = true;
+                this._checkboxIsIndeterminate = false;
+            } else {
+                // Some or no children are selected
+                this._selected = false;
+                this._checkboxIsIndeterminate = !!selectedChildren.length;
+            }
+        } else {
+            this._checkboxIsIndeterminate = false;
+        }
+
+        this.updateCheckboxStatus();
     }
 
     getBounds = () => {
@@ -431,6 +480,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     };
 
+    setSelected = (value) => {
+        this._selected = value;
+        this.computeSelection();
+    };
+
     showBranchButtons() {
         if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
@@ -467,6 +521,15 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.popoverVisible = !this.popoverVisible;
         this.hideBranchButtons();
     };
+
+    updateCheckboxStatus() {
+        const checkbox = this.template.querySelector(
+            '[data-element-id="input-checkbox"]'
+        );
+        if (checkbox) {
+            checkbox.indeterminate = this._checkboxIsIndeterminate;
+        }
+    }
 
     updateLevel() {
         let style = this.template.host.style.cssText;
@@ -535,21 +598,20 @@ export default class PrimitiveTreeItem extends LightningElement {
                 target = 'icon';
             }
 
-            const customEvent = new CustomEvent('privateitemclick', {
-                bubbles: true,
-                composed: true,
-                cancelable: true,
-                detail: {
-                    name: this.name,
-                    key: this.nodeKey,
-                    target
-                }
-            });
-            this.dispatchEvent(customEvent);
-            if (customEvent.defaultPrevented) {
-                event.preventDefault();
+            if (this.showCheckbox && target === 'anchor') {
+                this._selected = !this.selected;
+                this._checkboxIsIndeterminate = false;
             }
+
+            this.dispatchClick(target, event);
         }
+    }
+
+    handleCheckboxChange(event) {
+        // Cancel the checkbox change event,
+        // because it is handled by the click event
+        event.stopPropagation();
+        event.currentTarget.checked = !event.currentTarget.checked;
     }
 
     handleDisabledEdit(event) {
@@ -783,6 +845,23 @@ export default class PrimitiveTreeItem extends LightningElement {
                 bubbles: true
             })
         );
+    }
+
+    dispatchClick(target, event) {
+        const customEvent = new CustomEvent('privateitemclick', {
+            bubbles: true,
+            composed: true,
+            cancelable: true,
+            detail: {
+                name: this.name,
+                key: this.nodeKey,
+                target
+            }
+        });
+        this.dispatchEvent(customEvent);
+        if (customEvent.defaultPrevented) {
+            event.preventDefault();
+        }
     }
 
     stopPropagation(event) {

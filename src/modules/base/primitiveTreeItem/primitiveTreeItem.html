@@ -1,5 +1,5 @@
 <template>
-    <div class="slds-is-relative">
+    <div class={computedWrapperClass}>
         <div
             class="avonni-primitive-tree-item__item slds-is-relative slds-grid"
             data-element-id="div-item"
@@ -30,6 +30,32 @@
                     onmouseenter={showBranchButtons}
                     onmouseleave={hideBranchButtons}
                 >
+                    <!-- Checkbox -->
+                    <span
+                        if:true={showCheckbox}
+                        class="slds-checkbox slds-m-right_xx-small"
+                    >
+                        <input
+                            id="checkbox"
+                            checked={selected}
+                            disabled={disabled}
+                            type="checkbox"
+                            data-element-id="input-checkbox"
+                            onclick={stopPropagation}
+                            onchange={handleCheckboxChange}
+                        />
+                        <label for="checkbox" class="slds-checkbox__label">
+                            <span class="slds-checkbox_faux"></span>
+                            <span
+                                class="
+                                    slds-form-element__label
+                                    slds-assistive-text
+                                "
+                                >Select</span
+                            >
+                        </label>
+                    </span>
+
                     <!-- Avatar -->
                     <avonni-avatar
                         if:true={avatar}
@@ -278,6 +304,8 @@
                     name={item.name}
                     node-key={item.key}
                     role="treeitem"
+                    selected={item.selected}
+                    show-checkbox={showCheckbox}
                     sortable={sortable}
                     data-element-id="avonni-primitive-tree-item"
                     data-key={item.key}

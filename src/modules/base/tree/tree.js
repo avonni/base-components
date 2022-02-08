@@ -37,6 +37,7 @@ export default class Tree extends LightningElement {
     _allowInlineEdit = false;
     _editFields = DEFAULT_EDIT_FIELDS;
     _isLoading = false;
+    _isMultiSelect = false;
     @track _items = [];
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
@@ -153,6 +154,21 @@ export default class Tree extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, multiple items can be selected and a checkbox is displayed to the left of the items.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isMultiSelect() {
+        return this._isMultiSelect;
+    }
+
+    set isMultiSelect(value) {
+        this._isMultiSelect = value;
     }
 
     /**
@@ -640,6 +656,19 @@ export default class Tree extends LightningElement {
         }
     }
 
+    updateParentsSelection(node) {
+        const parent = this.treedata.getItem(node.parent);
+        if (parent) {
+            const children = parent.treeNode.children;
+            const selectedChildren = children.filter((child) => child.selected);
+            const isSelected = selectedChildren.length === children.length;
+            parent.treeNode.nodeRef.selected = isSelected;
+            parent.treeNode.selected = isSelected;
+            this.callbackMap[parent.key].setSelected(isSelected);
+            this.updateParentsSelection(parent);
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
@@ -737,9 +766,21 @@ export default class Tree extends LightningElement {
                     this.expandBranch(item.treeNode);
                 }
             } else if (target === 'anchor') {
-                this._computedSelectedItem = item;
+                if (this.isMultiSelect) {
+                    const node = item.treeNode;
+
+                    if (!node.selected) {
+                        this.treedata.selectNode(node);
+                    } else {
+                        this.treedata.unselectNode(node);
+                    }
+
+                    this.updateParentsSelection(item);
+                } else {
+                    this._computedSelectedItem = item;
+                    this.setFocusToItem(item);
+                }
                 this.dispatchSelectEvent(item.treeNode, event);
-                this.setFocusToItem(item);
             }
         }
     }
@@ -943,14 +984,22 @@ export default class Tree extends LightningElement {
 
     handleRegistration(event) {
         event.stopPropagation();
-        const { bounds, key, focus, removeBorder, setBorder, unfocus } =
-            event.detail;
+        const {
+            bounds,
+            key,
+            focus,
+            removeBorder,
+            setBorder,
+            setSelected,
+            unfocus
+        } = event.detail;
 
         this.callbackMap[key] = {
             bounds,
             focus,
             removeBorder,
             setBorder,
+            setSelected,
             unfocus
         };
         this.treedata.addVisible(key);
@@ -975,7 +1024,10 @@ export default class Tree extends LightningElement {
                 bubbles: true,
                 composed: true,
                 cancelable: true,
-                detail: { name: node.name }
+                detail: {
+                    items: deepCopy(this.items),
+                    name: node.name
+                }
             });
 
             if (this.allowInlineEdit) {
