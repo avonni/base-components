@@ -45,8 +45,6 @@ export default class Tree extends LightningElement {
 
     callbackMap = {};
     @track children = [];
-    focusedChild;
-    rootElement;
     treedata = new TreeData();
     _dragState;
     _focusedItem;
@@ -167,7 +165,7 @@ export default class Tree extends LightningElement {
 
     set isMultiSelect(value) {
         this._isMultiSelect = value;
-        if (this.isConnected) this.syncSelection();
+        if (this.isConnected) this.resetSelection();
     }
 
     /**
@@ -221,8 +219,10 @@ export default class Tree extends LightningElement {
 
     set selectedItems(value) {
         this._selectedItems =
-            typeof value === 'string' ? [value] : normalizeArray(value);
-        if (this.isConnected) this.syncSelection();
+            typeof value === 'string'
+                ? [value]
+                : deepCopy(normalizeArray(value));
+        if (this.isConnected) this.resetSelection();
     }
 
     /**
@@ -275,7 +275,6 @@ export default class Tree extends LightningElement {
         this.treedata = new TreeData();
         if (!this.items.length) {
             this.children = [];
-            this.rootElement = null;
             return;
         }
 
@@ -286,9 +285,14 @@ export default class Tree extends LightningElement {
         this.children = treeRoot ? treeRoot.children : [];
         this._focusedItem = treeRoot.selectedItem;
         if (this.isMultiSelect) {
-            this.children.forEach((node) =>
-                this.treedata.cascadeSelection(node)
-            );
+            const selectedItems = [...this.selectedItems];
+            this.children.forEach((node) => {
+                this.treedata.cascadeSelection(node, selectedItems);
+            });
+            if (selectedItems.length !== this.selectedItems.length) {
+                this._selectedItems = selectedItems;
+                this.dispatchSelectEvent();
+            }
         } else if (this._focusedItem) {
             this.treedata.expandTo(this._focusedItem);
         }
@@ -640,16 +644,21 @@ export default class Tree extends LightningElement {
         }
     }
 
-    syncSelection() {
+    resetSelection() {
         if (!this.children.length) return;
 
         // Reset all selection
         this.treedata.resetSelection(this.computedSelectedItems);
 
         if (this.isMultiSelect) {
+            const selectedItems = [...this.selectedItems];
             this.children.forEach((node) => {
-                this.treedata.cascadeSelection(node);
+                this.treedata.cascadeSelection(node, selectedItems);
             });
+            if (selectedItems.length !== this.selectedItems.length) {
+                this._selectedItems = selectedItems;
+                this.dispatchSelectEvent();
+            }
             this.children = [...this.children];
         } else {
             const selectedItem = this.treedata.getItemFromName(
@@ -775,16 +784,16 @@ export default class Tree extends LightningElement {
                     const node = item.treeNode;
 
                     if (!node.selected) {
-                        this.treedata.selectNode(node);
+                        this.treedata.selectNode(node, this.selectedItems);
                     } else {
-                        this.treedata.unselectNode(node);
+                        this.treedata.unselectNode(node, this.selectedItems);
                     }
 
                     this.updateParentsSelection(item);
                 } else {
                     this.setFocusToItem(item);
                 }
-                this.dispatchSelectEvent(item.treeNode, event);
+                this.dispatchSelectEvent(event);
             }
         }
     }
@@ -964,6 +973,7 @@ export default class Tree extends LightningElement {
                 }
             );
             initialPosition.items.splice(initialItemNewIndex, 1);
+            if (!this.isMultiSelect) this._selectedItems = [initialItem.name];
             this.initItems();
             this.dispatchChange(initialItem.name, 'move');
         }
@@ -1029,29 +1039,26 @@ export default class Tree extends LightningElement {
         );
     }
 
-    dispatchSelectEvent(node, event) {
-        if (!node.disabled) {
-            const customEvent = new CustomEvent('select', {
-                bubbles: true,
-                composed: true,
-                cancelable: true,
-                detail: {
-                    items: deepCopy(this.items),
-                    name: node.name
-                }
-            });
+    dispatchSelectEvent(event) {
+        const customEvent = new CustomEvent('select', {
+            bubbles: true,
+            composed: true,
+            cancelable: true,
+            detail: {
+                selectedItems: this.selectedItems
+            }
+        });
 
-            if (this.allowInlineEdit) {
-                clearTimeout(this._selectTimeout);
-                this._selectTimeout = setTimeout(() => {
-                    this.dispatchEvent(customEvent);
-                }, 300);
-            } else {
+        if (this.allowInlineEdit) {
+            clearTimeout(this._selectTimeout);
+            this._selectTimeout = setTimeout(() => {
                 this.dispatchEvent(customEvent);
+            }, 300);
+        } else {
+            this.dispatchEvent(customEvent);
 
-                if (customEvent.defaultPrevented) {
-                    event.preventDefault();
-                }
+            if (event && customEvent.defaultPrevented) {
+                event.preventDefault();
             }
         }
     }

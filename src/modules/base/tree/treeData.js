@@ -53,7 +53,7 @@ export class TreeData {
         return newItem;
     }
 
-    cascadeSelection(node) {
+    cascadeSelection(node, selectedItems) {
         if (node.children.length) {
             if (!node.selected) {
                 const allChildrenAreSelected = node.children.every((child) => {
@@ -61,12 +61,22 @@ export class TreeData {
                 });
                 if (allChildrenAreSelected) {
                     node.selected = true;
+                    const name = node.name;
+                    if (!selectedItems.includes(name)) {
+                        selectedItems.push(name);
+                    }
                 }
             }
 
             node.children.forEach((child) => {
-                if (node.selected) child.selected = true;
-                this.cascadeSelection(child);
+                if (node.selected) {
+                    child.selected = true;
+                    const name = child.name;
+                    if (!selectedItems.includes(name)) {
+                        selectedItems.push(name);
+                    }
+                }
+                this.cascadeSelection(child, selectedItems);
             });
         }
     }
@@ -292,21 +302,32 @@ export class TreeData {
         this.visibleTreeItems.delete(child);
     }
 
-    selectNode(node) {
+    selectNode(node, selectedItems) {
         node.nodeRef.selected = true;
         node.selected = true;
+        if (!selectedItems.includes(node.name)) {
+            selectedItems.push(node.name);
+        }
 
         if (node.children) {
-            node.children.forEach((child) => this.selectNode(child));
+            node.children.forEach((child) =>
+                this.selectNode(child, selectedItems)
+            );
         }
     }
 
-    unselectNode(node) {
+    unselectNode(node, selectedItems) {
         node.nodeRef.selected = false;
         node.selected = false;
+        const selectedIndex = selectedItems.indexOf(node.name);
+        if (selectedIndex > -1) {
+            selectedItems.splice(selectedIndex, 1);
+        }
 
         if (node.children) {
-            node.children.forEach((child) => this.unselectNode(child));
+            node.children.forEach((child) =>
+                this.unselectNode(child, selectedItems)
+            );
         }
     }
 
