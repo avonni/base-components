@@ -114,6 +114,18 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
             }
+        },
+        isMultiSelect: {
+            name: 'is-multi-select',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, multiple items can be selected and a checkbox is displayed to the left of the items.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
         }
     },
     args: {
@@ -129,7 +141,8 @@ export default {
         ],
         isLoading: false,
         loadingStateAlternativeText: 'Loading...',
-        sortable: false
+        sortable: false,
+        isMultiSelect: false
     }
 };
 
@@ -180,6 +193,14 @@ InlineEditing.args = {
 export const FieldsAndAvatars = Template.bind({});
 FieldsAndAvatars.args = {
     items: ITEMS_WITH_FIELDS,
-    header: 'Tree with fields and avatars',
-    selectedItem: 'service1-3'
+    header: 'Tree with fields and avatars'
+};
+
+export const MultiSelect = Template.bind({});
+MultiSelect.args = {
+    items: ITEMS,
+    header: 'Multi select tree',
+    isMultiSelect: true,
+    actions: ACTIONS,
+    allowInlineEdit: true
 };

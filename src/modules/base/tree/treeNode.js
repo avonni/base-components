@@ -11,34 +11,34 @@ function computeKey(parentKey, childNum) {
 export function getTreeNode(node, level, parentKey, childNum) {
     return {
         avatar: node.avatar,
-        name: node.name,
-        label: node.label,
-        metatext: node.metatext,
-        level,
-        key: computeKey(parentKey, childNum),
-        // eslint-disable-next-line no-script-url
-        href: node.href,
-        disabled: node.disabled || false,
-        isLoading: node.isLoading || false,
-        visible: level === 1,
-        fields: node.fields,
         children: [],
-        visibleItems: [],
-        nodeRef: node,
-        isLeaf:
-            !node.isLoading &&
-            (!node.items ||
-                (Array.isArray(node.items) && node.items.length === 0)),
+        disabled: node.disabled || false,
         get expanded() {
             return this.isLeaf && !this.isLoading
                 ? true
                 : node.expanded || false;
         },
+        fields: node.fields,
         focusedChild: null,
+        href: node.href,
+        isLeaf:
+            !node.isLoading &&
+            (!node.items ||
+                (Array.isArray(node.items) && node.items.length === 0)),
+        isLoading: node.isLoading || false,
+        key: computeKey(parentKey, childNum),
+        label: node.label,
+        level,
+        metatext: node.metatext,
+        name: node.name,
+        nodeRef: node,
+        selected: node.selected,
         get strexpanded() {
             return (
                 this.isLeaf ? true : this.nodeRef.expanded || false
             ).toString();
-        }
+        },
+        visible: level === 1,
+        visibleItems: []
     };
 }

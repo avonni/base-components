@@ -65,7 +65,8 @@ export class TreeData {
             disabled: item.disabled,
             isLoading: item.isLoading,
             items: [],
-            fields: item.fields
+            fields: item.fields,
+            selected: item.selected
         };
 
         if (item.items && item.items.length > 0) {
@@ -75,6 +76,27 @@ export class TreeData {
         }
 
         return newItem;
+    }
+
+    /**
+     * Select all nodes for which all children are selected.
+     *
+     * @param {object} node Node for which the selection needs to be computed
+     */
+    computeSelection(node) {
+        if (node.children.length) {
+            const allChildrenAreSelected = node.children.every((child) => {
+                return child.selected;
+            });
+            if (allChildrenAreSelected) {
+                node.selected = true;
+                node.nodeRef.selected = true;
+            }
+
+            node.children.forEach((child) => {
+                this.computeSelection(child);
+            });
+        }
     }
 
     parse(data, selected) {
@@ -97,6 +119,11 @@ export class TreeData {
                     !parent.disabled
                 ) {
                     node.visible = true;
+                }
+                if (parent && parent.selected) {
+                    // Select all children of selected parent
+                    node.selected = true;
+                    node.nodeRef.selected = true;
                 }
                 level++;
                 seen.add(currentNode);
@@ -174,6 +201,9 @@ export class TreeData {
                 this._visibleTreeItems.add(item);
             });
             tree.selectedItem = _selectedItem;
+            tree.children.forEach((node) => {
+                this.computeSelection(node);
+            });
             return tree;
         }
         return null;
@@ -296,6 +326,24 @@ export class TreeData {
 
     removeVisible(child) {
         this.visibleTreeItems.delete(child);
+    }
+
+    selectNode(node) {
+        node.nodeRef.selected = true;
+        node.selected = true;
+
+        if (node.children) {
+            node.children.forEach((child) => this.selectNode(child));
+        }
+    }
+
+    unselectNode(node) {
+        node.nodeRef.selected = false;
+        node.selected = false;
+
+        if (node.children) {
+            node.children.forEach((child) => this.unselectNode(child));
+        }
     }
 
     /** Looks at all children and grandchildren of this branch

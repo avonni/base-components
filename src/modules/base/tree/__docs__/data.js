@@ -61,11 +61,17 @@ export const ITEMS = [
                         label: 'Go to Record 1.1.1',
                         href: '#record1',
                         name: 'node1-1-1',
+                        selected: true,
                         items: [
                             {
                                 label: 'Go to Record 1.1.1.1',
                                 href: '#record1',
                                 name: 'node1-1-1-1'
+                            },
+                            {
+                                label: 'Go to Record 1.1.1.2',
+                                href: '#record1',
+                                name: 'node1-1-1-s'
                             }
                         ]
                     }
@@ -80,6 +86,7 @@ export const ITEMS = [
                         label: 'Go to Record 1.2.1',
                         href: '#record1',
                         name: 'node1-2-1',
+                        selected: true,
                         items: [
                             {
                                 label: 'Go to Record 1.2.1.1',
@@ -88,6 +95,11 @@ export const ITEMS = [
                             }
                         ],
                         expanded: true
+                    },
+                    {
+                        label: 'Go to Record 1.2.2',
+                        href: '#record1',
+                        name: 'node1-2-2'
                     }
                 ]
             }
@@ -98,6 +110,7 @@ export const ITEMS = [
         href: '#record2',
         isLoading: true,
         name: 'node2',
+        selected: true,
         items: [
             {
                 label: 'Already loaded record',
@@ -136,8 +149,8 @@ export const ITEMS = [
 
 export const ITEMS_WITH_FIELDS = [
     {
-        label: 'Service 1',
-        name: 'service1',
+        label: 'Employee 1',
+        name: 'employee1',
         fields: [
             {
                 label: 'Status',
@@ -152,8 +165,8 @@ export const ITEMS_WITH_FIELDS = [
         },
         items: [
             {
-                label: 'Service 1.1',
-                name: 'service1-1',
+                label: 'Employee 1.1',
+                name: 'employee1-1',
                 avatar: {
                     src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
                     size: 'small',
@@ -172,21 +185,24 @@ export const ITEMS_WITH_FIELDS = [
                 ]
             },
             {
-                label: 'Service 1.2',
-                name: 'service1-2',
+                label: 'Employee 1.2',
+                name: 'employee1-2',
                 avatar: {
                     fallbackIconName: 'standard:account',
                     size: 'small',
-                    variant: 'circle'
+                    variant: 'circle',
+                    initials: 'JG'
                 }
             },
             {
-                label: 'Service 1.3',
-                name: 'service1-3',
+                label: 'Employee 1.3',
+                name: 'employee1-3',
                 avatar: {
                     size: 'small',
                     variant: 'circle',
-                    fallbackIconName: 'standard:user'
+                    fallbackIconName: 'standard:user',
+                    presence: 'online',
+                    presencePosition: 'top-right'
                 },
                 fields: [
                     {
@@ -200,15 +216,16 @@ export const ITEMS_WITH_FIELDS = [
                     },
                     {
                         label: 'Start Date',
-                        value: new Date(2021, 10, 10)
+                        value: new Date(2021, 10, 10),
+                        type: 'date'
                     }
                 ]
             }
         ]
     },
     {
-        label: 'Service 2',
-        name: 'service2',
+        label: 'Employee 2',
+        name: 'employee2',
         metatext: 'Metatext is always visible',
         avatar: {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -224,12 +241,12 @@ export const ITEMS_WITH_FIELDS = [
         ],
         items: [
             {
-                label: 'Service 2.1',
-                name: 'service2-1'
+                label: 'Employee 2.1',
+                name: 'employee2-1'
             },
             {
-                label: 'Service 2.2',
-                name: 'service2-2',
+                label: 'Employee 2.2',
+                name: 'employee2-2',
                 fields: [
                     {
                         label: 'Employees Assigned',

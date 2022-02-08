@@ -1,6 +1,7 @@
 <template>
     <div
         class="avonni-tree_container"
+        role="tree"
         data-element-id="div-tree-wrapper"
         onchange={handleChange}
         onprivateactionclick={handleActionClick}
@@ -51,6 +52,8 @@
                     name={item.name}
                     node-key={item.key}
                     role="treeitem"
+                    selected={item.selected}
+                    show-checkbox={isMultiSelect}
                     sortable={sortable}
                     data-key={item.key}
                 ></c-primitive-tree-item>

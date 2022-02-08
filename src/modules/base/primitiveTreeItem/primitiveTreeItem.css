@@ -15,7 +15,9 @@
     background-color: transparent;
 }
 
-:host[aria-selected='true'] > div > .avonni-primitive-tree-item__item {
+:host[aria-selected='true']
+    > .avonni-primitive-tree-item__single-selection
+    > .avonni-primitive-tree-item__item {
     background: rgba(21, 137, 238, 0.1);
     -webkit-box-shadow: #1b96ff 4px 0 0 inset;
     box-shadow: inset 4px 0 0 #1b96ff;
