@@ -317,7 +317,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     get computedLabelClass() {
-        return classSet('slds-show slds-truncate')
+        return classSet('slds-truncate')
             .add({
                 'slds-p-vertical_xx-small': !this.buttonActions.length
             })
@@ -655,7 +655,14 @@ export default class PrimitiveTreeItem extends LightningElement {
     handleExpandButtonFocus() {
         if (this.showCheckbox) return;
 
-        this.dispatchEvent(new CustomEvent('focus', { bubbles: true }));
+        this.dispatchEvent(
+            new CustomEvent('focus', {
+                detail: {
+                    key: this.nodeKey
+                },
+                bubbles: true
+            })
+        );
     }
 
     handleKeydown = (event) => {

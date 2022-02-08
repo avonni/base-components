@@ -18,7 +18,6 @@ const DEFAULT_EDIT_FIELDS = [
     'disabled',
     'isLoading'
 ];
-const DEFAULT_FOCUSED = { key: '1', parent: '0' };
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 
 /**
@@ -794,9 +793,10 @@ export default class Tree extends LightningElement {
         clearTimeout(this._selectTimeout);
     }
 
-    handleFocus() {
+    handleFocus(event) {
         if (!this._focusedItem) {
-            this.setFocusToItem(DEFAULT_FOCUSED);
+            const item = this.treedata.getItem(event.detail.key);
+            this.setFocusToItem(item);
         }
     }
 
