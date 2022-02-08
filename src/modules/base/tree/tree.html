@@ -4,6 +4,7 @@
         role="tree"
         data-element-id="div-tree-wrapper"
         onchange={handleChange}
+        onfocus={handleFocus}
         onprivateactionclick={handleActionClick}
         onprivatemousedown={handleMouseDown}
         onprivateitemclick={handleClick}
@@ -34,7 +35,6 @@
                     aria-expanded={item.strexpanded}
                     aria-label={item.label}
                     aria-level={item.level}
-                    aria-selected={item.selected}
                     avatar={item.avatar}
                     child-items={item.children}
                     disabled={item.disabled}

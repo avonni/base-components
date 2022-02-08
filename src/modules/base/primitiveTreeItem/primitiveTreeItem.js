@@ -333,6 +333,10 @@ export default class PrimitiveTreeItem extends LightningElement {
             .toString();
     }
 
+    get expandButtonTabindex() {
+        return this.showCheckbox ? '0' : '-1';
+    }
+
     get itemElement() {
         return this.template.querySelector('[data-element-id="div-item"]');
     }
@@ -387,6 +391,9 @@ export default class PrimitiveTreeItem extends LightningElement {
             this._checkboxIsIndeterminate = false;
         }
 
+        if (this.showCheckbox) {
+            this.ariaSelected = this.selected ? 'true' : 'false';
+        }
         this.updateCheckboxStatus();
     }
 
@@ -607,13 +614,6 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
-    handleCheckboxChange(event) {
-        // Cancel the checkbox change event,
-        // because it is handled by the click event
-        event.stopPropagation();
-        event.currentTarget.checked = !event.currentTarget.checked;
-    }
-
     handleDisabledEdit(event) {
         event.stopPropagation();
         this.draftValues.disabled = event.detail.checked;
@@ -652,7 +652,14 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.draftValues.isLoading = event.detail.checked;
     }
 
+    handleExpandButtonFocus() {
+        if (this.showCheckbox) return;
+
+        this.dispatchEvent(new CustomEvent('focus', { bubbles: true }));
+    }
+
     handleKeydown = (event) => {
+        if (this.popoverVisible) return;
         switch (event.keyCode) {
             case keyCodes.enter: {
                 this.preventDefaultAndStopPropagation(event);
@@ -730,6 +737,10 @@ export default class PrimitiveTreeItem extends LightningElement {
 
     handleActionMenuOpen() {
         this._menuIsOpen = true;
+    }
+
+    handleCheckboxClick(event) {
+        if (this.allowInlineEdit) event.stopPropagation();
     }
 
     handleLabelDoubleClick() {

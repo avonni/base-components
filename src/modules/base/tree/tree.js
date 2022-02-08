@@ -41,7 +41,7 @@ export default class Tree extends LightningElement {
     @track _items = [];
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
-    _selectedItem;
+    _selectedItems = [];
     _sortable = false;
 
     callbackMap = {};
@@ -49,9 +49,8 @@ export default class Tree extends LightningElement {
     focusedChild;
     rootElement;
     treedata = new TreeData();
-    _computedSelectedItem;
-    _currentFocusedItem;
     _dragState;
+    _focusedItem;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
     _selectTimeout;
@@ -65,8 +64,8 @@ export default class Tree extends LightningElement {
     }
 
     renderedCallback() {
-        if (this._computedSelectedItem) {
-            this.setFocusToItem(this._currentFocusedItem, this._setFocus);
+        if (this._focusedItem) {
+            this.setFocusToItem(this._focusedItem, this._setFocus);
             this._setFocus = false;
         }
     }
@@ -169,6 +168,7 @@ export default class Tree extends LightningElement {
 
     set isMultiSelect(value) {
         this._isMultiSelect = value;
+        if (this.isConnected) this.syncSelection();
     }
 
     /**
@@ -216,13 +216,14 @@ export default class Tree extends LightningElement {
      * @type {string}
      */
     @api
-    get selectedItem() {
-        return this._selectedItem;
+    get selectedItems() {
+        return this._selectedItems;
     }
 
-    set selectedItem(value) {
-        this._selectedItem = value;
-        if (this.isConnected) this.syncSelected();
+    set selectedItems(value) {
+        this._selectedItems =
+            typeof value === 'string' ? [value] : normalizeArray(value);
+        if (this.isConnected) this.syncSelection();
     }
 
     /**
@@ -238,7 +239,6 @@ export default class Tree extends LightningElement {
 
     set sortable(value) {
         this._sortable = value;
-        if (this.isConnected) this.syncSelected();
     }
 
     /*
@@ -249,6 +249,13 @@ export default class Tree extends LightningElement {
 
     get addAction() {
         return this.actions.find((action) => action.name === 'add');
+    }
+
+    get computedSelectedItems() {
+        if (!this.selectedItems.length) return [];
+        return this.isMultiSelect
+            ? this.selectedItems
+            : this.selectedItems.slice(0, 1);
     }
 
     /*
@@ -273,11 +280,19 @@ export default class Tree extends LightningElement {
             return;
         }
 
-        const treeRoot = this.treedata.parse(this.items, this.selectedItem);
+        const treeRoot = this.treedata.parse(
+            this.items,
+            this.computedSelectedItems
+        );
         this.children = treeRoot ? treeRoot.children : [];
-        this._computedSelectedItem = treeRoot.selectedItem;
-        this.rootElement = this.children.length > 0 ? treeRoot.key : null;
-        if (this.rootElement) this.syncCurrentFocused();
+        this._focusedItem = treeRoot.selectedItem;
+        if (this.isMultiSelect) {
+            this.children.forEach((node) =>
+                this.treedata.cascadeSelection(node)
+            );
+        } else if (this._focusedItem) {
+            this.treedata.expandTo(this._focusedItem);
+        }
     }
 
     addItem(parentKey) {
@@ -293,12 +308,13 @@ export default class Tree extends LightningElement {
             const path = parentKey.split('.');
             const branch = this.getBranch(path);
             branch.items.unshift(newItem);
+            if (this.isMultiSelect) branch.expanded = true;
         } else {
             // Add a new item in the main branch
             this.items.push(newItem);
         }
 
-        this._selectedItem = name;
+        if (!this.isMultiSelect) this._selectedItems = [name];
     }
 
     circleAndExpandHoveredItem() {
@@ -392,20 +408,21 @@ export default class Tree extends LightningElement {
         const duplicated = this.treedata.cloneItems(items[index]);
         duplicated.name = name;
         items.splice(index + 1, 0, duplicated);
-        this._selectedItem = name;
+        if (!this.isMultiSelect) this._selectedItems = [name];
+        return duplicated;
     }
 
     expandBranch(node) {
         if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = true;
             if (
-                this._computedSelectedItem &&
-                this._computedSelectedItem.key.startsWith(node.key)
+                this._focusedItem &&
+                this._focusedItem.key.startsWith(node.key)
             ) {
                 // focus after expansion happens and elements are rerendered
                 // eslint-disable-next-line @lwc/lwc/no-async-operation
                 setTimeout(() => {
-                    this.setFocusToItem(this._computedSelectedItem);
+                    this.setFocusToItem(this._focusedItem);
                 }, 0);
             }
 
@@ -470,9 +487,13 @@ export default class Tree extends LightningElement {
         ) {
             this.callbackMap[currentFocused.key].unfocus();
         }
+
+        if (this.isMultiSelect) return;
+
         if (item) {
-            this._currentFocusedItem =
-                this.treedata.updateCurrentFocusedItemIndex(item.index);
+            this._focusedItem = this.treedata.updateCurrentFocusedItemIndex(
+                item.index
+            );
 
             if (this.callbackMap[item.parent]) {
                 this.callbackMap[item.parent].focus(
@@ -620,39 +641,23 @@ export default class Tree extends LightningElement {
         }
     }
 
-    syncCurrentFocused() {
-        if (this._computedSelectedItem) {
-            this._currentFocusedItem = this._computedSelectedItem;
-        } else {
-            this._currentFocusedItem = DEFAULT_FOCUSED;
-        }
-
-        this.updateCurrentFocusedChild();
-    }
-
-    syncSelected() {
+    syncSelection() {
         if (!this.children.length) return;
 
-        this._computedSelectedItem = this.treedata.syncSelectedToData(
-            this.selectedItem
-        );
-        this.syncCurrentFocused();
+        // Reset all selection
+        this.treedata.resetSelection(this.computedSelectedItems);
 
-        if (!this._computedSelectedItem) {
-            this.setFocusToItem(this._currentFocusedItem, false, false);
-        }
-    }
-
-    updateCurrentFocusedChild() {
-        if (this.rootElement === this._currentFocusedItem.parent) {
-            this.focusedChild = this.treedata.getChildNum(
-                this._currentFocusedItem.key
-            );
+        if (this.isMultiSelect) {
+            this.children.forEach((node) => {
+                this.treedata.cascadeSelection(node);
+            });
+            this.children = [...this.children];
         } else {
-            this.focusedChild = this._currentFocusedItem.key;
-            this.treedata.updateCurrentFocusedChild(
-                this._currentFocusedItem.key
+            const selectedItem = this.treedata.getItemFromName(
+                this.computedSelectedItems[0]
             );
+            if (selectedItem) this.treedata.expandTo(selectedItem);
+            this.setFocusToItem(selectedItem);
         }
     }
 
@@ -708,16 +713,16 @@ export default class Tree extends LightningElement {
             }
             case 'delete': {
                 const prevItem = this.treedata.findPrevNodeToFocus(item.index);
-                if (prevItem) {
-                    this._selectedItem = prevItem.treeNode.name;
+                if (prevItem && !this.isMultiSelect) {
+                    this._selectedItems = [prevItem.treeNode.name];
                 }
                 this.deleteItem(key);
                 break;
             }
             case 'duplicate': {
                 previousName = item.treeNode.name;
-                this.duplicateItem(key);
-                name = this._selectedItem;
+                const duplicatedItem = this.duplicateItem(key);
+                name = duplicatedItem.name;
                 break;
             }
             default: {
@@ -743,6 +748,7 @@ export default class Tree extends LightningElement {
             item[property] = value;
         });
 
+        if (!this.isMultiSelect) this._selectedItems = [item.name];
         this.initItems();
         this.dispatchChange(item.name, 'edit', previousName);
         this._setFocus = true;
@@ -777,7 +783,6 @@ export default class Tree extends LightningElement {
 
                     this.updateParentsSelection(item);
                 } else {
-                    this._computedSelectedItem = item;
                     this.setFocusToItem(item);
                 }
                 this.dispatchSelectEvent(item.treeNode, event);
@@ -787,6 +792,12 @@ export default class Tree extends LightningElement {
 
     handleDblClick() {
         clearTimeout(this._selectTimeout);
+    }
+
+    handleFocus() {
+        if (!this._focusedItem) {
+            this.setFocusToItem(DEFAULT_FOCUSED);
+        }
     }
 
     handleKeydown(event) {
@@ -844,7 +855,7 @@ export default class Tree extends LightningElement {
 
             this._dragState = { key };
             this.dragTo(item);
-            this._selectedItem = name;
+            this._focusedItem = name;
             this.setFocusToItem(item);
 
             // Remove item hover color

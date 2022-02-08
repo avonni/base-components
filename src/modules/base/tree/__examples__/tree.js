@@ -12,7 +12,7 @@ export const Tree = ({
     items,
     loadingStateAlternativeText,
     isMultiSelect,
-    selectedItem,
+    selectedItems,
     sortable
 }) => {
     const element = document.createElement('avonni-tree');
@@ -25,7 +25,7 @@ export const Tree = ({
     element.items = items;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.isMultiSelect = isMultiSelect;
-    element.selectedItem = selectedItem;
+    element.selectedItems = selectedItems;
     element.sortable = sortable;
     return element;
 };

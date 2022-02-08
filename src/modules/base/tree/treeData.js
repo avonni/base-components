@@ -30,30 +30,6 @@ export class TreeData {
         return this._nameKeyMapping;
     }
 
-    /**
-     * When data is available first and selected later, fetch item from the selected name and modify data to expand till selected
-     * @param {string} itemName 'name' of the item which is indexed in _nameKeyMapping
-     * @returns {null|*} selected item
-     */
-    syncSelectedToData(itemName) {
-        if (itemName) {
-            const item = this.getItemFromName(itemName);
-            if (item) {
-                this.updateExpanded(item.key);
-                return item;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * When selected is available first and data later, modify data to expand till selected
-     * @param {object} node - node which is selected
-     */
-    syncDataToSelected(node) {
-        this.updateExpanded(node.key);
-    }
-
     cloneItems(item) {
         const newItem = {
             avatar: item.avatar,
@@ -65,8 +41,7 @@ export class TreeData {
             disabled: item.disabled,
             isLoading: item.isLoading,
             items: [],
-            fields: item.fields,
-            selected: item.selected
+            fields: item.fields
         };
 
         if (item.items && item.items.length > 0) {
@@ -78,28 +53,25 @@ export class TreeData {
         return newItem;
     }
 
-    /**
-     * Select all nodes for which all children are selected.
-     *
-     * @param {object} node Node for which the selection needs to be computed
-     */
-    computeSelection(node) {
+    cascadeSelection(node) {
         if (node.children.length) {
-            const allChildrenAreSelected = node.children.every((child) => {
-                return child.selected;
-            });
-            if (allChildrenAreSelected) {
-                node.selected = true;
-                node.nodeRef.selected = true;
+            if (!node.selected) {
+                const allChildrenAreSelected = node.children.every((child) => {
+                    return child.selected;
+                });
+                if (allChildrenAreSelected) {
+                    node.selected = true;
+                }
             }
 
             node.children.forEach((child) => {
-                this.computeSelection(child);
+                if (node.selected) child.selected = true;
+                this.cascadeSelection(child);
             });
         }
     }
 
-    parse(data, selected) {
+    parse(data, selectedItems) {
         const root = {};
         root.items = data;
         const seen = new WeakSet();
@@ -120,11 +92,6 @@ export class TreeData {
                 ) {
                     node.visible = true;
                 }
-                if (parent && parent.selected) {
-                    // Select all children of selected parent
-                    node.selected = true;
-                    node.nodeRef.selected = true;
-                }
                 level++;
                 seen.add(currentNode);
 
@@ -139,12 +106,8 @@ export class TreeData {
                     };
                     this.indices[node.key] = indexedObj;
                     this.nameKeyMapping[node.name] = node.key;
-                    if (node.name === selected) {
-                        this.syncDataToSelected(
-                            node,
-                            indexedObj.index,
-                            selected
-                        );
+                    if (selectedItems.includes(node.name)) {
+                        node.selected = true;
                         _selectedItem = indexedObj;
                     }
                 }
@@ -201,28 +164,22 @@ export class TreeData {
                 this._visibleTreeItems.add(item);
             });
             tree.selectedItem = _selectedItem;
-            tree.children.forEach((node) => {
-                this.computeSelection(node);
-            });
             return tree;
         }
         return null;
     }
 
-    updateExpanded(key) {
-        const node = this._indices[key];
-        if (node) {
-            let parentKey = node.parent;
-            let parentNode = this._indices[parentKey];
-            while (parentKey && parentKey !== '0' && parentNode) {
-                parentKey = parentNode.parent;
-                parentNode = parentNode.treeNode;
-                if (!parentNode.nodeRef.expanded) {
-                    parentNode.nodeRef.expanded = true;
-                }
-
-                parentNode = this._indices[parentKey];
+    expandTo(node) {
+        let parentKey = node.parent;
+        let parentNode = this._indices[parentKey];
+        while (parentKey && parentKey !== '0' && parentNode) {
+            parentKey = parentNode.parent;
+            parentNode = parentNode.treeNode;
+            if (!parentNode.nodeRef.expanded) {
+                parentNode.nodeRef.expanded = true;
             }
+
+            parentNode = this._indices[parentKey];
         }
     }
 
@@ -322,6 +279,13 @@ export class TreeData {
 
     addVisible(child) {
         this.visibleTreeItems.add(child);
+    }
+
+    resetSelection(selectedItems) {
+        this.treeItemsInTraversalOrder.forEach((key) => {
+            const item = this.indices[key];
+            item.treeNode.selected = selectedItems.includes(item.treeNode.name);
+        });
     }
 
     removeVisible(child) {
