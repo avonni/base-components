@@ -61,4 +61,8 @@ export default class ListView extends LightningElement {
     @api tooltip;
     @api value;
     @api variant = DEFAULT_BUTTON_VARIANT;
+
+    handleNewListView() {
+        this.template.querySelector('c-dynamic-menu').click();
+    }
 }

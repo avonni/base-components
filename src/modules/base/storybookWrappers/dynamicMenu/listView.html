@@ -62,5 +62,14 @@
         >
             List Views
         </div>
+        <div slot="footer">
+            <lightning-button
+                variant="base"
+                label="New List View"
+                icon-name="utility:add"
+                onclick={handleNewListView}
+                title="Create new list view"
+            ></lightning-button>
+        </div>
     </c-dynamic-menu>
 </template>
