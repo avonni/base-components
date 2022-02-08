@@ -850,6 +850,25 @@ describe('Dynamic Menu', () => {
     });
 
     /* ---- EVENTS ----- */
+    it('Dynamic Menu: event: action click', () => {
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            element.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    detail: {
+                        name: 'action-name'
+                    }
+                })
+            );
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('action-name');
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
 
     it('Dynamic Menu: event: select item', () => {
         element.items = baseItems;

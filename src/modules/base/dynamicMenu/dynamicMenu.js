@@ -796,7 +796,7 @@ export default class DynamicMenu extends LightningElement {
         }
 
         if (this._dropdownVisible) {
-            // this.toggleMenuVisibility();
+            this.toggleMenuVisibility();
         }
     }
 
