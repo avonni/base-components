@@ -317,7 +317,7 @@ export default class Tree extends LightningElement {
             this.items.push(newItem);
         }
 
-        if (!this.isMultiSelect) this._selectedItems = [name];
+        this.singleSelect(name);
     }
 
     circleAndExpandHoveredItem() {
@@ -364,12 +364,6 @@ export default class Tree extends LightningElement {
         }
     }
 
-    deleteItem(key) {
-        const { index, items } = this.getPositionInBranch(key);
-
-        return items.splice(index, 1)[0];
-    }
-
     dragTo(item) {
         if (!this._dragState) return;
 
@@ -411,7 +405,7 @@ export default class Tree extends LightningElement {
         const duplicated = this.treedata.cloneItems(items[index]);
         duplicated.name = name;
         items.splice(index + 1, 0, duplicated);
-        if (!this.isMultiSelect) this._selectedItems = [name];
+        this.singleSelect(name);
         return duplicated;
     }
 
@@ -555,6 +549,12 @@ export default class Tree extends LightningElement {
                 child.ariaSelected = true;
             }
         }
+    }
+
+    singleSelect(name) {
+        if (this.isMultiSelect) return;
+        this._selectedItems = [name];
+        this.dispatchSelectEvent();
     }
 
     showBottomBorderOnHoveredItem(x) {
@@ -722,9 +722,10 @@ export default class Tree extends LightningElement {
             case 'delete': {
                 const prevItem = this.treedata.findPrevNodeToFocus(item.index);
                 if (prevItem && !this.isMultiSelect) {
-                    this._selectedItems = [prevItem.treeNode.name];
+                    this.singleSelect(prevItem.treeNode.name);
                 }
-                this.deleteItem(key);
+                const { index, items } = this.getPositionInBranch(key);
+                items.splice(index, 1);
                 break;
             }
             case 'duplicate': {
@@ -756,7 +757,7 @@ export default class Tree extends LightningElement {
             item[property] = value;
         });
 
-        if (!this.isMultiSelect) this._selectedItems = [item.name];
+        this.singleSelect(item.name);
         this.initItems();
         this.dispatchChange(item.name, 'edit', previousName);
         this._setFocus = true;
@@ -973,7 +974,7 @@ export default class Tree extends LightningElement {
                 }
             );
             initialPosition.items.splice(initialItemNewIndex, 1);
-            if (!this.isMultiSelect) this._selectedItems = [initialItem.name];
+            this.singleSelect(initialItem.name);
             this.initItems();
             this.dispatchChange(initialItem.name, 'move');
         }
