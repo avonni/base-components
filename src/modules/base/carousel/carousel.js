@@ -496,7 +496,7 @@ export default class Carousel extends LightningElement {
      *
      * @param {event}
      */
-    handleItemClicked(event) {
+    handleItemClick(event) {
         /**
          * The event fired when an item is clicked.
          *
