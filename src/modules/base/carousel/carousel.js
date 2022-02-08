@@ -519,7 +519,7 @@ export default class Carousel extends LightningElement {
      *
      * @param {event}
      */
-    handleActionClicked(event) {
+    handleActionClick(event) {
         /**
          * The event fired when a user clicks on an action.
          *
@@ -537,6 +537,8 @@ export default class Carousel extends LightningElement {
                 }
             })
         );
+
+        console.log(event.detail.name);
     }
 
     /**
