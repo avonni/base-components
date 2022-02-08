@@ -32,7 +32,6 @@ export function getTreeNode(node, level, parentKey, childNum) {
         metatext: node.metatext,
         name: node.name,
         nodeRef: node,
-        selected: node.selected,
         get strexpanded() {
             return (
                 this.isLeaf ? true : this.nodeRef.expanded || false
