@@ -11,10 +11,11 @@
                 aria-expanded={expanded}
                 icon-name={computedIconName}
                 size="small"
-                tabindex="-1"
+                tabindex={expandButtonTabindex}
                 title={buttonLabel}
                 variant="bare"
                 data-type="chevron"
+                onfocus={handleExpandButtonFocus}
                 onmousedown={stopPropagation}
             >
             </lightning-button-icon>
@@ -41,10 +42,12 @@
                             disabled={disabled}
                             type="checkbox"
                             data-element-id="input-checkbox"
-                            onclick={stopPropagation}
-                            onchange={handleCheckboxChange}
                         />
-                        <label for="checkbox" class="slds-checkbox__label">
+                        <label
+                            for="checkbox"
+                            class="slds-checkbox__label"
+                            onclick={handleCheckboxClick}
+                        >
                             <span class="slds-checkbox_faux"></span>
                             <span
                                 class="
@@ -287,7 +290,6 @@
                     aria-expanded={item.strexpanded}
                     aria-label={item.label}
                     aria-level={item.level}
-                    aria-selected={item.selected}
                     avatar={item.avatar}
                     child-items={item.children}
                     disabled={item.disabled}

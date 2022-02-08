@@ -10,7 +10,7 @@ export default class Tree extends LightningElement {
     @api isMultiSelect;
     @api items;
     @api loadingStateAlternativeText;
-    @api selectedItem;
+    @api selectedItems;
     @api sortable;
 
     handleSelect(event) {

@@ -71,15 +71,15 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        selectedItem: {
-            name: 'selected-item',
+        selectedItems: {
+            name: 'selected-items',
             control: {
-                type: 'text'
+                type: 'object'
             },
             description:
-                'Name of the tree item to select and highlight. Tree item names are case-sensitive. If the tree item is nested, selecting this item also expands the parent branches.',
+                'Array of tree item names to select and highlight. If the tree is not multi-select:  only the first item of the list will be selected ; if it is nested, selecting this item also expands the parent branches.',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'string[]' }
             }
         },
         isLoading: {
@@ -152,7 +152,7 @@ export const Base = Template.bind({});
 Base.args = {
     items: ITEMS,
     header: 'Base tree with a selected item',
-    selectedItem: 'node1-1-1'
+    selectedItems: 'node1-1-1'
 };
 
 export const Actions = Template.bind({});
@@ -200,7 +200,8 @@ export const MultiSelect = Template.bind({});
 MultiSelect.args = {
     items: ITEMS,
     header: 'Multi select tree',
+    allowInlineEdit: true,
     isMultiSelect: true,
-    actions: ACTIONS,
-    allowInlineEdit: true
+    selectedItems: ['node1-2-1', 'node2', 'node1-1-1-2'],
+    actions: ACTIONS
 };

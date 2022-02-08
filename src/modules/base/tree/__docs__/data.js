@@ -61,7 +61,6 @@ export const ITEMS = [
                         label: 'Go to Record 1.1.1',
                         href: '#record1',
                         name: 'node1-1-1',
-                        selected: true,
                         items: [
                             {
                                 label: 'Go to Record 1.1.1.1',
@@ -71,7 +70,7 @@ export const ITEMS = [
                             {
                                 label: 'Go to Record 1.1.1.2',
                                 href: '#record1',
-                                name: 'node1-1-1-s'
+                                name: 'node1-1-1-2'
                             }
                         ]
                     }
@@ -86,7 +85,6 @@ export const ITEMS = [
                         label: 'Go to Record 1.2.1',
                         href: '#record1',
                         name: 'node1-2-1',
-                        selected: true,
                         items: [
                             {
                                 label: 'Go to Record 1.2.1.1',
@@ -110,7 +108,6 @@ export const ITEMS = [
         href: '#record2',
         isLoading: true,
         name: 'node2',
-        selected: true,
         items: [
             {
                 label: 'Already loaded record',
