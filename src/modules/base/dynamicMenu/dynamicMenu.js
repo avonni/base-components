@@ -870,10 +870,12 @@ export default class DynamicMenu extends LightningElement {
              * @event
              * @name actionclick
              * @param {string} name Name of the action clicked.
+             * @bubbles
              * @public
              */
             this.dispatchEvent(
                 new CustomEvent('actionclick', {
+                    bubbles: true,
                     detail: {
                         name: event.currentTarget.name
                     }
