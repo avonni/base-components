@@ -796,7 +796,7 @@ export default class DynamicMenu extends LightningElement {
         }
 
         if (this._dropdownVisible) {
-            this.toggleMenuVisibility();
+            // this.toggleMenuVisibility();
         }
     }
 
@@ -863,6 +863,7 @@ export default class DynamicMenu extends LightningElement {
      */
     handleItemClick(event) {
         let target = event.target.getAttribute('data-element-id');
+        let value = event.currentTarget.getAttribute('data-value');
         if (target === 'action') {
             /**
              * The event fired when a user clicks on an action.
@@ -870,20 +871,18 @@ export default class DynamicMenu extends LightningElement {
              * @event
              * @name actionclick
              * @param {string} name Name of the action clicked.
-             * @bubbles
+             * @param {string} item The value of the item.
              * @public
              */
             this.dispatchEvent(
                 new CustomEvent('actionclick', {
-                    bubbles: true,
                     detail: {
-                        name: event.currentTarget.name
+                        name: event.target.name,
+                        item: value
                     }
                 })
             );
         } else {
-            let value = event.currentTarget.getAttribute('data-value');
-            this._value = value;
             /**
              * Select event.
              *
@@ -901,6 +900,7 @@ export default class DynamicMenu extends LightningElement {
                     }
                 })
             );
+            this._value = value;
         }
 
         this.toggleMenuVisibility();
