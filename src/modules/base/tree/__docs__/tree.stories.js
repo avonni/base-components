@@ -151,7 +151,7 @@ const Template = (args) => Tree(args);
 export const Base = Template.bind({});
 Base.args = {
     items: ITEMS,
-    header: 'Base tree with a selected item',
+    header: 'Tree With a Selected Item',
     selectedItems: 'node1-1-1'
 };
 
@@ -160,13 +160,13 @@ Actions.args = {
     actions: ACTIONS,
     actionsWhenDisabled: ACTIONS_WHEN_DISABLED,
     items: ITEMS,
-    header: 'Tree with all standard actions'
+    header: 'Tree With All Standard Actions'
 };
 
 export const Sortable = Template.bind({});
 Sortable.args = {
     items: ITEMS,
-    header: 'Tree with sortable items',
+    header: 'Tree With Sortable Items',
     sortable: true
 };
 
@@ -179,29 +179,28 @@ CustomEditFields.args = {
         }
     ],
     items: ITEMS,
-    header: 'Tree with custom edit fields',
+    header: 'Tree With Custom Edit Fields',
     editFields: ['label', 'metatext']
 };
 
 export const InlineEditing = Template.bind({});
 InlineEditing.args = {
     items: ITEMS,
-    header: 'Tree with inline editing',
+    header: 'Tree With Inline Editing',
     allowInlineEdit: true
 };
 
 export const FieldsAndAvatars = Template.bind({});
 FieldsAndAvatars.args = {
     items: ITEMS_WITH_FIELDS,
-    header: 'Tree with fields and avatars'
+    header: 'Tree With Fields and Avatars'
 };
 
 export const MultiSelect = Template.bind({});
 MultiSelect.args = {
+    actions: ACTIONS,
     items: ITEMS,
-    header: 'Multi select tree',
-    allowInlineEdit: true,
+    header: 'Multi Select Tree',
     isMultiSelect: true,
-    selectedItems: ['node1-2-1', 'node2', 'node1-1-1-2'],
-    actions: ACTIONS
+    selectedItems: ['node1-2-1', 'node1-1', 'node2', 'node1-1-1-2', 'node6']
 };

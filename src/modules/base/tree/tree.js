@@ -28,6 +28,7 @@ export default class Tree extends LightningElement {
      * Tree heading.
      *
      * @type {string}
+     * @public
      */
     @api header;
 
@@ -82,6 +83,7 @@ export default class Tree extends LightningElement {
      * Array of action objects to display to the right of each item. These actions are not visible on disabled items.
      *
      * @type {object[]}
+     * @public
      */
     @api
     get actions() {
@@ -96,6 +98,7 @@ export default class Tree extends LightningElement {
      * Array of action objects to display to the right of disabled items.
      *
      * @type {object[]}
+     * @public
      */
     @api
     get actionsWhenDisabled() {
@@ -108,9 +111,9 @@ export default class Tree extends LightningElement {
 
     /**
      * If present, the items' label can be edited by double-clicking on it.
-     * NB: If inline editing is allowed, the label link will be disabled.
      *
      * @type {boolean}
+     * @public
      * @default false
      */
     @api
@@ -123,10 +126,11 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.
+     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard <code>edit</code> action.
      *
      * @type {string[]}
      * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
+     * @public
      */
     @api
     get editFields() {
@@ -142,6 +146,7 @@ export default class Tree extends LightningElement {
      *
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get isLoading() {
@@ -157,6 +162,7 @@ export default class Tree extends LightningElement {
      *
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get isMultiSelect() {
@@ -172,6 +178,7 @@ export default class Tree extends LightningElement {
      * Array of item objects.
      *
      * @type {object[]}
+     * @public
      */
     @api
     get items() {
@@ -207,10 +214,13 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Name of the tree item to select and highlight. Tree item names are case-sensitive.
-     * If the tree item is nested, selecting this item also expands the parent branches.
+     * Array of tree item names to select and highlight.
+     * If the tree is not multi-select:
+     * * Only the first item of the list will be selected.
+     * * If it is nested, selecting this item also expands the parent branches.
      *
-     * @type {string}
+     * @type {string[]}
+     * @public
      */
     @api
     get selectedItems() {
@@ -228,6 +238,7 @@ export default class Tree extends LightningElement {
     /**
      * If present, the tree item are sortable.
      *
+     * @public
      * @type {boolean}
      * @default false
      */
@@ -246,10 +257,20 @@ export default class Tree extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Definition of the "add" action, if present.
+     *
+     * @type {(object|undefined)}
+     */
     get addAction() {
         return this.actions.find((action) => action.name === 'add');
     }
 
+    /**
+     * Computed list of selected items names.
+     *
+     * @type {string[]}
+     */
     get computedSelectedItems() {
         if (!this.selectedItems.length) return [];
         return this.isMultiSelect
@@ -264,13 +285,12 @@ export default class Tree extends LightningElement {
      */
 
     /**
-     * Check the input data for circular references or cycles,
-     * Build a list of items in depth-first manner for traversing the tree by keyboard
-     * This list - treeItems is an array of data-keys of the nodes using which nodes can be accessed by querySelector
-     * Build a list of visible items to be checked while traversing the tree, at any point any branch is expanded
-     * or collapsed, this list has to be kept updated
+     * Initialize the tree items.
+     * Check the input data for circular references or cycles and build a list of items in depth-first manner for traversing the tree by keyboard.
+     * Build a list of visible items to be checked while traversing the tree, at any point any branch is expanded or collapsed, this list has to be kept updated.
      */
     initItems() {
+        // Reset the state
         this.setFocusToItem({});
         this.treedata = new TreeData();
         if (!this.items.length) {
@@ -278,12 +298,15 @@ export default class Tree extends LightningElement {
             return;
         }
 
+        // Create a new tree
         const treeRoot = this.treedata.parse(
             this.items,
             this.computedSelectedItems
         );
         this.children = treeRoot ? treeRoot.children : [];
         this._focusedItem = treeRoot.selectedItem;
+
+        // Compute the selected items
         if (this.isMultiSelect) {
             const selectedItems = [...this.selectedItems];
             this.children.forEach((node) => {
@@ -291,13 +314,18 @@ export default class Tree extends LightningElement {
             });
             if (selectedItems.length !== this.selectedItems.length) {
                 this._selectedItems = selectedItems;
-                this.dispatchSelectEvent();
+                this.dispatchSelect();
             }
         } else if (this._focusedItem) {
             this.treedata.expandTo(this._focusedItem);
         }
     }
 
+    /**
+     * Add a new child item to the given parent item.
+     *
+     * @param {string} parentKey Unique key of the parent item.
+     */
     addItem(parentKey) {
         const name = generateUUID();
         const newItem = {
@@ -320,6 +348,9 @@ export default class Tree extends LightningElement {
         this.singleSelect(name);
     }
 
+    /**
+     * Circle and open the hovered item when an item is dragged.
+     */
     circleAndExpandHoveredItem() {
         if (
             !this._dragState ||
@@ -356,6 +387,11 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Collapse a branch.
+     *
+     * @param {object} node The item to collapse.
+     */
     collapseBranch(node) {
         if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = false;
@@ -364,6 +400,26 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Collapse the parent of an item.
+     *
+     * @param {string} key Key of the child item.
+     */
+    collapseParent(key) {
+        const item = this.treedata.getItem(key);
+        if (item && item.level > 1) {
+            const parent = this.treedata.getItem(item.parent);
+            this.collapseBranch(parent.treeNode);
+            this.setFocusToItem(parent);
+            this.singleSelect(parent.treeNode.name);
+        }
+    }
+
+    /**
+     * Set an item as the current position of the dragged item.
+     *
+     * @param {object} item The item the dragged item is moving to.
+     */
     dragTo(item) {
         if (!this._dragState) return;
 
@@ -399,6 +455,12 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Duplicate an item in the tree.
+     *
+     * @param {string} key Key of the duplicated item.
+     * @returns {object} New item created.
+     */
     duplicateItem(key) {
         const { index, items } = this.getPositionInBranch(key);
         const name = generateUUID();
@@ -409,6 +471,55 @@ export default class Tree extends LightningElement {
         return duplicated;
     }
 
+    /**
+     * Execute a standard action.
+     *
+     * @param {string} action Name of the action. Valid values are add, edit, delete or duplicate.
+     * @param {object} item Item the action originated from.
+     */
+    executeStandardAction(action, item) {
+        let name = item ? item.treeNode.name : null;
+        const key = item ? item.key : null;
+        let previousName;
+
+        switch (action) {
+            case 'add': {
+                this.addItem(key);
+                break;
+            }
+            case 'edit': {
+                return;
+            }
+            case 'delete': {
+                const prevItem = this.treedata.findPrevNodeToFocus(item.index);
+                if (prevItem && !this.isMultiSelect) {
+                    this.singleSelect(prevItem.treeNode.name);
+                }
+                const { index, items } = this.getPositionInBranch(key);
+                items.splice(index, 1);
+                break;
+            }
+            case 'duplicate': {
+                previousName = item.treeNode.name;
+                const duplicatedItem = this.duplicateItem(key);
+                name = duplicatedItem.name;
+                break;
+            }
+            default: {
+                break;
+            }
+        }
+
+        this.initItems();
+        this.dispatchChange(name, action, previousName);
+        this._setFocus = true;
+    }
+
+    /**
+     * Expand a branch.
+     *
+     * @param {object} node Item to expand.
+     */
     expandBranch(node) {
         if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = true;
@@ -428,6 +539,12 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Find an item in the items array.
+     *
+     * @param {string[]} path Path to the item, based on its split key.
+     * @returns {object} Item found.
+     */
     getBranch(path) {
         path.forEach((str, i) => {
             path[i] = parseInt(str, 10);
@@ -445,6 +562,12 @@ export default class Tree extends LightningElement {
         return currentItems;
     }
 
+    /**
+     * Get the position of an item in its branch.
+     *
+     * @param {string} key Key of the item.
+     * @returns {object} Object with two keys: index (the index of the item in the branch) and items (the branch).
+     */
     getPositionInBranch(key) {
         const path = key.split('.');
         const index = parseInt(path.pop(), 10) - 1;
@@ -454,8 +577,8 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Moves focus to the first item node
-     * */
+     * Set the focus on the first item.
+     */
     setFocusToFirstItem() {
         const node = this.treedata.findFirstNodeToFocus();
         if (node && node.index !== -1) {
@@ -464,13 +587,11 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Sets focus to given node item with data-key, marks this node as focusable
-     * and all other non-focusable (tabindex -1)
-     * @param {String} item - item in the index which has to receive focus
-     * @param {boolean} shouldFocus - should put focus on item or not,
-     *     default true, false when only visual focus is necessary
-     * @param {boolean} shouldSelect - should add visual focus to item,
-     *     default true, false when visual focus not necessary
+     * Set the focus on an item and/or visually select it.
+     *
+     * @param {object} item Item to focus and select.
+     * @param {boolean} shouldFocus If true, focus will be set on the item. Defaults to true.
+     * @param {boolean} shouldSelect If true, visually select an item. Defaults to true.
      */
     setFocusToItem(item, shouldFocus = true, shouldSelect = true) {
         const currentFocused = this.treedata.getItemAtIndex(
@@ -485,6 +606,8 @@ export default class Tree extends LightningElement {
             this.callbackMap[currentFocused.key].unfocus();
         }
 
+        // The focus movement and visual selection are different
+        // for multi-select trees
         if (this.isMultiSelect) return;
 
         if (item) {
@@ -505,8 +628,8 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Moves focus to the last item node which is visible in depth first manner
-     * */
+     * Set the focus on the last visible item, in depth first manner.
+     */
     setFocusToLastItem() {
         const lastNode = this.treedata.findLastNodeToFocus();
         if (lastNode && lastNode.index !== -1) {
@@ -515,8 +638,7 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * If its not the last item node in the tree, moves focus to next visible item in the tree
-     * If its last item node, focus stays as it is
+     * Set the focus on the next visible item.
      */
     setFocusToNextItem() {
         const nextNode = this.treedata.findNextNodeToFocus();
@@ -526,8 +648,7 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * If its not the first item node in the tree, moves focus to previous visible item in the tree
-     * If its first item node, focus stays as it is
+     * Set the focus on the previous visible item.
      */
     setFocusToPrevItem() {
         const prevNode = this.treedata.findPrevNodeToFocus();
@@ -536,6 +657,13 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Set the focus on a root item.
+     *
+     * @param {string} key Key of the item to focus.
+     * @param {boolean} shouldFocus If true, focus will be set on the item.
+     * @param {boolean} shouldSelect If true, visually select the item.
+     */
     setFocusToRootItem(key, shouldFocus, shouldSelect) {
         const child = this.template.querySelector(`[data-key="${key}"]`);
         if (child) {
@@ -551,12 +679,27 @@ export default class Tree extends LightningElement {
         }
     }
 
-    singleSelect(name) {
-        if (this.isMultiSelect) return;
+    /**
+     * Update the currently selected item when the tree is not multi-select.
+     *
+     * @param {string} name Name of the item to select.
+     * @param {Event} event Event that triggered the selection.
+     */
+    singleSelect(name, event) {
+        if (
+            this.isMultiSelect ||
+            (this.selectedItems.length === 1 && this.selectedItems[0] === name)
+        )
+            return;
         this._selectedItems = [name];
-        this.dispatchSelectEvent();
+        this.dispatchSelect(event);
     }
 
+    /**
+     * Display a bottom border on the hovered item, when an item is being dragged.
+     *
+     * @param {number} x The horizontal position of the mouse pointer.
+     */
     showBottomBorderOnHoveredItem(x) {
         if (!this._dragState) return;
 
@@ -612,6 +755,11 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Display a top border on the hovered item, when an item is being dragged.
+     *
+     * @param {number} x The horizontal position of the mouse pointer.
+     */
     showTopBorderOnHoveredItem(x) {
         if (!this._dragState) return;
 
@@ -644,6 +792,9 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Reset the selected items to the current value of selectedItems.
+     */
     resetSelection() {
         if (!this.children.length) return;
 
@@ -657,7 +808,7 @@ export default class Tree extends LightningElement {
             });
             if (selectedItems.length !== this.selectedItems.length) {
                 this._selectedItems = selectedItems;
-                this.dispatchSelectEvent();
+                this.dispatchSelect();
             }
             this.children = [...this.children];
         } else {
@@ -669,16 +820,23 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Update the selection state of an item's parent. The parent is selected only if all its children are selected.
+     *
+     * @param {object} node Child item.
+     */
     updateParentsSelection(node) {
         const parent = this.treedata.getItem(node.parent);
         if (parent) {
             const children = parent.treeNode.children;
             const selectedChildren = children.filter((child) => child.selected);
             const isSelected = selectedChildren.length === children.length;
-            parent.treeNode.nodeRef.selected = isSelected;
-            parent.treeNode.selected = isSelected;
-            this.callbackMap[parent.key].setSelected(isSelected);
-            this.updateParentsSelection(parent);
+
+            if (isSelected !== parent.treeNode.selected) {
+                parent.treeNode.selected = isSelected;
+                this.callbackMap[parent.key].setSelected(isSelected);
+                this.updateParentsSelection(parent);
+            }
         }
     }
 
@@ -688,6 +846,11 @@ export default class Tree extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle the click on an item action.
+     *
+     * @param {Event} event
+     */
     handleActionClick(event) {
         event.stopPropagation();
         const action = event.detail.name || 'add';
@@ -695,6 +858,16 @@ export default class Tree extends LightningElement {
         const item = this.treedata.getItem(key);
         let name = item ? item.treeNode.name : null;
 
+        /**
+         * The event fired when an action is clicked.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action.
+         * @param {string} targetName Name of the item the action originated from. If the action came from the root, the <code>targetName</code> will be null.
+         * @public
+         * @cancelable
+         */
         const actionClickEvent = new CustomEvent('actionclick', {
             detail: {
                 name: action,
@@ -704,46 +877,21 @@ export default class Tree extends LightningElement {
         });
         this.dispatchEvent(actionClickEvent);
 
+        // If the event is canceled, or the action is a custom action, return
         if (
             actionClickEvent.defaultPrevented ||
             !DEFAULT_ACTION_NAMES.includes(action)
         )
             return;
 
-        let previousName;
-        switch (action) {
-            case 'add': {
-                this.addItem(key);
-                break;
-            }
-            case 'edit': {
-                return;
-            }
-            case 'delete': {
-                const prevItem = this.treedata.findPrevNodeToFocus(item.index);
-                if (prevItem && !this.isMultiSelect) {
-                    this.singleSelect(prevItem.treeNode.name);
-                }
-                const { index, items } = this.getPositionInBranch(key);
-                items.splice(index, 1);
-                break;
-            }
-            case 'duplicate': {
-                previousName = item.treeNode.name;
-                const duplicatedItem = this.duplicateItem(key);
-                name = duplicatedItem.name;
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-
-        this.initItems();
-        this.dispatchChange(name, action, previousName);
-        this._setFocus = true;
+        this.executeStandardAction(action, item);
     }
 
+    /**
+     * Handle the change of an item.
+     *
+     * @param {Event} event
+     */
     handleChange(event) {
         event.stopPropagation();
 
@@ -763,11 +911,11 @@ export default class Tree extends LightningElement {
         this._setFocus = true;
     }
 
-    handleChildBranchCollapse(event) {
-        event.stopPropagation();
-        this.treedata.updateVisibleTreeItemsOnCollapse(event.detail.key);
-    }
-
+    /**
+     * Handle the click on an item. If the click was on a chevron, expand or collapse the item. Else, select the item.
+     *
+     * @param {Event} event
+     */
     handleClick(event) {
         const key = event.detail.key;
         const target = event.detail.target;
@@ -791,18 +939,20 @@ export default class Tree extends LightningElement {
                     }
 
                     this.updateParentsSelection(item);
+                    this.dispatchSelect(event);
                 } else {
                     this.setFocusToItem(item);
+                    this.singleSelect(item.treeNode.name, event);
                 }
-                this.dispatchSelectEvent(event);
             }
         }
     }
 
-    handleDblClick() {
-        clearTimeout(this._selectTimeout);
-    }
-
+    /**
+     * Handle the first focus on the tree.
+     *
+     * @param {Event} event
+     */
     handleFocus(event) {
         if (!this._focusedItem) {
             const item = this.treedata.getItem(event.detail.key);
@@ -810,6 +960,11 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Handle a key down on an item.
+     *
+     * @param {Event} event
+     */
     handleKeydown(event) {
         event.preventDefault();
         event.stopPropagation();
@@ -848,6 +1003,11 @@ export default class Tree extends LightningElement {
         }
     }
 
+    /**
+     * Handle a mouse button down on an item. If the tree is sortable, initialize the dragging state.
+     *
+     * @param {Event} event
+     */
     handleMouseDown(event) {
         event.stopPropagation();
         if (!this.sortable) return;
@@ -876,6 +1036,11 @@ export default class Tree extends LightningElement {
         }, 200);
     }
 
+    /**
+     * Handle a mouse movement on the tree. If the tree is sortable and an item is being dragged, process the dragging movement.
+     *
+     * @param {Event} event
+     */
     handleMouseMove = (event) => {
         if (!this._dragState || !this.sortable) return;
 
@@ -924,6 +1089,11 @@ export default class Tree extends LightningElement {
         }
     };
 
+    /**
+     * Handle a mouse button up. Update the tree after an ttem drag, and clear the dragging state.
+     *
+     * @param {Event} event
+     */
     handleMouseUp = () => {
         clearTimeout(this._mouseDownTimeout);
         clearTimeout(this._mouseOverItemTimeout);
@@ -989,21 +1159,10 @@ export default class Tree extends LightningElement {
     };
 
     /**
-     * For leaf arrow key, in case it is leaf or already collapsed node
-     * go to parent and call its collapse callback
+     * Handle the registration event dispatched by items when they're first insterted into the DOM. Save the callback functions.
      *
-     * @param {string} key of the parent to collapse
+     * @param {Event} event
      */
-    handleParentCollapse(key) {
-        const item = this.treedata.getItem(key);
-        if (item && item.level > 1) {
-            // if not item at the level 1 which cant be collapsed further
-            const parent = this.treedata.getItem(item.parent);
-            this.collapseBranch(parent.treeNode);
-            this.setFocusToItem(parent);
-        }
-    }
-
     handleRegistration(event) {
         event.stopPropagation();
         const {
@@ -1027,7 +1186,25 @@ export default class Tree extends LightningElement {
         this.treedata.addVisible(key);
     }
 
+    /**
+     * Dispatch the change event.
+     *
+     * @param {string} name Name of the item that has changed.
+     * @param {string} action Action that has been performed on the item.
+     * @param {string} previousName Previous name of the item, if it has changed.
+     */
     dispatchChange(name, action, previousName) {
+        /**
+         * The event fired when a change is made to the tree.
+         *
+         * @event
+         * @name change
+         * @param {string} action Type of change made to the item. Options are <code>add</code>, <code>collapse</code>, <code>delete</code>, <code>duplicate</code>, <code>edit</code>, <code>expand</code> and <code>move</code>.
+         * @param {object[]} items The new items array.
+         * @param {string} name Name of the specific item the change was made to.
+         * @param {string} previousName For the <code>duplicate</code> action, name of the original item. For the <code>edit</code> action, if the name has changed, previous name of the item.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
@@ -1040,7 +1217,23 @@ export default class Tree extends LightningElement {
         );
     }
 
-    dispatchSelectEvent(event) {
+    /**
+     * Dispatch the select event.
+     *
+     * @param {Event} event The event that triggered the selection.
+     */
+    dispatchSelect(event) {
+        /**
+         * The event fired when an item is clicked.
+         *
+         * @event
+         * @name select
+         * @param {string[]} selectedItems Array of selected items names.
+         * @public
+         * @bubbles
+         * @cancelable
+         * @composed
+         */
         const customEvent = new CustomEvent('select', {
             bubbles: true,
             composed: true,
@@ -1053,6 +1246,7 @@ export default class Tree extends LightningElement {
         if (this.allowInlineEdit) {
             clearTimeout(this._selectTimeout);
             this._selectTimeout = setTimeout(() => {
+                // Prevent a double click from dispatching a select event twice.
                 this.dispatchEvent(customEvent);
             }, 300);
         } else {

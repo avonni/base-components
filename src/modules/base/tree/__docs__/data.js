@@ -148,6 +148,15 @@ export const ITEMS_WITH_FIELDS = [
     {
         label: 'Employee 1',
         name: 'employee1',
+        avatar: {
+            fallbackIconName: 'standard:account',
+            size: 'small',
+            initials: 'HK'
+        }
+    },
+    {
+        label: 'Employee 2',
+        name: 'employee2',
         fields: [
             {
                 label: 'Status',
@@ -162,8 +171,8 @@ export const ITEMS_WITH_FIELDS = [
         },
         items: [
             {
-                label: 'Employee 1.1',
-                name: 'employee1-1',
+                label: 'Employee 2.1',
+                name: 'employee2-1',
                 avatar: {
                     src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
                     size: 'small',
@@ -182,8 +191,8 @@ export const ITEMS_WITH_FIELDS = [
                 ]
             },
             {
-                label: 'Employee 1.2',
-                name: 'employee1-2',
+                label: 'Employee 2.2',
+                name: 'employee2-2',
                 avatar: {
                     fallbackIconName: 'standard:account',
                     size: 'small',
@@ -192,8 +201,8 @@ export const ITEMS_WITH_FIELDS = [
                 }
             },
             {
-                label: 'Employee 1.3',
-                name: 'employee1-3',
+                label: 'Employee 2.3',
+                name: 'employee2-3',
                 avatar: {
                     size: 'small',
                     variant: 'circle',
@@ -221,11 +230,11 @@ export const ITEMS_WITH_FIELDS = [
         ]
     },
     {
-        label: 'Employee 2',
-        name: 'employee2',
+        label: 'Employee 3',
+        name: 'employee3',
         metatext: 'Metatext is always visible',
         avatar: {
-            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
             size: 'small',
             variant: 'circle'
         },
@@ -238,12 +247,12 @@ export const ITEMS_WITH_FIELDS = [
         ],
         items: [
             {
-                label: 'Employee 2.1',
-                name: 'employee2-1'
+                label: 'Employee 3.1',
+                name: 'employee3-1'
             },
             {
-                label: 'Employee 2.2',
-                name: 'employee2-2',
+                label: 'Employee 3.2',
+                name: 'employee3-2',
                 fields: [
                     {
                         label: 'Employees Assigned',
