@@ -1,18 +1,18 @@
 <template>
-    <div class={computedWrapperClass}>
+    <div class={wrapperClass}>
         <div
             class="avonni-primitive-tree-item__item slds-is-relative slds-grid"
             data-element-id="div-item"
             onclick={handleClick}
         >
             <lightning-button-icon
-                class={computedButtonClass}
-                alternative-text={buttonLabel}
+                class={expandButtonClass}
+                alternative-text={expandButtonLabel}
                 aria-expanded={expanded}
-                icon-name={computedIconName}
+                icon-name={expandButtonIconName}
                 size="small"
                 tabindex={expandButtonTabindex}
-                title={buttonLabel}
+                title={expandButtonLabel}
                 variant="bare"
                 data-type="chevron"
                 onfocus={handleExpandButtonFocus}
@@ -75,7 +75,7 @@
                     ></avonni-avatar>
 
                     <!-- Label -->
-                    <div if:false={labelIsEdited} class={computedLabelClass}>
+                    <div if:false={labelIsEdited} class={labelClass}>
                         <a
                             if:true={showLink}
                             class="avonni-primitive-item__link"
@@ -293,7 +293,6 @@
                     disabled={item.disabled}
                     expanded={item.expanded}
                     fields={item.fields}
-                    focused-child={item.focusedChild}
                     href={item.href}
                     is-leaf={item.isLeaf}
                     is-loading={item.isLoading}

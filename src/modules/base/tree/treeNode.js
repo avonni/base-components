@@ -1,3 +1,10 @@
+/**
+ * Compute an item key value.
+ *
+ * @param {string} parentKey Key of the parent item.
+ * @param {number} childNum Number of the item in the parent.
+ * @returns {string} Key of the item.
+ */
 function computeKey(parentKey, childNum) {
     if (!parentKey) {
         return '0';
@@ -8,6 +15,15 @@ function computeKey(parentKey, childNum) {
     return `${parentKey}.${childNum}`;
 }
 
+/**
+ * Create a usable tree item object.
+ *
+ * @param {object} node Original item.
+ * @param {number} level Depth level of the item in the tree.
+ * @param {string} parentKey Key of the parent item.
+ * @param {number} childNum Number of the item in its parent.
+ * @returns {object} Tree node object.
+ */
 export function getTreeNode(node, level, parentKey, childNum) {
     return {
         avatar: node.avatar,
@@ -19,7 +35,6 @@ export function getTreeNode(node, level, parentKey, childNum) {
                 : node.expanded || false;
         },
         fields: node.fields,
-        focusedChild: null,
         href: node.href,
         isLeaf:
             !node.isLoading &&

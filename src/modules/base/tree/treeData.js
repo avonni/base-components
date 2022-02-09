@@ -1,6 +1,14 @@
 import { getTreeNode } from './treeNode';
 import { assert } from 'c/utilsPrivate';
 
+/**
+ * @class
+ * @param {number} currentFocusedItemIndex Index of the currently focused item.
+ * @param {string[]} treeItemsInTraversalOrder Array of item keys, in the order they appear in the tree when it is completely opened.
+ * @param {object[]} visibleTreeItems Set of visible tree items.
+ * @param {object} indices Map of item keys and their value.
+ * @param {object} nameKeyMapping Map of item names and their key.
+ */
 export class TreeData {
     constructor() {
         this._currentFocusedItemIndex = 0;
@@ -30,29 +38,21 @@ export class TreeData {
         return this._nameKeyMapping;
     }
 
-    cloneItems(item) {
-        const newItem = {
-            avatar: item.avatar,
-            label: item.label,
-            name: item.name,
-            expanded: item.expanded,
-            metatext: item.metatext,
-            href: item.href,
-            disabled: item.disabled,
-            isLoading: item.isLoading,
-            items: [],
-            fields: item.fields
-        };
-
-        if (item.items && item.items.length > 0) {
-            newItem.items = item.items.map((leaf) => {
-                return this.cloneItems(leaf);
-            });
-        }
-
-        return newItem;
+    /**
+     * Add an item to the visible tree items set.
+     *
+     * @param {object} child Item to add to the visible items.
+     */
+    addVisible(child) {
+        this.visibleTreeItems.add(child);
     }
 
+    /**
+     * Compute the selection of all children of a node.
+     *
+     * @param {object} node Item the selection cascade should start from.
+     * @param {string[]} selectedItems Array of selected item names.
+     */
     cascadeSelection(node, selectedItems) {
         if (node.children.length) {
             if (!node.selected) {
@@ -81,6 +81,201 @@ export class TreeData {
         }
     }
 
+    /**
+     * Clone an item.
+     *
+     * @param {object} item Item to clone.
+     * @returns {object} Cloned item.
+     */
+    cloneItems(item) {
+        const newItem = {
+            avatar: item.avatar,
+            label: item.label,
+            name: item.name,
+            expanded: item.expanded,
+            metatext: item.metatext,
+            href: item.href,
+            disabled: item.disabled,
+            isLoading: item.isLoading,
+            items: [],
+            fields: item.fields
+        };
+
+        if (item.items && item.items.length > 0) {
+            newItem.items = item.items.map((leaf) => {
+                return this.cloneItems(leaf);
+            });
+        }
+
+        return newItem;
+    }
+
+    /**
+     * Expand the parents of an item.
+     *
+     * @param {object} node Item to expand the tree to.
+     */
+    expandTo(node) {
+        let parentKey = node.parent;
+        let parentNode = this._indices[parentKey];
+        while (parentKey && parentKey !== '0' && parentNode) {
+            parentKey = parentNode.parent;
+            parentNode = parentNode.treeNode;
+            if (!parentNode.nodeRef.expanded) {
+                parentNode.nodeRef.expanded = true;
+            }
+
+            parentNode = this._indices[parentKey];
+        }
+    }
+
+    /**
+     * Find the first visible focusable item.
+     *
+     * @returns {object} First focusable item.
+     */
+    findFirstNodeToFocus() {
+        return this.indices[this.treeItemsInTraversalOrder[0]];
+    }
+
+    /**
+     * Find the index of an item, based on its key.
+     *
+     * @param {string} key Key of the item.
+     * @returns {number} Index of the item.
+     */
+    findIndex(key) {
+        return this.indices[key] !== undefined ? this.indices[key].index : -1;
+    }
+
+    /**
+     * Find the last visible focusable item.
+     *
+     * @returns {object} Last focusable item.
+     */
+    findLastNodeToFocus() {
+        let lastNode = null;
+        const treeitems = this.treeItemsInTraversalOrder;
+        for (let i = treeitems.length - 1; i >= 0; i--) {
+            if (this.isVisible(treeitems[i])) {
+                lastNode = treeitems[i];
+                break;
+            }
+        }
+        return this.indices[lastNode];
+    }
+
+    /**
+     * Find the next visible focusable item.
+     *
+     * @param {number} current Index of the currently focused item.
+     * @returns {object} Next focusable item.
+     */
+    findNextNodeToFocus(current = this.currentFocusedItemIndex) {
+        const treeitems = this.treeItemsInTraversalOrder;
+        let nextNode = null;
+        if (current < treeitems.length - 1) {
+            for (let i = current + 1; i < treeitems.length; i++) {
+                if (this.isVisible(treeitems[i])) {
+                    nextNode = treeitems[i];
+                    break;
+                }
+            }
+        }
+        return this.indices[nextNode];
+    }
+
+    /**
+     * Find the previous item in the same branch.
+     *
+     * @param {number} key Key of the current item.
+     * @returns {object} Previous item in the branch.
+     */
+    findPrevNodeInSameBranch(key) {
+        const path = key.split('.');
+        const index = Number(path.pop()) - 1;
+        path.push(index);
+        const prevKey = path.join('.');
+        return this.getItem(prevKey);
+    }
+
+    /**
+     * Find the previous visible focusable item.
+     *
+     * @param {number} current Index of the currently focused item.
+     * @returns {object} Previous focusable item.
+     */
+    findPrevNodeToFocus(current = this.currentFocusedItemIndex) {
+        const treeitems = this.treeItemsInTraversalOrder;
+        let prevNode = null;
+        if (current > 0) {
+            for (let i = current - 1; i >= 0; i--) {
+                if (this.isVisible(treeitems[i])) {
+                    prevNode = treeitems[i];
+                    break;
+                }
+            }
+        }
+        return this.indices[prevNode];
+    }
+
+    /**
+     * Find an item from its key.
+     *
+     * @param {string} key Key of the item.
+     * @returns {object} Item.
+     */
+    getItem(key) {
+        return this.indices[key];
+    }
+
+    /**
+     * Find an item from its index.
+     *
+     * @param {number} index Index of the item.
+     * @returns {object} Item.
+     */
+    getItemAtIndex(index) {
+        if (index > -1 && index < this.treeItemsInTraversalOrder.length) {
+            return this.indices[this.treeItemsInTraversalOrder[index]];
+        }
+        return null;
+    }
+
+    /**
+     * Find an item from its name.
+     *
+     * @param {string} name Name of the item.
+     * @returns {object} Item.
+     */
+    getItemFromName(itemName) {
+        if (typeof itemName === 'string') {
+            const itemKey = this.nameKeyMapping[itemName];
+            if (itemKey) {
+                const item = this.getItem(itemKey);
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Determine if an item is visible.
+     *
+     * @param {object} treeItem Item to check.
+     * @returns {boolean} True of the item is visible.
+     */
+    isVisible(treeItem) {
+        return this.visibleTreeItems.has(treeItem);
+    }
+
+    /**
+     * Parse the tree data into a usable tree structure.
+     *
+     * @param {object[]} data Data to parse.
+     * @param {string[]} selectedItems Selected item names.
+     * @returns {object[]} Parsed data.
+     */
     parse(data, selectedItems) {
         const root = {};
         root.items = data;
@@ -179,118 +374,20 @@ export class TreeData {
         return null;
     }
 
-    expandTo(node) {
-        let parentKey = node.parent;
-        let parentNode = this._indices[parentKey];
-        while (parentKey && parentKey !== '0' && parentNode) {
-            parentKey = parentNode.parent;
-            parentNode = parentNode.treeNode;
-            if (!parentNode.nodeRef.expanded) {
-                parentNode.nodeRef.expanded = true;
-            }
-
-            parentNode = this._indices[parentKey];
-        }
+    /**
+     * Remove an item from the visible items.
+     *
+     * @param {object} child The item to remove.
+     */
+    removeVisible(child) {
+        this.visibleTreeItems.delete(child);
     }
 
-    isVisible(treeItem) {
-        return this.visibleTreeItems.has(treeItem);
-    }
-
-    findNextNodeToFocus(current = this.currentFocusedItemIndex) {
-        const treeitems = this.treeItemsInTraversalOrder;
-        let nextNode = null;
-        if (current < treeitems.length - 1) {
-            for (let i = current + 1; i < treeitems.length; i++) {
-                if (this.isVisible(treeitems[i])) {
-                    nextNode = treeitems[i];
-                    break;
-                }
-            }
-        }
-        return this.indices[nextNode];
-    }
-
-    findPrevNodeInSameBranch(key) {
-        const path = key.split('.');
-        const index = Number(path.pop()) - 1;
-        path.push(index);
-        const prevKey = path.join('.');
-        return this.getItem(prevKey);
-    }
-
-    findPrevNodeToFocus(current = this.currentFocusedItemIndex) {
-        const treeitems = this.treeItemsInTraversalOrder;
-        let prevNode = null;
-        if (current > 0) {
-            for (let i = current - 1; i >= 0; i--) {
-                if (this.isVisible(treeitems[i])) {
-                    prevNode = treeitems[i];
-                    break;
-                }
-            }
-        }
-        return this.indices[prevNode];
-    }
-
-    findFirstNodeToFocus() {
-        return this.indices[this.treeItemsInTraversalOrder[0]];
-    }
-
-    findLastNodeToFocus() {
-        let lastNode = null;
-        const treeitems = this.treeItemsInTraversalOrder;
-        for (let i = treeitems.length - 1; i >= 0; i--) {
-            if (this.isVisible(treeitems[i])) {
-                lastNode = treeitems[i];
-                break;
-            }
-        }
-        return this.indices[lastNode];
-    }
-
-    getItem(key) {
-        return this.indices[key];
-    }
-
-    getItemAtIndex(index) {
-        if (index > -1 && index < this.treeItemsInTraversalOrder.length) {
-            return this.indices[this.treeItemsInTraversalOrder[index]];
-        }
-        return null;
-    }
-
-    getItemFromName(itemName) {
-        if (typeof itemName === 'string') {
-            const itemKey = this.nameKeyMapping[itemName];
-            if (itemKey) {
-                const item = this.getItem(itemKey);
-                return item;
-            }
-        }
-        return null;
-    }
-
-    getLastChildIndex(key) {
-        const item = this.getItem(key);
-        if (!item) return null;
-
-        const children = item.treeNode ? item.treeNode.children : item.children;
-        if (children.length) {
-            const lastChild =
-                item.treeNode.children[item.treeNode.children.length - 1];
-            if (lastChild.children) {
-                const nestedChild = this.getLastChildIndex(lastChild.key);
-                if (nestedChild) return nestedChild;
-            }
-        }
-        return item.index;
-    }
-
-    addVisible(child) {
-        this.visibleTreeItems.add(child);
-    }
-
+    /**
+     * Reset the selected items to the given selected items.
+     *
+     * @param {stirng[]} selectedItems Selected item names.
+     */
     resetSelection(selectedItems) {
         this.treeItemsInTraversalOrder.forEach((key) => {
             const item = this.indices[key];
@@ -298,10 +395,12 @@ export class TreeData {
         });
     }
 
-    removeVisible(child) {
-        this.visibleTreeItems.delete(child);
-    }
-
+    /**
+     * Select an item.
+     *
+     * @param {object} node The item to select.
+     * @param {string[]} selectedItems Selected item names.
+     */
     selectNode(node, selectedItems) {
         node.nodeRef.selected = true;
         node.selected = true;
@@ -316,6 +415,12 @@ export class TreeData {
         }
     }
 
+    /**
+     * Unselect an item.
+     *
+     * @param {object} node The item to unselect.
+     * @param {string[]} selectedItems Selected item names, from which the item name is removed from.
+     */
     unselectNode(node, selectedItems) {
         node.nodeRef.selected = false;
         node.selected = false;
@@ -331,10 +436,24 @@ export class TreeData {
         }
     }
 
-    /** Looks at all children and grandchildren of this branch
-     * for all grandchildren make them not visible, remove them from visibleTreeItems set
-     * for this looks at treeItems in order of traversal till we reach same level again
-     * @param {string} branchCollapsed - key of the branch that was collapsed
+    /**
+     * Update the value of the current focus item index.
+     *
+     * @param {object} focused Index of the new focused item.
+     * @returns {object} New focused item.
+     */
+    updateCurrentFocusedItemIndex(focused) {
+        if (focused > -1 && focused < this.treeItemsInTraversalOrder.length) {
+            this._currentFocusedItemIndex = focused;
+            return this.getItemAtIndex(this.currentFocusedItemIndex);
+        }
+        return null;
+    }
+
+    /**
+     * Remove an item's children from the visible items.
+     *
+     * @param {string} branchCollapsed Key of the branch that was collapsed.
      */
     updateVisibleTreeItemsOnCollapse(branchCollapsed) {
         const treeitems = this.treeItemsInTraversalOrder;
@@ -351,45 +470,5 @@ export class TreeData {
             }
             this.visibleTreeItems.delete(treeitems[i]);
         }
-    }
-
-    updateCurrentFocusedChild(focusedKey) {
-        const item = this.getItem(focusedKey);
-        if (item) {
-            const parent = this.getItem(item.parent);
-            if (parent) {
-                parent.treeNode.focusedChild = this.getChildNum(item.key);
-            }
-        }
-    }
-
-    updateCurrentFocusedItemIndex(focused) {
-        if (focused > -1 && focused < this.treeItemsInTraversalOrder.length) {
-            this._currentFocusedItemIndex = focused;
-            return this.getItemAtIndex(this.currentFocusedItemIndex);
-        }
-        return null;
-    }
-
-    isValidCurrent(currentFocusedItem) {
-        return !!(
-            currentFocusedItem.index &&
-            this.getItemAtIndex(currentFocusedItem.index)
-        );
-    }
-
-    isCurrentFocusedNode(key) {
-        return this.findIndex(key) === this.currentFocusedItemIndex;
-    }
-
-    findIndex(key) {
-        return this.indices[key] !== undefined ? this.indices[key].index : -1;
-    }
-
-    getChildNum(key) {
-        const idx = key.lastIndexOf('.');
-        return idx > -1
-            ? parseInt(key.substring(idx + 1), 10) - 1
-            : parseInt(key, 10) - 1;
     }
 }
