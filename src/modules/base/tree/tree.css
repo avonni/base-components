@@ -1,6 +1,7 @@
 .avonni-tree__group-header {
-    font-size: 0.875rem;
-    font-weight: 700;
+    font-size: var(--avonni-tree-header-font-size, 0.875rem);
+    font-weight: var(--avonni-tree-header-font-weight, 700);
+    color: var(--avonni-tree-header-text-color);
 }
 
 .avonni-tree__loading-spinner {

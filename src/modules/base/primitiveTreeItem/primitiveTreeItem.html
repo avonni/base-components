@@ -24,7 +24,7 @@
                 <div
                     class="
                         slds-grid slds-grid_vertical-align-center
-                        avonni-primitive-tree-item__options
+                        avonni-primitive-tree-item__header
                     "
                     onfocusin={showBranchButtons}
                     onfocusout={hideBranchButtons}
@@ -78,6 +78,7 @@
                     <div if:false={labelIsEdited} class={computedLabelClass}>
                         <a
                             if:true={showLink}
+                            class="avonni-primitive-item__link"
                             href={href}
                             data-element-id="a-label-link"
                             onmousedown={handleLinkMouseDown}
@@ -164,15 +165,12 @@
                 <!-- Metatext -->
                 <div
                     if:true={metatext}
-                    class="
-                        slds-truncate
-                        slds-text-color_weak
-                        avonni-primitive-tree-item__metatext
-                    "
+                    class="slds-truncate avonni-primitive-tree-item__metatext"
                     title={metatext}
                 >
                     <a
                         if:true={showLink}
+                        class="avonni-primitive-item__link"
                         href={href}
                         onmousedown={handleLinkMouseDown}
                         >{metatext}</a

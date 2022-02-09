@@ -35,3 +35,91 @@
  * @property {boolean} isLoading If true, the item is expandable and displays a loading spinner instead of nested items.
  * @property {object[]} fields Array of output data objects. See <a href="/components/output-data/">Output Data</a> for valid keys. The fields are visible only when the item is expanded.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-header-text-color
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-header-font-size
+ * @type font
+ * @default 0.875rem
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-header-font-weight
+ * @type font
+ * @default 700
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-color-background-hover
+ * @type color
+ * @default #f3f2f2
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-color-background-selected
+ * @type color
+ * @default rgba(21, 137, 238, 0.1)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-header-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-header-spacing-block-start
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-header-spacing-block-end
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-header-spacing-inline-end
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-header-spacing-inline-start
+ * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-shadow-selected
+ * @type shadow
+ * @default #1b96ff 4px 0 0 inset
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-text-color-header
+ * @type color
+ * @default #080707
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-text-color-header-disabled
+ * @type color
+ * @default #dddbda
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-text-color-metatext
+ * @type color
+ * @default #3e3e3c
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-tree-item-text-color-metatext-disabled
+ * @type color
+ * @default #dddbda
+ */
