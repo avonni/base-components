@@ -32,7 +32,7 @@
  * Links are incompatible with inline edition and multi-select trees.
  * @property {boolean} expanded If true, the item branch is expanded. An expanded branch displays its nested items visually. Defaults to false.
  * @property {boolean} disabled If true, the item is disabled. A disabled item is grayed out and can't be focused. Defaults to false.
- * @property {boolean} isLoading If true, the item is expandable and displays a loading spinner instead of nested items.
+ * @property {boolean} isLoading If true, a loading spinner is visible when the item is expanded. Defaults to false.
  * @property {object[]} fields Array of output data objects. See <a href="/components/output-data/">Output Data</a> for valid keys. The fields are visible only when the item is expanded.
  */
 

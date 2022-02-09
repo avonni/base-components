@@ -21,7 +21,12 @@ const DEFAULT_EDIT_FIELDS = [
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading...';
 
 /**
- * Editable tree of nested items. Used to display a visualization of a structural hierarchy.
+ * Tree of nested items. Used to display a visualization of a structural hierarchy.
+ *
+ * @class
+ * @descriptor avonni-tree
+ * @storyId example-tree--base
+ * @public
  */
 export default class Tree extends LightningElement {
     /**
@@ -991,10 +996,6 @@ export default class Tree extends LightningElement {
             case keyCodes.left:
                 if (item.treeNode.nodeRef.expanded && !item.treeNode.isLeaf) {
                     this.collapseBranch(item.treeNode);
-                } else {
-                    // if this is a leaf, move focus to its parent group and collapse it, move focus there
-                    // if this is a collapsed group, move focus to its parent group and collapse it, move focus there
-                    this.handleParentCollapse(key);
                 }
                 break;
 

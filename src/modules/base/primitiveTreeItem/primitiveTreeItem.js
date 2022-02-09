@@ -18,9 +18,26 @@ const DEFAULT_EDIT_FIELDS = [
     'isLoading'
 ];
 
+/**
+ * @class
+ * @descriptor avonni-primitive-tree-item
+ */
 export default class PrimitiveTreeItem extends LightningElement {
-    @api focusedChild;
+    /**
+     * The alternative text used to describe the reason for the wait and need for a spinner.
+     *
+     * @type {string}
+     * @public
+     */
     @api loadingStateAlternativeText;
+
+    /**
+     * Unique key of the item.
+     *
+     * @type {string}
+     * @public
+     * @required
+     */
     @api nodeKey;
 
     _actions = [];
@@ -54,17 +71,32 @@ export default class PrimitiveTreeItem extends LightningElement {
     _menuIsOpen = false;
 
     connectedCallback() {
+        /**
+         * The event fired when the item is inserted into the DOM.
+         *
+         * @event
+         * @name privateregisteritem
+         * @param {function} bounds Callback function to get the bounds of the item.
+         * @param {function} focus Callback function to set the focus on the item.
+         * @param {function} removeBorder Callback function to remove the border of the item.
+         * @param {function} setBorder Callback function to set the border of the item.
+         * @param {function} setSelected Callback function to set the selected state of the item.
+         * @param {function} unfocus Callback function to remove the focus from the item.
+         * @param {string} key Unique key of the item.
+         * @bubbles
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('privateregisteritem', {
                 composed: true,
                 bubbles: true,
                 detail: {
                     bounds: this.getBounds,
-                    focus: this.handleChildFocus,
+                    focus: this.focusChild,
                     removeBorder: this.removeBorder,
                     setBorder: this.setBorder,
                     setSelected: this.setSelected,
-                    unfocus: this.handleChildUnfocus,
+                    unfocus: this.unfocusChild,
                     key: this.nodeKey
                 }
             })
@@ -78,13 +110,6 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     renderedCallback() {
-        if (typeof this.focusedChild === 'number') {
-            const child = this.getNthChildItem(this.focusedChild + 1);
-            if (child) {
-                child.tabIndex = '0';
-            }
-        }
-
         if (this._focusOn) {
             const focusedElement = this.template.querySelector(
                 `[data-element-id="${this._focusOn}"]`
@@ -109,6 +134,12 @@ export default class PrimitiveTreeItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Array of action objects to display to the riht of the item header.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get actions() {
         return this._actions;
@@ -118,6 +149,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.isConnected) this.splitActions();
     }
 
+    /**
+     * Array of action objects to display to the right of the item header, when the item is disabled.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get actionsWhenDisabled() {
         return this._actionsWhenDisabled;
@@ -127,6 +164,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.isConnected) this.splitActions();
     }
 
+    /**
+     * If present, the item label can be edited by double-clicking on it.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get allowInlineEdit() {
         return this._allowInlineEdit;
@@ -135,6 +179,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._allowInlineEdit = normalizeBoolean(value);
     }
 
+    /**
+     * Avatar object. If present, the avatar is displayed to the left of the item.
+     *
+     * @type {object}
+     * @public
+     */
     @api
     get avatar() {
         return this._avatar;
@@ -143,6 +193,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._avatar = value instanceof Object ? value : null;
     }
 
+    /**
+     * Nested item objects.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get childItems() {
         return this._childItems;
@@ -152,6 +208,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.isConnected) this.computeSelection();
     }
 
+    /**
+     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.
+     *
+     * @type {string[]}
+     * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
+     * @public
+     */
     @api
     get editFields() {
         return this._editFields;
@@ -161,6 +224,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.popoverVisible) this.togglePopoverVisibility();
     }
 
+    /**
+     * Array of output data objects. See Output Data for valid keys. The fields are visible only when the item is expanded.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get fields() {
         return this._fields;
@@ -169,6 +238,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._fields = normalizeArray(value);
     }
 
+    /**
+     * If the item label should be a link, URL of the link.
+     * Links are incompatible with inline edition and multi-select trees.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get href() {
         return this._href;
@@ -177,6 +253,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._href = value;
     }
 
+    /**
+     * If present, the item is disabled. A disabled item is grayed out and can't be focused.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -186,6 +269,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.isConnected) this.splitActions();
     }
 
+    /**
+     * If present, a loading spinner is visible when the item is expanded.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get isLoading() {
         return this._isLoading;
@@ -194,6 +284,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the item branch is expanded. An expanded branch displays its nested items visually.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get expanded() {
         return this._expanded;
@@ -202,6 +299,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._expanded = normalizeBoolean(value);
     }
 
+    /**
+     * If present, the item is not expandable.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get isLeaf() {
         return this._isLeaf;
@@ -210,6 +314,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._isLeaf = normalizeBoolean(value);
     }
 
+    /**
+     * Label of the item.
+     *
+     * @type {string}
+     * @required
+     * @public
+     */
     @api
     get label() {
         return this._label;
@@ -218,6 +329,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._label = value;
     }
 
+    /**
+     * Level of the item in the tree.
+     *
+     * @type {number}
+     * @public
+     */
     @api
     get level() {
         return this._level;
@@ -227,6 +344,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.updateLevel();
     }
 
+    /**
+     * Text to provide users with supplemental information and aid with identification or disambiguation.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get metatext() {
         return this._metatext;
@@ -235,6 +358,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._metatext = value;
     }
 
+    /**
+     * The unique name of the item. It will be returned by the <code>onselect</code> event handler.
+     *
+     * @type {string}
+     * @required
+     * @public
+     */
     @api
     get name() {
         return this._name;
@@ -243,6 +373,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._name = value;
     }
 
+    /**
+     * If present, the item is selected.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get selected() {
         return this._selected;
@@ -252,6 +389,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.isConnected) this.computeSelection();
     }
 
+    /**
+     * If present, a checkbox is displayed to the left of the label, and is used to show the selection state of the item.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get showCheckbox() {
         return this._showCheckbox;
@@ -261,6 +405,13 @@ export default class PrimitiveTreeItem extends LightningElement {
         if (this.isConnected) this.computeSelection();
     }
 
+    /**
+     * If present, the item is sortable in its parent.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get sortable() {
         return this._sortable;
@@ -275,25 +426,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
-    get buttonLabel() {
-        if (this.expanded) {
-            return i18n.collapseBranch;
-        }
-        return i18n.expandBranch;
-    }
-
-    get computedButtonClass() {
-        return classSet(
-            'slds-m-right_x-small slds-p-vertical_xx-small avonni-primitive-tree-item__chevron'
-        )
-            .add({
-                'slds-hidden': this.isLeaf || this.disabled,
-                'avonni-primitive-tree-item__chevron_expanded': this.expanded,
-                'slds-p-top_xx-small': this.metatext
-            })
-            .toString();
-    }
-
+    /**
+     * Array of computed edit field objects.
+     *
+     * @type {object[]}
+     */
     get computedEditFields() {
         return this.editFields.map((field) => {
             return {
@@ -310,13 +447,72 @@ export default class PrimitiveTreeItem extends LightningElement {
         });
     }
 
-    get computedIconName() {
+    /**
+     * Name of the expand button icon.
+     *
+     * @type {string}
+     */
+    get expandButtonIconName() {
         return document.dir === 'rtl'
             ? 'utility:chevronleft'
             : 'utility:chevronright';
     }
 
-    get computedLabelClass() {
+    /**
+     * CSS class of the expand button.
+     *
+     * @type {string}
+     * @public
+     */
+    get expandButtonClass() {
+        return classSet(
+            'slds-m-right_x-small slds-p-vertical_xx-small avonni-primitive-tree-item__chevron'
+        )
+            .add({
+                'slds-hidden': this.isLeaf || this.disabled,
+                'avonni-primitive-tree-item__chevron_expanded': this.expanded,
+                'slds-p-top_xx-small': this.metatext
+            })
+            .toString();
+    }
+
+    /**
+     * Label of the expand button.
+     *
+     * @type {string}
+     * @default Expand Branch
+     */
+    get expandButtonLabel() {
+        if (this.expanded) {
+            return i18n.collapseBranch;
+        }
+        return i18n.expandBranch;
+    }
+
+    /**
+     * Value of the expand button tabindex attribute.
+     *
+     * @type {string}
+     */
+    get expandButtonTabindex() {
+        return this.showCheckbox ? '0' : '-1';
+    }
+
+    /**
+     * Main HTML element of the item.
+     *
+     * @type {HTMLElement}
+     */
+    get itemElement() {
+        return this.template.querySelector('[data-element-id="div-item"]');
+    }
+
+    /**
+     * CSS class of the label.
+     *
+     * @type {string}
+     */
+    get labelClass() {
         return classSet('slds-truncate')
             .add({
                 'slds-p-vertical_xx-small': !this.buttonActions.length
@@ -324,7 +520,57 @@ export default class PrimitiveTreeItem extends LightningElement {
             .toString();
     }
 
-    get computedWrapperClass() {
+    /**
+     * True if the child items should be visible.
+     *
+     * @type {boolean}
+     */
+    get showChildren() {
+        return !this.disabled && this.expanded;
+    }
+
+    /**
+     * True if the fields should be visible.
+     *
+     * @type {boolean}
+     */
+    get showFields() {
+        return this.fields.length && !this.disabled && this.expanded;
+    }
+
+    /**
+     * True if the label and metatext are links.
+     *
+     * @type {boolean}
+     */
+    get showLink() {
+        return !this.disabled && !this.allowInlineEdit && this.href;
+    }
+
+    /**
+     * Unique generated key.
+     *
+     * @type {string}
+     */
+    get uniqueKey() {
+        return generateUUID();
+    }
+
+    /**
+     * Array of visible action objects.
+     *
+     * @type {object[]}
+     */
+    get visibleActions() {
+        return this.disabled ? this.actionsWhenDisabled : this.actions;
+    }
+
+    /**
+     * CSS class of the wrapper div.
+     *
+     * @type {string}
+     */
+    get wrapperClass() {
         return classSet('slds-is-relative')
             .add({
                 'avonni-primitive-tree-item__single-selection':
@@ -333,45 +579,26 @@ export default class PrimitiveTreeItem extends LightningElement {
             .toString();
     }
 
-    get expandButtonTabindex() {
-        return this.showCheckbox ? '0' : '-1';
-    }
-
-    get itemElement() {
-        return this.template.querySelector('[data-element-id="div-item"]');
-    }
-
-    get showChildren() {
-        return !this.disabled && this.expanded;
-    }
-
-    get showFields() {
-        return this.fields.length && !this.disabled && this.expanded;
-    }
-
-    get showLink() {
-        return !this.disabled && !this.allowInlineEdit && this.href;
-    }
-
-    get uniqueKey() {
-        return generateUUID();
-    }
-
-    get visibleActions() {
-        return this.disabled ? this.actionsWhenDisabled : this.actions;
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
 
+    /**
+     * Transform a camel case string to a start case string.
+     *
+     * @param {string} string String to transform.
+     * @returns {string} String in start case.
+     */
     camelCaseToStartCase(string) {
         const result = string.replace(/([A-Z])/g, ' $1');
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
 
+    /**
+     * Compute the selection state of the item, depending on the selection state of its children.
+     */
     computeSelection() {
         if (!this.selected && this.showCheckbox && this.childItems.length) {
             const selectedChildren = this.childItems.filter(
@@ -397,6 +624,33 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.updateCheckboxStatus();
     }
 
+    /**
+     * Set the focus on a child item.
+     *
+     * @param {string} childKey Key of the child item receiving focus.
+     * @param {boolean} shouldFocus If true, the child item should be focused.
+     * @param {boolean} shouldSelect If true, the child item should be visually selected.
+     */
+    focusChild = (childKey, shouldFocus, shouldSelect) => {
+        const child = this.getImmediateChildItem(childKey);
+        if (child) {
+            if (child.tabIndex !== '0') {
+                child.tabIndex = '0';
+            }
+            if (shouldFocus) {
+                child.focus();
+            }
+            if (shouldSelect) {
+                child.ariaSelected = true;
+            }
+        }
+    };
+
+    /**
+     * Get the bounds of the item.
+     *
+     * @returns {DOMRect} Bounds of the item.
+     */
     getBounds = () => {
         if (this.itemElement) {
             return this.itemElement.getBoundingClientRect();
@@ -404,18 +658,21 @@ export default class PrimitiveTreeItem extends LightningElement {
         return {};
     };
 
+    /**
+     * Get the HTML element of a child item.
+     *
+     * @param {string} key Key of the child item.
+     * @returns {HTMLElement} Element of the child item.
+     */
     getImmediateChildItem(key) {
         return this.template.querySelector(
             `[data-element-id="avonni-primitive-tree-item"][data-key="${key}"]`
         );
     }
 
-    getNthChildItem(n) {
-        return this.template.querySelector(
-            `[data-element-id="avonni-primitive-tree-item"]:nth-of-type(${n})`
-        );
-    }
-
+    /**
+     * Hide the action buttons.
+     */
     hideBranchButtons() {
         if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
@@ -432,6 +689,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Position the edit form popover.
+     */
     positionPopover() {
         const popoverBody = this.template.querySelector(
             '[data-element-id="div-popover-body"]'
@@ -442,11 +702,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         popoverBody.style.maxHeight = `${maxHeight}px`;
     }
 
-    preventDefaultAndStopPropagation(event) {
-        event.preventDefault();
-        event.stopPropagation();
-    }
-
+    /**
+     * Remove the border displayed by the parent tree when an item is dragged over this item.
+     */
     removeBorder = () => {
         if (!this.itemElement) return;
         this.itemElement.classList.remove(
@@ -461,6 +719,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.itemElement.style = '';
     };
 
+    /**
+     * Display a border when an item is dragged over this item in the parent tree.
+     *
+     * @param {string} position Position of the border.
+     * @param {number} level Level of the tree the border should extend to.
+     */
     setBorder = (position, level) => {
         if (!this.itemElement) return;
 
@@ -487,11 +751,19 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     };
 
+    /**
+     * Set the selected state of the item.
+     *
+     * @param {boolean} value New value of the selected property.
+     */
     setSelected = (value) => {
         this._selected = value;
         this.computeSelection();
     };
 
+    /**
+     * Display the action buttons.
+     */
     showBranchButtons() {
         if (!this.popoverVisible && this.visibleActions.length) {
             this.template.querySelector(
@@ -500,6 +772,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Split the visible actions between the ones that are always visible as icons, and the ones that are hidden inside the action button menu.
+     */
     splitActions() {
         const buttonActions = [];
         const menuActions = [];
@@ -514,6 +789,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.menuActions = menuActions;
     }
 
+    /**
+     * Toggle the edit popover visibility.
+     */
     togglePopoverVisibility = () => {
         if (this.popoverVisible) {
             this.draftValues = {};
@@ -529,6 +807,17 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.hideBranchButtons();
     };
 
+    /**
+     * Remove the visual selection of a child item.
+     */
+    unfocusChild = () => {
+        this.ariaSelected = 'false';
+        this.removeAttribute('tabindex');
+    };
+
+    /**
+     * Set the indeterminate state of the checkbox.
+     */
     updateCheckboxStatus() {
         const checkbox = this.template.querySelector(
             '[data-element-id="input-checkbox"]'
@@ -538,12 +827,20 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Update the visual level offset of the item.
+     */
     updateLevel() {
         let style = this.template.host.style.cssText;
         style += `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
         this.template.host.style.cssText = style;
     }
 
+    /**
+     * Validate a required input. If the input is invalid, disable the save button of the edit form.
+     *
+     * @param {HTMLElement} input Input element to validate.
+     */
     validate(input) {
         if (input.value.length === 0) {
             input.setCustomValidity('Cannot be empty');
@@ -564,34 +861,67 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
 
     /**
-     * Callback so that the child it contains can be made focusable
-     * @param {string} childKey - key of the item to receive focus
-     * @param {boolean} shouldFocus - whether to focus the item immediately
-     * @param {boolean} shouldSelect - whether visually focus the item immediately
+     * Handle a click on an action.
+     *
+     * @param {Event} event
      */
-    handleChildFocus = (childKey, shouldFocus, shouldSelect) => {
-        const child = this.getImmediateChildItem(childKey);
-        if (child) {
-            if (child.tabIndex !== '0') {
-                child.tabIndex = '0';
-            }
-            if (shouldFocus) {
-                child.focus();
-            }
-            if (shouldSelect) {
-                child.ariaSelected = true;
-            }
+    handleActionClick(event) {
+        const name = event.detail.value || event.currentTarget.name;
+        /**
+         * The event fired when an action is clicked.
+         *
+         * @event
+         * @name privateactionclick
+         * @param {string} key Unique key of the item.
+         * @param {string} name Unique name of the item.
+         * @bubbles
+         * @cancelable
+         * @composed
+         */
+        const actionClickEvent = new CustomEvent('privateactionclick', {
+            detail: {
+                key: this.nodeKey,
+                name
+            },
+            cancelable: true,
+            composed: true,
+            bubbles: true
+        });
+        this.dispatchEvent(actionClickEvent);
+
+        if (name === 'edit' && !actionClickEvent.defaultPrevented) {
+            this.togglePopoverVisibility();
         }
-    };
+    }
 
     /**
-     * Callback to remove the tabindex attribute and make ariaSelected false
+     * Handle the closing of the action button menu.
      */
-    handleChildUnfocus = () => {
-        this.ariaSelected = 'false';
-        this.removeAttribute('tabindex');
-    };
+    handleActionMenuClose() {
+        this._menuIsOpen = false;
+    }
 
+    /**
+     * Handle the opening of the action button menu.
+     */
+    handleActionMenuOpen() {
+        this._menuIsOpen = true;
+    }
+
+    /**
+     * Handle a click on the checkbox.
+     *
+     * @param {Event} event
+     */
+    handleCheckboxClick(event) {
+        if (this.allowInlineEdit) event.stopPropagation();
+    }
+
+    /**
+     * Handle a click on the item.
+     *
+     * @param {Event} event
+     */
     handleClick(event) {
         if (!this.disabled) {
             let target = 'anchor';
@@ -614,11 +944,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
-    handleDisabledEdit(event) {
-        event.stopPropagation();
-        this.draftValues.disabled = event.detail.checked;
-    }
-
+    /**
+     * Handle a click on the "done" button of the edit form.
+     */
     handleDone() {
         Object.entries(this.draftValues).forEach(([key, value]) => {
             this[`_${key}`] = value;
@@ -630,28 +958,20 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.splitActions();
     }
 
-    handleExpandedEdit(event) {
-        event.stopPropagation();
-        this.draftValues.expanded = event.detail.checked;
+    /**
+     * Handle the blur of an edit form input.
+     *
+     * @param {Event} event
+     */
+    handleEditInputBlur(event) {
+        if (event.currentTarget.required) {
+            this.validate(event.currentTarget);
+        }
     }
 
-    handleHrefEdit(event) {
-        event.stopPropagation();
-        this.draftValues.href = event.value;
-    }
-
-    handleInputChange(event) {
-        event.stopPropagation();
-        const name = event.currentTarget.name;
-        const { checked, value } = event.detail;
-        this.draftValues[name] = checked !== undefined ? checked : value;
-    }
-
-    handleIsLoadingEdit(event) {
-        event.stopPropagation();
-        this.draftValues.isLoading = event.detail.checked;
-    }
-
+    /**
+     * Handle the focus on the expand button.
+     */
     handleExpandButtonFocus() {
         if (this.showCheckbox) return;
 
@@ -665,6 +985,23 @@ export default class PrimitiveTreeItem extends LightningElement {
         );
     }
 
+    /**
+     * Handle a change in an edit form input.
+     *
+     * @param {Event} event
+     */
+    handleInputChange(event) {
+        event.stopPropagation();
+        const name = event.currentTarget.name;
+        const { checked, value } = event.detail;
+        this.draftValues[name] = checked !== undefined ? checked : value;
+    }
+
+    /**
+     * Handle a key down on the item.
+     *
+     * @param {Event} event
+     */
     handleKeydown = (event) => {
         if (this.popoverVisible) return;
         switch (event.keyCode) {
@@ -704,52 +1041,9 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     };
 
-    handleEditInputBlur(event) {
-        if (event.currentTarget.required) {
-            this.validate(event.currentTarget);
-        }
-    }
-
-    handleLabelEdit(event) {
-        event.stopPropagation();
-        this.draftValues.label = event.detail.value;
-    }
-
-    handleMetatextEdit(event) {
-        event.stopPropagation();
-        this.draftValues.metatext = event.detail.value;
-    }
-
-    handleActionClick(event) {
-        const name = event.detail.value || event.currentTarget.name;
-        const actionClickEvent = new CustomEvent('privateactionclick', {
-            detail: {
-                key: this.nodeKey,
-                name
-            },
-            cancelable: true,
-            composed: true,
-            bubbles: true
-        });
-        this.dispatchEvent(actionClickEvent);
-
-        if (name === 'edit' && !actionClickEvent.defaultPrevented) {
-            this.togglePopoverVisibility();
-        }
-    }
-
-    handleActionMenuClose() {
-        this._menuIsOpen = false;
-    }
-
-    handleActionMenuOpen() {
-        this._menuIsOpen = true;
-    }
-
-    handleCheckboxClick(event) {
-        if (this.allowInlineEdit) event.stopPropagation();
-    }
-
+    /**
+     * Handle a double click on the label.
+     */
     handleLabelDoubleClick() {
         if (!this.allowInlineEdit || this.disabled) return;
 
@@ -759,6 +1053,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         this._focusOn = 'lightning-input-inline-label';
     }
 
+    /**
+     * Handle a key down on the label input, when it is edited inline.
+     *
+     * @param {Event} event
+     */
     handleLabelInlineKeyDown(event) {
         event.stopPropagation();
         this.draftValues.label = event.currentTarget.value;
@@ -771,6 +1070,22 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Handle a mouse down on the item links.
+     *
+     * @param {Event} event
+     */
+    handleLinkMouseDown(event) {
+        if (!this.sortable) return;
+
+        // Prevent the link from being dragged,
+        // to allow for dragging the whole item
+        event.preventDefault();
+    }
+
+    /**
+     * Handle the saving of the inline edition of the label.
+     */
     handleSaveLabelInlineEdit() {
         const labelInput = this.template.querySelector(
             '[data-element-id="lightning-input-inline-label"]'
@@ -783,14 +1098,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.dispatchChange();
     }
 
-    handleLinkMouseDown(event) {
-        if (!this.sortable) return;
-
-        // Prevent the link from being dragged,
-        // to allow for dragging the whole item
-        event.preventDefault();
-    }
-
+    /**
+     * Handle a mouse down on the item.
+     *
+     * @param {Event} event
+     */
     handleMouseDown = (event) => {
         if (!this.sortable) return;
         event.stopPropagation();
@@ -807,11 +1119,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         );
     };
 
-    handleNameEdit(event) {
-        event.stopPropagation();
-        this.draftValues.name = event.detail.value;
-    }
-
+    /**
+     * Handle a key down on the close button of the edit form popover.
+     *
+     * @param {Event} event
+     */
     handlePopoverCloseKeyDown(event) {
         // Trap the keyboard focus inside the popover
         if (event.keyCode === keyCodes.tab && event.shiftKey) {
@@ -822,6 +1134,11 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Handle a mouse down on the "done" button of the edit form popover.
+     *
+     * @param {Event} event
+     */
     handlePopoverDoneKeyDown(event) {
         // Trap the keyboard focus inside the popover
         if (event.keyCode === keyCodes.tab && !event.shiftKey) {
@@ -834,7 +1151,21 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Dispatch the change event.
+     */
     dispatchChange() {
+        /**
+         * The event fired when the item is edited.
+         *
+         * @event
+         * @name change
+         * @param {object} values New value of the item.
+         * @param {string} key Unique key of the item.
+         * @public
+         * @bubbles
+         * @composed
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
@@ -855,7 +1186,25 @@ export default class PrimitiveTreeItem extends LightningElement {
         );
     }
 
+    /**
+     * Dispatch the click event.
+     *
+     * @param {string} target Target of the click.
+     * @param {Event} event
+     */
     dispatchClick(target, event) {
+        /**
+         * The event fired when the item is clicked.
+         *
+         * @event
+         * @name privateitemclick
+         * @param {string} name Unique name of the item.
+         * @param {string} key Unique key of the item.
+         * @param {string} target Name of the target the click originated from.
+         * @bubbles
+         * @cancelable
+         * @composed
+         */
         const customEvent = new CustomEvent('privateitemclick', {
             bubbles: true,
             composed: true,
@@ -872,6 +1221,21 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
     }
 
+    /**
+     * Prevent the default behavior and stop the propagation of an event.
+     *
+     * @param {Event} event
+     */
+    preventDefaultAndStopPropagation(event) {
+        event.preventDefault();
+        event.stopPropagation();
+    }
+
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event
+     */
     stopPropagation(event) {
         event.stopPropagation();
     }
