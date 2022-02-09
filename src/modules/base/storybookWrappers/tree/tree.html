@@ -1,23 +1,18 @@
 <template>
-    <div class="slds-theme_shade slds-p-around_medium">
-        <div
-            class="slds-theme_default slds-box"
-            style="max-width: 400px; margin: 0 auto"
-        >
-            <c-tree
-                actions={actions}
-                actions-when-disabled={actionsWhenDisabled}
-                allow-inline-edit={allowInlineEdit}
-                edit-fields={editFields}
-                header={header}
-                is-loading={isLoading}
-                is-multi-select={isMultiSelect}
-                items={items}
-                loading-state-alternative-text={loadingStateAlternativeText}
-                selected-items={selectedItems}
-                sortable={sortable}
-                onselect={handleSelect}
-            ></c-tree>
-        </div>
+    <div style="max-width: 300px">
+        <c-tree
+            actions={actions}
+            actions-when-disabled={actionsWhenDisabled}
+            allow-inline-edit={allowInlineEdit}
+            edit-fields={editFields}
+            header={header}
+            is-loading={isLoading}
+            is-multi-select={isMultiSelect}
+            items={items}
+            loading-state-alternative-text={loadingStateAlternativeText}
+            selected-items={selectedItems}
+            sortable={sortable}
+            onselect={handleSelect}
+        ></c-tree>
     </div>
 </template>

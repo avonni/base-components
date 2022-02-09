@@ -14,6 +14,7 @@ export default class Tree extends LightningElement {
     @api sortable;
 
     handleSelect(event) {
+        // Prevent the links from navigating
         event.preventDefault();
     }
 }
