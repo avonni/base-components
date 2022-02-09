@@ -63,18 +63,34 @@ describe('Dialog', () => {
         element.show();
 
         return Promise.resolve().then(() => {
-            const title = element.shadowRoot.querySelector('[data-element-id="h2"]');
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
             expect(title.textContent).toBe('This is a title');
         });
     });
 
     // size
+    it('Dialog size x-small', () => {
+        element.size = 'x-small';
+        element.show();
+
+        return Promise.resolve().then(() => {
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="modal"]'
+            );
+            expect(modal.className).toContain('slds-modal_x-small');
+        });
+    });
+
     it('Dialog size small', () => {
         element.size = 'small';
         element.show();
 
         return Promise.resolve().then(() => {
-            const modal = element.shadowRoot.querySelector('.slds-modal');
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="modal"]'
+            );
             expect(modal.className).toContain('slds-modal_small');
         });
     });
@@ -83,7 +99,9 @@ describe('Dialog', () => {
         element.show();
 
         return Promise.resolve().then(() => {
-            const modal = element.shadowRoot.querySelector('.slds-modal');
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="modal"]'
+            );
             expect(modal.className).toContain('slds-modal_medium');
         });
     });
@@ -93,7 +111,9 @@ describe('Dialog', () => {
         element.show();
 
         return Promise.resolve().then(() => {
-            const modal = element.shadowRoot.querySelector('.slds-modal');
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="modal"]'
+            );
             expect(modal.className).toContain('slds-modal_large');
         });
     });
@@ -133,7 +153,9 @@ describe('Dialog', () => {
         element.showDialog = true;
 
         return Promise.resolve().then(() => {
-            const modal = element.shadowRoot.querySelector('.slds-modal');
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="modal"]'
+            );
             expect(modal).toBeTruthy();
         });
     });
@@ -146,7 +168,9 @@ describe('Dialog', () => {
         element.hide();
 
         return Promise.resolve().then(() => {
-            const modal = element.shadowRoot.querySelector('.slds-modal');
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="modal"]'
+            );
             expect(modal).toBeFalsy();
         });
     });
@@ -158,9 +182,8 @@ describe('Dialog', () => {
         const handler = jest.fn();
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector(
-                '.slds-modal__close'
-            );
+            const button =
+                element.shadowRoot.querySelector('.slds-modal__close');
             button.focus = handler;
             element.focusOnCloseButton();
             expect(handler).toHaveBeenCalled();
@@ -172,7 +195,9 @@ describe('Dialog', () => {
         element.show();
 
         return Promise.resolve().then(() => {
-            const modal = element.shadowRoot.querySelector('.slds-modal');
+            const modal = element.shadowRoot.querySelector(
+                '[data-element-id="modal"]'
+            );
             expect(modal).toBeTruthy();
         });
     });
