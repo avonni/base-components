@@ -32,7 +32,7 @@
 
 import { createElement } from 'lwc';
 import DynamicMenu from 'c/dynamicMenu';
-import { baseItems } from '../__docs__/data';
+import { baseItems, listViewItems } from '../__docs__/data';
 
 // not tested menuLength because of offsetHeight in the DOM
 
@@ -66,6 +66,7 @@ describe('Dynamic Menu', () => {
         expect(element.loadingStateAlternativeText).toBeUndefined();
         expect(element.menuAlignment).toBe('left');
         expect(element.menuLength).toBe('7-items');
+        expect(element.menuWidth).toBe('small');
         expect(element.nubbin).toBeFalsy();
         expect(element.searchInputPlaceholder).toBe('Search…');
         expect(element.title).toBeUndefined();
@@ -107,10 +108,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const searchInput = element.shadowRoot.querySelector(
@@ -288,10 +286,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
@@ -303,17 +298,18 @@ describe('Dynamic Menu', () => {
 
     // items
     it('Dynamic Menu: items', () => {
-        element.items = baseItems;
+        element.items = listViewItems;
 
         return Promise.resolve().then(() => {
-            baseItems.forEach((item, index) => {
-                const correspondingItem = baseItems[index];
+            listViewItems.forEach((item, index) => {
+                const correspondingItem = listViewItems[index];
                 expect(correspondingItem).toBeTruthy();
-                expect(item.label).toBe(correspondingItem.label);
-                expect(item.value).toBe(correspondingItem.value);
-                expect(item.meta).toBe(correspondingItem.meta);
-                expect(item.id).toBe(correspondingItem.id);
                 expect(item.avatar).toBe(correspondingItem.avatar);
+                expect(item.actions).toBe(correspondingItem.actions);
+                expect(item.id).toBe(correspondingItem.id);
+                expect(item.label).toBe(correspondingItem.label);
+                expect(item.meta).toBe(correspondingItem.meta);
+                expect(item.value).toBe(correspondingItem.value);
             });
         });
     });
@@ -338,10 +334,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const spinner = element.shadowRoot.querySelector(
@@ -357,10 +350,7 @@ describe('Dynamic Menu', () => {
         element.nubbin = true;
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -378,10 +368,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -399,10 +386,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -420,10 +404,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -441,10 +422,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -462,10 +440,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -482,10 +457,7 @@ describe('Dynamic Menu', () => {
     it('Dynamic Menu: menu alignment without nubbin left', () => {
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -500,10 +472,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -518,10 +487,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -536,10 +502,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -556,10 +519,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
@@ -576,16 +536,89 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const dropdown = element.shadowRoot.querySelector(
                     '[data-element-id="dropdown"]'
                 );
                 expect(dropdown.className).toContain('slds-dropdown_bottom');
+            });
+    });
+
+    // menu width
+    it('Dynamic Menu: menu width xx-small', () => {
+        element.menuWidth = 'xx-small';
+
+        return Promise.resolve()
+            .then(() => {
+                element.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_xx-small');
+            });
+    });
+
+    it('Dynamic Menu: menu width x-small', () => {
+        element.menuWidth = 'x-small';
+
+        return Promise.resolve()
+            .then(() => {
+                element.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_x-small');
+            });
+    });
+
+    it('Dynamic Menu: menu width small', () => {
+        element.menuWidth = 'small';
+
+        return Promise.resolve()
+            .then(() => {
+                element.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_small');
+            });
+    });
+
+    it('Dynamic Menu: menu width large', () => {
+        element.menuWidth = 'large';
+
+        return Promise.resolve()
+            .then(() => {
+                element.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_large');
+            });
+    });
+
+    it('Dynamic Menu: menu width medium', () => {
+        element.menuWidth = 'medium';
+
+        return Promise.resolve()
+            .then(() => {
+                element.click();
+            })
+            .then(() => {
+                const dropdown = element.shadowRoot.querySelector(
+                    '[data-element-id="dropdown"]'
+                );
+                expect(dropdown.className).toContain('slds-dropdown_medium');
             });
     });
 
@@ -596,10 +629,7 @@ describe('Dynamic Menu', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-button-icon"]'
-                );
-                button.click();
+                element.click();
             })
             .then(() => {
                 const searchInput = element.shadowRoot.querySelector(

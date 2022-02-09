@@ -216,6 +216,20 @@ export default {
                 defaultValue: { summary: '7-items' }
             }
         },
+        menuWidth: {
+            name: 'menu-width',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            defaultValue: 'small',
+            description:
+                'Minimum width of the menu. Valid values include xx-small, x-small, small, medium and large.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'small' }
+            }
+        },
         nubbin: {
             control: {
                 type: 'boolean'

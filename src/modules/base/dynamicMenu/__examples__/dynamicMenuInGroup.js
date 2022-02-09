@@ -54,6 +54,7 @@ export const DynamicMenuInGroup = ({
     nubbin,
     menuAlignment,
     menuLength,
+    menuWidth,
     searchInputPlaceholder,
     title,
     tooltip,
@@ -77,6 +78,7 @@ export const DynamicMenuInGroup = ({
     element.nubbin = nubbin;
     element.menuAlignment = menuAlignment;
     element.menuLength = menuLength;
+    element.menuWidth = menuWidth;
     element.searchInputPlaceholder = searchInputPlaceholder;
     element.title = title;
     element.tooltip = tooltip;
