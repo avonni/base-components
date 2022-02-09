@@ -38,6 +38,7 @@ const DEFAULT_ICON_SIZE = 'medium';
 const DEFAULT_ICON_POSITION = 'left';
 const DEFAULT_MENU_ALIGNMENT = 'left';
 const DEFAULT_MENU_LENGTH = '7-items';
+const DEFAULT_MENU_WIDTH = 'small';
 
 export default class ListView extends LightningElement {
     @api accessKey;
@@ -55,6 +56,7 @@ export default class ListView extends LightningElement {
     @api loadingStateAlternativeText;
     @api menuAlignment = DEFAULT_MENU_ALIGNMENT;
     @api menuLength = DEFAULT_MENU_LENGTH;
+    @api menuWidth = DEFAULT_MENU_WIDTH;
     @api nubbin = false;
     @api searchInputPlaceholder = DEFAULT_SEARCH_INPUT_PLACEHOLDER;
     @api title;
