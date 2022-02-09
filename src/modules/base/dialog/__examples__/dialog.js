@@ -36,18 +36,18 @@ customElements.define('ac-base-dialog', Component.CustomElementConstructor);
 
 export const Dialog = ({
     dialogName,
-    title,
+    isLoading,
     loadingStateAlternativeText,
     size,
-    isLoading,
-    showDialog
+    showDialog,
+    title
 }) => {
     const element = document.createElement('ac-base-dialog');
     element.dialogName = dialogName;
-    element.title = title;
+    element.isLoading = isLoading;
     element.loadingStateAlternativeText = loadingStateAlternativeText;
     element.size = size;
-    element.isLoading = isLoading;
     element.showDialog = showDialog;
+    element.title = title;
     return element;
 };

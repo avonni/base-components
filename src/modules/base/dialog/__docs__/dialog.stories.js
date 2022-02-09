@@ -45,14 +45,16 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        title: {
+        isLoading: {
+            name: 'is-loading',
             control: {
-                type: 'text'
+                type: 'boolean'
             },
             description:
-                'The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+                'If present, the modal box is in a loading state and shows a spinner.',
             table: {
-                type: { summary: 'string' }
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
             }
         },
         loadingStateAlternativeText: {
@@ -66,47 +68,43 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        size: {
-            control: {
-                type: 'select'
-            },
-            options: ['small', 'medium', 'large'],
-            defaultValue: 'medium',
-            description:
-                'Width of the modal. Accepted sizes include small, medium, large. ',
-            table: {
-                defaultValue: { summary: 'medium' },
-                type: { summary: 'string' }
-            }
-        },
-        isLoading: {
-            name: 'is-loading',
-            control: {
-                type: 'boolean'
-            },
-            defaultValue: 0,
-            description:
-                'If present, the modal box is in a loading state and shows a spinner.',
-            table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' }
-            }
-        },
         showDialog: {
             name: 'show-dialog',
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, display dialog',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
             }
+        },
+        size: {
+            control: {
+                type: 'select'
+            },
+            options: ['x-small', 'small', 'medium', 'large'],
+            defaultValue: 'medium',
+            description:
+                'Width of the modal. Accepted sizes include small, medium, large. ',
+            table: {
+                type: { summary: 'string' }
+            }
+        },
+        title: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The title can include text, and is displayed in the header. To include additional markup or another component, use the title slot.',
+            table: {
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
         isLoading: false,
+        size: 'medium',
         showDialog: false
     }
 };
@@ -116,6 +114,13 @@ const Template = (args) => Dialog(args);
 export const Base = Template.bind({});
 Base.args = {
     dialogName: 'dialog',
+    showDialog: true
+};
+
+export const BaseXSmall = Template.bind({});
+BaseXSmall.args = {
+    dialogName: 'dialog',
+    size: 'x-small',
     showDialog: true
 };
 
