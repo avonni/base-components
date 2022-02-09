@@ -476,7 +476,7 @@ export default class PrimitiveTreeItem extends LightningElement {
                     'avonni-primitive-tree-item__item_border-bottom'
                 );
                 if (level) {
-                    this.itemElement.style = `--avonni-tree-item-border-offset-left: ${level}rem;`;
+                    this.itemElement.style = `--avonni-tree-item-spacing-inline-start-border: ${level}rem;`;
                 }
                 break;
             default:
@@ -540,7 +540,7 @@ export default class PrimitiveTreeItem extends LightningElement {
 
     updateLevel() {
         let style = this.template.host.style.cssText;
-        style += `--avonni-tree-item-offset-left: ${this.level}rem;`;
+        style += `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
         this.template.host.style.cssText = style;
     }
 

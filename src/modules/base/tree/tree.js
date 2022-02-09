@@ -1032,7 +1032,8 @@ export default class Tree extends LightningElement {
             const tree = this.template.querySelector(
                 '[data-element-id="div-tree-wrapper"]'
             );
-            tree.style.cssText = '--avonni-tree-item-color-hover: transparent;';
+            tree.style.cssText =
+                '--avonni-tree-item-color-background-hover: transparent;';
         }, 200);
     }
 
