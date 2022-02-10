@@ -80,36 +80,61 @@ export class TreeData {
     }
 
     /**
-     * Compute the selection of all children of a node.
+     * Select all children descendants of a node.
      *
-     * @param {object} node Item the selection cascade should start from.
-     * @param {string[]} selectedItems Array of selected item names.
+     * @param {object} node Node to select all descendants of.
+     * @param {string[]} selectedItems Array of selected item names, the new selected items' names should be added to.
      */
-    cascadeSelection(node, selectedItems) {
-        if (node.children.length) {
-            if (!node.selected) {
-                const allChildrenAreSelected = node.children.every((child) => {
-                    return child.selected;
-                });
-                if (allChildrenAreSelected) {
-                    node.selected = true;
-                    const name = node.name;
-                    if (!selectedItems.includes(name)) {
-                        selectedItems.push(name);
-                    }
+    cascadeSelectionDown(node, selectedItems) {
+        node.children.forEach((child) => {
+            const name = child.name;
+            if (!selectedItems.includes(name)) {
+                selectedItems.push(name);
+                child.selected = true;
+                this.cascadeSelectionDown(child, selectedItems);
+            }
+        });
+    }
+
+    /**
+     * Go up the tree hierarchy to select all the item's ancestors for which all children are selected.
+     *
+     * @param {object} item Item from which to start the cascade up the tree.
+     * @param {string[]} selectedItems Array of selected item names, the new selected items' names should be added to.
+     */
+    cascadeSelectionUp(item, selectedItems) {
+        const node = item.treeNode;
+        const name = node.name;
+        if (!selectedItems.includes(name)) {
+            const allChildrenAreSelected = node.children.every((child) => {
+                return child.selected;
+            });
+            if (allChildrenAreSelected) {
+                node.selected = true;
+                selectedItems.push(name);
+                const parent = this.getItem(item.parent);
+                if (parent) {
+                    this.cascadeSelectionUp(parent, selectedItems);
                 }
             }
+        }
+    }
 
-            node.children.forEach((child) => {
-                if (node.selected) {
-                    child.selected = true;
-                    const name = child.name;
-                    if (!selectedItems.includes(name)) {
-                        selectedItems.push(name);
-                    }
-                }
-                this.cascadeSelection(child, selectedItems);
-            });
+    /**
+     * Select the item that belongs to this name, and select all its descendants and ancestors if needed.
+     *
+     * @param {string} name Name of the item to select.
+     * @param {string[]} selectedItems Array of selected item names, the new selected items' names should be added to.
+     */
+    computeSelection(name, selectedItems) {
+        const item = this.getItemFromName(name);
+        if (!item) return;
+
+        item.treeNode.selected = true;
+        this.cascadeSelectionDown(item.treeNode, selectedItems);
+        const parent = this.getItem(item.parent);
+        if (parent) {
+            this.cascadeSelectionUp(parent, selectedItems);
         }
     }
 
@@ -434,7 +459,6 @@ export class TreeData {
      * @param {string[]} selectedItems Selected item names.
      */
     selectNode(node, selectedItems) {
-        node.nodeRef.selected = true;
         node.selected = true;
         if (!selectedItems.includes(node.name)) {
             selectedItems.push(node.name);
@@ -454,7 +478,6 @@ export class TreeData {
      * @param {string[]} selectedItems Selected item names, from which the item name is removed from.
      */
     unselectNode(node, selectedItems) {
-        node.nodeRef.selected = false;
         node.selected = false;
         const selectedIndex = selectedItems.indexOf(node.name);
         if (selectedIndex > -1) {
