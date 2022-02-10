@@ -345,14 +345,7 @@ export default class Tree extends LightningElement {
 
         // Compute the selected items
         if (this.isMultiSelect) {
-            const selectedItems = [...this.selectedItems];
-            this.children.forEach((node) => {
-                this.treedata.cascadeSelection(node, selectedItems);
-            });
-            if (selectedItems.length !== this.selectedItems.length) {
-                this._selectedItems = selectedItems;
-                this.dispatchSelect();
-            }
+            this.computeMultiSelection();
         } else if (this._focusedItem) {
             this.treedata.expandTo(this._focusedItem);
         }
@@ -450,6 +443,29 @@ export default class Tree extends LightningElement {
             this.setFocusToItem(parent);
             this.singleSelect(parent.treeNode.name);
         }
+    }
+
+    /**
+     * Compute the selected items when the tree is muti-select.
+     */
+    computeMultiSelection() {
+        const selectedItems = [...this.selectedItems];
+        for (let i = 0; i < selectedItems.length; i++) {
+            const name = selectedItems[i];
+            this.treedata.computeSelection(name, selectedItems);
+        }
+        if (selectedItems.length !== this.selectedItems.length) {
+            this._selectedItems = selectedItems;
+            this.dispatchSelect();
+        }
+
+        // Force the children update
+        const children = this.template.querySelectorAll(
+            '[data-element-id="avonni-primitive-tree-item"]'
+        );
+        children.forEach((child, index) => {
+            child.selected = this.children[index].selected;
+        });
     }
 
     /**
@@ -839,15 +855,7 @@ export default class Tree extends LightningElement {
         this.treedata.resetSelection(this.computedSelectedItems);
 
         if (this.isMultiSelect) {
-            const selectedItems = [...this.selectedItems];
-            this.children.forEach((node) => {
-                this.treedata.cascadeSelection(node, selectedItems);
-            });
-            if (selectedItems.length !== this.selectedItems.length) {
-                this._selectedItems = selectedItems;
-                this.dispatchSelect();
-            }
-            this.children = [...this.children];
+            this.computeMultiSelection();
         } else {
             const selectedItem = this.treedata.getItemFromName(
                 this.computedSelectedItems[0]
