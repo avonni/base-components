@@ -31,7 +31,7 @@
  */
 
 import { createElement } from 'lwc';
-import OutputData from 'c/outputData';
+import OutputData from '../outputData';
 
 let element;
 describe('OutputData', () => {
@@ -66,7 +66,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -102,7 +104,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -142,7 +146,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -194,7 +200,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -265,7 +273,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -319,7 +329,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -362,7 +374,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -409,7 +423,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -471,7 +487,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -524,7 +542,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -562,7 +582,9 @@ describe('OutputData', () => {
         };
 
         return Promise.resolve().then(() => {
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
@@ -609,7 +631,9 @@ describe('OutputData', () => {
             const text = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-text"]'
             );
-            const boolean = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const boolean = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
             const number = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-formatted-number"]'
             );
