@@ -76,16 +76,16 @@ export default class PrimitiveTreeItem extends LightningElement {
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
     _avatar;
-    _level;
     _childItems = [];
+    _disabled = false;
     _editFields = DEFAULT_EDIT_FIELDS;
     _fields = [];
     _href;
-    _disabled = false;
     _expanded = false;
     _isLeaf = false;
     _isLoading = false;
     _label;
+    _level;
     _metatext;
     _name;
     _selected = false;
@@ -957,7 +957,10 @@ export default class PrimitiveTreeItem extends LightningElement {
     handleClick(event) {
         if (!this.disabled) {
             let target = 'anchor';
-            if (event.target.dataset.type === 'chevron') {
+            if (
+                event.target.dataset.elementId ===
+                'lightning-button-icon-expand'
+            ) {
                 target = 'chevron';
             } else if (event.target.tagName === 'LIGHTNING-INPUT') {
                 target = 'input';

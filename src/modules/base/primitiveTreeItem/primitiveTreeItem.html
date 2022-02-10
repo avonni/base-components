@@ -48,7 +48,7 @@
                 tabindex={expandButtonTabindex}
                 title={expandButtonLabel}
                 variant="bare"
-                data-type="chevron"
+                data-element-id="lightning-button-icon-expand"
                 onfocus={handleExpandButtonFocus}
                 onmousedown={stopPropagation}
             >
@@ -60,6 +60,7 @@
                         slds-grid slds-grid_vertical-align-center
                         avonni-primitive-tree-item__header
                     "
+                    data-element-id="div-header"
                     onfocusin={showBranchButtons}
                     onfocusout={hideBranchButtons}
                     onmouseenter={showBranchButtons}
@@ -94,7 +95,7 @@
                     </span>
 
                     <!-- Avatar -->
-                    <avonni-avatar
+                    <c-avatar
                         if:true={avatar}
                         class="slds-m-right_x-small"
                         alternative-text={avatar.alternativeText}
@@ -106,7 +107,8 @@
                         size={avatar.size}
                         src={avatar.src}
                         variant={avatar.variant}
-                    ></avonni-avatar>
+                        data-element-id="avonni-avatar"
+                    ></c-avatar>
 
                     <!-- Label -->
                     <div if:false={labelIsEdited} class={labelClass}>
@@ -115,12 +117,14 @@
                             class="avonni-primitive-item__link"
                             href={href}
                             data-element-id="a-label-link"
+                            data-group-name="link"
                             onmousedown={handleLinkMouseDown}
                         >
                             {label}
                         </a>
                         <span
                             if:false={showLink}
+                            data-element-id="span-label"
                             ondblclick={handleLabelDoubleClick}
                             >{label}</span
                         >
@@ -142,6 +146,7 @@
                         class="slds-m-left_x-small slds-m-vertical_xx-small"
                         icon-name="utility:check"
                         variant="bare"
+                        data-element-id="lightning-button-icon-inline-save"
                         onclick={handleSaveLabelInlineEdit}
                     ></lightning-button-icon>
 
@@ -166,6 +171,7 @@
                                 icon-name={action.iconName}
                                 name={action.name}
                                 variant="bare"
+                                data-element-id="lightning-button-icon-action"
                                 onclick={handleActionClick}
                             ></lightning-button-icon>
                         </template>
@@ -190,6 +196,7 @@
                                     icon-name={action.iconName}
                                     label={action.label}
                                     value={action.name}
+                                    data-element-id="lightning-menu-item-action"
                                 ></lightning-menu-item>
                             </template>
                         </lightning-button-menu>
@@ -206,10 +213,13 @@
                         if:true={showLink}
                         class="avonni-primitive-item__link"
                         href={href}
+                        data-group-name="link"
                         onmousedown={handleLinkMouseDown}
                         >{metatext}</a
                     >
-                    <span if:false={showLink}>{metatext}</span>
+                    <span if:false={showLink} data-element-id="span-metatext"
+                        >{metatext}</span
+                    >
                 </div>
 
                 <!-- Fields -->
@@ -227,6 +237,7 @@
                             type-attributes={field.typeAttributes}
                             value={field.value}
                             variant="label-inline"
+                            data-element-id="avonni-output-data-field"
                         ></c-output-data>
                     </template>
                 </div>
@@ -242,6 +253,7 @@
             "
             aria-label="Edit item"
             role="dialog"
+            data-element-id="div-popover"
             onmousedown={stopPropagation}
         >
             <!-- Close button -->
@@ -275,6 +287,8 @@
                         required={field.required}
                         type={field.type}
                         value={field.value}
+                        data-element-id="lightning-input-edit-field"
+                        data-name={field.name}
                         onblur={handleEditInputBlur}
                         onchange={handleInputChange}
                     ></lightning-input>
@@ -319,7 +333,7 @@
                     actions-when-disabled={actionsWhenDisabled}
                     allow-inline-edit={allowInlineEdit}
                     aria-disabled={item.disabled}
-                    aria-expanded={item.strexpanded}
+                    aria-expanded={item.expanded}
                     aria-label={item.label}
                     aria-level={item.level}
                     avatar={item.avatar}
@@ -355,6 +369,7 @@
                 <lightning-spinner
                     alternative-text={loadingStateAlternativeText}
                     size="small"
+                    data-element-id="lightning-spinner-loading"
                 ></lightning-spinner>
             </div>
         </div>
