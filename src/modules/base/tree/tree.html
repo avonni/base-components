@@ -35,6 +35,7 @@
 <template>
     <div
         class="avonni-tree_container"
+        aria-labelledby="treeheading"
         role="tree"
         data-element-id="div-tree-wrapper"
         onchange={handleChange}
@@ -45,7 +46,13 @@
         onprivateitemkeydown={handleKeydown}
         onprivateregisteritem={handleRegistration}
     >
-        <h4 class="avonni-tree__group-header" id="treeheading">{header}</h4>
+        <h4
+            class="avonni-tree__group-header"
+            id="treeheading"
+            data-element-id="h4-header"
+        >
+            {header}
+        </h4>
 
         <div
             if:true={isLoading}
@@ -54,6 +61,7 @@
             <lightning-spinner
                 alternative-text={loadingStateAlternativeText}
                 size="small"
+                data-element-id="lightning-spinner"
             ></lightning-spinner>
         </div>
 
@@ -88,6 +96,7 @@
                     show-checkbox={isMultiSelect}
                     sortable={sortable}
                     data-key={item.key}
+                    data-element-id="avonni-primitive-tree-item"
                 ></c-primitive-tree-item>
             </template>
         </template>
@@ -100,6 +109,7 @@
             slds-m-top_xx-small
             slds-m-left_none
         "
+        data-element-id="button-add-action"
         onclick={handleActionClick}
     >
         <lightning-icon
@@ -108,6 +118,7 @@
             icon-name={addAction.iconName}
             size="xx-small"
             variant="brand"
+            data-element-id="lightning-icon-add-action"
         ></lightning-icon>
         Add item
     </button>
