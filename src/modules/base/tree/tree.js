@@ -77,7 +77,6 @@ export default class Tree extends LightningElement {
     _isMultiSelect = false;
     @track _items = [];
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
-    _readOnly = false;
     _selectedItems = [];
     _sortable = false;
 
@@ -431,21 +430,6 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Collapse the parent of an item.
-     *
-     * @param {string} key Key of the child item.
-     */
-    collapseParent(key) {
-        const item = this.treedata.getItem(key);
-        if (item && item.level > 1) {
-            const parent = this.treedata.getItem(item.parent);
-            this.collapseBranch(parent.treeNode);
-            this.setFocusToItem(parent);
-            this.singleSelect(parent.treeNode.name);
-        }
-    }
-
-    /**
      * Compute the selected items when the tree is muti-select.
      */
     computeMultiSelection() {
@@ -576,18 +560,6 @@ export default class Tree extends LightningElement {
     expandBranch(node) {
         if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = true;
-            if (
-                this._focusedItem &&
-                this._focusedItem.key.startsWith(node.key)
-            ) {
-                // focus after expansion happens and elements are rerendered
-                // eslint-disable-next-line @lwc/lwc/no-async-operation
-                setTimeout(() => {
-                    this.setFocusToItem(this._focusedItem);
-                }, 0);
-            }
-
-            // Need to dispatch a change event specifically for interop to pick up the change to node.expanded
             this.dispatchChange(node.name, 'expand');
         }
     }
@@ -880,6 +852,9 @@ export default class Tree extends LightningElement {
             if (isSelected !== parent.treeNode.selected) {
                 parent.treeNode.selected = isSelected;
                 this.callbackMap[parent.key].setSelected(isSelected);
+                if (!this.selectedItems.includes(parent.treeNode.name)) {
+                    this.selectedItems.push(parent.treeNode.name);
+                }
                 this.updateParentsSelection(parent);
             }
         }
