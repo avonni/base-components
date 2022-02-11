@@ -365,13 +365,12 @@ describe('Path', () => {
             expect(fieldValues).toHaveLength(STEPS[2].keyFields.length);
             fieldValues.forEach((field, index) => {
                 // Normalize data to be able to compare
-                const originalType = STEPS[2].keyFields[index].type || 'text';
+                const originalType = STEPS[2].keyFields[index].type;
                 const originalValue = JSON.parse(
                     JSON.stringify(STEPS[2].keyFields[index].value)
                 );
                 const originalTypeAttributes =
-                    JSON.stringify(STEPS[2].keyFields[index].typeAttributes) ||
-                    '{}';
+                    JSON.stringify(STEPS[2].keyFields[index].typeAttributes);
                 const typeAttributes = JSON.stringify(field.typeAttributes);
 
                 expect(field.value).toBe(originalValue);
