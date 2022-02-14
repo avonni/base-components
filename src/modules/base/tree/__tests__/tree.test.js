@@ -24,7 +24,7 @@ describe('Tree', () => {
         expect(element.actions).toEqual([]);
         expect(element.actionsWhenDisabled).toEqual([]);
         expect(element.allowInlineEdit).toBeFalsy();
-        expect(element.editFields).toEqual([
+        expect(element.editableFields).toEqual([
             'label',
             'metatext',
             'name',
@@ -109,9 +109,9 @@ describe('Tree', () => {
     });
 
     // edit-field
-    it('editFields', () => {
-        const editFields = ['metatext', 'href'];
-        element.editFields = editFields;
+    it('editableFields', () => {
+        const editableFields = ['metatext', 'href'];
+        element.editableFields = editableFields;
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -119,7 +119,7 @@ describe('Tree', () => {
                 '[data-element-id="avonni-primitive-tree-item"]'
             );
             items.forEach((item) =>
-                expect(item.editFields).toEqual(editFields)
+                expect(item.editableFields).toEqual(editableFields)
             );
         });
     });
