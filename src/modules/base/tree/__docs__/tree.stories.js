@@ -235,6 +235,5 @@ MultiSelect.args = {
     header: 'Multi Select Tree',
     isMultiSelect: true,
     sortable: true,
-    isLoading: true,
     selectedItems: ['node1-2-1', 'node1-1', 'node2', 'node1-1-1-2', 'node6']
 };

@@ -299,7 +299,10 @@ export default class Tree extends LightningElement {
      * @type {(object|undefined)}
      */
     get addAction() {
-        return this.actions.find((action) => action.name === 'add');
+        return (
+            !this.isLoading &&
+            this.actions.find((action) => action.name === 'add')
+        );
     }
 
     /**
