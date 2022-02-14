@@ -610,6 +610,54 @@ describe('List', () => {
         });
     });
 
+    // itemmousedown
+    it('List: Itemmousedown event', () => {
+        const handler = jest.fn();
+        element.addEventListener('itemmousedown', handler);
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
+
+            const event = new CustomEvent('mousedown');
+            event.button = 0;
+            items[2].dispatchEvent(event);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[2]
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    // itemmouseup
+    it('List: Itemmouseup event', () => {
+        const handler = jest.fn();
+        element.addEventListener('itemmouseup', handler);
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-main"]'
+            );
+
+            const event = new CustomEvent('mouseup');
+            event.button = 0;
+            items[1].dispatchEvent(event);
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
+                ITEMS[1]
+            );
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
     // reorder
     // Depends on items and sortable
     it('List: Reorder event, fired with keyboard', () => {
