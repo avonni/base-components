@@ -7,7 +7,7 @@ export const ACTIONS = [
         name: 'add',
         label: 'Add',
         iconName: 'utility:add',
-        alwaysVisible: true
+        visible: true
     },
     {
         name: 'custom',

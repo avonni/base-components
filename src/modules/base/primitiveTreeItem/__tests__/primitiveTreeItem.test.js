@@ -38,7 +38,7 @@ const ACTIONS = [
         label: 'Some action',
         name: 'edit',
         iconName: 'utility:apps',
-        alwaysVisible: true
+        visible: true
     },
     {
         label: 'Some other action',
@@ -52,7 +52,7 @@ const ACTIONS = [
     {
         label: 'Some fourth action',
         name: 'someFourthAction',
-        alwaysVisible: true,
+        visible: true,
         iconName: 'standard:user'
     }
 ];
@@ -487,7 +487,7 @@ describe('Primitive Tree Item', () => {
             {
                 label: 'Edit',
                 name: 'edit',
-                alwaysVisible: true,
+                visible: true,
                 iconName: 'utility:edit'
             }
         ];

@@ -811,7 +811,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         const buttonActions = [];
         const menuActions = [];
         this.visibleActions.forEach((action) => {
-            if (action.alwaysVisible) {
+            if (action.visible) {
                 buttonActions.push(action);
             } else {
                 menuActions.push(action);

@@ -1,9 +1,9 @@
 /**
  * @typedef {object} TreeAction
  * @name actions
- * @property {boolean} alwaysVisible If true, the action is always visible. If false, the action will be displayed in a button menu. Defaults to false.
- * @property {string} iconName Required if <code>alwaysVisible</code> is true. The Lightning Design System name of the action icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
- * @property {string} label Required. Label of the action. If <code>alwaysVisible</code> is true, the label will be used as alternative text.
+ * @property {boolean} visible If true, the action is always visible. If false, the action will be displayed in a button menu. Defaults to false.
+ * @property {string} iconName Required if <code>visible</code> is true. The Lightning Design System name of the action icon. Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {string} label Required. Label of the action. If <code>visible</code> is true, the label will be used as alternative text.
  * @property {string} name Required. Unique name of the action.
  * Reserved action names are: <code>edit</code>, <code>add</code>, <code>duplicate</code> and <code>delete</code>. If a reserved action name is used, the standard action will be executed on top of the dispatch of the <code>actionclick</code> event. To prevent the default behavior of a reserved action, <code>preventDefault()</code> can be called on the <code>actionclick</code> event.
  */

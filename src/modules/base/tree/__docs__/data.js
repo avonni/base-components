@@ -3,12 +3,12 @@ export const ACTIONS = [
         name: 'edit',
         label: 'Edit',
         iconName: 'utility:edit',
-        alwaysVisible: true
+        visible: true
     },
     {
         name: 'add',
         label: 'Add',
-        alwaysVisible: true,
+        visible: true,
         iconName: 'utility:add'
     },
     {
@@ -30,13 +30,13 @@ export const ACTIONS_WHEN_DISABLED = [
         name: 'edit',
         label: 'Edit',
         iconName: 'utility:edit',
-        alwaysVisible: true
+        visible: true
     },
     {
         name: 'delete',
         label: 'Delete',
         iconName: 'utility:delete',
-        alwaysVisible: true
+        visible: true
     },
     {
         name: 'enable',
