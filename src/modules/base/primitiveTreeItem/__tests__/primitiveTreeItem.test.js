@@ -138,7 +138,7 @@ describe('Primitive Tree Item', () => {
         expect(element.avatar).toBeUndefined();
         expect(element.childItems).toEqual([]);
         expect(element.disabled).toBeFalsy();
-        expect(element.editFields).toEqual([
+        expect(element.editableFields).toEqual([
             'label',
             'metatext',
             'name',
@@ -481,8 +481,8 @@ describe('Primitive Tree Item', () => {
 
     // edit-fields
     // Depends on actions
-    it('editFields', () => {
-        element.editFields = ['disabled', 'label'];
+    it('editableFields', () => {
+        element.editableFields = ['disabled', 'label'];
         element.actions = [
             {
                 label: 'Edit',

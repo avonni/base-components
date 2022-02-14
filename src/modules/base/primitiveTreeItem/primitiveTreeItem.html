@@ -275,7 +275,7 @@
                 data-element-id="div-popover-body"
             >
                 <!-- Edit inputs -->
-                <template for:each={computedEditFields} for:item="field">
+                <template for:each={computedEditableFields} for:item="field">
                     <lightning-input
                         key={field.name}
                         class="slds-m-bottom_x-small"
@@ -339,6 +339,7 @@
                     avatar={item.avatar}
                     child-items={item.children}
                     disabled={item.disabled}
+                    editable-fields={editableFields}
                     expanded={item.expanded}
                     fields={item.fields}
                     href={item.href}

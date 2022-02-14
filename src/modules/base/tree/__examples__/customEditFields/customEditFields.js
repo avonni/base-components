@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class TreeCustomEditFields extends LightningElement {
+export default class TreeCustomEditableFields extends LightningElement {
     actions = [
         {
             name: 'edit',
@@ -8,7 +8,7 @@ export default class TreeCustomEditFields extends LightningElement {
         }
     ];
 
-    editFields = ['label', 'metatext'];
+    editableFields = ['label', 'metatext'];
 
     items = [
         {

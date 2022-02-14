@@ -78,7 +78,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _avatar;
     _childItems = [];
     _disabled = false;
-    _editFields = DEFAULT_EDIT_FIELDS;
+    _editableFields = DEFAULT_EDIT_FIELDS;
     _fields = [];
     _href;
     _expanded = false;
@@ -248,11 +248,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      */
     @api
-    get editFields() {
-        return this._editFields;
+    get editableFields() {
+        return this._editableFields;
     }
-    set editFields(value) {
-        this._editFields = normalizeArray(value);
+    set editableFields(value) {
+        this._editableFields = normalizeArray(value);
         if (this.popoverVisible) this.togglePopoverVisibility();
     }
 
@@ -463,8 +463,8 @@ export default class PrimitiveTreeItem extends LightningElement {
      *
      * @type {object[]}
      */
-    get computedEditFields() {
-        return this.editFields.map((field) => {
+    get computedEditableFields() {
+        return this.editableFields.map((field) => {
             return {
                 checked: this.draftValues[field],
                 label: this.camelCaseToStartCase(field),
@@ -830,7 +830,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         } else {
             this.labelIsEdited = false;
             this._focusOn = 'lightning-button-icon-close';
-            this.editFields.forEach((field) => {
+            this.editableFields.forEach((field) => {
                 this.draftValues[field] = this[field];
             });
         }

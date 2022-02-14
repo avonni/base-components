@@ -74,15 +74,15 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        editFields: {
-            name: 'edit-fields',
+        editableFields: {
+            name: 'editable-fields',
             control: {
                 type: 'object'
             },
             description:
                 'Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard edit action.',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'string[]' }
             }
         },
         header: {
@@ -162,7 +162,7 @@ export default {
     },
     args: {
         allowInlineEdit: false,
-        editFields: [
+        editableFields: [
             'label',
             'metatext',
             'name',
@@ -202,8 +202,8 @@ Sortable.args = {
     sortable: true
 };
 
-export const CustomEditFields = Template.bind({});
-CustomEditFields.args = {
+export const CustomEditableFields = Template.bind({});
+CustomEditableFields.args = {
     actions: [
         {
             name: 'edit',
@@ -212,7 +212,7 @@ CustomEditFields.args = {
     ],
     items: ITEMS,
     header: 'Tree With Custom Edit Fields',
-    editFields: ['label', 'metatext']
+    editableFields: ['label', 'metatext']
 };
 
 export const InlineEditing = Template.bind({});

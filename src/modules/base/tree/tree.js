@@ -41,7 +41,7 @@ import {
 } from 'c/utilsPrivate';
 
 const DEFAULT_ACTION_NAMES = ['add', 'edit', 'delete', 'duplicate'];
-const DEFAULT_EDIT_FIELDS = [
+const DEFAULT_EDITABLE_FIELDS = [
     'label',
     'metatext',
     'name',
@@ -72,7 +72,7 @@ export default class Tree extends LightningElement {
     _actions = [];
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
-    _editFields = DEFAULT_EDIT_FIELDS;
+    _editableFields = DEFAULT_EDITABLE_FIELDS;
     _isLoading = false;
     _isMultiSelect = false;
     @track _items = [];
@@ -169,12 +169,12 @@ export default class Tree extends LightningElement {
      * @public
      */
     @api
-    get editFields() {
-        return this._editFields;
+    get editableFields() {
+        return this._editableFields;
     }
 
-    set editFields(value) {
-        this._editFields = normalizeArray(value);
+    set editableFields(value) {
+        this._editableFields = normalizeArray(value);
     }
 
     /**
