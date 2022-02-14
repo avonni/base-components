@@ -454,9 +454,10 @@ export default class DualListbox extends LightningElement {
     }
 
     set maxVisibleOptions(value) {
-        const number =
-            typeof value === 'number' ? value : DEFAULT_MAX_VISIBLE_OPTIONS;
-        this._maxVisibleOptions = parseInt(number, 10);
+        const number = isNaN(parseInt(value, 10))
+            ? DEFAULT_MAX_VISIBLE_OPTIONS
+            : value;
+        this._maxVisibleOptions = number;
 
         if (this._connected) {
             this.updateBoxesHeight();
@@ -475,8 +476,8 @@ export default class DualListbox extends LightningElement {
     }
 
     set max(value) {
-        const number = typeof value === 'number' ? value : '';
-        this._max = parseInt(number, 10);
+        const number = isNaN(parseInt(value, 10)) ? '' : value;
+        this._max = number;
     }
 
     /**
@@ -491,8 +492,8 @@ export default class DualListbox extends LightningElement {
     }
 
     set min(value) {
-        const number = typeof value === 'number' ? value : DEFAULT_MIN;
-        this._min = parseInt(number, 10);
+        const number = isNaN(parseInt(value, 10)) ? DEFAULT_MIN : value;
+        this._min = number;
     }
 
     /**
