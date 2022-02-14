@@ -652,6 +652,16 @@ export default class PrimitiveTreeItem extends LightningElement {
 
         if (this.showCheckbox) {
             this.ariaSelected = this.selected ? 'true' : 'false';
+
+            // Force the children update
+            const items = this.template.querySelectorAll(
+                '[data-element-id="avonni-primitive-tree-item"]'
+            );
+            if (this.childItems.length === items.length) {
+                items.forEach((item, index) => {
+                    item.selected = this.childItems[index].selected;
+                });
+            }
         }
         this.updateCheckboxStatus();
     }
