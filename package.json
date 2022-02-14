@@ -1,7 +1,7 @@
 {
     "name": "@avonni/base-components",
     "description": "Base components",
-    "version": "1.0.1",
+    "version": "1.1.0",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
