@@ -446,13 +446,7 @@ export default class Tree extends LightningElement {
             this.dispatchSelect();
         }
 
-        // Force the children update
-        const children = this.template.querySelectorAll(
-            '[data-element-id="avonni-primitive-tree-item"]'
-        );
-        children.forEach((child, index) => {
-            child.selected = this.children[index].selected;
-        });
+        this.forceChildrenSelectionUpdate();
     }
 
     /**
@@ -564,6 +558,20 @@ export default class Tree extends LightningElement {
         if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = true;
             this.dispatchChange(node.name, 'expand');
+        }
+    }
+
+    /**
+     * Force the update of the children "selected" attribute. This manual reassignment is necessary because the @track decorator will not track changes made to the nested objects.
+     */
+    forceChildrenSelectionUpdate() {
+        const children = this.template.querySelectorAll(
+            '[data-element-id="avonni-primitive-tree-item"]'
+        );
+        if (children.length === this.children.length) {
+            children.forEach((child, index) => {
+                child.selected = this.children[index].selected;
+            });
         }
     }
 
@@ -855,9 +863,16 @@ export default class Tree extends LightningElement {
             if (isSelected !== parent.treeNode.selected) {
                 parent.treeNode.selected = isSelected;
                 this.callbackMap[parent.key].setSelected(isSelected);
-                if (!this.selectedItems.includes(parent.treeNode.name)) {
+
+                const selectedItemIndex = this.selectedItems.indexOf(
+                    parent.treeNode.name
+                );
+                if (isSelected && selectedItemIndex < 0) {
                     this.selectedItems.push(parent.treeNode.name);
+                } else if (!isSelected && selectedItemIndex >= 0) {
+                    this.selectedItems.splice(selectedItemIndex, 1);
                 }
+
                 this.updateParentsSelection(parent);
             }
         }
@@ -962,6 +977,7 @@ export default class Tree extends LightningElement {
                     }
 
                     this.updateParentsSelection(item);
+                    this.forceChildrenSelectionUpdate();
                     this.dispatchSelect(event);
                 } else {
                     this.setFocusToItem(item);
