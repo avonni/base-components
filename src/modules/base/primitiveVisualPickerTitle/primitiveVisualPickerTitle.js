@@ -50,7 +50,7 @@ export default class PrimitiveVisualPickerTitle extends LightningElement {
     /**
      * An object with item fields to be rendered as an avatar.
      *
-     * @type {object{}}
+     * @type {object}
      */
     @api avatar;
     /**

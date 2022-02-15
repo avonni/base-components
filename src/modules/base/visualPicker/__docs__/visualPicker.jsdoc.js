@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} VisualPickerItem
  * @name items
- * @property {object{}} avatar An object with item fields to be rendered as an avatar.
+ * @property {object} avatar An object with item fields to be rendered as an avatar.
  * @property {string} avatarPosition If present, sets the position of the avatar. Valid values include top, bottom, right, left. The value defaults to left.
  * @property {string} description The description can include text, and is displayed under the title inside the figure.
  * @property {string} descriptionPosition The position of the title in the figure. Valid positions include top, bottom and center. The value defaults to center.
