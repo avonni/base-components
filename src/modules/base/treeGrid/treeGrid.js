@@ -1,91 +1,42 @@
-import { LightningElement, api, track } from 'lwc';
+import { LightningElement, api } from 'lwc';
 import { normalizeColumns, normalizeData } from './normalizer';
-import { arraysEqual } from 'c/utilsPrivate';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    arraysEqual,
+    normalizeAriaAttribute
+} from 'c/utilsPrivate';
+
+const DEFAULT_MAX_WIDTH = 1000;
+const DEFAULT_MIN_WIDTH = 50;
+const DEFAULT_ROW_NUMBER_OFFSET = 0;
 
 /**
  * Displays a hierarchical view of data in a table.
  */
 export default class LightningTreeGrid extends LightningElement {
+    _ariaLabel;
+    _columns;
+    _data;
+    _expandedRows = [];
+    _hideCheckboxColumn = false;
+    _isLoading = false;
+    _keyField;
+    _maxColumnWidth = DEFAULT_MAX_WIDTH;
+    _minColumnWidth = DEFAULT_MIN_WIDTH;
+    _resizeColumnDisabled = false;
+    _rowNumberOffset = DEFAULT_ROW_NUMBER_OFFSET;
+    _selectedRows = [];
+    _showRowNumberColumn = false;
+
     // raw values passed in
     _rawColumns;
     _rawData;
-    _keyField;
+
+    // toggle all rows
+    _toggleAllRecursionCounter = 1;
 
     _publicExpandedRows = [];
-    _ariaLabel;
-
-    /**
-     * If present, the checkbox column for row selection is hidden.
-     * @type {boolean}
-     * @default false
-     */
-    @api hideCheckboxColumn = false;
-
-    /**
-     * If present, a spinner is displayed to indicate that more data is being loaded.
-     * @type {boolean}
-     * @default false
-     */
-    @api isLoading = false;
-
-    /**
-     * Required for better performance. Associates each row with a unique ID.
-     * @type {string}
-     */
-    @api
-    get keyField() {
-        return this._keyField;
-    }
-
-    set keyField(value) {
-        this._keyField = value;
-        this.flattenData();
-    }
-
-    /**
-     * The maximum width for all columns. The default is 1000px.
-     * @type {number}
-     * @default 1000
-     */
-    @api maxColumnWidth = 1000;
-
-    /**
-     * The minimum width for all columns. The default is 50px.
-     * @type {number}
-     * @default 50
-     */
-    @api minColumnWidth = 50;
-
-    /**
-     * If present, column resizing is disabled.
-     * @type {boolean}
-     * @default false
-     */
-    @api resizeColumnDisabled = false;
-
-    /**
-     * Determines where to start counting the row number. The default is 0.
-     * @type {number}
-     * @default 0
-     */
-    @api rowNumberOffset = 0;
-
-    /**
-     * The array of unique row IDs that are selected.
-     * @type {array}
-     */
-    @api selectedRows = [];
-
-    /**
-     * If present, the row number column are shown in the first column.
-     * @type {boolean}
-     * @default false
-     */
-    @api showRowNumberColumn = false;
-
-    @track _columns;
-    @track _data;
-    @track _expandedRows = [];
 
     constructor() {
         super();
@@ -99,9 +50,17 @@ export default class LightningTreeGrid extends LightningElement {
         ); // event received by the tree column header
     }
 
-    set columns(value) {
-        this._rawColumns = value;
-        this._columns = normalizeColumns(value);
+    /**
+     * Pass through for aria-label on lightning-datatable
+     * @type {string}
+     * @default ''
+     */
+    @api
+    get ariaLabel() {
+        return this._ariaLabel;
+    }
+    set ariaLabel(value) {
+        this._ariaLabel = normalizeAriaAttribute(value);
     }
 
     /**
@@ -115,9 +74,9 @@ export default class LightningTreeGrid extends LightningElement {
         return this._rawColumns;
     }
 
-    set data(value) {
-        this._rawData = value;
-        this.flattenData();
+    set columns(value) {
+        this._rawColumns = value;
+        this._columns = normalizeColumns(value);
     }
 
     /**
@@ -128,6 +87,11 @@ export default class LightningTreeGrid extends LightningElement {
     // eslint-disable-next-line @lwc/lwc/valid-api
     get data() {
         return this._rawData;
+    }
+
+    set data(value) {
+        this._rawData = value;
+        this.flattenData();
     }
 
     /**
@@ -151,6 +115,136 @@ export default class LightningTreeGrid extends LightningElement {
         this.flattenData();
     }
 
+    /**
+     * If present, the checkbox column for row selection is hidden.
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideCheckboxColumn() {
+        return this._hideCheckboxColumn;
+    }
+
+    set hideCheckboxColumn(value) {
+        this._hideCheckboxColumn = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, a spinner is displayed to indicate that more data is being loaded.
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * Required for better performance. Associates each row with a unique ID.
+     * @type {string}
+     */
+    @api
+    get keyField() {
+        return this._keyField;
+    }
+
+    set keyField(value) {
+        this._keyField = value;
+        this.flattenData();
+    }
+
+    /**
+     * The maximum width for all columns. The default is 1000px.
+     * @type {number}
+     * @default 1000
+     */
+    @api
+    get maxColumnWidth() {
+        return this._maxColumnWidth;
+    }
+
+    set maxColumnWidth(value) {
+        const number = isNaN(parseInt(value, 10)) ? DEFAULT_MAX_WIDTH : value;
+        this._maxColumnWidth = number;
+    }
+
+    /**
+     * The minimum width for all columns. The default is 50px.
+     * @type {number}
+     * @default 50
+     */
+    @api
+    get minColumnWidth() {
+        return this._minColumnWidth;
+    }
+
+    set minColumnWidth(value) {
+        const number = isNaN(parseInt(value, 10)) ? DEFAULT_MIN_WIDTH : value;
+        this._minColumnWidth = number;
+    }
+
+    /**
+     * If present, column resizing is disabled.
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get resizeColumnDisabled() {
+        return this._resizeColumnDisabled;
+    }
+
+    set resizeColumnDisabled(value) {
+        this._resizeColumnDisabled = normalizeBoolean(value);
+    }
+
+    /**
+     * Determines where to start counting the row number. The default is 0.
+     * @type {number}
+     * @default 0
+     */
+    @api
+    get rowNumberOffset() {
+        return this._rowNumberOffset;
+    }
+
+    set rowNumberOffset(value) {
+        const number = isNaN(parseInt(value, 10))
+            ? DEFAULT_ROW_NUMBER_OFFSET
+            : value;
+        this._rowNumberOffset = number;
+    }
+
+    /**
+     * The array of unique row IDs that are selected.
+     * @type {array}
+     */
+    @api
+    get selectedRows() {
+        return this._selectedRows;
+    }
+
+    set selectedRows(value) {
+        this._selectedRows = normalizeArray(value);
+    }
+
+    /**
+     * If present, the row number column are shown in the first column.
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get showRowNumberColumn() {
+        return this._showRowNumberColumn;
+    }
+
+    set showRowNumberColumn(value) {
+        this._showRowNumberColumn = normalizeBoolean(value);
+    }
+
     get normalizedColumns() {
         return this._columns;
     }
@@ -164,17 +258,21 @@ export default class LightningTreeGrid extends LightningElement {
     /**
      * Returns data in each selected row.
      * @returns {array} An array of data in each selected row.
+     *
+     * @public
      */
     @api
     getSelectedRows() {
         return this.template
-            .querySelector('lightning-datatable')
+            .querySelector('avonni-datatable')
             .getSelectedRows();
     }
 
     /**
      * Returns an array of rows that are expanded.
      * @returns {array} The IDs for all rows that are marked as expanded
+     *
+     * @public
      */
     @api
     getCurrentExpandedRows() {
@@ -183,6 +281,8 @@ export default class LightningTreeGrid extends LightningElement {
 
     /**
      * Expand all rows with children content
+     *
+     * @public
      */
     @api
     expandAll() {
@@ -191,23 +291,12 @@ export default class LightningTreeGrid extends LightningElement {
 
     /**
      * Collapse all rows
+     *
+     * @public
      */
     @api
     collapseAll() {
         this.toggleAllRows(this.data, false);
-    }
-
-    /**
-     * Pass through for aria-label on lightning-datatable
-     * @type {string}
-     * @default ''
-     */
-    @api
-    get ariaLabel() {
-        return this._ariaLabel;
-    }
-    set ariaLabel(value) {
-        this._ariaLabel = value;
     }
 
     // Event handlers
@@ -248,6 +337,17 @@ export default class LightningTreeGrid extends LightningElement {
 
     // fires when a row is toggled and its expanded state changes
     fireRowToggleChange(name, isExpanded, hasChildrenContent, row) {
+        /**
+         * The event fired when a row is expanded or collapsed.
+         *
+         * @event
+         * @name toggle
+         * @param {string} name The unique ID for the row that's toggled.
+         * @param {boolean} isExpanded Specifies whether the row is expanded or not.
+         * @param {boolean} hasChildrenContent Specifies whether any data is available for the nested items of this row. When value is false, _children is null, undefined, or an empty array. When value is true, _children has a non-empty array.
+         * @param {object} row The toggled row data.
+         * @public
+         */
         const event = new CustomEvent('toggle', {
             detail: { name, isExpanded, hasChildrenContent, row }
         });
@@ -256,6 +356,14 @@ export default class LightningTreeGrid extends LightningElement {
 
     // fires when all rows are toggled
     fireToggleAllChange(isExpanded) {
+        /**
+         * The event fired when all rows are expanded or collapsed.
+         *
+         * @event
+         * @name toggleall
+         * @param {boolean} isExpanded Specifies whether the row is expanded or not.
+         * @public
+         */
         const event = new CustomEvent('toggleall', {
             detail: { isExpanded }
         });
@@ -263,6 +371,13 @@ export default class LightningTreeGrid extends LightningElement {
     }
 
     fireSelectedRowsChange(eventDetails) {
+        /**
+         * The event fired when a row is selected.
+         *
+         * @event
+         * @name rowselection
+         * @public
+         */
         const event = new CustomEvent('rowselection', {
             detail: eventDetails
         });
@@ -271,6 +386,13 @@ export default class LightningTreeGrid extends LightningElement {
     }
 
     fireHeaderAction(eventDetails) {
+        /**
+         * The event fired when a header-level action is run.
+         *
+         * @event
+         * @name headeraction
+         * @public
+         */
         const event = new CustomEvent('headeraction', {
             detail: eventDetails
         });
@@ -279,6 +401,13 @@ export default class LightningTreeGrid extends LightningElement {
     }
 
     fireRowAction(eventDetails) {
+        /**
+         * The event fired when a row-level action is run.
+         *
+         * @event
+         * @name rowaction
+         * @public
+         */
         const event = new CustomEvent('rowaction', {
             detail: eventDetails
         });
@@ -287,8 +416,6 @@ export default class LightningTreeGrid extends LightningElement {
     }
 
     // Utility methods
-
-    //
     flattenData() {
         // only flatten data if we have a key field defined
         if (this.keyField) {
@@ -360,9 +487,6 @@ export default class LightningTreeGrid extends LightningElement {
         // update the data
         this.flattenData();
     }
-
-    // toggle all rows
-    _toggleAllRecursionCounter = 1;
 
     /**
      * Toggle all rows, update flattened data, and fire the `toggleall` event
