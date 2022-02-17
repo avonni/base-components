@@ -124,6 +124,7 @@ export default class PrimitiveTreeItem extends LightningElement {
                 bubbles: true,
                 detail: {
                     bounds: this.getBounds,
+                    closePopover: this.closePopover,
                     focus: this.focusChild,
                     removeBorder: this.removeBorder,
                     setBorder: this.setBorder,
@@ -627,6 +628,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         const result = string.replace(/([A-Z])/g, ' $1');
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
+
+    closePopover = () => {
+        if (this.popoverVisible) {
+            this.togglePopoverVisibility();
+        }
+    };
 
     /**
      * Compute the selection state of the item, depending on the selection state of its children.

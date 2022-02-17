@@ -84,6 +84,7 @@ export default class Tree extends LightningElement {
     @track children = [];
     treedata = new TreeData();
     _dragState;
+    _editedItemKey;
     _focusedItem;
     _mouseDownTimeout;
     _mouseOverItemTimeout;
@@ -522,6 +523,10 @@ export default class Tree extends LightningElement {
                 break;
             }
             case 'edit': {
+                if (this._editedItemKey) {
+                    this.callbackMap[this._editedItemKey].closePopover();
+                }
+                this._editedItemKey = key;
                 return;
             }
             case 'delete': {
@@ -1205,6 +1210,7 @@ export default class Tree extends LightningElement {
         event.stopPropagation();
         const {
             bounds,
+            closePopover,
             key,
             focus,
             removeBorder,
@@ -1215,6 +1221,7 @@ export default class Tree extends LightningElement {
 
         this.callbackMap[key] = {
             bounds,
+            closePopover,
             focus,
             removeBorder,
             setBorder,
