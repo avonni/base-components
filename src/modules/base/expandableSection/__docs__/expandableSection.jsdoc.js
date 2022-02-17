@@ -8,7 +8,6 @@
  * @name default
  */
 
-
 /**
  * @namespace stylingHooks
  */
@@ -95,4 +94,14 @@
  * @name --avonni-expandable-section-shaded-header-spacing-block-end
  * @default 0.75rem
  * @type spacing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-icon-color-foreground-default
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-icon-color-foreground-default
+ * @type color
  */

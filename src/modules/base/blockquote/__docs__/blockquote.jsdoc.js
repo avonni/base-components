@@ -69,6 +69,11 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-blockquote-icon-radius-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-blockquote-default-color-background
  * @default #fafaf9
  * @type color
