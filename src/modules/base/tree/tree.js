@@ -919,8 +919,10 @@ export default class Tree extends LightningElement {
         if (
             actionClickEvent.defaultPrevented ||
             !DEFAULT_ACTION_NAMES.includes(action)
-        )
+        ) {
+            event.preventDefault();
             return;
+        }
 
         this.executeStandardAction(action, item);
     }
