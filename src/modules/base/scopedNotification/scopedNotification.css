@@ -46,7 +46,7 @@
         --avonni-scoped-notification-base-icon-color-foreground-default
     );
     --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-base-icon-radius-border
+        --avonni-scoped-notification-icon-radius-border
     );
 }
 
@@ -66,7 +66,7 @@
         --avonni-scoped-notification-dark-icon-color-foreground-default
     );
     --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-dark-icon-radius-border
+        --avonni-scoped-notification-icon-radius-border
     );
 }
 
@@ -86,7 +86,7 @@
         --avonni-scoped-notification-error-icon-color-foreground-default
     );
     --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-error-icon-radius-border
+        --avonni-scoped-notification-icon-radius-border
     );
 }
 
@@ -106,7 +106,7 @@
         --avonni-scoped-notification-success-icon-color-foreground-default
     );
     --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-success-icon-radius-border
+        --avonni-scoped-notification-icon-radius-border
     );
 }
 
@@ -126,6 +126,6 @@
         --avonni-scoped-notification-warning-icon-color-foreground-default
     );
     --sds-c-icon-radius-border: var(
-        --avonni-scoped-notification-warning-icon-radius-border
+        --avonni-scoped-notification-icon-radius-border
     );
 }

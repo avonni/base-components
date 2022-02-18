@@ -37,26 +37,11 @@
 
 /* this works for `record home vertical` and `mobile record home vertical` */
 .slds-page-header_vertical {
-    --sds-c-icon-radius-border: var(
-        --avonni-page-header-icon-color-radius-border
-    );
+    --sds-c-icon-radius-border: var(--avonni-page-header-icon-radius-border);
     --sds-c-icon-color-background: var(
         --avonni-page-header-record-home-vertical-icon-color-background
     );
     --sds-c-icon-color-foreground: var(
         --avonni-page-header-record-home-vertical-icon-color-foreground
     );
-}
-
-:host {
-    --avonni-page-header-icon-color-radius-border: 0px;
-    --avonni-page-header-record-home-vertical-icon-color-background: blue;
-    --avonni-page-header-record-home-vertical-icon-color-foreground: orange;
-    /* test 
-    utility:ad_set 
-    standard:avatar 
-    custom:custom3
-    action:add_photo_video
-    doctype:csv
-    */
 }

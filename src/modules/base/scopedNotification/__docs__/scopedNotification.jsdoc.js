@@ -45,11 +45,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-scoped-notification-base-icon-radius-border
- * @type sizing
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-scoped-notification-dark-color-background
  * @default #706e6b
  * @type color
@@ -74,11 +69,6 @@
  * @memberof stylingHooks
  * @name --avonni-scoped-notification-dark-icon-color-foreground-default
  * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-scoped-notification-dark-icon-radius-border
- * @type sizing
  */
 /**
  * @memberof stylingHooks
@@ -109,11 +99,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-scoped-notification-error-icon-radius-border
- * @type sizing
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-scoped-notification-success-color-background
  * @default #2e844a
  * @type color
@@ -138,11 +123,6 @@
  * @memberof stylingHooks
  * @name --avonni-scoped-notification-success-icon-color-foreground-default
  * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-scoped-notification-success-icon-radius-border
- * @type sizing
  */
 /**
  * @memberof stylingHooks
@@ -173,6 +153,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-scoped-notification-warning-icon-radius-border
+ * @name --avonni-scoped-notification-icon-radius-border
  * @type sizing
  */

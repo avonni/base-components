@@ -63,7 +63,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-page-header-icon-color-radius-border
+ * @name --avonni-page-header-icon-radius-border
  * @type sizing
  */
 /**
