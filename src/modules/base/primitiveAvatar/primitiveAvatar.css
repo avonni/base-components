@@ -366,7 +366,3 @@
         --avonni-avatar-fallback-icon-color-foreground-default
     );
 }
-
-:host {
-    --avonni-avatar-fallback-icon-color-background: green;
-}
