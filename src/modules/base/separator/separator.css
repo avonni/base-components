@@ -54,6 +54,9 @@
 }
 
 .avonni-separator__icon {
+    --sds-c-icon-radius-border: var(
+        --avonni-separator-icon-color-radius-border
+    );
     --sds-c-icon-color-foreground: var(
         --avonni-separator-icon-color-foreground
     );
@@ -63,4 +66,11 @@
     --sds-c-icon-color-background: var(
         --avonni-separator-icon-color-background
     );
+}
+
+:host {
+    --avonni-separator-icon-color-radius-border: 0px;
+    --avonni-separator-icon-color-background: blue;
+    --avonni-separator-icon-color-foreground: pink;
+    --avonni-separator-icon-color-foreground-default: yellow;
 }
