@@ -326,6 +326,7 @@ describe('Tree', () => {
             );
             const event = new CustomEvent('privateactionclick', {
                 detail: {
+                    bounds: { x: 3, y: 3 },
                     name: 'custom',
                     key: '2'
                 },
@@ -334,13 +335,57 @@ describe('Tree', () => {
             items[1].dispatchEvent(event);
 
             expect(handler).toHaveBeenCalledTimes(1);
-            expect(handler.mock.calls[0][0].detail.name).toBe('custom');
-            expect(handler.mock.calls[0][0].detail.targetName).toBe(
-                ITEMS[1].name
-            );
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.bounds).toEqual({ x: 3, y: 3 });
+            expect(detail.levelPath).toEqual([1]);
+            expect(detail.name).toBe('custom');
+            expect(detail.targetName).toBe(ITEMS[1].name);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('actionclick event, close edit popover if a standard action is clicked', () => {
+        element.items = ITEMS;
+        element.actions = ACTIONS;
+        const fakeRegisters = generateFakeRegisters();
+
+        return Promise.resolve().then(() => {
+            // Register the items, including the nested ones
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-tree-item"]'
+            );
+            Object.values(fakeRegisters).forEach((register) => {
+                items[0].dispatchEvent(
+                    new CustomEvent('privateregisteritem', {
+                        bubbles: true,
+                        detail: register
+                    })
+                );
+            });
+
+            items[1].dispatchEvent(
+                new CustomEvent('privateactionclick', {
+                    detail: {
+                        name: 'edit',
+                        key: '2'
+                    },
+                    bubbles: true
+                })
+            );
+            items[2].dispatchEvent(
+                new CustomEvent('privateactionclick', {
+                    detail: {
+                        name: 'add',
+                        key: '3'
+                    },
+                    bubbles: true
+                })
+            );
+            expect(
+                fakeRegisters[ITEMS[1].name].closePopover
+            ).toHaveBeenCalled();
         });
     });
 
@@ -394,6 +439,7 @@ describe('Tree', () => {
 
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('expand');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([2]);
             expect(handler.mock.calls[0][0].detail.name).toBe('regular');
             expect(handler.mock.calls[0][0].detail.items[2]).toMatchObject(
                 item
@@ -437,6 +483,7 @@ describe('Tree', () => {
 
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('expand');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([2]);
             expect(handler.mock.calls[0][0].detail.name).toBe('regular');
             expect(handler.mock.calls[0][0].detail.items[2]).toMatchObject(
                 item
@@ -481,6 +528,7 @@ describe('Tree', () => {
 
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('add');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([3]);
             expect(handler.mock.calls[0][0].detail.name).toBe('simple');
             expect(handler.mock.calls[0][0].detail.items[3]).toMatchObject(
                 item
@@ -507,6 +555,9 @@ describe('Tree', () => {
 
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('add');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([
+                ITEMS.length - 1
+            ]);
             expect(handler.mock.calls[0][0].detail.name).toBeNull();
             expect(handler.mock.calls[0][0].detail.items).toHaveLength(5);
             expect(handler.mock.calls[0][0].detail.items[4]).toMatchObject({
@@ -539,6 +590,7 @@ describe('Tree', () => {
 
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('delete');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([3]);
             expect(handler.mock.calls[0][0].detail.name).toBe('simple');
             expect(handler.mock.calls[0][0].detail.items).toHaveLength(3);
             expect(
@@ -568,6 +620,7 @@ describe('Tree', () => {
 
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('duplicate');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([3]);
             expect(handler.mock.calls[0][0].detail.name).not.toBe(
                 ITEMS[3].name
             );
@@ -621,6 +674,7 @@ describe('Tree', () => {
 
             expect(handler).toHaveBeenCalledTimes(1);
             expect(handler.mock.calls[0][0].detail.action).toBe('edit');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([0]);
             expect(handler.mock.calls[0][0].detail.name).toBe('new name');
             expect(handler.mock.calls[0][0].detail.items[0]).toMatchObject(
                 item
@@ -712,6 +766,7 @@ describe('Tree', () => {
             );
             expect(handler).toHaveBeenCalledTimes(2);
             expect(handler.mock.calls[1][0].detail.action).toBe('move');
+            expect(handler.mock.calls[1][0].detail.levelPath).toEqual([1]);
             expect(handler.mock.calls[1][0].detail.name).toBe(ITEMS[1].name);
             expect(
                 handler.mock.calls[1][0].detail.previousName
@@ -788,6 +843,7 @@ describe('Tree', () => {
             );
             expect(handler).toHaveBeenCalledTimes(2);
             expect(handler.mock.calls[1][0].detail.action).toBe('move');
+            expect(handler.mock.calls[1][0].detail.levelPath).toEqual([1]);
             expect(handler.mock.calls[1][0].detail.name).toBe(ITEMS[1].name);
             expect(
                 handler.mock.calls[1][0].detail.previousName
@@ -867,6 +923,7 @@ describe('Tree', () => {
             );
             expect(handler).toHaveBeenCalledTimes(3);
             expect(handler.mock.calls[2][0].detail.action).toBe('move');
+            expect(handler.mock.calls[2][0].detail.levelPath).toEqual([1]);
             expect(handler.mock.calls[2][0].detail.name).toBe(ITEMS[1].name);
             expect(
                 handler.mock.calls[2][0].detail.previousName
@@ -966,6 +1023,7 @@ describe('Tree', () => {
             expect(handler).toHaveBeenCalledTimes(1);
             const detail = handler.mock.calls[0][0].detail;
             expect(detail.action).toBe('move');
+            expect(detail.levelPath).toEqual([3]);
             expect(detail.name).toBe(ITEMS[3].name);
             expect(detail.previousName).toBeUndefined();
             expect(detail.items).toHaveLength(3);
@@ -1156,6 +1214,7 @@ describe('Tree', () => {
             items[1].dispatchEvent(
                 new CustomEvent('privateitemclick', {
                     detail: {
+                        bounds: { x: 5, y: 12 },
                         target: 'anchor',
                         key: '2'
                     },
@@ -1167,6 +1226,11 @@ describe('Tree', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+            expect(handler.mock.calls[0][0].detail.bounds).toEqual({
+                x: 5,
+                y: 12
+            });
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([1]);
             expect(handler.mock.calls[0][0].detail.selectedItems).toEqual([
                 'loading'
             ]);
@@ -1206,14 +1270,22 @@ describe('Tree', () => {
                 new CustomEvent('privateitemclick', {
                     detail: {
                         target: 'anchor',
-                        key: '3.1.2'
+                        key: '3.1.2',
+                        bounds: { x: 5, y: 12 }
                     },
                     bubbles: true
                 })
             );
 
             expect(handler).toHaveBeenCalledTimes(2);
-            expect(handler.mock.calls[0][0].detail.selectedItems).toEqual([
+            expect(handler.mock.calls[1][0].detail.bounds).toEqual({
+                x: 5,
+                y: 12
+            });
+            expect(handler.mock.calls[1][0].detail.levelPath).toEqual([
+                2, 0, 1
+            ]);
+            expect(handler.mock.calls[1][0].detail.selectedItems).toEqual([
                 'thirdLevel',
                 'secondLevel',
                 'secondLevel3',

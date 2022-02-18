@@ -108,6 +108,7 @@ const makeRegister = (item, key, fakeRegisters, y) => {
             bottom: 10 * y + 10,
             height: 10
         }),
+        closePopover: jest.fn(),
         focus: jest.fn(),
         removeBorder: jest.fn(),
         setBorder: jest.fn(),

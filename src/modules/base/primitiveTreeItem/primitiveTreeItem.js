@@ -124,6 +124,7 @@ export default class PrimitiveTreeItem extends LightningElement {
                 bubbles: true,
                 detail: {
                     bounds: this.getBounds,
+                    closePopover: this.closePopover,
                     focus: this.focusChild,
                     removeBorder: this.removeBorder,
                     setBorder: this.setBorder,
@@ -628,6 +629,12 @@ export default class PrimitiveTreeItem extends LightningElement {
         return result.charAt(0).toUpperCase() + result.slice(1);
     }
 
+    closePopover = () => {
+        if (this.popoverVisible) {
+            this.togglePopoverVisibility();
+        }
+    };
+
     /**
      * Compute the selection state of the item, depending on the selection state of its children.
      */
@@ -922,6 +929,7 @@ export default class PrimitiveTreeItem extends LightningElement {
          */
         const actionClickEvent = new CustomEvent('privateactionclick', {
             detail: {
+                bounds: this.getBounds(),
                 key: this.nodeKey,
                 name
             },
@@ -1214,6 +1222,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
+                    bounds: this.getBounds(),
                     values: {
                         disabled: this.disabled,
                         expanded: this.expanded,
@@ -1255,6 +1264,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             composed: true,
             cancelable: true,
             detail: {
+                bounds: this.getBounds(),
                 name: this.name,
                 key: this.nodeKey,
                 target

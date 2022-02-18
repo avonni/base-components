@@ -317,6 +317,16 @@ export class TreeData {
     }
 
     /**
+     * Get the path to access the item in the tree, in the form of an array of levels.
+     *
+     * @param {string} key Key of the item.
+     * @returns {number[]} Array of levels of depth.
+     */
+    getLevelPath(key) {
+        return key.split('.').map((level) => parseInt(level, 10) - 1);
+    }
+
+    /**
      * Determine if an item is visible.
      *
      * @param {object} treeItem Item to check.
