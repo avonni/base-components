@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} VerticalVisualPickerItem
  * @name items
- * @property {object{}} avatar An object with item fields to be rendered as an avatar.
+ * @property {object} avatar An object with item fields to be rendered as an avatar.
  * @property {string} description Description displayed under the title.
  * @property {boolean} disabled If present, the item is disabled and the user cannot interact with it. Default is false.
  * @property {string} imgAlternativeText The assistive text for the image.
