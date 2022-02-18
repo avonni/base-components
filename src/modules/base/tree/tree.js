@@ -858,8 +858,11 @@ export default class Tree extends LightningElement {
             const selectedItem = this.treedata.getItemFromName(
                 this.computedSelectedItems[0]
             );
-            if (selectedItem) this.treedata.expandTo(selectedItem);
-            this.setFocusToItem(selectedItem);
+            if (selectedItem) {
+                this.treedata.expandTo(selectedItem);
+                this.setFocusToItem(selectedItem);
+            }
+            this.forceChildrenSelectionUpdate();
         }
     }
 
