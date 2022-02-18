@@ -50,3 +50,9 @@
     font-style: var(--avonni-avatar-tertiary-text-font-style, normal);
     font-weight: var(--avonni-avatar-tertiary-text-font-weight, 400);
 }
+
+:host {
+    --avonni-avatar-fallback-icon-color-background: blue;
+    --avonni-avatar-fallback-icon-color-foreground: yellow;
+    --avonni-avatar-fallback-icon-color-foreground-default: pink;
+}

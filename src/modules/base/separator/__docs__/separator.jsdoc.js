@@ -45,7 +45,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-separator-icon-color-radius-border
+ * @name --avonni-separator-icon-radius-border
  * @type sizing
  */
 /**
