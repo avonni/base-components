@@ -242,3 +242,18 @@
  * @default #706e6b
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-fallback-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-fallback-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-fallback-icon-color-foreground-default
+ * @type color
+ */

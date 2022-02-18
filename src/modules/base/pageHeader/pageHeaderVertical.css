@@ -34,3 +34,14 @@
     display: flex;
     flex-direction: column;
 }
+
+/* this works for `record home vertical` and `mobile record home vertical` */
+.slds-page-header_vertical {
+    --sds-c-icon-radius-border: var(--avonni-page-header-icon-radius-border);
+    --sds-c-icon-color-background: var(
+        --avonni-page-header-record-home-vertical-icon-color-background
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-page-header-record-home-vertical-icon-color-foreground
+    );
+}

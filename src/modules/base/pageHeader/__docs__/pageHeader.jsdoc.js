@@ -61,3 +61,47 @@
  * @default #f3f2f2
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-icon-radius-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-base-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-base-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-object-home-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-object-home-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-base-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-base-icon-color-foreground
+ * @type color
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-record-home-vertical-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-page-header-record-home-vertical-icon-color-foreground
+ * @type color
+ */
