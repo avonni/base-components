@@ -912,28 +912,16 @@ describe('Primitive Tree Item', () => {
                 done.click();
                 expect(element.isLeaf).toBeFalsy();
                 expect(handler).toHaveBeenCalledTimes(1);
-                expect(
-                    handler.mock.calls[0][0].detail.values.disabled
-                ).toBeTruthy();
-                expect(
-                    handler.mock.calls[0][0].detail.values.expanded
-                ).toBeTruthy();
-                expect(
-                    handler.mock.calls[0][0].detail.values.isLoading
-                ).toBeTruthy();
-                expect(handler.mock.calls[0][0].detail.values.href).toBe(
-                    '#link'
-                );
-                expect(handler.mock.calls[0][0].detail.values.label).toBe(
-                    'new label'
-                );
-                expect(handler.mock.calls[0][0].detail.values.metatext).toBe(
-                    'new meta'
-                );
-                expect(handler.mock.calls[0][0].detail.values.name).toBe(
-                    'new name'
-                );
-                expect(handler.mock.calls[0][0].detail.key).toBe('someKey');
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.values.disabled).toBeTruthy();
+                expect(detail.values.expanded).toBeTruthy();
+                expect(detail.values.isLoading).toBeTruthy();
+                expect(detail.values.href).toBe('#link');
+                expect(detail.values.label).toBe('new label');
+                expect(detail.values.metatext).toBe('new meta');
+                expect(detail.values.name).toBe('new name');
+                expect(typeof detail.bounds).toBe('object');
+                expect(detail.key).toBe('someKey');
                 expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
                 expect(handler.mock.calls[0][0].composed).toBeTruthy();
                 expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -1129,6 +1117,9 @@ describe('Primitive Tree Item', () => {
                 buttonAction.click();
 
                 expect(handler).toHaveBeenCalledTimes(1);
+                expect(typeof handler.mock.calls[0][0].detail.bounds).toBe(
+                    'object'
+                );
                 expect(handler.mock.calls[0][0].detail.key).toBe('someKey');
                 expect(handler.mock.calls[0][0].detail.name).toBe('edit');
                 expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
@@ -1171,9 +1162,11 @@ describe('Primitive Tree Item', () => {
         expandButton.click();
 
         expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.key).toBe('someKey');
-        expect(handler.mock.calls[0][0].detail.name).toBe('someName');
-        expect(handler.mock.calls[0][0].detail.target).toBe('chevron');
+        const detail = handler.mock.calls[0][0].detail;
+        expect(typeof detail.bounds).toBe('object');
+        expect(detail.key).toBe('someKey');
+        expect(detail.name).toBe('someName');
+        expect(detail.target).toBe('chevron');
         expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
         expect(handler.mock.calls[0][0].composed).toBeTruthy();
         expect(handler.mock.calls[0][0].cancelable).toBeTruthy();

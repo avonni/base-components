@@ -929,7 +929,7 @@ export default class PrimitiveTreeItem extends LightningElement {
          */
         const actionClickEvent = new CustomEvent('privateactionclick', {
             detail: {
-                bounds: this.itemElement.getBoundingClientRect(),
+                bounds: this.getBounds(),
                 key: this.nodeKey,
                 name
             },
@@ -1222,7 +1222,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    bounds: this.itemElement.getBoundingClientRect(),
+                    bounds: this.getBounds(),
                     values: {
                         disabled: this.disabled,
                         expanded: this.expanded,
@@ -1264,7 +1264,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             composed: true,
             cancelable: true,
             detail: {
-                bounds: this.itemElement.getBoundingClientRect(),
+                bounds: this.getBounds(),
                 name: this.name,
                 key: this.nodeKey,
                 target
