@@ -163,7 +163,7 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard <code>edit</code> action.
+     * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard ``edit`` action.
      *
      * @type {string[]}
      * @default ['label', 'metatext', 'name', 'href', 'expanded', 'disabled', 'isLoading']
@@ -429,7 +429,11 @@ export default class Tree extends LightningElement {
         if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = false;
             this.treedata.updateVisibleTreeItemsOnCollapse(node.key);
-            this.dispatchChange(node.name, 'collapse');
+            this.dispatchChange({
+                name: node.name,
+                action: 'collapse',
+                key: node.key
+            });
         }
     }
 
@@ -517,15 +521,17 @@ export default class Tree extends LightningElement {
         const key = item ? item.key : null;
         let previousName;
 
+        if (this._editedItemKey) {
+            this.callbackMap[this._editedItemKey].closePopover();
+            this._editedItemKey = null;
+        }
+
         switch (action) {
             case 'add': {
                 this.addItem(key);
                 break;
             }
             case 'edit': {
-                if (this._editedItemKey) {
-                    this.callbackMap[this._editedItemKey].closePopover();
-                }
                 this._editedItemKey = key;
                 return;
             }
@@ -550,7 +556,7 @@ export default class Tree extends LightningElement {
         }
 
         this.initItems();
-        this.dispatchChange(name, action, previousName);
+        this.dispatchChange({ name, action, previousName, key });
         this._setFocus = true;
     }
 
@@ -562,7 +568,11 @@ export default class Tree extends LightningElement {
     expandBranch(node) {
         if (!node.isLeaf && !node.disabled) {
             node.nodeRef.expanded = true;
-            this.dispatchChange(node.name, 'expand');
+            this.dispatchChange({
+                name: node.name,
+                action: 'expand',
+                key: node.key
+            });
         }
     }
 
@@ -898,6 +908,7 @@ export default class Tree extends LightningElement {
         event.stopPropagation();
         const action = event.detail.name || 'add';
         const key = event.detail.key;
+        const levelPath = this.treedata.getLevelPath(key);
         const item = this.treedata.getItem(key);
         let name = item ? item.treeNode.name : null;
 
@@ -906,13 +917,18 @@ export default class Tree extends LightningElement {
          *
          * @event
          * @name actionclick
+         * @param {DOMRect} bounds Bounds of the item clicked.
+         * @param {number[]} levelPath Array of the clicked item levels of depth.
+         * The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: ``[1, 2]``.
          * @param {string} name Name of the action.
-         * @param {string} targetName Name of the item the action originated from. If the action came from the root, the <code>targetName</code> will be null.
+         * @param {string} targetName Name of the item the action originated from. If the action came from the root, the ``targetName`` will be null.
          * @public
          * @cancelable
          */
         const actionClickEvent = new CustomEvent('actionclick', {
             detail: {
+                bounds: event.detail.bounds,
+                levelPath,
                 name: action,
                 targetName: name
             },
@@ -952,7 +968,12 @@ export default class Tree extends LightningElement {
 
         this.singleSelect(item.name);
         this.initItems();
-        this.dispatchChange(item.name, 'edit', previousName);
+        this.dispatchChange({
+            name: item.name,
+            action: 'edit',
+            previousName,
+            key
+        });
         this._setFocus = true;
     }
 
@@ -1134,8 +1155,6 @@ export default class Tree extends LightningElement {
 
     /**
      * Handle a mouse button up. Update the tree after an ttem drag, and clear the dragging state.
-     *
-     * @param {Event} event
      */
     handleMouseUp = () => {
         clearTimeout(this._mouseDownTimeout);
@@ -1189,7 +1208,11 @@ export default class Tree extends LightningElement {
             initialPosition.items.splice(initialItemNewIndex, 1);
             this.singleSelect(initialItem.name);
             this.initItems();
-            this.dispatchChange(initialItem.name, 'move');
+            this.dispatchChange({
+                name: initialItem.name,
+                action: 'move',
+                key
+            });
         }
 
         this._dragState = null;
@@ -1234,20 +1257,24 @@ export default class Tree extends LightningElement {
     /**
      * Dispatch the change event.
      *
+     * @param {string} key Key of the changed item.
      * @param {string} name Name of the item that has changed.
      * @param {string} action Action that has been performed on the item.
      * @param {string} previousName Previous name of the item, if it has changed.
      */
-    dispatchChange(name, action, previousName) {
+    dispatchChange({ key, name, action, previousName }) {
+        const levelPath = this.treedata.getLevelPath(key);
         /**
          * The event fired when a change is made to the tree.
          *
          * @event
          * @name change
-         * @param {string} action Type of change made to the item. Options are <code>add</code>, <code>collapse</code>, <code>delete</code>, <code>duplicate</code>, <code>edit</code>, <code>expand</code> and <code>move</code>.
+         * @param {string} action Type of change made to the item. Options are ``add``, ``collapse``, ``delete``, ``duplicate``, ``edit``, ``expand`` and ``move``.
          * @param {object[]} items The new items array.
+         * @param {number[]} levelPath Array of the levels of depth of the changed item.
+         * The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: ``[1, 2]``.
          * @param {string} name Name of the specific item the change was made to.
-         * @param {string} previousName For the <code>duplicate</code> action, name of the original item. For the <code>edit</code> action, if the name has changed, previous name of the item.
+         * @param {string} previousName For the ``duplicate`` action, name of the original item. For the ``edit`` action, if the name has changed, previous name of the item.
          * @public
          */
         this.dispatchEvent(
@@ -1255,6 +1282,7 @@ export default class Tree extends LightningElement {
                 detail: {
                     action,
                     items: deepCopy(this.items),
+                    levelPath,
                     name,
                     previousName
                 }
@@ -1268,11 +1296,19 @@ export default class Tree extends LightningElement {
      * @param {Event} event The event that triggered the selection.
      */
     dispatchSelect(event) {
+        const levelPath = event
+            ? this.treedata.getLevelPath(event.detail.key)
+            : null;
+
         /**
          * The event fired when an item is clicked.
          *
          * @event
          * @name select
+         * @param {(DOMRect|null)} bounds Bounds of the last item to have been selected or unselected, if it was a manual selection. Null if the selection was updated automatically.
+         * @param {(number[]|null)} levelPath Array of the levels of depth of the last item to have been selected or unselected.
+         * The levels start from 0. For example, if an item is the third child of its parent, and its parent is the second child of the tree root, the value would be: ``[1, 2]``.
+         * Null if the selection was updated automatically.
          * @param {string[]} selectedItems Array of selected items names.
          * @public
          * @bubbles
@@ -1284,6 +1320,8 @@ export default class Tree extends LightningElement {
             composed: true,
             cancelable: true,
             detail: {
+                bounds: event ? event.detail.bounds : null,
+                levelPath,
                 selectedItems: this.selectedItems
             }
         });
