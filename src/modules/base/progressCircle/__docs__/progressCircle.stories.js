@@ -45,6 +45,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the loading animation runs continually.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         titlePosition: {
             name: 'title-position',
             control: {
@@ -148,7 +159,8 @@ export default {
         }
     },
     args: {
-        round: false
+        round: false,
+        isLoading: false
     }
 };
 

@@ -80,6 +80,16 @@ export default class ProgressCircle extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Is-Loading functionality to animate the progress wring in circles
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
 
     _titlePosition = TITLE_POSITIONS.default;
     _value = DEFAULT_VALUE;

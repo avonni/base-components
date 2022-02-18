@@ -61,7 +61,7 @@
                 if:true={showValue}
                 style={progressValueStyles}
                 data-element-id="span"
-                >{value}%</span
+                >{value}%{isLoading}</span
             >
             <span
                 if:true={label}
@@ -69,6 +69,13 @@
                 data-element-id="label"
                 >{label}</span
             >
+            <span
+                if:true={isLoading}
+                class={progressLabelClass}
+                data-element-id="label"
+            >
+                ...
+            </span>
         </div>
         <template if:false={showPositionTop}>
             <div class={progressTitleClass} data-element-id="title">
