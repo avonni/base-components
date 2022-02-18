@@ -355,11 +355,9 @@ export default class PrimitiveAvatar extends LightningElement {
             'slds-avatar_circle': variant === 'circle'
         });
 
-        const fallbackIconClass = classSet('avonni-avatar__icon')
-            .add('avonni-avatar_fallback-icon')
-            .add({
-                'slds-avatar-grouped__icon': groupedAvatar
-            });
+        const fallbackIconClass = classSet('avonni-avatar__icon').add({
+            'slds-avatar-grouped__icon': groupedAvatar
+        });
 
         this.avatarClass = avatarClass;
         this.wrapperClass = wrapperClass;

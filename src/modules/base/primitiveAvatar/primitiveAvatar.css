@@ -355,7 +355,7 @@
 /** 
 * fallback icon
 */
-.avonni-avatar_fallback-icon {
+.avonni-avatar__icon {
     --sds-c-icon-color-background: var(
         --avonni-avatar-fallback-icon-color-background
     );
@@ -365,4 +365,8 @@
     --sds-c-icon-color-foreground-default: var(
         --avonni-avatar-fallback-icon-color-foreground-default
     );
+}
+
+:host {
+    --avonni-avatar-fallback-icon-color-background: green;
 }
