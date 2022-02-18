@@ -263,7 +263,9 @@ describe('PrimitiveReferenceLine', () => {
 
     // label
     it('label', () => {
-        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+        const badge = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-badge"]'
+        );
 
         element.label = 'A string label';
 
@@ -531,6 +533,17 @@ describe('PrimitiveReferenceLine', () => {
 
     // value
     // Depends on orientation
+    it('value is Nan, horizontal orientation', () => {
+        const div = element.shadowRoot.querySelector('[data-element-id="div"]');
+
+        element.orientation = 'horizontal';
+        element.value = 'hello';
+
+        return Promise.resolve().then(() => {
+            expect(div.style.width).toBe('0%');
+        });
+    });
+
     it('value lesser than 0, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
@@ -602,7 +615,9 @@ describe('PrimitiveReferenceLine', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+        const badge = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-badge"]'
+        );
 
         element.variant = 'default';
 
@@ -625,7 +640,9 @@ describe('PrimitiveReferenceLine', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+        const badge = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-badge"]'
+        );
 
         element.variant = 'inverse';
 
@@ -660,7 +677,9 @@ describe('PrimitiveReferenceLine', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+        const badge = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-badge"]'
+        );
 
         element.variant = 'success';
 
@@ -695,7 +714,9 @@ describe('PrimitiveReferenceLine', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+        const badge = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-badge"]'
+        );
 
         element.variant = 'warning';
 
@@ -730,7 +751,9 @@ describe('PrimitiveReferenceLine', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+        const badge = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-badge"]'
+        );
 
         element.variant = 'error';
 
@@ -765,7 +788,9 @@ describe('PrimitiveReferenceLine', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        const badge = element.shadowRoot.querySelector('[data-element-id="lightning-badge"]');
+        const badge = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-badge"]'
+        );
 
         element.variant = 'lightest';
 
