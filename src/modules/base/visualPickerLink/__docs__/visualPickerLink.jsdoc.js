@@ -14,3 +14,32 @@
  * @memberof slots
  * @name default
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-radius-border
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-background-complete
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-foreground
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-visual-picker-icon-color-foreground-default
+ * @type color
+ */

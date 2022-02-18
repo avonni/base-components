@@ -50,22 +50,20 @@
 }
 
 .avonni-visual-picker-icon {
-    /* these work */
     --sds-c-icon-radius-border: var(--avonni-visual-picker-icon-radius-border);
-    --sds-c-icon-color-background: var(--avonni-visual-picker-icon-background);
-    --sds-c-icon-color-foreground: var(--avonni-visual-picker-icon-foreground);
+    --sds-c-icon-color-background: var(
+        --avonni-visual-picker-icon-color-background
+    );
+    --sds-c-icon-color-foreground: var(
+        --avonni-visual-picker-icon-color-foreground
+    );
     --sds-c-icon-color-foreground-default: var(
-        --avonni-visual-picker-icon-foreground-default
+        --avonni-visual-picker-icon-color-foreground-default
     );
 }
 
-/* trying to target the complete */
-/* .slds-welcome-mat__tile_complete .avonni-visual-picker-icon {
-    fill: green;
+.slds-welcome-mat__tile_complete .avonni-visual-picker-icon {
+    --sds-c-icon-color-background: var(
+        --avonni-visual-picker-icon-color-background-complete
+    );
 }
-:host {
-    --avonni-visual-picker-icon-radius-border: 30px;
-    --avonni-visual-picker-icon-background: black;
-    --avonni-visual-picker-icon-foreground: yellow;
-    --avonni-visual-picker-icon-foreground-default: pink;
-} */
