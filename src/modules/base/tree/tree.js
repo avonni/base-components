@@ -911,7 +911,9 @@ export default class Tree extends LightningElement {
         event.stopPropagation();
         const action = event.detail.name || 'add';
         const key = event.detail.key;
-        const levelPath = this.treedata.getLevelPath(key);
+        const levelPath = this.treedata.getLevelPath(
+            key || this.items.length.toString()
+        );
         const item = this.treedata.getItem(key);
         let name = item ? item.treeNode.name : null;
 
@@ -1266,7 +1268,11 @@ export default class Tree extends LightningElement {
      * @param {string} previousName Previous name of the item, if it has changed.
      */
     dispatchChange({ key, name, action, previousName }) {
-        const levelPath = this.treedata.getLevelPath(key);
+        // If no key is given, it's a new item at the root of the tree
+        const levelPath = this.treedata.getLevelPath(
+            (key || this.items.length - 1).toString()
+        );
+
         /**
          * The event fired when a change is made to the tree.
          *
