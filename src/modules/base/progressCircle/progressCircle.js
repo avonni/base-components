@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 const VALUE_VARIANTS = {
@@ -91,6 +91,10 @@ export default class ProgressCircle extends LightningElement {
         return this._isLoading;
     }
 
+    set isLoading(loading) {
+        this._isLoading = normalizeBoolean(loading);
+    }
+
     _titlePosition = TITLE_POSITIONS.default;
     _value = DEFAULT_VALUE;
     _variant = VALUE_VARIANTS.default;
@@ -98,6 +102,9 @@ export default class ProgressCircle extends LightningElement {
     _size = PROGRESS_CIRCLE_SIZES.default;
     _thickness = PROGRESS_CIRCLE_THICKNESSES.default;
     _color = DEFAULT_COLOR;
+    _isLoading = false;
+    _spinningValue = 0;
+    _dots = 1;
 
     /**
      * Position of the title. Valid values include top and bottom.
@@ -113,8 +120,7 @@ export default class ProgressCircle extends LightningElement {
 
     set titlePosition(position) {
         this._titlePosition = normalizeString(position, {
-            fallbackValue: TITLE_POSITIONS.default,
-            validValues: TITLE_POSITIONS.valid
+            fallbackValue: TITLE_POSITIONS.default
         });
     }
 
@@ -361,7 +367,7 @@ export default class ProgressCircle extends LightningElement {
      * @type {string}
      */
     get showValue() {
-        return this._variant === 'standard';
+        return this._variant === 'standard' && !this.isLoading;
     }
 
     /**
@@ -371,6 +377,55 @@ export default class ProgressCircle extends LightningElement {
      */
     get progressValueStyles() {
         return `color: ${this.color}`;
+    }
+
+    /**
+     * Animate progress bar with continuous loading animation.
+     *
+     * @type {string}
+     */
+    @api
+    get loading() {
+        let previousValue = this._spinningValue;
+
+        setTimeout(() => {
+            if (previousValue < 100) {
+                this._spinningValue += 2.5;
+            } else {
+                setTimeout(() => {
+                    this._spinningValue = 0;
+                }, 800);
+            }
+        }, 60);
+
+        this._dots = Math.round(this._spinningValue / 33);
+
+        let fillValue = this._spinningValue;
+        let isLong = this._spinningValue > 50 ? '1 1' : '0 1';
+
+        if (this._direction === 'fill' && fillValue !== 100) {
+            fillValue = 100 - this._spinningValue;
+            isLong = this._spinningValue > 50 ? '1 0' : '0 0';
+        }
+
+        let arcX = Math.cos(2 * Math.PI * (fillValue / 100));
+        let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
+
+        return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    /**
+     * Return loading dots animations . .. ... for isLoading animation.
+     *
+     * @type {string}
+     */
+    @api
+    get loadingDots() {
+        let dots = '';
+        for (let i = 0; i < this._dots; i++) {
+            dots += '.';
+        }
+        return dots;
     }
 
     /**
@@ -391,6 +446,19 @@ export default class ProgressCircle extends LightningElement {
         let arcY = Math.sin(2 * Math.PI * (fillValue / 100));
 
         return 'M 1 0 A 1 1 0 ' + isLong + ' ' + arcX + ' ' + arcY + ' L 0 0';
+    }
+
+    /**
+     * Compute display fill for progress bar.
+     *
+     * @type {string}
+     */
+    get progress() {
+        if (this.isLoading) {
+            return this.loading;
+        }
+
+        return this.completeness;
     }
 
     /**
