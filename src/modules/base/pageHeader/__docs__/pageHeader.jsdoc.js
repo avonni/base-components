@@ -95,6 +95,7 @@
  * @memberof stylingHooks
  * @name --avonni-page-header-base-icon-color-foreground
  * @type color
+ */
 /**
  * @memberof stylingHooks
  * @name --avonni-page-header-record-home-vertical-icon-color-background
