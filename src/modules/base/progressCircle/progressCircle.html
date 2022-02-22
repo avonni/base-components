@@ -59,15 +59,15 @@
                 data-element-id="span"
                 >{value}%</span
             >
-            <span if:false={isLoading}>
-                <span
-                    if:true={label}
-                    class={progressLabelClass}
-                    data-element-id="label"
-                    >{label}</span
-                >
-            </span>
-            <span if:true={isLoading} class="avonni-progress-circle_dots">
+            <span
+                if:true={labelPresent}
+                class={progressLabelClass}
+                data-element-id="label"
+                >{label}</span
+            >
+            <span 
+                if:true={isLoading} 
+                class="avonni-progress-circle__dots">
                 {loadingDots}
             </span>
         </div>

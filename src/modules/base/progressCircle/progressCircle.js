@@ -80,20 +80,6 @@ export default class ProgressCircle extends LightningElement {
      * @public
      */
     @api label;
-    /**
-     * Is-Loading functionality to animate the progress wring in circles
-     *
-     * @type {boolean}
-     * @public
-     */
-    @api
-    get isLoading() {
-        return this._isLoading;
-    }
-
-    set isLoading(loading) {
-        this._isLoading = normalizeBoolean(loading);
-    }
 
     _titlePosition = TITLE_POSITIONS.default;
     _value = DEFAULT_VALUE;
@@ -105,6 +91,22 @@ export default class ProgressCircle extends LightningElement {
     _isLoading = false;
     _spinningValue = 0;
     _dots = 1;
+
+    /**
+     * Is-Loading functionality to animate the progress wring in circles
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(loading) {
+        this._isLoading = normalizeBoolean(loading);
+    }
 
     /**
      * Position of the title. Valid values include top and bottom.
@@ -120,7 +122,8 @@ export default class ProgressCircle extends LightningElement {
 
     set titlePosition(position) {
         this._titlePosition = normalizeString(position, {
-            fallbackValue: TITLE_POSITIONS.default
+            fallbackValue: TITLE_POSITIONS.default,
+            validValues: TITLE_POSITIONS.valid
         });
     }
 
@@ -362,6 +365,15 @@ export default class ProgressCircle extends LightningElement {
     }
 
     /**
+     * There is no label when isLoading is true.
+     *
+     * @type {boolean}
+     */
+     get labelPresent() {
+        return this.label && !this.isLoading;
+    }
+
+    /**
      * Verify if showing value.
      *
      * @type {string}
@@ -384,7 +396,6 @@ export default class ProgressCircle extends LightningElement {
      *
      * @type {string}
      */
-    @api
     get loading() {
         let previousValue = this._spinningValue;
 

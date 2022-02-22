@@ -60,6 +60,7 @@ describe('ProgressCircle', () => {
         expect(element.titlePosition).toBe('bottom');
         expect(element.value).toBe(0);
         expect(element.variant).toBe('standard');
+        expect(element.isLoading).toBe(false)
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -147,6 +148,26 @@ describe('ProgressCircle', () => {
                 '[data-element-id="label"]'
             );
             expect(label.textContent.trim()).toBe('A string label');
+        });
+    });
+
+    // loading
+    it('Progress Circle: is-loaoding', () => {
+        element.isLoading = true;
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
+            const valueLabel = element.shadowRoot.querySelector(
+                '[data-element-id="span"]'
+            );
+            const dots = element.shadowRoot.querySelector(
+                '.avonni-progress-circle__dots'
+            );
+            expect(label).toBeFalsy();
+            expect(valueLabel).toBeFalsy();
+            expect(dots).toBeTruthy();
         });
     });
 

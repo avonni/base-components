@@ -223,6 +223,21 @@ NoLabelSmallValueHiddenGreen.args = {
     size: 'small'
 };
 
+export const BaseLoading = Template.bind({});
+BaseLoading.args = {
+    title: 'Text title',
+    value: 20,
+    isLoading: true
+};
+
+export const DrainLoadingWithThicknessX_Small = Template.bind({});
+DrainLoadingWithThicknessX_Small.args = {
+    title: 'Text title',
+    isLoading: true,
+    direction: 'drain',
+    thickness: 'x-small',
+};
+
 export const ExtraSmall = Template.bind({});
 ExtraSmall.args = {
     title: 'Extra small',
