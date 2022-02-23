@@ -67,7 +67,8 @@
             >
             <span 
                 if:true={isLoading} 
-                class="avonni-progress-circle__dots">
+                class="avonni-progress-circle__dots"
+                data-element-id="dots">
                 {loadingDots}
             </span>
         </div>
@@ -77,5 +78,4 @@
             </div>
         </template>
     </div>
-    <span class={progressLabelClass}> </span>
 </template>

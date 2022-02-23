@@ -163,7 +163,7 @@ describe('ProgressCircle', () => {
                 '[data-element-id="span"]'
             );
             const dots = element.shadowRoot.querySelector(
-                '.avonni-progress-circle__dots'
+                '[data-element-id="dots"]'
             );
             expect(label).toBeFalsy();
             expect(valueLabel).toBeFalsy();

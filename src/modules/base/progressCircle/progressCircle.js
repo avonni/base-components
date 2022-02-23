@@ -430,7 +430,6 @@ export default class ProgressCircle extends LightningElement {
      *
      * @type {string}
      */
-    @api
     get loadingDots() {
         let dots = '';
         for (let i = 0; i < this._dots; i++) {
