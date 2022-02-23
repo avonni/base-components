@@ -93,7 +93,7 @@ export default class ProgressCircle extends LightningElement {
     _dots = 1;
 
     /**
-     * Is-Loading functionality to animate the progress wring in circles
+     * If present the progress bar displays a loading animation. The value goes from 0 to 100 repeatedly and the label displays a 3 dots animation. The value and labels become hidden.
      *
      * @type {boolean}
      * @public
@@ -369,7 +369,7 @@ export default class ProgressCircle extends LightningElement {
      *
      * @type {boolean}
      */
-     get labelPresent() {
+    get labelPresent() {
         return this.label && !this.isLoading;
     }
 
