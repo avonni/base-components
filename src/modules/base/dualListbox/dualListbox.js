@@ -797,7 +797,9 @@ export default class DualListbox extends LightningElement {
 
         if (this._searchTerm) {
             sourceListOptions = sourceListOptions.filter((option) => {
-                return option.label.toLowerCase().includes(this._searchTerm);
+                return option.label
+                    .toLowerCase()
+                    .includes(this._searchTerm.toLowerCase());
             });
         }
 
