@@ -189,6 +189,6 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-cursor-hover
+ * @name --avonni-list-item-cursor
  * @type styling
  */

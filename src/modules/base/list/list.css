@@ -70,7 +70,7 @@
 /* Disable the hover on touch */
 @media (hover: hover) {
     .avonni-list__item:hover {
-        cursor: var(--avonni-list-item-cursor-hover, default);
+        cursor: var(--avonni-list-item-cursor, default);
         background-color: var(
             --avonni-list-item-basic-color-background-hover,
             --avonni-list-item-color-background
