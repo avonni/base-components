@@ -118,7 +118,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-sortable-color-background
+ * @name --avonni-list-item-color-background-sortable
  * @default transparent
  * @type color
  */
@@ -130,7 +130,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-non-sortable-hover-color-background
+ * @name --avonni-list-item-basic-color-background-hover
  * @type color
  */
 /**
@@ -159,8 +159,8 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-spacing
- * @type sizing
+ * @name --avonni-list-item-spacing-block-between
+ * @type spacing
  */
 /**
  * @memberof stylingHooks
@@ -184,11 +184,11 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-sortable-cursor
+ * @name --avonni-list-item-cursor-sortable
  * @type styling
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-non-sortable-cursor
+ * @name --avonni-list-item-cursor-hover
  * @type styling
  */

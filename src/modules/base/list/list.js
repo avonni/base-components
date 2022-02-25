@@ -353,14 +353,6 @@ export default class List extends LightningElement {
                 'avonni-list__item-sortable': this.sortable,
                 'avonni-list__item-expanded': this._hasActions,
                 'slds-p-vertical_x-small': !this._divider,
-                /**
-                 * DELETE COMMENT TO MERGE
-                 * this class puts padding left and right as 0!important
-                 * blocking:
-                 * --avonni-list-item-inline-start
-                 * --avonni-list-item-inline-end
-                 */
-                // 'slds-p-horizontal_none': this._divider === 'top' || 'bottom',
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
                 'avonni-list__item-divider_around': this._divider === 'around'
