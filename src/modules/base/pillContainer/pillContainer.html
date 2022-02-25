@@ -33,7 +33,11 @@
 -->
 
 <template>
-    <div class={computedWrapperClass} data-element-id="div-wrapper">
+    <div
+        class={computedWrapperClass}
+        data-element-id="div-wrapper"
+    >
+        <!-- Show more -->
         <lightning-button
             if:true={showMore}
             class="slds-listbox-toggle"
@@ -41,51 +45,53 @@
             variant="base"
             onclick={handleMoreClick}
         ></lightning-button>
+
         <ul
             class={computedListboxClass}
             aria-label={label}
             aria-orientation="horizontal"
             data-element-id="ul"
-            onclick={handleClick}
             onkeydown={handleKeyDown}
         >
-            <template for:each={computedPills} for:item="pill">
+            <template for:each={computedPills} for:item="pill" for:index="index">
                 <li
                     key={pill.name}
-                    class="slds-listbox-item"
+                    class={computedListItemClass}
                     role="presentation"
                     data-element-id="li"
+                    data-index={index}
+                    onmousemove={handleMouseMove}
+                    onmousedown={handlePillMouseDown}
                 >
                     <span
-                        class="slds-pill"
+                        class={computedPillClass}
                         role="option"
-                        aria-selected="true"
+                        aria-selected={pill.selected}
                         tabindex={pill.tabIndex}
                         data-element-id="span-pill"
                         onblur={handlePillBlur}
                         onclick={handlePillClick}
                         onfocus={handlePillFocus}
                     >
-                        <span
+                        <!-- Avatar -->
+                        <c-avatar
                             if:true={pill.avatar}
                             class="slds-pill__icon_container"
-                        >
-                            <c-avatar
-                                fallback-icon-name={pill.avatar.fallbackIconName}
-                                initials={pill.avatar.initials}
-                                size="x-small"
-                                src={pill.avatar.src}
-                                variant={pill.avatar.variant}
-                            ></c-avatar>
-                        </span>
+                            fallback-icon-name={pill.avatar.fallbackIconName}
+                            initials={pill.avatar.initials}
+                            size="x-small"
+                            src={pill.avatar.src}
+                            variant={pill.avatar.variant}
+                        ></c-avatar>
+
+                        <!-- Label -->
                         <a
                             if:true={pill.href}
                             href={pill.href}
-                            class="slds-pill__action"
                             title={pill.label}
-                        >
-                            <span class="slds-pill__label">{pill.label}</span>
-                        </a>
+                            class="slds-pill__label"
+                            onmousedown={handleLinkMouseDown}
+                        >{pill.label}</a>
                         <span
                             if:false={pill.href}
                             class="slds-pill__label"
@@ -93,6 +99,7 @@
                             >{pill.label}</span
                         >
 
+                        <!-- Actions -->
                         <lightning-button-icon
                             if:true={oneAction}
                             class="slds-pill__remove"
@@ -101,7 +108,7 @@
                             icon-name={oneAction.iconName}
                             value={oneAction.name}
                             variant="bare"
-                            data-item-name={pill.name}
+                            data-index={index}
                             onclick={handleActionClick}
                         ></lightning-button-icon>
 
@@ -110,7 +117,7 @@
                             alternative-text="Show menu"
                             icon-size="x-small"
                             variant="bare"
-                            data-item-name={pill.name}
+                            data-index={index}
                             onclick={stopPropagation}
                             onselect={handleActionClick}
                         >

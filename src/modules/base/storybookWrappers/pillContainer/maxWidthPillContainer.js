@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 
-export default class PillContainer extends LightningElement {
+export default class MaxWidthPillContainer extends LightningElement {
     @api actions;
     @api isCollapsible;
     @api isExpanded;

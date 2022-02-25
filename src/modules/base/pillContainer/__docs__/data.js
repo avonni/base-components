@@ -19,7 +19,8 @@ const ACTIONS = [
 const ITEMS = [
     {
         label: 'First pill',
-        name: 'first'
+        name: 'first',
+        href: '#first-pill'
     },
     {
         label: 'Second pill',
@@ -35,7 +36,8 @@ const ITEMS = [
         avatar: {
             fallbackIconName: 'standard:user',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-        }
+        },
+        href: '#third-pill'
     },
     {
         label: 'Fourth pill',
@@ -47,7 +49,8 @@ const ITEMS = [
     },
     {
         label: 'Fifth pill',
-        name: 'fifth'
+        name: 'fifth',
+        href: '#fifth-pill'
     },
     {
         label: 'Sixth pill',

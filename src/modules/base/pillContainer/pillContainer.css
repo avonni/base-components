@@ -29,30 +29,38 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+ 
+.avonni-pill-container__pill-sortable {
+    user-select: none;
+    -webkit-user-select: none;
+}
 
-import Component from '../pillContainer';
+.avonni-pill-container__pill-sortable {
+    cursor: grab;
+}
 
-customElements.define(
-    'ac-base-pill-container',
-    Component.CustomElementConstructor
-);
+.avonni-pill-container__list_dragging,
+.avonni-pill-container__list_dragging .avonni-pill-container__pill-sortable,
+.avonni-pill-container__list_dragging .avonni-pill-container__pill-sortable a {
+    cursor: grabbing;
+}
 
-export const PillContainer = ({
-    actions,
-    isCollapsible,
-    isExpanded,
-    items,
-    label,
-    singleLine,
-    sortable
-}) => {
-    const element = document.createElement('ac-base-pill-container');
-    element.actions = actions;
-    element.isCollapsible = isCollapsible;
-    element.isExpanded = isExpanded;
-    element.items = items;
-    element.label = label;
-    element.singleLine = singleLine;
-    element.sortable = sortable;
-    return element;
-};
+.avonni-pill-container__pill_left-border::before,
+.avonni-pill-container__pill_right-border::after {
+    content: '';
+    width: 2px;
+    background-color: #747474;
+    position: absolute;
+    top: 1px;
+    bottom: 0;
+}
+.avonni-pill-container__pill_left-border::before {
+    left: -1px;
+}
+.avonni-pill-container__pill_right-border::after {
+    right: -1px;
+}
+
+.avonni-pill-container__item_sortable-single-line {
+    padding-right: 0.125rem;
+}

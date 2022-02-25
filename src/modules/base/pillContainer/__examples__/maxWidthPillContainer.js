@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../pillContainer';
+import Component from '../../storybookWrappers/pillContainer/maxWidthPillContainer';
 
 customElements.define(
-    'ac-base-pill-container',
+    'ac-max-width-pill-container',
     Component.CustomElementConstructor
 );
 
-export const PillContainer = ({
+export const MaxWidthPillContainer = ({
     actions,
     isCollapsible,
     isExpanded,
@@ -46,7 +46,7 @@ export const PillContainer = ({
     singleLine,
     sortable
 }) => {
-    const element = document.createElement('ac-base-pill-container');
+    const element = document.createElement('ac-max-width-pill-container');
     element.actions = actions;
     element.isCollapsible = isCollapsible;
     element.isExpanded = isExpanded;

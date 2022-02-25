@@ -31,6 +31,7 @@
  */
 
 import { PillContainer } from '../__examples__/pillContainer';
+import { MaxWidthPillContainer } from '../__examples__/maxWidthPillContainer';
 import { ITEMS, ACTIONS } from './data';
 
 export default {
@@ -124,6 +125,7 @@ export default {
 };
 
 const Template = (args) => PillContainer(args);
+const TemplateWithMaxWidth = (args) => MaxWidthPillContainer(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -136,15 +138,21 @@ Actions.args = {
     items: ITEMS
 };
 
-export const Collapsible = Template.bind({});
+export const Collapsible = TemplateWithMaxWidth.bind({});
 Collapsible.args = {
     isCollapsible: true,
     items: ITEMS
 };
 
-export const Sortable = Template.bind({});
-Sortable.args = {
+export const SingleLine = Template.bind({});
+SingleLine.args = {
     actions: [ACTIONS[0]],
+    items: ITEMS,
+    singleLine: true
+};
+
+export const Sortable = TemplateWithMaxWidth.bind({});
+Sortable.args = {
     items: ITEMS,
     label: 'Sortable options',
     sortable: true

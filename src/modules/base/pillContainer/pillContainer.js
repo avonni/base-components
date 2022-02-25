@@ -30,9 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 import Pill from './pill';
-import { keyCodes, normalizeBoolean, normalizeArray } from 'c/utilsPrivate';
+import { deepCopy, keyCodes, normalizeBoolean, normalizeArray } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { classSet } from 'c/utils';
 
@@ -47,6 +47,9 @@ export default class PillContainer extends LightningElement {
     _singleLine = false;
     _sortable = false;
 
+    @track computedPills = [];
+    _dragState;
+    _dragTimeOut;
     _focusedIndex = 0;
     _focusedTabIndex = 0;
     _hasFocus = false;
@@ -54,10 +57,8 @@ export default class PillContainer extends LightningElement {
     _pillContainerElementId;
     _resizeObserver;
 
-    disconnectedCallback() {
-        if (this._resizeObserver) {
-            this._resizeObserver.disconnect();
-        }
+    connectedCallback() {
+        window.addEventListener('mouseup', this.handleMouseUp);
     }
 
     renderedCallback() {
@@ -68,21 +69,28 @@ export default class PillContainer extends LightningElement {
             this._resizeObserver = this.initResizeObserver();
         }
 
-        const ul = this.template.querySelector('[data-element-id="ul"]');
-        if (ul) {
-            if (this.items.length === 0) {
-                // If no option is present, set ul has the focus (SLDS require UL has focus).
-                ul.tabIndex = 0;
-            } else {
-                ul.tabIndex = -1;
-                this.setFocusedItemTabIndex(0);
-                // Consider adding pills programmatically to empty pill container.
-                // UL has focus, so should shift focus to pill.
-                if (this.template.querySelector('ul:focus')) {
-                    this.focus();
-                }
-            }
+        // if (this.listElement) {
+        //     if (this.items.length === 0) {
+        //         // If no option is present, set ul has the focus (SLDS require UL has focus).
+        //         this.listElement.tabIndex = 0;
+        //     } else {
+        //         this.listElement.tabIndex = -1;
+        //         this.setFocusedItemTabIndex(0);
+        //         // Consider adding pills programmatically to empty pill container.
+        //         // UL has focus, so should shift focus to pill.
+        //         if (this.template.querySelector('ul:focus')) {
+        //             this.focus();
+        //         }
+        //     }
+        // }
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
         }
+
+        window.removeEventListener('mouseup', this.handleMouseUp);
     }
 
     /*
@@ -105,6 +113,7 @@ export default class PillContainer extends LightningElement {
     }
     set isCollapsible(value) {
         this._isCollapsible = normalizeBoolean(value);
+        this.clearDrag();
     }
 
     @api
@@ -113,6 +122,7 @@ export default class PillContainer extends LightningElement {
     }
     set isExpanded(value) {
         this._isExpanded = normalizeBoolean(value);
+        this.clearDrag();
     }
 
     @api
@@ -120,7 +130,10 @@ export default class PillContainer extends LightningElement {
         return this._items;
     }
     set items(value) {
-        this._items = normalizeArray(value);
+        this._items = deepCopy(normalizeArray(value));
+
+        this.initPills();
+        this.clearDrag();
     }
 
     @api
@@ -138,6 +151,7 @@ export default class PillContainer extends LightningElement {
     }
     set singleLine(value) {
         this._singleLine = normalizeBoolean(value);
+        this.clearDrag();
     }
 
     @api
@@ -146,6 +160,7 @@ export default class PillContainer extends LightningElement {
     }
     set sortable(value) {
         this._sortable = normalizeBoolean(value);
+        this.clearDrag();
     }
 
     /*
@@ -170,6 +185,19 @@ export default class PillContainer extends LightningElement {
             .toString();
     }
 
+    get computedListItemClass() {
+        return classSet('slds-listbox-item').add({
+            'slds-is-relative': this.sortable,
+            'avonni-pill-container__item_sortable-single-line': this.sortable && this.singleLine
+        });
+    }
+
+    get computedPillClass() {
+        return classSet('slds-pill').add({
+            'avonni-pill-container__pill-sortable': this.sortable
+        }).toString();
+    }
+
     get computedPillCountMoreLabel() {
         if (
             this.computedIsExpanded ||
@@ -181,15 +209,15 @@ export default class PillContainer extends LightningElement {
         return `+${this._pillsNotFittingCount} more`;
     }
 
-    get computedPills() {
-        return this.items.map((item, index) => {
-            return new Pill({
-                ...item,
-                tabIndex:
-                    this._focusedIndex === index ? this._focusedTabIndex : -1
-            });
-        });
-    }
+    // get computedPills() {
+    //     return this.items.map((item, index) => {
+    //         return new Pill({
+    //             ...item,
+    //             tabIndex:
+    //                 this._focusedIndex === index ? this._focusedTabIndex : -1
+    //         });
+    //     });
+    // }
 
     get computedWrapperClass() {
         return classSet().add({
@@ -199,29 +227,37 @@ export default class PillContainer extends LightningElement {
         });
     }
 
-    get focusedIndex() {
-        if (this._focusedIndex >= this.items.length) {
-            // Change is due to itemremove event, should move focus to the last one.
-            this._focusedIndex = this._deleteLast ? this.items.length - 1 : 0;
-            this._deleteLast = false;
-        } else if (this._focusedIndex < 0) {
-            this._focusedIndex = this.items.length - 1;
-        }
-        return this._focusedIndex;
-    }
+    // get focusedIndex() {
+    //     if (this._focusedIndex >= this.items.length) {
+    //         // Change is due to itemremove event, should move focus to the last one.
+    //         this._focusedIndex = this._deleteLast ? this.items.length - 1 : 0;
+    //         this._deleteLast = false;
+    //     } else if (this._focusedIndex < 0) {
+    //         this._focusedIndex = this.items.length - 1;
+    //     }
+    //     return this._focusedIndex;
+    // }
 
-    set focusedIndex(value) {
-        // Host may asynchronous update items. For example, move focus to latest item with right/left key, then host change items.
-        // Then at renderedCallback call, need to update which item should has focus, but index > items.length.
-        // When set it, the index is valid, but when rendered, index is not valid, so the validation check is happened at getter.
-        this._focusedIndex = value;
-    }
+    // set focusedIndex(value) {
+    //     // Host may asynchronous update items. For example, move focus to latest item with right/left key, then host change items.
+    //     // Then at renderedCallback call, need to update which item should has focus, but index > items.length.
+    //     // When set it, the index is valid, but when rendered, index is not valid, so the validation check is happened at getter.
+    //     this._focusedIndex = value;
+    // }
 
     get focusedNode() {
         const pills = this.template.querySelectorAll(
             '[data-element-id="span-pill"]'
         );
-        return pills.length <= 0 ? null : pills[this.focusedIndex];
+        return pills.length <= 0 ? null : pills[this._focusedIndex];
+    }
+
+    get itemElements() {
+        return this.template.querySelectorAll('[data-element-id="li"]');
+    }
+
+    get listElement() {
+        return this.template.querySelector('[data-element-id="ul"]');
     }
 
     get oneAction() {
@@ -244,8 +280,7 @@ export default class PillContainer extends LightningElement {
 
     @api
     focus() {
-        const ul = this.template.querySelector('[data-element-id="ul"]');
-        if (ul) ul.focus();
+        if (this.listElement) this.listElement.focus();
     }
 
     /*
@@ -254,9 +289,14 @@ export default class PillContainer extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    initPills() {
+        this.computedPills = this.items.map((item) => {
+            return new Pill(item);
+        });
+    }
+
     initResizeObserver() {
-        const listBox = this.template.querySelector('[data-element-id="ul"]');
-        if (!listBox) return null;
+        if (!this.listElement) return null;
 
         const resizeObserver = new AvonniResizeObserver(() => {
             let notFittingCount = 0;
@@ -271,26 +311,37 @@ export default class PillContainer extends LightningElement {
             }
             this._pillsNotFittingCount = notFittingCount;
         });
-        resizeObserver.observe(listBox);
+        resizeObserver.observe(this.listElement);
         return resizeObserver;
     }
 
-    setFocusedItemTabIndex(value) {
-        const focusedNode = this.focusedNode;
-        if (focusedNode) {
-            this._focusedTabIndex = value;
-        }
+    clearDrag() {
+        clearTimeout(this._dragTimeOut);
+        if (!this._dragState) return;
+        
+        const index = this._dragState.lastHoveredIndex;
+        this.itemElements[index].classList.remove('avonni-pill-container__pill_left-border', 'avonni-pill-container__pill_right-border');
+        const wrapper = this.template.querySelector('[data-element-id="div-wrapper"]');
+        wrapper.classList.remove('avonni-pill-container__list_dragging');
+        this._dragState = null;
     }
 
-    switchFocus(newValue) {
-        // remove focus from current pill
-        this.setFocusedItemTabIndex(-1);
-        // move to next
-        this.focusedIndex = newValue;
-        // set focus
-        this.setFocusedItemTabIndex(0);
-        this.focus();
-    }
+    // setFocusedItemTabIndex(value) {
+    //     const focusedNode = this.focusedNode;
+    //     if (focusedNode) {
+    //         this._focusedTabIndex = value;
+    //     }
+    // }
+
+    // switchFocus(newValue) {
+    //     // remove focus from current pill
+    //     this.setFocusedItemTabIndex(-1);
+    //     // move to next
+    //     this.focusedIndex = newValue;
+    //     // set focus
+    //     this.setFocusedItemTabIndex(0);
+    //     this.focus();
+    // }
 
     /*
      * ------------------------------------------------------------
@@ -303,44 +354,98 @@ export default class PillContainer extends LightningElement {
             event.detail instanceof Object
                 ? event.detail.value
                 : event.currentTarget.value;
-        const itemName = event.currentTarget.dataset.itemName;
-        const item = this.items.find((it) => it.name === itemName);
+        const itemIndex = Number(event.currentTarget.dataset.index);
 
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName,
-                    item
+                    item: this.items[itemIndex]
                 }
             })
         );
     }
 
-    handleClick() {
-        this.focus();
+    handleKeyDown(event) {
+        // if (this.items.length <= 0) {
+        //     return;
+        // }
+        // const index = this.focusedIndex;
+        // switch (event.keyCode) {
+        //     case keyCodes.left:
+        //     case keyCodes.up:
+        //         this.switchFocus(index - 1);
+        //         break;
+        //     case keyCodes.right:
+        //     case keyCodes.down:
+        //         this.switchFocus(index + 1);
+        //         break;
+        //     default:
+        //         this.focus();
+        // }
     }
 
-    handleKeyDown(event) {
-        if (this.items.length <= 0) {
-            return;
-        }
-        const index = this.focusedIndex;
-        switch (event.keyCode) {
-            case keyCodes.left:
-            case keyCodes.up:
-                this.switchFocus(index - 1);
-                break;
-            case keyCodes.right:
-            case keyCodes.down:
-                this.switchFocus(index + 1);
-                break;
-            default:
-                this.focus();
-        }
+    handleLinkMouseDown(event) {
+        if (!this.sortable) return;
+
+        // Prevent the link from being dragged,
+        // to allow for dragging the whole item
+        event.preventDefault();
     }
 
     handleMoreClick() {
         this.focus();
+    }
+
+    handleMouseMove(event) {
+        if (!this._dragState) return;
+
+        const index = Number(event.currentTarget.dataset.index);
+        const lastIndex = this._dragState.lastHoveredIndex;
+
+        this.itemElements[lastIndex].classList.remove('avonni-pill-container__pill_left-border', 'avonni-pill-container__pill_right-border');
+        if (lastIndex !== index) {
+            this._dragState.lastHoveredIndex = index;
+        }
+        
+        const coordinates = event.currentTarget.getBoundingClientRect();
+        const onLeft = event.clientX < coordinates.left + coordinates.width / 2;
+        if (onLeft) {
+            // The cursor is on the left side of the pill
+            event.currentTarget.classList.add('avonni-pill-container__pill_left-border');
+            this._dragState.position = 'left';
+        } else {
+            // The cursor is on the right side of the pill
+            event.currentTarget.classList.add('avonni-pill-container__pill_right-border');
+            this._dragState.position = 'right';
+        }
+    }
+
+    handleMouseUp = () => {
+        if (!this._dragState || this._dragState.lastHoveredIndex === this._dragState.initialIndex) {
+            this.clearDrag();
+            return;
+        }
+
+        const { initialIndex, lastHoveredIndex, position } = this._dragState;
+        const index = position === 'left' ? lastHoveredIndex : lastHoveredIndex + 1;
+
+        if (lastHoveredIndex > initialIndex) {
+            this.items.splice(index, 0, this.items[initialIndex]);
+            this.items.splice(initialIndex, 1);
+        } else {
+            const pill = this.items.splice(initialIndex, 1)[0];
+            this.items.splice(index, 0, pill);
+        }
+
+        this.initPills();
+        this.dispatchEvent(new CustomEvent('reorder', {
+            detail: {
+                items: this.items
+            }
+        }));
+
+        this.clearDrag();
     }
 
     handlePillBlur(event) {
@@ -370,6 +475,20 @@ export default class PillContainer extends LightningElement {
             this._hasFocus = true;
             this.dispatchEvent(new CustomEvent('focus'));
         }
+    }
+
+    handlePillMouseDown(event) {
+        if (!this.sortable) return;
+
+        const index = Number(event.currentTarget.dataset.index);
+        this._dragTimeOut = setTimeout(() => {
+            this._dragState = {
+                initialIndex: index,
+                lastHoveredIndex: index
+            };
+            const wrapper = this.template.querySelector('[data-element-id="div-wrapper"]');
+            wrapper.classList.add('avonni-pill-container__list_dragging');
+        }, 200);
     }
 
     stopPropagation(event) {
