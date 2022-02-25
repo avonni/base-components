@@ -32,7 +32,15 @@
 
 .avonni-list__item {
     height: fit-content;
-    background-color: var(--avonni-list-item-color-background, transparent);
+    background-color: var(--avonni-list-item-color-background);
+    padding-top: var(--avonni-list-item-block-start);
+    padding-bottom: var(--avonni-list-item-block-end);
+    padding-left: var(--avonni-list-item-inline-start);
+    padding-right: var(--avonni-list-item-inline-end);
+}
+
+.avonni-list__item:not(:last-child) {
+    margin-bottom: var(--avonni-list-item-spacing);
 }
 
 .avonni-list__header_font {
@@ -44,7 +52,7 @@
 }
 
 .avonni-list__item-sortable {
-    cursor: var(--avonni-list-item-cursor, grab);
+    background-color: var(--avonni-list-item-sortable-color-background);
 }
 
 .avonni-list__item-sortable-icon-cursor {
@@ -53,7 +61,15 @@
 
 /* Disable the hover on touch */
 @media (hover: hover) {
+    .avonni-list__item:hover {
+        cursor: var(--avonni-list-item-non-sortable-cursor, default);
+        background-color: var(
+            --avonni-list-item-non-sortable-hover-color-background
+        );
+    }
+
     .avonni-list__item-sortable:hover {
+        cursor: var(--avonni-list-item-sortable-cursor);
         background-color: var(
             --avonni-list-item-color-background-hover,
             #f3f2f2
@@ -80,7 +96,10 @@
     box-shadow: 0 0 10px rgb(0 0 0 / 40%);
     opacity: 0.8;
     cursor: grabbing;
-    background-color: var(--avonni-list-item-color-background, transparent);
+    background-color: var(
+        --avonni-list-item-sortable-color-background,
+        transparent
+    );
 }
 
 .avonni-list__item-img {

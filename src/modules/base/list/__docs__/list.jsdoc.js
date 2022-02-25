@@ -118,8 +118,19 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-list-item-sortable-color-background
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-list-item-color-background-hover
  * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-non-sortable-hover-color-background
  * @type color
  */
 /**
@@ -145,4 +156,39 @@
  * @name --avonni-list-item-around-border-radius
  * @default 0.25rem
  * @type radius
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-spacing
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-block-start
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-block-end
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-inline-start
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-inline-end
+ * @type sizing
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-sortable-cursor
+ * @type styling
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-list-item-non-sortable-cursor
+ * @type styling
  */
