@@ -43,6 +43,7 @@ import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 import { handleKeyDownOnOption } from './keyboard';
 
 const DEFAULT_MIN = 0;
+const DEFAULT_MAX = undefined;
 const DEFAULT_ADD_BUTTON_ICON_NAME = 'utility:right';
 const DEFAULT_DOWN_BUTTON_ICON_NAME = 'utility:down';
 const DEFAULT_REMOVE_BUTTON_ICON_NAME = 'utility:left';
@@ -476,7 +477,7 @@ export default class DualListbox extends LightningElement {
     }
 
     set max(value) {
-        const number = isNaN(parseInt(value, 10)) ? '' : value;
+        const number = isNaN(parseInt(value, 10)) ? DEFAULT_MAX : value;
         this._max = number;
     }
 
@@ -1557,11 +1558,10 @@ export default class DualListbox extends LightningElement {
                     this.required &&
                     this.computedSelectedList.length < 1,
                 rangeUnderflow: () =>
-                    this.computedSelectedList.length < this.min &&
-                    this.min !== '',
+                    this.computedSelectedList.length < this.min,
                 rangeOverflow: () =>
                     this.computedSelectedList.length > this.max &&
-                    this.max !== ''
+                    this.max !== undefined
             });
         }
         return this._constraintApi;
