@@ -1,0 +1,132 @@
+<!--
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+-->
+
+<template>
+    <div class={computedWrapperClass} data-element-id="div-wrapper">
+        <lightning-button
+            if:true={showMore}
+            class="slds-listbox-toggle"
+            label={computedPillCountMoreLabel}
+            variant="base"
+            onclick={handleMoreClick}
+        ></lightning-button>
+        <ul
+            class={computedListboxClass}
+            aria-label={label}
+            aria-orientation="horizontal"
+            data-element-id="ul"
+            onclick={handleClick}
+            onkeydown={handleKeyDown}
+        >
+            <template for:each={computedPills} for:item="pill">
+                <li
+                    key={pill.name}
+                    class="slds-listbox-item"
+                    role="presentation"
+                    data-element-id="li"
+                >
+                    <span
+                        class="slds-pill"
+                        role="option"
+                        aria-selected="true"
+                        tabindex={pill.tabIndex}
+                        data-element-id="span-pill"
+                        onblur={handlePillBlur}
+                        onclick={handlePillClick}
+                        onfocus={handlePillFocus}
+                    >
+                        <span
+                            if:true={pill.avatar}
+                            class="slds-pill__icon_container"
+                        >
+                            <c-avatar
+                                fallback-icon-name={pill.avatar.fallbackIconName}
+                                initials={pill.avatar.initials}
+                                size="x-small"
+                                src={pill.avatar.src}
+                                variant={pill.avatar.variant}
+                            ></c-avatar>
+                        </span>
+                        <a
+                            if:true={pill.href}
+                            href={pill.href}
+                            class="slds-pill__action"
+                            title={pill.label}
+                        >
+                            <span class="slds-pill__label">{pill.label}</span>
+                        </a>
+                        <span
+                            if:false={pill.href}
+                            class="slds-pill__label"
+                            title={pill.label}
+                            >{pill.label}</span
+                        >
+
+                        <lightning-button-icon
+                            if:true={oneAction}
+                            class="slds-pill__remove"
+                            alternative-text={oneAction.label}
+                            disabled={oneAction.disabled}
+                            icon-name={oneAction.iconName}
+                            value={oneAction.name}
+                            variant="bare"
+                            data-item-name={pill.name}
+                            onclick={handleActionClick}
+                        ></lightning-button-icon>
+
+                        <lightning-button-menu
+                            if:true={severalActions}
+                            alternative-text="Show menu"
+                            icon-size="x-small"
+                            variant="bare"
+                            data-item-name={pill.name}
+                            onclick={stopPropagation}
+                            onselect={handleActionClick}
+                        >
+                            <template for:each={actions} for:item="action">
+                                <lightning-menu-item
+                                    key={action.name}
+                                    disabled={action.disabled}
+                                    label={action.label}
+                                    prefix-icon-name={action.iconName}
+                                    value={action.name}
+                                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                    </span>
+                </li>
+            </template>
+        </ul>
+    </div>
+</template>
