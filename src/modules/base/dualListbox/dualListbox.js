@@ -1557,8 +1557,11 @@ export default class DualListbox extends LightningElement {
                     this.required &&
                     this.computedSelectedList.length < 1,
                 rangeUnderflow: () =>
-                    this.computedSelectedList.length < this.min,
-                rangeOverflow: () => this.computedSelectedList.length > this.max
+                    this.computedSelectedList.length < this.min &&
+                    this.min !== '',
+                rangeOverflow: () =>
+                    this.computedSelectedList.length > this.max &&
+                    this.max !== ''
             });
         }
         return this._constraintApi;
