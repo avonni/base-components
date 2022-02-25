@@ -32,7 +32,7 @@
 
 .avonni-list__item {
     height: fit-content;
-    background-color: var(--avonni-list-item-color-background);
+    background-color: var(--avonni-list-item-color-background, transparent);
     padding-top: var(--avonni-list-item-block-start);
     padding-bottom: var(--avonni-list-item-block-end);
     padding-left: var(--avonni-list-item-inline-start);
@@ -69,7 +69,7 @@
     }
 
     .avonni-list__item-sortable:hover {
-        cursor: var(--avonni-list-item-sortable-cursor);
+        cursor: var(--avonni-list-item-sortable-cursor, grab);
         background-color: var(
             --avonni-list-item-color-background-hover,
             #f3f2f2
