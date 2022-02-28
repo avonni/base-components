@@ -42,7 +42,7 @@
 .avonni-list__item-sortable {
     background-color: var(
         --avonni-list-item-color-background-sortable,
-        --avonni-list-item-color-background
+        var(--avonni-list-item-color-background, transparent)
     );
 }
 
@@ -66,17 +66,17 @@
 @media (hover: hover) {
     .avonni-list__item:hover {
         cursor: var(--avonni-list-item-cursor, default);
-        background-color: var(
-            --avonni-list-item-basic-color-background-hover,
-            --avonni-list-item-color-background
-        );
+        background-color: var(--avonni-list-item-color-background-hover);
     }
 
     .avonni-list__item-sortable:hover {
-        cursor: var(--avonni-list-item-cursor-sortable, grab);
+        cursor: var(
+            --avonni-list-item-cursor-sortable,
+            var(--avonni-list-item-cursor, grab)
+        );
         background-color: var(
-            --avonni-list-item-color-background-hover,
-            #f3f2f2
+            --avonni-list-item-color-background-hover-sortable,
+            var(--avonni-list-item-color-background-hover, #f3f2f2)
         );
     }
 }
