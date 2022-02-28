@@ -39,19 +39,19 @@ customElements.define(
 
 export const MaxWidthPillContainer = ({
     actions,
+    alternativeText,
     isCollapsible,
     isExpanded,
     items,
-    label,
     singleLine,
     sortable
 }) => {
     const element = document.createElement('ac-max-width-pill-container');
     element.actions = actions;
+    element.alternativeText = alternativeText;
     element.isCollapsible = isCollapsible;
     element.isExpanded = isExpanded;
     element.items = items;
-    element.label = label;
     element.singleLine = singleLine;
     element.sortable = sortable;
     return element;

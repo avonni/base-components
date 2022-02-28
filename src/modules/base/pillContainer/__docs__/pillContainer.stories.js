@@ -47,6 +47,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        alternativeText: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'Alternative text used to describe the pill container. If the pill container is sortable, it should describe its behavior, for example: "Sortable pills. Press spacebar to grab or drop an item. Press right and left arrow keys to change position. Press escape to cancel."',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Selected Options:' }
+            }
+        },
         isCollapsible: {
             name: 'is-collapsible',
             control: {
@@ -81,17 +92,6 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        label: {
-            control: {
-                type: 'text'
-            },
-            description:
-                'Label used as assistive text for the container, to describe the list of options.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Selected Options:' }
-            }
-        },
         singleLine: {
             name: 'single-line',
             control: {
@@ -118,7 +118,7 @@ export default {
     args: {
         isCollapsible: false,
         isExpanded: false,
-        label: 'Selected Options:',
+        alternativeText: 'Selected Options:',
         singleLine: false,
         sortable: false
     }
@@ -154,6 +154,7 @@ SingleLine.args = {
 export const Sortable = TemplateWithMaxWidth.bind({});
 Sortable.args = {
     items: ITEMS,
-    label: 'Sortable options',
+    alternativeText:
+        'Sortable pills. Press spacebar to grab or drop an item. Press right and left arrow keys to change position. Press escape to cancel.',
     sortable: true
 };

@@ -44,6 +44,7 @@
 
         <span
             if:true={alternativeText}
+            id="label"
             class="slds-assistive-text"
             data-element-id="span-alternative-text"
             >{alternativeText}</span
@@ -61,10 +62,15 @@
 
         <ul
             class={computedListboxClass}
-            aria-label={label}
+            aria-describedby="instructions"
+            aria-labelledby="label"
             aria-orientation="horizontal"
             tabindex={listboxTabIndex}
             data-element-id="ul"
+            onactionclick={handleActionClick}
+            onclick={handlePillClick}
+            onfocusin={handlePillFocus}
+            onfocusout={handlePillBlur}
             onkeydown={handleKeyDown}
         >
             <template for:each={items} for:item="pill" for:index="index">
@@ -74,7 +80,7 @@
                     role="presentation"
                     data-element-id="li"
                     data-index={index}
-                    onmousemove={handleMouseMove}
+                    onmousemove={handlePillMouseMove}
                     onmousedown={handlePillMouseDown}
                 >
                     <c-primitive-pill
@@ -85,12 +91,8 @@
                         label={pill.label}
                         role="option"
                         tabindex="-1"
-                        data-element-id="span-pill"
+                        data-element-id="avonni-primitive-pill"
                         data-index={index}
-                        onactionclick={handleActionClick}
-                        onblur={handlePillBlur}
-                        onclick={handlePillClick}
-                        onfocus={handlePillFocus}
                     ></c-primitive-pill>
                 </li>
             </template>

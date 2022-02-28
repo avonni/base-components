@@ -33,8 +33,25 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeArray, keyCodes } from 'c/utilsPrivate';
 
+/**
+ * @class
+ * @descriptor c-primitive-pill
+ */
 export default class PrimitivePill extends LightningElement {
+    /**
+     * URL of the page that the pill’s link goes to.
+     *
+     * @type {string}
+     * @public
+     */
     @api href;
+
+    /**
+     * Text to display in the pill.
+     *
+     * @type {string}
+     * @public
+     */
     @api label;
 
     _actions = [];
@@ -50,6 +67,18 @@ export default class PrimitivePill extends LightningElement {
         this.removeEventListener('keydown', this.handleKeyDown);
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Array of action objects. See pill container for allowed keys.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get actions() {
         return this._actions;
@@ -59,6 +88,12 @@ export default class PrimitivePill extends LightningElement {
         this._focusedActions = false;
     }
 
+    /**
+     * Avatar object. See pill container for allowed keys.
+     *
+     * @type {object}
+     * @public
+     */
     @api
     get avatar() {
         return this._avatar;
@@ -67,38 +102,94 @@ export default class PrimitivePill extends LightningElement {
         this._avatar = value instanceof Object ? value : null;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Link element.
+     *
+     * @type {HTMLElement}
+     */
     get labelLink() {
         return this.template.querySelector('[data-element-id="a-label"]');
     }
 
+    /**
+     * First action, if there is only one action.
+     *
+     * @type {object}
+     */
     get oneAction() {
         return this.actions.length === 1 && this.actions[0];
     }
 
+    /**
+     * True if there is more than one action.
+     *
+     * @type {boolean}
+     */
     get severalActions() {
         return this.actions.length > 1;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set the focus on the label link.
+     */
     @api
     focusLink() {
         if (this.labelLink) this.labelLink.focus();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Handle a click on an action.
+     *
+     * @param {Event} event
+     */
     handleActionClick(event) {
         const actionName =
             event.detail instanceof Object
                 ? event.detail.value
                 : event.currentTarget.value;
 
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action.
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName
-                }
+                },
+                bubbles: true
             })
         );
     }
 
+    /**
+     * Handle a key pressed on the pill.
+     *
+     * @param {Event} event
+     */
     handleKeyDown = (event) => {
         if (
             event.keyCode === keyCodes.tab &&
@@ -119,12 +210,22 @@ export default class PrimitivePill extends LightningElement {
         }
     };
 
+    /**
+     * Handle a mouse button pressed on the pill link.
+     *
+     * @param {Event} event
+     */
     handleLinkMouseDown(event) {
         // Prevent the link from being dragged,
         // to allow for dragging the whole item
         event.preventDefault();
     }
 
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event
+     */
     stopPropagation(event) {
         event.stopPropagation();
     }
