@@ -69,7 +69,7 @@
         >
             <template for:each={items} for:item="pill" for:index="index">
                 <li
-                    key={pill.name}
+                    key={uniqueKey}
                     class={computedListItemClass}
                     role="presentation"
                     data-element-id="li"
@@ -83,7 +83,6 @@
                         avatar={pill.avatar}
                         href={pill.href}
                         label={pill.label}
-                        name={pill.name}
                         role="option"
                         tabindex="-1"
                         data-element-id="span-pill"

@@ -38,7 +38,7 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 
 const DEFAULT_LABEL = 'Selected Options:';
 
@@ -238,6 +238,10 @@ export default class PillContainer extends LightningElement {
         return this.computedIsCollapsible && !this.computedIsExpanded;
     }
 
+    get uniqueKey() {
+        return generateUUID();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -377,13 +381,11 @@ export default class PillContainer extends LightningElement {
      */
 
     handleActionClick(event) {
-        const itemIndex = Number(event.currentTarget.dataset.index);
-
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
                     name: event.detail.name,
-                    item: deepCopy(this.items[itemIndex])
+                    index: Number(event.currentTarget.dataset.index)
                 }
             })
         );

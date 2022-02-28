@@ -36,7 +36,6 @@ import { normalizeArray, keyCodes } from 'c/utilsPrivate';
 export default class PrimitivePill extends LightningElement {
     @api href;
     @api label;
-    @api name;
 
     _actions = [];
     _avatar;
