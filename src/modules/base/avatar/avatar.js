@@ -157,6 +157,7 @@ export default class Avatar extends LightningElement {
     _textPosition = TEXT_POSITIONS.default;
     _tags;
     _computedTags;
+    _actions;
 
     connectedCallback() {
         this._updateClassList();
@@ -460,6 +461,18 @@ export default class Avatar extends LightningElement {
             fallbackValue: AVATAR_VARIANTS.default,
             validValues: AVATAR_VARIANTS.valid
         });
+    }
+
+    /**
+     * Actions are displayed as button icons that launch custom actions
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+
+    set actions(value) {
+        this._actions = normalizeArray(value);
     }
 
     /**

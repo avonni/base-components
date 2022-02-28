@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeArray } from 'c/utilsPrivate';
 import { computeSldsClass } from 'c/iconUtils';
 
 const AVATAR_SIZES = {
@@ -94,6 +94,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _presenceTitle = DEFAULT_PRESENCE_TITLE;
     _size = AVATAR_SIZES.default;
     _src = '';
+    _actions = [];
     _status = STATUS.default;
     _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
@@ -264,6 +265,28 @@ export default class PrimitiveAvatar extends LightningElement {
             })
             .add(computeSldsClass(this.fallbackIconName))
             .toString();
+    }
+
+    /**
+     * Actions
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+
+    set actions(value) {
+        console.log('Primitive avatar', normalizeArray(value).length);
+
+        this._actions = normalizeArray(value);
+    }
+
+    get actionMenu() {
+        return this._actions.length > 1;
+    }
+
+    get action() {
+        return this._actions[0];
     }
 
     /**

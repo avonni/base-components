@@ -105,5 +105,32 @@
                 <span class="slds-assistive-text">{entityTitle}</span>
             </template>
         </div>
+
+        <!-- Actions here -->
+        <div
+            if:true={actions}
+            class="avonni-avatar__actions avonni-avatar_bottom-left"
+        >
+            <template if:true={actionMenu}>
+                <lightning-button-menu>
+                    <template for:each={actions} for:item="action">
+                        <lightning-icon
+                            key={action.name}
+                            class="avonni-avatar__entity-icon"
+                            icon-name={action.iconName}
+                        >
+                        </lightning-icon>
+                    </template>
+                </lightning-button-menu>
+            </template>
+
+            <template if:false={actionMenu}>
+                <lightning-icon
+                    class="avonni-avatar__entity-icon"
+                    icon-name={action.iconName}
+                >
+                </lightning-icon>
+            </template>
+        </div>
     </div>
 </template>

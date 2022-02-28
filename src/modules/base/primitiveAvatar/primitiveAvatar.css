@@ -200,6 +200,18 @@
     border-width: 2px;
     padding: 3px;
 }
+/** 
+* Actions
+*/
+.avonni-avatar__actions {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    border-radius: 100px;
+    border-style: solid;
+    border-color: var(--avonni-avatar-presence-color-border, #ffffff);
+    background: white;
+}
 /**
 * Presence
 */

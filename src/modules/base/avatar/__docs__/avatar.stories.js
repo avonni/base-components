@@ -192,6 +192,43 @@ export default {
                 category: 'Presence'
             }
         },
+        actions: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'One action or a list of different actions in a dropdown menu.',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Action'
+            }
+        },
+        actionTitle: {
+            name: 'action-title',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Action title to be shown as a tooltip on hover over the action icon.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Action'
+            }
+        },
+        actionPosition: {
+            name: 'presence-position',
+            control: {
+                type: 'select'
+            },
+            options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+            defaultValue: 'bottom-right',
+            description: 'Position of the action icon.',
+            table: {
+                defaultValue: { summary: 'bottom-right' },
+                type: { summar: 'string' },
+                category: 'Action'
+            }
+        },
         entityIconName: {
             name: 'entity-icon-name',
             control: {
@@ -354,6 +391,20 @@ const tags = [
     { label: 'lightest', variant: 'lightest' },
     { label: 'inverse', variant: 'inverse' }
 ];
+
+const actions = [
+    {
+        label: 'Add item',
+        name: 'add-item',
+        iconName: 'utility:add'
+    },
+    {
+        label: 'Edit item',
+        name: 'edit-item',
+        iconName: 'utility:edit'
+    }
+];
+
 const Template = (args) => Avatar(args);
 
 export const Base = Template.bind({});
@@ -580,4 +631,38 @@ BaseWithTags.args = {
     fallbackIconName: 'standard:avatar',
     initials: 'JS',
     tags: tags
+};
+
+export const BaseWithAction = Template.bind({});
+BaseWithAction.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    actions: [
+        {
+            label: 'Add item',
+            name: 'add-item',
+            iconName: 'utility:add'
+        }
+    ]
+};
+
+export const BaseWithActions = Template.bind({});
+BaseWithActions.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    actions: actions
 };
