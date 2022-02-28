@@ -1,0 +1,8 @@
+:host:focus-within {
+    border-color: var(--sds-c-pill-color-border-focus, #1b96ff);
+    box-shadow: 0 0 3px #0176d3;
+}
+
+.avonni-primitive-pill__label-link:focus {
+    box-shadow: none;
+}

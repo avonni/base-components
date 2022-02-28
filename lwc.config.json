@@ -375,6 +375,10 @@
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
         },
         {
+            "name": "c/primitivePill",
+            "path": "src/modules/base/primitivePill/primitivePill.js"
+        },
+        {
             "name": "c/primitiveProgressStep",
             "path": "src/modules/base/primitiveProgressStep/primitiveProgressStep.js"
         },

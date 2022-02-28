@@ -30,15 +30,38 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export default class PillContainerPill {
-    constructor(props) {
-        Object.assign(this, props);
-    }
+import { createElement } from 'lwc';
+import PrimitivePill from '../primitivePill';
 
-    get avatar() {
-        return this._avatar;
-    }
-    set avatar(value) {
-        this._avatar = value instanceof Object ? value : null;
-    }
-}
+let element;
+describe('Primitive Pill', () => {
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
+
+    beforeEach(() => {
+        element = createElement('avonni-primitive-pill', {
+            is: PrimitivePill
+        });
+        document.body.appendChild(element);
+    });
+
+    it('Default attributes', () => {
+        // expect(element.title).toBeUndefined();
+    });
+
+    /* ----- ATTRIBUTES ----- */
+
+    // title
+    it('title', () => {
+        // element.title = 'This is a title text';
+        // return Promise.resolve().then(() => {
+        //     const title = element.shadowRoot.querySelector(
+        //         '.slds-section__title'
+        //     );
+        //     expect(title.textContent).toBe('This is a title text');
+        // });
+    });
+});
