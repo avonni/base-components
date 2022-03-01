@@ -106,13 +106,18 @@
             </template>
         </div>
 
-        <!-- Actions here -->
+        <!-- Actions -->
         <div
             if:true={actions.length}
             class="avonni-avatar__actions avonni-avatar_bottom-left"
         >
             <template if:true={actionMenu}>
-                <lightning-button-menu variant="border-filled">
+                <c-button-menu
+                    variant="border-filled"
+                    icon-size="xx-small"
+                    icon-name="utility:add"
+                    icon-only
+                >
                     <template for:each={computedActions} for:item="action">
                         <lightning-menu-item
                             key={action.name}
@@ -122,13 +127,12 @@
                         >
                         </lightning-menu-item>
                     </template>
-                </lightning-button-menu>
+                </c-button-menu>
             </template>
 
             <template if:false={actionMenu}>
                 <lightning-button-icon
                     size="small"
-                    class="avonni-avatar__action-icon"
                     icon-name={action.iconName}
                     variant="border-filled"
                     alternative-text={action.label}

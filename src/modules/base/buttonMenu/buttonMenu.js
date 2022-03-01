@@ -109,7 +109,14 @@ export default class ButtonMenu extends LightningElement {
      * @type {string}
      * @default utility:down
      */
-    @api iconName = DEFAULT_ICON_NAME;
+    @api
+    get iconName() {
+        return this._iconName;
+    }
+
+    set iconName(icon) {
+        this._iconName = normalizeString(icon);
+    }
     /**
      * Optional text to be shown on the button.
      *
@@ -144,6 +151,8 @@ export default class ButtonMenu extends LightningElement {
     _tooltip;
     _variant = BUTTON_VARIANTS.default;
 
+    _iconName = DEFAULT_ICON_NAME;
+    _iconOnly = false;
     _order = null;
 
     _boundingRect = {};
@@ -330,6 +339,21 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
+     * Displays custom icon without down arrow
+     *
+     * @public
+     * @type {boolean}
+     */
+    @api
+    get iconOnly() {
+        return this._iconOnly;
+    }
+
+    set iconOnly(value) {
+        this._iconOnly = normalizeBoolean(value);
+    }
+
+    /**
      * Displays title text when the mouse moves over the button menu.
      *
      * @public
@@ -483,6 +507,11 @@ export default class ButtonMenu extends LightningElement {
      * @type {boolean}
      */
     get computedShowDownIcon() {
+        console.log(this.iconOnly);
+        if (this.iconOnly) {
+            console.log('icon only');
+            return false;
+        }
         return !(
             this.iconName === 'utility:down' ||
             this.iconName === 'utility:chevrondown'
