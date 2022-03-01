@@ -43,6 +43,7 @@
         src={avatar.src}
         variant={avatar.variant}
         data-element-id="avonni-avatar"
+        onmousedown={handleDraggableMouseDown}
     ></c-avatar>
 
     <!-- Label -->
@@ -52,7 +53,7 @@
         title={label}
         class="slds-pill__label avonni-primitive-pill__label-link"
         data-element-id="a-label"
-        onmousedown={handleLinkMouseDown}
+        onmousedown={handleDraggableMouseDown}
         >{label}</a
     >
     <span

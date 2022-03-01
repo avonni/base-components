@@ -223,13 +223,11 @@ export default class PrimitivePill extends LightningElement {
     };
 
     /**
-     * Handle a mouse button pressed on the pill link.
+     * Handle a mouse button pressed on the pill link or avatar. Prevent them from being dragged, to allow for dragging the whole item when the pill is in a pill container.
      *
      * @param {Event} event
      */
-    handleLinkMouseDown(event) {
-        // Prevent the link from being dragged,
-        // to allow for dragging the whole item
+    handleDraggableMouseDown(event) {
         event.preventDefault();
     }
 }
