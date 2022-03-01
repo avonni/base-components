@@ -108,28 +108,32 @@
 
         <!-- Actions here -->
         <div
-            if:true={actions}
+            if:true={actions.length}
             class="avonni-avatar__actions avonni-avatar_bottom-left"
         >
             <template if:true={actionMenu}>
-                <lightning-button-menu>
-                    <template for:each={actions} for:item="action">
-                        <lightning-icon
+                <lightning-button-menu variant="border-filled">
+                    <template for:each={computedActions} for:item="action">
+                        <lightning-menu-item
                             key={action.name}
-                            class="avonni-avatar__entity-icon"
                             icon-name={action.iconName}
+                            value={action.name}
+                            label={action.label}
                         >
-                        </lightning-icon>
+                        </lightning-menu-item>
                     </template>
                 </lightning-button-menu>
             </template>
 
             <template if:false={actionMenu}>
-                <lightning-icon
-                    class="avonni-avatar__entity-icon"
+                <lightning-button-icon
+                    size="small"
+                    class="avonni-avatar__action-icon"
                     icon-name={action.iconName}
+                    variant="border-filled"
+                    alternative-text={action.label}
                 >
-                </lightning-icon>
+                </lightning-button-icon>
             </template>
         </div>
     </div>

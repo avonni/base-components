@@ -394,14 +394,14 @@ const tags = [
 
 const actions = [
     {
-        label: 'Add item',
-        name: 'add-item',
-        iconName: 'utility:add'
-    },
-    {
         label: 'Edit item',
         name: 'edit-item',
         iconName: 'utility:edit'
+    },
+    {
+        label: 'Add item',
+        name: 'add-item',
+        iconName: 'utility:add'
     }
 ];
 
@@ -644,11 +644,12 @@ BaseWithAction.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JS',
+    actionPosition: 'bottom-left',
     actions: [
         {
-            label: 'Add item',
-            name: 'add-item',
-            iconName: 'utility:add'
+            label: 'Take a profile picture',
+            name: 'take-profile-picture',
+            iconName: 'utility:photo'
         }
     ]
 };
@@ -664,5 +665,6 @@ BaseWithActions.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JS',
+    actionPosition: 'bottom-left',
     actions: actions
 };
