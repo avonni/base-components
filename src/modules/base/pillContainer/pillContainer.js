@@ -474,6 +474,8 @@ export default class PillContainer extends LightningElement {
      * @param {number} index Index of the pill the reordered pill is moving to the left of.
      */
     moveLeft(index) {
+        if (index < 0) return;
+
         this.clearDragBorder();
         this._dragState.lastHoveredIndex = index;
         this.itemElements[index].classList.add(
@@ -491,6 +493,8 @@ export default class PillContainer extends LightningElement {
      * @param {number} index Index of the pill the reordered pill is moving to the right of.
      */
     moveRight(index) {
+        if (index > this.items.length - 1) return;
+
         this.clearDragBorder();
         this._dragState.lastHoveredIndex = index;
         this.itemElements[index].classList.add(
@@ -569,15 +573,6 @@ export default class PillContainer extends LightningElement {
                 }
             })
         );
-
-        console.log(
-            new CustomEvent('actionclick', {
-                detail: {
-                    name: event.detail.name,
-                    index: Number(event.target.dataset.index)
-                }
-            }).detail
-        );
     }
 
     /**
@@ -592,6 +587,7 @@ export default class PillContainer extends LightningElement {
         const index = this._dragState
             ? this._dragState.lastHoveredIndex
             : this._focusedIndex;
+
         switch (event.keyCode) {
             case keyCodes.left:
             case keyCodes.up: {
@@ -601,7 +597,8 @@ export default class PillContainer extends LightningElement {
                     this.switchFocus(previousIndex);
                 } else if (
                     this._dragState.position === 'left' ||
-                    previousIndex === this._dragState.initialIndex
+                    previousIndex === this._dragState.initialIndex ||
+                    index === this._dragState.initialIndex
                 ) {
                     this.moveLeft(previousIndex);
                 } else {
@@ -617,7 +614,8 @@ export default class PillContainer extends LightningElement {
                     this.switchFocus(nextIndex);
                 } else if (
                     this._dragState.position === 'right' ||
-                    nextIndex === this._dragState.initialIndex
+                    nextIndex === this._dragState.initialIndex ||
+                    index === this._dragState.initialIndex
                 ) {
                     this.moveRight(nextIndex);
                 } else {
@@ -628,7 +626,7 @@ export default class PillContainer extends LightningElement {
             case keyCodes.space:
                 if (this._dragState) {
                     this.handleMouseUp();
-                } else {
+                } else if (this.sortable) {
                     this.initDragState(index);
                 }
                 break;
