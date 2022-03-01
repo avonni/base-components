@@ -120,15 +120,6 @@ export default class PrimitivePill extends LightningElement {
      */
 
     /**
-     * Link element.
-     *
-     * @type {HTMLElement}
-     */
-    get labelLink() {
-        return this.template.querySelector('[data-element-id="a-label"]');
-    }
-
-    /**
      * First action, if there is only one action.
      *
      * @type {object}
@@ -157,7 +148,8 @@ export default class PrimitivePill extends LightningElement {
      */
     @api
     focusLink() {
-        if (this.labelLink) this.labelLink.focus();
+        const link = this.template.querySelector('[data-element-id="a-label"]');
+        if (link) link.focus();
     }
 
     /*
@@ -197,6 +189,15 @@ export default class PrimitivePill extends LightningElement {
     }
 
     /**
+     * Block the propagation of the click on the action menu. Necessary for sortable pill containers.
+     *
+     * @param {Event} event
+     */
+    handleButtonMenuClick(event) {
+        event.stopPropagation();
+    }
+
+    /**
      * Handle a key pressed on the pill.
      *
      * @param {Event} event
@@ -230,14 +231,5 @@ export default class PrimitivePill extends LightningElement {
         // Prevent the link from being dragged,
         // to allow for dragging the whole item
         event.preventDefault();
-    }
-
-    /**
-     * Stop the propagation of an event.
-     *
-     * @param {Event} event
-     */
-    stopPropagation(event) {
-        event.stopPropagation();
     }
 }
