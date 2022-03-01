@@ -31,21 +31,13 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray, keyCodes } from 'c/utilsPrivate';
+import { normalizeArray, keyCodes, classListMutation } from 'c/utilsPrivate';
 
 /**
  * @class
  * @descriptor c-primitive-pill
  */
 export default class PrimitivePill extends LightningElement {
-    /**
-     * URL of the page that the pill’s link goes to.
-     *
-     * @type {string}
-     * @public
-     */
-    @api href;
-
     /**
      * Text to display in the pill.
      *
@@ -56,6 +48,7 @@ export default class PrimitivePill extends LightningElement {
 
     _actions = [];
     _avatar;
+    _href;
 
     _focusedActions = false;
 
@@ -100,6 +93,24 @@ export default class PrimitivePill extends LightningElement {
     }
     set avatar(value) {
         this._avatar = value instanceof Object ? value : null;
+    }
+
+    /**
+     * URL of the page that the pill’s link goes to.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get href() {
+        return this._href;
+    }
+    set href(value) {
+        this._href = value;
+
+        classListMutation(this.classList, {
+            'avonni-primitive-pill__action': !!this._href
+        });
     }
 
     /*

@@ -289,7 +289,7 @@ export default class PillContainer extends LightningElement {
      * @type {string}
      */
     get computedWrapperClass() {
-        return classSet().add({
+        return classSet('avonni-pill-container__wrapper').add({
             'slds-is-expanded': this.computedIsExpanded && !this.singleLine,
             'slds-pill_container': this.singleLine,
             'slds-listbox_selection-group': !this.singleLine

@@ -23,3 +23,144 @@
  * @property {string} label Text to display in the pill.
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-action-color-background
+ * @default --avonni-pill-color-background
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-action-color-border
+ * @default --avonni-pill-color-border
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-action-text-color
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-color-border
+ * @default #e5e5e5
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-color-border-focus
+ * @default #1b96ff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-color-border
+ * @default #e5e5e5
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-spacing-block-end
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-spacing-block-start
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-spacing-inline-end
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-container-spacing-inline-start
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-line-height
+ * @default 1.5
+ * @type number
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-radius-border
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-shadow
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-shadow-focus
+ * @default 0 0 3px #0176d3
+ * @type string
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-sizing-border
+ * @default 1px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-spacing-block-end
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-spacing-block-start
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-spacing-inline-end
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-spacing-inline-start
+ * @default 0.125rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-pill-text-color
+ * @default #181818
+ * @type color
+ */
