@@ -62,7 +62,8 @@ const POSITIONS = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
     presenceDefault: 'bottom-right',
     statusDefault: 'top-right',
-    entityDefault: 'top-left'
+    entityDefault: 'top-left',
+    actionDefault: 'bottom-left'
 };
 const PRESENCE = {
     valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
@@ -72,6 +73,10 @@ const PRESENCE = {
 const TEXT_POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: 'right'
+};
+const ACTION_SIZE = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
 };
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Avatar';
@@ -86,6 +91,7 @@ const DEFAULT_STATUS_TITLE = 'Status';
  * @public
  */
 export default class Avatar extends LightningElement {
+    @api actionMenuIcon;
     /**
      * The Lightning Design System name of the icon used as a fallback for the entity icon when the image fails to load. The initials fallback relies on this for its background color.
      * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -158,6 +164,8 @@ export default class Avatar extends LightningElement {
     _tags;
     _computedTags;
     _actions;
+    _actionPosition = POSITIONS.actionDefault;
+    _actionSize;
 
     connectedCallback() {
         this._updateClassList();
@@ -473,6 +481,30 @@ export default class Avatar extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
+    }
+
+    @api
+    get actionPosition() {
+        return this._actionPosition;
+    }
+
+    set actionPosition(value) {
+        this._actionPosition = normalizeString(value, {
+            fallbackValue: POSITIONS.actionDefault,
+            validValues: POSITIONS.valid
+        });
+    }
+
+    @api
+    get actionSize() {
+        return this._actionSize;
+    }
+
+    set actionSize(value) {
+        this._actionSize = normalizeString(value, {
+            fallbackValue: ACTION_SIZE.default,
+            validValues: ACTION_SIZE.valid
+        });
     }
 
     /**

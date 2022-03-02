@@ -188,7 +188,7 @@ export default {
             description: 'Position of the presence icon.',
             table: {
                 defaultValue: { summary: 'bottom-right' },
-                type: { summar: 'string' },
+                type: { summary: 'string' },
                 category: 'Presence'
             }
         },
@@ -203,13 +203,13 @@ export default {
                 category: 'Action'
             }
         },
-        actionTitle: {
-            name: 'action-title',
+        actionMenuIcon: {
+            name: 'action-menu-icon',
             control: {
                 type: 'text'
             },
             description:
-                'Action title to be shown as a tooltip on hover over the action icon.',
+                "The Lightning Design System name of the icon used as a menu icon. Names are written in the format 'utility:threedots_vertical' where 'utility' is the category, and 'threedots_vertical' is the specific icon to be displayed.",
             table: {
                 type: { summary: 'string' },
                 category: 'Action'
@@ -221,11 +221,24 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'bottom-right',
-            description: 'Position of the action icon.',
+            defaultValue: 'bottom-left',
+            description: 'Position of the action button.',
             table: {
-                defaultValue: { summary: 'bottom-right' },
-                type: { summar: 'string' },
+                defaultValue: { summary: 'bottom-left' },
+                type: { summary: 'string' },
+                category: 'Action'
+            }
+        },
+        actionSize: {
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            defaultValue: 'small',
+            description: 'The size of the action button.',
+            table: {
+                defaultValue: { summary: 'small' },
+                type: { summary: 'string' },
                 category: 'Action'
             }
         },
@@ -644,7 +657,6 @@ BaseWithAction.args = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     fallbackIconName: 'standard:avatar',
     initials: 'JS',
-    actionPosition: 'bottom-left',
     actions: [
         {
             label: 'Take a profile picture',
@@ -666,5 +678,6 @@ BaseWithActions.args = {
     fallbackIconName: 'standard:avatar',
     initials: 'JS',
     actionPosition: 'bottom-left',
-    actions: actions
+    actions: actions,
+    actionMenuIcon: 'utility:threedots'
 };

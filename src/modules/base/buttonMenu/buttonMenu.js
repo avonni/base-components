@@ -152,7 +152,7 @@ export default class ButtonMenu extends LightningElement {
     _variant = BUTTON_VARIANTS.default;
 
     _iconName = DEFAULT_ICON_NAME;
-    _iconOnly = false;
+    _hideDownArrow = false;
     _order = null;
 
     _boundingRect = {};
@@ -345,12 +345,12 @@ export default class ButtonMenu extends LightningElement {
      * @type {boolean}
      */
     @api
-    get iconOnly() {
-        return this._iconOnly;
+    get hideDownArrow() {
+        return this._hideDownArrow;
     }
 
-    set iconOnly(value) {
-        this._iconOnly = normalizeBoolean(value);
+    set hideDownArrow(value) {
+        this._hideDownArrow = normalizeBoolean(value);
     }
 
     /**
@@ -507,7 +507,7 @@ export default class ButtonMenu extends LightningElement {
      * @type {boolean}
      */
     get computedShowDownIcon() {
-        if (this.iconOnly) {
+        if (this.hideDownArrow) {
             return false;
         }
         return !(

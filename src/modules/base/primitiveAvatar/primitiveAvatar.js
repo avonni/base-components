@@ -62,6 +62,10 @@ const POSITIONS = {
     entityDefault: 'top-left',
     actionDefault: 'bottom-left'
 };
+const ACTION_SIZE = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
+};
 const PRESENCE = {
     valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
     default: null
@@ -71,6 +75,7 @@ const DEFAULT_ALTERNATIVE_TEXT = 'Avatar';
 const DEFAULT_ENTITY_TITLE = 'Entity';
 const DEFAULT_PRESENCE_TITLE = 'Presence';
 const DEFAULT_STATUS_TITLE = 'Status';
+const DEFAULT_ICON_MENU_ICON = 'utility:down';
 
 export default class PrimitiveAvatar extends LightningElement {
     @api entityInitials;
@@ -99,6 +104,9 @@ export default class PrimitiveAvatar extends LightningElement {
     _src = '';
     _actions = [];
     _actionPosition = POSITIONS.actionDefault;
+    _actionMenuIcon = DEFAULT_ICON_MENU_ICON;
+    _actionSize = ACTION_SIZE.default;
+    _actionTitle = '';
     _status = STATUS.default;
     _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
@@ -294,17 +302,37 @@ export default class PrimitiveAvatar extends LightningElement {
 
     @api
     get actionPosition() {
-        console.log('action position', this._actionPosition);
         return this._actionPosition;
     }
 
     set actionPosition(value) {
-        console.log('value', normalizeString(value));
         this._actionPosition = normalizeString(value, {
             fallbackValue: POSITIONS.actionDefault,
             validValues: POSITIONS.valid
         });
         this._computeActionClasses();
+    }
+
+    @api
+    get actionSize() {
+        return this._actionSize;
+    }
+
+    set actionSize(size) {
+        this._actionSize = size;
+    }
+
+    @api
+    get actionMenuIcon() {
+        return this._actionMenuIcon;
+    }
+
+    set actionMenuIcon(icon) {
+        if (icon?.length > 0) {
+            this._actionMenuIcon = icon;
+        } else {
+            this._actionMenuIcon = DEFAULT_ICON_MENU_ICON;
+        }
     }
 
     get computedActionClasse() {
@@ -448,7 +476,6 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     _computeActionClasses() {
-        console.log('classes action', this._actionPosition);
         this.actionClass = classSet('avonni-avatar__actions').add(
             `avonni-avatar_${this._actionPosition}`
         );
