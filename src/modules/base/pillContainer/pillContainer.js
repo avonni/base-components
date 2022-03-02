@@ -642,6 +642,7 @@ export default class PillContainer extends LightningElement {
      * Handle a click on the "show more" button.
      */
     handleMoreClick() {
+        this._isExpanded = true;
         this.focus();
     }
 

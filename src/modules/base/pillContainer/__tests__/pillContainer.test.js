@@ -157,9 +157,10 @@ describe('Pill Container', () => {
                 );
                 expect(button).toBeTruthy();
 
-                element.isExpanded = true;
+                button.click();
             })
             .then(() => {
+                expect(element.isExpanded).toBeTruthy();
                 button = element.shadowRoot.querySelector(
                     '[data-element-id="lightning-button-show-more"]'
                 );
