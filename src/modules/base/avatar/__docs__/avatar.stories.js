@@ -230,6 +230,7 @@ export default {
             }
         },
         actionSize: {
+            name: 'action-size',
             control: {
                 type: 'select'
             },

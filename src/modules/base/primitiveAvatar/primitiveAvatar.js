@@ -505,4 +505,27 @@ export default class PrimitiveAvatar extends LightningElement {
         );
         this._src = '';
     }
+
+    /**
+     * Action clicked event handler.
+     *
+     * @param {event}
+     */
+    handleActionClick(event) {
+        console.log(event.currentTarget.value);
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    name: event.currentTarget.value
+                }
+            })
+        );
+    }
 }

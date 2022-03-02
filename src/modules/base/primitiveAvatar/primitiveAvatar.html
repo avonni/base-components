@@ -122,6 +122,7 @@
                             icon-name={action.iconName}
                             value={action.name}
                             label={action.label}
+                            onclick={handleActionClick}
                         >
                         </lightning-menu-item>
                     </template>
@@ -134,6 +135,8 @@
                     icon-name={action.iconName}
                     variant="border-filled"
                     alternative-text={action.label}
+                    value={action.name}
+                    onclick={handleActionClick}
                 >
                 </lightning-button-icon>
             </template>
