@@ -216,7 +216,7 @@ export default {
             }
         },
         actionPosition: {
-            name: 'presence-position',
+            name: 'action-position',
             control: {
                 type: 'select'
             },

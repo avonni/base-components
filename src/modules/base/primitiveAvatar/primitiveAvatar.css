@@ -206,6 +206,10 @@
 .avonni-avatar__actions {
     position: absolute;
     --sds-c-button-radius-border: 40px;
+    --sds-c-button-spacing-block-start: 0;
+    --sds-c-button-spacing-block-end: 3px;
+    --sds-c-button-spacing-inline-end: 0px;
+    --sds-c-button-spacing-inline-start: 0;
 }
 
 /**

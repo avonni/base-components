@@ -59,7 +59,8 @@ const POSITIONS = {
     valid: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
     presenceDefault: 'bottom-right',
     statusDefault: 'top-right',
-    entityDefault: 'top-left'
+    entityDefault: 'top-left',
+    actionDefault: 'bottom-left'
 };
 const PRESENCE = {
     valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
@@ -82,6 +83,8 @@ export default class PrimitiveAvatar extends LightningElement {
     statusComputed;
     wrapperClass;
     fallbackIconClass;
+    computedActions;
+    actionClass;
 
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _entityIconName;
@@ -95,7 +98,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _size = AVATAR_SIZES.default;
     _src = '';
     _actions = [];
-    computedActions = [];
+    _actionPosition = POSITIONS.actionDefault;
     _status = STATUS.default;
     _statusPosition = POSITIONS.statusDefault;
     _statusTitle = DEFAULT_STATUS_TITLE;
@@ -289,6 +292,25 @@ export default class PrimitiveAvatar extends LightningElement {
         return this.computedActions[0];
     }
 
+    @api
+    get actionPosition() {
+        console.log('action position', this._actionPosition);
+        return this._actionPosition;
+    }
+
+    set actionPosition(value) {
+        console.log('value', normalizeString(value));
+        this._actionPosition = normalizeString(value, {
+            fallbackValue: POSITIONS.actionDefault,
+            validValues: POSITIONS.valid
+        });
+        this._computeActionClasses();
+    }
+
+    get computedActionClasse() {
+        return this.actionClass;
+    }
+
     /**
      * Status
      */
@@ -423,6 +445,13 @@ export default class PrimitiveAvatar extends LightningElement {
         this.presenceClass = classSet('avonni-avatar__presence')
             .add(`avonni-avatar__presence_${presence}`)
             .add(`avonni-avatar_${presencePosition}`);
+    }
+
+    _computeActionClasses() {
+        console.log('classes action', this._actionPosition);
+        this.actionClass = classSet('avonni-avatar__actions').add(
+            `avonni-avatar_${this._actionPosition}`
+        );
     }
 
     _computeEntityClasses() {

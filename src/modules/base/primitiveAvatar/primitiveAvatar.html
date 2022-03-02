@@ -107,10 +107,7 @@
         </div>
 
         <!-- Actions -->
-        <div
-            if:true={actions.length}
-            class="avonni-avatar__actions avonni-avatar_bottom-left"
-        >
+        <div if:true={actions.length} class={computedActionClasse}>
             <template if:true={actionMenu}>
                 <c-button-menu
                     variant="border-filled"

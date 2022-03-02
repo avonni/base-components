@@ -507,9 +507,7 @@ export default class ButtonMenu extends LightningElement {
      * @type {boolean}
      */
     get computedShowDownIcon() {
-        console.log(this.iconOnly);
         if (this.iconOnly) {
-            console.log('icon only');
             return false;
         }
         return !(
