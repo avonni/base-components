@@ -148,8 +148,9 @@
                 </div>
                 <ul
                     if:false={isLoading}
-                    role="listbox"
+                    class="slds-scrollable_y"
                     aria-multiselectable={isMultiSelect}
+                    role="listbox"
                     data-element-id="ul-listbox"
                 >
                     <!-- Back to parent link -->
@@ -192,6 +193,7 @@
                             aria-label="Action button"
                             aria-disabled={action.computedAriaDisabled}
                             data-element-id="li-top-action"
+                            data-fixed={action.fixed}
                             data-name={action.name}
                             onclick={handleActionClick}
                             onmouseenter={handleMouseEnter}
@@ -254,6 +256,7 @@
                             id={action.name}
                             role="option"
                             data-element-id="li-bottom-action"
+                            data-fixed={action.fixed}
                             data-name={action.name}
                             aria-disabled={action.computedAriaDisabled}
                             onclick={handleActionClick}

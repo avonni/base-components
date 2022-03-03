@@ -43,6 +43,18 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-combobox-action-color-background
+ * @default #ffffff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-combobox-action-color-background-hover
+ * @default #f3f2f2
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-combobox-option-color-background
  * @default transparent
  * @type color

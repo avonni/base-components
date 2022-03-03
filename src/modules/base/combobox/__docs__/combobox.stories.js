@@ -443,6 +443,8 @@ VerticalSelectedOptions.args = {
     label: 'Vertical selected options',
     isMultiSelect: true,
     options: optionsWithAvatars,
+    dropdownLength: '5-items',
+    actions,
     selectedOptionsDirection: 'vertical',
     value: ['tyrell', 'oil-sla', 'dickenson']
 };

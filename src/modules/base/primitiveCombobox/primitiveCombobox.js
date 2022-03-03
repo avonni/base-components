@@ -204,6 +204,9 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.topActions.push(actionObject);
             }
         });
+
+        this.sortFixedActions(this.topActions, 'first');
+        this.sortFixedActions(this.bottomActions);
     }
 
     /**
@@ -834,7 +837,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get computedDropdownClass() {
         return classSet(
-            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid combobox__dropdown avonni-primitive-combobox__dropdown'
+            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid avonni-primitive-combobox__dropdown slds-is-relative'
         )
             .add({
                 'slds-dropdown_left':
@@ -1071,6 +1074,25 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Place the fixed actions first or last in an array of action objects. Used to make sure items actual order matches the visual order.
+     *
+     * @param {object[]} actions Array of actions to sort.
+     * @param {string} position Position of the fixecd actions in the array. Valid values are first and last. Defaults to last.
+     */
+    sortFixedActions(actions, position) {
+        const fixedFirst = position === 'first';
+
+        actions.sort((a, b) => {
+            if (a.fixed && !b.fixed) {
+                return fixedFirst ? -1 : 1;
+            } else if (!a.fixed && b.fixed) {
+                return fixedFirst ? 1 : -1;
+            }
+            return 0;
+        });
+    }
+
+    /**
      * Positioning for the dropdown.
      */
     startDropdownAutoPositioning() {
@@ -1172,8 +1194,10 @@ export default class PrimitiveCombobox extends LightningElement {
         // Do not set the height when there is no actions or options
         // (for example 0 search results or is loading)
         if (height) {
-            dropdown.style.maxHeight = `${height}px`;
+            dropdown.style.height = `${height}px`;
         }
+
+        this.updateFixedActionsHeight();
     }
 
     /**
@@ -1423,11 +1447,11 @@ export default class PrimitiveCombobox extends LightningElement {
 
         if (this._highlightedOption)
             this._highlightedOption.classList.remove(
-                'avonni-primitive-combobox__option_background_focused'
+                'avonni-primitive-combobox__option_focused'
             );
         this._highlightedOptionIndex = index;
         this._highlightedOption.classList.add(
-            'avonni-primitive-combobox__option_background_focused'
+            'avonni-primitive-combobox__option_focused'
         );
         const listboxElement = this.template.querySelector(
             '[data-element-id="ul-listbox"]'
@@ -1451,6 +1475,41 @@ export default class PrimitiveCombobox extends LightningElement {
             position: 'top',
             isBackLink: true
         });
+    }
+
+    /**
+     * Position the fixed actions and add their height to the listbox padding, to leave room for them in their original position.
+     */
+    updateFixedActionsHeight() {
+        const listbox = this.template.querySelector(
+            '[data-element-id="ul-listbox"]'
+        );
+
+        let offset = 0;
+        const fixedTopActions = Array.from(
+            this.template.querySelectorAll(
+                '[data-element-id="li-top-action"][data-fixed="true"]'
+            )
+        );
+        fixedTopActions.forEach((action) => {
+            action.style.top = `${offset}px`;
+            offset += action.offsetHeight;
+        });
+
+        listbox.style.paddingTop = `${offset}px`;
+
+        offset = 0;
+        const fixedBottomActions = Array.from(
+            this.template.querySelectorAll(
+                '[data-element-id="li-bottom-action"][data-fixed="true"]'
+            )
+        );
+        fixedBottomActions.reverse().forEach((action) => {
+            action.style.bottom = `${offset}px`;
+            offset += action.offsetHeight;
+        });
+
+        listbox.style.paddingBottom = `${offset}px`;
     }
 
     /**
@@ -1560,6 +1619,8 @@ export default class PrimitiveCombobox extends LightningElement {
                     } else {
                         this.highlightOption(this._optionElements.length - 1);
                     }
+                    // Prevent the browser scrollbar from scrolling up
+                    event.preventDefault();
                     break;
                 case 'ArrowDown':
                     if (index < this._optionElements.length - 1) {
@@ -1567,21 +1628,19 @@ export default class PrimitiveCombobox extends LightningElement {
                     } else {
                         this.highlightOption(0);
                     }
+                    // Prevent the browser scrollbar from scrolling down
+                    event.preventDefault();
                     break;
                 case 'ArrowLeft':
-                    this.handleBackLinkClick();
-                    break;
                 case 'GoBack':
                     this.handleBackLinkClick();
                     break;
                 case ' ':
-                    this.handleHighlightedOptionClick(event);
-                    break;
                 case 'Spacebar':
-                    this.handleHighlightedOptionClick(event);
-                    break;
                 case 'Enter':
                     this.handleHighlightedOptionClick(event);
+                    // Prevent the browser scrollbar from scrolling down
+                    event.preventDefault();
                     break;
                 case 'Escape':
                     this.close();
