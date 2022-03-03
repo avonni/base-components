@@ -44,7 +44,7 @@
         0.25rem
     );
     --avonni-primitive-combobox-input-radius-border-top-left: 0;
-    --avonni-primitive-combobox-input-radius-border-bottom-lef: 0;
+    --avonni-primitive-combobox-input-radius-border-bottom-left: 0;
     --avonni-primitive-combobox-input-sizing-border-right: var(
         --avonni-combobox-input-sizing-border-right,
         1px

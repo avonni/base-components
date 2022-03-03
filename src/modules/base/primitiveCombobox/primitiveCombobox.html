@@ -285,55 +285,13 @@
         </div>
     </template>
 
-    <!-- Selected options -->
-    <ul
-        if:true={showSelectedOptions}
-        class="
-            slds-grid slds-wrap
-            slds-p-vertical_xx-small
-            primitive-combobox__selected-options
-        "
-        role="listbox"
-        aria-label={selectedOptionsAriaLabel}
-        aria-orientation="horizontal"
-    >
-        <template for:each={selectedOptions} for:item="option">
-            <li
-                key={option.value}
-                class="slds-m-right_xx-small"
-                role="presentation"
-            >
-                <lightning-pill
-                    if:false={readOnly}
-                    label={option.label}
-                    variant="plain"
-                    name={option.value}
-                    role="option"
-                    tabindex="0"
-                    data-element-id="lightning-pill"
-                    onremove={handleRemoveSelectedOption}
-                >
-                    <c-avatar
-                        if:true={option.hasAvatar}
-                        src={option.avatarSrc}
-                        fallback-icon-name={option.avatarFallbackIconName}
-                        hide-avatar-details="true"
-                        size="x-small"
-                    ></c-avatar>
-                </lightning-pill>
-                <div if:true={readOnly} class="slds-pill">
-                    <span class="slds-pill__label">{option.label}</span>
-                </div>
-            </li>
-        </template>
-    </ul>
     <template if:true={readOnlyNotMultiSelect}>
         <lightning-input
-            data-element-id="lightning-input-read-only"
-            label={readOnlyLabel}
+            label={label}
             value={readOnlyValue}
-            variant={variant}
+            variant="label-hidden"
             read-only
+            data-element-id="lightning-input-read-only"
         ></lightning-input>
     </template>
     <template if:true={helpMessage}>

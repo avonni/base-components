@@ -37,7 +37,7 @@
         <template if:true={required}>
             <abbr class="slds-required" title="Required">*</abbr>
         </template>
-        {label}
+        {computedLabel}
     </span>
     <lightning-helptext
         if:true={fieldLevelHelp}
@@ -60,7 +60,6 @@
                 dropdown-length={dropdownLength}
                 groups={scopesGroups}
                 hide-clear-icon
-                hide-selected-options
                 multi-level-groups={multiLevelGroups}
                 options={scopes}
                 read-only={readOnly}
@@ -78,8 +77,7 @@
                 dropdown-alignment={dropdownAlignment}
                 dropdown-length={dropdownLength}
                 groups={groups}
-                hide-selected-options
-                label={label}
+                label={computedLabel}
                 is-loading={isLoading}
                 is-multi-select={isMultiSelect}
                 loading-state-alternative-text={loadingStateAlternativeText}

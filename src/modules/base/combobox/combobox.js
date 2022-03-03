@@ -65,6 +65,7 @@ const DROPDOWN_LENGTHS = {
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
+const DEFAULT_READ_ONLY_LABEL = 'Read Only Combobox';
 const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 
 /**
@@ -524,6 +525,17 @@ export default class Combobox extends LightningElement {
             'slds-form-element_stacked': this._variant === 'label-stacked',
             'slds-form-element_horizontal': this._variant === 'label-inline'
         });
+    }
+
+    /**
+     * Computed label, with default value if the combobox is read-only.
+     *
+     * @type {string}
+     */
+    get computedLabel() {
+        return this.label || !this.readOnly
+            ? this.label
+            : DEFAULT_READ_ONLY_LABEL;
     }
 
     /**

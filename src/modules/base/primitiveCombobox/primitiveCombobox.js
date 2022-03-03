@@ -126,7 +126,6 @@ export default class PrimitiveCombobox extends LightningElement {
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
     _dropdownLength = DROPDOWN_LENGTHS.default;
     _groups = [{ name: DEFAULT_GROUP_NAME }];
-    _hideSelectedOptions = false;
     _isLoading = false;
     _isMultiSelect = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
@@ -297,21 +296,6 @@ export default class PrimitiveCombobox extends LightningElement {
         // Add a default group for options without groups
         this._groups.unshift({ name: DEFAULT_GROUP_NAME });
         if (this.visibleOptions.length) this.computeGroups();
-    }
-
-    /**
-     * If present, the selected options pills will be hidden.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get hideSelectedOptions() {
-        return this._hideSelectedOptions;
-    }
-    set hideSelectedOptions(value) {
-        this._hideSelectedOptions = normalizeBoolean(value);
     }
 
     /**
@@ -900,10 +884,6 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get readOnlyValue() {
         return this.validity.valid ? this.inputValue : '';
-    }
-
-    get readOnlyLabel() {
-        return this.label ? this.label : 'Read Only Combobox';
     }
 
     /**
