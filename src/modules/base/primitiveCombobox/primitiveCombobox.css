@@ -30,17 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.combobox__input-has-icon_left-right input {
+.avonni-primitive-combobox__input-has-icon_left-right input {
     padding-left: var(--lwc-spacingXLarge, 2rem);
 }
 
-.combobox__dropdown {
+.avonni-primitive-combobox__dropdown {
     overflow-y: auto;
     box-sizing: content-box;
 }
 
-.combobox__action_disabled,
-.combobox__action_disabled lightning-icon {
+.avonni-primitive-combobox__action_disabled,
+.avonni-primitive-combobox__action_disabled lightning-icon {
     color: #dddbda;
 }
 

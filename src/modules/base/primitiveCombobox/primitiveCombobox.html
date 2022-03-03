@@ -134,6 +134,7 @@
             <div
                 id="dropdown-element"
                 class={computedDropdownClass}
+                data-element-id="div-dropdown"
                 onmousedown={handleDropdownMouseDown}
                 onmouseup={handleDropdownMouseUp}
             >
@@ -149,6 +150,7 @@
                     if:false={isLoading}
                     role="listbox"
                     aria-multiselectable={isMultiSelect}
+                    data-element-id="ul-listbox"
                 >
                     <!-- Back to parent link -->
                     <li
@@ -158,6 +160,7 @@
                         role="option"
                         onclick={handleBackLinkClick}
                         onmouseenter={handleMouseEnter}
+                        data-element-id="li-top-action"
                         data-name="backlink"
                     >
                         <div
@@ -188,6 +191,7 @@
                             role="option"
                             aria-label="Action button"
                             aria-disabled={action.computedAriaDisabled}
+                            data-element-id="li-top-action"
                             data-name={action.name}
                             onclick={handleActionClick}
                             onmouseenter={handleMouseEnter}
@@ -249,6 +253,7 @@
                             class={action.computedClass}
                             id={action.name}
                             role="option"
+                            data-element-id="li-bottom-action"
                             data-name={action.name}
                             aria-disabled={action.computedAriaDisabled}
                             onclick={handleActionClick}

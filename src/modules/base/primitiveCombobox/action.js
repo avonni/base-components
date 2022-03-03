@@ -66,9 +66,11 @@ export default class Action {
         )
             .add({
                 'slds-border_bottom': this.isBackLink,
-                combobox__action_top: this.position === 'top',
-                combobox__action_bottom: this.position === 'bottom',
-                combobox__action_disabled: this.disabled
+                'avonni-primitive-combobox__action_top':
+                    this.position === 'top',
+                'avonni-primitive-combobox__action_bottom':
+                    this.position === 'bottom',
+                'avonni-primitive-combobox__action_disabled': this.disabled
             })
             .toString();
     }

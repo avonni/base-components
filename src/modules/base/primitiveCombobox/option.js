@@ -69,7 +69,7 @@ export default class Option {
      */
     get computedClass() {
         return classSet(
-            'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity combobox__option avonni-primitive-combobox__option_background'
+            'slds-media slds-media_small slds-media_center slds-listbox__item slds-listbox__option slds-listbox__option_plain slds-listbox__option_entity avonni-primitive-combobox__option avonni-primitive-combobox__option_background'
         )
             .add({
                 'slds-is-selected': this.selected || this.hasSelectedChildren()

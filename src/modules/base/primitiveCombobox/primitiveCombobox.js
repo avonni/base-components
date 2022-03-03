@@ -726,7 +726,7 @@ export default class PrimitiveCombobox extends LightningElement {
         if (this.dropdownVisible) {
             const elements = [];
             const topActions = this.template.querySelectorAll(
-                '.combobox__action_top'
+                '[data-element-id="li-top-action"]'
             );
             topActions.forEach((action) => {
                 if (action.ariaDisabled === 'false') elements.push(action);
@@ -738,14 +738,14 @@ export default class PrimitiveCombobox extends LightningElement {
             if (backLink) elements.push(backLink);
 
             const groups = this.template.querySelectorAll(
-                '[data-element-id^="avonni-primitive-combobox-group"]'
+                '[data-element-id="avonni-primitive-combobox-group"]'
             );
             groups.forEach((group) => {
                 elements.push(group.optionElements);
             });
 
             const bottomActions = this.template.querySelectorAll(
-                '.combobox__action_bottom'
+                '[data-element-id="li-bottom-action"]'
             );
             bottomActions.forEach((action) => {
                 if (action.ariaDisabled === 'false') elements.push(action);
@@ -757,9 +757,9 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * True if highlighted-option.
+     * Highlighted option HTML element.
      *
-     * @type {boolean}
+     * @type {HTMLElement}
      */
     get _highlightedOption() {
         return (
@@ -834,7 +834,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get computedDropdownClass() {
         return classSet(
-            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid combobox__dropdown'
+            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid combobox__dropdown avonni-primitive-combobox__dropdown'
         )
             .add({
                 'slds-dropdown_left':
@@ -860,7 +860,7 @@ export default class PrimitiveCombobox extends LightningElement {
     get computedInputContainerClass() {
         return classSet('slds-combobox__form-element slds-input-has-icon')
             .add({
-                'slds-input-has-icon_left-right combobox__input-has-icon_left-right':
+                'slds-input-has-icon_left-right avonni-primitive-combobox__input-has-icon_left-right':
                     this.showInputValueAvatar || this.showInputValueIcon,
                 'slds-input-has-icon_right':
                     !this.showInputValueAvatar && !this.showInputValueIcon
@@ -1085,7 +1085,8 @@ export default class PrimitiveCombobox extends LightningElement {
         this._autoPosition.start({
             target: () =>
                 this.template.querySelector('[data-element-id="input"]'),
-            element: () => this.template.querySelector('div.slds-dropdown'),
+            element: () =>
+                this.template.querySelector('[data-element-id="div-dropdown"]'),
             align: {
                 horizontal: Direction.Left,
                 vertical: Direction.Top
@@ -1146,7 +1147,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         // Height of the top actions
         const topActions = this.template.querySelectorAll(
-            '.combobox__action_top'
+            '[data-element-id="li-top-action"]'
         );
         const topActionsHeight = getListHeight(topActions);
 
@@ -1154,13 +1155,13 @@ export default class PrimitiveCombobox extends LightningElement {
         let bottomActionsHeight = 0;
         if (this.visibleOptions.length <= this._maxVisibleOptions) {
             const bottomActions = this.template.querySelectorAll(
-                '.combobox__action_bottom'
+                '[data-element-id="li-bottom-action"]'
             );
             bottomActionsHeight = getListHeight(bottomActions);
         }
 
         const dropdown = this.template.querySelector(
-            '.combobox__dropdown-trigger .slds-dropdown'
+            '[data-element-id="div-dropdown"]'
         );
         const height =
             optionsHeight +
@@ -1429,7 +1430,7 @@ export default class PrimitiveCombobox extends LightningElement {
             'avonni-primitive-combobox__option_background_focused'
         );
         const listboxElement = this.template.querySelector(
-            '.slds-listbox [role="listbox"]'
+            '[data-element-id="ul-listbox"]'
         );
         listboxElement.setAttribute(
             'aria-activedescendant',
