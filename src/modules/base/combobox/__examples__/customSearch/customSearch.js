@@ -6,8 +6,7 @@ export default class ComboboxCustomSearch extends LightningElement {
             label: 'Burlington Textiles Corp of America',
             value: 'burlington',
             avatarFallbackIconName: 'standard:account',
-            secondaryText: 'Account - Burlington, NC',
-            groups: ['accounts']
+            secondaryText: 'Account - Burlington, NC'
         },
         {
             label: 'Dickenson plc',
@@ -15,22 +14,19 @@ export default class ComboboxCustomSearch extends LightningElement {
             avatarSrc:
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             avatarFallbackIconName: 'standard:account',
-            secondaryText: 'Account - Lawrence, KS',
-            groups: ['accounts']
+            secondaryText: 'Account - Lawrence, KS'
         },
         {
             label: 'Edge Communication',
             value: 'edge',
             avatarFallbackIconName: 'standard:account',
-            secondaryText: 'Account - Singapore',
-            groups: ['accounts']
+            secondaryText: 'Account - Singapore'
         },
         {
             label: 'Tyrell Corp',
             value: 'tyrell',
             avatarFallbackIconName: 'standard:opportunity',
             secondaryText: 'Opportunity',
-            groups: ['opportunities'],
             options: [
                 {
                     label: 'Burlington Textiles Corp of America',
@@ -66,15 +62,13 @@ export default class ComboboxCustomSearch extends LightningElement {
             label: 'United Oil SLA',
             value: 'oil-sla',
             avatarFallbackIconName: 'standard:opportunity',
-            secondaryText: 'Opportunity - Closed',
-            groups: ['opportunities', 'closed']
+            secondaryText: 'Opportunity - Closed'
         },
         {
             label: 'United Oil Standby Generators',
             value: 'united-oil',
             avatarFallbackIconName: 'standard:opportunity',
-            secondaryText: 'Opportunity - Closed Won',
-            groups: ['opportunities', 'closed', 'won']
+            secondaryText: 'Opportunity - Closed Won'
         }
     ];
 

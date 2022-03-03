@@ -1,6 +1,29 @@
 import { LightningElement } from 'lwc';
 
-export default class ComboboxLookup extends LightningElement {
+export default class ComboboxVerticalSelectedOptions extends LightningElement {
+    actions = [
+        {
+            label: 'New Account',
+            name: 'new-account',
+            iconName: 'utility:add',
+            position: 'bottom',
+            fixed: true
+        },
+        {
+            label: 'New Opportunity',
+            name: 'new-opportunity',
+            iconName: 'utility:add',
+            position: 'bottom',
+            disabled: true
+        },
+        {
+            label: 'United',
+            name: 'search-united',
+            iconName: 'utility:search',
+            fixed: true
+        }
+    ];
+
     options = [
         {
             label: 'Burlington Textiles Corp of America',
@@ -72,28 +95,5 @@ export default class ComboboxLookup extends LightningElement {
         }
     ];
 
-    value = ['burlington', 'edge'];
-
-    actions = [
-        {
-            label: 'New Account',
-            name: 'new-account',
-            iconName: 'utility:add',
-            position: 'bottom',
-            fixed: true
-        },
-        {
-            label: 'New Opportunity',
-            name: 'new-opportunity',
-            iconName: 'utility:add',
-            position: 'bottom',
-            disabled: true
-        },
-        {
-            label: 'United',
-            name: 'search-united',
-            iconName: 'utility:search',
-            fixed: true
-        }
-    ];
+    value = ['tyrell', 'oil-sla', 'dickenson'];
 }
