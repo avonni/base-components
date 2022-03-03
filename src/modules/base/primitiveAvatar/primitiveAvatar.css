@@ -205,16 +205,14 @@
 */
 .avonni-avatar__actions {
     position: absolute;
-    --sds-c-button-radius-border: 40px;
-    --sds-c-button-spacing-block-end: 3px;
-    /* 
-    DO NOT MERGE
-    --sds-c-button-spacing-block-start: 0;
-    --sds-c-button-spacing-inline-end: 0px;
-    --sds-c-button-spacing-inline-start: 0;
-    --sds-c-button-color-background: red;
-    --sds-c-button-color-border: yellow;
-    --sds-c-button-text-color-border-filled: blue; */
+    --sds-c-button-radius-border: var(
+        --avonni-avatar-action-button-radius,
+        30px
+    );
+    --sds-c-button-spacing-block-end: var(
+        --avonni-avatar-action-button-spacing-block-end,
+        2px
+    );
 }
 
 /**

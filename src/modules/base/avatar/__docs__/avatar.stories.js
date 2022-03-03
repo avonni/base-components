@@ -408,14 +408,14 @@ const tags = [
 
 const actions = [
     {
-        label: 'Edit item',
+        label: 'Edit item edit item',
         name: 'edit-item',
         iconName: 'utility:edit'
     },
     {
-        label: 'Add item',
-        name: 'add-item',
-        iconName: 'utility:add'
+        label: 'Add item edit item add item',
+        name: 'add-item'
+        // iconName: 'utility:add'
     }
 ];
 

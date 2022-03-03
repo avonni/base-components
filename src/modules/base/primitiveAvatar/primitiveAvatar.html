@@ -107,13 +107,18 @@
         </div>
 
         <!-- Actions -->
-        <div if:true={actions.length} class={computedActionClasse}>
+        <div
+            if:true={actions.length}
+            data-element-id="action-section"
+            class={computedActionClasse}
+        >
             <template if:true={actionMenu}>
                 <c-button-menu
                     variant="border-filled"
                     icon-size={actionSize}
                     icon-name={actionMenuIcon}
-                    alternative-text="Options"
+                    alternative-text="Actions"
+                    data-element-id="action-menu-icon"
                     hide-down-arrow
                 >
                     <template for:each={computedActions} for:item="action">
@@ -136,6 +141,7 @@
                     variant="border-filled"
                     alternative-text={action.label}
                     value={action.name}
+                    data-element-id="action-icon"
                     onclick={handleActionClick}
                 >
                 </lightning-button-icon>

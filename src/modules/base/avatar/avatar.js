@@ -91,7 +91,6 @@ const DEFAULT_STATUS_TITLE = 'Status';
  * @public
  */
 export default class Avatar extends LightningElement {
-    @api actionMenuIcon;
     /**
      * The Lightning Design System name of the icon used as a fallback for the entity icon when the image fails to load. The initials fallback relies on this for its background color.
      * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
@@ -122,7 +121,7 @@ export default class Avatar extends LightningElement {
      */
     @api initials;
     /**
-     * primary-text.
+     * Primary-text.
      *
      * @public
      * @type {string}
@@ -472,7 +471,10 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Actions are displayed as button icons that launch custom actions
+     * Array of action objects. If the array contains a single action, it is displayed as a button icon. Otherwise, actions are placed in a button menu with a label and icon.
+     *
+     * @public
+     * @type {object[]}
      */
     @api
     get actions() {
@@ -483,6 +485,13 @@ export default class Avatar extends LightningElement {
         this._actions = normalizeArray(value);
     }
 
+    /**
+     * Position of the action button or menu relative to the avatar. Valid values include top-right, bottom-right, bottom-left or top-left.
+     *
+     * @public
+     * @type {string}
+     * @default bottom-left
+     */
     @api
     get actionPosition() {
         return this._actionPosition;
@@ -495,6 +504,13 @@ export default class Avatar extends LightningElement {
         });
     }
 
+    /**
+     * Size of the action button or menu relative to the avatar. Valid values include xx-small, x-small, small, medium or large.
+     *
+     * @public
+     * @type {string}
+     * @default small
+     */
     @api
     get actionSize() {
         return this._actionSize;
@@ -506,6 +522,15 @@ export default class Avatar extends LightningElement {
             validValues: ACTION_SIZE.valid
         });
     }
+
+    /**
+     * The Lightning Design System icon name for a custom menu icon. Unused if there is only one action.
+     *
+     * @public
+     * @type {string}
+     * @default utility:down
+     */
+    @api actionMenuIcon;
 
     /**
      * Text position centered.

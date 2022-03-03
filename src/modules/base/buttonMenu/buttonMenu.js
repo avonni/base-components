@@ -339,10 +339,11 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * Displays custom icon without down arrow
+     * If present, the small down arrow normaly displayed to the right of a custom icon is hidden. Without a custom icon-name this does nothing.
      *
      * @public
      * @type {boolean}
+     * @default false
      */
     @api
     get hideDownArrow() {

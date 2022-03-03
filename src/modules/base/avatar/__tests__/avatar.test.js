@@ -71,6 +71,7 @@ describe('Avatar', () => {
         expect(element.secondaryText).toBeUndefined();
         expect(element.tertiaryText).toBeUndefined();
         expect(element.textPosition).toBe('right');
+        expect(element.actions).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -810,6 +811,42 @@ describe('Avatar', () => {
                 '[data-element-id="avonni-media-object"]'
             );
             expect(mediaObject.className).toBe('slds-text-align_right');
+        });
+    });
+
+    // actions
+    it('Avatar with actions', () => {
+        const actions = [
+            {
+                label: 'Edit item',
+                name: 'edit-item',
+                iconName: 'utility:edit'
+            },
+            {
+                label: 'Add item',
+                name: 'add-item',
+                iconName: 'utility:add'
+            }
+        ];
+        element.actions = actions;
+        element.hideAvatarDetails = true;
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
+            );
+            expect(avatar.actions).toEqual([
+                {
+                    label: 'Edit item',
+                    name: 'edit-item',
+                    iconName: 'utility:edit'
+                },
+                {
+                    label: 'Add item',
+                    name: 'add-item',
+                    iconName: 'utility:add'
+                }
+            ]);
         });
     });
 
