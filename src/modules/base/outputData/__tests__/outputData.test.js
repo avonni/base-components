@@ -397,8 +397,8 @@ describe('OutputData', () => {
             );
 
             expect(location).toBeTruthy();
-            expect(location.latitude).toBe(typeAttributes.latitude);
-            expect(location.longitude).toBe(typeAttributes.longitude);
+            expect(location.latitude).toBe(Number(typeAttributes.latitude));
+            expect(location.longitude).toBe(Number(typeAttributes.longitude));
 
             expect(
                 text || boolean || number || date || email || phone || url
@@ -662,6 +662,28 @@ describe('OutputData', () => {
             expect(
                 text || boolean || number || date || email || location || phone
             ).toBeFalsy();
+        });
+    });
+
+    // Invalid type attributes
+    it('Invalid type attributes are ignored', () => {
+        const typeAttributes = {
+            currencyCode: 45,
+            currencyDisplayAs: 'invalid',
+            minimumFractionDigits: 'invalid',
+            target: '_blank'
+        };
+        element.typeAttributes = typeAttributes;
+        element.type = 'currency';
+        element.value = '56.78';
+
+        return Promise.resolve().then(() => {
+            const number = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-formatted-number"]'
+            );
+
+            expect(number.currencyDisplayAs).toBe('symbol');
+            expect(number.currencyCode).toBeUndefined();
         });
     });
 });
