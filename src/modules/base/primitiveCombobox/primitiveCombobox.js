@@ -961,6 +961,31 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
+     * Handles the removal of a selected option.
+     * Dispatches change event.
+     *
+     * @param {string} value Value of the option to remove.
+     * @public
+     */
+    @api
+    removeSelectedOption(value) {
+        const selectedOption = this.getOption(value);
+        selectedOption.selected = false;
+
+        this.computeSelection();
+        this.visibleOptions = this.options;
+
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: this.value
+                },
+                bubbles: true
+            })
+        );
+    }
+
+    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
@@ -1726,32 +1751,6 @@ export default class PrimitiveCombobox extends LightningElement {
         });
 
         this.highlightOption(index);
-    }
-
-    /**
-     * Handles the remove of lightning-pill (selected-option).
-     * Dispatches change event.
-     *
-     * @param {event} event onremove event
-     * @public
-     */
-    @api
-    handleRemoveSelectedOption(event) {
-        const value = event.detail.name;
-        const selectedOption = this.getOption(value);
-        selectedOption.selected = false;
-
-        this.computeSelection();
-        this.visibleOptions = this.options;
-
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.value
-                },
-                bubbles: true
-            })
-        );
     }
 
     /**

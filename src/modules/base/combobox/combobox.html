@@ -107,7 +107,7 @@
         </div>
         <!-- Selected options -->
         <ul
-            if:true={showSelectedOptions}
+            if:true={showHorizontalSelectedOptions}
             class="
                 slds-grid slds-wrap
                 slds-p-vertical_xx-small
@@ -131,7 +131,7 @@
                         role="option"
                         tabindex="0"
                         data-element-id="lightning-pill"
-                        onremove={handleRemoveSelectedOption}
+                        onremove={handleRemovePill}
                     >
                         <c-avatar
                             if:true={option.hasAvatar}
@@ -147,5 +147,15 @@
                 </li>
             </template>
         </ul>
+
+        <div if:true={showVerticalSelectedOptions} class="slds-m-top_x-small">
+            <c-list
+                actions={selectedOptionsActions}
+                alternative-text={selectedOptionsAriaLabel}
+                divider="around"
+                items={selectedOptions}
+                onactionclick={handleRemoveListItem}
+            ></c-list>
+        </div>
     </div>
 </template>

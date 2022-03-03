@@ -68,6 +68,17 @@ const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
 const DEFAULT_READ_ONLY_LABEL = 'Read Only Combobox';
 const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 
+const SELECTED_OPTIONS_ACTIONS = [
+    {
+        name: 'remove',
+        iconName: 'utility:close'
+    }
+];
+const SELECTED_OPTIONS_DIRECTIONS = {
+    default: 'horizontal',
+    valid: ['horizontal', 'vertical']
+};
+
 /**
  * A widget that provides a user with an input field that is either an autocomplete or readonly, accompanied by a listbox of options.
  *
@@ -145,6 +156,7 @@ export default class Combobox extends LightningElement {
     _removeSelectedOptions = false;
     _required = false;
     _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
+    _selectedOptionsDirection = SELECTED_OPTIONS_DIRECTIONS.default;
     _scopes = [];
     _scopesGroups = [];
     _search = this.computeSearch;
@@ -152,7 +164,14 @@ export default class Combobox extends LightningElement {
     _variant = VARIANTS.default;
 
     selectedOptions = [];
+    selectedOptionsActions = SELECTED_OPTIONS_ACTIONS;
     scopesValue;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Array of action objects. The actions are displayed at the end of the combobox options.
@@ -446,6 +465,24 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * Direction of the selected options. Horizontally, the selected options will be displayed as pills. Vertically, the selected options will be displayed as a list.
+     *
+     * @type {string}
+     * @default horizontal
+     * @public
+     */
+    @api
+    get selectedOptionsDirection() {
+        return this._selectedOptionsDirection;
+    }
+    set selectedOptionsDirection(value) {
+        this._selectedOptionsDirection = normalizeString(value, {
+            fallbackValue: SELECTED_OPTIONS_DIRECTIONS.default,
+            validValues: SELECTED_OPTIONS_DIRECTIONS.valid
+        });
+    }
+
+    /**
      * Array of scope objects. The scopes are displayed in a drop-down menu, to the left of the combobox input.
      *
      * @type {object[]}
@@ -527,6 +564,12 @@ export default class Combobox extends LightningElement {
         });
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Computed label, with default value if the combobox is read-only.
      *
@@ -539,40 +582,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Selects the main combobox.
-     *
-     * @type {element}
-     */
-    get mainCombobox() {
-        return this.template.querySelector(
-            '[data-element-id="avonni-primitive-combobox-main"]'
-        );
-    }
-
-    /**
-     * True if scopes.
-     *
-     * @type {boolean}
-     */
-    get showScopes() {
-        return this.scopes.length;
-    }
-
-    /**
-     * True if hide-selected-options is false, is-multi-select is true and selected-options.
-     *
-     * @type {boolean}
-     */
-    get showSelectedOptions() {
-        return (
-            !this.hideSelectedOptions &&
-            this.isMultiSelect &&
-            this.selectedOptions.length
-        );
-    }
-
-    /**
-     * Computed Label Class styling.
+     * Computed CSS Classes for the label.
      *
      * @type {string}
      */
@@ -583,7 +593,7 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Computed Main Combobox Class styling.
+     * Computed CSS classes for the main combobox.
      *
      * @type {string}
      */
@@ -597,13 +607,76 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Computed Combobox Group Class styling.
+     * Computed CSS classes for the comboboxes wrapper.
      *
      * @type {string}
      */
     get computedComboboxGroupClass() {
         return this.showScopes ? 'slds-combobox-group' : undefined;
     }
+
+    /**
+     * Main combobox HTML element.
+     *
+     * @type {HTMLElement}
+     */
+    get mainCombobox() {
+        return this.template.querySelector(
+            '[data-element-id="avonni-primitive-combobox-main"]'
+        );
+    }
+
+    /**
+     * True if the selected options are visible and displayed as horizontal pills.
+     *
+     * @type {boolean}
+     */
+    get showHorizontalSelectedOptions() {
+        return (
+            this.showSelectedOptions &&
+            this.selectedOptionsDirection === 'horizontal'
+        );
+    }
+
+    /**
+     * True if the scopes combobox is visible.
+     *
+     * @type {boolean}
+     */
+    get showScopes() {
+        return this.scopes.length;
+    }
+
+    /**
+     * True if the selected options are visible.
+     *
+     * @type {boolean}
+     */
+    get showSelectedOptions() {
+        return (
+            !this.hideSelectedOptions &&
+            this.isMultiSelect &&
+            this.selectedOptions.length
+        );
+    }
+
+    /**
+     * True if the selected options are visible and displayed as a vertical list.
+     *
+     * @type {boolean}
+     */
+    get showVerticalSelectedOptions() {
+        return (
+            this.showSelectedOptions &&
+            this.selectedOptionsDirection === 'vertical'
+        );
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Removes focus from the combobox.
@@ -699,6 +772,12 @@ export default class Combobox extends LightningElement {
     updateScope(value) {
         this.scopesValue = value;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLERS AND DISPATCHERS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Dispatches blur event.
@@ -830,9 +909,22 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Handles remove for lightning-pill.
+     * Handles removal of a vertical selected option.
+     *
+     * @param {Event} event
      */
-    handleRemoveSelectedOption(event) {
-        this.mainCombobox.handleRemoveSelectedOption(event);
+    handleRemoveListItem(event) {
+        const value = event.detail.item.value;
+        this.mainCombobox.removeSelectedOption(value);
+    }
+
+    /**
+     * Handles removal of a horizontal selected option.
+     *
+     * @param {Event} event
+     */
+    handleRemovePill(event) {
+        const value = event.detail.name;
+        this.mainCombobox.removeSelectedOption(value);
     }
 }
