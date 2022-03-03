@@ -154,7 +154,9 @@
                 alternative-text={selectedOptionsAriaLabel}
                 divider="around"
                 items={selectedOptions}
+                sortable={sortableSelectedOptions}
                 onactionclick={handleRemoveListItem}
+                onreorder={handleReorderSelectedOptions}
             ></c-list>
         </div>
     </div>

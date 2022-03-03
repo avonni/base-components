@@ -349,6 +349,17 @@ export default {
                 defaultValue: { summary: 'horizontal' }
             }
         },
+        sortableSelectedOptions: {
+            name: 'sortable-selected-options',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected options are sortable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         validity: {
             description:
                 'Represents the validity states that an element can be in, with respect to constraint validation.',
@@ -399,6 +410,7 @@ export default {
         required: false,
         selectedOptionsAriaLabel: 'Selected Options',
         selectedOptionsDirection: 'horizontal',
+        sortableSelectedOptions: false,
         variant: 'standard'
     }
 };
@@ -446,6 +458,7 @@ VerticalSelectedOptions.args = {
     dropdownLength: '5-items',
     actions,
     selectedOptionsDirection: 'vertical',
+    sortableSelectedOptions: true,
     value: ['tyrell', 'oil-sla', 'dickenson']
 };
 
@@ -489,7 +502,8 @@ Lookup.args = {
     isMultiSelect: true,
     removeSelectedOptions: true,
     actions: actions,
-    allowSearch: true
+    allowSearch: true,
+    sortableSelectedOptions: true
 };
 
 export const Scopes = Template.bind({});

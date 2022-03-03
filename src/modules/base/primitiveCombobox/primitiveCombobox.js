@@ -1319,6 +1319,12 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     computeSelection() {
         this.selectedOptions = this.getSelectedOptions();
+        this.selectedOptions.sort((a, b) => {
+            // Sort the selected options by their position in the value
+            const indexA = this.value.indexOf(a.value);
+            const indexB = this.value.indexOf(b.value);
+            return indexA - indexB;
+        });
         this.hasBadValues =
             this._value.length === 0
                 ? true

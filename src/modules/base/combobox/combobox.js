@@ -155,11 +155,12 @@ export default class Combobox extends LightningElement {
     _readOnly = false;
     _removeSelectedOptions = false;
     _required = false;
-    _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
-    _selectedOptionsDirection = SELECTED_OPTIONS_DIRECTIONS.default;
     _scopes = [];
     _scopesGroups = [];
     _search = this.computeSearch;
+    _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
+    _selectedOptionsDirection = SELECTED_OPTIONS_DIRECTIONS.default;
+    _sortableSelectedOptions = false;
     _value = [];
     _variant = VARIANTS.default;
 
@@ -509,6 +510,21 @@ export default class Combobox extends LightningElement {
     }
     set scopesGroups(value) {
         this._scopesGroups = normalizeArray(value);
+    }
+
+    /**
+     * If present, the selected options are sortable.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get sortableSelectedOptions() {
+        return this._sortableSelectedOptions;
+    }
+    set sortableSelectedOptions(value) {
+        this._sortableSelectedOptions = normalizeBoolean(value);
     }
 
     /**
@@ -867,23 +883,7 @@ export default class Combobox extends LightningElement {
         this._value = this.isMultiSelect
             ? event.detail.value
             : event.detail.value.toString();
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name change
-         * @param {(string[]|string)} value The new value of the combobox. If the combobox is not multi-select, the value is a string.
-         * @bubbles
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this._value
-                },
-                bubbles: true
-            })
-        );
+        this.dispatchChange();
     }
 
     /**
@@ -919,12 +919,45 @@ export default class Combobox extends LightningElement {
     }
 
     /**
-     * Handles removal of a horizontal selected option.
+     * Handles the removal of a horizontal selected option.
      *
      * @param {Event} event
      */
     handleRemovePill(event) {
         const value = event.detail.name;
         this.mainCombobox.removeSelectedOption(value);
+    }
+
+    /**
+     * Handles the reordering of the selected options.
+     *
+     * @param {Event} event
+     */
+    handleReorderSelectedOptions(event) {
+        this._value = event.detail.items.map((item) => item.value);
+        this.dispatchChange();
+    }
+
+    /**
+     * Dispatch the change event.
+     */
+    dispatchChange() {
+        /**
+         * The event fired when the combobox value changes. It can be because an option has been selected or unselected, or because the selected options have been reordered.
+         *
+         * @event
+         * @name change
+         * @param {(string[]|string)} value New value of the combobox. If the combobox is not multi-select, the value is a string.
+         * @bubbles
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    value: this._value
+                },
+                bubbles: true
+            })
+        );
     }
 }
