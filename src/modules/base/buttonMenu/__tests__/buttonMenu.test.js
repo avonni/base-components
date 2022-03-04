@@ -69,6 +69,7 @@ describe('Button Menu', () => {
         expect(element.tooltip).toBeUndefined();
         expect(element.value).toBe('');
         expect(element.variant).toBe('border');
+        expect(element.hideDownArrow).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
