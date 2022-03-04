@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+:host {
+    --avonni-avatar-action-button-spacing-block-end: 2px;
+}
+
 .avonni-avatar {
     display: inline-block;
     line-height: 0;
@@ -210,8 +214,7 @@
         30px
     );
     --sds-c-button-spacing-block-end: var(
-        --avonni-avatar-action-button-spacing-block-end,
-        2px
+        --avonni-avatar-action-button-spacing-block-end
     );
 }
 

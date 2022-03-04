@@ -208,6 +208,20 @@ describe('Button Menu', () => {
             });
     });
 
+    // hide down arrow
+    it('Button menu hide down arrow', () => {
+        element.iconName = 'utility:threedots';
+        element.hideDownArrow = true;
+
+        const downArrow = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-primitive-icon-down"]'
+        );
+
+        return Promise.resolve().then(() => {
+            expect(downArrow).toBeFalsy();
+        });
+    });
+
     // label
     it('Button Menu label', () => {
         element.label = 'This is a label';

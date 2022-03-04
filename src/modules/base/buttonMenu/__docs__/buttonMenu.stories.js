@@ -93,8 +93,9 @@ export default {
         iconSize: {
             name: 'icon-size',
             control: {
-                type: 'text'
+                type: 'select'
             },
+            options: ['xx-small', 'x-small', 'small', 'medium'],
             description:
                 'The size of the icon. Options include xx-small, x-small, small, or medium.',
             table: {
