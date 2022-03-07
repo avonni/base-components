@@ -452,7 +452,7 @@ export default class ButtonMenu extends LightningElement {
                     this.variant === 'container' && isDropdownIcon,
                 'slds-button_icon-border':
                     this.variant === 'border' && isDropdownIcon,
-                'slds-button_icon-border-filled':
+                'slds-button_icon-border-filled avonni-button-menu_button-border-filled':
                     this.variant === 'border-filled',
                 'slds-button_icon-border-inverse':
                     this.variant === 'border-inverse',

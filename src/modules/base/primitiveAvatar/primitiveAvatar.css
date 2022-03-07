@@ -217,6 +217,14 @@
         --avonni-avatar-action-button-spacing-block-end
     );
 }
+.avonni-action-button {
+    background-color: red;
+    color: white;
+}
+
+/* .avonni-avatar_action-button .slds-button_icon-border-filled {
+    background-color: yellow;
+} */
 
 /**
 * Presence

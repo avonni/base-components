@@ -135,7 +135,25 @@
             </template>
 
             <template if:false={actionMenu}>
-                <lightning-button-icon
+                <button
+                    class="
+                        avonni-action-button
+                        slds-button
+                        slds-button_icon
+                        slds-button_icon-border-filled
+                        slds-button_icon-small
+                    "
+                    title="Settings"
+                >
+                    <svg class="slds-button__icon" aria-hidden="true">
+                        <use
+                            xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"
+                        ></use>
+                    </svg>
+                    <span class="slds-assistive-text">Settings</span>
+                </button>
+                <!-- <lightning-button-icon
+                    class="avonni-avatar_action-button"
                     size={actionSize}
                     icon-name={action.iconName}
                     variant="border-filled"
@@ -144,7 +162,7 @@
                     data-element-id="action-icon"
                     onclick={handleActionClick}
                 >
-                </lightning-button-icon>
+                </lightning-button-icon> -->
             </template>
         </div>
     </div>
