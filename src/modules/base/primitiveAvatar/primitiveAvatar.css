@@ -217,14 +217,16 @@
         --avonni-avatar-action-button-spacing-block-end
     );
 }
-.avonni-action-button {
-    background-color: red;
-    color: white;
+.avonni-avatar__actions .avonni-action-button {
+    background-color: var(
+        --avonni-avatar-action-button-color-background,
+        white
+    );
+    color: var(--avonni-avatar-action-button-color-foreground, #706e6b);
+    border-color: var(--avonni-avatar-action-button-color-border, #dddbda);
+    border-width: var(--avonni-avatar-action-button-width-border, 1px);
+    border-style: var(--avonni-avatar-action-button-style-border, solid);
 }
-
-/* .avonni-avatar_action-button .slds-button_icon-border-filled {
-    background-color: yellow;
-} */
 
 /**
 * Presence

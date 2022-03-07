@@ -136,33 +136,28 @@
 
             <template if:false={actionMenu}>
                 <button
-                    class="
-                        avonni-action-button
-                        slds-button
-                        slds-button_icon
-                        slds-button_icon-border-filled
-                        slds-button_icon-small
-                    "
-                    title="Settings"
-                >
-                    <svg class="slds-button__icon" aria-hidden="true">
-                        <use
-                            xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"
-                        ></use>
-                    </svg>
-                    <span class="slds-assistive-text">Settings</span>
-                </button>
-                <!-- <lightning-button-icon
-                    class="avonni-avatar_action-button"
-                    size={actionSize}
-                    icon-name={action.iconName}
-                    variant="border-filled"
-                    alternative-text={action.label}
-                    value={action.name}
+                    class={computedActionButtonClasses}
                     data-element-id="action-icon"
                     onclick={handleActionClick}
+                    title={action.label}
+                    value={action.name}
                 >
-                </lightning-button-icon> -->
+                    <c-primitive-icon
+                        class="avonni-avatar__entity"
+                        icon-name={action.iconName}
+                    ></c-primitive-icon>
+                </button>
+                <!-- <lightning-button-icon
+                        class="avonni-avatar_action-button"
+                        size={actionSize}
+                        icon-name={action.iconName}
+                        variant="border-filled"
+                        alternative-text={action.label}
+                        value={action.name}
+                        data-element-id="action-icon"
+                        onclick={handleActionClick}
+                    >
+                    </lightning-button-icon>  -->
             </template>
         </div>
     </div>

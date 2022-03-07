@@ -290,6 +290,9 @@ export default class PrimitiveAvatar extends LightningElement {
     set actions(value) {
         this._actions = normalizeArray(value);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
+        this._computeActionIcon();
+        this._computeActionButtonClasses();
+        this._computeActionButtonClasses();
     }
 
     get actionMenu() {
@@ -320,6 +323,7 @@ export default class PrimitiveAvatar extends LightningElement {
 
     set actionSize(size) {
         this._actionSize = size;
+        this._computeActionButtonClasses();
     }
 
     @api
@@ -335,8 +339,17 @@ export default class PrimitiveAvatar extends LightningElement {
         }
     }
 
+    @api
+    get actionIconLink() {
+        return this._actionIconLink;
+    }
+
     get computedActionClasse() {
         return this.actionClass;
+    }
+
+    get computedActionButtonClasses() {
+        return this._actionButtonClasses;
     }
 
     /**
@@ -479,6 +492,8 @@ export default class PrimitiveAvatar extends LightningElement {
         this.actionClass = classSet('avonni-avatar__actions').add(
             `avonni-avatar_${this._actionPosition}`
         );
+
+        this._computeActionIcon();
     }
 
     _computeEntityClasses() {
@@ -498,6 +513,24 @@ export default class PrimitiveAvatar extends LightningElement {
             });
     }
 
+    _computeActionButtonClasses() {
+        this._actionButtonClasses = classSet(
+            'avonni-action-button slds-button slds-button_icon slds-button_icon-border-filled'
+        ).add(`slds-button_icon-${this.actionSize}`);
+    }
+
+    _computeActionIcon() {
+        let iconName = this.action.iconName;
+        let category = '';
+        let name = '';
+        if (iconName.length > 0 && iconName.includes(':')) {
+            let components = iconName.split(':');
+            category = components[0];
+            name = components[1];
+        }
+        this._actionIconLink = `/assets/icons/${category}-sprite/svg/symbols.svg#${name}`;
+    }
+
     handleImageError(event) {
         // eslint-disable-next-line no-console
         console.warn(
@@ -512,6 +545,7 @@ export default class PrimitiveAvatar extends LightningElement {
      * @param {event}
      */
     handleActionClick(event) {
+        console.log(event.currentTarget.value);
         /**
          * The event fired when a user clicks on an action.
          *
