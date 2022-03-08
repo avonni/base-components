@@ -476,7 +476,9 @@ export default class DualListbox extends LightningElement {
     }
 
     set max(value) {
-        const number = isNaN(parseInt(value, 10)) ? '' : value;
+        const number = isNaN(parseInt(value, 10))
+            ? Infinity
+            : parseInt(value, 10);
         this._max = number;
     }
 
@@ -492,7 +494,9 @@ export default class DualListbox extends LightningElement {
     }
 
     set min(value) {
-        const number = isNaN(parseInt(value, 10)) ? DEFAULT_MIN : value;
+        const number = isNaN(parseInt(value, 10))
+            ? DEFAULT_MIN
+            : parseInt(value, 10);
         this._min = number;
     }
 
@@ -797,7 +801,9 @@ export default class DualListbox extends LightningElement {
 
         if (this._searchTerm) {
             sourceListOptions = sourceListOptions.filter((option) => {
-                return option.label.toLowerCase().includes(this._searchTerm);
+                return option.label
+                    .toLowerCase()
+                    .includes(this._searchTerm.toLowerCase());
             });
         }
 
