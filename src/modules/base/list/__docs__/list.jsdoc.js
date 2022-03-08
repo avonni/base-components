@@ -135,9 +135,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-sizing-border
+ * @name --avonni-list-item-dimension-border
  * @default 1px
- * @type sizing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -155,32 +155,32 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-color-background-sortable-hover
  * @default --avonni-list-item-color-background-hover, #f3f2f2
- * @type spacing
+ * @type color
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-between
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-start
- * @type sizing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-block-end
- * @type sizing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-start
- * @type sizing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-spacing-inline-end
- * @type sizing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
