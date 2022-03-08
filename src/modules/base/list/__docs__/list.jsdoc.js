@@ -153,7 +153,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-color-background-hover-sortable
+ * @name --avonni-list-item-color-background-sortable-hover
  * @default --avonni-list-item-color-background-hover, #f3f2f2
  * @type spacing
  */
@@ -164,32 +164,32 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-block-start
+ * @name --avonni-list-item-spacing-block-start
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-block-end
+ * @name --avonni-list-item-spacing-block-end
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-inline-start
+ * @name --avonni-list-item-spacing-inline-start
  * @type sizing
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-inline-end
+ * @name --avonni-list-item-spacing-inline-end
  * @type sizing
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor-sortable
  * @default --avonni-list-item-cursor, grab
- * @type styling
+ * @type string
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-cursor
- * @type styling
+ * @type string
  */
