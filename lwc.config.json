@@ -511,6 +511,10 @@
             "path": "src/modules/base/tree/tree.js"
         },
         {
+            "name": "c/treeGrid",
+            "path": "src/modules/base/treeGrid/treeGrid.js"
+        },
+        {
             "name": "c/verticalProgressIndicator",
             "path": "src/modules/base/verticalProgressIndicator/verticalProgressIndicator.js"
         },
@@ -821,6 +825,10 @@
         {
             "name": "avonni/tree",
             "path": "src/modules/base/tree/tree.js"
+        },
+        {
+            "name": "avonni/treeGrid",
+            "path": "src/modules/base/treeGrid/treeGrid.js"
         },
         {
             "name": "avonni/verticalProgressIndicator",
