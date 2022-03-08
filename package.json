@@ -26,7 +26,6 @@
         "chromatic": "^5.6.2",
         "eslint": "^7.19.0",
         "eslint-plugin-inclusive-language": "^2.1.1",
-        "eslint-plugin-storybook": "^0.5.6",
         "husky": "^4.3.8",
         "jest": "^26.6.3",
         "jsdoc": "~3.6.7",
