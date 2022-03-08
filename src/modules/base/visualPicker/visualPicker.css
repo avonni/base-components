@@ -152,7 +152,7 @@
 
 /*-- figure title --*/
 .avonni-visual-picker__figure-title_margin {
-    margin: var(--avonni-visual-picker-title-margin-around, 0.25rem);
+    margin: var(--avonni-visual-picker-title-margin-around, 0rem);
 }
 
 /*-- description --*/
