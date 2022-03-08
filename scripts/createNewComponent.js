@@ -10,7 +10,7 @@ fs.mkdirSync(`./src/modules/base/${componentName}/__tests__`);
 const upperCamelName =
     componentName.charAt(0).toUpperCase() + componentName.slice(1);
 const spacedName = upperCamelName.replace(/([A-Z])/g, ' $1').trim();
-const kebabName = componentName.replace(/[A-Z]/g, '$1-').toLowerCase();
+const kebabName = componentName.replace(/([A-Z])/g, '-$1').toLowerCase();
 
 const javascript = `
 /**
@@ -246,7 +246,7 @@ import { createElement } from 'lwc';
 import ${upperCamelName} from '../${componentName}';
 
 let element;
-describe('${upperCamelName}', () => {
+describe('${spacedName}', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
@@ -268,15 +268,16 @@ describe('${upperCamelName}', () => {
 
     // title
     it('title', () => {
-        // element.title = 'This is an title text';
+        // element.title = 'This is a title text';
 
         // return Promise.resolve().then(() => {
         //     const title = element.shadowRoot.querySelector(
         //         '.slds-section__title'
         //     );
-        //     expect(title.textContent).toBe('This is an title text');
+        //     expect(title.textContent).toBe('This is a title text');
         // });
     });
+});
 `;
 
 fs.writeFile(
@@ -326,3 +327,5 @@ fs.writeFile(
         if (err) throw err;
     }
 );
+
+console.log('\x1b[7m%s\x1b[7m', `\nNew component ${spacedName} created!\n`);

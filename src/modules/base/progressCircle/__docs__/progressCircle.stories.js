@@ -45,6 +45,17 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the loading animation runs continually.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         titlePosition: {
             name: 'title-position',
             control: {
@@ -148,7 +159,8 @@ export default {
         }
     },
     args: {
-        round: false
+        round: false,
+        isLoading: false
     }
 };
 
@@ -209,6 +221,21 @@ NoLabelSmallValueHiddenGreen.args = {
     variant: 'value-hidden',
     color: '#7ED321',
     size: 'small'
+};
+
+export const BaseLoading = Template.bind({});
+BaseLoading.args = {
+    title: 'Text title',
+    value: 20,
+    isLoading: true
+};
+
+export const DrainLoadingWithThicknessX_Small = Template.bind({});
+DrainLoadingWithThicknessX_Small.args = {
+    title: 'Text title',
+    isLoading: true,
+    direction: 'drain',
+    thickness: 'x-small',
 };
 
 export const ExtraSmall = Template.bind({});

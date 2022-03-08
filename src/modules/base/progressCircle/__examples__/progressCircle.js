@@ -47,7 +47,8 @@ export const ProgressCircle = ({
     color,
     direction,
     size,
-    thickness
+    thickness,
+    isLoading
 }) => {
     const element = document.createElement('ac-base-progress-circle');
     element.title = title;
@@ -59,5 +60,6 @@ export const ProgressCircle = ({
     element.direction = direction;
     element.size = size;
     element.thickness = thickness;
+    element.isLoading = isLoading;
     return element;
 };
