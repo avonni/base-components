@@ -30,21 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-/* Test values */
-:host {
-    --avonni-list-item-color-background: red;
-    --avonni-list-item-color-background-hover: brown;
-    --avonni-list-item-color-background-sortable: blue;
-    --avonni-list-item-color-background-sortable-hover: teal;
-    --avonni-list-item-spacing-block-start: 10px;
-    --avonni-list-item-spacing-block-end: 20px;
-    --avonni-list-item-spacing-inline-start: 40px;
-    --avonni-list-item-spacing-inline-end: 80px;
-    --avonni-list-item-spacing-block-between: 50px;
-    --avonni-list-item-cursor: wait;
-    --avonni-list-item-cursor-sortable: cell;
-}
-
 .avonni-list__item {
     height: fit-content;
     background-color: var(--avonni-list-item-color-background, transparent);
