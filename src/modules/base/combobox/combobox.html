@@ -105,50 +105,26 @@
                 onprivateselect={handlePrivateSelect}
             ></c-primitive-combobox>
         </div>
-        <!-- Selected options -->
-        <ul
-            if:true={showHorizontalSelectedOptions}
-            class="
-                slds-grid slds-wrap
-                slds-p-vertical_xx-small
-                combobox__selected-options
-            "
-            role="listbox"
-            aria-label={selectedOptionsAriaLabel}
-            aria-orientation="horizontal"
-        >
-            <template for:each={selectedOptions} for:item="option">
-                <li
-                    key={option.value}
-                    class="slds-m-right_xx-small"
-                    role="presentation"
-                >
-                    <lightning-pill
-                        if:false={readOnly}
-                        label={option.label}
-                        variant="plain"
-                        name={option.value}
-                        role="option"
-                        tabindex="0"
-                        data-element-id="lightning-pill"
-                        onremove={handleRemovePill}
-                    >
-                        <c-avatar
-                            if:true={option.hasAvatar}
-                            src={option.avatarSrc}
-                            fallback-icon-name={option.avatarFallbackIconName}
-                            hide-avatar-details="true"
-                            size="x-small"
-                        ></c-avatar>
-                    </lightning-pill>
-                    <div if:true={readOnly} class="slds-pill">
-                        <span class="slds-pill__label">{option.label}</span>
-                    </div>
-                </li>
-            </template>
-        </ul>
 
-        <div if:true={showVerticalSelectedOptions} class="slds-m-top_x-small">
+        <!-- Selected options -->
+        <div
+            if:true={showHorizontalSelectedOptions}
+            class="slds-p-bottom_xx-small"
+        >
+            <c-pill-container
+                actions={selectedOptionsActions}
+                alternative-text={selectedOptionsAriaLabel}
+                items={selectedOptions}
+                sortable={sortableSelectedOptions}
+                onactionclick={handleRemoveListItem}
+                onreorder={handleReorderSelectedOptions}
+            ></c-pill-container>
+        </div>
+
+        <div
+            if:true={showVerticalSelectedOptions}
+            class="slds-p-vertical_xx-small"
+        >
             <c-list
                 actions={selectedOptionsActions}
                 alternative-text={selectedOptionsAriaLabel}

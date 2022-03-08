@@ -414,6 +414,9 @@ export default class Combobox extends LightningElement {
     }
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
+        this.selectedOptionsActions = this._readOnly
+            ? []
+            : SELECTED_OPTIONS_ACTIONS;
     }
 
     /**
