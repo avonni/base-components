@@ -12,9 +12,14 @@ const DEFAULT_MIN_WIDTH = 50;
 const DEFAULT_ROW_NUMBER_OFFSET = 0;
 
 /**
- * Displays a hierarchical view of data in a table.
+ * @description Displays a hierarchical view of data in a table.
+ *
+ * @class
+ * @descriptor avonni-tree-grid
+ * @storyId example-tree-grid--base
+ * @public
  */
-export default class LightningTreeGrid extends LightningElement {
+export default class TreeGrid extends LightningElement {
     _ariaLabel;
     _columns;
     _data;

@@ -929,6 +929,7 @@
         "avonni/tabBar",
         "avonni/timer",
         "avonni/tree",
+        "avonni/treeGrid",
         "avonni/verticalProgressIndicator",
         "avonni/verticalProgressStep",
         "avonni/verticalVisualPicker",

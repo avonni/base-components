@@ -37,7 +37,7 @@ import {
     EXPANDED_ROWS_BASIC
 } from '../__docs__/data';
 export default {
-    title: 'Example/TreeGrid',
+    title: 'Example/Tree Grid',
     argTypes: {
         ariaLabel: {
             name: 'aria-label',
