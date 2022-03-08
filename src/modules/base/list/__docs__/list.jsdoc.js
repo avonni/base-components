@@ -42,25 +42,25 @@
  * @memberof stylingHooks
  * @name --avonni-list-header-font-size
  * @default 1rem
- * @type font
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-font-style
  * @default normal
- * @type font
+ * @type string
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-font-weight
  * @default 400
- * @type font
+ * @type string, number
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-line-height
  * @default 1.25
- * @type line-height
+ * @type number
  */
 /**
  * @memberof stylingHooks
@@ -72,13 +72,13 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-header-font-size
  * @default 0.8125rem
- * @type font
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-header-font-style
  * @default normal
- * @type font
+ * @type string
  */
 /**
  * @memberof stylingHooks
@@ -96,19 +96,19 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-description-font-size
  * @default 0.8125rem
- * @type font
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-description-font-style
  * @default normal
- * @type font
+ * @type string
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-description-font-weight
  * @default 400
- * @type font
+ * @type number
  */
 /**
  * @memberof stylingHooks
@@ -135,7 +135,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-list-item-dimension-border
+ * @name --avonni-list-item-sizing-border
  * @default 1px
  * @type dimension
  */
@@ -143,13 +143,13 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-styling-border
  * @default solid
- * @type styling
+ * @type string
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-around-border-radius
  * @default 0.25rem
- * @type radius
+ * @type length, percentage
  */
 /**
  * @memberof stylingHooks
