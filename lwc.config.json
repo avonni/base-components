@@ -23,6 +23,10 @@
             "path": "src/modules/base/iso8601Utils/iso8601Utils.js"
         },
         {
+            "name": "c/resizeObserver",
+            "path": "src/modules/base/resizeObserver/resizeObserver.js"
+        },
+        {
             "name": "c/tooltipLibrary",
             "path": "src/modules/base/tooltipLibrary/tooltipLibrary.js"
         },
@@ -259,6 +263,10 @@
             "path": "src/modules/base/path/path.js"
         },
         {
+            "name": "c/pillContainer",
+            "path": "src/modules/base/pillContainer/pillContainer.js"
+        },
+        {
             "name": "c/positionLibrary",
             "path": "src/modules/base/positionLibrary/positionLibrary.js"
         },
@@ -365,6 +373,10 @@
         {
             "name": "c/primitiveIframe",
             "path": "src/modules/base/primitiveIframe/primitiveIframe.js"
+        },
+        {
+            "name": "c/primitivePill",
+            "path": "src/modules/base/primitivePill/primitivePill.js"
         },
         {
             "name": "c/primitiveProgressStep",
@@ -719,6 +731,10 @@
             "path": "src/modules/base/path/path.js"
         },
         {
+            "name": "avonni/pillContainer",
+            "path": "src/modules/base/pillContainer/pillContainer.js"
+        },
+        {
             "name": "avonni/primitiveIcon",
             "path": "src/modules/base/primitiveIcon/primitiveIcon.js"
         },
@@ -883,6 +899,7 @@
         "avonni/pagination",
         "avonni/panel",
         "avonni/path",
+        "avonni/pillContainer",
         "avonni/primitiveIcon",
         "avonni/profileCard",
         "avonni/progressBar",
