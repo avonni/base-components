@@ -56,9 +56,9 @@ export default class TreeGrid extends LightningElement {
     }
 
     /**
-     * Pass through for aria-label on lightning-datatable
+     * Pass through for aria-label on datatable.
      * @type {string}
-     * @default ''
+     * @public
      */
     @api
     get ariaLabel() {
@@ -72,7 +72,8 @@ export default class TreeGrid extends LightningElement {
      * Array of the columns object that's used to define the data types.
      * Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'.
      * See the Documentation tab for more information.
-     * @type {array}
+     * @type {object[]}
+     * @public
      */
     @api
     get columns() {
@@ -86,7 +87,8 @@ export default class TreeGrid extends LightningElement {
 
     /**
      * The array of data to be displayed.
-     * @type {array}
+     * @type {object[]}
+     * @public
      */
     @api
     // eslint-disable-next-line @lwc/lwc/valid-api
@@ -101,7 +103,8 @@ export default class TreeGrid extends LightningElement {
 
     /**
      * The array of unique row IDs for rows that are expanded.
-     * @type {array}
+     * @type {string[]}
+     * @public
      */
     @api
     get expandedRows() {
@@ -124,6 +127,7 @@ export default class TreeGrid extends LightningElement {
      * If present, the checkbox column for row selection is hidden.
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get hideCheckboxColumn() {
@@ -151,6 +155,7 @@ export default class TreeGrid extends LightningElement {
     /**
      * Required for better performance. Associates each row with a unique ID.
      * @type {string}
+     * @public
      */
     @api
     get keyField() {
@@ -166,6 +171,7 @@ export default class TreeGrid extends LightningElement {
      * The maximum width for all columns. The default is 1000px.
      * @type {number}
      * @default 1000
+     * @public
      */
     @api
     get maxColumnWidth() {
@@ -181,6 +187,7 @@ export default class TreeGrid extends LightningElement {
      * The minimum width for all columns. The default is 50px.
      * @type {number}
      * @default 50
+     * @public
      */
     @api
     get minColumnWidth() {
@@ -196,6 +203,7 @@ export default class TreeGrid extends LightningElement {
      * If present, column resizing is disabled.
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get resizeColumnDisabled() {
@@ -210,6 +218,7 @@ export default class TreeGrid extends LightningElement {
      * Determines where to start counting the row number. The default is 0.
      * @type {number}
      * @default 0
+     * @public
      */
     @api
     get rowNumberOffset() {
@@ -225,7 +234,8 @@ export default class TreeGrid extends LightningElement {
 
     /**
      * The array of unique row IDs that are selected.
-     * @type {array}
+     * @type {string[]}
+     * @public
      */
     @api
     get selectedRows() {
@@ -240,6 +250,7 @@ export default class TreeGrid extends LightningElement {
      * If present, the row number column are shown in the first column.
      * @type {boolean}
      * @default false
+     * @public
      */
     @api
     get showRowNumberColumn() {

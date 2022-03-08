@@ -468,6 +468,7 @@ export default class DualListbox extends LightningElement {
      * Maximum number of options allowed in the selected options listbox.
      *
      * @type {number}
+     * @default Infinity
      * @public
      */
     @api
@@ -486,6 +487,7 @@ export default class DualListbox extends LightningElement {
      * Minimum number of options required in the selected options listbox.
      *
      * @type {number}
+     * @default 0
      * @public
      */
     @api
