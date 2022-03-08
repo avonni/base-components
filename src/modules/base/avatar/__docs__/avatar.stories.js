@@ -229,20 +229,6 @@ export default {
                 category: 'Action'
             }
         },
-        actionSize: {
-            name: 'action-size',
-            control: {
-                type: 'select'
-            },
-            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'small',
-            description: 'The size of the action button.',
-            table: {
-                defaultValue: { summary: 'small' },
-                type: { summary: 'string' },
-                category: 'Action'
-            }
-        },
         entityIconName: {
             name: 'entity-icon-name',
             control: {

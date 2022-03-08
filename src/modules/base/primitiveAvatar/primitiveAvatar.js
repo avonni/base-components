@@ -62,10 +62,6 @@ const POSITIONS = {
     entityDefault: 'top-left',
     actionDefault: 'bottom-left'
 };
-const ACTION_SIZE = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'small'
-};
 const PRESENCE = {
     valid: ['online', 'busy', 'focus', 'offline', 'blocked', 'away'],
     default: null
@@ -105,7 +101,6 @@ export default class PrimitiveAvatar extends LightningElement {
     _actions = [];
     _actionPosition = POSITIONS.actionDefault;
     _actionMenuIcon = DEFAULT_ICON_MENU_ICON;
-    _actionSize = ACTION_SIZE.default;
     _actionTitle = '';
     _status = STATUS.default;
     _statusPosition = POSITIONS.statusDefault;
@@ -290,7 +285,6 @@ export default class PrimitiveAvatar extends LightningElement {
     set actions(value) {
         this._actions = normalizeArray(value);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
-        this._computeActionIcon();
         this._computeActionButtonClasses();
         this._computeActionButtonClasses();
     }
@@ -314,16 +308,6 @@ export default class PrimitiveAvatar extends LightningElement {
             validValues: POSITIONS.valid
         });
         this._computeActionClasses();
-    }
-
-    @api
-    get actionSize() {
-        return this._actionSize;
-    }
-
-    set actionSize(size) {
-        this._actionSize = size;
-        this._computeActionButtonClasses();
     }
 
     @api
@@ -492,8 +476,6 @@ export default class PrimitiveAvatar extends LightningElement {
         this.actionClass = classSet('avonni-avatar__actions').add(
             `avonni-avatar_${this._actionPosition}`
         );
-
-        this._computeActionIcon();
     }
 
     _computeEntityClasses() {
@@ -516,19 +498,7 @@ export default class PrimitiveAvatar extends LightningElement {
     _computeActionButtonClasses() {
         this._actionButtonClasses = classSet(
             'avonni-action-button slds-button slds-button_icon slds-button_icon-border-filled'
-        ).add(`slds-button_icon-${this.actionSize}`);
-    }
-
-    _computeActionIcon() {
-        let iconName = this.action.iconName;
-        let category = '';
-        let name = '';
-        if (iconName.length > 0 && iconName.includes(':')) {
-            let components = iconName.split(':');
-            category = components[0];
-            name = components[1];
-        }
-        this._actionIconLink = `/assets/icons/${category}-sprite/svg/symbols.svg#${name}`;
+        );
     }
 
     handleImageError(event) {

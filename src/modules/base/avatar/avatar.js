@@ -74,10 +74,6 @@ const TEXT_POSITIONS = {
     valid: ['left', 'right', 'center'],
     default: 'right'
 };
-const ACTION_SIZE = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'small'
-};
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Avatar';
 const DEFAULT_ENTITY_TITLE = 'Entity';
@@ -164,7 +160,6 @@ export default class Avatar extends LightningElement {
     _computedTags;
     _actions;
     _actionPosition = POSITIONS.actionDefault;
-    _actionSize;
 
     connectedCallback() {
         this._updateClassList();
@@ -501,25 +496,6 @@ export default class Avatar extends LightningElement {
         this._actionPosition = normalizeString(value, {
             fallbackValue: POSITIONS.actionDefault,
             validValues: POSITIONS.valid
-        });
-    }
-
-    /**
-     * Size of the action button or menu relative to the avatar. Valid values include xx-small, x-small, small, medium or large.
-     *
-     * @public
-     * @type {string}
-     * @default small
-     */
-    @api
-    get actionSize() {
-        return this._actionSize;
-    }
-
-    set actionSize(value) {
-        this._actionSize = normalizeString(value, {
-            fallbackValue: ACTION_SIZE.default,
-            validValues: ACTION_SIZE.valid
         });
     }
 
