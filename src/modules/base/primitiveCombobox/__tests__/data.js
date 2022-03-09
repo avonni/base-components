@@ -73,8 +73,7 @@ export const options = [
 export const actions = [
     {
         label: 'Action 1',
-        name: 'action-1',
-        iconName: 'utility:apps'
+        name: 'action-1'
     },
     {
         label: 'Action 2',
@@ -91,7 +90,20 @@ export const actions = [
     {
         label: 'Action 4',
         name: 'action-4',
-        position: 'top'
+        position: 'top',
+        iconName: 'utility:user',
+        disabled: true
+    },
+    {
+        label: 'Action 5',
+        name: 'action-5',
+        position: 'bottom',
+        iconName: 'standard:apps'
+    },
+    {
+        label: 'Action 6',
+        name: 'action-6',
+        position: 'bottom'
     }
 ];
 

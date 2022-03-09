@@ -11,6 +11,7 @@ module.exports = {
         '^c/(inputDateRange)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(inputRichText)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(outputData)$': '<rootDir>/jest-mock/components/base/$1/$1',
+        '^c/(primitiveCombobox)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitivePill)$': '<rootDir>/jest-mock/components/base/$1/$1',
         '^c/(primitiveSchedulerHeaderGroup)$':
             '<rootDir>/jest-mock/components/base/$1/$1',

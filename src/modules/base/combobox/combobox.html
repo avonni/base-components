@@ -91,7 +91,6 @@
                 remove-selected-options={removeSelectedOptions}
                 required={required}
                 search={search}
-                selected-options-aria-label={selectedOptionsAriaLabel}
                 hide-clear-icon={hideClearIcon}
                 value={value}
                 variant="label-hidden"
@@ -116,6 +115,7 @@
                 alternative-text={selectedOptionsAriaLabel}
                 items={selectedOptions}
                 sortable={sortableSelectedOptions}
+                data-element-id="avonni-pill-container"
                 onactionclick={handleRemovePill}
                 onreorder={handleReorderSelectedOptions}
             ></c-pill-container>
@@ -131,6 +131,7 @@
                 divider="around"
                 items={selectedOptions}
                 sortable={sortableSelectedOptions}
+                data-element-id="avonni-list"
                 onactionclick={handleRemoveListItem}
                 onreorder={handleReorderSelectedOptions}
             ></c-list>
