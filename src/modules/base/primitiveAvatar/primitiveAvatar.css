@@ -236,36 +236,6 @@
     display: flex;
 }
 
-.avonni-avatar_xx-small .avonni-avatar-action-button-icon {
-    /* transform: scale(0.5); */
-    padding: 2px;
-}
-
-.avonni-avatar_xx-small .avonni-avatar-action-button {
-    width: 0px;
-    height: 0px;
-    padding: 2px;
-    border-width: 1px;
-    margin-bottom: 1px;
-}
-
-.avonni-avatar_x-small .avonni-avatar-action-button-icon {
-    transform: scale(0.5);
-}
-
-.slds-avatar_x-small .avonni-avatar-action-button {
-    width: 1px;
-    height: 1px;
-    padding: 2px;
-}
-.slds-avatar_small .avonni-avatar-action-button-icon {
-    transform: scale(1);
-}
-.slds-avatar_small .avonni-avatar-action-button {
-    width: 4px;
-    height: 4px;
-    padding: 4px;
-}
 .slds-avatar_medium .avonni-avatar-action-button {
     width: 6px;
     height: 6px;

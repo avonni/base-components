@@ -33,23 +33,10 @@
 .avonni-button-menu_button-border-filled {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background,
-        yellow,
         white
     );
     color: var(
         --avonni-button-menu-button-border-filled-color-foreground,
         #706e6b
-    );
-    border-color: var(
-        --avonni-button-menu-button-border-filled-color-border,
-        #dddbda
-    );
-    border-width: var(
-        --avonni-button-menu-button-border-filled-width-border,
-        1px
-    );
-    border-style: var(
-        --avonni-button-menu-button-border-filled-style-border,
-        solid
     );
 }

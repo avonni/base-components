@@ -334,6 +334,41 @@ export default class PrimitiveAvatar extends LightningElement {
         return this._actionButtonClasses;
     }
 
+    @api
+    get showActions() {
+        const { size, actions } = this;
+        let _showAction = true;
+        if (
+            size === 'small' ||
+            size === 'x-small' ||
+            size === 'xx-small' ||
+            !actions?.length > 0
+        ) {
+            _showAction = false;
+        }
+        return _showAction;
+    }
+
+    @api
+    get actionMenuSize() {
+        let _actionSize;
+        switch (this.size) {
+            case 'x-large':
+                _actionSize = 'x-small';
+                break;
+            case 'large':
+                _actionSize = 'xx-small';
+                break;
+            case 'medium':
+                _actionSize = 'xx-small';
+                break;
+            default:
+                _actionSize = 'small';
+                break;
+        }
+        return _actionSize;
+    }
+
     /**
      * Status
      */

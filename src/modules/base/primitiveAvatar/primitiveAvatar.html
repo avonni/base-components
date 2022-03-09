@@ -109,38 +109,15 @@
 
         <!-- Actions -->
         <div
-            if:true={actions.length}
+            if:true={showActions}
             data-element-id="action-section"
             class={computedActionClasse}
         >
             <template if:true={actionMenu}>
-                <!-- <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
-                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
-                      <svg class="slds-button__icon" aria-hidden="true">
-                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-                      </svg>
-                      <span class="slds-assistive-text">Show More</span>
-                    </button>
-                    <div class="slds-dropdown slds-dropdown_left">
-                      <ul class="slds-dropdown__list" role="menu" aria-label="Show More">
-                        <template for:each={computedActions} for:item="action">
-                            <lightning-menu-item
-                                key={action.name}
-                                icon-name={action.iconName}
-                                value={action.name}
-                                label={action.label}
-                                onclick={handleActionClick}
-                            >
-                            </lightning-menu-item>
-                        </template>
-                      </ul>
-                    </div>
-                  </div> -->
-
-                <!-- <c-button-menu
+                <c-button-menu
                     variant="border-filled"
-                    
                     icon-name={actionMenuIcon}
+                    icon-size={actionMenuSize}
                     alternative-text="Actions"
                     data-element-id="action-menu-icon"
                     hide-down-arrow
@@ -155,7 +132,7 @@
                         >
                         </lightning-menu-item>
                     </template>
-                </c-button-menu> -->
+                </c-button-menu>
             </template>
 
             <template if:false={actionMenu}>
