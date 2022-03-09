@@ -986,7 +986,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @param {Event} event
      */
     handleCheckboxClick(event) {
-        if (this.allowInlineEdit) event.stopPropagation();
+        event.stopPropagation();
     }
 
     /**
@@ -1293,7 +1293,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             }
         });
         this.dispatchEvent(customEvent);
-        if (customEvent.defaultPrevented) {
+        if (customEvent.defaultPrevented && event.target.tagName !== 'INPUT') {
             event.preventDefault();
         }
     }
