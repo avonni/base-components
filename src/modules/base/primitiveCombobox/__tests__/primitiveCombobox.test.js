@@ -35,6 +35,7 @@ import PrimitiveCombobox from '../primitiveCombobox';
 import Option from '../option';
 import Action from '../action';
 import { options, actions, topActions, bottomActions, groups } from './data';
+import { deepCopy } from 'c/utilsPrivate';
 
 // Not tested:
 // auto positionning
@@ -107,25 +108,6 @@ describe('PrimitiveCombobox', () => {
                 '[data-element-id="li-top-action"]'
             );
             expect(topActionElements).toHaveLength(topActions.length);
-            expect(topActionElements[2].classList).toContain(
-                'avonni-primitive-combobox__action_disabled'
-            );
-            expect(topActionElements[2].ariaDisabled).toBe('true');
-            [0, 1].forEach((index) => {
-                const action = topActionElements[index];
-                expect(action.classList).not.toContain(
-                    'avonni-primitive-combobox__action_disabled'
-                );
-                expect(action.ariaDisabled).toBe('false');
-            });
-            [1, 2].forEach((index) => {
-                const action = topActionElements[index];
-                const icon = action.querySelector(
-                    '[data-element-id="lightning-icon-top-action"]'
-                );
-                expect(icon).toBeTruthy();
-                expect(icon.iconName).toBe(topActions[index].iconName);
-            });
             topActionElements.forEach((actionElement, index) => {
                 expect(actionElement.dataset.name).toBe(topActions[index].name);
                 const label = actionElement.querySelector(
@@ -148,6 +130,33 @@ describe('PrimitiveCombobox', () => {
                 );
                 expect(label.textContent).toBe(bottomActions[index].label);
             });
+        });
+    });
+
+    it('actions, disabled', () => {
+        element.actions = actions;
+
+        return Promise.resolve().then(() => {
+            // Top actions
+            const topActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-top-action"]'
+            );
+            expect(topActionElements[2].classList).toContain(
+                'avonni-primitive-combobox__action_disabled'
+            );
+            expect(topActionElements[2].ariaDisabled).toBe('true');
+            [0, 1].forEach((index) => {
+                const action = topActionElements[index];
+                expect(action.classList).not.toContain(
+                    'avonni-primitive-combobox__action_disabled'
+                );
+                expect(action.ariaDisabled).toBe('false');
+            });
+
+            // Bottom actions
+            const bottomActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-bottom-action"]'
+            );
             expect(bottomActionElements[0].classList).toContain(
                 'avonni-primitive-combobox__action_disabled'
             );
@@ -159,12 +168,74 @@ describe('PrimitiveCombobox', () => {
                 );
                 expect(action.ariaDisabled).toBe('false');
             });
+        });
+    });
 
+    it('actions, icons', () => {
+        element.actions = actions;
+
+        return Promise.resolve().then(() => {
+            // Top actions
+            const topActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-top-action"]'
+            );
+            [1, 2].forEach((index) => {
+                const action = topActionElements[index];
+                const icon = action.querySelector(
+                    '[data-element-id="lightning-icon-top-action"]'
+                );
+                expect(icon).toBeTruthy();
+                expect(icon.iconName).toBe(topActions[index].iconName);
+            });
+
+            // Bottom actions
+            const bottomActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-bottom-action"]'
+            );
             const icon = bottomActionElements[1].querySelector(
                 '[data-element-id="lightning-icon-bottom-action"]'
             );
             expect(icon).toBeTruthy();
             expect(icon.iconName).toBe(bottomActions[1].iconName);
+        });
+    });
+
+    it('actions, fixed', () => {
+        const fixedActions = deepCopy(actions);
+        fixedActions[1].fixed = true;
+        fixedActions[2].fixed = true;
+        element.actions = fixedActions;
+
+        return Promise.resolve().then(() => {
+            // Top actions
+            const topActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-top-action"]'
+            );
+            // Fixed actions are always first on top
+            expect(topActionElements[0].classList).toContain(
+                'avonni-primitive-combobox__action_fixed'
+            );
+            [1, 2].forEach((index) => {
+                const action = topActionElements[index];
+                expect(action.classList).not.toContain(
+                    'avonni-primitive-combobox__action_fixed'
+                );
+            });
+
+            // Bottom actions
+            const bottomActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-bottom-action"]'
+            );
+            // Bottom actions are always last on bottom
+            expect(bottomActionElements[2].classList).toContain(
+                'avonni-primitive-combobox__action_fixed'
+            );
+            [0, 1].forEach((index) => {
+                const action = bottomActionElements[index];
+                expect(action.classList).not.toContain(
+                    'avonni-primitive-combobox__action_fixed'
+                );
+            });
         });
     });
 
