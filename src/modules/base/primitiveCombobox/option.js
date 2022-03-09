@@ -50,16 +50,16 @@ import { classSet } from 'c/utils';
  * @property {boolean} hasAvatar Present if avatarFallbackIconName or avatarSrc
  */
 export default class Option {
-    constructor(option) {
+    constructor(option, levelPath) {
         this.avatarFallbackIconName = option.avatarFallbackIconName;
         this.avatarSrc = option.avatarSrc;
         this.iconName = option.iconName;
+        this.levelPath = levelPath;
         this.groups = normalizeArray(option.groups);
         this.label = option.label;
         this.options = normalizeArray(option.options);
         this.secondaryText = option.secondaryText;
         this.value = option.value;
-        this.hasAvatar = this.avatarFallbackIconName || this.avatarSrc;
     }
 
     /**
@@ -95,6 +95,10 @@ export default class Option {
      */
     get computedCheckmarkIconName() {
         return this.iconName || 'utility:check';
+    }
+
+    get hasAvatar() {
+        return this.avatarFallbackIconName || this.avatarSrc;
     }
 
     /**

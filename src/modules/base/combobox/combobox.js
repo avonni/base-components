@@ -883,10 +883,9 @@ export default class Combobox extends LightningElement {
      * Dispatches change event.
      */
     handleChange(event) {
-        this._value = this.isMultiSelect
-            ? event.detail.value
-            : event.detail.value.toString();
-        this.dispatchChange();
+        const { action, levelPath, value } = event.detail;
+        this._value = this.isMultiSelect ? value : value.toString();
+        this.dispatchChange(action, levelPath);
     }
 
     /**
@@ -927,7 +926,8 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleRemovePill(event) {
-        const value = event.detail.name;
+        const index = event.detail.index;
+        const value = this.selectedOptions[index].value;
         this.mainCombobox.removeSelectedOption(value);
     }
 
@@ -938,18 +938,21 @@ export default class Combobox extends LightningElement {
      */
     handleReorderSelectedOptions(event) {
         this._value = event.detail.items.map((item) => item.value);
-        this.dispatchChange();
+        this.dispatchChange('reorder');
     }
 
     /**
      * Dispatch the change event.
      */
-    dispatchChange() {
+    dispatchChange(action, levelPath) {
         /**
-         * The event fired when the combobox value changes. It can be because an option has been selected or unselected, or because the selected options have been reordered.
+         * The event fired when the combobox value changes. The value changes when an option has been selected or unselected, or because the selected options have been reordered.
          *
          * @event
          * @name change
+         * @param {string} action Type of change made to the value. Options are `select`, `unselect` or `reorder`.
+         * @param {number[]} levelPath If an option has been selected or unselected, array of level indexes to get to the option. This is useful in case options are nested.
+         * The levels start at 0. For example, if an option is the third child of its parent, and its parent is the second child of the root options, the value would be: `[1, 2]`.
          * @param {(string[]|string)} value New value of the combobox. If the combobox is not multi-select, the value is a string.
          * @bubbles
          * @public
@@ -957,6 +960,8 @@ export default class Combobox extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
+                    action,
+                    levelPath,
                     value: this._value
                 },
                 bubbles: true

@@ -977,15 +977,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
         this.computeSelection();
         this.visibleOptions = this.options;
-
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.value
-                },
-                bubbles: true
-            })
-        );
+        this.dispatchChange('unselect', selectedOption.levelPath);
     }
 
     /**
@@ -1057,15 +1049,19 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Option's object initialization.
      */
-    initOptionObjects(options) {
+    initOptionObjects(options, levelPath = []) {
         const optionObjects = [];
-        options.forEach((option) => {
-            const optionObject = new Option(option);
+        options.forEach((option, index) => {
+            const optionLevelPath = levelPath.concat(index);
+            const optionObject = new Option(option, optionLevelPath);
 
             // If the option has children, generate objects for them too
             const childrenOptions = normalizeArray(option.options);
             if (childrenOptions.length) {
-                optionObject.options = this.initOptionObjects(childrenOptions);
+                optionObject.options = this.initOptionObjects(
+                    childrenOptions,
+                    optionLevelPath
+                );
             }
 
             optionObjects.push(optionObject);
@@ -1359,13 +1355,15 @@ export default class PrimitiveCombobox extends LightningElement {
      * @param {array} options Array of all the options
      * @returns {array} Array of all unselected options
      */
-    removeSelectedOptionsFrom(options) {
+    removeSelectedOptionsFrom(options, levelPath = []) {
         const unselectedOptions = [];
-        options.forEach((option) => {
+        options.forEach((option, index) => {
             if (option.options.length) {
-                const computedOption = new Option(option);
+                const optionLevelPath = levelPath.concat(index);
+                const computedOption = new Option(option, optionLevelPath);
                 computedOption.options = this.removeSelectedOptionsFrom(
-                    computedOption.options
+                    computedOption.options,
+                    optionLevelPath
                 );
 
                 // We want to show the option only if some children options are unselected
@@ -1706,17 +1704,11 @@ export default class PrimitiveCombobox extends LightningElement {
 
         // Clear the value
         if (!this.isMultiSelect && this.selectedOption) {
+            const levelPath = this.selectedOption.levelPath;
             this.selectedOption.selected = false;
             this.selectedOption = undefined;
             this.computeSelection();
-
-            this.dispatchEvent(
-                new CustomEvent('change', {
-                    detail: {
-                        value: this.value
-                    }
-                })
-            );
+            this.dispatchChange('unselect', levelPath);
         }
 
         // Reset the visible options
@@ -1729,7 +1721,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     /**
      * Handles the click on action.
-     * Dispatches actionClick event.
+     * Dispatches actionclick event.
      * Closes the dropdown.
      *
      * @param {event} event If clicked with mouse we receive the event
@@ -1801,15 +1793,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this.selectedOption = undefined;
         }
 
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    value: this.value
-                },
-                bubbles: true
-            })
-        );
-
+        this.dispatchChange('select', selectedOption.levelPath);
         this.close();
         this.focus();
     }
@@ -1841,5 +1825,33 @@ export default class PrimitiveCombobox extends LightningElement {
             this.open();
             this.dispatchEvent(new CustomEvent('open'));
         }
+    }
+
+    /**
+     * Dispatch the change event.
+     *
+     * @param {string} action Action that fired the event. Valid values are `select` or `unselect`.
+     * @param {number[]} levelPath Array of level indexes to get to the option.
+     */
+    dispatchChange(action, levelPath) {
+        /**
+         * The event fired when an option is selected or unselected.
+         *
+         * @event
+         * @name change
+         * @param {string} action Type of change made to the value. Options are `select` or `unselect`.
+         * @param {number[]} levelPath Array of level indexes to get to the option.
+         * @param {string[]} value New value of the primitive combobox.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    action,
+                    levelPath,
+                    value: this.value
+                }
+            })
+        );
     }
 }
