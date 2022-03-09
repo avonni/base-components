@@ -33,6 +33,7 @@
 .avonni-button-menu_button-border-filled {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background,
+        yellow,
         white
     );
     color: var(

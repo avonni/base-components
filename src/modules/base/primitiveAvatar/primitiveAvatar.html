@@ -101,7 +101,8 @@
                     class="avonni-avatar__entity-icon"
                     icon-name={entityIconName}
                     title={entityTitle}
-                ></c-primitive-icon>
+                >
+                </c-primitive-icon>
                 <span class="slds-assistive-text">{entityTitle}</span>
             </template>
         </div>
@@ -113,9 +114,32 @@
             class={computedActionClasse}
         >
             <template if:true={actionMenu}>
-                <c-button-menu
+                <!-- <div class="slds-dropdown-trigger slds-dropdown-trigger_click">
+                    <button class="slds-button slds-button_icon slds-button_icon-border-filled" aria-haspopup="true" aria-expanded="true" title="Show More">
+                      <svg class="slds-button__icon" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
+                      </svg>
+                      <span class="slds-assistive-text">Show More</span>
+                    </button>
+                    <div class="slds-dropdown slds-dropdown_left">
+                      <ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+                        <template for:each={computedActions} for:item="action">
+                            <lightning-menu-item
+                                key={action.name}
+                                icon-name={action.iconName}
+                                value={action.name}
+                                label={action.label}
+                                onclick={handleActionClick}
+                            >
+                            </lightning-menu-item>
+                        </template>
+                      </ul>
+                    </div>
+                  </div> -->
+
+                <!-- <c-button-menu
                     variant="border-filled"
-                    icon-size={size}
+                    
                     icon-name={actionMenuIcon}
                     alternative-text="Actions"
                     data-element-id="action-menu-icon"
@@ -131,33 +155,26 @@
                         >
                         </lightning-menu-item>
                     </template>
-                </c-button-menu>
+                </c-button-menu> -->
             </template>
 
             <template if:false={actionMenu}>
                 <button
-                    class={computedActionButtonClasses}
+                    class="
+                        avonni-avatar-action-button
+                        slds-button slds-button_icon
+                    "
                     data-element-id="action-icon"
                     onclick={handleActionClick}
                     title={action.label}
                     value={action.name}
                 >
                     <c-primitive-icon
-                        class="avonni-avatar__entity"
+                        class="avonni-avatar-action-button-icon"
                         icon-name={action.iconName}
-                    ></c-primitive-icon>
-                </button>
-                <!-- <lightning-button-icon
-                        class="avonni-avatar_action-button"
-                        size={actionSize}
-                        icon-name={action.iconName}
-                        variant="border-filled"
-                        alternative-text={action.label}
-                        value={action.name}
-                        data-element-id="action-icon"
-                        onclick={handleActionClick}
                     >
-                    </lightning-button-icon>  -->
+                    </c-primitive-icon>
+                </button>
             </template>
         </div>
     </div>

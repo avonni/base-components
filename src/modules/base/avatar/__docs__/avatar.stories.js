@@ -642,6 +642,7 @@ BaseWithAction.args = {
     tertiaryText: 'Busy',
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
     fallbackIconName: 'standard:avatar',
+    status: 'declined',
     initials: 'JS',
     actions: [
         {

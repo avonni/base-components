@@ -31,27 +31,8 @@
  */
 
 :host {
-    --avonni-avatar-action-button-color-border: red;
-    --avonni-avatar-action-button-width-border: 1px;
-    --avonni-avatar-action-button-style-border: dotted;
-    --avonni-avatar-action-button-color-background: rgb(126, 203, 255);
-    --avonni-avatar-action-button-color-foreground: white;
-
-    --avonni-button-menu-button-border-filled-color-border: var(
-        --avonni-avatar-action-button-color-border
-    );
-    --avonni-button-menu-button-border-filled-width-border: var(
-        --avonni-avatar-action-button-width-border
-    );
-    --avonni-button-menu-button-border-filled-style-border: var(
-        --avonni-avatar-action-button-style-border
-    );
-    --avonni-button-menu-button-border-filled-color-background: var(
-        --avonni-avatar-action-button-color-background
-    );
-    --avonni-button-menu-button-border-filled-color-foreground: var(
-        --avonni-avatar-action-button-color-foreground
-    );
+    --avonni-avatar-action-button-color-background: rgb(255, 163, 179);
+    --avonni-avatar-action-button-color-foreground: rgb(113, 255, 248);
 }
 
 .avonni-avatar__primary-text {

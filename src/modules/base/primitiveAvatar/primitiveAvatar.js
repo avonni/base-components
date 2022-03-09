@@ -285,8 +285,6 @@ export default class PrimitiveAvatar extends LightningElement {
     set actions(value) {
         this._actions = normalizeArray(value);
         this.computedActions = JSON.parse(JSON.stringify(this._actions));
-        this._computeActionButtonClasses();
-        this._computeActionButtonClasses();
     }
 
     get actionMenu() {
@@ -493,12 +491,6 @@ export default class PrimitiveAvatar extends LightningElement {
             .add({
                 'slds-avatar_circle': entityVariant === 'circle'
             });
-    }
-
-    _computeActionButtonClasses() {
-        this._actionButtonClasses = classSet(
-            'avonni-action-button slds-button slds-button_icon slds-button_icon-border-filled'
-        );
     }
 
     handleImageError(event) {
