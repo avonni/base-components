@@ -71,7 +71,6 @@ const DROPDOWN_LENGTHS = {
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
-const DEFAULT_SELECTED_OPTIONS_ARIA_LABEL = 'Selected Options';
 const DEFAULT_GROUP_NAME = 'ungrouped';
 
 /**
@@ -136,7 +135,6 @@ export default class PrimitiveCombobox extends LightningElement {
     _removeSelectedOptions = false;
     _required = false;
     _search = this.computeSearch;
-    _selectedOptionsAriaLabel = DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
     _hideClearIcon = false;
     _value = [];
     _variant = VARIANTS.default;
@@ -477,24 +475,6 @@ export default class PrimitiveCombobox extends LightningElement {
     }
 
     /**
-     * Describes the selected options section to assistive technologies.
-     *
-     * @type {string}
-     * @default Selected Options
-     * @public
-     */
-    @api
-    get selectedOptionsAriaLabel() {
-        return this._selectedOptionsAriaLabel;
-    }
-    set selectedOptionsAriaLabel(value) {
-        this._selectedOptionsAriaLabel =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_SELECTED_OPTIONS_ARIA_LABEL;
-    }
-
-    /**
      * If present, it is not possible to clear a selected option using the input clear icon.
      *
      * @type {boolean}
@@ -768,19 +748,6 @@ export default class PrimitiveCombobox extends LightningElement {
         return (
             this._optionElements.length &&
             this._optionElements[this._highlightedOptionIndex]
-        );
-    }
-
-    /**
-     * True if selected-options, multi-select is true and hide-selected-options is false.
-     *
-     * @type {boolean}
-     */
-    get showSelectedOptions() {
-        return (
-            !this.hideSelectedOptions &&
-            this.isMultiSelect &&
-            this.selectedOptions.length > 0
         );
     }
 
@@ -1500,6 +1467,7 @@ export default class PrimitiveCombobox extends LightningElement {
         const listbox = this.template.querySelector(
             '[data-element-id="ul-listbox"]'
         );
+        if (!listbox) return;
 
         let offset = 0;
         const fixedTopActions = Array.from(
@@ -1793,7 +1761,8 @@ export default class PrimitiveCombobox extends LightningElement {
             this.selectedOption = undefined;
         }
 
-        this.dispatchChange('select', selectedOption.levelPath);
+        const action = selectedOption.selected ? 'select' : 'unselect';
+        this.dispatchChange(action, selectedOption.levelPath);
         this.close();
         this.focus();
     }
