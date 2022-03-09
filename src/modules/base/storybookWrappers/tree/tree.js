@@ -4,6 +4,7 @@ export default class Tree extends LightningElement {
     @api actions;
     @api actionsWhenDisabled;
     @api allowInlineEdit;
+    @api disableSelectionCascade;
     @api editableFields;
     @api header;
     @api isLoading;

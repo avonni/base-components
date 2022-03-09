@@ -74,6 +74,18 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        disableSelectionCascade: {
+            name: 'disable-selection-cascade',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'Used only if `is-multi-select` is true. If present, the parent and children nodes will be selected independently of each other. If empty, when all children of a node are selected, the node is selected automatically. If a node is selected, all its children are also selected by default.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         editableFields: {
             name: 'editable-fields',
             control: {
@@ -162,6 +174,7 @@ export default {
     },
     args: {
         allowInlineEdit: false,
+        disableSelectionCascade: false,
         editableFields: [
             'label',
             'metatext',
@@ -236,4 +249,13 @@ MultiSelect.args = {
     isMultiSelect: true,
     sortable: true,
     selectedItems: ['node1-2-1', 'node1-1', 'node2', 'node1-1-1-2', 'node6']
+};
+
+export const MultiSelectNoCascade = Template.bind({});
+MultiSelectNoCascade.args = {
+    items: ITEMS,
+    header: 'Multi Select Tree With no Selection Cascade',
+    isMultiSelect: true,
+    selectedItems: ['node1-2-1', 'node1-1', 'node2', 'node1-1-1-2', 'node6'],
+    disableSelectionCascade: true
 };

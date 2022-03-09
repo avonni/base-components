@@ -78,6 +78,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     _avatar;
     _childItems = [];
     _disabled = false;
+    _disableSelectionCascade = false;
     _editableFields = DEFAULT_EDIT_FIELDS;
     _fields = [];
     _href;
@@ -300,6 +301,22 @@ export default class PrimitiveTreeItem extends LightningElement {
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
         if (this.isConnected) this.splitActions();
+    }
+
+    /**
+     * If present, the item selection will not extend to its children.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get disableSelectionCascade() {
+        return this._disableSelectionCascade;
+    }
+    set disableSelectionCascade(value) {
+        this._disableSelectionCascade = normalizeBoolean(value);
+        if (this.isConnected) this.computeSelection();
     }
 
     /**
@@ -639,7 +656,12 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Compute the selection state of the item, depending on the selection state of its children.
      */
     computeSelection() {
-        if (!this.selected && this.showCheckbox && this.childItems.length) {
+        if (
+            !this.selected &&
+            this.showCheckbox &&
+            this.childItems.length &&
+            !this.disableSelectionCascade
+        ) {
             const selectedChildren = this.childItems.filter(
                 (child) => child.selected
             );

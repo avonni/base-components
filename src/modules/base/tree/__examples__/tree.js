@@ -38,6 +38,7 @@ export const Tree = ({
     actions,
     actionsWhenDisabled,
     allowInlineEdit,
+    disableSelectionCascade,
     editableFields,
     header,
     isLoading,
@@ -51,6 +52,7 @@ export const Tree = ({
     element.actions = actions;
     element.actionsWhenDisabled = actionsWhenDisabled;
     element.allowInlineEdit = allowInlineEdit;
+    element.disableSelectionCascade = disableSelectionCascade;
     element.editableFields = editableFields;
     element.header = header;
     element.isLoading = isLoading;
