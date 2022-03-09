@@ -24,6 +24,7 @@ describe('Tree', () => {
         expect(element.actions).toEqual([]);
         expect(element.actionsWhenDisabled).toEqual([]);
         expect(element.allowInlineEdit).toBeFalsy();
+        expect(element.disableSelectionCascade).toBeFalsy();
         expect(element.editableFields).toEqual([
             'label',
             'metatext',
@@ -156,7 +157,7 @@ describe('Tree', () => {
         });
     });
 
-    // is-multi-select and selected-items
+    // is-multi-select, disable-selection-cascade and selected-items
     it('isMultiSelect = false and selectedItems', () => {
         element.isMultiSelect = false;
         element.selectedItems = ['secondLevel2', 'loading'];
@@ -220,6 +221,40 @@ describe('Tree', () => {
                 'regular',
                 'childOfLoading'
             ]);
+        });
+    });
+
+    it('isMultiSelect = true, selectedItems and disableSelectionCascade', () => {
+        element.isMultiSelect = true;
+        element.disableSelectionCascade = true;
+        const handler = jest.fn();
+        element.addEventListener('select', handler);
+        const selectedItems = [
+            'thirdLevel',
+            'secondLevel',
+            'secondLevel2',
+            'loading'
+        ];
+        element.selectedItems = selectedItems;
+        element.items = ITEMS;
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-tree-item"]'
+            );
+
+            const regular = Array.from(items).find(
+                (item) => item.name === 'regular'
+            );
+            expect(regular.expanded).toBeFalsy();
+            expect(regular.selected).toBeFalsy();
+
+            const loading = Array.from(items).find(
+                (item) => item.name === 'loading'
+            );
+            expect(loading.selected).toBeTruthy();
+            expect(handler).not.toHaveBeenCalled();
+            expect(element.selectedItems).toEqual(selectedItems);
         });
     });
 
@@ -1292,6 +1327,53 @@ describe('Tree', () => {
                 'secondLevel2',
                 'firstLevel',
                 'regular'
+            ]);
+        });
+    });
+
+    it('select event, for multi-select tree with disableCascadeSelection = true', () => {
+        const fakeRegisters = generateFakeRegisters();
+        const handler = jest.fn();
+        element.addEventListener('select', handler);
+
+        element.disableSelectionCascade = true;
+        element.items = ITEMS;
+        element.selectedItems = ['thirdLevel', 'secondLevel'];
+        element.isMultiSelect = true;
+
+        return Promise.resolve().then(() => {
+            // Register the items, including the nested ones
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-tree-item"]'
+            );
+            Object.values(fakeRegisters).forEach((register) => {
+                items[0].dispatchEvent(
+                    new CustomEvent('privateregisteritem', {
+                        bubbles: true,
+                        detail: register
+                    })
+                );
+            });
+
+            items[2].dispatchEvent(
+                new CustomEvent('privateitemclick', {
+                    detail: {
+                        target: 'anchor',
+                        key: '3.1.2',
+                        bounds: { x: 5, y: 12 }
+                    },
+                    bubbles: true
+                })
+            );
+
+            expect(handler).toHaveBeenCalledTimes(1);
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.bounds).toEqual({ x: 5, y: 12 });
+            expect(detail.levelPath).toEqual([2, 0, 1]);
+            expect(detail.selectedItems).toEqual([
+                'thirdLevel',
+                'secondLevel',
+                'secondLevel2'
             ]);
         });
     });
