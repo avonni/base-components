@@ -31,10 +31,11 @@
  */
 
 import { createElement } from 'lwc';
-import PrimitiveCombobox from 'c/primitiveCombobox';
+import PrimitiveCombobox from '../primitiveCombobox';
 import Option from '../option';
 import Action from '../action';
 import { options, actions, topActions, bottomActions, groups } from './data';
+import { deepCopy } from 'c/utilsPrivate';
 
 // Not tested:
 // auto positionning
@@ -71,7 +72,6 @@ describe('PrimitiveCombobox', () => {
         expect(element.dropdownLength).toBe('7-items');
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.groups).toMatchObject([{ name: 'ungrouped' }]);
-        expect(element.hideSelectedOptions).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.isMultiSelect).toBeFalsy();
         expect(element.label).toBeUndefined();
@@ -86,7 +86,6 @@ describe('PrimitiveCombobox', () => {
         expect(element.removeSelectedOptions).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.search).toBeInstanceOf(Function);
-        expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
         expect(element.hideClearIcon).toBeFalsy();
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
@@ -106,38 +105,20 @@ describe('PrimitiveCombobox', () => {
 
             // Top actions
             const topActionElements = element.shadowRoot.querySelectorAll(
-                '.combobox__action_top'
+                '[data-element-id="li-top-action"]'
             );
             expect(topActionElements).toHaveLength(topActions.length);
             topActionElements.forEach((actionElement, index) => {
                 expect(actionElement.dataset.name).toBe(topActions[index].name);
                 const label = actionElement.querySelector(
-                    '.slds-listbox__option-text'
+                    '[data-element-id="span-top-action-label"]'
                 );
                 expect(label.textContent).toBe(topActions[index].label);
-
-                if (topActions[index].disabled) {
-                    expect(actionElement.classList).toContain(
-                        'combobox__action_disabled'
-                    );
-                    expect(actionElement.ariaDisabled).toBe('true');
-                } else {
-                    expect(actionElement.classList).not.toContain(
-                        'combobox__action_disabled'
-                    );
-                    expect(actionElement.ariaDisabled).toBe('false');
-                }
-
-                if (topActions[index].iconName) {
-                    const icon = actionElement.querySelector('lightning-icon');
-                    expect(icon).toBeTruthy();
-                    expect(icon.iconName).toBe(topActions[index].iconName);
-                }
             });
 
             // Bottom actions
             const bottomActionElements = element.shadowRoot.querySelectorAll(
-                '.combobox__action_bottom'
+                '[data-element-id="li-bottom-action"]'
             );
             expect(bottomActionElements).toHaveLength(bottomActions.length);
             bottomActionElements.forEach((actionElement, index) => {
@@ -148,26 +129,112 @@ describe('PrimitiveCombobox', () => {
                     '.slds-listbox__option-text'
                 );
                 expect(label.textContent).toBe(bottomActions[index].label);
+            });
+        });
+    });
 
-                if (bottomActions[index].disabled) {
-                    expect(actionElement.classList).toContain(
-                        'combobox__action_disabled'
-                    );
-                    expect(actionElement.ariaDisabled).toBe('true');
-                } else {
-                    expect(actionElement.classList).not.toContain(
-                        'combobox__action_disabled'
-                    );
-                    expect(actionElement.ariaDisabled).toBe('false');
-                }
+    it('actions, disabled', () => {
+        element.actions = actions;
 
-                if (bottomActions[index].iconName) {
-                    const icon = actionElement.querySelector(
-                        '[data-element-id="lightning-icon-bottom-action"]'
-                    );
-                    expect(icon).toBeTruthy();
-                    expect(icon.iconName).toBe(bottomActions[index].iconName);
-                }
+        return Promise.resolve().then(() => {
+            // Top actions
+            const topActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-top-action"]'
+            );
+            expect(topActionElements[2].classList).toContain(
+                'avonni-primitive-combobox__action_disabled'
+            );
+            expect(topActionElements[2].ariaDisabled).toBe('true');
+            [0, 1].forEach((index) => {
+                const action = topActionElements[index];
+                expect(action.classList).not.toContain(
+                    'avonni-primitive-combobox__action_disabled'
+                );
+                expect(action.ariaDisabled).toBe('false');
+            });
+
+            // Bottom actions
+            const bottomActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-bottom-action"]'
+            );
+            expect(bottomActionElements[0].classList).toContain(
+                'avonni-primitive-combobox__action_disabled'
+            );
+            expect(bottomActionElements[0].ariaDisabled).toBe('true');
+            [1, 2].forEach((index) => {
+                const action = bottomActionElements[index];
+                expect(action.classList).not.toContain(
+                    'avonni-primitive-combobox__action_disabled'
+                );
+                expect(action.ariaDisabled).toBe('false');
+            });
+        });
+    });
+
+    it('actions, icons', () => {
+        element.actions = actions;
+
+        return Promise.resolve().then(() => {
+            // Top actions
+            const topActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-top-action"]'
+            );
+            [1, 2].forEach((index) => {
+                const action = topActionElements[index];
+                const icon = action.querySelector(
+                    '[data-element-id="lightning-icon-top-action"]'
+                );
+                expect(icon).toBeTruthy();
+                expect(icon.iconName).toBe(topActions[index].iconName);
+            });
+
+            // Bottom actions
+            const bottomActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-bottom-action"]'
+            );
+            const icon = bottomActionElements[1].querySelector(
+                '[data-element-id="lightning-icon-bottom-action"]'
+            );
+            expect(icon).toBeTruthy();
+            expect(icon.iconName).toBe(bottomActions[1].iconName);
+        });
+    });
+
+    it('actions, fixed', () => {
+        const fixedActions = deepCopy(actions);
+        fixedActions[1].fixed = true;
+        fixedActions[2].fixed = true;
+        element.actions = fixedActions;
+
+        return Promise.resolve().then(() => {
+            // Top actions
+            const topActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-top-action"]'
+            );
+            // Fixed actions are always first on top
+            expect(topActionElements[0].classList).toContain(
+                'avonni-primitive-combobox__action_fixed'
+            );
+            [1, 2].forEach((index) => {
+                const action = topActionElements[index];
+                expect(action.classList).not.toContain(
+                    'avonni-primitive-combobox__action_fixed'
+                );
+            });
+
+            // Bottom actions
+            const bottomActionElements = element.shadowRoot.querySelectorAll(
+                '[data-element-id="li-bottom-action"]'
+            );
+            // Bottom actions are always last on bottom
+            expect(bottomActionElements[2].classList).toContain(
+                'avonni-primitive-combobox__action_fixed'
+            );
+            [0, 1].forEach((index) => {
+                const action = bottomActionElements[index];
+                expect(action.classList).not.toContain(
+                    'avonni-primitive-combobox__action_fixed'
+                );
             });
         });
     });
@@ -253,7 +320,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const dropdown = element.shadowRoot.querySelector(
-                '.combobox__dropdown'
+                '[data-element-id="div-dropdown"]'
             );
             expect(dropdown.classList).toContain('slds-dropdown_left');
             expect(dropdown.classList).not.toContain('slds-dropdown_center');
@@ -273,7 +340,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const dropdown = element.shadowRoot.querySelector(
-                '.combobox__dropdown'
+                '[data-element-id="div-dropdown"]'
             );
             expect(dropdown.classList).toContain('slds-dropdown_left');
             expect(dropdown.classList).not.toContain('slds-dropdown_center');
@@ -293,7 +360,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const dropdown = element.shadowRoot.querySelector(
-                '.combobox__dropdown'
+                '[data-element-id="div-dropdown"]'
             );
             expect(dropdown.classList).not.toContain('slds-dropdown_left');
             expect(dropdown.classList).toContain('slds-dropdown_center');
@@ -313,7 +380,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const dropdown = element.shadowRoot.querySelector(
-                '.combobox__dropdown'
+                '[data-element-id="div-dropdown"]'
             );
             expect(dropdown.classList).not.toContain('slds-dropdown_left');
             expect(dropdown.classList).not.toContain('slds-dropdown_center');
@@ -333,7 +400,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const dropdown = element.shadowRoot.querySelector(
-                '.combobox__dropdown'
+                '[data-element-id="div-dropdown"]'
             );
             expect(dropdown.classList).not.toContain('slds-dropdown_left');
             expect(dropdown.classList).not.toContain('slds-dropdown_center');
@@ -353,7 +420,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const dropdown = element.shadowRoot.querySelector(
-                '.combobox__dropdown'
+                '[data-element-id="div-dropdown"]'
             );
             expect(dropdown.classList).not.toContain('slds-dropdown_left');
             expect(dropdown.classList).not.toContain('slds-dropdown_center');
@@ -371,7 +438,7 @@ describe('PrimitiveCombobox', () => {
 
         return Promise.resolve().then(() => {
             const dropdown = element.shadowRoot.querySelector(
-                '.combobox__dropdown'
+                '[data-element-id="div-dropdown"]'
             );
             expect(dropdown.classList).toContain('slds-dropdown_left');
             expect(dropdown.classList).not.toContain('slds-dropdown_center');
@@ -411,66 +478,24 @@ describe('PrimitiveCombobox', () => {
                 '[data-element-id^="avonni-primitive-combobox-group"]'
             );
             expect(groupElements).toHaveLength(5);
-            groupElements.forEach((group, index) => {
-                // Default group
-                if (index === 0) {
-                    expect(group.name).toBe('ungrouped');
-                    expect(group.label).toBeUndefined();
-                    expect(group.options).toHaveLength(1);
-                    expect(group.groups).toHaveLength(0);
-                } else {
-                    const groupName = groups[index - 1].name;
-                    expect(group.name).toBe(groupName);
-                    expect(group.label).toBe(groups[index - 1].label);
+            expect(groupElements[0].name).toBe('ungrouped');
+            expect(groupElements[0].label).toBeUndefined();
+            expect(groupElements[0].options).toHaveLength(1);
+            expect(groupElements[0].groups).toHaveLength(0);
+            const groupArray = Array.from(groupElements);
+            // Remove the default group
+            groupArray.shift();
+            groupArray.forEach((group, index) => {
+                const groupName = groups[index].name;
+                expect(group.name).toBe(groupName);
+                expect(group.label).toBe(groups[index].label);
 
-                    const groupOptions = options.filter((option) => {
-                        return (
-                            option.groups && option.groups.includes(groupName)
-                        );
-                    });
-                    expect(group.options).toHaveLength(groupOptions.length);
-                    expect(group.groups).toHaveLength(0);
-                }
+                const groupOptions = options.filter((option) => {
+                    return option.groups && option.groups.includes(groupName);
+                });
+                expect(group.options).toHaveLength(groupOptions.length);
+                expect(group.groups).toHaveLength(0);
             });
-        });
-    });
-
-    // hide-selected-options
-    // Depends on options, isMultiSelect and value
-    it('hideSelectedOptions = false', () => {
-        const values = ['oil-sla', 'dickenson'];
-        element.options = options;
-        element.value = values;
-        element.hideSelectedOptions = false;
-        element.isMultiSelect = true;
-
-        return Promise.resolve().then(() => {
-            const pills = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-pill"]'
-            );
-            expect(pills).toHaveLength(2);
-
-            pills.forEach((pill, index) => {
-                const option = options.find(
-                    (opt) => opt.value === values[values.length - (1 + index)]
-                );
-                expect(pill.name).toBe(option.value);
-                expect(pill.label).toBe(option.label);
-            });
-        });
-    });
-
-    it('hideSelectedOptions = true', () => {
-        element.options = options;
-        element.value = ['oil-sla', 'dickenson'];
-        element.hideSelectedOptions = true;
-        element.isMultiSelect = true;
-
-        return Promise.resolve().then(() => {
-            const pills = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-pill"]'
-            );
-            expect(pills).toHaveLength(0);
         });
     });
 
@@ -535,7 +560,7 @@ describe('PrimitiveCombobox', () => {
     it('messageWhenBadInput', () => {
         element.messageWhenBadInput = 'Something is wrong';
         element.options = options;
-        element.value = ['hello']
+        element.value = ['hello'];
         element.showHelpMessageIfInvalid();
 
         return Promise.resolve().then(() => {
@@ -678,7 +703,7 @@ describe('PrimitiveCombobox', () => {
     it('readOnly = true and good value', () => {
         element.readOnly = true;
         element.options = options;
-        element.value = 'no-avatar-oil-sla'
+        element.value = 'no-avatar-oil-sla';
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
@@ -691,7 +716,7 @@ describe('PrimitiveCombobox', () => {
     it('readOnly = true and bad value', () => {
         element.readOnly = true;
         element.options = options;
-        element.value = 'no-avatarsss-oil-sla'
+        element.value = 'no-avatarsss-oil-sla';
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
@@ -756,22 +781,6 @@ describe('PrimitiveCombobox', () => {
         });
     });
 
-    // selected-options-aria-label
-    // Depends on isMultiSelect, value and options
-    it('selectedOptionsAriaLabel', () => {
-        element.options = options;
-        element.value = [options[1].value, options[0].value];
-        element.isMultiSelect = true;
-        element.selectedOptionsAriaLabel = 'A string label';
-
-        return Promise.resolve().then(() => {
-            const selectedOptions = element.shadowRoot.querySelector(
-                '.primitive-combobox__selected-options'
-            );
-            expect(selectedOptions.ariaLabel).toBe('A string label');
-        });
-    });
-
     // hideClearIcon
     it('hideClearIcon = true', () => {
         element.hideClearIcon = true;
@@ -782,9 +791,7 @@ describe('PrimitiveCombobox', () => {
         return Promise.resolve()
             .then(() => {
                 input.value = 'Some value';
-                input.dispatchEvent(
-                    new CustomEvent('input')
-                );
+                input.dispatchEvent(new CustomEvent('input'));
             })
             .then(() => {
                 const clearButton = element.shadowRoot.querySelector(
@@ -841,11 +848,6 @@ describe('PrimitiveCombobox', () => {
                 '[data-element-id="input"]'
             );
             expect(input.value).toBe(options[1].label);
-
-            const pills = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-pill"]'
-            );
-            expect(pills).toHaveLength(0);
         });
     });
 
@@ -855,10 +857,10 @@ describe('PrimitiveCombobox', () => {
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
-            const pills = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-pill"]'
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
             );
-            expect(pills).toHaveLength(2);
+            expect(input.value).toBe('');
         });
     });
 
@@ -1004,45 +1006,25 @@ describe('PrimitiveCombobox', () => {
         expect(spy).toHaveBeenCalled();
     });
 
-    // handleRemoveSelectedOption and change event
+    // removeSelectedOption and change event
     // Depends on value, isMultiSelect and options
-    it('handleRemoveSelectedOption method and change event', () => {
-        element.value = [options[0].value, options[1].value];
+    it('removeSelectedOption method and change event', () => {
+        element.value = ['no-avatar-oil-sla', 'dickenson'];
         element.options = options;
         element.isMultiSelect = true;
 
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
-        return Promise.resolve()
-            .then(() => {
-                const pills = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="lightning-pill"]'
-                );
-                expect(pills).toHaveLength(2);
-
-                const event = new CustomEvent('click', {
-                    detail: {
-                        name: options[0].value
-                    }
-                });
-
-                element.handleRemoveSelectedOption(event);
-                expect(handler).toHaveBeenCalled();
-                expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-                    options[1].value
-                ]);
-                expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-                expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-                expect(handler.mock.calls[0][0].composed).toBeFalsy();
-                expect(element.value).toMatchObject([options[1].value]);
-            })
-            .then(() => {
-                const pills = element.shadowRoot.querySelectorAll(
-                    '[data-element-id="lightning-pill"]'
-                );
-                expect(pills).toHaveLength(1);
-            });
+        return Promise.resolve().then(() => {
+            element.removeSelectedOption('no-avatar-oil-sla');
+            expect(handler).toHaveBeenCalled();
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.value).toEqual(['dickenson']);
+            expect(detail.action).toBe('unselect');
+            expect(detail.levelPath).toEqual([3, 1]);
+            expect(element.value).toMatchObject(['dickenson']);
+        });
     });
 
     // open
@@ -1116,7 +1098,7 @@ describe('PrimitiveCombobox', () => {
 
     // change
     // Depends on options, showClearInput and value
-    it('change event', () => {
+    it('change event, triggered by clear button', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.options = options;
@@ -1130,7 +1112,9 @@ describe('PrimitiveCombobox', () => {
             clearButton.click();
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toMatchObject([]);
+            expect(handler.mock.calls[0][0].detail.action).toBe('unselect');
+            expect(handler.mock.calls[0][0].detail.levelPath).toEqual([0]);
+            expect(handler.mock.calls[0][0].detail.value).toEqual([]);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();

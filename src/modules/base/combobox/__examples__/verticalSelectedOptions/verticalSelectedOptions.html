@@ -1,11 +1,11 @@
 <template>
     <avonni-combobox
         actions={actions}
-        allow-search
+        label="Vertical selected options"
+        dropdown-length="5-items"
         is-multi-select
-        label="Multi-select lookup"
         options={options}
-        remove-selected-options
+        selected-options-direction="vertical"
         sortable-selected-options
         value={value}
     ></avonni-combobox>

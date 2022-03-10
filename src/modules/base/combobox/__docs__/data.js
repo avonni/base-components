@@ -82,7 +82,8 @@ export const actions = [
         label: 'New Account',
         name: 'new-account',
         iconName: 'utility:add',
-        position: 'bottom'
+        position: 'bottom',
+        fixed: true
     },
     {
         label: 'New Opportunity',
@@ -94,7 +95,8 @@ export const actions = [
     {
         label: 'United',
         name: 'search-united',
-        iconName: 'utility:search'
+        iconName: 'utility:search',
+        fixed: true
     }
 ];
 

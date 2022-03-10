@@ -60,7 +60,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, the combobox options are searchable.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -72,7 +71,6 @@ export default {
             },
             description:
                 'If present, the combobox is disabled and users cannot interact with it.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -92,7 +90,6 @@ export default {
                 'bottom-center',
                 'bottom-right'
             ],
-            defaultValue: 'left',
             description:
                 'Specifies where the drop-down list is aligned with or anchored to the selection field. Valid values include auto, left, center, right, bottom-left, bottom-center and bottom-right.',
             table: {
@@ -106,7 +103,6 @@ export default {
                 type: 'select'
             },
             options: ['5-items', '7-items', '10-items'],
-            defaultValue: '7-items',
             description:
                 'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
             table: {
@@ -140,7 +136,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, it is not possible to clear a selected option.',
             table: {
@@ -153,7 +148,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the selected options pills will be hidden.',
             table: {
@@ -166,7 +160,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If true, the drop-down menu is in a loading state and shows a spinner.',
             table: {
@@ -179,7 +172,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, multiple options can be selected.',
             table: {
                 type: { summary: 'boolean' },
@@ -200,7 +192,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Loading',
             description:
                 'Message displayed while the combobox is in the loading state.',
             table: {
@@ -235,7 +226,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, groups can contain other groups. Each group added to an option will create a level of depth. \nIf false, there will be only one level of groups. If an option belongs to several groups, the option will be repeated in each group.',
             table: {
@@ -277,7 +267,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the combobox is read-only. A read-only combobox is also disabled.',
             table: {
@@ -290,7 +279,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the selected options will be removed from the options.\nIf false, a checkmark will be displayed next to the selected options.',
             table: {
@@ -302,7 +290,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, a value must be selected before the form can be submitted.',
             table: {
@@ -343,12 +330,34 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Selected Options',
             description:
                 'Describes the selected options section to assistive technologies.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Selected Options' }
+            }
+        },
+        selectedOptionsDirection: {
+            name: 'selected-options-direction',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Direction of the selected options. Horizontally, the selected options will be displayed as pills. Vertically, the selected options will be displayed as a list.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'horizontal' }
+            }
+        },
+        sortableSelectedOptions: {
+            name: 'sortable-selected-options',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the selected options are sortable.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         validity: {
@@ -377,7 +386,6 @@ export default {
                 'label-hidden',
                 'label-stacked'
             ],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of the combobox. Accepted variants include standard, label-hidden, label-inline, and label-stacked. This value defaults to standard. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and combobox. Use label-stacked to place the label above the combobox.',
             table: {
@@ -387,13 +395,23 @@ export default {
         }
     },
     args: {
+        allowSearch: false,
+        disabled: false,
+        dropdownAlignment: 'left',
+        dropdownLength: '7-items',
+        hideClearIcon: false,
         hideSelectedOptions: false,
         isLoading: false,
         isMultiSelect: false,
+        loadingStateAlternativeText: 'Loading',
         multiLevelGroups: false,
         readOnly: false,
         removeSelectedOptions: false,
-        required: false
+        required: false,
+        selectedOptionsAriaLabel: 'Selected Options',
+        selectedOptionsDirection: 'horizontal',
+        sortableSelectedOptions: false,
+        variant: 'standard'
     }
 };
 
@@ -415,16 +433,16 @@ Base.args = {
     options: options
 };
 
-export const readOnly = Template.bind({});
-readOnly.args = {
+export const ReadOnly = Template.bind({});
+ReadOnly.args = {
     label: 'Read-only combobox',
     options: options,
     readOnly: true,
     value: 'no-avatar-oil-sla'
 };
 
-export const readOnlyMultiSelect = Template.bind({});
-readOnlyMultiSelect.args = {
+export const ReadOnlyMultiSelect = Template.bind({});
+ReadOnlyMultiSelect.args = {
     label: 'Read-only multi-select combobox',
     options: options,
     isMultiSelect: true,
@@ -432,11 +450,16 @@ readOnlyMultiSelect.args = {
     value: ['no-avatar-dickenson', 'no-avatar-oil-sla']
 };
 
-export const Disabled = Template.bind({});
-Disabled.args = {
-    label: 'Disabled combobox',
-    options: options,
-    disabled: true
+export const VerticalSelectedOptions = Template.bind({});
+VerticalSelectedOptions.args = {
+    label: 'Vertical selected options',
+    isMultiSelect: true,
+    options: optionsWithAvatars,
+    dropdownLength: '5-items',
+    actions,
+    selectedOptionsDirection: 'vertical',
+    sortableSelectedOptions: true,
+    value: ['tyrell', 'oil-sla', 'dickenson']
 };
 
 export const Loading = Template.bind({});
@@ -479,7 +502,8 @@ Lookup.args = {
     isMultiSelect: true,
     removeSelectedOptions: true,
     actions: actions,
-    allowSearch: true
+    allowSearch: true,
+    sortableSelectedOptions: true
 };
 
 export const Scopes = Template.bind({});

@@ -60,6 +60,7 @@ describe('Combobox', () => {
         expect(element.dropdownLength).toBe('7-items');
         expect(element.fieldLevelLevel).toBeUndefined();
         expect(element.groups).toMatchObject([]);
+        expect(element.hideClearIcon).toBeFalsy();
         expect(element.hideSelectedOptions).toBeFalsy();
         expect(element.isLoading).toBeFalsy();
         expect(element.isMultiSelect).toBeFalsy();
@@ -75,6 +76,8 @@ describe('Combobox', () => {
         expect(element.removeSelectedOptions).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
+        expect(element.selectedOptionsDirection).toBe('horizontal');
+        expect(element.sortableSelectedOptions).toBeFalsy();
         expect(element.scopes).toMatchObject([]);
         expect(element.scopesGroups).toMatchObject([]);
         expect(element.search).toBeUndefined();
@@ -187,7 +190,20 @@ describe('Combobox', () => {
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
             // A default group will be added to the beginning of the list by the primitive combobox
-            expect(combobox.groups.slice(1)).toMatchObject(groups);
+            expect(combobox.groups).toMatchObject(groups);
+        });
+    });
+
+    // hide-clear-icon
+    it('hideClearIcon', () => {
+        element.hideClearIcon = true;
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            // A default group will be added to the beginning of the list by the primitive combobox
+            expect(combobox.hideClearIcon).toBeTruthy();
         });
     });
 
@@ -211,14 +227,11 @@ describe('Combobox', () => {
                 );
             })
             .then(() => {
-                const pills = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="lightning-pill"]'
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
                 );
-                expect(pills).toHaveLength(6);
-                pills.forEach((pill, index) => {
-                    expect(pill.name).toBe(options[index].value);
-                    expect(pill.label).toBe(options[index].label);
-                });
+                expect(pillContainer).toBeTruthy();
+                expect(pillContainer.items).toEqual(options);
             });
     });
 
@@ -240,10 +253,10 @@ describe('Combobox', () => {
                 );
             })
             .then(() => {
-                const pills = element.shadowRoot.querySelectorAll(
-                    '[data-element-id^="lightning-pill"]'
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
                 );
-                expect(pills).toHaveLength(0);
+                expect(pillContainer).toBeFalsy();
             });
     });
 
@@ -445,7 +458,7 @@ describe('Combobox', () => {
                 '[data-element-id="avonni-primitive-combobox-scopes"]'
             );
             // A default group will be added to the beginning of the list by the primitive combobox
-            expect(scopesCombobox.groups.splice(1)).toMatchObject(scopesGroups);
+            expect(scopesCombobox.groups).toMatchObject(scopesGroups);
         });
     });
 
@@ -474,10 +487,6 @@ describe('Combobox', () => {
                 const combobox = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-primitive-combobox-main"]'
                 );
-                expect(combobox.selectedOptionsAriaLabel).toBe(
-                    'A string label'
-                );
-
                 combobox.dispatchEvent(
                     new CustomEvent('privateselect', {
                         detail: {
@@ -487,10 +496,100 @@ describe('Combobox', () => {
                 );
             })
             .then(() => {
-                const selectedOptions = element.shadowRoot.querySelector(
-                    '.combobox__selected-options'
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
                 );
-                expect(selectedOptions.ariaLabel).toBe('A string label');
+                expect(pillContainer.alternativeText).toBe('A string label');
+            });
+    });
+
+    // selected-options-direction
+    // Depends on isMultiSelect and options
+    it('selectedOptionsDirection = horizontal', () => {
+        element.options = options;
+        element.isMultiSelect = true;
+        element.selectedOptionsDirection = 'horizontal';
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
+                );
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-list"]'
+                );
+                expect(pillContainer).toBeTruthy();
+                expect(list).toBeFalsy();
+            });
+    });
+
+    it('selectedOptionsDirection = vertical', () => {
+        element.options = options;
+        element.isMultiSelect = true;
+        element.selectedOptionsDirection = 'vertical';
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
+                );
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-list"]'
+                );
+                expect(pillContainer).toBeFalsy();
+                expect(list).toBeTruthy();
+            });
+    });
+
+    // sortable-selected-options
+    // Depends on isMultiSelect and options
+    it('sortableSelectedOptions', () => {
+        element.options = options;
+        element.isMultiSelect = true;
+        element.sortableSelectedOptions = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
+                );
+                expect(pillContainer.sortable).toBeTruthy();
             });
     });
 
@@ -500,6 +599,10 @@ describe('Combobox', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            combobox.validity = { valueMissing: true };
             expect(element.validity.valueMissing).toBeTruthy();
         });
     });
@@ -694,7 +797,7 @@ describe('Combobox', () => {
                 const scopeCombobox = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-primitive-combobox-scopes"]'
                 );
-                expect(scopeCombobox.value).toMatchObject(['accounts']);
+                expect(scopeCombobox.value).toBe('accounts');
             });
     });
 
@@ -833,16 +936,18 @@ describe('Combobox', () => {
         combobox.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: ['value-1', 'value-2']
+                    value: ['burlington', 'nakatomi'],
+                    levelPath: [3, 0, 0],
+                    action: 'select'
                 }
             })
         );
 
         expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-            'value-1',
-            'value-2'
-        ]);
+        const detail = handler.mock.calls[0][0].detail;
+        expect(detail.value).toEqual(['burlington', 'nakatomi']);
+        expect(detail.levelPath).toEqual([3, 0, 0]);
+        expect(detail.action).toBe('select');
         expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -870,15 +975,65 @@ describe('Combobox', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 
+    it('change event, reorder horizontal selection', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        element.isMultiSelect = true;
+        element.options = options;
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: [
+                                options[0],
+                                options[1],
+                                options[3],
+                                options[4]
+                            ]
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
+                );
+                pillContainer.dispatchEvent(
+                    new CustomEvent('reorder', {
+                        detail: {
+                            items: [
+                                options[0],
+                                options[4],
+                                options[1],
+                                options[3]
+                            ]
+                        }
+                    })
+                );
+                expect(handler).toHaveBeenCalled();
+                const detail = handler.mock.calls[0][0].detail;
+                expect(detail.value).toEqual([
+                    options[0].value,
+                    options[4].value,
+                    options[1].value,
+                    options[3].value
+                ]);
+                expect(detail.action).toBe('reorder');
+            });
+    });
+
     // Remove a selected option
     // Depends on isMultiSelect
     it('Remove a selected option', () => {
-        const handler = jest.fn();
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
-        combobox.handleRemoveSelectedOption = handler;
-
+        const spy = jest.spyOn(combobox, 'removeSelectedOption');
         element.isMultiSelect = true;
 
         return Promise.resolve()
@@ -892,17 +1047,52 @@ describe('Combobox', () => {
                 );
             })
             .then(() => {
-                const pill = element.shadowRoot.querySelector(
-                    '[data-element-id="lightning-pill"]'
+                const pillContainer = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-pill-container"]'
                 );
-                pill.dispatchEvent(
-                    new CustomEvent('remove', {
+                pillContainer.dispatchEvent(
+                    new CustomEvent('actionclick', {
                         detail: {
-                            name: 'value-of-removed-option'
+                            index: 2
                         }
                     })
                 );
-                expect(handler).toHaveBeenCalled();
+                expect(spy).toHaveBeenCalled();
+                expect(spy.mock.calls[0][0]).toBe(options[2].value);
+            });
+    });
+
+    it('Remove a selected option with vertical options', () => {
+        const combobox = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-primitive-combobox-main"]'
+        );
+        const spy = jest.spyOn(combobox, 'removeSelectedOption');
+        element.isMultiSelect = true;
+        element.selectedOptionsDirection = 'vertical';
+
+        return Promise.resolve()
+            .then(() => {
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-list"]'
+                );
+                list.dispatchEvent(
+                    new CustomEvent('actionclick', {
+                        detail: {
+                            item: options[2]
+                        }
+                    })
+                );
+                expect(spy).toHaveBeenCalled();
+                expect(spy.mock.calls[0][0]).toBe(options[2].value);
             });
     });
 });
