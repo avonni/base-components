@@ -40,4 +40,5 @@ export default class PageHeader extends LightningElement {
     @api title;
     @api info;
     @api variant = DEFAULT_PAGE_HEADER_VARIANT;
+    @api isJoined = false;
 }

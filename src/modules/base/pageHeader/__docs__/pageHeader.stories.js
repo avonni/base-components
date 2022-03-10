@@ -100,11 +100,11 @@ export default {
             description:
                 'If present, the lower border is removed to allow the header to sit flush on an element.',
             table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                type: { summary: 'boolean' }
             }
         }
-    }
+    },
+    args: { isJoined: false }
 };
 
 const Template = (args) => PageHeader(args);

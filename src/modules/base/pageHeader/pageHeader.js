@@ -210,8 +210,6 @@ export default class PageHeader extends LightningElement {
 
     set isJoined(value) {
         this._isJoined = normalizeBoolean(value);
-        console.log(this._isJoined);
-        this.computedOuterClass();
     }
 
     /**
@@ -221,7 +219,18 @@ export default class PageHeader extends LightningElement {
      */
     get computedOuterClass() {
         return classSet('slds-page-header')
+            .add({ 'slds-page-header_joined': this._isJoined })
             .add(`avonni-page-header__header_${this._variant}`)
+            .toString();
+    }
+
+    /**
+     * Computed Outer class styling based on variant 'object-home' or 'record-home'.
+     *
+     * @type {string}
+     */
+    get computedVerticalOuterClass() {
+        return classSet('slds-page-header slds-page-header_vertical')
             .add({ 'slds-page-header_joined': this._isJoined })
             .toString();
     }
