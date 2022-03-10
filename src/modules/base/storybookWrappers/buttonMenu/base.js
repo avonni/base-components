@@ -33,23 +33,20 @@
 import { LightningElement, api } from 'lwc';
 
 export default class ButtonMenuBase extends LightningElement {
-    @api alternativeText;
-    @api draftAlternativeText;
-    @api iconName;
     @api label;
-    @api loadingStateAlternativeText;
-    @api value;
-    @api accessKey;
-    @api disabled;
+    @api title;
+    @api tooltip;
+    @api iconName;
     @api iconSize;
-    @api isDraft;
+    @api variant;
+    @api disabled;
     @api isLoading;
     @api menuAlignment;
     @api nubbin;
-    @api title;
-    @api tooltip;
-    @api variant;
-    @api computedButtonClass;
-    @api focus;
-    @api click;
+    @api accessKey;
+    @api isDraft;
+    @api alternativeText;
+    @api draftAlternativeText;
+    @api loadingStateAlternativeText;
+    @api value;
 }

@@ -400,22 +400,27 @@ export default class ButtonMenu extends LightningElement {
      *
      * @type {string}
      */
-    @api
     get computedButtonClass() {
         const isDropdownIcon = !this.computedShowDownIcon;
-        const isBare = this.variant === ('bare' || 'bare-inverse');
+        const isBare =
+            this.variant === 'bare' || this.variant === 'bare-inverse';
 
         const classes = classSet('slds-button');
 
         if (this.label) {
             classes.add({
-                'slds-button_neutral': this.variant === 'border',
-                'slds-button_inverse': this.variant === 'border-inverse'
+                'slds-button_neutral':
+                    this.variant === 'border' ||
+                    this.variant === 'border-filled',
+                'slds-button_inverse': this.variant === 'border-inverse',
+                'slds-button_icon-inverse': this.variant === 'bare-inverse',
+                'slds-button_brand': this.variant === 'brand'
             });
         } else {
             const useMoreContainer =
-                this.variant ===
-                ('container' || 'bare-inverse' || 'border-inverse');
+                this.variant === 'container' ||
+                this.variant === 'bare-inverse' ||
+                this.variant === 'border-inverse';
 
             classes.add({
                 'slds-button_icon': !isDropdownIcon,
@@ -485,7 +490,10 @@ export default class ButtonMenu extends LightningElement {
      * @type {boolean}
      */
     get computedShowDownIcon() {
-        return !(this.iconName === ('utility:down' || 'utility:chevrondown'));
+        return !(
+            this.iconName === 'utility:down' ||
+            this.iconName === 'utility:chevrondown'
+        );
     }
 
     /**
