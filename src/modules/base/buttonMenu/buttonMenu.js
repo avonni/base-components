@@ -400,10 +400,10 @@ export default class ButtonMenu extends LightningElement {
      *
      * @type {string}
      */
+    @api
     get computedButtonClass() {
         const isDropdownIcon = !this.computedShowDownIcon;
-        const isBare =
-            this.variant === 'bare' || this.variant === 'bare-inverse';
+        const isBare = this.variant === ('bare' || 'bare-inverse');
 
         const classes = classSet('slds-button');
 
@@ -414,9 +414,8 @@ export default class ButtonMenu extends LightningElement {
             });
         } else {
             const useMoreContainer =
-                this.variant === 'container' ||
-                this.variant === 'bare-inverse' ||
-                this.variant === 'border-inverse';
+                this.variant ===
+                ('container' || 'bare-inverse' || 'border-inverse');
 
             classes.add({
                 'slds-button_icon': !isDropdownIcon,
@@ -424,7 +423,8 @@ export default class ButtonMenu extends LightningElement {
                 'slds-button_icon-more': !useMoreContainer && !isDropdownIcon,
                 'slds-button_icon-container-more':
                     useMoreContainer && !isDropdownIcon,
-                'slds-button_icon-brand': this.variant === 'brand',
+                'slds-button_icon-brand slds-button_icon':
+                    this.variant === 'brand',
                 'slds-button_icon-container':
                     this.variant === 'container' && isDropdownIcon,
                 'slds-button_icon-border':
@@ -485,10 +485,7 @@ export default class ButtonMenu extends LightningElement {
      * @type {boolean}
      */
     get computedShowDownIcon() {
-        return !(
-            this.iconName === 'utility:down' ||
-            this.iconName === 'utility:chevrondown'
-        );
+        return !(this.iconName === ('utility:down' || 'utility:chevrondown'));
     }
 
     /**
