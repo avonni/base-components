@@ -65,11 +65,16 @@
                             <div class="slds-page-header__name-title">
                                 <template if:true={isBaseVariant}>
                                     <span
-                                        class="slds-page-header__title slds-truncate"
+                                        class="
+                                            slds-page-header__title
+                                            slds-truncate
+                                        "
                                     >
                                         <template if:true={hasStringTitle}>
                                             {title}
                                         </template>
+                                    </span>
+                                    <span>
                                         <template if:false={hasStringTitle}>
                                             <slot name="title"></slot>
                                         </template>
@@ -92,7 +97,10 @@
                                     </template>
                                     <div class="slds-page-header__name-title">
                                         <span
-                                            class="slds-page-header__title slds-truncate"
+                                            class="
+                                                slds-page-header__title
+                                                slds-truncate
+                                            "
                                         >
                                             <template if:true={hasStringTitle}>
                                                 {title}
