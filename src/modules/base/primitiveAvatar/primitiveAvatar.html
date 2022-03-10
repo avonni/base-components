@@ -142,9 +142,10 @@
                         slds-button slds-button_icon
                     "
                     data-element-id="action-icon"
-                    onclick={handleActionClick}
                     title={action.label}
                     value={action.name}
+                    alternative-text={action.label}
+                    onclick={handleActionClick}
                 >
                     <c-primitive-icon
                         class="avonni-avatar-action-button-icon"

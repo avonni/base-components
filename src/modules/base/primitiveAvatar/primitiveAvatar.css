@@ -210,7 +210,7 @@
 .avonni-avatar__actions {
     position: absolute;
     --sds-c-button-radius-border: var(
-        --avonni-avatar-action-button-radius,
+        --avonni-avatar-action-button-radius-border,
         30px
     );
     --sds-c-button-spacing-block-end: var(
