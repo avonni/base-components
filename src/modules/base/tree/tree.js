@@ -72,6 +72,7 @@ export default class Tree extends LightningElement {
     _actions = [];
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
+    _disableSelectionCascade = false;
     _editableFields = DEFAULT_EDITABLE_FIELDS;
     _isLoading = false;
     _isMultiSelect = false;
@@ -160,6 +161,24 @@ export default class Tree extends LightningElement {
 
     set allowInlineEdit(value) {
         this._allowInlineEdit = normalizeBoolean(value);
+    }
+
+    /**
+     * Used only if `is-multi-select` is true.
+     * If present, the parent and children nodes will be selected independently of each other.
+     * If empty, when all children of a node are selected, the node is selected automatically. If a node is selected, all its children are also selected by default.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get disableSelectionCascade() {
+        return this._disableSelectionCascade;
+    }
+
+    set disableSelectionCascade(value) {
+        this._disableSelectionCascade = normalizeBoolean(value);
     }
 
     /**
@@ -444,7 +463,12 @@ export default class Tree extends LightningElement {
         const selectedItems = [...this.selectedItems];
         for (let i = 0; i < selectedItems.length; i++) {
             const name = selectedItems[i];
-            this.treedata.computeSelection(name, selectedItems);
+            const cascadeSelection = !this.disableSelectionCascade;
+            this.treedata.computeSelection(
+                name,
+                selectedItems,
+                cascadeSelection
+            );
         }
         if (selectedItems.length !== this.selectedItems.length) {
             this._selectedItems = selectedItems;
@@ -1002,15 +1026,25 @@ export default class Tree extends LightningElement {
             } else if (target === 'anchor') {
                 if (this.isMultiSelect) {
                     const node = item.treeNode;
-
+                    const cascadeSelection = !this.disableSelectionCascade;
                     if (!node.selected) {
-                        this.treedata.selectNode(node, this.selectedItems);
+                        this.treedata.selectNode(
+                            node,
+                            this.selectedItems,
+                            cascadeSelection
+                        );
                     } else {
-                        this.treedata.unselectNode(node, this.selectedItems);
+                        this.treedata.unselectNode(
+                            node,
+                            this.selectedItems,
+                            cascadeSelection
+                        );
                     }
 
-                    this.updateParentsSelection(item);
-                    this.forceChildrenSelectionUpdate();
+                    if (!this.disableSelectionCascade) {
+                        this.updateParentsSelection(item);
+                        this.forceChildrenSelectionUpdate();
+                    }
                     this.dispatchSelect(event);
                 } else {
                     this.setFocusToItem(item);

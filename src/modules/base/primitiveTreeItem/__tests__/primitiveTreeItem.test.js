@@ -138,6 +138,7 @@ describe('Primitive Tree Item', () => {
         expect(element.avatar).toBeUndefined();
         expect(element.childItems).toEqual([]);
         expect(element.disabled).toBeFalsy();
+        expect(element.disableSelectionCascade).toBeFalsy();
         expect(element.editableFields).toEqual([
             'label',
             'metatext',
@@ -724,9 +725,10 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    // selected and show-checkbox
+    // selected, disable-selection-cascade and show-checkbox
     // Depends on childItems
-    it('selected and showCheckbox, with some selected childItems', () => {
+    it('selected = false, with showCheckbox and some selected childItems', () => {
+        element.disableSelectionCascade = false;
         element.selected = false;
         element.showCheckbox = true;
         element.childItems = [
@@ -752,7 +754,35 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('selected and showCheckbox, with all selected childItems', () => {
+    it('selected = false, with showCheckbox, some selected childItems and disableSelectionCascade', () => {
+        element.disableSelectionCascade = true;
+        element.selected = false;
+        element.showCheckbox = true;
+        element.childItems = [
+            {
+                label: 'not selected',
+                name: 'notSelected'
+            },
+            {
+                label: 'selected',
+                name: 'selected',
+                selected: true
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            expect(element.selected).toBeFalsy();
+            expect(element.ariaSelected).toBe('false');
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            expect(checkbox.indeterminate).toBeFalsy();
+            expect(checkbox.checked).toBeFalsy();
+        });
+    });
+
+    it('selected = false, with showCheckbox and all selected childItems', () => {
+        element.disableSelectionCascade = false;
         element.selected = false;
         element.showCheckbox = true;
         element.childItems = [
@@ -776,6 +806,34 @@ describe('Primitive Tree Item', () => {
             );
             expect(checkbox.indeterminate).toBeFalsy();
             expect(checkbox.checked).toBeTruthy();
+        });
+    });
+
+    it('selected = false, with showCheckbox, all selected childItems and disableSelectionCascade', () => {
+        element.disableSelectionCascade = true;
+        element.selected = false;
+        element.showCheckbox = true;
+        element.childItems = [
+            {
+                label: 'selected too',
+                name: 'selectedToo',
+                selected: true
+            },
+            {
+                label: 'selected',
+                name: 'selected',
+                selected: true
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            expect(element.selected).toBeFalsy();
+            expect(element.ariaSelected).toBe('false');
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            expect(checkbox.indeterminate).toBeFalsy();
+            expect(checkbox.checked).toBeFalsy();
         });
     });
 
