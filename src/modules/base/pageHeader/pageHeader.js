@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import pageHeader from './pageHeader.html';
 import pageHeaderVertical from './pageHeaderVertical.html';
@@ -81,6 +81,7 @@ export default class PageHeader extends LightningElement {
     @api info;
 
     _variant = PAGE_HEADER_VARIANTS.default;
+    _isJoined = false;
     showTitle = true;
     showLabel = true;
     showActions = true;
@@ -196,6 +197,24 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
+     * When present, the lower border and shadow are removed so the header can sit flush on the following element.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isJoined() {
+        return this._isJoined;
+    }
+
+    set isJoined(value) {
+        this._isJoined = normalizeBoolean(value);
+        console.log(this._isJoined);
+        this.computedOuterClass();
+    }
+
+    /**
      * Computed Outer class styling based on variant 'object-home' or 'record-home'.
      *
      * @type {string}
@@ -203,6 +222,7 @@ export default class PageHeader extends LightningElement {
     get computedOuterClass() {
         return classSet('slds-page-header')
             .add(`avonni-page-header__header_${this._variant}`)
+            .add({ 'slds-page-header_joined': this._isJoined })
             .toString();
     }
 
