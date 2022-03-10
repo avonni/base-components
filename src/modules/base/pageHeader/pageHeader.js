@@ -213,7 +213,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Computed Outer class styling based on variant 'record-home-vertical'.
+     * Computed Outer class styling based on variant 'object-home' or 'record-home'.
      *
      * @type {string}
      */
@@ -225,7 +225,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Computed Outer class styling based on variant 'object-home' or 'record-home'.
+     * Computed Outer class styling based on variant 'record-home-vertical'.
      *
      * @type {string}
      */
