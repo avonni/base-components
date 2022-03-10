@@ -88,7 +88,6 @@ export default {
             description:
                 'The type of component. Valid values include base, object-home, record-home and record-home-vertical.',
             table: {
-                defaultValue: { summary: 'base' },
                 type: { summary: 'String' }
             }
         },
@@ -104,7 +103,10 @@ export default {
             }
         }
     },
-    args: { isJoined: false }
+    args: {
+        isJoined: false,
+        variant: 'base'
+    }
 };
 
 const Template = (args) => PageHeader(args);

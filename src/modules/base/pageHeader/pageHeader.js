@@ -197,7 +197,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * When present, the lower border and shadow are removed so the header can sit flush on the following element.
+     * When present, the lower border-radius is set to zero and the shadow is removed so the header can sit flush on the following element.
      *
      * @type {boolean}
      * @public
@@ -213,7 +213,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * Computed Outer class styling based on variant 'object-home' or 'record-home'.
+     * Computed Outer class styling based on variant 'record-home-vertical'.
      *
      * @type {string}
      */
