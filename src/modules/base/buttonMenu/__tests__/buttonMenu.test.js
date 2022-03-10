@@ -518,6 +518,17 @@ describe('Button Menu', () => {
         });
     });
 
+    it('Button menu variant brand without label', () => {
+        element.variant = 'brand';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_icon-brand');
+        });
+    });
+
     it('Button menu variant border-inverse without label', () => {
         element.variant = 'border-inverse';
 

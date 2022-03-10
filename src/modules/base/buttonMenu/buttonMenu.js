@@ -67,11 +67,12 @@ const ICON_SIZES = {
 
 const BUTTON_VARIANTS = {
     valid: [
+        'brand',
         'bare',
+        'bare-inverse',
         'container',
         'border',
         'border-filled',
-        'bare-inverse',
         'border-inverse'
     ],
     default: 'border'
@@ -372,7 +373,7 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
-     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
+     * The variant changes the look of the button. Accepted variants include brand, bare, container, border, border-filled, bare-inverse, and border-inverse.
      *
      * @public
      * @type {string}
@@ -423,6 +424,7 @@ export default class ButtonMenu extends LightningElement {
                 'slds-button_icon-more': !useMoreContainer && !isDropdownIcon,
                 'slds-button_icon-container-more':
                     useMoreContainer && !isDropdownIcon,
+                'slds-button_icon-brand': this.variant === 'brand',
                 'slds-button_icon-container':
                     this.variant === 'container' && isDropdownIcon,
                 'slds-button_icon-border':
