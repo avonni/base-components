@@ -77,7 +77,7 @@ describe('PageHeader', () => {
 
         return Promise.resolve().then(() => {
             const label = element.shadowRoot.querySelector(
-                '[data-element-id="label"] > span'
+                '.slds-page-header__name > .slds-page-header__name-title > span'
             );
 
             expect(label.textContent).toBe('A string label');
