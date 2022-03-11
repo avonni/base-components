@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class TreeMultiSelectNoCascade extends LightningElement {
+export default class TreeIndependentMultiSelect extends LightningElement {
     items = [
         {
             label: 'Go to Record 1',
