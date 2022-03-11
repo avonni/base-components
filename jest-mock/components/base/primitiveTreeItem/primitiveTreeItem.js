@@ -9,10 +9,10 @@ export default class PrimitiveTreeItem extends LightningElement {
     @api avatar;
     @api childItems;
     @api disabled;
-    @api disableSelectionCascade;
     @api editableFields;
     @api fields;
     @api href;
+    @api independentMultiSelect;
     @api expanded;
     @api isLeaf;
     @api isLoading;
