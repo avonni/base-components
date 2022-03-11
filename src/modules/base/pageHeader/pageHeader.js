@@ -197,7 +197,7 @@ export default class PageHeader extends LightningElement {
     }
 
     /**
-     * When present, the lower border-radius is set to zero and the shadow is removed so the header can sit flush on the following element.
+     * If present, the bottom border-radius is set to zero and the shadow is removed. This allows the page-header to sit flush on top of another element.
      *
      * @type {boolean}
      * @public

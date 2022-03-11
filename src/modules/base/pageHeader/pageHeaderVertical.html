@@ -60,7 +60,7 @@
                 <div class="slds-page-header__name">
                     <div class="slds-page-header__name-title">
                         <template if:false={hasStringLabel}>
-                            <slot name="label"></slot>
+                            <slot name="label" data-element-id="label"></slot>
                         </template>
                         <template if:true={hasStringLabel}>
                             <span>{label}</span>
