@@ -267,6 +267,18 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-avatar-action-button-color-background
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-action-button-color-foreground
+ * @type color
+ * @default #706e6b
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-avatar-action-button-radius-border
  * @default 30px
  * @type radius

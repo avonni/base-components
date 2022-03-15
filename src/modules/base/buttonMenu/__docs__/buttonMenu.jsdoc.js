@@ -20,7 +20,7 @@
  * @memberof stylingHooks
  * @name --avonni-button-menu-button-border-filled-color-background
  * @type color
- * @default white
+ * @default #ffffff
  */
 /**
  * @memberof stylingHooks

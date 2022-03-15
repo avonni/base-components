@@ -72,6 +72,8 @@ describe('Avatar', () => {
         expect(element.tertiaryText).toBeUndefined();
         expect(element.textPosition).toBe('right');
         expect(element.actions).toBeUndefined();
+        expect(element.position).toBeUndefined();
+        expect(element.actionMenuIcon).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -829,6 +831,8 @@ describe('Avatar', () => {
             }
         ];
         element.actions = actions;
+        element.actionMenuIcon = 'utility:threedots';
+        element.actionPosition = 'top-right';
         element.hideAvatarDetails = true;
 
         return Promise.resolve().then(() => {
@@ -847,6 +851,8 @@ describe('Avatar', () => {
                     iconName: 'utility:add'
                 }
             ]);
+            expect(avatar.actionMenuIcon).toEqual('utility:threedots');
+            expect(avatar.actionPosition).toEqual('top-right');
         });
     });
 

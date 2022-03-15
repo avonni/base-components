@@ -81,7 +81,6 @@ export default {
                 'x-large',
                 'xx-large'
             ],
-            defaultValue: 'medium',
             description: 'The size of the avatar.',
             table: {
                 defaultValue: { summary: 'medium' },
@@ -103,7 +102,6 @@ export default {
                 type: 'select'
             },
             options: ['circle', 'square'],
-            defaultValue: 'square',
             description: 'The variant changes the shape of the avatar.',
             table: {
                 defaultValue: { summary: 'square' },
@@ -127,7 +125,6 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'top-right',
             description: 'Position of the status icon.',
             table: {
                 defaultValue: { summary: 'top-right' },
@@ -184,7 +181,6 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'bottom-right',
             description: 'Position of the presence icon.',
             table: {
                 defaultValue: { summary: 'bottom-right' },
@@ -221,7 +217,6 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'bottom-left',
             description: 'Position of the action button.',
             table: {
                 defaultValue: { summary: 'bottom-left' },
@@ -259,7 +254,6 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'top-left',
             description: 'Position of the entity icon.',
             table: {
                 defaultValue: { summary: 'top-left' },
@@ -296,7 +290,6 @@ export default {
                 type: 'select'
             },
             options: ['circle', 'square'],
-            defaultValue: 'square',
             description: 'The variant changes the shape of the entity.',
             table: {
                 defaultValue: { summary: 'square' },
@@ -309,7 +302,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'Hide primary, secondary and tertiary text.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -359,7 +351,6 @@ export default {
                 type: 'select'
             },
             options: ['right', 'center', 'left'],
-            defaultValue: 'right',
             description:
                 'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
             table: {
@@ -380,7 +371,15 @@ export default {
         }
     },
     args: {
-        hideAvatarDetails: false
+        hideAvatarDetails: false,
+        variant: 'square',
+        size: 'medium',
+        entityVariant: 'square',
+        entityPosition: 'top-left',
+        actionPosition: 'bottom-left',
+        statusPosition: 'top-right',
+        presencePosition: 'bottom-right',
+        textPosition: 'right'
     }
 };
 const tags = [
