@@ -37,7 +37,7 @@ customElements.define('ac-base-tree-grid', Component.CustomElementConstructor);
 export const TreeGrid = ({
     ariaLabel,
     columns,
-    data,
+    records,
     expandedRows,
     hideCheckboxColumn,
     isLoading,
@@ -52,7 +52,7 @@ export const TreeGrid = ({
     const element = document.createElement('ac-base-tree-grid');
     element.ariaLabel = ariaLabel;
     element.columns = columns;
-    element.data = data;
+    element.records = records;
     element.expandedRows = expandedRows;
     element.hideCheckboxColumn = hideCheckboxColumn;
     element.isLoading = isLoading;

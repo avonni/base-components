@@ -21,7 +21,7 @@ export const allowlistedColumnKeys = [
  * @param {object[]} flattenedData - recursive data aggregation
  * @returns {object[]} normalized/flattened data
  */
-export const normalizeData = function (
+export const normalizeRecords = function (
     data,
     expandedRows,
     keyField,
@@ -71,7 +71,7 @@ export const normalizeData = function (
 
             // only continue deeper into the tree if row is set to be expanded and has children content
             if (flatRow.isExpanded && hasChildrenContent) {
-                normalizeData(
+                normalizeRecords(
                     row._children,
                     expandedRows,
                     keyField,

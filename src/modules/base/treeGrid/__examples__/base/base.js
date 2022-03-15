@@ -33,7 +33,7 @@ export default class TreeGridBase extends LightningElement {
         }
     ];
 
-    data = [
+    records = [
         {
             name: '123555',
             accountName: 'Rewis Inc',

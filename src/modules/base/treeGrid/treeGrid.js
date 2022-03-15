@@ -1,5 +1,5 @@
 import { LightningElement, api } from 'lwc';
-import { normalizeColumns, normalizeData } from './normalizer';
+import { normalizeColumns, normalizeRecords } from './normalizer';
 import {
     normalizeArray,
     normalizeBoolean,
@@ -22,13 +22,13 @@ const DEFAULT_ROW_NUMBER_OFFSET = 0;
 export default class TreeGrid extends LightningElement {
     _ariaLabel;
     _columns;
-    _data;
     _expandedRows = [];
     _hideCheckboxColumn = false;
     _isLoading = false;
     _keyField;
     _maxColumnWidth = DEFAULT_MAX_WIDTH;
     _minColumnWidth = DEFAULT_MIN_WIDTH;
+    _records;
     _resizeColumnDisabled = false;
     _rowNumberOffset = DEFAULT_ROW_NUMBER_OFFSET;
     _selectedRows = [];
@@ -36,7 +36,7 @@ export default class TreeGrid extends LightningElement {
 
     // raw values passed in
     _rawColumns;
-    _rawData;
+    _rawRecords;
 
     // toggle all rows
     _toggleAllRecursionCounter = 1;
@@ -86,18 +86,18 @@ export default class TreeGrid extends LightningElement {
     }
 
     /**
-     * The array of data to be displayed.
+     * The array of records to be displayed.
      * @type {object[]}
      * @public
      */
     @api
     // eslint-disable-next-line @lwc/lwc/valid-api
-    get data() {
-        return this._rawData;
+    get records() {
+        return this._rawRecords;
     }
 
-    set data(value) {
-        this._rawData = value;
+    set records(value) {
+        this._rawRecords = value;
         this.flattenData();
     }
 
@@ -265,8 +265,8 @@ export default class TreeGrid extends LightningElement {
         return this._columns;
     }
 
-    get normalizedData() {
-        return this._data;
+    get normalizedRecords() {
+        return this._records;
     }
 
     // Methods
@@ -302,7 +302,7 @@ export default class TreeGrid extends LightningElement {
      */
     @api
     expandAll() {
-        this.toggleAllRows(this.data, true);
+        this.toggleAllRows(this.records, true);
     }
 
     /**
@@ -312,7 +312,7 @@ export default class TreeGrid extends LightningElement {
      */
     @api
     collapseAll() {
-        this.toggleAllRows(this.data, false);
+        this.toggleAllRows(this.records, false);
     }
 
     // Event handlers
@@ -321,14 +321,14 @@ export default class TreeGrid extends LightningElement {
         event.stopPropagation();
         const { name, nextState } = event.detail;
         // toggle row in user provided data
-        this.toggleRow(this.data, name, nextState);
+        this.toggleRow(this.records, name, nextState);
     }
 
     handleToggleAll(event) {
         event.stopPropagation();
         const { nextState } = event.detail;
         // toggle all rows in user provided data
-        this.toggleAllRows(this.data, nextState);
+        this.toggleAllRows(this.records, nextState);
     }
 
     handleRowSelection(event) {
@@ -435,8 +435,8 @@ export default class TreeGrid extends LightningElement {
     flattenData() {
         // only flatten data if we have a key field defined
         if (this.keyField) {
-            this._data = normalizeData(
-                this.data,
+            this._records = normalizeRecords(
+                this.records,
                 this.expandedRows,
                 this.keyField
             );
