@@ -571,9 +571,11 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        return this.checkboxVariant
-            ? ''
-            : `slds-checkbox_button-group ${this.orientation}`;
+        return classSet(
+            `avonni-input-choice-set-stretch ${this.orientation}`
+        ).add({
+            'slds-checkbox_button-group': !this.checkboxVariant
+        });
     }
 
     /**

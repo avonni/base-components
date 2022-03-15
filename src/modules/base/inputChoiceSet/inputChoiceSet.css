@@ -79,3 +79,9 @@
     font-style: var(--avonni-input-choice-set-header-font-style, normal);
     font-weight: var(--avonni-input-choice-set-header-font-weight, 400);
 }
+
+@media (max-width: 480px) {
+    .avonni-input-choice-set-stretch {
+        width: 100%;
+    }
+}
