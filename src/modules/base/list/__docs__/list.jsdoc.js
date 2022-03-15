@@ -42,25 +42,25 @@
  * @memberof stylingHooks
  * @name --avonni-list-header-font-size
  * @default 1rem
- * @type dimension
+ * @type font
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-font-style
  * @default normal
- * @type string
+ * @type font
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-font-weight
  * @default 400
- * @type string, number
+ * @type font
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-line-height
  * @default 1.25
- * @type number
+ * @type line-height
  */
 /**
  * @memberof stylingHooks
@@ -72,13 +72,13 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-header-font-size
  * @default 0.8125rem
- * @type dimension
+ * @type font
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-header-font-style
  * @default normal
- * @type string
+ * @type font
  */
 /**
  * @memberof stylingHooks
@@ -96,19 +96,19 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-description-font-size
  * @default 0.8125rem
- * @type dimension
+ * @type font
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-description-font-style
  * @default normal
- * @type string
+ * @type font
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-list-item-description-font-weight
  * @default 400
- * @type number
+ * @type font
  */
 /**
  * @memberof stylingHooks
@@ -149,7 +149,7 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-around-border-radius
  * @default 0.25rem
- * @type length, percentage
+ * @type radius
  */
 /**
  * @memberof stylingHooks
