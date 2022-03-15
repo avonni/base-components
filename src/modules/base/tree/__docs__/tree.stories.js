@@ -74,8 +74,8 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        disableSelectionCascade: {
-            name: 'disable-selection-cascade',
+        independentMultiSelect: {
+            name: 'independent-multi-select',
             control: {
                 type: 'boolean'
             },
@@ -174,7 +174,7 @@ export default {
     },
     args: {
         allowInlineEdit: false,
-        disableSelectionCascade: false,
+        independentMultiSelect: false,
         editableFields: [
             'label',
             'metatext',
@@ -251,11 +251,11 @@ MultiSelect.args = {
     selectedItems: ['node1-2-1', 'node1-1', 'node2', 'node1-1-1-2', 'node6']
 };
 
-export const MultiSelectNoCascade = Template.bind({});
-MultiSelectNoCascade.args = {
+export const IndependentMultiSelect = Template.bind({});
+IndependentMultiSelect.args = {
     items: ITEMS,
     header: 'Multi Select Tree With no Selection Cascade',
     isMultiSelect: true,
     selectedItems: ['node1-2-1', 'node1-1', 'node2', 'node1-1-1-2', 'node6'],
-    disableSelectionCascade: true
+    independentMultiSelect: true
 };

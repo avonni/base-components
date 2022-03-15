@@ -78,11 +78,11 @@ export default class PrimitiveTreeItem extends LightningElement {
     _avatar;
     _childItems = [];
     _disabled = false;
-    _disableSelectionCascade = false;
     _editableFields = DEFAULT_EDIT_FIELDS;
     _fields = [];
     _href;
     _expanded = false;
+    _independentMultiSelect = false;
     _isLeaf = false;
     _isLoading = false;
     _label;
@@ -311,11 +311,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * @public
      */
     @api
-    get disableSelectionCascade() {
-        return this._disableSelectionCascade;
+    get independentMultiSelect() {
+        return this._independentMultiSelect;
     }
-    set disableSelectionCascade(value) {
-        this._disableSelectionCascade = normalizeBoolean(value);
+    set independentMultiSelect(value) {
+        this._independentMultiSelect = normalizeBoolean(value);
         if (this.isConnected) this.computeSelection();
     }
 
@@ -660,7 +660,7 @@ export default class PrimitiveTreeItem extends LightningElement {
             !this.selected &&
             this.showCheckbox &&
             this.childItems.length &&
-            !this.disableSelectionCascade
+            !this.independentMultiSelect
         ) {
             const selectedChildren = this.childItems.filter(
                 (child) => child.selected

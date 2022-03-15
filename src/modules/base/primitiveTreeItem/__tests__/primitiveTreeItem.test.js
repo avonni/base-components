@@ -138,7 +138,7 @@ describe('Primitive Tree Item', () => {
         expect(element.avatar).toBeUndefined();
         expect(element.childItems).toEqual([]);
         expect(element.disabled).toBeFalsy();
-        expect(element.disableSelectionCascade).toBeFalsy();
+        expect(element.independentMultiSelect).toBeFalsy();
         expect(element.editableFields).toEqual([
             'label',
             'metatext',
@@ -725,10 +725,10 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    // selected, disable-selection-cascade and show-checkbox
+    // selected, independent-multi-select and show-checkbox
     // Depends on childItems
     it('selected = false, with showCheckbox and some selected childItems', () => {
-        element.disableSelectionCascade = false;
+        element.independentMultiSelect = false;
         element.selected = false;
         element.showCheckbox = true;
         element.childItems = [
@@ -754,8 +754,8 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('selected = false, with showCheckbox, some selected childItems and disableSelectionCascade', () => {
-        element.disableSelectionCascade = true;
+    it('selected = false, with showCheckbox, some selected childItems and independentMultiSelect', () => {
+        element.independentMultiSelect = true;
         element.selected = false;
         element.showCheckbox = true;
         element.childItems = [
@@ -782,7 +782,7 @@ describe('Primitive Tree Item', () => {
     });
 
     it('selected = false, with showCheckbox and all selected childItems', () => {
-        element.disableSelectionCascade = false;
+        element.independentMultiSelect = false;
         element.selected = false;
         element.showCheckbox = true;
         element.childItems = [
@@ -809,8 +809,8 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('selected = false, with showCheckbox, all selected childItems and disableSelectionCascade', () => {
-        element.disableSelectionCascade = true;
+    it('selected = false, with showCheckbox, all selected childItems and independentMultiSelect', () => {
+        element.independentMultiSelect = true;
         element.selected = false;
         element.showCheckbox = true;
         element.childItems = [

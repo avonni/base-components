@@ -24,7 +24,7 @@ describe('Tree', () => {
         expect(element.actions).toEqual([]);
         expect(element.actionsWhenDisabled).toEqual([]);
         expect(element.allowInlineEdit).toBeFalsy();
-        expect(element.disableSelectionCascade).toBeFalsy();
+        expect(element.independentMultiSelect).toBeFalsy();
         expect(element.editableFields).toEqual([
             'label',
             'metatext',
@@ -224,9 +224,9 @@ describe('Tree', () => {
         });
     });
 
-    it('isMultiSelect = true, selectedItems and disableSelectionCascade', () => {
+    it('isMultiSelect = true, selectedItems and independentMultiSelect', () => {
         element.isMultiSelect = true;
-        element.disableSelectionCascade = true;
+        element.independentMultiSelect = true;
         const handler = jest.fn();
         element.addEventListener('select', handler);
         const selectedItems = [
@@ -1331,12 +1331,12 @@ describe('Tree', () => {
         });
     });
 
-    it('select event, for multi-select tree with disableCascadeSelection = true', () => {
+    it('select event, for multi-select tree with independent-multi-select = true', () => {
         const fakeRegisters = generateFakeRegisters();
         const handler = jest.fn();
         element.addEventListener('select', handler);
 
-        element.disableSelectionCascade = true;
+        element.independentMultiSelect = true;
         element.items = ITEMS;
         element.selectedItems = ['thirdLevel', 'secondLevel'];
         element.isMultiSelect = true;

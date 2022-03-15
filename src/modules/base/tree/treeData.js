@@ -479,9 +479,9 @@ export class TreeData {
         }
 
         if (cascadeSelection && node.children) {
-            node.children.forEach((child) =>
-                this.selectNode(child, selectedItems)
-            );
+            node.children.forEach((child) => {
+                this.selectNode(child, selectedItems, cascadeSelection);
+            });
         }
     }
 
@@ -500,9 +500,9 @@ export class TreeData {
         }
 
         if (cascadeSelection && node.children) {
-            node.children.forEach((child) =>
-                this.unselectNode(child, selectedItems)
-            );
+            node.children.forEach((child) => {
+                this.unselectNode(child, selectedItems, cascadeSelection);
+            });
         }
     }
 

@@ -72,8 +72,8 @@ export default class Tree extends LightningElement {
     _actions = [];
     _actionsWhenDisabled = [];
     _allowInlineEdit = false;
-    _disableSelectionCascade = false;
     _editableFields = DEFAULT_EDITABLE_FIELDS;
+    _independentMultiSelect = false;
     _isLoading = false;
     _isMultiSelect = false;
     @track _items = [];
@@ -164,24 +164,6 @@ export default class Tree extends LightningElement {
     }
 
     /**
-     * Used only if `is-multi-select` is true.
-     * If present, the parent and children nodes will be selected independently of each other.
-     * If empty, when all children of a node are selected, the node is selected automatically. If a node is selected, all its children are also selected by default.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get disableSelectionCascade() {
-        return this._disableSelectionCascade;
-    }
-
-    set disableSelectionCascade(value) {
-        this._disableSelectionCascade = normalizeBoolean(value);
-    }
-
-    /**
      * Array of fields that should be visible in the item edit form. The item edit form can be opened through the standard ``edit`` action.
      *
      * @type {string[]}
@@ -195,6 +177,24 @@ export default class Tree extends LightningElement {
 
     set editableFields(value) {
         this._editableFields = normalizeArray(value);
+    }
+
+    /**
+     * Used only if `is-multi-select` is true.
+     * If present, the parent and children nodes will be selected independently of each other.
+     * If empty, when all children of a node are selected, the node is selected automatically. If a node is selected, all its children are also selected by default.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get independentMultiSelect() {
+        return this._independentMultiSelect;
+    }
+
+    set independentMultiSelect(value) {
+        this._independentMultiSelect = normalizeBoolean(value);
     }
 
     /**
@@ -463,7 +463,7 @@ export default class Tree extends LightningElement {
         const selectedItems = [...this.selectedItems];
         for (let i = 0; i < selectedItems.length; i++) {
             const name = selectedItems[i];
-            const cascadeSelection = !this.disableSelectionCascade;
+            const cascadeSelection = !this.independentMultiSelect;
             this.treedata.computeSelection(
                 name,
                 selectedItems,
@@ -1026,7 +1026,7 @@ export default class Tree extends LightningElement {
             } else if (target === 'anchor') {
                 if (this.isMultiSelect) {
                     const node = item.treeNode;
-                    const cascadeSelection = !this.disableSelectionCascade;
+                    const cascadeSelection = !this.independentMultiSelect;
                     if (!node.selected) {
                         this.treedata.selectNode(
                             node,
@@ -1041,7 +1041,7 @@ export default class Tree extends LightningElement {
                         );
                     }
 
-                    if (!this.disableSelectionCascade) {
+                    if (!this.independentMultiSelect) {
                         this.updateParentsSelection(item);
                         this.forceChildrenSelectionUpdate();
                     }
