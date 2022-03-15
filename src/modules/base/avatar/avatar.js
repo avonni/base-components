@@ -601,10 +601,6 @@ export default class Avatar extends LightningElement {
      * @param {event}
      */
     handleActionClick = (event) => {
-        // event.stopPropagation();
-        // opiton1 keep event composed and risk propagation errors
-        // option2 stop propagation and add event listener in avatar group
-        console.log(event.detail.name);
         /**
          * The event fired when a user clicks on an action.
          *

@@ -665,7 +665,6 @@ export default class AvatarGroup extends LightningElement {
      */
     handleAvatarActionClick = (event) => {
         const name = event.detail.name;
-
         const itemId = event.target.dataset.itemId;
         const type = event.target.dataset.type;
         let item;
@@ -676,7 +675,6 @@ export default class AvatarGroup extends LightningElement {
             item = this.listHiddenItems[itemId];
         }
 
-        console.log('avatar group', name, 'item', item);
         /**
          * The event fired when the user clicks on an avatar action.
          *
