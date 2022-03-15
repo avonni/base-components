@@ -216,11 +216,12 @@ export default {
                 type: 'select'
             },
             options: [
+                'brand',
                 'bare',
+                'bare-inverse',
                 'container',
                 'border',
                 'border-filled',
-                'bare-inverse',
                 'border-inverse'
             ],
             description:

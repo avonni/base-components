@@ -1,5 +1,22 @@
 <template>
-    <avonni-button-menu>
+    <avonni-button-menu
+        variant={variant}
+        label={label}
+        title={title}
+        tooltip={tooltip}
+        disabled={disabled}
+        icon-name={iconName}
+        icon-size={iconSize}
+        is-loading={isLoading}
+        menu-alignment={menuAlignment}
+        nubbin={nubbin}
+        is-draft={isDraft}
+        access-key={accessKey}
+        alternative-text={alternativeText}
+        draft-alternative-text={draftAlternativeText}
+        loading-state-alternative-text={loadingStateAlternativeText}
+        value={value}
+    >
         <lightning-menu-item
             value="MenuItemOne"
             label="Menu Item One"
