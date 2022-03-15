@@ -137,6 +137,19 @@ describe('PageHeader', () => {
         });
     });
 
+    it('if-joined with record-home-vertical variant', () => {
+        element.variant = 'record-home-vertical';
+        element.isJoined = true;
+
+        return Promise.resolve().then(() => {
+            const header =
+                element.shadowRoot.querySelector('.slds-page-header');
+
+            expect(header.classList).toContain('slds-page-header_vertical');
+            expect(header.classList).toContain('slds-page-header_joined');
+        });
+    });
+
     // variant
     it('variant = base', () => {
         element.variant = 'base';
