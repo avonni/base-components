@@ -33,7 +33,7 @@
 import { TreeGrid } from '../__examples__/treeGrid';
 import {
     EXAMPLES_COLUMNS_DEFINITION_BASIC,
-    EXAMPLES_DATA_BASIC,
+    EXAMPLES_RECORDS_BASIC,
     EXPANDED_ROWS_BASIC
 } from '../__docs__/data';
 export default {
@@ -55,15 +55,6 @@ export default {
             },
             description:
                 "Array of the columns object that's used to define the data types. Required properties include 'label', 'fieldName', and 'type'. The default type is 'text'. See the table below for more information.",
-            table: {
-                type: { summary: 'object[]' }
-            }
-        },
-        data: {
-            control: {
-                type: 'object'
-            },
-            description: 'The array of data to be displayed.',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -138,6 +129,15 @@ export default {
                 defaultValue: { summary: '50' }
             }
         },
+        records: {
+            control: {
+                type: 'object'
+            },
+            description: 'The array of data to be displayed.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         resizeColumnDisabled: {
             name: 'resize-column-disabled',
             control: {
@@ -202,13 +202,13 @@ export const Base = Template.bind({});
 Base.args = {
     keyField: 'name',
     columns: EXAMPLES_COLUMNS_DEFINITION_BASIC,
-    data: EXAMPLES_DATA_BASIC
+    records: EXAMPLES_RECORDS_BASIC
 };
 
 export const Expanded = Template.bind({});
 Expanded.args = {
     keyField: 'name',
     columns: EXAMPLES_COLUMNS_DEFINITION_BASIC,
-    data: EXAMPLES_DATA_BASIC,
+    records: EXAMPLES_RECORDS_BASIC,
     expandedRows: EXPANDED_ROWS_BASIC
 };

@@ -50,7 +50,7 @@ export const EXPANDED_ROWS_BASIC = [
  * Sample data
  * :: used by examples
  */
-export const EXAMPLES_DATA_BASIC = [
+export const EXAMPLES_RECORDS_BASIC = [
     {
         name: '123555',
         accountName: 'Rewis Inc',
