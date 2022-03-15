@@ -30,14 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host {
+/* :host {
     --avonni-avatar-action-button-color-background: rgb(255, 163, 179);
     --avonni-avatar-action-button-color-foreground: rgb(113, 255, 248);
     --avonni-button-menu-button-border-filled-color-background: yellow;
     --avonni-button-menu-button-border-filled-color-foreground: orange;
-    --avonni-avatar-action-button-radius-border: 0;
+    --avonni-avatar-action-button-radius-border: 40px;
     --avonni-button-menu-spacing-block-end: 3px;
-}
+} */
 
 .avonni-avatar__primary-text {
     color: var(--avonni-avatar-primary-text-color, #000000);
