@@ -143,6 +143,10 @@ export default class AvatarGroup extends LightningElement {
         if (!this.maxCount) {
             this._maxCount = this.layout === 'stack' ? 5 : 11;
         }
+        this.template.addEventListener(
+            'actionclick',
+            this.handleAvatarActionClick
+        );
     }
 
     renderedCallback() {
@@ -655,6 +659,41 @@ export default class AvatarGroup extends LightningElement {
             })
         );
     }
+
+    /**
+     * Dispatch the actionclick event
+     */
+    handleAvatarActionClick = (event) => {
+        const name = event.detail.name;
+
+        const itemId = event.target.dataset.itemId;
+        const type = event.target.dataset.type;
+        let item;
+
+        if (type === 'show') {
+            item = this.listItems[itemId];
+        } else {
+            item = this.listHiddenItems[itemId];
+        }
+
+        console.log('avatar group', name, 'item', item);
+        /**
+         * The event fired when the user clicks on an avatar action.
+         *
+         * @event
+         * @name avataractionclick
+         * @param {object} item The avatar detail
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('avataractionclick', {
+                detail: {
+                    item,
+                    name
+                }
+            })
+        );
+    };
 
     /**
      * Toggle the hidden extra avatars popover

@@ -126,6 +126,19 @@ describe('Button Menu', () => {
         });
     });
 
+    // hide down arrow
+    it('Button menu hide down arrow', () => {
+        element.iconName = 'utility:threedots';
+        element.hideDownArrow = true;
+
+        return Promise.resolve().then(() => {
+            const downArrow = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-down"]'
+            );
+            expect(downArrow).toBeFalsy();
+        });
+    });
+
     // icon name
     it('Button Menu icon name', () => {
         element.iconName = 'utility:close';
@@ -207,20 +220,6 @@ describe('Button Menu', () => {
                     'This is a loading state alternative text'
                 );
             });
-    });
-
-    // hide down arrow
-    it('Button menu hide down arrow', () => {
-        element.iconName = 'utility:threedots';
-        element.hideDownArrow = true;
-
-        const downArrow = element.shadowRoot.querySelector(
-            '[data-element-id="avonni-primitive-icon-down"]'
-        );
-
-        return Promise.resolve().then(() => {
-            expect(downArrow).toBeFalsy();
-        });
     });
 
     // label
