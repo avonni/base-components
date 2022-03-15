@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="slds-page-header slds-page-header_vertical">
+    <div class={computedVerticalOuterClass}>
         <div class="slds-media slds-media_center">
             <template if:true={iconName}>
                 <div class="slds-media__figure">
@@ -60,7 +60,7 @@
                 <div class="slds-page-header__name">
                     <div class="slds-page-header__name-title">
                         <template if:false={hasStringLabel}>
-                            <slot name="label"></slot>
+                            <slot name="label" data-element-id="label"></slot>
                         </template>
                         <template if:true={hasStringLabel}>
                             <span>{label}</span>
@@ -74,6 +74,8 @@
                             <template if:true={hasStringTitle}>
                                 {title}
                             </template>
+                        </span>
+                        <span>
                             <template if:false={hasStringTitle}>
                                 <slot name="title"></slot>
                             </template>

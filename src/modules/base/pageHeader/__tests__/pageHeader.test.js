@@ -54,6 +54,7 @@ describe('PageHeader', () => {
         expect(element.title).toBeUndefined();
         expect(element.info).toBeUndefined();
         expect(element.variant).toBe('base');
+        expect(element.isJoined).toBeFalsy();
     });
 
     // icon-name
@@ -61,7 +62,9 @@ describe('PageHeader', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="avonni-primitive-icon-mobile"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-mobile"]'
+            );
             expect(icon.iconName).toBe('utility:apps');
         });
     });
@@ -121,22 +124,47 @@ describe('PageHeader', () => {
         });
     });
 
+    // is-joined
+    it('if-joined with base variant', () => {
+        element.variant = 'base';
+        element.isJoined = true;
+
+        return Promise.resolve().then(() => {
+            const header =
+                element.shadowRoot.querySelector('.slds-page-header');
+
+            expect(header.classList).toContain('slds-page-header_joined');
+        });
+    });
+
+    it('if-joined with record-home-vertical variant', () => {
+        element.variant = 'record-home-vertical';
+        element.isJoined = true;
+
+        return Promise.resolve().then(() => {
+            const header =
+                element.shadowRoot.querySelector('.slds-page-header');
+
+            expect(header.classList).toContain('slds-page-header_vertical');
+            expect(header.classList).toContain('slds-page-header_joined');
+        });
+    });
+
     // variant
     it('variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-page-header'
-            );
+            const wrapper =
+                element.shadowRoot.querySelector('.slds-page-header');
             const label = element.shadowRoot.querySelector(
-                '.slds-page-header__name-title > slot[name="label"]'
+                '[data-element-id="label"]'
             );
             const bodyInfo = element.shadowRoot.querySelector(
                 '.slds-page-header__meta-text'
             );
             const headerInfo = element.shadowRoot.querySelector(
-                '.slds-page-header__title + .slds-page-header__name-meta'
+                '[data-element-id="header-info"]'
             );
             const details = element.shadowRoot.querySelector(
                 'slot[name="details"]'
@@ -163,17 +191,16 @@ describe('PageHeader', () => {
         element.variant = 'object-home';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-page-header'
-            );
+            const wrapper =
+                element.shadowRoot.querySelector('.slds-page-header');
             const label = element.shadowRoot.querySelector(
-                '.slds-page-header__name-title > slot[name="label"]'
+                '[data-element-id="label"]'
             );
             const bodyInfo = element.shadowRoot.querySelector(
                 '.slds-page-header__meta-text'
             );
             const headerInfo = element.shadowRoot.querySelector(
-                '.slds-page-header__title + .slds-page-header__name-meta'
+                '[data-element-id="header-info"]'
             );
             const details = element.shadowRoot.querySelector(
                 'slot[name="details"]'
@@ -184,7 +211,9 @@ describe('PageHeader', () => {
             expect(headerInfo).toBeFalsy();
             expect(details).toBeFalsy();
 
-            expect(wrapper.classList).toContain('avonni-page-header__header_object-home');
+            expect(wrapper.classList).toContain(
+                'avonni-page-header__header_object-home'
+            );
             expect(wrapper.classList).not.toContain(
                 'avonni-page-header__header_record-home'
             );
@@ -198,17 +227,16 @@ describe('PageHeader', () => {
         element.variant = 'record-home';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-page-header'
-            );
+            const wrapper =
+                element.shadowRoot.querySelector('.slds-page-header');
             const label = element.shadowRoot.querySelector(
-                '.slds-page-header__name-title > slot[name="label"]'
+                '[data-element-id="label"]'
             );
             const bodyInfo = element.shadowRoot.querySelector(
                 '.slds-page-header__meta-text'
             );
             const headerInfo = element.shadowRoot.querySelector(
-                '.slds-page-header__title + .slds-page-header__name-meta'
+                '[data-element-id="header-info"]'
             );
             const details = element.shadowRoot.querySelector(
                 'slot[name="details"]'
@@ -222,7 +250,9 @@ describe('PageHeader', () => {
             expect(wrapper.classList).not.toContain(
                 'avonni-page-header__header_object-home'
             );
-            expect(wrapper.classList).toContain('avonni-page-header__header_record-home');
+            expect(wrapper.classList).toContain(
+                'avonni-page-header__header_record-home'
+            );
             expect(wrapper.classList).not.toContain(
                 'slds-page-header_vertical'
             );
@@ -233,17 +263,16 @@ describe('PageHeader', () => {
         element.variant = 'record-home-vertical';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector(
-                '.slds-page-header'
-            );
+            const wrapper =
+                element.shadowRoot.querySelector('.slds-page-header');
             const label = element.shadowRoot.querySelector(
-                '.slds-page-header__name-title > slot[name="label"]'
+                '[data-element-id="label"]'
             );
             const bodyInfo = element.shadowRoot.querySelector(
                 '.slds-page-header__meta-text'
             );
             const headerInfo = element.shadowRoot.querySelector(
-                '.slds-page-header__title + .slds-page-header__name-meta'
+                '[data-element-id="header-info"]'
             );
             const details = element.shadowRoot.querySelector(
                 'slot[name="details"]'

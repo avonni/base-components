@@ -85,14 +85,27 @@ export default {
                 'record-home',
                 'record-home-vertical'
             ],
-            defaultValue: 'base',
             description:
-                'The type of component. Valid values include base, object-home, record-home and record-home-vertical',
+                'The type of component. Valid values include base, object-home, record-home and record-home-vertical.',
             table: {
-                defaultValue: { summary: 'base' },
                 type: { summary: 'String' }
             }
+        },
+        isJoined: {
+            control: {
+                type: 'boolean'
+            },
+            name: 'is-joined',
+            description:
+                'If present, the lower border is removed to allow the header to sit flush on an element.',
+            table: {
+                type: { summary: 'boolean' }
+            }
         }
+    },
+    args: {
+        isJoined: false,
+        variant: 'base'
     }
 };
 
