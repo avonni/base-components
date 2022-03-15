@@ -529,6 +529,19 @@ describe('Button Menu', () => {
         });
     });
 
+    it('Button menu variant brand with label', () => {
+        element.variant = 'brand';
+        element.label = 'label';
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.className).toContain('slds-button_brand');
+            expect(button.textContent).toContain('label');
+        });
+    });
+
     it('Button menu variant border-inverse without label', () => {
         element.variant = 'border-inverse';
 
