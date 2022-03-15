@@ -30,13 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host {
-}
-
-.slds-button {
-    padding-bottom: var(--avonni-button-menu-spacing-block-end);
-}
-
 .avonni-button-menu_button-border-filled {
     background-color: var(
         --avonni-button-menu-button-border-filled-color-background,

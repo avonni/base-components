@@ -26,7 +26,7 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-radius-border
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -176,7 +176,7 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-presence-radius-border
  * @default 50%
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -224,7 +224,7 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-status-radius-border
  * @default 50%
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -281,7 +281,7 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-action-button-radius-border
  * @default 30px
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

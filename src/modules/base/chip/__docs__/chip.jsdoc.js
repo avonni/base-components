@@ -241,7 +241,7 @@
  * @memberof stylingHooks
  * @name --avonni-chip-radius-border
  * @default 15rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

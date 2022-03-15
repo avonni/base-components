@@ -117,7 +117,7 @@ export default class Avatar extends LightningElement {
      */
     @api initials;
     /**
-     * Primary-text.
+     * Primary text to display, usually the name of the person.
      *
      * @public
      * @type {string}

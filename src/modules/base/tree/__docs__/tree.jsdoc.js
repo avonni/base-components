@@ -76,22 +76,22 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-tree-item-header-spacing-block-start
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-tree-item-header-spacing-block-end
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-tree-item-header-spacing-inline-end
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-tree-item-header-spacing-inline-start
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

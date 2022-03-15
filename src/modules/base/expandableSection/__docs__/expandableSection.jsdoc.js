@@ -75,25 +75,25 @@
  * @memberof stylingHooks
  * @name --avonni-expandable-section-base-header-spacing-block-start
  * @default 0rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-expandable-section-base-header-spacing-block-end
  * @default 0rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-spacing-block-start
  * @default 0.75rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-spacing-block-end
  * @default 0.75rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

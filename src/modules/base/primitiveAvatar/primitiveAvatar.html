@@ -111,7 +111,7 @@
         <div
             if:true={showActions}
             data-element-id="action-section"
-            class={computedActionClasse}
+            class={computedActionClasses}
         >
             <template if:true={actionMenu}>
                 <c-button-menu
@@ -122,7 +122,7 @@
                     data-element-id="action-menu-icon"
                     hide-down-arrow
                 >
-                    <template for:each={computedActions} for:item="action">
+                    <template for:each={actions} for:item="action">
                         <lightning-menu-item
                             key={action.name}
                             icon-name={action.iconName}

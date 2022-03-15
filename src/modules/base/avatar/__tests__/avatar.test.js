@@ -72,7 +72,7 @@ describe('Avatar', () => {
         expect(element.tertiaryText).toBeUndefined();
         expect(element.textPosition).toBe('right');
         expect(element.actions).toBeUndefined();
-        expect(element.position).toBeUndefined();
+        expect(element.actionPosition).toBe('bottom-left');
         expect(element.actionMenuIcon).toBeUndefined();
     });
 
