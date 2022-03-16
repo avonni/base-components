@@ -528,6 +528,7 @@ export default class PrimitiveAvatar extends LightningElement {
          *
          * @event
          * @name actionclick
+         * @bubbles
          * @public
          */
         this.dispatchEvent(

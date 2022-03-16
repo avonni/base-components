@@ -607,6 +607,7 @@ export default class Avatar extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name The action name.
+         * @bubbles
          * @public
          */
         this.dispatchEvent(
