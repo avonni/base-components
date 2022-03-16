@@ -934,4 +934,49 @@ describe('Avatar', () => {
             expect(badge.label).toBe('error');
         });
     });
+
+    /* ----- EVENTS ----- */
+
+    // actionclick event
+    // Depends on action name
+    it('actionclick event', () => {
+        element.initials = 'LG';
+        const ACTIONS = [
+            {
+                label: 'Edit item',
+                name: 'edit-item',
+                iconName: 'utility:edit'
+            },
+            {
+                label: 'Add item',
+                name: 'add-item',
+                iconName: 'utility:add'
+            }
+        ];
+        element.actions = ACTIONS;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const primitiveAvatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-avatar-details-right"]'
+            );
+            expect(primitiveAvatar).toBeTruthy();
+            primitiveAvatar.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    bubbles: true,
+                    detail: {
+                        name: ACTIONS[0].name
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('edit-item');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
 });

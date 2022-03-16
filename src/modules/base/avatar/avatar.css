@@ -29,7 +29,9 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
+:host {
+    --avonni-button-menu-spacing-block-end: 0px;
+}
 .avonni-avatar__primary-text {
     color: var(--avonni-avatar-primary-text-color, #000000);
     font-size: var(--avonni-avatar-primary-text-font-size, 0.875rem);

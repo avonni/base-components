@@ -73,7 +73,14 @@ const items = [
         alternativeText: 'This is the alternative text',
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        actions: [
+            {
+                label: 'Edit item',
+                name: 'edit-item',
+                iconName: 'utility:edit'
+            }
+        ]
     }
 ];
 
@@ -1069,6 +1076,37 @@ describe('Avatar Group', () => {
             expect(handler.mock.calls[0][0].detail.name).toBe(
                 'Avatar group name'
             );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // actionclick event
+    // Depends on action name
+    it('actionclick event', () => {
+        element.items = items;
+        element.layout = 'grid';
+
+        const handler = jest.fn();
+        element.addEventListener('avataractionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-avatar"]'
+            );
+            expect(avatar).toBeTruthy();
+            avatar.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    bubbles: true,
+                    detail: {
+                        name: items[1].actions[0].name
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('edit-item');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

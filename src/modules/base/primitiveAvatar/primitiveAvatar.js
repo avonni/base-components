@@ -317,11 +317,6 @@ export default class PrimitiveAvatar extends LightningElement {
         }
     }
 
-    @api
-    get actionIconLink() {
-        return this._actionIconLink;
-    }
-
     get computedActionClasses() {
         return classSet('avonni-avatar__actions').add(
             `avonni-avatar_${this._actionPosition}`

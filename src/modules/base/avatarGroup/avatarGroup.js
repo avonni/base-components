@@ -617,7 +617,7 @@ export default class AvatarGroup extends LightningElement {
              *
              * @event
              * @name avatarclick
-             * @param {object} item The avatar detail
+             * @param {object} item The avatar detail.
              * @bubbles
              * @cancelable
              * @public
@@ -680,7 +680,8 @@ export default class AvatarGroup extends LightningElement {
          *
          * @event
          * @name avataractionclick
-         * @param {object} item The avatar detail
+         * @param {object} item The avatar detail.
+         * @param {string} name The action name.
          * @public
          */
         this.dispatchEvent(
