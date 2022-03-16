@@ -38,7 +38,7 @@ customElements.define(
 );
 
 export const InputChoiceSet = ({
-    buttonFullWidth,
+    stretch,
     disabled,
     isMultiSelect,
     fieldLevelHelp,
@@ -53,7 +53,7 @@ export const InputChoiceSet = ({
     variant
 }) => {
     const element = document.createElement('ac-base-input-choice-set');
-    element.buttonFullWidth = buttonFullWidth;
+    element.stretch = stretch;
     element.disabled = disabled;
     element.fieldLevelHelp = fieldLevelHelp;
     element.isMultiSelect = isMultiSelect;

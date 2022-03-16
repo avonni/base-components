@@ -80,8 +80,11 @@
     font-weight: var(--avonni-input-choice-set-header-font-weight, 400);
 }
 
-@media (max-width: 480px) {
-    .avonni-input-choice-set-stretch {
-        width: 100%;
-    }
+.avonni-input-choice-set__stretch {
+    width: 100%;
+}
+
+.avonni-input-choice-set__stretch .slds-checkbox_button,
+.avonni-input-choice-set__stretch .slds-checkbox_button__label {
+    flex-grow: 1;
 }

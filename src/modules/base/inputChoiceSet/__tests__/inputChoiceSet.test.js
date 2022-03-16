@@ -88,29 +88,14 @@ describe('Input choice set', () => {
         expect(element.orientation).toBe('vertical');
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
+        expect(element.stretch).toBe(false);
         expect(element.type).toBe('default');
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('standard');
-        expect(element.buttonFullWidth).toBe(false);
     });
 
     /* ----- ATTRIBUTES ----- */
-
-    // buttonFullWidth
-    it('Input choice set buttonFullWidth', () => {
-        element.options = options;
-        element.buttonFullWidth = true;
-
-        return Promise.resolve().then(() => {
-            const inputGroup = element.shadowRoot.querySelector(
-                '[data-element-id="input-group"]'
-            );
-            expect(inputGroup.className).toContain(
-                'avonni-input-choice-set-stretch'
-            );
-        });
-    });
 
     // disabled
     it('Input choice set disabled', () => {
@@ -149,6 +134,21 @@ describe('Input choice set', () => {
             const fieldLevelHelp =
                 element.shadowRoot.querySelector('lightning-helptext');
             expect(fieldLevelHelp.content).toBe('This is a field level help');
+        });
+    });
+
+    // stretch
+    it('Input choice set stretch', () => {
+        element.options = options;
+        element.stretch = true;
+
+        return Promise.resolve().then(() => {
+            const inputGroup = element.shadowRoot.querySelector(
+                '[data-element-id="input-group"]'
+            );
+            expect(inputGroup.className).toContain(
+                'avonni-input-choice-set__stretch'
+            );
         });
     });
 

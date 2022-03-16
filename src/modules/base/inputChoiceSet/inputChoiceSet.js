@@ -243,11 +243,11 @@ export default class InputChoiceSet extends LightningElement {
      * @public
      */
     @api
-    get buttonFullWidth() {
-        return this._buttonFullWidth || false;
+    get stretch() {
+        return this._stretch || false;
     }
-    set buttonFullWidth(value) {
-        this._buttonFullWidth = normalizeBoolean(value);
+    set stretch(value) {
+        this._stretch = normalizeBoolean(value);
     }
 
     /**
@@ -588,7 +588,7 @@ export default class InputChoiceSet extends LightningElement {
     get computedButtonClass() {
         return classSet(`${this.orientation}`).add({
             'slds-checkbox_button-group': !this.checkboxVariant,
-            'avonni-input-choice-set-stretch': this.buttonFullWidth
+            'avonni-input-choice-set__stretch': this.stretch
         });
     }
 
