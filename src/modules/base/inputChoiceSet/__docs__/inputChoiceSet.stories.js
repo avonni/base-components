@@ -35,6 +35,14 @@ import { InputChoiceSet } from '../__examples__/inputChoiceSet';
 export default {
     title: 'Example/Input Choice Set',
     argTypes: {
+        buttonFullWidth: {
+            name: 'button-full-width',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the vertical choice buttons are full width on smaller screens.'
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -181,6 +189,7 @@ export default {
         }
     },
     args: {
+        buttonFullWidth: false,
         disabled: false,
         required: false,
         readOnly: false

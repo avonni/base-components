@@ -92,6 +92,7 @@ describe('Input choice set', () => {
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('standard');
+        expect(element.buttonFullWidth).toBe(false);
     });
 
     /* ----- ATTRIBUTES ----- */

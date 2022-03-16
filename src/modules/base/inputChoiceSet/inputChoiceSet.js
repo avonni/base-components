@@ -236,6 +236,21 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
+     * If present, vertical buttons are responsive, full width on smaller screens.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get buttonFullWidth() {
+        return this._buttonFullWidth || false;
+    }
+    set buttonFullWidth(value) {
+        this._buttonFullWidth = normalizeBoolean(value);
+    }
+
+    /**
      * If present, the input field is read-only and cannot be edited by users.
      *
      * @type {boolean}
@@ -571,10 +586,9 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        return classSet(
-            `avonni-input-choice-set-stretch ${this.orientation}`
-        ).add({
-            'slds-checkbox_button-group': !this.checkboxVariant
+        return classSet(`${this.orientation}`).add({
+            'slds-checkbox_button-group': !this.checkboxVariant,
+            'avonni-input-choice-set-stretch': this.buttonFullWidth
         });
     }
 
