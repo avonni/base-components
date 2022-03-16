@@ -130,7 +130,7 @@ export default {
                 type: 'boolean'
             },
             description:
-                'If present, the vertical choice buttons are full width on smaller screens.'
+                'If present, vertical or horizontal button groups stretch to full width.'
         },
         required: {
             control: {

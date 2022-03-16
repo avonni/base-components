@@ -236,7 +236,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * If present, vertical buttons are responsive, full width on smaller screens.
+     * If present, vertical or horizontal button groups stretch to full width.
      *
      * @type {boolean}
      * @default false
