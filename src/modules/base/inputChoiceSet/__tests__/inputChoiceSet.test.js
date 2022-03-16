@@ -97,6 +97,21 @@ describe('Input choice set', () => {
 
     /* ----- ATTRIBUTES ----- */
 
+    // buttonFullWidth
+    it('Input choice set buttonFullWidth', () => {
+        element.options = options;
+        element.buttonFullWidth = true;
+
+        return Promise.resolve().then(() => {
+            const inputGroup = element.shadowRoot.querySelector(
+                '[data-element-id="input-group"]'
+            );
+            expect(inputGroup.className).toContain(
+                'avonni-input-choice-set-stretch'
+            );
+        });
+    });
+
     // disabled
     it('Input choice set disabled', () => {
         element.options = options;
@@ -104,7 +119,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
@@ -145,7 +160,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="span-checkbox-container"]'
+                '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
                 expect(input.className).toContain('slds-checkbox vertical');
@@ -163,7 +178,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="span-checkbox-container"]'
+                '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
                 const expected =
@@ -204,7 +219,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.name).toBe('Checkbox group name');
@@ -265,7 +280,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             input.click();
             expect(handler).not.toHaveBeenCalled();
@@ -294,7 +309,7 @@ describe('Input choice set', () => {
         return Promise.resolve().then(() => {
             const values = [];
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs.forEach((input) => {
                 if (input.checked) {
@@ -459,7 +474,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             input.click();
             expect(handler).toHaveBeenCalled();
@@ -479,7 +494,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs[1].click();
             expect(handler).toHaveBeenCalled();
@@ -502,7 +517,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
 
             input.addEventListener('blur', handler);
@@ -523,7 +538,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
 
             input.addEventListener('focus', handler);
