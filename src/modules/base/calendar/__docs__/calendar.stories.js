@@ -35,11 +35,16 @@ import { Calendar } from '../__examples__/calendar';
 export default {
     title: 'Example/Calendar',
     argTypes: {
+        dateLabels: {
+            name: 'date-labels',
+            control: {
+                type: 'object'
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If true, the calendar is disabled.',
             table: {
                 type: { summary: 'boolean' },
@@ -53,7 +58,6 @@ export default {
             },
             description:
                 'An array that will be used to determine which dates to be disabled in the calendar.',
-            defaultValue: [],
             table: {
                 type: { summary: 'string|string[]' }
             }
@@ -65,7 +69,6 @@ export default {
             },
             description:
                 'An array that will be used to determine which dates to be marked in the calendar.',
-            defaultValue: [],
             table: {
                 type: { summary: 'object[]' }
             }
@@ -76,7 +79,6 @@ export default {
             },
             description:
                 'Specifies the minimum date, which the calendar can show.',
-            defaultValue: new Date(1900, 0, 1),
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date(1900, 0, 1)' }
@@ -88,7 +90,6 @@ export default {
             },
             description:
                 'Specifies the maximum date, which the calendar can show.',
-            defaultValue: new Date(2099, 11, 31),
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date(2099, 11, 31)' }
@@ -100,7 +101,6 @@ export default {
                 type: 'select'
             },
             options: ['single', 'multiple', 'interval'],
-            defaultValue: 'single',
             description:
                 'Specifies the selection mode of the calendar. Valid values include single, multiple and interval. If single, only one date can be selected at a time. If multiple, the user can select multiple dates. If interval, the user can only select a date range (two dates).',
             table: {
@@ -124,7 +124,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If true, display a week number column',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -133,6 +132,12 @@ export default {
     },
     args: {
         disabled: false,
+        dateLabels: [],
+        disabledDates: [],
+        markedDates: [],
+        min: new Date(1900, 0, 1),
+        max: new Date(2099, 11, 31),
+        selectinMode: 'single',
         weekNumber: false
     }
 };
@@ -162,7 +167,11 @@ Multiple.args = {
 export const Interval = Template.bind({});
 Interval.args = {
     value: ['05/03/2021', '05/08/2021'],
-    selectionMode: 'interval'
+    selectionMode: 'interval',
+    dateLabels: [
+        { date: 12, label: 'label label label' },
+        { date: 25, label: 'label' }
+    ]
 };
 
 export const Disabled = Template.bind({});

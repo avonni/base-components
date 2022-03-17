@@ -172,6 +172,11 @@
                                                 </template>
                                             </div>
                                         </div>
+                                        <c-chip
+                                            if:true={day.labeled}
+                                            class="avonni-calendar__label"
+                                            label={day.chipLabel}
+                                        ></c-chip>
                                     </td>
                                 </template>
                             </tr>

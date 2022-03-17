@@ -82,6 +82,7 @@ export default class Calendar extends LightningElement {
     _min = DEFAULT_MIN;
     _selectionMode = SELECTION_MODES.default;
     _value = [];
+    _dateLabels = [];
     _weekNumber = false;
     date = DEFAULT_DATE;
     year;
@@ -93,6 +94,30 @@ export default class Calendar extends LightningElement {
 
     connectedCallback() {
         this.updateDateParameters();
+    }
+
+    /**
+     * Array of date labels. The dates should be a Date object, a timestamp, or an ISO8601 formatted string. The labels are strings
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get dateLabels() {
+        return this._dateLabels;
+    }
+
+    set dateLabels(value) {
+        this._dateLabels = value.map((x) => {
+            console.log(x.date);
+            const labelDate =
+                new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
+                !isNaN(Date.parse(x.date))
+                    ? this.formattedWithTimezoneOffset(new Date(x.date))
+                    : x.date;
+            return { date: labelDate, label: x.label };
+        });
+        console.log(this._dateLabels);
     }
 
     /**
@@ -350,6 +375,15 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Generate array of dates from marked dates object.
+     */
+    get labeledDatesArray() {
+        return this.dateLabels.map((date) => {
+            return date.date;
+        });
+    }
+
+    /**
      * Create Dates array.
      *
      * @param {object[]} array
@@ -469,6 +503,7 @@ export default class Calendar extends LightningElement {
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
                 const markedColors = this.isInArrayMarker(date);
+                const labeled = this.isInArray(date, this.labeledDatesArray);
                 let time = date.getTime();
                 let valueTime = this._value.length
                     ? this._value[0].getTime()
@@ -493,6 +528,12 @@ export default class Calendar extends LightningElement {
                     dateClass += ' slds-is-today';
                     currentDate = true;
                 }
+
+                // if (labeled) {
+                //     chipLabel = this._dateLabels.get(date)
+                // }
+                // console.log(this.formattedWithTimezoneOffset(new Date(date)))
+                // console.log(this.formattedWithTimezoneOffset(new Date(x.date)))
 
                 // interval
                 this.endDateInInterval(this._value);
@@ -533,6 +574,7 @@ export default class Calendar extends LightningElement {
                     markedDate = true;
                 }
 
+                let chipLabel = label;
                 weekData.push({
                     label: label,
                     class: dateClass,
@@ -541,7 +583,9 @@ export default class Calendar extends LightningElement {
                     currentDate: currentDate,
                     fullDate: fullDate,
                     marked: markedDate,
-                    markedColors: markedColors
+                    markedColors: markedColors,
+                    labeled: labeled,
+                    chipLabel: chipLabel
                 });
 
                 date.setDate(date.getDate() + 1);

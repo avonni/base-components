@@ -124,9 +124,11 @@ th {
     position: absolute;
     top: 0;
     left: -50%;
+    /* right: 0; */
     height: 100%;
-    width: 2.5rem;
-    transform: translateX(-0.5rem);
+    width: 70px;
+    /* width: 2.5rem; */
+    transform: translateX(-50%);
     z-index: -1;
     background: var(--avonni-calendar-selected-date-color-background, #0176d3);
 }
@@ -202,4 +204,22 @@ div:focus {
 
 .avonni-calendar__background_color {
     background-color: var(--avonni-calendar-color-background, transparent);
+}
+
+.avonni-calendar__label {
+    --avonni-chip-radius-border: 2px;
+    --avonni-chip-label-font-size: 8px;
+    --avonni-chip-spacing-block-start: 2px;
+    --avonni-chip-spacing-block-end: 2px;
+    --avonni-chip-spacing-inline-start: 2px;
+    --avonni-chip-spacing-inline-end: 2px;
+    --avonni-chip-sizing-width: 100%;
+    pointer-events: none;
+}
+
+td {
+    outline: 0.4px solid rgba(211, 211, 211, 0.438);
+    width: 70px;
+    max-width: 70px;
+    height: 50px;
 }
