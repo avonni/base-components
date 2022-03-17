@@ -81,10 +81,18 @@
 }
 
 .avonni-input-choice-set__stretch {
+    display: flex;
+    flex-wrap: wrap;
     width: 100%;
 }
 
+.avonni-input-choice-set__stretch.vertical {
+    flex-direction: column;
+}
+
 .avonni-input-choice-set__stretch .slds-checkbox_button,
-.avonni-input-choice-set__stretch .slds-checkbox_button__label {
+.avonni-input-choice-set__stretch .slds-checkbox_button__label,
+.avonni-input-choice-set__stretch .slds-checkbox,
+.avonni-input-choice-set__stretch .slds-radio {
     flex-grow: 1;
 }
