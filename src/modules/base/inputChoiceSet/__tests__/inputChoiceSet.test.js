@@ -163,7 +163,9 @@ describe('Input choice set', () => {
                 '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
-                expect(input.className).toContain('slds-checkbox vertical');
+                expect(input.className).toContain(
+                    'slds-checkbox avonni-input-choice-set__vertical'
+                );
                 expect(input.className).not.toContain(
                     'slds-button slds-checkbox_button'
                 );
@@ -183,7 +185,7 @@ describe('Input choice set', () => {
             inputs.forEach((input) => {
                 const expected =
                     input.className ===
-                        'slds-button slds-checkbox_button vertical' ||
+                        'slds-button slds-checkbox_button avonni-input-choice-set__vertical' ||
                     input.className === 'slds-checkbox_faux';
                 expect(expected).toBe(true);
                 expect(input.className).not.toBe('slds-checkbox');
@@ -330,8 +332,12 @@ describe('Input choice set', () => {
                 '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
-                expect(input.className).not.toContain('horizontal');
-                expect(input.className).toContain('vertical');
+                expect(input.className).not.toContain(
+                    'avonni-input-choice-set__horizontal'
+                );
+                expect(input.className).toContain(
+                    'avonni-input-choice-set__vertical'
+                );
             });
         });
     });
@@ -345,8 +351,12 @@ describe('Input choice set', () => {
                 '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
-                expect(input.className).not.toContain('vertical');
-                expect(input.className).toContain('horizontal');
+                expect(input.className).not.toContain(
+                    'avonni-input-choice-set__vertical'
+                );
+                expect(input.className).toContain(
+                    'avonni-input-choice-set__horizontal'
+                );
             });
         });
     });
