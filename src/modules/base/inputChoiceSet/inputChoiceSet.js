@@ -236,7 +236,7 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * If present, vertical or horizontal button groups stretch to full width.
+     * If present, the options stretch to full width.
      *
      * @type {boolean}
      * @default false
@@ -586,7 +586,7 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedButtonClass() {
-        return classSet(`${this.orientation}`).add({
+        return classSet(`avonni-input-choice-set__${this.orientation}`).add({
             'slds-checkbox_button-group': !this.checkboxVariant,
             'avonni-input-choice-set__stretch': this.stretch
         });
@@ -599,9 +599,9 @@ export default class InputChoiceSet extends LightningElement {
      */
     get computedCheckboxContainerClass() {
         const checkboxClass = this.isMultiSelect
-            ? `slds-checkbox ${this.orientation}`
-            : `slds-radio ${this.orientation}`;
-        const buttonClass = `slds-button slds-checkbox_button ${this.orientation}`;
+            ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
+            : `slds-radio avonni-input-choice-set__${this.orientation}`;
+        const buttonClass = `slds-button slds-checkbox_button avonni-input-choice-set__${this.orientation}`;
 
         return this.checkboxVariant ? checkboxClass : buttonClass;
     }
@@ -612,7 +612,7 @@ export default class InputChoiceSet extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center ${this.orientation}`;
+        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
         const checkboxLabelClass =
             this.isMultiSelect && this.checkboxVariant
                 ? 'slds-checkbox__label'
