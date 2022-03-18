@@ -259,7 +259,7 @@
  * @memberof stylingHooks
  * @name --avonni-chip-line-height
  * @default normal
- * @type line-height
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

@@ -145,6 +145,9 @@ export default {
 const markedDates = [
     { date: new Date('05/09/2021'), color: 'red' },
     { date: new Date('05/26/2021'), color: 'brown' },
+    { date: new Date('05/26/2021'), color: 'blue' },
+    { date: new Date('05/26/2021'), color: 'red' },
+    { date: new Date('05/26/2021'), color: 'yellow' },
     { date: 14, color: 'blue' },
     { date: 20, color: 'yellow' },
     { date: 'Wed', color: 'black' }

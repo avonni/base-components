@@ -142,8 +142,8 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-item-description-line-height
- * @default 1.25
- * @type line-height
+ * @default 1.25rem
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -220,8 +220,8 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-description-line-height
- * @default 1.25
- * @type line-height
+ * @default 1.25rem
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

@@ -109,7 +109,8 @@ export default class Calendar extends LightningElement {
 
     set dateLabels(value) {
         this._dateLabels = value.map((x) => {
-            console.log(x.date);
+            console.log(new Date(x.date));
+            // console.log(new Date().setDate(x.date))
             const labelDate =
                 new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
                 !isNaN(Date.parse(x.date))
@@ -117,7 +118,6 @@ export default class Calendar extends LightningElement {
                     : x.date;
             return { date: labelDate, label: x.label };
         });
-        console.log(this._dateLabels);
     }
 
     /**
@@ -529,11 +529,13 @@ export default class Calendar extends LightningElement {
                     currentDate = true;
                 }
 
+                // chip label
                 // if (labeled) {
-                //     chipLabel = this._dateLabels.get(date)
+                //     this._dateLabels.keys(date).map(function(key){return date[key]})
+                //     console.log(this.formattedWithTimezoneOffset(new Date(date)))
+                //     // console.log(this.formattedWithTimezoneOffset(new Date(x.date)))
+                //     // chipLabel = this._dateLabels.get(date)
                 // }
-                // console.log(this.formattedWithTimezoneOffset(new Date(date)))
-                // console.log(this.formattedWithTimezoneOffset(new Date(x.date)))
 
                 // interval
                 this.endDateInInterval(this._value);
