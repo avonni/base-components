@@ -84,7 +84,6 @@ export default {
                 type: 'select'
             },
             options: ['x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
             description:
                 'Width of the modal. Accepted sizes include small, medium, large. ',
             table: {
@@ -142,6 +141,6 @@ export const IsLoading = Template.bind({});
 IsLoading.args = {
     dialogName: 'dialog',
     showDialog: true,
-    isLoading: 'true',
+    isLoading: true,
     loadingStateAlternativeText: 'Modal is loading'
 };
