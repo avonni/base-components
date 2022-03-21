@@ -81,7 +81,6 @@ export default {
                 'x-large',
                 'xx-large'
             ],
-            defaultValue: 'medium',
             description: 'The size of the avatar.',
             table: {
                 defaultValue: { summary: 'medium' },
@@ -103,7 +102,6 @@ export default {
                 type: 'select'
             },
             options: ['circle', 'square'],
-            defaultValue: 'square',
             description: 'The variant changes the shape of the avatar.',
             table: {
                 defaultValue: { summary: 'square' },
@@ -127,7 +125,6 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'top-right',
             description: 'Position of the status icon.',
             table: {
                 defaultValue: { summary: 'top-right' },
@@ -184,12 +181,47 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'bottom-right',
             description: 'Position of the presence icon.',
             table: {
                 defaultValue: { summary: 'bottom-right' },
-                type: { summar: 'string' },
+                type: { summary: 'string' },
                 category: 'Presence'
+            }
+        },
+        actions: {
+            control: {
+                type: 'object'
+            },
+            description:
+                'One action or a list of different actions in a dropdown menu.',
+            table: {
+                type: { summary: 'object[]' },
+                category: 'Action'
+            }
+        },
+        actionMenuIcon: {
+            name: 'action-menu-icon',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the icon used as a menu icon. Names are written in the format 'utility:threedots_vertical' where 'utility' is the category, and 'threedots_vertical' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Action'
+            }
+        },
+        actionPosition: {
+            name: 'action-position',
+            control: {
+                type: 'select'
+            },
+            options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+            description: 'Position of the action button.',
+            table: {
+                defaultValue: { summary: 'bottom-left' },
+                type: { summary: 'string' },
+                category: 'Action'
             }
         },
         entityIconName: {
@@ -222,7 +254,6 @@ export default {
                 type: 'select'
             },
             options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
-            defaultValue: 'top-left',
             description: 'Position of the entity icon.',
             table: {
                 defaultValue: { summary: 'top-left' },
@@ -259,7 +290,6 @@ export default {
                 type: 'select'
             },
             options: ['circle', 'square'],
-            defaultValue: 'square',
             description: 'The variant changes the shape of the entity.',
             table: {
                 defaultValue: { summary: 'square' },
@@ -272,7 +302,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'Hide primary, secondary and tertiary text.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -322,7 +351,6 @@ export default {
                 type: 'select'
             },
             options: ['right', 'center', 'left'],
-            defaultValue: 'right',
             description:
                 'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
             table: {
@@ -343,7 +371,15 @@ export default {
         }
     },
     args: {
-        hideAvatarDetails: false
+        hideAvatarDetails: false,
+        variant: 'square',
+        size: 'medium',
+        entityVariant: 'square',
+        entityPosition: 'top-left',
+        actionPosition: 'bottom-left',
+        statusPosition: 'top-right',
+        presencePosition: 'bottom-right',
+        textPosition: 'right'
     }
 };
 const tags = [
@@ -354,6 +390,19 @@ const tags = [
     { label: 'lightest', variant: 'lightest' },
     { label: 'inverse', variant: 'inverse' }
 ];
+
+const actions = [
+    {
+        label: 'Edit item',
+        name: 'edit-item',
+        iconName: 'utility:edit'
+    },
+    {
+        label: 'Action without an icon',
+        name: 'action-name'
+    }
+];
+
 const Template = (args) => Avatar(args);
 
 export const Base = Template.bind({});
@@ -580,4 +629,41 @@ BaseWithTags.args = {
     fallbackIconName: 'standard:avatar',
     initials: 'JS',
     tags: tags
+};
+
+export const BaseWithAction = Template.bind({});
+BaseWithAction.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    status: 'declined',
+    initials: 'JS',
+    actions: [
+        {
+            label: 'Take a profile picture',
+            name: 'take-profile-picture',
+            iconName: 'utility:photo'
+        }
+    ]
+};
+
+export const BaseWithActions = Template.bind({});
+BaseWithActions.args = {
+    alternativeText: 'John Smith',
+    size: 'xx-large',
+    presence: 'busy',
+    primaryText: 'John Smith',
+    secondaryText: 'VP, Human Resources',
+    tertiaryText: 'Busy',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    fallbackIconName: 'standard:avatar',
+    initials: 'JS',
+    actionPosition: 'bottom-left',
+    actions: actions,
+    actionMenuIcon: 'utility:threedots'
 };

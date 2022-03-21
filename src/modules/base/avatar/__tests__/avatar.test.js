@@ -71,6 +71,9 @@ describe('Avatar', () => {
         expect(element.secondaryText).toBeUndefined();
         expect(element.tertiaryText).toBeUndefined();
         expect(element.textPosition).toBe('right');
+        expect(element.actions).toBeUndefined();
+        expect(element.actionPosition).toBe('bottom-left');
+        expect(element.actionMenuIcon).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -813,6 +816,46 @@ describe('Avatar', () => {
         });
     });
 
+    // actions
+    it('Avatar with actions', () => {
+        const actions = [
+            {
+                label: 'Edit item',
+                name: 'edit-item',
+                iconName: 'utility:edit'
+            },
+            {
+                label: 'Add item',
+                name: 'add-item',
+                iconName: 'utility:add'
+            }
+        ];
+        element.actions = actions;
+        element.actionMenuIcon = 'utility:threedots';
+        element.actionPosition = 'top-right';
+        element.hideAvatarDetails = true;
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-avatar-no-details"]'
+            );
+            expect(avatar.actions).toEqual([
+                {
+                    label: 'Edit item',
+                    name: 'edit-item',
+                    iconName: 'utility:edit'
+                },
+                {
+                    label: 'Add item',
+                    name: 'add-item',
+                    iconName: 'utility:add'
+                }
+            ]);
+            expect(avatar.actionMenuIcon).toEqual('utility:threedots');
+            expect(avatar.actionPosition).toEqual('top-right');
+        });
+    });
+
     // tags
     it('Avatar with default tags', () => {
         const tags = [{ label: 'default', variant: 'default' }];
@@ -889,6 +932,51 @@ describe('Avatar', () => {
             );
             expect(badge.className).toBe('slds-badge slds-theme_error');
             expect(badge.label).toBe('error');
+        });
+    });
+
+    /* ----- EVENTS ----- */
+
+    // actionclick event
+    // Depends on action name
+    it('actionclick event', () => {
+        element.initials = 'LG';
+        const ACTIONS = [
+            {
+                label: 'Edit item',
+                name: 'edit-item',
+                iconName: 'utility:edit'
+            },
+            {
+                label: 'Add item',
+                name: 'add-item',
+                iconName: 'utility:add'
+            }
+        ];
+        element.actions = ACTIONS;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const primitiveAvatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-avatar-details-right"]'
+            );
+            expect(primitiveAvatar).toBeTruthy();
+            primitiveAvatar.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    bubbles: true,
+                    detail: {
+                        name: ACTIONS[0].name
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('edit-item');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

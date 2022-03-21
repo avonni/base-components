@@ -73,7 +73,14 @@ const items = [
         alternativeText: 'This is the alternative text',
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        actions: [
+            {
+                label: 'Edit item',
+                name: 'edit-item',
+                iconName: 'utility:edit'
+            }
+        ]
     }
 ];
 
@@ -117,9 +124,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain('slds-avatar-group_x-small');
             });
@@ -146,9 +152,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain('slds-avatar-group_small');
             });
@@ -175,9 +180,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain('slds-avatar-group_medium');
             });
@@ -204,9 +208,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain('slds-avatar-group_large');
             });
@@ -233,9 +236,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain(
                     'avonni-avatar-group_x-large'
@@ -264,9 +266,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain(
                     'avonni-avatar-group_xx-large'
@@ -297,9 +298,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).not.toContain(
                     'avonni-avatar-group_circle'
@@ -328,9 +328,8 @@ describe('Avatar Group', () => {
         element.items = items;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll(
-                '.slds-avatar-group'
-            );
+            const avatars =
+                element.shadowRoot.querySelectorAll('.slds-avatar-group');
             avatars.forEach((avatar) => {
                 expect(avatar.className).toContain(
                     'avonni-avatar-group_circle'
@@ -361,7 +360,9 @@ describe('Avatar Group', () => {
         element.items = item;
 
         return Promise.resolve().then(() => {
-            const avatars = element.shadowRoot.querySelectorAll('[data-element-id="avonni-avatar"]');
+            const avatars = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-avatar"]'
+            );
             avatars.forEach((avatar, index) => {
                 const correspondingField = item[index];
                 expect(correspondingField).toBeTruthy();
@@ -416,9 +417,8 @@ describe('Avatar Group', () => {
         element.actionIconName = '';
 
         return Promise.resolve().then(() => {
-            const group = element.shadowRoot.querySelector(
-                '.slds-avatar-group'
-            );
+            const group =
+                element.shadowRoot.querySelector('.slds-avatar-group');
             expect(group.className).toContain('avonni-avatar-group__avatar');
 
             const noGroup = element.shadowRoot.querySelector(
@@ -436,11 +436,10 @@ describe('Avatar Group', () => {
             const avatars = element.shadowRoot.querySelectorAll(
                 '.avonni-avatar-group__avatar'
             );
-            avatars.forEach((avatar, index) => {
-                if (index < avatars.length)
-                    expect(avatar.className).toContain(
-                        'avonni-avatar-group_in-line'
-                    );
+            avatars.forEach((avatar) => {
+                expect(avatar.className).toContain(
+                    'avonni-avatar-group_in-line'
+                );
             });
 
             const groups = element.shadowRoot.querySelectorAll(
@@ -667,7 +666,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.iconName).toBe('utility:lock');
         });
     });
@@ -689,7 +690,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.iconPosition).toBe('right');
         });
     });
@@ -709,7 +712,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('This is a list button label');
         });
     });
@@ -730,7 +735,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('neutral');
         });
     });
@@ -750,7 +757,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('base');
         });
     });
@@ -770,7 +779,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('brand');
         });
     });
@@ -790,7 +801,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('brand-outline');
         });
     });
@@ -810,7 +823,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('destructive');
         });
     });
@@ -830,7 +845,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('destructive-text');
         });
     });
@@ -850,7 +867,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('inverse');
         });
     });
@@ -870,7 +889,9 @@ describe('Avatar Group', () => {
         ];
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('success');
         });
     });
@@ -1055,6 +1076,37 @@ describe('Avatar Group', () => {
             expect(handler.mock.calls[0][0].detail.name).toBe(
                 'Avatar group name'
             );
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // actionclick event
+    // Depends on action name
+    it('actionclick event', () => {
+        element.items = items;
+        element.layout = 'grid';
+
+        const handler = jest.fn();
+        element.addEventListener('avataractionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-avatar"]'
+            );
+            expect(avatar).toBeTruthy();
+            avatar.dispatchEvent(
+                new CustomEvent('actionclick', {
+                    bubbles: true,
+                    detail: {
+                        name: items[1].actions[0].name
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe('edit-item');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

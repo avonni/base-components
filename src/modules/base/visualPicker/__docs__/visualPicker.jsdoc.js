@@ -287,7 +287,7 @@
  * @memberof stylingHooks
  * @name --avonni-visual-picker-radius-border
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

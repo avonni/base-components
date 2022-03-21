@@ -100,25 +100,25 @@
  * @memberof stylingHooks
  * @name --avonni-combobox-input-radius-border-bottom-left
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-combobox-input-radius-border-bottom-right
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-combobox-input-radius-border-top-left
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-combobox-input-radius-border-top-right
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

@@ -150,25 +150,25 @@
  * @memberof stylingHooks
  * @name --avonni-alert-spacing-block-start
  * @default 0.5rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-spacing-inline-end
  * @default 2rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-spacing-block-end
  * @default 0.5rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-alert-spacing-inline-start
  * @default 0.5rem
- * @type spacing
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -198,5 +198,5 @@
  * @memberof stylingHooks
  * @name --avonni-alert-icon-radius-border
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */

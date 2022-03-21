@@ -149,7 +149,7 @@
  * @memberof stylingHooks
  * @name --avonni-list-item-around-border-radius
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

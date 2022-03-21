@@ -69,6 +69,7 @@ describe('Button Menu', () => {
         expect(element.tooltip).toBeUndefined();
         expect(element.value).toBe('');
         expect(element.variant).toBe('border');
+        expect(element.hideDownArrow).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -122,6 +123,30 @@ describe('Button Menu', () => {
             );
             expect(draft.title).toBe('This is a draft alternative text');
             expect(draft.textContent).toBe('*');
+        });
+    });
+
+    // hide down arrow
+    it('Button menu down arrow hidden', () => {
+        element.iconName = 'utility:threedots';
+        element.hideDownArrow = true;
+
+        return Promise.resolve().then(() => {
+            const downArrow = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-down"]'
+            );
+            expect(downArrow).toBeFalsy();
+        });
+    });
+
+    it('Button menu down arrow not hidden', () => {
+        element.iconName = 'utility:threedots';
+
+        return Promise.resolve().then(() => {
+            const downArrow = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-icon-down"]'
+            );
+            expect(downArrow).toBeTruthy();
         });
     });
 

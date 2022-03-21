@@ -151,7 +151,7 @@
  * @memberof stylingHooks
  * @name --avonni-hero-banner-primary-button-radius
  * @default 4px
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -187,5 +187,5 @@
  * @memberof stylingHooks
  * @name --avonni-hero-banner-secondary-button-radius
  * @default 4px
- * @type radius
+ * @type dimension
  */

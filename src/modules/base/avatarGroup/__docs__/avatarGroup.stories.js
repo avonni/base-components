@@ -327,6 +327,17 @@ const itemsWithStatusAndEntity = [
             { label: 'tag-02', variant: 'inverse' },
             { label: 'tag-03', variant: 'lightest' },
             { label: 'tag-04', variant: 'success' }
+        ],
+        actions: [
+            {
+                label: 'Edit item',
+                name: 'edit-item',
+                iconName: 'utility:edit'
+            },
+            {
+                label: 'Action without an icon',
+                name: 'action-name'
+            }
         ]
     },
     {

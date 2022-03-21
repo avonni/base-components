@@ -21,6 +21,10 @@
  * @property {string} secondaryText Secondary text displayed next to the avatar.
  * @property {string} tertiaryText Tertiary text displayed next to the avatar.
  * @property {object[]} tags Array of tag objects. The tags will be displayed as badges in the avatar’s details. See <a href="/components/avatar/">Avatar</a> for allowed keys.
+ * @property {object[]} actions Array of action objects. One action is displayed as a button icon. Two or more actions are displayed in a button menu.
+ * @property {string} actionPosition Position of action button. Valid values are top-right, bottom-right, bottom-left or top-left.
+ * @property {string} actionMenuIcon Optional custom icon to replace the button menu down arrow default.
+ * Names are written in the format 'utility:threedots' where 'utility' is the category, and 'threedots' is the specific icon to be displayed.
  */
 /**
  * @typedef {Object} AvatarGroupTag

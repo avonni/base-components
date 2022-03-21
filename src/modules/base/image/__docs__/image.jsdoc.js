@@ -6,5 +6,5 @@
  * @memberof stylingHooks
  * @name --avonni-image-radius-border
  * @default 0
- * @type radius
+ * @type dimension
  */

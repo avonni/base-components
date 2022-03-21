@@ -6,6 +6,14 @@
  */
 
 /**
+ * @typedef {Object} Action
+ * @name actions
+ * @property {string} label Action label. If only one action present, label is used as alternative-text. If there are many options, the icon and label are displayed in a menu.
+ * @property {string} name A unique name with no spaces to identify the action.
+ * @property {string} iconName The Lightning Design System name of the icon that represents the action. It may be omitted only if there are many actions.
+ */
+
+/**
  * @namespace stylingHooks
  */
 /**
@@ -18,7 +26,7 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-radius-border
  * @default 0.25rem
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -168,7 +176,7 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-presence-radius-border
  * @default 50%
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -216,7 +224,7 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-status-radius-border
  * @default 50%
- * @type radius
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
@@ -256,4 +264,28 @@
  * @memberof stylingHooks
  * @name --avonni-avatar-fallback-icon-color-foreground-default
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-action-button-color-background
+ * @type color
+ * @default #ffffff
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-action-button-color-foreground
+ * @type color
+ * @default #706e6b
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-action-button-radius-border
+ * @default 30px
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-avatar-action-button-spacing-block-end
+ * @default 2px
+ * @type dimension
  */
