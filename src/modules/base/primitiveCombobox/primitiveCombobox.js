@@ -804,7 +804,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get computedDropdownClass() {
         return classSet(
-            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid avonni-primitive-combobox__dropdown slds-is-relative'
+            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid avonni-primitive-combobox__dropdown'
         )
             .add({
                 'slds-dropdown_left':
