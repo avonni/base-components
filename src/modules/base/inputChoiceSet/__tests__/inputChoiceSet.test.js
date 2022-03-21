@@ -88,6 +88,7 @@ describe('Input choice set', () => {
         expect(element.orientation).toBe('vertical');
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
+        expect(element.stretch).toBe(false);
         expect(element.type).toBe('default');
         expect(element.validity).toMatchObject({});
         expect(element.value).toMatchObject([]);
@@ -103,7 +104,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
@@ -136,6 +137,21 @@ describe('Input choice set', () => {
         });
     });
 
+    // stretch
+    it('Input choice set stretch', () => {
+        element.options = options;
+        element.stretch = true;
+
+        return Promise.resolve().then(() => {
+            const inputGroup = element.shadowRoot.querySelector(
+                '[data-element-id="input-group"]'
+            );
+            expect(inputGroup.className).toContain(
+                'avonni-input-choice-set__stretch'
+            );
+        });
+    });
+
     // type
     it('Input choice set type checkbox', () => {
         element.options = options;
@@ -144,10 +160,12 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="span-checkbox-container"]'
+                '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
-                expect(input.className).toContain('slds-checkbox vertical');
+                expect(input.className).toContain(
+                    'slds-checkbox avonni-input-choice-set__vertical'
+                );
                 expect(input.className).not.toContain(
                     'slds-button slds-checkbox_button'
                 );
@@ -162,12 +180,12 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="span-checkbox-container"]'
+                '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
                 const expected =
                     input.className ===
-                        'slds-button slds-checkbox_button vertical' ||
+                        'slds-button slds-checkbox_button avonni-input-choice-set__vertical' ||
                     input.className === 'slds-checkbox_faux';
                 expect(expected).toBe(true);
                 expect(input.className).not.toBe('slds-checkbox');
@@ -203,7 +221,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.name).toBe('Checkbox group name');
@@ -264,7 +282,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             input.click();
             expect(handler).not.toHaveBeenCalled();
@@ -293,7 +311,7 @@ describe('Input choice set', () => {
         return Promise.resolve().then(() => {
             const values = [];
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs.forEach((input) => {
                 if (input.checked) {
@@ -314,8 +332,12 @@ describe('Input choice set', () => {
                 '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
-                expect(input.className).not.toContain('horizontal');
-                expect(input.className).toContain('vertical');
+                expect(input.className).not.toContain(
+                    'avonni-input-choice-set__horizontal'
+                );
+                expect(input.className).toContain(
+                    'avonni-input-choice-set__vertical'
+                );
             });
         });
     });
@@ -329,8 +351,12 @@ describe('Input choice set', () => {
                 '[data-element-id="span-checkbox-container"]'
             );
             inputs.forEach((input) => {
-                expect(input.className).not.toContain('vertical');
-                expect(input.className).toContain('horizontal');
+                expect(input.className).not.toContain(
+                    'avonni-input-choice-set__vertical'
+                );
+                expect(input.className).toContain(
+                    'avonni-input-choice-set__horizontal'
+                );
             });
         });
     });
@@ -458,7 +484,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             input.click();
             expect(handler).toHaveBeenCalled();
@@ -478,7 +504,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
             inputs[1].click();
             expect(handler).toHaveBeenCalled();
@@ -501,7 +527,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
 
             input.addEventListener('blur', handler);
@@ -522,7 +548,7 @@ describe('Input choice set', () => {
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
-                '[data-element-id^="input"]'
+                '[data-element-id="input"]'
             );
 
             input.addEventListener('focus', handler);

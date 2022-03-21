@@ -125,6 +125,13 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        stretch: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, vertical or horizontal button groups stretch to full width.'
+        },
         required: {
             control: {
                 type: 'boolean'
@@ -183,7 +190,8 @@ export default {
     args: {
         disabled: false,
         required: false,
-        readOnly: false
+        readOnly: false,
+        stretch: false
     }
 };
 
