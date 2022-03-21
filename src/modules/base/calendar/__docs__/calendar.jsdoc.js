@@ -73,10 +73,27 @@
  * @default dashed
  * @type styling
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-cell-sizing-width
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-cell-sizing-height
+ * @type dimension
+ */
 
 /**
  * @typedef {Object} MarkedDate
  * @name markedDates
  * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
  * @property {string} color Color of the marker. Defaults to #bf0201.
+ */
+
+/**
+ * @typedef {Object} DateLabel
+ * @name DateLabels
+ * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
+ * @property {string} label Text to appear under a date.
  */

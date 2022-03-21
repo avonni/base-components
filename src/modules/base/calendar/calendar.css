@@ -29,6 +29,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+:host {
+    --avonni-calendar-cell-sizing-width: 60px;
+    --avonni-calendar-cell-sizing-height: 60px;
+}
 
 .avonni-calendar__container {
     width: fit-content;
@@ -56,7 +60,7 @@ th {
     position: relative;
     min-width: var(--lwc-squareIconMediumBoundary, 2rem);
     line-height: var(--lwc-squareIconMediumBoundary, 2rem);
-    border-radius: var(--lwc-borderRadiusCircle, 50%);
+    border-radius: var(--lwc-borderRadiusCircle, 10rem);
     margin: auto;
 }
 
@@ -122,13 +126,9 @@ th {
     > .avonni-calendar__disabled-cell:before {
     content: '';
     position: absolute;
-    top: 0;
-    left: -50%;
-    /* right: 0; */
     height: 100%;
-    width: 70px;
-    /* width: 2.5rem; */
-    transform: translateX(-50%);
+    width: var(--avonni-calendar-cell-sizing-width);
+    transform: translateX(calc(-50%));
     z-index: -1;
     background: var(--avonni-calendar-selected-date-color-background, #0176d3);
 }
@@ -207,7 +207,7 @@ div:focus {
 }
 
 .avonni-calendar__label {
-    --avonni-chip-radius-border: 2px;
+    --avonni-chip-radius-border: 30px;
     --avonni-chip-label-font-size: 8px;
     --avonni-chip-spacing-block-start: 2px;
     --avonni-chip-spacing-block-end: 2px;
@@ -218,8 +218,13 @@ div:focus {
 }
 
 td {
-    outline: 0.4px solid rgba(211, 211, 211, 0.438);
-    width: 70px;
-    max-width: 70px;
-    height: 50px;
+    border: 1px solid transparent;
+    vertical-align: top;
+    /* outline: 0.4px solid rgba(211, 211, 211, 0.438); */
+    width: var(--avonni-calendar-cell-sizing-width);
+    min-width: var(--avonni-calendar-cell-sizing-width);
+    max-width: var(--avonni-calendar-cell-sizing-width);
+    height: var(--avonni-calendar-cell-sizing-height);
+    min-height: var(--avonni-calendar-cell-sizing-height);
+    max-height: var(--avonni-calendar-cell-sizing-height);
 }

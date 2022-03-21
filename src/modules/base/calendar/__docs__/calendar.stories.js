@@ -137,7 +137,7 @@ export default {
         markedDates: [],
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
-        selectinMode: 'single',
+        selectionMode: 'single',
         weekNumber: false
     }
 };
@@ -172,8 +172,8 @@ Interval.args = {
     value: ['05/03/2021', '05/08/2021'],
     selectionMode: 'interval',
     dateLabels: [
-        { date: 12, label: 'label label label' },
-        { date: 25, label: 'label' }
+        { date: 12, label: 'day 12 label' },
+        { date: 25, label: 'day 25 label' }
     ]
 };
 

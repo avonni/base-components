@@ -109,7 +109,6 @@ export default class Calendar extends LightningElement {
 
     set dateLabels(value) {
         this._dateLabels = value.map((x) => {
-            console.log(new Date(x.date));
             // console.log(new Date().setDate(x.date))
             const labelDate =
                 new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
@@ -118,6 +117,7 @@ export default class Calendar extends LightningElement {
                     : x.date;
             return { date: labelDate, label: x.label };
         });
+        console.log(this._dateLabels);
     }
 
     /**
@@ -530,12 +530,38 @@ export default class Calendar extends LightningElement {
                 }
 
                 // chip label
-                // if (labeled) {
-                //     this._dateLabels.keys(date).map(function(key){return date[key]})
-                //     console.log(this.formattedWithTimezoneOffset(new Date(date)))
-                //     // console.log(this.formattedWithTimezoneOffset(new Date(x.date)))
-                //     // chipLabel = this._dateLabels.get(date)
-                // }
+                let chipLabel = '';
+                if (labeled) {
+                    let labelIndex;
+                    if (
+                        this._dateLabels
+                            .map((object) => object.date)
+                            .indexOf(date.getDate()) > -1
+                    ) {
+                        labelIndex = this._dateLabels
+                            .map((object) => object.date)
+                            .indexOf(date.getDate());
+                    }
+                    if (
+                        this._dateLabels
+                            .map((object) => object.date)
+                            .indexOf(date.getDay()) > -1
+                    ) {
+                        labelIndex = this._dateLabels
+                            .map((object) => object.date)
+                            .indexOf(date.getDay());
+                    }
+                    if (
+                        this._dateLabels
+                            .map((object) => object.date)
+                            .indexOf(date.getTime()) > -1
+                    ) {
+                        labelIndex = this._dateLabels
+                            .map((object) => object.date)
+                            .indexOf(date.getTime());
+                    }
+                    chipLabel = this._dateLabels[labelIndex].label;
+                }
 
                 // interval
                 this.endDateInInterval(this._value);
@@ -576,7 +602,6 @@ export default class Calendar extends LightningElement {
                     markedDate = true;
                 }
 
-                let chipLabel = label;
                 weekData.push({
                     label: label,
                     class: dateClass,
