@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { normalizeArray } from 'c/utilsPrivate';
+import { normalizeArray, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
 /**
@@ -54,6 +54,7 @@ export default class Option {
         this.avatarFallbackIconName = option.avatarFallbackIconName;
         this.avatarSrc = option.avatarSrc;
         this.iconName = option.iconName;
+        this.isLoading = normalizeBoolean(option.isLoading);
         this.levelPath = levelPath;
         this.groups = normalizeArray(option.groups);
         this.label = option.label;
@@ -99,6 +100,10 @@ export default class Option {
 
     get hasAvatar() {
         return this.avatarFallbackIconName || this.avatarSrc;
+    }
+
+    get hasChildren() {
+        return this.options.length || this.isLoading;
     }
 
     /**

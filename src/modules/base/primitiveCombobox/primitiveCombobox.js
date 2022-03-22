@@ -68,6 +68,9 @@ const DROPDOWN_LENGTHS = {
     default: '7-items'
 };
 
+const DEFAULT_BACK_ACTION = {
+    iconName: 'utility:chevronleft'
+};
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
@@ -79,15 +82,6 @@ const DEFAULT_GROUP_NAME = 'ungrouped';
  * @class
  */
 export default class PrimitiveCombobox extends LightningElement {
-    /**
-     * Label of the link used to go back to the parent option. This link appears at the top of the children options, after clicking on an option that has nested options.
-     *
-     * @type {string}
-     * @default Label of the parent option
-     * @public
-     */
-    @api backLinkLabel;
-
     /**
      * Help text detailing the purpose and function of the primitive combobox.
      *
@@ -130,6 +124,7 @@ export default class PrimitiveCombobox extends LightningElement {
 
     _actions = [];
     _allowSearch = false;
+    _backAction = DEFAULT_BACK_ACTION;
     _disabled = false;
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
     _dropdownLength = DROPDOWN_LENGTHS.default;
@@ -161,6 +156,7 @@ export default class PrimitiveCombobox extends LightningElement {
     parentOptionsValues = [];
     selectedOption;
     selectedOptions = [];
+    showLoader = false;
     topActions = [];
     bottomActions = [];
 
@@ -229,6 +225,22 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set allowSearch(value) {
         this._allowSearch = normalizeBoolean(value);
+    }
+
+    /**
+     * Action object. The back action is used to go back to the previous level, after clicking on an option that has nested options.
+     *
+     * @type {object}
+     * @default { iconName: 'utility:chevronright', label: Label of the parent option }
+     * @public
+     */
+    @api
+    get backAction() {
+        return this._backAction;
+    }
+    set backAction(value) {
+        this._backAction =
+            value instanceof Object ? value : DEFAULT_BACK_ACTION;
     }
 
     /**
@@ -321,6 +333,7 @@ export default class PrimitiveCombobox extends LightningElement {
     }
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+        this.showLoader = this._isLoading;
     }
 
     /**
@@ -704,16 +717,11 @@ export default class PrimitiveCombobox extends LightningElement {
         if (this.dropdownVisible) {
             const elements = [];
             const topActions = this.template.querySelectorAll(
-                '[data-element-id="li-top-action"]'
+                '[data-group-name="actions"][data-position="top"]'
             );
             topActions.forEach((action) => {
                 if (action.ariaDisabled === 'false') elements.push(action);
             });
-
-            const backLink = this.template.querySelector(
-                '[data-name="backlink"]'
-            );
-            if (backLink) elements.push(backLink);
 
             const groups = this.template.querySelectorAll(
                 '[data-element-id="avonni-primitive-combobox-group"]'
@@ -723,7 +731,7 @@ export default class PrimitiveCombobox extends LightningElement {
             });
 
             const bottomActions = this.template.querySelectorAll(
-                '[data-element-id="li-bottom-action"]'
+                '[data-group-name="actions"][data-position="bottom"]'
             );
             bottomActions.forEach((action) => {
                 if (action.ariaDisabled === 'false') elements.push(action);
@@ -894,6 +902,7 @@ export default class PrimitiveCombobox extends LightningElement {
                     (this.currentParent && this.currentParent.options) ||
                     this.options;
             }
+            this.showLoader = this.isLoading;
         }
     }
 
@@ -1125,9 +1134,17 @@ export default class PrimitiveCombobox extends LightningElement {
         // Height of the title groups
         const titlesHeight = getListHeight(visibleGroupTitles);
 
+        // Height of the loading spinner
+        const loadingSpinner = this.template.querySelector(
+            '[data-element-id="li-loading-spinner"]'
+        );
+        const loadingSpinnerHeight = loadingSpinner
+            ? loadingSpinner.offsetHeight
+            : 0;
+
         // Height of the top actions
         const topActions = this.template.querySelectorAll(
-            '[data-element-id="li-top-action"]'
+            '[data-group-name="actions"][data-position="top"]'
         );
         const topActionsHeight = getListHeight(topActions);
 
@@ -1135,7 +1152,7 @@ export default class PrimitiveCombobox extends LightningElement {
         let bottomActionsHeight = 0;
         if (this.visibleOptions.length <= this._maxVisibleOptions) {
             const bottomActions = this.template.querySelectorAll(
-                '[data-element-id="li-bottom-action"]'
+                '[data-group-name="actions"][data-position="bottom"]'
             );
             bottomActionsHeight = getListHeight(bottomActions);
         }
@@ -1146,6 +1163,7 @@ export default class PrimitiveCombobox extends LightningElement {
         const height =
             optionsHeight +
             titlesHeight +
+            loadingSpinnerHeight +
             topActionsHeight +
             bottomActionsHeight;
 
@@ -1442,16 +1460,15 @@ export default class PrimitiveCombobox extends LightningElement {
      * @param {string} parentLabel
      */
     updateBackLink(parentLabel) {
-        const label =
-            typeof this.backLinkLabel !== 'string'
-                ? parentLabel
-                : this.backLinkLabel;
+        const { label, iconName, fixed, position, disabled } = this.backAction;
+
         this.backLink = new Action({
-            label,
+            disabled,
+            fixed,
+            iconName,
+            label: typeof label === 'string' ? label : parentLabel,
             name: 'backlink',
-            iconName: 'utility:chevronleft',
-            position: 'top',
-            isBackLink: true
+            position
         });
     }
 
@@ -1467,7 +1484,7 @@ export default class PrimitiveCombobox extends LightningElement {
         let offset = 0;
         const fixedTopActions = Array.from(
             this.template.querySelectorAll(
-                '[data-element-id="li-top-action"][data-fixed="true"]'
+                '[data-group-name="actions"][data-position="top"][data-fixed="true"]'
             )
         );
         fixedTopActions.forEach((action) => {
@@ -1480,7 +1497,7 @@ export default class PrimitiveCombobox extends LightningElement {
         offset = 0;
         const fixedBottomActions = Array.from(
             this.template.querySelectorAll(
-                '[data-element-id="li-bottom-action"][data-fixed="true"]'
+                '[data-group-name="actions"][data-position="bottom"][data-fixed="true"]'
             )
         );
         fixedBottomActions.reverse().forEach((action) => {
@@ -1647,9 +1664,11 @@ export default class PrimitiveCombobox extends LightningElement {
             const parent = this.getOption(parents[parents.length - 1]);
             this.updateBackLink(parent.label);
             this.visibleOptions = parent.options;
+            this.showLoader = parent.isLoading;
         } else {
             this.visibleOptions = this.options;
             this.backLink = undefined;
+            this.showLoader = this.isLoading;
         }
 
         this.focus();
@@ -1732,10 +1751,13 @@ export default class PrimitiveCombobox extends LightningElement {
         });
 
         // If the option has children options, change the visible options
-        if (selectedOption.options && selectedOption.options.length) {
+        if (selectedOption.hasChildren) {
             this.visibleOptions = selectedOption.options;
             this.parentOptionsValues.push(selectedOption.value);
             this.updateBackLink(this.currentParent.label);
+            if (selectedOption.isLoading) {
+                this.showLoader = true;
+            }
             this.focus();
             return;
         }

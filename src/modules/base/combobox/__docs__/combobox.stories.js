@@ -65,16 +65,21 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        backLinkLabel: {
-            name: 'back-link-label',
+        backAction: {
+            name: 'back-action',
             control: {
-                type: 'text'
+                type: 'object'
             },
             description:
-                'Label of the link used to go back to the parent option. This link appears at the top of the children options, after clicking on an option that has nested options.',
+                'Action object. The back action is used to go back to the previous level, after clicking on an option that has nested options.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'Label of the parent option' }
+                type: { summary: 'object' },
+                defaultValue: {
+                    summary: `{
+                        iconName: 'utility:chevronright',
+                        label: Label of the parent option
+                    }`
+                }
             }
         },
         disabled: {
@@ -484,7 +489,6 @@ Loading.args = {
 export const MultiSelect = Template.bind({});
 MultiSelect.args = {
     label: 'Multi-select combobox',
-    backLinkLabel: 'Back',
     options: options,
     isMultiSelect: true,
     required: true
@@ -532,7 +536,14 @@ ScopesWithIcons.args = {
     label: 'Combobox with scopes',
     allowSearch: true,
     options: optionsWithAvatars,
-    scopes: scopesWithIcons
+    scopes: scopesWithIcons,
+    dropdownLength: '5-items',
+    backAction: {
+        label: 'Back',
+        iconName: 'utility:back',
+        fixed: true,
+        position: 'bottom'
+    }
 };
 
 export const CustomSearch = Template.bind({});

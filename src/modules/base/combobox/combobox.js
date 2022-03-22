@@ -62,6 +62,9 @@ const DROPDOWN_LENGTHS = {
     default: '7-items'
 };
 
+const DEFAULT_BACK_ACTION = {
+    iconName: 'utility:chevronleft'
+};
 const DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT = 'Loading';
 const DEFAULT_PLACEHOLDER = 'Select an Option';
 const DEFAULT_PLACEHOLDER_WHEN_SEARCH_ALLOWED = 'Search...';
@@ -88,15 +91,6 @@ const SELECTED_OPTIONS_DIRECTIONS = {
  * @descriptor avonni-combobox
  */
 export default class Combobox extends LightningElement {
-    /**
-     * Label of the link used to go back to the parent option. This link appears at the top of the children options, after clicking on an option that has nested options.
-     *
-     * @type {string}
-     * @default Label of the parent option
-     * @public
-     */
-    @api backLinkLabel;
-
     /**
      * Help text detailing the purpose and function of the combobox.
      *
@@ -149,6 +143,7 @@ export default class Combobox extends LightningElement {
 
     _actions = [];
     _allowSearch = false;
+    _backAction = DEFAULT_BACK_ACTION;
     _disabled = false;
     _dropdownAlignment = DROPDOWN_ALIGNMENTS.default;
     _dropdownLength = DROPDOWN_LENGTHS.default;
@@ -210,6 +205,22 @@ export default class Combobox extends LightningElement {
     }
     set allowSearch(value) {
         this._allowSearch = normalizeBoolean(value);
+    }
+
+    /**
+     * Action object. The back action is used to go back to the previous level, after clicking on an option that has nested options.
+     *
+     * @type {object}
+     * @default { iconName: 'utility:chevronright', label: Label of the parent option }
+     * @public
+     */
+    @api
+    get backAction() {
+        return this._backAction;
+    }
+    set backAction(value) {
+        this._backAction =
+            value instanceof Object ? value : DEFAULT_BACK_ACTION;
     }
 
     /**
