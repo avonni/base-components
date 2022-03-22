@@ -104,7 +104,7 @@
                 <table
                     aria-labelledby="month"
                     aria-multiselectable="true"
-                    class="slds-datepicker__month"
+                    class={tableClasses}
                     role="grid"
                 >
                     <thead>
@@ -174,9 +174,26 @@
                                         </div>
                                         <c-chip
                                             if:true={day.labeled}
-                                            class="avonni-calendar__label"
-                                            label={day.chipLabel}
-                                        ></c-chip>
+                                            variant={day.chip.variant}
+                                            class="avonni-calendar__chip-label"
+                                            label={day.chip.label}
+                                            outline="true"
+                                        >
+                                            <c-primitive-icon
+                                                if:true={day.chip.showLeft}
+                                                slot="left"
+                                                size="xx-small"
+                                                variant={day.chip.iconVariant}
+                                                icon-name={day.chip.iconName}
+                                            ></c-primitive-icon>
+                                            <c-primitive-icon
+                                                if:true={day.chip.showRight}
+                                                slot="right"
+                                                size="xx-small"
+                                                variant={day.chip.iconVariant}
+                                                icon-name={day.chip.iconName}
+                                            ></c-primitive-icon>
+                                        </c-chip>
                                     </td>
                                 </template>
                             </tr>

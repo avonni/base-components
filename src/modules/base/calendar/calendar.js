@@ -37,6 +37,7 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { generateUUID } from 'c/utils';
+import { classSet } from '../utils/classSet';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
@@ -115,9 +116,8 @@ export default class Calendar extends LightningElement {
                 !isNaN(Date.parse(x.date))
                     ? this.formattedWithTimezoneOffset(new Date(x.date))
                     : x.date;
-            return { date: labelDate, label: x.label };
+            return { date: labelDate, ...x };
         });
-        console.log(this._dateLabels);
     }
 
     /**
@@ -384,6 +384,17 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     *
+     * @returns string
+     */
+    get tableClasses() {
+        let isLabeled = this._dateLabels.length > 0;
+        return classSet('slds-datepicker__month')
+            .add({ 'avonni-calendar__date-with-labels': isLabeled })
+            .toString();
+    }
+
+    /**
      * Create Dates array.
      *
      * @param {object[]} array
@@ -503,7 +514,6 @@ export default class Calendar extends LightningElement {
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
                 const markedColors = this.isInArrayMarker(date);
-                const labeled = this.isInArray(date, this.labeledDatesArray);
                 let time = date.getTime();
                 let valueTime = this._value.length
                     ? this._value[0].getTime()
@@ -530,37 +540,17 @@ export default class Calendar extends LightningElement {
                 }
 
                 // chip label
-                let chipLabel = '';
+                const labeled =
+                    this.isInArray(date, this.labeledDatesArray) || false;
+                let labelIndex;
+                let iconPosition = 'left';
+                let showLeft = false;
+                let showRight = false;
                 if (labeled) {
-                    let labelIndex;
-                    if (
-                        this._dateLabels
-                            .map((object) => object.date)
-                            .indexOf(date.getDate()) > -1
-                    ) {
-                        labelIndex = this._dateLabels
-                            .map((object) => object.date)
-                            .indexOf(date.getDate());
-                    }
-                    if (
-                        this._dateLabels
-                            .map((object) => object.date)
-                            .indexOf(date.getDay()) > -1
-                    ) {
-                        labelIndex = this._dateLabels
-                            .map((object) => object.date)
-                            .indexOf(date.getDay());
-                    }
-                    if (
-                        this._dateLabels
-                            .map((object) => object.date)
-                            .indexOf(date.getTime()) > -1
-                    ) {
-                        labelIndex = this._dateLabels
-                            .map((object) => object.date)
-                            .indexOf(date.getTime());
-                    }
-                    chipLabel = this._dateLabels[labelIndex].label;
+                    labelIndex = this.findArrayPosition(date, this._dateLabels);
+                    iconPosition = this._dateLabels[labelIndex].iconPosition;
+                    showLeft = iconPosition === 'left' ? true : false;
+                    showRight = iconPosition === 'right' ? true : false;
                 }
 
                 // interval
@@ -602,6 +592,7 @@ export default class Calendar extends LightningElement {
                     markedDate = true;
                 }
 
+                // console.log(labeled)
                 weekData.push({
                     label: label,
                     class: dateClass,
@@ -612,7 +603,11 @@ export default class Calendar extends LightningElement {
                     marked: markedDate,
                     markedColors: markedColors,
                     labeled: labeled,
-                    chipLabel: chipLabel
+                    chip: {
+                        showLeft: showLeft,
+                        showRight: showRight,
+                        ...this._dateLabels[labelIndex]
+                    }
                 });
 
                 date.setDate(date.getDate() + 1);
@@ -621,6 +616,35 @@ export default class Calendar extends LightningElement {
         }
 
         this.calendarData = calendarData;
+    }
+
+    /**
+     * Return an index if the days date is in the date array.
+     *
+     * @param {object | Date} date
+     * @param {object[]} array
+     * @returns index
+     */
+    findArrayPosition(date, array) {
+        let index;
+
+        if (array.map((object) => object.date).indexOf(date.getDate()) > -1) {
+            index = this._dateLabels
+                .map((object) => object.date)
+                .indexOf(date.getDate());
+        }
+        if (array.map((object) => object.date).indexOf(date.getDay()) > -1) {
+            index = this._dateLabels
+                .map((object) => object.date)
+                .indexOf(date.getDay());
+        }
+        if (array.map((object) => object.date).indexOf(date.getTime()) > -1) {
+            index = this._dateLabels
+                .map((object) => object.date)
+                .indexOf(date.getTime());
+        }
+
+        return index;
     }
 
     /**
@@ -742,7 +766,6 @@ export default class Calendar extends LightningElement {
     isSelectedInterval(array, newDate) {
         const timestamp = newDate.getTime();
         let timestamps = array.map((x) => x.getTime()).sort((a, b) => a - b);
-        const timesLength = timestamps.length - 1;
 
         if (timestamps.includes(timestamp)) {
             timestamps.splice(timestamps.indexOf(timestamp), 1);
@@ -753,14 +776,13 @@ export default class Calendar extends LightningElement {
                 if (timestamp > timestamps[0]) {
                     timestamps.push(timestamp);
                 } else {
-                    timestamps = [timestamp];
+                    timestamps.splice(0, 0, timestamp);
                 }
             } else {
                 if (timestamp > timestamps[0]) {
-                    timestamps.splice(timesLength, 1);
-                    timestamps.push(timestamp);
+                    timestamps.splice(1, 1, timestamp);
                 } else {
-                    timestamps = [timestamp];
+                    timestamps.splice(0, 1, timestamp);
                 }
             }
         }
@@ -874,6 +896,7 @@ export default class Calendar extends LightningElement {
      */
     handleMouseOver(event) {
         const day = event.target.getAttribute('data-day');
+        // const day = 1621483200000
         const dayCell = this.template.querySelector(`[data-day="${day}"]`);
         const timeArray = this._value
             .map((x) => x.getTime())

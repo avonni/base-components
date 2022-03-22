@@ -49,6 +49,7 @@
     -ms-flex-align: center;
     align-items: center;
     width: var(--avonni-chip-sizing-width);
+    max-width: var(--avonni-chip-sizing-max-width);
 }
 .avonni-chip_outline {
     background-color: #ffffff !important;

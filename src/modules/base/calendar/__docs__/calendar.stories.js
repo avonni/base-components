@@ -39,7 +39,8 @@ export default {
             name: 'date-labels',
             control: {
                 type: 'object'
-            }
+            },
+            description: 'An array of dates and label properties.'
         },
         disabled: {
             control: {
@@ -143,11 +144,11 @@ export default {
 };
 
 const markedDates = [
-    { date: new Date('05/09/2021'), color: 'red' },
-    { date: new Date('05/26/2021'), color: 'brown' },
-    { date: new Date('05/26/2021'), color: 'blue' },
-    { date: new Date('05/26/2021'), color: 'red' },
-    { date: new Date('05/26/2021'), color: 'yellow' },
+    { date: new Date('05/09/2022'), color: 'red' },
+    { date: new Date('05/26/2022'), color: 'brown' },
+    { date: new Date('05/26/2022'), color: 'blue' },
+    { date: new Date('05/26/2022'), color: 'red' },
+    { date: new Date('05/26/2022'), color: 'yellow' },
     { date: 14, color: 'blue' },
     { date: 20, color: 'yellow' },
     { date: 'Wed', color: 'black' }
@@ -157,23 +158,39 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: '05/08/2021',
-    disabledDates: '05/09/2021'
+    value: '05/08/2022',
+    disabledDates: '05/09/2022'
 };
 
 export const Multiple = Template.bind({});
 Multiple.args = {
-    value: ['05/03/2021', '05/08/2021', '05/12/2021', '05/18/2021'],
+    value: ['05/03/2022', '05/08/2022', '05/12/2022', '05/18/2022'],
     selectionMode: 'multiple'
 };
 
 export const Interval = Template.bind({});
 Interval.args = {
-    value: ['05/03/2021', '05/08/2021'],
+    value: ['05/10/2022', '05/17/2022'],
     selectionMode: 'interval',
     dateLabels: [
-        { date: 12, label: 'day 12 label' },
-        { date: 25, label: 'day 25 label' }
+        {
+            date: 12,
+            label: 'day 12',
+            variant: 'success',
+            outline: '',
+            iconName: 'standard:branch_merge',
+            iconPosition: 'right',
+            iconVariant: 'success'
+        },
+        {
+            date: 25,
+            label: '25 label big label',
+            variant: '',
+            outline: true,
+            iconName: 'standard:branch_merge',
+            iconPosition: 'left',
+            iconVariant: 'brand'
+        }
     ]
 };
 
@@ -184,7 +201,7 @@ Disabled.args = {
 
 export const BaseWithWeekNumber = Template.bind({});
 BaseWithWeekNumber.args = {
-    value: '05/09/2021',
+    value: '05/09/2022',
     weekNumber: true,
     disabledDates: [
         new Date(2021, 4, 9),
@@ -200,7 +217,7 @@ BaseWithWeekNumber.args = {
 
 export const MarkedDates = Template.bind({});
 MarkedDates.args = {
-    value: '05/09/2021',
+    value: '05/09/2022',
     disabledDates: [20, 'Sat'],
     markedDates: markedDates
 };

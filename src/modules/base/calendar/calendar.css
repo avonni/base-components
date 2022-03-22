@@ -30,8 +30,53 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 :host {
-    --avonni-calendar-cell-sizing-width: 60px;
-    --avonni-calendar-cell-sizing-height: 60px;
+    /* internal styling hooks - not documented */
+    --avonni-calendar-cell-sizing-width: 30px;
+    --avonni-calendar-cell-sizing-height: 30px;
+    --avonni-calendar-cell-labeled-sizing-width: 70px;
+    --avonni-calendar-cell-labeled-sizing-height: 60px;
+}
+
+td {
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    border-width: 1px;
+    position: relative;
+    vertical-align: top;
+    width: var(--avonni-calendar-cell-sizing-width);
+    min-width: var(--avonni-calendar-cell-sizing-width);
+    max-width: var(--avonni-calendar-cell-sizing-width);
+    height: var(--avonni-calendar-cell-sizing-height);
+    min-height: var(--avonni-calendar-cell-sizing-height);
+    max-height: var(--avonni-calendar-cell-sizing-height);
+}
+
+.avonni-calendar__date-with-labels td {
+    width: var(
+        --avonni-calendar-cell-labeled-sizing-width,
+        var(--avonni-calendar-cell-sizing-width)
+    );
+    min-width: var(
+        --avonni-calendar-cell-labeled-sizing-width,
+        var(--avonni-calendar-cell-sizing-width)
+    );
+    max-width: var(
+        --avonni-calendar-cell-labeled-sizing-width,
+        var(--avonni-calendar-cell-sizing-width)
+    );
+    height: var(
+        --avonni-calendar-cell-labeled-sizing-height,
+        var(--avonni-calendar-cell-sizing-height)
+    );
+    min-height: var(
+        --avonni-calendar-cell-labeled-sizing-height,
+        var(--avonni-calendar-cell-sizing-height)
+    );
+    max-height: var(
+        --avonni-calendar-cell-labeled-sizing-height,
+        var(--avonni-calendar-cell-sizing-height)
+    );
 }
 
 .avonni-calendar__container {
@@ -116,11 +161,11 @@ th {
     color: var(--avonni-calendar-selected-date-text-color, #ffffff);
 }
 
-.slds-datepicker
+.slds-datepicker__month
     td.slds-is-selected-multi
     + .slds-is-selected-multi
     > .slds-day:before,
-.slds-datepicker
+.slds-datepicker__month
     td.slds-is-selected-multi
     + .slds-is-selected-multi
     > .avonni-calendar__disabled-cell:before {
@@ -128,9 +173,21 @@ th {
     position: absolute;
     height: 100%;
     width: var(--avonni-calendar-cell-sizing-width);
-    transform: translateX(calc(-50%));
+    transform: translateX(calc(- (width/2)));
     z-index: -1;
     background: var(--avonni-calendar-selected-date-color-background, #0176d3);
+}
+
+.slds-datepicker__month.avonni-calendar__date-with-labels
+    td.slds-is-selected-multi
+    + .slds-is-selected-multi
+    > .slds-day:before,
+.slds-datepicker__month.avonni-calendar__date-with-labels
+    td.slds-is-selected-multi
+    + .slds-is-selected-multi
+    > .avonni-calendar__disabled-cell:before {
+    width: var(--avonni-calendar-cell-labeled-sizing-width);
+    transform: translateX(-50%);
 }
 
 div:focus {
@@ -142,7 +199,6 @@ div:focus {
         --avonni-calendar-multi-selected-color-border-hover,
         #d3d3d39a
     );
-    border-right-width: 1px;
     border-right-style: var(
         --avonni-calendar-multi-selected-styling-border-hover,
         dashed
@@ -154,14 +210,20 @@ div:focus {
         --avonni-calendar-multi-selected-color-border-hover,
         #d3d3d39a
     );
-    border-left-width: 1px;
     border-left-style: var(
         --avonni-calendar-multi-selected-styling-border-hover,
         dashed
     );
 }
 
-.avonni-calendar__cell_bordered-top_bottom {
+.avonni-calendar__cell_bordered-top_bottom:after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    height: calc(100% + 1px);
+    width: 100%;
     border-bottom-color: var(
         --avonni-calendar-multi-selected-color-border-hover,
         #d3d3d39a
@@ -206,25 +268,15 @@ div:focus {
     background-color: var(--avonni-calendar-color-background, transparent);
 }
 
-.avonni-calendar__label {
-    --avonni-chip-radius-border: 30px;
+.avonni-calendar__chip-label {
+    /* --avonni-chip-radius-border: 2px; */
     --avonni-chip-label-font-size: 8px;
     --avonni-chip-spacing-block-start: 2px;
     --avonni-chip-spacing-block-end: 2px;
-    --avonni-chip-spacing-inline-start: 2px;
+    --avonni-chip-spacing-inline-start: 3px;
     --avonni-chip-spacing-inline-end: 2px;
-    --avonni-chip-sizing-width: 100%;
+    /* --avonni-chip-sizing-width: 100%; */
+    --avonni-chip-sizing-max-width: 100%;
+    margin: 0 auto;
     pointer-events: none;
-}
-
-td {
-    border: 1px solid transparent;
-    vertical-align: top;
-    /* outline: 0.4px solid rgba(211, 211, 211, 0.438); */
-    width: var(--avonni-calendar-cell-sizing-width);
-    min-width: var(--avonni-calendar-cell-sizing-width);
-    max-width: var(--avonni-calendar-cell-sizing-width);
-    height: var(--avonni-calendar-cell-sizing-height);
-    min-height: var(--avonni-calendar-cell-sizing-height);
-    max-height: var(--avonni-calendar-cell-sizing-height);
 }
