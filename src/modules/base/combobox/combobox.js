@@ -35,7 +35,8 @@ import {
     normalizeArray,
     normalizeBoolean,
     normalizeString,
-    classListMutation
+    classListMutation,
+    deepCopy
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
@@ -814,9 +815,37 @@ export default class Combobox extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    getOption(value, options = this.options) {
+        for (let i = 0; i < options.length; i++) {
+            const option = options[i];
+            if (option.value === value) {
+                return option;
+            }
+
+            const children = normalizeArray(option.options);
+            if (children.length) {
+                const childOption = this.getOption(value, children);
+                if (childOption) return childOption;
+            }
+        }
+        return null;
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  EVENT HANDLERS AND DISPATCHERS
      * -------------------------------------------------------------
      */
+
+    handleBackActionClick() {
+        this.dispatchEvent(
+            new CustomEvent('backactionclick', { bubbles: true })
+        );
+    }
 
     /**
      * Dispatches blur event.
@@ -906,6 +935,19 @@ export default class Combobox extends LightningElement {
         const { action, levelPath, value } = event.detail;
         this._value = this.isMultiSelect ? value : value.toString();
         this.dispatchChange(action, levelPath);
+    }
+
+    handleLevelChange(event) {
+        const option = this.getOption(event.detail.optionValue);
+
+        this.dispatchEvent(
+            new CustomEvent('levelchange', {
+                detail: {
+                    option: deepCopy(option)
+                },
+                bubbles: true
+            })
+        );
     }
 
     /**

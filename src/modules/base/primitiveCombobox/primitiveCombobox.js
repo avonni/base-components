@@ -896,13 +896,13 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.visibleOptions = [...this.options];
                 this.parentOptionsValues = [];
                 this.backLink = undefined;
+                this.showLoader = this.isLoading;
             } else {
                 // Reset to current visible level and erase the search
                 this.visibleOptions =
                     (this.currentParent && this.currentParent.options) ||
                     this.options;
             }
-            this.showLoader = this.isLoading;
         }
     }
 
@@ -923,7 +923,8 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     @api
     open() {
-        const hasItems = this.options.length || this.actions.length;
+        const hasItems =
+            this.options.length || this.actions.length || this.backLink;
         if (
             !this.inputIsDisabled &&
             !this.dropdownVisible &&
@@ -1672,6 +1673,7 @@ export default class PrimitiveCombobox extends LightningElement {
         }
 
         this.focus();
+        this.dispatchEvent(new CustomEvent('backactionclick'));
     }
 
     /**
@@ -1759,6 +1761,13 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.showLoader = true;
             }
             this.focus();
+            this.dispatchEvent(
+                new CustomEvent('levelchange', {
+                    detail: {
+                        optionValue: selectedOption.value
+                    }
+                })
+            );
             return;
         }
 
