@@ -3,6 +3,7 @@ import { LightningElement, api } from 'lwc';
 export default class PrimitiveCombobox extends LightningElement {
     @api actions;
     @api allowSearch;
+    @api backAction;
     @api disabled;
     @api dropdownAlignment;
     @api dropdownLength;

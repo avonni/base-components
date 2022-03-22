@@ -43,6 +43,7 @@ import { deepCopy } from 'c/utilsPrivate';
 // dropdownHeight, because depends on DOM measurements (offsetHeight)
 // Event handler triggered by the keyboard
 // Anything that depends on getting the <li> elements from the primitive groups via optionElements():
+//   * backAction
 //   * isMultiSelect
 //   * option click
 //   * option mouse enter
@@ -67,6 +68,9 @@ describe('PrimitiveCombobox', () => {
     it('Default attributes', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.allowSearch).toBeFalsy();
+        expect(element.backAction).toEqual({
+            iconName: 'utility:chevronleft'
+        });
         expect(element.disabled).toBeFalsy();
         expect(element.dropdownAlignment).toBe('left');
         expect(element.dropdownLength).toBe('7-items');

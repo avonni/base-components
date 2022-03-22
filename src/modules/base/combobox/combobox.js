@@ -819,6 +819,13 @@ export default class Combobox extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Get an option by its value.
+     *
+     * @param {string} value Unique value of the option.
+     * @param {object[]} options Array of options.
+     * @returns {object} Option object.
+     */
     getOption(value, options = this.options) {
         for (let i = 0; i < options.length; i++) {
             const option = options[i];
@@ -841,7 +848,18 @@ export default class Combobox extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Handle the click on a back action.
+     */
     handleBackActionClick() {
+        /**
+         * The event fired when a user clicks on a back action.
+         *
+         * @event
+         * @name backactionclick
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('backactionclick', { bubbles: true })
         );
@@ -937,9 +955,23 @@ export default class Combobox extends LightningElement {
         this.dispatchChange(action, levelPath);
     }
 
+    /**
+     * Handle the click on an option with nested options.
+     *
+     * @param {Event} event
+     */
     handleLevelChange(event) {
         const option = this.getOption(event.detail.optionValue);
 
+        /**
+         * The event fired when an option with nested options has been selected.
+         *
+         * @event
+         * @name levelchange
+         * @param {object} option Option clicked.
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('levelchange', {
                 detail: {

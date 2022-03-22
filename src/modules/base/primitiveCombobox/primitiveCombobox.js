@@ -1566,6 +1566,11 @@ export default class PrimitiveCombobox extends LightningElement {
         );
     }
 
+    /**
+     * Handles a mouse press down on the dropdown.
+     *
+     * @param {Event} event
+     */
     handleDropdownMouseDown(event) {
         const mainButton = 0;
         if (event.button === mainButton) {
@@ -1725,6 +1730,15 @@ export default class PrimitiveCombobox extends LightningElement {
             name = eventOrName.currentTarget.dataset.name;
         }
 
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @public
+         * @bubbles
+         */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -1761,6 +1775,15 @@ export default class PrimitiveCombobox extends LightningElement {
                 this.showLoader = true;
             }
             this.focus();
+
+            /**
+             * The event fired when an option with nested options has been selected.
+             *
+             * @event
+             * @name levelchange
+             * @param {string} optionValue The value of the option clicked.
+             * @public
+             */
             this.dispatchEvent(
                 new CustomEvent('levelchange', {
                     detail: {
