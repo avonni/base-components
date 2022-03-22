@@ -65,6 +65,18 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        backLinkLabel: {
+            name: 'back-link-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the link used to go back to the parent option. This link appears at the top of the children options, after clicking on an option that has nested options.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Label of the parent option' }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -472,6 +484,7 @@ Loading.args = {
 export const MultiSelect = Template.bind({});
 MultiSelect.args = {
     label: 'Multi-select combobox',
+    backLinkLabel: 'Back',
     options: options,
     isMultiSelect: true,
     required: true

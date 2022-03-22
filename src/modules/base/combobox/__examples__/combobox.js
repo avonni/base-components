@@ -37,6 +37,7 @@ customElements.define('ac-base-combobox', Component.CustomElementConstructor);
 export const Combobox = ({
     actions,
     allowSearch,
+    backLinkLabel,
     disabled,
     dropdownAlignment,
     dropdownLength,
@@ -69,6 +70,7 @@ export const Combobox = ({
     const element = document.createElement('ac-base-combobox');
     element.actions = actions;
     element.allowSearch = allowSearch;
+    element.backLinkLabel = backLinkLabel;
     element.disabled = disabled;
     element.dropdownAlignment = dropdownAlignment;
     element.dropdownLength = dropdownLength;

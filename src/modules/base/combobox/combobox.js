@@ -89,6 +89,15 @@ const SELECTED_OPTIONS_DIRECTIONS = {
  */
 export default class Combobox extends LightningElement {
     /**
+     * Label of the link used to go back to the parent option. This link appears at the top of the children options, after clicking on an option that has nested options.
+     *
+     * @type {string}
+     * @default Label of the parent option
+     * @public
+     */
+    @api backLinkLabel;
+
+    /**
      * Help text detailing the purpose and function of the combobox.
      *
      * @type {string}

@@ -80,6 +80,15 @@ const DEFAULT_GROUP_NAME = 'ungrouped';
  */
 export default class PrimitiveCombobox extends LightningElement {
     /**
+     * Label of the link used to go back to the parent option. This link appears at the top of the children options, after clicking on an option that has nested options.
+     *
+     * @type {string}
+     * @default Label of the parent option
+     * @public
+     */
+    @api backLinkLabel;
+
+    /**
      * Help text detailing the purpose and function of the primitive combobox.
      *
      * @type {string}
@@ -1430,11 +1439,15 @@ export default class PrimitiveCombobox extends LightningElement {
     /**
      * Updates the back link.
      *
-     * @param {string} label
+     * @param {string} parentLabel
      */
-    updateBackLink(label) {
+    updateBackLink(parentLabel) {
+        const label =
+            typeof this.backLinkLabel !== 'string'
+                ? parentLabel
+                : this.backLinkLabel;
         this.backLink = new Action({
-            label: label,
+            label,
             name: 'backlink',
             iconName: 'utility:chevronleft',
             position: 'top',
