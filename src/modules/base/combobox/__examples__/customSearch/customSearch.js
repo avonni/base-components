@@ -46,7 +46,8 @@ export default class ComboboxCustomSearch extends LightningElement {
                 },
                 {
                     label: 'United Oil SLA',
-                    value: 'no-avatar-oil-sla'
+                    value: 'no-avatar-oil-sla',
+                    isLoading: true
                 },
                 {
                     label: 'United Oil Standby Generators',

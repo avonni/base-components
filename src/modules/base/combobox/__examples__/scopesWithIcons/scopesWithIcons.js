@@ -1,6 +1,13 @@
 import { LightningElement } from 'lwc';
 
 export default class ComboboxScopesWithIcons extends LightningElement {
+    backAction = {
+        label: 'Back',
+        iconName: 'utility:back',
+        fixed: true,
+        position: 'bottom'
+    };
+
     options = [
         {
             label: 'Burlington Textiles Corp of America',
@@ -20,7 +27,8 @@ export default class ComboboxScopesWithIcons extends LightningElement {
         },
         {
             label: 'United Oil SLA',
-            value: 'no-avatar-oil-sla'
+            value: 'no-avatar-oil-sla',
+            isLoading: true
         },
         {
             label: 'United Oil Standby Generators',

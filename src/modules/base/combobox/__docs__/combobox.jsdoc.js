@@ -4,6 +4,7 @@
  * @property {string} avatarFallbackIconName The Lightning Design System name of the icon used as a fallback when the option avatar image fails to load. Specify the name in the format 'utility:user' where 'utility' is the category, and 'user' is the specific icon to be displayed.
  * @property {string} avatarSrc Image URL for the option avatar.
  * @property {string[]} groups Array of group names this option belongs to.
+ * @property {boolean} isLoading If true, the option will be considered having nested options. On click, the back action and a spinner will appear.
  * @property {string} label Label of the option.
  * @property {object[]} options Array of option objects. If present:
  * * The icon utility:chevronright will be displayed to the right of the option to indicate it has children.
