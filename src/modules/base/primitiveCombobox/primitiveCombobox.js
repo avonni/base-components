@@ -566,21 +566,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {boolean}
      */
     get hasBadInput() {
-        let values = [];
-        this.options.forEach((option) => {
-            if (option.options) {
-                option.options.forEach((innerOption) => {
-                    values.push(innerOption.value);
-                });
-            }
-            values.push(option.value);
-        });
-        if (this.isMultiSelect) {
-            return this.hasBadValues;
-        }
-        return this._value.length === 0 || this._value[0] === ''
-            ? true
-            : values.some((e) => this._value.includes(e));
+        return this.value.some((value) => !this.getOption(value));
     }
 
     /**
@@ -593,7 +579,7 @@ export default class PrimitiveCombobox extends LightningElement {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
                     !this.disabled && this.required && this.value.length === 0,
-                badInput: () => !this.hasBadInput
+                badInput: () => this.hasBadInput
             });
         }
         return this._constraintApi;
@@ -804,7 +790,7 @@ export default class PrimitiveCombobox extends LightningElement {
      */
     get computedDropdownClass() {
         return classSet(
-            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid avonni-primitive-combobox__dropdown slds-is-relative'
+            'slds-listbox slds-listbox_vertical slds-dropdown slds-dropdown_fluid avonni-primitive-combobox__dropdown'
         )
             .add({
                 'slds-dropdown_left':
@@ -1288,10 +1274,6 @@ export default class PrimitiveCombobox extends LightningElement {
             const indexB = this.value.indexOf(b.value);
             return indexA - indexB;
         });
-        this.hasBadValues =
-            this._value.length === 0
-                ? true
-                : this.selectedOptions.some((option) => option.value);
         this._value = this.selectedOptions.map((option) => option.value);
 
         this.dispatchEvent(
