@@ -37,6 +37,10 @@
     --avonni-calendar-cell-labeled-sizing-height: 60px;
 }
 
+.primitive-icon-calendar {
+    max-height: 100%;
+}
+
 td {
     -moz-user-select: none;
     -khtml-user-select: none;
@@ -277,6 +281,7 @@ div:focus {
     --avonni-chip-spacing-inline-end: 2px;
     /* --avonni-chip-sizing-width: 100%; */
     --avonni-chip-sizing-max-width: 100%;
+    --avonni-ship-sizing-height: 16px;
     margin: 0 auto;
     pointer-events: none;
 }

@@ -110,11 +110,6 @@ export default class Calendar extends LightningElement {
 
     set dateLabels(value) {
         this._dateLabels = value.map((x) => {
-            console.log(
-                new Date(x.date).setHours(0, 0, 0, 0),
-                this.formattedWithTimezoneOffset(new Date(x.date)),
-                x.date
-            );
             const labelDate =
                 new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
                 !isNaN(Date.parse(x.date))
@@ -122,7 +117,6 @@ export default class Calendar extends LightningElement {
                     : x.date;
             return { date: labelDate, ...x };
         });
-        console.log(this._dateLabels);
     }
 
     /**
@@ -183,11 +177,6 @@ export default class Calendar extends LightningElement {
 
     set markedDates(value) {
         this._markedDates = value.map((x) => {
-            console.log(
-                new Date(x.date).setHours(0, 0, 0, 0),
-                this.formattedWithTimezoneOffset(new Date(x.date)),
-                x.date
-            );
             const isDate =
                 new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
                 !isNaN(Date.parse(x.date))
@@ -560,19 +549,29 @@ export default class Calendar extends LightningElement {
                     false;
                 let iconPosition;
                 let chipOuline;
-                let showLeft;
-                let showRight;
+                let showLeft = false;
+                let showRight = false;
                 if (labeled) {
                     iconPosition =
                         labelIndex > -1
                             ? this._dateLabels[labelIndex].iconPosition
                             : 'left';
                     chipOuline =
-                        this._dateLabels[labelIndex].outline === 'true'
-                            ? 'true'
-                            : 'false';
-                    showLeft = iconPosition === 'left' ? true : false;
-                    showRight = iconPosition === 'right' ? true : false;
+                        this._dateLabels[labelIndex].outline === true
+                            ? true
+                            : false;
+                    if (
+                        iconPosition === 'left' &&
+                        this._dateLabels[labelIndex].iconName?.length > 0
+                    ) {
+                        showLeft = true;
+                    }
+                    if (
+                        iconPosition === 'right' &&
+                        this._dateLabels[labelIndex].iconName?.length > 0
+                    ) {
+                        showRight = true;
+                    }
                 }
 
                 // interval
@@ -614,7 +613,6 @@ export default class Calendar extends LightningElement {
                     markedDate = true;
                 }
 
-                // console.log(labeled)
                 weekData.push({
                     label: label,
                     class: dateClass,
@@ -628,8 +626,8 @@ export default class Calendar extends LightningElement {
                     chip: {
                         showLeft: showLeft,
                         showRight: showRight,
-                        outline: chipOuline,
-                        ...this._dateLabels[labelIndex]
+                        ...this._dateLabels[labelIndex],
+                        outline: chipOuline
                     }
                 });
 
@@ -649,24 +647,23 @@ export default class Calendar extends LightningElement {
      * @returns index
      */
     findArrayPosition(day, array) {
-        let datesArray = array.map((x) => x.date);
-        let time = day.getTime();
-        let weekDay = day.getDay();
-        let monthDay = day.getDate();
         let index;
 
-        if (this.fullDatesFromArray(datesArray).indexOf(time) > -1) {
-            index = this.fullDatesFromArray(datesArray).indexOf(time);
-            console.log('this is a full date', index);
-        }
-        if (this.weekDaysFromArray(datesArray).indexOf(weekDay) > -1) {
-            index = this.weekDaysFromArray(datesArray).indexOf(weekDay);
-            console.log('this is a weekday', index);
-        }
-        if (this.monthDaysFromArray(datesArray).indexOf(monthDay) > -1) {
-            index = this.monthDaysFromArray(datesArray).indexOf(monthDay);
-            console.log('this is a month day', index);
-        }
+        array
+            .map((x) => x.date)
+            .forEach((x, _index) => {
+                if (DAYS.includes(x)) {
+                    index = _index;
+                }
+
+                if (x === day.getDate()) {
+                    index = _index;
+                }
+
+                if (typeof x === 'object' && x.getTime() === day.getTime()) {
+                    index = _index;
+                }
+            });
 
         return index;
     }

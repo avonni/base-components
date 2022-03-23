@@ -150,7 +150,7 @@ const markedDates = [
     { date: new Date('05/26/2022'), color: 'red' },
     { date: new Date('05/26/2022'), color: 'yellow' },
     { date: 14, color: 'blue' },
-    { date: 20, color: 'yellow' },
+    { date: 25, color: 'yellow' },
     { date: 'Wed', color: 'black' }
 ];
 
@@ -174,22 +174,13 @@ Interval.args = {
     selectionMode: 'interval',
     dateLabels: [
         {
-            date: 12,
-            label: 'day 12',
+            date: 'Tue',
+            label: 'Tuesday',
             variant: 'success',
             outline: 'asdf',
-            iconName: 'standard:branch_merge',
+            iconName: 'standard:contract_line_item',
             iconPosition: 'right',
             iconVariant: 'inverse'
-        },
-        {
-            date: new Date('05/26/2022'),
-            label: '26 may',
-            variant: 'success',
-            outline: '',
-            // iconName: 'standard:branch_merge',
-            iconPosition: 'right',
-            iconVariant: 'success'
         },
         {
             date: 25,
@@ -199,6 +190,15 @@ Interval.args = {
             iconName: 'standard:branch_merge',
             iconPosition: 'left',
             iconVariant: 'brand'
+        },
+        {
+            date: new Date('05/26/2022'),
+            label: '26 may',
+            variant: 'error',
+            outline: '',
+            // iconName: 'standard:branch_merge',
+            iconPosition: 'right',
+            iconVariant: 'success'
         }
     ]
 };
