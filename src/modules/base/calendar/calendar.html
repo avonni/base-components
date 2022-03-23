@@ -176,9 +176,10 @@
                                             if:true={day.labeled}
                                             variant={day.chip.variant}
                                             class="avonni-calendar__chip-label"
-                                            label={day.chip.label}
-                                            outline="true"
+                                            label={day.chip.outline}
+                                            outline={day.chip.outline}
                                         >
+                                            <!-- outline={day.chip.outline} -->
                                             <c-primitive-icon
                                                 if:true={day.chip.showLeft}
                                                 slot="left"

@@ -177,8 +177,17 @@ Interval.args = {
             date: 12,
             label: 'day 12',
             variant: 'success',
-            outline: '',
+            outline: 'asdf',
             iconName: 'standard:branch_merge',
+            iconPosition: 'right',
+            iconVariant: 'inverse'
+        },
+        {
+            date: new Date('05/26/2022'),
+            label: '26 may',
+            variant: 'success',
+            outline: '',
+            // iconName: 'standard:branch_merge',
             iconPosition: 'right',
             iconVariant: 'success'
         },
