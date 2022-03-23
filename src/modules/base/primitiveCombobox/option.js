@@ -61,6 +61,13 @@ export default class Option {
         this.options = normalizeArray(option.options);
         this.secondaryText = option.secondaryText;
         this.value = option.value;
+
+        if (this.hasAvatar) {
+            this.avatar = {
+                src: this.avatarSrc,
+                fallbackIconName: this.avatarFallbackIconName
+            };
+        }
     }
 
     /**

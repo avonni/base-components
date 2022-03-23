@@ -1386,18 +1386,8 @@ export default class PrimitiveCombobox extends LightningElement {
     getSelectedOptions(options = this.options) {
         const selectedOptions = [];
         options.forEach((option) => {
-            if (option.selected) {
-                const selectedOption = { ...option };
-                const optionHasAvatar =
-                    option.avatarFallbackIconName || option.avatarSrc;
-                if (optionHasAvatar) {
-                    selectedOption.avatar = {
-                        src: option.avatarSrc,
-                        fallbackIconName: option.avatarFallbackIconName
-                    };
-                }
-                selectedOptions.push(selectedOption);
-            }
+            if (option.selected) selectedOptions.push(option);
+
             const childrenOptions = normalizeArray(option.options);
             if (childrenOptions.length) {
                 selectedOptions.push(this.getSelectedOptions(childrenOptions));

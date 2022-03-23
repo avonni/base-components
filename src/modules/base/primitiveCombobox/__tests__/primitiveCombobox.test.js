@@ -1017,17 +1017,28 @@ describe('PrimitiveCombobox', () => {
         element.options = options;
         element.isMultiSelect = true;
 
-        const handler = jest.fn();
-        element.addEventListener('change', handler);
+        const changeHandler = jest.fn();
+        const privateSelectHandler = jest.fn();
+        element.addEventListener('change', changeHandler);
+        element.addEventListener('privateselect', privateSelectHandler);
 
         return Promise.resolve().then(() => {
             element.removeSelectedOption('no-avatar-oil-sla');
-            expect(handler).toHaveBeenCalled();
-            const detail = handler.mock.calls[0][0].detail;
-            expect(detail.value).toEqual(['dickenson']);
-            expect(detail.action).toBe('unselect');
-            expect(detail.levelPath).toEqual([3, 1]);
+
+            expect(changeHandler).toHaveBeenCalled();
+            const changeDetail = changeHandler.mock.calls[0][0].detail;
+            expect(changeDetail.value).toEqual(['dickenson']);
+            expect(changeDetail.action).toBe('unselect');
+            expect(changeDetail.levelPath).toEqual([3, 1]);
             expect(element.value).toMatchObject(['dickenson']);
+
+            expect(privateSelectHandler).toHaveBeenCalled();
+            const privateSelectDetail =
+                privateSelectHandler.mock.calls[0][0].detail;
+            expect(privateSelectDetail.selectedOptions).toHaveLength(1);
+            expect(privateSelectDetail.selectedOptions[0].value).toBe(
+                'dickenson'
+            );
         });
     });
 
@@ -1140,6 +1151,22 @@ describe('PrimitiveCombobox', () => {
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
+    });
+
+    // privateselect
+    it('privateselect event', () => {
+        const handler = jest.fn();
+        element.addEventListener('privateselect', handler);
+
+        element.isMultiSelect = true;
+        element.options = options;
+        element.value = [options[0].value];
+
+        expect(handler).toHaveBeenCalledTimes(3);
+        const detail = handler.mock.calls[2][0].detail;
+        expect(detail.selectedOptions).toHaveLength(1);
+        expect(detail.selectedOptions[0]).toBeInstanceOf(Option);
+        expect(detail.selectedOptions[0].value).toBe(options[0].value);
     });
 
     // search
