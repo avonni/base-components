@@ -588,7 +588,7 @@ export default class PrimitiveCombobox extends LightningElement {
      * @type {boolean}
      */
     get hasBadInput() {
-        return this.value.some((value) => !this.getOption(value));
+        return this.value.some((value) => value && !this.getOption(value));
     }
 
     /**
