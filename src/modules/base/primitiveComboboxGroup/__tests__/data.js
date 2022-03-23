@@ -13,6 +13,7 @@ export const options = [
         label: 'Dickenson plc',
         value: 'dickenson',
         computedClass: 'combobox__option',
+        hasChildren: true,
         options: [
             {
                 avatarFallbackIconName: 'standard:opportunity',
