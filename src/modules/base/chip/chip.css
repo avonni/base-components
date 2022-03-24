@@ -50,7 +50,7 @@
     align-items: center;
     width: var(--avonni-chip-sizing-width);
     max-width: var(--avonni-chip-sizing-max-width);
-    height: var(--avonni-ship-sizing-height);
+    height: var(--avonni-chip-sizing-height);
     overflow-y: hidden;
 }
 .avonni-chip_outline {

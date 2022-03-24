@@ -173,15 +173,16 @@
                                             </div>
                                         </div>
                                         <c-chip
-                                            if:true={day.chip.label}
+                                            if:true={day.labeled}
                                             variant={day.chip.variant}
-                                            class="avonni-calendar__chip-label"
+                                            class={day.chip.classes}
                                             label={day.chip.label}
                                             outline={day.chip.outline}
                                         >
-                                            <!-- outline={day.chip.outline} -->
                                             <c-primitive-icon
-                                                class="primitive-icon-calendar"
+                                                class="
+                                                    avonni-calendar-chip-icon
+                                                "
                                                 if:true={day.chip.showLeft}
                                                 slot="left"
                                                 size="xx-small"

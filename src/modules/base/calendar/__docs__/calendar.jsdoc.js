@@ -73,16 +73,6 @@
  * @default dashed
  * @type styling
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-calendar-cell-sizing-width
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-calendar-cell-sizing-height
- * @type dimension
- */
 
 /**
  * @typedef {Object} MarkedDate
@@ -93,7 +83,13 @@
 
 /**
  * @typedef {Object} DateLabel
- * @name DateLabels
+ * @name dateLabels
  * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
- * @property {string} label Text to appear under a date.
+ * In case a date has more than one label, full dates have priority over month dates, which have priority over week days.
+ * @property {string} label The date label text.
+ * @property {string} variant A valid chip variant.
+ * @property {boolean} outline If true, display a border around the label.
+ * @property {string} iconName A valid lightning icon name.
+ * @property {string} iconPosition The side on which the icon is displayed. Valid values are 'right' or 'left'.
+ * @property {string} iconVariant The color scheme for the icon.
  */

@@ -117,6 +117,7 @@ export default class Calendar extends LightningElement {
                     : x.date;
             return { date: labelDate, ...x };
         });
+        this.updateDateParameters();
     }
 
     /**
@@ -540,26 +541,22 @@ export default class Calendar extends LightningElement {
 
                 // chip label
                 let labelIndex;
-                if (this.isInArray(date, this.labeledDatesArray)) {
-                    labelIndex = this.findArrayPosition(date, this._dateLabels);
-                }
-                let labeled =
-                    (this.isInArray(date, this.labeledDatesArray) &&
-                        labelIndex > -1) ||
-                    false;
+                let labeled = false;
                 let iconPosition;
-                let chipOuline;
                 let showLeft = false;
                 let showRight = false;
+                let labelClasses;
+                if (this.isInArray(date, this.labeledDatesArray)) {
+                    labelIndex = this.findArrayPosition(date, this._dateLabels);
+                    if (this.isInArray(date, this.labeledDatesArray)) {
+                        labeled = true;
+                    }
+                }
                 if (labeled) {
                     iconPosition =
                         labelIndex > -1
                             ? this._dateLabels[labelIndex].iconPosition
                             : 'left';
-                    chipOuline =
-                        this._dateLabels[labelIndex].outline === true
-                            ? true
-                            : false;
                     if (
                         iconPosition === 'left' &&
                         this._dateLabels[labelIndex].iconName?.length > 0
@@ -572,6 +569,16 @@ export default class Calendar extends LightningElement {
                     ) {
                         showRight = true;
                     }
+                    let iconOnlyLabel =
+                        (this._dateLabels[labelIndex].iconName?.length > 0 &&
+                            (this._dateLabels[labelIndex].label?.length < 1 ||
+                                !this._dateLabels[labelIndex].label)) ||
+                        false;
+                    labelClasses = classSet('avonni-calendar__chip-label')
+                        .add({
+                            'avonni-calendar__chip-icon-only': iconOnlyLabel
+                        })
+                        .toString();
                 }
 
                 // interval
@@ -626,8 +633,8 @@ export default class Calendar extends LightningElement {
                     chip: {
                         showLeft: showLeft,
                         showRight: showRight,
-                        ...this._dateLabels[labelIndex],
-                        outline: chipOuline
+                        classes: labelClasses,
+                        ...this._dateLabels[labelIndex]
                     }
                 });
 

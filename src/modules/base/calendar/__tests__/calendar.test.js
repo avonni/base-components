@@ -55,6 +55,7 @@ describe('Calendar', () => {
             is: Calendar
         });
 
+        expect(element.dateLabels).toMatchObject([]);
         expect(element.disabled).toBeFalsy();
         expect(element.disabledDates).toMatchObject([]);
         expect(element.markedDates).toMatchObject([]);
@@ -66,6 +67,24 @@ describe('Calendar', () => {
     });
 
     /* ----- ATTRIBUTES ----- */
+
+    // dateLabels
+    it('Calendar date labels', () => {
+        element.value = '05/14/2022';
+        element.dateLabels = [
+            {
+                date: new Date('05/26/2022'),
+                label: '26 may'
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            const day26Label = element.shadowRoot.querySelector(
+                '[data-cell-day="1653537600000"] .avonni-calendar__chip-label'
+            );
+            expect(day26Label).toBeTruthy();
+        });
+    });
 
     // disabled
     it('Calendar disabled', () => {
@@ -252,7 +271,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval startDate < newDate', () => {
+    it('Calendar values selection-mode: interval newDate < startDate', () => {
         element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -262,11 +281,14 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(element.value).toMatchObject([
+                new Date('05/14/2021'),
+                new Date('05/15/2021')
+            ]);
         });
     });
 
-    it('Calendar values selection-mode: interval startDate > newDate', () => {
+    it('Calendar values selection-mode: interval newDate > startDate', () => {
         element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -283,7 +305,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval endDate < newDate', () => {
+    it('Calendar values selection-mode: interval newDate < endDate', () => {
         element.value = ['05/15/2021', '05/16/2021'];
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -300,7 +322,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval endDate > newDate < startDate', () => {
+    it('Calendar values selection-mode: interval newDate < startDate < endDate', () => {
         element.value = ['05/15/2021', '05/16/2021'];
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -310,7 +332,10 @@ describe('Calendar', () => {
                 'span[data-date="14"]'
             );
             day14.click();
-            expect(element.value).toMatchObject([new Date('05/14/2021')]);
+            expect(element.value).toMatchObject([
+                new Date('05/14/2021'),
+                new Date('05/16/2021')
+            ]);
         });
     });
 

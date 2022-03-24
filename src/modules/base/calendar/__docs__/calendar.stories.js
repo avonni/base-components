@@ -177,14 +177,13 @@ Interval.args = {
             date: 'Tue',
             label: 'Tuesday',
             variant: 'success',
-            outline: 'asdf',
-            iconName: 'standard:contract_line_item',
+            iconName: 'standard:branch_merge',
             iconPosition: 'right',
             iconVariant: 'inverse'
         },
         {
             date: 25,
-            label: '25 label big label',
+            label: '',
             variant: '',
             outline: true,
             iconName: 'standard:branch_merge',
@@ -195,10 +194,9 @@ Interval.args = {
             date: new Date('05/26/2022'),
             label: '26 may',
             variant: 'error',
-            outline: '',
-            // iconName: 'standard:branch_merge',
+            iconName: 'standard:branch_merge',
             iconPosition: 'right',
-            iconVariant: 'success'
+            iconVariant: 'inverse'
         }
     ]
 };
