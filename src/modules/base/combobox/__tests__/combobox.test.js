@@ -55,6 +55,9 @@ describe('Combobox', () => {
         });
         expect(element.actions).toMatchObject([]);
         expect(element.allowSearch).toBeFalsy();
+        expect(element.backAction).toEqual({
+            iconName: 'utility:chevronleft'
+        });
         expect(element.disabled).toBeFalsy();
         expect(element.dropdownAlignment).toBe('left');
         expect(element.dropdownLength).toBe('7-items');
@@ -109,6 +112,23 @@ describe('Combobox', () => {
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
             expect(combobox.allowSearch).toBeTruthy();
+        });
+    });
+
+    // back-action
+    it('backAction', () => {
+        const action = {
+            label: 'Back',
+            iconName: 'utility:add',
+            fixed: true
+        };
+        element.backAction = action;
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            expect(combobox.backAction).toEqual(action);
         });
     });
 
@@ -826,6 +846,22 @@ describe('Combobox', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 
+    // backactionclick
+    it('backactionclick event', () => {
+        const handler = jest.fn();
+        element.addEventListener('backactionclick', handler);
+
+        const combobox = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-primitive-combobox-main"]'
+        );
+        combobox.dispatchEvent(new CustomEvent('backactionclick'));
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+        expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+    });
+
     // blur
     it('blur event', () => {
         const handler = jest.fn();
@@ -856,6 +892,35 @@ describe('Combobox', () => {
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+    });
+
+    // levelchange
+    it('levelchange event', () => {
+        element.options = options;
+        const handler = jest.fn();
+        element.addEventListener('levelchange', handler);
+
+        return Promise.resolve().then(() => {
+            const combobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-combobox-main"]'
+            );
+            combobox.dispatchEvent(
+                new CustomEvent('levelchange', {
+                    detail: {
+                        optionValue: options[3].options[0].options[0].value
+                    }
+                })
+            );
+
+            expect(handler).toHaveBeenCalled();
+            const event = handler.mock.calls[0][0];
+            expect(event.detail.option).toEqual(
+                options[3].options[0].options[0]
+            );
+            expect(event.bubbles).toBeTruthy();
+            expect(event.composed).toBeFalsy();
+            expect(event.cancelable).toBeFalsy();
+        });
     });
 
     // open

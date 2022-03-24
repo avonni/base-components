@@ -17,7 +17,8 @@ export const options = [
     },
     {
         label: 'United Oil SLA',
-        value: 'no-avatar-oil-sla'
+        value: 'no-avatar-oil-sla',
+        isLoading: true
     },
     {
         label: 'United Oil Standby Generators',

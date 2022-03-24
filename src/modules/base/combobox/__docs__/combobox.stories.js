@@ -65,6 +65,23 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
+        backAction: {
+            name: 'back-action',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Action object. The back action is used to go back to the previous level, after clicking on an option that has nested options.',
+            table: {
+                type: { summary: 'object' },
+                defaultValue: {
+                    summary: `{
+                        iconName: 'utility:chevronright',
+                        label: Label of the parent option
+                    }`
+                }
+            }
+        },
         disabled: {
             control: {
                 type: 'boolean'
@@ -519,7 +536,14 @@ ScopesWithIcons.args = {
     label: 'Combobox with scopes',
     allowSearch: true,
     options: optionsWithAvatars,
-    scopes: scopesWithIcons
+    scopes: scopesWithIcons,
+    dropdownLength: '5-items',
+    backAction: {
+        label: 'Back',
+        iconName: 'utility:back',
+        fixed: true,
+        position: 'bottom'
+    }
 };
 
 export const CustomSearch = Template.bind({});
