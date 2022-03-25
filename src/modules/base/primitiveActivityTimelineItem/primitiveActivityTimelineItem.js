@@ -150,6 +150,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasCheckbox = false;
     _hasError = false;
     _isLoading = false;
+    _variant = '';
 
     _color;
 
@@ -288,6 +289,25 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     set isLoading(value) {
         this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * your-brilliant-description.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(value) {
+        this._variant = value || 'simple';
+    }
+
+    get isSimple() {
+        return this._variant === 'simple';
     }
 
     /**

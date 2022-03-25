@@ -75,6 +75,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _sortedDirection = SORTED_DIRECTIONS.default;
+    _variant = '';
 
     _key;
     _presentDates = [];
@@ -186,6 +187,22 @@ export default class ActivityTimeline extends LightningElement {
             fallbackValue: SORTED_DIRECTIONS.default,
             validValues: SORTED_DIRECTIONS.valid
         });
+    }
+
+    /**
+     * A variant for the timeline trail style
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(value) {
+        this._variant = value || 'simple';
+        console.log(this._variant);
     }
 
     /**

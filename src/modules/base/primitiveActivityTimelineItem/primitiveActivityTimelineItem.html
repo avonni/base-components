@@ -57,10 +57,12 @@
                     </template>
                 </template>
                 <lightning-icon
+                    if:false={isSimple}
                     icon-name={iconName}
                     size="small"
                     class="slds-timeline__icon"
                 ></lightning-icon>
+                <div if:true={isSimple}>{isSimple}</div>
             </div>
             <div class="slds-media__body">
                 <div

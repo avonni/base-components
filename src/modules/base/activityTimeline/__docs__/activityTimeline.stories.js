@@ -103,7 +103,6 @@ export default {
             control: {
                 type: 'select'
             },
-            defaultValue: 'desc',
             options: ['desc', 'asc'],
             description:
                 'Specifies the sorting direction.  Valid values include asc and desc.',
@@ -121,11 +120,22 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        variant: {
+            control: {
+                type: 'text'
+            },
+            description:
+                'The variant changes the appearance of the timeline trail.',
+            table: {
+                type: { summary: 'string' }
+            }
         }
     },
     args: {
         closed: false,
-        collapsible: false
+        collapsible: false,
+        sortedDirection: 'desc'
     }
 };
 
@@ -188,4 +198,14 @@ Yearly.args = {
     items: yearlyItems,
     collapsible: true,
     actions: actions
+};
+
+export const Simple = Template.bind({});
+Simple.args = {
+    title: 'Activity Timeline with simple variant',
+    iconName: 'standard:timesheet_entry',
+    items: items,
+    collapsible: true,
+    actions: actions,
+    variant: 'simple'
 };
