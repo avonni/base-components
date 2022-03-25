@@ -109,6 +109,9 @@ export default class Calendar extends LightningElement {
     }
 
     set dateLabels(value) {
+        if (!value) {
+            return;
+        }
         this._dateLabels = value.map((x) => {
             const labelDate =
                 new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
@@ -542,7 +545,7 @@ export default class Calendar extends LightningElement {
                 // chip label
                 let labelIndex;
                 let labeled = false;
-                let iconPosition;
+                let iconPosition = 'left';
                 let showLeft = false;
                 let showRight = false;
                 let labelClasses;
@@ -553,10 +556,10 @@ export default class Calendar extends LightningElement {
                     }
                 }
                 if (labeled) {
-                    iconPosition =
-                        labelIndex > -1
-                            ? this._dateLabels[labelIndex].iconPosition
-                            : 'left';
+                    if (this._dateLabels[labelIndex].iconPosition?.length > 0) {
+                        iconPosition =
+                            this._dateLabels[labelIndex].iconPosition;
+                    }
                     if (
                         iconPosition === 'left' &&
                         this._dateLabels[labelIndex].iconName?.length > 0
@@ -656,6 +659,8 @@ export default class Calendar extends LightningElement {
     findArrayPosition(day, array) {
         let index;
 
+        // The dates are prioritize from last to first from the array.
+        // We might wnat to fix this in the future.
         array
             .map((x) => x.date)
             .forEach((x, _index) => {
@@ -924,12 +929,11 @@ export default class Calendar extends LightningElement {
      */
     handleMouseOver(event) {
         const day = event.target.getAttribute('data-day');
-        // const day = 1621483200000
         const dayCell = this.template.querySelector(`[data-day="${day}"]`);
         const timeArray = this._value
             .map((x) => x.getTime())
             .sort((a, b) => a - b);
-        if (this._selectionMode === 'interval' && day !== '') {
+        if (this._selectionMode === 'interval' && !!day) {
             if (timeArray.length === 1) {
                 if (day > timeArray[0]) {
                     dayCell.classList.add(

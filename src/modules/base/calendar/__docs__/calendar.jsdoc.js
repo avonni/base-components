@@ -85,11 +85,11 @@
  * @typedef {Object} DateLabel
  * @name dateLabels
  * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
- * In case a date has more than one label, full dates have priority over month dates, which have priority over week days.
+ * To prioritize a date label, place it toward the end of the array.
  * @property {string} label The date label text.
- * @property {string} variant A valid chip variant.
+ * @property {string} variant A chip variant. Default is base and accepted variants are base, brand, inverse, alt-inverse, success, info, warning, error, offline.
  * @property {boolean} outline If true, display a border around the label.
  * @property {string} iconName A valid lightning icon name.
- * @property {string} iconPosition The side on which the icon is displayed. Valid values are 'right' or 'left'.
- * @property {string} iconVariant The color scheme for the icon.
+ * @property {string} iconPosition The side on which the icon is displayed. Default is left and accepted values are left and right.
+ * @property {string} iconVariant The color scheme for the icon. Accepted variants include inverse, success, warning, and error.
  */

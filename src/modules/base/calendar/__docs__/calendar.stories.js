@@ -170,7 +170,7 @@ Multiple.args = {
 
 export const Interval = Template.bind({});
 Interval.args = {
-    value: ['05/10/2022', '05/17/2022'],
+    value: ['05/10/2022', '05/30/2022'],
     selectionMode: 'interval',
     dateLabels: [
         {
@@ -182,22 +182,29 @@ Interval.args = {
             iconVariant: 'inverse'
         },
         {
-            date: 25,
+            date: 6,
             label: '',
-            variant: '',
-            outline: true,
-            iconName: 'standard:branch_merge',
-            iconPosition: 'left',
-            iconVariant: 'brand'
+            variant: 'success',
+            iconName: 'standard:campaign',
+            iconVariant: 'inverse'
         },
         {
-            date: new Date('05/26/2022'),
-            label: '26 may',
+            date: new Date('05/25/2022'),
+            label: '25 may',
             variant: 'error',
-            iconName: 'standard:branch_merge',
-            iconPosition: 'right',
+            iconName: 'standard:lightning_component',
             iconVariant: 'inverse'
         }
+    ],
+    disabledDates: [
+        new Date(2021, 4, 9),
+        new Date(2021, 4, 26),
+        13,
+        14,
+        20,
+        21,
+        'Wed',
+        'Thu'
     ]
 };
 

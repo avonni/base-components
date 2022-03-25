@@ -269,7 +269,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-chip-spacing-block-start
+ * @name --avonni-chip-spacing-block-end
  * @default 0.25rem
  * @type dimension
  */
@@ -281,7 +281,23 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-chip-spacing-inline-start
+ * @name --avonni-chip-spacing-inline-end
+ * @default 0.5rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-sizing-width
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-sizing-max-width
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-sizing-height
  * @default 0.5rem
  * @type dimension
  */
