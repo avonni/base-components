@@ -80,7 +80,7 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day26Label = element.shadowRoot.querySelector(
-                '[data-cell-day="1653537600000"] [data-element-id="date-label"]'
+                '[data-cell-day="1653537600000"] [data-element-id="chip-date-label"]'
             );
             expect(day26Label).toBeTruthy();
         });
@@ -105,7 +105,9 @@ describe('Calendar', () => {
                 '[data-element-id^="span-day-label"]'
             );
             tds.forEach((td) => {
-                expect(td.className).toBe('avonni-calendar__disabled-cell');
+                expect(td.className).toBe(
+                    'avonni-calendar__disabled-cell slds-day'
+                );
             });
         });
     });
@@ -152,6 +154,7 @@ describe('Calendar', () => {
     });
 
     // min & max
+    // this test does nothing
     it('Calendar min and max', () => {
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
@@ -163,6 +166,15 @@ describe('Calendar', () => {
             dates.forEach((date) => {
                 dateArray.push(date.textContent);
             });
+            const disabledDates = [];
+            const disabled = element.shadowRoot.querySelectorAll(
+                '.slds-day_adjacent-month'
+            );
+            disabled.forEach((date) => {
+                disabledDates.push(date.textContent);
+            });
+            console.log(disabledDates);
+            console.log(dateArray);
             expect(dateArray.slice(0, 1)[0]).toBe('1');
             expect(dateArray.slice(-1)[0]).toBe('31');
         });
