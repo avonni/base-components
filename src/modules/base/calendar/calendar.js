@@ -36,8 +36,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
-import { classSet } from '../utils/classSet';
+import { generateUUID, classSet } from 'c/utils';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
@@ -66,6 +65,11 @@ const NULL_DATE = new Date('12/31/1969').setHours(0, 0, 0, 0);
 const SELECTION_MODES = {
     valid: ['single', 'multiple', 'interval'],
     default: 'single'
+};
+
+const LABEL_ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
 };
 
 /**
@@ -98,7 +102,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Array of date labels. The dates should be a Date object, a timestamp, or an ISO8601 formatted string. The labels are strings
+     * Array of date label objects. Priority is given to dates placed toward the end of the array.
      *
      * @public
      * @type {object[]}
@@ -110,6 +114,7 @@ export default class Calendar extends LightningElement {
 
     set dateLabels(value) {
         if (!value) {
+            this._dateLabels = [];
             return;
         }
         this._dateLabels = value.map((x) => {
@@ -391,7 +396,7 @@ export default class Calendar extends LightningElement {
      * @returns string
      */
     get tableClasses() {
-        let isLabeled = this._dateLabels.length > 0;
+        const isLabeled = this._dateLabels.length > 0;
         return classSet('slds-datepicker__month')
             .add({ 'avonni-calendar__date-with-labels': isLabeled })
             .toString();
@@ -551,31 +556,23 @@ export default class Calendar extends LightningElement {
                 let labelClasses;
                 if (this.isInArray(date, this.labeledDatesArray)) {
                     labelIndex = this.findArrayPosition(date, this._dateLabels);
-                    if (this.isInArray(date, this.labeledDatesArray)) {
-                        labeled = true;
-                    }
-                }
-                if (labeled) {
-                    if (this._dateLabels[labelIndex].iconPosition?.length > 0) {
-                        iconPosition =
-                            this._dateLabels[labelIndex].iconPosition;
-                    }
-                    if (
-                        iconPosition === 'left' &&
-                        this._dateLabels[labelIndex].iconName?.length > 0
-                    ) {
+                    labeled = true;
+                    const labelItem = this._dateLabels[labelIndex];
+
+                    iconPosition = normalizeString(labelItem.iconPosition, {
+                        validValues: LABEL_ICON_POSITIONS.valid,
+                        fallbackValue: LABEL_ICON_POSITIONS.default
+                    });
+                    if (iconPosition === 'left') {
                         showLeft = true;
                     }
-                    if (
-                        iconPosition === 'right' &&
-                        this._dateLabels[labelIndex].iconName?.length > 0
-                    ) {
+                    if (iconPosition === 'right') {
                         showRight = true;
                     }
                     let iconOnlyLabel =
-                        (this._dateLabels[labelIndex].iconName?.length > 0 &&
-                            (this._dateLabels[labelIndex].label?.length < 1 ||
-                                !this._dateLabels[labelIndex].label)) ||
+                        (labelItem.iconName?.length > 0 &&
+                            (labelItem.label?.length < 1 ||
+                                !labelItem.label)) ||
                         false;
                     labelClasses = classSet('avonni-calendar__chip-label')
                         .add({
@@ -618,7 +615,7 @@ export default class Calendar extends LightningElement {
                 if (time >= this.min.getTime() && time <= this.max.getTime()) {
                     label = date.getDate();
                 } else {
-                    dayClass = 'avonni-calendar__disabled-cell';
+                    dayClass = 'avonni-calendar__disabled-cell slds-day';
                     fullDate = '';
                 }
 

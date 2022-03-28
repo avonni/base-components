@@ -49,7 +49,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
-    overflow-y: hidden;
+    overflow: hidden;
 }
 .avonni-chip_outline {
     background-color: #ffffff !important;

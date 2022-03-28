@@ -170,42 +170,9 @@ Multiple.args = {
 
 export const Interval = Template.bind({});
 Interval.args = {
-    value: ['05/10/2022', '05/30/2022'],
+    value: ['05/10/2022', '05/22/2022'],
     selectionMode: 'interval',
-    dateLabels: [
-        {
-            date: 'Tue',
-            label: 'Tuesday',
-            variant: 'success'
-            // iconName: 'standard:branch_merge',
-            // iconPosition: 'right',
-            // iconVariant: 'inverse'
-        },
-        {
-            date: 23,
-            label: '',
-            variant: 'success',
-            iconName: 'standard:campaign',
-            iconVariant: 'inverse'
-        },
-        {
-            date: new Date('05/25/2022'),
-            label: '25 may long label',
-            variant: 'error',
-            iconName: 'standard:lightning_component',
-            iconVariant: 'inverse'
-        }
-    ],
-    disabledDates: [
-        new Date(2021, 4, 9),
-        new Date(2021, 4, 26),
-        13,
-        14,
-        20,
-        21,
-        'Wed',
-        'Thu'
-    ]
+    disabledDates: ['Wed', 'Thu']
 };
 
 export const Disabled = Template.bind({});
@@ -234,4 +201,35 @@ MarkedDates.args = {
     value: '05/09/2022',
     disabledDates: [20, 'Sat'],
     markedDates: markedDates
+};
+
+export const Labels = Template.bind({});
+Labels.args = {
+    value: ['05/10/2022', '05/30/2022'],
+    selectionMode: 'interval',
+    dateLabels: [
+        {
+            date: 'Tue',
+            label: 'Tuesday',
+            variant: 'success',
+            iconName: 'standard:branch_merge',
+            iconPosition: 'right',
+            iconVariant: 'inverse'
+        },
+        {
+            date: 23,
+            label: '',
+            variant: 'success',
+            iconName: 'standard:campaign',
+            iconVariant: 'inverse'
+        },
+        {
+            date: new Date('05/25/2022'),
+            label: '25 may long label',
+            variant: 'error',
+            iconName: 'standard:lightning_component',
+            iconVariant: 'inverse'
+        }
+    ],
+    disabledDates: ['Wed', 'Thu']
 };

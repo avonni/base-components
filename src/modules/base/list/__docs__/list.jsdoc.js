@@ -59,7 +59,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-list-header-line-height
- * @default 1.25rem
+ * @default 1.25
  * @type dimension
  */
 /**
