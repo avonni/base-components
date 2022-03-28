@@ -100,6 +100,7 @@ do
         "internationalizationLibrary"
         "iso8601Utils"
         "luxon"
+        "resizeObserver"
         "utils"
         "utilsPrivate"
         "tooltipLibrary"
