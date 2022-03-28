@@ -635,6 +635,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Set the focus on the first focusable element inside the item.
+     *
+     * @public
+     */
     @api
     focusContent() {
         if (!this.isLeaf && !this.disabled) {
@@ -1021,15 +1026,6 @@ export default class PrimitiveTreeItem extends LightningElement {
      */
     handleActionMenuOpen() {
         this._menuIsOpen = true;
-    }
-
-    /**
-     * Handle a click on the checkbox.
-     *
-     * @param {Event} event
-     */
-    handleCheckboxClick(event) {
-        event.stopPropagation();
     }
 
     /**
