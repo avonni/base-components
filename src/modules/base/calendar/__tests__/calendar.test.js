@@ -80,7 +80,7 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day26Label = element.shadowRoot.querySelector(
-                '[data-cell-day="1653537600000"] .avonni-calendar__chip-label'
+                '[data-cell-day="1653537600000"] [data-element-id="date-label"]'
             );
             expect(day26Label).toBeTruthy();
         });

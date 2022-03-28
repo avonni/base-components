@@ -45,6 +45,7 @@ td {
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
+    user-select: none;
     position: relative;
     vertical-align: top;
     width: var(--avonni-calendar-cell-sizing-width);
@@ -74,9 +75,9 @@ lightning-combobox {
 }
 
 .avonni-calendar__week-cell,
-.avonni-calendar__disabled-cell,
+.avonni-calendar__disabled-cell.slds-day,
 th {
-    cursor: default;
+    cursor: default !important;
 }
 
 .slds-day_adjacent-month {
@@ -116,7 +117,7 @@ th {
     color: var(--avonni-calendar-weekdays-text-color, #3e3e3c);
 }
 
-.avonni-calendar__disabled-cell {
+.avonni-calendar__disabled-cell.slds-day {
     color: var(--avonni-calendar-date-disabled-text-color, #adadad);
 }
 
@@ -137,16 +138,16 @@ th {
     color: var(--avonni-calendar-selected-date-text-color, #ffffff);
 }
 
-.slds-is-today .avonni-calendar__disabled-cell {
+.slds-is-today .avonni-calendar__disabled-cell.slds-day {
     background-color: var(--avonni-calendar-today-color-background, #ecebea);
 }
 
-.slds-is-selected .avonni-calendar__disabled-cell {
+.slds-is-selected .avonni-calendar__disabled-cell.slds-day {
     background: var(--avonni-calendar-selected-date-color-background, #0176d3);
-    color: var(--avonni-calendar-selected-date-text-color, #ffffff);
+    color: var(--avonni-calendar-selected-date-text-color, #dddddd);
 }
 
-/* Interval selection */
+/* Interval selection 'bridges' */
 .slds-datepicker__month
     td.slds-is-selected-multi
     + .slds-is-selected-multi
@@ -174,20 +175,6 @@ th {
     > .avonni-calendar__disabled-cell:before {
     width: var(--avonni-calendar-cell-labeled-sizing-width);
     transform: translateX(calc(-50% + -2px));
-}
-
-.slds-datepicker__month
-    td.slds-is-selected-multi
-    + .slds-is-selected-multi
-    > .avonni-calendar__disabled-cell:before {
-    transform: translateX(-85%);
-}
-
-.slds-datepicker__month.avonni-calendar__date-with-labels
-    td.slds-is-selected-multi
-    + .slds-is-selected-multi
-    > .avonni-calendar__disabled-cell:before {
-    transform: translateX(-92%);
 }
 
 /* Borders around hovered interval */
@@ -273,25 +260,24 @@ th {
 /* Chip label */
 .avonni-calendar__chip-label {
     --avonni-chip-label-font-size: 8px;
-    --avonni-chip-spacing-block-start: 2px;
-    --avonni-chip-spacing-block-end: 2px;
-    --avonni-chip-spacing-inline-start: 3px;
-    --avonni-chip-spacing-inline-end: 2px;
-    --avonni-chip-sizing-max-width: 100%;
-    --avonni-chip-sizing-height: 16px;
-    margin: 0 auto;
-}
-.avonni-calendar__chip-icon-only {
-    position: relative;
-    top: -3px;
     --avonni-chip-spacing-block-start: 0px;
     --avonni-chip-spacing-block-end: 0px;
+    --avonni-chip-spacing-inline-start: 3px;
+    --avonni-chip-spacing-inline-end: 3px;
+}
+
+.avonni-calendar__chip-without-icon {
+    position: relative;
+    top: 0.7px;
+    --avonni-chip-spacing-block-start: 2px;
+    --avonni-chip-spacing-block-end: 2px;
+}
+
+.avonni-calendar__chip-icon-only {
     --avonni-chip-spacing-inline-start: 0px;
     --avonni-chip-spacing-inline-end: 0px;
-    --avonni-chip-sizing-width: 16px;
 }
 
 .avonni-calendar__chip-icon-only .avonni-calendar-chip-icon {
-    /* necessary for icon-only labels, otherwise they break */
-    position: absolute;
+    margin-right: -4px;
 }

@@ -529,10 +529,10 @@ export default class Calendar extends LightningElement {
                     }
 
                     dateClass = 'slds-day_adjacent-month';
-                    dayClass = 'avonni-calendar__disabled-cell';
+                    dayClass = 'avonni-calendar__disabled-cell slds-day';
                 } else if (this.disabled) {
                     dateClass = 'slds-day_adjacent-month';
-                    dayClass = 'avonni-calendar__disabled-cell';
+                    dayClass = 'avonni-calendar__disabled-cell slds-day';
                 } else {
                     fullDate = time;
                 }
@@ -580,6 +580,10 @@ export default class Calendar extends LightningElement {
                     labelClasses = classSet('avonni-calendar__chip-label')
                         .add({
                             'avonni-calendar__chip-icon-only': iconOnlyLabel
+                        })
+                        .add({
+                            'avonni-calendar__chip-without-icon':
+                                !showLeft && !showRight
                         })
                         .toString();
                 }
