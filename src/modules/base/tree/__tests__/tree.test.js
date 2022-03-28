@@ -344,6 +344,43 @@ describe('Tree', () => {
 
     /*
      * ------------------------------------------------------------
+     *  METHODS
+     * -------------------------------------------------------------
+     */
+
+    // blur and focus
+    it('blur() and focus() methods', () => {
+        element.items = ITEMS;
+        const fakeRegisters = generateFakeRegisters();
+
+        return Promise.resolve().then(() => {
+            // Register the items, including the nested ones
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-tree-item"]'
+            );
+            Object.values(fakeRegisters).forEach((register) => {
+                items[0].dispatchEvent(
+                    new CustomEvent('privateregisteritem', {
+                        bubbles: true,
+                        detail: register
+                    })
+                );
+            });
+
+            const item = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-tree-item"]'
+            );
+            const focusSpy = jest.spyOn(item, 'focus');
+            element.focus();
+            expect(focusSpy).toHaveBeenCalled();
+
+            element.blur();
+            expect(fakeRegisters[ITEMS[0].name].unfocus).toHaveBeenCalled();
+        });
+    });
+
+    /*
+     * ------------------------------------------------------------
      *  EVENTS
      * -------------------------------------------------------------
      */
