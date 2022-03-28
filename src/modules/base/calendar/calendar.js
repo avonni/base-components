@@ -36,8 +36,7 @@ import {
     normalizeString,
     normalizeArray
 } from 'c/utilsPrivate';
-import { generateUUID } from 'c/utils';
-import { classSet } from '../utils/classSet';
+import { generateUUID, classSet } from 'c/utils';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
@@ -68,6 +67,11 @@ const SELECTION_MODES = {
     default: 'single'
 };
 
+const LABEL_ICON_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+
 /**
  * @class
  * @name Calendar
@@ -76,6 +80,7 @@ const SELECTION_MODES = {
  * @public
  */
 export default class Calendar extends LightningElement {
+    _dateLabels = [];
     _disabled = false;
     _disabledDates = [];
     _markedDates = [];
@@ -83,7 +88,6 @@ export default class Calendar extends LightningElement {
     _min = DEFAULT_MIN;
     _selectionMode = SELECTION_MODES.default;
     _value = [];
-    _dateLabels = [];
     _weekNumber = false;
     date = DEFAULT_DATE;
     year;
@@ -98,7 +102,7 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Array of date labels. The dates should be a Date object, a timestamp, or an ISO8601 formatted string. The labels are strings
+     * Array of date labels objects. Each object must contain a date and either a label or iconName at a minimum.
      *
      * @public
      * @type {object[]}
@@ -391,7 +395,7 @@ export default class Calendar extends LightningElement {
      * @returns string
      */
     get tableClasses() {
-        let isLabeled = this._dateLabels.length > 0;
+        const isLabeled = this._dateLabels.length > 0;
         return classSet('slds-datepicker__month')
             .add({ 'avonni-calendar__date-with-labels': isLabeled })
             .toString();
@@ -553,35 +557,33 @@ export default class Calendar extends LightningElement {
                     labelIndex = this.findArrayPosition(date, this._dateLabels);
                     if (this.isInArray(date, this.labeledDatesArray)) {
                         labeled = true;
+                        const label = this._dateLabels[labelIndex];
+                        iconPosition = normalizeString(label.iconPosition, {
+                            fallbackValue: LABEL_ICON_POSITIONS.default,
+                            validValues: LABEL_ICON_POSITIONS.valid
+                        });
+                        if (
+                            iconPosition === 'left' &&
+                            label.iconName?.length > 0
+                        ) {
+                            showLeft = true;
+                        }
+                        if (
+                            iconPosition === 'right' &&
+                            label.iconName?.length > 0
+                        ) {
+                            showRight = true;
+                        }
+                        let iconOnlyLabel =
+                            (label.iconName?.length > 0 &&
+                                (label.label?.length < 1 || !label.label)) ||
+                            false;
+                        labelClasses = classSet('avonni-calendar__chip-label')
+                            .add({
+                                'avonni-calendar__chip-icon-only': iconOnlyLabel
+                            })
+                            .toString();
                     }
-                }
-                if (labeled) {
-                    if (this._dateLabels[labelIndex].iconPosition?.length > 0) {
-                        iconPosition =
-                            this._dateLabels[labelIndex].iconPosition;
-                    }
-                    if (
-                        iconPosition === 'left' &&
-                        this._dateLabels[labelIndex].iconName?.length > 0
-                    ) {
-                        showLeft = true;
-                    }
-                    if (
-                        iconPosition === 'right' &&
-                        this._dateLabels[labelIndex].iconName?.length > 0
-                    ) {
-                        showRight = true;
-                    }
-                    let iconOnlyLabel =
-                        (this._dateLabels[labelIndex].iconName?.length > 0 &&
-                            (this._dateLabels[labelIndex].label?.length < 1 ||
-                                !this._dateLabels[labelIndex].label)) ||
-                        false;
-                    labelClasses = classSet('avonni-calendar__chip-label')
-                        .add({
-                            'avonni-calendar__chip-icon-only': iconOnlyLabel
-                        })
-                        .toString();
                 }
 
                 // interval

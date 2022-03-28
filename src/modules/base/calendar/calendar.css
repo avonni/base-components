@@ -45,6 +45,7 @@ td {
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
+    user-select: none;
     position: relative;
     vertical-align: top;
     width: var(--avonni-calendar-cell-sizing-width);
@@ -57,10 +58,8 @@ td {
 
 .avonni-calendar__date-with-labels td {
     width: var(--avonni-calendar-cell-labeled-sizing-width);
-    min-width: var(--avonni-calendar-cell-labeled-sizing-width);
     max-width: var(--avonni-calendar-cell-labeled-sizing-width);
     height: var(--avonni-calendar-cell-labeled-sizing-height);
-    min-height: var(--avonni-calendar-cell-labeled-sizing-height);
     max-height: var(--avonni-calendar-cell-labeled-sizing-height);
 }
 
@@ -83,14 +82,14 @@ th {
     color: #adadad;
 }
 
-.slds-datepicker td > span[data-element-id='span-day-label'] {
+.slds-datepicker td > span.avonni-calendar__chip-label {
     width: var(--lwc-squareIconMediumBoundary, 2rem);
     height: var(--lwc-squareIconMediumBoundary, 2rem);
     display: block;
     position: relative;
     min-width: var(--lwc-squareIconMediumBoundary, 2rem);
     line-height: var(--lwc-squareIconMediumBoundary, 2rem);
-    border-radius: var(--lwc-borderRadiusCircle, 10rem);
+    border-radius: var(--lwc-borderRadiusCircle, 50%);
     margin: auto;
 }
 
@@ -199,7 +198,7 @@ th {
     pointer-events: none;
     top: 0;
     left: 0;
-    height: calc(100% + 1px);
+    height: 100%;
     width: 100%;
     border-width: 1px;
 }
@@ -227,6 +226,7 @@ th {
 }
 
 .avonni-calendar__cell_bordered-top_bottom:after {
+    height: calc(100% + 1px);
     border-bottom-color: var(
         --avonni-calendar-multi-selected-color-border-hover,
         #d3d3d39a
