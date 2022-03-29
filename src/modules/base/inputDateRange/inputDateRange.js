@@ -147,11 +147,11 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-    * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>.
-    *
-    * @type {object}
-    * @public
-    */
+     * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>.
+     *
+     * @type {object}
+     * @public
+     */
     @api
     get value() {
         return { startDate: this._startDate, endDate: this._endDate };
@@ -838,6 +838,14 @@ export default class InputDateRange extends LightningElement {
                 this._startDate = date[0] ? new Date(date[0]) : null;
                 // For the case of clicking on the same date to delete it.
                 this._endDate = null;
+            }
+        }
+
+        // selecting 'end date' earlier than 'start date', make that the new 'end date', void 'start date', open start date picker
+        if (this.areBothDatePresent) {
+            if (date[0] < this._startDate) {
+                this._endDate = date[0];
+                this._startDate = null;
             }
         }
 
