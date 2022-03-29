@@ -153,30 +153,42 @@ describe('Calendar', () => {
         });
     });
 
-    // min & max
-    // this test does nothing
-    it('Calendar min and max', () => {
+    // enable current month only
+    it('Calendar disable dates of previous and next months', () => {
         element.value = '05/09/2021';
-        element.min = new Date('05/01/2021');
-        element.max = new Date('05/31/2021');
-
         return Promise.resolve().then(() => {
             const dateArray = [];
-            const dates = element.shadowRoot.querySelectorAll('.slds-day');
+            const dates = element.shadowRoot.querySelectorAll(
+                ':not(.slds-day_adjacent-month) > .slds-day'
+            );
             dates.forEach((date) => {
                 dateArray.push(date.textContent);
             });
-            const disabledDates = [];
-            const disabled = element.shadowRoot.querySelectorAll(
-                '.slds-day_adjacent-month'
-            );
-            disabled.forEach((date) => {
-                disabledDates.push(date.textContent);
-            });
-            console.log(disabledDates);
-            console.log(dateArray);
             expect(dateArray.slice(0, 1)[0]).toBe('1');
             expect(dateArray.slice(-1)[0]).toBe('31');
+        });
+    });
+
+    // min max
+    it('Calendar click only inside min-max', () => {
+        element.value = '05/16/2021';
+        element.min = new Date('05/15/2021');
+        element.max = new Date('05/23/2021');
+        element.selectionMode = 'single';
+        return Promise.resolve().then(() => {
+            const day14 = element.shadowRoot.querySelector(
+                'span[data-date="14"]'
+            );
+            const day18 = element.shadowRoot.querySelector(
+                'span[data-date="18"]'
+            );
+            const day24 = element.shadowRoot.querySelector(
+                'span[data-date="24"]'
+            );
+            expect(day14).toBeFalsy();
+            day18.click();
+            expect(element.value).toMatchObject([new Date('05/18/2021')]);
+            expect(day24).toBeFalsy();
         });
     });
 

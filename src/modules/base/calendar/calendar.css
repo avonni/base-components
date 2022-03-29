@@ -80,13 +80,15 @@ th {
     color: #adadad;
 }
 
-td > .slds-day {
+td > .slds-day,
+.avonni-calendar__week-cell > span {
     display: block;
     position: relative;
     width: var(--lwc-squareIconMediumBoundary, 2rem);
     height: var(--lwc-squareIconMediumBoundary, 2rem);
     line-height: var(--lwc-squareIconMediumBoundary, 2rem);
     border-radius: var(--lwc-borderRadiusCircle, 50%);
+    margin: auto;
 }
 
 tr > td:hover > .slds-day {
