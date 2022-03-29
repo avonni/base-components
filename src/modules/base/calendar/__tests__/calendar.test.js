@@ -82,6 +82,14 @@ describe('Calendar', () => {
             const day26Label = element.shadowRoot.querySelector(
                 '[data-cell-day="1653537600000"] [data-element-id="chip-date-label"]'
             );
+            const dateInfo = day26Label.getAttribute('data-day');
+            expect(day26Label.variant).toBe('base');
+            expect(day26Label.outline).toBeFalsy();
+            expect(day26Label.label).toBe('26 may');
+            expect(day26Label.className).toBe(
+                'avonni-calendar__chip-label avonni-calendar__chip-without-icon'
+            );
+            expect(dateInfo).toBe('1653537600000');
             expect(day26Label).toBeTruthy();
         });
     });
