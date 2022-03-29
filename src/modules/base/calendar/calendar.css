@@ -56,6 +56,7 @@ td {
 
 .avonni-calendar__date-with-labels td {
     width: var(--avonni-calendar-cell-labeled-sizing-width);
+    min-width: var(--avonni-calendar-cell-labeled-sizing-width);
     max-width: var(--avonni-calendar-cell-labeled-sizing-width);
     height: var(--avonni-calendar-cell-labeled-sizing-height);
     max-height: var(--avonni-calendar-cell-labeled-sizing-height);
@@ -85,6 +86,7 @@ td > .slds-day,
     display: block;
     position: relative;
     width: var(--lwc-squareIconMediumBoundary, 2rem);
+    min-width: var(--lwc-squareIconMediumBoundary, 2rem);
     height: var(--lwc-squareIconMediumBoundary, 2rem);
     line-height: var(--lwc-squareIconMediumBoundary, 2rem);
     border-radius: var(--lwc-borderRadiusCircle, 50%);
@@ -258,10 +260,8 @@ tr > td:hover.slds-is-selected > .slds-day {
 }
 
 .avonni-calendar__chip-without-icon {
-    position: relative;
-    top: 0.7px;
-    --avonni-chip-spacing-block-start: 2px;
-    --avonni-chip-spacing-block-end: 2px;
+    --avonni-chip-spacing-block-start: 1px;
+    --avonni-chip-spacing-block-end: 3px;
 }
 
 .avonni-calendar__chip-icon-only {

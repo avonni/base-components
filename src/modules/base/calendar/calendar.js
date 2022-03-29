@@ -569,6 +569,11 @@ export default class Calendar extends LightningElement {
                     if (iconPosition === 'right') {
                         showRight = true;
                     }
+                    console.log(!labelItem.iconName);
+                    if (!labelItem.iconName) {
+                        showLeft = false;
+                        showRight = false;
+                    }
                     let iconOnlyLabel =
                         (labelItem.iconName?.length > 0 &&
                             (labelItem.label?.length < 1 ||

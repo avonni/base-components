@@ -212,7 +212,7 @@ Labels.args = {
             date: 'Tue',
             label: 'Tuesday',
             variant: 'success',
-            iconName: 'standard:branch_merge',
+            // iconName: 'standard:branch_merge',
             iconPosition: 'right',
             iconVariant: 'inverse'
         },
