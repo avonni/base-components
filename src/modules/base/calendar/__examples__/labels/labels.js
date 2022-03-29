@@ -1,8 +1,8 @@
 import { LightningElement } from 'lwc';
 
 export default class CalendarLabels extends LightningElement {
-    value = ['05/03/2022', '05/18/2022'];
-    disabledDates = ['Wed', 'Thu'];
+    value = ['05/10/2022', '05/30/2022'];
+    disabledDates = ['Sat'];
     dateLabels = [
         {
             date: 'Tue',
@@ -13,17 +13,16 @@ export default class CalendarLabels extends LightningElement {
             iconVariant: 'inverse'
         },
         {
-            date: 25,
-            label: '',
-            variant: 'error',
+            date: 23,
+            variant: 'success',
             iconName: 'standard:campaign',
             iconVariant: 'inverse'
         },
         {
-            date: new Date('05/26/2022'),
-            label: '26 may',
+            date: new Date('05/25/2022'),
+            label: '25 may long label',
             variant: 'error',
-            iconName: 'standard:branch_merge',
+            iconName: 'standard:lightning_component',
             iconVariant: 'inverse'
         }
     ];

@@ -146,9 +146,6 @@ export default {
 const markedDates = [
     { date: new Date('05/09/2022'), color: 'red' },
     { date: new Date('05/26/2022'), color: 'brown' },
-    { date: new Date('05/26/2022'), color: 'blue' },
-    { date: new Date('05/26/2022'), color: 'red' },
-    { date: new Date('05/26/2022'), color: 'yellow' },
     { date: 14, color: 'blue' },
     { date: 25, color: 'yellow' },
     { date: 'Wed', color: 'black' }
@@ -230,5 +227,5 @@ Labels.args = {
             iconVariant: 'inverse'
         }
     ],
-    disabledDates: ['Sun']
+    disabledDates: ['Sat']
 };
