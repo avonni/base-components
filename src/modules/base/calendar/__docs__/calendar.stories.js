@@ -230,5 +230,5 @@ Labels.args = {
             iconVariant: 'inverse'
         }
     ],
-    disabledDates: ['Wed', 'Thu']
+    disabledDates: ['Sun']
 };

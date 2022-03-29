@@ -285,19 +285,3 @@
  * @default 0.5rem
  * @type dimension
  */
-/**
- * @memberof stylingHooks
- * @name --avonni-chip-sizing-width
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-chip-sizing-max-width
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-chip-sizing-height
- * @default 0.5rem
- * @type dimension
- */

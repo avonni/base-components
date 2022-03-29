@@ -113,11 +113,9 @@ export default class Calendar extends LightningElement {
     }
 
     set dateLabels(value) {
-        if (!value) {
-            this._dateLabels = [];
-            return;
-        }
-        this._dateLabels = value.map((x) => {
+        const _value = normalizeArray(value);
+
+        this._dateLabels = _value.map((x) => {
             const labelDate =
                 new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
                 !isNaN(Date.parse(x.date))
@@ -569,18 +567,15 @@ export default class Calendar extends LightningElement {
                     if (iconPosition === 'right' && labelItem.iconName) {
                         showRight = true;
                     }
-                    let iconOnlyLabel =
-                        (labelItem.iconName?.length > 0 &&
-                            (labelItem.label?.length < 1 ||
-                                !labelItem.label)) ||
-                        false;
+
                     labelClasses = classSet('avonni-calendar__chip-label')
                         .add({
-                            'avonni-calendar__chip-icon-only': iconOnlyLabel
+                            'avonni-calendar__chip-icon-only':
+                                labelItem.iconName && !labelItem.label
                         })
                         .add({
                             'avonni-calendar__chip-without-icon':
-                                !showLeft && !showRight
+                                !labelItem.iconName
                         })
                         .toString();
                 }
