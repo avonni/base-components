@@ -127,7 +127,10 @@
                     </thead>
                     <tbody>
                         <template for:each={calendarData} for:item="week">
-                            <tr key={generateKey}>
+                            <tr
+                                class="avonni-calendar__table-row"
+                                key={generateKey}
+                            >
                                 <template for:each={week} for:item="day">
                                     <td
                                         class={day.class}

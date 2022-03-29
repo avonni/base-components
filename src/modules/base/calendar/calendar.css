@@ -41,7 +41,8 @@ div:focus {
     outline: none;
 }
 
-td {
+.avonni-calendar__date-cell,
+.avonni-calendar__week-cell {
     -moz-user-select: none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -49,16 +50,20 @@ td {
     position: relative;
     vertical-align: top;
     width: var(--avonni-calendar-cell-sizing-width);
+    min-width: var(--avonni-calendar-cell-sizing-width);
     max-width: var(--avonni-calendar-cell-sizing-width);
     height: var(--avonni-calendar-cell-sizing-height);
+    min-height: var(--avonni-calendar-cell-sizing-height);
     max-height: var(--avonni-calendar-cell-sizing-height);
 }
 
-.avonni-calendar__date-with-labels td {
+.avonni-calendar__date-with-labels .avonni-calendar__date-cell,
+.avonni-calendar__date-with-labels .avonni-calendar__week-cell {
     width: var(--avonni-calendar-cell-labeled-sizing-width);
     min-width: var(--avonni-calendar-cell-labeled-sizing-width);
     max-width: var(--avonni-calendar-cell-labeled-sizing-width);
     height: var(--avonni-calendar-cell-labeled-sizing-height);
+    min-height: var(--avonni-calendar-cell-labeled-sizing-height);
     max-height: var(--avonni-calendar-cell-labeled-sizing-height);
 }
 
@@ -73,7 +78,7 @@ lightning-combobox {
 
 .avonni-calendar__week-cell,
 .avonni-calendar__disabled-cell.slds-day,
-th {
+.avonni-calendar__weekdays_color {
     cursor: default !important;
 }
 
@@ -81,7 +86,7 @@ th {
     color: #adadad;
 }
 
-td > .slds-day,
+.avonni-calendar__date-cell > .slds-day,
 .avonni-calendar__week-cell > span {
     display: block;
     position: relative;
@@ -93,14 +98,16 @@ td > .slds-day,
     margin: auto;
 }
 
-tr > td:hover > .slds-day {
+.avonni-calendar__table-row > .avonni-calendar__date-cell:hover > .slds-day {
     background-color: var(
         --avonni-calendar-date-color-background-hover,
         #f3f2f2
     );
 }
 
-tr > td:hover.slds-is-selected > .slds-day {
+.avonni-calendar__table-row
+    > .avonni-calendar__date-cell:hover.slds-is-selected
+    > .slds-day {
     background-color: var(
         --avonni-calendar-selected-date-color-background,
         #0176d3
@@ -154,7 +161,7 @@ tr > td:hover.slds-is-selected > .slds-day {
 
 /* Interval selection 'bridges' */
 .slds-datepicker__month
-    td.slds-is-selected-multi
+    .avonni-calendar__date-cell.slds-is-selected-multi
     + .slds-is-selected-multi
     > .slds-day:before {
     content: '';
@@ -167,7 +174,7 @@ tr > td:hover.slds-is-selected > .slds-day {
 }
 
 .slds-datepicker__month.avonni-calendar__date-with-labels
-    td.slds-is-selected-multi
+    .avonni-calendar__date-cell.slds-is-selected-multi
     + .slds-is-selected-multi
     > .slds-day:before {
     width: var(--avonni-calendar-cell-labeled-sizing-width);

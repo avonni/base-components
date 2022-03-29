@@ -516,7 +516,7 @@ export default class Calendar extends LightningElement {
                 let currentDate = false;
                 let selected = false;
 
-                let dateClass = '';
+                let dateClass = 'avonni-calendar__date-cell';
                 let dayClass = 'slds-day';
                 let fullDate = '';
                 let disabled = this.isInArray(date, this.disabledDates);
@@ -623,6 +623,8 @@ export default class Calendar extends LightningElement {
                 if (marked && label > 0) {
                     markedDate = true;
                 }
+
+                dateClass += ' avonni-calendar__date-cell';
 
                 weekData.push({
                     label: label,
