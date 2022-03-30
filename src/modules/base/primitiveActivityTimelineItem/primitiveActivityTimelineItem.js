@@ -150,8 +150,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasCheckbox = false;
     _hasError = false;
     _isLoading = false;
-    _variant = '';
-
+    _variant = 'simple';
+    _index;
     _color;
 
     renderedCallback() {
@@ -292,7 +292,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * your-brilliant-description.
+     * Variant for simple view, without icons.
      *
      * @type {string}
      * @public
@@ -303,11 +303,27 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     set variant(value) {
-        this._variant = value || 'simple';
+        this._variant = value;
+        console.log(this._variant);
     }
 
     get isSimple() {
-        return this._variant === 'simple';
+        return this.variant === 'progress-indicator';
+    }
+
+    /**
+     * Item index.
+     *
+     * @type {number}
+     * @public
+     */
+    @api
+    get index() {
+        return this._index;
+    }
+
+    set index(value) {
+        this._index = value;
     }
 
     /**
@@ -346,6 +362,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         return classSet('slds-timeline__item_expandable')
             .add({
                 'slds-is-open': !this.closed
+            })
+            .toString();
+    }
+
+    /**
+     * Classes for items bullet point.
+     *
+     * @type {string}
+     * @public
+     */
+    get timelineItemBullet() {
+        return classSet('slds-timeline__icon avonni-timeline-item__bullet')
+            .add({
+                'avonni-timeline-item__first-bullet': this.index === 0
             })
             .toString();
     }
@@ -451,7 +481,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @returns {string} line background color
      */
     setLineColor() {
-        const icon = this.template.querySelector('lightning-icon');
+        const icon = this.template.querySelector('.slds-timeline__icon');
         if (icon === null) return;
         const style = getComputedStyle(icon);
         this._color = style.backgroundColor;

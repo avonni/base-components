@@ -50,9 +50,10 @@
     </template>
     <template if:true={noGroupBy}>
         <ul class="slds-timeline">
-            <template for:each={sortedItems} for:item="item">
+            <template for:each={sortedItems} for:item="item" for:index="index">
                 <li key={item.name}>
                     <c-primitive-activity-timeline-item
+                        index={index}
                         title={item.title}
                         description={item.description}
                         datetime-value={item.datetimeValue}
@@ -72,6 +73,7 @@
                         loading-state-alternative-text={item.loadingStateAlternativeText}
                         actions={actions}
                         name={item.name}
+                        variant={variant}
                         data-element-id="avonni-primitive-activity-timeline-item"
                         data-name={item.name}
                         onactionclick={handleActionClick}
@@ -94,10 +96,15 @@
                     data-element-id="avonni-expandable-section"
                 >
                     <ul class="slds-timeline">
-                        <template for:each={date.items} for:item="item">
+                        <template
+                            for:each={date.items}
+                            for:item="item"
+                            for:index="index"
+                        >
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
                                     title={item.title}
+                                    index={index}
                                     description={item.description}
                                     datetime-value={item.datetimeValue}
                                     href={item.href}
@@ -116,6 +123,7 @@
                                     loading-state-alternative-text={item.loadingStateAlternativeText}
                                     actions={actions}
                                     name={item.name}
+                                    variant={variant}
                                     data-element-id="avonni-primitive-activity-timeline-item"
                                     data-name={item.name}
                                     onactionclick={handleActionClick}

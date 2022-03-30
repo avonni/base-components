@@ -123,8 +123,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'text'
+                type: 'select'
             },
+            options: ['base', 'progress-indicator'],
             description:
                 'The variant changes the appearance of the timeline trail.',
             table: {
@@ -135,7 +136,8 @@ export default {
     args: {
         closed: false,
         collapsible: false,
-        sortedDirection: 'desc'
+        sortedDirection: 'desc',
+        variant: 'base'
     }
 };
 
@@ -207,5 +209,5 @@ Simple.args = {
     items: items,
     collapsible: true,
     actions: actions,
-    variant: 'simple'
+    variant: 'progress-indicator'
 };

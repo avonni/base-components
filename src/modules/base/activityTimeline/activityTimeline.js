@@ -201,7 +201,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set variant(value) {
-        this._variant = value || 'simple';
+        this._variant = value;
         console.log(this._variant);
     }
 
