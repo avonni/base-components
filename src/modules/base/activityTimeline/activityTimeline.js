@@ -195,7 +195,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * A variant for the timeline trail style
+     * 	If variant is progress-indicator, a progress indicator trail replaces the icons. Accepted values are base and progress-indicator.
      *
      * @type {string}
      * @public

@@ -297,7 +297,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Variant for simple view, without icons.
+     * 	
+If variant is progress-indicator, a progress indicator trail replaces the icons. Accepted values are base and progress-indicator.
      *
      * @type {string}
      * @public
@@ -315,7 +316,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Check if fields is populated.
+     * Check if variant is progress-indicator.
      *
      * @type {boolean}
      */
@@ -324,7 +325,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Item index.
+     * Index of an item in the list. Used for the progress-indicator variant.
      *
      * @type {number}
      * @public

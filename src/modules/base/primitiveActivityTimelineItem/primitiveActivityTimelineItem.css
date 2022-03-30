@@ -39,6 +39,7 @@
     height: 12px;
     border-radius: 100px;
     background-color: #c9c7c5;
+    box-shadow: 0 0 0 2px white;
 }
 
 .slds-timeline__icon.avonni-timeline-item__bullet.avonni-timeline-item__first-bullet::after {
@@ -51,7 +52,7 @@
     border-radius: 100px;
     background-color: white;
     border: #1b96ff solid 4.5px;
-    box-shadow: 0 0 0 3px white;
+    box-shadow: 0 0 0 4px white;
 }
 
 .slds-timeline__item_expandable:before {
