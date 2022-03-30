@@ -881,6 +881,92 @@ describe('Primitive Tree Item', () => {
 
     /*
      * ------------------------------------------------------------
+     *  METHODS
+     * -------------------------------------------------------------
+     */
+
+    it('focusContent() method, expand button', () => {
+        return Promise.resolve().then(() => {
+            const expandButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-expand"]'
+            );
+            const spy = jest.spyOn(expandButton, 'focus');
+            element.focusContent();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    it('focusContent() method, checkbox', () => {
+        element.disabled = true;
+        element.showCheckbox = true;
+
+        return Promise.resolve().then(() => {
+            const checkbox = element.shadowRoot.querySelector(
+                '[data-element-id="input-checkbox"]'
+            );
+            const spy = jest.spyOn(checkbox, 'focus');
+            element.focusContent();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    it('focusContent() method, href', () => {
+        element.isLeaf = true;
+        element.href = 'some link';
+
+        return Promise.resolve().then(() => {
+            const link = element.shadowRoot.querySelector(
+                '[data-group-name="link"]'
+            );
+            const spy = jest.spyOn(link, 'focus');
+            element.focusContent();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    it('focusContent() method, button actions', () => {
+        element.isLeaf = true;
+        element.actions = [
+            {
+                label: 'some label',
+                name: 'someName',
+                iconName: 'utility:add',
+                visible: true
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-action"]'
+            );
+            const spy = jest.spyOn(action, 'focus');
+            element.focusContent();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    it('focusContent() method, actions menu', () => {
+        element.isLeaf = true;
+        element.actions = [
+            {
+                label: 'some label',
+                name: 'someName',
+                iconName: 'utility:add'
+            }
+        ];
+
+        return Promise.resolve().then(() => {
+            const menu = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"]'
+            );
+            const spy = jest.spyOn(menu, 'focus');
+            element.focusContent();
+            expect(spy).toHaveBeenCalled();
+        });
+    });
+
+    /*
+     * ------------------------------------------------------------
      *  EVENTS
      * -------------------------------------------------------------
      */
