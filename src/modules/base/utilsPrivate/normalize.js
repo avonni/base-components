@@ -44,6 +44,13 @@ export function normalizeBoolean(value) {
     return typeof value === 'string' || !!value;
 }
 
+/**
+ * Normalize a given value into an array.
+ *
+ * @param {any} value Value that should be an array.
+ * @param {string} entryType Type of the array entries. Valid values inclue string, number, boolean and object. If given, only the entries of the correct type will be left in the array.
+ * @returns {any[]} Normalized array.
+ */
 export function normalizeArray(value, entryType) {
     if (Array.isArray(value)) {
         switch (entryType) {

@@ -144,7 +144,7 @@ export default class List extends LightningElement {
     /**
      * Array of item objects.
      *
-     * @type {object}
+     * @type {object[]}
      * @public
      */
     @api
@@ -152,7 +152,7 @@ export default class List extends LightningElement {
         return this._items;
     }
     set items(proxy) {
-        this._items = normalizeArray(proxy);
+        this._items = normalizeArray(proxy, 'object');
         this.computedItems = JSON.parse(JSON.stringify(this._items));
         this.computedItems.forEach((item) => {
             item.infos = normalizeArray(item.infos);
