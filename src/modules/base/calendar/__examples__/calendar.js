@@ -35,6 +35,7 @@ import Component from 'avonni/calendar';
 customElements.define('ac-base-calendar', Component.CustomElementConstructor);
 
 export const Calendar = ({
+    dateLabels,
     disabled,
     disabledDates,
     markedDates,
@@ -45,6 +46,7 @@ export const Calendar = ({
     weekNumber
 }) => {
     const element = document.createElement('ac-base-calendar');
+    element.dateLabels = dateLabels;
     element.disabled = disabled;
     element.disabledDates = disabledDates;
     element.markedDates = markedDates;

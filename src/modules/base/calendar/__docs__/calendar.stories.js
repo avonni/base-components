@@ -35,11 +35,17 @@ import { Calendar } from '../__examples__/calendar';
 export default {
     title: 'Example/Calendar',
     argTypes: {
+        dateLabels: {
+            name: 'date-labels',
+            control: {
+                type: 'object'
+            },
+            description: 'An array of dates and label properties.'
+        },
         disabled: {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If true, the calendar is disabled.',
             table: {
                 type: { summary: 'boolean' },
@@ -53,7 +59,6 @@ export default {
             },
             description:
                 'An array that will be used to determine which dates to be disabled in the calendar.',
-            defaultValue: [],
             table: {
                 type: { summary: 'string|string[]' }
             }
@@ -65,7 +70,6 @@ export default {
             },
             description:
                 'An array that will be used to determine which dates to be marked in the calendar.',
-            defaultValue: [],
             table: {
                 type: { summary: 'object[]' }
             }
@@ -76,7 +80,6 @@ export default {
             },
             description:
                 'Specifies the minimum date, which the calendar can show.',
-            defaultValue: new Date(1900, 0, 1),
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date(1900, 0, 1)' }
@@ -88,7 +91,6 @@ export default {
             },
             description:
                 'Specifies the maximum date, which the calendar can show.',
-            defaultValue: new Date(2099, 11, 31),
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date(2099, 11, 31)' }
@@ -100,7 +102,6 @@ export default {
                 type: 'select'
             },
             options: ['single', 'multiple', 'interval'],
-            defaultValue: 'single',
             description:
                 'Specifies the selection mode of the calendar. Valid values include single, multiple and interval. If single, only one date can be selected at a time. If multiple, the user can select multiple dates. If interval, the user can only select a date range (two dates).',
             table: {
@@ -124,7 +125,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If true, display a week number column',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -133,15 +133,21 @@ export default {
     },
     args: {
         disabled: false,
+        dateLabels: [],
+        disabledDates: [],
+        markedDates: [],
+        min: new Date(1900, 0, 1),
+        max: new Date(2099, 11, 31),
+        selectionMode: 'single',
         weekNumber: false
     }
 };
 
 const markedDates = [
-    { date: new Date('05/09/2021'), color: 'red' },
-    { date: new Date('05/26/2021'), color: 'brown' },
+    { date: new Date('05/09/2022'), color: 'red' },
+    { date: new Date('05/26/2022'), color: 'brown' },
     { date: 14, color: 'blue' },
-    { date: 20, color: 'yellow' },
+    { date: 25, color: 'yellow' },
     { date: 'Wed', color: 'black' }
 ];
 
@@ -149,20 +155,21 @@ const Template = (args) => Calendar(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    value: '05/08/2021',
-    disabledDates: '05/09/2021'
+    value: '05/08/2022',
+    disabledDates: '05/09/2022'
 };
 
 export const Multiple = Template.bind({});
 Multiple.args = {
-    value: ['05/03/2021', '05/08/2021', '05/12/2021', '05/18/2021'],
+    value: ['05/03/2022', '05/08/2022', '05/12/2022', '05/18/2022'],
     selectionMode: 'multiple'
 };
 
 export const Interval = Template.bind({});
 Interval.args = {
-    value: ['05/03/2021', '05/08/2021'],
-    selectionMode: 'interval'
+    value: ['05/10/2022', '05/22/2022'],
+    selectionMode: 'interval',
+    disabledDates: ['Wed', 'Thu']
 };
 
 export const Disabled = Template.bind({});
@@ -172,7 +179,7 @@ Disabled.args = {
 
 export const BaseWithWeekNumber = Template.bind({});
 BaseWithWeekNumber.args = {
-    value: '05/09/2021',
+    value: '05/09/2022',
     weekNumber: true,
     disabledDates: [
         new Date(2021, 4, 9),
@@ -188,7 +195,37 @@ BaseWithWeekNumber.args = {
 
 export const MarkedDates = Template.bind({});
 MarkedDates.args = {
-    value: '05/09/2021',
+    value: '05/09/2022',
     disabledDates: [20, 'Sat'],
     markedDates: markedDates
+};
+
+export const Labels = Template.bind({});
+Labels.args = {
+    value: ['05/10/2022', '05/30/2022'],
+    selectionMode: 'interval',
+    dateLabels: [
+        {
+            date: 'Tue',
+            label: 'Tuesday',
+            variant: 'success',
+            iconName: 'standard:branch_merge',
+            iconPosition: 'right',
+            iconVariant: 'inverse'
+        },
+        {
+            date: 23,
+            variant: 'success',
+            iconName: 'standard:campaign',
+            iconVariant: 'inverse'
+        },
+        {
+            date: new Date('05/25/2022'),
+            label: '25 may long label',
+            variant: 'error',
+            iconName: 'standard:lightning_component',
+            iconVariant: 'inverse'
+        }
+    ],
+    disabledDates: ['Sat']
 };

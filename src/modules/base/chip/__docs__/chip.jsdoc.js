@@ -259,5 +259,29 @@
  * @memberof stylingHooks
  * @name --avonni-chip-line-height
  * @default normal
- * @type line-height
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-spacing-block-start
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-spacing-block-end
+ * @default 0.25rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-spacing-inline-start
+ * @default 0.5rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-chip-spacing-inline-end
+ * @default 0.5rem
+ * @type dimension
  */

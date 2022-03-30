@@ -60,7 +60,7 @@
  * @memberof stylingHooks
  * @name --avonni-list-header-line-height
  * @default 1.25
- * @type line-height
+ * @type dimension
  */
 /**
  * @memberof stylingHooks

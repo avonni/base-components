@@ -80,3 +80,17 @@
  * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
  * @property {string} color Color of the marker. Defaults to #bf0201.
  */
+
+/**
+ * @typedef {Object} DateLabel
+ * @name dateLabels
+ * @property {string} date The value of the marked date, which can be a Date object, a timestamp, or an ISO8601 formatted string.
+ * To prioritize a date label, place it toward the end of the array.
+ * @property {string} label The date label text.
+ * @property {string} variant A chip variant. Default is base and accepted variants are base, brand, inverse, alt-inverse, success, info, warning, error, offline.
+ * @property {boolean} outline If true, display a border around the label.
+ * @property {string} iconName The Lightning Design System name of the icon to be displayed inside the label.
+ * Names are written in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+ * @property {string} iconPosition The side on which the icon is displayed. Default is left and accepted values are left and right.
+ * @property {string} iconVariant The color scheme for the icon. Accepted variants include inverse, success, warning, and error.
+ */

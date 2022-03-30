@@ -121,7 +121,7 @@
  * @memberof stylingHooks
  * @name --avonni-vertical-visual-picker-description-line-height
  * @default 1.25
- * @type line-height
+ * @type dimension
  */
 /**
  * @memberof stylingHooks
