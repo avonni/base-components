@@ -58,6 +58,7 @@ describe('Activity Timeline', () => {
         expect(element.items).toMatchObject([]);
         expect(element.sortedDirection).toBe('desc');
         expect(element.title).toBeUndefined();
+        expect(element.variant).toBe('base');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -155,6 +156,92 @@ describe('Activity Timeline', () => {
         });
     });
 
+    // variant
+    it('Activity timeline: variant progress-indicator', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call',
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Adam Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Adam Chan'
+                        }
+                    },
+                    {
+                        label: 'Related To',
+                        value: 'Tesla Cloudhub + Anypoint Connectors',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Tesla Cloudhub + Anypoint Connectors'
+                        }
+                    },
+                    {
+                        label: 'Description',
+                        value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
+                        type: 'text'
+                    }
+                ]
+            },
+            {
+                name: 'item2',
+                title: 'Re: Mobile conversation on Monday with the new global team',
+                description: 'You emailed Lea Chan',
+                datetimeValue: 1619013600000,
+                href: '#',
+                iconName: 'standard:email',
+                icons: ['utility:groups', 'utility:attach'],
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Jackie Dewar',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Jackie Dewar'
+                        }
+                    },
+                    {
+                        label: 'To Address',
+                        value: 'Lea Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Lea Chan'
+                        }
+                    },
+                    {
+                        label: 'Text Body',
+                        value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                        type: 'text'
+                    }
+                ],
+                buttonLabel: 'Public Sharing',
+                buttonIconName: 'utility:world'
+            }
+        ];
+
+        element.items = ITEM;
+        element.variant = 'progress-indicator';
+
+        return Promise.resolve().then(() => {
+            const items = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+
+            expect(items).toHaveLength(2)
+            expect(items[0].variant).toEqual('progress-indicator');
+            expect(items[0].index).toBe(0);
+            expect(items[1].variant).toEqual('progress-indicator');
+            expect(items[1].index).toBe(1);
+        });
+    });
+
     it('Activity Timeline: group by month', () => {
         element.groupBy = 'month';
         element.items = testItems;
@@ -186,7 +273,7 @@ describe('Activity Timeline', () => {
     });
 
     // items
-    it('Activity Timeline: items', () => {
+    it('Activity Timeline: items, base variant', () => {
         const ITEM = [
             {
                 name: 'item1',
@@ -276,6 +363,7 @@ describe('Activity Timeline', () => {
                 expect(item.loadingStateAlternativeText).toBe(
                     ITEM[index].loadingStateAlternativeText
                 );
+                expect(item.variant).toEqual('base');
                 expect(item.closed).toBe(ITEM[index].closed || false);
                 expect(item.buttonLabel).toBe(ITEM[index].buttonLabel);
                 expect(item.buttonIconName).toBe(ITEM[index].buttonIconName);

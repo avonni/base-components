@@ -93,6 +93,8 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.buttonIconPosition).toBe('left');
         expect(element.buttonVariant).toBe('neutral');
         expect(element.buttonDisabled).toBeFalsy();
+        expect(element.variant).toBe('base');
+        expect(element.index).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -176,6 +178,38 @@ describe('Primitive Activity Timeline Item', () => {
             });
         });
     });
+
+    // variant
+    it('Activity timeline variant: progress-indicator, index 0', () => {
+        element.variant = "progress-indicator";
+        element.index = 0;
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('.slds-timeline__icon');
+
+            expect(icon.classList).toContain('avonni-timeline-item__first-bullet');
+        })
+    })
+
+    it('Activity timeline variant: progress-indicator, index 1', () => {
+        element.variant = "progress-indicator";
+        element.index = 1;
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('.slds-timeline__icon');
+
+            expect(icon.classList).toContain('avonni-timeline-item__bullet');
+            expect(icon.classList).not.toContain('avonni-timeline-item__first-bullet');
+        })
+    })
+
+    it('Activity timeline variant: base', () => {
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector('.slds-timeline__icon');
+
+            expect(icon.classList).not.toContain('avonni-timeline-item__first-bullet');
+        })
+    })
 
     // has checkbox
     it('Activity timeline item has checkbox', () => {
