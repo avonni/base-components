@@ -44,8 +44,31 @@ export function normalizeBoolean(value) {
     return typeof value === 'string' || !!value;
 }
 
-export function normalizeArray(value) {
+export function normalizeArray(value, entryType) {
     if (Array.isArray(value)) {
+        switch (entryType) {
+            case 'string':
+                return value.filter((entry) => normalizeString(entry));
+            case 'boolean':
+                return value.map((entry) => normalizeBoolean(entry));
+            case 'number': {
+                const numbers = [];
+                value.forEach((entry) => {
+                    const number = Number(entry);
+                    if (!isNaN(number)) {
+                        numbers.push(number);
+                    }
+                });
+                return numbers;
+            }
+            case 'object':
+                return value.filter((entry) => {
+                    const object = normalizeObject(entry);
+                    return Object.keys(object).length;
+                });
+            default:
+                break;
+        }
         return value;
     }
     return [];
@@ -63,4 +86,15 @@ export function normalizeAriaAttribute(value) {
         .filter((ariaValue) => !!ariaValue);
 
     return arias.length > 0 ? arias.join(' ') : null;
+}
+
+export function normalizeObject(value) {
+    if (
+        value &&
+        value.constructor === Object &&
+        Object.getPrototypeOf(value) === Object.prototype
+    ) {
+        return value;
+    }
+    return {};
 }
