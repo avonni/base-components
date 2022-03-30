@@ -202,9 +202,9 @@ Yearly.args = {
     actions: actions
 };
 
-export const Simple = Template.bind({});
-Simple.args = {
-    title: 'Activity Timeline with simple variant',
+export const ProgressIndicator = Template.bind({});
+ProgressIndicator.args = {
+    title: 'Activity Timeline with progress indicator variant',
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: true,

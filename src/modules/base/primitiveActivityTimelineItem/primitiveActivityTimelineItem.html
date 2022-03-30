@@ -57,12 +57,15 @@
                     </template>
                 </template>
                 <lightning-icon
-                    if:false={isSimple}
+                    if:false={isProgressIndicator}
                     icon-name={iconName}
                     size="small"
                     class="slds-timeline__icon"
                 ></lightning-icon>
-                <div if:true={isSimple} class={timelineItemBullet}></div>
+                <div
+                    if:true={isProgressIndicator}
+                    class={timelineItemBullet}
+                ></div>
             </div>
             <div class="slds-media__body">
                 <div

@@ -304,10 +304,14 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     set variant(value) {
         this._variant = value;
-        console.log(this._variant);
     }
 
-    get isSimple() {
+    /**
+     * Check if fields is populated.
+     *
+     * @type {boolean}
+     */
+    get isProgressIndicator() {
         return this.variant === 'progress-indicator';
     }
 
