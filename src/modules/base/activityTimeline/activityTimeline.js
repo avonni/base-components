@@ -46,6 +46,11 @@ const SORTED_DIRECTIONS = {
     valid: ['asc', 'desc'],
     default: 'desc'
 };
+
+const VARIANT = {
+    valid: ['base', 'progress-indicator'],
+    default: 'base'
+};
 /**
  * @class
  * @descriptor avonni-activity-timeline
@@ -75,7 +80,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _sortedDirection = SORTED_DIRECTIONS.default;
-    _variant = '';
+    _variant = VARIANT.default;
 
     _key;
     _presentDates = [];
@@ -201,7 +206,10 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set variant(value) {
-        this._variant = value;
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANT.default,
+            validValues: VARIANT.valid
+        });
     }
 
     /**

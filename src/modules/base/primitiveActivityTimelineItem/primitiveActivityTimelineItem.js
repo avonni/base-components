@@ -56,6 +56,11 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const VARIANT = {
+    valid: ['base', 'progress-indicator'],
+    default: 'base'
+};
+
 const DEFAULT_LOADING_TEXT = 'Loading';
 
 /**
@@ -150,7 +155,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasCheckbox = false;
     _hasError = false;
     _isLoading = false;
-    _variant = 'simple';
+    _variant = VARIANT.default;
     _index;
     _color;
 
@@ -303,7 +308,10 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     set variant(value) {
-        this._variant = value;
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANT.default,
+            validValues: VARIANT.valid
+        });
     }
 
     /**

@@ -136,8 +136,7 @@ export default {
     args: {
         closed: false,
         collapsible: false,
-        sortedDirection: 'desc',
-        variant: 'base'
+        sortedDirection: 'desc'
     }
 };
 
