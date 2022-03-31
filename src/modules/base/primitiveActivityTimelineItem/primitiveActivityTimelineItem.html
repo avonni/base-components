@@ -57,47 +57,43 @@
                     </template>
                 </template>
                 <lightning-icon
-                    if:false={hasNoIcon}
+                    if:true={iconName}
                     icon-name={iconName}
                     size="small"
                     class="slds-timeline__icon"
                 ></lightning-icon>
-                <div if:true={hasNoIcon} class={timelineItemBullet}></div>
+                <div if:false={iconName} class={timelineItemBullet}></div>
             </div>
-            <div class="slds-media__body">
+            <div class="slds-media__body" 
+            style="max-width: 100%;">
                 <div
                     class="
                         slds-grid slds-grid_align-spread
-                        slds-timeline__trigger
+                        slds-timeline__trigger slds-no-flex
                     "
                 >
                     <div
                         class="
                             slds-grid slds-grid_vertical-align-center
-                            slds-truncate slds-no-space
+                            slds-truncate 
                         "
                     >
-                        <template if:true={hasCheckbox}>
-                            <lightning-input
-                                type="checkbox"
-                                label="checkbox"
-                                variant="label-hidden"
-                                class="avonni-activity-timeline-item-checkbox"
-                                data-element-id="lightning-input-checkbox"
-                                onchange={handleCheck}
-                            >
-                            </lightning-input>
-                        </template>
-                        <template if:true={href}>
-                            <span class="slds-trucate">
-                                <a href={href}>
-                                    <h3>{title}</h3>
-                                </a>
-                            </span>
-                        </template>
-                        <template if:false={href}>
+                        
+                        <lightning-input if:true={hasCheckbox}
+                            type="checkbox"
+                            label="checkbox"
+                            variant="label-hidden"
+                            class="slds-no-flex"
+                            data-element-id="lightning-input-checkbox"
+                            onchange={handleCheck}
+                        >
+                        </lightning-input>
+                        <a if:true={href} href={href}>
                             <h3>{title}</h3>
-                        </template>
+                        </a>
+                        <h3 if:false={href}>{title}</h3>
+
+
                         <div if:true={icons} class="slds-no-flex">
                             <template for:each={icons} for:item="icon">
                                 <lightning-icon

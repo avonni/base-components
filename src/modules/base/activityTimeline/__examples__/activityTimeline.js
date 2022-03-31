@@ -45,8 +45,7 @@ export const ActivityTimeline = ({
     items,
     groupBy,
     sortedDirection,
-    title,
-    variant
+    title
 }) => {
     const element = document.createElement('ac-activity-timeline');
     element.actions = actions;
@@ -57,6 +56,5 @@ export const ActivityTimeline = ({
     element.items = items;
     element.sortedDirection = sortedDirection;
     element.title = title;
-    element.variant = variant;
     return element;
 };

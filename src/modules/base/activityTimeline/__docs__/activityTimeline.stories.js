@@ -190,9 +190,9 @@ Yearly.args = {
     actions: actions
 };
 
-export const BaseWithoutIcons = Template.bind({});
-BaseWithoutIcons.args = {
-    title: 'Activity Timeline with progress indicator variant',
+export const WithoutIcons = Template.bind({});
+WithoutIcons.args = {
+    title: 'Activity Timeline without some icons',
     iconName: 'standard:timesheet_entry',
     items: itemsWithoutIcons,
     collapsible: true,

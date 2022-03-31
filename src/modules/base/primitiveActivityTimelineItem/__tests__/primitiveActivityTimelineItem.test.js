@@ -93,7 +93,7 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.buttonIconPosition).toBe('left');
         expect(element.buttonVariant).toBe('neutral');
         expect(element.buttonDisabled).toBeFalsy();
-        expect(element.index).toBeFalsy();
+        expect(element.index).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */

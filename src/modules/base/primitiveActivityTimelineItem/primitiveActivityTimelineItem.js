@@ -292,15 +292,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Check if variant is progress-indicator.
-     *
-     * @type {boolean}
-     */
-    get hasNoIcon() {
-        return !this.iconName;
-    }
-
-    /**
      * Index of an item in the list. Used for the progress-indicator variant.
      *
      * @type {number}

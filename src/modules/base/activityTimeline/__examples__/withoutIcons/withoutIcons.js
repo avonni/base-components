@@ -1,14 +1,13 @@
 import { LightningElement } from 'lwc';
 
-export default class ActivityTimelineProgressIndicator extends LightningElement {
+export default class ActivityTimelineWithoutIcons extends LightningElement {
     items = [
         {
             name: 'item1',
             title: 'Review proposals for EBC deck with larger team and have marketing review this',
             description: 'You created a task with Charlie Gomez',
-            datetimeValue: '01/01/2022',
+            datetimeValue: '01/11/2022',
             href: 'salesforce.com',
-            iconName: 'standard:task',
             icons: ['utility:refresh'],
             hasCheckbox: true,
             fields: [
@@ -41,7 +40,6 @@ export default class ActivityTimelineProgressIndicator extends LightningElement 
             description: 'You logged a call with Adam Chan',
             href: '#',
             datetimeValue: new Date(),
-            iconName: 'standard:log_a_call',
             fields: [
                 {
                     label: 'Name',
@@ -107,7 +105,6 @@ export default class ActivityTimelineProgressIndicator extends LightningElement 
             icons: ['utility:world'],
             datetimeValue: '04/21/2021 8:00',
             href: '#',
-            iconName: 'standard:event',
             fields: [
                 {
                     label: 'Location',
@@ -146,13 +143,9 @@ export default class ActivityTimelineProgressIndicator extends LightningElement 
         {
             name: 'item5',
             title: 'Create one task',
-            description: 'Fields are loading',
             datetimeValue: '05/21/2022 10:00',
             href: '#',
-            iconName: 'standard:dashboard',
-            loadingStateAlternativeText: 'Is Loading',
             hasCheckbox: true,
-            isLoading: true,
             buttonLabel: 'Public Sharing',
             buttonIconName: 'utility:world'
         },
@@ -161,11 +154,11 @@ export default class ActivityTimelineProgressIndicator extends LightningElement 
             title: 'Create another task',
             datetimeValue: '05/21/2022 11:30',
             href: '#',
-            iconName: 'standard:case',
             hasCheckbox: true,
             hasError: true
         }
     ];
+
 
     actions = [
         {
