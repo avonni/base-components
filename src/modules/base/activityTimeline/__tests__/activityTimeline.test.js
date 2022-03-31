@@ -58,7 +58,6 @@ describe('Activity Timeline', () => {
         expect(element.items).toMatchObject([]);
         expect(element.sortedDirection).toBe('desc');
         expect(element.title).toBeUndefined();
-        expect(element.variant).toBe('base');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -157,7 +156,7 @@ describe('Activity Timeline', () => {
     });
 
     // variant
-    it('Activity timeline: variant progress-indicator', () => {
+    it('Activity timeline: item iterator', () => {
         const ITEM = [
             {
                 name: 'item1',
@@ -165,7 +164,6 @@ describe('Activity Timeline', () => {
                 description: 'You logged a call with Adam Chan',
                 href: '#',
                 datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call',
                 fields: [
                     {
                         label: 'Name',
@@ -227,7 +225,6 @@ describe('Activity Timeline', () => {
         ];
 
         element.items = ITEM;
-        element.variant = 'progress-indicator';
 
         return Promise.resolve().then(() => {
             const items = element.shadowRoot.querySelectorAll(
@@ -235,9 +232,7 @@ describe('Activity Timeline', () => {
             );
 
             expect(items).toHaveLength(2)
-            expect(items[0].variant).toEqual('progress-indicator');
             expect(items[0].index).toBe(0);
-            expect(items[1].variant).toEqual('progress-indicator');
             expect(items[1].index).toBe(1);
         });
     });
@@ -273,7 +268,7 @@ describe('Activity Timeline', () => {
     });
 
     // items
-    it('Activity Timeline: items, base variant', () => {
+    it('Activity Timeline: items', () => {
         const ITEM = [
             {
                 name: 'item1',
@@ -363,7 +358,6 @@ describe('Activity Timeline', () => {
                 expect(item.loadingStateAlternativeText).toBe(
                     ITEM[index].loadingStateAlternativeText
                 );
-                expect(item.variant).toEqual('base');
                 expect(item.closed).toBe(ITEM[index].closed || false);
                 expect(item.buttonLabel).toBe(ITEM[index].buttonLabel);
                 expect(item.buttonIconName).toBe(ITEM[index].buttonIconName);

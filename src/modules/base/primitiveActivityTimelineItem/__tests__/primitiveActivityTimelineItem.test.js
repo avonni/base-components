@@ -93,14 +93,13 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.buttonIconPosition).toBe('left');
         expect(element.buttonVariant).toBe('neutral');
         expect(element.buttonDisabled).toBeFalsy();
-        expect(element.variant).toBe('base');
         expect(element.index).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
 
     // title
-    it('Activity timeline item title', () => {
+    it('Activity timeline item: title', () => {
         element.title = 'This is an title text';
 
         return Promise.resolve().then(() => {
@@ -110,7 +109,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // description
-    it('Activity timeline item description', () => {
+    it('Activity timeline item: description', () => {
         element.description = 'This is an description text';
 
         return Promise.resolve().then(() => {
@@ -120,7 +119,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // datetime value
-    it('Activity timeline item datetimeValue', () => {
+    it('Activity timeline item: datetimeValue', () => {
         element.datetimeValue = 1621605600000;
 
         return Promise.resolve().then(() => {
@@ -132,7 +131,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // href
-    it('Activity timeline item href', () => {
+    it('Activity timeline item: href', () => {
         element.title = 'This is an title link text';
         element.href = 'salesforce.com';
 
@@ -144,7 +143,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // icon name
-    it('Activity timeline item icon name', () => {
+    it('Activity timeline item: icon name no bullet', () => {
         element.iconName = 'standard:case';
 
         return Promise.resolve().then(() => {
@@ -152,11 +151,12 @@ describe('Primitive Activity Timeline Item', () => {
                 '.slds-timeline__icon'
             );
             expect(icon.iconName).toBe('standard:case');
+            expect(icon.classList).not.toContain('avonni-timeline-item__bullet');
         });
     });
 
     // fields
-    it('Activity timeline item fields', () => {
+    it('Activity timeline item: fields', () => {
         element.fields = FIELDS;
 
         return Promise.resolve().then(() => {
@@ -180,19 +180,18 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // variant
-    it('Activity timeline variant: progress-indicator, index 0', () => {
-        element.variant = "progress-indicator";
+    it('Activity timeline item: blue bullet, index 0', () => {
         element.index = 0;
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('.slds-timeline__icon');
 
+            expect(icon.classList).toContain('avonni-timeline-item__bullet');
             expect(icon.classList).toContain('avonni-timeline-item__first-bullet');
         })
     })
 
-    it('Activity timeline variant: progress-indicator, index 1', () => {
-        element.variant = "progress-indicator";
+    it('Activity timeline item: gray bullet, index 1', () => {
         element.index = 1;
 
         return Promise.resolve().then(() => {
@@ -203,16 +202,8 @@ describe('Primitive Activity Timeline Item', () => {
         })
     })
 
-    it('Activity timeline variant: base', () => {
-        return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('.slds-timeline__icon');
-
-            expect(icon.classList).not.toContain('avonni-timeline-item__first-bullet');
-        })
-    })
-
     // has checkbox
-    it('Activity timeline item has checkbox', () => {
+    it('Activity timeline item: has checkbox', () => {
         element.hasCheckbox = true;
 
         return Promise.resolve().then(() => {
@@ -225,7 +216,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // has error
-    it('Activity timeline item has error', () => {
+    it('Activity timeline item: has error', () => {
         element.hasError = true;
 
         return Promise.resolve().then(() => {
@@ -245,7 +236,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // is loading and loading text
-    it('Activity timeline item is loading', () => {
+    it('Activity timeline item: is loading', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText = 'This is a loading text';
 
@@ -259,7 +250,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // closed
-    it('Activity timeline item closed', () => {
+    it('Activity timeline item: closed', () => {
         element.fields = FIELDS;
         element.closed = true;
 
@@ -273,7 +264,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // button label
-    it('Activity timeline item button label', () => {
+    it('Activity timeline item: button label', () => {
         element.buttonLabel = 'This is a button label';
 
         return Promise.resolve().then(() => {
@@ -284,7 +275,7 @@ describe('Primitive Activity Timeline Item', () => {
 
     // button icon name
     // needs a label
-    it('Activity timeline item button icon name', () => {
+    it('Activity timeline item: button icon name', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonIconName = 'utility:close';
 
@@ -297,7 +288,7 @@ describe('Primitive Activity Timeline Item', () => {
 
     // button icon position
     // needs a label
-    it('Activity timeline item button icon position', () => {
+    it('Activity timeline item: button icon position', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonIconName = 'utility:close';
         element.buttonIconPosition = 'right';
@@ -310,7 +301,7 @@ describe('Primitive Activity Timeline Item', () => {
 
     // button variant
     // needs a label
-    it('Activity timeline item button variant neutral', () => {
+    it('Activity timeline item: button variant neutral', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'neutral';
 
@@ -320,7 +311,7 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    it('Activity timeline item button variant base', () => {
+    it('Activity timeline item: button variant base', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'base';
 
@@ -330,7 +321,7 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    it('Activity timeline item button variant brand', () => {
+    it('Activity timeline item: button variant brand', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'brand';
 
@@ -340,7 +331,7 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    it('Activity timeline item button variant brand-outline', () => {
+    it('Activity timeline item: button variant brand-outline', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'brand-outline';
 
@@ -350,7 +341,7 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    it('Activity timeline item button variant destructive', () => {
+    it('Activity timeline item: button variant destructive', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'destructive';
 
@@ -360,7 +351,7 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    it('Activity timeline item button variant destructive-text', () => {
+    it('Activity timeline item: button variant destructive-text', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'destructive-text';
 
@@ -370,7 +361,7 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    it('Activity timeline item button variant inverse', () => {
+    it('Activity timeline item: button variant inverse', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'inverse';
 
@@ -380,7 +371,7 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
-    it('Activity timeline item button variant success', () => {
+    it('Activity timeline item: button variant success', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonVariant = 'success';
 
@@ -391,7 +382,7 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // button disabled
-    it('Activity timeline item button disabled', () => {
+    it('Activity timeline item: button disabled', () => {
         element.buttonLabel = 'This is a button label';
         element.buttonDisabled = true;
 
