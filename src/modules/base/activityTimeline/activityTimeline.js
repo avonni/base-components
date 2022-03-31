@@ -47,10 +47,6 @@ const SORTED_DIRECTIONS = {
     default: 'desc'
 };
 
-const VARIANT = {
-    valid: ['base', 'progress-indicator'],
-    default: 'base'
-};
 /**
  * @class
  * @descriptor avonni-activity-timeline
@@ -60,6 +56,7 @@ const VARIANT = {
 export default class ActivityTimeline extends LightningElement {
     /**
      * The Lightning Design System name of the icon displayed in the header, before the title. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * When omitted, a simplified timeline bullet replaces it.
      *
      * @public
      * @type {string}
@@ -80,7 +77,7 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _sortedDirection = SORTED_DIRECTIONS.default;
-    _variant = VARIANT.default;
+    _iterator = 0;
 
     _key;
     _presentDates = [];
@@ -195,24 +192,6 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * If variant is progress-indicator, a progress indicator trail replaces the icons. Accepted values are base and progress-indicator.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get variant() {
-        return this._variant;
-    }
-
-    set variant(value) {
-        this._variant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
-        });
-    }
-
-    /**
      * Verify if dates exist.
      *
      * @type {boolean}
@@ -252,6 +231,13 @@ export default class ActivityTimeline extends LightningElement {
                   (a, b) =>
                       new Date(a.datetimeValue) - new Date(b.datetimeValue)
               );
+    }
+
+    /**
+     * Iterator to find index of items in displayed order
+     */
+    get iterator() {
+        return this._iterator++;
     }
 
     /**

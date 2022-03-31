@@ -57,15 +57,12 @@
                     </template>
                 </template>
                 <lightning-icon
-                    if:false={isProgressIndicator}
+                    if:false={hasNoIcon}
                     icon-name={iconName}
                     size="small"
                     class="slds-timeline__icon"
                 ></lightning-icon>
-                <div
-                    if:true={isProgressIndicator}
-                    class={timelineItemBullet}
-                ></div>
+                <div if:true={hasNoIcon} class={timelineItemBullet}></div>
             </div>
             <div class="slds-media__body">
                 <div
@@ -85,15 +82,18 @@
                                 type="checkbox"
                                 label="checkbox"
                                 variant="label-hidden"
+                                class="avonni-activity-timeline-item-checkbox"
                                 data-element-id="lightning-input-checkbox"
                                 onchange={handleCheck}
                             >
                             </lightning-input>
                         </template>
                         <template if:true={href}>
-                            <a href={href}>
-                                <h3>{title}</h3>
-                            </a>
+                            <span class="slds-trucate">
+                                <a href={href}>
+                                    <h3>{title}</h3>
+                                </a>
+                            </span>
                         </template>
                         <template if:false={href}>
                             <h3>{title}</h3>

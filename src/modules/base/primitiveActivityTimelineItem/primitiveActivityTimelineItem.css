@@ -33,8 +33,9 @@
 .slds-timeline__icon.avonni-timeline-item__bullet {
     display: inline-block;
     position: relative;
-    margin-top: 9px;
+    margin-top: 7px;
     margin-left: 8px;
+    margin-right: 8px;
     width: 12px;
     height: 12px;
     border-radius: 100px;
@@ -69,4 +70,11 @@
 
 .avonni-activity-timeline-item-no-fields_margin {
     margin-left: 24px;
+}
+
+.avonni-activity-timeline-item-checkbox {
+    /* Stop label retracting under checkbox and push checkbox up */
+    min-width: 22px;
+    max-width: 22px;
+    padding-bottom: 3px;
 }

@@ -31,7 +31,7 @@
  */
 
 import { ActivityTimeline } from '../__examples__/activityTimeline';
-import { actions, items, yearlyItems } from './data';
+import { actions, items, yearlyItems, itemsWithoutIcons } from './data';
 
 export default {
     title: 'Example/Activity Timeline',
@@ -120,17 +120,6 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
-        },
-        variant: {
-            control: {
-                type: 'select'
-            },
-            options: ['base', 'progress-indicator'],
-            description:
-                'The variant changes the appearance of the timeline trail.',
-            table: {
-                type: { summary: 'string' }
-            }
         }
     },
     args: {
@@ -201,12 +190,11 @@ Yearly.args = {
     actions: actions
 };
 
-export const ProgressIndicator = Template.bind({});
-ProgressIndicator.args = {
+export const BaseWithoutIcons = Template.bind({});
+BaseWithoutIcons.args = {
     title: 'Activity Timeline with progress indicator variant',
     iconName: 'standard:timesheet_entry',
-    items: items,
+    items: itemsWithoutIcons,
     collapsible: true,
-    actions: actions,
-    variant: 'progress-indicator'
+    actions: actions
 };

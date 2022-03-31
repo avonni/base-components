@@ -56,11 +56,6 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
-const VARIANT = {
-    valid: ['base', 'progress-indicator'],
-    default: 'base'
-};
-
 const DEFAULT_LOADING_TEXT = 'Loading';
 
 /**
@@ -111,6 +106,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     @api href;
     /**
      * The Lightning Design System name of the icon. Specify the name in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. The icon is displayed in the header before the title.
+     * When omitted, a simplified timeline bullet replaces it.
      *
      * @public
      * @type {string}
@@ -155,7 +151,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasCheckbox = false;
     _hasError = false;
     _isLoading = false;
-    _variant = VARIANT.default;
     _index;
     _color;
 
@@ -297,31 +292,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * 	
-If variant is progress-indicator, a progress indicator trail replaces the icons. Accepted values are base and progress-indicator.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get variant() {
-        return this._variant;
-    }
-
-    set variant(value) {
-        this._variant = normalizeString(value, {
-            fallbackValue: VARIANT.default,
-            validValues: VARIANT.valid
-        });
-    }
-
-    /**
      * Check if variant is progress-indicator.
      *
      * @type {boolean}
      */
-    get isProgressIndicator() {
-        return this.variant === 'progress-indicator';
+    get hasNoIcon() {
+        return !this.iconName;
     }
 
     /**
