@@ -721,15 +721,6 @@ export default class List extends LightningElement {
     }
 
     /**
-     * Stop the dragging process when touching the button menu.
-     *
-     * @param {Event} event
-     */
-    handleButtonMenuTouchStart(event) {
-        event.stopPropagation();
-    }
-
-    /**
      * Handles a click on an item action.
      *
      * @param {Event} event
@@ -789,5 +780,14 @@ export default class List extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Stop the propagation of an event.
+     *
+     * @param {Event} event
+     */
+    stopPropagation(event) {
+        event.stopPropagation();
     }
 }
