@@ -441,8 +441,4 @@ export default class ActivityTimeline extends LightningElement {
             })
         );
     }
-
-    rerenderPlease() {
-        this._items = [...this._items]
-    }
 }
