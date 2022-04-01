@@ -33,6 +33,7 @@
 -->
 
 <template>
+    <lightning-button label="rerender" onclick={rerenderPlease}></lightning-button>
     <template if:true={hasHeader}>
         <div class="slds-card__header">
             <div class="slds-media slds-media_center">
@@ -50,11 +51,11 @@
     </template>
     <template if:true={noGroupBy}>
         <ul class="slds-timeline">
-            <template for:each={sortedItems} for:item="item">
+            <template for:each={sortedItems} for:item="item" for:index="index">
                 <li key={item.name}>
                     <c-primitive-activity-timeline-item
-                        index={iterator}
                         title={item.title}
+                        index={index}
                         description={item.description}
                         datetime-value={item.datetimeValue}
                         href={item.href}
@@ -85,7 +86,7 @@
         </ul>
     </template>
     <template if:true={hasDates}>
-        <template for:each={orderedDates} for:item="date">
+        <template for:each={orderedDates} for:item="date" for:index="groupIndex">
             <template if:false={noGroupBy}>
                 <c-expandable-section
                     key={date.label}
@@ -95,11 +96,12 @@
                     data-element-id="avonni-expandable-section"
                 >
                     <ul class="slds-timeline">
-                        <template for:each={date.items} for:item="item">
+                        <template for:each={date.items} for:item="item" for:index="index">
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
                                     title={item.title}
-                                    index={iterator}
+                                    index={index}
+                                    group-index={groupIndex}
                                     description={item.description}
                                     datetime-value={item.datetimeValue}
                                     href={item.href}

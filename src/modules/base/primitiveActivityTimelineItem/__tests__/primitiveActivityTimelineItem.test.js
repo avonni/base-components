@@ -184,7 +184,7 @@ describe('Primitive Activity Timeline Item', () => {
         element.index = 0;
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('.slds-timeline__icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="item-marker"]');
 
             expect(icon.classList).toContain('avonni-timeline-item__bullet');
             expect(icon.classList).toContain('avonni-timeline-item__first-bullet');
@@ -195,7 +195,7 @@ describe('Primitive Activity Timeline Item', () => {
         element.index = 1;
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('.slds-timeline__icon');
+            const icon = element.shadowRoot.querySelector('[data-element-id="item-marker"]');
 
             expect(icon.classList).toContain('avonni-timeline-item__bullet');
             expect(icon.classList).not.toContain('avonni-timeline-item__first-bullet');

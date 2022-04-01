@@ -142,6 +142,20 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     @api title;
+    /**
+     * Index of item in the activity timeline. Used to make the first bullet blue. 
+     *
+     * @public
+     * @type {number}
+     */
+    @api index;
+    /**
+     * Index of item group in the activity timeline. Used to make the first bullet blue. 
+     *
+     * @public
+     * @type {number}
+     */
+    @api groupIndex;
 
     _buttonDisabled = false;
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
@@ -292,21 +306,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Index of an item in the list. Used for the progress-indicator variant.
-     *
-     * @type {number}
-     * @public
-     */
-    @api
-    get index() {
-        return this._index;
-    }
-
-    set index(value) {
-        this._index = value;
-    }
-
-    /**
      * Check if fields is populated.
      *
      * @type {boolean}
@@ -353,9 +352,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @public
      */
     get timelineItemBullet() {
+        let _groupIndex = this.groupIndex ? this.groupIndex : 0
+        
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
-                'avonni-timeline-item__first-bullet': this.index === 0
+                'avonni-timeline-item__first-bullet': this.index === 0 && _groupIndex === 0
             })
             .toString();
     }
@@ -461,7 +462,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @returns {string} line background color
      */
     setLineColor() {
-        const icon = this.template.querySelector('.slds-timeline__icon');
+        const icon = this.template.querySelector('[data-element-id="item-marker"]');
         if (icon === null) return;
         const style = getComputedStyle(icon);
         this._color = style.backgroundColor;

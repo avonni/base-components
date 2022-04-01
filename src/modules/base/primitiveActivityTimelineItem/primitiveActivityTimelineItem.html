@@ -61,25 +61,29 @@
                     icon-name={iconName}
                     size="small"
                     class="slds-timeline__icon"
+                    data-element-id="item-marker"
                 ></lightning-icon>
-                <div if:false={iconName} class={timelineItemBullet}></div>
+                <div
+                    if:false={iconName}
+                    class={timelineItemBullet}
+                    data-element-id="item-marker"
+                ></div>
             </div>
-            <div class="slds-media__body" 
-            style="max-width: 100%;">
+            <div class="slds-media__body">
                 <div
                     class="
                         slds-grid slds-grid_align-spread
-                        slds-timeline__trigger slds-no-flex
+                        slds-timeline__trigger
                     "
                 >
                     <div
                         class="
                             slds-grid slds-grid_vertical-align-center
-                            slds-truncate 
+                            slds-truncate
                         "
                     >
-                        
-                        <lightning-input if:true={hasCheckbox}
+                        <lightning-input
+                            if:true={hasCheckbox}
                             type="checkbox"
                             label="checkbox"
                             variant="label-hidden"
@@ -88,11 +92,15 @@
                             onchange={handleCheck}
                         >
                         </lightning-input>
-                        <a if:true={href} href={href}>
-                            <h3>{title}</h3>
-                        </a>
-                        <h3 if:false={href}>{title}</h3>
-
+                        <!-- this div.slds-has-flexi-truncate does the magic -->
+                        <div class="slds-has-flexi-truncate">
+                            <a if:true={href} href={href}>
+                                <h3 class="slds-truncate">{title}</h3>
+                            </a>
+                            <h3 if:false={href} class="slds-truncate">
+                                {title}
+                            </h3>
+                        </div>
 
                         <div if:true={icons} class="slds-no-flex">
                             <template for:each={icons} for:item="icon">
