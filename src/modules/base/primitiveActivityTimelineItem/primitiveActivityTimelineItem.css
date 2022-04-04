@@ -43,7 +43,7 @@
     box-shadow: 0 0 0 2px white;
 }
 
-.slds-timeline__icon.avonni-timeline-item__bullet.avonni-timeline-item__first-bullet::after {
+.slds-timeline__icon.avonni-timeline-item__bullet.avonni-timeline-item__active-bullet::after {
     position: absolute;
     content: '';
     top: -4px;
@@ -54,6 +54,14 @@
     background-color: white;
     border: #1b96ff solid 4.5px;
     box-shadow: 0 0 0 4px white;
+}
+
+.slds-grid_align-spread {
+    flex-wrap: wrap;
+}
+
+.slds-timeline__actions_inline {
+    margin-left: auto;
 }
 
 .slds-timeline__item_expandable:before {

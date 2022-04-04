@@ -143,19 +143,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api title;
     /**
-     * Index of item in the activity timeline. Used to make the first bullet blue. 
+     * If true, this item gets a blue bullet incase it has no icon. 
      *
      * @public
-     * @type {number}
+     * @type {boolean}
      */
-    @api index;
-    /**
-     * Index of item group in the activity timeline. Used to make the first bullet blue. 
-     *
-     * @public
-     * @type {number}
-     */
-    @api groupIndex;
+    @api isActive;
 
     _buttonDisabled = false;
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
@@ -165,7 +158,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _hasCheckbox = false;
     _hasError = false;
     _isLoading = false;
-    _index;
     _color;
 
     renderedCallback() {
@@ -352,11 +344,9 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @public
      */
     get timelineItemBullet() {
-        let _groupIndex = this.groupIndex ? this.groupIndex : 0
-        
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
-                'avonni-timeline-item__first-bullet': this.index === 0 && _groupIndex === 0
+                'avonni-timeline-item__active-bullet': this.isActive
             })
             .toString();
     }

@@ -33,7 +33,11 @@
 -->
 
 <template>
-    <div class={activityTimelineItemOuterClass} style={backgroundColor}>
+    <div 
+        class={activityTimelineItemOuterClass} 
+        data-element-id="avonni-timeline-item"
+        style={backgroundColor}
+    >
         <div class={computedSldsMedia}>
             <div class="slds-media__figure">
                 <template if:true={hasFields}>
@@ -76,10 +80,12 @@
                         slds-timeline__trigger
                     "
                 >
+                    <!-- item check box and title -->
                     <div
                         class="
                             slds-grid slds-grid_vertical-align-center
                             slds-truncate
+                            avonni-timeline-title
                         "
                     >
                         <lightning-input
@@ -113,6 +119,8 @@
                             </template>
                         </div>
                     </div>
+
+                    <!-- item date and actions -->
                     <div
                         class="
                             slds-timeline__actions slds-timeline__actions_inline

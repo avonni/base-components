@@ -232,8 +232,6 @@ describe('Activity Timeline', () => {
             );
 
             expect(items).toHaveLength(2)
-            expect(items[0].index).toBe(0);
-            expect(items[1].index).toBe(1);
         });
     });
 

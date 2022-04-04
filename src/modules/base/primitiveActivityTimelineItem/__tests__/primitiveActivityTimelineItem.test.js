@@ -93,7 +93,7 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.buttonIconPosition).toBe('left');
         expect(element.buttonVariant).toBe('neutral');
         expect(element.buttonDisabled).toBeFalsy();
-        expect(element.index).toBeUndefined();
+        expect(element.isActive).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -180,25 +180,25 @@ describe('Primitive Activity Timeline Item', () => {
     });
 
     // variant
-    it('Activity timeline item: blue bullet, index 0', () => {
-        element.index = 0;
+    it('Activity timeline item: isActive blue bullet', () => {
+        element.isActive = true;
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('[data-element-id="item-marker"]');
 
             expect(icon.classList).toContain('avonni-timeline-item__bullet');
-            expect(icon.classList).toContain('avonni-timeline-item__first-bullet');
+            expect(icon.classList).toContain('avonni-timeline-item__active-bullet');
         })
     })
 
-    it('Activity timeline item: gray bullet, index 1', () => {
-        element.index = 1;
+    it('Activity timeline item: not isActive gray bullet', () => {
+        element.isActive = false;
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector('[data-element-id="item-marker"]');
 
             expect(icon.classList).toContain('avonni-timeline-item__bullet');
-            expect(icon.classList).not.toContain('avonni-timeline-item__first-bullet');
+            expect(icon.classList).not.toContain('avonni-timeline-item__active-bullet');
         })
     })
 
