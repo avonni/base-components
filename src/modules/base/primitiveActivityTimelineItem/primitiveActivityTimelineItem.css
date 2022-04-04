@@ -56,11 +56,11 @@
     box-shadow: 0 0 0 4px white;
 }
 
-.slds-grid_align-spread {
+.avonni-activity-timeline-item-header {
     flex-wrap: wrap;
 }
 
-.slds-timeline__actions_inline {
+.avonni-activity-timeline-item-header-date {
     margin-left: auto;
 }
 

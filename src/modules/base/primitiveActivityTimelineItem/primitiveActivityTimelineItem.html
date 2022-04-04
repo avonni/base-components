@@ -33,8 +33,8 @@
 -->
 
 <template>
-    <div 
-        class={activityTimelineItemOuterClass} 
+    <div
+        class={activityTimelineItemOuterClass}
         data-element-id="avonni-timeline-item"
         style={backgroundColor}
     >
@@ -78,14 +78,13 @@
                     class="
                         slds-grid slds-grid_align-spread
                         slds-timeline__trigger
+                        avonni-activity-timeline-item-header
                     "
                 >
-                    <!-- item check box and title -->
                     <div
                         class="
                             slds-grid slds-grid_vertical-align-center
-                            slds-truncate
-                            avonni-timeline-title
+                            slds-truncate slds-no-space
                         "
                     >
                         <lightning-input
@@ -98,6 +97,7 @@
                             onchange={handleCheck}
                         >
                         </lightning-input>
+
                         <!-- this div.slds-has-flexi-truncate does the magic -->
                         <div class="slds-has-flexi-truncate">
                             <a if:true={href} href={href}>
@@ -120,10 +120,10 @@
                         </div>
                     </div>
 
-                    <!-- item date and actions -->
                     <div
                         class="
                             slds-timeline__actions slds-timeline__actions_inline
+                            avonni-activity-timeline-item-header-date
                         "
                     >
                         <lightning-formatted-date-time

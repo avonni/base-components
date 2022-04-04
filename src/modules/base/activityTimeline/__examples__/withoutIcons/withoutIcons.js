@@ -39,6 +39,7 @@ export default class ActivityTimelineWithoutIcons extends LightningElement {
             title: 'Mobile conversation on Monday',
             description: 'You logged a call with Adam Chan',
             href: '#',
+            isActive: true,
             datetimeValue: new Date(),
             fields: [
                 {
@@ -158,7 +159,6 @@ export default class ActivityTimelineWithoutIcons extends LightningElement {
             hasError: true
         }
     ];
-
 
     actions = [
         {

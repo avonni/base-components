@@ -77,7 +77,6 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _sortedDirection = SORTED_DIRECTIONS.default;
-    _iterator = 0;
 
     _key;
     _presentDates = [];
@@ -231,13 +230,6 @@ export default class ActivityTimeline extends LightningElement {
                   (a, b) =>
                       new Date(a.datetimeValue) - new Date(b.datetimeValue)
               );
-    }
-
-    /**
-     * Iterator to find index of items in displayed order
-     */
-    get iterator() {
-        return this._iterator++;
     }
 
     /**
