@@ -536,7 +536,10 @@ export default class Calendar extends LightningElement {
                     dateClass = 'slds-day_adjacent-month';
                     dayClass = 'avonni-calendar__disabled-cell slds-day';
                 } else if (this.disabled) {
-                    dateClass = 'slds-day_adjacent-month';
+                    // why does a disabled day have an adjacent month class?
+                    // dateClass = 'slds-day_adjacent-month';
+
+                    dateClass = '';
                     dayClass = 'avonni-calendar__disabled-cell slds-day';
                 } else {
                     fullDate = time;
@@ -1020,10 +1023,46 @@ export default class Calendar extends LightningElement {
      * @param {Event}
      */
     handleKeyDown(event) {
-        let key = event.keyCode;
-        console.log(event);
+        console.log(event.target.innerText, event.target);
+        // the event is on the cell, not the span inside
 
-        switch (key) {
+        // console.log(event.target.parentElement.parentElement)
+        // get tbody tag
+
+        // in case of Enter: pass span instead
+        // let daySpan = event.target;
+        // console.log(daySpan);
+
+        /**
+         * When the datepicker opens, place user focus on either the currently selected date in the grid or if no date is selected the current day
+        LEFT and RIGHT arrow keys to navigate row
+        UP and DOWN arrow keys to navigate between weeks on the same day
+        HOME and END keys to jump to beginning or end of current row
+        PAGEDOWN and PAGEUP to navigate between months
+        alt + PAGEDOWN and alt + PAGEUP to navigate between years
+        ENTER to select date and close datepicker
+        esc to close datepicker without choosing a date
+
+        keyCodes object contains:
+
+        backspace: 8
+        delete: 46
+        down: 40
+        end: 35         (fn + right)
+        enter: 13
+        escape: 27
+        home: 36        (fn + left)
+        left: 37
+        pagedown: 34    (fn + down)
+        pageup: 33      (fn + up)
+        right: 39
+        shift: 16
+        space: 32
+        tab: 9
+        up: 38
+         */
+
+        switch (event.keyCode) {
             case keyCodes.left:
                 this.previous(event);
                 break;
@@ -1040,6 +1079,11 @@ export default class Calendar extends LightningElement {
                 this.down(event);
                 break;
 
+            case keyCodes.enter:
+                console.log('enter');
+                this.handlerSelectDate(event);
+                break;
+
             default:
                 break;
         }
@@ -1050,21 +1094,57 @@ export default class Calendar extends LightningElement {
      *
      */
     previous(event) {
-        console.log(event);
-        // let nextTd = event..parentNode.nextSibling;
-        console.log('previous');
+        let currentDay = event.target;
+        let previousDay = event.target.previousSibling;
+
+        // check if not disabled or week number
+        if (previousDay?.classList.contains('avonni-calendar__week-cell')) {
+            console.log('thats a weekday');
+            // go one week-before and last day
+
+            let previousWeek = event.target.parentElement.previousSibling;
+
+            if (!previousWeek) {
+                return;
+            }
+            let previousDays = previousWeek.querySelectorAll('td');
+            previousDay = previousDays[previousDays.length - 1];
+        }
+
+        if (
+            previousDay
+                ?.querySelector('span')[0]
+                ?.classList.contains('avonni-calendar__disabled-cell')
+        ) {
+            console.log('this day is disabled');
+        }
+
+        if (previousDay) {
+            currentDay?.setAttribute('tabindex', '-1');
+            previousDay?.setAttribute('tabindex', '0');
+            previousDay?.focus();
+        }
+
+        // else go to previous row
     }
+
     /**
      * Move selection to enxt valid day
      *
      */
     next(event) {
-        let currentCell = event.target;
-        currentCell.setAttribute('tabindex', '-1');
+        let currentDay = event.target;
         let nextCell = event.target.nextSibling;
-        nextCell.setAttribute('tabindex', '0');
-        console.log('next', nextCell);
+
+        if (nextCell) {
+            currentDay?.setAttribute('tabindex', '-1');
+            nextCell?.setAttribute('tabindex', '0');
+            nextCell?.focus();
+        }
+
+        // else go to next row and select first "day" cell
     }
+
     /**
      * Move selection to enxt valid day
      *
