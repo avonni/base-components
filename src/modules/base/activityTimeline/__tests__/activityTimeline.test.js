@@ -225,7 +225,7 @@ describe('Activity Timeline', () => {
                 description: 'You emailed Lea Chan',
                 datetimeValue: 1619013600000,
                 href: '#',
-                iconName: 'standard:email',
+                isActive: true,
                 icons: ['utility:groups', 'utility:attach'],
                 fields: [
                     {
@@ -273,6 +273,7 @@ describe('Activity Timeline', () => {
                 expect(item.hasCheckbox).toBe(ITEM[index].hasCheckbox || false);
                 expect(item.hasError).toBe(ITEM[index].hasError || false);
                 expect(item.isLoading).toBe(ITEM[index].isLoading || false);
+                expect(item.isActive).toBe(ITEM[index].isActive);
                 expect(item.loadingStateAlternativeText).toBe(
                     ITEM[index].loadingStateAlternativeText
                 );

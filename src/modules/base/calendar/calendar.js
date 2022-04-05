@@ -184,7 +184,7 @@ export default class Calendar extends LightningElement {
     }
 
     set markedDates(value) {
-        this._markedDates = value.map((x) => {
+        this._markedDates = normalizeArray(value).map((x) => {
             const isDate =
                 new Date(x.date).setHours(0, 0, 0, 0) !== NULL_DATE &&
                 !isNaN(Date.parse(x.date))
@@ -252,10 +252,10 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * The value of the date selected, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * The value of the selected date(s). Dates can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @public
-     * @type {string}
+     * @type {string|string[]}
      */
     @api
     get value() {
@@ -379,6 +379,14 @@ export default class Calendar extends LightningElement {
         return this.markedDates.map((date) => {
             return date.date;
         });
+    }
+
+    get normalizedValue() {
+        const stringDates = this.value.map((date) => {
+            const stringDate = date.toISOString();
+            return stringDate.match(/^\d{4}-\d{2}-\d{2}/)[0];
+        });
+        return this.selectionMode === 'single' ? stringDates[0] : stringDates;
     }
 
     /**
@@ -845,6 +853,9 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
+        // Prevent selecting week numbers
+        if (!event.currentTarget.dataset.day) return;
+
         let date = new Date(Number(event.target.dataset.day));
         const disabledDate = Array.from(event.target.classList).includes(
             'avonni-calendar__disabled-cell'
@@ -879,12 +890,12 @@ export default class Calendar extends LightningElement {
          * @event
          * @public
          * @name change
-         * @param {string} value Selected date.
+         * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
          */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this._value
+                    value: this.normalizedValue
                 }
             })
         );

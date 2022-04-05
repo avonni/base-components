@@ -80,17 +80,15 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day26Label = element.shadowRoot.querySelector(
-                '[data-cell-day="1653537600000"] [data-element-id="chip-date-label"]'
+                '[data-element-id="chip-date-label"]'
             );
-            const dateInfo = day26Label.getAttribute('data-day');
+            expect(day26Label).toBeTruthy();
             expect(day26Label.variant).toBe('base');
             expect(day26Label.outline).toBeFalsy();
             expect(day26Label.label).toBe('26 may');
             expect(day26Label.className).toBe(
                 'avonni-calendar__chip-label avonni-calendar__chip-without-icon'
             );
-            expect(dateInfo).toBe('1653537600000');
-            expect(day26Label).toBeTruthy();
         });
     });
 
@@ -443,20 +441,40 @@ describe('Calendar', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            element.dispatchEvent(
-                new CustomEvent('change', {
-                    detail: {
-                        value: element.value
-                    }
-                })
+            const days = element.shadowRoot.querySelectorAll(
+                '[data-element-id="span-day-label"]'
             );
+            const day7 = days[12];
+            day7.click();
+
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-                new Date('05/09/2021')
-            ]);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toBe('2021-05-07');
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+        });
+    });
+
+    it('Calendar event change selection-mode: multiple', () => {
+        element.value = '05/09/2021';
+        element.selectionMode = 'multiple';
+        element.min = new Date('05/01/2021');
+        element.max = new Date('05/31/2021');
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        return Promise.resolve().then(() => {
+            const days = element.shadowRoot.querySelectorAll(
+                '[data-element-id="span-day-label"]'
+            );
+            const day7 = days[12];
+            day7.click();
+
+            expect(handler).toHaveBeenCalled();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.value).toEqual(['2021-05-09', '2021-05-07']);
         });
     });
 
@@ -476,9 +494,6 @@ describe('Calendar', () => {
             day9.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject([]);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 
@@ -497,13 +512,10 @@ describe('Calendar', () => {
             );
             day11.click();
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
-                new Date('05/09/2021'),
-                new Date('05/11/2021')
+            expect(handler.mock.calls[0][0].detail.value).toEqual([
+                '2021-05-09',
+                '2021-05-11'
             ]);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
 });

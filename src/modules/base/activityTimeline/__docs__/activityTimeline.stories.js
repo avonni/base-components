@@ -31,7 +31,7 @@
  */
 
 import { ActivityTimeline } from '../__examples__/activityTimeline';
-import { actions, items, yearlyItems } from './data';
+import { actions, items, yearlyItems, itemsWithoutIcons } from './data';
 
 export default {
     title: 'Example/Activity Timeline',
@@ -103,7 +103,6 @@ export default {
             control: {
                 type: 'select'
             },
-            defaultValue: 'desc',
             options: ['desc', 'asc'],
             description:
                 'Specifies the sorting direction.  Valid values include asc and desc.',
@@ -125,7 +124,8 @@ export default {
     },
     args: {
         closed: false,
-        collapsible: false
+        collapsible: false,
+        sortedDirection: 'desc'
     }
 };
 
@@ -186,6 +186,15 @@ Yearly.args = {
     iconName: 'standard:timesheet_entry',
     groupBy: 'year',
     items: yearlyItems,
+    collapsible: true,
+    actions: actions
+};
+
+export const WithoutIcons = Template.bind({});
+WithoutIcons.args = {
+    title: 'Activity Timeline without some icons',
+    iconName: 'standard:timesheet_entry',
+    items: itemsWithoutIcons,
     collapsible: true,
     actions: actions
 };

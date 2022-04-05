@@ -310,7 +310,7 @@ export default class PrimitiveAvatar extends LightningElement {
     }
 
     set actionMenuIcon(icon) {
-        if (icon?.length > 0) {
+        if (icon && icon.length > 0) {
             this._actionMenuIcon = icon;
         } else {
             this._actionMenuIcon = DEFAULT_ICON_MENU_ICON;
@@ -330,7 +330,7 @@ export default class PrimitiveAvatar extends LightningElement {
             size === 'small' ||
             size === 'x-small' ||
             size === 'xx-small' ||
-            !actions?.length > 0
+            (actions && !actions.length > 0)
         ) {
             _showAction = false;
         }

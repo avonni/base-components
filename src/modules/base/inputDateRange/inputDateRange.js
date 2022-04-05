@@ -684,32 +684,34 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of start-date on c-calendar.
      */
     handleChangeStartDate(event) {
-        const date = event.detail.value;
+        const value = event.detail.value;
+        const normalizedValue = value instanceof Array ? value : [value];
+        const dates = normalizedValue.map((date) => new Date(date));
 
         // Handler if there is a start date and there is an end date.
         if (this.areBothDatePresent) {
-            if (date[1] > this._endDate) {
-                this._startDate = new Date(date[1]);
-            } else if (date[0] < this._startDate) {
-                this._startDate = new Date(date[0]);
+            if (dates[1] > this._endDate) {
+                this._startDate = new Date(dates[1]);
+            } else if (dates[0] < this._startDate) {
+                this._startDate = new Date(dates[0]);
                 // If user click on the same date.
-            } else if (date.length === 1) {
+            } else if (dates.length === 1) {
                 this._startDate = null;
             } else {
-                this._startDate = new Date(date[1]);
+                this._startDate = new Date(dates[1]);
             }
             // If there is no start date, but there is an end date.
         } else if (this.isOnlyEndDate) {
-            if (date[1] > this._endDate) {
-                this._startDate = new Date(date[1]);
-            } else if (date.length === 0) {
+            if (dates[1] > this._endDate) {
+                this._startDate = new Date(dates[1]);
+            } else if (dates.length === 0) {
                 this._startDate = this._endDate;
             } else {
-                this._startDate = new Date(date[0]);
+                this._startDate = new Date(dates[0]);
             }
             // If there is no start date and no end date.
         } else {
-            this._startDate = date[0] ? new Date(date[0]) : null;
+            this._startDate = dates[0] ? new Date(dates[0]) : null;
         }
 
         event.stopPropagation();
@@ -816,26 +818,28 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of end-date on c-calendar.
      */
     handleChangeEndDate(event) {
-        const date = event.detail.value;
+        const value = event.detail.value;
+        const normalizedValue = value instanceof Array ? value : [value];
+        const dates = normalizedValue.map((date) => new Date(date));
 
         // Handler if there is an end date and there is no start date.
-        if (date.length === 1 && !this._startDate) {
-            this._endDate = new Date(date[0]);
+        if (dates.length === 1 && !this._startDate) {
+            this._endDate = new Date(dates[0]);
             // Handler if there is no end date, but there is a start date.
         } else if (this.isOnlyStartDate) {
-            if (date[1] > this._startDate) {
-                this._endDate = new Date(date[1]);
-            } else if (date.length === 0) {
+            if (dates[1] > this._startDate) {
+                this._endDate = new Date(dates[1]);
+            } else if (dates.length === 0) {
                 this._endDate = this._startDate;
             } else {
-                this._endDate = new Date(date[0]);
+                this._endDate = new Date(dates[0]);
             }
             // Handler if there is no end date and no start date or both date.
         } else {
-            if (date[1]) {
-                this._endDate = new Date(date[1]);
+            if (dates[1]) {
+                this._endDate = new Date(dates[1]);
             } else {
-                this._startDate = date[0] ? new Date(date[0]) : null;
+                this._startDate = dates[0] ? new Date(dates[0]) : null;
                 // For the case of clicking on the same date to delete it.
                 this._endDate = null;
             }
@@ -843,8 +847,8 @@ export default class InputDateRange extends LightningElement {
 
         // selecting 'end date' earlier than 'start date', make that the new 'end date', void 'start date', open start date picker
         if (this.areBothDatePresent) {
-            if (date[0] < this._startDate) {
-                this._endDate = date[0];
+            if (dates[0] < this._startDate) {
+                this._endDate = dates[0];
                 this._startDate = null;
             }
         }
