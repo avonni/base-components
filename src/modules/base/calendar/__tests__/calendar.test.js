@@ -80,17 +80,15 @@ describe('Calendar', () => {
 
         return Promise.resolve().then(() => {
             const day26Label = element.shadowRoot.querySelector(
-                '[data-cell-day="1653537600000"] [data-element-id="chip-date-label"]'
+                '[data-element-id="chip-date-label"]'
             );
-            const dateInfo = day26Label.getAttribute('data-day');
+            expect(day26Label).toBeTruthy();
             expect(day26Label.variant).toBe('base');
             expect(day26Label.outline).toBeFalsy();
             expect(day26Label.label).toBe('26 may');
             expect(day26Label.className).toBe(
                 'avonni-calendar__chip-label avonni-calendar__chip-without-icon'
             );
-            expect(dateInfo).toBe('1653537600000');
-            expect(day26Label).toBeTruthy();
         });
     });
 
@@ -443,7 +441,9 @@ describe('Calendar', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const days = element.shadowRoot.querySelectorAll('[data-element-id="span-day-label"]');
+            const days = element.shadowRoot.querySelectorAll(
+                '[data-element-id="span-day-label"]'
+            );
             const day7 = days[12];
             day7.click();
 
@@ -466,7 +466,9 @@ describe('Calendar', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const days = element.shadowRoot.querySelectorAll('[data-element-id="span-day-label"]');
+            const days = element.shadowRoot.querySelectorAll(
+                '[data-element-id="span-day-label"]'
+            );
             const day7 = days[12];
             day7.click();
 
