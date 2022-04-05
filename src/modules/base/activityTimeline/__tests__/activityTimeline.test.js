@@ -155,86 +155,6 @@ describe('Activity Timeline', () => {
         });
     });
 
-    // variant
-    it('Activity timeline: item iterator', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                fields: [
-                    {
-                        label: 'Name',
-                        value: 'Adam Chan',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Adam Chan'
-                        }
-                    },
-                    {
-                        label: 'Related To',
-                        value: 'Tesla Cloudhub + Anypoint Connectors',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Tesla Cloudhub + Anypoint Connectors'
-                        }
-                    },
-                    {
-                        label: 'Description',
-                        value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
-                        type: 'text'
-                    }
-                ]
-            },
-            {
-                name: 'item2',
-                title: 'Re: Mobile conversation on Monday with the new global team',
-                description: 'You emailed Lea Chan',
-                datetimeValue: 1619013600000,
-                href: '#',
-                iconName: 'standard:email',
-                icons: ['utility:groups', 'utility:attach'],
-                fields: [
-                    {
-                        label: 'Name',
-                        value: 'Jackie Dewar',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Jackie Dewar'
-                        }
-                    },
-                    {
-                        label: 'To Address',
-                        value: 'Lea Chan',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Lea Chan'
-                        }
-                    },
-                    {
-                        label: 'Text Body',
-                        value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
-                        type: 'text'
-                    }
-                ],
-                buttonLabel: 'Public Sharing',
-                buttonIconName: 'utility:world'
-            }
-        ];
-
-        element.items = ITEM;
-
-        return Promise.resolve().then(() => {
-            const items = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-primitive-activity-timeline-item"]'
-            );
-
-            expect(items).toHaveLength(2)
-        });
-    });
-
     it('Activity Timeline: group by month', () => {
         element.groupBy = 'month';
         element.items = testItems;
@@ -305,7 +225,7 @@ describe('Activity Timeline', () => {
                 description: 'You emailed Lea Chan',
                 datetimeValue: 1619013600000,
                 href: '#',
-                iconName: 'standard:email',
+                isActive: true,
                 icons: ['utility:groups', 'utility:attach'],
                 fields: [
                     {
@@ -353,6 +273,7 @@ describe('Activity Timeline', () => {
                 expect(item.hasCheckbox).toBe(ITEM[index].hasCheckbox || false);
                 expect(item.hasError).toBe(ITEM[index].hasError || false);
                 expect(item.isLoading).toBe(ITEM[index].isLoading || false);
+                expect(item.isActive).toBe(ITEM[index].isActive);
                 expect(item.loadingStateAlternativeText).toBe(
                     ITEM[index].loadingStateAlternativeText
                 );

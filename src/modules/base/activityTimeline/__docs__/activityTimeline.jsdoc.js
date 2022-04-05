@@ -21,6 +21,7 @@
  * @property {boolean} hasCheckbox If present, a checkbox is displayed before the label. Defaults to false.
  * @property {boolean} hasError If present, display an error message in the details section. Defaults to false.
  * @property {boolean} isLoading If present, the detail section is in a loading state and shows a spinner. Defaults to false.
+ * @property {boolean} isActive If present, and the item has no icon, a blue circle will replace the default gray bullet. Defaults to false.
  * @property {string} loadingStateAlternativeText Message displayed while the detail section is in the loading state. Defaults to "Loading".
  * @property {boolean} closed If present, the item is closed by default.
  * @property {string} buttonLabel Label of the button displayed below the details.
