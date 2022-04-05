@@ -106,6 +106,7 @@
                     aria-multiselectable="true"
                     class={tableClasses}
                     role="grid"
+                    onkeydown={handleKeyDown}
                 >
                     <thead>
                         <tr id="weekdays">
@@ -142,6 +143,7 @@
                                         onmouseout={handleMouseOut}
                                         data-cell-day={day.fullDate}
                                         data-day={day.fullDate}
+                                        tabindex={day.tabIndex}
                                     >
                                         <span
                                             class={day.dayClass}

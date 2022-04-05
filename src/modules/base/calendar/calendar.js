@@ -37,6 +37,7 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 import { generateUUID, classSet } from 'c/utils';
+import { keyCodes } from 'c/utilsPrivate';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
@@ -513,6 +514,7 @@ export default class Calendar extends LightningElement {
             for (let a = 0; a < 7; a++) {
                 let currentDate = false;
                 let selected = false;
+                let tabIndex;
 
                 let dateClass = 'avonni-calendar__date-cell';
                 let dayClass = 'slds-day';
@@ -602,6 +604,7 @@ export default class Calendar extends LightningElement {
                         }
                     });
                 } else if (this._value && valueTime === time) {
+                    selected = true;
                     dateClass += ' slds-is-selected';
                 }
 
@@ -620,6 +623,7 @@ export default class Calendar extends LightningElement {
                 }
 
                 dateClass += ' avonni-calendar__date-cell';
+                tabIndex = selected ? 0 : -1;
 
                 weekData.push({
                     label: label,
@@ -629,6 +633,7 @@ export default class Calendar extends LightningElement {
                     currentDate: currentDate,
                     fullDate: fullDate,
                     marked: markedDate,
+                    tabIndex: tabIndex,
                     markedColors: markedColors,
                     labeled: labeled,
                     chip: {
@@ -1007,6 +1012,74 @@ export default class Calendar extends LightningElement {
             x.classList.remove('avonni-calendar__cell_bordered-right');
             x.classList.remove('avonni-calendar__cell_bordered-left');
         });
+    }
+
+    /**
+     * Keyboard navigation handler.
+     *
+     * @param {Event}
+     */
+    handleKeyDown(event) {
+        let key = event.keyCode;
+        console.log(event);
+
+        switch (key) {
+            case keyCodes.left:
+                this.previous(event);
+                break;
+
+            case keyCodes.right:
+                this.next(event);
+                break;
+
+            case keyCodes.up:
+                this.up(event);
+                break;
+
+            case keyCodes.down:
+                this.down(event);
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Move selection to enxt valid day
+     *
+     */
+    previous(event) {
+        console.log(event);
+        // let nextTd = event..parentNode.nextSibling;
+        console.log('previous');
+    }
+    /**
+     * Move selection to enxt valid day
+     *
+     */
+    next(event) {
+        let currentCell = event.target;
+        currentCell.setAttribute('tabindex', '-1');
+        let nextCell = event.target.nextSibling;
+        nextCell.setAttribute('tabindex', '0');
+        console.log('next', nextCell);
+    }
+    /**
+     * Move selection to enxt valid day
+     *
+     */
+    up(event) {
+        console.log(event.target);
+        console.log('up');
+    }
+    /**
+     * Move selection to enxt valid day
+     *
+     */
+    down(event) {
+        console.log(event.target);
+        console.log('down');
     }
 }
 
