@@ -1098,7 +1098,10 @@ export default class Calendar extends LightningElement {
         let previousDay = event.target.previousSibling;
 
         // check if not disabled or week number
-        if (previousDay?.classList.contains('avonni-calendar__week-cell')) {
+        if (
+            previousDay &&
+            previousDay.classList.contains('avonni-calendar__week-cell')
+        ) {
             console.log('thats a weekday');
             // go one week-before and last day
 
@@ -1112,17 +1115,19 @@ export default class Calendar extends LightningElement {
         }
 
         if (
+            previousDay &&
+            previousDay.querySelector('span')[0] &&
             previousDay
-                ?.querySelector('span')[0]
-                ?.classList.contains('avonni-calendar__disabled-cell')
+                .querySelector('span')[0]
+                .classList.contains('avonni-calendar__disabled-cell')
         ) {
             console.log('this day is disabled');
         }
 
         if (previousDay) {
-            currentDay?.setAttribute('tabindex', '-1');
-            previousDay?.setAttribute('tabindex', '0');
-            previousDay?.focus();
+            currentDay.setAttribute('tabindex', '-1');
+            previousDay.setAttribute('tabindex', '0');
+            previousDay.focus();
         }
 
         // else go to previous row
@@ -1134,12 +1139,12 @@ export default class Calendar extends LightningElement {
      */
     next(event) {
         let currentDay = event.target;
-        let nextCell = event.target.nextSibling;
+        let nextDay = event.target.nextSibling;
 
-        if (nextCell) {
-            currentDay?.setAttribute('tabindex', '-1');
-            nextCell?.setAttribute('tabindex', '0');
-            nextCell?.focus();
+        if (currentDay && nextDay) {
+            currentDay.setAttribute('tabindex', '-1');
+            nextDay.setAttribute('tabindex', '0');
+            nextDay.focus();
         }
 
         // else go to next row and select first "day" cell
