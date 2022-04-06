@@ -853,11 +853,10 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
-        // Prevent selecting week numbers
         if (!event.currentTarget.dataset.day) return;
 
         let date = new Date(Number(event.target.dataset.day));
-        const disabledDate = Array.from(event.target.classList).includes(
+        const disabledDate = event.target.classList.contains(
             'avonni-calendar__disabled-cell'
         );
 
@@ -1034,7 +1033,7 @@ export default class Calendar extends LightningElement {
      * @param {Event}
      */
     handleKeyDown(event) {
-        console.log(event.target.innerText, event.target);
+        console.log(event.target.innerText);
         // the event is on the cell, not the span inside
 
         // console.log(event.target.parentElement.parentElement)
@@ -1091,8 +1090,14 @@ export default class Calendar extends LightningElement {
                 break;
 
             case keyCodes.enter:
-                console.log('enter');
-                this.handlerSelectDate(event);
+                {
+                    let dayButton = event.target.querySelector(
+                        '[data-element-id="span-day-label"]'
+                    );
+                    if (dayButton) {
+                        dayButton.click();
+                    }
+                }
                 break;
 
             default:
@@ -1108,31 +1113,18 @@ export default class Calendar extends LightningElement {
         let currentDay = event.target;
         let previousDay = event.target.previousSibling;
 
-        // check if not disabled or week number
         if (
-            previousDay &&
-            previousDay.classList.contains('avonni-calendar__week-cell')
+            !previousDay ||
+            (previousDay &&
+                previousDay.classList.contains('avonni-calendar__week-cell'))
         ) {
-            console.log('thats a weekday');
-            // go one week-before and last day
-
             let previousWeek = event.target.parentElement.previousSibling;
-
-            if (!previousWeek) {
-                return;
+            if (previousWeek) {
+                let previousDays = previousWeek.querySelectorAll('td');
+                if (previousDays) {
+                    previousDay = previousDays[previousDays.length - 1];
+                }
             }
-            let previousDays = previousWeek.querySelectorAll('td');
-            previousDay = previousDays[previousDays.length - 1];
-        }
-
-        if (
-            previousDay &&
-            previousDay.querySelector('span')[0] &&
-            previousDay
-                .querySelector('span')[0]
-                .classList.contains('avonni-calendar__disabled-cell')
-        ) {
-            console.log('this day is disabled');
         }
 
         if (previousDay) {
@@ -1140,8 +1132,6 @@ export default class Calendar extends LightningElement {
             previousDay.setAttribute('tabindex', '0');
             previousDay.focus();
         }
-
-        // else go to previous row
     }
 
     /**
@@ -1152,7 +1142,19 @@ export default class Calendar extends LightningElement {
         let currentDay = event.target;
         let nextDay = event.target.nextSibling;
 
-        if (currentDay && nextDay) {
+        if (!nextDay) {
+            let nextWeek = currentDay.parentElement.nextSibling;
+            if (nextWeek) {
+                let nextDays = nextWeek.querySelectorAll(
+                    'td.avonni-calendar__date-cell'
+                );
+                if (nextDays) {
+                    nextDay = nextDays[0];
+                }
+            }
+        }
+
+        if (nextDay) {
             currentDay.setAttribute('tabindex', '-1');
             nextDay.setAttribute('tabindex', '0');
             nextDay.focus();
