@@ -820,10 +820,12 @@ export default class InputDateRange extends LightningElement {
     handleChangeEndDate(event) {
         const value = event.detail.value;
         const normalizedValue = value instanceof Array ? value : [value];
-        const dates = normalizedValue.map((date) => new Date(date));
+        const dates = normalizedValue.map((date) => {
+            return date ? new Date(date) : null;
+        });
 
         // Handler if there is an end date and there is no start date.
-        if (dates.length === 1 && !this._startDate) {
+        if (dates.length === 1 && dates[0] && !this._startDate) {
             this._endDate = new Date(dates[0]);
             // Handler if there is no end date, but there is a start date.
         } else if (this.isOnlyStartDate) {
