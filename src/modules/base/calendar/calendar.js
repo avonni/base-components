@@ -403,9 +403,11 @@ export default class Calendar extends LightningElement {
     }
 
     get normalizedValue() {
+        if (!this.value.length)
+            return this.selectionMode === 'single' ? null : [];
+
         const stringDates = this.value.map((date) => {
-            const stringDate = date.toISOString();
-            return stringDate.match(/^\d{4}-\d{2}-\d{2}/)[0];
+            return date.toISOString();
         });
         return this.selectionMode === 'single' ? stringDates[0] : stringDates;
     }

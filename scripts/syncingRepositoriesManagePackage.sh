@@ -115,6 +115,39 @@ do
         if [[ "$baseComponentsSfdxPath/${moduleFolderName}/lwc/*" != ${folder} ]]; 
         then
             folderName=${folder##*/}
+            containsElement "${folderName}"
+            valNumResult=$?
+
+            if [[ $valNumResult -ne 0 ]]
+            then
+                prefix=""
+
+                if [[ ${moduleFolderName} != "base" ]];
+                then
+                    prefix="$(tr '[:lower:]' '[:upper:]' <<< ${moduleFolderName:0:1})${moduleFolderName:1}"
+                fi
+
+                folderName="$(tr '[:lower:]' '[:upper:]' <<< ${folderName:0:1})${folderName:1}"
+
+                # Set isExposed to true by default
+                find "$(dirname "$folder")/${folderName}" -type f -name '*.js-meta.xml' -exec sed -i '' "s/<isExposed>false<\/isExposed>/<isExposed>true<\/isExposed>/g" {} \;
+
+                # Add legacy public attributes
+                find "$(dirname "$folder")/${folderName}" -type f -name 'dynamicMenu.js' -exec sed -i '' "s/export default class DynamicMenu extends LightningElement {/export default class DynamicMenu extends LightningElement {\n\n\t@api withSearch;\n/g" {} \;
+
+                find "$(dirname "$folder")/${folderName}" -type f -name 'visualPicker.js' -exec sed -i '' "s/export default class VisualPicker extends LightningElement {/export default class DynamicMenu extends LightningElement {\n\n\t@api hideBorder;\n/g" {} \;
+
+                find "$(dirname "$folder")/${folderName}" -type f -name 'primitiveCombobox.js' -exec sed -i '' "s/export default class PrimitiveCombobox extends LightningElement {/export default class PrimitiveCombobox extends LightningElement {\n\n\t@api hideSelectedOptions;\n\n\t@api selectedOptionsAriaLabel;\n/g" {} \;
+
+            fi
+        fi
+    done
+
+    for folder in "$baseComponentsSfdxPath/${moduleFolderName}/lwc/"*
+    do 
+        if [[ "$baseComponentsSfdxPath/${moduleFolderName}/lwc/*" != ${folder} ]]; 
+        then
+            folderName=${folder##*/}
             containsElement "${folderName}" "${notRenameFolders[@]}"
             valNumResult=$?
 
