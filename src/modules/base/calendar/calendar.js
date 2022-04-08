@@ -103,6 +103,26 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
+    renderedCallback() {
+        // when a date gets selected a new render is executed
+        let focusDay = this.template.querySelector(
+            `td[data-cell-day="${this._focusDate}"]`
+        );
+        let selectedDay = this.template.querySelector('td.slds-is-selected');
+        // or this.date
+        let dateTime = this.date.getTime();
+        let dateDay = this.template.querySelector(
+            `td[data-cell-day="${dateTime}"]`
+        );
+
+        let focusTarget = selectedDay || focusDay || dateDay || null;
+
+        if (focusTarget) {
+            focusTarget.setAttribute('tabindex', '0');
+            focusTarget.focus();
+        }
+    }
+
     /**
      * Array of date label objects. Priority is given to dates placed toward the end of the array.
      *
@@ -554,6 +574,7 @@ export default class Calendar extends LightningElement {
                     fullDate = time;
                 }
 
+                fullDate = time;
                 if (today === time) {
                     dateClass += ' slds-is-today';
                     currentDate = true;
@@ -628,7 +649,7 @@ export default class Calendar extends LightningElement {
                     label = date.getDate();
                 } else {
                     dayClass = 'avonni-calendar__disabled-cell slds-day';
-                    fullDate = '';
+                    // fullDate = '';
                 }
 
                 let markedDate = false;
@@ -1069,7 +1090,17 @@ export default class Calendar extends LightningElement {
      * @param {Event}
      */
     handleKeyDown(event) {
+        console.log(event);
         // console.log(this.date, event);
+
+        if (event.altKey && event.keyCode === keyCodes.pageup) {
+            this.yearUp();
+            return;
+        }
+        if (event.altKey && event.keyCode === keyCodes.pagedown) {
+            this.yearDown();
+            return;
+        }
         switch (event.keyCode) {
             case keyCodes.left:
                 this.previous(event);
@@ -1102,6 +1133,23 @@ export default class Calendar extends LightningElement {
      *
      */
     enter(event) {
+        // save focus date and bring back focus
+        let currentDay = event.target;
+        let currentTime = parseInt(currentDay.dataset.cellDay, 10);
+
+        if (currentTime) {
+            this._focusDate = currentTime;
+            let currentDate = new Date(currentTime);
+            let currentMonth = currentDate.getMonth();
+            let thisMonth = this.date.getMonth();
+
+            if (currentMonth !== thisMonth) {
+                console.log('change month?');
+                this.date.setMonth(currentMonth);
+                this.updateDateParameters();
+            }
+        }
+
         let dayButton = event.target.querySelector(
             '[data-element-id="span-day-label"]'
         );
@@ -1116,22 +1164,18 @@ export default class Calendar extends LightningElement {
      */
     previous(event) {
         let currentDay = event.target;
-        let previousDay = currentDay.previousSibling;
+        let currentTime = parseInt(currentDay.dataset.cellDay, 10);
+        let currentDate = new Date(currentTime);
+        let previousDay;
 
-        if (
-            !previousDay ||
-            (previousDay &&
-                previousDay.classList.contains('avonni-calendar__week-cell'))
-        ) {
-            let previousWeek = event.target.parentElement.previousSibling;
-            if (previousWeek) {
-                let previousDays = previousWeek.querySelectorAll('td');
-                if (previousDays) {
-                    previousDay = previousDays[previousDays.length - 1];
-                }
-            }
+        if (currentDate) {
+            let previousDayDate = currentDate.setDate(
+                currentDate.getDate() - 1
+            );
+            previousDay = this.template.querySelector(
+                `[data-cell-day="${previousDayDate}"]`
+            );
         }
-
         if (previousDay) {
             currentDay.setAttribute('tabindex', '-1');
             previousDay.setAttribute('tabindex', '0');
@@ -1145,27 +1189,21 @@ export default class Calendar extends LightningElement {
      */
     next(event) {
         let currentDay = event.target;
-        let nextDay = currentDay.nextSibling;
+        let currentTime = parseInt(currentDay.dataset.cellDay, 10);
+        let currentDate = new Date(currentTime);
 
-        if (!nextDay) {
-            let nextWeek = currentDay.parentElement.nextSibling;
-            if (nextWeek) {
-                let nextDays = nextWeek.querySelectorAll(
-                    'td.avonni-calendar__date-cell'
-                );
-                if (nextDays) {
-                    nextDay = nextDays[0];
-                }
+        if (currentDate) {
+            let nextDayDate = currentDate.setDate(currentDate.getDate() + 1);
+            let nextDay = this.template.querySelector(
+                `[data-cell-day="${nextDayDate}"]`
+            );
+
+            if (nextDay) {
+                currentDay.setAttribute('tabindex', '-1');
+                nextDay.setAttribute('tabindex', '0');
+                nextDay.focus();
             }
         }
-
-        if (nextDay) {
-            currentDay.setAttribute('tabindex', '-1');
-            nextDay.setAttribute('tabindex', '0');
-            nextDay.focus();
-        }
-
-        // else go to next row and select first "day" cell
     }
 
     /**
@@ -1176,23 +1214,22 @@ export default class Calendar extends LightningElement {
         let currentDay = event.target;
         let currentTime = parseInt(currentDay.dataset.cellDay, 10);
         let currentDate = new Date(currentTime);
-        let oneWeekUp;
 
         if (currentDate) {
             let oneWeekUpDate = currentDate.setDate(currentDate.getDate() - 7);
-            oneWeekUp = this.template.querySelector(
+            let oneWeekUp = this.template.querySelector(
                 `[data-cell-day="${oneWeekUpDate}"]`
             );
-        }
 
-        if (oneWeekUp) {
-            currentDay.setAttribute('tabindex', '-1');
-            oneWeekUp.setAttribute('tabindex', '0');
-            oneWeekUp.focus();
+            if (oneWeekUp) {
+                currentDay.setAttribute('tabindex', '-1');
+                oneWeekUp.setAttribute('tabindex', '0');
+                oneWeekUp.focus();
+            }
         }
     }
     /**
-     * Move selection to enxt valid day
+     * Move selection to next valid day
      *
      */
     down(event) {
@@ -1215,6 +1252,24 @@ export default class Calendar extends LightningElement {
             oneWeekDown.setAttribute('tabindex', '0');
             oneWeekDown.focus();
         }
+    }
+
+    /**
+     * Go up one year
+     *
+     */
+    yearUp() {
+        this.date.setFullYear(this.date.getFullYear() + 1);
+        this.updateDateParameters();
+    }
+
+    /**
+     * Go down one year
+     *
+     */
+    yearDown() {
+        this.date.setFullYear(this.date.getFullYear() - 1);
+        this.updateDateParameters();
     }
 }
 

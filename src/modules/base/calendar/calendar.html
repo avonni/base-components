@@ -37,7 +37,7 @@
         class="avonni-calendar__container"
         onfocus={handleFocus}
         onblur={handleBlur}
-        tabindex="0"
+        onkeydown={handleKeyDown}
     >
         <div class="slds-form-element avonni-calendar__background_color">
             <div class="slds-datepicker">
@@ -106,7 +106,6 @@
                     aria-multiselectable="true"
                     class={tableClasses}
                     role="grid"
-                    onkeydown={handleKeyDown}
                 >
                     <thead>
                         <tr id="weekdays">
