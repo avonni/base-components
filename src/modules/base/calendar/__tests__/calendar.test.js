@@ -449,7 +449,8 @@ describe('Calendar', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toBe('2021-05-07');
+            const normalizedDate = new Date('05/07/2021').toISOString();
+            expect(call.detail.value).toBe(normalizedDate);
             expect(call.bubbles).toBeFalsy();
             expect(call.composed).toBeFalsy();
             expect(call.cancelable).toBeFalsy();
@@ -474,7 +475,12 @@ describe('Calendar', () => {
 
             expect(handler).toHaveBeenCalled();
             const call = handler.mock.calls[0][0];
-            expect(call.detail.value).toEqual(['2021-05-09', '2021-05-07']);
+            const normalizedFirst = new Date('05/09/2021').toISOString();
+            const normalizedSecond = new Date('05/07/2021').toISOString();
+            expect(call.detail.value).toEqual([
+                normalizedFirst,
+                normalizedSecond
+            ]);
         });
     });
 
@@ -512,9 +518,11 @@ describe('Calendar', () => {
             );
             day11.click();
             expect(handler).toHaveBeenCalled();
+            const normalizedStart = new Date('05/09/2021').toISOString();
+            const normalizedEnd = new Date('05/11/2021').toISOString();
             expect(handler.mock.calls[0][0].detail.value).toEqual([
-                '2021-05-09',
-                '2021-05-11'
+                normalizedStart,
+                normalizedEnd
             ]);
         });
     });
