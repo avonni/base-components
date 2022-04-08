@@ -104,18 +104,15 @@ export default class Calendar extends LightningElement {
     }
 
     renderedCallback() {
-        // when a date gets selected a new render is executed
         let focusDay = this.template.querySelector(
             `td[data-cell-day="${this._focusDate}"]`
         );
-        let selectedDay = this.template.querySelector('td.slds-is-selected');
-        // or this.date
-        let dateTime = this.date.getTime();
         let dateDay = this.template.querySelector(
-            `td[data-cell-day="${dateTime}"]`
+            `td[data-cell-day="${this.date.getTime()}"]`
         );
+        let selectedDay = this.template.querySelector('td.slds-is-selected');
 
-        let focusTarget = selectedDay || focusDay || dateDay || null;
+        let focusTarget = dateDay || focusDay || selectedDay || null;
 
         if (focusTarget) {
             focusTarget.setAttribute('tabindex', '0');
@@ -660,11 +657,7 @@ export default class Calendar extends LightningElement {
                 }
 
                 dateClass += ' avonni-calendar__date-cell';
-                tabIndex = selected ? 0 : -1;
-
-                if (selected) {
-                    console.log('selected:', label);
-                }
+                // tabIndex = selected ? 0 : -1;
 
                 weekData.push({
                     label: label,
@@ -801,7 +794,6 @@ export default class Calendar extends LightningElement {
      * Previous month handler.
      */
     handlerPreviousMonth() {
-        console.log('previous-month');
         this.date.setMonth(this.date.getMonth() - 1);
         this.updateDateParameters();
     }
@@ -1072,10 +1064,10 @@ export default class Calendar extends LightningElement {
     backspace: 8
     delete: 46
     down: 40
-    end: 35         (fn + right)
+    end: 35         (fn + right) weekEnd
     enter: 13
     escape: 27
-    home: 36        (fn + left)
+    home: 36        (fn + left) weekStart
     left: 37
     pagedown: 34    (fn + down)
     pageup: 33      (fn + up)
@@ -1092,41 +1084,100 @@ export default class Calendar extends LightningElement {
      * @param {Event}
      */
     handleKeyDown(event) {
-        console.log(event);
-        // console.log(this.date, event);
+        if (event.altKey) {
+            // year goes down
+            if (event.keyCode === keyCodes.pageup) {
+                this.focusRoving(event, -1, 'year');
+                return;
+            }
+            // year goes up
+            if (event.keyCode === keyCodes.pagedown) {
+                this.focusRoving(event, 1, 'year');
+                return;
+            }
+        }
 
-        if (event.altKey && event.keyCode === keyCodes.pageup) {
-            this.yearUp();
-            return;
-        }
-        if (event.altKey && event.keyCode === keyCodes.pagedown) {
-            this.yearDown();
-            return;
-        }
         switch (event.keyCode) {
             case keyCodes.left:
-                this.previous(event);
+                this.focusRoving(event, -1, 'days');
                 break;
             case keyCodes.right:
-                this.next(event);
+                this.focusRoving(event, 1, 'days');
                 break;
             case keyCodes.up:
-                this.up(event);
+                this.focusRoving(event, -7, 'days');
                 break;
             case keyCodes.down:
-                this.down(event);
+                this.focusRoving(event, 7, 'days');
+                break;
+            case keyCodes.home:
+                this.focusRoving(event, 0, 'week-start');
+                break;
+            case keyCodes.end:
+                this.focusRoving(event, 0, 'week-end');
+                break;
+            case keyCodes.pagedown:
+                this.focusRoving(event, -1, 'month');
+                break;
+            case keyCodes.pageup:
+                this.focusRoving(event, 1, 'month');
                 break;
             case keyCodes.enter:
                 this.enter(event);
                 break;
-            case keyCodes.pagedown:
-                this.handlerNextMonth();
-                break;
-            case keyCodes.pageup:
-                this.handlerPreviousMonth();
-                break;
             default:
                 break;
+        }
+    }
+
+    /**
+     * Focus roving
+     * direction is number of days (- is before)
+     */
+    focusRoving(event, direction, unit) {
+        let focusDate = new Date(parseInt(event.target.dataset.cellDay, 10));
+
+        if (focusDate) {
+            let nextDate;
+            switch (unit) {
+                case 'days':
+                    nextDate = focusDate.setDate(
+                        focusDate.getDate() + direction
+                    );
+                    break;
+                case 'month':
+                    nextDate = focusDate.setMonth(
+                        focusDate.getMonth() + direction
+                    );
+                    break;
+                case 'year':
+                    nextDate = focusDate.setFullYear(
+                        focusDate.getFullYear() + direction
+                    );
+                    break;
+                case 'week-end':
+                    {
+                        let daysToSat = 6 - focusDate.getDay();
+                        nextDate = focusDate.setDate(
+                            focusDate.getDate() + daysToSat
+                        );
+                    }
+                    break;
+                case 'week-start':
+                    {
+                        nextDate = focusDate.setDate(
+                            focusDate.getDate() + -focusDate.getDay()
+                        );
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            if (nextDate) {
+                this.date = new Date(nextDate);
+                this.updateDateParameters();
+            }
         }
     }
 
@@ -1158,120 +1209,6 @@ export default class Calendar extends LightningElement {
         if (dayButton) {
             dayButton.click();
         }
-    }
-
-    /**
-     * Move selection to enxt valid day
-     *
-     */
-    previous(event) {
-        let currentDay = event.target;
-        let currentTime = parseInt(currentDay.dataset.cellDay, 10);
-        let currentDate = new Date(currentTime);
-        let previousDay;
-
-        if (currentDate) {
-            let previousDayDate = currentDate.setDate(
-                currentDate.getDate() - 1
-            );
-            previousDay = this.template.querySelector(
-                `[data-cell-day="${previousDayDate}"]`
-            );
-        }
-        if (previousDay) {
-            currentDay.setAttribute('tabindex', '-1');
-            previousDay.setAttribute('tabindex', '0');
-            previousDay.focus();
-        }
-    }
-
-    /**
-     * Move selection to enxt valid day
-     *
-     */
-    next(event) {
-        let currentDay = event.target;
-        let currentTime = parseInt(currentDay.dataset.cellDay, 10);
-        let currentDate = new Date(currentTime);
-
-        if (currentDate) {
-            let nextDayDate = currentDate.setDate(currentDate.getDate() + 1);
-            let nextDay = this.template.querySelector(
-                `[data-cell-day="${nextDayDate}"]`
-            );
-
-            if (nextDay) {
-                currentDay.setAttribute('tabindex', '-1');
-                nextDay.setAttribute('tabindex', '0');
-                nextDay.focus();
-            }
-        }
-    }
-
-    /**
-     * Move selection to enxt valid day
-     *
-     */
-    up(event) {
-        let currentDay = event.target;
-        let currentTime = parseInt(currentDay.dataset.cellDay, 10);
-        let currentDate = new Date(currentTime);
-
-        if (currentDate) {
-            let oneWeekUpDate = currentDate.setDate(currentDate.getDate() - 7);
-            let oneWeekUp = this.template.querySelector(
-                `[data-cell-day="${oneWeekUpDate}"]`
-            );
-
-            if (oneWeekUp) {
-                currentDay.setAttribute('tabindex', '-1');
-                oneWeekUp.setAttribute('tabindex', '0');
-                oneWeekUp.focus();
-            }
-        }
-    }
-    /**
-     * Move selection to next valid day
-     *
-     */
-    down(event) {
-        let currentDay = event.target;
-        let currentTime = parseInt(currentDay.dataset.cellDay, 10);
-        let currentDate = new Date(currentTime);
-        let oneWeekDown;
-
-        if (currentDate) {
-            let oneWeekDownDate = currentDate.setDate(
-                currentDate.getDate() + 7
-            );
-            oneWeekDown = this.template.querySelector(
-                `[data-cell-day="${oneWeekDownDate}"]`
-            );
-        }
-
-        if (oneWeekDown) {
-            currentDay.setAttribute('tabindex', '-1');
-            oneWeekDown.setAttribute('tabindex', '0');
-            oneWeekDown.focus();
-        }
-    }
-
-    /**
-     * Go up one year
-     *
-     */
-    yearUp() {
-        this.date.setFullYear(this.date.getFullYear() + 1);
-        this.updateDateParameters();
-    }
-
-    /**
-     * Go down one year
-     *
-     */
-    yearDown() {
-        this.date.setFullYear(this.date.getFullYear() - 1);
-        this.updateDateParameters();
     }
 }
 
