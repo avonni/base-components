@@ -212,7 +212,7 @@ export default class Combobox extends LightningElement {
      * Action object. The back action is used to go back to the previous level, after clicking on an option that has nested options.
      *
      * @type {object}
-     * @default { iconName: 'utility:chevronright', label: Label of the parent option }
+     * @default { iconName: 'utility:chevronleft', label: Label of the parent option }
      * @public
      */
     @api
