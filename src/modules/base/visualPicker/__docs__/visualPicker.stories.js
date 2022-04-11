@@ -33,6 +33,7 @@
 import { VisualPicker } from '../__examples__/visualPicker';
 import {
     items,
+    itemsWithIcon,
     iconTiles,
     itemsWithPictures,
     itemsWithTags,
@@ -41,7 +42,8 @@ import {
     goalStories,
     botStories,
     avatarStories,
-    xSmallAvatarStories
+    xSmallAvatarStories,
+    templates
 } from './data';
 
 export default {
@@ -211,9 +213,17 @@ Base.args = {
     value: 'lightning-professional'
 };
 
+export const BaseWithIcons = Template.bind({});
+BaseWithIcons.args = {
+    items: itemsWithIcon,
+    label: 'This is a label',
+    name: 'base',
+    value: 'lightning-professional'
+};
+
 export const Coverable = Template.bind({});
 Coverable.args = {
-    items: items,
+    items: itemsWithIcon,
     label: 'Coverable 4-by-3',
     name: 'coverable',
     ratio: '4-by-3',
@@ -224,7 +234,7 @@ Coverable.args = {
 export const CoverableNoMark = Template.bind({});
 CoverableNoMark.args = {
     hideCheckMark: true,
-    items: items,
+    items: itemsWithIcon,
     label: 'Coverable 16-by-9 no mark',
     name: 'coverable',
     ratio: '16-by-9',
@@ -243,7 +253,7 @@ ItemsWithTags.args = {
 export const NoMarkDoubleExtraSmall = Template.bind({});
 NoMarkDoubleExtraSmall.args = {
     hideCheckMark: true,
-    items: items,
+    items: itemsWithIcon,
     label: 'Double extra small no mark',
     name: 'xx-small',
     size: 'xx-small',
@@ -316,4 +326,12 @@ X_SmallAvatarStory.args = {
     label: 'Select an avatar',
     name: 'small-avatar-story',
     size: 'x-small'
+};
+
+export const Templates = Template.bind({});
+Templates.args = {
+    items: templates,
+    size: 'xx-large',
+    label: 'Recommended Templates',
+    name: 'templates'
 };

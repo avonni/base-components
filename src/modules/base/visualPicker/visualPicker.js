@@ -107,6 +107,7 @@ export default class VisualPicker extends LightningElement {
     _variant = VISUAL_PICKER_VARIANTS.default;
 
     helpMessage;
+    displayImg = false;
 
     renderedCallback() {
         if (this.inputs) {
@@ -322,7 +323,7 @@ export default class VisualPicker extends LightningElement {
             const descriptionIsBottom =
                 descriptionPosition === 'bottom' && displayDescription;
             const computedDescriptionClass = classSet(
-                'avonni-visual-picker__figure-description'
+                'avonni-visual-picker__figure-description slds-line-clamp'
             ).add({
                 'slds-truncate slds-p-horizontal_x-small': this.truncateRatio,
                 'slds-p-around_small slds-m-around_none':
@@ -348,11 +349,14 @@ export default class VisualPicker extends LightningElement {
 
             // Image management
             const displayImgCenter =
-                (this.isBiggerThanXSmall && titleIsTop) ||
-                (!this.isBiggerThanXSmall && !avatarIsCenter);
+                imgSrc &&
+                ((this.isBiggerThanXSmall && titleIsTop) ||
+                    (!this.isBiggerThanXSmall && !avatarIsCenter));
             const displayImgTop =
-                this.isBiggerThanXSmall && (titleIsCenter || titleIsBottom);
-
+                imgSrc &&
+                this.isBiggerThanXSmall &&
+                (titleIsCenter || titleIsBottom);
+            this.displayImg = displayImgCenter || displayImgTop;
             return {
                 key,
                 itemTitle,
@@ -413,8 +417,25 @@ export default class VisualPicker extends LightningElement {
             .add({
                 'slds-visual-picker__text': !this.isCoverable,
                 'slds-visual-picker__icon': this.isCoverable,
-                'avonni-hide-check-mark': this._hideCheckMark,
+                'avonni-hide-check-mark': this.hideCheckMark,
                 'slds-align_absolute-center': !this.isResponsive
+            })
+            .toString();
+    }
+
+    /**
+     * Compute visual picker items class styling based on size attributes and presence of image.
+     *
+     * @type {string}
+     */
+    get visualPickerItemsClass() {
+        return classSet('slds-has-flexi-truncate')
+            .add({
+                'avonni-visual-picker__items':
+                    this.size !== 'responsive' ||
+                    (this.size === 'responsive' && !this.displayImg),
+                'avonni-visual-picker__items_responsive':
+                    this.size === 'responsive' && this.displayImg
             })
             .toString();
     }
@@ -451,7 +472,7 @@ export default class VisualPicker extends LightningElement {
      * @type {boolean}
      */
     get isBiggerThanXSmall() {
-        return !(this._size === 'x-small' || this._size === 'xx-small');
+        return !(this.size === 'x-small' || this.size === 'xx-small');
     }
 
     /**
@@ -460,7 +481,7 @@ export default class VisualPicker extends LightningElement {
      * @type {boolean}
      */
     get isCoverable() {
-        return this._variant === 'coverable';
+        return this.variant === 'coverable';
     }
 
     /**
@@ -469,7 +490,7 @@ export default class VisualPicker extends LightningElement {
      * @type {boolean}
      */
     get isResponsive() {
-        return this._size === 'responsive';
+        return this.size === 'responsive';
     }
 
     /**
