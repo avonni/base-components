@@ -51,26 +51,8 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-header-font-style
- * @default normal
- * @type font
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-visual-picker-header-font-weight
  * @default 700
- * @type font
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-header-text-color
- * @default #3e3e3c
- * @type color
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-header-font-size
- * @default 0.75rem
  * @type font
  */
 /**
