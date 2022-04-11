@@ -878,6 +878,7 @@ export default class InputDateRange extends LightningElement {
      */
     handleBlurEndDate(event) {
         if (this._cancelBlurEndDate) {
+            console.log('cancel blur end date');
             return;
         }
 
@@ -917,7 +918,6 @@ export default class InputDateRange extends LightningElement {
             this.dispatchChange();
         }
     }
-
     /**
      * Handles blur for the c-calendar for end-date.
      */
@@ -1042,5 +1042,34 @@ export default class InputDateRange extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * click start date input -> open start calendar
+     */
+
+    /**
+     * click end date input -> open end calendar
+     */
+
+    /**
+     * tab start icon -> open start calendar
+     */
+    clickStartCalendarIcon() {
+        console.log('start date');
+        this.isOpenStartDate = true;
+    }
+    /**
+     * tab end icon -> open start calendar
+     */
+    clickEndCalendarIcon() {
+        console.log('icon');
+        this.isOpenEndDate = true;
+    }
+
+    blurCalendar() {
+        console.log('blur calendar');
+        this.isOpenStartDate = false;
+        this.isOpenEndDate = false;
     }
 }

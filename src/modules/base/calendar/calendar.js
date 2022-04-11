@@ -116,7 +116,7 @@ export default class Calendar extends LightningElement {
 
         if (focusTarget) {
             focusTarget.setAttribute('tabindex', '0');
-            focusTarget.focus();
+            // focusTarget.focus();
         }
     }
 
@@ -906,6 +906,7 @@ export default class Calendar extends LightningElement {
      * Change event dispatcher.
      */
     dispatchChange() {
+        console.log('dispatch change');
         /**
          * The event fired when the selected date is changed.
          *
@@ -946,6 +947,7 @@ export default class Calendar extends LightningElement {
      * Private blur handler.
      */
     handleBlur() {
+        console.log('private blur');
         /**
          * @event
          * @private

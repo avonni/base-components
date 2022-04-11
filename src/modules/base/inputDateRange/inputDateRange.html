@@ -45,7 +45,7 @@
                 data-element-id="lightning-helptext"
             ></lightning-helptext>
         </div>
-        <div class="avonni-date-range__container">
+        <div class="avonni-date-range__container" onblur={blurCalendar}>
             <div class="slds-form-element">
                 <label
                     if:true={labelStartDate}
@@ -75,11 +75,13 @@
                         onfocus={handleFocusStartDate}
                         autocomplete="off"
                     />
-                    <lightning-icon
+                    <lightning-button-icon
                         icon-name="utility:event"
-                        size="xx-small"
+                        variant="bare"
+                        size="medium"
                         class="slds-input__icon slds-input__icon_right"
-                    ></lightning-icon>
+                        onclick={clickStartCalendarIcon}
+                    ></lightning-button-icon>
                 </div>
                 <div
                     if:true={isOpenStartDate}
@@ -183,11 +185,13 @@
                         onfocus={handleFocusEndDate}
                         autocomplete="off"
                     />
-                    <lightning-icon
+                    <lightning-button-icon
                         icon-name="utility:event"
-                        size="xx-small"
+                        variant="bare"
+                        size="medium"
                         class="slds-input__icon slds-input__icon_right"
-                    ></lightning-icon>
+                        onclick={clickEndCalendarIcon}
+                    ></lightning-button-icon>
                 </div>
                 <div
                     if:true={isOpenEndDate}
