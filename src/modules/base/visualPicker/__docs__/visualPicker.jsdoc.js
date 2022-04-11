@@ -94,7 +94,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-item-title-font-size
- * @default 1rem
+ * @default 1.25rem
  * @type font
  */
 /**
@@ -106,7 +106,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-item-title-font-weight
- * @default 400
+ * @default 700
  * @type font
  */
 /**
@@ -159,6 +159,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-visual-picker-tags-padding
+ * @default 0rem
+ * @type padding
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-visual-picker-title-text-color
  * @default #080707
  * @type color
@@ -166,7 +172,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-title-font-size
- * @default 1.75rem
+ * @default 1.25rem
  * @type font
  */
 /**
@@ -178,7 +184,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-title-font-weight
- * @default 400
+ * @default 700
  * @type font
  */
 /**
@@ -189,9 +195,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-title-margin-around
+ * @name --avonni-visual-picker-title-padding
  * @default 0rem
- * @type margin
+ * @type padding
  */
 /**
  * @memberof stylingHooks
@@ -231,7 +237,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-description-margin-around
+ * @name --avonni-visual-picker-description-margin
  * @default 0.25rem
  * @type margin
  */
@@ -297,13 +303,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-visual-picker-image-padding-around
+ * @name --avonni-visual-picker-image-padding
  * @default 0rem
  * @type padding
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-image-object-fit
- * @default scale-down
- * @type object-fit
  */
