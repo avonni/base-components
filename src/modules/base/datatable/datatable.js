@@ -385,11 +385,12 @@ export default class Datatable extends LightningDatatable {
     }
 
     set columns(value) {
+        value = JSON.parse(JSON.stringify(value));
+        this.removeWrapOption(value);
+        this.computeEditableOption(value);
         super.columns = value;
 
-        this._columns = JSON.parse(JSON.stringify(this._columns));
-        this.removeWrapOption();
-        this.computeEditableOption();
+        this._columns = JSON.parse(JSON.stringify(super.columns));
     }
 
     /**
@@ -632,21 +633,23 @@ export default class Datatable extends LightningDatatable {
     /**
      * Sets the wrapText and hideDefaultActions attributes to true for custom types that are always wrapped.
      */
-    removeWrapOption() {
-        this.columns.forEach((column) => {
-            if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
-                column.wrapText = true;
-                column.hideDefaultActions = true;
-            }
-        });
+    removeWrapOption(columns) {
+        if (columns) {
+            columns.forEach((column) => {
+                if (CUSTOM_TYPES_ALWAYS_WRAPPED.includes(column.type)) {
+                    column.wrapText = true;
+                    column.hideDefaultActions = true;
+                }
+            });
+        }
     }
 
     /**
      * If the data type is editable, transforms the value into an object containing the editable property.
      */
-    computeEditableOption() {
-        if (this.columns && this._data) {
-            this.columns.forEach((column) => {
+    computeEditableOption(columns) {
+        if (columns && this._data) {
+            columns.forEach((column) => {
                 if (CUSTOM_TYPES_EDITABLE.includes(column.type)) {
                     const fieldName = column.fieldName;
                     this._data.forEach((row) => {
