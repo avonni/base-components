@@ -142,7 +142,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-tags-padding
- * @default 0rem
+ * @default 0.5rem
  * @type padding
  */
 /**
@@ -178,7 +178,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-visual-picker-title-padding
- * @default 0rem
+ * @default 0.15rem 0.75rem
  * @type padding
  */
 /**
@@ -216,12 +216,6 @@
  * @name --avonni-visual-picker-description-alignment
  * @default center
  * @type alignment
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-visual-picker-description-margin
- * @default 0.25rem
- * @type margin
  */
 /**
  * @memberof stylingHooks
