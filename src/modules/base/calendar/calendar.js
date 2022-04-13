@@ -99,11 +99,25 @@ export default class Calendar extends LightningElement {
 
     months = MONTHS;
 
+    focusSaver;
+    keepFocus = true;
+    genericFocusToggle = true;
+
     connectedCallback() {
         this.updateDateParameters();
+
+        console.log('connected callback');
+        this.focusSaver = this.template.querySelector(
+            '[data-element-id="hiddenInputFocus"]'
+        );
+        if (this.focusSaver) {
+            this.focusSaver.focus();
+            console.log('connected', this.focusSaver, document.activeElement);
+        }
     }
 
     renderedCallback() {
+        console.log('renderedCallback', this.template.activeElement);
         let focusDay = this.template.querySelector(
             `td[data-cell-day="${this._focusDate}"]`
         );
@@ -116,7 +130,7 @@ export default class Calendar extends LightningElement {
 
         if (focusTarget) {
             focusTarget.setAttribute('tabindex', '0');
-            // focusTarget.focus();
+            focusTarget.focus();
         }
     }
 
@@ -487,6 +501,16 @@ export default class Calendar extends LightningElement {
      * Update date : year, month, day.
      */
     updateDateParameters() {
+        // save a focus point
+        this.focusSaver = this.template.querySelector(
+            '[data-element-id="hiddenInputFocus"]'
+        );
+        if (this.focusSaver) {
+            this.focusSaver.focus();
+            this.keepFocus = this.focusSaver === this.template.activeElement;
+            console.log('generateViewData', this.template.activeElement);
+        }
+
         this.year = this.date.getFullYear();
         this.month = MONTHS[this.date.getMonth()];
         this.day = this.date.getDay();
@@ -876,6 +900,7 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
+        console.log('handle select');
         if (!event.currentTarget.dataset.day) return;
 
         let date = new Date(Number(event.target.dataset.day));
@@ -906,7 +931,7 @@ export default class Calendar extends LightningElement {
      * Change event dispatcher.
      */
     dispatchChange() {
-        console.log('dispatch change');
+        console.log('dispatch change', this.endDate);
         /**
          * The event fired when the selected date is changed.
          *
@@ -928,6 +953,7 @@ export default class Calendar extends LightningElement {
      * Private focus handler.
      */
     handleFocus() {
+        this.keepFocus = true;
         /**
          * @event
          * @private
@@ -947,7 +973,6 @@ export default class Calendar extends LightningElement {
      * Private blur handler.
      */
     handleBlur() {
-        console.log('private blur');
         /**
          * @event
          * @private
@@ -965,6 +990,36 @@ export default class Calendar extends LightningElement {
         );
     }
 
+    /**
+     * Private blur handler.
+     */
+    handleFocusOut() {
+        setTimeout(() => {
+            if (!this.keepFocus) {
+                console.log('trigger focus out');
+                this.triggerFocusOut();
+            }
+        }, 10);
+        this.keepFocus = false;
+    }
+
+    triggerFocusOut() {
+        /**
+         * @event
+         * @private
+         * @name privatefocusout
+         * @bubbles
+         * @cancelable
+         * @composed
+         */
+        this.dispatchEvent(
+            new CustomEvent('privatefocusout', {
+                composed: true,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+    }
     /**
      * Mouse over handler.
      */
@@ -1127,9 +1182,16 @@ export default class Calendar extends LightningElement {
             case keyCodes.enter:
                 this.enter(event);
                 break;
+            case keyCodes.escape:
+                this.escape();
+                break;
             default:
                 break;
         }
+
+        // focus trap
+        // if on last focus element, tab goes to first
+        // if on first focus element, shift + tab goes to last
     }
 
     /**
@@ -1181,6 +1243,10 @@ export default class Calendar extends LightningElement {
                 this.updateDateParameters();
             }
         }
+    }
+
+    escape() {
+        this.handleFocusOut();
     }
 
     /**

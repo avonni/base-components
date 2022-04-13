@@ -278,4 +278,57 @@
             {helpMessage}
         </div>
     </div>
+
+    <div style="background-color: azure">
+        <h3>test input date</h3>
+        <div class="slds-form-element">
+            <label
+                if:true={labelEndDate}
+                class="slds-form-element__label avonni-input-date-range__labels"
+                for="end-date"
+                >{labelEndDate}, {showEndDate}</label
+            >
+            <div
+                class="
+                    slds-form-element__control
+                    slds-input-has-icon slds-input-has-icon_right
+                "
+                if:false={readOnly}
+            >
+                <input
+                    type="text"
+                    id="test-start-date"
+                    class="slds-input"
+                    value={endDateString}
+                    disabled={disabled}
+                    data-element-id="test-input-start-date"
+                    onclick={clickEndCalendarInput}
+                    autocomplete="off"
+                />
+                <lightning-button-icon
+                    icon-name="utility:event"
+                    variant="bare"
+                    size="medium"
+                    class="slds-input__icon slds-input__icon_right"
+                    onclick={clickEndCalendarIcon}
+                ></lightning-button-icon>
+            </div>
+            <div
+                if:true={showEndDate}
+                onblur={clickOutside}
+                class="slds-datepicker slds-dropdown slds-dropdown_left"
+            >
+                <c-calendar
+                    value={startDateEndDate}
+                    selection-mode="interval"
+                    onchange={testHandleChangeEndDate}
+                    onprivateblur={testPrivateBlur}
+                    onprivatefocusout={testPrivateFocusOut}
+                    data-element-id="test-c-calendar-end-date-with-start-date"
+                ></c-calendar>
+            </div>
+        </div>
+        <h3>lightning input date</h3>
+        <lightning-input type="date" label="input date"></lightning-input>
+    </div>
 </template>

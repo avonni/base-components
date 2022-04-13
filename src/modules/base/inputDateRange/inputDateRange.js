@@ -134,6 +134,10 @@ export default class InputDateRange extends LightningElement {
     _cancelBlurStartDate = false;
     _cancelBlurEndDate = false;
 
+    /** tests */
+    _showEndDate = false;
+    timer;
+
     helpMessage;
     _valid = true;
 
@@ -818,6 +822,7 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of end-date on c-calendar.
      */
     handleChangeEndDate(event) {
+        console.log('default handle change event', event.detail.value);
         const value = event.detail.value;
         const normalizedValue = value instanceof Array ? value : [value];
         const dates = normalizedValue.map((date) => {
@@ -1051,25 +1056,102 @@ export default class InputDateRange extends LightningElement {
     /**
      * click end date input -> open end calendar
      */
+    clickEndCalendarInput(event) {
+        console.log('click end input');
+        event.stopPropagation();
+        this._showEndDate = true;
+    }
+
+    get showEndDate() {
+        return this._showEndDate;
+    }
+
+    testHandleChangeEndDate(event) {
+        console.log('default handle change event', event.detail.value);
+        const value = event.detail.value;
+        const normalizedValue = value instanceof Array ? value : [value];
+        const dates = normalizedValue.map((date) => {
+            return date ? new Date(date) : null;
+        });
+
+        // Handler if there is an end date and there is no start date.
+        if (dates.length === 1 && dates[0] && !this._startDate) {
+            this._endDate = new Date(dates[0]);
+            // Handler if there is no end date, but there is a start date.
+        } else if (this.isOnlyStartDate) {
+            if (dates[1] > this._startDate) {
+                this._endDate = new Date(dates[1]);
+            } else if (dates.length === 0) {
+                this._endDate = this._startDate;
+            } else {
+                this._endDate = new Date(dates[0]);
+            }
+            // Handler if there is no end date and no start date or both date.
+        } else {
+            if (dates[1]) {
+                this._endDate = new Date(dates[1]);
+            } else {
+                this._startDate = dates[0] ? new Date(dates[0]) : null;
+                // For the case of clicking on the same date to delete it.
+                this._endDate = null;
+            }
+        }
+
+        // selecting 'end date' earlier than 'start date', make that the new 'end date', void 'start date', open start date picker
+        if (this.areBothDatePresent) {
+            if (dates[0] < this._startDate) {
+                this._endDate = dates[0];
+                this._startDate = null;
+            }
+        }
+
+        event.stopPropagation();
+        this._cancelBlurEndDate = false;
+        this.handleBlurEndDate();
+
+        // test
+        console.log('testHandleChangeEndDate');
+        this._showEndDate = false;
+    }
 
     /**
      * tab start icon -> open start calendar
      */
-    clickStartCalendarIcon() {
-        console.log('start date');
-        this.isOpenStartDate = true;
+    clickStartCalendarIcon(event) {
+        console.log('click start date icon');
+        this.showEndDate = true;
+        event.stopPropagation();
     }
     /**
      * tab end icon -> open start calendar
      */
-    clickEndCalendarIcon() {
-        console.log('icon');
-        this.isOpenEndDate = true;
+    clickEndCalendarIcon(event) {
+        console.log('click end date icon');
+        this._showEndDate = true;
+        event.stopPropagation();
+    }
+
+    clickOutside() {
+        console.log('click outside');
+        this._showEndDate = false;
+    }
+
+    testPrivateBlur() {
+        console.log('calendar blur');
+        this._showEndDate = false;
+    }
+
+    focusin() {
+        console.log('focus in');
+    }
+
+    testPrivateFocusOut() {
+        // console.log('private focus out test');
+        this._showEndDate = false;
     }
 
     blurCalendar() {
-        console.log('blur calendar');
-        this.isOpenStartDate = false;
-        this.isOpenEndDate = false;
+        console.log('click outside calendar');
+        this._showEndDate = false;
     }
 }
