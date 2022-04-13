@@ -108,6 +108,8 @@ export default class VisualPicker extends LightningElement {
 
     helpMessage;
     displayImg = false;
+    displayImgC = false;
+    displayImgT = false;
 
     renderedCallback() {
         if (this.inputs) {
@@ -325,9 +327,9 @@ export default class VisualPicker extends LightningElement {
             const computedDescriptionClass = classSet(
                 'avonni-visual-picker__figure-description slds-line-clamp'
             ).add({
-                'slds-truncate slds-p-horizontal_x-small': this.truncateRatio,
-                'slds-p-around_small slds-m-around_none':
-                    descriptionPosition === titlePosition && this.truncateRatio
+                'slds-p-around_small': this.truncateRatio,
+                'slds-p-horizontal_xx-small':
+                    descriptionPosition === titlePosition && !this.truncateRatio
             });
 
             // Avatar management
@@ -356,7 +358,8 @@ export default class VisualPicker extends LightningElement {
                 imgSrc &&
                 this.isBiggerThanXSmall &&
                 (titleIsCenter || titleIsBottom);
-            this.displayImg = displayImgCenter || displayImgTop;
+            this.displayImgC = displayImgCenter;
+            this.displayImgT = displayImgTop;
             return {
                 key,
                 itemTitle,
@@ -436,6 +439,40 @@ export default class VisualPicker extends LightningElement {
                     (this.size === 'responsive' && !this.displayImg),
                 'avonni-visual-picker__items_responsive':
                     this.size === 'responsive' && this.displayImg
+            })
+            .toString();
+    }
+
+    /**
+     * Compute visual picker items class styling based on size attributes and presence of image.
+     *
+     * @type {string}
+     */
+    get visualPickerItemsClassTop() {
+        return classSet('slds-has-flexi-truncate')
+            .add({
+                'avonni-visual-picker__items':
+                    this.size !== 'responsive' ||
+                    (this.size === 'responsive' && !this.displayImgT),
+                'avonni-visual-picker__items_responsive_image':
+                    this.size === 'responsive' && this.displayImgT
+            })
+            .toString();
+    }
+
+    /**
+     * Compute visual picker items class styling based on size attributes and presence of image.
+     *
+     * @type {string}
+     */
+    get visualPickerItemsClassCenter() {
+        return classSet('slds-has-flexi-truncate')
+            .add({
+                'avonni-visual-picker__items':
+                    this.size !== 'responsive' ||
+                    (this.size === 'responsive' && !this.displayImgC),
+                'avonni-visual-picker__items_responsive_image':
+                    this.size === 'responsive' && this.displayImgC
             })
             .toString();
     }

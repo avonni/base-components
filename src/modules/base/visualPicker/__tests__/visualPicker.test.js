@@ -686,7 +686,7 @@ describe('VisualPicker', () => {
 
     // variant
     // Depends on items
-    it('Visual picker: variant = non-coverable', () => {
+    it('Visual Picker: variant = non-coverable', () => {
         element.variant = 'non-coverable';
         element.items = testItems;
         element.value = 'lightning-professional';
@@ -706,7 +706,7 @@ describe('VisualPicker', () => {
         });
     });
 
-    it('Visual picker: variant = coverable', () => {
+    it('Visual Picker: variant = coverable', () => {
         element.variant = 'coverable';
         element.items = testItems;
         element.value = 'lightning-professional';
@@ -743,7 +743,7 @@ describe('VisualPicker', () => {
 
     // reportValidity
     // Depends on required
-    it('Visual picker: reportValidity method', () => {
+    it('Visual Picker: reportValidity method', () => {
         element.required = true;
         element.reportValidity();
 
@@ -757,7 +757,7 @@ describe('VisualPicker', () => {
 
     // showHelpMessageIfInvalid
     // Depends on required
-    it('Visual picker: showHelpMessageIfInvalid method', () => {
+    it('Visual Picker: showHelpMessageIfInvalid method', () => {
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -770,7 +770,7 @@ describe('VisualPicker', () => {
     });
 
     // checkValidity
-    it('Visual picker: checkValidity method', () => {
+    it('Visual Picker: checkValidity method', () => {
         const spy = jest.spyOn(element, 'checkValidity');
 
         element.checkValidity();
@@ -778,7 +778,7 @@ describe('VisualPicker', () => {
     });
 
     // setCustomValidity
-    it('Visual picker: setCustomValidity method', () => {
+    it('Visual Picker: setCustomValidity method', () => {
         const spy = jest.spyOn(element, 'setCustomValidity');
 
         element.setCustomValidity('Something');
@@ -789,7 +789,7 @@ describe('VisualPicker', () => {
 
     // change
     // Depends on items and type
-    it('Visual picker: change event, with radio type', () => {
+    it('Visual Picker: change event, with radio type', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -812,7 +812,7 @@ describe('VisualPicker', () => {
         });
     });
 
-    it('Visual picker: change event, with checkbox type', () => {
+    it('Visual Picker: change event, with checkbox type', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
