@@ -667,6 +667,15 @@ export default class Combobox extends LightningElement {
     }
 
     /**
+     * Selected options copied and converted to regular objects.
+     *
+     * @type {object[]}
+     */
+    get normalizedSelectedOptions() {
+        return deepCopy(this.selectedOptions);
+    }
+
+    /**
      * True if the selected options are visible and displayed as horizontal pills.
      *
      * @type {boolean}
