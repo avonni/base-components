@@ -279,56 +279,123 @@
         </div>
     </div>
 
-    <div style="background-color: azure">
-        <h3>test input date</h3>
-        <div class="slds-form-element">
-            <label
-                if:true={labelEndDate}
-                class="slds-form-element__label avonni-input-date-range__labels"
-                for="end-date"
-                >{labelEndDate}, {showEndDate}</label
+    <div
+        class={computedWrapperClass}
+        data-element-id="div-wrapper"
+        style="background-color: azure"
+    >
+        <hr style="margin-block: 10px" />
+        <div class={computedLabelClass}>
+            <abbr if:true={required} title="required" class="slds-required"
+                >*</abbr
             >
-            <div
-                class="
-                    slds-form-element__control
-                    slds-input-has-icon slds-input-has-icon_right
-                "
-                if:false={readOnly}
-            >
-                <input
-                    type="text"
-                    id="test-start-date"
-                    class="slds-input"
-                    value={endDateString}
-                    disabled={disabled}
-                    data-element-id="test-input-start-date"
-                    onclick={clickEndCalendarInput}
-                    autocomplete="off"
-                />
-                <lightning-button-icon
-                    icon-name="utility:event"
-                    variant="bare"
-                    size="medium"
-                    class="slds-input__icon slds-input__icon_right"
-                    onclick={clickEndCalendarIcon}
-                ></lightning-button-icon>
-            </div>
-            <div
-                if:true={showEndDate}
-                onblur={clickOutside}
-                class="slds-datepicker slds-dropdown slds-dropdown_left"
-            >
-                <c-calendar
-                    value={startDateEndDate}
-                    selection-mode="interval"
-                    onchange={testHandleChangeEndDate}
-                    onprivateblur={testPrivateBlur}
-                    onprivatefocusout={testPrivateFocusOut}
-                    data-element-id="test-c-calendar-end-date-with-start-date"
-                ></c-calendar>
-            </div>
+            <p if:true={label} data-element-id="p-label">{label}</p>
+            <lightning-helptext
+                if:true={fieldLevelHelp}
+                content={fieldLevelHelp}
+                data-element-id="lightning-helptext"
+            ></lightning-helptext>
         </div>
-        <h3>lightning input date</h3>
-        <lightning-input type="date" label="input date"></lightning-input>
+        <div class="avonni-date-range__container" onblur={blurCalendar}>
+            <div class="slds-form-element">
+                <label
+                    if:true={labelStartDate}
+                    class="
+                        slds-form-element__label
+                        avonni-input-date-range__labels
+                    "
+                    for="start-date"
+                    >{labelStartDate}</label
+                >
+                <div
+                    class="
+                        slds-form-element__control
+                        slds-input-has-icon slds-input-has-icon_right
+                    "
+                    if:false={readOnly}
+                >
+                    <input
+                        type="text"
+                        id="test-start-date"
+                        class="slds-input start-date"
+                        value={startDateString}
+                        disabled={disabled}
+                        required={required}
+                        data-element-id="input-start-date"
+                        onblur={handleBlurStartDate}
+                        onfocus={handleFocusStartDate}
+                        autocomplete="off"
+                    />
+                    <lightning-button-icon
+                        icon-name="utility:event"
+                        variant="bare"
+                        size="medium"
+                        class="slds-input__icon slds-input__icon_right"
+                        onclick={clickStartCalendarIcon}
+                    ></lightning-button-icon>
+                </div>
+                <!-- <div class="slds-datepicker slds-dropdown slds-dropdown_left">
+                    calendar start
+                </div> -->
+                <p data-element-id="start-date" if:true={readOnly}>
+                    {startDateString}
+                </p>
+            </div>
+            <div class="slds-form-element">
+                <label
+                    if:true={labelEndDate}
+                    class="
+                        slds-form-element__label
+                        avonni-input-date-range__labels
+                    "
+                    for="end-date"
+                    >{labelEndDate}</label
+                >
+                <div
+                    class="
+                        slds-form-element__control
+                        slds-input-has-icon slds-input-has-icon_right
+                    "
+                    if:false={readOnly}
+                >
+                    <input
+                        type="text"
+                        id="test-end-date"
+                        class="slds-input"
+                        value={endDateString}
+                        data-element-id="test-input-start-date"
+                        onclick={clickEndCalendarInput}
+                        autocomplete="off"
+                        disabled={disabled}
+                    />
+                    <lightning-button-icon
+                        icon-name="utility:event"
+                        variant="bare"
+                        size="medium"
+                        class="slds-input__icon slds-input__icon_right"
+                        onclick={clickEndCalendarIcon}
+                    ></lightning-button-icon>
+                </div>
+                <div
+                    if:true={showEndDate}
+                    onblur={clickOutside}
+                    class="slds-datepicker slds-dropdown slds-dropdown_left"
+                >
+                    <c-calendar
+                        value={startDateEndDate}
+                        selection-mode="interval"
+                        onchange={testHandleChangeEndDate}
+                        onprivateblur={testPrivateBlur}
+                        onprivatefocusout={testPrivateFocusOut}
+                        data-element-id="test-c-calendar-end-date-with-start-date"
+                    ></c-calendar>
+                </div>
+                <p data-element-id="end-date" if:true={readOnly}>
+                    {endDateString}
+                </p>
+            </div>
+            <!-- <h3>lightning input date</h3>
+        <lightning-input type="date" label="input date"></lightning-input> -->
+        </div>
     </div>
 </template>

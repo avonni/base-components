@@ -1106,11 +1106,9 @@ export default class InputDateRange extends LightningElement {
         }
 
         event.stopPropagation();
-        this._cancelBlurEndDate = false;
-        this.handleBlurEndDate();
+        // this._cancelBlurEndDate = false;
+        // this.handleBlurEndDate();
 
-        // test
-        console.log('testHandleChangeEndDate');
         this._showEndDate = false;
     }
 
@@ -1146,12 +1144,10 @@ export default class InputDateRange extends LightningElement {
     }
 
     testPrivateFocusOut() {
-        // console.log('private focus out test');
         this._showEndDate = false;
     }
 
     blurCalendar() {
-        console.log('click outside calendar');
         this._showEndDate = false;
     }
 }

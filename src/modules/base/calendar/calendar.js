@@ -973,6 +973,7 @@ export default class Calendar extends LightningElement {
      * Private blur handler.
      */
     handleBlur() {
+        console.log('calendar private blur');
         /**
          * @event
          * @private
@@ -993,7 +994,8 @@ export default class Calendar extends LightningElement {
     /**
      * Private blur handler.
      */
-    handleFocusOut() {
+    handleFocusOut(event) {
+        console.log('calendar private focus out', event.relatedTarget);
         setTimeout(() => {
             if (!this.keepFocus) {
                 console.log('trigger focus out');
@@ -1246,6 +1248,7 @@ export default class Calendar extends LightningElement {
     }
 
     escape() {
+        console.log('close calendar');
         this.handleFocusOut();
     }
 
