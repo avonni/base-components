@@ -53,7 +53,6 @@ export default {
                 type: 'radio'
             },
             options: ['fixed', 'auto'],
-            defaultValue: 'fixed',
             description:
                 "Specifies how column widths are calculated. Set to 'fixed' for columns with equal widths. Set to 'auto' for column widths that are based on the width of the column content and the table width.",
             table: {
@@ -89,7 +88,6 @@ export default {
                 type: 'radio'
             },
             options: ['asc', 'desc'],
-            defaultValue: 'asc',
             description:
                 "Specifies the default sorting direction on an unsorted column. Valid options include 'asc' and 'desc'.",
             table: {
@@ -115,7 +113,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultvalue: false,
             description:
                 'If present, you can load a subset of data and then display more when users scroll to the end of the table. Use with the onloadmore event handler to retrieve more data.',
             table: {
@@ -140,7 +137,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultvalue: false,
             description:
                 'If present, the checkbox column for row selection is hidden.',
             table: {
@@ -154,7 +150,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultvalue: false,
             description: 'If present, the table header is hidden.',
             table: {
                 type: { summary: 'boolean' },
@@ -167,7 +162,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultvalue: false,
             description:
                 'If present, a spinner is shown to indicate that more data is loading.',
             table: {
@@ -193,7 +187,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 20,
             description:
                 "Determines when to trigger infinite loading based on how many pixels the table's scroll position is from the bottom of the table.",
             table: {
@@ -207,12 +200,11 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 1000,
             description:
                 'The maximum width for all columns. The default is 1000px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '1000' },
+                defaultValue: { summary: '1000px' },
                 category: 'Display'
             }
         },
@@ -221,7 +213,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 100,
             description:
                 'The maximum number of rows that can be selected. Checkboxes are used for selection by default, and radio buttons are used when max-row-selection is 1.',
             table: {
@@ -234,12 +225,11 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 50,
             description:
                 'The minimum width for all columns. The default is 50px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '50' },
+                defaultValue: { summary: '50px' },
                 category: 'Display'
             }
         },
@@ -248,7 +238,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, column resizing is disabled.',
             table: {
                 type: { summary: 'boolean' },
@@ -261,12 +250,11 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 10,
             description:
                 'The width to resize the column when a user presses left or right arrow. The default is 10px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: '10' },
+                defaultValue: { summary: '10px' },
                 category: 'Display'
             }
         },
@@ -275,7 +263,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 0,
             description:
                 'Determines where to start counting the row number. The default is 0.',
             table: {
@@ -289,7 +276,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: [],
             description:
                 'Enables programmatic row selection with a list of key-field values.',
             table: {
@@ -302,7 +288,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the row numbers are shown in the first column.',
             table: {
@@ -329,7 +314,6 @@ export default {
                 type: 'radio'
             },
             options: ['asc', 'desc'],
-            defaultValue: 'asc',
             description:
                 "Specifies the sorting direction. Sort the data using the onsort event handler. Valid options include 'asc' and 'desc'.",
             table: {
@@ -342,7 +326,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the footer that displays the Save and Cancel buttons is hidden during inline editing.',
             table: {
@@ -368,6 +351,22 @@ export default {
                 category: 'Display'
             }
         }
+    },
+    args: {
+        columnWidthsMode: 'fixed',
+        defaultSortDirection: 'asc',
+        enableInfiniteLoading: false,
+        hideCheckboxColumn: false,
+        hideTableHeader: false,
+        isLoading: false,
+        loadMoreOffset: 20,
+        maxColumnWidth: 1000,
+        minColumnWidth: 50,
+        resizeColumnDisabled: false,
+        resizeStep: 10,
+        rowNumberOffset: 0,
+        showRowNumberColumn: false,
+        suppressBottomBar: false
     }
 };
 
