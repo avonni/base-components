@@ -382,11 +382,11 @@
                     class="slds-datepicker slds-dropdown slds-dropdown_left"
                 >
                     <c-calendar
-                        value={startDateEndDate}
+                        value=""
                         selection-mode="interval"
                         onchange={testHandleChangeEndDate}
                         onprivateblur={testPrivateBlur}
-                        onprivatefocusout={testPrivateFocusOut}
+                        onfocusout={testPrivateFocusOut}
                         data-element-id="test-c-calendar-end-date-with-start-date"
                     ></c-calendar>
                 </div>
@@ -394,8 +394,10 @@
                     {endDateString}
                 </p>
             </div>
-            <!-- <h3>lightning input date</h3>
-        <lightning-input type="date" label="input date"></lightning-input> -->
+            <lightning-input
+                type="date"
+                label="Lightning input date"
+            ></lightning-input>
         </div>
     </div>
 </template>

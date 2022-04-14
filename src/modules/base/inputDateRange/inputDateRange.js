@@ -1144,7 +1144,9 @@ export default class InputDateRange extends LightningElement {
     }
 
     testPrivateFocusOut() {
-        this._showEndDate = false;
+        requestAnimationFrame(() => {
+            this._showEndDate = false;
+        });
     }
 
     blurCalendar() {

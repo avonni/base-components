@@ -96,6 +96,7 @@ export default class Calendar extends LightningElement {
     month;
     day;
     calendarData;
+    firstFocus = 0;
 
     months = MONTHS;
 
@@ -117,21 +118,7 @@ export default class Calendar extends LightningElement {
     }
 
     renderedCallback() {
-        console.log('renderedCallback', this.template.activeElement);
-        let focusDay = this.template.querySelector(
-            `td[data-cell-day="${this._focusDate}"]`
-        );
-        let dateDay = this.template.querySelector(
-            `td[data-cell-day="${this.date.getTime()}"]`
-        );
-        let selectedDay = this.template.querySelector('td.slds-is-selected');
-
-        let focusTarget = dateDay || focusDay || selectedDay || null;
-
-        if (focusTarget) {
-            focusTarget.setAttribute('tabindex', '0');
-            focusTarget.focus();
-        }
+        console.log('rendered callback');
     }
 
     /**
@@ -312,8 +299,10 @@ export default class Calendar extends LightningElement {
             this.date = this._value.length
                 ? new Date(this._value[0])
                 : DEFAULT_DATE;
-            this.updateDateParameters();
+        } else {
+            return;
         }
+        this.updateDateParameters();
     }
 
     /**
@@ -502,14 +491,14 @@ export default class Calendar extends LightningElement {
      */
     updateDateParameters() {
         // save a focus point
-        this.focusSaver = this.template.querySelector(
-            '[data-element-id="hiddenInputFocus"]'
-        );
-        if (this.focusSaver) {
-            this.focusSaver.focus();
-            this.keepFocus = this.focusSaver === this.template.activeElement;
-            console.log('generateViewData', this.template.activeElement);
-        }
+        // this.focusSaver = this.template.querySelector(
+        //     '[data-element-id="hiddenInputFocus"]'
+        // );
+        // if (this.focusSaver) {
+        //     this.focusSaver.focus();
+        //     this.keepFocus = this.focusSaver === this.template.activeElement;
+        //     console.log('generateViewData', this.template.activeElement);
+        // }
 
         this.year = this.date.getFullYear();
         this.month = MONTHS[this.date.getMonth()];
@@ -953,7 +942,6 @@ export default class Calendar extends LightningElement {
      * Private focus handler.
      */
     handleFocus() {
-        this.keepFocus = true;
         /**
          * @event
          * @private
@@ -994,34 +982,27 @@ export default class Calendar extends LightningElement {
     /**
      * Private blur handler.
      */
-    handleFocusOut(event) {
-        console.log('calendar private focus out', event.relatedTarget);
-        setTimeout(() => {
-            if (!this.keepFocus) {
-                console.log('trigger focus out');
-                this.triggerFocusOut();
-            }
-        }, 10);
-        this.keepFocus = false;
+    handleFocusOut() {
+        console.log('handle focus out');
+        window.requestAnimationFrame(() => {
+            /**
+             * @event
+             * @private
+             * @name privatefocusout
+             * @bubbles
+             * @cancelable
+             * @composed
+             */
+            this.dispatchEvent(
+                new CustomEvent('privatefocusout', {
+                    composed: true,
+                    bubbles: true,
+                    cancelable: true
+                })
+            );
+        });
     }
 
-    triggerFocusOut() {
-        /**
-         * @event
-         * @private
-         * @name privatefocusout
-         * @bubbles
-         * @cancelable
-         * @composed
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatefocusout', {
-                composed: true,
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    }
     /**
      * Mouse over handler.
      */
@@ -1200,7 +1181,7 @@ export default class Calendar extends LightningElement {
      * Focus roving
      * direction is number of days (- is before)
      */
-    focusRoving(event, direction, unit) {
+    focusRoving(event, difference, unit) {
         let focusDate = new Date(parseInt(event.target.dataset.cellDay, 10));
 
         if (focusDate) {
@@ -1208,17 +1189,17 @@ export default class Calendar extends LightningElement {
             switch (unit) {
                 case 'days':
                     nextDate = focusDate.setDate(
-                        focusDate.getDate() + direction
+                        focusDate.getDate() + difference
                     );
                     break;
                 case 'month':
                     nextDate = focusDate.setMonth(
-                        focusDate.getMonth() + direction
+                        focusDate.getMonth() + difference
                     );
                     break;
                 case 'year':
                     nextDate = focusDate.setFullYear(
-                        focusDate.getFullYear() + direction
+                        focusDate.getFullYear() + difference
                     );
                     break;
                 case 'week-end':
@@ -1230,19 +1211,36 @@ export default class Calendar extends LightningElement {
                     }
                     break;
                 case 'week-start':
-                    {
-                        nextDate = focusDate.setDate(
-                            focusDate.getDate() + -focusDate.getDay()
-                        );
-                    }
+                    nextDate = focusDate.setDate(
+                        focusDate.getDate() + -focusDate.getDay()
+                    );
                     break;
                 default:
                     break;
             }
 
             if (nextDate) {
-                this.date = new Date(nextDate);
-                this.updateDateParameters();
+                window.requestAnimationFrame(() => {
+                    console.log('request animation');
+                    let focusDay = this.template.querySelector(
+                        `td[data-cell-day="${this._focusDate}"]`
+                    );
+                    let dateDay = this.template.querySelector(
+                        `td[data-cell-day="${this.date.getTime()}"]`
+                    );
+                    let selectedDay = this.template.querySelector(
+                        'td.slds-is-selected'
+                    );
+
+                    let focusTarget =
+                        dateDay || focusDay || selectedDay || null;
+
+                    console.log(focusTarget);
+                    if (focusTarget) {
+                        focusTarget.setAttribute('tabindex', '0');
+                        focusTarget.focus();
+                    }
+                });
             }
         }
     }
