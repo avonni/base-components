@@ -107,6 +107,7 @@ export default class InputChoiceSet extends LightningElement {
     @api options;
 
     _disabled = false;
+    _isLoading = false;
     _isMultiSelect = false;
     _orientation = INPUT_CHOICE_ORIENTATIONS.default;
     _required = false;
@@ -163,6 +164,22 @@ export default class InputChoiceSet extends LightningElement {
 
     renderedCallback() {
         this.synchronizeA11y();
+    }
+
+    /**
+     * If present, the input is loading and a spinner is visible where the options should be.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
     }
 
     /**
