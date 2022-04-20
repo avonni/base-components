@@ -361,17 +361,17 @@
                     >{labelStartTime}</label
                 >
                 <lightning-input
-                    type="time"
                     if:false={readOnly}
+                    class="start-time"
+                    type="time"
+                    disabled={disabled}
                     name="start-time"
                     label="Start time"
                     variant="label-hidden"
                     value={startTime}
                     time-style={timeStyle}
-                    disabled={disabled}
-                    class="start-time"
-                    data-element-id="lightning-input-start-time"
                     onchange={handleChangeStartTime}
+                    data-element-id="lightning-input-start-time"
                 ></lightning-input>
                 <p data-element-id="start-time" if:true={readOnly}>
                     {startTimeString}

@@ -35,13 +35,13 @@
 <template>
     <div
         class="avonni-calendar__container"
+        onfocusin={handleFocus}
         onfocusout={handleFocusOut}
         tabindex="-1"
     >
         <lightning-focus-trap>
             <div
                 class="slds-form-element avonni-calendar__background_color"
-                onfocusin={handleFocus}
                 onblur={handleBlur}
                 onkeydown={handleKeyDown}
             >

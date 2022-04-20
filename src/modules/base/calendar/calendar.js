@@ -978,7 +978,7 @@ export default class Calendar extends LightningElement {
      */
     handleFocusOut() {
         console.log('focus out');
-        // this.keepFocus = true;
+        this.keepFocus = true;
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         requestAnimationFrame(() => {
             if (this.keepFocus) {
@@ -999,7 +999,6 @@ export default class Calendar extends LightningElement {
                     })
                 );
             }
-            this.keepFocus = true;
         });
     }
 

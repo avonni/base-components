@@ -1113,9 +1113,7 @@ export default class InputDateRange extends LightningElement {
 
     // toggle calendars when clicking on the inputs or input icons
     clickDateInput(event) {
-        let dataElementId = event.target.getAttribute('data-element-id');
-
-        switch (dataElementId) {
+        switch (event.target.dataset.elementId) {
             case 'test-input-end-date':
             case 'test-input-end-date-icon':
                 this.showEndDate = !this.showEndDate;
@@ -1133,9 +1131,7 @@ export default class InputDateRange extends LightningElement {
 
     // handle calendar focus out
     calendarFocusOut(event) {
-        let dataElementId = event.target.getAttribute('data-element-id');
-
-        switch (dataElementId) {
+        switch (event.target.dataset.elementId) {
             case 'calendar-start-date':
                 this.showStartDate = false;
                 break;
