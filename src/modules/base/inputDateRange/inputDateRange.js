@@ -147,7 +147,8 @@ export default class InputDateRange extends LightningElement {
     }
 
     renderedCallback() {
-        this.updateClassListWhenError();
+        // put back when fixed
+        // this.updateClassListWhenError();
     }
 
     /**
@@ -495,9 +496,10 @@ export default class InputDateRange extends LightningElement {
      * @type {object}
      */
     get startDateEndDate() {
-        if (!this.startDate && !this.endDate) {
-            return null;
-        }
+        if (!this.startDate && !this.endDate) return null;
+        if (!this.startDate && this.endDate) return this.endDate;
+        if (this.startDate && !this.endDate) return this.startDate;
+
         return [this.startDate, this.endDate];
     }
 
@@ -825,7 +827,6 @@ export default class InputDateRange extends LightningElement {
      * Handles the change of end-date on c-calendar.
      */
     handleChangeEndDate(event) {
-        console.log('default handle change event', event.detail.value);
         const value = event.detail.value;
         const normalizedValue = value instanceof Array ? value : [value];
         const dates = normalizedValue.map((date) => {
@@ -886,7 +887,6 @@ export default class InputDateRange extends LightningElement {
      */
     handleBlurEndDate(event) {
         if (this._cancelBlurEndDate) {
-            console.log('cancel blur end date');
             return;
         }
 
@@ -1145,7 +1145,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     testHandleChangeEndDate(event) {
-        console.log('default handle change event', event.detail.value);
         const value = event.detail.value;
         const normalizedValue = value instanceof Array ? value : [value];
         const dates = normalizedValue.map((date) => {

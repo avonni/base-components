@@ -341,6 +341,7 @@
                     <c-calendar
                         value={startDateEndDate}
                         selection-mode="interval"
+                        focus-date={startDate}
                         onchange={testHandleChangeStartDate}
                         onprivatefocusout={calendarFocusOut}
                         data-element-id="calendar-start-date"
@@ -421,6 +422,7 @@
                         value={startDateEndDate}
                         selection-mode="interval"
                         onchange={testHandleChangeEndDate}
+                        focus-date={endDate}
                         onprivatefocusout={calendarFocusOut}
                         data-element-id="calendar-end-date"
                     ></c-calendar>
