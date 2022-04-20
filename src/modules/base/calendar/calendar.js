@@ -106,14 +106,13 @@ export default class Calendar extends LightningElement {
     connectedCallback() {
         this.updateDateParameters();
 
-        console.log('connected callback');
-        this.focusSaver = this.template.querySelector(
-            '[data-element-id="hiddenInputFocus"]'
-        );
-        if (this.focusSaver) {
-            this.focusSaver.focus();
-            console.log('connected', this.focusSaver, document.activeElement);
-        }
+        // this.focusSaver = this.template.querySelector(
+        //     '[data-element-id="hiddenInputFocus"]'
+        // );
+        // if (this.focusSaver) {
+        //     this.focusSaver.focus();
+        //     console.log('connected', this.focusSaver, document.activeElement);
+        // }
     }
 
     renderedCallback() {
@@ -900,6 +899,7 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
+        this.keepFocus = true;
         console.log('handle select');
         if (!event.currentTarget.dataset.day) return;
 
@@ -953,6 +953,7 @@ export default class Calendar extends LightningElement {
      * Private focus handler.
      */
     handleFocus() {
+        console.log('focus in');
         if (this.keepFocus) {
             this.keepFocus = false;
         }
@@ -973,13 +974,15 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Private blur handler.
+     * Private focus out handler.
      */
     handleFocusOut() {
-        this.keepFocus = true;
+        console.log('focus out');
+        // this.keepFocus = true;
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         requestAnimationFrame(() => {
             if (this.keepFocus) {
+                console.log('dispatch focus out');
                 /**
                  * @event
                  * @private
@@ -996,6 +999,7 @@ export default class Calendar extends LightningElement {
                     })
                 );
             }
+            this.keepFocus = true;
         });
     }
 
@@ -1267,7 +1271,6 @@ export default class Calendar extends LightningElement {
             let thisMonth = this.date.getMonth();
 
             if (currentMonth !== thisMonth) {
-                console.log('change month?');
                 this.date.setMonth(currentMonth);
                 this.updateDateParameters();
             }

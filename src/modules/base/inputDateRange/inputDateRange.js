@@ -136,7 +136,7 @@ export default class InputDateRange extends LightningElement {
 
     /** tests */
     _showEndDate = false;
-    timer;
+    _showStartDate = false;
 
     helpMessage;
     _valid = true;
@@ -1052,12 +1052,57 @@ export default class InputDateRange extends LightningElement {
     /**
      * click start date input -> open start calendar
      */
+    clickStartCalendarInput(event) {
+        event.stopPropagation();
+        this._showStartDate = true;
+    }
+
+    get showStartDate() {
+        return this._showStartDate;
+    }
+
+    /**
+     * Handles the change of start-date on c-calendar.
+     */
+    testHandleChangeStartDate(event) {
+        const value = event.detail.value;
+        const normalizedValue = value instanceof Array ? value : [value];
+        const dates = normalizedValue.map((date) => new Date(date));
+
+        // Handler if there is a start date and there is an end date.
+        if (this.areBothDatePresent) {
+            if (dates[1] > this._endDate) {
+                this._startDate = new Date(dates[1]);
+            } else if (dates[0] < this._startDate) {
+                this._startDate = new Date(dates[0]);
+                // If user click on the same date.
+            } else if (dates.length === 1) {
+                this._startDate = null;
+            } else {
+                this._startDate = new Date(dates[1]);
+            }
+            // If there is no start date, but there is an end date.
+        } else if (this.isOnlyEndDate) {
+            if (dates[1] > this._endDate) {
+                this._startDate = new Date(dates[1]);
+            } else if (dates.length === 0) {
+                this._startDate = this._endDate;
+            } else {
+                this._startDate = new Date(dates[0]);
+            }
+            // If there is no start date and no end date.
+        } else {
+            this._startDate = dates[0] ? new Date(dates[0]) : null;
+        }
+
+        event.stopPropagation();
+        this._showStartDate = false;
+    }
 
     /**
      * click end date input -> open end calendar
      */
     clickEndCalendarInput(event) {
-        console.log('click end input');
         event.stopPropagation();
         this._showEndDate = true;
     }
@@ -1106,9 +1151,6 @@ export default class InputDateRange extends LightningElement {
         }
 
         event.stopPropagation();
-        // this._cancelBlurEndDate = false;
-        // this.handleBlurEndDate();
-
         this._showEndDate = false;
     }
 
@@ -1116,15 +1158,13 @@ export default class InputDateRange extends LightningElement {
      * tab start icon -> open start calendar
      */
     clickStartCalendarIcon(event) {
-        console.log('click start date icon');
-        this.showEndDate = true;
+        this._showStartDate = true;
         event.stopPropagation();
     }
     /**
      * tab end icon -> open start calendar
      */
     clickEndCalendarIcon(event) {
-        console.log('click end date icon');
         this._showEndDate = true;
         event.stopPropagation();
     }
@@ -1143,8 +1183,12 @@ export default class InputDateRange extends LightningElement {
         console.log('focus in');
     }
 
-    testPrivateFocusOut() {
+    testPrivateFocusOutEnd() {
         this._showEndDate = false;
+    }
+
+    testPrivateFocusOutStart() {
+        this._showStartDate = false;
     }
 
     blurCalendar() {

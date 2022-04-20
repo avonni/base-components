@@ -322,8 +322,7 @@
                         disabled={disabled}
                         required={required}
                         data-element-id="input-start-date"
-                        onblur={handleBlurStartDate}
-                        onfocus={handleFocusStartDate}
+                        onclick={clickStartCalendarInput}
                         autocomplete="off"
                     />
                     <lightning-button-icon
@@ -334,9 +333,19 @@
                         onclick={clickStartCalendarIcon}
                     ></lightning-button-icon>
                 </div>
-                <!-- <div class="slds-datepicker slds-dropdown slds-dropdown_left">
-                    calendar start
-                </div> -->
+                <div
+                    if:true={showStartDate}
+                    onblur={clickOutside}
+                    class="slds-datepicker slds-dropdown slds-dropdown_left"
+                >
+                    <c-calendar
+                        value={startDateEndDate}
+                        selection-mode="interval"
+                        onchange={testHandleChangeStartDate}
+                        onprivatefocusout={testPrivateFocusOutStart}
+                        data-element-id="test-c-calendar-end-date-with-start-date"
+                    ></c-calendar>
+                </div>
                 <p data-element-id="start-date" if:true={readOnly}>
                     {startDateString}
                 </p>
@@ -385,8 +394,7 @@
                         value={startDateEndDate}
                         selection-mode="interval"
                         onchange={testHandleChangeEndDate}
-                        onprivateblur={testPrivateBlur}
-                        onprivatefocusout={testPrivateFocusOut}
+                        onprivatefocusout={testPrivateFocusOutEnd}
                         data-element-id="test-c-calendar-end-date-with-start-date"
                     ></c-calendar>
                 </div>
@@ -394,8 +402,10 @@
                     {endDateString}
                 </p>
             </div>
-            <!-- <h3>lightning input date</h3>
-        <lightning-input type="date" label="input date"></lightning-input> -->
+            <lightning-input
+                type="date"
+                label="Lightning input date"
+            ></lightning-input>
         </div>
     </div>
 </template>
