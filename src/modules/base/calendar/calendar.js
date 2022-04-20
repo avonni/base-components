@@ -953,7 +953,10 @@ export default class Calendar extends LightningElement {
      * Private focus handler.
      */
     handleFocus() {
-        this.keepFocus = true;
+        if (this.keepFocus) {
+            this.keepFocus = false;
+        }
+
         /**
          * @event
          * @private
@@ -967,6 +970,33 @@ export default class Calendar extends LightningElement {
                 cancelable: true
             })
         );
+    }
+
+    /**
+     * Private blur handler.
+     */
+    handleFocusOut() {
+        this.keepFocus = true;
+        // eslint-disable-next-line @lwc/lwc/no-async-operation
+        requestAnimationFrame(() => {
+            if (this.keepFocus) {
+                /**
+                 * @event
+                 * @private
+                 * @name privatefocusout
+                 * @bubbles
+                 * @cancelable
+                 * @composed
+                 */
+                this.dispatchEvent(
+                    new CustomEvent('privatefocusout', {
+                        composed: true,
+                        bubbles: true,
+                        cancelable: true
+                    })
+                );
+            }
+        });
     }
 
     /**
@@ -991,37 +1021,6 @@ export default class Calendar extends LightningElement {
         );
     }
 
-    /**
-     * Private blur handler.
-     */
-    handleFocusOut(event) {
-        console.log('calendar private focus out', event.relatedTarget);
-        setTimeout(() => {
-            if (!this.keepFocus) {
-                console.log('trigger focus out');
-                this.triggerFocusOut();
-            }
-        }, 10);
-        this.keepFocus = false;
-    }
-
-    triggerFocusOut() {
-        /**
-         * @event
-         * @private
-         * @name privatefocusout
-         * @bubbles
-         * @cancelable
-         * @composed
-         */
-        this.dispatchEvent(
-            new CustomEvent('privatefocusout', {
-                composed: true,
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    }
     /**
      * Mouse over handler.
      */
