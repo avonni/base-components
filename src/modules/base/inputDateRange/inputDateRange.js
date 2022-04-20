@@ -135,8 +135,8 @@ export default class InputDateRange extends LightningElement {
     _cancelBlurEndDate = false;
 
     /** tests */
-    _showEndDate = false;
-    _showStartDate = false;
+    showEndDate = false;
+    showStartDate = false;
 
     helpMessage;
     _valid = true;
@@ -495,6 +495,9 @@ export default class InputDateRange extends LightningElement {
      * @type {object}
      */
     get startDateEndDate() {
+        if (!this.startDate && !this.endDate) {
+            return null;
+        }
         return [this.startDate, this.endDate];
     }
 
@@ -1050,18 +1053,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * click start date input -> open start calendar
-     */
-    clickStartCalendarInput(event) {
-        event.stopPropagation();
-        this._showStartDate = true;
-    }
-
-    get showStartDate() {
-        return this._showStartDate;
-    }
-
-    /**
      * Handles the change of start-date on c-calendar.
      */
     testHandleChangeStartDate(event) {
@@ -1096,19 +1087,65 @@ export default class InputDateRange extends LightningElement {
         }
 
         event.stopPropagation();
-        this._showStartDate = false;
+        this.showStartDate = false;
+
+        // handle focus procession
+        // start date => start time => end date => end time
+
+        // if (this.showTime) {
+
+        // }
+        // if (!this.endDate) {
+        //     this.showEndDate = true;
+        // }
+
+        // if (this.type === 'datetime' && this.startDate && !this.startTime) {
+        //     this.startTimeInput.focus();
+        // } else if (
+        //     this.startDate &&
+        //     (!this.endDate ||
+        //         this.startDate.getTime() > this.endDate.getTime())
+        // ) {
+        //     this._endDate = null;
+        //     this.endDateInput.focus();
+        // }
     }
 
-    /**
-     * click end date input -> open end calendar
-     */
-    clickEndCalendarInput(event) {
-        event.stopPropagation();
-        this._showEndDate = true;
+    // toggle calendars when clicking on the inputs or input icons
+    clickDateInput(event) {
+        let dataElementId = event.target.getAttribute('data-element-id');
+
+        switch (dataElementId) {
+            case 'test-input-end-date':
+            case 'test-input-end-date-icon':
+                this.showEndDate = !this.showEndDate;
+                break;
+
+            case 'test-input-start-date':
+            case 'test-input-start-date-icon':
+                this.showStartDate = !this.showStartDate;
+                break;
+
+            default:
+                break;
+        }
     }
 
-    get showEndDate() {
-        return this._showEndDate;
+    // handle calendar focus out
+    calendarFocusOut(event) {
+        let dataElementId = event.target.getAttribute('data-element-id');
+
+        switch (dataElementId) {
+            case 'calendar-start-date':
+                this.showStartDate = false;
+                break;
+            case 'calendar-end-date':
+                this.showEndDate = false;
+                break;
+
+            default:
+                break;
+        }
     }
 
     testHandleChangeEndDate(event) {
@@ -1151,47 +1188,6 @@ export default class InputDateRange extends LightningElement {
         }
 
         event.stopPropagation();
-        this._showEndDate = false;
-    }
-
-    /**
-     * tab start icon -> open start calendar
-     */
-    clickStartCalendarIcon(event) {
-        this._showStartDate = true;
-        event.stopPropagation();
-    }
-    /**
-     * tab end icon -> open start calendar
-     */
-    clickEndCalendarIcon(event) {
-        this._showEndDate = true;
-        event.stopPropagation();
-    }
-
-    clickOutside() {
-        console.log('click outside');
-        this._showEndDate = false;
-    }
-
-    testPrivateBlur() {
-        console.log('calendar blur');
-        this._showEndDate = false;
-    }
-
-    focusin() {
-        console.log('focus in');
-    }
-
-    testPrivateFocusOutEnd() {
-        this._showEndDate = false;
-    }
-
-    testPrivateFocusOutStart() {
-        this._showStartDate = false;
-    }
-
-    blurCalendar() {
-        this._showEndDate = false;
+        this.showEndDate = false;
     }
 }
