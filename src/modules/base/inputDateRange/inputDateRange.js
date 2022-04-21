@@ -369,7 +369,7 @@ export default class InputDateRange extends LightningElement {
         );
     }
 
-    /**
+    /** ❌ change to new input
      * End date input.
      *
      * @type {element}
@@ -492,6 +492,7 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Array with the start date and end date.
+     * With added fallback to return one date or the other or none at all.
      *
      * @type {object}
      */
@@ -503,37 +504,39 @@ export default class InputDateRange extends LightningElement {
         return [this.startDate, this.endDate];
     }
 
-    /**
+    /** TO BE FIXED
+     *
      * Removes the slds-has-error class on the whole element if it's not valid.
      * Aplies it on every input we need it applied.
      * Removes it from every input when valid.
      */
     updateClassListWhenError() {
-        if (!this._valid && !this._readOnly) {
-            this.classList.remove('slds-has-error');
-            this.startDateInput.classList.add('slds-has-error');
-            this.startDateInput.classList.add('avonni-date-range__input_error');
-            this.endDateInput.classList.add('slds-has-error');
-            this.endDateInput.classList.add('avonni-date-range__input_error');
-            if (this.showTime) {
-                this.startTimeInput.classList.add('slds-has-error');
-                this.endTimeInput.classList.add('slds-has-error');
-            }
-        }
-        if (this._valid && !this._readOnly) {
-            this.startDateInput.classList.remove('slds-has-error');
-            this.startDateInput.classList.remove(
-                'avonni-date-range__input_error'
-            );
-            this.endDateInput.classList.remove('slds-has-error');
-            this.endDateInput.classList.remove(
-                'avonni-date-range__input_error'
-            );
-            if (this.showTime) {
-                this.startTimeInput.classList.remove('slds-has-error');
-                this.endTimeInput.classList.remove('slds-has-error');
-            }
-        }
+        // change names
+        // if (!this._valid && !this._readOnly) {
+        //     this.classList.remove('slds-has-error');
+        //     this.startDateInput.classList.add('slds-has-error');
+        //     this.startDateInput.classList.add('avonni-date-range__input_error');
+        //     this.endDateInput.classList.add('slds-has-error');
+        //     this.endDateInput.classList.add('avonni-date-range__input_error');
+        //     if (this.showTime) {
+        //         this.startTimeInput.classList.add('slds-has-error');
+        //         this.endTimeInput.classList.add('slds-has-error');
+        //     }
+        // }
+        // if (this._valid && !this._readOnly) {
+        //     this.startDateInput.classList.remove('slds-has-error');
+        //     this.startDateInput.classList.remove(
+        //         'avonni-date-range__input_error'
+        //     );
+        //     this.endDateInput.classList.remove('slds-has-error');
+        //     this.endDateInput.classList.remove(
+        //         'avonni-date-range__input_error'
+        //     );
+        //     if (this.showTime) {
+        //         this.startTimeInput.classList.remove('slds-has-error');
+        //         this.endTimeInput.classList.remove('slds-has-error');
+        //     }
+        // }
     }
 
     /**
@@ -546,7 +549,7 @@ export default class InputDateRange extends LightningElement {
         this.startDateInput.focus();
     }
 
-    /**
+    /** ❌
      * Removes keyboard focus from the start date input and end date input.
      *
      * @public
@@ -618,7 +621,7 @@ export default class InputDateRange extends LightningElement {
         return this._constraintApi;
     }
 
-    /**
+    /** ✅
      * Initialization of start date depending on timezone and type.
      */
     initStartDate() {
@@ -642,7 +645,7 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ✅
      * Initialization of end date depending on timezone and type.
      */
     initEndtDate() {
@@ -666,7 +669,7 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ✅
      * Handles the change of start-time.
      */
     handleChangeStartTime(event) {
@@ -674,12 +677,13 @@ export default class InputDateRange extends LightningElement {
         event.preventDefault();
         this.startTime = event.target.value;
         this.dispatchChange();
-        if (this.startDate && this.startTime) {
-            this.endDateInput.focus();
-        }
+        this.handleDateInputBlur('startTime');
+        // if (this.startDate && this.startTime) {
+        //     this.endDateInput.focus();
+        // }
     }
 
-    /**
+    /** ✅
      * Handles the change of end-time.
      */
     handleChangeEndTime(event) {
@@ -689,7 +693,7 @@ export default class InputDateRange extends LightningElement {
         this.dispatchChange();
     }
 
-    /**
+    /** ❌
      * Handles the change of start-date on c-calendar.
      */
     handleChangeStartDate(event) {
@@ -729,7 +733,7 @@ export default class InputDateRange extends LightningElement {
         this.handleBlurStartDate();
     }
 
-    /**
+    /** ❌
      * Handles focus for the start-date input.
      */
     handleFocusStartDate() {
@@ -743,7 +747,7 @@ export default class InputDateRange extends LightningElement {
         this.interactingState.enter();
     }
 
-    /**
+    /** ❌
      * Handles blur for the start-date input.
      */
     handleBlurStartDate(event) {
@@ -779,7 +783,7 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ❌
      * Handles blur for the c-calendar for start-date.
      */
     handlePrivateBlurStartDate(event) {
@@ -788,7 +792,7 @@ export default class InputDateRange extends LightningElement {
         this.handleBlurStartDate();
     }
 
-    /**
+    /** ❌
      * Handles focus for the c-calendar for start-date.
      */
     handlePrivateFocusStartDate(event) {
@@ -797,7 +801,7 @@ export default class InputDateRange extends LightningElement {
         this.handleFocusStartDate();
     }
 
-    /**
+    /** ❌
      * Sets the variable cancelBlurStartDate to false.
      */
     allowBlurStartDate(event) {
@@ -806,14 +810,14 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ❌
      * Sets the variable cancelBlurStartDate to true.
      */
     cancelBlurStartDate() {
         this._cancelBlurStartDate = true;
     }
 
-    /**
+    /** ❌
      * Toggles the visibility of c-calendar for start-date.
      */
     toggleStartDateVisibility() {
@@ -823,7 +827,7 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ❌
      * Handles the change of end-date on c-calendar.
      */
     handleChangeEndDate(event) {
@@ -869,7 +873,7 @@ export default class InputDateRange extends LightningElement {
         this.handleBlurEndDate();
     }
 
-    /**
+    /** ❌
      * Handles focus for the end date input.
      */
     handleFocusEndDate() {
@@ -882,7 +886,7 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ❌
      * Handles blur for the end date input.
      */
     handleBlurEndDate(event) {
@@ -926,7 +930,7 @@ export default class InputDateRange extends LightningElement {
             this.dispatchChange();
         }
     }
-    /**
+    /** ❌
      * Handles blur for the c-calendar for end-date.
      */
     handlePrivateBlurEndDate(event) {
@@ -944,7 +948,7 @@ export default class InputDateRange extends LightningElement {
         this.handleFocusEndDate();
     }
 
-    /**
+    /** ❌
      * Sets the variable cancelBlurEndDate to false.
      */
     allowBlurEndDate(event) {
@@ -953,14 +957,14 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ❌
      * Sets the variable cancelBlurEndDate to true.
      */
     cancelBlurEndDate() {
         this._cancelBlurEndDate = true;
     }
 
-    /**
+    /** ❌
      * Toggles the visibility of c-calendar for end-date.
      */
     toggleEndDateVisibility() {
@@ -970,7 +974,7 @@ export default class InputDateRange extends LightningElement {
         }
     }
 
-    /**
+    /** ✅
      * Change the date format depending on date style.
      *
      * @param {date}
@@ -994,6 +998,7 @@ export default class InputDateRange extends LightningElement {
         return `${month}/${date}/${year}`;
     }
 
+    // ✅
     /**
      * Change the time format depending on time style.
      *
@@ -1013,7 +1018,7 @@ export default class InputDateRange extends LightningElement {
               });
     }
 
-    /**
+    /** ✅
      * Dispatch changes from start-date input, end-date input, c-calendar for start-date and c-calendar for end-date.
      */
     dispatchChange() {
@@ -1052,13 +1057,50 @@ export default class InputDateRange extends LightningElement {
         );
     }
 
-    /**
+    // ✅ toggle calendars when clicking on the inputs or input icons
+    clickDateInput(event) {
+        switch (event.target.dataset.elementId) {
+            case 'test-input-end-date':
+            case 'test-input-end-date-icon':
+                this.showEndDate = !this.showEndDate;
+                break;
+
+            case 'test-input-start-date':
+            case 'test-input-start-date-icon':
+                this.showStartDate = !this.showStartDate;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    // ✅ handle calendar focus out
+    calendarFocusOut(event) {
+        switch (event.target.dataset.elementId) {
+            case 'calendar-start-date':
+                this.showStartDate = false;
+                break;
+            case 'calendar-end-date':
+                this.showEndDate = false;
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /** ✅
      * Handles the change of start-date on c-calendar.
      */
     testHandleChangeStartDate(event) {
         const value = event.detail.value;
         const normalizedValue = value instanceof Array ? value : [value];
-        const dates = normalizedValue.map((date) => new Date(date));
+        const dates = normalizedValue.map((date) => {
+            return date ? new Date(date) : null;
+        });
+        console.log(dates);
+        // let keepFocusOn = false;
 
         // Handler if there is a start date and there is an end date.
         if (this.areBothDatePresent) {
@@ -1068,6 +1110,7 @@ export default class InputDateRange extends LightningElement {
                 this._startDate = new Date(dates[0]);
                 // If user click on the same date.
             } else if (dates.length === 1) {
+                console.log('delete start date');
                 this._startDate = null;
             } else {
                 this._startDate = new Date(dates[1]);
@@ -1088,101 +1131,96 @@ export default class InputDateRange extends LightningElement {
 
         event.stopPropagation();
         this.showStartDate = false;
+        this.dispatchChange();
 
-        // handle focus procession
-        // start date => start time => end date => end time
+        // check if end date was invalidated by new start date.
+        // if new start date is higher than end date, jump to end date.
 
-        // if (this.showTime) {
-
-        // }
-        // if (!this.endDate) {
-        //     this.showEndDate = true;
-        // }
-
-        // if (this.type === 'datetime' && this.startDate && !this.startTime) {
-        //     this.startTimeInput.focus();
-        // } else if (
-        //     this.startDate &&
-        //     (!this.endDate ||
-        //         this.startDate.getTime() > this.endDate.getTime())
-        // ) {
-        //     this._endDate = null;
-        //     this.endDateInput.focus();
-        // }
+        this.handleDateInputBlur('startDate');
     }
 
-    // toggle calendars when clicking on the inputs or input icons
-    clickDateInput(event) {
-        switch (event.target.dataset.elementId) {
-            case 'test-input-end-date':
-            case 'test-input-end-date-icon':
-                this.showEndDate = !this.showEndDate;
-                break;
-
-            case 'test-input-start-date':
-            case 'test-input-start-date-icon':
-                this.showStartDate = !this.showStartDate;
-                break;
-
-            default:
-                break;
-        }
-    }
-
-    // handle calendar focus out
-    calendarFocusOut(event) {
-        switch (event.target.dataset.elementId) {
-            case 'calendar-start-date':
-                this.showStartDate = false;
-                break;
-            case 'calendar-end-date':
-                this.showEndDate = false;
-                break;
-
-            default:
-                break;
-        }
-    }
-
+    // ✅
     testHandleChangeEndDate(event) {
         const value = event.detail.value;
         const normalizedValue = value instanceof Array ? value : [value];
         const dates = normalizedValue.map((date) => {
             return date ? new Date(date) : null;
         });
+        console.log(dates);
+        let keepFocusOn = false;
 
-        // Handler if there is an end date and there is no start date.
-        if (dates.length === 1 && dates[0] && !this._startDate) {
-            this._endDate = new Date(dates[0]);
-            // Handler if there is no end date, but there is a start date.
-        } else if (this.isOnlyStartDate) {
-            if (dates[1] > this._startDate) {
-                this._endDate = new Date(dates[1]);
-            } else if (dates.length === 0) {
-                this._endDate = this._startDate;
-            } else {
-                this._endDate = new Date(dates[0]);
-            }
-            // Handler if there is no end date and no start date or both date.
-        } else {
-            if (dates[1]) {
-                this._endDate = new Date(dates[1]);
-            } else {
-                this._startDate = dates[0] ? new Date(dates[0]) : null;
-                // For the case of clicking on the same date to delete it.
-                this._endDate = null;
-            }
-        }
-
-        // selecting 'end date' earlier than 'start date', make that the new 'end date', void 'start date', open start date picker
-        if (this.areBothDatePresent) {
+        // if contains start date and end date
+        if (dates.length === 2) {
+            // D) two dates, new end < start => delete start, open start
             if (dates[0] < this._startDate) {
                 this._endDate = dates[0];
                 this._startDate = null;
+                // -> send focus back to start date
+
+                // A) two dates, new end date
+            } else {
+                this._endDate = dates[1];
             }
+        } else if (dates.length === 1) {
+            // if array constains only one date, check if its the same as the existing start or end
+            if (dates[0] === this._startDate) {
+                // end date was deleted
+                this._endDate = null;
+                keepFocusOn = true;
+            } else {
+                this._endDate = dates[0];
+            }
+        } else if (dates.length === 0) {
+            this._startDate = null;
+            this._endDate = null;
         }
 
+        /**
+         * Cases:
+         * A) two dates, new end date
+         * B) only one date, equal to start date (delete end date)
+         * C) two dates, both equal to start date
+         * D) two dates, new end < start => delete start, open start
+         * E) only one date, not equal to start
+         */
+
+        if (!keepFocusOn) {
+            this.handleDateInputBlur('endDate');
+        }
         event.stopPropagation();
-        this.showEndDate = false;
+        this.dispatchChange();
     }
+
+    // handle focus procession through the fields
+    handleDateInputBlur(type) {
+        // action when [type] gets blurred
+        switch (type) {
+            case 'startDate':
+                {
+                    if (!this.endDate && !this.showTime) {
+                        this.showEndDate = true;
+                    } else if (this.showTime) {
+                        this.startTimeInput.focus();
+                    }
+                }
+                break;
+            case 'startTime':
+                if (!this.endDate) {
+                    this.showEndDate = true;
+                }
+                break;
+            case 'endDate':
+                if (this.showTime) {
+                    this.showEndDate = false;
+                    this.endTimeInput.focus();
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    // handle on escape return focus to initial element, input or input icon.
+    // when escaping the focus trap, focus should return where it was.
 }

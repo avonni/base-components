@@ -1107,34 +1107,6 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * When the datepicker opens, place user focus on either the currently selected date in the grid or if no date is selected the current day
-    ✅ LEFT and RIGHT arrow keys to navigate row
-    UP and DOWN arrow keys to navigate between weeks on the same day
-    HOME and END keys to jump to beginning or end of current row
-    PAGEDOWN and PAGEUP to navigate between months
-    alt + PAGEDOWN and alt + PAGEUP to navigate between years
-    ✅ ENTER to select date and close datepicker
-    esc to close datepicker without choosing a date
-
-    keyCodes object contains:
-    backspace: 8
-    delete: 46
-    down: 40
-    end: 35         (fn + right) weekEnd
-    enter: 13
-    escape: 27
-    home: 36        (fn + left) weekStart
-    left: 37
-    pagedown: 34    (fn + down)
-    pageup: 33      (fn + up)
-    right: 39
-    shift: 16
-    space: 32
-    tab: 9
-    up: 38
-        */
-
-    /**
      * Keyboard navigation handler.
      *
      * @param {Event}
@@ -1198,38 +1170,41 @@ export default class Calendar extends LightningElement {
      * direction is number of days (- is before)
      */
     focusRoving(event, direction, unit) {
-        let focusDate = new Date(parseInt(event.target.dataset.cellDay, 10));
+        let initialFocusDate = new Date(
+            parseInt(event.target.dataset.cellDay, 10)
+        );
 
-        if (focusDate) {
+        if (initialFocusDate) {
             let nextDate;
             switch (unit) {
                 case 'days':
-                    nextDate = focusDate.setDate(
-                        focusDate.getDate() + direction
+                    nextDate = initialFocusDate.setDate(
+                        initialFocusDate.getDate() + direction
                     );
                     break;
                 case 'month':
-                    nextDate = focusDate.setMonth(
-                        focusDate.getMonth() + direction
+                    nextDate = initialFocusDate.setMonth(
+                        initialFocusDate.getMonth() + direction
                     );
                     break;
                 case 'year':
-                    nextDate = focusDate.setFullYear(
-                        focusDate.getFullYear() + direction
+                    nextDate = initialFocusDate.setFullYear(
+                        initialFocusDate.getFullYear() + direction
                     );
                     break;
                 case 'week-end':
                     {
-                        let daysToSat = 6 - focusDate.getDay();
-                        nextDate = focusDate.setDate(
-                            focusDate.getDate() + daysToSat
+                        let daysToSat = 6 - initialFocusDate.getDay();
+                        nextDate = initialFocusDate.setDate(
+                            initialFocusDate.getDate() + daysToSat
                         );
                     }
                     break;
                 case 'week-start':
                     {
-                        nextDate = focusDate.setDate(
-                            focusDate.getDate() + -focusDate.getDay()
+                        nextDate = initialFocusDate.setDate(
+                            initialFocusDate.getDate() -
+                                initialFocusDate.getDay()
                         );
                     }
                     break;
