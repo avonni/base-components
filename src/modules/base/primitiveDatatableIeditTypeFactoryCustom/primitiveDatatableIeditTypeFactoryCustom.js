@@ -96,25 +96,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     @api maxLength;
     @api minLength;
 
-    @api
-    get columnDef() {
-        return this._columnDef;
-    }
-
-    set columnDef(value) {
-        assert(
-            // eslint-disable-next-line no-prototype-builtins
-            CUSTOM_TYPES_TPL.hasOwnProperty(value.type),
-            INVALID_TYPE_FOR_EDIT
-        );
-        this._columnDef = value;
-        this.columnLabel = value.label;
-    }
-
-    get columnType() {
-        return this._columnDef.type;
-    }
-
     render() {
         return CUSTOM_TYPES_TPL[this.columnType] || DefaultTpl;
     }
@@ -132,6 +113,21 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         if (this.concreteComponent) {
             this.concreteComponent.focus();
         }
+    }
+
+    @api
+    get columnDef() {
+        return this._columnDef;
+    }
+
+    set columnDef(value) {
+        assert(
+            // eslint-disable-next-line no-prototype-builtins
+            CUSTOM_TYPES_TPL.hasOwnProperty(value.type),
+            INVALID_TYPE_FOR_EDIT
+        );
+        this._columnDef = value;
+        this.columnLabel = value.label;
     }
 
     @api
@@ -154,6 +150,10 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     set endDate(value) {
         this._endDate = value;
+    }
+
+    get columnType() {
+        return this._columnDef.type;
     }
 
     /**

@@ -37,7 +37,6 @@ import {
     getCellValue,
     getCurrentSelectionLength,
     isSelectedRow,
-    getChangesForCustomer,
     processInlineEditFinishCustom
 } from './inlineEdit';
 
@@ -691,6 +690,7 @@ export default class Datatable extends LightningDatatable {
 
         const colIndex = this.state.headerIndexes[colKeyValue];
         inlineEdit.columnDef = this.state.columns[colIndex];
+        super.state = this.state;
     }
 
     /**
@@ -712,15 +712,6 @@ export default class Datatable extends LightningDatatable {
         // Add the new cell value to the state dirty values
         dirtyValues[rowKeyValue][colKeyValue] = value;
 
-        const cellChange = { [rowKeyValue]: { [colKeyValue]: value } };
-
-        this.dispatchEvent(
-            new CustomEvent('cellchange', {
-                detail: {
-                    draftValues: getChangesForCustomer(cellChange, this.state)
-                }
-            })
-        );
         // Show yellow background and save/cancel button
         super.updateRowsState(this.state);
     };
@@ -757,6 +748,7 @@ export default class Datatable extends LightningDatatable {
             isMassEditChecked
         } = event.detail;
         processInlineEditFinishCustom(
+            this,
             this.state,
             reason,
             rowKeyValue,
@@ -765,5 +757,6 @@ export default class Datatable extends LightningDatatable {
             valid,
             isMassEditChecked
         );
+        super.state = this.state;
     };
 }
