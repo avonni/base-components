@@ -96,11 +96,7 @@ export function normalizeAriaAttribute(value) {
 }
 
 export function normalizeObject(value) {
-    if (
-        value &&
-        value.constructor === Object &&
-        Object.getPrototypeOf(value) === Object.prototype
-    ) {
+    if (value && value.constructor === Object) {
         return value;
     }
     return {};

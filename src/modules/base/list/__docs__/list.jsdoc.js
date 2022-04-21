@@ -6,7 +6,9 @@
  * @property {string} href The URL of the page the link goes to.
  * @property {string[]} icons List of iconName display next to the label.
  * @property {string} imageSrc Image URL for the list item image. If present, the image is disaplyed to the left of the item.
- * @property {object} infos List of additional information to display. Fields:- label: string- href: string
+ * @property {object} infos List of additional information to display. Valid keys:
+ * - label: string
+ * - href: string
  * @property {string} label Required. Label of the item.
  */
 /**

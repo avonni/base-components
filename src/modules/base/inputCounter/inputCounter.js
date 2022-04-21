@@ -542,6 +542,7 @@ export default class InputCounter extends LightningElement {
          * @name change
          * @description The event fired when the value changes.
          * @param {number} value
+         * @public
          */
         this.dispatchEvent(
             new CustomEvent('change', {
