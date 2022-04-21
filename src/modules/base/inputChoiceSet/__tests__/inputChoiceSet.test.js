@@ -77,10 +77,11 @@ describe('Input choice set', () => {
         document.body.appendChild(element);
     });
 
-    it('Input choice set Default attributes', () => {
+    it('Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.fieldLevelHelp).toBeUndefined();
+        expect(element.isLoading).toBe(false);
         expect(element.isMultiSelect).toBe(false);
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.name).toBeUndefined();
@@ -98,7 +99,7 @@ describe('Input choice set', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('Input choice set disabled', () => {
+    it('disabled', () => {
         element.options = options;
         element.disabled = true;
 
@@ -112,8 +113,41 @@ describe('Input choice set', () => {
         });
     });
 
+    // is-loading
+    it('isLoading = false', () => {
+        element.options = options;
+        element.isLoading = false;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            const loader = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-spinner-loading"]'
+            );
+            expect(input).toBeTruthy();
+            expect(loader).toBeFalsy();
+        });
+    });
+
+    it('isLoading = true', () => {
+        element.options = options;
+        element.isLoading = true;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="input"]'
+            );
+            const loader = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-spinner-loading"]'
+            );
+            expect(input).toBeFalsy();
+            expect(loader).toBeTruthy();
+        });
+    });
+
     // label
-    it('Input choice set label', () => {
+    it('label', () => {
         element.options = options;
         element.label = 'This is a label';
 
@@ -126,7 +160,7 @@ describe('Input choice set', () => {
     });
 
     // fieldLevelHelp
-    it('Input choice set fieldLevelHelp', () => {
+    it('fieldLevelHelp', () => {
         element.options = options;
         element.fieldLevelHelp = 'This is a field level help';
 
@@ -138,7 +172,7 @@ describe('Input choice set', () => {
     });
 
     // stretch
-    it('Input choice set stretch', () => {
+    it('stretch', () => {
         element.options = options;
         element.stretch = true;
 
@@ -153,7 +187,7 @@ describe('Input choice set', () => {
     });
 
     // type
-    it('Input choice set type checkbox', () => {
+    it('type checkbox', () => {
         element.options = options;
         element.orientation = 'vertical';
         element.isMultiSelect = true;
@@ -173,7 +207,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('Input choice set type button', () => {
+    it('type button', () => {
         element.options = options;
         element.type = 'button';
         element.orientation = 'vertical';
@@ -195,7 +229,7 @@ describe('Input choice set', () => {
 
     // Message when value is missing
     // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
-    it('Input choice set message when value is missing', () => {
+    it('message when value is missing', () => {
         element.options = options;
         element.required = true;
         element.messageWhenValueMissing = 'Value is Missing';
@@ -215,7 +249,7 @@ describe('Input choice set', () => {
     });
 
     // name
-    it('Input choice set name', () => {
+    it('name', () => {
         element.options = options;
         element.name = 'Checkbox group name';
 
@@ -230,7 +264,7 @@ describe('Input choice set', () => {
     });
 
     // options
-    it('Input choice set options', () => {
+    it('options', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -247,7 +281,7 @@ describe('Input choice set', () => {
     });
 
     // options with icons
-    it('Input choice set options with icons', () => {
+    it('options with icons', () => {
         element.options = optionsWithIcon;
 
         return Promise.resolve().then(() => {
@@ -272,7 +306,7 @@ describe('Input choice set', () => {
     });
 
     // readOnly
-    it('Input choice set readOnly', () => {
+    it('readOnly', () => {
         element.options = options;
         element.readOnly = true;
         element.value = options[0].value;
@@ -291,7 +325,7 @@ describe('Input choice set', () => {
     });
 
     // required
-    it('Input choice set required', () => {
+    it('required', () => {
         element.options = options;
         element.required = true;
 
@@ -304,7 +338,7 @@ describe('Input choice set', () => {
     });
 
     // value
-    it('Input choice set value', () => {
+    it('value', () => {
         element.options = options;
         element.value = ['mon', 'wed'];
 
@@ -323,7 +357,7 @@ describe('Input choice set', () => {
     });
 
     // orientation
-    it('Input choice set vertical orientation', () => {
+    it('vertical orientation', () => {
         element.options = options;
         element.orientation = 'vertical';
 
@@ -342,7 +376,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('Input choice set horizontal orientation', () => {
+    it('horizontal orientation', () => {
         element.options = options;
         element.orientation = 'horizontal';
 
@@ -362,7 +396,7 @@ describe('Input choice set', () => {
     });
 
     // variant
-    it('Input choice set variant standard', () => {
+    it('variant standard', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -379,7 +413,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('Input choice set variant label hidden', () => {
+    it('variant label hidden', () => {
         element.options = options;
         element.variant = 'label-hidden';
 
@@ -397,7 +431,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('Input choice set variant label inline', () => {
+    it('variant label inline', () => {
         element.options = options;
         element.variant = 'label-inline';
 
@@ -413,7 +447,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('Input choice set variant label stacked', () => {
+    it('variant label stacked', () => {
         element.options = options;
         element.variant = 'label-stacked';
 
@@ -477,7 +511,7 @@ describe('Input choice set', () => {
     /* ----- EVENTS ----- */
 
     // change event
-    it('Input choice set change event single', () => {
+    it('change event single', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.options = options;
@@ -495,7 +529,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('Input choice set change event multiple', () => {
+    it('change event multiple', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.options = options;
@@ -519,7 +553,7 @@ describe('Input choice set', () => {
     });
 
     // blur event
-    it('Input choice set blur event', () => {
+    it('blur event', () => {
         element.options = options;
 
         const handler = jest.fn();
@@ -540,7 +574,7 @@ describe('Input choice set', () => {
     });
 
     // focus event
-    it('Input choice set focus event', () => {
+    it('focus event', () => {
         element.options = options;
 
         const handler = jest.fn();
