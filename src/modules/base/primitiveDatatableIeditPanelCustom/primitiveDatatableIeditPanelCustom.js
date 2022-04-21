@@ -229,7 +229,6 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
     }
 
     triggerEditFinished(detail) {
-        console.log(detail);
         // for combobox we need to make sure that the value is only set if the there is a change, a submit or a valid value.
         if (
             !this.isTypeCombobox ||
