@@ -111,23 +111,11 @@ export default class Calendar extends LightningElement {
             _focusDate = this.template.querySelector(
                 `td[data-cell-day="${this.focusDate.getTime()}"]`
             );
+            if (_focusDate) {
+                _focusDate.focus();
+            }
         }
 
-        let rovingFocusDate = this.template.querySelector(
-            `td[data-cell-day="${this._focusDateTime}"]`
-        );
-        let todayDate = this.template.querySelector(
-            `td[data-cell-day="${this.date.getTime()}"]`
-        );
-        let selectedDate = this.template.querySelector('td.slds-is-selected');
-
-        let focusTarget =
-            _focusDate || rovingFocusDate || todayDate || selectedDate || null;
-
-        if (focusTarget) {
-            focusTarget.setAttribute('tabindex', '0');
-            focusTarget.focus();
-        }
         this.firstRender++;
     }
 
@@ -1214,8 +1202,28 @@ export default class Calendar extends LightningElement {
 
             if (nextDate) {
                 this.date = new Date(nextDate);
+
                 this.updateDateParameters();
             }
+            requestAnimationFrame(() => {
+                let rovingFocusDate = this.template.querySelector(
+                    `td[data-cell-day="${this._focusDateTime}"]`
+                );
+                let todayDate = this.template.querySelector(
+                    `td[data-cell-day="${this.date.getTime()}"]`
+                );
+                let selectedDate = this.template.querySelector(
+                    'td.slds-is-selected'
+                );
+
+                let focusTarget =
+                    rovingFocusDate || todayDate || selectedDate || null;
+
+                if (focusTarget) {
+                    focusTarget.setAttribute('tabindex', '0');
+                    focusTarget.focus();
+                }
+            });
         }
     }
 

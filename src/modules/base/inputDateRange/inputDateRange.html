@@ -89,7 +89,7 @@
                 >
                     <c-calendar
                         value={startDateEndDate}
-                        selection-mode="interval"
+                        selection-mode={selectionModeStartDate}
                         focus-date={startDate}
                         onchange={testHandleChangeStartDate}
                         onprivatefocusout={calendarFocusOut}
@@ -169,7 +169,7 @@
                 >
                     <c-calendar
                         value={startDateEndDate}
-                        selection-mode="interval"
+                        selection-mode={selectionModeEndDate}
                         onchange={testHandleChangeEndDate}
                         focus-date={endDate}
                         onprivatefocusout={calendarFocusOut}

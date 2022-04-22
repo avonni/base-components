@@ -137,6 +137,7 @@ export default class InputDateRange extends LightningElement {
     /** tests */
     showEndDate = false;
     showStartDate = false;
+    _selectionModeEndDate = 'interval'; // or 'single'
 
     helpMessage;
     _valid = true;
@@ -504,6 +505,16 @@ export default class InputDateRange extends LightningElement {
         return [this.startDate, this.endDate];
     }
 
+    /**
+     * calendar selection mode
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get selectionModeEndDate() {
+        return this._selectionModeEndDate;
+    }
     /** TO BE FIXED
      *
      * Removes the slds-has-error class on the whole element if it's not valid.
@@ -1062,12 +1073,18 @@ export default class InputDateRange extends LightningElement {
         switch (event.target.dataset.elementId) {
             case 'test-input-end-date':
             case 'test-input-end-date-icon':
+                if (!this._startDate) {
+                    console.log('no start date');
+                    this._selectionModeEndDate = 'single';
+                }
                 this.showEndDate = !this.showEndDate;
+                this.showStartDate = false;
                 break;
 
             case 'test-input-start-date':
             case 'test-input-start-date-icon':
                 this.showStartDate = !this.showStartDate;
+                this.showEndDate = false;
                 break;
 
             default:
@@ -1148,41 +1165,41 @@ export default class InputDateRange extends LightningElement {
         });
         console.log(dates);
         let keepFocusOn = false;
+        let reassignedEndDate = false;
 
-        // if contains start date and end date
-        if (dates.length === 2) {
-            // D) two dates, new end < start => delete start, open start
-            if (dates[0] < this._startDate) {
-                this._endDate = dates[0];
-                this._startDate = null;
-                // -> send focus back to start date
+        let datetime0 = dates[0] ? dates[0].getTime() : null;
+        let datetime1 = dates[1] ? dates[1].getTime() : null;
 
-                // A) two dates, new end date
-            } else {
+        if (this._endDate) {
+            if (datetime0 === this._endDate.getTime() && datetime1) {
                 this._endDate = dates[1];
+                reassignedEndDate = true;
             }
-        } else if (dates.length === 1) {
-            // if array constains only one date, check if its the same as the existing start or end
-            if (dates[0] === this._startDate) {
-                // end date was deleted
-                this._endDate = null;
-                keepFocusOn = true;
-            } else {
+            if (!reassignedEndDate && datetime1 === this._endDate.getTime()) {
                 this._endDate = dates[0];
+                reassignedEndDate = true;
+
+                if (dates[0] < this._startDate) {
+                    this._startDate = null;
+                }
             }
-        } else if (dates.length === 0) {
-            this._startDate = null;
-            this._endDate = null;
+        }
+        if (datetime0 === datetime1) {
+            this._endDate = dates[1];
         }
 
-        /**
-         * Cases:
-         * A) two dates, new end date
-         * B) only one date, equal to start date (delete end date)
-         * C) two dates, both equal to start date
-         * D) two dates, new end < start => delete start, open start
-         * E) only one date, not equal to start
-         */
+        console.log(dates[0] < this._startDate, reassignedEndDate);
+        if (!reassignedEndDate) {
+            // if contains start date and end date
+            if (dates.length === 2) {
+                this._endDate = dates[1];
+            } else if (dates.length === 1) {
+                this._endDate = dates[0];
+            } else if (dates.length === 0) {
+                this._startDate = null;
+                this._endDate = null;
+            }
+        }
 
         if (!keepFocusOn) {
             this.handleDateInputBlur('endDate');
