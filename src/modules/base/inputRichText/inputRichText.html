@@ -51,7 +51,11 @@
                 class="slds-rich-text-editor__textarea slds-grid"
             >
                 <div
-                    class="slds-rich-text-area__content slds-grow slds-text-color-weak standin"
+                    class="
+                        slds-rich-text-area__content
+                        slds-grow slds-text-color-weak
+                        standin
+                    "
                     onclick={handleStandInClick}
                 >
                     <lightning-formatted-rich-text
@@ -158,6 +162,7 @@
                                 class={button.computedClass}
                                 value={button.value}
                                 title={button.label}
+                                type="button"
                                 data-format={button.format}
                                 aria-pressed="false"
                             >
@@ -186,7 +191,11 @@
                 class="slds-rich-text-editor__textarea slds-grid"
             >
                 <div
-                    class="slds-rich-text-area__content slds-grow slds-text-color-weak standin"
+                    class="
+                        slds-rich-text-area__content
+                        slds-grow slds-text-color-weak
+                        standin
+                    "
                     onclick={handleStandInClick}
                 >
                     <div if:true={shouldShowPlaceholder}>
