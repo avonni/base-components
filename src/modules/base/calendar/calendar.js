@@ -1154,10 +1154,6 @@ export default class Calendar extends LightningElement {
             default:
                 break;
         }
-
-        // focus trap
-        // if on last focus element, tab goes to first
-        // if on first focus element, shift + tab goes to last
     }
 
     /**
@@ -1210,7 +1206,7 @@ export default class Calendar extends LightningElement {
             if (nextDate) {
                 this.date = new Date(nextDate);
                 this._nextFocusDate = new Date(nextDate);
-
+                console.log('next day', this._nextFocusDate.getDay());
                 this.updateDateParameters();
             }
             requestAnimationFrame(() => {
@@ -1224,12 +1220,20 @@ export default class Calendar extends LightningElement {
                     'td.slds-is-selected'
                 );
 
+                // let initialDateTime = this.date.getTime();
+
+                // let initialDateElement = this.template.querySelector(
+                //     `td[data-cell-day="${initialDateTime}"]`
+                // )
+
                 let focusTarget =
                     rovingFocusDate || todayDate || selectedDate || null;
 
                 if (focusTarget) {
+                    // initialDateElement.setAttribute('tabindex', '-1');
                     focusTarget.setAttribute('tabindex', '0');
                     focusTarget.focus();
+                    console.log('after focus', focusTarget.textContent);
                 }
             });
         }

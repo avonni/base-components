@@ -41,11 +41,17 @@ describe('Calendar', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
         element = createElement('base-calendar', {
             is: Calendar
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 10);
         });
         document.body.appendChild(element);
     });
@@ -64,6 +70,7 @@ describe('Calendar', () => {
         expect(element.selectionMode).toBe('single');
         expect(element.value).toMatchObject([]);
         expect(element.weekNumber).toBeFalsy();
+        expect(element.focusDate).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -135,6 +142,41 @@ describe('Calendar', () => {
             });
             expect(dates.includes('6')).toBeTruthy();
         });
+    });
+
+    // keyboard accessibility
+    it('Calendar keyboard accessibility', () => {
+        element.value = '05/09/2021';
+        element.disabledDates = '05/06/2021';
+
+        return Promise.resolve()
+            .then(() => {
+                const calendarDiv = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-calendar__keyboard-handler"]'
+                );
+                element.shadowRoot.querySelector('td[tabindex="0"]').focus();
+                jest.runAllTimers();
+                // arrow right ➡️
+                calendarDiv.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 39 })
+                );
+                jest.runAllTimers();
+                // trigger request animation frame: ...
+                console.log(
+                    element.shadowRoot
+                        .querySelector('td[tabindex="0"] > span')
+                        .getAttribute('data-date')
+                );
+                element.shadowRoot.querySelector('td[tabindex="0"]').click();
+                jest.runAllTimers();
+            })
+            .then(() => {
+                // get focused date
+                const focusedDate = element.shadowRoot
+                    .querySelector('td[tabindex="0"] > span')
+                    .getAttribute('data-date');
+                expect(focusedDate).toEqual('10');
+            });
     });
 
     // marked dates
@@ -406,7 +448,7 @@ describe('Calendar', () => {
             const previousButton = element.shadowRoot.querySelector(
                 '[data-element-id="previous-lightning-button-icon"]'
             );
-            previousButton.dispatchEvent(new CustomEvent('focus'));
+            previousButton.focus();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -420,10 +462,10 @@ describe('Calendar', () => {
         element.addEventListener('privateblur', handler);
 
         return Promise.resolve().then(() => {
-            const previousButton = element.shadowRoot.querySelector(
-                '[data-element-id="previous-lightning-button-icon"]'
+            const calendarContainer = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar__container"]'
             );
-            previousButton.dispatchEvent(new CustomEvent('blur'));
+            calendarContainer.dispatchEvent(new CustomEvent('blur'));
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
