@@ -85,13 +85,13 @@ export default class Calendar extends LightningElement {
     _disabled = false;
     _disabledDates = [];
     _focusDate;
-    _focusDateTime;
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
     _selectionMode = SELECTION_MODES.default;
     _value = [];
     _weekNumber = false;
+    _nextFocusDate;
     date = DEFAULT_DATE;
     year;
     month;
@@ -100,6 +100,7 @@ export default class Calendar extends LightningElement {
     calendarData;
     keepFocus = true;
     firstRender = 0;
+    closingMethod = 'click';
 
     connectedCallback() {
         this.updateDateParameters();
@@ -112,6 +113,7 @@ export default class Calendar extends LightningElement {
                 `td[data-cell-day="${this.focusDate.getTime()}"]`
             );
             if (_focusDate) {
+                _focusDate.setAttribute('tabindex', '0');
                 _focusDate.focus();
             }
         }
@@ -671,7 +673,7 @@ export default class Calendar extends LightningElement {
                 }
 
                 dateClass += ' avonni-calendar__date-cell';
-                // tabIndex = selected ? 0 : -1;
+                tabIndex = selected ? 0 : -1;
 
                 weekData.push({
                     label: label,
@@ -967,6 +969,7 @@ export default class Calendar extends LightningElement {
         // eslint-disable-next-line @lwc/lwc/no-async-operation
         requestAnimationFrame(() => {
             if (this.keepFocus) {
+                console.log('focus out');
                 /**
                  * @event
                  * @private
@@ -979,7 +982,10 @@ export default class Calendar extends LightningElement {
                     new CustomEvent('privatefocusout', {
                         composed: true,
                         bubbles: true,
-                        cancelable: true
+                        cancelable: true,
+                        detail: {
+                            method: this.closingMethod
+                        }
                     })
                 );
             }
@@ -1142,7 +1148,8 @@ export default class Calendar extends LightningElement {
                 this.enter(event);
                 break;
             case keyCodes.escape:
-                this.escape();
+                this.closingMethod = 'escape';
+                this.handleFocusOut();
                 break;
             default:
                 break;
@@ -1202,12 +1209,13 @@ export default class Calendar extends LightningElement {
 
             if (nextDate) {
                 this.date = new Date(nextDate);
+                this._nextFocusDate = new Date(nextDate);
 
                 this.updateDateParameters();
             }
             requestAnimationFrame(() => {
                 let rovingFocusDate = this.template.querySelector(
-                    `td[data-cell-day="${this._focusDateTime}"]`
+                    `td[data-cell-day="${this._nextFocusDate}"]`
                 );
                 let todayDate = this.template.querySelector(
                     `td[data-cell-day="${this.date.getTime()}"]`
@@ -1227,10 +1235,6 @@ export default class Calendar extends LightningElement {
         }
     }
 
-    escape() {
-        this.handleFocusOut();
-    }
-
     /**
      * Select this day with 'Enter'
      *
@@ -1241,7 +1245,7 @@ export default class Calendar extends LightningElement {
         let currentTime = parseInt(currentDay.dataset.cellDay, 10);
 
         if (currentTime) {
-            this._focusDateTime = currentTime;
+            this._nextFocusDate = currentTime;
             let currentDate = new Date(currentTime);
             let currentMonth = currentDate.getMonth();
             let thisMonth = this.date.getMonth();
