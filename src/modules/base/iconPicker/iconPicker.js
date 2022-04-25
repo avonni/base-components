@@ -681,7 +681,7 @@ export default class IconPicker extends LightningElement {
          *
          * @event
          * @name change
-         * @param {string} icon The Lightning Design System name of the icon. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+         * @param {string} value Value of the selected icon.
          * @public
          */
         this.dispatchEvent(
