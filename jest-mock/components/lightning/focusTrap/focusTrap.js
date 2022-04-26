@@ -6,4 +6,6 @@
  */
 import { LightningElement, api } from 'lwc';
 
-export default class FocusTrap extends LightningElement {}
+export default class FocusTrap extends LightningElement {
+    @api focus;
+}

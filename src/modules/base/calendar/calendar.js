@@ -117,6 +117,7 @@ export default class Calendar extends LightningElement {
                 _focusDate.focus();
             }
         }
+        // console.log('rendered callback');
 
         this.firstRender++;
     }
@@ -1107,12 +1108,10 @@ export default class Calendar extends LightningElement {
      */
     handleKeyDown(event) {
         if (event.altKey) {
-            // year goes down
             if (event.keyCode === keyCodes.pageup) {
                 this.focusRoving(event, -1, 'year');
                 return;
             }
-            // year goes up
             if (event.keyCode === keyCodes.pagedown) {
                 this.focusRoving(event, 1, 'year');
                 return;
@@ -1158,7 +1157,7 @@ export default class Calendar extends LightningElement {
 
     /**
      * Focus roving
-     * direction is number of days (- is before)
+     * direction is number of days (+ : after, - : before)
      */
     focusRoving(event, direction, unit) {
         let initialFocusDate = new Date(
@@ -1200,42 +1199,40 @@ export default class Calendar extends LightningElement {
                     }
                     break;
                 default:
-                    break;
+                    console.log('Accessibility issue changing date');
             }
 
             if (nextDate) {
+                let currentDate = this.date.getTime();
                 this.date = new Date(nextDate);
                 this._nextFocusDate = new Date(nextDate);
-                console.log('next day', this._nextFocusDate.getDay());
                 this.updateDateParameters();
+                requestAnimationFrame(() => {
+                    let currentFocusDate = this.template.querySelector(
+                        `td[data-cell-day="${currentDate}"]`
+                    );
+                    let rovingFocusDate = this.template.querySelector(
+                        `td[data-cell-day="${this._nextFocusDate}"]`
+                    );
+                    let todayDate = this.template.querySelector(
+                        `td[data-cell-day="${this.date.getTime()}"]`
+                    );
+                    let selectedDate = this.template.querySelector(
+                        'td.slds-is-selected'
+                    );
+
+                    let focusTarget =
+                        rovingFocusDate || todayDate || selectedDate || null;
+
+                    if (focusTarget) {
+                        if (currentFocusDate)
+                            currentFocusDate.setAttribute('tabindex', '-1');
+
+                        focusTarget.setAttribute('tabindex', '0');
+                        focusTarget.focus();
+                    }
+                });
             }
-            requestAnimationFrame(() => {
-                let rovingFocusDate = this.template.querySelector(
-                    `td[data-cell-day="${this._nextFocusDate}"]`
-                );
-                let todayDate = this.template.querySelector(
-                    `td[data-cell-day="${this.date.getTime()}"]`
-                );
-                let selectedDate = this.template.querySelector(
-                    'td.slds-is-selected'
-                );
-
-                // let initialDateTime = this.date.getTime();
-
-                // let initialDateElement = this.template.querySelector(
-                //     `td[data-cell-day="${initialDateTime}"]`
-                // )
-
-                let focusTarget =
-                    rovingFocusDate || todayDate || selectedDate || null;
-
-                if (focusTarget) {
-                    // initialDateElement.setAttribute('tabindex', '-1');
-                    focusTarget.setAttribute('tabindex', '0');
-                    focusTarget.focus();
-                    console.log('after focus', focusTarget.textContent);
-                }
-            });
         }
     }
 
