@@ -264,7 +264,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      * @type {element}
      */
     get inputableElement() {
-        return this.template.querySelector('.dt-type-edit-factory-custom');
+        return this.template.querySelector(
+            '[data-element-id="dt-type-edit-factory-custom"]'
+        );
     }
 
     /**
@@ -274,7 +276,7 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      */
     @api
     get value() {
-        return this.inputableElement.value;
+        return this.inputableElement ? this.inputableElement.value : undefined;
     }
 
     /**
@@ -284,7 +286,9 @@ export default class PrimitiveDatatableIeditPanelCustom extends LightningElement
      */
     @api
     get validity() {
-        return this.inputableElement.validity;
+        return this.inputableElement
+            ? this.inputableElement.validity
+            : undefined;
     }
 
     /**
