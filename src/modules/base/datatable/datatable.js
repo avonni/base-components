@@ -316,7 +316,7 @@ export default class Datatable extends LightningDatatable {
 
         this.template.addEventListener(
             'editbuttonclickcustom',
-            this.handleEditButtonClickCustom
+            this.handleEditButtonClickCustom.bind(this)
         );
 
         this.template.addEventListener(
@@ -670,9 +670,8 @@ export default class Datatable extends LightningDatatable {
      */
     handleEditButtonClickCustom(event) {
         event.stopPropagation();
-        const { colKeyValue, rowKeyValue, state } = event.detail;
+        const { colKeyValue, rowKeyValue } = event.detail;
         // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-        this.state = state;
         const inlineEdit = this.state.inlineEdit;
 
         inlineEdit.panelVisible = true;

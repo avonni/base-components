@@ -152,10 +152,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         this._endDate = value;
     }
 
-    get columnType() {
-        return this._columnDef.type;
-    }
-
     /**
      * Gets the data inputable element.
      *
@@ -165,6 +161,10 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         return this.template.querySelector('[data-inputable="true"]');
     }
 
+    get columnType() {
+        return this._columnDef.type;
+    }
+      
     @api
     get value() {
         return this.concreteComponent.value;

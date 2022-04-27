@@ -40,7 +40,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, the input is disabled.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -57,13 +56,24 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input is loading and a spinner is visible where the options should be.',
+            table: {
+                defaultValue: { summary: false },
+                type: { summary: 'boolean' }
+            }
+        },
         isMultiSelect: {
             name: 'is-multi-select',
             control: {
                 type: 'boolean'
             },
             description: 'If present, multiple choices can be selected.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -106,7 +116,6 @@ export default {
             description:
                 'Orientation of the input options. Valid values include vertical and horizontal.',
             options: ['vertical', 'horizontal'],
-            defaultValue: 'vertical',
             table: {
                 defaultValue: { summary: 'vertical' },
                 type: { summary: 'string' }
@@ -119,7 +128,6 @@ export default {
             },
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -137,7 +145,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, at least one input must be selected.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -150,7 +157,6 @@ export default {
             description:
                 'Type of the input. Valid values include default and button.',
             options: ['default', 'button'],
-            defaultValue: 'default',
             table: {
                 defaultValue: { summary: 'default' },
                 type: { summary: 'string' }
@@ -178,7 +184,6 @@ export default {
                 'label-stacked'
             ],
             type: { required: true },
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of the input label. Accepted variants include standard, label-hidden, label-inline, and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and checkbox group. Use label-stacked to place the label above the checkbox group.',
             table: {
@@ -189,9 +194,14 @@ export default {
     },
     args: {
         disabled: false,
-        required: false,
+        isLoading: false,
+        isMultiSelect: false,
+        orientation: 'vertical',
         readOnly: false,
-        stretch: false
+        required: false,
+        stretch: false,
+        type: 'default',
+        variant: 'standard'
     }
 };
 
