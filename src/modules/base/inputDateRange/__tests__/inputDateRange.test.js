@@ -87,6 +87,10 @@ describe('Input Date Range', () => {
                 '[data-element-id^="input"]'
             );
             expect(input).toHaveLength(2);
+            const iconInput = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-icon-input"]'
+            );
+            expect(iconInput).toHaveLength(2);
             const lightningInput = element.shadowRoot.querySelectorAll(
                 '[data-element-id^="lightning-input"]'
             );

@@ -38,7 +38,7 @@
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
             >
-            <p if:true={label} data-element-id="p-label">TEST: {label}</p>
+            <p if:true={label} data-element-id="p-label">{label}</p>
             <lightning-helptext
                 if:true={fieldLevelHelp}
                 content={fieldLevelHelp}
@@ -65,13 +65,14 @@
                 >
                     <input
                         type="text"
-                        id="test-start-date"
+                        id="start-date"
                         class="slds-input start-date"
                         value={startDateString}
                         disabled={disabled}
                         required={required}
+                        onblur={blurDateInput}
                         onclick={clickDateInput}
-                        data-element-id="test-input-start-date"
+                        data-element-id="input-start-date"
                         autocomplete="off"
                     />
                     <lightning-button-icon
@@ -80,7 +81,7 @@
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
                         onclick={clickDateInput}
-                        data-element-id="test-input-start-date-icon"
+                        data-element-id="lightning-icon-start-date"
                     ></lightning-button-icon>
                 </div>
                 <div
@@ -91,7 +92,8 @@
                         value={startDateEndDate}
                         selection-mode={selectionModeStartDate}
                         focus-date={focusStartDate}
-                        onchange={testHandleChangeStartDate}
+                        onchange={handleChangeStartDate}
+                        onprivatefocus={calendarFocusIn}
                         onprivatefocusout={calendarFocusOut}
                         data-element-id="calendar-start-date"
                     ></c-calendar>
@@ -146,12 +148,13 @@
                 >
                     <input
                         type="text"
-                        id="test-end-date"
-                        class="slds-input"
+                        id="end-date"
+                        class="slds-input end-date"
                         value={endDateString}
                         disabled={disabled}
+                        onblur={blurDateInput}
                         onclick={clickDateInput}
-                        data-element-id="test-input-end-date"
+                        data-element-id="input-end-date"
                         autocomplete="off"
                     />
                     <lightning-button-icon
@@ -160,7 +163,7 @@
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
                         onclick={clickDateInput}
-                        data-element-id="test-input-end-date-icon"
+                        data-element-id="lightning-icon-end-date"
                     ></lightning-button-icon>
                 </div>
                 <div
@@ -170,8 +173,9 @@
                     <c-calendar
                         value={startDateEndDate}
                         selection-mode={selectionModeEndDate}
-                        onchange={testHandleChangeEndDate}
+                        onchange={handleChangeEndDate}
                         focus-date={focusEndDate}
+                        onprivatefocus={calendarFocusIn}
                         onprivatefocusout={calendarFocusOut}
                         data-element-id="calendar-end-date"
                     ></c-calendar>
@@ -207,6 +211,16 @@
                     {endTimeString}
                 </p>
             </div>
+        </div>
+    </div>
+    <div class="slds-has-error" if:true={helpMessage}>
+        <div
+            id="help-message"
+            class="slds-form-element__help"
+            data-help-message
+            role="alert"
+        >
+            {helpMessage}
         </div>
     </div>
 </template>

@@ -39,13 +39,12 @@
         onblur={handleBlur}
         onfocusout={handleFocusOut}
         tabindex="-1"
+        onkeydown={handleKeyDown}
         data-element-id="avonni-calendar__container"
     >
         <lightning-focus-trap>
             <div
                 class="slds-form-element avonni-calendar__background_color"
-                onblur={handleBlur}
-                onkeydown={handleKeyDown}
                 data-element-id="avonni-calendar__keyboard-handler"
             >
                 <div class="slds-datepicker">

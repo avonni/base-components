@@ -117,7 +117,6 @@ export default class Calendar extends LightningElement {
                 _focusDate.focus();
             }
         }
-        // console.log('rendered callback');
 
         this.firstRender++;
     }
@@ -892,6 +891,7 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
+        console.log('deselect or select', event.currentTarget.dataset.day);
         if (!event.currentTarget.dataset.day) return;
 
         let date = new Date(Number(event.target.dataset.day));
@@ -922,6 +922,9 @@ export default class Calendar extends LightningElement {
      * Change event dispatcher.
      */
     dispatchChange() {
+        // add clicked date and
+        // whether it was selected or deselected
+
         /**
          * The event fired when the selected date is changed.
          *
@@ -947,6 +950,8 @@ export default class Calendar extends LightningElement {
             this.keepFocus = false;
         }
 
+        console.log('focus in');
+
         /**
          * @event
          * @private
@@ -967,10 +972,9 @@ export default class Calendar extends LightningElement {
      */
     handleFocusOut() {
         this.keepFocus = true;
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
+
         requestAnimationFrame(() => {
             if (this.keepFocus) {
-                console.log('focus out');
                 /**
                  * @event
                  * @private
@@ -1207,6 +1211,7 @@ export default class Calendar extends LightningElement {
                 this.date = new Date(nextDate);
                 this._nextFocusDate = new Date(nextDate);
                 this.updateDateParameters();
+
                 requestAnimationFrame(() => {
                     let currentFocusDate = this.template.querySelector(
                         `td[data-cell-day="${currentDate}"]`
