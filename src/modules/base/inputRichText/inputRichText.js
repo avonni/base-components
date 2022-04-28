@@ -32,7 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    normalizeArray,
     normalizeBoolean,
+    normalizeString,
     deepCopy,
     getRealDOMId,
     isRTL
@@ -154,7 +156,10 @@ function PARSE_INT_STYLE(element, value) {
     return parseInt(element.style[value], 10);
 }
 
-const DEFAULT_VARIANT = 'top-toolbar';
+const VARIANTS = {
+    default: 'top-toolbar',
+    valid: ['top-toolbar', 'bottom-toolbar']
+};
 
 /**
  * @class
@@ -195,25 +200,6 @@ export default class InputRichText extends LightningElement {
     @api disabledCategories = '';
 
     /**
-     * A list of allowed formats. By default, the list is computed based on enabled categories.
-     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
-     *
-     * @type {object}
-     * @public
-     */
-    @api formats = '';
-
-    /**
-     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes
-     * the toolbar to be displayed below the text box.
-     *
-     * @type {string}
-     * @public
-     * @default top-toolbar
-     */
-    @api variant = DEFAULT_VARIANT;
-
-    /**
      * Error message to be displayed when invalid input is detected.
      *
      * @type {string}
@@ -246,9 +232,11 @@ export default class InputRichText extends LightningElement {
      */
     @api isPublisher = false;
 
+    _formats = [];
     _valid = true;
     _disabled = false;
     _readOnly = false;
+    _variant = VARIANTS.default;
     linkPanelOpen = false;
     queueLinkPanelOpen = false;
     selectedFontValue = DEFAULT_FONT;
@@ -265,6 +253,21 @@ export default class InputRichText extends LightningElement {
         fontList: FONT_LIST,
         sizeList: SIZE_LIST
     };
+
+    /**
+     * A list of allowed formats. By default, the list is computed based on enabled categories.
+     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get formats() {
+        return this._formats;
+    }
+    set formats(value) {
+        this._formats = normalizeArray(value);
+    }
 
     /**
      * The HTML content in the rich text editor.
@@ -356,6 +359,26 @@ export default class InputRichText extends LightningElement {
 
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
+    }
+
+    /**
+     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes the toolbar to be displayed below the text box.
+     *
+     * @type {string}
+     * @public
+     * @default top-toolbar
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+
+        if (this.quill) this.resetQuill();
     }
 
     /**
@@ -948,12 +971,10 @@ export default class InputRichText extends LightningElement {
             'span[style*=text-decoration]',
             (element, text) => {
                 const elementStyle = getComputedStyle(element) || element.style;
-                const underline = elementStyle.textDecoration.match(
-                    /underline/
-                );
-                const strike = elementStyle.textDecoration.match(
-                    /line-through/
-                );
+                const underline =
+                    elementStyle.textDecoration.match(/underline/);
+                const strike =
+                    elementStyle.textDecoration.match(/line-through/);
 
                 return text.compose(
                     new Quill.Delta().retain(text.length(), {
@@ -1265,6 +1286,13 @@ export default class InputRichText extends LightningElement {
             ) {
                 this.quill.setSelection(this.quill.getLength());
             }
+        }
+
+        if (this.queueLinkPanelOpen) {
+            const link = this.template.querySelector(
+                '[data-element-id="lightning-input-link"]'
+            );
+            if (link) link.focus();
         }
     }
 
@@ -1592,6 +1620,17 @@ export default class InputRichText extends LightningElement {
         this.linkPanelHasFocus = true;
     }
 
+    resetQuill() {
+        this.removeQuillEmitterEventListeners();
+        this.quill = null;
+        this.quillNotReady = true;
+        this.initialRender = true;
+        this._hasBeenFocused = false;
+        this._pendingFormats = [];
+        this.linkPanelOpen = false;
+        this.queueLinkPanelOpen = false;
+    }
+
     /**
      * Font selection event handler.
      *
@@ -1696,7 +1735,9 @@ export default class InputRichText extends LightningElement {
         const buttons = this.template.querySelectorAll(BUTTON_SELECTOR);
         const format = item ? this.quill.getFormat(item) : {};
 
-        let emojiContainer = this.template.querySelector('[data-element-id="avonni-emoji-picker"]');
+        let emojiContainer = this.template.querySelector(
+            '[data-element-id="avonni-emoji-picker"]'
+        );
 
         if (emojiContainer && !emojiContainer.classList.contains('slds-hide')) {
             emojiContainer.classList.add('slds-hide');
