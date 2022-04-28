@@ -33,7 +33,11 @@
 -->
 
 <template>
-    <div class={computedWrapperClass} data-element-id="div-wrapper">
+    <div
+        class={computedWrapperClass}
+        data-element-id="div-wrapper"
+        onfocusout={onFocusOut}
+    >
         <div class={computedLabelClass}>
             <abbr if:true={required} title="required" class="slds-required"
                 >*</abbr
@@ -70,6 +74,7 @@
                         value={startDateString}
                         disabled={disabled}
                         required={required}
+                        onfocus={focusDateInput}
                         onblur={blurDateInput}
                         onclick={clickDateInput}
                         data-element-id="input-start-date"

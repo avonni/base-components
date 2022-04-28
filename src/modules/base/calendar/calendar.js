@@ -891,7 +891,6 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
-        console.log('deselect or select', event.currentTarget.dataset.day);
         if (!event.currentTarget.dataset.day) return;
 
         let date = new Date(Number(event.target.dataset.day));
@@ -900,6 +899,7 @@ export default class Calendar extends LightningElement {
         );
 
         if (date && !disabledDate) {
+            this._clickedDate = date;
             if (this._selectionMode === 'single') {
                 this._value =
                     this._value.length > 0 &&
@@ -922,9 +922,6 @@ export default class Calendar extends LightningElement {
      * Change event dispatcher.
      */
     dispatchChange() {
-        // add clicked date and
-        // whether it was selected or deselected
-
         /**
          * The event fired when the selected date is changed.
          *
@@ -936,7 +933,8 @@ export default class Calendar extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.normalizedValue
+                    value: this.normalizedValue,
+                    clickedDate: this._clickedDate
                 }
             })
         );
@@ -949,8 +947,6 @@ export default class Calendar extends LightningElement {
         if (this.keepFocus) {
             this.keepFocus = false;
         }
-
-        console.log('focus in');
 
         /**
          * @event
