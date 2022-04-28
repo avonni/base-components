@@ -996,6 +996,7 @@ export default class InputDateRange extends LightningElement {
             // d)
         } else if (!clicked0 && !clicked1 && clickedStart) {
             this._startDate = null;
+            if (this._endDate) this._focusStartDate = this._endDate;
             keepFocusOn = true;
 
             // e)
@@ -1061,6 +1062,8 @@ export default class InputDateRange extends LightningElement {
             // d)
         } else if (!clicked0 && !clicked1 && clickedEnd) {
             this._endDate = null;
+
+            if (this._startDate) this._focusEndDate = this._startDate;
             keepFocusOn = true;
 
             // e)
@@ -1084,40 +1087,29 @@ export default class InputDateRange extends LightningElement {
     // handle focus procession through the fields
     handleDateInputBlur(type) {
         // action when [type] gets blurred
-        requestAnimationFrame(() => {
-            switch (type) {
-                case 'startDate':
-                    this.showStartDate = false;
-                    if (!this.endDate && !this.showTime) {
-                        this._focusEndDate = this._startDate;
-                        this.showEndDate = true;
-                        this.savedFocus = null;
-                    } else if (this.showTime) {
-                        console.log(this.startTimeInput);
-                        this.startTimeInput.focus();
-                    }
-                    //     break;
-                    // case 'startTime':
-                    //     if (!this.endDate) {
-                    //         this.showEndDate = true;
-                    //         console.log('here');
-                    //     }
-                    break;
-                case 'endDate':
-                    this.showEndDate = false;
-                    if (!this.startDate) {
-                        this._focusStartDate = this._endDate;
-                        this.showStartDate = true;
-                        this.savedFocus = null;
-                    } else if (this.showTime) {
-                        this.endTimeInput.focus();
-                    }
-                    break;
+        // requestAnimationFrame(() => {
+        switch (type) {
+            case 'startDate':
+                this.showStartDate = false;
+                if (!this.endDate) {
+                    this._focusEndDate = this._startDate;
+                    this.showEndDate = true;
+                    this.savedFocus = null;
+                }
+                break;
+            case 'endDate':
+                this.showEndDate = false;
+                if (!this.startDate) {
+                    this._focusStartDate = this._endDate;
+                    this.showStartDate = true;
+                    this.savedFocus = null;
+                }
+                break;
 
-                default:
-                    break;
-            }
-        });
+            default:
+                break;
+        }
+        // });
 
         this._focusStartDate = null;
         this._focusEndDate = null;
