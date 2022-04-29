@@ -291,7 +291,7 @@ export default class Calendar extends LightningElement {
     set value(value) {
         if (value) {
             // check if date is in min max range...
-            this._value =
+            const incomingValue =
                 typeof value === 'string' || !Array.isArray(value)
                     ? [this.formattedWithTimezoneOffset(new Date(value))]
                     : [
@@ -301,9 +301,15 @@ export default class Calendar extends LightningElement {
                               )
                           )
                       ];
-            this._value = this._value.filter(
-                (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
-            );
+            console.log(incomingValue);
+
+            this._value = incomingValue.filter((x) => {
+                return (
+                    x.setHours(0, 0, 0, 0) !== NULL_DATE &&
+                    x > this.min &&
+                    x < this.max
+                );
+            });
             this.date = this._value.length
                 ? new Date(this._value[0])
                 : DEFAULT_DATE;
@@ -660,6 +666,8 @@ export default class Calendar extends LightningElement {
                 dateClass += ' avonni-calendar__date-cell';
 
                 tabIndex = selected ? 0 : -1;
+
+                // only add when calendar has no other focus date
                 if (label === 1) {
                     tabIndex = 0;
                 }
@@ -899,7 +907,7 @@ export default class Calendar extends LightningElement {
             } else if (this._selectionMode === 'interval') {
                 this._value = this.isSelectedInterval(this._value, date);
             }
-            this._clickedDate = date;
+            this._clickedDate = date.toISOString();
             this.date = date;
             this.closingMethod = 'selection';
 
