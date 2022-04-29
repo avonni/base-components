@@ -704,7 +704,10 @@ describe('Primitive Tree Item', () => {
         element.level = 3;
 
         return Promise.resolve().then(() => {
-            expect(element.shadowRoot.host.style.cssText).toBe(
+            const item = element.shadowRoot.querySelector(
+                '.avonni-primitive-tree-item__item'
+            );
+            expect(item.style.cssText).toContain(
                 '--avonni-tree-item-spacing-inline-left: 3rem;'
             );
         });
