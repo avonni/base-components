@@ -34,10 +34,10 @@ import { LightningElement, api } from 'lwc';
 import {
     normalizeBoolean,
     normalizeString,
-    normalizeArray
+    normalizeArray,
+    keyCodes
 } from 'c/utilsPrivate';
 import { generateUUID, classSet } from 'c/utils';
-import { keyCodes } from 'c/utilsPrivate';
 
 const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MONTHS = [
@@ -106,20 +106,7 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
-    renderedCallback() {
-        let _focusDate;
-        if (this.firstRender === 0 && this.focusDate) {
-            _focusDate = this.template.querySelector(
-                `td[data-cell-day="${this.focusDate.getTime()}"]`
-            );
-            if (_focusDate) {
-                _focusDate.setAttribute('tabindex', '0');
-                _focusDate.focus();
-            }
-        }
-
-        this.firstRender++;
-    }
+    renderedCallback() {}
 
     /**
      * Array of date label objects. Priority is given to dates placed toward the end of the array.
@@ -194,16 +181,21 @@ export default class Calendar extends LightningElement {
     /**
      * Set initial focus
      *
-     * @type {object}
+     * @param {Date}
      * @public
      */
     @api
-    get focusDate() {
-        return this._focusDate;
-    }
-
-    set focusDate(value) {
-        this._focusDate = value;
+    focusDate(value) {
+        const focusDateTime = value.getTime();
+        requestAnimationFrame(() => {
+            const _focusDate = this.template.querySelector(
+                `td[data-cell-day="${focusDateTime}"]`
+            );
+            if (_focusDate) {
+                _focusDate.setAttribute('tabindex', '0');
+                _focusDate.focus();
+            }
+        });
     }
 
     /**
@@ -298,6 +290,7 @@ export default class Calendar extends LightningElement {
 
     set value(value) {
         if (value) {
+            // check if date is in min max range...
             this._value =
                 typeof value === 'string' || !Array.isArray(value)
                     ? [this.formattedWithTimezoneOffset(new Date(value))]
@@ -530,9 +523,12 @@ export default class Calendar extends LightningElement {
         let date = new Date(this.date.getTime());
         let dateMonth = date.getMonth();
         date.setDate(1);
+        let tabIndex;
 
         if (date.getDay() > 0) {
             date.setDate(-date.getDay() + 1);
+
+            if (date.getDay() === 1) tabIndex = 0;
         }
 
         for (let i = 0; i < 6; i++) {
@@ -558,11 +554,9 @@ export default class Calendar extends LightningElement {
             for (let a = 0; a < 7; a++) {
                 let currentDate = false;
                 let selected = false;
-                let tabIndex;
 
                 let dateClass = 'avonni-calendar__date-cell';
                 let dayClass = 'slds-day';
-                let fullDate = '';
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
                 const markedColors = this.isInArrayMarker(date);
@@ -576,20 +570,12 @@ export default class Calendar extends LightningElement {
                         weekData.splice(-1, 1);
                         break;
                     }
-
                     dateClass = 'slds-day_adjacent-month';
                     dayClass = 'avonni-calendar__disabled-cell slds-day';
                 } else if (this.disabled) {
-                    // why does a disabled day have an adjacent month class?
-                    // dateClass = 'slds-day_adjacent-month';
-
                     dateClass = '';
                     dayClass = 'avonni-calendar__disabled-cell slds-day';
-                } else {
-                    fullDate = time;
                 }
-
-                fullDate = time;
                 if (today === time) {
                     dateClass += ' slds-is-today';
                     currentDate = true;
@@ -664,7 +650,6 @@ export default class Calendar extends LightningElement {
                     label = date.getDate();
                 } else {
                     dayClass = 'avonni-calendar__disabled-cell slds-day';
-                    // fullDate = '';
                 }
 
                 let markedDate = false;
@@ -673,7 +658,11 @@ export default class Calendar extends LightningElement {
                 }
 
                 dateClass += ' avonni-calendar__date-cell';
+
                 tabIndex = selected ? 0 : -1;
+                if (label === 1) {
+                    tabIndex = 0;
+                }
 
                 weekData.push({
                     label: label,
@@ -681,7 +670,7 @@ export default class Calendar extends LightningElement {
                     dayClass: dayClass,
                     selected: selected,
                     currentDate: currentDate,
-                    fullDate: fullDate,
+                    fullDate: time,
                     marked: markedDate,
                     tabIndex: tabIndex,
                     markedColors: markedColors,
@@ -899,7 +888,6 @@ export default class Calendar extends LightningElement {
         );
 
         if (date && !disabledDate) {
-            this._clickedDate = date;
             if (this._selectionMode === 'single') {
                 this._value =
                     this._value.length > 0 &&
@@ -911,7 +899,9 @@ export default class Calendar extends LightningElement {
             } else if (this._selectionMode === 'interval') {
                 this._value = this.isSelectedInterval(this._value, date);
             }
+            this._clickedDate = date;
             this.date = date;
+            this.closingMethod = 'selection';
 
             this.updateDateParameters();
             this.dispatchChange();

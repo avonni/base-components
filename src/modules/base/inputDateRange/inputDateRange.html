@@ -86,6 +86,7 @@
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
                         onclick={clickDateInput}
+                        onblur={blurDateInput}
                         data-element-id="lightning-icon-start-date"
                     ></lightning-button-icon>
                 </div>
@@ -96,7 +97,6 @@
                     <c-calendar
                         value={startDateEndDate}
                         selection-mode={selectionModeStartDate}
-                        focus-date={focusStartDate}
                         onchange={handleChangeStartDate}
                         onprivatefocus={calendarFocusIn}
                         onprivatefocusout={calendarFocusOut}
@@ -168,6 +168,7 @@
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
                         onclick={clickDateInput}
+                        onblur={blurDateInput}
                         data-element-id="lightning-icon-end-date"
                     ></lightning-button-icon>
                 </div>
@@ -179,7 +180,6 @@
                         value={startDateEndDate}
                         selection-mode={selectionModeEndDate}
                         onchange={handleChangeEndDate}
-                        focus-date={focusEndDate}
                         onprivatefocus={calendarFocusIn}
                         onprivatefocusout={calendarFocusOut}
                         data-element-id="calendar-end-date"
@@ -228,4 +228,5 @@
             {helpMessage}
         </div>
     </div>
+    <!-- <lightning-input type="date" label="lightning date"></lightning-input> -->
 </template>
