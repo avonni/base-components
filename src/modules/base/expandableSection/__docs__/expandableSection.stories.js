@@ -49,7 +49,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, close the section.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -60,7 +59,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If the section is not collapsible, the left icon is hidden.',
             table: {
@@ -73,7 +71,6 @@ export default {
                 type: 'select'
             },
             options: ['base', 'shaded'],
-            defaultValue: 'shaded',
             description:
                 'Variant of the section. Valid values include base and shaded.',
             table: {
@@ -84,7 +81,8 @@ export default {
     },
     args: {
         closed: false,
-        collapsible: false
+        collapsible: false,
+        variant: 'shaded'
     }
 };
 
@@ -104,7 +102,7 @@ Collapsible.args = {
 export const CollapsibleClosed = Template.bind({});
 CollapsibleClosed.args = {
     title: 'Section',
-    closed: 'true',
+    closed: true,
     collapsible: true
 };
 
