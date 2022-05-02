@@ -200,6 +200,13 @@ MarkedDates.args = {
     markedDates: markedDates
 };
 
+export const DisabledDatesError = Template.bind({});
+DisabledDatesError.args = {
+    value: '05/03/2022',
+    min: '05/08/2023',
+    max: '05/30/2026'
+};
+
 export const Labels = Template.bind({});
 Labels.args = {
     value: ['05/10/2022', '05/30/2022'],

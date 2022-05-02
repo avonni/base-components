@@ -238,6 +238,8 @@ export default class Calendar extends LightningElement {
         this._max.setHours(0, 0, 0, 0);
     }
 
+    // TODO: If value outside min max, min changes to current month
+    // - https://avonnicreator.atlassian.net/browse/ABC-534
     /**
      * Specifies the minimum date, which the calendar can show.
      *
@@ -290,8 +292,7 @@ export default class Calendar extends LightningElement {
 
     set value(value) {
         if (value) {
-            // check if date is in min max range...
-            const _value =
+            this._value =
                 typeof value === 'string' || !Array.isArray(value)
                     ? [this.formattedWithTimezoneOffset(new Date(value))]
                     : [
@@ -302,7 +303,7 @@ export default class Calendar extends LightningElement {
                           )
                       ];
 
-            this._value = _value.filter((x) => {
+            this._value = this._value.filter((x) => {
                 return (
                     x.setHours(0, 0, 0, 0) !== NULL_DATE &&
                     x > this.min &&
@@ -314,12 +315,11 @@ export default class Calendar extends LightningElement {
             if (this._value[0]) {
                 setDate = new Date(this._value[0]);
             } else if (DEFAULT_DATE < this.min || DEFAULT_DATE > this.max) {
-                setDate = this.min;
+                setDate = this._min;
             } else {
                 setDate = DEFAULT_DATE;
             }
             this.date = setDate;
-            console.log(this._value, this.date);
         }
     }
 
@@ -529,8 +529,7 @@ export default class Calendar extends LightningElement {
      * Compute view data for Calendar.
      */
     generateViewData() {
-        console.log(this.min);
-
+        // TODO: If "Sun" is disabled, the month gets cut after 4 rows.
         let calendarData = [];
         let today = new Date().setHours(0, 0, 0, 0);
         let currentMonth = this.date.getMonth();
@@ -597,7 +596,8 @@ export default class Calendar extends LightningElement {
                     currentDate = true;
                     tabIndex = 0;
                 }
-                // only add when calendar has no other focus date
+
+                // TODO: Only add tabindex = 0 to first of month if month has no other focus point
                 if (date.getDate() === 1) {
                     tabIndex = 0;
                 }
@@ -618,12 +618,10 @@ export default class Calendar extends LightningElement {
                         validValues: LABEL_ICON_POSITIONS.valid,
                         fallbackValue: LABEL_ICON_POSITIONS.default
                     });
-                    if (iconPosition === 'left' && labelItem.iconName) {
+                    if (iconPosition === 'left' && labelItem.iconName)
                         showLeft = true;
-                    }
-                    if (iconPosition === 'right' && labelItem.iconName) {
+                    if (iconPosition === 'right' && labelItem.iconName)
                         showRight = true;
-                    }
 
                     labelClasses = classSet('avonni-calendar__chip-label')
                         .add({
@@ -667,7 +665,7 @@ export default class Calendar extends LightningElement {
 
                 let label = '';
                 label = date.getDate();
-                //
+
                 if (time >= this.min.getTime() && time <= this.max.getTime()) {
                     label = date.getDate();
                 } else {
@@ -828,7 +826,6 @@ export default class Calendar extends LightningElement {
      * Next month handler.
      */
     handlerNextMonth() {
-        console.log(this.min, 'next month');
         this.date.setMonth(this.date.getMonth() + 1);
         this.updateDateParameters();
     }
