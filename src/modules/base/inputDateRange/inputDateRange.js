@@ -1059,9 +1059,10 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles the change of start date
+     *
+     * @param {event} event Calendar date change event
      */
     handleChangeStartDate(event) {
-        // errors to fix, if new start date betwen range, no change
         const value = event.detail.value;
         const clickedDate = new Date(event.detail.clickedDate);
         const normalizedValue = value instanceof Array ? value : [value];
@@ -1069,51 +1070,57 @@ export default class InputDateRange extends LightningElement {
             return date ? new Date(date) : null;
         });
         let keepFocusOn = false;
-        const clicked0 =
+        let state;
+        const clickedOnFirstValue =
             dates[0] && clickedDate.getTime() === dates[0].getTime();
-        const clicked1 =
+        const clickedOnSecondValue =
             dates[1] && clickedDate.getTime() === dates[1].getTime();
-        const clickedStart =
+        const clickedOnStartDate =
             this._startDate &&
             clickedDate.getTime() === this._startDate.getTime();
-        const clickedEnd =
+        const clickedOnEndDate =
             this._endDate && clickedDate.getTime() === this._endDate.getTime();
 
-        /** CASES
-         * a) click one date, new start date
-         * b) click date 0, new start date
-         * c) click date 1, new start date
-         *      c1) if > end, null end date => jump to end
-         * d) click start, start not in dates, delete start
-         * e) click end, new start equal end
-         */
+        // Case selection
+        if (clickedOnFirstValue) state = 'SELECT_ONLY_START';
 
-        // a)
-        if (clicked0 && dates.length === 1) {
-            this._startDate = dates[0];
+        if (clickedOnSecondValue && dates[1] < this._endDate) {
+            state = 'SELECT_NEW_START';
+        }
 
-            // b)
-        } else if (clicked0) {
-            this._startDate = dates[0];
+        if (clickedOnSecondValue && dates[1] > this._endDate)
+            state = 'SELECT_START_ABOVE_END';
 
-            // c)
-        } else if (clicked1) {
-            this._startDate = dates[1];
+        if (!clickedOnFirstValue && !clickedOnSecondValue && clickedOnStartDate)
+            state = 'DESELECT_START';
 
-            // c1)
-            if (dates[1] > this._endDate) {
+        if (clickedOnEndDate) state = 'SELECT_START_EQUAL_END';
+
+        // Case execution
+        switch (state) {
+            case 'SELECT_ONLY_START':
+                this._startDate = dates[0];
+                break;
+
+            case 'SELECT_NEW_START':
+                this._startDate = dates[1];
+                break;
+
+            case 'SELECT_START_ABOVE_END':
                 this._endDate = null;
-            }
+                break;
 
-            // d)
-        } else if (!clicked0 && !clicked1 && clickedStart) {
-            this._startDate = null;
-            if (this._endDate) this._focusStartDate = this._endDate;
-            keepFocusOn = true;
+            case 'DESELECT_START':
+                this._startDate = null;
+                if (this._endDate) this._focusStartDate = this._endDate;
+                keepFocusOn = true;
+                break;
 
-            // e)
-        } else if (clickedEnd) {
-            this._startDate = this._endDate;
+            case 'SELECT_START_EQUAL_END':
+                this._startDate = this._endDate;
+                break;
+
+            default:
         }
 
         event.stopPropagation();
@@ -1130,6 +1137,8 @@ export default class InputDateRange extends LightningElement {
 
     /**
      * Handles the change of end date
+     *
+     * @param {event} event Calendar date change event
      */
     handleChangeEndDate(event) {
         const value = event.detail.value;
@@ -1139,52 +1148,57 @@ export default class InputDateRange extends LightningElement {
             return date ? new Date(date) : null;
         });
         let keepFocusOn = false;
-        const clicked0 =
+        let state;
+        const clickedOnFirstValue =
             dates[0] && clickedDate.getTime() === dates[0].getTime();
-        const clicked1 =
+        const clickedOnSecondValue =
             dates[1] && clickedDate.getTime() === dates[1].getTime();
-        const clickedStart =
+        const clickedOnStartDate =
             this._startDate &&
             clickedDate.getTime() === this._startDate.getTime();
-        const clickedEnd =
+        const clickedOnEndDate =
             this._endDate && clickedDate.getTime() === this._endDate.getTime();
 
-        /** CASES
-         * a) click one date, new end date
-         * b) click date 0, new end date
-         *      b1) if < start, null start date => jump to start
-         * c) click date 1, new end date
-         * d) click end && not in dates, delete end
-         * e) click start, new end equal start
-         */
+        // Case selection
+        if (clickedOnFirstValue && dates.length === 1)
+            state = 'SELECT_ONLY_END';
 
-        // a)
-        if (clicked0 && dates.length === 1) {
-            this._endDate = dates[0];
+        if (clickedOnFirstValue && dates[0] < this._startDate)
+            state = 'SELECT_END_BELOW_START';
 
-            // b)
-        } else if (clicked0) {
-            this._endDate = dates[0];
+        if (clickedOnSecondValue) state = 'SELECT_NEW_END';
 
-            // b1)
-            if (dates[0] < this._startDate) {
+        if (!clickedOnFirstValue && !clickedOnSecondValue && clickedOnEndDate)
+            state = 'DESELECT_END';
+
+        if (clickedOnStartDate) state = 'SELECT_END_EQUAL_START';
+
+        // Case execution
+        switch (state) {
+            case 'SELECT_ONLY_END':
+                this._endDate = dates[0];
+                break;
+
+            case 'SELECT_END_BELOW_START':
+                this._endDate = dates[0];
                 this._startDate = null;
-            }
+                break;
 
-            // c)
-        } else if (clicked1) {
-            this._endDate = dates[1];
+            case 'SELECT_NEW_END':
+                this._endDate = dates[1];
+                break;
 
-            // d)
-        } else if (!clicked0 && !clicked1 && clickedEnd) {
-            this._endDate = null;
+            case 'DESELECT_END':
+                this._endDate = null;
+                if (this._startDate) this._focusEndDate = this._startDate;
+                keepFocusOn = true;
+                break;
 
-            if (this._startDate) this._focusEndDate = this._startDate;
-            keepFocusOn = true;
+            case 'SELECT_END_EQUAL_START':
+                this._endDate = this._startDate;
+                break;
 
-            // e)
-        } else if (clickedStart) {
-            this._endDate = this._startDate;
+            default:
         }
 
         event.stopPropagation();

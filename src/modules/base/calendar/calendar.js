@@ -238,8 +238,6 @@ export default class Calendar extends LightningElement {
         this._max.setHours(0, 0, 0, 0);
     }
 
-    // TODO: If value outside min max, min changes to current month
-    // - https://avonnicreator.atlassian.net/browse/ABC-534
     /**
      * Specifies the minimum date, which the calendar can show.
      *
@@ -304,11 +302,7 @@ export default class Calendar extends LightningElement {
                       ];
 
             this._value = this._value.filter((x) => {
-                return (
-                    x.setHours(0, 0, 0, 0) !== NULL_DATE &&
-                    x > this.min &&
-                    x < this.max
-                );
+                return x.setHours(0, 0, 0, 0) !== NULL_DATE;
             });
 
             let setDate;
@@ -541,7 +535,7 @@ export default class Calendar extends LightningElement {
         if (date.getDay() > 0) {
             date.setDate(-date.getDay() + 1);
 
-            if (date.getDay() === 1) tabIndex = 0;
+            // if (date.getDay() === 1) tabIndex = 0;
         }
 
         for (let i = 0; i < 6; i++) {
@@ -597,7 +591,6 @@ export default class Calendar extends LightningElement {
                     tabIndex = 0;
                 }
 
-                // TODO: Only add tabindex = 0 to first of month if month has no other focus point
                 if (date.getDate() === 1) {
                     tabIndex = 0;
                 }
@@ -1195,6 +1188,10 @@ export default class Calendar extends LightningElement {
                 break;
         }
 
+        this.updateFocus(nextDate);
+    }
+
+    updateFocus(nextDate) {
         if (nextDate) {
             let currentDate = this.date.getTime();
 
