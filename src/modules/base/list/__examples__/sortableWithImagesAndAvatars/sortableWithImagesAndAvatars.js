@@ -32,7 +32,7 @@ export default class ListSortableWithImagesAndAvatars extends LightningElement {
             description:
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             imageSrc:
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+                'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg'
         },
         {
             label: 'Item 2',
@@ -79,7 +79,8 @@ export default class ListSortableWithImagesAndAvatars extends LightningElement {
                 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             infos: [{ label: 'info 1', href: '' }],
             icons: ['utility:share'],
-            imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+            imageSrc:
+                'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
         }
     ];
 }

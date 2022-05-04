@@ -250,20 +250,20 @@ const ListTemplate = (args) => ImageList(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text'
 };
 
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '150'
 };
 
 export const BaseLarge = Template.bind({});
 BaseLarge.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '600'
 };
@@ -271,8 +271,6 @@ BaseLarge.args = {
 export const BaseWithLazyLoading = ListTemplate.bind({});
 BaseWithLazyLoading.args = {
     src: [
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
@@ -296,14 +294,14 @@ BaseWithLazyLoading.args = {
 
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     thumbnail: true
 };
 
 export const Center = Template.bind({});
 Center.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     position: 'center',
     width: '600'
@@ -311,7 +309,7 @@ Center.args = {
 
 export const Right = Template.bind({});
 Right.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     position: 'right',
     width: '600'
@@ -324,7 +322,7 @@ CropImageStaticThumbnailMobile.parameters = {
     }
 };
 CropImageStaticThumbnailMobile.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '280',
     cropSize: '1x1',
