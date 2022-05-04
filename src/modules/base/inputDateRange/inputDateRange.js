@@ -1163,31 +1163,27 @@ export default class InputDateRange extends LightningElement {
      * @param {event} event
      */
     blurDateInput(event) {
+        if (!event.target.dataset.elementId) return;
         const blurredInput = event.target.dataset.elementId;
+
         requestAnimationFrame(() => {
             let newFocus;
-            if (this.template.activeElement) {
-                newFocus = this.template.activeElement;
-            }
+            if (this.template.activeElement)
+                newFocus = this.template.activeElement.dataset.elementId;
 
             switch (blurredInput) {
                 case 'input-start-date':
                     if (
                         !this.enteredStartCalendar &&
-                        !(
-                            newFocus.dataset.elementId ===
-                            'lightning-icon-start-date'
-                        )
+                        // don't hide the calendar if the focus was moved to the icon
+                        !(newFocus === 'lightning-icon-start-date')
                     )
                         this.showStartDate = false;
                     break;
                 case 'input-end-date':
                     if (
                         !this.enteredEndCalendar &&
-                        !(
-                            newFocus.dataset.elementId ===
-                            'lightning-icon-end-date'
-                        )
+                        !(newFocus === 'lightning-icon-end-date')
                     )
                         this.showEndDate = false;
                     break;
@@ -1211,7 +1207,7 @@ export default class InputDateRange extends LightningElement {
      * @param {Event} event
      */
     calendarFocusIn(event) {
-        if (!event.target.dataset.elementId) return;
+        if (!event.target) return;
         const focusedElementId = event.target.dataset.elementId;
 
         if (focusedElementId === 'calendar-start-date') {
@@ -1228,13 +1224,18 @@ export default class InputDateRange extends LightningElement {
      * On calendar focus out, close calendar and
      * bring back focus to input
      */
-    calendarFocusStartOut() {
+    calendarFocusStartOut(event) {
         this.keepFocus = true;
 
         setTimeout(() => {
             if (this.keepFocus) {
                 this.showStartDate = false;
-                this.startDateInput.focus();
+
+                if (
+                    event.target &&
+                    event.target.dataset.elementId !== 'calendar-start-date'
+                )
+                    this.startDateInput.focus();
             }
         }, 1);
     }
@@ -1243,13 +1244,18 @@ export default class InputDateRange extends LightningElement {
      * On calendar focus out, close calendar and
      * bring back focus to input
      */
-    calendarFocusEndOut() {
+    calendarFocusEndOut(event) {
         this.keepFocus = true;
 
         setTimeout(() => {
             if (this.keepFocus) {
                 this.showEndDate = false;
-                this.endDateInput.focus();
+
+                if (
+                    event.target &&
+                    event.target.dataset.elementId !== 'calendar-end-date'
+                )
+                    this.endDateInput.focus();
             }
         }, 1);
     }
@@ -1260,18 +1266,16 @@ export default class InputDateRange extends LightningElement {
      * @param {event} event
      */
     calendarKeyListener(event) {
-        if (event.keyCode === keyCodes.escape) {
-            switch (event.target.dataset.elementId) {
-                case 'calendar-start-date':
-                    this.showStartDate = false;
-                    this.startDateIcon.focus();
-                    break;
-                case 'calendar-end-date':
-                    this.showEndDate = false;
-                    this.endDateIcon.focus();
-                    break;
-                default:
-            }
+        if (event.keyCode !== keyCodes.escape) return;
+        if (!event.target.dataset.elementId) return;
+
+        if (event.target.dataset.elementId === 'calendar-start-date') {
+            this.showStartDate = false;
+            this.startDateIcon.focus();
+        }
+        if (event.target.dataset.elementId === 'calendar-end-date') {
+            this.showEndDate = false;
+            this.endDateIcon.focus();
         }
     }
 }
