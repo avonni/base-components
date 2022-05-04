@@ -101,6 +101,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     popoverVisible = false;
     _checkboxIsIndeterminate = false;
     _focusOn = false;
+    _isConnected = false;
     _menuIsOpen = false;
 
     connectedCallback() {
@@ -141,6 +142,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         this.updateLevel();
         this.splitActions();
         this.computeSelection();
+        this._isConnected = true;
     }
 
     renderedCallback() {
@@ -180,7 +182,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actions(value) {
         this._actions = normalizeArray(value);
-        if (this.isConnected) this.splitActions();
+        if (this._isConnected) this.splitActions();
     }
 
     /**
@@ -195,7 +197,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set actionsWhenDisabled(value) {
         this._actionsWhenDisabled = normalizeArray(value);
-        if (this.isConnected) this.splitActions();
+        if (this._isConnected) this.splitActions();
     }
 
     /**
@@ -239,7 +241,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set childItems(value) {
         this._childItems = normalizeArray(value);
-        if (this.isConnected) this.computeSelection();
+        if (this._isConnected) this.computeSelection();
     }
 
     /**
@@ -300,7 +302,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-        if (this.isConnected) this.splitActions();
+        if (this._isConnected) this.splitActions();
     }
 
     /**
@@ -316,7 +318,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set independentMultiSelect(value) {
         this._independentMultiSelect = normalizeBoolean(value);
-        if (this.isConnected) this.computeSelection();
+        if (this._isConnected) this.computeSelection();
     }
 
     /**
@@ -436,7 +438,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set selected(value) {
         this._selected = normalizeBoolean(value);
-        if (this.isConnected) this.computeSelection();
+        if (this._isConnected) this.computeSelection();
     }
 
     /**
@@ -452,7 +454,7 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
     set showCheckbox(value) {
         this._showCheckbox = normalizeBoolean(value);
-        if (this.isConnected) this.computeSelection();
+        if (this._isConnected) this.computeSelection();
     }
 
     /**

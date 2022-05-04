@@ -105,10 +105,6 @@ export default class RelationshipGraph extends LightningElement {
      */
     @api expandIconName = DEFAULT_EXPAND_ICON_NAME;
 
-    processedGroups;
-    selectedItemPosition;
-    inlineHeader;
-
     _variant = RELATIONSHIP_GRAPH_GROUP_VARIANTS.default;
     _actions = [];
     _selectedItemName;
@@ -119,12 +115,18 @@ export default class RelationshipGraph extends LightningElement {
     _itemActions = [];
     _hideItemsCount = false;
 
+    processedGroups;
+    selectedItemPosition;
+    inlineHeader;
+    _isConnected = false;
+
     connectedCallback() {
         this.updateSelection();
 
         if (this.variant === 'vertical') {
             this.inlineHeader = true;
         }
+        this._isConnected = true;
     }
 
     renderedCallback() {
@@ -177,7 +179,7 @@ export default class RelationshipGraph extends LightningElement {
         this._selectedItemName =
             (typeof name === 'string' && name.trim()) || '';
 
-        if (this.isConnected) this.updateSelection();
+        if (this._isConnected) this.updateSelection();
     }
 
     /**
@@ -193,7 +195,7 @@ export default class RelationshipGraph extends LightningElement {
     set groups(value) {
         this._groups = normalizeArray(value);
 
-        if (this.isConnected) {
+        if (this._isConnected) {
             this.updateSelection();
         }
     }

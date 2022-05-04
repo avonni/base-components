@@ -63,9 +63,11 @@ export default class OutputData extends LightningElement {
     _variant = VARIANTS.default;
 
     normalizedTypeAttributes = {};
+    _isConnected = false;
 
     connectedCallback() {
         this.normalizeTypeAttributes();
+        this._isConnected = true;
     }
 
     /**
@@ -81,7 +83,7 @@ export default class OutputData extends LightningElement {
     set typeAttributes(value) {
         this._typeAttributes = typeof value === 'object' ? value : {};
 
-        if (this.isConnected) this.normalizeTypeAttributes();
+        if (this._isConnected) this.normalizeTypeAttributes();
     }
 
     /**
@@ -100,7 +102,7 @@ export default class OutputData extends LightningElement {
             validValues: TYPES.valid
         });
 
-        if (this.isConnected) this.normalizeTypeAttributes();
+        if (this._isConnected) this.normalizeTypeAttributes();
     }
 
     /**

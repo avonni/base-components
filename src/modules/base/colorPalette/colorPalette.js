@@ -103,9 +103,11 @@ export default class ColorPalette extends LightningElement {
     computedGroups = [];
     currentLabel;
     currentToken;
+    _isConnected = false;
 
     connectedCallback() {
         this.initGroups();
+        this._isConnected = true;
     }
 
     renderedCallback() {
@@ -131,7 +133,7 @@ export default class ColorPalette extends LightningElement {
         const colors = deepCopy(normalizeArray(value));
         this._colors = colors.length ? colors : DEFAULT_COLORS;
 
-        if (this.isConnected) this.initGroups();
+        if (this._isConnected) this.initGroups();
     }
 
     /**
@@ -165,7 +167,7 @@ export default class ColorPalette extends LightningElement {
     set groups(value) {
         this._groups = normalizeArray(value);
 
-        if (this.isConnected) this.initGroups();
+        if (this._isConnected) this.initGroups();
     }
 
     /**
@@ -499,7 +501,7 @@ export default class ColorPalette extends LightningElement {
         if (!this.disabled && !this.readOnly) {
             /**
              * The event fired when the value is changed.
-             * 
+             *
              * @event
              * @public
              * @name change
