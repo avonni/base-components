@@ -74,7 +74,6 @@
                         value={startDateString}
                         disabled={disabled}
                         required={required}
-                        onfocus={focusDateInput}
                         onblur={blurDateInput}
                         onclick={clickDateInput}
                         data-element-id="input-start-date"
@@ -101,8 +100,9 @@
                             value={startDateEndDate}
                             selection-mode={selectionModeStartDate}
                             onchange={handleChangeStartDate}
-                            onprivatefocus={calendarFocusIn}
-                            onprivatefocusout={calendarFocusOut}
+                            onfocusin={calendarFocusIn}
+                            onfocusout={calendarFocusStartOut}
+                            onkeydown={calendarKeyListener}
                             data-element-id="calendar-start-date"
                         ></c-calendar
                     ></lightning-focus-trap>
@@ -187,8 +187,9 @@
                             value={startDateEndDate}
                             selection-mode={selectionModeEndDate}
                             onchange={handleChangeEndDate}
-                            onprivatefocus={calendarFocusIn}
-                            onprivatefocusout={calendarFocusOut}
+                            onfocusin={calendarFocusIn}
+                            onfocusout={calendarFocusEndOut}
+                            onkeydown={calendarKeyListener}
                             data-element-id="calendar-end-date"
                         ></c-calendar>
                     </lightning-focus-trap>

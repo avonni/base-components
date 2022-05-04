@@ -100,7 +100,6 @@ export default class Calendar extends LightningElement {
     calendarData;
     keepFocus = true;
     firstRender = 0;
-    closingMethod = 'click';
 
     connectedCallback() {
         this.updateDateParameters();
@@ -913,12 +912,13 @@ export default class Calendar extends LightningElement {
             }
             this._clickedDate = date.toISOString();
             this.date = date;
-            this.closingMethod = 'selection';
 
             this.updateDateParameters();
             this.dispatchChange();
         }
     }
+
+    // EVENT HANDLERS //
 
     /**
      * Change event dispatcher.
@@ -947,10 +947,6 @@ export default class Calendar extends LightningElement {
      * Private focus handler.
      */
     handleFocus() {
-        if (this.keepFocus) {
-            this.keepFocus = false;
-        }
-
         /**
          * @event
          * @private
@@ -964,36 +960,6 @@ export default class Calendar extends LightningElement {
                 cancelable: true
             })
         );
-    }
-
-    /**
-     * Private focus out handler.
-     */
-    handleFocusOut() {
-        this.keepFocus = true;
-
-        requestAnimationFrame(() => {
-            if (this.keepFocus) {
-                /**
-                 * @event
-                 * @private
-                 * @name privatefocusout
-                 * @bubbles
-                 * @cancelable
-                 * @composed
-                 */
-                this.dispatchEvent(
-                    new CustomEvent('privatefocusout', {
-                        composed: true,
-                        bubbles: true,
-                        cancelable: true,
-                        detail: {
-                            method: this.closingMethod
-                        }
-                    })
-                );
-            }
-        });
     }
 
     /**
@@ -1016,6 +982,8 @@ export default class Calendar extends LightningElement {
             })
         );
     }
+
+    // HOVERED DATES AND RANGES APPEARANCE
 
     /**
      * Mouse over handler.
@@ -1104,10 +1072,12 @@ export default class Calendar extends LightningElement {
         });
     }
 
+    // KEYBOARD NAVIGATION
+
     /**
      * Keyboard navigation handler.
      *
-     * @param {Event} event keyCode value used to change selection
+     * @param {Event} event
      */
     handleKeyDown(event) {
         const initialFocusDate = new Date(
@@ -1176,13 +1146,7 @@ export default class Calendar extends LightningElement {
                 const currentDayButton = event.target.querySelector(
                     '[data-element-id="span-day-label"]'
                 );
-                if (currentDayButton) {
-                    currentDayButton.click();
-                }
-                break;
-            case keyCodes.escape:
-                this.closingMethod = 'escape';
-                this.handleFocusOut();
+                if (currentDayButton) currentDayButton.click();
                 break;
             default:
                 break;
@@ -1191,6 +1155,11 @@ export default class Calendar extends LightningElement {
         this.updateFocus(nextDate);
     }
 
+    /**
+     * Place focus according to keyboard selection
+     *
+     * @param {number} nextDate The datetime of the keyboard navigation target
+     */
     updateFocus(nextDate) {
         if (nextDate) {
             let currentDate = this.date.getTime();
