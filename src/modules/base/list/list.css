@@ -93,6 +93,14 @@
     transition: transform 300ms;
 }
 
+.avonni-list__item-grid {
+    display: flex;
+}
+
+.avonni-list__item-grid > div {
+    width: 300px;
+}
+
 .avonni-list__item-sortable.avonni-list__item-sortable_dragged {
     position: relative;
     z-index: 1;
@@ -152,6 +160,12 @@
     font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
+}
+
+.avonni-list__item-menu {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }
 
 @media (max-width: 320px) {

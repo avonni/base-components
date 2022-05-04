@@ -348,7 +348,9 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemClass() {
-        return classSet('slds-grid avonni-list__item slds-item')
+        return classSet(
+            'slds-grid avonni-list__item slds-item avonni-list__item-grid'
+        )
             .add({
                 'avonni-list__item-sortable': this.sortable,
                 'avonni-list__item-expanded': this._hasActions,
