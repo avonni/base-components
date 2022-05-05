@@ -139,7 +139,6 @@ export default class PrimitiveTreeItem extends LightningElement {
 
         this.addEventListener('keydown', this.handleKeydown);
         this.addEventListener('mousedown', this.handleMouseDown);
-        this.updateLevel();
         this.splitActions();
         this.computeSelection();
         this._isConnected = true;
@@ -155,7 +154,7 @@ export default class PrimitiveTreeItem extends LightningElement {
         }
 
         if (this.popoverVisible) this.positionPopover();
-
+        if (this.level) this.updateLevel();
         this.updateCheckboxStatus();
     }
 
@@ -952,9 +951,8 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Update the visual level offset of the item.
      */
     updateLevel() {
-        let style = this.template.host.style.cssText;
-        style += `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
-        this.template.host.style.cssText = style;
+        if (this.itemElement)
+            this.itemElement.style = `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
     }
 
     /**
