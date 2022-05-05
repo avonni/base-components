@@ -82,27 +82,27 @@ const CONFETTI_FREQUENCY = {
 };
 
 /**
-* @class
-* @descriptor avonni-path
-* @storyId example-path--base
-* @public
-*/
+ * @class
+ * @descriptor avonni-path
+ * @storyId example-path--base
+ * @public
+ */
 export default class Path extends LightningElement {
     /**
-    * The Lightning Design System name of the icon used for the path update button.
-    * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
-    *
-    * @type {string}
-    * @public
-    */
+     * The Lightning Design System name of the icon used for the path update button.
+     * Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     */
     @api nextButtonIconName;
     /**
-    * The Lightning Design System name of the icon used for the path update button. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
-    *
-    * @type {string}
-    * @public
-    * @default Mark as Current Stage
-    */
+     * The Lightning Design System name of the icon used for the path update button. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     * @default Mark as Current Stage
+     */
     @api selectButtonIconName;
 
     _currentStep;
@@ -123,6 +123,7 @@ export default class Path extends LightningElement {
     _status = DEFAULT_COMPLETED_OPTION;
     _activeStep;
     _candidateStep;
+    _isConnected = false;
     coachingIsVisible = false;
     computedCurrentStep;
     completedOptions;
@@ -131,6 +132,7 @@ export default class Path extends LightningElement {
     connectedCallback() {
         this.initSteps();
         this.initCurrentStep(this.currentStep);
+        this._isConnected = true;
     }
 
     renderedCallback() {
@@ -138,11 +140,11 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Name of the current step.
-    *
-    * @type {string}
-    * @public
-    */
+     * Name of the current step.
+     *
+     * @type {string}
+     * @public
+     */
     @api
     get currentStep() {
         return this._currentStep;
@@ -151,17 +153,17 @@ export default class Path extends LightningElement {
         if (typeof value === 'string') {
             this._currentStep = value;
 
-            if (this.isConnected) this.initCurrentStep(this.currentStep);
+            if (this._isConnected) this.initCurrentStep(this.currentStep);
         }
     }
 
     /**
-    * If present, the path is disabled.
-    *
-    * @type {boolean}
-    * @public
-    * @default false
-    */
+     * If present, the path is disabled.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get disabled() {
         return this._disabled;
@@ -171,12 +173,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Progression format of the path. Valid values include linear and non-linear.
-    *
-    * @type {string}
-    * @public
-    * @default linear
-    */
+     * Progression format of the path. Valid values include linear and non-linear.
+     *
+     * @type {string}
+     * @public
+     * @default linear
+     */
     @api
     get format() {
         return this._format;
@@ -189,12 +191,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Label of the key fields section.
-    *
-    * @type {string}
-    * @public
-    * @default Key Fields
-    */
+     * Label of the key fields section.
+     *
+     * @type {string}
+     * @public
+     * @default Key Fields
+     */
     @api
     get keyFieldsLabel() {
         return this._keyFieldsLabel;
@@ -205,12 +207,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Label of the guidance section.
-    *
-    * @type {string}
-    * @public
-    * @default Guidance for Success
-    */
+     * Label of the guidance section.
+     *
+     * @type {string}
+     * @public
+     * @default Guidance for Success
+     */
     @api
     get guidanceLabel() {
         return this._guidanceLabel;
@@ -221,12 +223,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * If present, the coaching section will be hidden.
-    *
-    * @type {boolean}
-    * @public
-    * @default false
-    */
+     * If present, the coaching section will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get hideCoaching() {
         return this._hideCoaching;
@@ -236,12 +238,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * If present, the path buttons will be hidden.
-    *
-    * @type {boolean}
-    * @public
-    * @default false
-    */
+     * If present, the path buttons will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
     @api
     get hideButtons() {
         return this._hideButtons;
@@ -251,12 +253,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Default label of the path button. On click on the button, the path will go to the next step.
-    *
-    * @type {string}
-    * @public
-    * @default Mark as Complete
-    */
+     * Default label of the path button. On click on the button, the path will go to the next step.
+     *
+     * @type {string}
+     * @public
+     * @default Mark as Complete
+     */
     @api
     get nextButtonLabel() {
         return this._nextButtonLabel;
@@ -269,12 +271,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Position of the next button. Valid values include left and right.
-    *
-    * @type {string}
-    * @public
-    * @default left
-    */
+     * Position of the next button. Valid values include left and right.
+     *
+     * @type {string}
+     * @public
+     * @default left
+     */
     @api
     get nextButtonIconPosition() {
         return this._nextButtonIconPosition;
@@ -287,12 +289,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Label of the path button, when the user clicked on a different step than the current one. On click on the button, the selected step will become the current step.
-    *
-    * @type {string}
-    * @public
-    * @default Mark as Current Stage
-    */
+     * Label of the path button, when the user clicked on a different step than the current one. On click on the button, the selected step will become the current step.
+     *
+     * @type {string}
+     * @public
+     * @default Mark as Current Stage
+     */
     @api
     get selectButtonLabel() {
         return this._selectButtonLabel;
@@ -305,12 +307,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Position of the select button. Valid values include left and right.
-    *
-    * @type {string}
-    * @public
-    * @default left
-    */
+     * Position of the select button. Valid values include left and right.
+     *
+     * @type {string}
+     * @public
+     * @default left
+     */
     @api
     get selectButtonIconPosition() {
         return this._selectButtonIconPosition;
@@ -323,13 +325,13 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Label of the menu item that appears when the previous step had completed options. 
-    * On click on the menu item, the dialog will reopen, and the user will be able to change the completion status.
-    *
-    * @type {string}
-    * @public
-    * @default Change Completion Status
-    */
+     * Label of the menu item that appears when the previous step had completed options.
+     * On click on the menu item, the dialog will reopen, and the user will be able to change the completion status.
+     *
+     * @type {string}
+     * @public
+     * @default Change Completion Status
+     */
     @api
     get changeCompletionStatusLabel() {
         return this._changeCompletionStatusLabel;
@@ -342,12 +344,12 @@ export default class Path extends LightningElement {
     }
 
     /**
-    * Array of step objects.
-    *
-    * @type {object[]}
-    * @public
-    * @required
-    */
+     * Array of step objects.
+     *
+     * @type {object[]}
+     * @public
+     * @required
+     */
     @api
     get steps() {
         return this._steps;
@@ -356,18 +358,18 @@ export default class Path extends LightningElement {
         const array = normalizeArray(proxy);
         this._steps = JSON.parse(JSON.stringify(array));
 
-        if (this.isConnected) {
+        if (this._isConnected) {
             this.initSteps();
             this.initCurrentStep(this.currentStep);
         }
     }
 
     /**
-    * Array of action objects, used as default step actions.
-    *
-    * @type {object[]}
-    * @public
-    */
+     * Array of action objects, used as default step actions.
+     *
+     * @type {object[]}
+     * @public
+     */
     @api
     get actions() {
         return this._actions;
@@ -375,12 +377,12 @@ export default class Path extends LightningElement {
     set actions(value) {
         this._actions = normalizeArray(value);
 
-        if (this.isConnected) this.initSteps();
+        if (this._isConnected) this.initSteps();
     }
 
     /**
      * Toggle to display Coaching icon.
-     * 
+     *
      * @type {string}
      */
     get toggleCoachingIcon() {
@@ -391,7 +393,7 @@ export default class Path extends LightningElement {
 
     /**
      * Name string of the last step.
-     * 
+     *
      * @type {string}
      */
     get lastStepName() {
@@ -400,7 +402,7 @@ export default class Path extends LightningElement {
 
     /**
      * Check if the last Step is the current step.
-     * 
+     *
      * @type {string}
      */
     get lastStepIsCurrent() {
@@ -409,7 +411,7 @@ export default class Path extends LightningElement {
 
     /**
      * Verify if the current step is also the active step.
-     * 
+     *
      * @type {boolean}
      */
     get currentStepIsActive() {
@@ -418,7 +420,7 @@ export default class Path extends LightningElement {
 
     /**
      * Upon fulfilling completed options show the Change Completion Status button.
-     * 
+     *
      * @type {boolean}
      */
     get showChangeCompletionStatusButton() {
@@ -432,7 +434,7 @@ export default class Path extends LightningElement {
 
     /**
      * Display the Select button when active step and is not the current step.
-     * 
+     *
      * @type {boolean}
      */
     get showSelectButton() {
@@ -441,7 +443,7 @@ export default class Path extends LightningElement {
 
     /**
      * Display next button when not at end of steps and the current step is the active one.
-     * 
+     *
      * @type {boolean}
      */
     get showNextButton() {
@@ -453,7 +455,7 @@ export default class Path extends LightningElement {
 
     /**
      * Find current Step index
-     * 
+     *
      * @type {number}
      */
     get currentStepIndex() {
@@ -462,7 +464,7 @@ export default class Path extends LightningElement {
 
     /**
      * Computed path class based on attribute selections.
-     * 
+     *
      * @type {string}
      */
     get pathClass() {
@@ -489,7 +491,7 @@ export default class Path extends LightningElement {
 
     /**
      * Return label for Stage Title based on active step or computed Current step.
-     * 
+     *
      * @type {string}
      */
     get stageTitle() {
@@ -500,7 +502,7 @@ export default class Path extends LightningElement {
 
     /**
      * Display the next step of the path.
-     * 
+     *
      * @public
      */
     @api
@@ -514,7 +516,7 @@ export default class Path extends LightningElement {
 
     /**
      * Display the previous step of the path.
-     * 
+     *
      * @public
      */
     @api
@@ -555,8 +557,8 @@ export default class Path extends LightningElement {
 
     /**
      * Initialize Current step.
-     * 
-     * @param {string} name 
+     *
+     * @param {string} name
      */
     initCurrentStep(name) {
         const currentStep = this.getStepFromName(name);
@@ -588,7 +590,7 @@ export default class Path extends LightningElement {
 
     /**
      * Compute path step movement.
-     * 
+     *
      * @param {object} param0 toIndex, toName
      */
     computeMovement({ toIndex, toName }) {
@@ -626,8 +628,8 @@ export default class Path extends LightningElement {
 
     /**
      * Move the current step to the selected step name.
-     * 
-     * @param {string} name 
+     *
+     * @param {string} name
      */
     moveToStep(name) {
         this._currentStep = name;
@@ -639,8 +641,8 @@ export default class Path extends LightningElement {
 
     /**
      * Retrieve step name
-     * 
-     * @param {string} name 
+     *
+     * @param {string} name
      * @returns {string} step.name
      */
     getStepFromName(name) {
@@ -735,9 +737,8 @@ export default class Path extends LightningElement {
      * Save the value of current dialog handler.
      */
     handleSaveDialog() {
-        this._completedOptionValue = this.template.querySelector(
-            'lightning-combobox'
-        ).value;
+        this._completedOptionValue =
+            this.template.querySelector('lightning-combobox').value;
         if (!this._completedOptionValue) return;
 
         // Get the new path status (base, success, etc.)
@@ -767,8 +768,8 @@ export default class Path extends LightningElement {
 
     /**
      * Click on step handler.
-     * 
-     * @param {Event} event 
+     *
+     * @param {Event} event
      */
     handlePathStepClick(event) {
         event.preventDefault();
@@ -790,19 +791,19 @@ export default class Path extends LightningElement {
 
     /**
      * Action button click event handler.
-     * 
+     *
      * @param {Event} event
      */
     handleActionClick(event) {
         /**
-        * The event fired when a user clicks on an action button.
-        *
-        * @event
-        * @name actionclick
-        * @param {string} name Name of the action clicked.
-        * @param {string} targetName Name of the step the action is related to.
-        * @public
-        */
+         * The event fired when a user clicks on an action button.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} name Name of the action clicked.
+         * @param {string} targetName Name of the step the action is related to.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
@@ -822,21 +823,21 @@ export default class Path extends LightningElement {
 
     /**
      * Change dispatcher.
-     * 
+     *
      * @param {string} oldStep
      */
     dispatchChange(oldStep) {
         /**
-        * The event fired when the path advances or goes back following the configured step flow.
-        *
-        * @event
-        * @name change
-        * @param {string} currentStep Step name the path is moving to.
-        * @param {string} oldStep Step name the path is moving from.
-        * @param {string} completedValue Value of the completed option selected.
-        * @param {boolean} lastStep True if the current step is the last step.
-        * @public
-        */
+         * The event fired when the path advances or goes back following the configured step flow.
+         *
+         * @event
+         * @name change
+         * @param {string} currentStep Step name the path is moving to.
+         * @param {string} oldStep Step name the path is moving from.
+         * @param {string} completedValue Value of the completed option selected.
+         * @param {boolean} lastStep True if the current step is the last step.
+         * @public
+         */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
