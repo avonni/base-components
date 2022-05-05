@@ -116,6 +116,7 @@ export default class InputChoiceSet extends LightningElement {
     _variant;
 
     _helpMessage;
+    _isConnected = false;
 
     constructor() {
         super();
@@ -149,6 +150,7 @@ export default class InputChoiceSet extends LightningElement {
         this.updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+        this._isConnected = true;
     }
 
     /**
@@ -197,7 +199,7 @@ export default class InputChoiceSet extends LightningElement {
     set value(value) {
         this._value = value;
 
-        if (value && this.isConnected && this.isMultiSelect) {
+        if (value && this._isConnected && this.isMultiSelect) {
             this._value =
                 typeof value === 'string' ? [value] : normalizeArray(value);
         }

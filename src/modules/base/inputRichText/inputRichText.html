@@ -41,6 +41,7 @@
         onclick={activateEditor}
     >
         <template if:true={isBottomToolbar}>
+            <!-- Top editor -->
             <div
                 if:false={readOnly}
                 class="slds-rich-text-editor__textarea slds-grid editor"
@@ -74,6 +75,8 @@
                 {errorMessage}
             </div>
         </template>
+
+        <!-- Toolbar -->
         <div
             class="slds-rich-text-editor__toolbar slds-shrink-none"
             role="toolbar"
@@ -180,7 +183,9 @@
                 </ul>
             </template>
         </div>
+
         <template if:false={isBottomToolbar}>
+            <!-- Bottom editor -->
             <div
                 if:false={readOnly}
                 class="slds-rich-text-editor__textarea slds-grid editor"
@@ -231,6 +236,7 @@
             name="link-input"
             value={showLinkValue}
             label={i18n.linkInput}
+            data-element-id="lightning-input-link"
             onchange={handleLinkValueChange}
             onkeydown={linkKeyboardPress}
         ></lightning-input>
