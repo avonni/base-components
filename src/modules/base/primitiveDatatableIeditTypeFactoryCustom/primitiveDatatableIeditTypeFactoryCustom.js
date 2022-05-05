@@ -152,16 +152,6 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
         this._endDate = value;
     }
 
-    @api
-    get value() {
-        return this.concreteComponent.value;
-    }
-
-    @api
-    get validity() {
-        return this.concreteComponent.validity;
-    }
-
     /**
      * Gets the data inputable element.
      *
@@ -173,6 +163,16 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
 
     get columnType() {
         return this._columnDef.type;
+    }
+      
+    @api
+    get value() {
+        return this.concreteComponent.value;
+    }
+
+    @api
+    get validity() {
+        return this.concreteComponent.validity;
     }
 
     @api
