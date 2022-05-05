@@ -206,12 +206,14 @@ export default class ColorPicker extends LightningElement {
     showError = false;
 
     _inputValue = '';
+    _isConnected = false;
     _rendered = false;
 
     connectedCallback() {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this.computeToken();
+        this._isConnected = true;
     }
 
     renderedCallback() {
@@ -298,7 +300,7 @@ export default class ColorPicker extends LightningElement {
         if (value && typeof value === 'string') {
             this._value = value;
             this.inputValue = value;
-            if (this.isConnected) this.computeToken();
+            if (this._isConnected) this.computeToken();
         } else {
             this._value = null;
             this._inputValue = '';
@@ -545,7 +547,7 @@ export default class ColorPicker extends LightningElement {
 
     set tokens(value) {
         this._tokens = normalizeArray(value);
-        if (this.isConnected) this.computeToken();
+        if (this._isConnected) this.computeToken();
     }
 
     /**
@@ -1151,7 +1153,7 @@ export default class ColorPicker extends LightningElement {
         if (this.isAutoAlignment() && this.dropdownVisible) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
             setTimeout(() => {
-                if (this.isConnected) {
+                if (this._isConnected) {
                     observePosition(this, 300, this._boundingRect, () => {
                         this.close();
                     });

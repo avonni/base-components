@@ -151,7 +151,9 @@ export default class ExpandableSection extends LightningElement {
         return classSet('slds-button slds-section__title-action')
             .add({
                 'slds-theme_default avonni-expandable-section__title-button_base':
-                    this.variant === 'base'
+                    this.variant === 'base',
+                'avonni-expandable-section__title-button_shaded':
+                    this.variant === 'shaded'
             })
             .toString();
     }

@@ -176,7 +176,7 @@ const itemsWithImages = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg'
     },
     {
         label: 'Item 2',
@@ -263,7 +263,7 @@ const itemsWithImagesAndAvatars = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 2',

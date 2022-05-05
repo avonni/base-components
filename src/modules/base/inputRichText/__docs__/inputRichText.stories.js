@@ -48,7 +48,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -75,7 +74,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -95,7 +93,6 @@ export default {
                 type: 'select'
             },
             options: ['top-toolbar', 'bottom-toolbar'],
-            defaultValue: 'top-toolbar',
             table: {
                 defaultValue: { summary: 'top-toolbar' },
                 type: { summary: 'string' },
@@ -106,7 +103,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -117,7 +113,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' },
@@ -138,7 +133,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: [],
             table: {
                 type: { summary: 'string[]' },
                 category: 'Toolbar'
@@ -148,7 +142,9 @@ export default {
     args: {
         labelVisible: false,
         disabled: false,
-        isPublisher: false
+        isPublisher: false,
+        variant: 'top-toolbar',
+        readOnly: false
     }
 };
 
@@ -160,7 +156,8 @@ export const BottomToolbar = Template.bind({});
 BottomToolbar.args = {
     label: 'Input with bottom toolbar',
     labelVisible: true,
-    placeholder: 'Write here'
+    placeholder: 'Write here',
+    variant: 'bottom-toolbar'
 };
 
 export const CustomToolbar = Template.bind({});
