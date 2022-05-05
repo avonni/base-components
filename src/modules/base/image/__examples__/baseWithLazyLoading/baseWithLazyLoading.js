@@ -1,7 +1,7 @@
 import { LightningElement } from 'lwc';
 
 const srcList = [
-    'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',

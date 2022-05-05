@@ -38,7 +38,7 @@ export const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
         },
         imageSrc:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     }
 ];
 
