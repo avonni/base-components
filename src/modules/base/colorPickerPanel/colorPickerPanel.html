@@ -34,7 +34,11 @@
 
 <template>
     <section
-        class="slds-popover slds-color-picker__selector slds-show slds-is-absolute"
+        class="
+            slds-popover
+            slds-color-picker__selector
+            slds-show slds-is-absolute
+        "
         role="dialog"
         aria-label="Choose a color"
         aria-describedby="dialog-body-id"
@@ -52,6 +56,7 @@
                 <button
                     name="cancel"
                     class="slds-button slds-button_neutral"
+                    type="button"
                     onclick={handleCancelClick}
                 >
                     {i18n.cancelButton}
@@ -59,6 +64,7 @@
                 <button
                     name="done"
                     class="slds-button slds-button_brand"
+                    type="button"
                     onclick={handleDoneClick}
                 >
                     {i18n.doneButton}

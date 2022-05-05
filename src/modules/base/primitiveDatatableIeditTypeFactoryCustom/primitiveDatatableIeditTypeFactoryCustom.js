@@ -164,7 +164,7 @@ export default class PrimitiveDatatableIeditTypeFactoryCustom extends LightningE
     get columnType() {
         return this._columnDef.type;
     }
-      
+
     @api
     get value() {
         return this.concreteComponent.value;

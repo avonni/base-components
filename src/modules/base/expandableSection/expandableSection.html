@@ -36,7 +36,11 @@
     <div class={sectionClass}>
         <h3 if:true={showHeader} class={headerClass} data-element-id="h3">
             <template if:true={collapsible}>
-                <button class={titleButtonClass} onclick={toggleSection}>
+                <button
+                    class={titleButtonClass}
+                    type="button"
+                    onclick={toggleSection}
+                >
                     <template if:false={closed}>
                         <lightning-icon
                             icon-name="utility:chevrondown"
