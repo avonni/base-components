@@ -32,4 +32,3 @@ $RECYCLE.BIN/
 
 # Github pages storybook
 storybook-static/*
-!storybook-static/assets/
