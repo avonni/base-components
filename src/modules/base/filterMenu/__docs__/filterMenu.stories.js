@@ -65,7 +65,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium or large. This value defaults to medium.',
             table: {
@@ -77,7 +76,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, the menu cannot be used by users.',
             table: {
                 type: { summary: 'boolean' },
@@ -89,7 +87,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the menu is in a loading state and shows a spinner.',
             table: {
@@ -125,7 +122,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If present, multiple items can be selected.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -152,7 +148,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The button variant changes the look of the horizontal variant’s button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This attribute isn’t supported for the vertical variant.',
             table: {
@@ -165,7 +160,6 @@ export default {
                 type: 'select'
             },
             options: ['horizontal', 'vertical'],
-            defaultValue: 'horizontal',
             description:
                 'The variant changes the look of the menu. Accepted variants include horizontal and vertical.',
             table: {
@@ -220,7 +214,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, the selected items are hidden.',
             table: {
                 type: { summary: 'boolean' },
@@ -232,7 +225,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Search...',
             description:
                 'Text displayed when the search input is empty, to prompt the user for a valid entry.',
             table: {
@@ -246,7 +238,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, the search box is visible.',
             table: {
                 type: { summary: 'boolean' },
@@ -259,7 +250,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Apply',
             description: 'Label of the apply button.',
             table: {
                 type: { summary: 'string' },
@@ -271,7 +261,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Reset',
             description: 'Label of the reset button.',
             table: {
                 type: { summary: 'string' },
@@ -283,7 +272,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, the apply and reset buttons are hidden.',
             table: {
                 type: { summary: 'boolean' },
@@ -304,7 +292,6 @@ export default {
                 'bottom-center',
                 'bottom-right'
             ],
-            defaultValue: 'left',
             description:
                 'Determines the alignment of the dropdown menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space. This attribute isn’t supported for the vertical variant.',
             table: {
@@ -319,7 +306,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'small',
             description:
                 'Minimum width of the dropdown menu. Valid values include xx-small, x-small, small, medium and large. This attribute isn’t supported for the vertical variant.',
             table: {
@@ -334,7 +320,6 @@ export default {
                 type: 'select'
             },
             options: ['5-items', '7-items', '10-items'],
-            defaultValue: '7-items',
             description:
                 'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items. This attribute isn’t supported for the vertical variant.',
             table: {
@@ -348,7 +333,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, a nubbin is present on the dropdown menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment. This attribute isn’t supported for the vertical variant.',
             table: {
@@ -357,6 +341,24 @@ export default {
                 category: 'Dropdown menu'
             }
         }
+    },
+    args: {
+        applyButtonLabel: 'Apply',
+        buttonVariant: 'border',
+        disabled: false,
+        dropdownAlignment: 'left',
+        dropdownLength: '7-items',
+        dropdownNubbin: false,
+        dropdownWidth: 'small',
+        hideApplyResetButtons: false,
+        hideSelectedItems: false,
+        iconSize: 'medium',
+        isLoading: false,
+        isMultiSelect: false,
+        resetButtonLabel: 'Reset',
+        searchInputPlaceholder: 'Search...',
+        showSearchBox: false,
+        variant: 'horizontal'
     }
 };
 

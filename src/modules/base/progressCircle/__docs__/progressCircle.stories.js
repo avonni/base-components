@@ -62,7 +62,6 @@ export default {
                 type: 'select'
             },
             options: ['bottom', 'top'],
-            defaultValue: 'bottom',
             description:
                 'Position of the title. Valid values include top and bottom.',
             table: {
@@ -74,7 +73,6 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#1589ee',
             description:
                 'The color of the Progress Circle. Accepts a valid CSS color string, including hex and rgb.',
             table: {
@@ -87,7 +85,6 @@ export default {
                 type: 'number',
                 min: 0
             },
-            defaultValue: 0,
             description:
                 'The percentage value of the progress ring. The value must be a number from 0 to 100. A value of 50 corresponds to a color fill of half the ring in a clockwise or counterclockwise direction, depending on the direction attribute.',
             table: {
@@ -110,7 +107,6 @@ export default {
                 type: 'select'
             },
             options: ['standard', 'value-hidden'],
-            defaultValue: 'standard',
             description:
                 'Accepted variants include standard, value-hidden.\nvalue-hidden: Hide the value in the progress circle (ex: 75%).',
             table: {
@@ -123,7 +119,6 @@ export default {
                 type: 'select'
             },
             options: ['fill', 'drain'],
-            defaultValue: 'fill',
             description:
                 'Controls which way the color flows from the top of the ring, either clockwise or counterclockwise Valid values include fill and drain. The fill value corresponds to a color flow in the clockwise direction. The drain value indicates a color flow in the counterclockwise direction.',
             table: {
@@ -136,7 +131,6 @@ export default {
                 type: 'select'
             },
             options: ['x-small', 'small', 'medium', 'large', 'x-large'],
-            defaultValue: 'medium',
             description:
                 'The size of the progress circle. Valid values include x-small (26x26px), small (52x52px), medium (104x104px), large (152x152px) and x-large (208x208px).',
             table: {
@@ -149,7 +143,6 @@ export default {
                 type: 'select'
             },
             options: ['x-small', 'small', 'medium', 'large', 'x-large'],
-            defaultValue: 'medium',
             description:
                 'Set progress circle thickness. Valid values include x-small, small, medium, large and x-large.',
             table: {
@@ -159,8 +152,15 @@ export default {
         }
     },
     args: {
+        color: '#1589ee',
+        direction: 'fill',
         round: false,
-        isLoading: false
+        isLoading: false,
+        size: 'medium',
+        thickness: 'medium',
+        titlePosition: 'bottom',
+        value: 0,
+        variant: 'standard'
     }
 };
 
@@ -235,7 +235,7 @@ DrainLoadingWithThicknessX_Small.args = {
     title: 'Text title',
     isLoading: true,
     direction: 'drain',
-    thickness: 'x-small',
+    thickness: 'x-small'
 };
 
 export const ExtraSmall = Template.bind({});

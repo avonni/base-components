@@ -208,7 +208,6 @@ export default {
                 type: 'select'
             },
             options: ['5-items', '7-items', '10-items'],
-            defaultValue: '7-items',
             description:
                 'Maximum length of the dropdown menu. Valid values include 5-items, 7-items and 10-items.',
             table: {
@@ -222,7 +221,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'small',
             description:
                 'Minimum width of the menu. Valid values include xx-small, x-small, small, medium and large.',
             table: {
@@ -314,6 +312,7 @@ export default {
         isLoading: false,
         menuAlignment: 'left',
         menuLength: '7-items',
+        menuWidth: 'small',
         nubbin: false,
         searchInputPlaceholder: 'Search…',
         variant: 'border',
@@ -336,21 +335,21 @@ export const BaseWithSearch = Template.bind({});
 BaseWithSearch.args = {
     items: baseItems,
     iconName: 'utility:favorite',
-    allowSearch: 'true'
+    allowSearch: true
 };
 
 export const Disabled = Template.bind({});
 Disabled.args = {
     items: baseItems,
     iconName: 'utility:favorite',
-    disabled: 'true'
+    disabled: true
 };
 
 export const IsLoading = Template.bind({});
 IsLoading.args = {
     items: baseItems,
     iconName: 'utility:favorite',
-    isLoading: 'true'
+    isLoading: true
 };
 
 export const BaseWithLabel = Template.bind({});

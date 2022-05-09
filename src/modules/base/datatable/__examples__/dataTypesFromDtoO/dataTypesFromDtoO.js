@@ -158,7 +158,7 @@ export default class DataTypesFromDtoO extends LightningElement {
             },
             dateRangeType: 'datetime',
             email: 'lily.murray@email.com',
-            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-home-bg_2x.png',
+            image: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             location: {
                 latitude: '45.55',
                 longitude: '-73.62'
@@ -175,7 +175,7 @@ export default class DataTypesFromDtoO extends LightningElement {
                 endDate: new Date('2021/09/15')
             },
             email: 'mike.mickelson@email.com',
-            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tdx-header-bg_2x.png',
+            image: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
             location: {
                 latitude: '45.56',
                 longitude: '-73.56'

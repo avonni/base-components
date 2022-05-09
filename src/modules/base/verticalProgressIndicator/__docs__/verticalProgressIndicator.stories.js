@@ -48,11 +48,9 @@ export default {
         },
         variant: {
             control: {
-                type: 'select',
-                options: ['base', 'shaded']
+                type: 'select'
             },
             options: ['base', 'shade'],
-            defaultValue: 'base',
             description:
                 'Changes the appearance of the progress indicator for the base type only. Valid values are base or shaded. The shaded variant adds a light gray border to the step indicators. The default is base.',
             table: {
@@ -65,7 +63,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the current step is in error state and an error icon is displayed on the step indicator. Only the base type can display errors.',
             table: {
@@ -78,7 +75,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, add the class slds-progress__item_content to all vertical-progress-step items. Example: https://www.lightningdesignsystem.com/components/setup-assistant/#Hub-with-Expandable-Steps',
             table: {
@@ -89,7 +85,8 @@ export default {
     },
     args: {
         hasError: false,
-        contentInLine: false
+        contentInLine: false,
+        variant: 'base'
     }
 };
 

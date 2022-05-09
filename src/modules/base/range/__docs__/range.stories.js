@@ -39,7 +39,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the slider is disabled and users cannot interact with it.',
             table: {
@@ -167,7 +166,6 @@ export default {
                 type: 'number',
                 min: 0
             },
-            defaultValue: 0,
             description:
                 'The minimum value of the input range. The default is 0.',
             table: {
@@ -181,7 +179,6 @@ export default {
                 type: 'number',
                 min: 100
             },
-            defaultValue: 100,
             description:
                 'The maximum value of the input range. The default is 100.',
             table: {
@@ -194,7 +191,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, a pin with integer value is shown when the knob is pressed.',
             table: {
@@ -208,7 +204,6 @@ export default {
                 type: 'select'
             },
             options: ['x-small', 'small', 'medium', 'large', 'full'],
-            defaultValue: 'full',
             description:
                 'The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.',
             table: {
@@ -221,7 +216,6 @@ export default {
                 type: 'number',
                 min: 1
             },
-            defaultValue: 1,
             description:
                 'The step increment value of the input range. Example steps include 0.1, 1, or 10. The default is 1.',
             table: {
@@ -235,7 +229,6 @@ export default {
                 type: 'select'
             },
             options: ['horizontal', 'vertical'],
-            defaultValue: 'horizontal',
             description:
                 'The type determines the orientation of the slider. Accepted values are vertical and horizontal. The default is horizontal.',
             table: {
@@ -248,7 +241,6 @@ export default {
                 type: 'select'
             },
             options: ['decimal', 'currency', 'percent'],
-            defaultValue: 'decimal',
             description:
                 'Accepted unit include decimal, currency and percent. \nFormat the value displayed (lightning-formatted-number)',
             table: {
@@ -296,7 +288,6 @@ export default {
                 type: 'select'
             },
             options: ['standard', 'label-hidden'],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of the slider. Accepted variants include standard and label-hidden. The default is standard.',
             table: {
@@ -307,7 +298,14 @@ export default {
     },
     args: {
         disabled: false,
-        pin: false
+        max: 0,
+        min: 0,
+        pin: false,
+        size: 'full',
+        step: 1,
+        type: 'horizontal',
+        unit: 'decimal',
+        variant: 'standard'
     }
 };
 

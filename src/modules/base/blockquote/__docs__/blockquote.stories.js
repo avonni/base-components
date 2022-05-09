@@ -61,7 +61,6 @@ export default {
                 type: 'select'
             },
             options: ['default', 'brand', 'warning', 'error', 'success'],
-            defaultValue: 'default',
             description:
                 'The variant changes the appearance of the blockquote. Valid values include default, brand, warning, error, success.',
             table: {
@@ -75,7 +74,6 @@ export default {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Describes the position of the icon. Options include left and right.',
             table: {
@@ -90,7 +88,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'small',
             description:
                 'The size of the icon. Valid values include xx-small, x-small, small, medium, large.',
             table: {
@@ -99,6 +96,11 @@ export default {
                 category: 'Icon'
             }
         }
+    },
+    args: {
+        iconPosition: 'left',
+        iconSize: 'small',
+        variant: 'default'
     }
 };
 

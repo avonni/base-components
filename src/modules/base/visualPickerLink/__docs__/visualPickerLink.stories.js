@@ -72,7 +72,6 @@ export default {
                 type: 'radio'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description: 'Values include left and right.',
             table: {
                 defaultValue: { summary: 'left' },
@@ -83,7 +82,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'Show as completed.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -95,7 +93,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'The <a> tags are removed from the tiles. The tiles also lose their button appearance, removing borders and shadows.',
             table: {
@@ -106,6 +103,7 @@ export default {
     },
     args: {
         completed: false,
+        iconPosition: 'left',
         infoOnly: false
     }
 };
