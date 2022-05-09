@@ -92,20 +92,21 @@ export default class Calendar extends LightningElement {
     _value = [];
     _weekNumber = false;
     _nextFocusDate;
-    date = DEFAULT_DATE;
+    displayDate = DEFAULT_DATE; // The calendar displays this date's month
     year;
     month;
     months = MONTHS;
     day;
     calendarData;
-    keepFocus = true;
-    firstRender = 0;
 
     connectedCallback() {
         this.updateDateParameters();
+        this.updateFocus();
     }
 
-    renderedCallback() {}
+    renderedCallback() {
+        this._selectionMethod = 'click';
+    }
 
     /**
      * Array of date label objects. Priority is given to dates placed toward the end of the array.
@@ -175,26 +176,6 @@ export default class Calendar extends LightningElement {
         });
 
         this.updateDateParameters();
-    }
-
-    /**
-     * Set initial focus
-     *
-     * @param {Date}
-     * @public
-     */
-    @api
-    focusDate(value) {
-        const focusDateTime = value.getTime();
-        requestAnimationFrame(() => {
-            const _focusDate = this.template.querySelector(
-                `td[data-cell-day="${focusDateTime}"]`
-            );
-            if (_focusDate) {
-                _focusDate.setAttribute('tabindex', '0');
-                _focusDate.focus();
-            }
-        });
     }
 
     /**
@@ -307,13 +288,17 @@ export default class Calendar extends LightningElement {
             let setDate;
             if (this._value[0]) {
                 setDate = new Date(this._value[0]);
-            } else if (DEFAULT_DATE < this.min || DEFAULT_DATE > this.max) {
-                setDate = this._min;
             } else {
                 setDate = DEFAULT_DATE;
             }
-            this.date = setDate;
+            if (setDate < this.min) {
+                setDate = this.min;
+            } else if (setDate > this.max) {
+                setDate = this.max;
+            }
+            this.displayDate = setDate;
         }
+        this.updateDateParameters();
     }
 
     /**
@@ -331,6 +316,18 @@ export default class Calendar extends LightningElement {
     set weekNumber(value) {
         this._weekNumber = normalizeBoolean(value);
         this.updateDateParameters();
+    }
+
+    /**
+     * Set initial focus
+     *
+     * @param {Date}
+     */
+    @api
+    focusDate(value) {
+        if (!value.getTime()) return;
+        this._focusDate = value;
+        this.updateFocus();
     }
 
     /**
@@ -364,8 +361,8 @@ export default class Calendar extends LightningElement {
      */
     get disabledPrevious() {
         let disabled = this.disabled;
-        let previousDate = new Date(this.date);
-        previousDate.setMonth(this.date.getMonth() - 1);
+        let previousDate = new Date(this.displayDate);
+        previousDate.setMonth(this.displayDate.getMonth() - 1);
         previousDate.setDate(1);
 
         let minDate = new Date(this.min);
@@ -383,8 +380,8 @@ export default class Calendar extends LightningElement {
      */
     get disabledNext() {
         let disabled = this.disabled;
-        let nextDate = new Date(this.date);
-        nextDate.setMonth(this.date.getMonth() + 1);
+        let nextDate = new Date(this.displayDate);
+        nextDate.setMonth(this.displayDate.getMonth() + 1);
         nextDate.setDate(1);
 
         let maxDate = new Date(this.max);
@@ -501,9 +498,9 @@ export default class Calendar extends LightningElement {
      * Update date : year, month, day.
      */
     updateDateParameters() {
-        this.year = this.date.getFullYear();
-        this.month = MONTHS[this.date.getMonth()];
-        this.day = this.date.getDay();
+        this.year = this.displayDate.getFullYear();
+        this.month = MONTHS[this.displayDate.getMonth()];
+        this.day = this.displayDate.getDay();
         this.generateViewData();
     }
 
@@ -522,11 +519,10 @@ export default class Calendar extends LightningElement {
      * Compute view data for Calendar.
      */
     generateViewData() {
-        // TODO: If "Sun" is disabled, the month gets cut after 4 rows.
         let calendarData = [];
         let today = new Date().setHours(0, 0, 0, 0);
-        let currentMonth = this.date.getMonth();
-        let date = new Date(this.date.getTime());
+        let currentMonth = this.displayDate.getMonth();
+        let date = new Date(this.displayDate.getTime());
         let dateMonth = date.getMonth();
         date.setDate(1);
         let tabIndex;
@@ -650,7 +646,14 @@ export default class Calendar extends LightningElement {
                             dateClass += ' slds-is-selected';
                         }
                     });
-                } else if (this._value && valueTime === time) {
+                }
+
+                // single selection
+                if (
+                    this._selectionMode === 'single' &&
+                    this._value &&
+                    valueTime === time
+                ) {
                     selected = true;
                     dateClass += ' slds-is-selected';
                 }
@@ -792,34 +795,38 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handleYearChange(event) {
-        this.date.setFullYear(event.detail.value);
+        this.displayDate.setFullYear(event.detail.value);
 
-        if (this.date.getTime() < this.min.getTime()) {
-            this.date.setMonth(this.min.getMonth());
+        if (this.displayDate.getTime() < this.min.getTime()) {
+            this.displayDate.setMonth(this.min.getMonth());
         }
 
-        if (this.date.getTime() > this.max.getTime()) {
-            this.date.setMonth(this.max.getMonth());
+        if (this.displayDate.getTime() > this.max.getTime()) {
+            this.displayDate.setMonth(this.max.getMonth());
         }
 
         this.updateDateParameters();
         event.stopPropagation();
+
+        this.updateFocus();
     }
 
     /**
      * Previous month handler.
      */
     handlerPreviousMonth() {
-        this.date.setMonth(this.date.getMonth() - 1);
+        this.displayDate.setMonth(this.displayDate.getMonth() - 1);
         this.updateDateParameters();
+        this.updateFocus();
     }
 
     /**
      * Next month handler.
      */
     handlerNextMonth() {
-        this.date.setMonth(this.date.getMonth() + 1);
+        this.displayDate.setMonth(this.displayDate.getMonth() + 1);
         this.updateDateParameters();
+        this.updateFocus();
     }
 
     /**
@@ -911,10 +918,11 @@ export default class Calendar extends LightningElement {
                 this._value = this.isSelectedInterval(this._value, date);
             }
             this._clickedDate = date.toISOString();
-            this.date = date;
+            this.displayDate = date;
 
             this.updateDateParameters();
             this.dispatchChange();
+            this.updateFocus();
         }
     }
 
@@ -937,7 +945,8 @@ export default class Calendar extends LightningElement {
             new CustomEvent('change', {
                 detail: {
                     value: this.normalizedValue,
-                    clickedDate: this._clickedDate
+                    clickedDate: this._clickedDate,
+                    selectionMethod: this._selectionMethod
                 }
             })
         );
@@ -960,6 +969,13 @@ export default class Calendar extends LightningElement {
                 cancelable: true
             })
         );
+    }
+
+    handleDateFocus(event) {
+        if (!event.currentTarget) return;
+
+        let focusDate = new Date(Number(event.currentTarget.dataset.day));
+        if (focusDate) this._focusDate = focusDate;
     }
 
     /**
@@ -1141,18 +1157,38 @@ export default class Calendar extends LightningElement {
                     initialFocusDate.getMonth() + 1
                 );
                 break;
+            case keyCodes.space:
+                // eslint-disable-next-line no-case-declarations
+                const selectedDayButton = event.target.querySelector(
+                    '[data-element-id="span-day-label"]'
+                );
+                this._selectionMethod = 'enter';
+                if (selectedDayButton) selectedDayButton.click();
+                break;
             case keyCodes.enter:
                 // eslint-disable-next-line no-case-declarations
                 const currentDayButton = event.target.querySelector(
                     '[data-element-id="span-day-label"]'
                 );
+                this._selectionMethod = 'enter';
                 if (currentDayButton) currentDayButton.click();
                 break;
             default:
                 break;
         }
 
-        this.updateFocus(nextDate);
+        if (!nextDate) return;
+
+        if (nextDate < this.min) {
+            this._focusDate = this.min;
+        } else if (nextDate > this.max) {
+            this._focusDate = this.max;
+        } else {
+            this._focusDate = new Date(nextDate);
+        }
+        this.displayDate = this._focusDate;
+        this.updateDateParameters();
+        this.updateFocus();
     }
 
     /**
@@ -1160,48 +1196,64 @@ export default class Calendar extends LightningElement {
      *
      * @param {number} nextDate The datetime of the keyboard navigation target
      */
-    updateFocus(nextDate) {
-        if (nextDate) {
-            let currentDate = this.date.getTime();
-
-            if (nextDate < this.min) {
-                this.date = this.min;
-                this._nextFocusDate = this.min;
-            } else if (nextDate > this.max) {
-                this.date = this.max;
-                this._nextFocusDate = this.max;
-            } else {
-                this.date = new Date(nextDate);
-                this._nextFocusDate = new Date(nextDate);
-            }
-            this.updateDateParameters();
-
-            requestAnimationFrame(() => {
-                let currentFocusDate = this.template.querySelector(
-                    `td[data-cell-day="${currentDate}"]`
-                );
-                let rovingFocusDate = this.template.querySelector(
-                    `td[data-cell-day="${this._nextFocusDate}"]`
-                );
-                let todayDate = this.template.querySelector(
-                    `td[data-cell-day="${this.date.getTime()}"]`
-                );
-                let selectedDate = this.template.querySelector(
-                    'td.slds-is-selected'
-                );
-
-                let focusTarget =
-                    rovingFocusDate || todayDate || selectedDate || null;
-
-                if (focusTarget) {
-                    if (currentFocusDate)
-                        currentFocusDate.setAttribute('tabindex', '-1');
-
-                    focusTarget.setAttribute('tabindex', '0');
-                    focusTarget.focus();
-                }
-            });
+    updateFocus() {
+        // if a date was previously selected or focused, focus the same date in this month.
+        let selectedMonthDate;
+        if (this._focusDate) {
+            selectedMonthDate = new Date();
+            selectedMonthDate.setMonth(this.displayDate.getMonth());
+            selectedMonthDate.setFullYear(this.displayDate.getFullYear());
+            selectedMonthDate.setHours(0, 0, 0, 0);
+            selectedMonthDate.setDate(new Date(this._focusDate).getDate());
+            selectedMonthDate = selectedMonthDate.getTime();
         }
+        let monthFirst = new Date(this.displayDate);
+        monthFirst.setDate(1);
+        monthFirst.setHours(0, 0, 0, 0);
+        let firstOfMonthDate = monthFirst.getTime();
+        let rovingDate = new Date(this._focusDate).getTime();
+
+        requestAnimationFrame(() => {
+            const rovingFocusDate = this.template.querySelector(
+                `td[data-cell-day="${rovingDate}"]`
+            );
+            const selectedDate = this.template.querySelector(
+                'td.slds-is-selected'
+            );
+            const todaysDate = this.template.querySelector(
+                `td[data-cell-day="${new Date().setHours(0, 0, 0, 0)}"]`
+            );
+            const firstOfMonth = this.template.querySelector(
+                `span[data-day="${firstOfMonthDate}"].slds-day:not(.avonni-calendar__disabled-cell)`
+            );
+            let firstOfMonthCell;
+            if (firstOfMonth) {
+                firstOfMonthCell = firstOfMonth.parentElement;
+            }
+            const rovingMonthDate = this.template.querySelector(
+                `td[data-cell-day="${selectedMonthDate}"]`
+            );
+            const firstValidDate = this.template.querySelector(
+                'span.slds-day:not(.avonni-calendar__disabled-cell)'
+            );
+            let firstValidDateCell;
+            if (firstValidDate) {
+                firstValidDateCell = firstValidDate.parentElement;
+            }
+
+            const focusTarget =
+                rovingFocusDate ||
+                selectedDate ||
+                rovingMonthDate ||
+                todaysDate ||
+                firstOfMonthCell ||
+                firstValidDateCell;
+
+            if (focusTarget) {
+                focusTarget.setAttribute('tabindex', '0');
+                focusTarget.focus();
+            }
+        });
     }
 }
 

@@ -141,6 +141,7 @@
                                         aria-current={day.currentDate}
                                         onmouseover={handleMouseOver}
                                         onmouseout={handleMouseOut}
+                                        onfocus={handleDateFocus}
                                         data-cell-day={day.fullDate}
                                         data-day={day.fullDate}
                                         tabindex={day.tabIndex}
@@ -218,4 +219,5 @@
             </div>
         </div>
     </div>
+    <lightning-input type="date" label="label"></lightning-input>
 </template>

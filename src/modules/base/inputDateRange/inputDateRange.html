@@ -58,6 +58,7 @@
                         avonni-input-date-range__labels
                     "
                     for="start-date"
+                    id="start-date-input-label"
                     >{labelStartDate}</label
                 >
                 <div
@@ -97,6 +98,7 @@
                 >
                     <lightning-focus-trap>
                         <c-calendar
+                            aria-label="Start date input calendar"
                             value={startDateEndDate}
                             selection-mode={selectionModeStartDate}
                             onchange={handleChangeStartDate}
@@ -184,6 +186,7 @@
                 >
                     <lightning-focus-trap>
                         <c-calendar
+                            aria-label="End date input calendar"
                             value={startDateEndDate}
                             selection-mode={selectionModeEndDate}
                             onchange={handleChangeEndDate}

@@ -491,6 +491,7 @@ export default class InputDateRange extends LightningElement {
      */
     setEndCalendarDate(date) {
         requestAnimationFrame(() => {
+            console.log('set end ');
             this.template
                 .querySelector('[data-element-id="calendar-end-date"]')
                 .focusDate(date);
@@ -879,6 +880,7 @@ export default class InputDateRange extends LightningElement {
     handleChangeStartDate(event) {
         const value = event.detail.value;
         const clickedDate = new Date(event.detail.clickedDate);
+        const selectionMethod = event.detail.selectionMethod;
         const normalizedValue = value instanceof Array ? value : [value];
         const dates = normalizedValue.map((date) => {
             return date ? new Date(date) : null;
@@ -938,16 +940,18 @@ export default class InputDateRange extends LightningElement {
         }
 
         this.dispatchChange();
-        if (keepFocusOn)
+        if (keepFocusOn) {
             setTimeout(() => {
                 this.showStartDate = true;
             }, 10);
-        else {
+        } else {
             this.showStartDate = false;
-            if (!this.endDate) {
+            if (!this.endDate && selectionMethod === 'click') {
                 this.setEndCalendarDate(this._startDate);
                 this.showEndDate = true;
             }
+            if (selectionMethod === 'enter')
+                requestAnimationFrame(() => this.startDateIcon.focus());
         }
 
         if (!this._valid) this.checkInputDatesValidity();
@@ -962,6 +966,7 @@ export default class InputDateRange extends LightningElement {
     handleChangeEndDate(event) {
         const value = event.detail.value;
         const clickedDate = new Date(event.detail.clickedDate);
+        const selectionMethod = event.detail.selectionMethod;
         const normalizedValue = value instanceof Array ? value : [value];
         const dates = normalizedValue.map((date) => {
             return date ? new Date(date) : null;
@@ -1020,19 +1025,21 @@ export default class InputDateRange extends LightningElement {
             default:
         }
 
-        if (keepFocusOn)
+        this.dispatchChange();
+        if (keepFocusOn) {
             setTimeout(() => {
                 this.showEndDate = true;
             }, 10);
-        else {
+        } else {
             this.showEndDate = false;
-            if (!this.startDate) {
+            if (!this.startDate && selectionMethod === 'click') {
                 this.setStartCalendarDate(this._endDate);
                 this.showStartDate = true;
             }
+            if (selectionMethod === 'enter')
+                requestAnimationFrame(() => this.endDateIcon.focus());
         }
 
-        this.dispatchChange();
         if (!this._valid) this.checkInputDatesValidity();
         event.stopPropagation();
     }
@@ -1096,6 +1103,7 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showStartDate = true;
                 this.showEndDate = false;
+                this.setStartCalendarDate(this.startDate || todayMidnight);
                 break;
             case 'lightning-icon-start-date':
                 this._selectionModeStartDate = !this._endDate
@@ -1111,6 +1119,7 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showEndDate = true;
                 this.showStartDate = false;
+                this.setEndCalendarDate(this.endDate || todayMidnight);
                 break;
             case 'lightning-icon-end-date':
                 this._selectionModeEndDate = !this._startDate
@@ -1233,7 +1242,8 @@ export default class InputDateRange extends LightningElement {
 
                 if (
                     event.target &&
-                    event.target.dataset.elementId !== 'calendar-start-date'
+                    event.target.dataset.elementId !== 'calendar-start-date' &&
+                    this.template.activeElement !== this.startDateIcon
                 )
                     this.startDateInput.focus();
             }
@@ -1253,7 +1263,8 @@ export default class InputDateRange extends LightningElement {
 
                 if (
                     event.target &&
-                    event.target.dataset.elementId !== 'calendar-end-date'
+                    event.target.dataset.elementId !== 'calendar-end-date' &&
+                    this.template.activeElement !== this.endDateIcon
                 )
                     this.endDateInput.focus();
             }
