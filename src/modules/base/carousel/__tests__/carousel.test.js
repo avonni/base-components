@@ -53,7 +53,7 @@ const bareActions = [
 
 const items = [
     {
-        id: 1,
+        name: '1',
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
@@ -62,7 +62,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 2,
+        name: '2',
         title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
@@ -72,7 +72,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 3,
+        name: '3',
         title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
@@ -81,7 +81,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 4,
+        name: '4',
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Apps',
@@ -90,7 +90,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 5,
+        name: '5',
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
@@ -99,7 +99,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 6,
+        name: '6',
         title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
@@ -108,7 +108,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 7,
+        name: '7',
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Apps',
@@ -121,6 +121,7 @@ const items = [
 const ex = [
     {
         title: 'Visit App Exchange',
+        name: 'someName',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
@@ -366,7 +367,7 @@ describe('Carousel', () => {
     it('Carousel hide previous next panel navigation', () => {
         element.items = [
             {
-                id: 1,
+                name: '1',
                 title: 'Visit App Exchange',
                 description:
                     'Extend Salesforce with the #1 business marketplace.',
