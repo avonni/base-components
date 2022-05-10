@@ -514,6 +514,21 @@ BaseSmall.args = {
     size: 'small'
 };
 
+export const BaseMedium = Template.bind({});
+BaseMedium.args = {
+    label: 'Select Options',
+    fieldLevelHelp: 'This is a Dual Listbox',
+    sourceLabel: 'Available Items',
+    selectedLabel: 'Selected Items',
+    addButtonLabel: 'Add Button Label',
+    removeButtonLabel: 'Remove Button Label',
+    downButtonLabel: 'Down Button Label',
+    upButtonLabel: 'Up Button Label',
+    options: Options,
+    value: ['2', '3', '4', '5', '6'],
+    size: 'medium'
+};
+
 export const BaseLarge = Template.bind({});
 BaseLarge.args = {
     label: 'Select Options',
@@ -527,21 +542,6 @@ BaseLarge.args = {
     options: Options,
     value: ['2', '3', '4', '5', '6'],
     size: 'large'
-};
-
-export const BaseResponsive = Template.bind({});
-BaseResponsive.args = {
-    label: 'Select Options',
-    fieldLevelHelp: 'This is a Dual Listbox',
-    sourceLabel: 'Available Items',
-    selectedLabel: 'Selected Items',
-    addButtonLabel: 'Add Button Label',
-    removeButtonLabel: 'Remove Button Label',
-    downButtonLabel: 'Down Button Label',
-    upButtonLabel: 'Up Button Label',
-    options: Options,
-    value: ['2', '3', '4', '5', '6'],
-    size: 'responsive'
 };
 
 export const BaseNoBorder = Template.bind({});
