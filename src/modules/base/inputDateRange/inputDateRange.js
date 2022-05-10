@@ -156,7 +156,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>.
+     * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>. The value is read-only.
      *
      * @type {object}
      * @public
@@ -371,6 +371,44 @@ export default class InputDateRange extends LightningElement {
         });
     }
 
+    // FOCUS MANAGEMENT //
+
+    /**
+     * Sets focus on the start date input.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.startDateInput.focus();
+    }
+
+    /**
+     * Removes keyboard focus from the start date input and end date input.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        this.startDateInput.blur();
+        this.endDateInput.blur();
+        this.checkInputDatesValidity();
+    }
+
+    /**
+     * Trigger focus out and validity check
+     *
+     * @public
+     */
+    @api
+    onFocusOut() {
+        setTimeout(() => {
+            if (!this.showStartDate && !this.showEndDate) {
+                this.interactingState.leave();
+                this.checkInputDatesValidity();
+            }
+        }, 1);
+    }
     /**
      * Represents the validity states that an element can be in, with respect to constraint validation.
      *
@@ -1042,45 +1080,6 @@ export default class InputDateRange extends LightningElement {
 
         if (!this._valid) this.checkInputDatesValidity();
         event.stopPropagation();
-    }
-
-    // FOCUS MANAGEMENT //
-
-    /**
-     * Sets focus on the start date input.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        this.startDateInput.focus();
-    }
-
-    /**
-     * Removes keyboard focus from the start date input and end date input.
-     *
-     * @public
-     */
-    @api
-    blur() {
-        this.startDateInput.blur();
-        this.endDateInput.blur();
-        this.checkInputDatesValidity();
-    }
-
-    /**
-     * Trigger focus out and validity check
-     *
-     * @public
-     */
-    @api
-    onFocusOut() {
-        setTimeout(() => {
-            if (!this.showStartDate && !this.showEndDate) {
-                this.interactingState.leave();
-                this.checkInputDatesValidity();
-            }
-        }, 1);
     }
 
     /**
