@@ -827,6 +827,30 @@ export default class Datatable extends LightningDatatable {
         }
     }
 
+    /**
+     * Returns data in each selected row.
+     *
+     * @name getSelectedRows
+     * @function
+     * @public
+     */
+
+    /**
+     * Opens the inline edit panel for the datatable's currently active cell. If the active cell is not
+     * editable, then the panel is instead opened for the first editable cell in the table. Given two
+     * distinct cells, C_x and C_y, C_x is considered "first" in the cell ordering if the following condition
+     * evaluates to true:
+     *
+     * (C_x.rowIndex < C_y.rowIndex) || (C_x.rowIndex === C_y.rowIndex && C_x.columnIndex < C_y.columnIndex)
+     *
+     * If there is no data in the table or there are no editable cells in the table then calling this function
+     * results in a no-op.
+     *
+     * @name openInlineEdit
+     * @function
+     * @public
+     */
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS

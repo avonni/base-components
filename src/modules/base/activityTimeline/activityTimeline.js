@@ -89,6 +89,12 @@ export default class ActivityTimeline extends LightningElement {
         this.initActivityTimeline();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Array of action objects. The actions are displayed at the top right of each item.
      *
@@ -190,6 +196,12 @@ export default class ActivityTimeline extends LightningElement {
         });
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Verify if dates exist.
      *
@@ -231,6 +243,12 @@ export default class ActivityTimeline extends LightningElement {
                       new Date(a.datetimeValue) - new Date(b.datetimeValue)
               );
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Compute Number of the week in the year.

@@ -50,6 +50,8 @@ const ACTIONS_VARIANTS = {
     default: 'border'
 };
 
+const DEFAULT_CAROUSEL_HEIGHT = 6.625;
+
 export default class PrimitiveCarouselItem extends LightningElement {
     @api title;
     @api description;
@@ -65,7 +67,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actions = [];
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
-    _carouselContentHeight = 6.625;
+    _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Valid values include bare, border and menu.
@@ -121,6 +129,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
             validValues: ACTIONS_VARIANTS.valid
         });
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Retrieve image class - set to relative if not in bottom position.
@@ -236,6 +250,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
     get computedCarouselContentSize() {
         return `height: ${this._carouselContentHeight}rem`;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Carousel height initialization.

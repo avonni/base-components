@@ -159,14 +159,14 @@ describe('Activity Timeline', () => {
         element.groupBy = 'month';
         element.items = testItems;
         const firstSection = 'Upcoming';
-        const secondSection = 'January 2022';
-        const thirdSection = 'May 2021';
+        const secondSection = 'May 2022';
+        const thirdSection = 'January 2022';
 
         return Promise.resolve().then(() => {
             const expandableSection = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-expandable-section"]'
             );
-            expect(expandableSection).toHaveLength(3);
+            expect(expandableSection).toHaveLength(4);
             expect(expandableSection[0].title).toBe(firstSection);
             expect(expandableSection[1].title).toBe(secondSection);
             expect(expandableSection[2].title).toBe(thirdSection);

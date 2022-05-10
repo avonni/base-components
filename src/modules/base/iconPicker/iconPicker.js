@@ -43,29 +43,12 @@ const DEFAULT_HIDDEN_CATEGORIES = ['Utility', 'Doctype', 'Action'];
  */
 export default class IconPicker extends LightningElement {
     /**
-     * Text label for the input.
-     *
-     * @type {string}
-     * @public
-     */
-    @api label;
-
-    /**
-     * Specifies the name of an input element.
-     *
-     * @type {string}
-     * @public
-     */
-    @api name;
-
-    /**
      * Specifies a shortcut key to activate or focus an element.
      *
      * @type {string}
      * @public
      */
     @api accessKey;
-
     /**
      * Help text detailing the purpose and function of the input.
      *
@@ -73,7 +56,13 @@ export default class IconPicker extends LightningElement {
      * @public
      */
     @api fieldLevelHelp;
-
+    /**
+     * Text label for the input.
+     *
+     * @type {string}
+     * @public
+     */
+    @api label;
     /**
      * Optional text to be shown on the button.
      *
@@ -81,7 +70,13 @@ export default class IconPicker extends LightningElement {
      * @public
      */
     @api menuLabel;
-
+    /**
+     * Specifies the name of an input element.
+     *
+     * @type {string}
+     * @public
+     */
+    @api name;
     /**
      * Text that is displayed when the field is empty, to prompt the user for a valid entry.
      *
@@ -90,17 +85,17 @@ export default class IconPicker extends LightningElement {
      */
     @api placeholder;
 
-    _value;
     _disabled = false;
+    _hiddenCategories = DEFAULT_HIDDEN_CATEGORIES.slice();
+    _hideFooter = false;
+    _hideInputText = false;
+    _menuIconSize = MENU_ICON_SIZES.default;
+    _menuVariant = MENU_VARIANTS.default;
+    _messageWhenBadInput = DEFAULT_BAD_INPUT_MESSAGE;
     _readOnly = false;
     _required = false;
+    _value;
     _variant = VARIANTS.default;
-    _hideFooter = false;
-    _hiddenCategories = DEFAULT_HIDDEN_CATEGORIES.slice();
-    _menuVariant = MENU_VARIANTS.default;
-    _menuIconSize = MENU_ICON_SIZES.default;
-    _messageWhenBadInput = DEFAULT_BAD_INPUT_MESSAGE;
-    _hideInputText = false;
 
     iconMenuOpened = false;
     isInvalidInput = false;
@@ -124,130 +119,26 @@ export default class IconPicker extends LightningElement {
         this.initEventListeners();
     }
 
-    /**
-     * If present, the dropdown footer is hidden.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
      */
-    @api
-    get hideFooter() {
-        return this._hideFooter;
-    }
-
-    set hideFooter(value) {
-        this._hideFooter = normalizeBoolean(value);
-    }
 
     /**
-     * The Lightning Design System name of the selected icon. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get value() {
-        return this._value;
-    }
-
-    set value(value) {
-        this._value = value;
-    }
-
-    /**
-     * If present, the input field must be filled out before the form is submitted.
+     * If present, the input field is disabled and users cannot interact with it.
      *
      * @type {boolean}
      * @default false
      * @public
      */
     @api
-    get required() {
-        return this._required;
+    get disabled() {
+        return this._disabled;
     }
 
-    set required(value) {
-        this._required = normalizeBoolean(value);
-    }
-
-    /**
-     * The variant changes the appearance of an input field.
-     * Accepted variants include standard, label-inline, label-hidden, and label-stacked.
-     * This value defaults to standard, which displays the label above the field.
-     * Use label-hidden to hide the label but make it available to assistive technology.
-     * Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.
-     *
-     * @type {string}
-     * @default standard
-     * @public
-     */
-    @api
-    get variant() {
-        return this._variant;
-    }
-
-    set variant(variant) {
-        this._variant = normalizeString(variant, {
-            fallbackValue: VARIANTS.default,
-            validValues: VARIANTS.valid
-        });
-    }
-
-    /**
-     * Error message to be displayed when a bad input is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get messageWhenBadInput() {
-        return this._messageWhenBadInput;
-    }
-    set messageWhenBadInput(value) {
-        this._messageWhenBadInput =
-            typeof value === 'string' ? value : DEFAULT_BAD_INPUT_MESSAGE;
-    }
-
-    /**
-     * The variant changes the look of the button.
-     * Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
-     * This value defaults to border.
-     *
-     * @type {string}
-     * @default border
-     * @public
-     */
-    @api
-    get menuVariant() {
-        return this._menuVariant;
-    }
-
-    set menuVariant(variant) {
-        this._menuVariant = normalizeString(variant, {
-            fallbackValue: MENU_VARIANTS.default,
-            validValues: MENU_VARIANTS.valid
-        });
-    }
-
-    /**
-     * The size of the icon.
-     * Options include xx-small, x-small, small, medium, or large.
-     *
-     * @type {string}
-     * @default medium
-     * @public
-     */
-    @api
-    get menuIconSize() {
-        return this._menuIconSize;
-    }
-
-    set menuIconSize(size) {
-        this._menuIconSize = normalizeString(size, {
-            fallbackValue: MENU_ICON_SIZES.default,
-            validValues: MENU_ICON_SIZES.valid
-        });
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
     }
 
     /**
@@ -293,19 +184,92 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
-     * If present, the input field is disabled and users cannot interact with it.
+     * If present, the dropdown footer is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideFooter() {
+        return this._hideFooter;
+    }
+
+    set hideFooter(value) {
+        this._hideFooter = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the input text next to the icon button is hidden.
      *
      * @type {boolean}
      * @default false
      * @public
      */
     @api
-    get disabled() {
-        return this._disabled;
+    get hideInputText() {
+        return this._hideInputText;
     }
 
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
+    set hideInputText(value) {
+        this._hideInputText = normalizeBoolean(value);
+    }
+
+    /**
+     * The size of the icon.
+     * Options include xx-small, x-small, small, medium, or large.
+     *
+     * @type {string}
+     * @default medium
+     * @public
+     */
+    @api
+    get menuIconSize() {
+        return this._menuIconSize;
+    }
+
+    set menuIconSize(size) {
+        this._menuIconSize = normalizeString(size, {
+            fallbackValue: MENU_ICON_SIZES.default,
+            validValues: MENU_ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * The variant changes the look of the button.
+     * Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
+     * This value defaults to border.
+     *
+     * @type {string}
+     * @default border
+     * @public
+     */
+    @api
+    get menuVariant() {
+        return this._menuVariant;
+    }
+
+    set menuVariant(variant) {
+        this._menuVariant = normalizeString(variant, {
+            fallbackValue: MENU_VARIANTS.default,
+            validValues: MENU_VARIANTS.valid
+        });
+    }
+
+    /**
+     * Error message to be displayed when a bad input is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get messageWhenBadInput() {
+        return this._messageWhenBadInput;
+    }
+
+    set messageWhenBadInput(value) {
+        this._messageWhenBadInput =
+            typeof value === 'string' ? value : DEFAULT_BAD_INPUT_MESSAGE;
     }
 
     /**
@@ -325,20 +289,64 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
-     * If present, the input text next to the icon button is hidden.
+     * If present, the input field must be filled out before the form is submitted.
      *
      * @type {boolean}
      * @default false
      * @public
      */
     @api
-    get hideInputText() {
-        return this._hideInputText;
+    get required() {
+        return this._required;
     }
 
-    set hideInputText(value) {
-        this._hideInputText = normalizeBoolean(value);
+    set required(value) {
+        this._required = normalizeBoolean(value);
     }
+
+    /**
+     * The Lightning Design System name of the selected icon. Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value;
+    }
+
+    /**
+     * The variant changes the appearance of an input field.
+     * Accepted variants include standard, label-inline, label-hidden, and label-stacked.
+     * This value defaults to standard, which displays the label above the field.
+     * Use label-hidden to hide the label but make it available to assistive technology.
+     * Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.
+     *
+     * @type {string}
+     * @default standard
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * The tabs of the icon picker.
@@ -572,6 +580,12 @@ export default class IconPicker extends LightningElement {
         return classes.toString();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Remove focus from the input element.
      *
@@ -595,6 +609,12 @@ export default class IconPicker extends LightningElement {
         this.showError = this.value ? this.isInvalidInput : this.required;
         return !!this.showError;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Initializes the event listeners.

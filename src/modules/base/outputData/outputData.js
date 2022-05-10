@@ -68,6 +68,12 @@ export default class OutputData extends LightningElement {
         this.normalizeTypeAttributes();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Attributes specific to the type (see <strong>Types and Type Attributes</strong>).
      *
@@ -138,6 +144,12 @@ export default class OutputData extends LightningElement {
             validValues: VARIANTS.valid
         });
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     get computedLabelClass() {
         return classSet('slds-item_label slds-text-color_weak slds-truncate')
@@ -259,6 +271,12 @@ export default class OutputData extends LightningElement {
     get showBoolean() {
         return this.isBoolean && this.value;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Normalize the type attributes, to remove the invalid and unsupported attributes.
