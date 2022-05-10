@@ -324,8 +324,8 @@ const itemsWithStatusAndEntity = [
         tertiaryText: 'FakeCompany Inc.',
         tags: [
             { label: 'tag-01', variant: 'default' },
-            { label: 'tag-02', variant: 'inverse' },
-            { label: 'tag-03', variant: 'lightest' },
+            { label: 'tag-02', variant: 'brand', outline: true },
+            { label: 'tag-03', variant: 'warning' },
             { label: 'tag-04', variant: 'success' }
         ],
         actions: [
@@ -374,7 +374,7 @@ const itemsWithStatusAndEntity = [
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'inverse' },
-            { label: 'tag-03', variant: 'lightest' },
+            { label: 'tag-03', variant: 'warning' },
             { label: 'tag-04', variant: 'success' }
         ]
     },
@@ -393,7 +393,7 @@ const itemsWithStatusAndEntity = [
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'inverse' },
-            { label: 'tag-03', variant: 'lightest' },
+            { label: 'tag-03', variant: 'warning' },
             { label: 'tag-04', variant: 'success' }
         ]
     }
