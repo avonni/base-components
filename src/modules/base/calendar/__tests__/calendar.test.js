@@ -215,6 +215,88 @@ describe('Calendar', () => {
         });
     });
 
+    // value is bigger than max
+    it('Calendar current day bigger than upper bound should change to max value', () => {
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2030');
+        element.value = '11/11/2040';
+        return Promise.resolve().then(() => {
+            const day = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(day.textContent).toBe('31');
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('December');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2030);
+        });
+    });
+
+    // value is smaller than min
+    it('Calendar current day smaller than lower bound should change to min value', () => {
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2030');
+        element.value = '04/04/100';
+        return Promise.resolve().then(() => {
+            const day = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(day.textContent).toBe('1');
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('January');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(2020);
+        });
+    });
+
+    // value is invalid and current date is in min-max interval
+    it('Invalid calendar current day should change to current date if it is in min-max interval', () => {
+        const currentDate = new Date();
+        const currentMonthName = currentDate.toLocaleString('default', {
+            month: 'long'
+        });
+        element.min = new Date('01/01/2020');
+        element.max = new Date('12/31/2030');
+        element.value = '00/00/2022';
+
+        return Promise.resolve().then(() => {
+            const day = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(day.textContent).toBe(currentDate.getDate().toString());
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe(currentMonthName);
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(currentDate.getFullYear());
+        });
+    });
+
+    // value is invalid and current date is not in interval
+    it('Invalid calendar current day should change to min value if current date is not in min-max interval', () => {
+        element.min = new Date('01/01/1840');
+        element.max = new Date('12/31/1890');
+        element.value = '00/00/2000';
+
+        return Promise.resolve().then(() => {
+            const day = element.shadowRoot.querySelector('.slds-is-selected');
+            expect(day.textContent).toBe('1');
+            const month = element.shadowRoot.querySelector(
+                '[data-element-id="h2"]'
+            );
+            expect(month.textContent).toBe('January');
+            const year = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-combobox"]'
+            );
+            expect(year.value).toBe(1840);
+        });
+    });
+
     it('Calendar values selection-mode: single no value', () => {
         element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
