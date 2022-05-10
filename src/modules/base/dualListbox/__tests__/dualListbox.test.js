@@ -85,7 +85,7 @@ describe('DualListbox', () => {
         expect(element.validity).toBeUndefined();
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('standard');
-        expect(element.size).toBe('medium');
+        expect(element.size).toBe('responsive');
     });
 
     /* ----- ATTRIBUTES ----- */
