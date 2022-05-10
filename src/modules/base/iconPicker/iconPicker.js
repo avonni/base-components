@@ -344,15 +344,7 @@ export default class IconPicker extends LightningElement {
                 orderedTabs.push(tab);
             }
         });
-
-        console.log('Output');
-        console.log(...orderedTabs.slice(0, NB_VISIBLE_TABS));
-        console.log(...orderedTabs.slice(NB_VISIBLE_TABS));
-
-        return [
-            ...orderedTabs.slice(0, NB_VISIBLE_TABS),
-            ...orderedTabs.slice(NB_VISIBLE_TABS)
-        ];
+        return [...orderedTabs];
     }
 
     get computedValue() {
