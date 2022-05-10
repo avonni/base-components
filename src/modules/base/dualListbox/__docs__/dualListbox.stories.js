@@ -378,12 +378,12 @@ export default {
                 type: 'select'
             },
             options: ['small', 'medium', 'large', 'responsive'],
-            defaultValue: 'medium',
+            defaultValue: 'responsive',
             description:
                 'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium, large and responsive.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'medium' }
+                defaultValue: { summary: 'responsive' }
             }
         },
         sourceLabel: {
