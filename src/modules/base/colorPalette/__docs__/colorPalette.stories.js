@@ -43,8 +43,7 @@ export default {
             description: 'Color values displayed in the palette.',
             table: {
                 defaultValue: {
-                    summary:
-                        '[“#e3abec”, “#c2dbf6”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]'
+                    summary: `['#e3abec', '#c2dbf6', '#9fd6ff', '#9de7da', '#9df0bf', '#fff099', '#fed49a', '#d073df', '#86b9f3', '#5ebbff', '#44d8be', '#3be281', '#ffe654', '#ffb758', '#bd35bd', '#5778c1', '#5ebbff', '#00aea9', '#3bba4c', '#f4bc25', '#f99120', '#580d8c', '#001870', '#0a2399', '#097476', '#096a50', '#b67d11', '#b85d0d']`
                 },
                 type: { summary: 'string[]' }
             }
@@ -54,7 +53,6 @@ export default {
                 type: 'number',
                 min: 0
             },
-            defaultValue: 7,
             description:
                 'Specifies the number of columns that will be displayed. ',
             table: {
@@ -77,7 +75,6 @@ export default {
                 type: 'number',
                 min: 0
             },
-            defaultValue: 20,
             description: 'Tile width in px.',
             table: {
                 defaultValue: { summary: 20 },
@@ -90,7 +87,6 @@ export default {
                 type: 'number',
                 min: 0
             },
-            defaultValue: 20,
             description: 'Tile height in px.',
             table: {
                 defaultValue: { summary: 20 },
@@ -101,7 +97,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -114,7 +109,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the palette is read-only and cannot be edited by users.',
             table: {
@@ -127,7 +121,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, a spinner is displayed to indicate that data is loading.',
             table: {
@@ -139,7 +132,6 @@ export default {
             control: {
                 type: 'radio'
             },
-            defaultValue: 'grid',
             options: ['grid', 'list'],
             description:
                 'Changes the appearance of the palette. Valid values include grid and list.',
@@ -150,9 +142,43 @@ export default {
         }
     },
     args: {
+        colors: [
+            '#e3abec',
+            '#c2dbf6',
+            '#9fd6ff',
+            '#9de7da',
+            '#9df0bf',
+            '#fff099',
+            '#fed49a',
+            '#d073df',
+            '#86b9f3',
+            '#5ebbff',
+            '#44d8be',
+            '#3be281',
+            '#ffe654',
+            '#ffb758',
+            '#bd35bd',
+            '#5778c1',
+            '#5ebbff',
+            '#00aea9',
+            '#3bba4c',
+            '#f4bc25',
+            '#f99120',
+            '#580d8c',
+            '#001870',
+            '#0a2399',
+            '#097476',
+            '#096a50',
+            '#b67d11',
+            '#b85d0d'
+        ],
+        columns: 7,
         disabled: false,
+        isLoading: false,
         readOnly: false,
-        isLoading: false
+        tileHeight: 20,
+        tileWidth: 20,
+        variant: 'grid'
     }
 };
 

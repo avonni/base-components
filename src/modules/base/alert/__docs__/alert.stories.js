@@ -51,7 +51,6 @@ export default {
                 type: 'select'
             },
             options: ['base', 'error', 'offline', 'warning'],
-            defaultValue: 'base',
             description:
                 'The variant change the apparence of the alert. Valid values include base, error, offline and warning.',
             table: {
@@ -64,7 +63,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'Specify if the alert can be close.',
             table: {
                 type: { summary: 'boolean' },
@@ -76,7 +74,6 @@ export default {
             control: {
                 type: 'action'
             },
-            defaultValue: 0,
             description:
                 'Custom function to execute when the user close the alert.',
             table: {
@@ -85,7 +82,9 @@ export default {
         }
     },
     args: {
-        isDismissible: false
+        closeAction: false,
+        isDismissible: false,
+        variant: 'base'
     }
 };
 

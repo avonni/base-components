@@ -117,7 +117,6 @@ export default {
             },
             description:
                 'If present, the menu item is disabled and users cannot interact with it.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -130,7 +129,6 @@ export default {
             },
             description:
                 'If present, a draft indicator is shown on the menu item. A draft indicator is denoted by blue asterisk on the left of the menu item. When you use a draft indicator, include alternative text for accessibility using draft-alternative-text.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }

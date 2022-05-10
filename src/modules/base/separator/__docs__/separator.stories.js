@@ -51,7 +51,6 @@ export default {
                 type: 'select'
             },
             options: ['start', 'center', 'end'],
-            defaultValue: 'center',
             description:
                 'Position of the content in the separator. Valid values include start, center and end.',
             table: {
@@ -76,7 +75,6 @@ export default {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Describes the position of the icon. Valid values include left and right.',
             table: {
@@ -90,7 +88,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'small',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium and large.',
             table: {
@@ -104,13 +101,18 @@ export default {
                 type: 'select'
             },
             options: ['horizontal', 'vertical'],
-            defaultValue: 'horizontal',
             description: 'Valid values include horizontal and vertical.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
             }
         }
+    },
+    args: {
+        alignContent: 'center',
+        iconPosition: 'left',
+        iconSize: 'small',
+        orientation: 'horizontal'
     }
 };
 

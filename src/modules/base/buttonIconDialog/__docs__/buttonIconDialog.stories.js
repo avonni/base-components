@@ -94,7 +94,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium'],
-            defaultValue: 'medium',
             description:
                 'The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.',
             table: {
@@ -115,7 +114,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
             table: {
@@ -127,7 +125,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, the popover can be opened by users.',
             table: {
                 type: { summary: 'boolean' },
@@ -136,7 +133,9 @@ export default {
         }
     },
     args: {
-        disabled: false
+        disabled: false,
+        size: 'medium',
+        variant: 'border'
     }
 };
 
@@ -187,7 +186,7 @@ export const BorderDisabled = Template.bind({});
 BorderDisabled.args = {
     tooltip: 'Show modal',
     iconName: 'utility:animal_and_nature',
-    disabled: 'true'
+    disabled: true
 };
 
 export const Brand = Template.bind({});
