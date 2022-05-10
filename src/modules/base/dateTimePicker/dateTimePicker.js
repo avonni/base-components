@@ -164,7 +164,6 @@ export default class DateTimePicker extends LightningElement {
     today;
     firstWeekDay;
     lastWeekDay;
-    selectedDayTime = {};
     timeZones = TIME_ZONES;
     selectedTimeZone;
     helpMessage;
@@ -173,6 +172,7 @@ export default class DateTimePicker extends LightningElement {
     calendarDisabledDates = [];
 
     _connected = false;
+    _selectedDayTime;
     _valid = true;
 
     connectedCallback() {
@@ -780,7 +780,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Pushes all dates included in disabled-date-times to calendar-disabled-dates to be disabled on the calendar.
+     * Transform the given value into a Date object, or return null.
      *
      * @param {string} value The value of the date selected.
      * @returns {Date|null} Returns a date object or null.
@@ -815,6 +815,8 @@ export default class DateTimePicker extends LightningElement {
             if (date) {
                 this._selectedDayTime = date.getTime();
                 this._value = [date.toISOString()];
+            } else {
+                this._selectedDayTime = null;
             }
         }
     }
