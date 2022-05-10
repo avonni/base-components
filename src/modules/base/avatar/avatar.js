@@ -157,7 +157,6 @@ export default class Avatar extends LightningElement {
     _variant = AVATAR_VARIANTS.default;
     _textPosition = TEXT_POSITIONS.default;
     _tags;
-    _computedTags;
     _actions;
     _actionPosition = POSITIONS.actionDefault;
 
@@ -414,7 +413,7 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Array of tag objects. The tags are displayed as badges in the details.
+     * Array of tag objects. The tags are displayed as chips in the details.
      *
      * @public
      * @type {object[]}
