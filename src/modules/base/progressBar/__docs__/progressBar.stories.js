@@ -49,7 +49,6 @@ export default {
                 type: 'select'
             },
             options: ['x-small', 'small', 'medium', 'large', 'full'],
-            defaultValue: 'full',
             description:
                 'The size of the progress bar. Valid values are x-small, small, medium, large and full. The default value is medium.',
             table: {
@@ -63,7 +62,6 @@ export default {
                 min: 0,
                 max: 100
             },
-            defaultValue: 0,
             description: 'The percentage value of the progress bar.',
             table: {
                 type: { summary: 'number', detail: 'From 0 to 100' },
@@ -76,7 +74,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, display the value.',
             table: {
                 type: { summary: 'boolean' },
@@ -97,7 +94,6 @@ export default {
                 'bottom-right',
                 'bottom-left'
             ],
-            defaultValue: 'top-right',
             description:
                 'Position of the value if present. Valid values include left, right, top-right, top-left, bottom-right and bottom-left.',
             table: {
@@ -133,7 +129,6 @@ export default {
                 type: 'select'
             },
             options: ['base', 'circular'],
-            defaultValue: 'base',
             description:
                 'The variant changes the appearance of the progress bar. Accepted variants include base or circular. This value defaults to base.',
             table: {
@@ -155,7 +150,6 @@ export default {
                 'error',
                 'offline'
             ],
-            defaultValue: 'base',
             description:
                 'Defines the theme of the progress bar. Valid values includes base, success, inverse, alt-inverse, warning, info, error and offline.',
             table: {
@@ -167,7 +161,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, display a texture background.',
             table: {
                 type: { summary: 'boolean' },
@@ -179,7 +172,6 @@ export default {
                 type: 'select'
             },
             options: ['x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
             description:
                 'Set progress bar thickness. Valid values include x-small, small, medium and large',
             table: {
@@ -192,7 +184,6 @@ export default {
                 type: 'select'
             },
             options: ['horizontal', 'vertical'],
-            defaultValue: 'horizontal',
             description:
                 'Orientation of the progress bar to be used. Valid values include horizontal and vertical.',
             table: {
@@ -202,8 +193,15 @@ export default {
         }
     },
     args: {
+        orientation: 'horizontal',
         showValue: false,
-        textured: false
+        size: 'full',
+        textured: false,
+        theme: 'base',
+        thickness: 'medium',
+        value: 0,
+        valuePosition: 'top-right',
+        variant: 'base'
     }
 };
 

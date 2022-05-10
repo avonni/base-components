@@ -125,7 +125,7 @@ export default class DateTimePicker extends LightningElement {
     _min = DEFAULT_MIN;
     _readOnly = false;
     _required = false;
-    _value;
+    _value = [];
     _startTime = DEFAULT_START_TIME;
     _timeSlotDuration = DEFAULT_TIME_SLOT_DURATION;
     _timeSlots;
@@ -144,7 +144,6 @@ export default class DateTimePicker extends LightningElement {
     today;
     firstWeekDay;
     lastWeekDay;
-    selectedDayTime = {};
     timeZones = TIME_ZONES;
     selectedTimeZone;
     helpMessage;
@@ -152,6 +151,8 @@ export default class DateTimePicker extends LightningElement {
     dayClass = DEFAULT_DAY_CLASS;
     calendarDisabledDates = [];
 
+    _connected = false;
+    _selectedDayTime;
     _valid = true;
 
     connectedCallback() {
@@ -718,7 +719,7 @@ export default class DateTimePicker extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && !this.value
+                    !this.disabled && this.required && !this.value.length
             });
         }
         return this._constraintApi;
@@ -953,7 +954,7 @@ export default class DateTimePicker extends LightningElement {
     }
 
     /**
-     * Pushes all dates included in disabled-date-times to calendar-disabled-dates to be disabled on the calendar.
+     * Transform the given value into a Date object, or return null.
      *
      * @param {string} value The value of the date selected.
      * @returns {Date|null} Returns a date object or null.
@@ -970,13 +971,10 @@ export default class DateTimePicker extends LightningElement {
      */
     _processValue() {
         if (this.type === 'checkbox') {
-            // Make sure the values are in an array
-            if (!Array.isArray(this._value)) this._value = [this._value];
-
             const selectedDayTimes = [];
             const values = [];
 
-            this._value.forEach((value) => {
+            this.value.forEach((value) => {
                 const date = this._processDate(value);
                 if (date) {
                     selectedDayTimes.push(date.getTime());
@@ -987,10 +985,12 @@ export default class DateTimePicker extends LightningElement {
             this._selectedDayTime = selectedDayTimes;
             this._value = values;
         } else {
-            const date = this._processDate(this.value);
+            const date = this._processDate(this.value[0]);
             if (date) {
                 this._selectedDayTime = date.getTime();
-                this._value = date.toISOString();
+                this._value = [date.toISOString()];
+            } else {
+                this._selectedDayTime = null;
             }
         }
     }
@@ -1270,7 +1270,7 @@ export default class DateTimePicker extends LightningElement {
                 this._selectedDayTime.push(date.getTime());
             }
         } else {
-            this._value = this._value === dateTimeISO ? null : dateTimeISO;
+            this._value = this._value[0] === dateTimeISO ? [] : [dateTimeISO];
             this._selectedDayTime =
                 this._selectedDayTime === date.getTime()
                     ? null
@@ -1291,9 +1291,10 @@ export default class DateTimePicker extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: Array.isArray(this.value)
-                        ? this.value.join()
-                        : this.value,
+                    value:
+                        this.type === 'radio'
+                            ? this.value[0] || null
+                            : this.value,
                     name: this.name
                 }
             })
@@ -1305,7 +1306,7 @@ export default class DateTimePicker extends LightningElement {
      * Removes slds-has-error on the whole element if not valid.
      */
     handleValueBlur() {
-        this._valid = !(this.required && !this.value);
+        this._valid = !(this.required && !this.value.length);
         this.interactingState.leave();
         if (!this._valid) {
             this.classList.remove('slds-has-error');

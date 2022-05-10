@@ -1323,7 +1323,9 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('apply', {
                 detail: {
-                    value: this.value
+                    value: this.isMultiSelect
+                        ? this.value
+                        : this.value[0] || null
                 }
             })
         );
@@ -1347,7 +1349,9 @@ export default class FilterMenu extends LightningElement {
             new CustomEvent('select', {
                 cancelable: true,
                 detail: {
-                    value: this.value
+                    value: this.isMultiSelect
+                        ? this.value
+                        : this.value[0] || null
                 }
             })
         );

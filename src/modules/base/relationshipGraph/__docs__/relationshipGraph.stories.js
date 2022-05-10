@@ -83,7 +83,6 @@ export default {
             },
             options: ['vertical', 'horizontal'],
             description: 'Valid values include horizontal, vertical.',
-            defaultValue: 'horizontal',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
@@ -135,7 +134,6 @@ export default {
                 type: 'radio'
             },
             options: ['top', 'bottom'],
-            defaultValue: 'top',
             description: 'Array of default actions for all groups.',
             table: {
                 type: { summary: 'string' },
@@ -149,7 +147,6 @@ export default {
                 type: 'select'
             },
             options: ['default', 'shade', 'inverse'],
-            defaultValue: 'default',
             description:
                 'Theme of the item groups tiles. Valid options include: ‘default’, ‘shade’ and ‘inverse’.',
             table: {
@@ -175,7 +172,6 @@ export default {
                 type: 'select'
             },
             options: ['default', 'shade', 'inverse'],
-            defaultValue: 'default',
             description:
                 'Theme of the item tiles. Valid options include: ‘default’, ‘shade’ and ‘inverse’.',
             table: {
@@ -189,7 +185,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:chevrondown',
             description: 'Icon used to shrink an expanded group of items.',
             table: {
                 type: { summary: 'object[]' },
@@ -202,7 +197,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:chevronright',
             description: 'Icon used to expand a closed group of items.',
             table: {
                 type: { summary: 'object[]' },
@@ -215,7 +209,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If true, the number of items per group is hidden.',
             table: {
                 type: { summary: 'boolean' },
@@ -225,7 +218,13 @@ export default {
         }
     },
     args: {
-        hideItemsCount: false
+        expandIconName: 'utility:chevronright',
+        groupActionsPosition: 'top',
+        groupTheme: 'default',
+        hideItemsCount: false,
+        itemTheme: 'default',
+        shrinkIconName: 'utility:chevrondown',
+        variant: 'horizontal'
     }
 };
 
