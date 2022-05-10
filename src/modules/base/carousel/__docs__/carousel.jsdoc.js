@@ -1,7 +1,7 @@
 /**
  * @typedef {Object} Item
  * @name items
- * @property {string} id Required. Unique id for the item.
+ * @property {string} name Required. Unique name for the item.
  * @property {string} title Primary string that will be used as the heading.
  * @property {string} description Secondary string that is used to describe the item.
  * @property {object[]} infos List of additional information to display. Fields: [ label: string, href: string ].
