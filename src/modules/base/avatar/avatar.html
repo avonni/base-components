@@ -138,13 +138,16 @@
             {tertiaryText}
         </p>
         <div if:true={tags} class="slds-m-top_xx-small">
-            <template for:each={computedTags} for:item="tag">
-                <lightning-badge
-                    class={tag.class}
+            <template for:each={tags} for:item="tag">
+                <c-chip
                     key={tag.label}
                     label={tag.label}
-                    data-element-id="lightning-badge"
-                ></lightning-badge>
+                    variant={tag.variant}
+                    outline={tag.outline}
+                    data-element-id="avonni-chip"
+                    class="avonni-chip"
+                >
+                </c-chip>
             </template>
         </div>
     </c-media-object>

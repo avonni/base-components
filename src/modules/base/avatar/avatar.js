@@ -519,21 +519,6 @@ export default class Avatar extends LightningElement {
     }
 
     /**
-     * Computed JSON string of tags object.
-     *
-     * @type {object[]}
-     */
-    get computedTags() {
-        this._computedTags = JSON.parse(JSON.stringify(this._tags));
-        this._computedTags.forEach((tag) => {
-            if (tag) {
-                tag.class = this._determineBadgeStyle(tag);
-            }
-        });
-        return this._computedTags;
-    }
-
-    /**
      * Check if Avatar exists.
      *
      * @type {boolean}
@@ -570,29 +555,6 @@ export default class Avatar extends LightningElement {
             'slds-text-align_right': this.textPosition === 'left',
             'slds-text-align_center': this.textPosition === 'center'
         });
-    }
-
-    /**
-     * Computed badge style based on tag object variant value.
-     *
-     * @param {object[]} tag
-     * @returns {string} slds badge style
-     */
-    _determineBadgeStyle(tag) {
-        switch (tag.variant) {
-            case 'inverse':
-                return 'slds-badge_inverse';
-            case 'lightest':
-                return 'slds-badge_lightest';
-            case 'success':
-                return 'slds-badge slds-theme_success';
-            case 'warning':
-                return 'slds-badge slds-theme_warning';
-            case 'error':
-                return 'slds-badge slds-theme_error';
-            default:
-                return 'slds-badge';
-        }
     }
 
     /**
