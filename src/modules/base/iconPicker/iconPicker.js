@@ -32,6 +32,8 @@ const TABS = {
     default: 'Standard'
 };
 
+const NB_VISIBLE_TABS = 2;
+
 const DEFAULT_HIDDEN_CATEGORIES = ['Utility', 'Doctype', 'Action'];
 
 /**
@@ -273,21 +275,10 @@ export default class IconPicker extends LightningElement {
                 this._hiddenCategories.push(category);
             }
         }
-
         if (this._hiddenCategories.length === 5) {
             let index = this._hiddenCategories.indexOf(TABS.default);
             if (index !== -1) {
                 this._hiddenCategories.splice(index, 1);
-            }
-        } else if (this._hiddenCategories.length < 3) {
-            let i;
-            for (i = TABS.valid.length - 1; i >= 0; i--) {
-                if (!this._hiddenCategories.includes(TABS.valid[i])) {
-                    this._hiddenCategories.push(TABS.valid[i]);
-                    if (this._hiddenCategories.length === 3) {
-                        return;
-                    }
-                }
             }
         }
     }
@@ -354,7 +345,14 @@ export default class IconPicker extends LightningElement {
             }
         });
 
-        return [...orderedTabs, ...this.hiddenCategories];
+        console.log('Output');
+        console.log(...orderedTabs.slice(0, NB_VISIBLE_TABS));
+        console.log(...orderedTabs.slice(NB_VISIBLE_TABS));
+
+        return [
+            ...orderedTabs.slice(0, NB_VISIBLE_TABS),
+            ...orderedTabs.slice(NB_VISIBLE_TABS)
+        ];
     }
 
     get computedValue() {
@@ -382,7 +380,10 @@ export default class IconPicker extends LightningElement {
      * @type {number}
      */
     get nHiddenCategories() {
-        return this.hiddenCategories.length;
+        return Math.max(
+            0,
+            TABS.valid.length - NB_VISIBLE_TABS - this.hiddenCategories.length
+        );
     }
 
     /**
