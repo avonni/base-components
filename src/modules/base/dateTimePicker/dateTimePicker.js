@@ -1262,7 +1262,10 @@ export default class DateTimePicker extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value: this.type === 'radio' ? this.value[0] : this.value,
+                    value:
+                        this.type === 'radio'
+                            ? this.value[0] || null
+                            : this.value,
                     name: this.name
                 }
             })
