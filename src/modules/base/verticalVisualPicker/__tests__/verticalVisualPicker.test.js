@@ -599,9 +599,9 @@ describe('VerticalVisualPicker', () => {
             inputs[0].click();
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.value).toMatchObject([
+            expect(handler.mock.calls[0][0].detail.value).toBe(
                 'lightning-professional'
-            ]);
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

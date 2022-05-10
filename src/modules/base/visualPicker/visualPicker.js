@@ -253,8 +253,10 @@ export default class VisualPicker extends LightningElement {
     }
 
     set value(value) {
-        this._value = value instanceof Array ? value : [value];
+        this._value =
+            typeof value === 'string' ? [value] : normalizeArray(value);
     }
+
     /**
      * Changes the appearance of the item when selected. Valid values include coverable and non-coverable.
      *
@@ -706,13 +708,13 @@ export default class VisualPicker extends LightningElement {
          *
          * @event
          * @name change
-         * @param {string[]} value The visual picker value.
+         * @param {string|string[]} value Selected items' value. Returns an array of string if the type is checkbox. Returns a string otherwise.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value
+                    value: this.type === 'radio' ? value[0] || null : value
                 }
             })
         );

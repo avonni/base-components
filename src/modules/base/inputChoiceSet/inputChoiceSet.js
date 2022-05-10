@@ -185,11 +185,10 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.
+     * Value of the selected option, or array of selected options' value.
      *
-     * @type {string}
+     * @type {(string|string[])}
      * @public
-     * @required
      */
     @api
     get value() {
@@ -510,9 +509,7 @@ export default class InputChoiceSet extends LightningElement {
         const checkedValues = Array.from(inputs)
             .filter((checkbox) => checkbox.checked)
             .map((checkbox) => checkbox.value);
-
-        if (!checkedValues.length) return null;
-        return this.isMultiSelect ? checkedValues : checkedValues[0];
+        return this.isMultiSelect ? checkedValues : checkedValues[0] || null;
     }
 
     /**
@@ -549,7 +546,7 @@ export default class InputChoiceSet extends LightningElement {
          *
          * @event
          * @name change
-         * @param {string} value The input value.
+         * @param {string|string[]} value Selected options' value. Returns an array of string if the input is multi-select. Returns a string otherwise.
          * @public
          * @bubbles
          * @cancelable

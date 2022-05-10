@@ -1555,6 +1555,33 @@ describe('FilterMenu', () => {
             applyButton.click();
 
             expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toBe(VALUE[0]);
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    it('apply event, multi-select', () => {
+        const handler = jest.fn();
+        element.addEventListener('apply', handler);
+
+        element.items = ITEMS;
+        element.value = VALUE;
+        element.isMultiSelect = true;
+
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="button"]'
+        );
+        button.click();
+
+        return Promise.resolve().then(() => {
+            const applyButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-apply"]'
+            );
+            applyButton.click();
+
+            expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toMatchObject(VALUE);
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();

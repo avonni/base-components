@@ -41,7 +41,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 5,
             description:
                 'The auto scroll duration. The default is 5 seconds, after that the next image is displayed.',
             table: {
@@ -67,7 +66,6 @@ export default {
             },
             description:
                 'Number of items to be displayed at a time in the carousel.',
-            defaultValue: 1,
             table: {
                 defaultValue: { summary: 1 },
                 type: { summary: 'number' }
@@ -103,7 +101,6 @@ export default {
                 type: 'boolean'
             },
             description: 'Boolean for displaying the progress indicators.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -116,7 +113,6 @@ export default {
             },
             description:
                 'Boolean for displaying the navigation indicators (left/right arrows) of the carousel.',
-            defaultValue: false,
             table: {
                 defaultValue: { summary: false },
                 type: { summary: 'boolean' }
@@ -142,7 +138,6 @@ export default {
             description:
                 'Changes the appearance of the progress indicators. Valid values are base or shaded.',
             options: ['base', 'shaded'],
-            defaultValue: 'base',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'base' }
@@ -191,7 +186,6 @@ export default {
                 'bottom-right',
                 'bottom-center'
             ],
-            defaultValue: 'bottom-center',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'bottom-center' }
@@ -204,7 +198,6 @@ export default {
             },
             description: 'Valid values include bare, border and menu.',
             options: ['bare', 'border', 'menu'],
-            defaultValue: 'border',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'border' }
@@ -213,11 +206,21 @@ export default {
     },
 
     args: {
+        actionsPosition: 'bottom-center',
+        actionsVariant: 'border',
+        assistiveText: {
+            nextPanel: 'Next Panel',
+            previousPanel: 'Previous Panel',
+            autoplayButton: 'Start / Stop auto-play'
+        },
         disableAutoRefresh: false,
         disableAutoScroll: false,
-        isInfinite: false,
         hideIndicator: false,
-        hidePreviousNextPanelNavigation: false
+        hidePreviousNextPanelNavigation: false,
+        indicatorVariant: 'base',
+        isInfinite: false,
+        itemsPerPanel: 1,
+        scrollDuration: 5
     }
 };
 

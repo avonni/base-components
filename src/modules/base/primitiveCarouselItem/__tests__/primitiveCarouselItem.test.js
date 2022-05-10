@@ -69,6 +69,7 @@ const menuActions = [
 const ex = [
     {
         title: 'Visit App Exchange',
+        name: 'someName',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
@@ -285,6 +286,7 @@ describe('Primitive Carousel Item', () => {
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
         element.title = 'Visit App Exchange';
+        element.name = 'someName';
         element.description =
             'Extend Salesforce with the #1 business marketplace.';
         element.imageAssistiveText = 'Appy';
@@ -316,6 +318,7 @@ describe('Primitive Carousel Item', () => {
             'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
         element.href = 'https://www.salesforce.com';
         element.actions = bareActions;
+        element.name = 'someName';
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);

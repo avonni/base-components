@@ -56,6 +56,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
     @api infos;
     @api imageAssistiveText;
     @api href;
+    @api name;
     @api src;
 
     @api itemIndex;
@@ -251,8 +252,15 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @param {event}
      */
     handleItemClick() {
-        const { title, description, src, href, actions, imageAssistiveText } =
-            this;
+        const {
+            title,
+            description,
+            src,
+            href,
+            actions,
+            imageAssistiveText,
+            name
+        } = this;
         /**
          * The event fired when an item is clicked.
          *
@@ -270,7 +278,8 @@ export default class PrimitiveCarouselItem extends LightningElement {
                         src,
                         href,
                         actions,
-                        imageAssistiveText
+                        imageAssistiveText,
+                        name
                     }
                 }
             })
@@ -284,9 +293,16 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
     handleActionClick(event) {
         event.preventDefault();
-        const name = event.currentTarget.name;
-        const { title, description, src, href, actions, imageAssistiveText } =
-            this;
+        const actionName = event.currentTarget.name;
+        const {
+            title,
+            description,
+            src,
+            href,
+            actions,
+            imageAssistiveText,
+            name
+        } = this;
 
         /**
          * The event fired when a user clicks on an action.
@@ -300,10 +316,11 @@ export default class PrimitiveCarouselItem extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name: name,
+                    name: actionName,
                     item: {
                         title,
                         description,
+                        name,
                         src,
                         href,
                         actions,

@@ -88,7 +88,6 @@ export default {
             options: ['base', 'shaded'],
             description:
                 'Changes the appearance of the progress indicator for the base type only. Valid values are base or shaded. The shaded variant adds a light gray border to the step indicators. The default is base.',
-            defaultValue: 'base',
             table: {
                 defaultValue: { summary: 'base' },
                 type: { summary: 'string' }
@@ -102,6 +101,9 @@ export default {
                 type: { summary: 'object[]' }
             }
         }
+    },
+    args: {
+        variant: 'base'
     }
 };
 
@@ -112,7 +114,7 @@ const BaseStepsWithPopoverHidden = [
         labelPosition: 'bottom',
         assistiveText: '1',
         popoverDescription: 'This is step #1',
-        popoverHidden: 'true'
+        popoverHidden: true
     },
     {
         value: '2',
@@ -120,7 +122,7 @@ const BaseStepsWithPopoverHidden = [
         labelPosition: 'bottom',
         assistiveText: '2',
         popoverDescription: 'This is step #2',
-        popoverHidden: 'true'
+        popoverHidden: true
     },
     {
         value: '3',
@@ -128,21 +130,21 @@ const BaseStepsWithPopoverHidden = [
         labelPosition: 'bottom',
         assistiveText: '3',
         popoverDescription: 'This is step #3',
-        popoverHidden: 'true'
+        popoverHidden: true
     },
     {
         value: '4',
         label: '4',
         labelPosition: 'bottom',
         popoverDescription: 'This is step #4',
-        popoverHidden: 'true'
+        popoverHidden: true
     },
     {
         value: '5',
         label: '5',
         labelPosition: 'bottom',
         popoverDescription: 'This is step #5',
-        popoverHidden: 'true'
+        popoverHidden: true
     }
 ];
 

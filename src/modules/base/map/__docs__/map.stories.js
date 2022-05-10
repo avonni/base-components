@@ -40,7 +40,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Markers',
             table: {
                 defaultValue: { summary: 'Markers' },
                 type: { summary: 'string' }
@@ -71,7 +70,6 @@ export default {
                 type: 'select'
             },
             options: ['visible', 'hidden', 'auto'],
-            defaultValue: 'auto',
             table: {
                 defaultValue: { summary: 'auto' },
                 type: { summary: 'string' }
@@ -99,7 +97,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -107,6 +104,8 @@ export default {
         }
     },
     args: {
+        listView: 'auto',
+        markersTitle: 'Markers',
         showFooter: false
     }
 };

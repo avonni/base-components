@@ -37,7 +37,8 @@ import {
     normalizeArray,
     observePosition,
     animationFrame,
-    timeout
+    timeout,
+    deepCopy
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { Tooltip } from 'c/tooltipLibrary';
@@ -414,7 +415,7 @@ export default class FilterMenu extends LightningElement {
     }
     set value(val) {
         const array = typeof val === 'string' ? [val] : normalizeArray(val);
-        this._value = JSON.parse(JSON.stringify(array));
+        this._value = deepCopy(array);
 
         this.computeValue();
         this.computeSelectedItems();
@@ -996,12 +997,12 @@ export default class FilterMenu extends LightningElement {
                 this.startPositioning();
 
                 /**
-                * The event fired when the dropdown is opened.
-                *
-                * @event
-                * @name open
-                * @public
-                */
+                 * The event fired when the dropdown is opened.
+                 *
+                 * @event
+                 * @name open
+                 * @public
+                 */
                 this.dispatchEvent(new CustomEvent('open'));
 
                 // update the bounding rect when the menu is toggled
@@ -1012,12 +1013,12 @@ export default class FilterMenu extends LightningElement {
                 this.stopPositioning();
 
                 /**
-                * The event fired when the dropdown is closed.
-                *
-                * @event
-                * @name close
-                * @public
-                */
+                 * The event fired when the dropdown is closed.
+                 *
+                 * @event
+                 * @name close
+                 * @public
+                 */
                 this.dispatchEvent(new CustomEvent('close'));
             }
 
@@ -1299,7 +1300,9 @@ export default class FilterMenu extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('apply', {
                 detail: {
-                    value: this.value
+                    value: this.isMultiSelect
+                        ? this.value
+                        : this.value[0] || null
                 }
             })
         );
@@ -1323,7 +1326,9 @@ export default class FilterMenu extends LightningElement {
             new CustomEvent('select', {
                 cancelable: true,
                 detail: {
-                    value: this.value
+                    value: this.isMultiSelect
+                        ? this.value
+                        : this.value[0] || null
                 }
             })
         );
