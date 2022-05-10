@@ -273,6 +273,7 @@ export default class Calendar extends LightningElement {
                               )
                           )
                       ];
+            this.validateCurrentDayValue();
             this._value = this._value.filter(
                 (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
             );
@@ -740,6 +741,24 @@ export default class Calendar extends LightningElement {
             }
         });
         return marked;
+    }
+
+    /**
+     * If invalid current day, center calendar's current day to closest date in min-max interval
+     */
+    validateCurrentDayValue() {
+        if (this._value[0].toString() === 'Invalid Date') {
+            if (
+                this.min.getFullYear() <= new Date().getFullYear() &&
+                new Date().getFullYear() <= this.max.getFullYear()
+            )
+                this._value[0] = new Date();
+            else this._value[0] = this.min;
+        } else if (this._value[0].getFullYear() > this.max.getFullYear()) {
+            this._value[0] = this.max;
+        } else if (this._value[0].getFullYear() < this.min.getFullYear()) {
+            this._value[0] = this.min;
+        }
     }
 
     /**
