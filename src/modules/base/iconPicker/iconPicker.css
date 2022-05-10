@@ -63,3 +63,19 @@ button:disabled {
 .avonni-builder-icon-picker-small-icon-padding {
     padding: 0.05rem;
 }
+
+.xx-small-action-icon-scaling {
+    transform: scale(0.38);
+}
+
+.small-action-icon-scaling {
+    transform: scale(0.4);
+}
+
+.medium-action-icon-scaling {
+    transform: scale(0.55);
+}
+
+.large-action-icon-scaling {
+    transform: scale(0.6);
+}

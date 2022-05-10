@@ -573,6 +573,27 @@ export default class IconPicker extends LightningElement {
     }
 
     /**
+     * Computed CSS classes for the button icon container. Adds a scaling class if icon is of type "action".
+     *
+     * @type {string}
+     */
+    get computedIconContainerClass() {
+        const classes = classSet('slds-icon_container');
+        if (this.value && this.value.split(':')[0] === 'action') {
+            classes.add({
+                'xx-small-action-icon-scaling':
+                    this.menuIconSize === 'xx-small',
+                'medium-action-icon-scaling':
+                    this.menuIconSize === 'x-small' ||
+                    this.menuIconSize === 'small' ||
+                    this.menuIconSize === 'medium',
+                'large-action-icon-scaling': this.menuIconSize === 'large'
+            });
+        }
+        return classes.toString();
+    }
+
+    /**
      * Remove focus from the input element.
      *
      * @public
