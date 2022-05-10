@@ -103,9 +103,11 @@ export default class ColorPalette extends LightningElement {
     computedGroups = [];
     currentLabel;
     currentToken;
+    _isConnected = false;
 
     connectedCallback() {
         this.initGroups();
+        this._isConnected = true;
     }
 
     renderedCallback() {
@@ -137,7 +139,7 @@ export default class ColorPalette extends LightningElement {
         const colors = deepCopy(normalizeArray(value));
         this._colors = colors.length ? colors : DEFAULT_COLORS;
 
-        if (this.isConnected) this.initGroups();
+        if (this._isConnected) this.initGroups();
     }
 
     /**

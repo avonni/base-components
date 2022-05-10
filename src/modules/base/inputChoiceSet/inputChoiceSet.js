@@ -115,6 +115,7 @@ export default class InputChoiceSet extends LightningElement {
     _variant;
 
     _helpMessage;
+    _isConnected = false;
 
     constructor() {
         super();
@@ -148,6 +149,7 @@ export default class InputChoiceSet extends LightningElement {
         this.updateClassList();
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+        this._isConnected = true;
     }
 
     renderedCallback() {

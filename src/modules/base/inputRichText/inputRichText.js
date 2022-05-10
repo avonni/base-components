@@ -32,7 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    normalizeArray,
     normalizeBoolean,
+    normalizeString,
     deepCopy,
     getRealDOMId,
     isRTL
@@ -154,7 +156,10 @@ function PARSE_INT_STYLE(element, value) {
     return parseInt(element.style[value], 10);
 }
 
-const DEFAULT_VARIANT = 'top-toolbar';
+const VARIANTS = {
+    default: 'top-toolbar',
+    valid: ['top-toolbar', 'bottom-toolbar']
+};
 
 /**
  * @class
@@ -176,15 +181,6 @@ export default class InputRichText extends LightningElement {
      * @public
      */
     @api disabledCategories = '';
-
-    /**
-     * A list of allowed formats. By default, the list is computed based on enabled categories.
-     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
-     *
-     * @type {object}
-     * @public
-     */
-    @api formats = '';
 
     /**
      * Check if editor is in Publisher category.
@@ -229,16 +225,6 @@ export default class InputRichText extends LightningElement {
     @api placeholder;
 
     /**
-     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes
-     * the toolbar to be displayed below the text box.
-     *
-     * @type {string}
-     * @public
-     * @default top-toolbar
-     */
-    @api variant = DEFAULT_VARIANT;
-
-    /**
      * Entity ID to share the image with.
      *
      * @type {string}
@@ -276,8 +262,10 @@ export default class InputRichText extends LightningElement {
     }
 
     _disabled = false;
+    _formats = [];
     _readOnly = false;
     _valid = true;
+    _variant = VARIANTS.default;
 
     linkPanelOpen = false;
     queueLinkPanelOpen = false;
@@ -319,6 +307,21 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
+     * A list of allowed formats. By default, the list is computed based on enabled categories.
+     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get formats() {
+        return this._formats;
+    }
+    set formats(value) {
+        this._formats = normalizeArray(value);
+    }
+
+    /**
      * If present, the editor is read-only and cannot be edited by users.
      *
      * @type {boolean}
@@ -335,7 +338,7 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-     * Represent the validity state the editor can be in, with respect to constraint validation.
+     * Sets focus on the rich text editor.
      *
      * @type {boolean}
      * @default true
@@ -392,6 +395,26 @@ export default class InputRichText extends LightningElement {
                 this.quill.clipboard.dangerouslyPasteHTML(this.internalValue);
             }
         }
+    }
+
+    /**
+     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes the toolbar to be displayed below the text box.
+     *
+     * @type {string}
+     * @public
+     * @default top-toolbar
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+
+        if (this.quill) this.resetQuill();
     }
 
     /*
@@ -1328,6 +1351,13 @@ export default class InputRichText extends LightningElement {
                 this.quill.setSelection(this.quill.getLength());
             }
         }
+
+        if (this.queueLinkPanelOpen) {
+            const link = this.template.querySelector(
+                '[data-element-id="lightning-input-link"]'
+            );
+            if (link) link.focus();
+        }
     }
 
     /**
@@ -1627,6 +1657,17 @@ export default class InputRichText extends LightningElement {
      */
     handleLinkPanelFocusIn() {
         this.linkPanelHasFocus = true;
+    }
+
+    resetQuill() {
+        this.removeQuillEmitterEventListeners();
+        this.quill = null;
+        this.quillNotReady = true;
+        this.initialRender = true;
+        this._hasBeenFocused = false;
+        this._pendingFormats = [];
+        this.linkPanelOpen = false;
+        this.queueLinkPanelOpen = false;
     }
 
     /**

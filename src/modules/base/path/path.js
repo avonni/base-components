@@ -123,6 +123,7 @@ export default class Path extends LightningElement {
     _status = DEFAULT_COMPLETED_OPTION;
     _activeStep;
     _candidateStep;
+    _isConnected = false;
     coachingIsVisible = false;
     computedCurrentStep;
     completedOptions;
@@ -131,6 +132,7 @@ export default class Path extends LightningElement {
     connectedCallback() {
         this.initSteps();
         this.initCurrentStep(this.currentStep);
+        this._isConnected = true;
     }
 
     renderedCallback() {
@@ -192,7 +194,7 @@ export default class Path extends LightningElement {
         if (typeof value === 'string') {
             this._currentStep = value;
 
-            if (this.isConnected) this.initCurrentStep(this.currentStep);
+            if (this._isConnected) this.initCurrentStep(this.currentStep);
         }
     }
 
@@ -378,7 +380,7 @@ export default class Path extends LightningElement {
         const array = normalizeArray(proxy);
         this._steps = JSON.parse(JSON.stringify(array));
 
-        if (this.isConnected) {
+        if (this._isConnected) {
             this.initSteps();
             this.initCurrentStep(this.currentStep);
         }

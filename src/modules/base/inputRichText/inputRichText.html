@@ -41,6 +41,7 @@
         onclick={activateEditor}
     >
         <template if:true={isBottomToolbar}>
+            <!-- Top editor -->
             <div
                 if:false={readOnly}
                 class="slds-rich-text-editor__textarea slds-grid editor"
@@ -51,7 +52,11 @@
                 class="slds-rich-text-editor__textarea slds-grid"
             >
                 <div
-                    class="slds-rich-text-area__content slds-grow slds-text-color-weak standin"
+                    class="
+                        slds-rich-text-area__content
+                        slds-grow slds-text-color-weak
+                        standin
+                    "
                     onclick={handleStandInClick}
                 >
                     <lightning-formatted-rich-text
@@ -70,6 +75,8 @@
                 {errorMessage}
             </div>
         </template>
+
+        <!-- Toolbar -->
         <div
             class="slds-rich-text-editor__toolbar slds-shrink-none"
             role="toolbar"
@@ -158,6 +165,7 @@
                                 class={button.computedClass}
                                 value={button.value}
                                 title={button.label}
+                                type="button"
                                 data-format={button.format}
                                 aria-pressed="false"
                             >
@@ -175,7 +183,9 @@
                 </ul>
             </template>
         </div>
+
         <template if:false={isBottomToolbar}>
+            <!-- Bottom editor -->
             <div
                 if:false={readOnly}
                 class="slds-rich-text-editor__textarea slds-grid editor"
@@ -186,7 +196,11 @@
                 class="slds-rich-text-editor__textarea slds-grid"
             >
                 <div
-                    class="slds-rich-text-area__content slds-grow slds-text-color-weak standin"
+                    class="
+                        slds-rich-text-area__content
+                        slds-grow slds-text-color-weak
+                        standin
+                    "
                     onclick={handleStandInClick}
                 >
                     <div if:true={shouldShowPlaceholder}>
@@ -222,6 +236,7 @@
             name="link-input"
             value={showLinkValue}
             label={i18n.linkInput}
+            data-element-id="lightning-input-link"
             onchange={handleLinkValueChange}
             onkeydown={linkKeyboardPress}
         ></lightning-input>

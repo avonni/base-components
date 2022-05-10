@@ -105,7 +105,7 @@ export default class DataTypesFromDtoO extends LightningElement {
                 endDate: new Date('2021/10/05')
             },
             email: 'nina.gomez@email.com',
-            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+            image: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
             location: {
                 latitude: '45.53',
                 longitude: '-73.61'
@@ -123,7 +123,7 @@ export default class DataTypesFromDtoO extends LightningElement {
             dynamicIcon: 'score',
             dynamicIconOption: 'negative',
             email: 'dave.mckinsley@email.com',
-            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+            image: 'https://images.unsplash.com/photo-1614850715649-1d0106293bd1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=340&q=80',
             toggle: true,
             location: {
                 latitude: '45.53',
@@ -139,7 +139,7 @@ export default class DataTypesFromDtoO extends LightningElement {
             dynamicIcon: 'strength',
             dynamicIconOption: -3,
             email: 'jung.phung@email.com',
-            image: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/tbc_banner_2x.jpg',
+            image: 'https://images.unsplash.com/photo-1614850715649-1d0106293bd1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=340&q=80',
             imageHeight: 50,
             location: {
                 latitude: '45.54',

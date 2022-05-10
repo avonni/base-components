@@ -125,6 +125,7 @@ export default class RelationshipGraph extends LightningElement {
         if (this.variant === 'vertical') {
             this.inlineHeader = true;
         }
+        this._isConnected = true;
     }
 
     renderedCallback() {

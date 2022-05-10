@@ -79,6 +79,7 @@ export default class ActivityTimeline extends LightningElement {
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _key;
+    _isConnected = false;
     _presentDates = [];
     _pastDates = [];
     _upcomingDates = [];
@@ -86,6 +87,7 @@ export default class ActivityTimeline extends LightningElement {
     @track orderedDates = [];
 
     connectedCallback() {
+        this._isConnected = true;
         this.initActivityTimeline();
     }
 
@@ -159,7 +161,7 @@ export default class ActivityTimeline extends LightningElement {
             validValues: GROUP_BY_OPTIONS.valid
         });
 
-        if (this.isConnected) this.initActivityTimeline();
+        if (this._isConnected) this.initActivityTimeline();
     }
 
     /**
@@ -175,7 +177,7 @@ export default class ActivityTimeline extends LightningElement {
 
     set items(value) {
         this._items = normalizeArray(value);
-        if (this.isConnected) this.initActivityTimeline();
+        if (this._isConnected) this.initActivityTimeline();
     }
 
     /**

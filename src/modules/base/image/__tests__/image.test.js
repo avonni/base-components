@@ -38,7 +38,7 @@ import Image from 'c/image';
 // cannot test aspect-ratio//most crop-size output. Jest/JS-Dom does not recognize its attribute within dom element. The JS function goes through, however since aspect-ratio computes only with 1 dimension ( e.g. width or height ) - we can only test the input dimension to match the same output dimension which is pointless.
 
 const src =
-    'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
+    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
 
 let element;
 describe('Image', () => {
@@ -287,7 +287,7 @@ describe('Image', () => {
     // sizes
     it('Image - Sizes', () => {
         element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg 320w';
         element.sizes =
             '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px';
 
@@ -303,7 +303,7 @@ describe('Image', () => {
 
     it('Image - Sizes[]', () => {
         element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg 320w';
         element.sizes = [
             '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
         ];
@@ -327,7 +327,7 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.src).toBe(
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
             );
         });
     });
@@ -335,21 +335,21 @@ describe('Image', () => {
     // srcset
     it('Image - Srcset string', () => {
         element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
             expect(img.srcset).toBe(
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
             );
         });
     });
 
     it('Image - srcset string[]', () => {
         element.srcset = [
-            'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            'https://www.avonni.app/, https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
         ];
 
         return Promise.resolve().then(() => {
@@ -357,7 +357,7 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.srcset).toBe(
-                'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+                'https://www.avonni.app/, https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
             );
         });
     });
@@ -403,9 +403,7 @@ describe('Image', () => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                expect(img.className).toBe(
-                    'avonni-image'
-                );
+                expect(img.className).toBe('avonni-image');
                 expect(img.style.minWidth).toBe('0px');
                 expect(img.style.minHeight).toBe('0px');
                 expect(img.style.maxWidth).toBe('0px');

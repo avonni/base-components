@@ -25,6 +25,24 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-text-color-focus
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-text-color-hover
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-text-decoration-focus
+ * @default none
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-expandable-section-base-header-font-size
  * @default 1rem
  * @type font
@@ -51,6 +69,24 @@
  * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-text-color
  * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-text-color-focus
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-text-color-hover
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-text-decoration-focus
+ * @default none
  * @type color
  */
 /**
@@ -102,6 +138,26 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-icon-color-foreground-default-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-base-header-icon-color-foreground-default-focus
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-expandable-section-shaded-header-icon-color-foreground-default
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-icon-color-foreground-default-hover
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-expandable-section-shaded-header-icon-color-foreground-default-focus
  * @type color
  */
