@@ -50,7 +50,7 @@ describe('Button Popover', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Button Popover: Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
@@ -70,9 +70,11 @@ describe('Button Popover', () => {
     /* ----- ATTRIBUTES ----- */
 
     // access-key
-    it('Button Popover access-key', () => {
+    it('Button Popover: access-key', () => {
         element.accessKey = 'K';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.accessKey).toBe('K');
@@ -80,9 +82,11 @@ describe('Button Popover', () => {
     });
 
     // disabled
-    it('Button Popover disabled', () => {
+    it('Button Popover: disabled', () => {
         element.disabled = true;
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.disabled).toBeTruthy();
@@ -90,9 +94,11 @@ describe('Button Popover', () => {
     });
 
     // label
-    it('Button Popover label', () => {
+    it('Button Popover: label', () => {
         element.label = 'Button Label';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.label).toBe('Button Label');
@@ -100,72 +106,88 @@ describe('Button Popover', () => {
     });
 
     // variant
-    it('Button Popover variant neutral', () => {
+    it('Button Popover: variant neutral', () => {
         element.variant = 'neutral';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('neutral');
         });
     });
 
-    it('Button Popover variant base', () => {
+    it('Button Popover: variant base', () => {
         element.variant = 'base';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('base');
         });
     });
 
-    it('Button Popover variant brand', () => {
+    it('Button Popover: variant brand', () => {
         element.variant = 'brand';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('brand');
         });
     });
 
-    it('Button Popover variant brand-outline', () => {
+    it('Button Popover: variant brand-outline', () => {
         element.variant = 'brand-outline';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('brand-outline');
         });
     });
 
-    it('Button Popover variant destructive', () => {
+    it('Button Popover: variant destructive', () => {
         element.variant = 'destructive';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('destructive');
         });
     });
 
-    it('Button Popover variant destructive-text', () => {
+    it('Button Popover: variant destructive-text', () => {
         element.variant = 'destructive-text';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('destructive-text');
         });
     });
 
-    it('Button Popover variant inverse', () => {
+    it('Button Popover: variant inverse', () => {
         element.variant = 'inverse';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('inverse');
         });
     });
 
-    it('Button Popover variant success', () => {
+    it('Button Popover: variant success', () => {
         element.variant = 'success';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.variant).toBe('success');
@@ -173,7 +195,7 @@ describe('Button Popover', () => {
     });
 
     // hide close button
-    it('Button Popover hide close button', () => {
+    it('Button Popover: hide close button', () => {
         return Promise.resolve().then(() => {
             const closeButton = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-icon"]'
@@ -182,7 +204,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover hide close button true', () => {
+    it('Button Popover: hide close button true', () => {
         element.hideCloseButton = true;
 
         return Promise.resolve().then(() => {
@@ -194,9 +216,11 @@ describe('Button Popover', () => {
     });
 
     // icon name
-    it('Button Popover icon name', () => {
+    it('Button Popover: icon name', () => {
         element.iconName = 'utility:lock';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.iconName).toBe('utility:lock');
@@ -204,19 +228,23 @@ describe('Button Popover', () => {
     });
 
     // icon position
-    it('Button Popover icon position left', () => {
+    it('Button Popover: icon position left', () => {
         element.iconName = 'utility:lock';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.iconPosition).toBe('left');
         });
     });
 
-    it('Button Popover icon position right', () => {
+    it('Button Popover: icon position right', () => {
         element.iconName = 'utility:lock';
         element.iconPosition = 'right';
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
 
         return Promise.resolve().then(() => {
             expect(button.iconPosition).toBe('right');
@@ -224,7 +252,7 @@ describe('Button Popover', () => {
     });
 
     // title
-    it('Button Popover title', () => {
+    it('Button Popover: title', () => {
         element.title = 'This is a popover Title';
 
         return Promise.resolve().then(() => {
@@ -236,7 +264,7 @@ describe('Button Popover', () => {
     });
 
     // popover size
-    it('Button Popover popoverSize small', () => {
+    it('Button Popover: popoverSize small', () => {
         element.popoverSize = 'small';
 
         return Promise.resolve().then(() => {
@@ -245,7 +273,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover popoverSize medium', () => {
+    it('Button Popover: popoverSize medium', () => {
         element.popoverSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -254,7 +282,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover popoverSize large', () => {
+    it('Button Popover: popoverSize large', () => {
         element.popoverSize = 'large';
 
         return Promise.resolve().then(() => {
@@ -264,7 +292,7 @@ describe('Button Popover', () => {
     });
 
     // popover variant
-    it('Button Popover popoverVariant base', () => {
+    it('Button Popover: popoverVariant base', () => {
         return Promise.resolve().then(() => {
             const popover = element.shadowRoot.querySelector('.slds-popover');
             expect(popover.className).not.toContain('slds-popover_warning');
@@ -273,7 +301,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover popoverVariant warning', () => {
+    it('Button Popover: popoverVariant warning', () => {
         element.popoverVariant = 'warning';
 
         return Promise.resolve().then(() => {
@@ -284,7 +312,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover popoverVariant error', () => {
+    it('Button Popover: popoverVariant error', () => {
         element.popoverVariant = 'error';
 
         return Promise.resolve().then(() => {
@@ -295,7 +323,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover popoverVariant walkthrough', () => {
+    it('Button Popover: popoverVariant walkthrough', () => {
         element.popoverVariant = 'walkthrough';
 
         return Promise.resolve().then(() => {
@@ -307,7 +335,7 @@ describe('Button Popover', () => {
     });
 
     // placement
-    it('Button Popover placement left', () => {
+    it('Button Popover: placement left', () => {
         element.placement = 'left';
 
         return Promise.resolve().then(() => {
@@ -317,7 +345,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover placement auto', () => {
+    it('Button Popover: placement auto', () => {
         element.placement = 'auto';
 
         return Promise.resolve().then(() => {
@@ -326,7 +354,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover placement center', () => {
+    it('Button Popover: placement center', () => {
         element.placement = 'center';
 
         return Promise.resolve().then(() => {
@@ -336,7 +364,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover placement right', () => {
+    it('Button Popover: placement right', () => {
         element.placement = 'right';
 
         return Promise.resolve().then(() => {
@@ -346,7 +374,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover placement bottom-left', () => {
+    it('Button Popover: placement bottom-left', () => {
         element.placement = 'bottom-left';
 
         return Promise.resolve().then(() => {
@@ -358,7 +386,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover placement bottom-right', () => {
+    it('Button Popover: placement bottom-right', () => {
         element.placement = 'bottom-right';
 
         return Promise.resolve().then(() => {
@@ -370,7 +398,7 @@ describe('Button Popover', () => {
         });
     });
 
-    it('Button Popover placement bottom-center', () => {
+    it('Button Popover: placement bottom-center', () => {
         element.placement = 'bottom-center';
 
         return Promise.resolve().then(() => {
@@ -381,7 +409,7 @@ describe('Button Popover', () => {
     });
 
     // is loading
-    it('Button Popover is loading', () => {
+    it('Button Popover: is loading', () => {
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -393,7 +421,7 @@ describe('Button Popover', () => {
     });
 
     // loading state alternative text
-    it('Button Popover loading state alternative text', () => {
+    it('Button Popover: loading state alternative text', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText = 'This is a loading text';
 
@@ -407,7 +435,7 @@ describe('Button Popover', () => {
 
     /* ---- METHODS ----- */
 
-    it('Button Popover method: click', () => {
+    it('Button Popover: method click', () => {
         element.triggers = 'click';
 
         return Promise.resolve()
@@ -419,14 +447,13 @@ describe('Button Popover', () => {
                 button.click();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
                 expect(popover.className).toContain('slds-show');
             });
     });
 
-    it('Button Popover method: focus', () => {
+    it('Button Popover: method focus', () => {
         element.triggers = 'focus';
 
         return Promise.resolve()
@@ -435,41 +462,38 @@ describe('Button Popover', () => {
                 element.shadowRoot.querySelector('slot').click();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
                 expect(popover.className).toContain('slds-show');
             });
     });
 
-    it('Button Popover method: open', () => {
+    it('Button Popover: method open', () => {
         return Promise.resolve()
             .then(() => {
                 element.open();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
                 expect(popover.className).toContain('slds-show');
             });
     });
 
-    it('Button Popover method: close', () => {
+    it('Button Popover: method close', () => {
         return Promise.resolve()
             .then(() => {
                 element.open();
                 element.close();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
                 expect(popover.className).toContain('slds-hide');
             });
     });
 
-    it('Button Popover triggers hover mouseenter', () => {
+    it('Button Popover: triggers hover mouseenter', () => {
         element.triggers = 'hover';
 
         return Promise.resolve()
@@ -487,10 +511,12 @@ describe('Button Popover', () => {
             });
     });
 
-    it('Button Popover triggers hover mouseleave', () => {
+    it('Button Popover: triggers hover mouseleave', () => {
         element.triggers = 'hover';
 
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
         return Promise.resolve()
             .then(() => {
                 element.focus();
@@ -503,7 +529,7 @@ describe('Button Popover', () => {
             });
     });
 
-    it('Button Popover triggers focus blur', () => {
+    it('Button Popover: triggers focus blur', () => {
         element.triggers = 'focus';
 
         const button = element.shadowRoot.querySelector(
@@ -522,10 +548,12 @@ describe('Button Popover', () => {
             });
     });
 
-    it('Button Popover triggers click popoverblur', () => {
+    it('Button Popover: triggers click popoverblur', () => {
         element.triggers = 'click';
 
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
         const popover = element.shadowRoot.querySelector('.slds-popover');
         return Promise.resolve()
             .then(() => {
@@ -539,10 +567,12 @@ describe('Button Popover', () => {
             });
     });
 
-    it('Button Popover triggers hover popoverleave', () => {
+    it('Button Popover: triggers hover popoverleave', () => {
         element.triggers = 'hover';
 
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
         const popover = element.shadowRoot.querySelector('.slds-popover');
         return Promise.resolve()
             .then(() => {
@@ -556,10 +586,12 @@ describe('Button Popover', () => {
             });
     });
 
-    it('Button Popover triggers click slot click', () => {
+    it('Button Popover: triggers click slot click', () => {
         element.triggers = 'click';
 
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
         const popover = element.shadowRoot.querySelector('.slds-popover');
         const slot = element.shadowRoot.querySelector('slot');
         return Promise.resolve()
@@ -577,10 +609,12 @@ describe('Button Popover', () => {
     /* ----- EVENTS ----- */
 
     // button popover click
-    it('Button Popover event click', () => {
+    it('Button Popover: event click', () => {
         const handler = jest.fn();
         element.addEventListener('click', handler);
-        const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+        const button = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button"]'
+        );
         button.click();
 
         expect(handler).toHaveBeenCalled();
@@ -591,7 +625,7 @@ describe('Button Popover', () => {
     });
 
     // button popover close
-    it('Button Popover event close', () => {
+    it('Button Popover: event close', () => {
         const handler = jest.fn();
         element.addEventListener('close', handler);
         element.close();

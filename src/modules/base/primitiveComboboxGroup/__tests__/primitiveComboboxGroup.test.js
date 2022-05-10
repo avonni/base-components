@@ -49,7 +49,7 @@ describe('PrimitiveComboboxGroup', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive combobox group: Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.groups).toMatchObject([]);
         expect(element.name).toBeUndefined();
@@ -60,18 +60,20 @@ describe('PrimitiveComboboxGroup', () => {
     /* ----- ATTRIBUTES ----- */
 
     // label
-    it('label', () => {
+    it('Primitive combobox group: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="h3"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="h3"]'
+            );
             expect(label).toBeTruthy();
             expect(label.textContent).toBe('A string label');
         });
     });
 
     // groups
-    it('groups', () => {
+    it('Primitive combobox group: groups', () => {
         element.groups = groups;
 
         return Promise.resolve().then(() => {
@@ -92,13 +94,12 @@ describe('PrimitiveComboboxGroup', () => {
     });
 
     // options
-    it('options', () => {
+    it('Primitive combobox group: options', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
-            const optionElements = element.shadowRoot.querySelectorAll(
-                'li[role="option"]'
-            );
+            const optionElements =
+                element.shadowRoot.querySelectorAll('li[role="option"]');
             expect(optionElements).toHaveLength(options.length);
 
             optionElements.forEach((option, index) => {
@@ -114,7 +115,9 @@ describe('PrimitiveComboboxGroup', () => {
                     expect(checkmark).toBeFalsy();
                 }
 
-                const avatar = option.querySelector('[data-element-id="avonni-avatar"]');
+                const avatar = option.querySelector(
+                    '[data-element-id="avonni-avatar"]'
+                );
                 if (options[index].hasAvatar) {
                     expect(avatar).toBeTruthy();
                 } else {
@@ -151,7 +154,7 @@ describe('PrimitiveComboboxGroup', () => {
 
     // remove-selected-options
     // Depends on groups and options
-    it('removeSelectedOptions = false', () => {
+    it('Primitive combobox group: removeSelectedOptions = false', () => {
         element.groups = groups;
         element.options = options;
         element.removeSelectedOptions = false;
@@ -164,9 +167,8 @@ describe('PrimitiveComboboxGroup', () => {
                 expect(group.removeSelectedOptions).toBeFalsy();
             });
 
-            const optionElements = element.shadowRoot.querySelectorAll(
-                'li[role="option"]'
-            );
+            const optionElements =
+                element.shadowRoot.querySelectorAll('li[role="option"]');
             optionElements.forEach((option, index) => {
                 const checkmark = option.querySelector(
                     '.slds-listbox__option-icon lightning-icon'
@@ -180,7 +182,7 @@ describe('PrimitiveComboboxGroup', () => {
         });
     });
 
-    it('removeSelectedOptions = true', () => {
+    it('Primitive combobox group: removeSelectedOptions = true', () => {
         element.groups = groups;
         element.options = options;
         element.removeSelectedOptions = true;
@@ -203,7 +205,7 @@ describe('PrimitiveComboboxGroup', () => {
     /* ----- COMPUTED PUBLIC VARIABLES ----- */
 
     // optionElements
-    it('get optionElements', () => {
+    it('Primitive combobox group: get optionElements', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -213,7 +215,7 @@ describe('PrimitiveComboboxGroup', () => {
     });
 
     // titleElement
-    it('get titleElement', () => {
+    it('Primitive combobox group: get titleElement', () => {
         element.label = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -226,16 +228,15 @@ describe('PrimitiveComboboxGroup', () => {
 
     // privateoptionclick event
     // Depends on options and name
-    it('privateoptionclick event', () => {
+    it('Primitive combobox group: privateoptionclick event', () => {
         element.options = options;
         element.name = 'string-name';
         const handler = jest.fn();
         element.addEventListener('privateoptionclick', handler);
 
         return Promise.resolve().then(() => {
-            const option = element.shadowRoot.querySelector(
-                'li[role="option"]'
-            );
+            const option =
+                element.shadowRoot.querySelector('li[role="option"]');
             option.click();
 
             expect(handler).toHaveBeenCalled();
@@ -248,16 +249,15 @@ describe('PrimitiveComboboxGroup', () => {
 
     // privateoptionmouseenter event
     // Depends on options and name
-    it('privateoptionmouseenter event', () => {
+    it('Primitive combobox group: privateoptionmouseenter event', () => {
         element.options = options;
         element.name = 'string-name';
         const handler = jest.fn();
         element.addEventListener('privateoptionmouseenter', handler);
 
         return Promise.resolve().then(() => {
-            const option = element.shadowRoot.querySelector(
-                'li[role="option"]'
-            );
+            const option =
+                element.shadowRoot.querySelector('li[role="option"]');
             option.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(handler).toHaveBeenCalled();

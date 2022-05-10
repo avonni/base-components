@@ -48,7 +48,7 @@ describe('MenuItemDialog', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Menu item dialog: Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.draftAlternativeText).toBeUndefined();
@@ -63,7 +63,7 @@ describe('MenuItemDialog', () => {
     /* ---- ATTRIBUTES ----- */
 
     // access-key
-    it('accessKey', () => {
+    it('Menu item dialog: accessKey', () => {
         const link = element.shadowRoot.querySelector('[data-element-id="a"]');
         element.accessKey = 'K';
 
@@ -74,7 +74,7 @@ describe('MenuItemDialog', () => {
 
     // disabled
     // Depends on the dispatch of a privateselect event on click
-    it('disabled = false', () => {
+    it('Menu item dialog: disabled = false', () => {
         let eventDispatched = false;
         element.disabled = false;
         element.addEventListener('privateselect', () => {
@@ -89,7 +89,7 @@ describe('MenuItemDialog', () => {
         });
     });
 
-    it('disabled = true', () => {
+    it('Menu item dialog: disabled = true', () => {
         let eventDispatched = false;
         element.disabled = true;
         element.addEventListener('privateselect', () => {
@@ -106,18 +106,20 @@ describe('MenuItemDialog', () => {
 
     // draft-alternative-text
     // Depend on isDraft
-    it('draftAlternativeText', () => {
+    it('Menu item dialog: draftAlternativeText', () => {
         element.draftAlternativeText = 'A string alternative text';
         element.isDraft = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
             expect(abbr.title).toBe('A string alternative text');
         });
     });
 
     // icon-name
-    it('iconName', () => {
+    it('Menu item dialog: iconName', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -129,37 +131,43 @@ describe('MenuItemDialog', () => {
     });
 
     // is-draft
-    it('isDraft = false', () => {
+    it('Menu item dialog: isDraft = false', () => {
         element.isDraft = false;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
             expect(abbr).toBeFalsy();
         });
     });
 
-    it('isDraft = true', () => {
+    it('Menu item dialog: isDraft = true', () => {
         element.isDraft = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
             expect(abbr).toBeTruthy();
         });
     });
 
     // label
-    it('label', () => {
+    it('Menu item dialog: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-label"]');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-label"]'
+            );
             expect(span.textContent).toBe('A string label');
             expect(span.title).toBe('A string label');
         });
     });
 
     // prefix-icon-name
-    it('prefixIconName', () => {
+    it('Menu item dialog: prefixIconName', () => {
         element.prefixIconName = 'standard:apps';
 
         return Promise.resolve().then(() => {
@@ -171,18 +179,20 @@ describe('MenuItemDialog', () => {
     });
 
     // tab-index
-    it('tabIndex', () => {
+    it('Menu item dialog: tabIndex', () => {
         element.tabIndex = '-1';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
             expect(link.getAttribute('tabindex')).toBe('-1');
         });
     });
 
     // value
     // Depends on the dispatch of a privateselect event on click
-    it('value', () => {
+    it('Menu item dialog: value', () => {
         let eventDetailValue;
         element.value = 'a-string-value';
         element.addEventListener('privateselect', (event) => {
@@ -200,7 +210,7 @@ describe('MenuItemDialog', () => {
     /* ---- METHOD ----- */
 
     // focus
-    it('focus', () => {
+    it('Menu item dialog: focus', () => {
         let focusEvent = false;
         element.addEventListener('focus', () => {
             focusEvent = true;

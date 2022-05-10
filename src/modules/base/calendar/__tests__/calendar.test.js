@@ -50,7 +50,7 @@ describe('Calendar', () => {
         document.body.appendChild(element);
     });
 
-    it('Calendar default attributes', () => {
+    it('Calendar: default attributes', () => {
         element = createElement('base-calendar', {
             is: Calendar
         });
@@ -69,7 +69,7 @@ describe('Calendar', () => {
     /* ----- ATTRIBUTES ----- */
 
     // dateLabels
-    it('Calendar date labels', () => {
+    it('Calendar: date labels', () => {
         element.value = '05/14/2022';
         element.dateLabels = [
             {
@@ -93,7 +93,7 @@ describe('Calendar', () => {
     });
 
     // disabled
-    it('Calendar disabled', () => {
+    it('Calendar: disabled', () => {
         element.value = '04/15/2021';
         element.disabled = true;
         return Promise.resolve().then(() => {
@@ -119,7 +119,7 @@ describe('Calendar', () => {
     });
 
     // disabled dates
-    it('Calendar disabled dates', () => {
+    it('Calendar: disabled dates', () => {
         element.value = '05/09/2021';
         element.disabledDates = '05/06/2021';
         element.min = new Date('05/20/2021');
@@ -138,7 +138,7 @@ describe('Calendar', () => {
     });
 
     // marked dates
-    it('Calendar marked dates', () => {
+    it('Calendar: marked dates', () => {
         element.value = '05/09/2021';
         element.markedDates = [
             { date: new Date('05/05/2021'), color: 'rgb(255, 0, 0)' },
@@ -160,7 +160,7 @@ describe('Calendar', () => {
     });
 
     // enable current month only
-    it('Calendar disable dates of previous and next months', () => {
+    it('Calendar: disable dates of previous and next months', () => {
         element.value = '05/09/2021';
         return Promise.resolve().then(() => {
             const dateArray = [];
@@ -176,7 +176,7 @@ describe('Calendar', () => {
     });
 
     // min max
-    it('Calendar click only inside min-max', () => {
+    it('Calendar: click only inside min-max', () => {
         element.value = '05/16/2021';
         element.min = new Date('05/15/2021');
         element.max = new Date('05/23/2021');
@@ -199,7 +199,7 @@ describe('Calendar', () => {
     });
 
     // values
-    it('Calendar values selection-mode: single', () => {
+    it('Calendar: values selection-mode: single', () => {
         element.value = '04/15/2021';
         return Promise.resolve().then(() => {
             const day = element.shadowRoot.querySelector('.slds-is-selected');
@@ -215,7 +215,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: single no value', () => {
+    it('Calendar: values selection-mode: single no value', () => {
         element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -229,7 +229,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: single same value', () => {
+    it('Calendar: values selection-mode: single same value', () => {
         element.value = '05/14/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -242,7 +242,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: multiple', () => {
+    it('Calendar: values selection-mode: multiple', () => {
         element.value = ['04/15/2021', '04/16/2021', '04/17/2021'];
         element.selectionMode = 'multiple';
         return Promise.resolve().then(() => {
@@ -268,7 +268,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: multiple no value', () => {
+    it('Calendar: values selection-mode: multiple no value', () => {
         element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -285,7 +285,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval no value', () => {
+    it('Calendar: values selection-mode: interval no value', () => {
         element.value = '05/14/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -301,7 +301,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval newDate < startDate', () => {
+    it('Calendar: values selection-mode: interval newDate < startDate', () => {
         element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -318,7 +318,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval newDate > startDate', () => {
+    it('Calendar: values selection-mode: interval newDate > startDate', () => {
         element.value = '05/15/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -335,7 +335,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval newDate < endDate', () => {
+    it('Calendar: values selection-mode: interval newDate < endDate', () => {
         element.value = ['05/15/2021', '05/16/2021'];
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -352,7 +352,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar values selection-mode: interval newDate < startDate < endDate', () => {
+    it('Calendar: values selection-mode: interval newDate < startDate < endDate', () => {
         element.value = ['05/15/2021', '05/16/2021'];
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -370,7 +370,7 @@ describe('Calendar', () => {
     });
 
     // week number
-    it('Calendar week number', () => {
+    it('Calendar: week number', () => {
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -398,7 +398,7 @@ describe('Calendar', () => {
     /* ----- EVENTS ----- */
 
     // calendar private focus event
-    it('Calendar event privatefocus', () => {
+    it('Calendar: event privatefocus', () => {
         const handler = jest.fn();
         element.addEventListener('privatefocus', handler);
 
@@ -415,7 +415,7 @@ describe('Calendar', () => {
     });
 
     // calendar private blur event
-    it('Calendar event privateblur', () => {
+    it('Calendar: event privateblur', () => {
         const handler = jest.fn();
         element.addEventListener('privateblur', handler);
 
@@ -432,7 +432,7 @@ describe('Calendar', () => {
     });
 
     // calendar change
-    it('Calendar event change', () => {
+    it('Calendar: event change', () => {
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -457,7 +457,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar event change selection-mode: multiple', () => {
+    it('Calendar: event change selection-mode: multiple', () => {
         element.value = '05/09/2021';
         element.selectionMode = 'multiple';
         element.min = new Date('05/01/2021');
@@ -484,7 +484,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar event change selection-mode: multiple unselect', () => {
+    it('Calendar: event change selection-mode: multiple unselect', () => {
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');
@@ -503,7 +503,7 @@ describe('Calendar', () => {
         });
     });
 
-    it('Calendar event change selection-mode: interval', () => {
+    it('Calendar: event change selection-mode: interval', () => {
         element.value = '05/09/2021';
         element.min = new Date('05/01/2021');
         element.max = new Date('05/31/2021');

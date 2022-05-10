@@ -49,7 +49,7 @@ describe('Combobox', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Combobox: Default attributes', () => {
         element = createElement('base-combobox', {
             is: Combobox
         });
@@ -92,7 +92,7 @@ describe('Combobox', () => {
     /* ----- ATTRIBUTES ----- */
 
     // actions
-    it('actions', () => {
+    it('Combobox: actions', () => {
         element.actions = actions;
 
         return Promise.resolve().then(() => {
@@ -104,7 +104,7 @@ describe('Combobox', () => {
     });
 
     // allow-search
-    it('allowSearch', () => {
+    it('Combobox: allowSearch', () => {
         element.allowSearch = true;
 
         return Promise.resolve().then(() => {
@@ -116,7 +116,7 @@ describe('Combobox', () => {
     });
 
     // back-action
-    it('backAction', () => {
+    it('Combobox: backAction', () => {
         const action = {
             label: 'Back',
             iconName: 'utility:add',
@@ -134,7 +134,7 @@ describe('Combobox', () => {
 
     // disabled
     // Depends on scopes
-    it('disabled', () => {
+    it('Combobox: disabled', () => {
         element.disabled = true;
         element.scopes = scopes;
 
@@ -153,7 +153,7 @@ describe('Combobox', () => {
 
     // dropdown-alignment
     // Depends on scopes
-    it('dropdownAlignment', () => {
+    it('Combobox: dropdownAlignment', () => {
         element.dropdownAlignment = 'right';
         element.scopes = scopes;
 
@@ -172,7 +172,7 @@ describe('Combobox', () => {
 
     // dropdown-length
     // Depends on scopes
-    it('dropdownLength', () => {
+    it('Combobox: dropdownLength', () => {
         element.dropdownLength = '5-items';
         element.scopes = scopes;
 
@@ -190,7 +190,7 @@ describe('Combobox', () => {
     });
 
     // field-level-help
-    it('fieldLevelHelp', () => {
+    it('Combobox: fieldLevelHelp', () => {
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -202,7 +202,7 @@ describe('Combobox', () => {
     });
 
     // groups
-    it('groups', () => {
+    it('Combobox: groups', () => {
         element.groups = groups;
 
         return Promise.resolve().then(() => {
@@ -215,7 +215,7 @@ describe('Combobox', () => {
     });
 
     // hide-clear-icon
-    it('hideClearIcon', () => {
+    it('Combobox: hideClearIcon', () => {
         element.hideClearIcon = true;
 
         return Promise.resolve().then(() => {
@@ -229,7 +229,7 @@ describe('Combobox', () => {
 
     // hide-selected-options
     // Depends on isMultiSelect
-    it('hideSelectedOptions = false', () => {
+    it('Combobox: hideSelectedOptions = false', () => {
         element.hideSelectedOptions = false;
         element.isMultiSelect = true;
 
@@ -255,7 +255,7 @@ describe('Combobox', () => {
             });
     });
 
-    it('hideSelectedOptions = true', () => {
+    it('Combobox: hideSelectedOptions = true', () => {
         element.hideSelectedOptions = true;
         element.isMultiSelect = true;
 
@@ -281,7 +281,7 @@ describe('Combobox', () => {
     });
 
     // is-loading
-    it('isLoading', () => {
+    it('Combobox: isLoading', () => {
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -293,7 +293,7 @@ describe('Combobox', () => {
     });
 
     // is-multi-select
-    it('isMultiSelect', () => {
+    it('Combobox: isMultiSelect', () => {
         element.isMultiSelect = true;
 
         return Promise.resolve().then(() => {
@@ -305,7 +305,7 @@ describe('Combobox', () => {
     });
 
     // label
-    it('label', () => {
+    it('Combobox: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -322,7 +322,7 @@ describe('Combobox', () => {
     });
 
     // loading-state-alternative-text
-    it('loadingStateAlternativeText', () => {
+    it('Combobox: loadingStateAlternativeText', () => {
         element.loadingStateAlternativeText = 'A string text';
 
         return Promise.resolve().then(() => {
@@ -334,7 +334,7 @@ describe('Combobox', () => {
     });
 
     // message-when-bad-input
-    it('messageWhenBadInput', () => {
+    it('Combobox: messageWhenBadInput', () => {
         element.messageWhenBadInput = 'A string message';
 
         return Promise.resolve().then(() => {
@@ -346,7 +346,7 @@ describe('Combobox', () => {
     });
 
     // message-when-value-missing
-    it('messageWhenValueMissing', () => {
+    it('Combobox: messageWhenValueMissing', () => {
         element.messageWhenValueMissing = 'A string message';
 
         return Promise.resolve().then(() => {
@@ -359,7 +359,7 @@ describe('Combobox', () => {
 
     // multi-level-groups
     // Depends on scopes
-    it('multiLevelGroups', () => {
+    it('Combobox: multiLevelGroups', () => {
         element.multiLevelGroups = true;
         element.scopes = scopes;
 
@@ -377,7 +377,7 @@ describe('Combobox', () => {
     });
 
     // name
-    it('name', () => {
+    it('Combobox: name', () => {
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
@@ -389,7 +389,7 @@ describe('Combobox', () => {
     });
 
     // options
-    it('options', () => {
+    it('Combobox: options', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -401,7 +401,7 @@ describe('Combobox', () => {
     });
 
     // placeholder
-    it('placeholder', () => {
+    it('Combobox: placeholder', () => {
         element.placeholder = 'A string placeholder';
 
         return Promise.resolve().then(() => {
@@ -414,7 +414,7 @@ describe('Combobox', () => {
 
     // read-only
     // Depends on scopes
-    it('readOnly', () => {
+    it('Combobox: readOnly', () => {
         element.readOnly = true;
         element.scopes = scopes;
 
@@ -432,7 +432,7 @@ describe('Combobox', () => {
     });
 
     // remove-selected-options
-    it('removeSelectedOptions', () => {
+    it('Combobox: removeSelectedOptions', () => {
         element.removeSelectedOptions = true;
 
         return Promise.resolve().then(() => {
@@ -444,7 +444,7 @@ describe('Combobox', () => {
     });
 
     // required
-    it('required', () => {
+    it('Combobox: required', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -456,7 +456,7 @@ describe('Combobox', () => {
     });
 
     // scopes
-    it('scopes', () => {
+    it('Combobox: scopes', () => {
         element.scopes = scopes;
 
         return Promise.resolve().then(() => {
@@ -469,7 +469,7 @@ describe('Combobox', () => {
 
     // scopes-groups
     // Depends on scopes
-    it('scopesGroups', () => {
+    it('Combobox: scopesGroups', () => {
         element.scopes = scopes;
         element.scopesGroups = scopesGroups;
 
@@ -483,7 +483,7 @@ describe('Combobox', () => {
     });
 
     // search
-    it('search', () => {
+    it('Combobox: search', () => {
         const search = jest.fn();
         element.search = search;
 
@@ -497,7 +497,7 @@ describe('Combobox', () => {
 
     // selected-options-aria-label
     // Depends on isMultiSelect and options
-    it('selectedOptionsAriaLabel', () => {
+    it('Combobox: selectedOptionsAriaLabel', () => {
         element.options = options;
         element.isMultiSelect = true;
         element.selectedOptionsAriaLabel = 'A string label';
@@ -525,7 +525,7 @@ describe('Combobox', () => {
 
     // selected-options-direction
     // Depends on isMultiSelect and options
-    it('selectedOptionsDirection = horizontal', () => {
+    it('Combobox: selectedOptionsDirection = horizontal', () => {
         element.options = options;
         element.isMultiSelect = true;
         element.selectedOptionsDirection = 'horizontal';
@@ -555,7 +555,7 @@ describe('Combobox', () => {
             });
     });
 
-    it('selectedOptionsDirection = vertical', () => {
+    it('Combobox: selectedOptionsDirection = vertical', () => {
         element.options = options;
         element.isMultiSelect = true;
         element.selectedOptionsDirection = 'vertical';
@@ -587,7 +587,7 @@ describe('Combobox', () => {
 
     // sortable-selected-options
     // Depends on isMultiSelect and options
-    it('sortableSelectedOptions', () => {
+    it('Combobox: sortableSelectedOptions', () => {
         element.options = options;
         element.isMultiSelect = true;
         element.sortableSelectedOptions = true;
@@ -615,7 +615,7 @@ describe('Combobox', () => {
 
     // validity
     // Depends on required
-    it('validity', () => {
+    it('Combobox: validity', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -628,7 +628,7 @@ describe('Combobox', () => {
     });
 
     // value
-    it('value', () => {
+    it('Combobox: value', () => {
         element.value = [options[0].value];
 
         return Promise.resolve().then(() => {
@@ -641,7 +641,7 @@ describe('Combobox', () => {
 
     // variant
     // Depends on label
-    it('variant = standard', () => {
+    it('Combobox: variant = standard', () => {
         element.variant = 'standard';
         element.label = 'A string label';
 
@@ -659,7 +659,7 @@ describe('Combobox', () => {
         });
     });
 
-    it('variant = label-stacked', () => {
+    it('Combobox: variant = label-stacked', () => {
         element.variant = 'label-stacked';
         element.label = 'A string label';
 
@@ -675,7 +675,7 @@ describe('Combobox', () => {
         });
     });
 
-    it('variant = label-hidden', () => {
+    it('Combobox: variant = label-hidden', () => {
         element.variant = 'label-hidden';
         element.label = 'A string label';
 
@@ -693,7 +693,7 @@ describe('Combobox', () => {
         });
     });
 
-    it('variant = label-inline', () => {
+    it('Combobox: variant = label-inline', () => {
         element.variant = 'label-inline';
         element.label = 'A string label';
 
@@ -712,7 +712,7 @@ describe('Combobox', () => {
     /* ----- METHODS ----- */
 
     // blur
-    it('blur method', () => {
+    it('Combobox: blur method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -723,7 +723,7 @@ describe('Combobox', () => {
     });
 
     // checkValidity
-    it('checkValidity method', () => {
+    it('Combobox: checkValidity method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -734,7 +734,7 @@ describe('Combobox', () => {
     });
 
     // close
-    it('close method', () => {
+    it('Combobox: close method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -745,7 +745,7 @@ describe('Combobox', () => {
     });
 
     // focus
-    it('focus method', () => {
+    it('Combobox: focus method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -756,7 +756,7 @@ describe('Combobox', () => {
     });
 
     // open
-    it('open method', () => {
+    it('Combobox: open method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -767,7 +767,7 @@ describe('Combobox', () => {
     });
 
     // reportValidity
-    it('reportValidity method', () => {
+    it('Combobox: reportValidity method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -778,7 +778,7 @@ describe('Combobox', () => {
     });
 
     // setCustomValidity
-    it('setCustomValidity method', () => {
+    it('Combobox: setCustomValidity method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -789,7 +789,7 @@ describe('Combobox', () => {
     });
 
     // showHelpMessageIfInvalid
-    it('showHelpMessageIfInvalid method', () => {
+    it('Combobox: showHelpMessageIfInvalid method', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -801,7 +801,7 @@ describe('Combobox', () => {
 
     // updateScope
     // Depends on scopes
-    it('updateScope method', () => {
+    it('Combobox: updateScope method', () => {
         element.scopes = scopes;
 
         return Promise.resolve()
@@ -824,7 +824,7 @@ describe('Combobox', () => {
     /* ----- EVENTS ----- */
 
     // actionclick
-    it('actionclick event', () => {
+    it('Combobox: actionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
 
@@ -847,7 +847,7 @@ describe('Combobox', () => {
     });
 
     // backactionclick
-    it('backactionclick event', () => {
+    it('Combobox: backactionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('backactionclick', handler);
 
@@ -863,7 +863,7 @@ describe('Combobox', () => {
     });
 
     // blur
-    it('blur event', () => {
+    it('Combobox: blur event', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
@@ -879,7 +879,7 @@ describe('Combobox', () => {
     });
 
     // focus
-    it('focus event', () => {
+    it('Combobox: focus event', () => {
         const handler = jest.fn();
         element.addEventListener('focus', handler);
 
@@ -895,7 +895,7 @@ describe('Combobox', () => {
     });
 
     // levelchange
-    it('levelchange event', () => {
+    it('Combobox: levelchange event', () => {
         element.options = options;
         const handler = jest.fn();
         element.addEventListener('levelchange', handler);
@@ -924,7 +924,7 @@ describe('Combobox', () => {
     });
 
     // open
-    it('open event', () => {
+    it('Combobox: open event', () => {
         const handler = jest.fn();
         element.addEventListener('open', handler);
 
@@ -941,7 +941,7 @@ describe('Combobox', () => {
 
     // scopechange
     // Depends on scopes
-    it('scopechange event', () => {
+    it('Combobox: scopechange event', () => {
         const handler = jest.fn();
         element.addEventListener('scopechange', handler);
         element.scopes = scopes;
@@ -967,7 +967,7 @@ describe('Combobox', () => {
     });
 
     // search
-    it('search event', () => {
+    it('Combobox: search event', () => {
         const handler = jest.fn();
         element.addEventListener('search', handler);
 
@@ -990,7 +990,7 @@ describe('Combobox', () => {
     });
 
     // change
-    it('change event multiselect = true', () => {
+    it('Combobox: change event multiselect = true', () => {
         element.isMultiSelect = true;
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -1018,7 +1018,7 @@ describe('Combobox', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 
-    it('change event multiselect = false', () => {
+    it('Combobox: change event multiselect = false', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -1040,7 +1040,7 @@ describe('Combobox', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 
-    it('change event, reorder horizontal selection', () => {
+    it('Combobox: change event, reorder horizontal selection', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.isMultiSelect = true;
@@ -1094,7 +1094,7 @@ describe('Combobox', () => {
 
     // Remove a selected option
     // Depends on isMultiSelect
-    it('Remove a selected option', () => {
+    it('Combobox: Remove a selected option', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );
@@ -1127,7 +1127,7 @@ describe('Combobox', () => {
             });
     });
 
-    it('Remove a selected option with vertical options', () => {
+    it('Combobox: Remove a selected option with vertical options', () => {
         const combobox = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-combobox-main"]'
         );

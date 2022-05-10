@@ -52,7 +52,7 @@ describe('Button Menu', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Button Menu: Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.alternativeText).toBe('Show Menu');
         expect(element.disabled).toBeFalsy();
@@ -75,7 +75,7 @@ describe('Button Menu', () => {
     /* ----- ATTRIBUTES ----- */
 
     // access-key
-    it('Button Menu access-key', () => {
+    it('Button Menu: access-key', () => {
         element.accessKey = 'K';
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
@@ -87,7 +87,7 @@ describe('Button Menu', () => {
     });
 
     // alternative text
-    it('Button Menu alternative text', () => {
+    it('Button Menu: alternative text', () => {
         element.alternativeText = 'This is an alternative text';
         const assistiveText = element.shadowRoot.querySelector(
             '.slds-assistive-text'
@@ -101,7 +101,7 @@ describe('Button Menu', () => {
     });
 
     // disabled
-    it('Button Menu disabled', () => {
+    it('Button Menu: disabled', () => {
         element.disabled = true;
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
@@ -113,7 +113,7 @@ describe('Button Menu', () => {
     });
 
     // draft & draft alternative text
-    it('Button Menu draft alternative text', () => {
+    it('Button Menu: draft alternative text', () => {
         element.isDraft = true;
         element.draftAlternativeText = 'This is a draft alternative text';
 
@@ -127,7 +127,7 @@ describe('Button Menu', () => {
     });
 
     // hide down arrow
-    it('Button menu down arrow hidden', () => {
+    it('Button menu: down arrow hidden', () => {
         element.iconName = 'utility:threedots';
         element.hideDownArrow = true;
 
@@ -139,7 +139,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu down arrow not hidden', () => {
+    it('Button menu: down arrow not hidden', () => {
         element.iconName = 'utility:threedots';
 
         return Promise.resolve().then(() => {
@@ -151,7 +151,7 @@ describe('Button Menu', () => {
     });
 
     // icon name
-    it('Button Menu icon name', () => {
+    it('Button Menu: icon name', () => {
         element.iconName = 'utility:close';
         const icon = element.shadowRoot.querySelector(
             '[data-element-id="avonni-primitive-icon-main"]'
@@ -163,7 +163,7 @@ describe('Button Menu', () => {
     });
 
     // icon size
-    it('Button Menu icon size xx-small', () => {
+    it('Button Menu: icon size xx-small', () => {
         element.iconSize = 'xx-small';
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
@@ -174,7 +174,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button Menu icon size x-small', () => {
+    it('Button Menu: icon size x-small', () => {
         element.iconSize = 'x-small';
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
@@ -185,7 +185,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button Menu icon size small', () => {
+    it('Button Menu: icon size small', () => {
         element.iconSize = 'small';
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
@@ -196,7 +196,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button Menu icon size medium', () => {
+    it('Button Menu: icon size medium', () => {
         element.iconSize = 'medium';
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
@@ -210,7 +210,7 @@ describe('Button Menu', () => {
     });
 
     // is loading & loading state alternative text
-    it('Button Menu is loading & loading state alternative text', () => {
+    it('Button Menu: is loading & loading state alternative text', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText =
             'This is a loading state alternative text';
@@ -234,7 +234,7 @@ describe('Button Menu', () => {
     });
 
     // label
-    it('Button Menu label', () => {
+    it('Button Menu: label', () => {
         element.label = 'This is a label';
 
         const button = element.shadowRoot.querySelector(
@@ -247,7 +247,7 @@ describe('Button Menu', () => {
     });
 
     // Menu alignment & menu nubbin
-    it('Button menu menu alignment left', () => {
+    it('Button menu: menu alignment left', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -262,7 +262,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment left and menu nubbin', () => {
+    it('Button menu: menu alignment left and menu nubbin', () => {
         element.nubbin = true;
 
         return Promise.resolve()
@@ -280,7 +280,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment right', () => {
+    it('Button menu: menu alignment right', () => {
         element.menuAlignment = 'right';
 
         return Promise.resolve()
@@ -297,7 +297,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment right and menu nubbin', () => {
+    it('Button menu: menu alignment right and menu nubbin', () => {
         element.menuAlignment = 'right';
         element.nubbin = true;
 
@@ -316,7 +316,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment center', () => {
+    it('Button menu: menu alignment center', () => {
         element.menuAlignment = 'center';
 
         return Promise.resolve()
@@ -333,7 +333,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment center and menu nubbin', () => {
+    it('Button menu: menu alignment center and menu nubbin', () => {
         element.menuAlignment = 'center';
         element.nubbin = true;
 
@@ -352,7 +352,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment bottom-center', () => {
+    it('Button menu: menu alignment bottom-center', () => {
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
@@ -369,7 +369,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment bottom-center and menu nubbin', () => {
+    it('Button menu: menu alignment bottom-center and menu nubbin', () => {
         element.menuAlignment = 'bottom-center';
         element.nubbin = true;
 
@@ -388,7 +388,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment bottom-left', () => {
+    it('Button menu: menu alignment bottom-left', () => {
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
@@ -407,7 +407,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment bottom-left and menu nubbin', () => {
+    it('Button menu: menu alignment bottom-left and menu nubbin', () => {
         element.menuAlignment = 'bottom-left';
         element.nubbin = true;
 
@@ -428,7 +428,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment bottom-right', () => {
+    it('Button menu: menu alignment bottom-right', () => {
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
@@ -447,7 +447,7 @@ describe('Button Menu', () => {
             });
     });
 
-    it('Button menu menu alignment bottom-right and menu nubbin', () => {
+    it('Button menu: menu alignment bottom-right and menu nubbin', () => {
         element.menuAlignment = 'bottom-right';
         element.nubbin = true;
 
@@ -471,7 +471,7 @@ describe('Button Menu', () => {
     });
 
     // title
-    it('Button Menu title', () => {
+    it('Button Menu: title', () => {
         element.title = 'This is a title';
 
         const button = element.shadowRoot.querySelector(
@@ -484,7 +484,7 @@ describe('Button Menu', () => {
     });
 
     // value
-    it('Button Menu value', () => {
+    it('Button Menu: value', () => {
         element.value = 'This is a value';
 
         const button = element.shadowRoot.querySelector(
@@ -497,7 +497,7 @@ describe('Button Menu', () => {
     });
 
     // variant
-    it('Button menu variant bare without label', () => {
+    it('Button menu: variant bare without label', () => {
         element.variant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -508,7 +508,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant container without label', () => {
+    it('Button menu: variant container without label', () => {
         element.variant = 'container';
 
         return Promise.resolve().then(() => {
@@ -519,7 +519,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant border-filled without label', () => {
+    it('Button menu: variant border-filled without label', () => {
         element.variant = 'border-filled';
 
         return Promise.resolve().then(() => {
@@ -532,7 +532,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant bare-inverse without label', () => {
+    it('Button menu: variant bare-inverse without label', () => {
         element.variant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
@@ -543,7 +543,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant brand without label', () => {
+    it('Button menu: variant brand without label', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -554,7 +554,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant brand with label', () => {
+    it('Button menu: variant brand with label', () => {
         element.variant = 'brand';
         element.label = 'label';
 
@@ -567,7 +567,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant border-inverse without label', () => {
+    it('Button menu: variant border-inverse without label', () => {
         element.variant = 'border-inverse';
 
         return Promise.resolve().then(() => {
@@ -580,7 +580,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant border-inverse with label', () => {
+    it('Button menu: variant border-inverse with label', () => {
         element.variant = 'border-inverse';
         element.label = 'label';
 
@@ -592,7 +592,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant border with label', () => {
+    it('Button menu: variant border with label', () => {
         element.variant = 'border';
         element.label = 'label';
 
@@ -604,7 +604,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant with icon name', () => {
+    it('Button menu: variant with icon name', () => {
         element.variant = 'border-inverse';
         element.iconName = 'utility:close';
 
@@ -618,7 +618,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu variant bare with icon name', () => {
+    it('Button menu: variant bare with icon name', () => {
         element.variant = 'bare';
         element.iconName = 'utility:close';
 
@@ -632,7 +632,7 @@ describe('Button Menu', () => {
     });
 
     /* ---- JS ----- */
-    it('Button menu method: blur', () => {
+    it('Button menu: method blur', () => {
         let blurEvent = false;
         element.addEventListener('blur', () => {
             blurEvent = true;
@@ -646,7 +646,7 @@ describe('Button Menu', () => {
     });
 
     /* ---- METHODS ----- */
-    it('Button menu method: click', () => {
+    it('Button menu: method click', () => {
         let clickEvent = false;
         element.addEventListener('click', () => {
             clickEvent = true;
@@ -659,7 +659,7 @@ describe('Button Menu', () => {
         });
     });
 
-    it('Button menu method: focus', () => {
+    it('Button menu: method focus', () => {
         let focusEvent = false;
         element.addEventListener('focus', () => {
             focusEvent = true;
@@ -674,7 +674,7 @@ describe('Button Menu', () => {
     /* ----- EVENTS ----- */
 
     // Button menu close
-    it('Button menu event close', () => {
+    it('Button menu: event close', () => {
         const handler = jest.fn();
         element.addEventListener('close', handler);
         element.click();
@@ -687,7 +687,7 @@ describe('Button Menu', () => {
     });
 
     // Button menu open
-    it('Button menu event open', () => {
+    it('Button menu: event open', () => {
         const handler = jest.fn();
         element.addEventListener('open', handler);
         element.click();

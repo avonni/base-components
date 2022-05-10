@@ -61,7 +61,7 @@ describe('PrimitiveAvatar', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive Avatar: Default attributes', () => {
         expect(element.initials).toBeFalsy();
         expect(element.variant).toBe('square');
         expect(element.size).toBe('medium');
@@ -88,7 +88,7 @@ describe('PrimitiveAvatar', () => {
     /* ----- ATTRIBUTES ----- */
 
     // actions
-    it('Avatar with action menu', () => {
+    it('Primitive Avatar: Avatar with action menu', () => {
         element.initials = 'LG';
         element.actions = ACTIONS;
 
@@ -109,7 +109,7 @@ describe('PrimitiveAvatar', () => {
         });
     });
 
-    it('Avatar with one action', () => {
+    it('Primitive Avatar: Avatar with one action', () => {
         element.initials = 'LG';
         element.actions = new Array(ACTIONS[0]);
 
@@ -138,7 +138,7 @@ describe('PrimitiveAvatar', () => {
 
     // actionclick event
     // Depends on action name
-    it('actionclick event', () => {
+    it('Primitive Avatar: actionclick event', () => {
         element.initials = 'LG';
         element.actions = new Array(ACTIONS[0]);
         const handler = jest.fn();
