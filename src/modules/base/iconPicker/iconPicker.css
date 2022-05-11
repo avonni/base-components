@@ -64,17 +64,17 @@ button:disabled {
     padding: 0.05rem;
 }
 
-.xx-small-action-icon-scaling {
+.avonni-icon-picker__action-icon_small-scaling {
     margin: 0 -0.5rem 0 -0.65rem;
     transform: scale(0.38);
 }
 
-.medium-action-icon-scaling {
+.avonni-icon-picker__action-icon_medium-scaling {
     margin: 0 -0.5rem 0 -0.65rem;
     transform: scale(0.55);
 }
 
-.large-action-icon-scaling {
+.avonni-icon-picker__action-icon_large-scaling {
     margin: 0 -0.5rem 0 -0.65rem;
     transform: scale(0.6);
 }

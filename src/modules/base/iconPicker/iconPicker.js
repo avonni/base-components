@@ -553,13 +553,7 @@ export default class IconPicker extends LightningElement {
      */
     get computedIconClass() {
         const classes = classSet();
-
-        if (this.value && this.value.split(':')[0] === 'action') {
-            classes.add({
-                'medium-icon-padding': this.menuIconSize === 'xx-small',
-                'large-icon-padding': this.menuIconSize !== 'xx-small'
-            });
-        } else {
+        if (this.value && !this.value.split(':')[0] === 'action') {
             classes.add({
                 'avonni-builder-icon-picker-x-small-icon-padding':
                     this.menuIconSize === 'x-small',
@@ -581,13 +575,14 @@ export default class IconPicker extends LightningElement {
         const classes = classSet('slds-icon_container');
         if (this.value && this.value.split(':')[0] === 'action') {
             classes.add({
-                'xx-small-action-icon-scaling':
+                'avonni-icon-picker__action-icon_small-scaling':
                     this.menuIconSize === 'xx-small',
-                'medium-action-icon-scaling':
+                'avonni-icon-picker__action-icon_medium-scaling':
                     this.menuIconSize === 'x-small' ||
                     this.menuIconSize === 'small' ||
                     this.menuIconSize === 'medium',
-                'large-action-icon-scaling': this.menuIconSize === 'large'
+                'avonni-icon-picker__action-icon_large-scaling':
+                    this.menuIconSize === 'large'
             });
         }
         return classes.toString();
