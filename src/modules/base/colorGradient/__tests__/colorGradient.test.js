@@ -51,7 +51,7 @@ describe('Color Gradient', () => {
         document.body.appendChild(element);
     });
 
-    it('Color Gradient Default attributes', () => {
+    it('Color Gradient: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.value).toBe('#ffffff');
         expect(element.readOnly).toBeFalsy();
@@ -64,7 +64,7 @@ describe('Color Gradient', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('Color Gradient disabled', () => {
+    it('Color Gradient: disabled', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -86,7 +86,7 @@ describe('Color Gradient', () => {
     });
 
     // value
-    it('Color Gradient value', () => {
+    it('Color Gradient: value', () => {
         element.value = '#b63e3e';
 
         return Promise.resolve().then(() => {
@@ -97,7 +97,7 @@ describe('Color Gradient', () => {
         });
     });
 
-    it('Color Gradient disabled with opacity', () => {
+    it('Color Gradient: disabled with opacity', () => {
         element.disabled = true;
         element.opacity = true;
 
@@ -110,7 +110,7 @@ describe('Color Gradient', () => {
     });
 
     // read only
-    it('Color Gradient read only', () => {
+    it('Color Gradient: read only', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -127,7 +127,7 @@ describe('Color Gradient', () => {
         });
     });
 
-    it('Color Gradient read only with opacity', () => {
+    it('Color Gradient: read only with opacity', () => {
         element.readOnly = true;
         element.opacity = true;
 
@@ -140,7 +140,7 @@ describe('Color Gradient', () => {
     });
 
     // opacity
-    it('Color Gradient opacity', () => {
+    it('Color Gradient: opacity', () => {
         element.opacity = true;
 
         return Promise.resolve().then(() => {
@@ -154,7 +154,7 @@ describe('Color Gradient', () => {
     /* ----- JS ----- */
 
     // private focus
-    it('Color Gradient private focus', () => {
+    it('Color Gradient: private focus', () => {
         let focusEvent = false;
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -174,7 +174,7 @@ describe('Color Gradient', () => {
     });
 
     // private blur
-    it('Color Gradient private blur', () => {
+    it('Color Gradient: private blur', () => {
         let blurEvent = false;
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -195,7 +195,7 @@ describe('Color Gradient', () => {
     });
 
     // render value
-    it('Color Gradient render value', () => {
+    it('Color Gradient: render value', () => {
         element.value = '#b63e3e';
         element.renderValue('#ffffff');
         return Promise.resolve().then(() => {
@@ -204,7 +204,7 @@ describe('Color Gradient', () => {
     });
 
     // set opacity
-    it('Color Gradient set opacity and disabled', () => {
+    it('Color Gradient: set opacity and disabled', () => {
         element.value = '#b63e3e';
         element.opacity = true;
         element.disabled = true;
@@ -220,7 +220,7 @@ describe('Color Gradient', () => {
     /* ----- EVENTS ----- */
 
     // color gradient change
-    it('Color Gradient change event', () => {
+    it('Color Gradient: change event', () => {
         element.value = '#ffffff';
 
         const handler = jest.fn();

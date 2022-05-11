@@ -48,7 +48,7 @@ describe('OutputData', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Output data: Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.type).toBe('text');
         expect(element.typeAttributes).toMatchObject({});
@@ -58,7 +58,7 @@ describe('OutputData', () => {
     /* ----- All tests by type ----- */
 
     // Boolean
-    it('type = boolean, with true value', () => {
+    it('Output data: type = boolean, with true value', () => {
         element.value = true;
         element.type = 'boolean';
 
@@ -96,7 +96,7 @@ describe('OutputData', () => {
         });
     });
 
-    it('type = boolean, with false value', () => {
+    it('Output data: type = boolean, with false value', () => {
         element.type = 'boolean';
         element.value = false;
 
@@ -139,7 +139,7 @@ describe('OutputData', () => {
         });
     });
 
-    it('type = boolean, with no value', () => {
+    it('Output data: type = boolean, with no value', () => {
         element.type = 'boolean';
 
         return Promise.resolve().then(() => {
@@ -182,7 +182,7 @@ describe('OutputData', () => {
     });
 
     // Currency
-    it('type = currency', () => {
+    it('Output data: type = currency', () => {
         const typeAttributes = {
             currencyCode: 'EUR',
             currencyDisplayAs: 'name',
@@ -251,7 +251,7 @@ describe('OutputData', () => {
     });
 
     // Date
-    it('type = date', () => {
+    it('Output data: type = date', () => {
         const typeAttributes = {
             day: '2-digit',
             era: 'long',
@@ -318,7 +318,7 @@ describe('OutputData', () => {
     });
 
     // Email
-    it('type = email', () => {
+    it('Output data: type = email', () => {
         element.type = 'email';
         element.value = 'jane.doe@email.com';
         element.typeAttributes = {
@@ -362,7 +362,7 @@ describe('OutputData', () => {
     });
 
     // Location
-    it('type = location', () => {
+    it('Output data: type = location', () => {
         const typeAttributes = {
             latitude: '45.53713090203662',
             longitude: '-73.61483166585984'
@@ -407,7 +407,7 @@ describe('OutputData', () => {
     });
 
     // Number
-    it('type = number', () => {
+    it('Output data: type = number', () => {
         const typeAttributes = {
             minimumIntegerDigits: 2,
             maximumFractionDigits: 4,
@@ -470,7 +470,7 @@ describe('OutputData', () => {
     });
 
     // Percent
-    it('type = percent', () => {
+    it('Output data: type = percent', () => {
         const typeAttributes = {
             minimumIntegerDigits: 2,
             maximumFractionDigits: 4,
@@ -534,7 +534,7 @@ describe('OutputData', () => {
     });
 
     // Phone
-    it('type = phone', () => {
+    it('Output data: type = phone', () => {
         element.type = 'phone';
         element.value = '123-456-7890';
 
@@ -574,7 +574,7 @@ describe('OutputData', () => {
     });
 
     // Text
-    it('type = text', () => {
+    it('Output data: type = text', () => {
         element.type = 'text';
         element.value = 'A string value';
         element.typeAttributes = {
@@ -617,7 +617,7 @@ describe('OutputData', () => {
     });
 
     // URL
-    it('type = url', () => {
+    it('Output data: type = url', () => {
         const typeAttributes = {
             label: 'A string label',
             target: '_blank',
@@ -666,7 +666,7 @@ describe('OutputData', () => {
     });
 
     // Invalid type attributes
-    it('Invalid type attributes are ignored', () => {
+    it('Output data: Invalid type attributes are ignored', () => {
         const typeAttributes = {
             currencyCode: 45,
             currencyDisplayAs: 'invalid',

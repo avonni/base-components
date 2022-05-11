@@ -48,7 +48,7 @@ describe('PageHeader', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Page header: Default attributes', () => {
         expect(element.iconName).toBeUndefined();
         expect(element.label).toBeUndefined();
         expect(element.title).toBeUndefined();
@@ -58,7 +58,7 @@ describe('PageHeader', () => {
     });
 
     // icon-name
-    it('iconName', () => {
+    it('Page header: iconName', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -71,7 +71,7 @@ describe('PageHeader', () => {
 
     // label
     // Depends on variant
-    it('label', () => {
+    it('Page header: label', () => {
         element.variant = 'object-home';
         element.label = 'A string label';
 
@@ -85,7 +85,7 @@ describe('PageHeader', () => {
     });
 
     // title
-    it('title', () => {
+    it('Page header: title', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -99,7 +99,7 @@ describe('PageHeader', () => {
 
     // info
     // Depends on variant
-    it('info with the default (base) variant', () => {
+    it('Page header: info with the default (base) variant', () => {
         element.info = 'A string info';
 
         return Promise.resolve().then(() => {
@@ -111,7 +111,7 @@ describe('PageHeader', () => {
         });
     });
 
-    it('info with the object-home variant', () => {
+    it('Page header: info with the object-home variant', () => {
         element.info = 'A string info';
         element.variant = 'object-home';
 
@@ -125,7 +125,7 @@ describe('PageHeader', () => {
     });
 
     // is-joined
-    it('if-joined with base variant', () => {
+    it('Page header: if-joined with base variant', () => {
         element.variant = 'base';
         element.isJoined = true;
 
@@ -137,7 +137,7 @@ describe('PageHeader', () => {
         });
     });
 
-    it('if-joined with record-home-vertical variant', () => {
+    it('Page header: if-joined with record-home-vertical variant', () => {
         element.variant = 'record-home-vertical';
         element.isJoined = true;
 
@@ -151,7 +151,7 @@ describe('PageHeader', () => {
     });
 
     // variant
-    it('variant = base', () => {
+    it('Page header: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -187,7 +187,7 @@ describe('PageHeader', () => {
         });
     });
 
-    it('variant = object-home', () => {
+    it('Page header: variant = object-home', () => {
         element.variant = 'object-home';
 
         return Promise.resolve().then(() => {
@@ -223,7 +223,7 @@ describe('PageHeader', () => {
         });
     });
 
-    it('variant = record-home', () => {
+    it('Page header: variant = record-home', () => {
         element.variant = 'record-home';
 
         return Promise.resolve().then(() => {
@@ -259,7 +259,7 @@ describe('PageHeader', () => {
         });
     });
 
-    it('variant = record-home-vertical', () => {
+    it('Page header: variant = record-home-vertical', () => {
         element.variant = 'record-home-vertical';
 
         return Promise.resolve().then(() => {

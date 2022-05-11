@@ -176,24 +176,24 @@ export default class ColorPicker extends LightningElement {
      */
     @api messageWhenValueMissing;
 
+    _colors = DEFAULT_COLORS;
     _columns = DEFAULT_COLUMNS;
-    _groups = [];
-    _value;
-    _name;
-    _variant = VARIANTS.default;
-    _type = TYPES.default;
-    _menuVariant = MENU_VARIANTS.default;
-    _menuIconSize = MENU_ICON_SIZES.default;
-    _menuAlignment = MENU_ALIGNMENTS.default;
     _disabled = false;
+    _groups = [];
+    _hideColorInput = false;
     _isLoading = false;
+    _menuAlignment = MENU_ALIGNMENTS.default;
+    _menuNubbin = false;
+    _menuIconSize = MENU_ICON_SIZES.default;
+    _menuVariant = MENU_VARIANTS.default;
+    _name;
+    _opacity = false;
     _readOnly = false;
     _required = false;
-    _hideColorInput = false;
-    _menuNubbin = false;
-    _colors = DEFAULT_COLORS;
-    _opacity = false;
     _tokens = [];
+    _type = TYPES.default;
+    _value;
+    _variant = VARIANTS.default;
 
     _currentTab = DEFAULT_TAB;
     _draftToken = {};
@@ -235,6 +235,29 @@ export default class ColorPicker extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Array of colors displayed in the default palette. Each color can either be a string, or a color object. The color objects are used in conjunction with the groups attribute, to split the colors into different groups.
+     *
+     * @public
+     * @type {string[]}
+     * @default [“#e3abec”, “#c2dbf6”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
+     */
+    @api
+    get colors() {
+        return this._colors;
+    }
+
+    set colors(value) {
+        const colors = normalizeArray(value);
+        this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
+    }
+
     /**
      * Number of columns in the palette.
      *
@@ -256,6 +279,22 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * If present, the input field is disabled and users cannot interact with it.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
+
+    /**
      * Array of group objects. Groups can be used by the tokens and the predefined palette.
      *
      * @type {object[]}
@@ -271,6 +310,111 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
+     * If true, hide the input color value.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideColorInput() {
+        return this._hideColorInput;
+    }
+
+    set hideColorInput(value) {
+        this._hideColorInput = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, a spinner is displayed to indicate that data is loading.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
+
+    /**
+     * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.
+     *
+     * @public
+     * @type {string}
+     * @default left
+     */
+    @api
+    get menuAlignment() {
+        return this._menuAlignment;
+    }
+
+    set menuAlignment(value) {
+        this._menuAlignment = normalizeString(value, {
+            fallbackValue: MENU_ALIGNMENTS.default,
+            validValues: MENU_ALIGNMENTS.valid
+        });
+    }
+
+    /**
+     * Size of the icon. Options include xx-small, x-small, small, medium, or large.
+     *
+     * @public
+     * @type {string}
+     * @default x-small
+     */
+    @api
+    get menuIconSize() {
+        return this._menuIconSize;
+    }
+
+    set menuIconSize(size) {
+        this._menuIconSize = normalizeString(size, {
+            fallbackValue: MENU_ICON_SIZES.default,
+            validValues: MENU_ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get menuNubbin() {
+        return this._menuNubbin;
+    }
+
+    set menuNubbin(value) {
+        this._menuNubbin = normalizeBoolean(value);
+    }
+
+    /**
+     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
+     *
+     * @public
+     * @type {string}
+     * @default border
+     */
+    @api
+    get menuVariant() {
+        return this._menuVariant;
+    }
+
+    set menuVariant(variant) {
+        this._menuVariant = normalizeString(variant, {
+            fallbackValue: MENU_VARIANTS.default,
+            validValues: MENU_VARIANTS.valid
+        });
+    }
+
+    /**
      * Specifies the name of an input element.
      *
      * @public
@@ -283,6 +427,90 @@ export default class ColorPicker extends LightningElement {
 
     set name(value) {
         this._name = value ? value : generateUUID();
+    }
+
+    /**
+     * If present, the alpha slider will be displayed.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get opacity() {
+        return this._opacity;
+    }
+
+    set opacity(value) {
+        this._opacity = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the input field is read-only and cannot be edited by users.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get required() {
+        return this._required;
+    }
+
+    set required(value) {
+        this._required = normalizeBoolean(value);
+    }
+
+    /**
+     * Array of token objects.
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get tokens() {
+        return this._tokens;
+    }
+
+    set tokens(value) {
+        this._tokens = normalizeArray(value);
+        if (this.isConnected) this.computeToken();
+    }
+
+    /**
+     * Type of the color picker. The base type uses tabs for all the other types.
+     * Valid values include base, custom, predefined and tokens.
+     *
+     * @public
+     * @type {string}
+     * @default base
+     */
+    @api
+    get type() {
+        return this._type;
+    }
+
+    set type(type) {
+        this._type = normalizeString(type, {
+            fallbackValue: TYPES.default,
+            validValues: TYPES.valid
+        });
     }
 
     /**
@@ -328,227 +556,11 @@ export default class ColorPicker extends LightningElement {
         });
     }
 
-    /**
-     * Type of the color picker. The base type uses tabs for all the other types.
-     * Valid values include base, custom, predefined and tokens.
-     *
-     * @public
-     * @type {string}
-     * @default base
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
      */
-    @api
-    get type() {
-        return this._type;
-    }
-
-    set type(type) {
-        this._type = normalizeString(type, {
-            fallbackValue: TYPES.default,
-            validValues: TYPES.valid
-        });
-    }
-
-    /**
-     * The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse.
-     *
-     * @public
-     * @type {string}
-     * @default border
-     */
-    @api
-    get menuVariant() {
-        return this._menuVariant;
-    }
-
-    set menuVariant(variant) {
-        this._menuVariant = normalizeString(variant, {
-            fallbackValue: MENU_VARIANTS.default,
-            validValues: MENU_VARIANTS.valid
-        });
-    }
-
-    /**
-     * Size of the icon. Options include xx-small, x-small, small, medium, or large.
-     *
-     * @public
-     * @type {string}
-     * @default x-small
-     */
-    @api
-    get menuIconSize() {
-        return this._menuIconSize;
-    }
-
-    set menuIconSize(size) {
-        this._menuIconSize = normalizeString(size, {
-            fallbackValue: MENU_ICON_SIZES.default,
-            validValues: MENU_ICON_SIZES.valid
-        });
-    }
-
-    /**
-     * Determines the alignment of the menu relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the dropdown menu based on available space.
-     *
-     * @public
-     * @type {string}
-     * @default left
-     */
-    @api
-    get menuAlignment() {
-        return this._menuAlignment;
-    }
-
-    set menuAlignment(value) {
-        this._menuAlignment = normalizeString(value, {
-            fallbackValue: MENU_ALIGNMENTS.default,
-            validValues: MENU_ALIGNMENTS.valid
-        });
-    }
-
-    /**
-     * If present, the input field is disabled and users cannot interact with it.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get disabled() {
-        return this._disabled;
-    }
-
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, a spinner is displayed to indicate that data is loading.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get isLoading() {
-        return this._isLoading;
-    }
-
-    set isLoading(value) {
-        this._isLoading = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the input field is read-only and cannot be edited by users.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get readOnly() {
-        return this._readOnly;
-    }
-
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the input field must be filled out before the form is submitted.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get required() {
-        return this._required;
-    }
-
-    set required(value) {
-        this._required = normalizeBoolean(value);
-    }
-
-    /**
-     * Array of colors displayed in the default palette. Each color can either be a string, or a color object. The color objects are used in conjunction with the groups attribute, to split the colors into different groups.
-     *
-     * @public
-     * @type {string[]}
-     * @default [“#e3abec”, “#c2dbf6”, ”#9fd6ff”, ”#9de7da”, ”#9df0bf”, ”#fff099”, ”#fed49a”, ”#d073df”, ”#86b9f3”, ”#5ebbff”, ”#44d8be”, ”#3be281”, ”#ffe654”, ”#ffb758”, ”#bd35bd”, ”#5778c1”, ”#5ebbff”, ”#00aea9”, ”#3bba4c”, ”#f4bc25”, ”#f99120”, ”#580d8c”, ”#001870”, ”#0a2399”, ”#097476”, ”#096a50”, ”#b67d11”, ”#b85d0d”]
-     */
-    @api
-    get colors() {
-        return this._colors;
-    }
-
-    set colors(value) {
-        const colors = normalizeArray(value);
-        this._colors = colors.length > 0 ? colors : DEFAULT_COLORS;
-    }
-
-    /**
-     * If true, hide the input color value.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get hideColorInput() {
-        return this._hideColorInput;
-    }
-
-    set hideColorInput(value) {
-        this._hideColorInput = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, a nubbin is present on the menu. A nubbin is a stub that protrudes from the menu item towards the button menu. The nubbin position is based on the menu-alignment.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get menuNubbin() {
-        return this._menuNubbin;
-    }
-
-    set menuNubbin(value) {
-        this._menuNubbin = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the alpha slider will be displayed.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get opacity() {
-        return this._opacity;
-    }
-
-    set opacity(value) {
-        this._opacity = normalizeBoolean(value);
-    }
-
-    /**
-     * Array of token objects.
-     *
-     * @public
-     * @type {object[]}
-     */
-    @api
-    get tokens() {
-        return this._tokens;
-    }
-
-    set tokens(value) {
-        this._tokens = normalizeArray(value);
-        if (this._isConnected) this.computeToken();
-    }
 
     /**
      * Variant of the color palette.
@@ -852,7 +864,11 @@ export default class ColorPicker extends LightningElement {
         return this._constraintApi;
     }
 
-    /*-------- Public methods --------*/
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Checks if the input is valid.
@@ -922,7 +938,11 @@ export default class ColorPicker extends LightningElement {
         if (input) input.blur();
     }
 
-    /*-------- Private methods --------*/
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Initialize swatch colors.

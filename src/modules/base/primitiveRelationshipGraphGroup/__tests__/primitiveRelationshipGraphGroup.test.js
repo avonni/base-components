@@ -44,7 +44,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         }
     });
 
-    it('Default attributes', () => {
+    it('Primitive relationship graph group: Default attributes', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -77,7 +77,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // actions-position
     // Depends on defaultActions
-    it('actionsPosition = top', () => {
+    it('Primitive relationship graph group: actionsPosition = top', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -103,7 +103,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('actionsPosition = bottom', () => {
+    it('Primitive relationship graph group: actionsPosition = bottom', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -130,7 +130,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // active-child
-    it('activeChild = false', () => {
+    it('Primitive relationship graph group: activeChild = false', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -150,7 +150,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('activeChild = true', () => {
+    it('Primitive relationship graph group: activeChild = true', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -172,7 +172,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // custom-actions
     // Depends on actionsPosition
-    it('customActions', () => {
+    it('Primitive relationship graph group: customActions', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -219,7 +219,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // default-actions
     // Depends on actionsPosition
-    it('defaultActions', () => {
+    it('Primitive relationship graph group: defaultActions', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -265,7 +265,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // expanded
-    it('expanded = false', () => {
+    it('Primitive relationship graph group: expanded = false', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -285,7 +285,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('expanded = true', () => {
+    it('Primitive relationship graph group: expanded = true', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -306,7 +306,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // expand-icon-name
-    it('expandIconName', () => {
+    it('Primitive relationship graph group: expandIconName', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -328,7 +328,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // hide-default-actions
     // Depends on defaultActions, customActions and actionPositions
-    it('hideDefaultActions = false', () => {
+    it('Primitive relationship graph group: hideDefaultActions = false', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -378,7 +378,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('hideDefaultActions = true', () => {
+    it('Primitive relationship graph group: hideDefaultActions = true', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -430,7 +430,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // hide-items-count
     // Depends on label
-    it('hideItemsCount = false', () => {
+    it('Primitive relationship graph group: hideItemsCount = false', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -449,7 +449,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('hideItemsCount = true', () => {
+    it('Primitive relationship graph group: hideItemsCount = true', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -469,7 +469,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // href
-    it('href is defined', () => {
+    it('Primitive relationship graph group: href is defined', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -487,7 +487,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('href is undefined', () => {
+    it('Primitive relationship graph group: href is undefined', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -502,7 +502,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // is-first-child
     // Depends on activeChild
-    it('isFirstChild', () => {
+    it('Primitive relationship graph group: isFirstChild', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -523,7 +523,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // items and item-actions
-    it('items and itemActions', () => {
+    it('Primitive relationship graph group: items and itemActions', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -610,7 +610,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // label
-    it('label', () => {
+    it('Primitive relationship graph group: label', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -630,7 +630,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // selected
     // Depends on items (needs to have an item selected with groups)
-    it('selected = true', () => {
+    it('Primitive relationship graph group: selected = true', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -661,7 +661,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('selected = false', () => {
+    it('Primitive relationship graph group: selected = false', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -694,7 +694,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // selected-item-component (only getter)
     // Depends on items (need to have a selected item)
-    it('selectedItemComponent (getter)', () => {
+    it('Primitive relationship graph group: selectedItemComponent (getter)', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -730,7 +730,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // shrink-icon-name
-    it('shrinkIconName', () => {
+    it('Primitive relationship graph group: shrinkIconName', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -751,7 +751,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
     });
 
     // variant
-    it('variant = horizontal', () => {
+    it('Primitive relationship graph group: variant = horizontal', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -771,7 +771,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('variant = vertical', () => {
+    it('Primitive relationship graph group: variant = vertical', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -795,7 +795,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // select
     // Depends on items
-    it('select event', () => {
+    it('Primitive relationship graph group: select event', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -835,7 +835,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // toggle
     // Depends on variant and items (need to have a selected item)
-    it('toggle event, with horizontal variant, selected item, and close = true', () => {
+    it('Primitive relationship graph group: toggle event, with horizontal variant, selected item, and close = true', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -880,7 +880,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             });
     });
 
-    it('toggle event, with horizontal variant, selected item, and close = false', () => {
+    it('Primitive relationship graph group: toggle event, with horizontal variant, selected item, and close = false', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -925,7 +925,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
             });
     });
 
-    it('toggle event, with vertical variant, and no selected item', () => {
+    it('Primitive relationship graph group: toggle event, with vertical variant, and no selected item', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -965,7 +965,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
 
     // actionclick event
     // Depends on name, defaultActions, actionsPosition and items
-    it('actionclick event, on group action', () => {
+    it('Primitive relationship graph group: actionclick event, on group action', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {
@@ -999,7 +999,7 @@ describe('PrimitiveRelationshipGraphGroup', () => {
         });
     });
 
-    it('actionclick event, on item action', () => {
+    it('Primitive relationship graph group: actionclick event, on item action', () => {
         const element = createElement(
             'data-primitive-relationship-graph-group',
             {

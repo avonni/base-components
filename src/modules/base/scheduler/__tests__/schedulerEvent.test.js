@@ -50,32 +50,15 @@ const DEFAULTS = {
 };
 
 describe('SchedulerEvent', () => {
-    it('Default attributes', () => {
+    it('Scheduler event: Default attributes', () => {
         const element = new SchedulerEvent({});
 
         expect(element.allDay).toBeFalsy();
         expect(element.availableDaysOfTheWeek).toMatchObject([
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6
+            0, 1, 2, 3, 4, 5, 6
         ]);
         expect(element.availableMonths).toMatchObject([
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
         ]);
         expect(element.availableTimeFrames).toMatchObject(['00:00-23:59']);
         expect(element.color).toBeUndefined();
@@ -104,7 +87,7 @@ describe('SchedulerEvent', () => {
     /* ----- ATTRIBUTES ----- */
 
     // allDay
-    it('allDay with undefined "to"', () => {
+    it('Scheduler event: allDay with undefined "to"', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -117,7 +100,7 @@ describe('SchedulerEvent', () => {
         expect(element.computedTo.ts).toBe(new Date(2021, 8, 2).getTime() - 1);
     });
 
-    it('allDay set after event constructor', () => {
+    it('Scheduler event: allDay set after event constructor', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -132,7 +115,7 @@ describe('SchedulerEvent', () => {
         expect(element.computedTo.ts).toBe(new Date(2021, 8, 2).getTime() - 1);
     });
 
-    it('allDay spanning on several days', () => {
+    it('Scheduler event: allDay spanning on several days', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -147,7 +130,7 @@ describe('SchedulerEvent', () => {
     });
 
     // availableDaysOfTheWeek
-    it('availableDaysOfTheWeek, event contains available days', () => {
+    it('Scheduler event: availableDaysOfTheWeek, event contains available days', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -160,7 +143,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences.length).toBeTruthy();
     });
 
-    it('availableDaysOfTheWeek, event does not contain available days', () => {
+    it('Scheduler event: availableDaysOfTheWeek, event does not contain available days', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -174,7 +157,7 @@ describe('SchedulerEvent', () => {
     });
 
     // availableMonths
-    it('availableMonths, event contains available months', () => {
+    it('Scheduler event: availableMonths, event contains available months', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -187,7 +170,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences.length).toBeTruthy();
     });
 
-    it('availableMonths, event does not contain available months', () => {
+    it('Scheduler event: availableMonths, event does not contain available months', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -201,7 +184,7 @@ describe('SchedulerEvent', () => {
     });
 
     // availableTimeFrames
-    it('availableTimeFrames, event contains available time frames', () => {
+    it('Scheduler event: availableTimeFrames, event contains available time frames', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -214,7 +197,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences.length).toBeTruthy();
     });
 
-    it('availableTimeFrames, event does not contain available time frames', () => {
+    it('Scheduler event: availableTimeFrames, event does not contain available time frames', () => {
         const options = {
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -228,13 +211,13 @@ describe('SchedulerEvent', () => {
     });
 
     // color
-    it('color', () => {
+    it('Scheduler event: color', () => {
         const element = new SchedulerEvent({ color: '#333' });
         expect(element.color).toBe('#333');
     });
 
     // data
-    it('data', () => {
+    it('Scheduler event: data', () => {
         const data = {
             title: 'Something',
             customField: 'Something else'
@@ -244,13 +227,13 @@ describe('SchedulerEvent', () => {
     });
 
     // disabled
-    it('disabled', () => {
+    it('Scheduler event: disabled', () => {
         const element = new SchedulerEvent({ disabled: true });
         expect(element.name).toBe('disabled');
     });
 
     // from
-    it('from', () => {
+    it('Scheduler event: from', () => {
         const element = new SchedulerEvent({ ...DEFAULTS });
         const occurrence = element.occurrences[0];
         expect(occurrence.from).toBeInstanceOf(DateTime);
@@ -259,13 +242,13 @@ describe('SchedulerEvent', () => {
     });
 
     // iconName
-    it('iconName', () => {
+    it('Scheduler event: iconName', () => {
         const element = new SchedulerEvent({ iconName: 'utility:apps' });
         expect(element.iconName).toBe('utility:apps');
     });
 
     // keyFields
-    it('keyFields', () => {
+    it('Scheduler event: keyFields', () => {
         const keyFields = ['1', '2', '3'];
         const element = new SchedulerEvent({
             name: NAME,
@@ -281,7 +264,7 @@ describe('SchedulerEvent', () => {
     });
 
     // labels
-    it('labels', () => {
+    it('Scheduler event: labels', () => {
         const labels = {
             top: {
                 fieldName: 'from'
@@ -296,7 +279,7 @@ describe('SchedulerEvent', () => {
     });
 
     // name
-    it('name', () => {
+    it('Scheduler event: name', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             name: 'some-name'
@@ -307,7 +290,7 @@ describe('SchedulerEvent', () => {
 
     // recurrence
     // Depends on schedulerEnd
-    it('recurrence yearly', () => {
+    it('Scheduler event: recurrence yearly', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2024, 0, 1),
@@ -330,7 +313,7 @@ describe('SchedulerEvent', () => {
         );
     });
 
-    it('recurrence monthly', () => {
+    it('Scheduler event: recurrence monthly', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2022, 0, 10),
@@ -353,7 +336,7 @@ describe('SchedulerEvent', () => {
         );
     });
 
-    it('recurrence weekly', () => {
+    it('Scheduler event: recurrence weekly', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 10, 10),
@@ -376,7 +359,7 @@ describe('SchedulerEvent', () => {
         );
     });
 
-    it('recurrence daily', () => {
+    it('Scheduler event: recurrence daily', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 8, 15),
@@ -403,7 +386,7 @@ describe('SchedulerEvent', () => {
 
     // recurrenceAttributes
     // Depends on recurrence and schedulerEnd
-    it('recurrenceAttributes, weekdays', () => {
+    it('Scheduler event: recurrenceAttributes, weekdays', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 8, 30),
@@ -427,7 +410,7 @@ describe('SchedulerEvent', () => {
         });
     });
 
-    it('recurrenceAttributes, weekdays, with first weekday before starting date', () => {
+    it('Scheduler event: recurrenceAttributes, weekdays, with first weekday before starting date', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 8, 8),
@@ -439,7 +422,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences).toHaveLength(2);
     });
 
-    it('recurrenceAttributes, sameDaySameWeek', () => {
+    it('Scheduler event: recurrenceAttributes, sameDaySameWeek', () => {
         const element = new SchedulerEvent({
             keyFields: KEY_FIELDS,
             name: NAME,
@@ -470,7 +453,7 @@ describe('SchedulerEvent', () => {
         );
     });
 
-    it('recurrenceAttributes, interval, daily recurrence', () => {
+    it('Scheduler event: recurrenceAttributes, interval, daily recurrence', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 8, 10),
@@ -489,7 +472,7 @@ describe('SchedulerEvent', () => {
         );
     });
 
-    it('recurrenceAttributes, interval, weekly recurrence', () => {
+    it('Scheduler event: recurrenceAttributes, interval, weekly recurrence', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 8, 30),
@@ -508,7 +491,7 @@ describe('SchedulerEvent', () => {
         );
     });
 
-    it('recurrenceAttributes, interval, monthly recurrence', () => {
+    it('Scheduler event: recurrenceAttributes, interval, monthly recurrence', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2022, 1, 15),
@@ -527,7 +510,7 @@ describe('SchedulerEvent', () => {
         );
     });
 
-    it('recurrenceAttributes, interval, yearly recurrence', () => {
+    it('Scheduler event: recurrenceAttributes, interval, yearly recurrence', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2026, 1, 15),
@@ -548,7 +531,7 @@ describe('SchedulerEvent', () => {
 
     // recurrenceCount
     // Depends on recurrence and schedulerEnd
-    it('recurrenceCount', () => {
+    it('Scheduler event: recurrenceCount', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2030, 0, 1),
@@ -560,7 +543,7 @@ describe('SchedulerEvent', () => {
 
     // recurrenceEndDate
     // Depends on recurrence and schedulerEnd
-    it('recurrenceEndDate', () => {
+    it('Scheduler event: recurrenceEndDate', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2030, 0, 1),
@@ -570,7 +553,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences).toHaveLength(4);
     });
 
-    it('If there are a recurrenceEndDate and a recurrenceCount, the earliest end will be used', () => {
+    it('Scheduler event: If there are a recurrenceEndDate and a recurrenceCount, the earliest end will be used', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2030, 0, 1),
@@ -583,7 +566,7 @@ describe('SchedulerEvent', () => {
 
     // referenceLine
     // Depends on theme
-    it('referenceLine', () => {
+    it('Scheduler event: referenceLine', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             referenceLine: true,
@@ -595,7 +578,7 @@ describe('SchedulerEvent', () => {
 
     // schedulerEnd
     // Depends on theme
-    it('schedulerEnd, before end of event', () => {
+    it('Scheduler event: schedulerEnd, before end of event', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 8, 2)
@@ -603,7 +586,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences[0].to.ts).toBe(element.schedulerEnd.ts);
     });
 
-    it('schedulerEnd, before beginning of event', () => {
+    it('Scheduler event: schedulerEnd, before beginning of event', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerEnd: new Date(2021, 7, 2)
@@ -613,7 +596,7 @@ describe('SchedulerEvent', () => {
 
     // schedulerStart
     // Depends on recurrence and schedulerEnd
-    it('schedulerStart, after end of event', () => {
+    it('Scheduler event: schedulerStart, after end of event', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerStart: new Date(2021, 10, 2)
@@ -621,7 +604,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences.length).toBeFalsy();
     });
 
-    it('schedulerStart, some occurrences are before the start', () => {
+    it('Scheduler event: schedulerStart, some occurrences are before the start', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerStart: new Date(2021, 8, 5),
@@ -631,7 +614,7 @@ describe('SchedulerEvent', () => {
         expect(element.occurrences).toHaveLength(5);
     });
 
-    it('schedulerStart, after beginning of event', () => {
+    it('Scheduler event: schedulerStart, after beginning of event', () => {
         const element = new SchedulerEvent({
             ...DEFAULTS,
             schedulerStart: new Date(2021, 8, 2)
@@ -640,13 +623,13 @@ describe('SchedulerEvent', () => {
     });
 
     // theme
-    it('theme', () => {
+    it('Scheduler event: theme', () => {
         const element = new SchedulerEvent({ theme: 'hollow' });
         expect(element.theme).toBe('hollow');
     });
 
     // to
-    it('to', () => {
+    it('Scheduler event: to', () => {
         const element = new SchedulerEvent(DEFAULTS);
         const occurrence = element.occurrences[0];
         expect(occurrence.to).toBeInstanceOf(DateTime);
@@ -657,7 +640,7 @@ describe('SchedulerEvent', () => {
     /* ----- METHODS ----- */
 
     // removeOccurrence
-    it('removeOccurrence', () => {
+    it('Scheduler event: removeOccurrence', () => {
         const element = new SchedulerEvent(DEFAULTS);
         expect(element.occurrences).toHaveLength(1);
         element.removeOccurrence(element.occurrences[0].key);

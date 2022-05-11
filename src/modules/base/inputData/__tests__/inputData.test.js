@@ -50,7 +50,7 @@ describe('InputData', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    it('Default attributes', () => {
+    it('Input data: Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.placeholder).toBeUndefined();
@@ -63,95 +63,113 @@ describe('InputData', () => {
         expect(element.longitude).toBeUndefined();
     });
 
-    it('Label attribute', () => {
+    it('Input data: Label attribute', () => {
         element.label = 'Base input';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.label).toBe('Base input');
         });
     });
 
-    it('No label attribute', () => {
+    it('Input data: No label attribute', () => {
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.label).toBe('Data input');
             expect(input.variant).toBe('label-hidden');
         });
     });
 
-    it('Disabled attribute', () => {
+    it('Input data: Disabled attribute', () => {
         element.label = 'Base input';
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.disabled).toBeTruthy();
         });
     });
 
-    it('Read-only attribute', () => {
+    it('Input data: Read-only attribute', () => {
         element.label = 'Base input';
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.readOnly).toBeTruthy();
         });
     });
 
-    it('Required attribute', () => {
+    it('Input data: Required attribute', () => {
         element.label = 'Base input';
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.required).toBeTruthy();
         });
     });
 
-    it('Variant attribute', () => {
+    it('Input data: Variant attribute', () => {
         element.label = 'Base input';
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.variant).toBe('label-inline');
         });
     });
 
-    it('Value attribute', () => {
+    it('Input data: Value attribute', () => {
         element.label = 'Base input';
         element.value = 'Default text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.value).toBe('Default text');
         });
     });
 
-    it('Undefined value attribute', () => {
+    it('Input data: Undefined value attribute', () => {
         element.label = 'Base input';
         element.value = undefined;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.value).toBe('');
         });
     });
 
-    it('Checked attribute', () => {
+    it('Input data: Checked attribute', () => {
         element.label = 'Base input';
         element.type = 'checkbox';
         element.checked = true;
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.checked).toBeTruthy();
         });
     });
 
-    it('Valid location attributes', () => {
+    it('Input data: Valid location attributes', () => {
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = 80;
@@ -166,7 +184,7 @@ describe('InputData', () => {
         });
     });
 
-    it('Corrected positive location attributes', () => {
+    it('Input data: Corrected positive location attributes', () => {
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = 100;
@@ -181,7 +199,7 @@ describe('InputData', () => {
         });
     });
 
-    it('Corrected negative location attributes', () => {
+    it('Input data: Corrected negative location attributes', () => {
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = -100;
@@ -196,7 +214,7 @@ describe('InputData', () => {
         });
     });
 
-    it('Valid location attributes as (0, 0)', () => {
+    it('Input data: Valid location attributes as (0, 0)', () => {
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = 0;
@@ -211,7 +229,7 @@ describe('InputData', () => {
         });
     });
 
-    it('Undefined location attributes', () => {
+    it('Input data: Undefined location attributes', () => {
         element.label = 'Base input';
         element.type = 'location';
         element.latitude = undefined;
@@ -228,70 +246,82 @@ describe('InputData', () => {
 
     /* ----- DATA INPUT TYPES ----- */
 
-    it('Boolean input', () => {
+    it('Input data: Boolean input', () => {
         element.label = 'Label';
         element.type = 'boolean';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('checkbox');
         });
     });
 
-    it('Number input', () => {
+    it('Input data: Number input', () => {
         element.label = 'Label';
         element.type = 'number';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('number');
             expect(input.formatter).toBe('decimal');
         });
     });
 
-    it('Currency input', () => {
+    it('Input data: Currency input', () => {
         element.label = 'Label';
         element.type = 'currency';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('number');
             expect(input.formatter).toBe('currency');
         });
     });
 
-    it('Percent input', () => {
+    it('Input data: Percent input', () => {
         element.label = 'Label';
         element.type = 'percent';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('number');
             expect(input.formatter).toBe('percent');
         });
     });
 
-    it('Date input', () => {
+    it('Input data: Date input', () => {
         element.label = 'Label';
         element.type = 'date';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('date');
         });
     });
 
-    it('Email input', () => {
+    it('Input data: Email input', () => {
         element.label = 'Label';
         element.type = 'email';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('email');
         });
     });
 
-    it('Location input', () => {
+    it('Input data: Location input', () => {
         element.label = 'Label';
         element.type = 'location';
 
@@ -307,51 +337,59 @@ describe('InputData', () => {
         });
     });
 
-    it('Phone input', () => {
+    it('Input data: Phone input', () => {
         element.label = 'Label';
         element.type = 'phone';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-phone"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-phone"]'
+            );
             expect(input.type).toBe('tel');
         });
     });
 
-    it('Phone input with default value to format', () => {
+    it('Input data: Phone input with default value to format', () => {
         element.type = 'phone';
         element.label = 'Label';
         element.value = '1234567890';
         document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-phone"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-phone"]'
+            );
             expect(input.value).toBe('123-456-7890');
         });
     });
 
-    it('URL input', () => {
+    it('Input data: URL input', () => {
         element.label = 'Label';
         element.type = 'url';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('url');
         });
     });
 
-    it('Text input', () => {
+    it('Input data: Text input', () => {
         element.label = 'Label';
         element.type = 'text';
 
         return Promise.resolve().then(() => {
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input-base"]');
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input-base"]'
+            );
             expect(input.type).toBe('text');
         });
     });
 
     /* ----- BEHAVIOR ON INPUT CHANGE ----- */
 
-    it('Formatted valid phone input', () => {
+    it('Input data: Formatted valid phone input', () => {
         element.label = 'Label';
         element.type = 'phone';
 
@@ -371,7 +409,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Formatted invalid phone input with 7 digits', () => {
+    it('Input data: Formatted invalid phone input with 7 digits', () => {
         element.label = 'Label';
         element.type = 'phone';
 
@@ -391,7 +429,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Formatted invalid phone input with 5 digits', () => {
+    it('Input data: Formatted invalid phone input with 5 digits', () => {
         element.label = 'Label';
         element.type = 'phone';
 
@@ -411,7 +449,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Formatted invalid phone input without with 1 digit', () => {
+    it('Input data: Formatted invalid phone input without with 1 digit', () => {
         element.label = 'Label';
         element.type = 'phone';
 
@@ -431,7 +469,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Location input change for adding values', () => {
+    it('Input data: Location input change for adding values', () => {
         element.label = 'Label';
         element.type = 'location';
 
@@ -453,7 +491,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Location input change for removing values', () => {
+    it('Input data: Location input change for removing values', () => {
         element.label = 'Label';
         element.type = 'location';
         element.latitude = 80;
@@ -477,7 +515,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Text input change for removing value', () => {
+    it('Input data: Text input change for removing value', () => {
         element.label = 'Label';
 
         return Promise.resolve()
@@ -498,7 +536,7 @@ describe('InputData', () => {
 
     /* ----- HANDLING LIGHTNING-INPUT EVENTS AND THEIR TRANSFER (FOR COVERAGE PURPOSES) ----- */
 
-    it('Transfer commit event', () => {
+    it('Input data: Transfer commit event', () => {
         element.label = 'Label';
 
         return Promise.resolve()
@@ -517,7 +555,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Transfer blur event', () => {
+    it('Input data: Transfer blur event', () => {
         element.label = 'Label';
 
         const handler = jest.fn();
@@ -542,7 +580,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Transfer focus event', () => {
+    it('Input data: Transfer focus event', () => {
         element.label = 'Label';
         const handler = jest.fn();
 
@@ -568,7 +606,7 @@ describe('InputData', () => {
 
     /* ----- PUBLIC METHODS ----- */
 
-    it('Transfer focus and blur', () => {
+    it('Input data: Transfer focus and blur', () => {
         element.label = 'Label';
 
         return Promise.resolve()
@@ -581,7 +619,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Transfer error messages on basic input', () => {
+    it('Input data: Transfer error messages on basic input', () => {
         element.label = 'Label';
 
         return Promise.resolve()
@@ -594,7 +632,7 @@ describe('InputData', () => {
             });
     });
 
-    it('Transfer error messages on location input', () => {
+    it('Input data: Transfer error messages on location input', () => {
         element.label = 'Label';
         element.type = 'location';
 

@@ -92,7 +92,7 @@ export default class Calendar extends LightningElement {
     _selectionMode = SELECTION_MODES.default;
     _value = [];
     _weekNumber = false;
-    displayDate = DEFAULT_DATE; // The calendar displays this date's month
+    displayDate = new Date(DEFAULT_DATE); // The calendar displays this date's month
     year;
     month;
     months = MONTHS;
@@ -103,6 +103,12 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
         this.computeFocus(false);
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Array of date label objects. Priority is given to dates placed toward the end of the array.
@@ -314,6 +320,12 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Set initial focus
      *
@@ -431,6 +443,12 @@ export default class Calendar extends LightningElement {
             .add({ 'avonni-calendar__date-with-labels': isLabeled })
             .toString();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Create Dates array.
