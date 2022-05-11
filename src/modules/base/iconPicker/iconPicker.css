@@ -65,16 +65,16 @@ button:disabled {
 }
 
 .avonni-icon-picker__action-icon_small-scaling {
-    margin: 0 -0.5rem 0 -0.65rem;
+    margin: 0 -0.4rem 0 -0.6rem;
     transform: scale(0.38);
 }
 
 .avonni-icon-picker__action-icon_medium-scaling {
-    margin: 0 -0.5rem 0 -0.65rem;
+    margin: 0 -0.4rem 0 -0.6rem;
     transform: scale(0.55);
 }
 
 .avonni-icon-picker__action-icon_large-scaling {
-    margin: 0 -0.5rem 0 -0.65rem;
+    margin: 0 -0.4rem 0 -0.6rem;
     transform: scale(0.6);
 }
