@@ -256,7 +256,7 @@ export default class IconPicker extends LightningElement {
      * The icon categories that will be hidden by default.
      *
      * @type {string[]}
-     * @default ['Utility', 'Doctype', 'Action']
+     * @default []
      * @public
      */
     @api
