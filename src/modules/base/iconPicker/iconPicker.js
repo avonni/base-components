@@ -553,7 +553,7 @@ export default class IconPicker extends LightningElement {
      */
     get computedIconClass() {
         const classes = classSet();
-        if (this.value && !this.value.split(':')[0] === 'action') {
+        if (!this.value.split(':')[0] === 'action') {
             classes.add({
                 'avonni-builder-icon-picker-x-small-icon-padding':
                     this.menuIconSize === 'x-small',
