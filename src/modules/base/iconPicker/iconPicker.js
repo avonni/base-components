@@ -34,7 +34,7 @@ const TABS = {
 
 const NB_VISIBLE_TABS = 2;
 
-const DEFAULT_HIDDEN_CATEGORIES = ['Utility', 'Doctype', 'Action'];
+const DEFAULT_HIDDEN_CATEGORIES = [];
 
 /**
  * @class
