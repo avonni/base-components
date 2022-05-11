@@ -57,7 +57,6 @@ export default {
                 'x-large',
                 'xx-large'
             ],
-            defaultValue: 'medium',
             description:
                 'The size of the avatars. Valid values include x-small, small, medium, large, x-large and xx-large.',
             table: {
@@ -70,7 +69,6 @@ export default {
                 type: 'select'
             },
             options: ['empty', 'circle', 'square'],
-            defaultValue: 'square',
             description:
                 'Shape of the avatars. Valid values include empty, circle or square.',
             table: {
@@ -83,7 +81,6 @@ export default {
                 type: 'select'
             },
             options: ['stack', 'grid', 'list'],
-            defaultValue: 'stack',
             description:
                 'Defines the layout of the avatar group. Valid values include stack, grid, list',
             table: {
@@ -109,7 +106,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Show more',
             description:
                 'Label of the button that appears in the list layout, when the number of avatars exceeds the max-count number.',
             table: {
@@ -134,7 +130,6 @@ export default {
                 'inverse',
                 'success'
             ],
-            defaultValue: 'base',
             description:
                 'Variant of the button that appears in the list layout, when the number of avatars exceeds the max-count number.',
             table: {
@@ -163,7 +158,6 @@ export default {
                 type: 'radio'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Position of the list button’s icon. Valid values include left and right.',
             table: {
@@ -178,7 +172,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Show less',
             description:
                 'Label of the button that appears in the list layout, when the list is expanded.',
             table: {
@@ -207,7 +200,6 @@ export default {
                 type: 'radio'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Position of the list button’s icon. Valid values include left and right.',
             table: {
@@ -241,6 +233,16 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        layout: 'stack',
+        listButtonShowLessLabel: 'Show less',
+        listButtonShowLessIconPosition: 'left',
+        listButtonShowMoreIconPosition: 'left',
+        listButtonShowMoreLabel: 'Show more',
+        listButtonVariant: 'base',
+        size: 'medium',
+        variant: 'square'
     }
 };
 

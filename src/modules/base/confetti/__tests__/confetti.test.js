@@ -40,7 +40,7 @@ describe('Confetti', () => {
         }
     });
 
-    it('Confetti Default attributes', () => {
+    it('Confetti: Default attributes', () => {
         const element = createElement('base-confetti', {
             is: Confetti
         });

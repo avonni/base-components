@@ -112,7 +112,7 @@ describe('Color Picker', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Color Picker: Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.colors).toMatchObject(defaultColors);
         expect(element.columns).toBe(7);
@@ -144,7 +144,7 @@ describe('Color Picker', () => {
     /* ----- ATTRIBUTES ----- */
 
     // access key
-    it('access key', () => {
+    it('Color Picker: access key', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
@@ -157,7 +157,7 @@ describe('Color Picker', () => {
 
     // columns
     // Depends on type
-    it('columns', () => {
+    it('Color Picker: columns', () => {
         element.columns = 5;
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
@@ -173,7 +173,7 @@ describe('Color Picker', () => {
     });
 
     // disabled
-    it('disabled', () => {
+    it('Color Picker: disabled', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -185,7 +185,7 @@ describe('Color Picker', () => {
     });
 
     // field level help
-    it('field level help', () => {
+    it('Color Picker: field level help', () => {
         element.fieldLevelHelp = 'This is a field level help text';
 
         return Promise.resolve().then(() => {
@@ -197,7 +197,7 @@ describe('Color Picker', () => {
     });
 
     // groups
-    it('groups', () => {
+    it('Color Picker: groups', () => {
         const groups = ['firstGroup', 'secondGroup'];
         element.groups = groups;
 
@@ -217,7 +217,7 @@ describe('Color Picker', () => {
     });
 
     // isLoading
-    it('isLoading', () => {
+    it('Color Picker: isLoading', () => {
         element.isLoading = true;
 
         return Promise.resolve()
@@ -236,7 +236,7 @@ describe('Color Picker', () => {
     });
 
     // label
-    it('label', () => {
+    it('Color Picker: label', () => {
         element.label = 'This is a label text';
 
         return Promise.resolve().then(() => {
@@ -248,7 +248,7 @@ describe('Color Picker', () => {
     });
 
     // name
-    it('name', () => {
+    it('Color Picker: name', () => {
         element.name = 'This is a name text';
 
         return Promise.resolve().then(() => {
@@ -260,7 +260,7 @@ describe('Color Picker', () => {
     });
 
     // readOnly
-    it('readOnly', () => {
+    it('Color Picker: readOnly', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -283,7 +283,7 @@ describe('Color Picker', () => {
     });
 
     // required
-    it('required', () => {
+    it('Color Picker: required', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -294,7 +294,7 @@ describe('Color Picker', () => {
     });
 
     // value
-    it('value', () => {
+    it('Color Picker: value', () => {
         element.value = 'rgb(65, 159, 236)';
 
         return Promise.resolve()
@@ -312,7 +312,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('value with a token', () => {
+    it('Color Picker: value with a token', () => {
         element.tokens = tokens;
         element.value = tokens[1].value;
 
@@ -332,7 +332,7 @@ describe('Color Picker', () => {
     });
 
     // variant
-    it('variant standard', () => {
+    it('Color Picker: variant standard', () => {
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
@@ -351,7 +351,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('variant label-stacked', () => {
+    it('Color Picker: variant label-stacked', () => {
         element.variant = 'label-stacked';
 
         return Promise.resolve().then(() => {
@@ -370,7 +370,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('variant label-hidden', () => {
+    it('Color Picker: variant label-hidden', () => {
         element.variant = 'label-hidden';
         element.label = 'label-hidden';
 
@@ -391,7 +391,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('variant label-inline', () => {
+    it('Color Picker: variant label-inline', () => {
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
@@ -412,7 +412,7 @@ describe('Color Picker', () => {
 
     // type
     // Depends on colors and tokens
-    it('type base', () => {
+    it('Color Picker: type base', () => {
         element.type = 'base';
 
         return Promise.resolve()
@@ -430,7 +430,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('type predefined', () => {
+    it('Color Picker: type predefined', () => {
         element.type = 'predefined';
         element.colors = colors;
         element.tokens = tokens;
@@ -457,7 +457,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('type custom', () => {
+    it('Color Picker: type custom', () => {
         element.type = 'custom';
 
         return Promise.resolve()
@@ -480,7 +480,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('type tokens', () => {
+    it('Color Picker: type tokens', () => {
         element.type = 'tokens';
         element.tokens = tokens;
         element.colors = colors;
@@ -508,7 +508,7 @@ describe('Color Picker', () => {
     });
 
     // Menu variant without menu icon name
-    it('menu variant bare', () => {
+    it('Color Picker: menu variant bare', () => {
         element.menuVariant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -521,7 +521,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant container', () => {
+    it('Color Picker: menu variant container', () => {
         element.menuVariant = 'container';
 
         return Promise.resolve().then(() => {
@@ -534,7 +534,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant border', () => {
+    it('Color Picker: menu variant border', () => {
         element.menuVariant = 'border';
 
         return Promise.resolve().then(() => {
@@ -547,7 +547,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant border-filled', () => {
+    it('Color Picker: menu variant border-filled', () => {
         element.menuVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
@@ -560,7 +560,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant bare-inverse', () => {
+    it('Color Picker: menu variant bare-inverse', () => {
         element.menuVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
@@ -573,7 +573,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant border-inverse', () => {
+    it('Color Picker: menu variant border-inverse', () => {
         element.menuVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
@@ -587,7 +587,7 @@ describe('Color Picker', () => {
     });
 
     // Menu variant with menu icon name
-    it('menu variant bare without menu icon down', () => {
+    it('Color Picker: menu variant bare without menu icon down', () => {
         element.menuIconName = 'utility:down';
         element.menuVariant = 'bare';
 
@@ -601,7 +601,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant container without menu icon down', () => {
+    it('Color Picker: menu variant container without menu icon down', () => {
         element.menuIconName = 'utility:down';
         element.menuVariant = 'container';
 
@@ -615,7 +615,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant border without menu icon down', () => {
+    it('Color Picker: menu variant border without menu icon down', () => {
         element.menuIconName = 'utility:down';
         element.menuVariant = 'border';
 
@@ -629,7 +629,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant border-filled without menu icon down', () => {
+    it('Color Picker: menu variant border-filled without menu icon down', () => {
         element.menuIconName = 'utility:down';
         element.menuVariant = 'border-filled';
 
@@ -643,7 +643,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant bare-inverse without menu icon down', () => {
+    it('Color Picker: menu variant bare-inverse without menu icon down', () => {
         element.menuIconName = 'utility:down';
         element.menuVariant = 'bare-inverse';
 
@@ -657,7 +657,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu variant border-inverse without menu icon down', () => {
+    it('Color Picker: menu variant border-inverse without menu icon down', () => {
         element.menuIconName = 'utility:down';
         element.menuVariant = 'border-inverse';
 
@@ -672,7 +672,7 @@ describe('Color Picker', () => {
     });
 
     // Menu icon size without menu icon name
-    it('menu icon size xx-small', () => {
+    it('Color Picker: menu icon size xx-small', () => {
         element.menuIconSize = 'xx-small';
 
         return Promise.resolve().then(() => {
@@ -683,7 +683,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu icon size x-small', () => {
+    it('Color Picker: menu icon size x-small', () => {
         element.menuIconSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -694,7 +694,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu icon size medium', () => {
+    it('Color Picker: menu icon size medium', () => {
         element.menuIconSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -705,7 +705,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu icon size large', () => {
+    it('Color Picker: menu icon size large', () => {
         element.menuIconSize = 'large';
 
         return Promise.resolve().then(() => {
@@ -717,7 +717,7 @@ describe('Color Picker', () => {
     });
 
     // Menu icon size with menu icon name
-    it('menu icon size xx-small with menu icon name', () => {
+    it('Color Picker: menu icon size xx-small with menu icon name', () => {
         element.menuIconSize = 'xx-small';
         element.menuIconName = 'utility:down';
 
@@ -729,7 +729,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu icon size x-small with menu icon name', () => {
+    it('Color Picker: menu icon size x-small with menu icon name', () => {
         element.menuIconSize = 'x-small';
         element.menuIconName = 'utility:down';
 
@@ -741,7 +741,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu icon size medium with menu icon name', () => {
+    it('Color Picker: menu icon size medium with menu icon name', () => {
         element.menuIconSize = 'medium';
         element.menuIconName = 'utility:down';
 
@@ -753,7 +753,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu icon size large with menu icon name', () => {
+    it('Color Picker: menu icon size large with menu icon name', () => {
         element.menuIconSize = 'large';
         element.menuIconName = 'utility:down';
 
@@ -766,7 +766,7 @@ describe('Color Picker', () => {
     });
 
     // Menu label
-    it('menu label border', () => {
+    it('Color Picker: menu label border', () => {
         element.menuLabel = 'This is a menu label text';
 
         return Promise.resolve().then(() => {
@@ -778,7 +778,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('menu label border-inverse', () => {
+    it('Color Picker: menu label border-inverse', () => {
         element.menuLabel = 'This is a menu label text';
         element.menuVariant = 'border-inverse';
 
@@ -792,7 +792,7 @@ describe('Color Picker', () => {
     });
 
     // Menu alignment & menu nubbin
-    it('menu alignment left', () => {
+    it('Color Picker: menu alignment left', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -807,7 +807,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment left and menu nubbin', () => {
+    it('Color Picker: menu alignment left and menu nubbin', () => {
         element.menuNubbin = true;
 
         return Promise.resolve()
@@ -825,7 +825,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment right', () => {
+    it('Color Picker: menu alignment right', () => {
         element.menuAlignment = 'right';
 
         return Promise.resolve()
@@ -842,7 +842,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment right and menu nubbin', () => {
+    it('Color Picker: menu alignment right and menu nubbin', () => {
         element.menuAlignment = 'right';
         element.menuNubbin = true;
 
@@ -861,7 +861,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment center', () => {
+    it('Color Picker: menu alignment center', () => {
         element.menuAlignment = 'center';
 
         return Promise.resolve()
@@ -878,7 +878,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment center and menu nubbin', () => {
+    it('Color Picker: menu alignment center and menu nubbin', () => {
         element.menuAlignment = 'center';
         element.menuNubbin = true;
 
@@ -897,7 +897,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment bottom-center', () => {
+    it('Color Picker: menu alignment bottom-center', () => {
         element.menuAlignment = 'bottom-center';
 
         return Promise.resolve()
@@ -914,7 +914,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment bottom-center and menu nubbin', () => {
+    it('Color Picker: menu alignment bottom-center and menu nubbin', () => {
         element.menuAlignment = 'bottom-center';
         element.menuNubbin = true;
 
@@ -933,7 +933,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment bottom-left', () => {
+    it('Color Picker: menu alignment bottom-left', () => {
         element.menuAlignment = 'bottom-left';
 
         return Promise.resolve()
@@ -952,7 +952,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment bottom-left and menu nubbin', () => {
+    it('Color Picker: menu alignment bottom-left and menu nubbin', () => {
         element.menuAlignment = 'bottom-left';
         element.menuNubbin = true;
 
@@ -973,7 +973,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment bottom-right', () => {
+    it('Color Picker: menu alignment bottom-right', () => {
         element.menuAlignment = 'bottom-right';
 
         return Promise.resolve()
@@ -992,7 +992,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('menu alignment bottom-right and menu nubbin', () => {
+    it('Color Picker: menu alignment bottom-right and menu nubbin', () => {
         element.menuAlignment = 'bottom-right';
         element.menuNubbin = true;
 
@@ -1016,7 +1016,7 @@ describe('Color Picker', () => {
     });
 
     // message when bad input
-    it('message when bad input value', () => {
+    it('Color Picker: message when bad input value', () => {
         element.messageWhenBadInput = 'Something is wrong';
         element.value = 'hello';
         element.showHelpMessageIfInvalid();
@@ -1030,7 +1030,7 @@ describe('Color Picker', () => {
     });
 
     // message when missing value
-    it('message when missing value', () => {
+    it('Color Picker: message when missing value', () => {
         element.messageWhenValueMissing = 'Something is wrong';
         element.required = true;
         element.showHelpMessageIfInvalid();
@@ -1044,7 +1044,7 @@ describe('Color Picker', () => {
     });
 
     // colors
-    it('colors', () => {
+    it('Color Picker: colors', () => {
         element.colors = colors;
 
         return Promise.resolve()
@@ -1063,7 +1063,7 @@ describe('Color Picker', () => {
     });
 
     // Hide color input
-    it('hide color input', () => {
+    it('Color Picker: hide color input', () => {
         element.hideColorInput = true;
 
         return Promise.resolve().then(() => {
@@ -1075,7 +1075,7 @@ describe('Color Picker', () => {
     });
 
     // opacity
-    it('opacity', () => {
+    it('Color Picker: opacity', () => {
         element.opacity = true;
         element.type = 'custom';
         const button = element.shadowRoot.querySelector(
@@ -1092,7 +1092,7 @@ describe('Color Picker', () => {
     });
 
     // focus and blur on tab
-    it('focus', () => {
+    it('Color Picker: focus', () => {
         return Promise.resolve()
             .then(() => {
                 const button = element.shadowRoot.querySelector(
@@ -1126,7 +1126,7 @@ describe('Color Picker', () => {
     });
 
     // clear
-    it('clear', () => {
+    it('Color Picker: clear', () => {
         element.value = '#ffffff';
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -1156,7 +1156,7 @@ describe('Color Picker', () => {
 
     // checkValidity
     // Depends on required
-    it('checkValidity method, valid', () => {
+    it('Color Picker: checkValidity method, valid', () => {
         element.required = false;
 
         return Promise.resolve().then(() => {
@@ -1164,7 +1164,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('checkValidity method, invalid', () => {
+    it('Color Picker: checkValidity method, invalid', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -1174,7 +1174,7 @@ describe('Color Picker', () => {
 
     // reportValidity
     // Depends on required
-    it('reportValidity method', () => {
+    it('Color Picker: reportValidity method', () => {
         element.required = true;
         element.reportValidity();
 
@@ -1188,7 +1188,7 @@ describe('Color Picker', () => {
 
     // showHelpMessageIfInvalid
     // Depends on required
-    it('showHelpMessageIfInvalid method', () => {
+    it('Color Picker: showHelpMessageIfInvalid method', () => {
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -1203,7 +1203,7 @@ describe('Color Picker', () => {
     /* ----- EVENTS ----- */
 
     // blur
-    it('close dropdown on button blur', () => {
+    it('Color Picker: close dropdown on button blur', () => {
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
         );
@@ -1225,7 +1225,7 @@ describe('Color Picker', () => {
             });
     });
 
-    it('do not close dropdown on button blur if focus is inside dropdown', () => {
+    it('Color Picker: do not close dropdown on button blur if focus is inside dropdown', () => {
         const button = element.shadowRoot.querySelector(
             '[data-element-id="button"]'
         );
@@ -1255,7 +1255,7 @@ describe('Color Picker', () => {
 
     // cancel button
     // Depends on type
-    it('cancel button in the dropdown', () => {
+    it('Color Picker: cancel button in the dropdown', () => {
         element.type = 'custom';
 
         const handler = jest.fn();
@@ -1300,7 +1300,7 @@ describe('Color Picker', () => {
     });
 
     // change
-    it('change event in the input', () => {
+    it('Color Picker: change event in the input', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         const input = element.shadowRoot.querySelector(
@@ -1326,7 +1326,7 @@ describe('Color Picker', () => {
         });
     });
 
-    it('change event in the dropdown', () => {
+    it('Color Picker: change event in the dropdown', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -1377,7 +1377,7 @@ describe('Color Picker', () => {
 
     // done button
     // Depends on type
-    it('done button', () => {
+    it('Color Picker: done button', () => {
         element.type = 'custom';
         const handler = jest.fn();
         element.addEventListener('change', handler);
@@ -1415,7 +1415,7 @@ describe('Color Picker', () => {
     });
 
     // focus event
-    it('focus event', () => {
+    it('Color Picker: focus event', () => {
         const handler = jest.fn();
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'

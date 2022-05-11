@@ -51,7 +51,7 @@ describe('VerticalProgressIndicator', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Vertical progress indicator: Default attributes', () => {
         expect(element.contentInLine).toBeFalsy();
         expect(element.currentStep).toBeUndefined();
         expect(element.hasError).toBeFalsy();
@@ -61,7 +61,7 @@ describe('VerticalProgressIndicator', () => {
     /* ----- ATTRIBUTES ----- */
 
     // content-in-line
-    it('contentInLine = false', () => {
+    it('Vertical progress indicator: contentInLine = false', () => {
         element.contentInLine = false;
 
         return Promise.resolve().then(() => {
@@ -74,7 +74,7 @@ describe('VerticalProgressIndicator', () => {
         });
     });
 
-    it('contentInLine = true', () => {
+    it('Vertical progress indicator: contentInLine = true', () => {
         element.contentInLine = true;
 
         return Promise.resolve().then(() => {
@@ -88,7 +88,7 @@ describe('VerticalProgressIndicator', () => {
     });
 
     // hasError
-    it('hasError = false', () => {
+    it('Vertical progress indicator: hasError = false', () => {
         element.hasError = false;
 
         return Promise.resolve().then(() => {
@@ -96,7 +96,7 @@ describe('VerticalProgressIndicator', () => {
         });
     });
 
-    it('hasError = true', () => {
+    it('Vertical progress indicator: hasError = true', () => {
         element.hasError = true;
 
         return Promise.resolve().then(() => {
@@ -105,7 +105,7 @@ describe('VerticalProgressIndicator', () => {
     });
 
     // variant
-    it('variant = base', () => {
+    it('Vertical progress indicator: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -114,7 +114,7 @@ describe('VerticalProgressIndicator', () => {
         });
     });
 
-    it('variant = shaded', () => {
+    it('Vertical progress indicator: variant = shaded', () => {
         element.variant = 'shaded';
 
         return Promise.resolve().then(() => {

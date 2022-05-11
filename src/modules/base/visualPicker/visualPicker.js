@@ -128,6 +128,12 @@ export default class VisualPicker extends LightningElement {
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * If present, the visual picker is disabled and the user cannot with it.
      *
@@ -241,6 +247,18 @@ export default class VisualPicker extends LightningElement {
             validValues: INPUT_TYPES.valid
         });
     }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
     /**
      * Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2], 'value1' or ['value1']
      *
@@ -253,8 +271,10 @@ export default class VisualPicker extends LightningElement {
     }
 
     set value(value) {
-        this._value = value instanceof Array ? value : [value];
+        this._value =
+            typeof value === 'string' ? [value] : normalizeArray(value);
     }
+
     /**
      * Changes the appearance of the item when selected. Valid values include coverable and non-coverable.
      *
@@ -273,6 +293,12 @@ export default class VisualPicker extends LightningElement {
             validValues: VISUAL_PICKER_VARIANTS.valid
         });
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Computed list items
@@ -581,6 +607,27 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Validation with constraint Api.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
      * Removes keyboard focus from the input element.
      *
      * @public
@@ -598,17 +645,6 @@ export default class VisualPicker extends LightningElement {
     @api
     focus() {
         this.input.focus();
-    }
-
-    /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get validity() {
-        return this._constraint.validity;
     }
 
     /**
@@ -659,20 +695,11 @@ export default class VisualPicker extends LightningElement {
         this.reportValidity();
     }
 
-    /**
-     * Validation with constraint Api.
-     *
-     * @type {object}
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
      */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
-            });
-        }
-        return this._constraintApi;
-    }
 
     /**
      * Dispatches the blur event.
@@ -706,13 +733,13 @@ export default class VisualPicker extends LightningElement {
          *
          * @event
          * @name change
-         * @param {string[]} value The visual picker value.
+         * @param {string|string[]} value Selected items' value. Returns an array of string if the type is checkbox. Returns a string otherwise.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
-                    value
+                    value: this.type === 'radio' ? value[0] || null : value
                 }
             })
         );

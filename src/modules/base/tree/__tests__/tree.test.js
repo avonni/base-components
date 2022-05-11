@@ -20,7 +20,7 @@ describe('Tree', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Tree: Default attributes', () => {
         expect(element.actions).toEqual([]);
         expect(element.actionsWhenDisabled).toEqual([]);
         expect(element.allowInlineEdit).toBeFalsy();
@@ -50,7 +50,7 @@ describe('Tree', () => {
      */
 
     // actions
-    it('actions', () => {
+    it('Tree: actions', () => {
         const addButton = element.shadowRoot.querySelector(
             '[data-element-id="button-add-action"]'
         );
@@ -77,7 +77,7 @@ describe('Tree', () => {
     });
 
     // actions-when-disabled
-    it('actionsWhenDisabled', () => {
+    it('Tree: actionsWhenDisabled', () => {
         element.actionsWhenDisabled = ACTIONS;
         element.items = ITEMS;
 
@@ -97,7 +97,7 @@ describe('Tree', () => {
     });
 
     // allow-inline-edit
-    it('allowInlineEdit', () => {
+    it('Tree: allowInlineEdit', () => {
         element.allowInlineEdit = true;
         element.items = ITEMS;
 
@@ -110,7 +110,7 @@ describe('Tree', () => {
     });
 
     // edit-field
-    it('editableFields', () => {
+    it('Tree: editableFields', () => {
         const editableFields = ['metatext', 'href'];
         element.editableFields = editableFields;
         element.items = ITEMS;
@@ -126,7 +126,7 @@ describe('Tree', () => {
     });
 
     // header
-    it('header', () => {
+    it('Tree: header', () => {
         element.header = 'Some header';
 
         return Promise.resolve().then(() => {
@@ -138,7 +138,7 @@ describe('Tree', () => {
     });
 
     // is-loading and loading-state-alternative-text
-    it('isLoading and loadingStateAlternativeText', () => {
+    it('Tree: isLoading and loadingStateAlternativeText', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText = 'Some loading text';
         element.items = ITEMS;
@@ -158,7 +158,7 @@ describe('Tree', () => {
     });
 
     // is-multi-select, disable-selection-cascade and selected-items
-    it('isMultiSelect = false and selectedItems', () => {
+    it('Tree: isMultiSelect = false and selectedItems', () => {
         element.isMultiSelect = false;
         element.selectedItems = ['secondLevel2', 'loading'];
         element.items = ITEMS;
@@ -182,7 +182,7 @@ describe('Tree', () => {
         });
     });
 
-    it('isMultiSelect = true and selectedItems', () => {
+    it('Tree: isMultiSelect = true and selectedItems', () => {
         element.isMultiSelect = true;
         const handler = jest.fn();
         element.addEventListener('select', handler);
@@ -224,7 +224,7 @@ describe('Tree', () => {
         });
     });
 
-    it('isMultiSelect = true, selectedItems and independentMultiSelect', () => {
+    it('Tree: isMultiSelect = true, selectedItems and independentMultiSelect', () => {
         element.isMultiSelect = true;
         element.independentMultiSelect = true;
         const handler = jest.fn();
@@ -259,7 +259,7 @@ describe('Tree', () => {
     });
 
     // items
-    it('items', () => {
+    it('Tree: items', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -329,7 +329,7 @@ describe('Tree', () => {
     });
 
     // sortable
-    it('sortable', () => {
+    it('Tree: sortable', () => {
         element.items = ITEMS;
         element.sortable = true;
 
@@ -349,7 +349,7 @@ describe('Tree', () => {
      */
 
     // blur and focus
-    it('blur() and focus() methods', () => {
+    it('Tree: blur() and focus() methods', () => {
         element.items = ITEMS;
         const fakeRegisters = generateFakeRegisters();
 
@@ -386,7 +386,7 @@ describe('Tree', () => {
      */
 
     // actionclick
-    it('actionclick event', () => {
+    it('Tree: actionclick event', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -418,7 +418,7 @@ describe('Tree', () => {
         });
     });
 
-    it('actionclick event, close edit popover if a standard action is clicked', () => {
+    it('Tree: actionclick event, close edit popover if a standard action is clicked', () => {
         element.items = ITEMS;
         element.actions = ACTIONS;
         const fakeRegisters = generateFakeRegisters();
@@ -461,7 +461,7 @@ describe('Tree', () => {
         });
     });
 
-    it('actionclick event can cancel standard action', () => {
+    it('Tree: actionclick event can cancel standard action', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -487,7 +487,7 @@ describe('Tree', () => {
     });
 
     // change
-    it('change event, collapse and expand', () => {
+    it('Tree: change event, collapse and expand', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -531,7 +531,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, collapse and expand triggered by keyboard', () => {
+    it('Tree: change event, collapse and expand triggered by keyboard', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -572,7 +572,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, add', () => {
+    it('Tree: change event, add', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -612,7 +612,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, add to root', () => {
+    it('Tree: change event, add to root', () => {
         element.items = ITEMS;
         element.actions = ACTIONS;
 
@@ -641,7 +641,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, delete', () => {
+    it('Tree: change event, delete', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -671,7 +671,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, duplicate', () => {
+    it('Tree: change event, duplicate', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -707,7 +707,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, edit', () => {
+    it('Tree: change event, edit', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -759,7 +759,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, move an item down', () => {
+    it('Tree: change event, move an item down', () => {
         const fakeRegisters = generateFakeRegisters();
         element.items = ITEMS;
         element.sortable = true;
@@ -852,7 +852,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, move an item up', () => {
+    it('Tree: change event, move an item up', () => {
         const fakeRegisters = generateFakeRegisters();
         element.items = ITEMS;
         element.sortable = true;
@@ -929,7 +929,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, move an item inside another', () => {
+    it('Tree: change event, move an item inside another', () => {
         const fakeRegisters = generateFakeRegisters();
         element.items = ITEMS;
         element.sortable = true;
@@ -1010,7 +1010,7 @@ describe('Tree', () => {
         });
     });
 
-    it('change event, move an item to a more nested position', () => {
+    it('Tree: change event, move an item to a more nested position', () => {
         const fakeRegisters = generateFakeRegisters();
         element.sortable = true;
         element.items = ITEMS;
@@ -1104,7 +1104,7 @@ describe('Tree', () => {
     });
 
     // keyboard navigation
-    it('keyboard navigation, up', () => {
+    it('Tree: keyboard navigation, up', () => {
         const fakeRegisters = generateFakeRegisters();
         element.items = ITEMS;
 
@@ -1146,7 +1146,7 @@ describe('Tree', () => {
         });
     });
 
-    it('keyboard navigation, down', () => {
+    it('Tree: keyboard navigation, down', () => {
         const fakeRegisters = generateFakeRegisters();
         element.items = ITEMS;
 
@@ -1187,7 +1187,7 @@ describe('Tree', () => {
         });
     });
 
-    it('keyboard navigation, home', () => {
+    it('Tree: keyboard navigation, home', () => {
         const fakeRegisters = generateFakeRegisters();
         element.items = ITEMS;
 
@@ -1229,7 +1229,7 @@ describe('Tree', () => {
         });
     });
 
-    it('keyboard navigation, end', () => {
+    it('Tree: keyboard navigation, end', () => {
         const fakeRegisters = generateFakeRegisters();
         element.items = ITEMS;
 
@@ -1272,7 +1272,7 @@ describe('Tree', () => {
     });
 
     // select
-    it('select event', () => {
+    it('Tree: select event', () => {
         element.items = ITEMS;
         element.selectedItems = ['thirdLevel'];
 
@@ -1309,7 +1309,7 @@ describe('Tree', () => {
         });
     });
 
-    it('select event, for multi-select tree', () => {
+    it('Tree: select event, for multi-select tree', () => {
         const fakeRegisters = generateFakeRegisters();
         const handler = jest.fn();
         element.addEventListener('select', handler);
@@ -1368,7 +1368,7 @@ describe('Tree', () => {
         });
     });
 
-    it('select event, for multi-select tree with independent-multi-select = true', () => {
+    it('Tree: select event, for multi-select tree with independent-multi-select = true', () => {
         const fakeRegisters = generateFakeRegisters();
         const handler = jest.fn();
         element.addEventListener('select', handler);
@@ -1415,7 +1415,7 @@ describe('Tree', () => {
         });
     });
 
-    it('select event is delayed when inline edit is allowed', () => {
+    it('Tree: select event is delayed when inline edit is allowed', () => {
         element.items = ITEMS;
         element.selectedItems = ['thirdLevel'];
         element.allowInlineEdit = true;

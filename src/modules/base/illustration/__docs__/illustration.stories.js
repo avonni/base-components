@@ -49,7 +49,6 @@ export default {
                 type: 'select'
             },
             options: ['small', 'large'],
-            defaultValue: 'small',
             table: {
                 defaultValue: { summary: 'small' }
             }
@@ -84,11 +83,14 @@ export default {
                 'preview',
                 'research'
             ],
-            defaultValue: 'text-only',
             table: {
                 defaultValue: { summary: 'text-only' }
             }
         }
+    },
+    args: {
+        size: 'small',
+        variant: 'text-only'
     }
 };
 

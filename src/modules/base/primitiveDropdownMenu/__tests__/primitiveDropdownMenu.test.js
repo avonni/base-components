@@ -71,7 +71,7 @@ describe('PrimitiveDropdownMenu', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive dropdown menu: Default attributes', () => {
         expect(element.items).toMatchObject([]);
         expect(element.offsetHeight).toBeNull();
         expect(element.offsetWidth).toBeNull();
@@ -82,7 +82,7 @@ describe('PrimitiveDropdownMenu', () => {
 
     // items
     // Depends on show
-    it('items', () => {
+    it('Primitive dropdown menu: items', () => {
         element.items = items;
         element.show = true;
 
@@ -101,7 +101,7 @@ describe('PrimitiveDropdownMenu', () => {
     });
 
     // show
-    it('show = false', () => {
+    it('Primitive dropdown menu: show = false', () => {
         element.show = false;
 
         return Promise.resolve().then(() => {
@@ -110,7 +110,7 @@ describe('PrimitiveDropdownMenu', () => {
         });
     });
 
-    it('show = true', () => {
+    it('Primitive dropdown menu: show = true', () => {
         element.show = true;
 
         return Promise.resolve().then(() => {
@@ -123,7 +123,7 @@ describe('PrimitiveDropdownMenu', () => {
 
     // Handle the privateblur of an item
     // Depends on show and items
-    it('Close the dropdown if an item sends a blur event', () => {
+    it('Primitive dropdown menu: Close the dropdown if an item sends a blur event', () => {
         element.show = true;
         element.items = items;
 
@@ -139,16 +139,15 @@ describe('PrimitiveDropdownMenu', () => {
                 );
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
                 expect(popover).toBeFalsy();
             });
     });
 
     // privateselect
     // Depends on show and items
-    it('privateselect event', () => {
+    it('Primitive dropdown menu: privateselect event', () => {
         element.show = true;
         element.items = items;
 
@@ -170,9 +169,8 @@ describe('PrimitiveDropdownMenu', () => {
                 );
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '.slds-popover'
-                );
+                const popover =
+                    element.shadowRoot.querySelector('.slds-popover');
                 expect(popover).toBeFalsy();
 
                 expect(handler).toHaveBeenCalled();

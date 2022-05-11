@@ -48,7 +48,7 @@ describe('VerticalProgressStep', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Vertical progress step: Default attributes', () => {
         expect(element.label).toBeUndefined();
         expect(element.value).toBeUndefined();
     });
@@ -56,7 +56,7 @@ describe('VerticalProgressStep', () => {
     /* ----- ATTRIBUTES ----- */
 
     // label
-    it('label', () => {
+    it('Vertical progress step: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -68,7 +68,7 @@ describe('VerticalProgressStep', () => {
     });
 
     // value
-    it('value', () => {
+    it('Vertical progress step: value', () => {
         element.value = 'a-string-value';
 
         return Promise.resolve().then(() => {
@@ -78,7 +78,7 @@ describe('VerticalProgressStep', () => {
 
     /* ----- METHODS ----- */
     // setAttributes
-    it('setAttributes', () => {
+    it('Vertical progress step: setAttributes', () => {
         element.setAttributes(true, true);
 
         return Promise.resolve().then(() => {
@@ -88,7 +88,7 @@ describe('VerticalProgressStep', () => {
     });
 
     // setIcon
-    it('setIcon', () => {
+    it('Vertical progress step: setIcon', () => {
         element.setIcon('utility:down');
 
         return Promise.resolve().then(() => {
@@ -101,7 +101,7 @@ describe('VerticalProgressStep', () => {
 
     // stepmouseenter
     // Depends on value
-    it('stepmouseenter event', () => {
+    it('Vertical progress step: stepmouseenter event', () => {
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepmouseenter', handler);
@@ -119,7 +119,7 @@ describe('VerticalProgressStep', () => {
 
     // stepmouseleave
     // Depends on value
-    it('stepmouseleave event', () => {
+    it('Vertical progress step: stepmouseleave event', () => {
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepmouseleave', handler);
@@ -137,7 +137,7 @@ describe('VerticalProgressStep', () => {
 
     // stepblur
     // Depends on value
-    it('stepblur event', () => {
+    it('Vertical progress step: stepblur event', () => {
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepblur', handler);
@@ -155,7 +155,7 @@ describe('VerticalProgressStep', () => {
 
     // stepfocus
     // Depends on value
-    it('stepfocus event', () => {
+    it('Vertical progress step: stepfocus event', () => {
         element.value = 'a-string-value';
         const handler = jest.fn();
         element.addEventListener('stepfocus', handler);

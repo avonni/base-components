@@ -91,7 +91,7 @@ describe('Pill Container', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Pill container: Default attributes', () => {
         expect(element.actions).toEqual([]);
         expect(element.alternativeText).toBe('Selected Options:');
         expect(element.isCollapsible).toBeFalsy();
@@ -104,7 +104,7 @@ describe('Pill Container', () => {
     /* ----- ATTRIBUTES ----- */
 
     // actions
-    it('actions', () => {
+    it('Pill container: actions', () => {
         const actions = [
             {
                 label: 'Action 1',
@@ -131,7 +131,7 @@ describe('Pill Container', () => {
     });
 
     // alternative-text
-    it('alternativeText', () => {
+    it('Pill container: alternativeText', () => {
         element.alternativeText = 'Some alt text';
 
         return Promise.resolve().then(() => {
@@ -143,7 +143,7 @@ describe('Pill Container', () => {
     });
 
     // is-collapsible and is-expanded
-    it('isCollapsible and isExpanded', () => {
+    it('Pill container: isCollapsible and isExpanded', () => {
         let button = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-show-more"]'
         );
@@ -169,7 +169,7 @@ describe('Pill Container', () => {
     });
 
     // items
-    it('items', () => {
+    it('Pill container: items', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -187,7 +187,7 @@ describe('Pill Container', () => {
     });
 
     // single-line
-    it('singleLine = false', () => {
+    it('Pill container: singleLine = false', () => {
         element.singleLine = false;
         element.items = ITEMS;
 
@@ -213,7 +213,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('singleLine = true', () => {
+    it('Pill container: singleLine = true', () => {
         element.singleLine = true;
         element.sortable = true;
         element.items = ITEMS;
@@ -243,7 +243,7 @@ describe('Pill Container', () => {
     });
 
     // sortable
-    it('sortable = false', () => {
+    it('Pill container: sortable = false', () => {
         element.sortable = false;
         element.items = ITEMS;
 
@@ -265,7 +265,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('sortable = true', () => {
+    it('Pill container: sortable = true', () => {
         element.sortable = true;
         element.items = ITEMS;
 
@@ -293,7 +293,7 @@ describe('Pill Container', () => {
      * -------------------------------------------------------------
      */
 
-    it('focus() method, no items', () => {
+    it('Pill container: focus() method, no items', () => {
         const ul = element.shadowRoot.querySelector('[data-element-id="ul"]');
         const spy = jest.spyOn(ul, 'focus');
 
@@ -301,7 +301,7 @@ describe('Pill Container', () => {
         expect(spy).toHaveBeenCalled();
     });
 
-    it('focus() method, item with no link', () => {
+    it('Pill container: focus() method, item with no link', () => {
         element.items = [ITEMS[1]];
 
         return Promise.resolve().then(() => {
@@ -317,7 +317,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('focus() method, item with a link', () => {
+    it('Pill container: focus() method, item with a link', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -333,7 +333,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('focus() method is called on pill click', () => {
+    it('Pill container: focus() method is called on pill click', () => {
         element.items = ITEMS;
 
         return Promise.resolve().then(() => {
@@ -349,7 +349,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('focus() method is called on "show more" click', () => {
+    it('Pill container: focus() method is called on "show more" click', () => {
         element.items = ITEMS;
         element.isCollapsible = true;
 
@@ -367,7 +367,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('focused item changes on keyboard navigation', () => {
+    it('Pill container: focused item changes on keyboard navigation', () => {
         element.items = ITEMS;
         const keyDown = new CustomEvent('keydown');
 
@@ -415,7 +415,7 @@ describe('Pill Container', () => {
      */
 
     // actionclick
-    it('actionclick event', () => {
+    it('Pill container: actionclick event', () => {
         element.items = ITEMS;
         element.actions = [
             {
@@ -452,7 +452,7 @@ describe('Pill Container', () => {
     });
 
     // blur
-    it('blur event', () => {
+    it('Pill container: blur event', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -476,7 +476,7 @@ describe('Pill Container', () => {
     });
 
     // focus
-    it('focus event', () => {
+    it('Pill container: focus event', () => {
         element.items = ITEMS;
 
         const handler = jest.fn();
@@ -500,7 +500,7 @@ describe('Pill Container', () => {
     });
 
     // reorder
-    it('reorder event, to the right', () => {
+    it('Pill container: reorder event, to the right', () => {
         element.items = ITEMS;
         element.sortable = true;
         jest.useFakeTimers();
@@ -557,7 +557,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('reorder event, to the left', () => {
+    it('Pill container: reorder event, to the left', () => {
         element.items = ITEMS;
         element.sortable = true;
         jest.useFakeTimers();
@@ -607,7 +607,7 @@ describe('Pill Container', () => {
         });
     });
 
-    it('reorder event, using keyboard', () => {
+    it('Pill container: reorder event, using keyboard', () => {
         element.items = ITEMS;
         element.sortable = true;
         jest.useFakeTimers();
@@ -702,7 +702,7 @@ describe('Pill Container', () => {
             });
     });
 
-    it('reorder event, cancel movement using keyboard', () => {
+    it('Pill container: reorder event, cancel movement using keyboard', () => {
         element.items = ITEMS;
         element.sortable = true;
         jest.useFakeTimers();

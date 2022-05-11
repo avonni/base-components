@@ -44,7 +44,6 @@ export default {
                 type: 'select'
             },
             options: ['right', 'left'],
-            defaultValue: 'right',
             description:
                 'Position of the panel. Valid values include left and right.',
             table: {
@@ -67,7 +66,6 @@ export default {
                 type: 'select'
             },
             options: ['small', 'medium', 'large', 'x-large', 'full'],
-            defaultValue: 'medium',
             description:
                 'It defines the width of the panel. Valid values include small, medium, large, x-large and full.',
             table: {
@@ -75,6 +73,10 @@ export default {
                 defaultValue: { summary: 'medium' }
             }
         }
+    },
+    args: {
+        position: 'right',
+        size: 'medium'
     }
 };
 

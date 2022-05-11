@@ -58,6 +58,12 @@ export default class ExpandableSection extends LightningElement {
     _collapsible = false;
     _variant = VARIANTS.default;
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * If present, close the section.
      *
@@ -108,6 +114,12 @@ export default class ExpandableSection extends LightningElement {
             fallbackValues: VARIANTS.default
         });
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Computed list of the section classes.
@@ -167,6 +179,12 @@ export default class ExpandableSection extends LightningElement {
     get showHeader() {
         return this.title || this.collapsible;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Section change status toggle.

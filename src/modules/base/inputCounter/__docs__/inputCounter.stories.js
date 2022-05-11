@@ -83,7 +83,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 1,
             description: 'Amount to add or substract from the value',
             table: {
                 type: { summary: 'number' },
@@ -122,7 +121,6 @@ export default {
                 'label-hidden',
                 'label-stacked'
             ],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
@@ -134,7 +132,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -148,7 +145,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
             table: {
@@ -161,7 +157,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
@@ -254,7 +249,6 @@ export default {
                 type: 'select'
             },
             options: ['number', 'currency', 'percent'],
-            defaultValue: 'number',
             description:
                 'Input counter type. Valid values include number (default), currency, percent.',
             table: {
@@ -266,7 +260,10 @@ export default {
     args: {
         disabled: false,
         readOnly: false,
-        required: false
+        required: false,
+        step: 1,
+        type: 'number',
+        variant: 'standard'
     }
 };
 
