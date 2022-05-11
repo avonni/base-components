@@ -48,7 +48,7 @@ describe('SplitterPane', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Splitter pane: Default attributes', () => {
         expect(element.collapsed).toBeFalsy();
         expect(element.collapsedSize).toBeUndefined();
         expect(element.collapsible).toBeFalsy();
@@ -62,7 +62,7 @@ describe('SplitterPane', () => {
     /* ----- ATTRIBUTES ----- */
 
     // collapsed
-    it('collapsed = false', () => {
+    it('Splitter pane: collapsed = false', () => {
         element.collapsed = false;
 
         return Promise.resolve().then(() => {
@@ -70,7 +70,7 @@ describe('SplitterPane', () => {
         });
     });
 
-    it('collapsed = true', () => {
+    it('Splitter pane: collapsed = true', () => {
         element.collapsed = true;
 
         return Promise.resolve().then(() => {
@@ -79,7 +79,7 @@ describe('SplitterPane', () => {
     });
 
     // collapsed-size
-    it('collapsedSize', () => {
+    it('Splitter pane: collapsedSize', () => {
         element.collapsedSize = '100px';
 
         return Promise.resolve().then(() => {
@@ -88,7 +88,7 @@ describe('SplitterPane', () => {
     });
 
     // collapsible
-    it('collapsible = false', () => {
+    it('Splitter pane: collapsible = false', () => {
         element.collapsible = false;
 
         return Promise.resolve().then(() => {
@@ -96,7 +96,7 @@ describe('SplitterPane', () => {
         });
     });
 
-    it('collapsible = true', () => {
+    it('Splitter pane: collapsible = true', () => {
         element.collapsible = true;
 
         return Promise.resolve().then(() => {
@@ -105,7 +105,7 @@ describe('SplitterPane', () => {
     });
 
     // max
-    it('max', () => {
+    it('Splitter pane: max', () => {
         element.max = '50%';
 
         return Promise.resolve().then(() => {
@@ -114,7 +114,7 @@ describe('SplitterPane', () => {
     });
 
     // min
-    it('min', () => {
+    it('Splitter pane: min', () => {
         element.min = '300px';
 
         return Promise.resolve().then(() => {
@@ -123,7 +123,7 @@ describe('SplitterPane', () => {
     });
 
     // resizable
-    it('resizable = false', () => {
+    it('Splitter pane: resizable = false', () => {
         element.resizable = false;
 
         return Promise.resolve().then(() => {
@@ -131,7 +131,7 @@ describe('SplitterPane', () => {
         });
     });
 
-    it('resizable = true', () => {
+    it('Splitter pane: resizable = true', () => {
         element.resizable = true;
 
         return Promise.resolve().then(() => {
@@ -140,7 +140,7 @@ describe('SplitterPane', () => {
     });
 
     // scrollable
-    it('scrollable = false', () => {
+    it('Splitter pane: scrollable = false', () => {
         element.scrollable = false;
 
         return Promise.resolve().then(() => {
@@ -148,7 +148,7 @@ describe('SplitterPane', () => {
         });
     });
 
-    it('scrollable = true', () => {
+    it('Splitter pane: scrollable = true', () => {
         element.scrollable = true;
 
         return Promise.resolve().then(() => {
@@ -157,7 +157,7 @@ describe('SplitterPane', () => {
     });
 
     // size
-    it('size', () => {
+    it('Splitter pane: size', () => {
         element.size = '40%';
 
         return Promise.resolve().then(() => {

@@ -118,6 +118,12 @@ export default class ColorPalette extends LightningElement {
         return this.variant === 'list' ? list : grid;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Array of colors displayed in the default palette. Each color can either be a string or a color object.
      *
@@ -154,57 +160,6 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
-     * Array of group objects.
-     *
-     * @public
-     * @type {object[]}
-     */
-    @api
-    get groups() {
-        return this._groups;
-    }
-
-    set groups(value) {
-        this._groups = normalizeArray(value);
-
-        if (this._isConnected) this.initGroups();
-    }
-
-    /**
-     * Tile width in px.
-     *
-     * @public
-     * @default 20
-     * @type {number}
-     */
-    @api
-    get tileWidth() {
-        return this._tileWidth;
-    }
-
-    set tileWidth(value) {
-        this._tileWidth = Number(value);
-        this.initContainer();
-    }
-
-    /**
-     * Tile height in px.
-     *
-     * @public
-     * @default 20
-     * @type {number}
-     */
-    @api
-    get tileHeight() {
-        return this._tileHeight;
-    }
-
-    set tileHeight(value) {
-        this._tileHeight = Number(value);
-        this.initContainer();
-    }
-
-    /**
      * If present, the input field is disabled and users cannot interact with it.
      *
      * @public
@@ -219,6 +174,23 @@ export default class ColorPalette extends LightningElement {
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
         this.initContainer();
+    }
+
+    /**
+     * Array of group objects.
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get groups() {
+        return this._groups;
+    }
+
+    set groups(value) {
+        this._groups = normalizeArray(value);
+
+        if (this.isConnected) this.initGroups();
     }
 
     /**
@@ -256,6 +228,40 @@ export default class ColorPalette extends LightningElement {
     }
 
     /**
+     * Tile width in px.
+     *
+     * @public
+     * @default 20
+     * @type {number}
+     */
+    @api
+    get tileWidth() {
+        return this._tileWidth;
+    }
+
+    set tileWidth(value) {
+        this._tileWidth = Number(value);
+        this.initContainer();
+    }
+
+    /**
+     * Tile height in px.
+     *
+     * @public
+     * @default 20
+     * @type {number}
+     */
+    @api
+    get tileHeight() {
+        return this._tileHeight;
+    }
+
+    set tileHeight(value) {
+        this._tileHeight = Number(value);
+        this.initContainer();
+    }
+
+    /**
      * Specifies the value of an input element.
      *
      * @public
@@ -289,6 +295,12 @@ export default class ColorPalette extends LightningElement {
         });
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * CSS class of the group wrapping div.
      *
@@ -307,6 +319,12 @@ export default class ColorPalette extends LightningElement {
         return generateUUID();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Clear the value.
      *
@@ -318,6 +336,12 @@ export default class ColorPalette extends LightningElement {
         this.value = '';
         this.dispatchChange();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Initialize Palette container.

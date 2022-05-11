@@ -48,18 +48,20 @@ describe('Splitter', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Splitter: Default attributes', () => {
         expect(element.orientation).toBe('horizontal');
     });
 
     /* ----- ATTRIBUTES ----- */
 
     // orientation
-    it('orientation = horizontal', () => {
+    it('Splitter: orientation = horizontal', () => {
         element.orientation = 'horizontal';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div"]');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div"]'
+            );
             expect(wrapper.classList).not.toContain(
                 'splitter-orientation-vertical'
             );
@@ -69,11 +71,13 @@ describe('Splitter', () => {
         });
     });
 
-    it('orientation = vertical', () => {
+    it('Splitter: orientation = vertical', () => {
         element.orientation = 'vertical';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div"]');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div"]'
+            );
             expect(wrapper.classList).toContain(
                 'splitter-orientation-vertical'
             );
@@ -86,11 +90,13 @@ describe('Splitter', () => {
     /* ----- METHODS ----- */
 
     // changeHeight
-    it('changeHeight method', () => {
+    it('Splitter: changeHeight method', () => {
         element.changeHeight(300);
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div"]');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div"]'
+            );
             expect(wrapper.style.height).toBe('300px');
         });
     });

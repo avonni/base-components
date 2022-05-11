@@ -143,7 +143,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     @api title;
     /**
-     * If true, this item gets a blue bullet incase it has no icon. 
+     * If true, this item gets a blue bullet incase it has no icon.
      *
      * @public
      * @type {boolean}
@@ -163,6 +163,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     renderedCallback() {
         this.setLineColor();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * If true, the button is disabled.
@@ -297,6 +303,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Check if fields is populated.
      *
@@ -368,6 +380,12 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get computedDatetimeValue() {
         return new Date(this.datetimeValue).getTime();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Toggle for closed/open section.
@@ -452,7 +470,9 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @returns {string} line background color
      */
     setLineColor() {
-        const icon = this.template.querySelector('[data-element-id="item-marker"]');
+        const icon = this.template.querySelector(
+            '[data-element-id="item-marker"]'
+        );
         if (icon === null) return;
         const style = getComputedStyle(icon);
         this._color = style.backgroundColor;

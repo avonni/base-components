@@ -89,6 +89,7 @@ export default class Calendar extends LightningElement {
     _value = [];
     _dateLabels = [];
     _weekNumber = false;
+
     date = DEFAULT_DATE;
     year;
     month;
@@ -100,6 +101,12 @@ export default class Calendar extends LightningElement {
     connectedCallback() {
         this.updateDateParameters();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Array of date label objects. Priority is given to dates placed toward the end of the array.
@@ -300,6 +307,12 @@ export default class Calendar extends LightningElement {
         this.updateDateParameters();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Compute days from week.
      */
@@ -409,6 +422,12 @@ export default class Calendar extends LightningElement {
             .add({ 'avonni-calendar__date-with-labels': isLabeled })
             .toString();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Create Dates array.
