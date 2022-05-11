@@ -65,17 +65,16 @@ button:disabled {
 }
 
 .xx-small-action-icon-scaling {
+    margin: 0 -0.5rem 0 -0.65rem;
     transform: scale(0.38);
 }
 
-.small-action-icon-scaling {
-    transform: scale(0.4);
-}
-
 .medium-action-icon-scaling {
+    margin: 0 -0.5rem 0 -0.65rem;
     transform: scale(0.55);
 }
 
 .large-action-icon-scaling {
+    margin: 0 -0.5rem 0 -0.65rem;
     transform: scale(0.6);
 }
