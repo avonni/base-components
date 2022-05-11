@@ -587,6 +587,17 @@ export default class IconPicker extends LightningElement {
      */
 
     /**
+     * Sets focus on the input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const input = this.template.querySelector('[data-element-id="input"]');
+        if (input) input.focus();
+    }
+
+    /**
      * Remove focus from the input element.
      *
      * @public
