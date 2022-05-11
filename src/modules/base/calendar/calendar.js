@@ -536,7 +536,7 @@ export default class Calendar extends LightningElement {
                     : '';
 
                 if (date.getMonth() !== currentMonth || disabled) {
-                    if (i > 3 && a === 0) {
+                    if (i > 5 && a === 0) {
                         weekData.splice(-1, 1);
                         break;
                     }

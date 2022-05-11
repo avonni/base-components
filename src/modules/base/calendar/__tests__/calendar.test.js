@@ -137,6 +137,45 @@ describe('Calendar', () => {
         });
     });
 
+    // disabled all sundays
+    it('Calendar disabled all sundays', () => {
+        element.value = '05/08/2022';
+        element.disabledDates = 'Sun';
+        element.min = new Date('05/01/2022');
+        element.max = new Date('05/31/2022');
+
+        return Promise.resolve().then(() => {
+            const dates = [];
+            const disabledDates = element.shadowRoot.querySelectorAll(
+                '.avonni-calendar__disabled-cell'
+            );
+            disabledDates.forEach((date) => {
+                dates.push(date.getAttribute('data-date'));
+            });
+            expect(dates.includes('29')).toBeTruthy();
+        });
+    });
+
+    // disabled all sundays with sunday on week 5
+    it('Calendar disabled all sundays (month with 5 sundays)', () => {
+        element.value = '01/31/2022';
+        element.disabledDates = 'Sun';
+        element.min = new Date('01/01/2022');
+        element.max = new Date('01/31/2022');
+
+        return Promise.resolve().then(() => {
+            const dates = [];
+            const disabledDates = element.shadowRoot.querySelectorAll(
+                '.avonni-calendar__disabled-cell'
+            );
+            disabledDates.forEach((date) => {
+                dates.push(date.getAttribute('data-date'));
+            });
+            expect(dates.includes('23')).toBeTruthy();
+            expect(dates.includes('30')).toBeTruthy();
+        });
+    });
+
     // marked dates
     it('Calendar marked dates', () => {
         element.value = '05/09/2021';
