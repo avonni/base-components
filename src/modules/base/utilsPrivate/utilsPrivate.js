@@ -176,3 +176,24 @@ export function animationFrame() {
         window.requestAnimationFrame(resolve);
     });
 }
+
+export const BUTTON_GROUP_ORDER = {
+    FIRST: 'first',
+    MIDDLE: 'middle',
+    LAST: 'last',
+    ONLY: 'only'
+};
+
+/**
+ * returns the SLDS class for the given group order
+ * @param groupOrder
+ * @returns {string}
+ */
+export function buttonGroupOrderClass(groupOrder) {
+    return {
+        [BUTTON_GROUP_ORDER.FIRST]: 'slds-button_first',
+        [BUTTON_GROUP_ORDER.MIDDLE]: 'slds-button_middle',
+        [BUTTON_GROUP_ORDER.LAST]: 'slds-button_last',
+        [BUTTON_GROUP_ORDER.ONLY]: 'single-button'
+    }[groupOrder];
+}
