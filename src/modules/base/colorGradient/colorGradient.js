@@ -517,8 +517,8 @@ export default class ColorGradient extends LightningElement {
         this.data = {
             x: event.x,
             y: event.y,
-            top: event.target.offsetTop,
-            left: event.target.offsetLeft,
+            top: event.offsetY - INDICATOR_SIZE,
+            left: event.offsetX,
             width: this.paletteWidth,
             height: this.paletteHeight - INDICATOR_SIZE
         };

@@ -37,6 +37,7 @@
         <div
             class="slds-color-picker__custom-range"
             onclick={handlerClickPalet}
+            onmousedown={handlerMouseDown}
         >
             <div
                 if:false={disabled}
@@ -44,7 +45,6 @@
                 aria-live="assertive"
                 aria-atomic="true"
                 aria-describedby="color-picker-instructions"
-                onmousedown={handlerMouseDown}
             ></div>
         </div>
         <div class="slds-color-picker__hue-and-preview">
