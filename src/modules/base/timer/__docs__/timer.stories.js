@@ -52,7 +52,6 @@ export default {
                 type: 'number',
                 min: 0
             },
-            defaultValue: 0,
             description: 'Default value of the timer.',
             table: {
                 defaultValue: { summary: '0' },
@@ -64,7 +63,6 @@ export default {
                 type: 'number',
                 min: 1
             },
-            defaultValue: 1000,
             description:
                 'How long a timer runs in milliseconds. There is no maximum value.',
             table: {
@@ -86,7 +84,6 @@ export default {
                 'inverse',
                 'success'
             ],
-            defaultValue: 'neutral',
             description:
                 'The variant changes the appearance of the timer. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success. This value defaults to neutral.',
             table: {
@@ -99,7 +96,6 @@ export default {
                 type: 'select'
             },
             options: ['count-up', 'count-down'],
-            defaultValue: 'count-up',
             description:
                 'Type of the timer. Valid values include count-up and count-down.',
             table: {
@@ -113,7 +109,6 @@ export default {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Describes the position of the icon with respect to body. Options include left and right. This value defaults to left.',
             table: {
@@ -126,7 +121,6 @@ export default {
                 type: 'select'
             },
             options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'],
-            defaultValue: 'hh:mm:ss',
             description:
                 'Format of the timer. Valid values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”.',
             table: {
@@ -139,7 +133,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'Whether the timer control automatically starts to play when the user navigates to the component.',
             table: {
@@ -151,7 +144,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'Whether a timer automatically restarts when it finishes running.',
             table: {
@@ -162,7 +154,13 @@ export default {
     },
     args: {
         autoStart: false,
-        repeat: false
+        duration: 1000,
+        format: 'hh:mm:ss',
+        iconPosition: 'left',
+        repeat: false,
+        type: 'count-up',
+        value: 0,
+        variant: 'neutral'
     }
 };
 

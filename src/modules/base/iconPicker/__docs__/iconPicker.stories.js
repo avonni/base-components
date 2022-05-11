@@ -60,7 +60,6 @@ export default {
             },
             description:
                 'Error message to be displayed when a bad input is detected.',
-            defaultValue: 'Please ensure the value is correct.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Please ensure the value is correct.' }
@@ -86,7 +85,6 @@ export default {
                 'label-hidden',
                 'label-stacked'
             ],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
@@ -107,7 +105,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The variant changes the look of the button. Accepted variants include bare, container, border, border-filled, bare-inverse, and border-inverse. This value defaults to border.',
             table: {
@@ -133,7 +130,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium, or large.',
             table: {
@@ -158,7 +154,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the popover footer is hidden. The icons are selected on click.',
             table: {
@@ -170,7 +165,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -183,7 +177,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
             table: {
@@ -196,7 +189,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
@@ -211,7 +203,6 @@ export default {
             },
             description:
                 'If present, the input text next to the icon button is hidden.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -220,9 +211,14 @@ export default {
     },
     args: {
         disabled: false,
+        hideFooter: false,
+        hideInputText: false,
+        menuIconSize: 'medium',
+        menuVariant: 'border',
+        messageWhenBadInput: 'Please ensure the value is correct.',
         readOnly: false,
         required: false,
-        hideInputText: false
+        variant: 'standard'
     }
 };
 

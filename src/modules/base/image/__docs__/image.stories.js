@@ -53,7 +53,6 @@ export default {
                 type: 'select'
             },
             options: ['cover', 'contain', 'fill', 'none'],
-            defaultValue: 'cover',
             description:
                 'Specifies the "fit" behaviour for the cropped image. Options: "cover"(default), "contain", "fill", "none"',
             table: {
@@ -70,7 +69,6 @@ export default {
                 max: 100,
                 step: 1
             },
-            defaultValue: '50',
             description:
                 'Specifies the cropping point of interest on the X axis of the image, in percentage',
             table: {
@@ -88,7 +86,6 @@ export default {
                 max: 100,
                 step: 1
             },
-            defaultValue: '50',
             description:
                 'Specifies the cropping point of interest on the Y axis of the image, in percentage',
             table: {
@@ -104,7 +101,6 @@ export default {
                 type: 'select'
             },
             options: ['1x1', '4x3', '16x9', 'none'],
-            defaultValue: 'none',
             description:
                 'Specifies the cropping ratio for the image, which is constrained to the parents width. Options : 1:1, 4:3, 16:9, none',
             table: {
@@ -117,7 +113,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: '',
             table: {
                 defaultValue: { summary: false },
@@ -129,7 +124,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 "Makes the image responsive. The image will shrink as needed or grow up the the image's native width.",
             table: {
@@ -152,12 +146,11 @@ export default {
                 type: 'select'
             },
             options: ['auto', 'lazy'],
-            defaultValue: 'auto',
             description:
                 'Enables lazy loading for images that are offscreen. If set to lazy, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Valid values are auto and lazy. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
             table: {
-                default: { summary: false },
-                type: { summary: 'boolean' }
+                default: { summary: 'auto' },
+                type: { summary: 'string' }
             }
         },
         position: {
@@ -165,7 +158,6 @@ export default {
                 type: 'select'
             },
             options: ['left', 'right', 'center'],
-            defaultValue: 'left',
             description:
                 'Specifies the position of the image. Valid values include left, center and right.',
             table: {
@@ -207,7 +199,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'Set Images as Static - images will be fixed dimensions and will not be responsive on resize',
             table: {
@@ -219,7 +210,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'Adds a thumbnail border around the image.',
             table: {
                 defaultValue: { summary: false },
@@ -237,10 +227,16 @@ export default {
         }
     },
     args: {
+        cropFit: 'cover',
+        cropPositionX: 50,
+        cropPositionY: 50,
+        cropSize: 'none',
         fluid: false,
         fluidGrow: false,
-        thumbnail: false,
-        staticImages: false
+        lazyLoading: 'auto',
+        position: 'left',
+        staticImages: false,
+        thumbnail: false
     }
 };
 

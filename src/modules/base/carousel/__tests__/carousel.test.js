@@ -53,7 +53,7 @@ const bareActions = [
 
 const items = [
     {
-        id: 1,
+        name: '1',
         title: 'Visit App Exchange',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
@@ -62,7 +62,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 2,
+        name: '2',
         title: 'Click to Customize',
         description:
             'Use the Object Manager to add fields, build layouts, and more.',
@@ -72,7 +72,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 3,
+        name: '3',
         title: 'Download Salesforce Apps',
         description: "Get the mobile app that's just for Salesforce admins.",
         imageAssistiveText: 'Salesforce Apps',
@@ -81,7 +81,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 4,
+        name: '4',
         title: 'Carousel Item 4',
         description: 'Description for carousel item #4',
         imageAssistiveText: 'Apps',
@@ -90,7 +90,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 5,
+        name: '5',
         title: 'Carousel Item 5',
         description: 'Description for carousel item #5',
         imageAssistiveText: 'Appy',
@@ -99,7 +99,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 6,
+        name: '6',
         title: 'Carousel Item 6',
         description: 'Description for carousel item #6',
         imageAssistiveText: 'Salesforce Apps',
@@ -108,7 +108,7 @@ const items = [
         actions: bareActions
     },
     {
-        id: 7,
+        name: '7',
         title: 'Carousel Item 7',
         description: 'Description for carousel item #7',
         imageAssistiveText: 'Apps',
@@ -121,6 +121,7 @@ const items = [
 const ex = [
     {
         title: 'Visit App Exchange',
+        name: 'someName',
         description: 'Extend Salesforce with the #1 business marketplace.',
         imageAssistiveText: 'Appy',
         src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
@@ -146,7 +147,7 @@ describe('Carousel', () => {
 
     // const flushPromises = () => new Promise(setImmediate);
 
-    it('Default attributes', () => {
+    it('Carousel: Default attributes', () => {
         expect(element.assistiveText).toMatchObject({
             autoplayButton: 'Play / Stop auto-play',
             nextPanel: 'Next Panel',
@@ -169,7 +170,7 @@ describe('Carousel', () => {
     /* ----- ATTRIBUTES ----- */
 
     // actions variant
-    it('Carousel actions variant bare without label', () => {
+    it('Carousel: actions variant bare without label', () => {
         element.items = items;
         element.actionsVariant = 'bare';
 
@@ -182,7 +183,7 @@ describe('Carousel', () => {
     });
 
     // actions position
-    it('Carousel actions position top-center', () => {
+    it('Carousel: actions position top-center', () => {
         element.items = items;
         element.actionsPosition = 'top-left';
 
@@ -195,7 +196,7 @@ describe('Carousel', () => {
     });
 
     // assistive-text
-    it('Carousel assistive-text with indicator', () => {
+    it('Carousel: assistive-text with indicator', () => {
         element.items = items;
         element.assistiveText = {
             nextPanel: 'Next Panel Assistive Text',
@@ -219,7 +220,7 @@ describe('Carousel', () => {
         });
     });
 
-    it('Carousel assistive-text without indicator', () => {
+    it('Carousel: assistive-text without indicator', () => {
         element.items = items;
         element.assistiveText = {
             nextPanel: 'Next Panel Assistive Text',
@@ -244,7 +245,7 @@ describe('Carousel', () => {
     });
 
     // disable auto refresh
-    it('Carousel disable auto refresh', () => {
+    it('Carousel: disable auto refresh', () => {
         element.items = items;
         element.disableAutoRefresh = true;
 
@@ -265,7 +266,7 @@ describe('Carousel', () => {
     });
 
     // disable auto scrollable
-    it('Carousel disable auto scrollable with indicator', () => {
+    it('Carousel: disable auto scrollable with indicator', () => {
         element.items = items;
         element.disableAutoScroll = true;
         element.hideIndicator = false;
@@ -278,7 +279,7 @@ describe('Carousel', () => {
         });
     });
 
-    it('Carousel disable auto scrollable without indicator', () => {
+    it('Carousel: disable auto scrollable without indicator', () => {
         element.items = items;
         element.disableAutoScroll = true;
         element.hideIndicator = true;
@@ -292,7 +293,7 @@ describe('Carousel', () => {
     });
 
     // indicator variant
-    it('Carousel indicator variant base', () => {
+    it('Carousel: indicator variant base', () => {
         element.items = items;
         element.hideIndicator = false;
 
@@ -313,7 +314,7 @@ describe('Carousel', () => {
         });
     });
 
-    it('Carousel indicator variant shaded', () => {
+    it('Carousel: indicator variant shaded', () => {
         element.indicatorVariant = 'shaded';
         element.items = items;
 
@@ -334,7 +335,7 @@ describe('Carousel', () => {
     });
 
     // current panel
-    it('Carousel current panel', () => {
+    it('Carousel: current panel', () => {
         element.currentPanel = 2;
         element.items = items;
 
@@ -350,7 +351,7 @@ describe('Carousel', () => {
     });
 
     // hide indicator
-    it('Carousel hide indicator', () => {
+    it('Carousel: hide indicator', () => {
         element.items = items;
         element.hideIndicator = true;
 
@@ -363,10 +364,10 @@ describe('Carousel', () => {
     });
 
     // hide previous next panel navigation
-    it('Carousel hide previous next panel navigation', () => {
+    it('Carousel: hide previous next panel navigation', () => {
         element.items = [
             {
-                id: 1,
+                name: '1',
                 title: 'Visit App Exchange',
                 description:
                     'Extend Salesforce with the #1 business marketplace.',
@@ -387,7 +388,7 @@ describe('Carousel', () => {
     });
 
     // items per panel
-    it('Carousel items per panel not a number', () => {
+    it('Carousel: items per panel not a number', () => {
         element.items = items;
         element.itemsPerPanel = 'hello';
 
@@ -400,7 +401,7 @@ describe('Carousel', () => {
         });
     });
 
-    it('Carousel items per panel', () => {
+    it('Carousel: items per panel', () => {
         element.itemsPerPanel = 2;
         element.items = items;
 
@@ -413,7 +414,7 @@ describe('Carousel', () => {
     });
 
     // carousel infinite last goes back to first
-    it('Carousel infinite last goes back to first', () => {
+    it('Carousel: infinite last goes back to first', () => {
         element.items = items;
         element.hideIndicator = false;
         element.isIfinite = true;
@@ -436,7 +437,7 @@ describe('Carousel', () => {
     });
 
     // carousel infinite first goes back to last
-    it('Carousel infinite first goes back to last', () => {
+    it('Carousel: infinite first goes back to last', () => {
         element.items = items;
         element.hideIndicator = false;
         element.isIfinite = true;
@@ -466,7 +467,7 @@ describe('Carousel', () => {
     /* ----- METHODS ----- */
 
     // carousel next & previous
-    it('Carousel next & previous methods', () => {
+    it('Carousel: next & previous methods', () => {
         element.items = items;
         element.hideIndicator = false;
         return Promise.resolve()
@@ -496,7 +497,7 @@ describe('Carousel', () => {
     });
 
     // carousel first & last
-    it('Carousel first & last methods', () => {
+    it('Carousel: first & last methods', () => {
         element.items = items;
         element.hideIndicator = false;
         const lastItem = items.length - 1;
@@ -517,7 +518,7 @@ describe('Carousel', () => {
     });
 
     // carousel play & pause
-    it('Carousel play & pause methods', () => {
+    it('Carousel: play & pause methods', () => {
         element.items = items;
         element.hideIndicator = false;
         element.pause();
@@ -540,7 +541,7 @@ describe('Carousel', () => {
     /* ----- JS ----- */
 
     // handle indicator click
-    it('Carousel handle indicator click base', () => {
+    it('Carousel: handle indicator click base', () => {
         element.items = items;
 
         return Promise.resolve()
@@ -560,7 +561,7 @@ describe('Carousel', () => {
             });
     });
 
-    it('Carousel handle indicator click shaded', () => {
+    it('Carousel: handle indicator click shaded', () => {
         element.items = items;
         element.indicatorVariant = 'shaded';
 
@@ -582,7 +583,7 @@ describe('Carousel', () => {
     });
 
     // Scroll right
-    it('Carousel handle scroll right', () => {
+    it('Carousel: handle scroll right', () => {
         element.items = items;
         const nextButton = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon-next"]'
@@ -602,7 +603,7 @@ describe('Carousel', () => {
     });
 
     // Scroll left
-    it('Carousel handle scroll left', () => {
+    it('Carousel: handle scroll left', () => {
         element.items = items;
         const nextButton = element.shadowRoot.querySelector(
             '[data-element-id="lightning-button-icon-next"]'
@@ -639,7 +640,7 @@ describe('Carousel', () => {
     /* ----- EVENTS ----- */
 
     // carousel itemclick
-    it('Carousel item click', () => {
+    it('Carousel: item click', () => {
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
         element.items = items;
@@ -663,7 +664,7 @@ describe('Carousel', () => {
     });
 
     // carousel actionclick
-    it('Carousel actionclick', () => {
+    it('Carousel: actionclick', () => {
         element.items = items;
 
         const handler = jest.fn();

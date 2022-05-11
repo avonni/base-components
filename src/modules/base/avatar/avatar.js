@@ -88,6 +88,14 @@ const DEFAULT_STATUS_TITLE = 'Status';
  */
 export default class Avatar extends LightningElement {
     /**
+     * The Lightning Design System icon name for a custom menu icon. Unused if there is only one action.
+     *
+     * @public
+     * @type {string}
+     * @default utility:down
+     */
+    @api actionMenuIcon;
+    /**
      * The Lightning Design System name of the icon used as a fallback for the entity icon when the image fails to load. The initials fallback relies on this for its background color.
      * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
      *
@@ -164,6 +172,46 @@ export default class Avatar extends LightningElement {
     connectedCallback() {
         this._updateClassList();
         this.template.addEventListener('actionclick', this.handleActionClick);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Array of action objects. If the array contains a single action, it is displayed as a button icon. Otherwise, actions are placed in a button menu with a label and icon.
+     *
+     * @public
+     * @type {object[]}
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+
+    set actions(value) {
+        this._actions = normalizeArray(value);
+    }
+
+    /**
+     * Position of the action button or menu relative to the avatar. Valid values include top-right, bottom-right, bottom-left or top-left.
+     *
+     * @public
+     * @type {string}
+     * @default bottom-left
+     */
+    @api
+    get actionPosition() {
+        return this._actionPosition;
+    }
+
+    set actionPosition(value) {
+        this._actionPosition = normalizeString(value, {
+            fallbackValue: POSITIONS.actionDefault,
+            validValues: POSITIONS.valid
+        });
     }
 
     /**
@@ -466,48 +514,11 @@ export default class Avatar extends LightningElement {
         });
     }
 
-    /**
-     * Array of action objects. If the array contains a single action, it is displayed as a button icon. Otherwise, actions are placed in a button menu with a label and icon.
-     *
-     * @public
-     * @type {object[]}
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
      */
-    @api
-    get actions() {
-        return this._actions;
-    }
-
-    set actions(value) {
-        this._actions = normalizeArray(value);
-    }
-
-    /**
-     * Position of the action button or menu relative to the avatar. Valid values include top-right, bottom-right, bottom-left or top-left.
-     *
-     * @public
-     * @type {string}
-     * @default bottom-left
-     */
-    @api
-    get actionPosition() {
-        return this._actionPosition;
-    }
-
-    set actionPosition(value) {
-        this._actionPosition = normalizeString(value, {
-            fallbackValue: POSITIONS.actionDefault,
-            validValues: POSITIONS.valid
-        });
-    }
-
-    /**
-     * The Lightning Design System icon name for a custom menu icon. Unused if there is only one action.
-     *
-     * @public
-     * @type {string}
-     * @default utility:down
-     */
-    @api actionMenuIcon;
 
     /**
      * Text position centered.
@@ -559,6 +570,12 @@ export default class Avatar extends LightningElement {
     get textPositionLeft() {
         return this.textPosition === 'left';
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Media object layout based on text position.

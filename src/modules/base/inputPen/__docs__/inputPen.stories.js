@@ -68,7 +68,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -82,7 +81,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
             table: {
@@ -95,7 +93,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
@@ -111,7 +108,6 @@ export default {
             options: ['top-toolbar', 'bottom-toolbar'],
             description:
                 'The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar and top-toolbar which causes the toolbar to be displayed below the box.',
-            defaultValue: 'bottom-toolbar',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'bottom-toolbar' },
@@ -123,7 +119,6 @@ export default {
                 type: 'select'
             },
             options: ['draw', 'erase'],
-            defaultValue: 'draw',
             description: 'Valid modes include draw and erase.',
             table: {
                 type: { summary: 'string' },
@@ -135,7 +130,6 @@ export default {
             control: {
                 type: 'color'
             },
-            defaultValue: '#000',
             description: 'Defines the color of the pen.',
             table: {
                 type: { summary: 'string' },
@@ -148,7 +142,6 @@ export default {
                 type: 'number',
                 min: 1
             },
-            defaultValue: 2,
             description: 'Defines the size of the pen.',
             table: {
                 type: { summary: 'number' },
@@ -161,7 +154,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, hide the control bar.',
             table: {
                 type: { summary: 'boolean' },
@@ -185,22 +177,25 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'Specifies whether the editor content is valid. If invalid, the slds-has-error class is added. This value defaults to false.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: 'false',
+                defaultValue: { summary: 'false' },
                 category: 'Validation'
             }
         }
     },
     args: {
+        color: '#000',
         disabled: false,
+        hideControls: false,
+        invalid: false,
+        mode: 'draw',
         readOnly: false,
         required: false,
-        hideControls: false,
-        invalid: false
+        size: 2,
+        variant: 'bottom-toolbar'
     }
 };
 

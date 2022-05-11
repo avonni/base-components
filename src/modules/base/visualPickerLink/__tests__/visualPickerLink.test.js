@@ -48,7 +48,7 @@ describe('VisualPickerLink', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Visual picker link: Default attributes', () => {
         expect(element.completed).toBeFalsy();
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -60,7 +60,7 @@ describe('VisualPickerLink', () => {
     /* ----- ATTRIBUTES ----- */
 
     // completed
-    it('completed = false', () => {
+    it('Visual picker link: completed = false', () => {
         element.completed = false;
 
         return Promise.resolve().then(() => {
@@ -73,7 +73,7 @@ describe('VisualPickerLink', () => {
         });
     });
 
-    it('completed = true', () => {
+    it('Visual picker link: completed = true', () => {
         element.completed = true;
 
         return Promise.resolve().then(() => {
@@ -87,17 +87,19 @@ describe('VisualPickerLink', () => {
     });
 
     // href
-    it('href', () => {
+    it('Visual picker link: href', () => {
         element.href = 'https://www.avonni.app/';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
             expect(link.href).toBe('https://www.avonni.app/');
         });
     });
 
     // icon-name
-    it('iconName', () => {
+    it('Visual picker link: iconName', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -110,7 +112,7 @@ describe('VisualPickerLink', () => {
         });
     });
 
-    it('no iconName', () => {
+    it('Visual picker link: no iconName', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -126,7 +128,7 @@ describe('VisualPickerLink', () => {
 
     // icon-position
     // Depends on iconName
-    it('iconPosition = left', () => {
+    it('Visual picker link: iconPosition = left', () => {
         element.iconName = 'utility:apps';
         element.iconPosition = 'left';
 
@@ -149,7 +151,7 @@ describe('VisualPickerLink', () => {
         });
     });
 
-    it('iconPosition = right', () => {
+    it('Visual picker link: iconPosition = right', () => {
         element.iconName = 'utility:apps';
         element.iconPosition = 'right';
 
@@ -173,14 +175,16 @@ describe('VisualPickerLink', () => {
     });
 
     // info-only
-    it('infoOnly = false', () => {
+    it('Visual picker link: infoOnly = false', () => {
         element.infoOnly = false;
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-welcome-mat__tile'
             );
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
 
             expect(link).toBeTruthy();
             expect(wrapper.classList).not.toContain(
@@ -189,14 +193,16 @@ describe('VisualPickerLink', () => {
         });
     });
 
-    it('infoOnly = true', () => {
+    it('Visual picker link: infoOnly = true', () => {
         element.infoOnly = true;
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-welcome-mat__tile'
             );
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
 
             expect(link).toBeFalsy();
             expect(wrapper.classList).toContain(
@@ -206,7 +212,7 @@ describe('VisualPickerLink', () => {
     });
 
     // title
-    it('title', () => {
+    it('Visual picker link: title', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -220,7 +226,7 @@ describe('VisualPickerLink', () => {
     /* ----- EVENTS ----- */
 
     // click
-    it('click event', () => {
+    it('Visual picker link: click event', () => {
         const handler = jest.fn();
         element.addEventListener('click', handler);
 

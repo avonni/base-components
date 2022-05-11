@@ -48,7 +48,7 @@ describe('PrimitiveVisualPickerTitle', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Visual picker title: Default attributes', () => {
         expect(element.avatar).toBeUndefined();
         expect(element.avatarPosition).toBe('left');
         expect(element.displayAvatar).toBeFalsy();
@@ -56,7 +56,7 @@ describe('PrimitiveVisualPickerTitle', () => {
         expect(element.title).toBeUndefined();
     });
 
-    it('Avatar is left', () => {
+    it('Visual picker title: Avatar is left', () => {
         element.avatarPosition = 'left';
         element.avatar = {
             iconName: 'custom:custom68'
@@ -72,7 +72,7 @@ describe('PrimitiveVisualPickerTitle', () => {
         });
     });
 
-    it('Avatar is right', () => {
+    it('Visual picker title: Avatar is right', () => {
         element.avatarPosition = 'right';
         element.avatar = {
             iconName: 'custom:custom68'

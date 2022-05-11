@@ -82,7 +82,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 400,
             description: 'Defines the height of the banner. ',
             table: {
                 type: { summary: 'number' },
@@ -96,7 +95,6 @@ export default {
                 type: 'select'
             },
             options: ['left', 'center', 'right'],
-            defaultValue: 'left',
             description:
                 'Defines the horizontal alignment of the title, caption and description. Valid values include left, center and right.',
             table: {
@@ -111,7 +109,6 @@ export default {
                 type: 'select'
             },
             options: ['top', 'center', 'bottom'],
-            defaultValue: 'center',
             description:
                 'Defines the vertical alignment of the title, caption and description. Valid values include top, center and bottom.',
             table: {
@@ -125,7 +122,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 960,
             description:
                 'Defines the width inside of the banner in percentage.',
             table: {
@@ -142,7 +138,6 @@ export default {
                 max: 100,
                 step: 1
             },
-            defaultValue: 100,
             description:
                 'Defines the width of the content inside of the banner in percentage.',
             table: {
@@ -172,6 +167,13 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        contentHorizontalAlignment: 'left',
+        contentVerticalAlignment: 'center',
+        contentWidth: 100,
+        height: 400,
+        maxWidth: 960
     }
 };
 
@@ -188,8 +190,7 @@ Base.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300
 };
 
@@ -198,8 +199,7 @@ BaseAbsoluteCenterWithContentWidth.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentHorizontalAlignment: 'center',
     contentWidth: 15
@@ -210,8 +210,7 @@ BaseTopLeftWithMaxWidth.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'top',
     maxWidth: 2000
@@ -222,8 +221,7 @@ BaseTopCenterWithButtons.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'top',
     contentHorizontalAlignment: 'center',
@@ -236,8 +234,7 @@ BaseTopRight.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'top',
     contentHorizontalAlignment: 'right'
@@ -248,8 +245,7 @@ BaseBottomLeft.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'bottom'
 };
@@ -259,8 +255,7 @@ BaseBottomCenter.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'bottom',
     contentHorizontalAlignment: 'center'
@@ -271,8 +266,7 @@ BaseBottomRight.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
-    src:
-        'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentVerticalAlignment: 'bottom',
     contentHorizontalAlignment: 'right'
@@ -282,8 +276,7 @@ export const withButtonInFooterSlot = TemplateWithButton.bind({});
 withButtonInFooterSlot.args = {
     title: 'Trailblazer Community Group',
     subtitle: 'Summer camp',
-    src:
-        'https://backofficethinking.com/sites/default/files/styles/title_banner/public/images/Basic%20page/hero/salesforce-trail.jpg?itok=56jumEDa',
+    src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 350,
     contentHorizontalAlignment: 'center'
 };
@@ -294,8 +287,7 @@ export const withSearchBarInDefaultSlot = TemplateWithSearchBarInDefault.bind(
 withSearchBarInDefaultSlot.args = {
     title: 'Looking for a vacation?',
     subtitle: 'Find the right one',
-    src:
-        'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 200,
     contentHorizontalAlignment: 'center'
 };
@@ -304,8 +296,7 @@ export const withSearchBarInFooterSlot = TemplateWithSearchBarInFooter.bind({});
 withSearchBarInFooterSlot.args = {
     title: 'Looking for a vacation?',
     subtitle: 'Find the right one',
-    src:
-        'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 500,
     contentHorizontalAlignment: 'center'
 };
@@ -314,8 +305,7 @@ export const withTwoSlots = TemplateWithTwoSlots.bind({});
 withTwoSlots.args = {
     title: 'Looking for a vacation?',
     subtitle: 'Find the right one',
-    src:
-        'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
+    src: 'https://res.cloudinary.com/hy4kyit2a/image/upload/2019-10-Developer_Website_Hero_Banner-1280%C3%97248%20%281%29.png',
     height: 300,
     contentHorizontalAlignment: 'center'
 };

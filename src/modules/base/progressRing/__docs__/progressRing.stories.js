@@ -43,7 +43,6 @@ export default {
             },
             description:
                 'The percentage value of the progress ring. The value must be a number from 0 to 100. A value of 50 corresponds to a color fill of half the ring in a clockwise or counterclockwise direction, depending on the direction attribute.',
-            defaultValue: 0,
             table: {
                 type: { summary: 'number', detail: 'From 0 to 100' },
                 defaultValue: { summary: '0' }
@@ -56,7 +55,6 @@ export default {
             options: ['fill', 'drain'],
             description:
                 'Controls which way the color flows from the top of the ring, either clockwise or counterclockwise Valid values include fill and drain. The fill value corresponds to a color flow in the clockwise direction. The drain value indicates a color flow in the counterclockwise direction.',
-            defaultValue: 'fill',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'fill' }
@@ -69,7 +67,6 @@ export default {
             options: ['medium', 'large'],
             description:
                 'The size of the progress ring. Valid values include medium and large.',
-            defaultValue: 'medium',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
@@ -88,7 +85,6 @@ export default {
             ],
             description:
                 'Changes the appearance of the progress ring. Accepted variants include base, active-step, warning, expired, base-autocomplete.',
-            defaultValue: 'base',
             table: {
                 type: { summary: 'String' },
                 defaultValue: { summary: 'base' }
@@ -101,7 +97,6 @@ export default {
             },
             description:
                 'If present and the variant is equal to warning, base-autocomplete or expired, hide the icon in the progress ring content',
-            defaultValue: 0,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -109,7 +104,11 @@ export default {
         }
     },
     args: {
-        hideIcon: false
+        direction: 'fill',
+        hideIcon: false,
+        size: 'medium',
+        value: 0,
+        variant: 'base'
     }
 };
 

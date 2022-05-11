@@ -43,7 +43,7 @@ describe('WizardStep', () => {
         }
     });
 
-    it('Default attributes', () => {
+    it('Wizard step: Default attributes', () => {
         const element = createElement('base-wizard-step', {
             is: WizardStep
         });
@@ -57,7 +57,7 @@ describe('WizardStep', () => {
     });
 
     // wizardStepstepregister event
-    it('wizardStepstepregister event', () => {
+    it('Wizard step: wizardStepstepregister event', () => {
         const element = createElement('base-wizard-step', {
             is: WizardStep
         });

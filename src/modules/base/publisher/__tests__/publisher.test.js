@@ -49,7 +49,7 @@ describe('Publisher', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Publisher: Default attributes', () => {
         expect(element.buttonLabel).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.placeholder).toBeUndefined();
@@ -60,36 +60,46 @@ describe('Publisher', () => {
     /* ----- ATTRIBUTES ----- */
 
     // button-label
-    it('buttonLabel', () => {
+    it('Publisher: buttonLabel', () => {
         element.buttonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('A string label');
         });
     });
 
     // disabled
     // Depends on focus()
-    it('disabled = false', () => {
+    it('Publisher: disabled = false', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
             // The button should not be disabled by default
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
 
             expect(input.disabled).toBeFalsy();
             expect(button.disabled).toBeFalsy();
         });
     });
 
-    it('disabled = true', () => {
+    it('Publisher: disabled = true', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
-            const input = element.shadowRoot.querySelector('[data-element-id="lightning-input"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-input"]'
+            );
 
             expect(input.disabled).toBeTruthy();
             expect(button.disabled).toBeTruthy();
@@ -98,7 +108,7 @@ describe('Publisher', () => {
 
     // placeholder
     // Depends on focus()
-    it('placeholder', () => {
+    it('Publisher: placeholder', () => {
         element.placeholder = 'A string placeholder';
 
         return Promise.resolve()
@@ -111,16 +121,15 @@ describe('Publisher', () => {
                 element.focus();
             })
             .then(() => {
-                const richText = element.shadowRoot.querySelector(
-                    '.richTextPublisher'
-                );
+                const richText =
+                    element.shadowRoot.querySelector('.richTextPublisher');
                 expect(richText.placeholder).toBe('A string placeholder');
             });
     });
 
     // value
     // Depends on focus()
-    it('value', () => {
+    it('Publisher: value', () => {
         element.value = 'A string value';
         element.focus();
 
@@ -133,20 +142,24 @@ describe('Publisher', () => {
     });
 
     // variant
-    it('variant = base', () => {
+    it('Publisher: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button).toBeTruthy();
         });
     });
 
-    it('variant = comment', () => {
+    it('Publisher: variant = comment', () => {
         element.variant = 'comment';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button).toBeFalsy();
         });
     });
@@ -154,7 +167,7 @@ describe('Publisher', () => {
     /* ----- METHOD ----- */
 
     // focus
-    it('focus method', () => {
+    it('Publisher: focus method', () => {
         element.focus();
 
         return Promise.resolve().then(() => {
@@ -172,14 +185,16 @@ describe('Publisher', () => {
 
     // submit
     // Depends on value
-    it('submit event', () => {
+    it('Publisher: submit event', () => {
         const handler = jest.fn();
         element.value = 'A string value';
         element.addEventListener('submit', handler);
         element.focus();
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
 
             button.click();
             expect(handler).toHaveBeenCalled();

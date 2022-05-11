@@ -48,7 +48,7 @@ describe('Submenu', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Submenu: Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.draftAlternativeText).toBeUndefined();
@@ -62,23 +62,27 @@ describe('Submenu', () => {
     /* ----- ATTRIBUTES ----- */
 
     // access-key
-    it('accessKey', () => {
+    it('Submenu: accessKey', () => {
         element.accessKey = 'k';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
             expect(link.accessKey).toBe('k');
         });
     });
 
     // disabled
-    it('disabled = false', () => {
+    it('Submenu: disabled = false', () => {
         element.disabled = false;
         const handler = jest.fn();
         element.addEventListener('privateselect', handler);
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
             link.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(link.ariaDisabled).toBe('false');
@@ -86,13 +90,15 @@ describe('Submenu', () => {
         });
     });
 
-    it('disabled = true', () => {
+    it('Submenu: disabled = true', () => {
         element.disabled = true;
         const handler = jest.fn();
         element.addEventListener('privateselect', handler);
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
             link.dispatchEvent(new CustomEvent('mouseenter'));
 
             expect(link.ariaDisabled).toBe('true');
@@ -102,18 +108,20 @@ describe('Submenu', () => {
 
     // draft-alternative-text
     // Depends on isDraft
-    it('draftAlternativeText', () => {
+    it('Submenu: draftAlternativeText', () => {
         element.isDraft = true;
         element.draftAlternativeText = 'A string help';
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
             expect(abbr.title).toBe('A string help');
         });
     });
 
     // icon-name
-    it('iconName', () => {
+    it('Submenu: iconName', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -126,36 +134,42 @@ describe('Submenu', () => {
     });
 
     // is-draft
-    it('isDraft = false', () => {
+    it('Submenu: isDraft = false', () => {
         element.isDraft = false;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
             expect(abbr).toBeFalsy();
         });
     });
 
-    it('isDraft = true', () => {
+    it('Submenu: isDraft = true', () => {
         element.isDraft = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
             expect(abbr).toBeTruthy();
         });
     });
 
-    it('label', () => {
+    it('Submenu: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const span = element.shadowRoot.querySelector('[data-element-id="span-label"]');
+            const span = element.shadowRoot.querySelector(
+                '[data-element-id="span-label"]'
+            );
             expect(span.textContent).toBe('A string label');
             expect(span.title).toBe('A string label');
         });
     });
 
     // prefix-icon-name
-    it('prefixIconName', () => {
+    it('Submenu: prefixIconName', () => {
         element.prefixIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -168,11 +182,13 @@ describe('Submenu', () => {
     });
 
     // tab-index
-    it('tabIndex', () => {
+    it('Submenu: tabIndex', () => {
         element.tabIndex = '-1';
 
         return Promise.resolve().then(() => {
-            const link = element.shadowRoot.querySelector('[data-element-id="a"]');
+            const link = element.shadowRoot.querySelector(
+                '[data-element-id="a"]'
+            );
             expect(link.tabIndex).toBe(-1);
         });
     });
@@ -180,7 +196,7 @@ describe('Submenu', () => {
     /* ----- METHODS ----- */
 
     // focus
-    it('focus method', () => {
+    it('Submenu: focus method', () => {
         const handler = jest.fn();
         element.addEventListener('focus', handler);
         element.focus();
@@ -189,7 +205,7 @@ describe('Submenu', () => {
     });
 
     /* ----- EVENTS ----- */
-    it('Submenu blur', () => {
+    it('Submenu: blur', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
@@ -204,7 +220,7 @@ describe('Submenu', () => {
         });
     });
 
-    it('Submenu privateblur', () => {
+    it('Submenu: privateblur', () => {
         const handler = jest.fn();
         element.addEventListener('privateblur', handler);
 
@@ -219,7 +235,7 @@ describe('Submenu', () => {
         });
     });
 
-    it('Submenu privatefocus', () => {
+    it('Submenu: privatefocus', () => {
         const handler = jest.fn();
         element.addEventListener('privatefocus', handler);
 

@@ -48,7 +48,7 @@ describe('Pagination', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Pagination: Default attributes', () => {
         expect(element.align).toBe('left');
         expect(element.disabled).toBeFalsy();
         expect(element.ellipsisText).toBe('...');
@@ -69,7 +69,7 @@ describe('Pagination', () => {
     /* ---- ATTRIBUTES ----- */
 
     // align
-    it('align = left', () => {
+    it('Pagination: align = left', () => {
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-pagination__container'
         );
@@ -82,7 +82,7 @@ describe('Pagination', () => {
         });
     });
 
-    it('align = center', () => {
+    it('Pagination: align = center', () => {
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-pagination__container'
         );
@@ -95,7 +95,7 @@ describe('Pagination', () => {
         });
     });
 
-    it('align = right', () => {
+    it('Pagination: align = right', () => {
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-pagination__container'
         );
@@ -108,7 +108,7 @@ describe('Pagination', () => {
         });
     });
 
-    it('align = fill', () => {
+    it('Pagination: align = fill', () => {
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-pagination__container'
         );
@@ -123,12 +123,16 @@ describe('Pagination', () => {
 
     // disabled
     // Depends on totalRows and value
-    it('disabled = false, with one page', () => {
+    it('Pagination: disabled = false, with one page', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttonIcons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-icon"]'
+            );
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
 
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
@@ -139,13 +143,17 @@ describe('Pagination', () => {
         });
     });
 
-    it('disabled = false, with several pages, on first page', () => {
+    it('Pagination: disabled = false, with several pages, on first page', () => {
         element.disabled = false;
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttonIcons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-icon"]'
+            );
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
 
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
@@ -160,14 +168,18 @@ describe('Pagination', () => {
         });
     });
 
-    it('disabled = false, with several pages, on middle page', () => {
+    it('Pagination: disabled = false, with several pages, on middle page', () => {
         element.disabled = false;
         element.totalRows = 200;
         element.value = 4;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttonIcons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-icon"]'
+            );
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
 
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
@@ -178,14 +190,18 @@ describe('Pagination', () => {
         });
     });
 
-    it('disabled = false, with several pages, on last page', () => {
+    it('Pagination: disabled = false, with several pages, on last page', () => {
         element.disabled = false;
         element.totalRows = 200;
         element.value = 10;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttonIcons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-icon"]'
+            );
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
 
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
@@ -200,14 +216,18 @@ describe('Pagination', () => {
         });
     });
 
-    it('disabled = true', () => {
+    it('Pagination: disabled = true', () => {
         element.disabled = true;
         element.totalRows = 200;
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttonIcons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-icon"]');
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttonIcons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-icon"]'
+            );
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
 
             buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
@@ -219,77 +239,91 @@ describe('Pagination', () => {
     });
 
     // ellipsis-text
-    it('ellipsisText', () => {
+    it('Pagination: ellipsisText', () => {
         element.ellipsisText = 'A string ellipsis';
         element.totalRows = 200;
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="lightning-button-no-icon-page"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="lightning-button-no-icon-page"]'
+            );
             expect(buttons[0].value).toBe('A string ellipsis');
             expect(buttons[buttons.length - 1].value).toBe('A string ellipsis');
         });
     });
 
     // first-button-icon-name
-    it('firstButtonIconName, without label', () => {
+    it('Pagination: firstButtonIconName, without label', () => {
         element.firstButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const firstButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-first"]');
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-first"]'
+            );
             expect(firstButton.iconName).toBe('utility:apps');
         });
     });
 
     // first-button-label
-    it('firstButtonLabel, without icon', () => {
+    it('Pagination: firstButtonLabel, without icon', () => {
         element.firstButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const firstButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-first"]');
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-first"]'
+            );
             expect(firstButton.label).toBe('A string label');
             expect(firstButton.iconName).toBeUndefined();
         });
     });
 
-    it('firstButtonLabel, with icon', () => {
+    it('Pagination: firstButtonLabel, with icon', () => {
         element.firstButtonLabel = 'A string label';
         element.firstButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const firstButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-first"]');
+            const firstButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-first"]'
+            );
             expect(firstButton.label).toBe('A string label');
             expect(firstButton.iconName).toBe('utility:apps');
         });
     });
 
     // last-button-icon-name
-    it('lastButtonIconName, without label', () => {
+    it('Pagination: lastButtonIconName, without label', () => {
         element.lastButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const lastButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-last"]');
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-last"]'
+            );
             expect(lastButton.iconName).toBe('standard:user');
         });
     });
 
     // last-button-label
-    it('lastButtonLabel, without icon', () => {
+    it('Pagination: lastButtonLabel, without icon', () => {
         element.lastButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const lastButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-last"]');
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-last"]'
+            );
             expect(lastButton.label).toBe('A string label');
             expect(lastButton.iconName).toBeUndefined();
         });
     });
 
-    it('lastButtonIconName, with icon', () => {
+    it('Pagination: lastButtonIconName, with icon', () => {
         element.lastButtonLabel = 'A string label';
         element.lastButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const lastButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-last"]');
+            const lastButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-last"]'
+            );
             expect(lastButton.label).toBe('A string label');
             expect(lastButton.iconName).toBe('utility:apps');
         });
@@ -297,105 +331,125 @@ describe('Pagination', () => {
 
     // limit
     // Depends on totalRows
-    it('limit greater than 3, with enough results to see all buttons', () => {
+    it('Pagination: limit greater than 3, with enough results to see all buttons', () => {
         element.limit = 6;
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
             expect(buttons).toHaveLength(6);
         });
     });
 
-    it('limit less than 3, with enough results to see all buttons', () => {
+    it('Pagination: limit less than 3, with enough results to see all buttons', () => {
         element.limit = 1;
         element.totalRows = 200;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
             expect(buttons).toHaveLength(3);
         });
     });
 
-    it('limit greater than 3, without enough results to see all buttons', () => {
+    it('Pagination: limit greater than 3, without enough results to see all buttons', () => {
         element.limit = 18;
         element.totalRows = 25;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
             expect(buttons).toHaveLength(2);
         });
     });
 
-    it('limit less than 3, without enough results to see all buttons', () => {
+    it('Pagination: limit less than 3, without enough results to see all buttons', () => {
         element.limit = 1;
         element.totalRows = 25;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id^="lightning-button-no-icon"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id^="lightning-button-no-icon"]'
+            );
             expect(buttons).toHaveLength(2);
         });
     });
 
     // next-button-icon-name
-    it('nextButtonIconName, without label', () => {
+    it('Pagination: nextButtonIconName, without label', () => {
         element.nextButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-next"]');
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-next"]'
+            );
             expect(nextButton.iconName).toBe('standard:user');
         });
     });
 
     // next-button-label
-    it('nextButtonLabel, without icon', () => {
+    it('Pagination: nextButtonLabel, without icon', () => {
         element.nextButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-next"]');
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-next"]'
+            );
             expect(nextButton.label).toBe('A string label');
             expect(nextButton.iconName).toBeUndefined();
         });
     });
 
-    it('nextButtonLabel, with icon', () => {
+    it('Pagination: nextButtonLabel, with icon', () => {
         element.nextButtonLabel = 'A string label';
         element.nextButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-next"]');
+            const nextButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-next"]'
+            );
             expect(nextButton.label).toBe('A string label');
             expect(nextButton.iconName).toBe('utility:apps');
         });
     });
 
     // previous-button-icon-name
-    it('previousButtonIconName, without label', () => {
+    it('Pagination: previousButtonIconName, without label', () => {
         element.previousButtonIconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const previousButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-previous"]');
+            const previousButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon-previous"]'
+            );
             expect(previousButton.iconName).toBe('standard:user');
         });
     });
 
     // previous-button-label
-    it('previousButtonLabel, without icon', () => {
+    it('Pagination: previousButtonLabel, without icon', () => {
         element.previousButtonLabel = 'A string label';
 
         return Promise.resolve().then(() => {
-            const previousButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-previous"]');
+            const previousButton = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-previous"]'
+            );
             expect(previousButton.label).toBe('A string label');
             expect(previousButton.iconName).toBeUndefined();
         });
     });
 
-    it('previousButtonIconName, with icon', () => {
+    it('Pagination: previousButtonIconName, with icon', () => {
         element.previousButtonLabel = 'A string label';
         element.previousButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelector('[data-element-id="lightning-button-no-icon-previous"]');
+            const buttons = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-no-icon-previous"]'
+            );
             expect(buttons.label).toBe('A string label');
             expect(buttons.iconName).toBe('utility:apps');
         });
@@ -403,7 +457,7 @@ describe('Pagination', () => {
 
     // value
     // Depends on total-rows
-    it('value in the range', () => {
+    it('Pagination: value in the range', () => {
         element.value = 3;
         element.totalRows = 200;
 
@@ -415,7 +469,7 @@ describe('Pagination', () => {
         });
     });
 
-    it('value greater than the available range', () => {
+    it('Pagination: value greater than the available range', () => {
         element.value = 30;
         element.totalRows = 20;
 
@@ -428,13 +482,17 @@ describe('Pagination', () => {
     });
 
     // Number of pages and page change. Checks change event.
-    it('Number of pages and page change (test of perPage, totalRows and change event)', () => {
+    it('Pagination: Number of pages and page change (test of perPage, totalRows and change event)', () => {
         // There are 5 pages
         element.perPage = 10;
         element.totalRows = 50;
 
-        const nextButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-next"]');
-        const previousButton = element.shadowRoot.querySelector('[data-element-id="lightning-button-icon-previous"]');
+        const nextButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-next"]'
+        );
+        const previousButton = element.shadowRoot.querySelector(
+            '[data-element-id="lightning-button-icon-previous"]'
+        );
 
         // The previous button should be disabled on first page
         expect(previousButton.disabled).toBeTruthy();
@@ -511,7 +569,7 @@ describe('Pagination', () => {
 
     // first
     // Depends on totalRows and value. Checks change event.
-    it('method: first', () => {
+    it('Pagination: method first', () => {
         element.totalRows = 200;
         element.value = 3;
 
@@ -545,7 +603,7 @@ describe('Pagination', () => {
 
     // last
     // Depends on totalRows. Checks change event.
-    it('method: last', () => {
+    it('Pagination: method last', () => {
         element.totalRows = 200;
 
         return Promise.resolve()
@@ -580,7 +638,7 @@ describe('Pagination', () => {
 
     // next
     // Depends on totalRows. Checks change event.
-    it('method: next', () => {
+    it('Pagination: method next', () => {
         element.totalRows = 200;
 
         return Promise.resolve()
@@ -613,7 +671,7 @@ describe('Pagination', () => {
 
     // previous
     // Depends on totalRows and value. Checks change event.
-    it('method: previous', () => {
+    it('Pagination: method previous', () => {
         element.totalRows = 200;
         element.value = 3;
 
@@ -647,7 +705,7 @@ describe('Pagination', () => {
 
     // goto
     // Depends on totalRows. Checks change event.
-    it('method: goto', () => {
+    it('Pagination: method goto', () => {
         element.totalRows = 200;
 
         return Promise.resolve()

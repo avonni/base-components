@@ -37,27 +37,12 @@ import { LightningElement, api } from 'lwc';
  * @descriptor avonni-link
  */
 export default class Link extends LightningElement {
-    /**
-     * The link type.
-     *
-     * @type {string}
-     * @public
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
      */
-    @api type;
-    /**
-     * The link label.
-     *
-     * @type {string}
-     * @public
-     */
-    @api label;
-    /**
-     * The URL/URI for the link.
-     *
-     * @type {string}
-     * @public
-     */
-    @api href;
+
     /**
      * Specify the class name for the link.
      *
@@ -66,19 +51,19 @@ export default class Link extends LightningElement {
      */
     @api className;
     /**
-     * The title for the link.
+     * The URL/URI for the link.
      *
      * @type {string}
      * @public
      */
-    @api title;
+    @api href;
     /**
-     * Target attribute that controls what happens when clicking on the link. Default is "_blank" which opens the link in a new window.
+     * The link label.
      *
      * @type {string}
-     * @default _blank
+     * @public
      */
-    @api target = '_blank';
+    @api label;
     /**
      * The relationship between the current component and the link document.
      *
@@ -87,26 +72,33 @@ export default class Link extends LightningElement {
      * @default
      */
     @api rel;
-
     /**
-     * Set focus on the link element.
+     * Target attribute that controls what happens when clicking on the link. Default is "_blank" which opens the link in a new window.
      *
+     * @type {string}
+     * @default _blank
+     */
+    @api target = '_blank';
+    /**
+     * The title for the link.
+     *
+     * @type {string}
      * @public
      */
-    @api
-    focus() {
-        this.linkElement.focus();
-    }
-
+    @api title;
     /**
-     * Removes focus on the link element.
+     * The link type.
      *
+     * @type {string}
      * @public
      */
-    @api
-    blur() {
-        this.linkElement.blur();
-    }
+    @api type;
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Computed Href from provided uri.
@@ -136,5 +128,31 @@ export default class Link extends LightningElement {
      */
     get linkElement() {
         return this.template.querySelector('[data-element-id="a"]');
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set focus on the link element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.linkElement.focus();
+    }
+
+    /**
+     * Removes focus on the link element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        this.linkElement.blur();
     }
 }

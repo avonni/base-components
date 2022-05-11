@@ -127,7 +127,6 @@ export default {
             ],
             description:
                 'Position of the avatar. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
-            defaultValue: 'top-left',
             table: {
                 defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
@@ -149,7 +148,6 @@ export default {
             ],
             description:
                 'Position of the avatar when screen width is under 480px. Valid values include top-left, top-center, top-right, bottom-left, bottom-center, bottom-right.',
-            defaultValue: 'top-left',
             table: {
                 defaultValue: { summary: 'top-left' },
                 type: { summary: 'string' },
@@ -164,7 +162,6 @@ export default {
             options: ['circle', 'square'],
             description:
                 'The variant change the shape of the avatar. Valid values are circle, square.',
-            defaultValue: 'circle',
             table: {
                 defaultValue: { summary: 'circle' },
                 type: { summary: 'string' },
@@ -178,12 +175,17 @@ export default {
             options: ['x-small', 'small', 'medium', 'large', 'x-large'],
             description:
                 'The size of the avatar. Valid values include x-small, small, medium, large, x-large.',
-            defaultValue: 'medium',
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        avatarPosition: 'top-left',
+        avatarMobilePosition: 'top-left',
+        avatarVariant: 'circle',
+        size: 'medium'
     }
 };
 

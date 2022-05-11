@@ -48,7 +48,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If true, display an outline style button.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -70,7 +69,6 @@ export default {
                 'error',
                 'offline'
             ],
-            defaultValue: 'base',
             description:
                 'The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.',
             table: {
@@ -80,7 +78,8 @@ export default {
         }
     },
     args: {
-        outline: false
+        outline: false,
+        variant: 'base'
     }
 };
 
@@ -94,7 +93,7 @@ Base.args = {
 export const BaseOutline = Template.bind({});
 BaseOutline.args = {
     label: 'Chip',
-    outline: 'true'
+    outline: true
 };
 
 export const Brand = Template.bind({});
@@ -107,7 +106,7 @@ export const BrandOutline = Template.bind({});
 BrandOutline.args = {
     label: 'Chip',
     variant: 'brand',
-    outline: 'true'
+    outline: true
 };
 
 export const Inverse = Template.bind({});
@@ -120,7 +119,7 @@ export const InverseOutline = Template.bind({});
 InverseOutline.args = {
     label: 'Chip',
     variant: 'inverse',
-    outline: 'true'
+    outline: true
 };
 
 export const AltInverse = Template.bind({});
@@ -133,7 +132,7 @@ export const AltInverseOutline = Template.bind({});
 AltInverseOutline.args = {
     label: 'Chip',
     variant: 'alt-inverse',
-    outline: 'true'
+    outline: true
 };
 
 export const Success = Template.bind({});
@@ -146,7 +145,7 @@ export const SuccessOutline = Template.bind({});
 SuccessOutline.args = {
     label: 'Chip',
     variant: 'success',
-    outline: 'true'
+    outline: true
 };
 
 export const Info = Template.bind({});
@@ -159,7 +158,7 @@ export const InfoOutline = Template.bind({});
 InfoOutline.args = {
     label: 'Chip',
     variant: 'info',
-    outline: 'true'
+    outline: true
 };
 
 export const Warning = Template.bind({});
@@ -172,7 +171,7 @@ export const WarningOutline = Template.bind({});
 WarningOutline.args = {
     label: 'Chip',
     variant: 'warning',
-    outline: 'true'
+    outline: true
 };
 
 export const Error = Template.bind({});
@@ -185,7 +184,7 @@ export const ErrorOutline = Template.bind({});
 ErrorOutline.args = {
     label: 'Chip',
     variant: 'error',
-    outline: 'true'
+    outline: true
 };
 
 export const Offline = Template.bind({});
@@ -198,5 +197,5 @@ export const OfflineOutline = Template.bind({});
 OfflineOutline.args = {
     label: 'Chip',
     variant: 'offline',
-    outline: 'true'
+    outline: true
 };
