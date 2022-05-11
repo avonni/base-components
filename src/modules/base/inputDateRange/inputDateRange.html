@@ -36,7 +36,7 @@
     <div
         class={computedWrapperClass}
         data-element-id="div-wrapper"
-        onfocusout={onFocusOut}
+        onfocusout={handleFocusOut}
     >
         <div class={computedLabelClass}>
             <abbr if:true={required} title="required" class="slds-required"
@@ -76,7 +76,7 @@
                         disabled={disabled}
                         required={required}
                         onblur={blurDateInput}
-                        onclick={clickDateInput}
+                        onclick={handleClickDateInput}
                         data-element-id="input-start-date"
                         onkeydown={handleInputKeyDown}
                         autocomplete="off"
@@ -86,7 +86,7 @@
                         variant="bare"
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
-                        onclick={clickDateInput}
+                        onclick={handleClickDateInput}
                         onblur={blurDateInput}
                         onkeydown={handleInputKeyDown}
                         data-element-id="lightning-icon-start-date"
@@ -164,7 +164,7 @@
                         value={endDateString}
                         disabled={disabled}
                         onblur={blurDateInput}
-                        onclick={clickDateInput}
+                        onclick={handleClickDateInput}
                         data-element-id="input-end-date"
                         onkeydown={handleInputKeyDown}
                         autocomplete="off"
@@ -174,7 +174,7 @@
                         variant="bare"
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
-                        onclick={clickDateInput}
+                        onclick={handleClickDateInput}
                         onblur={blurDateInput}
                         onkeydown={handleInputKeyDown}
                         data-element-id="lightning-icon-end-date"

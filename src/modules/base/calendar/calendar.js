@@ -92,7 +92,6 @@ export default class Calendar extends LightningElement {
     _selectionMode = SELECTION_MODES.default;
     _value = [];
     _weekNumber = false;
-    _nextFocusDate;
     displayDate = DEFAULT_DATE; // The calendar displays this date's month
     year;
     month;
@@ -102,11 +101,7 @@ export default class Calendar extends LightningElement {
 
     connectedCallback() {
         this.updateDateParameters();
-        this.updateFocus();
-    }
-
-    renderedCallback() {
-        this._selectionMethod = 'click';
+        this.computeFocus(false);
     }
 
     /**
@@ -328,7 +323,7 @@ export default class Calendar extends LightningElement {
     focusDate(value) {
         if (!value.getTime()) return;
         this._focusDate = new Date(value);
-        this.updateFocus();
+        this.computeFocus(true);
     }
 
     /**
@@ -550,7 +545,6 @@ export default class Calendar extends LightningElement {
             for (let a = 0; a < 7; a++) {
                 let currentDate = false;
                 let selected = false;
-                let tabindex = -1;
                 let dateClass = 'avonni-calendar__date-cell';
                 let dayClass = 'slds-day';
                 let disabled = this.isInArray(date, this.disabledDates);
@@ -574,7 +568,6 @@ export default class Calendar extends LightningElement {
                 }
 
                 if (today === time) {
-                    tabindex = 0;
                     dateClass += ' slds-is-today';
                     currentDate = true;
                 }
@@ -667,7 +660,6 @@ export default class Calendar extends LightningElement {
                     currentDate: currentDate,
                     fullDate: time,
                     marked: markedDate,
-                    tabIndex: tabindex,
                     markedColors: markedColors,
                     labeled: labeled,
                     chip: {
@@ -788,8 +780,7 @@ export default class Calendar extends LightningElement {
 
         this.updateDateParameters();
         event.stopPropagation();
-
-        this.updateFocus();
+        this.computeFocus(true);
     }
 
     /**
@@ -798,7 +789,7 @@ export default class Calendar extends LightningElement {
     handlerPreviousMonth() {
         this.displayDate.setMonth(this.displayDate.getMonth() - 1);
         this.updateDateParameters();
-        this.updateFocus();
+        this.computeFocus(true);
     }
 
     /**
@@ -807,7 +798,7 @@ export default class Calendar extends LightningElement {
     handlerNextMonth() {
         this.displayDate.setMonth(this.displayDate.getMonth() + 1);
         this.updateDateParameters();
-        this.updateFocus();
+        this.computeFocus(true);
     }
 
     /**
@@ -881,6 +872,7 @@ export default class Calendar extends LightningElement {
     handlerSelectDate(event) {
         if (!event.currentTarget.dataset.day) return;
 
+        this._selectionMethod = event.pointerType === '' ? 'keyboard' : 'mouse';
         let date = new Date(Number(event.target.dataset.day));
         const disabledDate = event.target.classList.contains(
             'avonni-calendar__disabled-cell'
@@ -903,7 +895,7 @@ export default class Calendar extends LightningElement {
 
             this.updateDateParameters();
             this.dispatchChange();
-            this.updateFocus();
+            this.computeFocus(true);
         }
     }
 
@@ -921,6 +913,7 @@ export default class Calendar extends LightningElement {
          * @name change
          * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
          * @param {string} clickedDate Clicked date, as an formatted string. Useful in the event where the clicked date is not in the value, like when it is deselected.
+         * @param {string} selectionMethod
          */
         this.dispatchEvent(
             new CustomEvent('change', {
@@ -952,13 +945,6 @@ export default class Calendar extends LightningElement {
         );
     }
 
-    handleDateFocus(event) {
-        if (!event.currentTarget) return;
-
-        let focusDate = new Date(Number(event.currentTarget.dataset.day));
-        if (focusDate) this._focusDate = focusDate;
-    }
-
     /**
      * Private blur handler.
      */
@@ -978,6 +964,16 @@ export default class Calendar extends LightningElement {
                 cancelable: true
             })
         );
+    }
+
+    /**
+     * Record focus if a cell is clicked.
+     */
+    handleDateFocus(event) {
+        if (!event.currentTarget) return;
+
+        let focusDate = new Date(Number(event.currentTarget.dataset.day));
+        if (focusDate) this._focusDate = focusDate;
     }
 
     // HOVERED DATES AND RANGES APPEARANCE
@@ -1143,7 +1139,6 @@ export default class Calendar extends LightningElement {
                 const selectedDayButton = event.target.querySelector(
                     '[data-element-id="span-day-label"]'
                 );
-                this._selectionMethod = 'enter';
                 if (selectedDayButton) selectedDayButton.click();
                 break;
             case keyCodes.enter:
@@ -1151,7 +1146,6 @@ export default class Calendar extends LightningElement {
                 const currentDayButton = event.target.querySelector(
                     '[data-element-id="span-day-label"]'
                 );
-                this._selectionMethod = 'enter';
                 if (currentDayButton) currentDayButton.click();
                 break;
             default:
@@ -1169,7 +1163,7 @@ export default class Calendar extends LightningElement {
         }
         this.displayDate = this._focusDate;
         this.updateDateParameters();
-        this.updateFocus();
+        this.computeFocus(true);
     }
 
     /**
@@ -1177,7 +1171,7 @@ export default class Calendar extends LightningElement {
      *
      * @param {number} nextDate The datetime of the keyboard navigation target
      */
-    updateFocus() {
+    computeFocus(applyFocus) {
         // if a date was previously selected or focused, focus the same date in this month.
         let selectedMonthDate;
         if (this._focusDate) {
@@ -1228,18 +1222,29 @@ export default class Calendar extends LightningElement {
                 firstOfMonthCell ||
                 firstValidDateCell;
 
-            if (focusTarget) {
-                if (focusTarget.length > 1) {
-                    focusTarget.forEach((target) => {
+            if (selectedDate) {
+                if (this.selectionMode === 'single') {
+                    selectedDate[0].setAttribute('tabindex', '0');
+                } else if (this.selectionMode === 'multiple') {
+                    selectedDate.forEach((target) => {
                         target.setAttribute('tabindex', '0');
-                        target.focus();
                     });
-                } else if (focusTarget.length === 1) {
+                } else if (this.selectionMode === 'interval') {
+                    selectedDate[0].setAttribute('tabindex', '0');
+                    selectedDate[selectedDate.length - 1].setAttribute(
+                        'tabindex',
+                        '0'
+                    );
+                }
+            }
+
+            if (focusTarget) {
+                if (focusTarget.length > 0) {
                     focusTarget[0].setAttribute('tabindex', '0');
-                    focusTarget[0].focus();
+                    if (applyFocus) focusTarget[0].focus();
                 } else {
                     focusTarget.setAttribute('tabindex', '0');
-                    focusTarget.focus();
+                    if (applyFocus) focusTarget.focus();
                 }
             }
         });
