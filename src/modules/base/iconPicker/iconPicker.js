@@ -333,7 +333,7 @@ export default class IconPicker extends LightningElement {
 
     /**
      * The tabs of the icon picker.
-     * The tabs are ordered as they should be displayed: the array starts with the visible tabs, followed by the hidden tabs.
+     * Hidden tabs are not displayed.
      *
      * @type {string[]}
      */
