@@ -574,14 +574,9 @@ export default class IconPicker extends LightningElement {
         return classes.toString();
     }
 
-    /*
-     * ------------------------------------------------------------
-     *  PUBLIC METHODS
-     * -------------------------------------------------------------
-     */
-
     /**
-     * Computed CSS classes for the button icon container. Adds a scaling class if icon is of type "action".
+     * Computed CSS classes for the button icon container.
+     * Adds a scaling class if icon is of type "action".
      *
      * @type {string}
      */
@@ -601,6 +596,12 @@ export default class IconPicker extends LightningElement {
         }
         return classes.toString();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Remove focus from the input element.
