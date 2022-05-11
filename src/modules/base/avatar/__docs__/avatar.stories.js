@@ -355,7 +355,6 @@ export default {
                 'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: 'right',
                 category: 'Details'
             }
         },

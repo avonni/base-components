@@ -69,7 +69,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If true, the coaching section will be hidden.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -82,7 +81,6 @@ export default {
                 type: 'text'
             },
             description: 'Label of the key fields section.',
-            defaultValue: 'Key Fields',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Key Fields' },
@@ -95,7 +93,6 @@ export default {
                 type: 'text'
             },
             description: 'Label of the guidance section.',
-            defaultValue: 'Guidance for Success',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Guidance for Success' },
@@ -107,7 +104,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If true, the path is disabled.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -119,7 +115,6 @@ export default {
             },
             options: ['linear', 'non-linear'],
             description: 'Valid values include linear and non-linear.',
-            defaultValue: 'linear',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'linear' },
@@ -142,7 +137,6 @@ export default {
                 type: 'boolean'
             },
             description: 'If true, hide the path buttons.',
-            defaultValue: false,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' },
@@ -157,7 +151,6 @@ export default {
             },
             description:
                 'Default label of the path button. On click on the button, the path will go to the next step.',
-            defaultValue: 'Mark as Complete',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Mark as Complete' },
@@ -185,7 +178,6 @@ export default {
             },
             options: ['left', 'right'],
             description: 'Valid values include left and right.',
-            defaultValue: 'left',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
@@ -200,7 +192,6 @@ export default {
             },
             description:
                 'Label of the path button, when the user clicked on a different step than the current one. On click on the button, the selected step will become the current step.',
-            defaultValue: 'Mark as Current Stage',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Mark as Current Stage' },
@@ -228,7 +219,6 @@ export default {
             },
             options: ['left', 'right'],
             description: 'Valid values include left and right.',
-            defaultValue: 'left',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'left' },
@@ -243,7 +233,6 @@ export default {
             },
             description:
                 'Label of the menu item that appears when the previous step had completed options. On click on the menu item, the dialog will reopen, and the user will be able to change the completion status.',
-            defaultValue: 'Change Completion Status',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'Change Completion Status' },
@@ -251,6 +240,19 @@ export default {
                 subcategory: 'Button'
             }
         }
+    },
+    args: {
+        changeCompletionStatusLabel: 'Change Completion Status',
+        disabled: false,
+        format: 'linear',
+        guidanceLabel: 'Guidance for Success',
+        hideButtons: false,
+        hideCoaching: false,
+        keyFieldsLabel: 'Key Fields',
+        nextButtonLabel: 'Mark as Complete',
+        nextButtonIconPosition: 'left',
+        selectButtonLabel: 'Mark as Current Stage',
+        selectButtonIconPosition: 'left'
     }
 };
 

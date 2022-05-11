@@ -41,7 +41,6 @@ export default {
                 type: 'radio'
             },
             options: ['horizontal', 'vertical'],
-            defaultValue: 'horizontal',
             description:
                 'Specifies the orientation of the widget. Supported values are "horizontal" and "vertical".',
             table: {
@@ -49,6 +48,9 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        orientation: 'horizontal'
     }
 };
 

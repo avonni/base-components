@@ -65,7 +65,7 @@ describe('Path', () => {
         }
     });
 
-    it('Default attributes', () => {
+    it('Path: Default attributes', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -94,7 +94,7 @@ describe('Path', () => {
 
     // actions
     // Depends on toggle coaching button working
-    it('actions, only default actions visible on step', () => {
+    it('Path: actions, only default actions visible on step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -134,7 +134,7 @@ describe('Path', () => {
         });
     });
 
-    it('actions, only custom actions visible on step', () => {
+    it('Path: actions, only custom actions visible on step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -175,7 +175,7 @@ describe('Path', () => {
         });
     });
 
-    it('actions, no actions visible on step', () => {
+    it('Path: actions, no actions visible on step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -203,7 +203,7 @@ describe('Path', () => {
         });
     });
 
-    it('actions, custom and default actions visible on step', () => {
+    it('Path: actions, custom and default actions visible on step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -247,7 +247,7 @@ describe('Path', () => {
 
     // Change completion button presence
     // Depends on completed options and next()
-    it('Change completion button present only when completed options', () => {
+    it('Path: Change completion button present only when completed options', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -285,9 +285,8 @@ describe('Path', () => {
             .then(() => {
                 // Third step has several completed options
                 // Going to fourth step should trigger the dialog
-                const combobox = element.shadowRoot.querySelector(
-                    'lightning-combobox'
-                );
+                const combobox =
+                    element.shadowRoot.querySelector('lightning-combobox');
                 combobox.value = COMPLETED_OPTIONS[0].value;
                 const saveButton = element.shadowRoot.querySelector(
                     'avonni-dialog lightning-button:nth-of-type(2)'
@@ -305,7 +304,7 @@ describe('Path', () => {
 
     // current-step
     // Depends on toggle coaching button working
-    it('currentStep, valid step name given', () => {
+    it('Path: currentStep, valid step name given', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -369,8 +368,9 @@ describe('Path', () => {
                 const originalValue = JSON.parse(
                     JSON.stringify(STEPS[2].keyFields[index].value)
                 );
-                const originalTypeAttributes =
-                    JSON.stringify(STEPS[2].keyFields[index].typeAttributes);
+                const originalTypeAttributes = JSON.stringify(
+                    STEPS[2].keyFields[index].typeAttributes
+                );
                 const typeAttributes = JSON.stringify(field.typeAttributes);
 
                 expect(field.value).toBe(originalValue);
@@ -385,7 +385,7 @@ describe('Path', () => {
         });
     });
 
-    it('currentStep, invalid step name given', () => {
+    it('Path: currentStep, invalid step name given', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -409,7 +409,7 @@ describe('Path', () => {
 
     // disabled
     // Depends on step click working
-    it('disabled = false', () => {
+    it('Path: disabled = false', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -422,9 +422,8 @@ describe('Path', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
+                const button =
+                    element.shadowRoot.querySelector('lightning-button');
                 expect(button.disabled).toBeFalsy();
 
                 const steps = element.shadowRoot.querySelectorAll('li a');
@@ -436,7 +435,7 @@ describe('Path', () => {
             });
     });
 
-    it('disabled = true', () => {
+    it('Path: disabled = true', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -449,9 +448,8 @@ describe('Path', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
+                const button =
+                    element.shadowRoot.querySelector('lightning-button');
                 expect(button.disabled).toBeTruthy();
 
                 const steps = element.shadowRoot.querySelectorAll('li a');
@@ -465,7 +463,7 @@ describe('Path', () => {
 
     // format
     // Depends on next
-    it('format = linear, path element has no styling when not on last step', () => {
+    it('Path: format = linear, path element has no styling when not on last step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -503,7 +501,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = linear, base styling', () => {
+    it('Path: format = linear, base styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -538,9 +536,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('path-is-complete_base');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -560,7 +557,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = linear, success styling', () => {
+    it('Path: format = linear, success styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -595,9 +592,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('slds-is-won');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -617,7 +613,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = linear, error styling', () => {
+    it('Path: format = linear, error styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -652,9 +648,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('slds-is-lost');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -674,7 +669,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = linear, warning styling', () => {
+    it('Path: format = linear, warning styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -709,9 +704,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('path-is-complete_warning');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -731,7 +725,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = linear, offline styling', () => {
+    it('Path: format = linear, offline styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -766,9 +760,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('path-is-complete_offline');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -787,7 +780,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = non-linear, base styling', () => {
+    it('Path: format = non-linear, base styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -825,9 +818,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('path-is-complete_base');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -844,7 +836,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = non-linear, success styling', () => {
+    it('Path: format = non-linear, success styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -882,9 +874,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('slds-is-won');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -901,7 +892,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = non-linear, error styling', () => {
+    it('Path: format = non-linear, error styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -939,9 +930,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('slds-is-lost');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -958,7 +948,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = non-linear, warning styling', () => {
+    it('Path: format = non-linear, warning styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -996,9 +986,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('path-is-complete_warning');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -1015,7 +1004,7 @@ describe('Path', () => {
             });
     });
 
-    it('format = non-linear, offline styling', () => {
+    it('Path: format = non-linear, offline styling', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1053,9 +1042,8 @@ describe('Path', () => {
                 expect(path.classList).toContain('path-is-complete');
                 expect(path.classList).toContain('path-is-complete_offline');
 
-                const stepElements = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const stepElements =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 stepElements.forEach((step, index) => {
                     if (index === 1) {
                         expect(step.classList).toHaveLength(4);
@@ -1074,7 +1062,7 @@ describe('Path', () => {
 
     // guidance-label
     // Depends on toggle coaching button working
-    it('guidanceLabel', () => {
+    it('Path: guidanceLabel', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1098,7 +1086,7 @@ describe('Path', () => {
     });
 
     // hide-buttons
-    it('hideButtons = false', () => {
+    it('Path: hideButtons = false', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1115,7 +1103,7 @@ describe('Path', () => {
         });
     });
 
-    it('hideButtons = true', () => {
+    it('Path: hideButtons = true', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1133,7 +1121,7 @@ describe('Path', () => {
     });
 
     // hide-coaching
-    it('hideCoaching = false', () => {
+    it('Path: hideCoaching = false', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1152,7 +1140,7 @@ describe('Path', () => {
         });
     });
 
-    it('hideCoaching = true', () => {
+    it('Path: hideCoaching = true', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1173,7 +1161,7 @@ describe('Path', () => {
 
     // key-fields-label
     // Depends on toggle coaching button working
-    it('keyFieldsLabel', () => {
+    it('Path: keyFieldsLabel', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1197,7 +1185,7 @@ describe('Path', () => {
     });
 
     // next-button-icon-name, next-button-icon-position and next-button-label
-    it('nextButtonIconName, nextButtonIconPosition and nextButtonLabel', () => {
+    it('Path: nextButtonIconName, nextButtonIconPosition and nextButtonLabel', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1220,7 +1208,7 @@ describe('Path', () => {
 
     // select-button-icon-name, select-button-icon-position and select-button-label
     // Depends on step click working
-    it('selectButtonIconName, selectButtonIconPosition and selectButtonLabel', () => {
+    it('Path: selectButtonIconName, selectButtonIconPosition and selectButtonLabel', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1247,7 +1235,7 @@ describe('Path', () => {
     });
 
     // steps
-    it('steps', () => {
+    it('Path: steps', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1284,7 +1272,7 @@ describe('Path', () => {
 
     // Close dialog without picking an option
     // Depends on next
-    it('Close dialog without picking an option', () => {
+    it('Path: Close dialog without picking an option', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1311,7 +1299,7 @@ describe('Path', () => {
 
     // next
     // Depends on step classes and currentStep
-    it('next method', () => {
+    it('Path: next method', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1326,15 +1314,14 @@ describe('Path', () => {
         element.next();
 
         return Promise.resolve().then(() => {
-            const newSteps = element.shadowRoot.querySelectorAll(
-                '.slds-path__item'
-            );
+            const newSteps =
+                element.shadowRoot.querySelectorAll('.slds-path__item');
             expect(newSteps[0].classList).not.toContain('slds-is-current');
             expect(newSteps[1].classList).toContain('slds-is-current');
         });
     });
 
-    it('next method on step with completed option', () => {
+    it('Path: next method on step with completed option', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1353,7 +1340,7 @@ describe('Path', () => {
         });
     });
 
-    it('next method on last step', () => {
+    it('Path: next method on last step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1365,18 +1352,16 @@ describe('Path', () => {
 
         return Promise.resolve()
             .then(() => {
-                const steps = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const steps =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 expect(steps[steps.length - 1].classList).toContain(
                     'slds-is-current'
                 );
                 element.next();
             })
             .then(() => {
-                const steps = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const steps =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 expect(steps[steps.length - 1].classList).toContain(
                     'slds-is-current'
                 );
@@ -1386,7 +1371,7 @@ describe('Path', () => {
 
     // previous
     // Depends on current step
-    it('previous method', () => {
+    it('Path: previous method', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1398,24 +1383,22 @@ describe('Path', () => {
 
         return Promise.resolve()
             .then(() => {
-                const steps = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const steps =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 expect(steps[2].classList).toContain('slds-is-current');
                 expect(steps[1].classList).not.toContain('slds-is-current');
 
                 element.previous();
             })
             .then(() => {
-                const steps = element.shadowRoot.querySelectorAll(
-                    '.slds-path__item'
-                );
+                const steps =
+                    element.shadowRoot.querySelectorAll('.slds-path__item');
                 expect(steps[2].classList).not.toContain('slds-is-current');
                 expect(steps[1].classList).toContain('slds-is-current');
             });
     });
 
-    it('previous method on step with completed option', () => {
+    it('Path: previous method on step with completed option', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1439,7 +1422,7 @@ describe('Path', () => {
             });
     });
 
-    it('previous method on first step', () => {
+    it('Path: previous method on first step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1452,9 +1435,8 @@ describe('Path', () => {
         element.previous();
 
         return Promise.resolve().then(() => {
-            const stepsAfterPrevious = element.shadowRoot.querySelectorAll(
-                '.slds-path__item'
-            );
+            const stepsAfterPrevious =
+                element.shadowRoot.querySelectorAll('.slds-path__item');
             expect(stepsAfterPrevious[0].classList).toContain(
                 'slds-is-current'
             );
@@ -1466,7 +1448,7 @@ describe('Path', () => {
 
     // change
     // Depends on currentStep
-    it('change event, no completed option, not on last step', () => {
+    it('Path: change event, no completed option, not on last step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1490,7 +1472,7 @@ describe('Path', () => {
         expect(handler.mock.calls[0][0].composed).toBeFalsy();
     });
 
-    it('change event, completed option, last step', () => {
+    it('Path: change event, completed option, last step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1506,15 +1488,13 @@ describe('Path', () => {
 
         return Promise.resolve()
             .then(() => {
-                const button = element.shadowRoot.querySelector(
-                    'lightning-button'
-                );
+                const button =
+                    element.shadowRoot.querySelector('lightning-button');
                 button.click();
             })
             .then(() => {
-                const combobox = element.shadowRoot.querySelector(
-                    'lightning-combobox'
-                );
+                const combobox =
+                    element.shadowRoot.querySelector('lightning-combobox');
                 combobox.value = COMPLETED_OPTIONS[2].value;
                 const saveButton = element.shadowRoot.querySelector(
                     'avonni-dialog lightning-button:nth-of-type(2)'
@@ -1535,7 +1515,7 @@ describe('Path', () => {
             });
     });
 
-    it('change event, click on a specific step', () => {
+    it('Path: change event, click on a specific step', () => {
         const element = createElement('avonni-path', {
             is: Path
         });
@@ -1563,7 +1543,7 @@ describe('Path', () => {
 
     // actionclick
     // Depends on custom actions and toggle coaching button working
-    it('actionclick event', () => {
+    it('Path: actionclick event', () => {
         const element = createElement('avonni-path', {
             is: Path
         });

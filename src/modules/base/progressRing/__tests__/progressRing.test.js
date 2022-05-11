@@ -48,7 +48,7 @@ describe('ProgressRing', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Progress ring: Default attributes', () => {
         expect(element.direction).toBe('fill');
         expect(element.hideIcon).toBeFalsy();
         expect(element.size).toBe('medium');
@@ -59,12 +59,14 @@ describe('ProgressRing', () => {
     /* ----- ATTRIBUTES ----- */
 
     // direction and value
-    it('direction = fill, value = 34', () => {
+    it('Progress ring: direction = fill, value = 34', () => {
         element.direction = 'fill';
         element.value = 34;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
+            const path = element.shadowRoot.querySelector(
+                '[data-element-id="path"]'
+            );
             const arcx = Math.cos(2 * Math.PI * 0.34);
             const arcy = Math.sin(2 * Math.PI * 0.34) * -1;
 
@@ -74,7 +76,7 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('value > 100', () => {
+    it('Progress ring: value > 100', () => {
         element.value = 110;
 
         return Promise.resolve().then(() => {
@@ -82,7 +84,7 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('value < 0', () => {
+    it('Progress ring: value < 0', () => {
         element.value = -110;
 
         return Promise.resolve().then(() => {
@@ -90,7 +92,7 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('value NaN', () => {
+    it('Progress ring: value NaN', () => {
         element.value = 'a';
 
         return Promise.resolve().then(() => {
@@ -98,12 +100,14 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('direction = drain, value = 87', () => {
+    it('Progress ring: direction = drain, value = 87', () => {
         element.direction = 'drain';
         element.value = 87;
 
         return Promise.resolve().then(() => {
-            const path = element.shadowRoot.querySelector('[data-element-id="path"]');
+            const path = element.shadowRoot.querySelector(
+                '[data-element-id="path"]'
+            );
             const arcx = Math.cos(2 * Math.PI * 0.87);
             const arcy = Math.sin(2 * Math.PI * 0.87);
 
@@ -115,30 +119,34 @@ describe('ProgressRing', () => {
 
     // hide-icon
     // Depends on variant
-    it('hideIcon = false', () => {
+    it('Progress ring: hideIcon = false', () => {
         element.hideIcon = false;
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(icon).toBeTruthy();
         });
     });
 
-    it('hideIcon = true', () => {
+    it('Progress ring: hideIcon = true', () => {
         element.hideIcon = true;
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(icon).toBeFalsy();
         });
     });
 
     // size
-    it('size = medium', () => {
+    it('Progress ring: size = medium', () => {
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
@@ -150,7 +158,7 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('size = large', () => {
+    it('Progress ring: size = large', () => {
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -164,14 +172,16 @@ describe('ProgressRing', () => {
 
     // variant
     // Depends on value
-    it('variant = base', () => {
+    it('Progress ring: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -189,14 +199,16 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('variant = active-step', () => {
+    it('Progress ring: variant = active-step', () => {
         element.variant = 'active-step';
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -214,14 +226,16 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('variant = warning', () => {
+    it('Progress ring: variant = warning', () => {
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).toContain('slds-progress-ring_warning');
             expect(wrapper.classList).not.toContain(
@@ -242,14 +256,16 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('variant = expired', () => {
+    it('Progress ring: variant = expired', () => {
         element.variant = 'expired';
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -270,14 +286,16 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('variant = base-autocomplete', () => {
+    it('Progress ring: variant = base-autocomplete', () => {
         element.variant = 'base-autocomplete';
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'
@@ -295,7 +313,7 @@ describe('ProgressRing', () => {
         });
     });
 
-    it('variant = base-autocomplete, with value = 100', () => {
+    it('Progress ring: variant = base-autocomplete, with value = 100', () => {
         element.variant = 'base-autocomplete';
         element.value = 100;
 
@@ -303,7 +321,9 @@ describe('ProgressRing', () => {
             const wrapper = element.shadowRoot.querySelector(
                 '.slds-progress-ring'
             );
-            const icon = element.shadowRoot.querySelector('[data-element-id="lightning-icon"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-icon"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-progress-ring_warning'

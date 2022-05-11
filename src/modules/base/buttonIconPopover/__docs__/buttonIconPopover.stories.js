@@ -72,7 +72,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the close button of the popover is hidden.',
             table: {
@@ -120,7 +119,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium'],
-            defaultValue: 'medium',
             description:
                 'The size of the buttonIcon. For the bare variant, options include x-small, small, medium, and large. For non-bare variants, options include xx-small, x-small, small, and medium.',
             table: {
@@ -143,7 +141,6 @@ export default {
                 type: 'select'
             },
             options: ['click', 'hover', 'focus'],
-            defaultValue: 'click',
             description:
                 "Specify which triggers will show the popover. Supported values are 'click', 'hover', 'focus'.",
             table: {
@@ -164,7 +161,6 @@ export default {
                 'bottom-center',
                 'bottom-right'
             ],
-            defaultValue: 'left',
             description:
                 'Determines the alignment of the popover relative to the button. Available options are: auto, left, center, right, bottom-left, bottom-center, bottom-right. The auto option aligns the popover based on available space.',
             table: {
@@ -181,7 +177,6 @@ export default {
             description:
                 'Width of the popover. Accepted values include small, medium and large. ',
             options: ['small', 'medium', 'large'],
-            defaultValue: 'medium',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' },
@@ -194,7 +189,6 @@ export default {
                 type: 'select'
             },
             options: ['base', 'warning', 'error', 'walkthrough'],
-            defaultValue: 'base',
             description:
                 'The variant changes the appearance of the popover. Accepted variants include base, warning, error, walkthrough.',
             table: {
@@ -215,7 +209,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'The variant changes the appearance of buttonIcon. Accepted variants include bare, container, brand, border, border-filled, bare-inverse, and border-inverse.',
             table: {
@@ -228,7 +221,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the popover is in a loading state and shows a spinner.',
             table: {
@@ -241,7 +233,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: "If present, the popover can't be opened by users.",
             table: {
                 type: { summary: 'boolean' },
@@ -250,9 +241,15 @@ export default {
         }
     },
     args: {
-        hideCloseButton: false,
         disabled: false,
-        isLoading: false
+        hideCloseButton: false,
+        isLoading: false,
+        placement: 'left',
+        popoverSize: 'medium',
+        popoverVariant: 'base',
+        size: 'medium',
+        triggers: 'click',
+        variant: 'border'
     }
 };
 
@@ -269,7 +266,7 @@ export const BaseWithPopoverLoading = Template.bind({});
 BaseWithPopoverLoading.args = {
     iconName: 'utility:favorite',
     tooltip: 'Tooltip text',
-    isLoading: 'true'
+    isLoading: true
 };
 
 export const BaseWithPopoverWarning = Template.bind({});

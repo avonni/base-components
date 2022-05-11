@@ -104,21 +104,6 @@ export default class ButtonMenu extends LightningElement {
      */
     @api draftAlternativeText;
     /**
-     * The name of the icon to be used in the format 'utility:down'. If an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.
-     *
-     * @public
-     * @type {string}
-     * @default utility:down
-     */
-    @api
-    get iconName() {
-        return this._iconName;
-    }
-
-    set iconName(icon) {
-        this._iconName = normalizeString(icon);
-    }
-    /**
      * Optional text to be shown on the button.
      *
      * @public
@@ -217,6 +202,12 @@ export default class ButtonMenu extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * The keyboard shortcut for the button menu.
      *
@@ -246,6 +237,22 @@ export default class ButtonMenu extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * The name of the icon to be used in the format 'utility:down'. If an icon other than 'utility:down' or 'utility:chevrondown' is used, a utility:down icon is appended to the right of that icon.
+     *
+     * @public
+     * @type {string}
+     * @default utility:down
+     */
+    @api
+    get iconName() {
+        return this._iconName;
+    }
+
+    set iconName(icon) {
+        this._iconName = normalizeString(icon);
     }
 
     /**
@@ -416,6 +423,12 @@ export default class ButtonMenu extends LightningElement {
         });
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     get computedAriaExpanded() {
         return String(this._dropdownVisible);
     }
@@ -560,6 +573,42 @@ export default class ButtonMenu extends LightningElement {
         return this.loadingStateAlternativeText || i18n.loading;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set focus on the button.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        if (this._connected) {
+            this.focusOnButton();
+        }
+    }
+
+    /**
+     * Simulate a mouse click on the button.
+     *
+     * @public
+     */
+    @api
+    click() {
+        if (this._connected) {
+            this.template.querySelector('[data-element-id="button"]').click();
+        }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Tooltip initialization.
      */
@@ -636,30 +685,6 @@ export default class ButtonMenu extends LightningElement {
         }
 
         this.dispatchSelect(event);
-    }
-
-    /**
-     * Set focus on the button.
-     *
-     * @public
-     */
-    @api
-    focus() {
-        if (this._connected) {
-            this.focusOnButton();
-        }
-    }
-
-    /**
-     * Simulate a mouse click on the button.
-     *
-     * @public
-     */
-    @api
-    click() {
-        if (this._connected) {
-            this.template.querySelector('[data-element-id="button"]').click();
-        }
     }
 
     /**

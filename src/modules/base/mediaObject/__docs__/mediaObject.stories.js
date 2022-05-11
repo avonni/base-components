@@ -43,7 +43,6 @@ export default {
                 type: 'select'
             },
             options: ['start', 'center', 'end'],
-            defaultValue: 'start',
             description:
                 'Determines how to align the media object items vertically in the container. The alignment options are start, center and end.',
             table: {
@@ -56,7 +55,6 @@ export default {
                 type: 'boolean'
             },
             description: 'Figure and body stack on smaller screens.',
-            defaultValue: 0,
             table: {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: 'false' }
@@ -66,7 +64,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'Aligns the figure and body to be inline-block of each other.',
             table: {
@@ -81,7 +78,6 @@ export default {
             options: ['medium', 'small', 'large'],
             description:
                 'The size of the media object. Valid values include small, medium and large.',
-            defaultValue: 'medium',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'medium' }
@@ -89,8 +85,10 @@ export default {
         }
     },
     args: {
+        inline: false,
         responsive: false,
-        inline: false
+        size: 'medium',
+        verticalAlign: 'start'
     }
 };
 

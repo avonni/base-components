@@ -13,7 +13,7 @@ describe('Tab Bar', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    it('Default attributes', () => {
+    it('Tab bar: Default attributes', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -24,7 +24,7 @@ describe('Tab Bar', () => {
         expect(element.defaultTab).toBeUndefined();
     });
 
-    it('Labels attribute', () => {
+    it('Tab bar: Labels attribute', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -44,7 +44,7 @@ describe('Tab Bar', () => {
         });
     });
 
-    it('TabsHidden attribute', () => {
+    it('Tab bar: TabsHidden attribute', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -70,7 +70,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('DefaultTab attribute', () => {
+    it('Tab bar: DefaultTab attribute', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -89,7 +89,7 @@ describe('Tab Bar', () => {
 
     /* ----- TABS CHANGE ----- */
 
-    it('Click on visible tab', () => {
+    it('Tab bar: Click on visible tab', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -111,7 +111,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Click on hidden tab', () => {
+    it('Tab bar: Click on hidden tab', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -144,7 +144,7 @@ describe('Tab Bar', () => {
 
     /* ----- EVENTS ----- */
 
-    it('Select event', () => {
+    it('Tab bar: Select event', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -168,7 +168,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Blur event', () => {
+    it('Tab bar: Blur event', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -201,7 +201,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Dropdown button focus and blur', () => {
+    it('Tab bar: Dropdown button focus and blur', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -236,7 +236,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Change dropdown option with down arrow', () => {
+    it('Tab bar: Change dropdown option with down arrow', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -278,7 +278,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Change dropdown option with up arrow', () => {
+    it('Tab bar: Change dropdown option with up arrow', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -320,7 +320,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Close dropdown with Escape key', () => {
+    it('Tab bar: Close dropdown with Escape key', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -353,7 +353,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Close dropdown with Tab key', () => {
+    it('Tab bar: Close dropdown with Tab key', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -386,7 +386,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Close dropdown with button click', () => {
+    it('Tab bar: Close dropdown with button click', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -413,7 +413,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Invalid keypress in dropdown', () => {
+    it('Tab bar: Invalid keypress in dropdown', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -446,7 +446,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Change selected tab with right arrow with hidden tabs', () => {
+    it('Tab bar: Change selected tab with right arrow with hidden tabs', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -476,7 +476,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Change selected tab with right arrow without hidden tabs', () => {
+    it('Tab bar: Change selected tab with right arrow without hidden tabs', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -505,7 +505,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Change selected tab with left arrow with hidden tabs', () => {
+    it('Tab bar: Change selected tab with left arrow with hidden tabs', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -535,7 +535,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Change selected tab with left arrow without hidden tabs', () => {
+    it('Tab bar: Change selected tab with left arrow without hidden tabs', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });
@@ -564,7 +564,7 @@ describe('Tab Bar', () => {
             });
     });
 
-    it('Invalid keypress when focus is on tabs', () => {
+    it('Tab bar: Invalid keypress when focus is on tabs', () => {
         const element = createElement('avonni-builder-tab-bar', {
             is: TabBar
         });

@@ -108,7 +108,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Scheduler event occurence: Default attributes', () => {
         expect(element.color).toBeUndefined();
         expect(element.columnDuration).toBe(0);
         expect(element.columns).toMatchObject([]);
@@ -142,7 +142,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // color
     // Depends on theme, rows and rowKey
-    it('color', () => {
+    it('Scheduler event occurence: color', () => {
         element.from = FROM;
         element.to = TO;
         element.color = 'tomato';
@@ -156,7 +156,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('color defined by the row color', () => {
+    it('Scheduler event occurence: color defined by the row color', () => {
         element.from = FROM;
         element.to = TO;
         element.theme = 'default';
@@ -173,7 +173,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // date-format
     // Depends on labels, rows and rowKey
-    it('dateFormat', () => {
+    it('Scheduler event occurence: dateFormat', () => {
         element.from = FROM;
         element.to = TO;
         element.rows = ROWS;
@@ -195,7 +195,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // disabled
     // Depends on rows and rowKey
-    it('disabled = false', () => {
+    it('Scheduler event occurence: disabled = false', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -206,7 +206,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('disabled = true', () => {
+    it('Scheduler event occurence: disabled = true', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -217,7 +217,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('disabled occurrence height', () => {
+    it('Scheduler event occurence: disabled occurrence height', () => {
         element.disabled = true;
         element.rows = ROWS;
         element.rowKey = ROW_KEY;
@@ -229,7 +229,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // event-data
     // Depends on labels, rows and rowKey
-    it('eventData', () => {
+    it('Scheduler event occurence: eventData', () => {
         element.rows = ROWS;
         element.rowKey = ROW_KEY;
         element.labels = {
@@ -251,7 +251,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // icon-name
     // Depends on disabled
-    it('iconName', () => {
+    it('Scheduler event occurence: iconName', () => {
         element.disabled = true;
         element.iconName = 'utility:apps';
 
@@ -265,7 +265,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // labels
     // Depends on title, eventData, rows and rowKey
-    it('labels', () => {
+    it('Scheduler event occurence: labels', () => {
         element.rows = ROWS;
         element.rowKey = ROW_KEY;
         element.title = 'Title of the event';
@@ -331,7 +331,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // read-only
     // Depends on disabled and referenceLine
-    it('read-only = false', () => {
+    it('Scheduler event occurence: read-only = false', () => {
         element.readOnly = false;
         const dblClickHandler = jest.fn();
         const mouseDownHandler = jest.fn();
@@ -357,7 +357,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('read-only = false, disabled occurrence', () => {
+    it('Scheduler event occurence: read-only = false, disabled occurrence', () => {
         element.readOnly = false;
         element.disabled = true;
         const disabledDblClickHandler = jest.fn();
@@ -382,7 +382,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('read-only = false, reference line', () => {
+    it('Scheduler event occurence: read-only = false, reference line', () => {
         element.readOnly = false;
         element.referenceLine = true;
         const disabledDblClickHandler = jest.fn();
@@ -407,7 +407,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('read-only = true', () => {
+    it('Scheduler event occurence: read-only = true', () => {
         element.readOnly = true;
         const dblClickHandler = jest.fn();
         const mouseDownHandler = jest.fn();
@@ -433,7 +433,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('read-only = true, disabled occurrence', () => {
+    it('Scheduler event occurence: read-only = true, disabled occurrence', () => {
         element.readOnly = true;
         element.disabled = true;
         const disabledDblClickHandler = jest.fn();
@@ -458,7 +458,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('read-only = true, reference line', () => {
+    it('Scheduler event occurence: read-only = true, reference line', () => {
         element.readOnly = true;
         element.referenceLine = true;
         const disabledDblClickHandler = jest.fn();
@@ -484,7 +484,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     // reference-line
-    it('referenceLine = false', () => {
+    it('Scheduler event occurence: referenceLine = false', () => {
         element.referenceLine = false;
 
         return Promise.resolve().then(() => {
@@ -495,7 +495,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('referenceLine = true', () => {
+    it('Scheduler event occurence: referenceLine = true', () => {
         element.referenceLine = true;
 
         return Promise.resolve().then(() => {
@@ -508,7 +508,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // scroll-left-offset
     // Depends on labels, rows, and rowKey
-    it('scrollLeftOffset', () => {
+    it('Scheduler event occurence: scrollLeftOffset', () => {
         element.scrollLeftOffset = 30;
         element.from = FROM;
         element.to = TO;
@@ -530,7 +530,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // theme
     // Depends on color and referenceLine
-    it('theme = default', () => {
+    it('Scheduler event occurence: theme = default', () => {
         element.theme = 'default';
         element.color = 'rgb(0, 0, 0)';
 
@@ -543,7 +543,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('theme = transparent', () => {
+    it('Scheduler event occurence: theme = transparent', () => {
         element.theme = 'transparent';
         element.color = 'rgb(0, 0, 0)';
 
@@ -557,7 +557,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('theme = transparent, with hexadecimal color', () => {
+    it('Scheduler event occurence: theme = transparent, with hexadecimal color', () => {
         element.theme = 'transparent';
         element.color = '#000';
 
@@ -573,7 +573,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('theme = line', () => {
+    it('Scheduler event occurence: theme = line', () => {
         element.theme = 'line';
         element.color = 'rgb(0, 0, 0)';
 
@@ -586,7 +586,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('theme = hollow', () => {
+    it('Scheduler event occurence: theme = hollow', () => {
         element.theme = 'hollow';
         element.color = 'rgb(0, 0, 0)';
 
@@ -599,7 +599,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('theme = rounded', () => {
+    it('Scheduler event occurence: theme = rounded', () => {
         element.theme = 'rounded';
         element.color = 'rgb(0, 0, 0)';
 
@@ -612,7 +612,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('theme, referenceLine = true', () => {
+    it('Scheduler event occurence: theme, referenceLine = true', () => {
         element.theme = 'inverse';
         element.referenceLine = true;
 
@@ -626,7 +626,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // title
     // Depends on referenceLine and disabled
-    it('title, referenceLine = true', () => {
+    it('Scheduler event occurence: title, referenceLine = true', () => {
         element.title = 'Title string';
         element.referenceLine = true;
 
@@ -638,7 +638,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         });
     });
 
-    it('title, disabled = true', () => {
+    it('Scheduler event occurence: title, disabled = true', () => {
         element.title = 'Title string';
         element.disabled = true;
 
@@ -651,7 +651,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     // x
-    it('x', () => {
+    it('Scheduler event occurence: x', () => {
         element.x = 70;
 
         return Promise.resolve().then(() => {
@@ -660,7 +660,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     });
 
     // y
-    it('y', () => {
+    it('Scheduler event occurence: y', () => {
         element.y = 70;
 
         return Promise.resolve().then(() => {
@@ -671,7 +671,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
     /* ----- METHODS ----- */
 
     // focus
-    it('focus method', () => {
+    it('Scheduler event occurence: focus method', () => {
         const handler = jest.fn();
         const wrapper = element.shadowRoot.querySelector(
             '.avonni-scheduler__event-wrapper'
@@ -684,7 +684,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // hideRightLabel
     // Depends on labels, rowKey and rows
-    it('hideRightLabel method', () => {
+    it('Scheduler event occurence: hideRightLabel method', () => {
         element.rowKey = ROW_KEY;
         element.rows = ROWS;
         element.labels = {
@@ -705,7 +705,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // showRightLabel
     // Depends on hideRightLabel() labels, rowKey and rows
-    it('showRightLabel method', () => {
+    it('Scheduler event occurence: showRightLabel method', () => {
         element.rowKey = ROW_KEY;
         element.rows = ROWS;
         element.labels = {
@@ -727,7 +727,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // Horizontal position and width: updatePosition() and updateWidth()
     // columnDuration, columns, columnWidth, from, leftPosition, to, x
-    it('updateWidth and updatePosition methods, event spans only on full columns', () => {
+    it('Scheduler event occurence: updateWidth and updatePosition methods, event spans only on full columns', () => {
         element.from = FROM;
         element.to = TO;
         element.columnWidth = COLUMN_WIDTH;
@@ -741,7 +741,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         expect(element.style.width).toBe('100px');
     });
 
-    it('updateWidth and updatePosition methods, event spans on full and half columns', () => {
+    it('Scheduler event occurence: updateWidth and updatePosition methods, event spans on full and half columns', () => {
         element.from = new Date(FROM.getTime()).setHours(7, 30);
         element.to = new Date(TO.getTime()).setHours(9, 30);
         element.columnWidth = COLUMN_WIDTH;
@@ -755,7 +755,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         expect(element.style.width).toBe('100px');
     });
 
-    it('updateWidth and updatePosition methods, event spans on only part of a column', () => {
+    it('Scheduler event occurence: updateWidth and updatePosition methods, event spans on only part of a column', () => {
         element.from = new Date(FROM.getTime()).setHours(8, 15);
         element.to = new Date(TO.getTime()).setHours(8, 45);
         element.columnWidth = COLUMN_WIDTH;
@@ -771,7 +771,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // Vertical position: updatePosition()
     // occurrence, y, columns, rows and rowKey
-    it('updatePosition method, vertical position', () => {
+    it('Scheduler event occurence: updatePosition method, vertical position', () => {
         element.from = FROM;
         element.to = TO;
         element.rows = ROWS;
@@ -789,7 +789,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privateblur
     // Depends on eventName and occurrenceKey
-    it('privateblur event', () => {
+    it('Scheduler event occurence: privateblur event', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -808,7 +808,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatecontextmenu
     // Depends on eventName and occurrenceKey
-    it('privatecontextmenu event', () => {
+    it('Scheduler event occurence: privatecontextmenu event', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -834,7 +834,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         expect(handler.mock.calls[0][0].detail.y).toBe(20);
     });
 
-    it('privatecontextmenu event, triggered by the keyboard', () => {
+    it('Scheduler event occurence: privatecontextmenu event, triggered by the keyboard', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -862,7 +862,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatedblclick
     // Depends on eventName and occurrenceKey
-    it('privatedblclick event', () => {
+    it('Scheduler event occurence: privatedblclick event', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -890,7 +890,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatedisabledcontextmenu
     // Depends on disabled
-    it('privatedisabledcontextmenu event', () => {
+    it('Scheduler event occurence: privatedisabledcontextmenu event', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -913,7 +913,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatedisableddblclick
     // Depends on disabled
-    it('privatedisableddblclick event', () => {
+    it('Scheduler event occurence: privatedisableddblclick event', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -936,7 +936,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatedisabledmousedown
     // Depends on disabled
-    it('privatedisabledmousedown event', () => {
+    it('Scheduler event occurence: privatedisabledmousedown event', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -960,7 +960,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatefocus
     // Depends on eventName and occurrenceKey
-    it('privatefocus event', () => {
+    it('Scheduler event occurence: privatefocus event', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -995,7 +995,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatemousedown
     // Depends on eventName and occurrenceKey
-    it('privatemousedown event', () => {
+    it('Scheduler event occurence: privatemousedown event', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1024,7 +1024,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatemouseenter
     // Depends on eventName and occurrenceKey
-    it('privatemouseenter event', () => {
+    it('Scheduler event occurence: privatemouseenter event', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;
@@ -1051,7 +1051,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
     // privatemouseleave
     // Depends on eventName and occurrenceKey
-    it('privatemouseleave event', () => {
+    it('Scheduler event occurence: privatemouseleave event', () => {
         element.eventName = 'event-name';
         element.occurrenceKey = 'occurrence-key';
         element.from = FROM;

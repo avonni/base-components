@@ -66,7 +66,7 @@ describe('Primitive Pill', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive pill: Default attributes', () => {
         expect(element.actions).toEqual([]);
         expect(element.avatar).toBeUndefined();
         expect(element.href).toBeUndefined();
@@ -80,7 +80,7 @@ describe('Primitive Pill', () => {
      */
 
     // actions
-    it('actions', () => {
+    it('Primitive pill: actions', () => {
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
@@ -102,7 +102,7 @@ describe('Primitive Pill', () => {
         });
     });
 
-    it('actions, only one', () => {
+    it('Primitive pill: actions, only one', () => {
         element.actions = [ACTIONS[0]];
 
         return Promise.resolve().then(() => {
@@ -122,7 +122,7 @@ describe('Primitive Pill', () => {
         });
     });
 
-    it('actions, focus on actions when tab key is pressed', () => {
+    it('Primitive pill: actions, focus on actions when tab key is pressed', () => {
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
@@ -149,7 +149,7 @@ describe('Primitive Pill', () => {
     });
 
     // avatar
-    it('avatar', () => {
+    it('Primitive pill: avatar', () => {
         const avatar = {
             fallbackIconName: 'standard:account',
             initials: 'AB',
@@ -173,7 +173,7 @@ describe('Primitive Pill', () => {
     });
 
     // href and label
-    it('href and label', () => {
+    it('Primitive pill: href and label', () => {
         element.href = 'https://avonni.app/';
         element.label = 'Some label';
 
@@ -220,7 +220,7 @@ describe('Primitive Pill', () => {
      */
 
     // focusLink
-    it('focusLink() method', () => {
+    it('Primitive pill: focusLink() method', () => {
         element.href = 'https://avonni.app/';
 
         return Promise.resolve().then(() => {
@@ -241,7 +241,7 @@ describe('Primitive Pill', () => {
      */
 
     // actionclick
-    it('actionclick event', () => {
+    it('Primitive pill: actionclick event', () => {
         element.actions = ACTIONS;
 
         const handler = jest.fn();
@@ -283,7 +283,7 @@ describe('Primitive Pill', () => {
     });
 
     // Event management relative to the pill container
-    it('Event management relative to the pill container', () => {
+    it('Primitive pill: Event management relative to the pill container', () => {
         element.actions = ACTIONS;
         element.href = 'https://avonni.app/';
 

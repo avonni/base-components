@@ -48,7 +48,7 @@ describe('Blockquote', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Blockquote: Default attributes', () => {
         expect(element.variant).toBe('default');
         expect(element.title).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -58,7 +58,7 @@ describe('Blockquote', () => {
 
     /* ----- ATTRIBUTES ----- */
     // variant
-    it('Blockquote variant default', () => {
+    it('Blockquote: variant default', () => {
         element.title = 'Blockquote Title';
 
         return Promise.resolve().then(() => {
@@ -69,7 +69,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote variant brand', () => {
+    it('Blockquote: variant brand', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -80,7 +80,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote variant warning', () => {
+    it('Blockquote: variant warning', () => {
         element.variant = 'warning';
 
         return Promise.resolve().then(() => {
@@ -91,7 +91,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote variant success', () => {
+    it('Blockquote: variant success', () => {
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
@@ -102,7 +102,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote variant error', () => {
+    it('Blockquote: variant error', () => {
         element.variant = 'error';
 
         return Promise.resolve().then(() => {
@@ -114,7 +114,7 @@ describe('Blockquote', () => {
     });
 
     // title
-    it('Blockquote title', () => {
+    it('Blockquote: title', () => {
         element.title = 'Blockquote Title';
 
         return Promise.resolve().then(() => {
@@ -126,7 +126,7 @@ describe('Blockquote', () => {
     });
 
     // icon name
-    it('Blockquote icon name', () => {
+    it('Blockquote: icon name', () => {
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
@@ -138,7 +138,7 @@ describe('Blockquote', () => {
     });
 
     // icon size
-    it('Blockquote icon size xx-small', () => {
+    it('Blockquote: icon size xx-small', () => {
         element.iconName = 'utility:error';
         element.iconSize = 'xx-small';
 
@@ -150,7 +150,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote icon size x-small', () => {
+    it('Blockquote: icon size x-small', () => {
         element.iconName = 'utility:error';
         element.iconSize = 'x-small';
 
@@ -162,7 +162,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote icon size small', () => {
+    it('Blockquote: icon size small', () => {
         element.iconName = 'utility:error';
 
         return Promise.resolve().then(() => {
@@ -173,7 +173,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote icon size medium', () => {
+    it('Blockquote: icon size medium', () => {
         element.iconName = 'utility:error';
         element.iconSize = 'medium';
 
@@ -185,7 +185,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote icon size large', () => {
+    it('Blockquote: icon size large', () => {
         element.iconName = 'utility:error';
         element.iconSize = 'large';
 
@@ -198,7 +198,7 @@ describe('Blockquote', () => {
     });
 
     // icon position
-    it('Blockquote icon position right', () => {
+    it('Blockquote: icon position right', () => {
         element.iconName = 'utility:error';
         element.iconPosition = 'right';
 
@@ -210,7 +210,7 @@ describe('Blockquote', () => {
         });
     });
 
-    it('Blockquote icon position left', () => {
+    it('Blockquote: icon position left', () => {
         element.iconName = 'utility:error';
         element.iconPosition = 'left';
 

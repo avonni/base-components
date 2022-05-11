@@ -61,7 +61,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Active',
             description: 'Text shown for the active state of a toggle.',
             table: {
                 type: { summary: 'string' },
@@ -73,7 +72,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Inactive',
             description: 'Text shown for the inactive state of a toggle.',
             table: {
                 type: { summary: 'string' },
@@ -115,7 +113,6 @@ export default {
                 type: 'select'
             },
             options: ['x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
             description:
                 'The size of the input toggle. Valid values include x-small, small, medium and large.',
             table: {
@@ -133,7 +130,6 @@ export default {
                 'label-hidden',
                 'label-stacked'
             ],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
             table: {
@@ -145,7 +141,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, the toggle is selected.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -156,7 +151,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -170,7 +164,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, hide the mark.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -182,7 +175,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
             table: {
@@ -195,7 +187,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
@@ -268,8 +259,12 @@ export default {
         checked: false,
         disabled: false,
         hideMark: false,
+        messageToggleActive: 'Active',
+        messageToggleInactive: 'Inactive',
         readOnly: false,
-        required: false
+        required: false,
+        size: 'medium',
+        variant: 'standard'
     }
 };
 

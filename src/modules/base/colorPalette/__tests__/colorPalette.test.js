@@ -70,7 +70,7 @@ describe('Color Palette', () => {
         document.body.appendChild(element);
     });
 
-    it('Color Palette Default attributes', () => {
+    it('Color Palette: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.value).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
@@ -115,7 +115,7 @@ describe('Color Palette', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('Color Palette disabled', () => {
+    it('Color Palette: disabled', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -135,7 +135,7 @@ describe('Color Palette', () => {
     });
 
     // read-only
-    it('Color Palette read-only', () => {
+    it('Color Palette: read-only', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -149,7 +149,7 @@ describe('Color Palette', () => {
     });
 
     // is loading
-    it('Color Palette is loading', () => {
+    it('Color Palette: is loading', () => {
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -161,7 +161,7 @@ describe('Color Palette', () => {
     });
 
     // colors
-    it('Color Palette color', () => {
+    it('Color Palette: color', () => {
         element.colors = COLORS;
 
         return Promise.resolve().then(() => {
@@ -180,7 +180,7 @@ describe('Color Palette', () => {
     });
 
     // columns
-    it('Color Palette columns', () => {
+    it('Color Palette: columns', () => {
         element.columns = 4;
 
         return Promise.resolve().then(() => {
@@ -193,7 +193,7 @@ describe('Color Palette', () => {
 
     // groups
     // Depends on colors
-    it('Color Palette groups', () => {
+    it('Color Palette: groups', () => {
         const groupsName = [
             {
                 name: 'firstGroup',
@@ -246,7 +246,7 @@ describe('Color Palette', () => {
     });
 
     // tile width
-    it('Color Palette tile width', () => {
+    it('Color Palette: tile width', () => {
         element.tileWidth = 4;
 
         return Promise.resolve().then(() => {
@@ -260,7 +260,7 @@ describe('Color Palette', () => {
     });
 
     // tile height
-    it('Color Palette tile height', () => {
+    it('Color Palette: tile height', () => {
         element.tileHeight = 10;
 
         return Promise.resolve().then(() => {
@@ -275,7 +275,7 @@ describe('Color Palette', () => {
 
     // variant
     // Depends on colors
-    it('Color Palette grid variant', () => {
+    it('Color Palette: grid variant', () => {
         element.variant = 'grid';
         element.colors = COLORS;
 
@@ -293,7 +293,7 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette list variant', () => {
+    it('Color Palette: list variant', () => {
         element.variant = 'list';
         element.colors = COLORS;
 
@@ -311,7 +311,7 @@ describe('Color Palette', () => {
     /* ----- JS ----- */
 
     // click when disabled
-    it('Color Palette click when disabled', () => {
+    it('Color Palette: click when disabled', () => {
         element.disabled = true;
 
         const color = element.shadowRoot.querySelector(
@@ -327,7 +327,7 @@ describe('Color Palette', () => {
     /* ----- METHODS ----- */
 
     // reset method
-    it('Color Palette reset method', () => {
+    it('Color Palette: reset method', () => {
         element.value = '#ffffff';
         element.reset();
 
@@ -339,7 +339,7 @@ describe('Color Palette', () => {
     /* ----- EVENTS ----- */
 
     // color palette change
-    it('Color Palette change event', () => {
+    it('Color Palette: change event', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -364,7 +364,7 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette change event in a list', () => {
+    it('Color Palette: change event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.colors = COLORS;
@@ -392,7 +392,7 @@ describe('Color Palette', () => {
 
     // color palette change
     // Depends on variant and colors
-    it('Color Palette double click event', () => {
+    it('Color Palette: double click event', () => {
         const handler = jest.fn();
         element.addEventListener('colordblclick', handler);
         element.colors = COLORS;
@@ -410,7 +410,7 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette double click event in a list', () => {
+    it('Color Palette: double click event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('colordblclick', handler);
         element.colors = COLORS;
@@ -429,7 +429,7 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette focus event', () => {
+    it('Color Palette: focus event', () => {
         const handler = jest.fn();
         element.addEventListener('privatefocus', handler);
         element.colors = COLORS;
@@ -446,7 +446,7 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette focus event in a list', () => {
+    it('Color Palette: focus event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('privatefocus', handler);
         element.colors = COLORS;
@@ -464,7 +464,7 @@ describe('Color Palette', () => {
         });
     });
 
-    it('Color Palette blur event', () => {
+    it('Color Palette: blur event', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
         element.colors = COLORS;
@@ -484,7 +484,7 @@ describe('Color Palette', () => {
             });
     });
 
-    it('Color Palette blur event in a list', () => {
+    it('Color Palette: blur event in a list', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
         element.colors = COLORS;
