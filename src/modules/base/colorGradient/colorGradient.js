@@ -103,7 +103,7 @@ export default class ColorGradient extends LightningElement {
 
             this.setPaletteColor(this.colors.H);
             this.setSwatchColor(this.value);
-            this.setindIcatorPosition();
+            this.setIndicatorPosition();
 
             this.init = true;
         }
@@ -197,7 +197,7 @@ export default class ColorGradient extends LightningElement {
             if (this.init) {
                 this.setPaletteColor(this.colors.H);
                 this.setSwatchColor(this.value);
-                this.setindIcatorPosition();
+                this.setIndicatorPosition();
             }
         }
     }
@@ -262,7 +262,7 @@ export default class ColorGradient extends LightningElement {
 
             this.setPaletteColor(this.colors.H);
             this.setSwatchColor(this.value);
-            this.setindIcatorPosition();
+            this.setIndicatorPosition();
         }
     }
 
@@ -356,11 +356,21 @@ export default class ColorGradient extends LightningElement {
     }
 
     /**
+     * Change event handler.
+     *
+     * @param {object} event
+     */
+    handleChange(event) {
+        event.stopPropagation();
+    }
+
+    /**
      * Input event handler.
      *
      * @param {object} event
      */
     handlerInput(event) {
+        event.stopPropagation();
         if (!this.readOnly) {
             let H = event.target.value;
 
@@ -484,7 +494,6 @@ export default class ColorGradient extends LightningElement {
      */
     processingRGBColor(event) {
         let color = `rgba(${this.colors.R},${this.colors.G},${this.colors.B},${this.colors.A})`;
-
         if (colorType(color) !== null) {
             this.hideErrors();
             this.updateColors(color);
@@ -650,14 +659,14 @@ export default class ColorGradient extends LightningElement {
 
         this.setPaletteColor(this.colors.H);
         this.setSwatchColor(this.colors.hexa);
-        this.setindIcatorPosition();
+        this.setIndicatorPosition();
         this.dispatchChange();
     }
 
     /**
      * Set indicator position based on color value.
      */
-    setindIcatorPosition() {
+    setIndicatorPosition() {
         let x = this.paletteWidth * this.colors.hsv.s;
         let y = this.paletteHeight * (1 - this.colors.hsv.v);
 
