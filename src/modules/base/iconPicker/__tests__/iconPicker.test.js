@@ -806,6 +806,40 @@ describe('IconPicker', () => {
             });
     });
 
+    /* ----- PUBLIC METHODS ----- */
+
+    it('Input element focused when component focused', () => {
+        return Promise.resolve()
+            .then(() => {
+                // exterior call of focus() method
+                element.focus();
+            })
+            .then(() => {
+                const input = element.shadowRoot.querySelector(
+                    '[data-element-id="input"]'
+                );
+                expect(element.shadowRoot.activeElement).toEqual(input);
+            });
+    });
+
+    it('Input element not focused when input does not exist', () => {
+        const input = element.shadowRoot.querySelector(
+            '[data-element-id="input"]'
+        );
+        return Promise.resolve()
+            .then(() => {
+                // input is no longer present in DOM
+                input.remove();
+            })
+            .then(() => {
+                // exterior call of focus() method
+                element.focus();
+            })
+            .then(() => {
+                expect(element.shadowRoot.activeElement).not.toEqual(input);
+            });
+    });
+
     /* ----- ICON SELECTION ----- */
 
     it('Value changes after icon selection and done button click', () => {
