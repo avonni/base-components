@@ -349,7 +349,7 @@ describe('IconPicker', () => {
             });
     });
 
-    it('Action icon small scaling class', () => {
+    it('Small action icon  scaling class', () => {
         element.value = 'action:add_file';
         element.menuIconSize = 'xx-small';
 
@@ -363,7 +363,7 @@ describe('IconPicker', () => {
         });
     });
 
-    it('Action icon medium scaling class', () => {
+    it('Medium action icon scaling class', () => {
         element.value = 'action:add_file';
         element.menuIconSize = 'medium';
 
@@ -377,7 +377,7 @@ describe('IconPicker', () => {
         });
     });
 
-    it('Action icon large scaling class', () => {
+    it('Large action icon large scaling class', () => {
         element.value = 'action:add_file';
         element.menuIconSize = 'large';
 
