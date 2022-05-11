@@ -34,6 +34,7 @@
     max-width: 20rem;
     cursor: pointer;
 }
+
 .avonni-opacity {
     padding-top: 0.25rem;
 }
@@ -51,4 +52,8 @@
     padding-top: 0.5rem;
     color: #c23934;
     font-size: 0.75rem;
+}
+
+.slds-color-picker__custom-range_disabled {
+    cursor: not-allowed;
 }

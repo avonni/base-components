@@ -209,6 +209,17 @@ export default class ColorGradient extends LightningElement {
      */
 
     /**
+     * Disable cursor if disabled or readOnly.
+     *
+     * @type {string}
+     */
+    get disabledClass() {
+        return this._disabled || this._readOnly
+            ? 'slds-color-picker__custom-range slds-color-picker__custom-range_disabled'
+            : 'slds-color-picker__custom-range';
+    }
+
+    /**
      * Disable input handler.
      *
      * @type {boolean}
@@ -601,25 +612,21 @@ export default class ColorGradient extends LightningElement {
             lightness = 100;
         }
 
-        if (this.opacity) {
-            let color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, ${this.colors.A})`;
+        const opacity = this.opacity ? this.colors.A : 100;
 
-            if (colorType(color) === null) {
-                color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, 1)`;
-            }
+        let color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, ${opacity})`;
 
-            let colors = generateColors(color);
-
-            if (colors.H !== this.colors.H) {
-                colors.H = this.colors.H;
-            }
-
-            this.colors = colors;
-        } else {
-            this.colors = generateColors(
-                `hsl(${this.colors.H}, ${saturation}%, ${lightness}%)`
-            );
+        if (colorType(color) === null) {
+            color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, 1)`;
         }
+
+        let colors = generateColors(color);
+
+        if (colors.H !== this.colors.H) {
+            colors.H = this.colors.H;
+        }
+
+        this.colors = colors;
 
         this.positionX = x;
         this.positionY = y;
