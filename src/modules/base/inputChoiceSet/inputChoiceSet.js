@@ -39,12 +39,7 @@ import {
     getRealDOMId,
     classListMutation
 } from 'c/utilsPrivate';
-import {
-    FieldConstraintApi,
-    InteractingState,
-    normalizeVariant,
-    VARIANT
-} from 'c/inputUtils';
+import { FieldConstraintApi, normalizeVariant, VARIANT } from 'c/inputUtils';
 import { classSet } from 'c/utils';
 import InputChoiceOption from './inputChoiceOption';
 
@@ -147,8 +142,6 @@ export default class InputChoiceSet extends LightningElement {
 
         this.classList.add('slds-form-element');
         this.updateClassList();
-        this.interactingState = new InteractingState();
-        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
         this._isConnected = true;
     }
 
@@ -574,8 +567,6 @@ export default class InputChoiceSet extends LightningElement {
      * Dispatch the focus event.
      */
     handleFocus() {
-        this.interactingState.enter();
-
         /**
          * The event fired when you focus the input.
          *
@@ -590,8 +581,6 @@ export default class InputChoiceSet extends LightningElement {
      * Dispatch the blur event.
      */
     handleBlur() {
-        this.interactingState.leave();
-
         /**
          * The event fired when the focus is removed from the input.
          *
@@ -657,6 +646,7 @@ export default class InputChoiceSet extends LightningElement {
             });
             this._value = this.handleValueChange(checkboxes);
         }
+        this.showHelpMessageIfInvalid();
 
         /**
          * The event fired when the value changed.
