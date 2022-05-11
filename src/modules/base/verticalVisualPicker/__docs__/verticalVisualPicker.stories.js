@@ -48,7 +48,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the visual picker is disabled and the user cannot interact with it. ',
             table: {
@@ -62,7 +61,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, hide the check mark when selected.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -114,7 +112,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, at least one item must be selected.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -127,7 +124,6 @@ export default {
                 type: 'select'
             },
             options: ['small', 'medium', 'large', 'responsive'],
-            defaultValue: 'medium',
             description:
                 'It defines the width of the item. Valid values include small, medium, large and responsive.',
             table: {
@@ -140,7 +136,6 @@ export default {
                 type: 'select'
             },
             options: ['radio', 'checkbox'],
-            defaultValue: 'radio',
             description:
                 'It defines the type of input. Valid values include radio and checkbox.',
             table: {
@@ -163,7 +158,6 @@ export default {
                 type: 'select'
             },
             options: ['coverable', 'non-coverable'],
-            defaultValue: 'non-coverable',
             description:
                 'Changes the appearance of the vertical visual picker when selected. Valid values include coverable and non-coverable.',
             table: {
@@ -175,7 +169,10 @@ export default {
     args: {
         disabled: false,
         hideCheckMark: false,
-        required: false
+        required: false,
+        size: 'medium',
+        type: 'radio',
+        variant: 'non-coverable'
     }
 };
 

@@ -131,7 +131,7 @@ describe('Primitive Tree Item', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive tree item: Default attributes', () => {
         expect(element.actions).toEqual([]);
         expect(element.actionsWhenDisabled).toEqual([]);
         expect(element.allowInlineEdit).toBeFalsy();
@@ -171,7 +171,7 @@ describe('Primitive Tree Item', () => {
 
     // actions
     // Depends on disabled
-    it('actions', () => {
+    it('Primitive tree item: actions', () => {
         element.actions = ACTIONS;
 
         return Promise.resolve()
@@ -213,7 +213,7 @@ describe('Primitive Tree Item', () => {
             });
     });
 
-    it('Hide and show action buttons and menu', () => {
+    it('Primitive tree item: Hide and show action buttons and menu', () => {
         element.actions = ACTIONS;
 
         return Promise.resolve().then(() => {
@@ -255,7 +255,7 @@ describe('Primitive Tree Item', () => {
 
     // actions-when-disabled
     // Depends on disabled
-    it('actionsWhenDisabled', () => {
+    it('Primitive tree item: actionsWhenDisabled', () => {
         element.actionsWhenDisabled = ACTIONS;
         element.disabled = true;
 
@@ -300,7 +300,7 @@ describe('Primitive Tree Item', () => {
 
     // allow-inline-edit
     // Depends on label and href
-    it('allowInlineEdit', () => {
+    it('Primitive tree item: allowInlineEdit', () => {
         element.allowInlineEdit = true;
         element.label = 'Some label';
         element.href = 'https://www.salesforce.com';
@@ -329,7 +329,7 @@ describe('Primitive Tree Item', () => {
             });
     });
 
-    it('allowInlineEdit triggered by keyboard', () => {
+    it('Primitive tree item: allowInlineEdit triggered by keyboard', () => {
         element.allowInlineEdit = true;
         const event = new CustomEvent('keydown');
         event.keyCode = 13;
@@ -344,7 +344,7 @@ describe('Primitive Tree Item', () => {
     });
 
     // avatar
-    it('avatar', () => {
+    it('Primitive tree item: avatar', () => {
         const avatar = {
             alternativeText: 'some alt text',
             fallbackIconName: 'utility:apps',
@@ -379,7 +379,7 @@ describe('Primitive Tree Item', () => {
 
     // child-items
     // Depends on actions, actionsWhenDisabled, epxanded, loadingStateAlternativeText, showCheckbox and sortable
-    it('childItems', () => {
+    it('Primitive tree item: childItems', () => {
         const actionsWhenDisabled = [ACTIONS[0], ACTIONS[3]];
         element.actions = ACTIONS;
         element.actionsWhenDisabled = actionsWhenDisabled;
@@ -432,7 +432,7 @@ describe('Primitive Tree Item', () => {
 
     // disabled
     // Depends on allowInlineEdit, childItems, href, fields and expanded
-    it('disabled', () => {
+    it('Primitive tree item: disabled', () => {
         element.allowInlineEdit = true;
         element.childItems = ITEMS;
         element.expanded = true;
@@ -482,7 +482,7 @@ describe('Primitive Tree Item', () => {
 
     // edit-fields
     // Depends on actions
-    it('editableFields', () => {
+    it('Primitive tree item: editableFields', () => {
         element.editableFields = ['disabled', 'label'];
         element.actions = [
             {
@@ -518,7 +518,7 @@ describe('Primitive Tree Item', () => {
 
     // expanded
     // Depends on fields and childItems
-    it('expanded = false', () => {
+    it('Primitive tree item: expanded = false', () => {
         element.fields = FIELDS;
         element.expanded = false;
         element.childItems = ITEMS;
@@ -546,7 +546,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('expanded = true', () => {
+    it('Primitive tree item: expanded = true', () => {
         element.fields = FIELDS;
         element.expanded = true;
         element.childItems = ITEMS;
@@ -576,7 +576,7 @@ describe('Primitive Tree Item', () => {
 
     // fields
     // Depends on expanded
-    it('fields', () => {
+    it('Primitive tree item: fields', () => {
         element.fields = FIELDS;
         element.expanded = true;
 
@@ -598,7 +598,7 @@ describe('Primitive Tree Item', () => {
 
     // href, label and metatext
     // Depends on metatext
-    it('href, label and metatext', () => {
+    it('Primitive tree item: href, label and metatext', () => {
         element.label = 'Some label';
         element.href = 'https://www.salesforce.com/';
         element.metatext = 'some meta';
@@ -626,7 +626,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('label and metatext with no href', () => {
+    it('Primitive tree item: label and metatext with no href', () => {
         element.label = 'Some label';
         element.metatext = 'some meta';
 
@@ -651,7 +651,7 @@ describe('Primitive Tree Item', () => {
     });
 
     // is-leaf
-    it('isLeaf = true', () => {
+    it('Primitive tree item: isLeaf = true', () => {
         element.isLeaf = true;
 
         return Promise.resolve().then(() => {
@@ -662,7 +662,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('isLeaf = false', () => {
+    it('Primitive tree item: isLeaf = false', () => {
         element.isLeaf = false;
 
         return Promise.resolve().then(() => {
@@ -675,7 +675,7 @@ describe('Primitive Tree Item', () => {
 
     // is-loading
     // Depends on expanded
-    it('isLoading = true', () => {
+    it('Primitive tree item: isLoading = true', () => {
         element.isLoading = true;
         element.expanded = true;
 
@@ -687,7 +687,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('isLoading = false', () => {
+    it('Primitive tree item: isLoading = false', () => {
         element.isLoading = false;
         element.expanded = true;
 
@@ -700,7 +700,7 @@ describe('Primitive Tree Item', () => {
     });
 
     // level
-    it('level', () => {
+    it('Primitive tree item: level', () => {
         element.level = 3;
 
         return Promise.resolve().then(() => {
@@ -715,7 +715,7 @@ describe('Primitive Tree Item', () => {
 
     // loading-state-alternative-text
     // Depends on isLoading and expanded
-    it('loadingStateAlternativeText', () => {
+    it('Primitive tree item: loadingStateAlternativeText', () => {
         element.isLoading = true;
         element.expanded = true;
         element.loadingStateAlternativeText = 'Some alt text';
@@ -730,7 +730,7 @@ describe('Primitive Tree Item', () => {
 
     // selected, independent-multi-select and show-checkbox
     // Depends on childItems
-    it('selected = false, with showCheckbox and some selected childItems', () => {
+    it('Primitive tree item: selected = false, with showCheckbox and some selected childItems', () => {
         element.independentMultiSelect = false;
         element.selected = false;
         element.showCheckbox = true;
@@ -757,7 +757,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('selected = false, with showCheckbox, some selected childItems and independentMultiSelect', () => {
+    it('Primitive tree item: selected = false, with showCheckbox, some selected childItems and independentMultiSelect', () => {
         element.independentMultiSelect = true;
         element.selected = false;
         element.showCheckbox = true;
@@ -784,7 +784,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('selected = false, with showCheckbox and all selected childItems', () => {
+    it('Primitive tree item: selected = false, with showCheckbox and all selected childItems', () => {
         element.independentMultiSelect = false;
         element.selected = false;
         element.showCheckbox = true;
@@ -812,7 +812,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('selected = false, with showCheckbox, all selected childItems and independentMultiSelect', () => {
+    it('Primitive tree item: selected = false, with showCheckbox, all selected childItems and independentMultiSelect', () => {
         element.independentMultiSelect = true;
         element.selected = false;
         element.showCheckbox = true;
@@ -842,7 +842,7 @@ describe('Primitive Tree Item', () => {
 
     // sortable and privatemousedown
     // Depends on nodeKey and name
-    it('sortable = false should not allow privatemousedown event', () => {
+    it('Primitive tree item: sortable = false should not allow privatemousedown event', () => {
         element.sortable = false;
         const handler = jest.fn();
         element.addEventListener('privatemousedown', handler);
@@ -851,7 +851,7 @@ describe('Primitive Tree Item', () => {
         expect(handler).not.toHaveBeenCalled();
     });
 
-    it('sortable = true should allow privatemousedown event', () => {
+    it('Primitive tree item: sortable = true should allow privatemousedown event', () => {
         element.sortable = true;
         element.name = 'someName';
         element.nodeKey = 'uniqueKey';
@@ -867,7 +867,7 @@ describe('Primitive Tree Item', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 
-    it('sortable = true should prevent links from being dragged', () => {
+    it('Primitive tree item: sortable = true should prevent links from being dragged', () => {
         element.sortable = true;
         element.href = 'some-url';
 
@@ -888,7 +888,7 @@ describe('Primitive Tree Item', () => {
      * -------------------------------------------------------------
      */
 
-    it('focusContent() method, expand button', () => {
+    it('Primitive tree item: focusContent() method, expand button', () => {
         return Promise.resolve().then(() => {
             const expandButton = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-icon-expand"]'
@@ -899,7 +899,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('focusContent() method, checkbox', () => {
+    it('Primitive tree item: focusContent() method, checkbox', () => {
         element.disabled = true;
         element.showCheckbox = true;
 
@@ -913,7 +913,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('focusContent() method, href', () => {
+    it('Primitive tree item: focusContent() method, href', () => {
         element.isLeaf = true;
         element.href = 'some link';
 
@@ -927,7 +927,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('focusContent() method, button actions', () => {
+    it('Primitive tree item: focusContent() method, button actions', () => {
         element.isLeaf = true;
         element.actions = [
             {
@@ -948,7 +948,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('focusContent() method, actions menu', () => {
+    it('Primitive tree item: focusContent() method, actions menu', () => {
         element.isLeaf = true;
         element.actions = [
             {
@@ -976,7 +976,7 @@ describe('Primitive Tree Item', () => {
 
     // change
     // Depends on allowInlineEdit, nodeKey, isLeaf, label and actions
-    it('change event', () => {
+    it('Primitive tree item: change event', () => {
         element.actions = ACTIONS;
         element.isLeaf = true;
         element.nodeKey = 'someKey';
@@ -1087,7 +1087,7 @@ describe('Primitive Tree Item', () => {
             });
     });
 
-    it('change event, invalid input disables done button', () => {
+    it('Primitive tree item: change event, invalid input disables done button', () => {
         element.actions = ACTIONS;
 
         return Promise.resolve()
@@ -1113,7 +1113,7 @@ describe('Primitive Tree Item', () => {
             });
     });
 
-    it('change event for inline editing', () => {
+    it('Primitive tree item: change event for inline editing', () => {
         element.allowInlineEdit = true;
         element.label = 'Some label';
 
@@ -1144,7 +1144,7 @@ describe('Primitive Tree Item', () => {
             });
     });
 
-    it('change event, invalid input prevent inline editing from saving', () => {
+    it('Primitive tree item: change event, invalid input prevent inline editing from saving', () => {
         element.allowInlineEdit = true;
         element.label = 'Some label';
 
@@ -1171,7 +1171,7 @@ describe('Primitive Tree Item', () => {
             });
     });
 
-    it('Cancel change event for inline editing if "Escape" is pressed', () => {
+    it('Primitive tree item: Cancel change event for inline editing if "Escape" is pressed', () => {
         element.allowInlineEdit = true;
         element.label = 'Some label';
 
@@ -1201,7 +1201,7 @@ describe('Primitive Tree Item', () => {
 
     // focus event
     // Depends on nodeKey
-    it('focus event', () => {
+    it('Primitive tree item: focus event', () => {
         element.nodeKey = 'uniqueKey';
         const handler = jest.fn();
         element.addEventListener('focus', handler);
@@ -1216,7 +1216,7 @@ describe('Primitive Tree Item', () => {
         expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
     });
 
-    it('Trap focus inside the edit popover', () => {
+    it('Primitive tree item: Trap focus inside the edit popover', () => {
         element.actions = ACTIONS;
 
         return Promise.resolve()
@@ -1250,7 +1250,7 @@ describe('Primitive Tree Item', () => {
 
     // privateactionclick
     // Depends on actions and nodeKey
-    it('privateactionclick event', () => {
+    it('Primitive tree item: privateactionclick event', () => {
         element.actions = ACTIONS;
         element.nodeKey = 'someKey';
         const handler = jest.fn();
@@ -1297,7 +1297,7 @@ describe('Primitive Tree Item', () => {
 
     // privateitemclick
     // Depends on nodeKey, name, showCheckbox, selected, childItems and href
-    it('privateitemclick event on expand button', () => {
+    it('Primitive tree item: privateitemclick event on expand button', () => {
         element.nodeKey = 'someKey';
         element.name = 'someName';
         const handler = jest.fn();
@@ -1319,7 +1319,7 @@ describe('Primitive Tree Item', () => {
         expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
     });
 
-    it('privateitemclick event on label', () => {
+    it('Primitive tree item: privateitemclick event on label', () => {
         element.showCheckbox = true;
         element.childItems = ITEMS;
         element.label = 'boubou';
@@ -1351,7 +1351,7 @@ describe('Primitive Tree Item', () => {
             });
     });
 
-    it('privateitemclick event dispatched by keyboard', () => {
+    it('Primitive tree item: privateitemclick event dispatched by keyboard', () => {
         element.href = '#link';
         const handler = jest.fn();
         element.addEventListener('privateitemclick', handler);
@@ -1368,7 +1368,7 @@ describe('Primitive Tree Item', () => {
 
     // privateitemkeydown
     // Depends on nodeKey
-    it('privateitemkeydown event', () => {
+    it('Primitive tree item: privateitemkeydown event', () => {
         element.nodeKey = 'someKey';
         const handler = jest.fn();
         element.addEventListener('privateitemkeydown', handler);
@@ -1387,7 +1387,7 @@ describe('Primitive Tree Item', () => {
 
     // privateregisteritem
     // Depends on nodeKey, expanded and childItems
-    it('privateregisteritem event', () => {
+    it('Primitive tree item: privateregisteritem event', () => {
         const otherElement = createElement('base-primitive-tree-item', {
             is: PrimitiveTreeItem
         });
@@ -1412,7 +1412,7 @@ describe('Primitive Tree Item', () => {
         expect(callbacks.setSelected).toBeTruthy();
     });
 
-    it('privateregisteritem event, bounds callback', () => {
+    it('Primitive tree item: privateregisteritem event, bounds callback', () => {
         const otherElement = createElement('base-primitive-tree-item', {
             is: PrimitiveTreeItem
         });
@@ -1433,7 +1433,7 @@ describe('Primitive Tree Item', () => {
         });
     });
 
-    it('privateregisteritem event, focus callbacks', () => {
+    it('Primitive tree item: privateregisteritem event, focus callbacks', () => {
         const otherElement = createElement('base-primitive-tree-item', {
             is: PrimitiveTreeItem
         });
@@ -1457,7 +1457,7 @@ describe('Primitive Tree Item', () => {
         expect(child.tabIndex).toBe(0);
     });
 
-    it('privateregisteritem event, unfocus callbacks', () => {
+    it('Primitive tree item: privateregisteritem event, unfocus callbacks', () => {
         const otherElement = createElement('base-primitive-tree-item', {
             is: PrimitiveTreeItem
         });
@@ -1472,7 +1472,7 @@ describe('Primitive Tree Item', () => {
         expect(otherElement.ariaSelected).toBe('false');
     });
 
-    it('privateregisteritem event, setBorder and removeBorder callbacks', () => {
+    it('Primitive tree item: privateregisteritem event, setBorder and removeBorder callbacks', () => {
         const otherElement = createElement('base-primitive-tree-item', {
             is: PrimitiveTreeItem
         });
@@ -1506,7 +1506,7 @@ describe('Primitive Tree Item', () => {
         );
     });
 
-    it('privateregisteritem event, setSelected callback', () => {
+    it('Primitive tree item: privateregisteritem event, setSelected callback', () => {
         const otherElement = createElement('base-primitive-tree-item', {
             is: PrimitiveTreeItem
         });

@@ -63,7 +63,7 @@ describe('PrimitiveSelect', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive select: Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.fieldLevelHelp).toBeUndefined();
@@ -83,58 +83,68 @@ describe('PrimitiveSelect', () => {
     /* ----- ATTRIBUTES ----- */
 
     // accessKey
-    it('accessKey', () => {
+    it('Primitive select: accessKey', () => {
         element.accessKey = 'K';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
             expect(select.accessKey).toBe('K');
         });
     });
 
     // disabled
-    it('disabled = true', () => {
+    it('Primitive select: disabled = true', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
             expect(select.disabled).toBeTruthy();
         });
     });
 
-    it('disabled = false', () => {
+    it('Primitive select: disabled = false', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
             expect(select.disabled).toBeFalsy();
         });
     });
 
     // field-level-help
-    it('fieldLevelHelp', () => {
+    it('Primitive select: fieldLevelHelp', () => {
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
-            const help = element.shadowRoot.querySelector('[data-element-id="lightning-helptext"]');
+            const help = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-helptext"]'
+            );
             expect(help).toBeTruthy();
             expect(help.content).toBe('A string help');
         });
     });
 
     // label
-    it('label', () => {
+    it('Primitive select: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
             expect(label.textContent).toBe('A string label');
         });
     });
 
     // message-when-value-missing
     // Depends on required and reportValidity method
-    it('messageWhenValueMissing', () => {
+    it('Primitive select: messageWhenValueMissing', () => {
         element.messageWhenValueMissing = 'A string message';
         element.required = true;
         element.reportValidity();
@@ -148,40 +158,48 @@ describe('PrimitiveSelect', () => {
     });
 
     // multiple
-    it('multiple = true', () => {
+    it('Primitive select: multiple = true', () => {
         element.multiple = true;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
             expect(select.multiple).toBeTruthy();
         });
     });
 
-    it('multiple = false', () => {
+    it('Primitive select: multiple = false', () => {
         element.multiple = false;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
             expect(select.multiple).toBeFalsy();
         });
     });
 
     // name
-    it('name', () => {
+    it('Primitive select: name', () => {
         element.name = 'a-string-name';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
             expect(select.name).toBe('a-string-name');
         });
     });
 
     // options
-    it('options', () => {
+    it('Primitive select: options', () => {
         element.options = OPTIONS;
 
         return Promise.resolve().then(() => {
-            const options = element.shadowRoot.querySelectorAll('[data-element-id="option"]');
+            const options = element.shadowRoot.querySelectorAll(
+                '[data-element-id="option"]'
+            );
 
             expect(options).toHaveLength(3);
             options.forEach((option, index) => {
@@ -192,21 +210,25 @@ describe('PrimitiveSelect', () => {
     });
 
     // required
-    it('required = true', () => {
+    it('Primitive select: required = true', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
 
             expect(abbr).toBeTruthy();
         });
     });
 
-    it('required = false', () => {
+    it('Primitive select: required = false', () => {
         element.required = false;
 
         return Promise.resolve().then(() => {
-            const abbr = element.shadowRoot.querySelector('[data-element-id="abbr"]');
+            const abbr = element.shadowRoot.querySelector(
+                '[data-element-id="abbr"]'
+            );
 
             expect(abbr).toBeFalsy();
         });
@@ -214,23 +236,27 @@ describe('PrimitiveSelect', () => {
 
     // size
     // Depends on multiple
-    it('size, unset with multiple', () => {
+    it('Primitive select: size, unset with multiple', () => {
         element.multiple = true;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
 
             expect(element.size).toBe('4');
             expect(select.size).toBe(4);
         });
     });
 
-    it('size, set with multiple', () => {
+    it('Primitive select: size, set with multiple', () => {
         element.multiple = true;
         element.size = '6';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
 
             expect(element.size).toBe('6');
             expect(select.size).toBe(6);
@@ -238,11 +264,13 @@ describe('PrimitiveSelect', () => {
     });
 
     // tab-index
-    it('tabIndex', () => {
+    it('Primitive select: tabIndex', () => {
         element.tabIndex = -1;
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
 
             expect(select.tabIndex).toBe(-1);
         });
@@ -250,7 +278,7 @@ describe('PrimitiveSelect', () => {
 
     // validity
     // Depends on disabled, required and value
-    it('validity, with required = true and disabled = true', () => {
+    it('Primitive select: validity, with required = true and disabled = true', () => {
         element.disabled = true;
         element.required = true;
 
@@ -259,7 +287,7 @@ describe('PrimitiveSelect', () => {
         });
     });
 
-    it('validity, with required = true and disabled = false', () => {
+    it('Primitive select: validity, with required = true and disabled = false', () => {
         element.disabled = false;
         element.required = true;
 
@@ -268,7 +296,7 @@ describe('PrimitiveSelect', () => {
         });
     });
 
-    it('validity, with required = true, disabled = true, and a value', () => {
+    it('Primitive select: validity, with required = true, disabled = true, and a value', () => {
         element.disabled = false;
         element.required = true;
         element.options = OPTIONS;
@@ -280,22 +308,26 @@ describe('PrimitiveSelect', () => {
     });
 
     // value
-    it('value', () => {
+    it('Primitive select: value', () => {
         element.options = OPTIONS;
         element.value = 'option-1';
 
         return Promise.resolve().then(() => {
-            const select = element.shadowRoot.querySelector('[data-element-id="select"]');
+            const select = element.shadowRoot.querySelector(
+                '[data-element-id="select"]'
+            );
             expect(select.value).toBe('option-1');
         });
     });
 
     // variant
-    it('variant = standard', () => {
+    it('Primitive select: variant = standard', () => {
         element.variant = 'standard';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(element.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -307,11 +339,13 @@ describe('PrimitiveSelect', () => {
         });
     });
 
-    it('variant = label-hidden', () => {
+    it('Primitive select: variant = label-hidden', () => {
         element.variant = 'label-hidden';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(element.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -323,11 +357,13 @@ describe('PrimitiveSelect', () => {
         });
     });
 
-    it('variant = label-stacked', () => {
+    it('Primitive select: variant = label-stacked', () => {
         element.variant = 'label-stacked';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(element.classList).toContain('slds-form-element_stacked');
             expect(element.classList).not.toContain(
@@ -337,11 +373,13 @@ describe('PrimitiveSelect', () => {
         });
     });
 
-    it('variant = label-inline', () => {
+    it('Primitive select: variant = label-inline', () => {
         element.variant = 'label-inline';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(element.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -352,7 +390,7 @@ describe('PrimitiveSelect', () => {
     });
 
     /* ----- EVENTS ----- */
-    it('focus', () => {
+    it('Primitive select: focus', () => {
         const handler = jest.fn();
         element.addEventListener('focus', handler);
 
@@ -367,7 +405,7 @@ describe('PrimitiveSelect', () => {
         });
     });
 
-    it('blur', () => {
+    it('Primitive select: blur', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
@@ -382,7 +420,7 @@ describe('PrimitiveSelect', () => {
         });
     });
 
-    it('change', () => {
+    it('Primitive select: change', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -391,7 +429,9 @@ describe('PrimitiveSelect', () => {
             select.dispatchEvent(new CustomEvent('change'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail).toMatchObject({value: ""});
+            expect(handler.mock.calls[0][0].detail).toMatchObject({
+                value: ''
+            });
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

@@ -61,7 +61,6 @@ export default {
                 type: 'select'
             },
             options: ['base', 'dark', 'warning', 'error', 'success'],
-            defaultValue: 'base',
             description:
                 'The variant changes the look of the scoped notification. Valid values include base, light, dark, warning, error, success.',
             table: {
@@ -75,7 +74,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
             description:
                 'The size of the icon. Options include xx-small, x-small, small, medium, or large. This value defaults to medium.',
             table: {
@@ -83,6 +81,10 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        variant: 'base',
+        iconSize: 'medium'
     }
 };
 

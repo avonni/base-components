@@ -48,7 +48,7 @@ describe('Dialog', () => {
         document.body.appendChild(element);
     });
 
-    it('Dialog Default attributes', () => {
+    it('Dialog: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.size).toBe('medium');
         expect(element.isLoading).toBeFalsy();
@@ -58,7 +58,7 @@ describe('Dialog', () => {
     /* ----- ATTRIBUTES ----- */
 
     // title
-    it('Dialog title', () => {
+    it('Dialog: title', () => {
         element.title = 'This is a title';
         element.show();
 
@@ -71,7 +71,7 @@ describe('Dialog', () => {
     });
 
     // size
-    it('Dialog size x-small', () => {
+    it('Dialog: size x-small', () => {
         element.size = 'x-small';
         element.show();
 
@@ -83,7 +83,7 @@ describe('Dialog', () => {
         });
     });
 
-    it('Dialog size small', () => {
+    it('Dialog: size small', () => {
         element.size = 'small';
         element.show();
 
@@ -95,7 +95,7 @@ describe('Dialog', () => {
         });
     });
 
-    it('Dialog size medium', () => {
+    it('Dialog: size medium', () => {
         element.show();
 
         return Promise.resolve().then(() => {
@@ -106,7 +106,7 @@ describe('Dialog', () => {
         });
     });
 
-    it('Dialog size large', () => {
+    it('Dialog: size large', () => {
         element.size = 'large';
         element.show();
 
@@ -119,7 +119,7 @@ describe('Dialog', () => {
     });
 
     // is loading
-    it('Dialog size is loading', () => {
+    it('Dialog: size is loading', () => {
         element.isLoading = true;
         element.show();
 
@@ -132,7 +132,7 @@ describe('Dialog', () => {
     });
 
     // loading state alternative text
-    it('Dialog size loading state alternative text', () => {
+    it('Dialog: size loading state alternative text', () => {
         element.isLoading = true;
         element.loadingStateAlternativeText =
             'This is a loading state alternative text';
@@ -149,7 +149,7 @@ describe('Dialog', () => {
     });
 
     // show dialog
-    it('Dialog show dialog', () => {
+    it('Dialog: show dialog', () => {
         element.showDialog = true;
 
         return Promise.resolve().then(() => {
@@ -163,7 +163,7 @@ describe('Dialog', () => {
     /* ----- METHODS ----- */
 
     // close
-    it('Dialog close method', () => {
+    it('Dialog: close method', () => {
         element.show();
         element.hide();
 
@@ -177,7 +177,7 @@ describe('Dialog', () => {
 
     // focusOnCloseButton
     // Depends on showDialog
-    it('Dialog focusOnCloseButton method', () => {
+    it('Dialog: focusOnCloseButton method', () => {
         element.showDialog = true;
         const handler = jest.fn();
 
@@ -191,7 +191,7 @@ describe('Dialog', () => {
     });
 
     // show
-    it('Dialog show method', () => {
+    it('Dialog: show method', () => {
         element.show();
 
         return Promise.resolve().then(() => {
@@ -209,7 +209,7 @@ describe('Dialog', () => {
      */
 
     // outsideclick
-    it('outsideclick event', () => {
+    it('Dialog: outsideclick event', () => {
         element.showDialog = true;
         const handler = jest.fn();
         element.addEventListener('outsideclick', handler);

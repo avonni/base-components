@@ -68,7 +68,7 @@ describe('DateTimePicker', () => {
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
         expect(element.validity).toMatchObject({});
-        expect(element.value).toBeUndefined();
+        expect(element.value).toEqual([]);
         expect(element.startTime).toBe(46800000);
         expect(element.endTime).toBe(82800000);
         expect(element.timeSlotDuration).toBe(1800000);

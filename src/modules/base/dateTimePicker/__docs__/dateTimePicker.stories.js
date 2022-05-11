@@ -82,7 +82,6 @@ export default {
                 type: 'select'
             },
             options: ['daily', 'weekly', 'inline', 'timeline', 'monthly'],
-            defaultValue: 'daily',
             description:
                 'The variant changes the appearance of the time picker. Accepted variants include daily and weekly.',
             table: {
@@ -146,7 +145,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: '08:00',
             description:
                 'Start of the time slots. Must be an ISO8601 formatted time string.',
             table: {
@@ -160,7 +158,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: '18:00',
             description:
                 'End of the time slots. Must be an ISO8601 formatted time string.',
             table: {
@@ -174,7 +171,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: '00:30',
             description:
                 'Duration of each time slot. Must be an ISO8601 formatted time string.',
             table: {
@@ -192,7 +188,7 @@ export default {
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: 'numeric',
+                defaultValue: { summary: 'numeric' },
                 category: 'Time'
             }
         },
@@ -217,7 +213,7 @@ export default {
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: '2-digit',
+                defaultValue: { summary: '2-digit' },
                 category: 'Time'
             }
         },
@@ -250,7 +246,6 @@ export default {
                 type: 'select'
             },
             options: ['2-digit', 'numeric'],
-            defaultValue: 'numeric',
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
@@ -264,7 +259,6 @@ export default {
                 type: 'select'
             },
             options: ['narrow', 'short', 'long'],
-            defaultValue: 'short',
             description:
                 'Specifies how to display the day of the week. Allowed values are narrow, short, or long.',
             table: {
@@ -279,7 +273,6 @@ export default {
                 type: 'select'
             },
             options: ['numeric', '2-digit', 'narrow', 'short', 'long'],
-            defaultValue: 'long',
             description:
                 'Allowed values are numeric, 2-digit, long, short or narrow.',
             table: {
@@ -327,7 +320,6 @@ export default {
             control: {
                 type: 'date'
             },
-            defaultValue: '2099-12-31',
             description:
                 'Specifies the minimum date, which the calendar can show.',
             table: {
@@ -340,7 +332,6 @@ export default {
             control: {
                 type: 'date'
             },
-            defaultValue: '1900-01-01',
             description:
                 'Specifies the maximum date, which the calendar can show.',
             table: {
@@ -354,7 +345,6 @@ export default {
                 type: 'select'
             },
             options: ['radio', 'checkbox'],
-            defaultValue: 'radio',
             description: 'Valid values include radio and checkbox.',
             table: {
                 defaultValue: { summary: 'radio' },
@@ -367,7 +357,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, show the time zone.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -380,7 +369,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If true, hide next, previous and today buttons.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -392,7 +380,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If true, hide the date picker button',
             table: {
                 defaultValue: { summary: 'false' },
@@ -402,16 +389,28 @@ export default {
         }
     },
     args: {
+        dateFormatDay: 'numeric',
+        dateFormatMonth: 'long',
+        dateFormatWeekday: 'short',
         disabled: false,
+        endTime: '18:00',
+        hideDatePicker: false,
         hideLabel: false,
+        hideNavigation: false,
+        max: '2099-12-31',
+        min: '1900-01-01',
         readOnly: false,
         required: false,
-        timeFormatHour12: false,
-        showEndTime: false,
         showDisabledDates: false,
+        showEndTime: false,
         showTimeZone: false,
-        hideNavigation: false,
-        hideDatePicker: false
+        startTime: '08:00',
+        timeFormatHour: 'numeric',
+        timeFormatHour12: false,
+        timeFormatMinute: '2-digit',
+        timeSlotDuration: '00:30',
+        type: 'radio',
+        variant: 'daily'
     }
 };
 

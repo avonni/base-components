@@ -86,7 +86,6 @@ export default {
             },
             description:
                 'The width of the border in pixels. By default the border width is set to zero which means that the border will not appear.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: '0' },
                 type: { summary: 'number' }
@@ -99,7 +98,6 @@ export default {
             },
             description:
                 'Sets the minimum distance in pixels that should be left between the border and the QR modules.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: '0' },
                 type: { summary: 'number' }
@@ -112,7 +110,6 @@ export default {
             },
             description:
                 'Specifies the size of a QR code in pixels (i.e. "200px"). Numeric values are treated as pixels. If no size is specified, it will be determined from the element width and height. In case the element has width or height of zero, a default value of 200 pixels will be used.',
-            defaultValue: 200,
             table: {
                 defaultValue: { summary: '200' },
                 type: { summary: 'number' }
@@ -125,7 +122,6 @@ export default {
             options: ['ISO_8859_1', 'UTF_8'],
             description:
                 'The encoding mode used to encode the value.The possible values are: \n"ISO_8859_1" - supports all characters from the ISO/IEC 8859-1 character set.\n "UTF_8" - supports all Unicode characters.',
-            defaultValue: 'ISO_8859_1',
             table: {
                 defaultValue: { summary: 'ISO_8859_1' },
                 type: { summary: 'string' }
@@ -139,7 +135,6 @@ export default {
             options: ['L', 'M', 'Q', 'H'],
             description:
                 'The error correction level used to encode the value. The possible values are: \n"L" - approximately 7% of the codewords can be restored. \n"M" - approximately 15% of the codewords can be restored. \n"Q" - approximately 25% of the codewords can be restored. \n"H" - approximately 30% of the codewords can be restored.',
-            defaultValue: 'L',
             table: {
                 defaultValue: { summary: 'L' },
                 type: { summary: 'string' }
@@ -153,12 +148,21 @@ export default {
             options: ['svg', 'canvas'],
             description:
                 'Sets the preferred rendering engine. If it is not supported by the browser, the QRCode will switch to the first available mode. The supported values are: \n"canvas" - renders the widget as a Canvas element, if available. \n"svg" - renders the widget as inline SVG document, if available',
-            defaultValue: 'svg',
             table: {
                 defaultValue: { summary: 'svg' },
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        color: '#000000',
+        background: '#ffffff',
+        borderWidth: 0,
+        enconding: 'ISO_8859_1',
+        errorCorrection: 'L',
+        padding: 0,
+        renderAs: 'svg',
+        size: 200
     }
 };
 

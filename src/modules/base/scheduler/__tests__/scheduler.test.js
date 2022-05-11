@@ -63,29 +63,12 @@ describe('Scheduler', () => {
         });
     });
 
-    it('Default attributes', () => {
+    it('Scheduler: Default attributes', () => {
         expect(element.availableDaysOfTheWeek).toMatchObject([
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6
+            0, 1, 2, 3, 4, 5, 6
         ]);
         expect(element.availableMonths).toMatchObject([
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
         ]);
         expect(element.availableTimeFrames).toMatchObject(['00:00-23:59']);
         expect(element.collapseDisabled).toBeFalsy();
@@ -133,7 +116,7 @@ describe('Scheduler', () => {
     /* ----- ATTRIBUTES ----- */
 
     // available-days-of-the-week
-    it('availableDaysOfTheWeek', () => {
+    it('Scheduler: availableDaysOfTheWeek', () => {
         document.body.appendChild(element);
         element.availableDaysOfTheWeek = [0, 1];
 
@@ -146,7 +129,7 @@ describe('Scheduler', () => {
     });
 
     // available-months
-    it('availableMonths', () => {
+    it('Scheduler: availableMonths', () => {
         document.body.appendChild(element);
         element.availableMonths = [0, 1];
 
@@ -159,7 +142,7 @@ describe('Scheduler', () => {
     });
 
     // available-time-frames
-    it('availableTimeFrames', () => {
+    it('Scheduler: availableTimeFrames', () => {
         document.body.appendChild(element);
         element.availableTimeFrames = ['12:00-17:00', '20:30-21:15'];
 
@@ -176,7 +159,7 @@ describe('Scheduler', () => {
 
     // collapse-disabled
     // Depends on rows, rowsKeyField and columns
-    it('collapseDisabled = false', () => {
+    it('Scheduler: collapseDisabled = false', () => {
         document.body.appendChild(element);
         element.collapseDisabled = false;
 
@@ -188,7 +171,7 @@ describe('Scheduler', () => {
         });
     });
 
-    it('collapseDisabled = true', () => {
+    it('Scheduler: collapseDisabled = true', () => {
         document.body.appendChild(element);
         element.collapseDisabled = true;
 
@@ -200,7 +183,7 @@ describe('Scheduler', () => {
         });
     });
 
-    it('collapse and open datatable column', () => {
+    it('Scheduler: collapse and open datatable column', () => {
         element.rows = ROWS;
         element.rowsKeyField = ROWS_KEY_FIELD;
         element.columns = COLUMNS;
@@ -261,19 +244,21 @@ describe('Scheduler', () => {
     });
 
     // columns
-    it('columns', () => {
+    it('Scheduler: columns', () => {
         document.body.appendChild(element);
         element.columns = COLUMNS;
 
         return Promise.resolve().then(() => {
-            const datatable = element.shadowRoot.querySelector('[data-element-id="avonni-datatable"]');
+            const datatable = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-datatable"]'
+            );
             expect(datatable.columns).toMatchObject(COLUMNS);
         });
     });
 
     // context-menu-event-actions
     // Depends on start, events, columns, rows and rowsKeyField
-    it('contextMenuEventActions', () => {
+    it('Scheduler: contextMenuEventActions', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -322,7 +307,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('contextMenuEventActions, default edit action', () => {
+    it('Scheduler: contextMenuEventActions, default edit action', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -363,13 +348,15 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe(title);
             });
     });
 
-    it('contextMenuEventActions, default delete action', () => {
+    it('Scheduler: contextMenuEventActions, default delete action', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -417,7 +404,7 @@ describe('Scheduler', () => {
 
     // context-menu-empty-spot-actions
     // Depends on rows and rowsKeyField
-    it('contextMenuEmptySpotActions', () => {
+    it('Scheduler: contextMenuEmptySpotActions', () => {
         document.body.appendChild(element);
 
         element.rows = ROWS;
@@ -460,7 +447,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('contextMenuEmptySpotActions, default add-event action (+ dialogLabels.newEventTitle)', () => {
+    it('Scheduler: contextMenuEmptySpotActions, default add-event action (+ dialogLabels.newEventTitle)', () => {
         document.body.appendChild(element);
 
         element.rows = ROWS;
@@ -496,7 +483,9 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe('Title of the new event');
             });
@@ -504,7 +493,7 @@ describe('Scheduler', () => {
 
     // custom-events-palette
     // Depends on rows, rowsKeyField, start and events
-    it('customEventsPalette', () => {
+    it('Scheduler: customEventsPalette', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -525,7 +514,7 @@ describe('Scheduler', () => {
     });
 
     // custom-headers
-    it('customHeaders', () => {
+    it('Scheduler: customHeaders', () => {
         document.body.appendChild(element);
 
         const headers = [
@@ -552,7 +541,7 @@ describe('Scheduler', () => {
 
     // date-format
     // Depends on start, events, rows and rowsKeyField
-    it('dateFormat', () => {
+    it('Scheduler: dateFormat', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -569,7 +558,7 @@ describe('Scheduler', () => {
         });
     });
 
-    it('dateFormat (detail popover)', () => {
+    it('Scheduler: dateFormat (detail popover)', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -618,7 +607,7 @@ describe('Scheduler', () => {
 
     // disabled-dates-times
     // Depends on start, rows and rowsKeyField
-    it('disabledDatesTimes', () => {
+    it('Scheduler: disabledDatesTimes', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -663,7 +652,7 @@ describe('Scheduler', () => {
         });
     });
 
-    it('disabledDatesTimes, recurrence', () => {
+    it('Scheduler: disabledDatesTimes, recurrence', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -690,7 +679,7 @@ describe('Scheduler', () => {
 
     // edit-dialog-labels
     // Depends on the edit and delete action flow
-    it('dialogLabels', () => {
+    it('Scheduler: dialogLabels', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -766,7 +755,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('dialogLabels, recurring event, edit dialog buttons', () => {
+    it('Scheduler: dialogLabels, recurring event, edit dialog buttons', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -826,7 +815,9 @@ describe('Scheduler', () => {
                 );
                 expect(saveMenu).toBeTruthy();
 
-                const saveOne = saveMenu.querySelector('[data-element-id="lightning-menu-item-save-one"]');
+                const saveOne = saveMenu.querySelector(
+                    '[data-element-id="lightning-menu-item-save-one"]'
+                );
                 expect(saveOne.label).toBe(labels.saveOneRecurrent);
 
                 const saveAll = saveMenu.querySelector(
@@ -836,7 +827,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('dialogLabels, recurring event edit choice dialog', () => {
+    it('Scheduler: dialogLabels, recurring event edit choice dialog', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -894,13 +885,19 @@ describe('Scheduler', () => {
                 wrapper.dispatchEvent(mouseUp);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeTruthy();
 
-                const paragraph = dialog.querySelector('[data-element-id="p-recurrence-dialog-description"]');
+                const paragraph = dialog.querySelector(
+                    '[data-element-id="p-recurrence-dialog-description"]'
+                );
                 expect(paragraph.textContent).toBe(labels.editRecurrent);
 
-                const cancelButton = dialog.querySelector('[data-element-id="lightning-button-recurrence-dialog-cancel"]');
+                const cancelButton = dialog.querySelector(
+                    '[data-element-id="lightning-button-recurrence-dialog-cancel"]'
+                );
                 expect(cancelButton.label).toBe(labels.cancelButton);
 
                 const saveOneRecurrent = dialog.querySelector(
@@ -917,12 +914,14 @@ describe('Scheduler', () => {
                 saveAllRecurrent.click();
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeFalsy();
             });
     });
 
-    it('dialogLabels, delete confirmation dialog', () => {
+    it('Scheduler: dialogLabels, delete confirmation dialog', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -968,10 +967,14 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog.title).toBe(labels.deleteTitle);
 
-                const deleteMessage = dialog.querySelector('[data-element-id="lightning-button-delete-description"]');
+                const deleteMessage = dialog.querySelector(
+                    '[data-element-id="lightning-button-delete-description"]'
+                );
                 expect(deleteMessage.textContent).toBe(labels.deleteMessage);
 
                 const deleteButton = dialog.querySelector(
@@ -979,14 +982,16 @@ describe('Scheduler', () => {
                 );
                 expect(deleteButton.label).toBe(labels.deleteButton);
 
-                const cancelButton = dialog.querySelector('[data-element-id="lightning-button-delete-dialog-cancel"]');
+                const cancelButton = dialog.querySelector(
+                    '[data-element-id="lightning-button-delete-dialog-cancel"]'
+                );
                 expect(cancelButton.label).toBe(labels.cancelButton);
             });
     });
 
     // events
     // Depends on start, rows, and rowsKeyField
-    it('events', () => {
+    it('Scheduler: events', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1031,7 +1036,7 @@ describe('Scheduler', () => {
         });
     });
 
-    it('events, recurrence', () => {
+    it('Scheduler: events, recurrence', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1058,7 +1063,7 @@ describe('Scheduler', () => {
 
     // events-labels
     // Depends on start, rows, events and rowsKeyField
-    it('eventsLabels', () => {
+    it('Scheduler: eventsLabels', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1129,7 +1134,7 @@ describe('Scheduler', () => {
 
     // events-palette
     // Depends on rows, rowsKeyField, start and events
-    it('eventsPalette', () => {
+    it('Scheduler: eventsPalette', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1158,7 +1163,7 @@ describe('Scheduler', () => {
 
     // events-theme
     // Depends on rows, rowsKeyField, start and events
-    it('eventsTheme', () => {
+    it('Scheduler: eventsTheme', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1178,7 +1183,7 @@ describe('Scheduler', () => {
     });
 
     // headers
-    it('headers', () => {
+    it('Scheduler: headers', () => {
         document.body.appendChild(element);
 
         const dayLetterAndWeek = [
@@ -1204,7 +1209,7 @@ describe('Scheduler', () => {
     });
 
     // is-loading
-    it('isLoading', () => {
+    it('Scheduler: isLoading', () => {
         document.body.appendChild(element);
 
         element.isLoading = true;
@@ -1219,7 +1224,7 @@ describe('Scheduler', () => {
 
     // loading-state-alternative-text
     // Depends on isLoading
-    it('loadingStateAlternativeText', () => {
+    it('Scheduler: loadingStateAlternativeText', () => {
         document.body.appendChild(element);
 
         element.loadingStateAlternativeText = 'Some alternative text';
@@ -1235,7 +1240,7 @@ describe('Scheduler', () => {
 
     // read-only
     // Depends on start, rows, rowsKeyField and events
-    it('readOnly', () => {
+    it('Scheduler: readOnly', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1254,7 +1259,7 @@ describe('Scheduler', () => {
         });
     });
 
-    it('readOnly, no default context menu on events', () => {
+    it('Scheduler: readOnly, no default context menu on events', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1289,7 +1294,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('readOnly, no default context menu on empty spots', () => {
+    it('Scheduler: readOnly, no default context menu on empty spots', () => {
         document.body.appendChild(element);
 
         element.rows = ROWS;
@@ -1318,7 +1323,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('readOnly, mouse drag', () => {
+    it('Scheduler: readOnly, mouse drag', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1360,14 +1365,16 @@ describe('Scheduler', () => {
                 wrapper.dispatchEvent(mouseUp);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeFalsy();
             });
     });
 
     // recurrent-edit-modes
     // Depends on start, rows, rowsKeyField, events and the edit/save flow
-    it('recurrentEditModes, all', () => {
+    it('Scheduler: recurrentEditModes, all', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1442,7 +1449,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('recurrentEditModes, one', () => {
+    it('Scheduler: recurrentEditModes, one', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1525,7 +1532,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('recurrentEditModes, no edit choice dialog when only one option', () => {
+    it('Scheduler: recurrentEditModes, no edit choice dialog when only one option', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1577,14 +1584,16 @@ describe('Scheduler', () => {
                 wrapper.dispatchEvent(mouseUp);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeFalsy();
             });
     });
 
     // reference-lines
     // Depends on start, rows and rowsKeyField
-    it('referenceLines', () => {
+    it('Scheduler: referenceLines', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1619,7 +1628,7 @@ describe('Scheduler', () => {
         });
     });
 
-    it('referenceLines, recurrent', () => {
+    it('Scheduler: referenceLines, recurrent', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1646,7 +1655,7 @@ describe('Scheduler', () => {
 
     // resize-column-disabled
     // Depends on columns, rows and rowsKeyField
-    it('resizeColumnDisabled = false', () => {
+    it('Scheduler: resizeColumnDisabled = false', () => {
         document.body.appendChild(element);
 
         element.resizeColumnDisabled = false;
@@ -1696,7 +1705,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('resizeColumnDisabled = true', () => {
+    it('Scheduler: resizeColumnDisabled = true', () => {
         document.body.appendChild(element);
         element.resizeColumnDisabled = true;
 
@@ -1744,7 +1753,7 @@ describe('Scheduler', () => {
 
     // rows
     // Depends on rowsKeyField
-    it('rows', () => {
+    it('Scheduler: rows', () => {
         document.body.appendChild(element);
 
         element.rows = ROWS;
@@ -1756,27 +1765,31 @@ describe('Scheduler', () => {
             );
             expect(rows).toHaveLength(ROWS.length);
 
-            const datatable = element.shadowRoot.querySelector('[data-element-id="avonni-datatable"]');
+            const datatable = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-datatable"]'
+            );
             expect(datatable.records).toMatchObject(ROWS);
         });
     });
 
     // rows-key-field
     // Depends on rows
-    it('rowsKeyField', () => {
+    it('Scheduler: rowsKeyField', () => {
         document.body.appendChild(element);
 
         element.rows = ROWS;
         element.rowsKeyField = ROWS_KEY_FIELD;
 
         return Promise.resolve().then(() => {
-            const datatable = element.shadowRoot.querySelector('[data-element-id="avonni-datatable"]');
+            const datatable = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-datatable"]'
+            );
             expect(datatable.keyField).toBe(ROWS_KEY_FIELD);
         });
     });
 
     // start
-    it('start', () => {
+    it('Scheduler: start', () => {
         document.body.appendChild(element);
 
         element.start = START;
@@ -1790,7 +1803,7 @@ describe('Scheduler', () => {
     });
 
     // time-span
-    it('timeSpan', () => {
+    it('Scheduler: timeSpan', () => {
         document.body.appendChild(element);
 
         const timeSpan = {
@@ -1811,7 +1824,7 @@ describe('Scheduler', () => {
 
     // createEvent
     // Depends on rows, rowsKeyField and start
-    it('createEvent method', () => {
+    it('Scheduler: createEvent method', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1829,7 +1842,7 @@ describe('Scheduler', () => {
 
     // deleteEvent
     // Depends on rows, rowsKeyField, start and events
-    it('deleteEvent method', () => {
+    it('Scheduler: deleteEvent method', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1857,7 +1870,7 @@ describe('Scheduler', () => {
 
     // focusEvent
     // Depends on rows, rowsKeyField, start and events
-    it('focusEvent method', () => {
+    it('Scheduler: focusEvent method', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1879,7 +1892,7 @@ describe('Scheduler', () => {
 
     // openNewEventDialog
     // Depends on rows, rowsKeyField and start
-    it('openNewEventDialog method', () => {
+    it('Scheduler: openNewEventDialog method', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1888,7 +1901,9 @@ describe('Scheduler', () => {
         element.openNewEventDialog();
 
         return Promise.resolve().then(() => {
-            const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+            const dialog = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-dialog"]'
+            );
             expect(dialog).toBeTruthy();
         });
     });
@@ -1897,7 +1912,7 @@ describe('Scheduler', () => {
 
     // actionclick
     // Depends on start, rows, rowsKeyField and events
-    it('actionclick event', () => {
+    it('Scheduler: actionclick event', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -1951,7 +1966,7 @@ describe('Scheduler', () => {
 
     // eventchange
     // Depends on start, rows, rowsKeyField and events
-    it('eventchange event', () => {
+    it('Scheduler: eventchange event', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -2068,7 +2083,7 @@ describe('Scheduler', () => {
 
     // eventcreate
     // Depends on openNewEventDialog(), rows, and rowsKeyField
-    it('eventcreate event', () => {
+    it('Scheduler: eventcreate event', () => {
         document.body.appendChild(element);
 
         const from = new Date(2021, 8, 2, 4).toISOString();
@@ -2138,7 +2153,7 @@ describe('Scheduler', () => {
 
     // eventdelete
     // Depends on deleteEvent(), events, start, rows, and rowsKeyField
-    it('eventdelete event', () => {
+    it('Scheduler: eventdelete event', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -2161,7 +2176,7 @@ describe('Scheduler', () => {
 
     // datatable resize
     // Depends on the splitter resize flow, rows, rowsKeyField and columns
-    it('User resizes one of the datatable columns', () => {
+    it('Scheduler: User resizes one of the datatable columns', () => {
         document.body.appendChild(element);
 
         element.columns = COLUMNS;
@@ -2212,7 +2227,7 @@ describe('Scheduler', () => {
 
     // Event delete
     // Depends on rows, rowsKeyField, events and start
-    it('User deletes an event', () => {
+    it('Scheduler: User deletes an event', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -2270,7 +2285,7 @@ describe('Scheduler', () => {
 
     // Double click
     // Depends on start, events, rows and rowsKeyField
-    it('User double-clicks on an event', () => {
+    it('Scheduler: User double-clicks on an event', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -2299,13 +2314,15 @@ describe('Scheduler', () => {
                 );
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe(eventTitle);
             });
     });
 
-    it('User double-clicks on an empty spot', () => {
+    it('Scheduler: User double-clicks on an empty spot', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -2323,7 +2340,9 @@ describe('Scheduler', () => {
                 cell.dispatchEvent(doubleClick);
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeTruthy();
                 expect(dialog.title).toBe(element.dialogLabels.newEventTitle);
             });
@@ -2331,7 +2350,7 @@ describe('Scheduler', () => {
 
     // Cancel button of the edit dialog
     // Depends on start, events, rows and rowsKeyField
-    it('User cancels an event edition', () => {
+    it('Scheduler: User cancels an event edition', () => {
         element.start = START;
         document.body.appendChild(element);
 
@@ -2388,7 +2407,9 @@ describe('Scheduler', () => {
                 cancelButton.click();
             })
             .then(() => {
-                const dialog = element.shadowRoot.querySelector('[data-element-id="avonni-dialog"]');
+                const dialog = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-dialog"]'
+                );
                 expect(dialog).toBeFalsy();
 
                 const event = element.shadowRoot.querySelector(
@@ -2398,7 +2419,7 @@ describe('Scheduler', () => {
             });
     });
 
-    it('User cancels a recurring event drag and drop', () => {
+    it('Scheduler: User cancels a recurring event drag and drop', () => {
         element.start = START;
         document.body.appendChild(element);
 

@@ -52,7 +52,6 @@ export default {
                 type: 'select'
             },
             options: ['base', 'comment'],
-            defaultValue: 'base',
             description: 'Values include base and comment.',
             table: {
                 defaultValue: { summary: 'base' },
@@ -82,7 +81,6 @@ export default {
                 type: 'boolean'
             },
             description: "If present, the publisher can't be used by users.",
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -90,7 +88,8 @@ export default {
         }
     },
     args: {
-        disabled: false
+        disabled: false,
+        variant: 'base'
     }
 };
 

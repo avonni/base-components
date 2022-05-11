@@ -42,7 +42,6 @@ export default {
             options: ['left', 'center', 'right', 'fill'],
             description:
                 'Alignment of the page buttons. Values include left, center, right and fill.',
-            defaultValue: 'left',
             table: {
                 defaultValue: { summary: 'left' },
                 type: { summary: 'string' }
@@ -54,7 +53,6 @@ export default {
             },
             description:
                 "When set to 'true', disables the component's functionality and places it in a disabled state",
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -66,7 +64,6 @@ export default {
                 min: 1
             },
             description: 'Current page number, starting from 1',
-            defaultValue: 1,
             table: {
                 defaultValue: { summary: '1' },
                 type: { summary: 'number' }
@@ -79,7 +76,6 @@ export default {
             },
             description:
                 'Maximum number of buttons to show (including ellipsis if shown, but excluding the bookend buttons). The minimum value is 3.',
-            defaultValue: 5,
             table: {
                 defaultValue: { summary: '5' },
                 type: { summary: 'number' }
@@ -92,7 +88,6 @@ export default {
                 min: 1
             },
             description: 'Number of rows per page.',
-            defaultValue: 20,
             table: {
                 defaultValue: { summary: '20' },
                 type: { summary: 'number' }
@@ -105,7 +100,6 @@ export default {
                 min: 0
             },
             description: 'Total number of rows in the dataset.',
-            defaultValue: 0,
             table: {
                 defaultValue: { summary: '0' },
                 type: { summary: 'number' }
@@ -117,7 +111,6 @@ export default {
                 type: 'text'
             },
             description: 'Content to place in the ellipsis placeholder.',
-            defaultValue: '...',
             table: {
                 defaultValue: { summary: '...' },
                 type: { summary: 'number' }
@@ -172,7 +165,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:chevronleft',
             description:
                 'The name of an icon to display after the label for the previous button.',
             table: {
@@ -197,7 +189,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:chevronright',
             description:
                 'The name of an icon to display after the label for the next button.',
             table: {
@@ -231,7 +222,15 @@ export default {
         }
     },
     args: {
-        disabled: false
+        align: 'left',
+        disabled: false,
+        ellipsisText: '...',
+        limit: 5,
+        nextButtonIconName: 'utility:chevronright',
+        perPage: 20,
+        previousButtonIconName: 'utility:chevronleft',
+        totalRows: 0,
+        value: 1
     }
 };
 

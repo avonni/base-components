@@ -51,7 +51,7 @@ describe('Hero Banner', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Hero Banner: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.caption).toBeUndefined();
         expect(element.subtitle).toBeUndefined();
@@ -68,7 +68,7 @@ describe('Hero Banner', () => {
     /* ----- ATTRIBUTES ----- */
 
     // title
-    it('Hero Banner title', () => {
+    it('Hero Banner: title', () => {
         element.title = 'This is a title text';
 
         return Promise.resolve().then(() => {
@@ -80,7 +80,7 @@ describe('Hero Banner', () => {
     });
 
     // caption
-    it('Hero Banner caption', () => {
+    it('Hero Banner: caption', () => {
         element.caption = 'This is a caption text';
 
         return Promise.resolve().then(() => {
@@ -92,7 +92,7 @@ describe('Hero Banner', () => {
     });
 
     // subtitle
-    it('Hero Banner subtitle', () => {
+    it('Hero Banner: subtitle', () => {
         element.subtitle = 'This is a subtitle text';
 
         return Promise.resolve().then(() => {
@@ -104,7 +104,7 @@ describe('Hero Banner', () => {
     });
 
     // height
-    it('Hero Banner height', () => {
+    it('Hero Banner: height', () => {
         const height = '200px';
         element.height = 200;
 
@@ -117,7 +117,7 @@ describe('Hero Banner', () => {
     });
 
     // max width
-    it('Hero Banner max width', () => {
+    it('Hero Banner: max width', () => {
         const maxWidth = '50px';
         element.maxWidth = 50;
 
@@ -130,7 +130,7 @@ describe('Hero Banner', () => {
     });
 
     // content horizontal alignment
-    it('Hero Banner content horizontal alignment center', () => {
+    it('Hero Banner: content horizontal alignment center', () => {
         element.title = 'This is a title text';
         element.contentHorizontalAlignment = 'center';
 
@@ -150,7 +150,7 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner content horizontal alignment left', () => {
+    it('Hero Banner: content horizontal alignment left', () => {
         element.title = 'This is a title text';
         element.contentHorizontalAlignment = 'left';
 
@@ -170,7 +170,7 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner content horizontal alignment right', () => {
+    it('Hero Banner: content horizontal alignment right', () => {
         element.title = 'This is a title text';
         element.contentHorizontalAlignment = 'right';
 
@@ -191,7 +191,7 @@ describe('Hero Banner', () => {
     });
 
     // content vertical alignment
-    it('Hero Banner content vertical alignment center', () => {
+    it('Hero Banner: content vertical alignment center', () => {
         element.title = 'This is a title text';
         element.contentVerticalAlignment = 'center';
 
@@ -211,7 +211,7 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner content vertical alignment top', () => {
+    it('Hero Banner: content vertical alignment top', () => {
         element.title = 'This is a title text';
         element.contentVerticalAlignment = 'top';
 
@@ -231,7 +231,7 @@ describe('Hero Banner', () => {
         });
     });
 
-    it('Hero Banner content vertical alignment bottom', () => {
+    it('Hero Banner: content vertical alignment bottom', () => {
         element.title = 'This is a title text';
         element.contentVerticalAlignment = 'bottom';
 
@@ -252,7 +252,7 @@ describe('Hero Banner', () => {
     });
 
     // content width
-    it('Hero Banner content width', () => {
+    it('Hero Banner: content width', () => {
         element.title = 'This is a title text';
         element.contentWidth = 10;
         const contentWidth = '10%';
@@ -266,7 +266,7 @@ describe('Hero Banner', () => {
     });
 
     // Primary button label
-    it('Hero Banner primary button label', () => {
+    it('Hero Banner: primary button label', () => {
         element.primaryButtonLabel = 'This is a primary button label';
 
         return Promise.resolve().then(() => {
@@ -281,7 +281,7 @@ describe('Hero Banner', () => {
 
     // Needs a primary button
     // Secondary button label
-    it('Hero Banner secondary button label', () => {
+    it('Hero Banner: secondary button label', () => {
         element.primaryButtonLabel = 'This is a primary button label';
         element.secondaryButtonLabel = 'This is a secondary button label';
 

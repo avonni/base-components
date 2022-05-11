@@ -105,19 +105,19 @@ export default class Path extends LightningElement {
      */
     @api selectButtonIconName;
 
+    _actions = [];
+    _changeCompletionStatusLabel = DEFAULT_CHANGE_COMPLETION_OPTION_LABEL;
     _currentStep;
     _disabled = false;
     _format = PATH_FORMATS.default;
-    _keyFieldsLabel = DEFAULT_KEYFIELDS_LABEL;
     _guidanceLabel = DEFAULT_GUIDANCE_LABEL;
-    _hideCoaching = false;
     _hideButtons = false;
-    _nextButtonLabel = DEFAULT_NEXT_BUTTON_LABEL;
+    _hideCoaching = false;
+    _keyFieldsLabel = DEFAULT_KEYFIELDS_LABEL;
     _nextButtonIconPosition = ICON_POSITIONS.default;
-    _selectButtonLabel = DEFAULT_SELECT_BUTTON_LABEL;
+    _nextButtonLabel = DEFAULT_NEXT_BUTTON_LABEL;
     _selectButtonIconPosition = ICON_POSITIONS.default;
-    _changeCompletionStatusLabel = DEFAULT_CHANGE_COMPLETION_OPTION_LABEL;
-    _actions = [];
+    _selectButtonLabel = DEFAULT_SELECT_BUTTON_LABEL;
     @track _steps = [];
 
     _status = DEFAULT_COMPLETED_OPTION;
@@ -137,6 +137,47 @@ export default class Path extends LightningElement {
 
     renderedCallback() {
         this.initTooltips();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Array of action objects, used as default step actions.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(value) {
+        this._actions = normalizeArray(value);
+
+        if (this.isConnected) this.initSteps();
+    }
+
+    /**
+     * Label of the menu item that appears when the previous step had completed options.
+     * On click on the menu item, the dialog will reopen, and the user will be able to change the completion status.
+     *
+     * @type {string}
+     * @public
+     * @default Change Completion Status
+     */
+    @api
+    get changeCompletionStatusLabel() {
+        return this._changeCompletionStatusLabel;
+    }
+    set changeCompletionStatusLabel(value) {
+        this._changeCompletionStatusLabel =
+            typeof value === 'string'
+                ? value.trim()
+                : DEFAULT_CHANGE_COMPLETION_OPTION_LABEL;
     }
 
     /**
@@ -191,22 +232,6 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * Label of the key fields section.
-     *
-     * @type {string}
-     * @public
-     * @default Key Fields
-     */
-    @api
-    get keyFieldsLabel() {
-        return this._keyFieldsLabel;
-    }
-    set keyFieldsLabel(value) {
-        this._keyFieldsLabel =
-            typeof value === 'string' ? value.trim() : DEFAULT_KEYFIELDS_LABEL;
-    }
-
-    /**
      * Label of the guidance section.
      *
      * @type {string}
@@ -220,6 +245,21 @@ export default class Path extends LightningElement {
     set guidanceLabel(value) {
         this._guidanceLabel =
             typeof value === 'string' ? value.trim() : DEFAULT_GUIDANCE_LABEL;
+    }
+
+    /**
+     * If present, the path buttons will be hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideButtons() {
+        return this._hideButtons;
+    }
+    set hideButtons(bool) {
+        this._hideButtons = normalizeBoolean(bool);
     }
 
     /**
@@ -238,18 +278,37 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * If present, the path buttons will be hidden.
+     * Label of the key fields section.
      *
-     * @type {boolean}
+     * @type {string}
      * @public
-     * @default false
+     * @default Key Fields
      */
     @api
-    get hideButtons() {
-        return this._hideButtons;
+    get keyFieldsLabel() {
+        return this._keyFieldsLabel;
     }
-    set hideButtons(bool) {
-        this._hideButtons = normalizeBoolean(bool);
+    set keyFieldsLabel(value) {
+        this._keyFieldsLabel =
+            typeof value === 'string' ? value.trim() : DEFAULT_KEYFIELDS_LABEL;
+    }
+
+    /**
+     * Position of the next button. Valid values include left and right.
+     *
+     * @type {string}
+     * @public
+     * @default left
+     */
+    @api
+    get nextButtonIconPosition() {
+        return this._nextButtonIconPosition;
+    }
+    set nextButtonIconPosition(value) {
+        this._nextButtonIconPosition = normalizeString(value, {
+            fallbackValue: ICON_POSITIONS.default,
+            validValues: ICON_POSITIONS.valid
+        });
     }
 
     /**
@@ -271,18 +330,18 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * Position of the next button. Valid values include left and right.
+     * Position of the select button. Valid values include left and right.
      *
      * @type {string}
      * @public
      * @default left
      */
     @api
-    get nextButtonIconPosition() {
-        return this._nextButtonIconPosition;
+    get selectButtonIconPosition() {
+        return this._selectButtonIconPosition;
     }
-    set nextButtonIconPosition(value) {
-        this._nextButtonIconPosition = normalizeString(value, {
+    set selectButtonIconPosition(value) {
+        this._selectButtonIconPosition = normalizeString(value, {
             fallbackValue: ICON_POSITIONS.default,
             validValues: ICON_POSITIONS.valid
         });
@@ -307,43 +366,6 @@ export default class Path extends LightningElement {
     }
 
     /**
-     * Position of the select button. Valid values include left and right.
-     *
-     * @type {string}
-     * @public
-     * @default left
-     */
-    @api
-    get selectButtonIconPosition() {
-        return this._selectButtonIconPosition;
-    }
-    set selectButtonIconPosition(value) {
-        this._selectButtonIconPosition = normalizeString(value, {
-            fallbackValue: ICON_POSITIONS.default,
-            validValues: ICON_POSITIONS.valid
-        });
-    }
-
-    /**
-     * Label of the menu item that appears when the previous step had completed options.
-     * On click on the menu item, the dialog will reopen, and the user will be able to change the completion status.
-     *
-     * @type {string}
-     * @public
-     * @default Change Completion Status
-     */
-    @api
-    get changeCompletionStatusLabel() {
-        return this._changeCompletionStatusLabel;
-    }
-    set changeCompletionStatusLabel(value) {
-        this._changeCompletionStatusLabel =
-            typeof value === 'string'
-                ? value.trim()
-                : DEFAULT_CHANGE_COMPLETION_OPTION_LABEL;
-    }
-
-    /**
      * Array of step objects.
      *
      * @type {object[]}
@@ -364,21 +386,11 @@ export default class Path extends LightningElement {
         }
     }
 
-    /**
-     * Array of action objects, used as default step actions.
-     *
-     * @type {object[]}
-     * @public
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
      */
-    @api
-    get actions() {
-        return this._actions;
-    }
-    set actions(value) {
-        this._actions = normalizeArray(value);
-
-        if (this._isConnected) this.initSteps();
-    }
 
     /**
      * Toggle to display Coaching icon.
@@ -500,6 +512,12 @@ export default class Path extends LightningElement {
             : this.computedCurrentStep.label;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
     /**
      * Display the next step of the path.
      *
@@ -527,6 +545,12 @@ export default class Path extends LightningElement {
             this.computeMovement({ toIndex });
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Initialize steps properties. ( keyFields, actions, tooltip )

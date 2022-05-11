@@ -50,7 +50,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Apply',
             description: 'Label of the apply button.',
             table: {
                 type: { summary: 'string' },
@@ -62,7 +61,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Reset',
             description: 'Label of the reset button.',
             table: {
                 type: { summary: 'string' },
@@ -74,7 +72,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, the selected items are hidden.',
             table: {
                 type: { summary: 'boolean' },
@@ -86,7 +83,6 @@ export default {
                 type: 'select'
             },
             options: ['horizontal', 'vertical'],
-            defaultValue: 'horizontal',
             description:
                 'The variant changes the look of the menu group. Accepted variants include horizontal and vertical.',
             table: {
@@ -94,6 +90,12 @@ export default {
                 defaultValue: { summary: 'horizontal' }
             }
         }
+    },
+    args: {
+        applyButtonLabel: 'Apply',
+        hideSelectedItems: false,
+        resetButtonLabel: 'Reset',
+        variant: 'horizontal'
     }
 };
 

@@ -47,7 +47,6 @@ export default {
                 'snow',
                 'pride'
             ],
-            defaultValue: 'base',
             description:
                 'The variant changes the appearance of the confetti. Accepted variants include include base, random-direction, realistic, fireworks, snow and pride.',
             table: {
@@ -76,7 +75,6 @@ export default {
             },
             description:
                 'The x position on the page, with 0 being the left edge and 1 being the right edge.',
-            defaultValue: 0.5,
             table: {
                 defaultValue: { summary: 0.5 },
                 type: { summary: 'number' }
@@ -90,12 +88,25 @@ export default {
             },
             description:
                 'The y position on the page, with 0 being the top edge and 1 being the bottom edge.',
-            defaultValue: 0.5,
             table: {
                 defaultValue: { summary: 0.5 },
                 type: { summary: 'number' }
             }
         }
+    },
+    args: {
+        colors: [
+            '#529EE0',
+            '#F0E442',
+            '#FFB03B',
+            '#E16032',
+            '#4FD2D2',
+            '#006699',
+            '#E287B2'
+        ],
+        originX: 0.5,
+        originY: 0.5,
+        variant: 'base'
     }
 };
 
@@ -120,7 +131,7 @@ Fireworks.args = {
 
 export const Snow = Template.bind({});
 Snow.args = {
-    colors: ["e63946","f1faee","a8dadc","457b9d","1d3557"],
+    colors: ['e63946', 'f1faee', 'a8dadc', '457b9d', '1d3557'],
     variant: 'snow'
 };
 
