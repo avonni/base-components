@@ -144,15 +144,10 @@ export default class InputDateRange extends LightningElement {
     selectionModeEndDate = 'interval';
 
     helpMessage;
-    _valid = true;
 
     connectedCallback() {
         this.interactingState = new InteractingState();
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
-    }
-
-    renderedCallback() {
-        this.updateClassListWhenError();
     }
 
     /*
@@ -162,7 +157,6 @@ export default class InputDateRange extends LightningElement {
      */
 
     /**
-     * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>. The value is read-only.
      * The display style of the date.
      * Valid values are short, medium and long. The format of each style is specific to the locale.
      * On mobile devices this attribute has no effect.
@@ -337,7 +331,7 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>.
+     * Value of the input. Object with two keys: <code>startDate</code> and <code>endDate</code>. The value is read-only.
      *
      * @type {object}
      * @public
@@ -442,8 +436,6 @@ export default class InputDateRange extends LightningElement {
             '[data-element-id="lightning-input-end-time"]'
         );
     }
-
-    // UTILITIES //
 
     /**
      * Set focus in a selected calendar
@@ -568,7 +560,9 @@ export default class InputDateRange extends LightningElement {
         if (!this._constraintApi) {
             this._constraintApi = new FieldConstraintApi(() => this, {
                 valueMissing: () =>
-                    !this.disabled && this.required && (!this.startDate || !this.endDate)
+                    !this.disabled &&
+                    this.required &&
+                    (!this.startDate || !this.endDate)
             });
         }
         return this._constraintApi;
@@ -654,12 +648,23 @@ export default class InputDateRange extends LightningElement {
      */
 
     /**
+     * Check validity on focus out.
+     */
+    handleFocusOut() {
+        requestAnimationFrame(() => {
+            if (!(this.showEndDate || this.showStartDate)) {
+                this.updateClassListWhenError();
+            }
+        });
+    }
+
+    /**
      * Removes the slds-has-error class on the whole element if it's not valid.
      * Aplies it on every input we need it applied.
      * Removes it from every input when valid.
      */
     updateClassListWhenError() {
-        if (!this._valid && !this._readOnly) {
+        if (!this.validity.valid && !this._readOnly) {
             this.classList.remove('slds-has-error');
             this.startDateInput.classList.add('slds-has-error');
             this.startDateInput.classList.add('avonni-date-range__input_error');
@@ -670,7 +675,7 @@ export default class InputDateRange extends LightningElement {
                 this.endTimeInput.classList.add('slds-has-error');
             }
         }
-        if (this._valid && !this._readOnly) {
+        if (this.validity.valid && !this._readOnly) {
             this.startDateInput.classList.remove('slds-has-error');
             this.startDateInput.classList.remove(
                 'avonni-date-range__input_error'
@@ -761,7 +766,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Change the date format depending on date style.
      *
-     * @param {date}
+     * @param {date} value date object
      * @returns {date} formatted date depending on the date style.
      */
     dateFormat(value) {
@@ -800,8 +805,6 @@ export default class InputDateRange extends LightningElement {
                   second: '2-digit'
               });
     }
-
-    // DATE CHANGE MANAGEMENT //
 
     /**
      * Dispatch changes from start-date input, end-date input, c-calendar for start-date and c-calendar for end-date.
@@ -845,7 +848,7 @@ export default class InputDateRange extends LightningElement {
     /**
      * Handles the change of start date
      *
-     * @param {event} event
+     * @param {Event} event
      */
     handleChangeStartDate(event) {
         event.stopPropagation();
@@ -911,22 +914,19 @@ export default class InputDateRange extends LightningElement {
         }
 
         this.dispatchChange();
-        if (!this._valid) this.checkInputDatesValidity();
 
         this.showStartDate = false;
         if (!this.endDate && selectionMethod === 'mouse') {
             this.setFocusDate(this._startDate, 'end');
             this.showEndDate = true;
         }
-        if (selectionMethod === 'keyboard')
-            requestAnimationFrame(() => this.startDateIcon.focus());
-        if (!this._valid) this.checkInputDatesValidity();
+        if (selectionMethod === 'keyboard') this.startDateIcon.focus();
     }
 
     /**
      * Handles the change of end date
      *
-     * @param {event} event
+     * @param {Event} event
      */
     handleChangeEndDate(event) {
         event.stopPropagation();
@@ -998,9 +998,7 @@ export default class InputDateRange extends LightningElement {
             this.setFocusDate(this._endDate, 'start');
             this.showStartDate = true;
         }
-        if (selectionMethod === 'keyboard')
-            requestAnimationFrame(() => this.endDateIcon.focus());
-        if (!this._valid) this.checkInputDatesValidity();
+        if (selectionMethod === 'keyboard') this.endDateIcon.focus();
     }
 
     /**
@@ -1054,15 +1052,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Check for missing required data
-     */
-    checkInputDatesValidity() {
-        if (this.required)
-            this._valid = this.required && !(!this.startDate || !this.endDate);
-        this.updateClassListWhenError();
-    }
-
-    /**
      * Type `escape` on inputs or input icons
      *
      * @param {Event} event
@@ -1087,10 +1076,10 @@ export default class InputDateRange extends LightningElement {
      * Close calendar on input focus out,
      * unless focus is in input icon or calendar
      *
-     * @param {event} event
+     * @param {Event} event
      */
     blurDateInput(event) {
-        if (!event.target.dataset.elementId) return;
+        if (!event.target) return;
         const blurredInput = event.target.dataset.elementId;
 
         requestAnimationFrame(() => {
@@ -1150,18 +1139,14 @@ export default class InputDateRange extends LightningElement {
      * On calendar focus out, close calendar and
      * bring back focus to input
      */
-    calendarFocusStartOut(event) {
+    calendarFocusStartOut() {
         this.keepFocus = true;
 
         setTimeout(() => {
             if (this.keepFocus) {
                 this.showStartDate = false;
 
-                if (
-                    event.target &&
-                    event.target.dataset.elementId !== 'calendar-start-date' &&
-                    this.template.activeElement !== this.startDateIcon
-                )
+                if (this.template.activeElement !== this.startDateIcon)
                     this.startDateInput.focus();
             }
         }, 1);
@@ -1171,27 +1156,23 @@ export default class InputDateRange extends LightningElement {
      * On calendar focus out, close calendar and
      * bring back focus to input
      */
-    calendarFocusEndOut(event) {
+    calendarFocusEndOut() {
         this.keepFocus = true;
 
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             if (this.keepFocus) {
                 this.showEndDate = false;
 
-                if (
-                    event.target &&
-                    event.target.dataset.elementId !== 'calendar-end-date' &&
-                    this.template.activeElement !== this.endDateIcon
-                )
+                if (this.template.activeElement !== this.endDateIcon)
                     this.endDateInput.focus();
             }
-        }, 1);
+        });
     }
 
     /**
      * Listen for the escape key to escape the calendar
      *
-     * @param {event} event
+     * @param {Event} event
      */
     calendarKeyListener(event) {
         if (event.keyCode !== keyCodes.escape) return;
