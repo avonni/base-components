@@ -333,7 +333,7 @@ export default class Calendar extends LightningElement {
      */
     @api
     focusDate(value) {
-        if (!value.getTime()) return;
+        if (value && !value.getTime()) return;
         this._focusDate = new Date(value);
         this.computeFocus(true);
     }
@@ -1240,6 +1240,13 @@ export default class Calendar extends LightningElement {
                 todaysDate ||
                 firstOfMonthCell ||
                 firstValidDateCell;
+
+            const existingFocusPoints =
+                this.template.querySelectorAll('td[tabindex="0"]');
+            if (existingFocusPoints)
+                existingFocusPoints.forEach((focusPoint) => {
+                    focusPoint.setAttribute('tabindex', '-1');
+                });
 
             if (selectedDate) {
                 if (this.selectionMode === 'single') {

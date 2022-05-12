@@ -36,6 +36,7 @@
     <div
         class="avonni-calendar__container"
         onblur={handleBlur}
+        onfocusin={handleFocus}
         tabindex="-1"
         onkeydown={handleKeyDown}
         data-element-id="avonni-calendar__container"
@@ -44,7 +45,7 @@
             class="slds-form-element avonni-calendar__background_color"
             data-element-id="avonni-calendar__keyboard-handler"
         >
-            <div class="slds-datepicker">
+            <div class="slds-datepicker" onfocus={handleFocus}>
                 <div class="slds-datepicker__filter slds-grid">
                     <div
                         class="
@@ -62,7 +63,6 @@
                                 onclick={handlerPreviousMonth}
                                 disabled={disabledPrevious}
                                 data-element-id="previous-lightning-button-icon"
-                                tabindex="0"
                             ></lightning-button-icon>
                         </div>
                         <h2
@@ -83,7 +83,6 @@
                                 disabled={disabledNext}
                                 data-element-id="next-lightning-button-icon"
                                 onclick={handlerNextMonth}
-                                tabindex="0"
                             ></lightning-button-icon>
                         </div>
                     </div>
@@ -98,7 +97,6 @@
                         disabled={disabled}
                         data-element-id="lightning-combobox"
                         onchange={handleYearChange}
-                        tabindex="0"
                     >
                     </lightning-combobox>
                 </div>
