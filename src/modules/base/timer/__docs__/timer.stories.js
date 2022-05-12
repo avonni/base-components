@@ -47,7 +47,8 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        value: {
+        timerValue: {
+            name: 'timer-value (ms)',
             control: {
                 type: 'number',
                 min: 0
@@ -59,6 +60,7 @@ export default {
             }
         },
         duration: {
+            name: 'duration (ms)',
             control: {
                 type: 'number',
                 min: 1
@@ -213,7 +215,7 @@ BrandIcon.args = {
 export const DestructiveCountdown = Template.bind({});
 DestructiveCountdown.args = {
     type: 'count-down',
-    value: 10,
+    timerValue: 10,
     duration: 10000,
     format: 'mm:ss',
     variant: 'destructive',

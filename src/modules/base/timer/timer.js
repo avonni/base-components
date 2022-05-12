@@ -54,10 +54,11 @@ const TIME_FORMATS = {
     default: 'hh:mm:ss'
 };
 
-const DEFAULT_VALUE = 0;
-const DEFAULT_DURATION = 1;
+const DEFAULT_TIMER_VALUE = 0;
+const DEFAULT_DURATION = 10000;
 const DEFAULT_AUTO_START = false;
 const DEFAULT_REPEAT = false;
+const MAX_TIMER_VALUE = 86400000000;
 
 /**
  * @class
@@ -80,8 +81,9 @@ export default class Timer extends LightningElement {
     _iconPosition = ICON_POSITIONS.default;
     _repeat = DEFAULT_REPEAT;
     _type = COUNT_TYPES.default;
-    _value = DEFAULT_VALUE;
+    _value = DEFAULT_TIMER_VALUE;
     _variant = BUTTON_VARIANTS.default;
+    _timerValue = DEFAULT_TIMER_VALUE;
 
     step;
     play = false;
@@ -118,11 +120,12 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * How long a timer runs in milliseconds. There is no maximum value.
+     * How long a timer runs in milliseconds. Duration caps at 24 hours.
+     * On countdown, this attribute is ignored.
      *
      * @type {number}
      * @public
-     * @default 1000
+     * @default 10000
      */
     @api
     get duration() {
@@ -131,11 +134,7 @@ export default class Timer extends LightningElement {
 
     set duration(value) {
         if (!isNaN(parseInt(value, 10))) {
-            if (parseInt(value, 10) > 86400000) {
-                this._duration = 86400;
-            } else {
-                this._duration = parseInt(value, 10) / 1000;
-            }
+            this._duration = Math.min(parseInt(value, 10), MAX_TIMER_VALUE);
         } else {
             this._duration = DEFAULT_DURATION;
         }
@@ -215,21 +214,22 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Default value of the timer.
+     * Starting value of the timer in milliseconds.
      *
      * @type {number}
      * @public
      * @default 0
      */
     @api
-    get value() {
-        return this._value;
+    get timerValue() {
+        return this._timerValue;
     }
 
-    set value(value) {
-        this._value = isNaN(parseInt(value, 10))
-            ? DEFAULT_VALUE
-            : Number(value / 1000);
+    set timerValue(value) {
+        this._timerValue = isNaN(parseInt(value, 10))
+            ? DEFAULT_TIMER_VALUE
+            : Number(Math.max(parseInt(value, 10), 86400000));
+        console.log(this._timerValue);
     }
 
     /**
@@ -328,26 +328,13 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Retrieve the timer value.
-     *
-     * @type {number}
-     */
-    get timerValue() {
-        if (this.type === 'count-up') {
-            return this.value;
-        }
-
-        return this.duration - this.value;
-    }
-
-    /**
      * Compute the hours based on the timer value.
      *
      * @type {number}
      */
     get hours() {
-        let time = parseFloat(this.timerValue).toFixed(3);
-        return Math.floor(time / 60 / 60);
+        console.log(this.timerValue);
+        return Math.floor(this.timerValue / 60 / 60 / 1000);
     }
 
     /**
@@ -356,8 +343,8 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get minutes() {
-        let time = parseFloat(this.timerValue).toFixed(3);
-        return Math.floor(time / 60) % 60;
+        console.log(this.timerValue);
+        return Math.floor(this.timerValue / 60 / 1000) % 60;
     }
 
     /**
@@ -366,8 +353,8 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get seconds() {
-        let time = parseFloat(this.timerValue).toFixed(3);
-        return Math.floor(time - this.minutes * 60);
+        console.log(this.timerValue);
+        return Math.floor(this.timerValue / 1000);
     }
 
     /*
@@ -409,7 +396,7 @@ export default class Timer extends LightningElement {
     @api
     stop() {
         this.play = false;
-        this._value = 0;
+        this._timerValue = 0;
         this.dispatchTimerStop();
     }
 
@@ -420,7 +407,7 @@ export default class Timer extends LightningElement {
      */
     @api
     reset() {
-        this._value = 0;
+        this._timerValue = 0;
         this.dispatchTimerReset();
     }
 
@@ -566,16 +553,15 @@ export default class Timer extends LightningElement {
      * Create timer interval.
      */
     createInterval() {
-        // eslint-disable-next-line @lwc/lwc/no-async-operation
         this.interval = setInterval(() => {
             if (this.play) {
-                this._value = this.value + 1;
+                this._timerValue = this._timerValue + 100;
             }
 
             if (this.type === 'count-up') {
                 if (this.timerValue >= this.duration) {
                     if (this.repeat) {
-                        this._value = 0;
+                        this._timerValue = 0;
                         this.dispatchTimerReset();
                     } else {
                         this.clearCurrentInterval();
@@ -584,14 +570,14 @@ export default class Timer extends LightningElement {
             } else {
                 if (this.timerValue === 0) {
                     if (this.repeat) {
-                        this._value = 0;
+                        this._timerValue = 0;
                         this.dispatchTimerReset();
                     } else {
                         this.clearCurrentInterval();
                     }
                 }
             }
-        }, 1000);
+        }, 100);
     }
 
     /**
@@ -600,7 +586,6 @@ export default class Timer extends LightningElement {
     clearCurrentInterval() {
         clearInterval(this.interval);
         this.interval = null;
-        this._value = 0;
         this.dispatchTimerStop();
     }
 
