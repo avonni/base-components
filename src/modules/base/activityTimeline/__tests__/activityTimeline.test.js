@@ -185,6 +185,138 @@ describe('Activity Timeline', () => {
         });
     });
 
+    // icon size
+    it('Activity Timeline: icon size (xx-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
+            expect(icon.size).toBe('xx-small');
+        });
+    });
+
+    it('Activity Timeline: icon size (x-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
+            expect(icon.size).toBe('x-small');
+        });
+    });
+
+    it('Activity Timeline: icon size (small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
+            expect(icon.size).toBe('small');
+        });
+    });
+
+    it('Activity Timeline: icon size (medium)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
+            expect(icon.size).toBe('medium');
+        });
+    });
+
+    it('Activity Timeline: icon size (large)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '.slds-media__figure > lightning-icon'
+            );
+            expect(icon.size).toBe('large');
+        });
+    });
+
+    // item icon size
+    it('Activity Timeline: item icon size (xx-small)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('xx-small')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (x-small)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('x-small')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (small)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('small')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (medium)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('medium')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (large)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('large')
+            );
+        });
+    });
+
     // items
     it('Activity Timeline: items', () => {
         const ITEM = [
