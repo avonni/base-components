@@ -39,7 +39,7 @@
                 <div class="slds-media__figure" if:true={iconName}>
                     <lightning-icon
                         icon-name={iconName}
-                        size="medium"
+                        size={iconSize}
                     ></lightning-icon>
                 </div>
                 <div class="slds-media__body" if:true={title}>
@@ -58,6 +58,7 @@
                         datetime-value={item.datetimeValue}
                         href={item.href}
                         icon-name={item.iconName}
+                        icon-size={itemIconSize}
                         icons={item.icons}
                         fields={item.fields}
                         has-checkbox={item.hasCheckbox}
@@ -85,10 +86,7 @@
         </ul>
     </template>
     <template if:true={hasDates}>
-        <template
-            for:each={orderedDates}
-            for:item="date"
-        >
+        <template for:each={orderedDates} for:item="date">
             <template if:false={noGroupBy}>
                 <c-expandable-section
                     key={date.label}
@@ -98,10 +96,7 @@
                     data-element-id="avonni-expandable-section"
                 >
                     <ul class="slds-timeline">
-                        <template
-                            for:each={date.items}
-                            for:item="item"
-                        >
+                        <template for:each={date.items} for:item="item">
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
                                     title={item.title}
@@ -109,6 +104,7 @@
                                     datetime-value={item.datetimeValue}
                                     href={item.href}
                                     icon-name={item.iconName}
+                                    icon-size={itemIconSize}
                                     icons={item.icons}
                                     fields={item.fields}
                                     has-checkbox={item.hasCheckbox}
