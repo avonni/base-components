@@ -31,18 +31,14 @@
  */
 .slds-input__button_decrement {
     position: absolute;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+    top: 1rem;
     left: 0.75rem;
     bottom: auto;
 }
 
 .slds-input__button_increment {
     position: absolute;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    transform: translateY(-50%);
+    top: 1rem;
     right: 0.75rem;
     bottom: auto;
 }
