@@ -202,7 +202,7 @@ BaseAbsoluteCenterWithContentWidth.args = {
     src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentHorizontalAlignment: 'center',
-    contentWidth: 15
+    contentWidth: 100
 };
 
 export const BaseTopLeftWithMaxWidth = Template.bind({});
