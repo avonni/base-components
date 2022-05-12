@@ -122,7 +122,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'],
+            options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss', 'ss.ms'],
             description:
                 'Format of the timer. Valid values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”.',
             table: {

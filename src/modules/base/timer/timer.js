@@ -50,7 +50,7 @@ const BUTTON_VARIANTS = {
 const COUNT_TYPES = { valid: ['count-up', 'count-down'], default: 'count-up' };
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const TIME_FORMATS = {
-    valid: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss'],
+    valid: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss', 'ss.ms'],
     default: 'hh:mm:ss'
 };
 
@@ -263,12 +263,6 @@ export default class Timer extends LightningElement {
      * @type {string|number}
      */
     get time() {
-        if (this.format === 'ss') {
-            return ''
-                .concat(`${this.seconds}`.padStart(2, '0'))
-                .concat('.')
-                .concat(`${this.milliseconds}`.padStart(3, '0'));
-        }
         let formattedTime = this.format;
         formattedTime = formattedTime.replace(
             'hh',
@@ -278,9 +272,18 @@ export default class Timer extends LightningElement {
             'mm',
             `${this.minutes}`.padStart(2, '0')
         );
+        if (this.format === 'ss') {
+            formattedTime = formattedTime.replace('ss', `${this.seconds}`);
+        } else {
+            formattedTime = formattedTime.replace(
+                'ss',
+                `${this.seconds}`.padStart(2, '0')
+            );
+        }
+
         formattedTime = formattedTime.replace(
-            'ss',
-            `${this.seconds}`.padStart(2, '0')
+            'ms',
+            `${this.milliseconds}`.padStart(3, '0')
         );
         return formattedTime;
     }
