@@ -188,7 +188,10 @@
                         <template for:each={actions} for:item="action">
                             <lightning-button
                                 if:true={action.label}
-                                class="slds-m-horizontal_xx-small"
+                                class="
+                                    slds-m-horizontal_xx-small
+                                    avonni-carousel__button
+                                "
                                 key={action.name}
                                 icon-name={action.iconName}
                                 label={action.label}

@@ -193,7 +193,14 @@ export default class PrimitiveCarouselItem extends LightningElement {
             .add({
                 'slds-m-horizontal_xx-small': this._actionsVariant === 'border',
                 'slds-m-right_x-small slds-m-top_xx-small':
-                    this._actionsVariant === 'bare'
+                    this._actionsVariant === 'bare',
+                'avonni-carousel__button-icon-top':
+                    this._actionsPosition === 'top-right' ||
+                    this._actionsPosition === 'top-left',
+                'avonni-carousel__button-icon-bottom':
+                    this._actionsPosition === 'bottom-right' ||
+                    this._actionsPosition === 'bottom-left' ||
+                    this._actionsPosition === 'bottom-center'
             })
             .toString();
     }

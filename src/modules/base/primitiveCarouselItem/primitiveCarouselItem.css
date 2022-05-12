@@ -11,9 +11,28 @@
     font-weight: var(--avonni-carousel-item-title-font-weight, 600);
 }
 
+.avonni-carousel__image {
+    display: flex;
+}
+
+.avonni-carousel__button-icon-top {
+    padding: 1px;
+    margin: 0px;
+    min-width: 0;
+    min-height: 0;
+}
+
+.avonni-carousel__button-icon-bottom {
+    padding: 1px;
+    margin: 0px;
+    min-width: 0;
+    min-height: 0;
+}
+
 .avonni-carousel__actions {
     display: flex;
     width: 100%;
+    padding: 4px;
 }
 
 .avonni-carousel__actions-bottom-center {
