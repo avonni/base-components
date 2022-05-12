@@ -303,49 +303,7 @@ describe('Activity Timeline', () => {
 
     // max visible items
     it('Activity Timeline: right number of items displayed if maxVisibleItems is set', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call',
-                fields: [
-                    {
-                        label: 'Name',
-                        value: 'Adam Chan',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Adam Chan'
-                        }
-                    }
-                ]
-            },
-            {
-                name: 'item2',
-                title: 'Re: Mobile conversation on Monday with the new global team',
-                description: 'You emailed Lea Chan',
-                datetimeValue: 1619013600000,
-                href: '#',
-                isActive: true,
-                icons: ['utility:groups', 'utility:attach'],
-                fields: [
-                    {
-                        label: 'Name',
-                        value: 'Jackie Dewar',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Jackie Dewar'
-                        }
-                    }
-                ],
-                buttonLabel: 'Public Sharing',
-                buttonIconName: 'utility:world'
-            }
-        ];
-
-        element.items = ITEM;
+        element.items = testItems;
         element.maxVisibleItems = 1;
         return Promise.resolve().then(() => {
             const timelineItems = element.shadowRoot.querySelectorAll(
@@ -361,55 +319,13 @@ describe('Activity Timeline', () => {
     });
 
     it('Activity Timeline: if maxVisibleItems is equal to items.length, all elements are shown', () => {
-        const ITEM = [
-            {
-                name: 'item1',
-                title: 'Mobile conversation on Monday',
-                description: 'You logged a call with Adam Chan',
-                href: '#',
-                datetimeValue: 1653141600000,
-                iconName: 'standard:log_a_call',
-                fields: [
-                    {
-                        label: 'Name',
-                        value: 'Adam Chan',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Adam Chan'
-                        }
-                    }
-                ]
-            },
-            {
-                name: 'item2',
-                title: 'Re: Mobile conversation on Monday with the new global team',
-                description: 'You emailed Lea Chan',
-                datetimeValue: 1619013600000,
-                href: '#',
-                isActive: true,
-                icons: ['utility:groups', 'utility:attach'],
-                fields: [
-                    {
-                        label: 'Name',
-                        value: 'Jackie Dewar',
-                        type: 'url',
-                        typeAttributes: {
-                            label: 'Jackie Dewar'
-                        }
-                    }
-                ],
-                buttonLabel: 'Public Sharing',
-                buttonIconName: 'utility:world'
-            }
-        ];
-
-        element.items = ITEM;
-        element.maxVisibleItems = 2;
+        element.items = testItems;
+        element.maxVisibleItems = testItems.length;
         return Promise.resolve().then(() => {
             const timelineItems = element.shadowRoot.querySelectorAll(
                 '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
-            expect(timelineItems).toHaveLength(2);
+            expect(timelineItems).toHaveLength(testItems.length);
             expect(
                 element.shadowRoot.querySelectorAll(
                     '[data-element-id="lightning-button"]'
