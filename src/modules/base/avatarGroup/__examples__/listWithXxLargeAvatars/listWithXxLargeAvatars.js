@@ -3,8 +3,7 @@ import { LightningElement } from 'lwc';
 export default class AvatarGroupListWithXxLargeAvatars extends LightningElement {
     items = [
         {
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
             alternativeText: 'This is the alternative text',
             status: 'locked',
@@ -19,14 +18,13 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tertiaryText: 'FakeCompany Inc.',
             tags: [
                 { label: 'tag-01', variant: 'default' },
-                { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-02', variant: 'brand', outline: true },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
         {
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
             alternativeText: 'This is the alternative text',
@@ -59,7 +57,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
@@ -78,13 +76,12 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
         {
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
             alternativeText: 'This is the alternative text',
             status: 'locked',
@@ -99,14 +96,13 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tertiaryText: 'FakeCompany Inc.',
             tags: [
                 { label: 'tag-01', variant: 'default' },
-                { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-02', variant: 'brand', outline: true },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
         {
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
             alternativeText: 'This is the alternative text',
@@ -139,7 +135,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
@@ -158,13 +154,12 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
         {
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             fallbackIconName: 'standard:user',
             alternativeText: 'This is the alternative text',
             status: 'locked',
@@ -179,14 +174,13 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tertiaryText: 'FakeCompany Inc.',
             tags: [
                 { label: 'tag-01', variant: 'default' },
-                { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-02', variant: 'brand', outline: true },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
         {
-            src:
-                'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
             fallbackIconName: 'standard:user',
             initials: 'UA',
             alternativeText: 'This is the alternative text',
@@ -219,7 +213,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         },
@@ -238,7 +232,7 @@ export default class AvatarGroupListWithXxLargeAvatars extends LightningElement 
             tags: [
                 { label: 'tag-01', variant: 'default' },
                 { label: 'tag-02', variant: 'inverse' },
-                { label: 'tag-03', variant: 'lightest' },
+                { label: 'tag-03', variant: 'warning' },
                 { label: 'tag-04', variant: 'success' }
             ]
         }

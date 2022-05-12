@@ -62,7 +62,7 @@ describe('Input Counter', () => {
         document.body.appendChild(element);
     });
 
-    it('Input Counter Default attributes', () => {
+    it('Input Counter: Default attributes', () => {
         expect(element.name).toBeUndefined();
         expect(element.label).toBeUndefined();
         expect(element.messageWhenBadInput).toBeUndefined();
@@ -92,7 +92,7 @@ describe('Input Counter', () => {
     /* ----- ATTRIBUTES ----- */
 
     // name
-    it('Input Counter name', () => {
+    it('Input Counter: name', () => {
         element.name = 'This is a name text';
 
         return Promise.resolve().then(() => {
@@ -104,7 +104,7 @@ describe('Input Counter', () => {
     });
 
     // label
-    it('Input Counter label', () => {
+    it('Input Counter: label', () => {
         element.label = 'This is a label text';
 
         return Promise.resolve().then(() => {
@@ -115,7 +115,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input Counter label label-inline', () => {
+    it('Input Counter: label label-inline', () => {
         element.label = 'This is a label text';
         element.variant = 'label-inline';
 
@@ -128,7 +128,7 @@ describe('Input Counter', () => {
     });
 
     // aria-label
-    it('Input Counter aria-label', () => {
+    it('Input Counter: aria-label', () => {
         element.ariaLabel = 'Aria-label';
 
         return Promise.resolve().then(() => {
@@ -140,7 +140,7 @@ describe('Input Counter', () => {
     });
 
     // max
-    it('Input Counter max', () => {
+    it('Input Counter: max', () => {
         element.max = 20;
 
         return Promise.resolve().then(() => {
@@ -149,7 +149,7 @@ describe('Input Counter', () => {
     });
 
     // min
-    it('Input Counter min', () => {
+    it('Input Counter: min', () => {
         element.min = 5;
 
         return Promise.resolve().then(() => {
@@ -158,7 +158,7 @@ describe('Input Counter', () => {
     });
 
     // step
-    it('Input Counter step // no input-step given - defaults to 1', () => {
+    it('Input Counter: step // no input-step given - defaults to 1', () => {
         element.step = 5;
         element.value = 0;
         element.fractionDigits = null;
@@ -180,7 +180,7 @@ describe('Input Counter', () => {
             });
     });
 
-    it('Input Counter step no decimal // input-step 0.01', () => {
+    it('Input Counter: step no decimal // input-step 0.01', () => {
         element.step = 5;
         element.value = 0;
         element.fractionDigits = 2;
@@ -202,7 +202,7 @@ describe('Input Counter', () => {
             });
     });
 
-    it('Input Counter step decimal // input-step 0.01', () => {
+    it('Input Counter: step decimal // input-step 0.01', () => {
         element.step = 5.55;
         element.value = 0;
         element.fractionDigits = 2;
@@ -225,7 +225,7 @@ describe('Input Counter', () => {
     });
 
     // Precision Handler
-    it('Input Counter Precision step decimal // input-step', () => {
+    it('Input Counter: Precision step decimal // input-step', () => {
         element.step = 55.3658;
         element.value = 1256.789;
         element.fractionDigits = 3;
@@ -248,7 +248,7 @@ describe('Input Counter', () => {
     });
 
     // value
-    it('Input Counter value', () => {
+    it('Input Counter: value', () => {
         element.value = 5;
 
         return Promise.resolve()
@@ -268,7 +268,7 @@ describe('Input Counter', () => {
     });
 
     // type
-    it('Input Counter number', () => {
+    it('Input Counter: number', () => {
         element.type = 'number';
 
         return Promise.resolve().then(() => {
@@ -279,7 +279,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input Counter percent', () => {
+    it('Input Counter: percent', () => {
         element.type = 'percent';
 
         return Promise.resolve().then(() => {
@@ -290,7 +290,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input Counter currency', () => {
+    it('Input Counter: currency', () => {
         element.type = 'currency';
 
         return Promise.resolve().then(() => {
@@ -302,7 +302,7 @@ describe('Input Counter', () => {
     });
 
     // disabled
-    it('Input Counter disabled', () => {
+    it('Input Counter: disabled', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -314,7 +314,7 @@ describe('Input Counter', () => {
     });
 
     // read only
-    it('Input Counter read only', () => {
+    it('Input Counter: read only', () => {
         element.readOnly = true;
 
         return Promise.resolve().then(() => {
@@ -330,7 +330,7 @@ describe('Input Counter', () => {
     });
 
     // required needs to be label inline
-    it('Input Counter required', () => {
+    it('Input Counter: required', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -343,7 +343,7 @@ describe('Input Counter', () => {
     });
 
     // field level help
-    it('Input Counter field level help', () => {
+    it('Input Counter: field level help', () => {
         element.fieldLevelHelp = 'This is a field level help';
         element.variant = 'label-inline';
 
@@ -359,7 +359,7 @@ describe('Input Counter', () => {
     /* ----- EVENTS ----- */
 
     // Input counter change
-    it('Input counter change event // decrement defaults', () => {
+    it('Input counter: change event // decrement defaults', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -376,7 +376,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input counter change event // decrement to Min floor', () => {
+    it('Input counter: change event // decrement to Min floor', () => {
         element.min = 5;
         element.value = 10;
         element.step = 6;
@@ -397,7 +397,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input counter change event // decrement to Max ceiling', () => {
+    it('Input counter: change event // decrement to Max ceiling', () => {
         element.max = 20;
         element.value = 25;
         element.step = 6;
@@ -418,7 +418,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input counter change event // increment defaults', () => {
+    it('Input counter: change event // increment defaults', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
 
@@ -435,7 +435,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input counter test Max ceiling on increment', () => {
+    it('Input counter: test Max ceiling on increment', () => {
         element.max = 5;
         element.value = 0;
         element.step = 6;
@@ -456,7 +456,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input counter test under Min floor on increment', () => {
+    it('Input counter: test under Min floor on increment', () => {
         element.min = 5;
         element.value = 0;
         element.step = 6;
@@ -477,7 +477,7 @@ describe('Input Counter', () => {
         });
     });
 
-    it('Input counter test Max and value unchanged on increment', () => {
+    it('Input counter: test Max and value unchanged on increment', () => {
         element.max = 5;
         element.value = 5;
         element.step = 6;
@@ -498,7 +498,7 @@ describe('Input Counter', () => {
             });
     });
 
-    it('Input counter test Min and value unchanged on decrement', () => {
+    it('Input counter: test Min and value unchanged on decrement', () => {
         element.min = 5;
         element.value = 5;
         element.step = 6;

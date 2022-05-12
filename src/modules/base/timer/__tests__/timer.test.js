@@ -53,7 +53,7 @@ describe('Timer', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Timer: Default attributes', () => {
         expect(element.autoStart).toBeFalsy();
         expect(element.duration).toBe(1);
         expect(element.format).toBe('hh:mm:ss');
@@ -68,7 +68,7 @@ describe('Timer', () => {
     /* ----- ATTRIBUTES ----- */
 
     // auto-start
-    it('autoStart = false', () => {
+    it('Timer: autoStart = false', () => {
         element.autoStart = false;
 
         return Promise.resolve().then(() => {
@@ -76,7 +76,7 @@ describe('Timer', () => {
         });
     });
 
-    it('autoStart = true', () => {
+    it('Timer: autoStart = true', () => {
         element.autoStart = true;
 
         return Promise.resolve().then(() => {
@@ -85,7 +85,7 @@ describe('Timer', () => {
     });
 
     // duration
-    it('duration > 86400000', () => {
+    it('Timer: duration > 86400000', () => {
         element.duration = 86500000;
 
         return Promise.resolve().then(() => {
@@ -93,7 +93,7 @@ describe('Timer', () => {
         });
     });
 
-    it('duration = 86200000', () => {
+    it('Timer: duration = 86200000', () => {
         element.duration = 86200000;
         const duration = 86200000 / 1000;
 
@@ -102,7 +102,7 @@ describe('Timer', () => {
         });
     });
 
-    it('duration default', () => {
+    it('Timer: duration default', () => {
         element.duration = 'test';
         const DEFAULT_DURATION = 1;
         return Promise.resolve().then(() => {
@@ -111,7 +111,7 @@ describe('Timer', () => {
     });
 
     // type
-    it('type', () => {
+    it('Timer: type', () => {
         element.type = 86400000;
         const DEFAULT_TYPE = 'count-up';
 
@@ -121,7 +121,7 @@ describe('Timer', () => {
     });
 
     // repeat
-    it('repeat false', () => {
+    it('Timer: repeat false', () => {
         element.repeat = false;
 
         return Promise.resolve().then(() => {
@@ -129,7 +129,7 @@ describe('Timer', () => {
         });
     });
 
-    it('repeat true', () => {
+    it('Timer: repeat true', () => {
         element.repeat = true;
 
         return Promise.resolve().then(() => {
@@ -138,89 +138,105 @@ describe('Timer', () => {
     });
 
     // format and value
-    it('format = hh:mm:ss', () => {
+    it('Timer: format = hh:mm:ss', () => {
         element.format = 'hh:mm:ss';
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('12:59:49');
         });
     });
 
-    it('format = mm:ss', () => {
+    it('Timer: format = mm:ss', () => {
         element.format = 'mm:ss';
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('779:49');
         });
     });
 
-    it('format = hh:mm', () => {
+    it('Timer: format = hh:mm', () => {
         element.format = 'hh:mm';
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('12:59');
         });
     });
 
-    it('format = hh', () => {
+    it('Timer: format = hh', () => {
         element.format = 'hh';
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('12');
         });
     });
 
-    it('format = mm', () => {
+    it('Timer: format = mm', () => {
         element.format = 'mm';
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe('779');
         });
     });
 
-    it('format = ss', () => {
+    it('Timer: format = ss', () => {
         element.format = 'ss';
         element.value = 46789000;
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.label).toBe(46789);
         });
     });
 
     // icon-name
-    it('iconName', () => {
+    it('Timer: iconName', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.iconName).toBe('utility:apps');
         });
     });
 
     // icon-position
-    it('iconPosition', () => {
+    it('Timer: iconPosition', () => {
         element.iconPosition = 'right';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.iconPosition).toBe('right');
         });
     });
 
     // repeat
     // Depends on value, duration and start()
-    // it('repeat = true', () => {
+    // it('Timer: repeat = true', () => {
     //     const element = createElement('base-timer', {
     //         is: Timer
     //     });
@@ -238,74 +254,90 @@ describe('Timer', () => {
     // });
 
     // variant
-    it('variant = neutral', () => {
+    it('Timer: variant = neutral', () => {
         element.variant = 'neutral';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('neutral');
         });
     });
 
-    it('variant = base', () => {
+    it('Timer: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('base');
         });
     });
 
-    it('variant = brand', () => {
+    it('Timer: variant = brand', () => {
         element.variant = 'brand';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('brand');
         });
     });
 
-    it('variant = brand-outline', () => {
+    it('Timer: variant = brand-outline', () => {
         element.variant = 'brand-outline';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('brand-outline');
         });
     });
 
-    it('variant = destructive', () => {
+    it('Timer: variant = destructive', () => {
         element.variant = 'destructive';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('destructive');
         });
     });
 
-    it('variant = destructive-text', () => {
+    it('Timer: variant = destructive-text', () => {
         element.variant = 'destructive-text';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('destructive-text');
         });
     });
 
-    it('variant = inverse', () => {
+    it('Timer: variant = inverse', () => {
         element.variant = 'inverse';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('inverse');
         });
     });
 
-    it('variant = success', () => {
+    it('Timer: variant = success', () => {
         element.variant = 'success';
 
         return Promise.resolve().then(() => {
-            const button = element.shadowRoot.querySelector('[data-element-id="lightning-button"]');
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
             expect(button.variant).toBe('success');
         });
     });
@@ -313,7 +345,7 @@ describe('Timer', () => {
     /* ----- METHODS AND EVENTS ----- */
 
     // start method and timerstart event
-    it('start method and timerstart event', () => {
+    it('Timer: start method and timerstart event', () => {
         const handler = jest.fn();
         element.addEventListener('timerstart', handler);
 
@@ -334,7 +366,7 @@ describe('Timer', () => {
     });
 
     // pause method and timerpause event
-    it('pause method and timerpause event', () => {
+    it('Timer: pause method and timerpause event', () => {
         const handler = jest.fn();
         element.addEventListener('timerpause', handler);
 
@@ -354,7 +386,7 @@ describe('Timer', () => {
     });
 
     // stop method and timerstop event
-    it('stop method and timerstop event', () => {
+    it('Timer: stop method and timerstop event', () => {
         const handler = jest.fn();
         element.addEventListener('timerstop', handler);
 
@@ -374,7 +406,7 @@ describe('Timer', () => {
     });
 
     // reset method and timerreset event
-    it('reset method and timerreset event', () => {
+    it('Timer: reset method and timerreset event', () => {
         const handler = jest.fn();
         element.addEventListener('timerreset', handler);
 

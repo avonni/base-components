@@ -51,33 +51,16 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         }
     });
 
-    it('Default attributes', () => {
+    it('Scheduler header group: Default attributes', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
 
         expect(element.availableDaysOfTheWeek).toMatchObject([
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6
+            0, 1, 2, 3, 4, 5, 6
         ]);
         expect(element.availableMonths).toMatchObject([
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9,
-            10,
-            11
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
         ]);
         expect(element.availableTimeFrames).toMatchObject(['00:00-23:59']);
         expect(element.headers).toMatchObject([
@@ -102,7 +85,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
 
     // available-days-of-the-week
     // Depends on timeSpan, start and headers
-    it('availableDaysOfTheWeek', () => {
+    it('Scheduler header group: availableDaysOfTheWeek', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -144,7 +127,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('availableDaysOfTheWeek, remove last column if empty', () => {
+    it('Scheduler header group: availableDaysOfTheWeek, remove last column if empty', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -183,7 +166,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
 
     // available-months
     // Depends on timeSpan, start and headers
-    it('availableMonths', () => {
+    it('Scheduler header group: availableMonths', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -227,7 +210,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
 
     // available-time-frames
     // Depends on timeSpan, start and headers
-    it('availableTimeFrames', () => {
+    it('Scheduler header group: availableTimeFrames', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -266,7 +249,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
 
     // headers
     // Depends on timeSpan and start
-    it('headers', () => {
+    it('Scheduler header group: headers', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -319,7 +302,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('headers, load only a maximum number of cells', () => {
+    it('Scheduler header group: headers, load only a maximum number of cells', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -373,7 +356,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('headers, header span bigger than timeSpan', () => {
+    it('Scheduler header group: headers, header span bigger than timeSpan', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -406,7 +389,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
 
     // scroll-left-offset
     // Depends on start
-    it('scrollLeftOffset', () => {
+    it('Scheduler header group: scrollLeftOffset', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -432,7 +415,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
 
     // start
     // Depends on headers and timeSpan
-    it('start', () => {
+    it('Scheduler header group: start', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -450,7 +433,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('start in the middle of the year should end in the middle of the year', () => {
+    it('Scheduler header group: start in the middle of the year should end in the middle of the year', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -479,7 +462,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('start in the middle of the month should end in the middle of the month', () => {
+    it('Scheduler header group: start in the middle of the month should end in the middle of the month', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -508,7 +491,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('start in the middle of the week should end in the middle of the week', () => {
+    it('Scheduler header group: start in the middle of the week should end in the middle of the week', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -537,7 +520,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('start in the middle of the day should end in the middle of the day', () => {
+    it('Scheduler header group: start in the middle of the day should end in the middle of the day', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -566,7 +549,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('start in the middle of the hour should end in the middle of the hour', () => {
+    it('Scheduler header group: start in the middle of the hour should end in the middle of the hour', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -597,7 +580,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
 
     // time-span
     // Depends on start and headers
-    it('timeSpan', () => {
+    it('Scheduler header group: timeSpan', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -634,7 +617,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
     /* ----- EVENTS ----- */
 
     // privateheaderregister and privatevisibleheaderchange
-    it('privateheaderregister event and privatevisibleheaderchange event', () => {
+    it('Scheduler header group: privateheaderregister event and privatevisibleheaderchange event', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });
@@ -663,7 +646,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
     });
 
     // privatecellwidthchange
-    it('privatecellwidthchange event', () => {
+    it('Scheduler header group: privatecellwidthchange event', () => {
         const element = createElement('base-primitive-scheduler-header-group', {
             is: PrimitiveSchedulerHeaderGroup
         });

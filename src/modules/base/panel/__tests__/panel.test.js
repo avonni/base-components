@@ -48,7 +48,7 @@ describe('Panel', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Panel: Default attributes', () => {
         expect(element.position).toBe('right');
         expect(element.title).toBeUndefined();
         expect(element.showPanel).toBeFalsy();
@@ -58,7 +58,7 @@ describe('Panel', () => {
     /* ---- ATTRIBUTES ----- */
 
     // position
-    it('position = right', () => {
+    it('Panel: position = right', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.position = 'right';
 
@@ -68,7 +68,7 @@ describe('Panel', () => {
         });
     });
 
-    it('position = left', () => {
+    it('Panel: position = left', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.position = 'left';
 
@@ -79,8 +79,10 @@ describe('Panel', () => {
     });
 
     // title
-    it('title', () => {
-        const title = element.shadowRoot.querySelector('[data-element-id="h1"]');
+    it('Panel: title', () => {
+        const title = element.shadowRoot.querySelector(
+            '[data-element-id="h1"]'
+        );
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -89,7 +91,7 @@ describe('Panel', () => {
     });
 
     // showPanel
-    it('showPanel = true', () => {
+    it('Panel: showPanel = true', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.showPanel = true;
 
@@ -99,7 +101,7 @@ describe('Panel', () => {
     });
 
     // size
-    it('size = medium', () => {
+    it('Panel: size = medium', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'medium';
 
@@ -112,7 +114,7 @@ describe('Panel', () => {
         });
     });
 
-    it('size = small', () => {
+    it('Panel: size = small', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'small';
 
@@ -125,7 +127,7 @@ describe('Panel', () => {
         });
     });
 
-    it('size = large', () => {
+    it('Panel: size = large', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'large';
 
@@ -138,7 +140,7 @@ describe('Panel', () => {
         });
     });
 
-    it('size = x-large', () => {
+    it('Panel: size = x-large', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'x-large';
 
@@ -151,7 +153,7 @@ describe('Panel', () => {
         });
     });
 
-    it('size = full', () => {
+    it('Panel: size = full', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         element.size = 'full';
 
@@ -167,7 +169,7 @@ describe('Panel', () => {
     /* ---- METHODS ----- */
 
     // toggle
-    it('method: toggle', () => {
+    it('Panel: method toggle', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         expect(wrapper.classList).toContain('slds-is-hidden');
 
@@ -187,7 +189,7 @@ describe('Panel', () => {
     });
 
     // open and close
-    it('methods: open and close', () => {
+    it('Panel: methods open and close', () => {
         const wrapper = element.shadowRoot.querySelector('.slds-panel');
         expect(wrapper.classList).toContain('slds-is-hidden');
 

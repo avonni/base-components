@@ -146,7 +146,8 @@ export default class Scheduler extends LightningElement {
 
         // Save the default datatable column width
         if (!this._initialDatatableWidth) {
-            this._initialDatatableWidth = this.datatableCol.getBoundingClientRect().width;
+            this._initialDatatableWidth =
+                this.datatableCol.getBoundingClientRect().width;
             this.datatableWidth = this._initialDatatableWidth;
         }
 
@@ -191,9 +192,17 @@ export default class Scheduler extends LightningElement {
 
         // If the edit dialog is opened, focus on the first input
         if (this.showEditDialog || this.showRecurrenceDialog) {
-            this.template.querySelector('[data-element-id="avonni-dialog"]').focusOnCloseButton();
+            this.template
+                .querySelector('[data-element-id="avonni-dialog"]')
+                .focusOnCloseButton();
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available.
@@ -803,6 +812,12 @@ export default class Scheduler extends LightningElement {
         if (this._connected) this.initHeaders();
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
      *
@@ -827,7 +842,9 @@ export default class Scheduler extends LightningElement {
      * @type {HTMLElement}
      */
     get datatable() {
-        return this.template.querySelector('[data-element-id="avonni-datatable"]');
+        return this.template.querySelector(
+            '[data-element-id="avonni-datatable"]'
+        );
     }
 
     /**
@@ -850,8 +867,8 @@ export default class Scheduler extends LightningElement {
             'slds-border_right avonni-scheduler__datatable-col slds-grid'
         )
             .add({
-                'avonni-scheduler__datatable-col_hidden': this
-                    .datatableIsHidden,
+                'avonni-scheduler__datatable-col_hidden':
+                    this.datatableIsHidden,
                 'avonni-scheduler__datatable-col_open': this.datatableIsOpen
             })
             .toString();
@@ -1008,9 +1025,8 @@ export default class Scheduler extends LightningElement {
     get showRightInfiniteLoadSpinner() {
         if (!this.smallestHeader || this.isLoading) return false;
 
-        const lastVisibleColumn = this.smallestHeader.columns[
-            this.smallestHeader.columns.length - 1
-        ];
+        const lastVisibleColumn =
+            this.smallestHeader.columns[this.smallestHeader.columns.length - 1];
         const lastVisibleTime =
             lastVisibleColumn && dateTimeObjectFrom(lastVisibleColumn.end);
         return lastVisibleTime < this.smallestHeader.end;
@@ -1041,12 +1057,18 @@ export default class Scheduler extends LightningElement {
     get splitterClass() {
         return classSet('avonni-scheduler__splitter slds-is-absolute slds-grid')
             .add({
-                'avonni-scheduler__splitter_disabled': this
-                    .resizeColumnDisabled,
+                'avonni-scheduler__splitter_disabled':
+                    this.resizeColumnDisabled,
                 'slds-grid_align-end': this.datatableIsOpen
             })
             .toString();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Create a new event.
@@ -1105,6 +1127,12 @@ export default class Scheduler extends LightningElement {
     openNewEventDialog() {
         this.crud.newEvent();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Create the computed headers.
@@ -2344,7 +2372,9 @@ export default class Scheduler extends LightningElement {
     handleEditSaveKeyDown(event) {
         if (event.key === 'Tab') {
             event.preventDefault();
-            this.template.querySelector('[data-element-id^="avonni-dialog"]').focusOnCloseButton();
+            this.template
+                .querySelector('[data-element-id^="avonni-dialog"]')
+                .focusOnCloseButton();
         }
     }
 
