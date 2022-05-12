@@ -58,6 +58,11 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_LOADING_TEXT = 'Loading';
 
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
+};
+
 /**
  * @class
  * @descriptor c-primitive-activity-timeline-item
@@ -157,6 +162,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _color;
 
@@ -285,6 +291,25 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     set hasError(value) {
         this._hasError = normalizeBoolean(value);
+    }
+
+    /**
+     * The size of the item's icon. Valid values are x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default small
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
     }
 
     /**
