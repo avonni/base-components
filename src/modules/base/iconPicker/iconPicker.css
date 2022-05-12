@@ -78,3 +78,7 @@ button:disabled {
     margin: 0 -0.4rem 0 -0.6rem;
     transform: scale(0.6);
 }
+
+.avonni-icon-picker__toggle-button_size-limit {
+    max-height: 2rem;
+}

@@ -523,7 +523,8 @@ export default class IconPicker extends LightningElement {
             classes.add({
                 'slds-p-horizontal_xx-small': true,
                 'slds-button_neutral': this.menuVariant === 'border',
-                'slds-button_inverse': this.menuVariant === 'border-inverse'
+                'slds-button_inverse': this.menuVariant === 'border-inverse',
+                'avonni-icon-picker__toggle-button_size-limit': true
             });
         } else {
             classes.add({
