@@ -30,8 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-div:focus {
-    outline: none;
+*:focus {
+    border: 1px solid red;
 }
 
 .slds-form-element_stacked .slds-form-element {

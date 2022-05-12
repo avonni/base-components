@@ -60,7 +60,8 @@
                     type="button"
                     data-element-id="button"
                     onclick={handleButtonClick}
-                    onblur={handleBlur}
+                    onfocus={handlePrivateFocus}
+                    onblur={handlePrivateBlur}
                     onmousedown={handleButtonMouseDown}
                 >
                     <template if:false={readOnly}>
@@ -95,11 +96,8 @@
                 <template if:true={dropdownOpened}>
                     <div
                         class={computedDropdownClass}
-                        onmousedown={handleDropdownMouseDown}
-                        onmouseup={handleDropdownMouseUp}
-                        onblur={handleBlur}
+                        onblur={handlePrivateBlur}
                         data-element-id="div-dropdown"
-                        tabindex="0"
                     >
                         <!-- Loading spinner -->
                         <template if:true={isLoading}>
@@ -120,8 +118,6 @@
                                 "
                                 onprivateblur={handlePrivateBlur}
                                 onprivatefocus={handlePrivateFocus}
-                                onmouseover={cancelBlur}
-                                onmouseout={allowBlur}
                                 onchange={handleDefaultAndTokenChange}
                             >
                                 <!-- Tabs -->

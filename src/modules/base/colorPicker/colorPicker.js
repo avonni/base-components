@@ -1116,13 +1116,21 @@ export default class ColorPicker extends LightningElement {
     /**
      * Blur handler.
      */
-    handleBlur() {
-        if (this._cancelBlur) {
-            return;
-        }
+    handleBlur(event) {
+        // if (this._cancelBlur) {
+        //     return;
+        // }
 
-        if (this.dropdownVisible) {
-            this.toggleMenuVisibility();
+        // if (this.dropdownVisible) {
+        //     // this.toggleMenuVisibility();
+        //     console.log('ici');
+        // }
+        const menuElement = this.template.querySelector('.slds-dropdown');
+        if (event && menuElement.contains(event.target)) {
+            console.log('DEDANS');
+        } else {
+            this._menuHasFocus = false;
+            console.log('DEHORS');
         }
     }
 
@@ -1219,8 +1227,7 @@ export default class ColorPicker extends LightningElement {
      */
     handlePrivateFocus(event) {
         event.stopPropagation();
-
-        this.allowBlur();
+        this.cancelBlur();
         this._menuHasFocus = true;
     }
 
@@ -1232,8 +1239,7 @@ export default class ColorPicker extends LightningElement {
     handlePrivateBlur(event) {
         event.stopPropagation();
 
-        this.handleBlur();
-        this._menuHasFocus = false;
+        this.handleBlur(event);
     }
 
     /**
