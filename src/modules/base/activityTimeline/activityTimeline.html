@@ -133,27 +133,19 @@
         </template>
     </template>
     <template if:false={isShowButtonHidden}>
-        <div
+        <lightning-button
+            variant={buttonVariant}
+            label={currentShowButtonLabel}
+            icon-name={currentShowButtonIcon}
+            icon-position={currentShowButtonPosition}
+            data-element-id="lightning-button"
             class="
-                slds-dropdown-trigger slds-dropdown-trigger_click
-                slds-is-open
+                slds-m-top_small
+                slds-m-bottom_small
+                slds-m-left_small
+                slds-show
             "
-        >
-            <lightning-button
-                variant={buttonVariant}
-                label={currentShowButtonLabel}
-                icon-name={currentShowButtonIcon}
-                icon-position={currentShowButtonPosition}
-                data-element-id="lightning-button"
-                class="
-                    slds-m-top_small
-                    slds-m-bottom_small
-                    slds-m-left_small
-                    slds-show
-                    avonni-activity-timeline__show-button
-                "
-                onclick={toggleShowMoreButton}
-            ></lightning-button>
-        </div>
+            onclick={toggleShowMoreButton}
+        ></lightning-button>
     </template>
 </template>
