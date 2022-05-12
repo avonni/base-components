@@ -870,6 +870,7 @@ export default class Calendar extends LightningElement {
      * @param {object} event
      */
     handlerSelectDate(event) {
+        this.handleDateFocus(event);
         if (!event.currentTarget.dataset.day) return;
 
         this._selectionMethod = event.pointerType === '' ? 'keyboard' : 'mouse';
