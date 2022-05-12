@@ -228,7 +228,7 @@ export default class Timer extends LightningElement {
     set timerValue(value) {
         this._timerValue = isNaN(parseInt(value, 10))
             ? DEFAULT_TIMER_VALUE
-            : Number(Math.max(parseInt(value, 10), 86400000));
+            : Number(Math.min(parseInt(value, 10), 86400000));
         console.log(this._timerValue);
     }
 
@@ -263,68 +263,26 @@ export default class Timer extends LightningElement {
      * @type {string|number}
      */
     get time() {
-        if (this.format === 'hh:mm:ss') {
-            return (
-                this.formatTime(
-                    this.hours,
-                    String(this.hours).length > 2
-                        ? String(this.hours).length
-                        : 2
-                ) +
-                ':' +
-                this.formatTime(
-                    this.minutes,
-                    String(this.minutes).length > 2
-                        ? String(this.minutes).length
-                        : 2
-                ) +
-                ':' +
-                this.formatTime(this.seconds, 2)
-            );
+        if (this.format === 'ss') {
+            return ''
+                .concat(`${this.seconds}`.padStart(2, '0'))
+                .concat('.')
+                .concat(`${this.milliseconds}`.padStart(3, '0'));
         }
-        if (this.format === 'mm:ss') {
-            let minutes = this.hours * 60 + this.minutes;
-            return (
-                this.formatTime(
-                    minutes,
-                    String(minutes).length > 2 ? String(minutes).length : 2
-                ) +
-                ':' +
-                this.formatTime(this.seconds, 2)
-            );
-        }
-        if (this.format === 'hh:mm') {
-            return (
-                this.formatTime(
-                    this.hours,
-                    String(this.hours).length > 2
-                        ? String(this.hours).length
-                        : 2
-                ) +
-                ':' +
-                this.formatTime(
-                    this.minutes,
-                    String(this.minutes).length > 2
-                        ? String(this.minutes).length
-                        : 2
-                )
-            );
-        }
-        if (this.format === 'hh') {
-            return this.formatTime(
-                this.hours,
-                String(this.hours).length > 2 ? String(this.hours).length : 2
-            );
-        }
-        if (this.format === 'mm') {
-            let minutes = this.hours * 60 + this.minutes;
-            return this.formatTime(
-                this.hours * 60 + this.minutes,
-                String(minutes).length > 2 ? String(minutes).length : 2
-            );
-        }
-
-        return this.value;
+        let formattedTime = this.format;
+        formattedTime = formattedTime.replace(
+            'hh',
+            `${this.hours}`.padStart(2, '0')
+        );
+        formattedTime = formattedTime.replace(
+            'mm',
+            `${this.minutes}`.padStart(2, '0')
+        );
+        formattedTime = formattedTime.replace(
+            'ss',
+            `${this.seconds}`.padStart(2, '0')
+        );
+        return formattedTime;
     }
 
     /**
@@ -333,7 +291,6 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get hours() {
-        console.log(this.timerValue);
         return Math.floor(this.timerValue / 60 / 60 / 1000);
     }
 
@@ -343,7 +300,6 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get minutes() {
-        console.log(this.timerValue);
         return Math.floor(this.timerValue / 60 / 1000) % 60;
     }
 
@@ -353,8 +309,16 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get seconds() {
-        console.log(this.timerValue);
         return Math.floor(this.timerValue / 1000);
+    }
+
+    /**
+     * Compute the milliseconds based on the timer value.
+     *
+     * @type {number}
+     */
+    get milliseconds() {
+        return Math.floor(this.timerValue % 1000);
     }
 
     /*
@@ -587,16 +551,5 @@ export default class Timer extends LightningElement {
         clearInterval(this.interval);
         this.interval = null;
         this.dispatchTimerStop();
-    }
-
-    /**
-     * Compute format time.
-     *
-     * @param {number} num
-     * @param {number} size
-     * @returns {string} formatTime
-     */
-    formatTime(num, size) {
-        return ('000' + num).slice(-size);
     }
 }

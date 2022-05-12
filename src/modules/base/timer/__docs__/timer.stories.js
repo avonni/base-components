@@ -48,7 +48,7 @@ export default {
             }
         },
         timerValue: {
-            name: 'timer-value (ms)',
+            name: 'timer-value',
             control: {
                 type: 'number',
                 min: 0
@@ -60,7 +60,7 @@ export default {
             }
         },
         duration: {
-            name: 'duration (ms)',
+            name: 'duration',
             control: {
                 type: 'number',
                 min: 1
@@ -161,7 +161,6 @@ export default {
         iconPosition: 'left',
         repeat: false,
         type: 'count-up',
-        value: 0,
         variant: 'neutral'
     }
 };
@@ -202,7 +201,7 @@ export const SuccessSeconds = Template.bind({});
 SuccessSeconds.args = {
     duration: 10000,
     variant: 'success',
-    format: 'ss'
+    format: 'mm:ss'
 };
 
 export const BrandIcon = Template.bind({});
