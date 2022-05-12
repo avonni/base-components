@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .avonni-rating:hover .avonni-active.avonni-continuous:not(:hover) {
+.avonni-rating:hover .avonni-active.avonni-continuous:not(:hover) {
     border: 1px solid #1b5297;
     background-color: #ffffff;
     border-color: #1b5297;
@@ -60,9 +60,11 @@
 
 .avonni-rating {
     unicode-bidi: bidi-override;
-    direction: rtl;
-    text-align: left;
     width: fit-content;
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap-reverse;
+    justify-content: flex-end;
 }
 
 button {
