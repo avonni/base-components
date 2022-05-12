@@ -744,6 +744,9 @@ describe('DualListbox', () => {
                 expect(box.className).not.toContain(
                     'avonni-dual-listbox__box_size-large'
                 );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-responsive'
+                );
             });
         });
     });
@@ -777,6 +780,9 @@ describe('DualListbox', () => {
                 expect(box.className).not.toContain(
                     'avonni-dual-listbox__box_size-large'
                 );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-responsive'
+                );
             });
         });
     });
@@ -809,6 +815,34 @@ describe('DualListbox', () => {
                 );
                 expect(box.className).toContain(
                     'avonni-dual-listbox__box_size-large'
+                );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-responsive'
+                );
+            });
+        });
+    });
+
+    it('Dual Listbox: size responsive', () => {
+        element.size = 'responsive';
+
+        return Promise.resolve().then(() => {
+            const boxes = element.shadowRoot.querySelectorAll(
+                '.slds-dueling-list__options'
+            );
+
+            boxes.forEach((box) => {
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-small'
+                );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-medium'
+                );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-large'
+                );
+                expect(box.className).toContain(
+                    'avonni-dual-listbox__box_size-responsive'
                 );
             });
         });
