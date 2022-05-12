@@ -94,33 +94,29 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * Label of the button that appears when the number of item exceeds the max-visible-items number.
      * @type {string}
-     * @name button-show-more-label
      * @default Show more
      * @public
      */
     @api buttonShowMoreLabel = DEFAULT_BUTTON_SHOW_MORE_LABEL;
 
     /**
-     * Label of the button to display only the max-visible-items number of items.
+     * Label of the button that appears when all items are displayed and max-visible-items value is set.
      * @type {string}
-     * @name button-show-less-label
      * @default Show less
      * @public
      */
     @api buttonShowLessLabel = DEFAULT_BUTTON_SHOW_LESS_LABEL;
 
     /**
-     * The Lightning Design System name of the show button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * The Lightning Design System name of the show more button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      * @type {string}
-     * @name button-show-more-icon-name
      * @public
      */
     @api buttonShowMoreIconName;
 
     /**
-     * The Lightning Design System name of the show button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * The Lightning Design System name of the show less button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
      * @type {string}
-     * @name button-show-less-icon-name
      * @public
      */
     @api buttonShowLessIconName;
@@ -175,9 +171,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show button’s icon. Valid values include left and right.
+     * Position of the show less button’s icon. Valid values include left and right.
      * @type {string}
-     * @name button-show-less-icon-position
      * @default left
      * @public
      */
@@ -194,9 +189,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Position of the show button’s icon. Valid values include left and right.
+     * Position of the show more button’s icon. Valid values include left and right.
      * @type {string}
-     * @name button-show-more-icon-position
      * @default left
      * @public
      */
@@ -213,9 +207,8 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * Variant of the button that appears when the number of item exceeds the max-visible-items number.
+     * Variant of the button that appears when the number of items exceeds the max-visible-items number.
      * @type {string}
-     * @name button-variant
      * @default neutral
      * @public
      */
@@ -302,7 +295,6 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * The maximum number of visible items to display
      * @type {number}
-     * @name maxVisibleItems
      * @default 11
      * @public
      */
