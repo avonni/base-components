@@ -125,7 +125,6 @@ export default class InputDateRange extends LightningElement {
     _timezone;
     _type = DATE_TYPES.default;
     _variant = LABEL_VARIANTS.default;
-
     startTime;
     endTime;
     isOpenStartDate = false;
@@ -135,14 +134,12 @@ export default class InputDateRange extends LightningElement {
     _focusStartDate;
     _focusEndDate;
     savedFocus;
-
     showEndDate = false;
     showStartDate = false;
     enteredStartCalendar = false;
     enteredEndCalendar = false;
     selectionModeStartDate = 'interval';
     selectionModeEndDate = 'interval';
-
     helpMessage;
 
     connectedCallback() {
@@ -644,20 +641,8 @@ export default class InputDateRange extends LightningElement {
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
-     * -------------------------------------------------------------
+     * ------------------------------------------------------------
      */
-
-    /**
-     * Check validity on focus out.
-     */
-    handleFocusOut() {
-        requestAnimationFrame(() => {
-            if (!(this.showEndDate || this.showStartDate)) {
-                this.updateClassListWhenError();
-                this.interactingState.leave();
-            }
-        });
-    }
 
     /**
      * Removes the slds-has-error class on the whole element if it's not valid.
@@ -1002,75 +987,22 @@ export default class InputDateRange extends LightningElement {
         if (selectionMethod === 'keyboard') this.endDateIcon.focus();
     }
 
-    /**
-     * Clicking either an input field or its icon to open or close its calendar
-     *
-     * @param {Event} event
+    /*
+     * ------------------------------------------------------------
+     *  FOCUS HANDLING
+     * ------------------------------------------------------------
      */
-    handleClickDateInput(event) {
-        const today = new Date();
-        const todayMidnight = new Date(today.setHours(0, 0, 0, 0));
-        this.interactingState.enter();
-
-        switch (event.target.dataset.elementId) {
-            case 'input-start-date':
-                /**
-                 * Show only a single date input if no other date,
-                 * otherwise selecting a new start date looks like selecting a range.
-                 */
-                this.selectionModeStartDate = !this._endDate
-                    ? 'single'
-                    : 'interval';
-                this.showStartDate = true;
-                this.showEndDate = false;
-                break;
-            case 'lightning-icon-start-date':
-                this.selectionModeStartDate = !this._endDate
-                    ? 'single'
-                    : 'interval';
-                this.showStartDate = true;
-                this.showEndDate = false;
-                this.setFocusDate(this.startDate || todayMidnight, 'start');
-                break;
-            case 'input-end-date':
-                this.selectionModeEndDate = !this._startDate
-                    ? 'single'
-                    : 'interval';
-                this.showEndDate = true;
-                this.showStartDate = false;
-                break;
-            case 'lightning-icon-end-date':
-                this.selectionModeEndDate = !this._startDate
-                    ? 'single'
-                    : 'interval';
-                this.showEndDate = true;
-                this.showStartDate = false;
-                this.setFocusDate(this.endDate || todayMidnight, 'end');
-                break;
-
-            default:
-                break;
-        }
-    }
 
     /**
-     * Type `escape` on inputs or input icons
-     *
-     * @param {Event} event
+     * Check validity on focus out.
      */
-    handleInputKeyDown(event) {
-        if (event.key === 'Escape') {
-            if (
-                event.target === this.startDateInput ||
-                event.target === this.startDateIcon
-            )
-                this.showStartDate = false;
-            if (
-                event.target === this.endDateInput ||
-                event.target === this.endDateIcon
-            )
-                this.showEndDate = false;
-        }
+    handleFocusOut() {
+        requestAnimationFrame(() => {
+            if (!(this.showEndDate || this.showStartDate)) {
+                this.updateClassListWhenError();
+                this.interactingState.leave();
+            }
+        });
     }
 
     /**
@@ -1187,6 +1119,77 @@ export default class InputDateRange extends LightningElement {
         if (event.target.dataset.elementId === 'calendar-end-date') {
             this.showEndDate = false;
             this.endDateIcon.focus();
+        }
+    }
+
+    /**
+     * Clicking either an input field or its icon to open or close its calendar
+     *
+     * @param {Event} event
+     */
+    handleClickDateInput(event) {
+        const today = new Date();
+        const todayMidnight = new Date(today.setHours(0, 0, 0, 0));
+        this.interactingState.enter();
+
+        switch (event.target.dataset.elementId) {
+            case 'input-start-date':
+                /**
+                 * Show only a single date input if no other date,
+                 * otherwise selecting a new start date looks like selecting a range.
+                 */
+                this.selectionModeStartDate = !this._endDate
+                    ? 'single'
+                    : 'interval';
+                this.showStartDate = true;
+                this.showEndDate = false;
+                break;
+            case 'lightning-icon-start-date':
+                this.selectionModeStartDate = !this._endDate
+                    ? 'single'
+                    : 'interval';
+                this.showStartDate = true;
+                this.showEndDate = false;
+                this.setFocusDate(this.startDate || todayMidnight, 'start');
+                break;
+            case 'input-end-date':
+                this.selectionModeEndDate = !this._startDate
+                    ? 'single'
+                    : 'interval';
+                this.showEndDate = true;
+                this.showStartDate = false;
+                break;
+            case 'lightning-icon-end-date':
+                this.selectionModeEndDate = !this._startDate
+                    ? 'single'
+                    : 'interval';
+                this.showEndDate = true;
+                this.showStartDate = false;
+                this.setFocusDate(this.endDate || todayMidnight, 'end');
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Type `escape` on inputs or input icons
+     *
+     * @param {Event} event
+     */
+    handleInputKeyDown(event) {
+        if (event.key === 'Escape') {
+            if (
+                event.target === this.startDateInput ||
+                event.target === this.startDateIcon
+            )
+                this.showStartDate = false;
+            if (
+                event.target === this.endDateInput ||
+                event.target === this.endDateIcon
+            )
+                this.showEndDate = false;
         }
     }
 }
