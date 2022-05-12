@@ -766,6 +766,7 @@ export default class Calendar extends LightningElement {
      * If invalid current day, center calendar's current day to closest date in min-max interval
      */
     validateCurrentDayValue() {
+        if (!Array.isArray(this._value) || !this._value[0]) return;
         if (this._value[0].toString() === 'Invalid Date') {
             if (
                 this.min.getFullYear() <= new Date().getFullYear() &&
