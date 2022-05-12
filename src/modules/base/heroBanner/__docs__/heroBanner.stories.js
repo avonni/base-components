@@ -194,8 +194,8 @@ Base.args = {
     height: 300
 };
 
-export const BaseAbsoluteCenterWithContentWidth = Template.bind({});
-BaseAbsoluteCenterWithContentWidth.args = {
+export const BaseAbsoluteCenter = Template.bind({});
+BaseAbsoluteCenter.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
