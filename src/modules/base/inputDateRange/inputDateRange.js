@@ -654,6 +654,7 @@ export default class InputDateRange extends LightningElement {
         requestAnimationFrame(() => {
             if (!(this.showEndDate || this.showStartDate)) {
                 this.updateClassListWhenError();
+                this.interactingState.leave();
             }
         });
     }
@@ -1009,6 +1010,7 @@ export default class InputDateRange extends LightningElement {
     handleClickDateInput(event) {
         const today = new Date();
         const todayMidnight = new Date(today.setHours(0, 0, 0, 0));
+        this.interactingState.enter();
 
         switch (event.target.dataset.elementId) {
             case 'input-start-date':
