@@ -35,7 +35,7 @@ import Component from 'avonni/timer';
 customElements.define('ac-base-timer', Component.CustomElementConstructor);
 
 export const Timer = ({
-    timerValue = 0,
+    startTime = 0,
     variant,
     type,
     duration = 1,
@@ -46,7 +46,7 @@ export const Timer = ({
     format
 }) => {
     const element = document.createElement('ac-base-timer');
-    element.timerValue = timerValue;
+    element.startTime = startTime;
     element.variant = variant;
     element.type = type;
     element.duration = duration;
