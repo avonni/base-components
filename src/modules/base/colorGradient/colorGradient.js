@@ -37,6 +37,7 @@ import {
     HSVToHSL,
     normalizeBoolean
 } from 'c/utilsPrivate';
+import { classSet } from '../utils/classSet';
 
 const INDICATOR_SIZE = 12;
 
@@ -213,10 +214,13 @@ export default class ColorGradient extends LightningElement {
      *
      * @type {string}
      */
-    get disabledClass() {
-        return this._disabled || this._readOnly
-            ? 'slds-color-picker__custom-range slds-color-picker__custom-range_disabled'
-            : 'slds-color-picker__custom-range';
+    get computedDisabledClass() {
+        return classSet('slds-color-picker__custom-range')
+            .add({
+                'slds-color-picker__custom-range_disabled':
+                    this._disabled || this._readOnly
+            })
+            .toString();
     }
 
     /**
