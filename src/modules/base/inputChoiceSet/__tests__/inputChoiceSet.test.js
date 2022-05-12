@@ -77,7 +77,7 @@ describe('Input choice set', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Input choice set: Default attributes', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.label).toBeUndefined();
         expect(element.fieldLevelHelp).toBeUndefined();
@@ -99,7 +99,7 @@ describe('Input choice set', () => {
     /* ----- ATTRIBUTES ----- */
 
     // disabled
-    it('disabled', () => {
+    it('Input choice set: disabled', () => {
         element.options = options;
         element.disabled = true;
 
@@ -114,7 +114,7 @@ describe('Input choice set', () => {
     });
 
     // is-loading
-    it('isLoading = false', () => {
+    it('Input choice set: isLoading = false', () => {
         element.options = options;
         element.isLoading = false;
 
@@ -130,7 +130,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('isLoading = true', () => {
+    it('Input choice set: isLoading = true', () => {
         element.options = options;
         element.isLoading = true;
 
@@ -147,7 +147,7 @@ describe('Input choice set', () => {
     });
 
     // label
-    it('label', () => {
+    it('Input choice set: label', () => {
         element.options = options;
         element.label = 'This is a label';
 
@@ -160,7 +160,7 @@ describe('Input choice set', () => {
     });
 
     // fieldLevelHelp
-    it('fieldLevelHelp', () => {
+    it('Input choice set: fieldLevelHelp', () => {
         element.options = options;
         element.fieldLevelHelp = 'This is a field level help';
 
@@ -172,7 +172,7 @@ describe('Input choice set', () => {
     });
 
     // stretch
-    it('stretch', () => {
+    it('Input choice set: stretch', () => {
         element.options = options;
         element.stretch = true;
 
@@ -187,7 +187,7 @@ describe('Input choice set', () => {
     });
 
     // type
-    it('type checkbox', () => {
+    it('Input choice set: type checkbox', () => {
         element.options = options;
         element.orientation = 'vertical';
         element.isMultiSelect = true;
@@ -207,7 +207,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('type button', () => {
+    it('Input choice set: type button', () => {
         element.options = options;
         element.type = 'button';
         element.orientation = 'vertical';
@@ -229,7 +229,7 @@ describe('Input choice set', () => {
 
     // Message when value is missing
     // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
-    it('message when value is missing', () => {
+    it('Input choice set: message when value is missing', () => {
         element.options = options;
         element.required = true;
         element.messageWhenValueMissing = 'Value is Missing';
@@ -249,7 +249,7 @@ describe('Input choice set', () => {
     });
 
     // name
-    it('name', () => {
+    it('Input choice set: name', () => {
         element.options = options;
         element.name = 'Checkbox group name';
 
@@ -264,7 +264,7 @@ describe('Input choice set', () => {
     });
 
     // options
-    it('options', () => {
+    it('Input choice set: options', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -281,7 +281,7 @@ describe('Input choice set', () => {
     });
 
     // options with icons
-    it('options with icons', () => {
+    it('Input choice set: options with icons', () => {
         element.options = optionsWithIcon;
 
         return Promise.resolve().then(() => {
@@ -306,7 +306,7 @@ describe('Input choice set', () => {
     });
 
     // readOnly
-    it('readOnly', () => {
+    it('Input choice set: readOnly', () => {
         element.options = options;
         element.readOnly = true;
         element.value = options[0].value;
@@ -325,7 +325,7 @@ describe('Input choice set', () => {
     });
 
     // required
-    it('required', () => {
+    it('Input choice set: required', () => {
         element.options = options;
         element.required = true;
 
@@ -338,7 +338,7 @@ describe('Input choice set', () => {
     });
 
     // value
-    it('value', () => {
+    it('Input choice set: value', () => {
         element.options = options;
         element.value = ['mon', 'wed'];
 
@@ -357,7 +357,7 @@ describe('Input choice set', () => {
     });
 
     // orientation
-    it('vertical orientation', () => {
+    it('Input choice set: vertical orientation', () => {
         element.options = options;
         element.orientation = 'vertical';
 
@@ -376,7 +376,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('horizontal orientation', () => {
+    it('Input choice set: horizontal orientation', () => {
         element.options = options;
         element.orientation = 'horizontal';
 
@@ -396,7 +396,7 @@ describe('Input choice set', () => {
     });
 
     // variant
-    it('variant standard', () => {
+    it('Input choice set: variant standard', () => {
         element.options = options;
 
         return Promise.resolve().then(() => {
@@ -413,7 +413,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('variant label hidden', () => {
+    it('Input choice set: variant label hidden', () => {
         element.options = options;
         element.variant = 'label-hidden';
 
@@ -431,7 +431,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('variant label inline', () => {
+    it('Input choice set: variant label inline', () => {
         element.options = options;
         element.variant = 'label-inline';
 
@@ -447,7 +447,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('variant label stacked', () => {
+    it('Input choice set: variant label stacked', () => {
         element.options = options;
         element.variant = 'label-stacked';
 
@@ -465,7 +465,7 @@ describe('Input choice set', () => {
 
     /* ----- METHODS ----- */
     // checkValidity
-    it('checkValidity method', () => {
+    it('Input choice set: checkValidity method', () => {
         const spy = jest.spyOn(element, 'checkValidity');
 
         element.checkValidity();
@@ -473,7 +473,7 @@ describe('Input choice set', () => {
     });
 
     // setCustomValidity
-    it('setCustomValidity method', () => {
+    it('Input choice set: setCustomValidity method', () => {
         const spy = jest.spyOn(element, 'setCustomValidity');
 
         element.setCustomValidity('Something');
@@ -482,7 +482,7 @@ describe('Input choice set', () => {
 
     // reportValidity
     // Depends on required
-    it('reportValidity method', () => {
+    it('Input choice set: reportValidity method', () => {
         element.required = true;
         element.reportValidity();
 
@@ -496,7 +496,7 @@ describe('Input choice set', () => {
 
     // showHelpMessageIfInvalid
     // Depends on required
-    it('showHelpMessageIfInvalid method', () => {
+    it('Input choice set: showHelpMessageIfInvalid method', () => {
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -511,7 +511,7 @@ describe('Input choice set', () => {
     /* ----- EVENTS ----- */
 
     // change event
-    it('change event single', () => {
+    it('Input choice set: change event single', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.options = options;
@@ -529,7 +529,7 @@ describe('Input choice set', () => {
         });
     });
 
-    it('change event multiple', () => {
+    it('Input choice set: change event multiple', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.options = options;
@@ -553,7 +553,7 @@ describe('Input choice set', () => {
     });
 
     // blur event
-    it('blur event', () => {
+    it('Input choice set: blur event', () => {
         element.options = options;
 
         const handler = jest.fn();
@@ -574,7 +574,7 @@ describe('Input choice set', () => {
     });
 
     // focus event
-    it('focus event', () => {
+    it('Input choice set: focus event', () => {
         element.options = options;
 
         const handler = jest.fn();

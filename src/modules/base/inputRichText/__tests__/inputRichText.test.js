@@ -48,7 +48,7 @@ describe('InputRichText', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Input rich text: Default attributes', () => {
         expect(element.customButtons).toBeUndefined();
         expect(element.disabled).toBeFalsy();
         expect(element.disabledCategories).toHaveLength(0);
@@ -66,7 +66,7 @@ describe('InputRichText', () => {
     });
 
     // disabled
-    it('disabled = true', () => {
+    it('Input rich text: disabled = true', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
@@ -93,7 +93,7 @@ describe('InputRichText', () => {
         });
     });
 
-    it('disabled = false', () => {
+    it('Input rich text: disabled = false', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
@@ -123,7 +123,7 @@ describe('InputRichText', () => {
     });
 
     // disabled-categories
-    it('disabledCategories', () => {
+    it('Input rich text: disabledCategories', () => {
         element.disabledCategories = ['FORMAT_TEXT', 'ALIGN_TEXT'];
 
         return Promise.resolve().then(() => {
@@ -145,7 +145,7 @@ describe('InputRichText', () => {
     });
 
     // formats
-    it('formats', () => {
+    it('Input rich text: formats', () => {
         element.formats = ['align', 'bold'];
 
         return Promise.resolve().then(() => {
@@ -161,7 +161,7 @@ describe('InputRichText', () => {
     });
 
     // is-publisher
-    it('isPublisher', () => {
+    it('Input rich text: isPublisher', () => {
         element.isPublisher = true;
 
         return Promise.resolve().then(() => {
@@ -174,7 +174,7 @@ describe('InputRichText', () => {
     });
 
     // label
-    it('label', () => {
+    it('Input rich text: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -186,7 +186,7 @@ describe('InputRichText', () => {
     });
 
     // label-visible
-    it('labelVisible = true', () => {
+    it('Input rich text: labelVisible = true', () => {
         element.labelVisible = true;
 
         return Promise.resolve().then(() => {
@@ -201,7 +201,7 @@ describe('InputRichText', () => {
         });
     });
 
-    it('labelVisible = false', () => {
+    it('Input rich text: labelVisible = false', () => {
         element.label = 'A string label';
         element.labelVisible = false;
 
@@ -214,7 +214,7 @@ describe('InputRichText', () => {
     });
 
     // message-when-bad-input
-    it('messageWhenBadInput', () => {
+    it('Input rich text: messageWhenBadInput', () => {
         element.messageWhenBadInput = 'A string error message';
 
         return Promise.resolve().then(() => {
@@ -226,7 +226,7 @@ describe('InputRichText', () => {
     });
 
     // placeholder
-    it('placeholder', () => {
+    it('Input rich text: placeholder', () => {
         element.placeholder = 'A string placeholder';
 
         return Promise.resolve().then(() => {
@@ -238,7 +238,7 @@ describe('InputRichText', () => {
     });
 
     // readOnly
-    it('readOnly', () => {
+    it('Input rich text: readOnly', () => {
         element.readOnly = true;
         element.value = 'Some value';
 
@@ -255,7 +255,7 @@ describe('InputRichText', () => {
     });
 
     // value
-    it('value', () => {
+    it('Input rich text: value', () => {
         element.value = 'A string value';
         const textArea = element.shadowRoot.querySelector(
             '[data-element-id="lightning-formatted-rich-text-top-toolbar"]'
@@ -267,7 +267,7 @@ describe('InputRichText', () => {
     });
 
     // variant
-    it('variant = top-toolbar', () => {
+    it('Input rich text: variant = top-toolbar', () => {
         element.variant = 'top-toolbar';
 
         return Promise.resolve().then(() => {
@@ -278,7 +278,7 @@ describe('InputRichText', () => {
         });
     });
 
-    it('variant = bottom-toolbar', () => {
+    it('Input rich text: variant = bottom-toolbar', () => {
         element.variant = 'bottom-toolbar';
 
         return Promise.resolve().then(() => {

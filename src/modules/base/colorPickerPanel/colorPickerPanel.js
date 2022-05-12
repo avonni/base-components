@@ -62,6 +62,12 @@ export default class ColorPickerPanel extends LightningElement {
         this._selectedColor = this.currentColor || DEFAULT_COLOR;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Localization.
      *
@@ -112,6 +118,12 @@ export default class ColorPickerPanel extends LightningElement {
     get ariaSelectedCustom() {
         return this._isCustomTabActive.toString();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Tab change handler.
@@ -196,7 +208,9 @@ export default class ColorPickerPanel extends LightningElement {
             event.target.name === 'done'
         ) {
             event.preventDefault();
-            this.template.querySelector('[data-element-id="avonni-color-picker-custom"]').focus();
+            this.template
+                .querySelector('[data-element-id="avonni-color-picker-custom"]')
+                .focus();
         }
     }
 }

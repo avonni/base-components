@@ -147,13 +147,11 @@ const groups = [
                 groups: [
                     {
                         label: 'Group relationships',
-                        name:
-                            'related-accounts-cumulus-restaurants-group-relationships'
+                        name: 'related-accounts-cumulus-restaurants-group-relationships'
                     },
                     {
                         label: 'Related contacts',
-                        name:
-                            'related-accounts-cumulus-restaurants-related-contacts'
+                        name: 'related-accounts-cumulus-restaurants-related-contacts'
                     }
                 ]
             }
@@ -219,60 +217,44 @@ const groups = [
                                 groups: [
                                     {
                                         label: 'Related Accounts',
-                                        name:
-                                            'related-accounts-adams-household',
+                                        name: 'related-accounts-adams-household',
                                         items: [
                                             {
                                                 label: 'Lin Akwan',
                                                 name: 'lin-akwan'
                                             },
                                             {
-                                                label:
-                                                    'Northern Trails Outfitter',
-                                                name:
-                                                    'related-accounts-adams-household-northern-trails-outfitter',
+                                                label: 'Northern Trails Outfitter',
+                                                name: 'related-accounts-adams-household-northern-trails-outfitter',
                                                 groups: [
                                                     {
-                                                        label:
-                                                            'Group Relationships',
-                                                        name:
-                                                            'northern-trails-outfitter-group-relationships2',
+                                                        label: 'Group Relationships',
+                                                        name: 'northern-trails-outfitter-group-relationships2',
                                                         items: [
                                                             {
-                                                                label:
-                                                                    'Neil Symonds',
-                                                                name:
-                                                                    'northern-trails-outfitter-neil-symonds',
+                                                                label: 'Neil Symonds',
+                                                                name: 'northern-trails-outfitter-neil-symonds',
                                                                 avatarFallbackIconName:
                                                                     'standard:user',
-                                                                href:
-                                                                    'https://www.avonni.app/',
+                                                                href: 'https://www.avonni.app/',
                                                                 data: [
                                                                     {
-                                                                        label:
-                                                                            'Account name',
-                                                                        value:
-                                                                            'Neil Symonds'
+                                                                        label: 'Account name',
+                                                                        value: 'Neil Symonds'
                                                                     },
                                                                     {
-                                                                        label:
-                                                                            'Account phone number',
-                                                                        value:
-                                                                            '(628) 391-9393'
+                                                                        label: 'Account phone number',
+                                                                        value: '(628) 391-9393'
                                                                     }
                                                                 ],
                                                                 groups: [
                                                                     {
-                                                                        label:
-                                                                            'Related Accounts',
-                                                                        name:
-                                                                            'northern-trails-outfitter-neil-symonds-related-accounts',
+                                                                        label: 'Related Accounts',
+                                                                        name: 'northern-trails-outfitter-neil-symonds-related-accounts',
                                                                         items: [
                                                                             {
-                                                                                label:
-                                                                                    'Mary James',
-                                                                                name:
-                                                                                    'mary-james'
+                                                                                label: 'Mary James',
+                                                                                name: 'mary-james'
                                                                             }
                                                                         ]
                                                                     }
@@ -281,15 +263,12 @@ const groups = [
                                                         ]
                                                     },
                                                     {
-                                                        label:
-                                                            'Related Accounts',
-                                                        name:
-                                                            'northern-trails-outfitter-related-accounts2'
+                                                        label: 'Related Accounts',
+                                                        name: 'northern-trails-outfitter-related-accounts2'
                                                     },
                                                     {
                                                         label: 'Members',
-                                                        name:
-                                                            'northern-trails-outfitter-members'
+                                                        name: 'northern-trails-outfitter-members'
                                                     }
                                                 ]
                                             }
@@ -460,13 +439,11 @@ const groupsWithNeilSymondsSelection = [
                 groups: [
                     {
                         label: 'Group relationships',
-                        name:
-                            'related-accounts-cumulus-restaurants-group-relationships'
+                        name: 'related-accounts-cumulus-restaurants-group-relationships'
                     },
                     {
                         label: 'Related contacts',
-                        name:
-                            'related-accounts-cumulus-restaurants-related-contacts'
+                        name: 'related-accounts-cumulus-restaurants-related-contacts'
                     }
                 ]
             }
@@ -532,60 +509,44 @@ const groupsWithNeilSymondsSelection = [
                                 groups: [
                                     {
                                         label: 'Related Accounts',
-                                        name:
-                                            'related-accounts-adams-household',
+                                        name: 'related-accounts-adams-household',
                                         items: [
                                             {
                                                 label: 'Lin Akwan',
                                                 name: 'lin-akwan'
                                             },
                                             {
-                                                label:
-                                                    'Northern Trails Outfitter',
-                                                name:
-                                                    'related-accounts-adams-household-northern-trails-outfitter',
+                                                label: 'Northern Trails Outfitter',
+                                                name: 'related-accounts-adams-household-northern-trails-outfitter',
                                                 groups: [
                                                     {
-                                                        label:
-                                                            'Group Relationships',
-                                                        name:
-                                                            'northern-trails-outfitter-group-relationships2',
+                                                        label: 'Group Relationships',
+                                                        name: 'northern-trails-outfitter-group-relationships2',
                                                         items: [
                                                             {
-                                                                label:
-                                                                    'Neil Symonds',
-                                                                name:
-                                                                    'northern-trails-outfitter-neil-symonds',
+                                                                label: 'Neil Symonds',
+                                                                name: 'northern-trails-outfitter-neil-symonds',
                                                                 avatarFallbackIconName:
                                                                     'standard:user',
-                                                                href:
-                                                                    'https://www.avonni.app/',
+                                                                href: 'https://www.avonni.app/',
                                                                 data: [
                                                                     {
-                                                                        label:
-                                                                            'Account name',
-                                                                        value:
-                                                                            'Neil Symonds'
+                                                                        label: 'Account name',
+                                                                        value: 'Neil Symonds'
                                                                     },
                                                                     {
-                                                                        label:
-                                                                            'Account phone number',
-                                                                        value:
-                                                                            '(628) 391-9393'
+                                                                        label: 'Account phone number',
+                                                                        value: '(628) 391-9393'
                                                                     }
                                                                 ],
                                                                 groups: [
                                                                     {
-                                                                        label:
-                                                                            'Related Accounts',
-                                                                        name:
-                                                                            'northern-trails-outfitter-neil-symonds-related-accounts',
+                                                                        label: 'Related Accounts',
+                                                                        name: 'northern-trails-outfitter-neil-symonds-related-accounts',
                                                                         items: [
                                                                             {
-                                                                                label:
-                                                                                    'Mary James',
-                                                                                name:
-                                                                                    'mary-james'
+                                                                                label: 'Mary James',
+                                                                                name: 'mary-james'
                                                                             }
                                                                         ]
                                                                     }
@@ -594,15 +555,12 @@ const groupsWithNeilSymondsSelection = [
                                                         ]
                                                     },
                                                     {
-                                                        label:
-                                                            'Related Accounts',
-                                                        name:
-                                                            'northern-trails-outfitter-related-accounts2'
+                                                        label: 'Related Accounts',
+                                                        name: 'northern-trails-outfitter-related-accounts2'
                                                     },
                                                     {
                                                         label: 'Members',
-                                                        name:
-                                                            'northern-trails-outfitter-members'
+                                                        name: 'northern-trails-outfitter-members'
                                                     }
                                                 ]
                                             }
@@ -678,7 +636,7 @@ describe('RelationshipGraph', () => {
         }
     });
 
-    it('Default attributes', () => {
+    it('Relationship graph: Default attributes', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -701,7 +659,7 @@ describe('RelationshipGraph', () => {
     /* ----- ATTRIBUTES ----- */
 
     // actions
-    it('actions', () => {
+    it('Relationship graph: actions', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -726,7 +684,7 @@ describe('RelationshipGraph', () => {
     });
 
     // expand-icon-name
-    it('expandIconName', () => {
+    it('Relationship graph: expandIconName', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -744,7 +702,7 @@ describe('RelationshipGraph', () => {
     });
 
     // group-actions
-    it('groupActions', () => {
+    it('Relationship graph: groupActions', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -762,7 +720,7 @@ describe('RelationshipGraph', () => {
     });
 
     // groups
-    it('groups', () => {
+    it('Relationship graph: groups', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -780,7 +738,7 @@ describe('RelationshipGraph', () => {
     });
 
     // hide-items-count
-    it('hideItemsCount', () => {
+    it('Relationship graph: hideItemsCount', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -798,7 +756,7 @@ describe('RelationshipGraph', () => {
     });
 
     // href
-    it('href', () => {
+    it('Relationship graph: href', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -815,7 +773,7 @@ describe('RelationshipGraph', () => {
     });
 
     // item-actions
-    it('itemActions', () => {
+    it('Relationship graph: itemActions', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -833,7 +791,7 @@ describe('RelationshipGraph', () => {
     });
 
     // label
-    it('label', () => {
+    it('Relationship graph: label', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -850,7 +808,7 @@ describe('RelationshipGraph', () => {
 
     // selected-item-name
     // Depends on groups
-    it('selectedItemName', () => {
+    it('Relationship graph: selectedItemName', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -869,7 +827,7 @@ describe('RelationshipGraph', () => {
     });
 
     // shrink-icon-name
-    it('shrinkIconName', () => {
+    it('Relationship graph: shrinkIconName', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -888,7 +846,7 @@ describe('RelationshipGraph', () => {
 
     // variant
     // Depends on actions
-    it('variant = horizontal', () => {
+    it('Relationship graph: variant = horizontal', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -902,13 +860,11 @@ describe('RelationshipGraph', () => {
             const level = element.shadowRoot.querySelector(
                 'c-primitive-relationship-graph-level'
             );
-            const wrapper = element.shadowRoot.querySelector(
-                'div:nth-of-type(3)'
-            );
+            const wrapper =
+                element.shadowRoot.querySelector('div:nth-of-type(3)');
             const header = element.shadowRoot.querySelector('div');
-            const actionsWrapper = element.shadowRoot.querySelector(
-                'div:nth-of-type(2)'
-            );
+            const actionsWrapper =
+                element.shadowRoot.querySelector('div:nth-of-type(2)');
             const actionButtons = element.shadowRoot.querySelectorAll('button');
             const line = element.shadowRoot.querySelector('.line');
 
@@ -932,7 +888,7 @@ describe('RelationshipGraph', () => {
         });
     });
 
-    it('variant = vertical', () => {
+    it('Relationship graph: variant = vertical', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -946,13 +902,11 @@ describe('RelationshipGraph', () => {
             const level = element.shadowRoot.querySelector(
                 'c-primitive-relationship-graph-level'
             );
-            const wrapper = element.shadowRoot.querySelector(
-                'div:nth-of-type(3)'
-            );
+            const wrapper =
+                element.shadowRoot.querySelector('div:nth-of-type(3)');
             const header = element.shadowRoot.querySelector('div');
-            const actionsWrapper = element.shadowRoot.querySelector(
-                'div:nth-of-type(2)'
-            );
+            const actionsWrapper =
+                element.shadowRoot.querySelector('div:nth-of-type(2)');
             const actionButtons = element.shadowRoot.querySelectorAll('button');
             const line = element.shadowRoot.querySelector('.line');
 
@@ -981,7 +935,7 @@ describe('RelationshipGraph', () => {
     /* ----- EVENTS ----- */
 
     // select
-    it('select event', () => {
+    it('Relationship graph: select event', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });
@@ -1011,7 +965,7 @@ describe('RelationshipGraph', () => {
     });
 
     // actionclick
-    it('actionclick event', () => {
+    it('Relationship graph: actionclick event', () => {
         const element = createElement('data-relationship-graph', {
             is: RelationshipGraph
         });

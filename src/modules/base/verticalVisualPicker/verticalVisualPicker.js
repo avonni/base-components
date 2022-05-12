@@ -113,6 +113,12 @@ export default class VerticalVisualPicker extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * If present, the visual picker is disabled and the user cannot interact with it.
      *
@@ -215,6 +221,17 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
      * Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2], 'value1' or ['value1'].
      *
      * @type {(string|string[])}
@@ -248,6 +265,12 @@ export default class VerticalVisualPicker extends LightningElement {
             validValues: ITEM_VARIANTS.valid
         });
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIESs
+     * -------------------------------------------------------------
+     */
 
     /**
      * Computed list of items for vertical visual picker.
@@ -390,15 +413,25 @@ export default class VerticalVisualPicker extends LightningElement {
     }
 
     /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
+     * Validation with constraint Api.
      *
-     * @type {string}
-     * @public
+     * @type {object}
      */
-    @api
-    get validity() {
-        return this._constraint.validity;
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0
+            });
+        }
+        return this._constraintApi;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Checks if the input is valid.
@@ -468,20 +501,11 @@ export default class VerticalVisualPicker extends LightningElement {
         this.reportValidity();
     }
 
-    /**
-     * Validation with constraint Api.
-     *
-     * @type {object}
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
      */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
-            });
-        }
-        return this._constraintApi;
-    }
 
     /**
      * Dispatches the blur event.

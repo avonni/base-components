@@ -49,7 +49,7 @@ describe('FilterMenuGroup', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Filter menu group: Default attributes', () => {
         expect(element.applyButtonLabel).toBe('Apply');
         expect(element.hideSelectedItems).toBeFalsy();
         expect(element.menus).toMatchObject([]);
@@ -61,7 +61,7 @@ describe('FilterMenuGroup', () => {
 
     // apply-button-label
     // Depends on variant
-    it('applyButtonLabel, with horizontal variant', () => {
+    it('Filter menu group: applyButtonLabel, with horizontal variant', () => {
         element.applyButtonLabel = 'Save';
         element.variant = 'horizontal';
 
@@ -75,7 +75,7 @@ describe('FilterMenuGroup', () => {
         });
     });
 
-    it('applyButtonLabel, with vertical variant', () => {
+    it('Filter menu group: applyButtonLabel, with vertical variant', () => {
         element.applyButtonLabel = 'Save';
         element.variant = 'vertical';
 
@@ -89,7 +89,7 @@ describe('FilterMenuGroup', () => {
 
     // hide-selected-items
     // Depends on menus
-    it('hideSelectedItems = false', () => {
+    it('Filter menu group: hideSelectedItems = false', () => {
         element.menus = MENUS;
         element.hideSelectedItems = false;
 
@@ -101,7 +101,7 @@ describe('FilterMenuGroup', () => {
         });
     });
 
-    it('hideSelectedItems = true', () => {
+    it('Filter menu group: hideSelectedItems = true', () => {
         element.menus = MENUS;
         element.hideSelectedItems = true;
 
@@ -114,7 +114,7 @@ describe('FilterMenuGroup', () => {
     });
 
     // menus
-    it('menus', () => {
+    it('Filter menu group: menus', () => {
         element.menus = MENUS;
 
         return Promise.resolve().then(() => {
@@ -169,7 +169,7 @@ describe('FilterMenuGroup', () => {
 
     // reset-button-label
     // Depends on variant
-    it('resetButtonLabel, with horizontal variant', () => {
+    it('Filter menu group: resetButtonLabel, with horizontal variant', () => {
         element.resetButtonLabel = 'Erase';
         element.variant = 'horizontal';
 
@@ -183,7 +183,7 @@ describe('FilterMenuGroup', () => {
         });
     });
 
-    it('resetButtonLabel, with vertical variant', () => {
+    it('Filter menu group: resetButtonLabel, with vertical variant', () => {
         element.resetButtonLabel = 'Erase';
         element.variant = 'vertical';
 
@@ -197,7 +197,7 @@ describe('FilterMenuGroup', () => {
 
     // variant
     // Depends on menus
-    it('variant = horizontal', () => {
+    it('Filter menu group: variant = horizontal', () => {
         element.variant = 'horizontal';
         element.menus = MENUS;
 
@@ -226,7 +226,7 @@ describe('FilterMenuGroup', () => {
         });
     });
 
-    it('variant = vertical', () => {
+    it('Filter menu group: variant = vertical', () => {
         element.variant = 'vertical';
         element.menus = MENUS;
 
@@ -259,7 +259,7 @@ describe('FilterMenuGroup', () => {
 
     // clear
     // Depends on menus
-    it('clear method', () => {
+    it('Filter menu group: clear method', () => {
         element.menus = MENUS;
 
         return Promise.resolve()
@@ -283,7 +283,7 @@ describe('FilterMenuGroup', () => {
 
     // apply
     // Depends on menus
-    it('apply method', () => {
+    it('Filter menu group: apply method', () => {
         element.menus = NO_VALUE_MENU;
 
         return Promise.resolve()
@@ -307,7 +307,7 @@ describe('FilterMenuGroup', () => {
 
     // select
     // Depends on menus
-    it('select event', () => {
+    it('Filter menu group: select event', () => {
         const handler = jest.fn();
         element.addEventListener('select', handler);
         element.menus = MENUS;
@@ -338,7 +338,7 @@ describe('FilterMenuGroup', () => {
 
     // click on apply button
     // Depends on menus and variant
-    it('click on apply button, with horizontal variant', () => {
+    it('Filter menu group: click on apply button, with horizontal variant', () => {
         element.menus = NO_VALUE_MENU;
 
         return Promise.resolve()
@@ -362,7 +362,7 @@ describe('FilterMenuGroup', () => {
             });
     });
 
-    it('click on apply button, with vertical variant', () => {
+    it('Filter menu group: click on apply button, with vertical variant', () => {
         element.menus = NO_VALUE_MENU;
         element.variant = 'vertical';
 
@@ -388,7 +388,7 @@ describe('FilterMenuGroup', () => {
 
     // click on reset button
     // Depends on menus and variant
-    it('click on reset button, with horizontal variant', () => {
+    it('Filter menu group: click on reset button, with horizontal variant', () => {
         element.menus = MENUS;
 
         return Promise.resolve()
@@ -408,7 +408,7 @@ describe('FilterMenuGroup', () => {
             });
     });
 
-    it('click on reset button, with vertical variant', () => {
+    it('Filter menu group: click on reset button, with vertical variant', () => {
         element.menus = MENUS;
         element.variant = 'vertical';
 
@@ -429,7 +429,7 @@ describe('FilterMenuGroup', () => {
 
     // Remove selected item
     // Depends on menus
-    it('Remove selected item', () => {
+    it('Filter menu group: Remove selected item', () => {
         element.menus = MENUS;
 
         return Promise.resolve()

@@ -48,7 +48,7 @@ describe('PrimitiveReferenceLine', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Primitive reference line: Default attributes', () => {
         expect(element.borderStyle).toBe('dotted');
         expect(element.label).toBeUndefined();
         expect(element.orientation).toBe('horizontal');
@@ -59,7 +59,7 @@ describe('PrimitiveReferenceLine', () => {
 
     // border-style
     // Depends on orientation
-    it('borderStyle = solid, horizontal orientation', () => {
+    it('Primitive reference line: borderStyle = solid, horizontal orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -86,7 +86,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('borderStyle = dashed, horizontal orientation', () => {
+    it('Primitive reference line: borderStyle = dashed, horizontal orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -113,7 +113,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('borderStyle = dotted, horizontal orientation', () => {
+    it('Primitive reference line: borderStyle = dotted, horizontal orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -140,7 +140,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('borderStyle = none, horizontal orientation', () => {
+    it('Primitive reference line: borderStyle = none, horizontal orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -160,7 +160,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('borderStyle = solid, vertical orientation', () => {
+    it('Primitive reference line: borderStyle = solid, vertical orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -187,7 +187,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('borderStyle = dashed, vertical orientation', () => {
+    it('Primitive reference line: borderStyle = dashed, vertical orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -214,7 +214,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('borderStyle = dotted, vertical orientation', () => {
+    it('Primitive reference line: borderStyle = dotted, vertical orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -241,7 +241,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('borderStyle = none, vertical orientation', () => {
+    it('Primitive reference line: borderStyle = none, vertical orientation', () => {
         const borders = ['solid', 'dashed', 'dotted', 'none'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -262,7 +262,7 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     // label
-    it('label', () => {
+    it('Primitive reference line: label', () => {
         const badge = element.shadowRoot.querySelector(
             '[data-element-id="lightning-badge"]'
         );
@@ -275,7 +275,7 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     // orientation
-    it('orientation = horizontal', () => {
+    it('Primitive reference line: orientation = horizontal', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -287,7 +287,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('orientation = vertical', () => {
+    it('Primitive reference line: orientation = vertical', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -299,7 +299,7 @@ describe('PrimitiveReferenceLine', () => {
 
     // thickness
     // Depends on orientation
-    it('thickness = x-small, horizontal orientation', () => {
+    it('Primitive reference line: thickness = x-small, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'x-small';
@@ -328,7 +328,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('thickness = small, horizontal orientation', () => {
+    it('Primitive reference line: thickness = small, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'small';
@@ -357,7 +357,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('thickness = medium, horizontal orientation', () => {
+    it('Primitive reference line: thickness = medium, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'medium';
@@ -386,7 +386,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('thickness = large, horizontal orientation', () => {
+    it('Primitive reference line: thickness = large, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'large';
@@ -415,7 +415,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('thickness = x-small, vertical orientation', () => {
+    it('Primitive reference line: thickness = x-small, vertical orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'x-small';
@@ -444,7 +444,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('thickness = small, vertical orientation', () => {
+    it('Primitive reference line: thickness = small, vertical orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'small';
@@ -473,7 +473,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('thickness = medium, vertical orientation', () => {
+    it('Primitive reference line: thickness = medium, vertical orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'medium';
@@ -502,7 +502,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('thickness = large, vertical orientation', () => {
+    it('Primitive reference line: thickness = large, vertical orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.thickness = 'large';
@@ -533,7 +533,7 @@ describe('PrimitiveReferenceLine', () => {
 
     // value
     // Depends on orientation
-    it('value is Nan, horizontal orientation', () => {
+    it('Primitive reference line: value is Nan, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -544,7 +544,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('value lesser than 0, horizontal orientation', () => {
+    it('Primitive reference line: value lesser than 0, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -555,7 +555,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('value greater than 100, horizontal orientation', () => {
+    it('Primitive reference line: value greater than 100, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -566,7 +566,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('value = 35, horizontal orientation', () => {
+    it('Primitive reference line: value = 35, horizontal orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'horizontal';
@@ -577,7 +577,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('value lesser than 0, vertical orientation', () => {
+    it('Primitive reference line: value lesser than 0, vertical orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -588,7 +588,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('value greater than 100, vertical orientation', () => {
+    it('Primitive reference line: value greater than 100, vertical orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -599,7 +599,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('value = 35, vertical orientation', () => {
+    it('Primitive reference line: value = 35, vertical orientation', () => {
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
 
         element.orientation = 'vertical';
@@ -611,7 +611,7 @@ describe('PrimitiveReferenceLine', () => {
     });
 
     // variant
-    it('variant = default', () => {
+    it('Primitive reference line: variant = default', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -636,7 +636,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('variant = inverse', () => {
+    it('Primitive reference line: variant = inverse', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -673,7 +673,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('variant = success', () => {
+    it('Primitive reference line: variant = success', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -710,7 +710,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('variant = warning', () => {
+    it('Primitive reference line: variant = warning', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -747,7 +747,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('variant = error', () => {
+    it('Primitive reference line: variant = error', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');
@@ -784,7 +784,7 @@ describe('PrimitiveReferenceLine', () => {
         });
     });
 
-    it('variant = lightest', () => {
+    it('Primitive reference line: variant = lightest', () => {
         const variants = ['inverse', 'success', 'warning', 'error', 'lightest'];
 
         const div = element.shadowRoot.querySelector('[data-element-id="div"]');

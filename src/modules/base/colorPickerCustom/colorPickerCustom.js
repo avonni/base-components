@@ -80,6 +80,7 @@ export default class ColorPickerCustom extends LightningElement {
     }
 
     _initialized = false;
+
     renderedCallback() {
         if (!this._initialized) {
             // eslint-disable-next-line @lwc/lwc/no-async-operation
@@ -91,6 +92,12 @@ export default class ColorPickerCustom extends LightningElement {
             this._initialized = true;
         }
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Current color value.
@@ -109,15 +116,11 @@ export default class ColorPickerCustom extends LightningElement {
         this._rgb = hexToRgb(fullHex);
     }
 
-    /**
-     * Focus anchor element.
-     *
-     * @public
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
      */
-    @api
-    focus() {
-        this.anchorElement.focus();
-    }
 
     /**
      * Localization.
@@ -196,6 +199,28 @@ export default class ColorPickerCustom extends LightningElement {
 
         return `Saturation: ${saturation.toFixed()}%. Brightness: ${brightness.toFixed()}%.`;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Focus anchor element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        this.anchorElement.focus();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Prevent event default handler.
