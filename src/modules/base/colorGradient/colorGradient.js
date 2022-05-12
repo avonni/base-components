@@ -557,7 +557,7 @@ export default class ColorGradient extends LightningElement {
      * @param {object} event
      */
     handlerMouseMove(event) {
-        if (this.down && !this.readOnly) {
+        if (this.down && !this.readOnly && !this.disabled) {
             let indicator = this.template.querySelector(
                 '.slds-color-picker__range-indicator'
             );
