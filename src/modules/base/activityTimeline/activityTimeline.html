@@ -85,10 +85,7 @@
         </ul>
     </template>
     <template if:true={hasDates}>
-        <template
-            for:each={orderedDates}
-            for:item="date"
-        >
+        <template for:each={orderedDates} for:item="date">
             <template if:false={noGroupBy}>
                 <c-expandable-section
                     key={date.label}
@@ -98,10 +95,7 @@
                     data-element-id="avonni-expandable-section"
                 >
                     <ul class="slds-timeline">
-                        <template
-                            for:each={date.items}
-                            for:item="item"
-                        >
+                        <template for:each={date.items} for:item="item">
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
                                     title={item.title}
@@ -137,5 +131,29 @@
                 </c-expandable-section>
             </template>
         </template>
+    </template>
+    <template if:false={isShowButtonHidden}>
+        <div
+            class="
+                slds-dropdown-trigger slds-dropdown-trigger_click
+                slds-is-open
+            "
+        >
+            <lightning-button
+                variant={buttonVariant}
+                label={currentShowButtonLabel}
+                icon-name={currentShowButtonIcon}
+                icon-position={currentShowButtonPosition}
+                data-element-id="lightning-button"
+                class="
+                    slds-m-top_small
+                    slds-m-bottom_small
+                    slds-m-left_small
+                    slds-show
+                    avonni-activity-timeline__show-button
+                "
+                onclick={toggleShowMoreButton}
+            ></lightning-button>
+        </div>
     </template>
 </template>
