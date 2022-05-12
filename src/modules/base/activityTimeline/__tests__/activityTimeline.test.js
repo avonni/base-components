@@ -58,6 +58,14 @@ describe('Activity Timeline', () => {
         expect(element.items).toMatchObject([]);
         expect(element.sortedDirection).toBe('desc');
         expect(element.title).toBeUndefined();
+        expect(element.maxVisibleItems).toBe(11);
+        expect(element.buttonShowLessIconName).toBeUndefined();
+        expect(element.buttonShowLessIconPosition).toBe('left');
+        expect(element.buttonShowLessLabel).toBe('Show less');
+        expect(element.buttonShowMoreIconName).toBeUndefined();
+        expect(element.buttonShowMoreIconPosition).toBe('left');
+        expect(element.buttonShowMoreLabel).toBe('Show more');
+        expect(element.buttonVariant).toBe('neutral');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -290,6 +298,202 @@ describe('Activity Timeline', () => {
                     ITEM[index].buttonVariant || 'neutral'
                 );
             });
+        });
+    });
+
+    // max visible items
+    it('Activity Timeline: right number of items displayed if maxVisibleItems is set', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call',
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Adam Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Adam Chan'
+                        }
+                    }
+                ]
+            },
+            {
+                name: 'item2',
+                title: 'Re: Mobile conversation on Monday with the new global team',
+                description: 'You emailed Lea Chan',
+                datetimeValue: 1619013600000,
+                href: '#',
+                isActive: true,
+                icons: ['utility:groups', 'utility:attach'],
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Jackie Dewar',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Jackie Dewar'
+                        }
+                    }
+                ],
+                buttonLabel: 'Public Sharing',
+                buttonIconName: 'utility:world'
+            }
+        ];
+
+        element.items = ITEM;
+        element.maxVisibleItems = 1;
+        return Promise.resolve().then(() => {
+            const timelineItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            expect(timelineItems).toHaveLength(1);
+            expect(
+                element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button"]'
+                )
+            ).toHaveLength(1);
+        });
+    });
+
+    it('Activity Timeline: if maxVisibleItems is equal to items.length, all elements are shown', () => {
+        const ITEM = [
+            {
+                name: 'item1',
+                title: 'Mobile conversation on Monday',
+                description: 'You logged a call with Adam Chan',
+                href: '#',
+                datetimeValue: 1653141600000,
+                iconName: 'standard:log_a_call',
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Adam Chan',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Adam Chan'
+                        }
+                    }
+                ]
+            },
+            {
+                name: 'item2',
+                title: 'Re: Mobile conversation on Monday with the new global team',
+                description: 'You emailed Lea Chan',
+                datetimeValue: 1619013600000,
+                href: '#',
+                isActive: true,
+                icons: ['utility:groups', 'utility:attach'],
+                fields: [
+                    {
+                        label: 'Name',
+                        value: 'Jackie Dewar',
+                        type: 'url',
+                        typeAttributes: {
+                            label: 'Jackie Dewar'
+                        }
+                    }
+                ],
+                buttonLabel: 'Public Sharing',
+                buttonIconName: 'utility:world'
+            }
+        ];
+
+        element.items = ITEM;
+        element.maxVisibleItems = 2;
+        return Promise.resolve().then(() => {
+            const timelineItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            expect(timelineItems).toHaveLength(2);
+            expect(
+                element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button"]'
+                )
+            ).toHaveLength(0);
+        });
+    });
+
+    // button show less icon position
+    it('Activity Timeline: change button show less position to right', () => {
+        element.items = testItems;
+        element.buttonVariant = 'neutral';
+        element.buttonIconName = 'utility:up';
+        element.buttonShowLessIconPosition = 'right';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                expect(button.iconPosition).toBe('right');
+            });
+    });
+
+    // button show more icon position
+    it('Activity Timeline: change button show more position to right', () => {
+        element.items = testItems;
+        element.buttonVariant = 'neutral';
+        element.buttonIconName = 'utility:down';
+        element.buttonShowMoreIconPosition = 'right';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            expect(button.iconPosition).toBe('right');
+        });
+    });
+
+    // button show less label
+    it("Activity Timeline: click on show button should change button's label to show less", () => {
+        element.items = testItems;
+        element.buttonVariant = 'neutral';
+        element.buttonIconName = 'utility:down';
+        element.buttonShowLessLabel = 'Show less';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                expect(button.label).toBe('Show less');
+            });
+    });
+
+    // button show more label
+    it('Activity Timeline: show button should have label show more', () => {
+        element.items = testItems;
+        element.buttonVariant = 'neutral';
+        element.buttonIconName = 'utility:up';
+        element.buttonShowLessLabel = 'Show less';
+        element.buttonShowMoreLabel = 'Show more';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            expect(button.label).toBe('Show more');
         });
     });
 
