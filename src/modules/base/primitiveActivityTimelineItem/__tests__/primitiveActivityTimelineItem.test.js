@@ -55,8 +55,7 @@ const FIELDS = [
     },
     {
         label: 'Description',
-        value:
-            'Need to finalize proposals and brand details before the meeting',
+        value: 'Need to finalize proposals and brand details before the meeting',
         type: 'text'
     }
 ];
@@ -76,7 +75,7 @@ describe('Primitive Activity Timeline Item', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Activity Timeline Item: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.description).toBeUndefined();
         expect(element.datetimeValue).toBeUndefined();
@@ -151,7 +150,9 @@ describe('Primitive Activity Timeline Item', () => {
                 '.slds-timeline__icon'
             );
             expect(icon.iconName).toBe('standard:case');
-            expect(icon.classList).not.toContain('avonni-timeline-item__bullet');
+            expect(icon.classList).not.toContain(
+                'avonni-timeline-item__bullet'
+            );
         });
     });
 
@@ -160,7 +161,9 @@ describe('Primitive Activity Timeline Item', () => {
         element.fields = FIELDS;
 
         return Promise.resolve().then(() => {
-            const fields = element.shadowRoot.querySelectorAll('[data-element-id="avonni-output-data"]');
+            const fields = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-output-data"]'
+            );
 
             expect(fields).toHaveLength(3);
 
@@ -184,32 +187,39 @@ describe('Primitive Activity Timeline Item', () => {
         element.isActive = true;
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="item-marker"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
 
             expect(icon.classList).toContain('avonni-timeline-item__bullet');
-            expect(icon.classList).toContain('avonni-timeline-item__active-bullet');
-        })
-    })
+            expect(icon.classList).toContain(
+                'avonni-timeline-item__active-bullet'
+            );
+        });
+    });
 
     it('Activity timeline item: not isActive gray bullet', () => {
         element.isActive = false;
 
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector('[data-element-id="item-marker"]');
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
 
             expect(icon.classList).toContain('avonni-timeline-item__bullet');
-            expect(icon.classList).not.toContain('avonni-timeline-item__active-bullet');
-        })
-    })
+            expect(icon.classList).not.toContain(
+                'avonni-timeline-item__active-bullet'
+            );
+        });
+    });
 
     // has checkbox
     it('Activity timeline item: has checkbox', () => {
         element.hasCheckbox = true;
 
         return Promise.resolve().then(() => {
-            const checkbox = element.shadowRoot.querySelector(
-                'lightning-input'
-            );
+            const checkbox =
+                element.shadowRoot.querySelector('lightning-input');
             expect(checkbox).toBeTruthy();
             expect(checkbox.type).toBe('checkbox');
         });
@@ -241,9 +251,8 @@ describe('Primitive Activity Timeline Item', () => {
         element.loadingStateAlternativeText = 'This is a loading text';
 
         return Promise.resolve().then(() => {
-            const spinner = element.shadowRoot.querySelector(
-                'lightning-spinner'
-            );
+            const spinner =
+                element.shadowRoot.querySelector('lightning-spinner');
             expect(spinner).toBeTruthy();
             expect(spinner.alternativeText).toBe('This is a loading text');
         });
@@ -405,11 +414,13 @@ describe('Primitive Activity Timeline Item', () => {
             const checkbox = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-input-checkbox"]'
             );
-            checkbox.dispatchEvent(new CustomEvent('change', {
-                detail: {
-                    checked: true
-                }
-            }));
+            checkbox.dispatchEvent(
+                new CustomEvent('change', {
+                    detail: {
+                        checked: true
+                    }
+                })
+            );
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();

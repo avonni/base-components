@@ -48,7 +48,7 @@ describe('Avatar', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Avatar: Default attributes', () => {
         expect(element.alternativeText).toBe('Avatar');
         expect(element.fallbackIconName).toBeUndefined();
         expect(element.initials).toBeUndefined();
@@ -79,7 +79,7 @@ describe('Avatar', () => {
     /* ----- ATTRIBUTES ----- */
 
     // alternative-text
-    it('Avatar alternative text with image', () => {
+    it('Avatar: alternative text with image', () => {
         element.alternativeText = 'This is an alternative text';
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -93,7 +93,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar alternative text with icon', () => {
+    it('Avatar: alternative text with icon', () => {
         element.alternativeText = 'This is an alternative text';
         element.fallbackIconName = 'standard:account';
         element.hideAvatarDetails = true;
@@ -106,7 +106,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar alternative text with initials', () => {
+    it('Avatar: alternative text with initials', () => {
         element.alternativeText = 'This is an alternative text';
         element.initials = 'JD';
         element.hideAvatarDetails = true;
@@ -120,7 +120,7 @@ describe('Avatar', () => {
     });
 
     // fallback icon name
-    it('Avatar fallback icon name', () => {
+    it('Avatar: fallback icon name', () => {
         element.fallbackIconName = 'standard:account';
         element.hideAvatarDetails = true;
 
@@ -133,7 +133,7 @@ describe('Avatar', () => {
     });
 
     // Itinitals
-    it('Avatar initials', () => {
+    it('Avatar: initials', () => {
         element.initials = 'JD';
         element.hideAvatarDetails = true;
 
@@ -146,7 +146,7 @@ describe('Avatar', () => {
     });
 
     //size
-    it('Avatar Size xx-small', () => {
+    it('Avatar: Size xx-small', () => {
         element.size = 'xx-small';
         element.hideAvatarDetails = true;
         element.src =
@@ -160,7 +160,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar Size x-small', () => {
+    it('Avatar: Size x-small', () => {
         element.size = 'x-small';
         element.hideAvatarDetails = true;
         element.src =
@@ -174,7 +174,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar Size small', () => {
+    it('Avatar: Size small', () => {
         element.size = 'small';
         element.hideAvatarDetails = true;
         element.src =
@@ -188,7 +188,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar Size medium', () => {
+    it('Avatar: Size medium', () => {
         element.size = 'medium';
         element.hideAvatarDetails = true;
         element.src =
@@ -202,7 +202,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar Size large', () => {
+    it('Avatar: Size large', () => {
         element.size = 'large';
         element.hideAvatarDetails = true;
         element.src =
@@ -216,7 +216,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar Size x-large', () => {
+    it('Avatar: Size x-large', () => {
         element.size = 'x-large';
         element.hideAvatarDetails = true;
         element.src =
@@ -230,7 +230,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar Size xx-large', () => {
+    it('Avatar: Size xx-large', () => {
         element.size = 'xx-large';
         element.hideAvatarDetails = true;
         element.src =
@@ -245,7 +245,7 @@ describe('Avatar', () => {
     });
 
     // src
-    it('Avatar Src', () => {
+    it('Avatar: Src', () => {
         element.size = 'xx-large';
         element.hideAvatarDetails = true;
         element.src =
@@ -262,7 +262,7 @@ describe('Avatar', () => {
     });
 
     // variant
-    it('Avatar variant square', () => {
+    it('Avatar: variant square', () => {
         element.variant = 'square';
         element.hideAvatarDetails = true;
         element.src =
@@ -276,7 +276,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar variant circle', () => {
+    it('Avatar: variant circle', () => {
         element.variant = 'circle';
         element.hideAvatarDetails = true;
         element.src =
@@ -291,7 +291,7 @@ describe('Avatar', () => {
     });
 
     // status
-    it('Avatar status approved', () => {
+    it('Avatar: status approved', () => {
         element.status = 'approved';
         element.hideAvatarDetails = true;
         element.src =
@@ -305,7 +305,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar status locked', () => {
+    it('Avatar: status locked', () => {
         element.status = 'locked';
         element.hideAvatarDetails = true;
         element.src =
@@ -319,7 +319,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar status declined', () => {
+    it('Avatar: status declined', () => {
         element.status = 'declined';
         element.hideAvatarDetails = true;
         element.src =
@@ -333,7 +333,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar status unknown', () => {
+    it('Avatar: status unknown', () => {
         element.status = 'unknown';
         element.hideAvatarDetails = true;
         element.src =
@@ -348,7 +348,7 @@ describe('Avatar', () => {
     });
 
     // status position
-    it('Avatar status position top-right', () => {
+    it('Avatar: status position top-right', () => {
         element.status = 'approved';
         element.statusPosition = 'top-right';
         element.hideAvatarDetails = true;
@@ -363,7 +363,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar status position top-left', () => {
+    it('Avatar: status position top-left', () => {
         element.status = 'approved';
         element.statusPosition = 'top-left';
         element.hideAvatarDetails = true;
@@ -378,7 +378,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar status position bottom-right', () => {
+    it('Avatar: status position bottom-right', () => {
         element.status = 'approved';
         element.statusPosition = 'bottom-right';
         element.hideAvatarDetails = true;
@@ -393,7 +393,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar status position bottom-left', () => {
+    it('Avatar: status position bottom-left', () => {
         element.status = 'approved';
         element.statusPosition = 'bottom-left';
         element.hideAvatarDetails = true;
@@ -409,7 +409,7 @@ describe('Avatar', () => {
     });
 
     // status title
-    it('Avatar status title', () => {
+    it('Avatar: status title', () => {
         element.status = 'approved';
         element.statusTitle = 'Status title';
         element.hideAvatarDetails = true;
@@ -425,7 +425,7 @@ describe('Avatar', () => {
     });
 
     // presence
-    it('Avatar presence online', () => {
+    it('Avatar: presence online', () => {
         element.presence = 'online';
         element.hideAvatarDetails = true;
         element.src =
@@ -439,7 +439,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence busy', () => {
+    it('Avatar: presence busy', () => {
         element.presence = 'busy';
         element.hideAvatarDetails = true;
         element.src =
@@ -453,7 +453,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence focus', () => {
+    it('Avatar: presence focus', () => {
         element.presence = 'focus';
         element.hideAvatarDetails = true;
         element.src =
@@ -467,7 +467,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence offline', () => {
+    it('Avatar: presence offline', () => {
         element.presence = 'offline';
         element.hideAvatarDetails = true;
         element.src =
@@ -481,7 +481,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence blocked', () => {
+    it('Avatar: presence blocked', () => {
         element.presence = 'blocked';
         element.hideAvatarDetails = true;
         element.src =
@@ -495,7 +495,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence away', () => {
+    it('Avatar: presence away', () => {
         element.presence = 'away';
         element.hideAvatarDetails = true;
         element.src =
@@ -510,7 +510,7 @@ describe('Avatar', () => {
     });
 
     // presence title
-    it('Avatar presence title', () => {
+    it('Avatar: presence title', () => {
         element.presence = 'online';
         element.presenceTitle = 'Presence Title';
         element.hideAvatarDetails = true;
@@ -526,7 +526,7 @@ describe('Avatar', () => {
     });
 
     // presence position
-    it('Avatar presence bottom-right', () => {
+    it('Avatar: presence bottom-right', () => {
         element.presence = 'online';
         element.presencePosition = 'bottom-right';
         element.hideAvatarDetails = true;
@@ -541,7 +541,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence bottom-left', () => {
+    it('Avatar: presence bottom-left', () => {
         element.presence = 'online';
         element.presencePosition = 'bottom-left';
         element.hideAvatarDetails = true;
@@ -556,7 +556,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence top-left', () => {
+    it('Avatar: presence top-left', () => {
         element.presence = 'online';
         element.presencePosition = 'top-left';
         element.hideAvatarDetails = true;
@@ -571,7 +571,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar presence top-right', () => {
+    it('Avatar: presence top-right', () => {
         element.presence = 'online';
         element.presencePosition = 'top-right';
         element.hideAvatarDetails = true;
@@ -587,7 +587,7 @@ describe('Avatar', () => {
     });
 
     // entity-icon-name
-    it('Avatar entity icon name', () => {
+    it('Avatar: entity icon name', () => {
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.hideAvatarDetails = true;
@@ -603,7 +603,7 @@ describe('Avatar', () => {
     });
 
     // entity position
-    it('Avatar entity top-right', () => {
+    it('Avatar: entity top-right', () => {
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'top-right';
@@ -619,7 +619,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar entity top-left', () => {
+    it('Avatar: entity top-left', () => {
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'top-left';
@@ -635,7 +635,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar entity bottom-right', () => {
+    it('Avatar: entity bottom-right', () => {
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'bottom-right';
@@ -651,7 +651,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar entity bottom-left', () => {
+    it('Avatar: entity bottom-left', () => {
         element.entityIconName = 'standard:account';
         element.entityInitials = 'JD';
         element.entityPosition = 'bottom-left';
@@ -668,7 +668,7 @@ describe('Avatar', () => {
     });
 
     // entity src
-    it('Avatar entity src', () => {
+    it('Avatar: entity src', () => {
         element.hideAvatarDetails = true;
         element.fallbackIconName = 'standard:account';
         element.entitySrc =
@@ -685,7 +685,7 @@ describe('Avatar', () => {
     });
 
     // entity title
-    it('Avatar entity title', () => {
+    it('Avatar: entity title', () => {
         element.hideAvatarDetails = true;
         element.fallbackIconName = 'standard:account';
         element.entitySrc =
@@ -701,7 +701,7 @@ describe('Avatar', () => {
     });
 
     // entity variant
-    it('Avatar entity circle', () => {
+    it('Avatar: entity circle', () => {
         element.entityIconName = 'standard:account';
         element.entityPosition = 'bottom-right';
         element.entityVariant = 'circle';
@@ -717,7 +717,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar entity square', () => {
+    it('Avatar: entity square', () => {
         element.entityIconName = 'standard:account';
         element.entityPosition = 'bottom-right';
         element.entityVariant = 'square';
@@ -734,7 +734,7 @@ describe('Avatar', () => {
     });
 
     // primary text
-    it('Avatar primary text', () => {
+    it('Avatar: primary text', () => {
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
         element.primaryText = 'This is a primary text';
@@ -748,7 +748,7 @@ describe('Avatar', () => {
     });
 
     // secondary text
-    it('Avatar secondary text', () => {
+    it('Avatar: secondary text', () => {
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
         element.secondaryText = 'This is a secondary text';
@@ -762,7 +762,7 @@ describe('Avatar', () => {
     });
 
     // tertiary text
-    it('Avatar tertiary text', () => {
+    it('Avatar: tertiary text', () => {
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
@@ -783,7 +783,7 @@ describe('Avatar', () => {
     });
 
     // text-position
-    it('Avatar center', () => {
+    it('Avatar: center', () => {
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
         element.primaryText = 'This is a primary Text';
@@ -800,7 +800,7 @@ describe('Avatar', () => {
         });
     });
 
-    it('Avatar left', () => {
+    it('Avatar: left', () => {
         element.src =
             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg';
         element.primaryText = 'This is a primary Text';
@@ -817,7 +817,7 @@ describe('Avatar', () => {
     });
 
     // actions
-    it('Avatar with actions', () => {
+    it('Avatar: with actions', () => {
         const actions = [
             {
                 label: 'Edit item',
@@ -856,90 +856,11 @@ describe('Avatar', () => {
         });
     });
 
-    // tags
-    it('Avatar with default tags', () => {
-        const tags = [{ label: 'default', variant: 'default' }];
-        element.tags = tags;
-
-        return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-badge"]'
-            );
-            expect(badge.className).toBe('slds-badge');
-            expect(badge.label).toBe('default');
-        });
-    });
-
-    it('Avatar with inverse tags', () => {
-        const tags = [{ label: 'inverse', variant: 'inverse' }];
-        element.tags = tags;
-
-        return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-badge"]'
-            );
-            expect(badge.className).toBe('slds-badge_inverse');
-            expect(badge.label).toBe('inverse');
-        });
-    });
-
-    it('Avatar with lightest tags', () => {
-        const tags = [{ label: 'lightest', variant: 'lightest' }];
-        element.tags = tags;
-
-        return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-badge"]'
-            );
-            expect(badge.className).toBe('slds-badge_lightest');
-            expect(badge.label).toBe('lightest');
-        });
-    });
-
-    it('Avatar with success tags', () => {
-        const tags = [{ label: 'success', variant: 'success' }];
-        element.tags = tags;
-
-        return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-badge"]'
-            );
-            expect(badge.className).toBe('slds-badge slds-theme_success');
-            expect(badge.label).toBe('success');
-        });
-    });
-
-    it('Avatar with warning tags', () => {
-        const tags = [{ label: 'warning', variant: 'warning' }];
-        element.tags = tags;
-
-        return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-badge"]'
-            );
-            expect(badge.className).toBe('slds-badge slds-theme_warning');
-            expect(badge.label).toBe('warning');
-        });
-    });
-
-    it('Avatar with error tags', () => {
-        const tags = [{ label: 'error', variant: 'error' }];
-        element.tags = tags;
-
-        return Promise.resolve().then(() => {
-            const badge = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-badge"]'
-            );
-            expect(badge.className).toBe('slds-badge slds-theme_error');
-            expect(badge.label).toBe('error');
-        });
-    });
-
     /* ----- EVENTS ----- */
 
     // actionclick event
     // Depends on action name
-    it('actionclick event', () => {
+    it('Avatar: actionclick event', () => {
         element.initials = 'LG';
         const ACTIONS = [
             {

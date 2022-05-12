@@ -48,7 +48,7 @@ describe('ProfileCard', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Profile card: Default attributes', () => {
         expect(element.avatarAlternativeText).toBeUndefined();
         expect(element.avatarFallbackIconName).toBeUndefined();
         expect(element.avatarPosition).toBe('top-left');
@@ -66,7 +66,7 @@ describe('ProfileCard', () => {
 
     // avatar-alternative-text
     // Depends on avatarFallbackIconName and avatarSrc
-    it('avatarAlternativeText, with an image', () => {
+    it('Profile card: avatarAlternativeText, with an image', () => {
         element.avatarAlternativeText = 'A string alternative text';
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -79,7 +79,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarAlternativeText, with an icon', () => {
+    it('Profile card: avatarAlternativeText, with an icon', () => {
         element.avatarAlternativeText = 'A string alternative text';
         element.avatarFallbackIconName = 'standard:user';
 
@@ -99,7 +99,7 @@ describe('ProfileCard', () => {
     });
 
     // avatar-fallback-icon-name
-    it('avatarFallbackIconName', () => {
+    it('Profile card: avatarFallbackIconName', () => {
         element.avatarFallbackIconName = 'standard:user';
 
         return Promise.resolve()
@@ -124,7 +124,7 @@ describe('ProfileCard', () => {
     });
 
     // avatar-position
-    it('avatarPosition = top-left', () => {
+    it('Profile card: avatarPosition = top-left', () => {
         element.avatarPosition = 'top-left';
         element.showActions = true;
 
@@ -141,7 +141,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarPosition = top-center', () => {
+    it('Profile card: avatarPosition = top-center', () => {
         element.avatarPosition = 'top-center';
 
         return Promise.resolve().then(() => {
@@ -158,7 +158,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarPosition = top-right', () => {
+    it('Profile card: avatarPosition = top-right', () => {
         element.avatarPosition = 'top-right';
 
         return Promise.resolve().then(() => {
@@ -174,7 +174,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarPosition = bottom-left', () => {
+    it('Profile card: avatarPosition = bottom-left', () => {
         element.avatarPosition = 'bottom-left';
 
         return Promise.resolve().then(() => {
@@ -191,7 +191,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarPosition = bottom-center', () => {
+    it('Profile card: avatarPosition = bottom-center', () => {
         element.avatarPosition = 'bottom-center';
 
         return Promise.resolve().then(() => {
@@ -208,7 +208,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarPosition = bottom-right', () => {
+    it('Profile card: avatarPosition = bottom-right', () => {
         element.avatarPosition = 'bottom-right';
 
         return Promise.resolve().then(() => {
@@ -226,7 +226,7 @@ describe('ProfileCard', () => {
     });
 
     // avatar-mobile-position
-    it('avatarMobilePosition = top-left', () => {
+    it('Profile card: avatarMobilePosition = top-left', () => {
         window.innerWidth = 200;
 
         element.avatarMobilePosition = 'top-left';
@@ -244,7 +244,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarMobilePosition = top-center', () => {
+    it('Profile card: avatarMobilePosition = top-center', () => {
         window.innerWidth = 200;
 
         element.avatarMobilePosition = 'top-center';
@@ -262,7 +262,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarMobilePosition = top-right', () => {
+    it('Profile card: avatarMobilePosition = top-right', () => {
         window.innerWidth = 200;
 
         element.avatarMobilePosition = 'top-right';
@@ -280,7 +280,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarMobilePosition = bottom-left', () => {
+    it('Profile card: avatarMobilePosition = bottom-left', () => {
         window.innerWidth = 200;
 
         element.avatarMobilePosition = 'bottom-left';
@@ -299,7 +299,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarMobilePosition = bottom-center', () => {
+    it('Profile card: avatarMobilePosition = bottom-center', () => {
         window.innerWidth = 200;
 
         element.avatarMobilePosition = 'bottom-center';
@@ -318,7 +318,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarMobilePosition = bottom-right', () => {
+    it('Profile card: avatarMobilePosition = bottom-right', () => {
         window.innerWidth = 200;
 
         element.avatarMobilePosition = 'bottom-right';
@@ -338,7 +338,7 @@ describe('ProfileCard', () => {
     });
 
     // avatar-src
-    it('avatarSrc', () => {
+    it('Profile card: avatarSrc', () => {
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
 
@@ -354,7 +354,7 @@ describe('ProfileCard', () => {
 
     // avatar-variant
     // Depends on avatarSrc and avatarFallbackIconName
-    it('avatarVariant = circle, with image', () => {
+    it('Profile card: avatarVariant = circle, with image', () => {
         element.avatarVariant = 'circle';
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -376,7 +376,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarVariant = circle, with icon', () => {
+    it('Profile card: avatarVariant = circle, with icon', () => {
         element.avatarVariant = 'circle';
         element.avatarFallbackIconName = 'standard:user';
 
@@ -404,7 +404,7 @@ describe('ProfileCard', () => {
             });
     });
 
-    it('avatarVariant = square, with image', () => {
+    it('Profile card: avatarVariant = square, with image', () => {
         element.avatarVariant = 'square';
         element.avatarSrc =
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg';
@@ -426,7 +426,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('avatarVariant = square, with icon', () => {
+    it('Profile card: avatarVariant = square, with icon', () => {
         element.avatarVariant = 'square';
         element.avatarFallbackIconName = 'standard:user';
 
@@ -455,7 +455,7 @@ describe('ProfileCard', () => {
     });
 
     // background-alternative-text
-    it('backgroundAlternativeText', () => {
+    it('Profile card: backgroundAlternativeText', () => {
         element.backgroundAlternativeText = 'An alternative text';
 
         return Promise.resolve().then(() => {
@@ -467,7 +467,7 @@ describe('ProfileCard', () => {
     });
 
     // background-src
-    it('backgroundSrc', () => {
+    it('Profile card: backgroundSrc', () => {
         element = createElement('base-profile-card', {
             is: ProfileCard
         });
@@ -487,7 +487,7 @@ describe('ProfileCard', () => {
     });
 
     // size
-    it('size = medium', () => {
+    it('Profile card: size = medium', () => {
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
@@ -506,7 +506,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('size = x-small', () => {
+    it('Profile card: size = x-small', () => {
         element.size = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -525,7 +525,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('size = small', () => {
+    it('Profile card: size = small', () => {
         element.size = 'small';
 
         return Promise.resolve().then(() => {
@@ -544,7 +544,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('size = large', () => {
+    it('Profile card: size = large', () => {
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -563,7 +563,7 @@ describe('ProfileCard', () => {
         });
     });
 
-    it('size = x-large', () => {
+    it('Profile card: size = x-large', () => {
         element.size = 'x-large';
 
         return Promise.resolve().then(() => {
@@ -583,7 +583,7 @@ describe('ProfileCard', () => {
     });
 
     // subtitle
-    it('subtitle', () => {
+    it('Profile card: subtitle', () => {
         element.subtitle = 'A string subtitle';
 
         return Promise.resolve().then(() => {
@@ -595,7 +595,7 @@ describe('ProfileCard', () => {
     });
 
     // title
-    it('title', () => {
+    it('Profile card: title', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {

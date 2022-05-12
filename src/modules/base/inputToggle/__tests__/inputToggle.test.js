@@ -48,7 +48,7 @@ describe('InputToggle', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Input toggle: Default attributes', () => {
         expect(element.accessKey).toBeUndefined();
         expect(element.ariaControls).toBeUndefined();
         expect(element.ariaDescribedBy).toBeUndefined();
@@ -74,7 +74,7 @@ describe('InputToggle', () => {
     /* ----- ATTRIBUTES ----- */
 
     // access-key
-    it('accessKey', () => {
+    it('Input toggle: accessKey', () => {
         element.accessKey = 'K';
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -86,7 +86,7 @@ describe('InputToggle', () => {
     });
 
     // aria-controls
-    it('ariaControls', () => {
+    it('Input toggle: ariaControls', () => {
         element.ariaControls = 'id-1 id-2 id-3';
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -98,7 +98,7 @@ describe('InputToggle', () => {
     });
 
     // aria-described-by
-    it('ariaDescribedBy', () => {
+    it('Input toggle: ariaDescribedBy', () => {
         element.ariaDescribedBy = 'id-1 id-2 id-3';
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -110,7 +110,7 @@ describe('InputToggle', () => {
     });
 
     // aria-label
-    it('ariaLabel', () => {
+    it('Input toggle: ariaLabel', () => {
         element.ariaLabel = 'String label';
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -122,7 +122,7 @@ describe('InputToggle', () => {
     });
 
     // aria-labelled-by
-    it('ariaLabelledBy', () => {
+    it('Input toggle: ariaLabelledBy', () => {
         element.ariaLabelledBy = 'id-1 id-2 id-3';
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -134,7 +134,7 @@ describe('InputToggle', () => {
     });
 
     // checked
-    it('checked', () => {
+    it('Input toggle: checked', () => {
         element.checked = true;
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -146,7 +146,7 @@ describe('InputToggle', () => {
     });
 
     // disabled
-    it('disabled', () => {
+    it('Input toggle: disabled', () => {
         element.disabled = true;
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -158,7 +158,7 @@ describe('InputToggle', () => {
     });
 
     // field-level-help
-    it('fieldLevelHelp', () => {
+    it('Input toggle: fieldLevelHelp', () => {
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -170,7 +170,7 @@ describe('InputToggle', () => {
     });
 
     // hide-mark
-    it('hideMark', () => {
+    it('Input toggle: hideMark', () => {
         element.hideMark = true;
 
         return Promise.resolve().then(() => {
@@ -181,7 +181,7 @@ describe('InputToggle', () => {
     });
 
     // label
-    it('label', () => {
+    it('Input toggle: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -193,7 +193,7 @@ describe('InputToggle', () => {
     });
 
     // message-toggle-active
-    it('messageToggleActive', () => {
+    it('Input toggle: messageToggleActive', () => {
         element.messageToggleActive = 'This toggle is active';
 
         return Promise.resolve().then(() => {
@@ -204,7 +204,7 @@ describe('InputToggle', () => {
     });
 
     // message-toggle-inactive
-    it('messageToggleInactive', () => {
+    it('Input toggle: messageToggleInactive', () => {
         element.messageToggleInactive = 'This toggle is inactive';
 
         return Promise.resolve().then(() => {
@@ -216,7 +216,7 @@ describe('InputToggle', () => {
 
     // message-when-value-missing
     // Depends on required, focus(), blur() and showHelpMessageIfInvalid()
-    it('messageWhenValueMissing', () => {
+    it('Input toggle: messageWhenValueMissing', () => {
         element.required = true;
         element.messageWhenValueMissing = 'Missing value!';
 
@@ -235,7 +235,7 @@ describe('InputToggle', () => {
     });
 
     // name
-    it('name', () => {
+    it('Input toggle: name', () => {
         element.name = 'a-string-name';
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -247,7 +247,7 @@ describe('InputToggle', () => {
     });
 
     // read-only
-    it('readOnly', () => {
+    it('Input toggle: readOnly', () => {
         element.readOnly = true;
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
@@ -259,7 +259,7 @@ describe('InputToggle', () => {
     });
 
     // required
-    it('required', () => {
+    it('Input toggle: required', () => {
         element.required = true;
 
         return Promise.resolve().then(() => {
@@ -269,7 +269,7 @@ describe('InputToggle', () => {
     });
 
     // size
-    it('size = medium', () => {
+    it('Input toggle: size = medium', () => {
         element.size = 'medium';
         const sizeClasses = ['faux_x-small', 'faux_small', 'faux_large'];
         const fauxToggle = element.shadowRoot.querySelector(
@@ -283,7 +283,7 @@ describe('InputToggle', () => {
         });
     });
 
-    it('size = x-small', () => {
+    it('Input toggle: size = x-small', () => {
         element.size = 'x-small';
         const sizeClasses = ['faux_small', 'faux_large'];
         const fauxToggle = element.shadowRoot.querySelector(
@@ -298,7 +298,7 @@ describe('InputToggle', () => {
         });
     });
 
-    it('size = small', () => {
+    it('Input toggle: size = small', () => {
         element.size = 'small';
         const sizeClasses = ['faux_x-small', 'faux_large'];
         const fauxToggle = element.shadowRoot.querySelector(
@@ -313,7 +313,7 @@ describe('InputToggle', () => {
         });
     });
 
-    it('size = large', () => {
+    it('Input toggle: size = large', () => {
         element.size = 'large';
         const sizeClasses = ['faux_x-small', 'faux_small'];
         const fauxToggle = element.shadowRoot.querySelector(
@@ -329,7 +329,7 @@ describe('InputToggle', () => {
     });
 
     // value
-    it('value', () => {
+    it('Input toggle: value', () => {
         element.value = 'A string value';
 
         return Promise.resolve().then(() => {
@@ -341,7 +341,7 @@ describe('InputToggle', () => {
     });
 
     // variant
-    it('variant = standard', () => {
+    it('Input toggle: variant = standard', () => {
         element.variant = 'standard';
         const label = element.shadowRoot.querySelector(
             '.slds-form-element__label'
@@ -360,7 +360,7 @@ describe('InputToggle', () => {
         });
     });
 
-    it('variant = label-inline', () => {
+    it('Input toggle: variant = label-inline', () => {
         element.variant = 'label-inline';
         const label = element.shadowRoot.querySelector(
             '.slds-form-element__label'
@@ -379,7 +379,7 @@ describe('InputToggle', () => {
         });
     });
 
-    it('variant = label-stacked', () => {
+    it('Input toggle: variant = label-stacked', () => {
         element.variant = 'label-stacked';
         const label = element.shadowRoot.querySelector(
             '.slds-form-element__label'
@@ -396,7 +396,7 @@ describe('InputToggle', () => {
         });
     });
 
-    it('variant = label-hidden', () => {
+    it('Input toggle: variant = label-hidden', () => {
         element.variant = 'label-hidden';
         const label = element.shadowRoot.querySelector(
             '.slds-form-element__label'
@@ -417,7 +417,7 @@ describe('InputToggle', () => {
 
     /* ----- METHODS ----- */
     // checkValidity
-    it('checkValidity method', () => {
+    it('Input toggle: checkValidity method', () => {
         const spy = jest.spyOn(element, 'checkValidity');
 
         element.checkValidity();
@@ -425,7 +425,7 @@ describe('InputToggle', () => {
     });
 
     // setCustomValidity
-    it('setCustomValidity method', () => {
+    it('Input toggle: setCustomValidity method', () => {
         const spy = jest.spyOn(element, 'setCustomValidity');
 
         element.setCustomValidity('Something');
@@ -434,7 +434,7 @@ describe('InputToggle', () => {
 
     // reportValidity
     // Depends on required
-    it('reportValidity method', () => {
+    it('Input toggle: reportValidity method', () => {
         element.required = true;
         element.reportValidity();
 
@@ -448,7 +448,7 @@ describe('InputToggle', () => {
 
     // showHelpMessageIfInvalid
     // Depends on required
-    it('showHelpMessageIfInvalid method', () => {
+    it('Input toggle: showHelpMessageIfInvalid method', () => {
         element.required = true;
         element.showHelpMessageIfInvalid();
 
@@ -463,7 +463,7 @@ describe('InputToggle', () => {
     /* ----- EVENTS ----- */
 
     // change
-    it('change event', () => {
+    it('Input toggle: change event', () => {
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
         );
@@ -477,7 +477,7 @@ describe('InputToggle', () => {
     });
 
     // blur
-    it('blur event', () => {
+    it('Input toggle: blur event', () => {
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
         );
@@ -498,7 +498,7 @@ describe('InputToggle', () => {
     });
 
     // focus
-    it('focus event', () => {
+    it('Input toggle: focus event', () => {
         const input = element.shadowRoot.querySelector(
             '[data-element-id="input"]'
         );

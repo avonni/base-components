@@ -87,7 +87,7 @@ describe('Wizard', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Wizard: Default attributes', () => {
         expect(element.actionPosition).toBe('left');
         expect(element.finishButtonIconName).toBeUndefined();
         expect(element.finishButtonIconPosition).toBe('left');
@@ -117,7 +117,7 @@ describe('Wizard', () => {
     /* ----- ATTRIBUTES ----- */
 
     // action-position
-    it('actionPosition', () => {
+    it('Wizard: actionPosition', () => {
         element.actionPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -129,7 +129,7 @@ describe('Wizard', () => {
     });
 
     // button-finish-icon-name
-    it('finishButtonIconName', () => {
+    it('Wizard: finishButtonIconName', () => {
         element.finishButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -143,7 +143,7 @@ describe('Wizard', () => {
     });
 
     // button-finish-icon-position
-    it('finishButtonIconPosition', () => {
+    it('Wizard: finishButtonIconPosition', () => {
         element.finishButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -155,7 +155,7 @@ describe('Wizard', () => {
     });
 
     // button-finish-label
-    it('finishButtonLabel', () => {
+    it('Wizard: finishButtonLabel', () => {
         element.finishButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
@@ -167,7 +167,7 @@ describe('Wizard', () => {
     });
 
     // button-finish-variant
-    it('finishButtonVariant', () => {
+    it('Wizard: finishButtonVariant', () => {
         element.finishButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -179,7 +179,7 @@ describe('Wizard', () => {
     });
 
     // button-next-icon-name
-    it('nextButtonIconName', () => {
+    it('Wizard: nextButtonIconName', () => {
         element.nextButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -191,7 +191,7 @@ describe('Wizard', () => {
     });
 
     // button-next-icon-position
-    it('nextButtonIconPosition', () => {
+    it('Wizard: nextButtonIconPosition', () => {
         element.nextButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -203,7 +203,7 @@ describe('Wizard', () => {
     });
 
     // button-next-label
-    it('nextButtonLabel', () => {
+    it('Wizard: nextButtonLabel', () => {
         element.nextButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
@@ -215,7 +215,7 @@ describe('Wizard', () => {
     });
 
     // button-next-variant
-    it('nextButtonVariant', () => {
+    it('Wizard: nextButtonVariant', () => {
         element.nextButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -227,7 +227,7 @@ describe('Wizard', () => {
     });
 
     // button-previous-icon-name
-    it('previousButtonIconName', () => {
+    it('Wizard: previousButtonIconName', () => {
         element.previousButtonIconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
@@ -241,7 +241,7 @@ describe('Wizard', () => {
     });
 
     // button-previous-icon-position
-    it('previousButtonIconPosition', () => {
+    it('Wizard: previousButtonIconPosition', () => {
         element.previousButtonIconPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -255,7 +255,7 @@ describe('Wizard', () => {
     });
 
     // button-previous-label
-    it('previousButtonLabel', () => {
+    it('Wizard: previousButtonLabel', () => {
         element.previousButtonLabel = 'The end';
 
         return Promise.resolve().then(() => {
@@ -267,7 +267,7 @@ describe('Wizard', () => {
     });
 
     // button-previous-variant
-    it('previousButtonVariant', () => {
+    it('Wizard: previousButtonVariant', () => {
         element.previousButtonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -279,7 +279,7 @@ describe('Wizard', () => {
     });
 
     // button-alignment-bump
-    it('buttonAlignmentBump', () => {
+    it('Wizard: buttonAlignmentBump', () => {
         element.buttonAlignmentBump = 'right';
 
         return Promise.resolve().then(() => {
@@ -291,7 +291,7 @@ describe('Wizard', () => {
     });
 
     // current-step
-    it('currentStep', () => {
+    it('Wizard: currentStep', () => {
         element.currentStep = 'second-step';
 
         const slot = element.shadowRoot.querySelector(
@@ -318,7 +318,7 @@ describe('Wizard', () => {
     });
 
     // fraction-label
-    it('fractionLabel', () => {
+    it('Wizard: fractionLabel', () => {
         element.fractionLabel = '/';
 
         return Promise.resolve().then(() => {
@@ -330,7 +330,7 @@ describe('Wizard', () => {
     });
 
     // fraction-prefix-label
-    it('fractionPrefixLabel', () => {
+    it('Wizard: fractionPrefixLabel', () => {
         element.fractionPrefixLabel = 'Page';
 
         return Promise.resolve().then(() => {
@@ -342,7 +342,7 @@ describe('Wizard', () => {
     });
 
     // hide-indicator
-    it('hideIndicator', () => {
+    it('Wizard: hideIndicator', () => {
         element.hideIndicator = true;
 
         return Promise.resolve().then(() => {
@@ -354,7 +354,7 @@ describe('Wizard', () => {
     });
 
     // hide-navigation
-    it('hideNavigation = false', () => {
+    it('Wizard: hideNavigation = false', () => {
         element.hideNavigation = false;
 
         return Promise.resolve().then(() => {
@@ -365,7 +365,7 @@ describe('Wizard', () => {
         });
     });
 
-    it('hideNavigation = true', () => {
+    it('Wizard: hideNavigation = true', () => {
         element.hideNavigation = true;
 
         return Promise.resolve().then(() => {
@@ -377,7 +377,7 @@ describe('Wizard', () => {
     });
 
     // indicator-type
-    it('indicatorType', () => {
+    it('Wizard: indicatorType', () => {
         element.indicatorType = 'path';
 
         return Promise.resolve().then(() => {
@@ -389,7 +389,7 @@ describe('Wizard', () => {
     });
 
     // indicator-position
-    it('indicatorPosition = bottom', () => {
+    it('Wizard: indicatorPosition = bottom', () => {
         element.indicatorPosition = 'bottom';
 
         return Promise.resolve().then(() => {
@@ -415,7 +415,7 @@ describe('Wizard', () => {
         });
     });
 
-    it('indicatorPosition = top', () => {
+    it('Wizard: indicatorPosition = top', () => {
         element.indicatorPosition = 'top';
 
         return Promise.resolve().then(() => {
@@ -442,7 +442,7 @@ describe('Wizard', () => {
         });
     });
 
-    it('indicatorPosition = right', () => {
+    it('Wizard: indicatorPosition = right', () => {
         element.indicatorPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -469,7 +469,7 @@ describe('Wizard', () => {
         });
     });
 
-    it('indicatorPosition = left', () => {
+    it('Wizard: indicatorPosition = left', () => {
         element.indicatorPosition = 'left';
 
         return Promise.resolve().then(() => {
@@ -497,7 +497,7 @@ describe('Wizard', () => {
     });
 
     // title
-    it('title', () => {
+    it('Wizard: title', () => {
         element.title = 'A string title';
 
         return Promise.resolve().then(() => {
@@ -509,7 +509,7 @@ describe('Wizard', () => {
     });
 
     // variant
-    it('variant = base', () => {
+    it('Wizard: variant = base', () => {
         element.variant = 'base';
 
         return Promise.resolve().then(() => {
@@ -533,7 +533,7 @@ describe('Wizard', () => {
         });
     });
 
-    it('variant = card', () => {
+    it('Wizard: variant = card', () => {
         element.variant = 'card';
 
         return Promise.resolve().then(() => {
@@ -557,7 +557,7 @@ describe('Wizard', () => {
         });
     });
 
-    it('variant = modal', () => {
+    it('Wizard: variant = modal', () => {
         element.variant = 'modal';
 
         return Promise.resolve().then(() => {
@@ -581,7 +581,7 @@ describe('Wizard', () => {
         });
     });
 
-    it('variant = quickActionPanel', () => {
+    it('Wizard: variant = quickActionPanel', () => {
         element.variant = 'quickActionPanel';
 
         return Promise.resolve().then(() => {
@@ -608,7 +608,7 @@ describe('Wizard', () => {
     /* ----- METHODS ----- */
 
     // show and hide
-    it('show and hide methods', () => {
+    it('Wizard: show and hide methods', () => {
         const article = element.shadowRoot.querySelector(
             '[data-element-id="article-base"]'
         );
@@ -634,7 +634,7 @@ describe('Wizard', () => {
     });
 
     // next and previous
-    it('next and previous methods', () => {
+    it('Wizard: next and previous methods', () => {
         const slot = element.shadowRoot.querySelector(
             '[data-element-id="slot-default"]'
         );
@@ -691,7 +691,7 @@ describe('Wizard', () => {
 
     // change
     // Depends on next()
-    it('change event based on next()', () => {
+    it('Wizard: change event based on next()', () => {
         const slot = element.shadowRoot.querySelector(
             '[data-element-id="slot-default"]'
         );

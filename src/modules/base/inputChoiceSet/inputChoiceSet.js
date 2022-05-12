@@ -66,7 +66,13 @@ const INPUT_CHOICE_TYPES = { valid: ['default', 'button'], default: 'default' };
  */
 export default class InputChoiceSet extends LightningElement {
     static delegatesFocus = true;
-
+    /**
+     * Help text detailing the purpose and function of the input.
+     *
+     * @type {string}
+     * @public
+     */
+    @api fieldLevelHelp;
     /**
      * Text label for the input.
      *
@@ -75,13 +81,6 @@ export default class InputChoiceSet extends LightningElement {
      * @required
      */
     @api label;
-    /**
-     * Help text detailing the purpose and function of the input.
-     *
-     * @type {string}
-     * @public
-     */
-    @api fieldLevelHelp;
     /**
      * Optional message to be displayed when no option is selected and the required attribute is set.
      *
@@ -153,19 +152,29 @@ export default class InputChoiceSet extends LightningElement {
         this._isConnected = true;
     }
 
-    /**
-     * Update form class styling.
-     */
-    updateClassList() {
-        classListMutation(this.classList, {
-            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
-            'slds-form-element_horizontal':
-                this.variant === VARIANT.LABEL_INLINE
-        });
-    }
-
     renderedCallback() {
         this.synchronizeA11y();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * If present, the input field is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get disabled() {
+        return this._disabled || false;
+    }
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
     }
 
     /**
@@ -185,38 +194,18 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Value of the selected option, or array of selected options' value.
-     *
-     * @type {(string|string[])}
-     * @public
-     */
-    @api
-    get value() {
-        return this._value;
-    }
-
-    set value(value) {
-        this._value = value;
-
-        if (value && this._isConnected && this.isMultiSelect) {
-            this._value =
-                typeof value === 'string' ? [value] : normalizeArray(value);
-        }
-    }
-
-    /**
-     * If present, the input field is disabled and users cannot interact with it.
+     * If present, multiple choices can be selected.
      *
      * @type {boolean}
      * @default false
      * @public
      */
     @api
-    get disabled() {
-        return this._disabled || false;
+    get isMultiSelect() {
+        return this._isMultiSelect || false;
     }
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
+    set isMultiSelect(value) {
+        this._isMultiSelect = normalizeBoolean(value);
     }
 
     /**
@@ -236,36 +225,6 @@ export default class InputChoiceSet extends LightningElement {
             fallbackValue: INPUT_CHOICE_ORIENTATIONS.default,
             validValues: INPUT_CHOICE_ORIENTATIONS.valid
         });
-    }
-
-    /**
-     * If present, multiple choices can be selected.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get isMultiSelect() {
-        return this._isMultiSelect || false;
-    }
-    set isMultiSelect(value) {
-        this._isMultiSelect = normalizeBoolean(value);
-    }
-
-    /**
-     * If present, the options stretch to full width.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
-     */
-    @api
-    get stretch() {
-        return this._stretch || false;
-    }
-    set stretch(value) {
-        this._stretch = normalizeBoolean(value);
     }
 
     /**
@@ -299,24 +258,18 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of the input label.
-     * Accepted variants include standard, label-hidden, label-inline, and label-stacked.
-     * Use label-hidden to hide the label but make it available to assistive technology.
-     * Use label-inline to horizontally align the label and checkbox group.
-     * Use label-stacked to place the label above the checkbox group.
+     * If present, the options stretch to full width.
      *
-     * @type {string}
-     * @default standard
+     * @type {boolean}
+     * @default false
      * @public
      */
     @api
-    get variant() {
-        return this._variant || VARIANT.STANDARD;
+    get stretch() {
+        return this._stretch || false;
     }
-
-    set variant(value) {
-        this._variant = normalizeVariant(value);
-        this.updateClassList();
+    set stretch(value) {
+        this._stretch = normalizeBoolean(value);
     }
 
     /**
@@ -337,6 +290,65 @@ export default class InputChoiceSet extends LightningElement {
             validValues: INPUT_CHOICE_TYPES.valid
         });
     }
+
+    /**
+     * The list of selected options. Each array entry contains the value of a selected option. The value of each option is set in the options attribute.
+     *
+     * @type {string}
+     * @public
+     * @required
+     */
+    @api
+    get value() {
+        return this._value;
+    }
+
+    set value(value) {
+        this._value = value;
+
+        if (value && this.isConnected && this.isMultiSelect) {
+            this._value =
+                typeof value === 'string' ? [value] : normalizeArray(value);
+        }
+    }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
+     * The variant changes the appearance of the input label.
+     * Accepted variants include standard, label-hidden, label-inline, and label-stacked.
+     * Use label-hidden to hide the label but make it available to assistive technology.
+     * Use label-inline to horizontally align the label and checkbox group.
+     * Use label-stacked to place the label above the checkbox group.
+     *
+     * @type {string}
+     * @default standard
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant || VARIANT.STANDARD;
+    }
+
+    set variant(value) {
+        this._variant = normalizeVariant(value);
+        this.updateClassList();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * True if type is default.
@@ -372,15 +384,113 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
+     * Get element unique help ID.
      *
      * @type {string}
-     * @public
      */
-    @api
-    get validity() {
-        return this._constraint.validity;
+    get computedUniqueHelpElementId() {
+        const helpElement = this.template.querySelector('[data-helptext]');
+        return getRealDOMId(helpElement);
     }
+
+    /**
+     * Gets FieldConstraintApi for validation.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled &&
+                    this.required &&
+                    (!this.value || !this.value.length)
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /**
+     * Computed Legend Class styling.
+     *
+     * @type {string}
+     */
+    get computedLegendClass() {
+        return classSet('')
+            .add({
+                'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
+                'avonni-input-choice-set__display_flex':
+                    this.variant !== VARIANT.LABEL_INLINE
+            })
+            .toString();
+    }
+
+    /**
+     * Computed Button Class styling.
+     *
+     * @type {string}
+     */
+    get computedButtonClass() {
+        return classSet(`avonni-input-choice-set__${this.orientation}`).add({
+            'slds-checkbox_button-group': !this.checkboxVariant,
+            'avonni-input-choice-set__stretch': this.stretch
+        });
+    }
+
+    /**
+     * Computed Checkbox Container Class styling.
+     *
+     * @type {string}
+     */
+    get computedCheckboxContainerClass() {
+        const checkboxClass = this.isMultiSelect
+            ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
+            : `slds-radio avonni-input-choice-set__${this.orientation}`;
+        const buttonClass = `slds-button slds-checkbox_button avonni-input-choice-set__${this.orientation}`;
+
+        return this.checkboxVariant ? checkboxClass : buttonClass;
+    }
+
+    /**
+     * Computed Label Class styling.
+     *
+     * @type {string}
+     */
+    get computedLabelClass() {
+        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
+        const checkboxLabelClass =
+            this.isMultiSelect && this.checkboxVariant
+                ? 'slds-checkbox__label'
+                : 'slds-radio__label';
+
+        return this.checkboxVariant ? checkboxLabelClass : buttonLabelClass;
+    }
+
+    /**
+     * Returns checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false.
+     *
+     * @type {string}
+     */
+    get computedInputType() {
+        return this.isMultiSelect || !this.checkboxVariant
+            ? 'checkbox'
+            : 'radio';
+    }
+
+    /**
+     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
+     *
+     * @type {string}
+     */
+    get computedCheckboxShapeClass() {
+        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Checks if the input is valid.
@@ -429,16 +539,6 @@ export default class InputChoiceSet extends LightningElement {
     }
 
     /**
-     * Get element unique help ID.
-     *
-     * @type {string}
-     */
-    get computedUniqueHelpElementId() {
-        const helpElement = this.template.querySelector('[data-helptext]');
-        return getRealDOMId(helpElement);
-    }
-
-    /**
      * Sets the focus on the first input option.
      *
      * @public
@@ -451,6 +551,23 @@ export default class InputChoiceSet extends LightningElement {
         if (firstCheckbox) {
             firstCheckbox.focus();
         }
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Update form class styling.
+     */
+    updateClassList() {
+        classListMutation(this.classList, {
+            'slds-form-element_stacked': this.variant === VARIANT.LABEL_STACKED,
+            'slds-form-element_horizontal':
+                this.variant === VARIANT.LABEL_INLINE
+        });
     }
 
     /**
@@ -562,98 +679,5 @@ export default class InputChoiceSet extends LightningElement {
                 cancelable: true
             })
         );
-    }
-
-    /**
-     * Gets FieldConstraintApi for validation.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled &&
-                    this.required &&
-                    (!this.value || !this.value.length)
-            });
-        }
-        return this._constraintApi;
-    }
-
-    /**
-     * Computed Legend Class styling.
-     *
-     * @type {string}
-     */
-    get computedLegendClass() {
-        return classSet('')
-            .add({
-                'slds-assistive-text': this.variant === VARIANT.LABEL_HIDDEN,
-                'avonni-input-choice-set__display_flex':
-                    this.variant !== VARIANT.LABEL_INLINE
-            })
-            .toString();
-    }
-
-    /**
-     * Computed Button Class styling.
-     *
-     * @type {string}
-     */
-    get computedButtonClass() {
-        return classSet(`avonni-input-choice-set__${this.orientation}`).add({
-            'slds-checkbox_button-group': !this.checkboxVariant,
-            'avonni-input-choice-set__stretch': this.stretch
-        });
-    }
-
-    /**
-     * Computed Checkbox Container Class styling.
-     *
-     * @type {string}
-     */
-    get computedCheckboxContainerClass() {
-        const checkboxClass = this.isMultiSelect
-            ? `slds-checkbox avonni-input-choice-set__${this.orientation}`
-            : `slds-radio avonni-input-choice-set__${this.orientation}`;
-        const buttonClass = `slds-button slds-checkbox_button avonni-input-choice-set__${this.orientation}`;
-
-        return this.checkboxVariant ? checkboxClass : buttonClass;
-    }
-
-    /**
-     * Computed Label Class styling.
-     *
-     * @type {string}
-     */
-    get computedLabelClass() {
-        const buttonLabelClass = `slds-checkbox_button__label slds-align_absolute-center avonni-input-choice-set__${this.orientation}`;
-        const checkboxLabelClass =
-            this.isMultiSelect && this.checkboxVariant
-                ? 'slds-checkbox__label'
-                : 'slds-radio__label';
-
-        return this.checkboxVariant ? checkboxLabelClass : buttonLabelClass;
-    }
-
-    /**
-     * Returns checkbox if is-multi-select is true or type is not default and radio if is-multi-select is false.
-     *
-     * @type {string}
-     */
-    get computedInputType() {
-        return this.isMultiSelect || !this.checkboxVariant
-            ? 'checkbox'
-            : 'radio';
-    }
-
-    /**
-     * Returns slds-checkbox_faux if is-multi-select is true and slds-radio_faux if is-multi-select is false.
-     *
-     * @type {string}
-     */
-    get computedCheckboxShapeClass() {
-        return this.isMultiSelect ? 'slds-checkbox_faux' : 'slds-radio_faux';
     }
 }

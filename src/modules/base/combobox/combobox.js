@@ -170,7 +170,6 @@ export default class Combobox extends LightningElement {
     _variant = VARIANTS.default;
 
     selectedOptions = [];
-    selectedOptionsActions = SELECTED_OPTIONS_ACTIONS;
     scopesValue;
 
     /*
@@ -435,9 +434,6 @@ export default class Combobox extends LightningElement {
     }
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
-        this.selectedOptionsActions = this._readOnly
-            ? []
-            : SELECTED_OPTIONS_ACTIONS;
     }
 
     /**
@@ -673,6 +669,15 @@ export default class Combobox extends LightningElement {
      */
     get normalizedSelectedOptions() {
         return deepCopy(this.selectedOptions);
+    }
+
+    /**
+     * Array of actions displayed on the selected options pills. Return a unique remove action, or an empty array, if disabled or read-only.
+     *
+     * @type {object[]}
+     */
+    get selectedOptionsActions() {
+        return this.readOnly || this.disabled ? [] : SELECTED_OPTIONS_ACTIONS;
     }
 
     /**

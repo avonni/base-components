@@ -128,6 +128,12 @@ export default class VisualPicker extends LightningElement {
         this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * If present, the visual picker is disabled and the user cannot with it.
      *
@@ -241,6 +247,18 @@ export default class VisualPicker extends LightningElement {
             validValues: INPUT_TYPES.valid
         });
     }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
     /**
      * Value of the selected item. For the checkbox type, the value can be an array. Ex: [value1, value2], 'value1' or ['value1']
      *
@@ -275,6 +293,12 @@ export default class VisualPicker extends LightningElement {
             validValues: VISUAL_PICKER_VARIANTS.valid
         });
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Computed list items
@@ -583,6 +607,27 @@ export default class VisualPicker extends LightningElement {
     }
 
     /**
+     * Validation with constraint Api.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && this.value.length === 0
+            });
+        }
+        return this._constraintApi;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
      * Removes keyboard focus from the input element.
      *
      * @public
@@ -600,17 +645,6 @@ export default class VisualPicker extends LightningElement {
     @api
     focus() {
         this.input.focus();
-    }
-
-    /**
-     * Represents the validity states that an element can be in, with respect to constraint validation.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get validity() {
-        return this._constraint.validity;
     }
 
     /**
@@ -661,20 +695,11 @@ export default class VisualPicker extends LightningElement {
         this.reportValidity();
     }
 
-    /**
-     * Validation with constraint Api.
-     *
-     * @type {object}
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
      */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled && this.required && this.value.length === 0
-            });
-        }
-        return this._constraintApi;
-    }
 
     /**
      * Dispatches the blur event.

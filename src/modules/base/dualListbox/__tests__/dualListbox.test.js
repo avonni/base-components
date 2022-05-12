@@ -52,7 +52,7 @@ describe('DualListbox', () => {
         document.body.appendChild(element);
     });
 
-    it('Dual Listbox Default attributes', () => {
+    it('Dual Listbox: Default attributes', () => {
         expect(element.addButtonIconName).toBe('utility:right');
         expect(element.addButtonLabel).toBeUndefined();
         expect(element.hideBottomDivider).toBeFalsy();
@@ -91,7 +91,7 @@ describe('DualListbox', () => {
     /* ----- ATTRIBUTES ----- */
 
     // add-button-icon-name & add-button-label
-    it('Dual Listbox add button icon name and label', () => {
+    it('Dual Listbox: add button icon name and label', () => {
         element.addButtonIconName = 'utility:add';
         element.addButtonLabel = 'add';
 
@@ -105,7 +105,7 @@ describe('DualListbox', () => {
     });
 
     // hide bottom divider
-    it('Dual Listbox hide bottom divider', () => {
+    it('Dual Listbox: hide bottom divider', () => {
         element.options = Options;
 
         element.hideBottomDivider = true;
@@ -123,7 +123,7 @@ describe('DualListbox', () => {
     });
 
     // button-size
-    it('Dual Listbox button size xx-small', () => {
+    it('Dual Listbox: button size xx-small', () => {
         element.buttonSize = 'xx-small';
 
         return Promise.resolve().then(() => {
@@ -138,7 +138,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button size x-small', () => {
+    it('Dual Listbox: button size x-small', () => {
         element.buttonSize = 'x-small';
 
         return Promise.resolve().then(() => {
@@ -152,7 +152,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button size small', () => {
+    it('Dual Listbox: button size small', () => {
         element.buttonSize = 'small';
 
         return Promise.resolve().then(() => {
@@ -166,7 +166,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button size medium', () => {
+    it('Dual Listbox: button size medium', () => {
         element.buttonSize = 'medium';
 
         return Promise.resolve().then(() => {
@@ -180,7 +180,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button size large', () => {
+    it('Dual Listbox: button size large', () => {
         element.buttonSize = 'large';
 
         return Promise.resolve().then(() => {
@@ -195,7 +195,7 @@ describe('DualListbox', () => {
     });
 
     // button-variant
-    it('Dual Listbox button variant bare', () => {
+    it('Dual Listbox: button variant bare', () => {
         element.buttonVariant = 'bare';
 
         return Promise.resolve().then(() => {
@@ -209,7 +209,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button variant container', () => {
+    it('Dual Listbox: button variant container', () => {
         element.buttonVariant = 'container';
 
         return Promise.resolve().then(() => {
@@ -223,7 +223,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button variant brand', () => {
+    it('Dual Listbox: button variant brand', () => {
         element.buttonVariant = 'brand';
 
         return Promise.resolve().then(() => {
@@ -237,7 +237,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button variant border-filled', () => {
+    it('Dual Listbox: button variant border-filled', () => {
         element.buttonVariant = 'border-filled';
 
         return Promise.resolve().then(() => {
@@ -251,7 +251,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button variant bare-inverse', () => {
+    it('Dual Listbox: button variant bare-inverse', () => {
         element.buttonVariant = 'bare-inverse';
 
         return Promise.resolve().then(() => {
@@ -265,7 +265,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox button variant border-inverse', () => {
+    it('Dual Listbox: button variant border-inverse', () => {
         element.buttonVariant = 'border-inverse';
 
         return Promise.resolve().then(() => {
@@ -280,7 +280,7 @@ describe('DualListbox', () => {
     });
 
     // disable-reordering
-    it('Dual Listbox disable reordering', () => {
+    it('Dual Listbox: disable reordering', () => {
         element.disableReordering = true;
         element.addButtonLabel = 'add';
         element.removeButtonLabel = 'remove';
@@ -297,7 +297,7 @@ describe('DualListbox', () => {
     });
 
     // disabled
-    it('Dual Listbox disabled', () => {
+    it('Dual Listbox: disabled', () => {
         element.disabled = true;
         element.addButtonLabel = 'add';
         element.downButtonLabel = 'down';
@@ -326,7 +326,7 @@ describe('DualListbox', () => {
     });
 
     // down-button-icon-name & down-button-label
-    it('Dual Listbox down button icon name and label', () => {
+    it('Dual Listbox: down button icon name and label', () => {
         element.downButtonIconName = 'utility:apex';
         element.downButtonLabel = 'down';
 
@@ -340,7 +340,7 @@ describe('DualListbox', () => {
     });
 
     // draggagble
-    it('Dual Listbox draggable without disabled', () => {
+    it('Dual Listbox: draggable without disabled', () => {
         element.options = Options;
         element.draggable = true;
 
@@ -354,7 +354,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox draggable with disabled', () => {
+    it('Dual Listbox: draggable with disabled', () => {
         element.options = Options;
         element.draggable = true;
         element.disabled = true;
@@ -370,7 +370,7 @@ describe('DualListbox', () => {
     });
 
     // field-level-help
-    it('Dual Listbox field level help', () => {
+    it('Dual Listbox: field level help', () => {
         element.fieldLevelHelp = 'A string help';
 
         return Promise.resolve().then(() => {
@@ -382,7 +382,7 @@ describe('DualListbox', () => {
     });
 
     // isLoading
-    it('Dual Listbox is loading', () => {
+    it('Dual Listbox: is loading', () => {
         element.isLoading = true;
 
         return Promise.resolve().then(() => {
@@ -394,7 +394,7 @@ describe('DualListbox', () => {
     });
 
     // label
-    it('Dual Listbox label', () => {
+    it('Dual Listbox: label', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
@@ -406,7 +406,7 @@ describe('DualListbox', () => {
     });
 
     // message-when-range-overflow and max
-    it('Dual Listbox message when range overflow', () => {
+    it('Dual Listbox: message when range overflow', () => {
         element.max = 2;
         element.messageWhenRangeOverflow = 'Maximum Capacity!';
         element.options = Options;
@@ -435,7 +435,7 @@ describe('DualListbox', () => {
     });
 
     // message-when-range-underflow and min
-    it('Dual Listbox message when range underflow', () => {
+    it('Dual Listbox: message when range underflow', () => {
         element.messageWhenRangeUnderflow = 'Minimum Capacity!';
         element.min = 5;
         element.options = Options;
@@ -464,7 +464,7 @@ describe('DualListbox', () => {
     });
 
     // message-when-value-missing
-    it('Dual Listbox message when value is missing', () => {
+    it('Dual Listbox: message when value is missing', () => {
         element.required = true;
         element.options = Options;
         element.messageWhenValueMissing = 'Missing value!';
@@ -493,7 +493,7 @@ describe('DualListbox', () => {
     });
 
     // options
-    it('Dual Listbox options with avatar', () => {
+    it('Dual Listbox: options with avatar', () => {
         const optionWithAvatar = [
             {
                 value: '1',
@@ -518,7 +518,7 @@ describe('DualListbox', () => {
             });
     });
 
-    it('Dual Listbox options without avatar', () => {
+    it('Dual Listbox: options without avatar', () => {
         const optionWithoutAvatar = [
             {
                 value: '1',
@@ -546,7 +546,7 @@ describe('DualListbox', () => {
             });
     });
 
-    it('Dual Listbox options with groupName', () => {
+    it('Dual Listbox: options with groupName', () => {
         const optionWithGroupName = [
             {
                 value: '1',
@@ -572,7 +572,7 @@ describe('DualListbox', () => {
     });
 
     // remove-button-icon-name & remove-button-label
-    it('Dual Listbox remove button icon name and label', () => {
+    it('Dual Listbox: remove button icon name and label', () => {
         element.removeButtonIconName = 'utility:apex';
         element.removeButtonLabel = 'remove';
 
@@ -586,7 +586,7 @@ describe('DualListbox', () => {
     });
 
     // required
-    it('Dual Listbox required', () => {
+    it('Dual Listbox: required', () => {
         element.required = true;
         element.options = Options;
 
@@ -597,7 +597,7 @@ describe('DualListbox', () => {
     });
 
     // required options
-    it('Dual Listbox required options', () => {
+    it('Dual Listbox: required options', () => {
         element.options = Options;
 
         return Promise.resolve()
@@ -613,7 +613,7 @@ describe('DualListbox', () => {
     });
 
     // allow search
-    it('Dual Listbox allow search', () => {
+    it('Dual Listbox: allow search', () => {
         element.allowSearch = true;
         element.options = Options;
 
@@ -627,7 +627,7 @@ describe('DualListbox', () => {
     });
 
     // selected label and source label
-    it('Dual Listbox selected label & source label', () => {
+    it('Dual Listbox: selected label & source label', () => {
         element.sourceLabel = 'A string source label';
         element.selectedLabel = 'A string selected label';
 
@@ -641,7 +641,7 @@ describe('DualListbox', () => {
     });
 
     // selected placeholder
-    it('Dual Listbox selected placeholder', () => {
+    it('Dual Listbox: selected placeholder', () => {
         element.value = [];
         element.selectedPlaceholder = 'A string selected placeholder';
 
@@ -656,7 +656,7 @@ describe('DualListbox', () => {
     });
 
     // up-button-icon-name & up-button-label
-    it('Dual Listbox up button icon name and label', () => {
+    it('Dual Listbox: up button icon name and label', () => {
         element.upButtonIconName = 'utility:apex';
         element.upButtonLabel = 'up';
 
@@ -670,7 +670,7 @@ describe('DualListbox', () => {
     });
 
     // value
-    it('Dual Listbox value', () => {
+    it('Dual Listbox: value', () => {
         element.options = Options;
         element.value = ['1', '2', '3'];
 
@@ -691,7 +691,7 @@ describe('DualListbox', () => {
     });
 
     // variants
-    it('Dual Listbox variant label hidden', () => {
+    it('Dual Listbox: variant label hidden', () => {
         element.label = 'This is a label-hidden';
         element.variant = 'label-hidden';
 
@@ -703,7 +703,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox variant label stacked', () => {
+    it('Dual Listbox: variant label stacked', () => {
         element.variant = 'label-stacked';
 
         return Promise.resolve().then(() => {
@@ -715,7 +715,7 @@ describe('DualListbox', () => {
     });
 
     // size
-    it('Dual Listbox size small', () => {
+    it('Dual Listbox: size small', () => {
         element.size = 'small';
 
         return Promise.resolve().then(() => {
@@ -748,7 +748,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox size medium', () => {
+    it('Dual Listbox: size medium', () => {
         element.size = 'medium';
 
         return Promise.resolve().then(() => {
@@ -781,7 +781,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox size large', () => {
+    it('Dual Listbox: size large', () => {
         element.size = 'large';
 
         return Promise.resolve().then(() => {
@@ -817,7 +817,7 @@ describe('DualListbox', () => {
     /* ----- JS ----- */
 
     // testing selection
-    it('Dual Listbox selection', () => {
+    it('Dual Listbox: selection', () => {
         element.options = Options;
 
         return Promise.resolve().then(() => {
@@ -834,7 +834,7 @@ describe('DualListbox', () => {
     });
 
     // data-index
-    it('Dual Listbox data-index sourceBox', () => {
+    it('Dual Listbox: data-index sourceBox', () => {
         element.options = OptionsWithGroups;
 
         return Promise.resolve().then(() => {
@@ -849,7 +849,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('Dual Listbox data-index selectedBox', () => {
+    it('Dual Listbox: data-index selectedBox', () => {
         element.options = OptionsWithGroups;
         element.value = ['1', '2'];
 

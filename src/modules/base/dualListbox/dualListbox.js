@@ -488,6 +488,10 @@ export default class DualListbox extends LightningElement {
             ? DEFAULT_MAX_VISIBLE_OPTIONS
             : value;
         this._maxVisibleOptions = number;
+
+        if (this._connected) {
+            this.updateBoxesHeight();
+        }
     }
 
     /**
