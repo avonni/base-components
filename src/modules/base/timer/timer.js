@@ -88,6 +88,7 @@ export default class Timer extends LightningElement {
     startDate = null;
     play = false;
     interval = null;
+    pauseBuffer = 0;
 
     disconnectedCallback() {
         clearInterval(this.interval);
@@ -329,7 +330,7 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Verify
+     * Boolean, is true if timerValue is negative.
      *
      * @type {number}
      */
@@ -353,6 +354,7 @@ export default class Timer extends LightningElement {
         if (this.interval === null) {
             this.createInterval();
         }
+        this.consumePauseBuffer();
         this.play = true;
         this.dispatchTimerStart();
     }
@@ -377,18 +379,21 @@ export default class Timer extends LightningElement {
     stop() {
         this.play = false;
         this.startDate = null;
-        this.dispatchTimerStop();
+        this.pauseBuffer = 0;
+        this.clearCurrentInterval();
     }
 
     /**
-     * Reset the timer.
+     * Reset the timer. Will keep on going if is still playing.
      *
      * @public
      */
     @api
     reset() {
-        this.timerValue = this.startTime;
         this.startDate = null;
+        this.pauseBuffer = 0;
+        this.stop();
+        this.start();
         this.dispatchTimerReset();
     }
 
@@ -542,24 +547,46 @@ export default class Timer extends LightningElement {
                 if (this.type === 'count-up') {
                     this.timerValue =
                         this.startTime + (Date.now() - this.startDate);
-                    if (this.timerValue >= this.duration) {
+                    if (this.timerValue > this.duration) {
                         this.timerValue = this.duration;
                         this.stop();
+                        if (this.repeat) this.start();
                     }
-                }
-                if (this.type === 'count-down') {
+                } else {
                     this.timerValue =
                         this.startTime - (Date.now() - this.startDate);
                     if (
                         this.isNegative &&
-                        Math.abs(this.timerValue) >= this.duration
+                        Math.abs(this.timerValue - 1000) > this.duration
                     ) {
                         this.timerValue = -this.duration;
                         this.stop();
+                        if (this.repeat) this.start();
                     }
                 }
+            } else {
+                if (this.type === 'count-up')
+                    this.pauseBuffer =
+                        Date.now() -
+                        this.startDate -
+                        (this.timerValue - this.startTime);
+                else
+                    this.pauseBuffer =
+                        Date.now() -
+                        this.startDate +
+                        (this.timerValue - this.startTime);
+
+                console.log(this.pauseBuffer);
             }
         }, 200);
+    }
+
+    /**
+     *  Consumes pause buffer.
+     */
+    consumePauseBuffer() {
+        if (this.startDate !== null) this.startDate += this.pauseBuffer;
+        this.pauseBuffer = 0;
     }
 
     /**
@@ -568,6 +595,7 @@ export default class Timer extends LightningElement {
     clearCurrentInterval() {
         clearInterval(this.interval);
         this.interval = null;
+        this.consumePauseBuffer();
         this.dispatchTimerStop();
     }
 }
