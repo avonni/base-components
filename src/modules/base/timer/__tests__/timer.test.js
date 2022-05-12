@@ -55,13 +55,13 @@ describe('Timer', () => {
 
     it('Timer: Default attributes', () => {
         expect(element.autoStart).toBeFalsy();
-        expect(element.duration).toBe(1);
+        expect(element.startTime).toBe(0);
+        expect(element.duration).toBe(10000);
         expect(element.format).toBe('hh:mm:ss');
         expect(element.iconName).toBeUndefined();
         expect(element.iconPosition).toBe('left');
         expect(element.repeat).toBeFalsy();
         expect(element.type).toBe('count-up');
-        expect(element.value).toBe(0);
         expect(element.variant).toBe('neutral');
     });
 
@@ -89,24 +89,23 @@ describe('Timer', () => {
         element.duration = 86500000;
 
         return Promise.resolve().then(() => {
-            expect(element.duration).toBe(86400);
+            expect(element.duration).toBe(86400000);
         });
     });
 
     it('Timer: duration = 86200000', () => {
         element.duration = 86200000;
-        const duration = 86200000 / 1000;
 
         return Promise.resolve().then(() => {
-            expect(element.duration).toBe(duration);
+            expect(element.duration).toBe(86200000);
         });
     });
 
-    it('Timer: duration default', () => {
-        element.duration = 'test';
-        const DEFAULT_DURATION = 1;
+    it('Timer: duration negative value', () => {
+        element.duration = -86200000;
+
         return Promise.resolve().then(() => {
-            expect(element.duration).toBe(DEFAULT_DURATION);
+            expect(element.duration).toBe(10000);
         });
     });
 
@@ -140,7 +139,7 @@ describe('Timer', () => {
     // format and value
     it('Timer: format = hh:mm:ss', () => {
         element.format = 'hh:mm:ss';
-        element.value = 46789000;
+        element.startTime = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -152,7 +151,7 @@ describe('Timer', () => {
 
     it('Timer: format = mm:ss', () => {
         element.format = 'mm:ss';
-        element.value = 46789000;
+        element.startTime = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -164,7 +163,7 @@ describe('Timer', () => {
 
     it('Timer: format = hh:mm', () => {
         element.format = 'hh:mm';
-        element.value = 46789000;
+        element.startTime = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -176,7 +175,7 @@ describe('Timer', () => {
 
     it('Timer: format = hh', () => {
         element.format = 'hh';
-        element.value = 46789000;
+        element.startTime = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -188,7 +187,7 @@ describe('Timer', () => {
 
     it('Timer: format = mm', () => {
         element.format = 'mm';
-        element.value = 46789000;
+        element.startTime = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -200,13 +199,13 @@ describe('Timer', () => {
 
     it('Timer: format = ss', () => {
         element.format = 'ss';
-        element.value = 46789000;
+        element.startTime = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button"]'
             );
-            expect(button.label).toBe(46789);
+            expect(button.label).toBe('46789');
         });
     });
 
@@ -237,15 +236,9 @@ describe('Timer', () => {
     // repeat
     // Depends on value, duration and start()
     // it('Timer: repeat = true', () => {
-    //     const element = createElement('base-timer', {
-    //         is: Timer
-    //     });
-
-    //     document.body.appendChild(element);
-
     //     const handler = jest.fn();
     //     element.addEventListener('timereset', handler);
-    //     element.value = 3000;
+    //     element.startTime = 3000;
     //     element.duration = 2000;
     //     element.repeat = true;
     //     element.start();
@@ -357,7 +350,7 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
@@ -377,7 +370,7 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
@@ -397,7 +390,7 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
@@ -417,7 +410,7 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();

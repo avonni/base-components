@@ -134,7 +134,7 @@ export default class Timer extends LightningElement {
     }
 
     set duration(value) {
-        if (!isNaN(parseInt(value, 10))) {
+        if (!isNaN(parseInt(value, 10)) && parseInt(value, 10) >= 0) {
             this._duration = Math.min(parseInt(value, 10), MAX_TIMER_VALUE);
         } else {
             this._duration = DEFAULT_DURATION;
@@ -273,19 +273,29 @@ export default class Timer extends LightningElement {
             'mm',
             `${this.minutes}`.padStart(2, '0')
         );
-        if (this.format === 'ss') {
-            formattedTime = formattedTime.replace('ss', `${this.seconds}`);
-        } else {
-            formattedTime = formattedTime.replace(
-                'ss',
-                `${this.seconds}`.padStart(2, '0')
-            );
-        }
-
+        formattedTime = formattedTime.replace(
+            'ss',
+            `${this.seconds}`.padStart(2, '0')
+        );
         formattedTime = formattedTime.replace(
             'ms',
             `${this.milliseconds}`.padStart(3, '0')
         );
+        //special cases:
+        if (this.format === 'mm') {
+            formattedTime = `${this.minutes + this.hours * 60}`.padStart(2, 0);
+        }
+        if (this.format === 'ss') {
+            formattedTime = `${
+                this.seconds + this.minutes * 60 + this.hours * 60 * 60
+            }`;
+        }
+        if (this.format === 'mm:ss') {
+            formattedTime = ''
+                .concat(`${this.minutes + this.hours * 60}`.padStart(2, 0))
+                .concat(':')
+                .concat(`${this.seconds}`.padStart(2, 0));
+        }
         return !this.isNegative ? formattedTime : '-'.concat(formattedTime);
     }
 
@@ -575,8 +585,6 @@ export default class Timer extends LightningElement {
                         Date.now() -
                         this.startDate +
                         (this.timerValue - this.startTime);
-
-                console.log(this.pauseBuffer);
             }
         }, 200);
     }
