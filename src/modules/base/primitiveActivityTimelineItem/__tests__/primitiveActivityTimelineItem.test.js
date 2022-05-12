@@ -214,7 +214,6 @@ describe('Primitive Activity Timeline Item', () => {
             const icon = element.shadowRoot.querySelector(
                 '[data-element-id="item-marker"]'
             );
-            console.log(icon);
             expect(icon.size).toBe('large');
         });
     });
