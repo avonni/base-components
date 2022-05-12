@@ -129,7 +129,7 @@ export default class ActivityTimeline extends LightningElement {
     _collapsible = false;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
-    _maxVisibleItems;
+    _maxVisibleItems = DEFAULT_MAX_VISIBLE_ITEMS;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _key;
@@ -304,9 +304,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set maxVisibleItems(value) {
-        if (value > this.items.length)
-            this._maxVisibleItems = this.items.length;
-        else this._maxVisibleItems = value > 0 ? value : 0;
+        this._maxVisibleItems = value > 0 ? value : DEFAULT_MAX_VISIBLE_ITEMS;
     }
 
     /**
@@ -629,8 +627,8 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * Toggle the show more button
      */
-    toggleShowMoreButton() {
+    handleToggleShowMoreButton() {
         this.showMore = !this.showMore;
-        if (this._isConnected) this.initActivityTimeline();
+        this.initActivityTimeline();
     }
 }
