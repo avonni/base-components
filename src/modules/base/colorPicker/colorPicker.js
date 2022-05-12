@@ -1040,7 +1040,8 @@ export default class ColorPicker extends LightningElement {
             this.dispatchChange(generateColors(this.value));
         }
 
-        this.handleBlur();
+        // this.handleBlur();
+        this.close();
         this.focus();
     }
 
@@ -1053,7 +1054,8 @@ export default class ColorPicker extends LightningElement {
         if (this.colorGradient) {
             this.colorGradient.renderValue(this.value);
         }
-
+        // this.handleBlur();
+        this.close();
         this.handleBlur();
     }
 
@@ -1126,11 +1128,17 @@ export default class ColorPicker extends LightningElement {
         //     console.log('ici');
         // }
         const menuElement = this.template.querySelector('.slds-dropdown');
-        if (event && menuElement.contains(event.target)) {
-            console.log('DEDANS');
-        } else {
+        const dropArrow = this.template.querySelector(
+            '[data-element-id="button"]'
+        );
+        if (
+            !(
+                menuElement.matches(':focus-within') ||
+                event.target === dropArrow
+            )
+        ) {
             this._menuHasFocus = false;
-            console.log('DEHORS');
+            this.close();
         }
     }
 

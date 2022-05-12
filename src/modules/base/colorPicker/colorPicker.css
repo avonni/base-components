@@ -30,8 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-*:focus {
-    border: 1px solid red;
+.slds-tabs_default__link:focus {
+    background-color: #ecebea;
+    padding: 0 0.5rem;
+    border-radius: 3px;
 }
 
 .slds-form-element_stacked .slds-form-element {
