@@ -337,8 +337,6 @@ describe('Activity Timeline', () => {
     // button show less icon position
     it('Activity Timeline: change button show less position to right', () => {
         element.items = testItems;
-        element.buttonVariant = 'neutral';
-        element.buttonIconName = 'utility:up';
         element.buttonShowLessIconPosition = 'right';
         element.maxVisibleItems = 1;
 
@@ -360,8 +358,6 @@ describe('Activity Timeline', () => {
     // button show more icon position
     it('Activity Timeline: change button show more position to right', () => {
         element.items = testItems;
-        element.buttonVariant = 'neutral';
-        element.buttonIconName = 'utility:down';
         element.buttonShowMoreIconPosition = 'right';
         element.maxVisibleItems = 1;
 
@@ -376,8 +372,6 @@ describe('Activity Timeline', () => {
     // button show less label
     it("Activity Timeline: click on show button should change button's label to show less", () => {
         element.items = testItems;
-        element.buttonVariant = 'neutral';
-        element.buttonIconName = 'utility:down';
         element.buttonShowLessLabel = 'Show less';
         element.maxVisibleItems = 1;
 
@@ -399,8 +393,6 @@ describe('Activity Timeline', () => {
     // button show more label
     it('Activity Timeline: show button should have label show more', () => {
         element.items = testItems;
-        element.buttonVariant = 'neutral';
-        element.buttonIconName = 'utility:up';
         element.buttonShowLessLabel = 'Show less';
         element.buttonShowMoreLabel = 'Show more';
         element.maxVisibleItems = 1;
