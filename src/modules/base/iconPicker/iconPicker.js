@@ -34,8 +34,6 @@ const TABS = {
 
 const NB_VISIBLE_TABS = 2;
 
-const DEFAULT_HIDDEN_CATEGORIES = [];
-
 /**
  * @class
  * @description Icon picker for Salesforce Lightning Design System's icons.
@@ -88,7 +86,7 @@ export default class IconPicker extends LightningElement {
     @api placeholder;
 
     _disabled = false;
-    _hiddenCategories = DEFAULT_HIDDEN_CATEGORIES.slice();
+    _hiddenCategories = [];
     _hideFooter = false;
     _hideInputText = false;
     _menuIconSize = MENU_ICON_SIZES.default;
@@ -147,7 +145,6 @@ export default class IconPicker extends LightningElement {
      * The icon categories that will be hidden by default.
      *
      * @type {string[]}
-     * @default ['Utility', 'Doctype', 'Action']
      * @public
      */
     @api
@@ -158,9 +155,7 @@ export default class IconPicker extends LightningElement {
     set hiddenCategories(value) {
         this._hiddenCategories = [];
         const categories =
-            value === undefined
-                ? DEFAULT_HIDDEN_CATEGORIES
-                : JSON.parse(JSON.stringify(value));
+            value === undefined ? [] : JSON.parse(JSON.stringify(value));
         for (const category of TABS.valid) {
             if (categories.includes(category)) {
                 this._hiddenCategories.push(category);
