@@ -2,7 +2,8 @@
  * @typedef {Object} Tag
  * @name tags
  * @property {string} label Tag label.
- * @property {string} variant The variant changes the style of the badge. Valid values include default, warning, error, success, lightest, inverse. Defaults to default.
+ * @property {string} variant The variant changes the style of the chip. Valid values include base, brand, warning, error, success, info, alt-inverse, inverse, offline. Defaults to base.
+ * @property {boolean} outline If true, display an outline style chip.
  */
 
 /**
