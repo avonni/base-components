@@ -357,7 +357,7 @@ export default class Rating extends LightningElement {
             items.push(i);
         }
 
-        return items.reverse();
+        return items;
     }
 
     /**
