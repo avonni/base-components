@@ -552,8 +552,8 @@ export default class Timer extends LightningElement {
                             this.value + (Date.now() - this.startDate);
                         if (this.timerValue >= this.value + this.duration) {
                             this.timerValue = this.duration;
-                            this.stop();
-                            if (this.repeat) this.start();
+                            if (this.repeat) this.reset();
+                            else this.stop();
                         }
                     } else {
                         this.timerValue =
@@ -567,8 +567,8 @@ export default class Timer extends LightningElement {
                                     this.value - this.duration
                                 );
                             }
-                            this.stop();
-                            if (this.repeat) this.start();
+                            if (this.repeat) this.reset();
+                            else this.stop();
                         }
                     }
                 } else {
@@ -585,7 +585,7 @@ export default class Timer extends LightningElement {
                             (this.timerValue - this.value);
                 }
             },
-            this.format.includes('ms') ? 333 : 200
+            this.format.includes('ms') ? 50 : 200
         );
     }
 
