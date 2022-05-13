@@ -425,6 +425,20 @@ export default class Calendar extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="previous-lightning-button-icon"]'
+        );
+        if (button) button.focus();
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
