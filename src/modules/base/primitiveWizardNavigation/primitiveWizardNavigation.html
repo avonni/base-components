@@ -75,6 +75,9 @@
                         >
                             <template for:each={steps} for:item="step">
                                 <lightning-progress-step
+                                    class="
+                                        avonni-primitive-wizard-navigation__progress-step-width
+                                    "
                                     key={step.name}
                                     label={step.label}
                                     value={step.name}
@@ -103,7 +106,11 @@
                 <!-- Bullets -->
                 <template if:true={showBulletIndicator}>
                     <ul
-                        class="slds-carousel__indicators slds-text-align_center slds-m-top_small"
+                        class="
+                            slds-carousel__indicators
+                            slds-text-align_center
+                            slds-m-top_small
+                        "
                         aria-label="Progress indicator"
                     >
                         <template for:each={_steps} for:item="step">

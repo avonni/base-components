@@ -30,6 +30,11 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
- .avonni-height_full {
+.avonni-height_full {
     height: 100%;
+}
+
+.avonni-primitive-wizard-navigation__style {
+    width: 40px !important;
+    min-width: 0px !important;
 }
