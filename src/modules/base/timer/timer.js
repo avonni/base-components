@@ -227,7 +227,7 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Starting value of the timer in milliseconds.
+     * Starting value of the timer in milliseconds. Getting this variable will provide the current timer value in milliseconds.
      *
      * @type {number}
      * @public
