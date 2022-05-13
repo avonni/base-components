@@ -52,6 +52,10 @@
     pointer-events: none;
 }
 
+.avonni-active-star {
+    pointer-events: auto;
+}
+
 .avonni-active {
     pointer-events: auto;
 }
@@ -74,6 +78,11 @@ button {
     background-color: #1b5297;
     border-color: #1b5297;
     color: #ffffff;
+    opacity: 1;
+}
+
+.avonni-rating__container:hover .avonni-active-star {
+    fill: #1b5297 !important;
     opacity: 1;
 }
 

@@ -113,29 +113,21 @@ export default class Rating extends LightningElement {
                 style.innerText = `
                     .avonni-icon-selected .slds-button:disabled svg {fill: #a5a4a2;}
                     .avonni-icon-selected svg {fill: #1b5297 !important;}
-                    .avonni-rating:hover .avonni-active-star.avonni-continuous-star:not(:hover) svg {
-                        fill: #c9c7c5;
-                        opacity: 0.85;
-                    }
-                    .avonni-rating:hover .avonni-active-star:hover svg{
+                    .avonni-rating:hover .avonni-active-star svg {
                         fill: #1b5297;
                         opacity: 1;
                     }
                     .avonni-active-star.avonni-continuous-star svg {
                         fill: #c9c7c5;
                     }
-                    .avonni-active-star.avonni-continuous-star:hover svg,
                     .avonni-active-star.avonni-continuous-star:hover ~ .avonni-active-star.avonni-continuous-star svg {
-                        fill: #1b5297 !important;
-                        opacity: 1 !important;
+                        fill: #c9c7c5;
+                        opacity: 1;
                     }
                     .avonni-icon button, 
                     .avonni-icon button:active, 
                     .avonni-icon button:focus {
                         box-shadow: none;
-                    }
-                    .avonni-icon.avonni-active-star svg {
-                        fill: #c9c7c5;
                     }
                 `;
                 selectedIcons.appendChild(style);
