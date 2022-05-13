@@ -50,7 +50,16 @@ const BUTTON_VARIANTS = {
 const COUNT_TYPES = { valid: ['count-up', 'count-down'], default: 'count-up' };
 const ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 const TIME_FORMATS = {
-    valid: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss', 'ss.ms'],
+    valid: [
+        'hh:mm:ss',
+        'mm:ss',
+        'hh:mm',
+        'mm:ss.ms',
+        'ss.ms',
+        'hh',
+        'mm',
+        'ss'
+    ],
     default: 'hh:mm:ss'
 };
 
@@ -82,7 +91,7 @@ export default class Timer extends LightningElement {
     _repeat = DEFAULT_REPEAT;
     _type = COUNT_TYPES.default;
     _variant = BUTTON_VARIANTS.default;
-    _startTime = DEFAULT_START_TIME;
+    _value = DEFAULT_START_TIME;
 
     timerValue = DEFAULT_START_TIME;
     startDate = null;
@@ -116,7 +125,11 @@ export default class Timer extends LightningElement {
         this._autoStart = normalizeBoolean(value);
 
         if (this._autoStart) {
-            this.start();
+            this.startDate = Date.now();
+            // start after short delay to account for properties initialization
+            setTimeout(() => {
+                this.start();
+            }, 10);
         }
     }
 
@@ -142,7 +155,7 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Format of the timer. Valid values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”.
+     * Format of the timer. Valid values include "hh:mm:ss", "mm:ss", "hh:mm", "mm:ss.ms", "ss.ms", "hh", "mm", "ss".
      *
      * @type {string}
      * @public
@@ -222,15 +235,15 @@ export default class Timer extends LightningElement {
      * @default 0
      */
     @api
-    get startTime() {
-        return this._startTime;
+    get value() {
+        return this._value;
     }
 
-    set startTime(value) {
-        this._startTime = isNaN(parseInt(value, 10))
+    set value(value) {
+        this._value = isNaN(parseInt(value, 10))
             ? DEFAULT_START_TIME
             : Number(Math.min(parseInt(value, 10), MAX_TIMER_VALUE));
-        this.timerValue = this._startTime;
+        this.timerValue = this._value;
     }
 
     /**
@@ -264,38 +277,17 @@ export default class Timer extends LightningElement {
      * @type {string|number}
      */
     get time() {
-        let formattedTime = this.format;
-        formattedTime = formattedTime.replace(
-            'hh',
-            `${this.hours}`.padStart(2, '0')
-        );
-        formattedTime = formattedTime.replace(
-            'mm',
-            `${this.minutes}`.padStart(2, '0')
-        );
-        formattedTime = formattedTime.replace(
-            'ss',
-            `${this.seconds}`.padStart(2, '0')
-        );
-        formattedTime = formattedTime.replace(
-            'ms',
-            `${this.milliseconds}`.padStart(3, '0')
-        );
-        //special cases:
-        if (this.format === 'mm') {
-            formattedTime = `${this.minutes + this.hours * 60}`.padStart(2, 0);
+        let timeFormats = this.format.split(new RegExp('[.:]')); // splits string at ":" and "." into array character
+        timeFormats[0] = this.formatToString(timeFormats[0], true);
+        for (let i = 1; i < timeFormats.length; i++) {
+            timeFormats[i] = this.formatToString(timeFormats[i], false);
         }
-        if (this.format === 'ss') {
-            formattedTime = `${
-                this.seconds + this.minutes * 60 + this.hours * 60 * 60
-            }`;
-        }
-        if (this.format === 'mm:ss') {
-            formattedTime = ''
-                .concat(`${this.minutes + this.hours * 60}`.padStart(2, 0))
-                .concat(':')
-                .concat(`${this.seconds}`.padStart(2, 0));
-        }
+        let formattedTime = timeFormats.join(':');
+        if (this.format.includes('ms'))
+            formattedTime = formattedTime.replace(
+                new RegExp('(:)(?!.*:)'),
+                '.'
+            ); // replaces last ":" character with "."
         return !this.isNegative ? formattedTime : '-'.concat(formattedTime);
     }
 
@@ -552,41 +544,54 @@ export default class Timer extends LightningElement {
         if (this.startDate === null) {
             this.startDate = Date.now();
         }
-        this.interval = setInterval(() => {
-            if (this.play) {
-                if (this.type === 'count-up') {
-                    this.timerValue =
-                        this.startTime + (Date.now() - this.startDate);
-                    if (this.timerValue > this.duration) {
-                        this.timerValue = this.duration;
-                        this.stop();
-                        if (this.repeat) this.start();
+        this.interval = setInterval(
+            () => {
+                if (this.play) {
+                    if (this.type === 'count-up') {
+                        this.timerValue =
+                            this.value + (Date.now() - this.startDate);
+                        if (this.timerValue > this.duration) {
+                            this.timerValue = this.duration;
+                            this.stop();
+                            if (this.repeat) this.start();
+                        }
+                    } else {
+                        this.timerValue =
+                            this.value - (Date.now() - this.startDate);
+                        if (
+                            this.isNegative &&
+                            Math.abs(this.timerValue - 1000) > this.duration
+                        ) {
+                            this.timerValue = -this.duration;
+                            this.stop();
+                            if (this.repeat) this.start();
+                        }
                     }
                 } else {
-                    this.timerValue =
-                        this.startTime - (Date.now() - this.startDate);
-                    if (
-                        this.isNegative &&
-                        Math.abs(this.timerValue - 1000) > this.duration
-                    ) {
-                        this.timerValue = -this.duration;
-                        this.stop();
-                        if (this.repeat) this.start();
-                    }
+                    if (this.type === 'count-up')
+                        this.pauseBuffer =
+                            Date.now() -
+                            this.startDate -
+                            (this.timerValue - this.value);
+                    else
+                        this.pauseBuffer =
+                            Date.now() -
+                            this.startDate +
+                            (this.timerValue - this.value);
                 }
-            } else {
-                if (this.type === 'count-up')
-                    this.pauseBuffer =
-                        Date.now() -
-                        this.startDate -
-                        (this.timerValue - this.startTime);
-                else
-                    this.pauseBuffer =
-                        Date.now() -
-                        this.startDate +
-                        (this.timerValue - this.startTime);
-            }
-        }, 200);
+            },
+            this.format.includes('ms') ? 50 : 200
+        );
+    }
+
+    /**
+     * Clear the current interval.
+     */
+    clearCurrentInterval() {
+        clearInterval(this.interval);
+        this.interval = null;
+        this.consumePauseBuffer();
+        this.dispatchTimerStop();
     }
 
     /**
@@ -598,12 +603,37 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Clear the current interval.
+     *  Transforms format string to timerValue equivalent.
+     *  @param format the string to transform.
+     *  @param isFirst is the first element in the timer.
      */
-    clearCurrentInterval() {
-        clearInterval(this.interval);
-        this.interval = null;
-        this.consumePauseBuffer();
-        this.dispatchTimerStop();
+    formatToString(format, isFirst) {
+        if (isFirst) {
+            switch (format) {
+                case 'hh':
+                    return `${this.hours}`.padStart(2, '0');
+                case 'mm':
+                    return `${this.minutes + this.hours * 60}`.padStart(2, '0');
+                case 'ss':
+                    return `${
+                        this.seconds + this.minutes * 60 + this.hours * 3600
+                    }`;
+                default:
+                    return '??';
+            }
+        } else {
+            switch (format) {
+                case 'hh':
+                    return `${this.hours}`.padStart(2, '0');
+                case 'mm':
+                    return `${this.minutes}`.padStart(2, '0');
+                case 'ss':
+                    return `${this.seconds}`.padStart(2, '0');
+                case 'ms':
+                    return `${this.milliseconds}`.padStart(3, '0');
+                default:
+                    return '??';
+            }
+        }
     }
 }

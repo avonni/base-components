@@ -47,8 +47,8 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        startTime: {
-            name: 'start-time',
+        value: {
+            name: 'value',
             control: {
                 type: 'number',
                 min: 0
@@ -122,7 +122,16 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['hh:mm:ss', 'mm:ss', 'hh:mm', 'hh', 'mm', 'ss', 'ss.ms'],
+            options: [
+                'hh:mm:ss',
+                'mm:ss',
+                'hh:mm',
+                'hh',
+                'mm',
+                'ss',
+                'ss.ms',
+                'mm:ss.ms'
+            ],
             description:
                 'Format of the timer. Valid values include "hh:mm:ss", "mm:ss", "hh:mm", “hh”, “mm”, “ss”.',
             table: {
@@ -201,7 +210,7 @@ export const SuccessSeconds = Template.bind({});
 SuccessSeconds.args = {
     duration: 10000,
     variant: 'success',
-    format: 'mm:ss'
+    format: 'ss'
 };
 
 export const BrandIcon = Template.bind({});
@@ -214,9 +223,19 @@ BrandIcon.args = {
 export const DestructiveCountdown = Template.bind({});
 DestructiveCountdown.args = {
     type: 'count-down',
-    startTime: 5000,
+    value: 5000,
     duration: 10000,
     format: 'mm:ss',
     variant: 'destructive',
     autoStart: true
+};
+
+export const ChronoCountdown = Template.bind({});
+ChronoCountdown.args = {
+    type: 'count-down',
+    value: 10000,
+    duration: 0,
+    format: 'ss.ms',
+    autoStart: true,
+    repeat: true
 };

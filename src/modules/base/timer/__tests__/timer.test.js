@@ -55,7 +55,7 @@ describe('Timer', () => {
 
     it('Timer: Default attributes', () => {
         expect(element.autoStart).toBeFalsy();
-        expect(element.startTime).toBe(0);
+        expect(element.value).toBe(0);
         expect(element.duration).toBe(10000);
         expect(element.format).toBe('hh:mm:ss');
         expect(element.iconName).toBeUndefined();
@@ -139,7 +139,7 @@ describe('Timer', () => {
     // format and value
     it('Timer: format = hh:mm:ss', () => {
         element.format = 'hh:mm:ss';
-        element.startTime = 46789000;
+        element.value = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -151,7 +151,7 @@ describe('Timer', () => {
 
     it('Timer: format = mm:ss', () => {
         element.format = 'mm:ss';
-        element.startTime = 46789000;
+        element.value = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -163,7 +163,7 @@ describe('Timer', () => {
 
     it('Timer: format = hh:mm', () => {
         element.format = 'hh:mm';
-        element.startTime = 46789000;
+        element.value = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -175,7 +175,7 @@ describe('Timer', () => {
 
     it('Timer: format = hh', () => {
         element.format = 'hh';
-        element.startTime = 46789000;
+        element.value = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -187,7 +187,7 @@ describe('Timer', () => {
 
     it('Timer: format = mm', () => {
         element.format = 'mm';
-        element.startTime = 46789000;
+        element.value = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -199,7 +199,7 @@ describe('Timer', () => {
 
     it('Timer: format = ss', () => {
         element.format = 'ss';
-        element.startTime = 46789000;
+        element.value = 46789000;
 
         return Promise.resolve().then(() => {
             const button = element.shadowRoot.querySelector(
@@ -238,7 +238,7 @@ describe('Timer', () => {
     // it('Timer: repeat = true', () => {
     //     const handler = jest.fn();
     //     element.addEventListener('timereset', handler);
-    //     element.startTime = 3000;
+    //     element.value = 3000;
     //     element.duration = 2000;
     //     element.repeat = true;
     //     element.start();
