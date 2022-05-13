@@ -227,7 +227,7 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Starting value of the timer in milliseconds. Getting this variable will provide the current timer value in milliseconds.
+     * Starting value of the timer in milliseconds. Getting this attribute will provide the current timer value in milliseconds.
      *
      * @type {number}
      * @public
@@ -239,9 +239,13 @@ export default class Timer extends LightningElement {
     }
 
     set value(value) {
-        this._startTime = isNaN(parseInt(value, 10))
-            ? DEFAULT_START_TIME
-            : Number(Math.min(parseInt(value, 10), MAX_TIMER_VALUE));
+        if (isNaN(parseInt(value, 10))) this._startTime = DEFAULT_START_TIME;
+        else {
+            this._startTime =
+                parseInt(value, 10) > 0
+                    ? Math.min(parseInt(value, 10), MAX_TIMER_VALUE)
+                    : Math.max(parseInt(value, 10), -MAX_TIMER_VALUE);
+        }
         this._timerValue = this._startTime;
     }
 
@@ -561,17 +565,15 @@ export default class Timer extends LightningElement {
                     } else {
                         this._timerValue =
                             this._startTime - (Date.now() - this.startDate);
+                        let maxTime = this._startTime - this.duration;
                         if (
-                            this._timerValue <=
-                            this._startTime - this.duration
+                            this._timerValue <= maxTime ||
+                            Math.abs(this._timerValue) >= MAX_TIMER_VALUE
                         ) {
-                            if (this._startTime - this.duration < 0) {
-                                this._timerValue =
-                                    this._startTime - this.duration - 1000;
+                            if (maxTime < 0) {
+                                this._timerValue = maxTime - 1000;
                             } else {
-                                this._timerValue = Math.abs(
-                                    this._startTime - this.duration
-                                );
+                                this._timerValue = Math.abs(maxTime);
                             }
                             if (this.repeat) this.reset();
                             else this.stop();
