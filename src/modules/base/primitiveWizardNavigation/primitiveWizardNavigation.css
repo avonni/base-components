@@ -34,7 +34,7 @@
     height: 100%;
 }
 
-.avonni-primitive-wizard-navigation__style {
+.avonni-primitive-wizard-navigation__progress-step-width {
     width: 40px !important;
     min-width: 0px !important;
 }
