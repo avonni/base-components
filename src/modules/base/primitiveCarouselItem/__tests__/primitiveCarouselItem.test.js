@@ -167,6 +167,44 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
+    it('Primitive Carousel Item: actions variant border with large and small mobile device', () => {
+        element.actions = bareActions;
+        element.actionsVariant = 'border';
+
+        Object.defineProperty(window, 'innerWidth', {
+            writable: true,
+            configurable: true,
+            value: 479
+        });
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"]'
+            );
+            expect(action).toBeTruthy();
+            expect(action.menuAlignment).toBe('auto');
+        });
+    });
+
+    it('Primitive Carousel Item: actions variant bare with large and small mobile device', () => {
+        element.actions = bareActions;
+        element.actionsVariant = 'bare';
+
+        Object.defineProperty(window, 'innerWidth', {
+            writable: true,
+            configurable: true,
+            value: 479
+        });
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"]'
+            );
+            expect(action).toBeTruthy();
+            expect(action.menuAlignment).toBe('auto');
+        });
+    });
+
     // actions position
     it('Primitive Carousel Item: actions position bottom-center', () => {
         element.actions = bareActions;
