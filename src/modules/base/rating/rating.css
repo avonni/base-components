@@ -49,6 +49,10 @@
 .avonni-rating {
     unicode-bidi: bidi-override;
     width: fit-content;
+    pointer-events: none;
+}
+
+.avonni-active {
     pointer-events: auto;
 }
 
@@ -58,9 +62,10 @@ button {
 }
 
 .avonni-rating__container,
-.div-wrapper {
+[data-element-id='div-wrapper'] {
     display: flex;
     align-items: center;
+    cursor: pointer;
     pointer-events: none;
 }
 
