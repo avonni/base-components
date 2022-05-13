@@ -134,8 +134,7 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * How long a timer runs in milliseconds. On count-up, duration caps at 24 hours.
-     * On count-down, sets maximum negative duration.
+     * How long a timer runs in milliseconds. Duration caps at 24 hours.
      *
      * @type {number}
      * @public
@@ -298,7 +297,7 @@ export default class Timer extends LightningElement {
      */
     get hours() {
         let hours = Math.floor(this.timerValue / 60 / 60 / 1000);
-        return hours >= 0 ? hours : Math.abs(hours) - 1;
+        return hours >= 0 ? Math.abs(hours) : Math.abs(hours) - 1;
     }
 
     /**
@@ -307,8 +306,8 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get minutes() {
-        let minutes = Math.floor((this.timerValue / 60 / 1000) % 60);
-        return minutes >= 0 ? minutes : Math.abs(minutes) - 1;
+        let minutes = Math.floor(this.timerValue / 60 / 1000) % 60;
+        return minutes >= 0 ? Math.abs(minutes) : Math.abs(minutes) - 1;
     }
 
     /**
@@ -317,8 +316,8 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get seconds() {
-        let seconds = Math.abs(Math.floor((this.timerValue / 1000) % 60));
-        return seconds >= 0 ? seconds : Math.abs(seconds) - 1;
+        let seconds = Math.floor(this.timerValue / 1000) % 60;
+        return seconds >= 0 ? Math.abs(seconds) : Math.abs(seconds) - 1;
     }
 
     /**
@@ -547,10 +546,11 @@ export default class Timer extends LightningElement {
         this.interval = setInterval(
             () => {
                 if (this.play) {
+                    // in play state
                     if (this.type === 'count-up') {
                         this.timerValue =
                             this.value + (Date.now() - this.startDate);
-                        if (this.timerValue > this.duration) {
+                        if (this.timerValue >= this.value + this.duration) {
                             this.timerValue = this.duration;
                             this.stop();
                             if (this.repeat) this.start();
@@ -558,16 +558,21 @@ export default class Timer extends LightningElement {
                     } else {
                         this.timerValue =
                             this.value - (Date.now() - this.startDate);
-                        if (
-                            this.isNegative &&
-                            Math.abs(this.timerValue - 1000) > this.duration
-                        ) {
-                            this.timerValue = -this.duration;
+                        if (this.timerValue <= this.value - this.duration) {
+                            if (this.value - this.duration < 0) {
+                                this.timerValue =
+                                    this.value - this.duration - 1000;
+                            } else {
+                                this.timerValue = Math.abs(
+                                    this.value - this.duration
+                                );
+                            }
                             this.stop();
                             if (this.repeat) this.start();
                         }
                     }
                 } else {
+                    // in pause state
                     if (this.type === 'count-up')
                         this.pauseBuffer =
                             Date.now() -
@@ -580,7 +585,7 @@ export default class Timer extends LightningElement {
                             (this.timerValue - this.value);
                 }
             },
-            this.format.includes('ms') ? 50 : 200
+            this.format.includes('ms') ? 333 : 200
         );
     }
 

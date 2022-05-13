@@ -72,6 +72,8 @@ describe('Timer', () => {
         element.autoStart = false;
 
         return Promise.resolve().then(() => {
+            expect(setTimeout).not.toHaveBeenCalled();
+            jest.advanceTimersByTime(500);
             expect(setInterval).not.toHaveBeenCalled();
         });
     });
@@ -80,6 +82,8 @@ describe('Timer', () => {
         element.autoStart = true;
 
         return Promise.resolve().then(() => {
+            expect(setTimeout).toHaveBeenCalled();
+            jest.advanceTimersByTime(500);
             expect(setInterval).toHaveBeenCalled();
         });
     });
@@ -233,18 +237,16 @@ describe('Timer', () => {
         });
     });
 
-    // repeat
-    // Depends on value, duration and start()
-    // it('Timer: repeat = true', () => {
-    //     const handler = jest.fn();
-    //     element.addEventListener('timereset', handler);
-    //     element.value = 3000;
-    //     element.duration = 2000;
-    //     element.repeat = true;
-    //     element.start();
+    it('Timer: repeat = true', () => {
+        const handler = jest.fn();
+        element.addEventListener('timereset', handler);
+        element.value = 3000;
+        element.duration = 2000;
+        element.repeat = true;
+        element.start();
 
-    //     expect(handler).toHaveBeenCalled();
-    // });
+        expect(handler).toHaveBeenCalled();
+    });
 
     // variant
     it('Timer: variant = neutral', () => {

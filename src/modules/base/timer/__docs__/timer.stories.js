@@ -234,7 +234,7 @@ export const ChronoCountdown = Template.bind({});
 ChronoCountdown.args = {
     type: 'count-down',
     value: 10000,
-    duration: 0,
+    duration: 10000,
     format: 'ss.ms',
     autoStart: true,
     repeat: true
