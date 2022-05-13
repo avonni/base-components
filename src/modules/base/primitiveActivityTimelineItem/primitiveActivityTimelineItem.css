@@ -70,10 +70,66 @@
     height: 100%;
     width: 2px;
     position: absolute;
-    left: 2.25rem;
-    top: 5px;
+    top: 11px;
     bottom: 0;
     margin-left: 1px;
+}
+
+.avonni-activity-timeline-item-timeline-action-icon-xx-small {
+    margin: -0.1rem 0 0 -0.5rem;
+    transform: scale(0.55);
+}
+
+.avonni-activity-timeline-item-timeline-action-icon-x-small {
+    margin: -0.15rem 0 0 -0.5rem;
+    transform: scale(0.6);
+}
+
+.avonni-activity-timeline-item-timeline-action-icon-small {
+    margin: -0.3rem 0 0 -0.5rem;
+    transform: scale(0.7);
+}
+
+.avonni-activity-timeline-item-timeline-action-icon-medium {
+    margin: -0.5rem 0 0 -0.5rem;
+    transform: scale(0.8);
+}
+
+.avonni-activity-timeline-item-timeline-action-icon-large {
+    margin: -0.7rem 0 0 -0.5rem;
+    transform: scale(0.85);
+}
+
+.avonni-activity-timeline-item-timeline-icon-xx-small {
+    margin-top: 0.4rem;
+}
+
+.avonni-activity-timeline-item-timeline-icon-x-small {
+    margin-top: 0.35rem;
+}
+
+.avonni-activity-timeline-item-timeline-icon-small {
+    margin-top: 0.2rem;
+}
+
+.avonni-activity-timeline-item-icon-size-xx-small:before {
+    left: 1.95rem;
+}
+
+.avonni-activity-timeline-item-icon-size-x-small:before {
+    left: 2rem;
+}
+
+.avonni-activity-timeline-item-icon-size-small:before {
+    left: 2.25rem;
+}
+
+.avonni-activity-timeline-item-icon-size-medium:before {
+    left: 2.45rem;
+}
+
+.avonni-activity-timeline-item-icon-size-large:before {
+    left: 3rem;
 }
 
 .avonni-activity-timeline-item-no-fields_margin {

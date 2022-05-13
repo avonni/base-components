@@ -369,7 +369,17 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get activityTimelineItemOuterClass() {
         return classSet('slds-timeline__item_expandable')
             .add({
-                'slds-is-open': !this.closed
+                'slds-is-open': !this.closed,
+                'avonni-activity-timeline-item-icon-size-xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-activity-timeline-item-icon-size-x-small':
+                    this.iconSize === 'x-small',
+                'avonni-activity-timeline-item-icon-size-small':
+                    this.iconSize === 'small',
+                'avonni-activity-timeline-item-icon-size-medium':
+                    this.iconSize === 'medium',
+                'avonni-activity-timeline-item-icon-size-large':
+                    this.iconSize === 'large'
             })
             .toString();
     }
@@ -404,6 +414,34 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     get computedDatetimeValue() {
         return new Date(this.datetimeValue).getTime();
+    }
+
+    /**
+     * Classes for timeline icons
+     *
+     * @type {string}
+     */
+    get timelineIconClass() {
+        return classSet('slds-timeline__icon')
+            .add({
+                'avonni-activity-timeline-item-timeline-icon-xx-small':
+                    !this.isActionIcon() && this.iconSize === 'xx-small',
+                'avonni-activity-timeline-item-timeline-icon-x-small':
+                    !this.isActionIcon() && this.iconSize === 'x-small',
+                'avonni-activity-timeline-item-timeline-icon-small':
+                    !this.isActionIcon() && this.iconSize === 'small',
+                'avonni-activity-timeline-item-timeline-action-icon-xx-small':
+                    this.isActionIcon() && this.iconSize === 'xx-small',
+                'avonni-activity-timeline-item-timeline-action-icon-x-small':
+                    this.isActionIcon() && this.iconSize === 'x-small',
+                'avonni-activity-timeline-item-timeline-action-icon-small':
+                    this.isActionIcon() && this.iconSize === 'small',
+                'avonni-activity-timeline-item-timeline-action-icon-medium':
+                    this.isActionIcon() && this.iconSize === 'medium',
+                'avonni-activity-timeline-item-timeline-action-icon-large':
+                    this.isActionIcon() && this.iconSize === 'large'
+            })
+            .toString();
     }
 
     /*
@@ -487,6 +525,13 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                 composed: true
             })
         );
+    }
+
+    /**
+     * Check if the type of the icon is action
+     */
+    isActionIcon() {
+        return this.iconName.split(':')[0] === 'action';
     }
 
     /**
