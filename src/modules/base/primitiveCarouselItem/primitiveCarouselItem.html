@@ -46,31 +46,54 @@
             <template if:false={isBottomPosition}>
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
-                        <template for:each={actions} for:item="action">
-                            <lightning-button
-                                if:true={action.label}
-                                class="slds-m-horizontal_xx-small"
-                                key={action.name}
-                                icon-name={action.iconName}
-                                label={action.label}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButton}
-                                data-element-id="lightning-button-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button>
-                            <lightning-button-icon
-                                if:false={action.label}
-                                class={computedLightningButtonIconActionClass}
-                                key={action.name}
-                                icon-name={action.iconName}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButtonIcon}
-                                data-element-id="lightning-button-icon-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button-icon>
-                        </template>
+                        <div class="slds-show_small">
+                            <template for:each={actions} for:item="action">
+                                <lightning-button
+                                    if:true={action.label}
+                                    class="slds-m-horizontal_xx-small"
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    label={action.label}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButton}
+                                    data-element-id="lightning-button-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button>
+                                <lightning-button-icon
+                                    if:false={action.label}
+                                    class={computedLightningButtonIconActionClass}
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButtonIcon}
+                                    data-element-id="lightning-button-icon-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button-icon>
+                            </template>
+                        </div>
+                        <div class="slds-hide_small">
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="auto"
+                                variant="border-filled"
+                                data-element-id="lightning-button-menu"
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        onclick={handleActionClick}
+                                        class="slds-text-color_default"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
                     </template>
                     <template if:true={isMenuVariant}>
                         <lightning-button-menu
@@ -122,31 +145,54 @@
             <template if:true={isBottomPosition}>
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
-                        <template for:each={actions} for:item="action">
-                            <lightning-button
-                                if:true={action.label}
-                                class="slds-m-horizontal_xx-small"
-                                key={action.name}
-                                icon-name={action.iconName}
-                                label={action.label}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButton}
-                                data-element-id="lightning-button-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button>
-                            <lightning-button-icon
-                                if:false={action.label}
-                                class={computedLightningButtonIconActionClass}
-                                key={action.name}
-                                icon-name={action.iconName}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButtonIcon}
-                                data-element-id="lightning-button-icon-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button-icon>
-                        </template>
+                        <div class="slds-show_small">
+                            <template for:each={actions} for:item="action">
+                                <lightning-button
+                                    if:true={action.label}
+                                    class="slds-m-horizontal_xx-small"
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    label={action.label}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButton}
+                                    data-element-id="lightning-button-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button>
+                                <lightning-button-icon
+                                    if:false={action.label}
+                                    class={computedLightningButtonIconActionClass}
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButtonIcon}
+                                    data-element-id="lightning-button-icon-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button-icon>
+                            </template>
+                        </div>
+                        <div class="slds-hide_small">
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="auto"
+                                variant="border-filled"
+                                data-element-id="lightning-button-menu"
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        onclick={handleActionClick}
+                                        class="slds-text-color_default"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
                     </template>
                     <template if:true={isMenuVariant}>
                         <lightning-button-menu
@@ -185,34 +231,57 @@
             <template if:false={isBottomPosition}>
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
-                        <template for:each={actions} for:item="action">
-                            <lightning-button
-                                if:true={action.label}
-                                class="
-                                    slds-m-horizontal_xx-small
-                                    avonni-carousel__button
-                                "
-                                key={action.name}
-                                icon-name={action.iconName}
-                                label={action.label}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButton}
-                                data-element-id="lightning-button-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button>
-                            <lightning-button-icon
-                                if:false={action.label}
-                                class={computedLightningButtonIconActionClass}
-                                key={action.name}
-                                icon-name={action.iconName}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButtonIcon}
-                                data-element-id="lightning-button-icon-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button-icon>
-                        </template>
+                        <div class="slds-show_small">
+                            <template for:each={actions} for:item="action">
+                                <lightning-button
+                                    if:true={action.label}
+                                    class="
+                                        slds-m-horizontal_xx-small
+                                        avonni-carousel__button
+                                    "
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    label={action.label}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButton}
+                                    data-element-id="lightning-button-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button>
+                                <lightning-button-icon
+                                    if:false={action.label}
+                                    class={computedLightningButtonIconActionClass}
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButtonIcon}
+                                    data-element-id="lightning-button-icon-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button-icon>
+                            </template>
+                        </div>
+                        <div class="slds-hide_small">
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="auto"
+                                variant="border-filled"
+                                data-element-id="lightning-button-menu"
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        onclick={handleActionClick}
+                                        class="slds-text-color_default"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
                     </template>
                     <template if:true={isMenuVariant}>
                         <lightning-button-menu
@@ -264,31 +333,54 @@
             <template if:true={isBottomPosition}>
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
-                        <template for:each={actions} for:item="action">
-                            <lightning-button
-                                if:true={action.label}
-                                class="slds-m-horizontal_xx-small"
-                                key={action.name}
-                                icon-name={action.iconName}
-                                label={action.label}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButton}
-                                data-element-id="lightning-button-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button>
-                            <lightning-button-icon
-                                if:false={action.label}
-                                class={computedLightningButtonIconActionClass}
-                                key={action.name}
-                                icon-name={action.iconName}
-                                name={action.name}
-                                disabled={action.disabled}
-                                variant={computedActionsVariantButtonIcon}
-                                data-element-id="lightning-button-icon-actions"
-                                onclick={handleActionClick}
-                            ></lightning-button-icon>
-                        </template>
+                        <div class="slds-show_small">
+                            <template for:each={actions} for:item="action">
+                                <lightning-button
+                                    if:true={action.label}
+                                    class="slds-m-horizontal_xx-small"
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    label={action.label}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButton}
+                                    data-element-id="lightning-button-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button>
+                                <lightning-button-icon
+                                    if:false={action.label}
+                                    class={computedLightningButtonIconActionClass}
+                                    key={action.name}
+                                    icon-name={action.iconName}
+                                    name={action.name}
+                                    disabled={action.disabled}
+                                    variant={computedActionsVariantButtonIcon}
+                                    data-element-id="lightning-button-icon-actions"
+                                    onclick={handleActionClick}
+                                ></lightning-button-icon>
+                            </template>
+                        </div>
+                        <div class="slds-hide_small">
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="auto"
+                                variant="border-filled"
+                                data-element-id="lightning-button-menu"
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        onclick={handleActionClick}
+                                        class="slds-text-color_default"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
                     </template>
                     <template if:true={isMenuVariant}>
                         <lightning-button-menu
