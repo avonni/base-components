@@ -33,6 +33,117 @@
 -->
 
 <template>
+    <!-- Toolbar -->
+    <div
+        if:false={hideToolbar}
+        class="slds-grid slds-m-bottom_medium slds-grid_vertical-align-center"
+    >
+        <lightning-button-group
+            if:true={toolbarTimeSpans.length}
+            onclick={handleToolbarTimeSpanClick}
+        >
+            <template for:each={toolbarTimeSpanButtons} for:item="button">
+                <lightning-button
+                    key={button.label}
+                    label={button.label}
+                    variant={button.variant}
+                    data-headers={button.headers}
+                    data-span={button.span}
+                    data-unit={button.unit}
+                ></lightning-button>
+            </template>
+            <c-button-menu
+                if:true={toolbarTimeSpanMenuItems.length}
+                icon-name="utility:down"
+            >
+                <template
+                    for:each={toolbarTimeSpanMenuItems}
+                    for:item="menuItem"
+                >
+                    <lightning-menu-item
+                        key={menuItem.label}
+                        label={menuItem.label}
+                        data-headers={menuItem.headers}
+                        data-span={menuItem.span}
+                        data-unit={menuItem.unit}
+                    ></lightning-menu-item>
+                </template>
+            </c-button-menu>
+        </lightning-button-group>
+
+        <div
+            class="
+                slds-col
+                slds-text-align_center
+                slds-p-horizontal_small
+                slds-has-flexi-truncate
+            "
+            onfocusin={handleToolbarCalendarFocusin}
+            onfocusout={handleToolbarCalendarFocusout}
+        >
+            <button
+                class="
+                    slds-truncate slds-button
+                    slds-text-heading_small
+                    avonni-scheduler__toolbar-date-range
+                "
+                type="button"
+                onclick={handleToggleToolbarCalendar}
+            >
+                <span class="slds-truncate">{visibleIntervalLabel}</span>
+                <span>
+                    <lightning-icon
+                        class="slds-button__icon slds-button__icon_right"
+                        aria-hidden="true"
+                        icon-name="utility:chevrondown"
+                        size="xx-small"
+                    ></lightning-icon>
+                </span>
+            </button>
+            <div
+                if:true={showToolbarCalendar}
+                class="slds-dropdown slds-dropdown_center"
+            >
+                <lightning-focus-trap>
+                    <c-calendar
+                        value={selectedDate}
+                        data-element-id="calendar-toolbar"
+                        onchange={handleToolbarCalendarChange}
+                    ></c-calendar>
+                </lightning-focus-trap>
+            </div>
+        </div>
+
+        <lightning-button-group>
+            <lightning-button-icon
+                icon-name="utility:chevronleft"
+                onclick={handleToolbarPrevClick}
+            ></lightning-button-icon>
+            <lightning-button
+                label="Today"
+                onclick={handleToolbarTodayClick}
+            ></lightning-button>
+            <lightning-button-icon
+                icon-name="utility:chevronright"
+                onclick={handleToolbarNextClick}
+            ></lightning-button-icon>
+        </lightning-button-group>
+
+        <c-button-menu
+            class="slds-m-left_small"
+            menu-alignment="right"
+            icon-name="utility:date_input"
+        >
+            <lightning-menu-item
+                label="Calendar"
+                value="calendar"
+            ></lightning-menu-item>
+            <lightning-menu-item
+                label="Timeline"
+                value="timeline"
+            ></lightning-menu-item>
+        </c-button-menu>
+    </div>
     <div
         class="
             slds-grid slds-is-relative
@@ -120,6 +231,7 @@
                     available-days-of-the-week={availableDaysOfTheWeek}
                     available-months={availableMonths}
                     available-time-frames={availableTimeFrames}
+                    available-time-spans={toolbarTimeSpans}
                     headers={computedHeaders}
                     scroll-left-offset={datatableWidth}
                     start={start}

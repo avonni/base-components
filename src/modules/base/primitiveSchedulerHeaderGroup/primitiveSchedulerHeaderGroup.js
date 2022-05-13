@@ -36,7 +36,8 @@ import {
     addToDate,
     dateTimeObjectFrom,
     numberOfUnitsBetweenDates,
-    normalizeArray
+    normalizeArray,
+    removeFromDate
 } from 'c/utilsPrivate';
 import SchedulerHeader from './schedulerHeader';
 
@@ -46,9 +47,15 @@ const DEFAULT_AVAILABLE_MONTHS = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 const DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK = [0, 1, 2, 3, 4, 5, 6];
 const DEFAULT_AVAILABLE_TIME_FRAMES = ['00:00-23:59'];
 const DEFAULT_TIME_SPAN = {
-    unit: 'hour',
-    span: '12'
+    unit: 'day',
+    span: 1
 };
+const DEFAULT_AVAILABLE_TIME_SPANS = [
+    { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+    { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+    { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+    { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+];
 const DEFAULT_HEADERS = [
     {
         unit: 'hour',
@@ -70,12 +77,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _availableDaysOfTheWeek = DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
     _availableMonths = DEFAULT_AVAILABLE_MONTHS;
     _availableTimeFrames = DEFAULT_AVAILABLE_TIME_FRAMES;
+    _availableTimeSpans = DEFAULT_AVAILABLE_TIME_SPANS;
     _headers = DEFAULT_HEADERS;
     _scrollLeftOffset = 0;
     _start = DEFAULT_START_DATE;
     _timeSpan = DEFAULT_TIME_SPAN;
 
     _cellWidth = 0;
+    _connected = false;
     _numberOfVisibleCells = 0;
     _previousStartTimes = [];
     computedHeaders = [];
@@ -124,7 +133,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             if (
                 this.smallestHeader.numberOfColumns < this._numberOfVisibleCells
             ) {
-                this._numberOfVisibleCells = this.smallestHeader.numberOfColumns;
+                this._numberOfVisibleCells =
+                    this.smallestHeader.numberOfColumns;
                 this._cellWidth = totalWidth / this._numberOfVisibleCells;
                 this.dispatchCellWidth();
             }
@@ -179,6 +189,23 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
     set availableTimeFrames(value) {
         this._availableTimeFrames = normalizeArray(value);
+        if (this._connected) this.initHeaders();
+    }
+
+    /**
+     * Array of available time spans. Each time span object must have the following properties:
+     * * unit: The unit of the time span.
+     * * span: The span of the time span.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get availableTimeSpans() {
+        return this._availableTimeSpans;
+    }
+    set availableTimeSpans(value) {
+        this._availableTimeSpans = normalizeArray(value, 'object');
         if (this._connected) this.initHeaders();
     }
 
@@ -241,7 +268,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      *
      * @type {object}
      * @public
-     * @default { unit: 'hour', span: 12 }
+     * @default { unit: 'day', span: 1 }
      */
     @api
     get timeSpan() {
@@ -278,11 +305,25 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         if (this._referenceHeader && this._referenceHeader.end) {
             return this._referenceHeader.end;
         }
-        const timeSpanEnd = addToDate(
-            this.start,
-            this.timeSpan.unit,
-            this.timeSpan.span
-        );
+
+        const { unit, span } = this.timeSpan;
+        let start = this.start;
+        if (this.timeSpanIsAvailable) {
+            // Compensate the fact that Luxon weeks start on Monday
+            if (unit === 'week' && start.weekday === 7) {
+                // Start is on Sunday and the unit is week
+                start = start.startOf('day');
+            } else {
+                start = this.start.startOf(unit);
+
+                if (unit === 'week') {
+                    // Start is not on a Sunday and the unit is week
+                    start = removeFromDate(start, 'day', 1);
+                }
+            }
+        }
+        const timeSpanEnd = addToDate(start, unit, span);
+
         // We take one millisecond off to exclude the next unit
         return DateTime.fromMillis(timeSpanEnd - 1);
     }
@@ -297,6 +338,15 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
         const lastIndex = this.computedHeaders.length - 1;
         return this.computedHeaders[lastIndex];
+    }
+
+    get timeSpanIsAvailable() {
+        return this.availableTimeSpans.find((timeSpan) => {
+            return (
+                timeSpan.unit === this.timeSpan.unit &&
+                timeSpan.span === this.timeSpan.span
+            );
+        });
     }
 
     /**
@@ -316,9 +366,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 this._previousStartTimes.pop();
             } else return;
         } else {
-            const startColumn = this.smallestHeader.columns[
-                this._numberOfVisibleCells
-            ];
+            const startColumn =
+                this.smallestHeader.columns[this._numberOfVisibleCells];
             if (startColumn) {
                 startTime = dateTimeObjectFrom(startColumn.start);
                 this._previousStartTimes.push(startTime);
@@ -362,6 +411,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * Create the headers.
      */
     initHeaders() {
+        this._referenceHeader = null;
+
         // Sort the headers from the longest unit to the shortest
         const sortedHeaders = [...this.headers].sort(
             (firstHeader, secondHeader) => {

@@ -36,7 +36,9 @@ import {
     normalizeBoolean,
     normalizeString,
     dateTimeObjectFrom,
-    addToDate
+    addToDate,
+    deepCopy,
+    removeFromDate
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { eventCrudMethods } from './eventCrud';
@@ -55,6 +57,7 @@ import {
     DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT,
     DEFAULT_START_DATE,
     DEFAULT_TIME_SPAN,
+    DEFAULT_TOOLBAR_TIME_SPANS,
     HEADERS,
     PALETTES,
     PRESET_HEADERS
@@ -86,6 +89,7 @@ export default class Scheduler extends LightningElement {
     _eventsPalette = EVENTS_PALETTES.default;
     _eventsTheme = EVENTS_THEMES.default;
     _headers = HEADERS.default;
+    _hideToolbar = false;
     _isLoading = false;
     _loadingStateAlternativeText = DEFAULT_LOADING_STATE_ALTERNATIVE_TEXT;
     _readOnly = false;
@@ -96,18 +100,19 @@ export default class Scheduler extends LightningElement {
     _rowsKeyField;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _timeSpan = DEFAULT_TIME_SPAN;
+    _toolbarTimeSpans = DEFAULT_TOOLBAR_TIME_SPANS;
 
     _allEvents = [];
     _datatableRowsHeight;
-    datatableWidth = 0;
     _draggedEvent;
     _draggedSplitter = false;
+    _headerHeightChange = false;
     _initialDatatableWidth;
     _initialState = {};
     _mouseIsDown = false;
     _numberOfVisibleCells = 0;
     _resizedEvent;
-    _headerHeightChange = false;
+    _toolbarCalendarIsFocused = false;
     _visibleInterval;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
@@ -118,15 +123,18 @@ export default class Scheduler extends LightningElement {
     contextMenuActions = [];
     datatableIsHidden = false;
     datatableIsOpen = false;
+    datatableWidth = 0;
     scrollHeadersTo = () => {
         return true;
     };
+    selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
     selectedEvent;
     showContextMenu = false;
     showEditDialog = false;
     showDeleteConfirmationDialog = false;
     showDetailPopover = false;
     showRecurrenceDialog = false;
+    showToolbarCalendar = false;
     smallestHeader;
 
     connectedCallback() {
@@ -583,6 +591,7 @@ export default class Scheduler extends LightningElement {
      * * minuteHourAndDay
      * * hourAndDay
      * * hourDayAndWeek
+     * * dayAndMonth
      * * dayAndWeek
      * * dayLetterAndWeek
      * * dayWeekAndMonth
@@ -612,6 +621,21 @@ export default class Scheduler extends LightningElement {
             this.computedEvents = [];
             this.initHeaders();
         }
+    }
+
+    /**
+     * If present, the toolbar is hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideToolbar() {
+        return this._hideToolbar;
+    }
+    set hideToolbar(value) {
+        this._hideToolbar = normalizeBoolean(value);
     }
 
     /**
@@ -787,20 +811,20 @@ export default class Scheduler extends LightningElement {
     set start(value) {
         const computedDate = dateTimeObjectFrom(value);
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
+        this.selectedDate = dateTimeObjectFrom(this._start);
 
         if (this._connected) this.initHeaders();
     }
 
     /**
      * Object used to set the duration of the scheduler. It has two keys:
-     * * <code>unit</code>. Valid values include minute, hour, day, week, month and year.
-     * * <code>span</code>. The number of unit the scheduler will show.
-     * For example, if the scheduler should be four-day long, the value would be: <code>{ unit: ‘day’, span: 4 }</code>
+     * * `unit`. Valid values include minute, hour, day, week, month and year.
+     * * `span`. The number of unit the scheduler will show.
+     * For example, if the scheduler should be four-day long, the value would be: `{ unit: 'day', span: 4 }`
      *
      * @type {object}
      * @public
-     * @default { unit: ‘hour’, span: 12 }
-     * @required
+     * @default { unit: 'day', span: 1 }
      */
     @api
     get timeSpan() {
@@ -810,6 +834,20 @@ export default class Scheduler extends LightningElement {
         this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
 
         if (this._connected) this.initHeaders();
+    }
+
+    /**
+     * Time spans, to display as buttons in the toolbar. On click on the button, the scheduler time span will be updated. Only three options can be visible, the others will be listed in a button menu.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get toolbarTimeSpans() {
+        return this._toolbarTimeSpans;
+    }
+    set toolbarTimeSpans(value) {
+        this._toolbarTimeSpans = normalizeArray(value, 'object');
     }
 
     /*
@@ -1064,6 +1102,68 @@ export default class Scheduler extends LightningElement {
             .toString();
     }
 
+    /**
+     * Array of toolbar time spans that should be displayed as buttons in the toolbar.
+     *
+     * @type {object[]}
+     */
+    get toolbarTimeSpanButtons() {
+        const buttons = deepCopy(this.toolbarTimeSpans.slice(0, 3));
+        const { span, unit } = this.timeSpan;
+        buttons.forEach((button) => {
+            if (button.span === span && button.unit === unit) {
+                button.variant = 'brand';
+            } else {
+                button.variant = 'neutral';
+            }
+        });
+        return buttons;
+    }
+
+    /**
+     * Array of toolbar time spans that should be displayed as menu items in the toolbar.
+     *
+     * @type {object[]}
+     */
+    get toolbarTimeSpanMenuItems() {
+        return this.toolbarTimeSpans.slice(3);
+    }
+
+    /**
+     * Label of the toolbar interval button.
+     *
+     * @type {string}
+     */
+    get visibleIntervalLabel() {
+        if (!this._visibleInterval) return null;
+
+        const unit = this.timeSpan.unit;
+        let format;
+        switch (unit) {
+            case 'day':
+            case 'week': {
+                format = 'ccc, LLLL d, kkkk';
+                break;
+            }
+            case 'month':
+            case 'year': {
+                format = 'LLLL yyyy';
+                break;
+            }
+            case 'minute':
+            case 'hour': {
+                format = 't';
+                break;
+            }
+            default:
+                break;
+        }
+
+        const start = this._visibleInterval.s.toFormat(format);
+        const end = this._visibleInterval.e.toFormat(format);
+        return start === end ? start : `${start} - ${end}`;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -1105,6 +1205,39 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Move the position of the scheduler so the specified date is visible. The difference with setting the start attribute is that the current time span is taken into account, so the scheduler won’t necessarily start with the given date.
+     *
+     * @param {string | number | Date} date Date the scheduler should be positioned on.
+     * @public
+     */
+    @api
+    goToDate(date) {
+        const selectedDate = dateTimeObjectFrom(date);
+        if (!selectedDate) {
+            console.warn(`The date ${date} is not valid.`);
+            return;
+        }
+        this.selectedDate = selectedDate;
+        const unit = this.timeSpan.unit;
+        let start;
+
+        // Compensate the fact that Luxon weeks start on Monday
+        if (unit === 'week' && selectedDate.weekday === 7) {
+            // Start is on Sunday and the unit is week
+            start = selectedDate.startOf('day');
+        } else {
+            start = selectedDate.startOf(unit);
+
+            if (unit === 'week') {
+                // Start is not on a Sunday and the unit is week
+                start = removeFromDate(start, 'day', 1);
+            }
+        }
+        this._start = start;
+        this.initHeaders();
+    }
+
+    /**
      * Open the edit event dialog.
      *
      * @param {string} name Unique name of the event to edit.
@@ -1139,15 +1272,10 @@ export default class Scheduler extends LightningElement {
      */
     initHeaders() {
         // Use the custom headers or a preset
-        let headers = [...this.customHeaders];
-        if (!headers.length) {
-            const presetConfig = PRESET_HEADERS.find(
-                (preset) => preset.name === this.headers
-            );
-            headers = presetConfig.headers;
-        }
-
-        this.computedHeaders = headers;
+        const headers = this.customHeaders.length
+            ? this.customHeaders
+            : PRESET_HEADERS[this.headers];
+        this.computedHeaders = deepCopy(headers);
     }
 
     /**
@@ -2472,6 +2600,85 @@ export default class Scheduler extends LightningElement {
             this.datatable.style.width = `${width}px`;
             this.datatableWidth = width;
         }
+    }
+
+    handleToggleToolbarCalendar() {
+        this.showToolbarCalendar = !this.showToolbarCalendar;
+
+        requestAnimationFrame(() => {
+            const calendar = this.template.querySelector(
+                '[data-element-id="calendar-toolbar"]'
+            );
+            if (calendar) calendar.focus();
+        });
+    }
+
+    handleToolbarCalendarChange(event) {
+        this.showToolbarCalendar = false;
+        const { value } = event.detail;
+        if (!value) return;
+
+        this.goToDate(value);
+    }
+
+    handleToolbarCalendarFocusin() {
+        this._toolbarCalendarIsFocused = true;
+    }
+
+    handleToolbarCalendarFocusout() {
+        this._toolbarCalendarIsFocused = false;
+
+        requestAnimationFrame(() => {
+            if (!this._toolbarCalendarIsFocused) {
+                this.showToolbarCalendar = false;
+            }
+        });
+    }
+
+    handleToolbarNextClick() {
+        const unit = this.timeSpan.unit;
+        this._start = addToDate(this.start, unit, 1);
+    }
+
+    handleToolbarPrevClick() {
+        const unit = this.timeSpan.unit;
+        this._start = removeFromDate(this.start, unit, 1);
+    }
+
+    /**
+     * Handle a click on one of the toolbar time span buttons.
+     *
+     * @param {Event} event
+     */
+    handleToolbarTimeSpanClick(event) {
+        const span = Number(event.target.dataset.span);
+        const { unit, headers } = event.target.dataset;
+        if (!unit) return;
+
+        const selectedDate = this.selectedDate || this.start;
+        this._start = selectedDate.startOf(unit);
+        this._timeSpan = { unit, span };
+
+        if (unit === 'week') {
+            // Compensate the fact that luxon weeks start on Monday
+            this._start = removeFromDate(this.start, 'day', 1);
+        }
+
+        this._headers = normalizeString(headers, {
+            validValues: HEADERS.valid,
+            fallbackValue: HEADERS.default,
+            toLowerCase: false
+        });
+        this.computedRows = [];
+        this.computedEvents = [];
+        this.initHeaders();
+    }
+
+    /**
+     * Handle a click on the toolbar "Today" button.
+     */
+    handleToolbarTodayClick() {
+        this.goToDate(new Date());
     }
 
     /**

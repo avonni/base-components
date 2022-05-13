@@ -256,6 +256,8 @@ export default class SchedulerHeader {
      * Make sure the last column contains allowed dates/times and remove it if not.
      */
     cleanEmptyLastColumn() {
+        if (this.columns.length <= 1) return;
+
         const lastColumn = this.columns[this.columns.length - 1];
         const nextDay = nextAllowedDay(
             DateTime.fromMillis(lastColumn.start),
@@ -281,14 +283,8 @@ export default class SchedulerHeader {
      * Adjust the header end when the start or end is in the middle of a unit.
      */
     setHeaderEnd() {
-        const {
-            unit,
-            duration,
-            span,
-            columns,
-            isReference,
-            numberOfColumns
-        } = this;
+        const { unit, duration, span, columns, isReference, numberOfColumns } =
+            this;
         const lastColumn = columns[columns.length - 1];
         const start = DateTime.fromMillis(columns[0].start);
         let end = DateTime.fromMillis(lastColumn.end);

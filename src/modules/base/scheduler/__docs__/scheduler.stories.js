@@ -161,7 +161,18 @@ export default {
                 'Object used to set the duration of the scheduler. It has two keys: unit (valid values include minute, hour, day, month and year) and span (number).',
             table: {
                 type: { summary: 'object' },
-                defaultValue: { summary: "{ unit: 'hour', span: 12 }" }
+                defaultValue: { summary: "{ unit: 'day', span: 1 }" }
+            }
+        },
+        hideToolbar: {
+            name: 'hide-toolbar',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the toolbar is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         events: {
@@ -459,13 +470,14 @@ export default {
         eventsPalette: 'aurora',
         eventsTheme: 'default',
         headers: 'hourAndDay',
+        hideToolbar: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         recurrentEditModes: ['all', 'one'],
         readOnly: false,
         resizeColumnDisabled: false,
         start: new Date(),
-        timeSpan: { unit: 'hour', span: 12 }
+        timeSpan: { unit: 'day', span: 1 }
     }
 };
 
