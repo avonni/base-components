@@ -60,9 +60,6 @@
                     type="button"
                     data-element-id="button"
                     onclick={handleButtonClick}
-                    onfocus={handlePrivateFocus}
-                    onblur={handlePrivateBlur}
-                    onmousedown={handleButtonMouseDown}
                 >
                     <template if:false={readOnly}>
                         {menuLabel}
@@ -96,8 +93,13 @@
                 <template if:true={dropdownOpened}>
                     <div
                         class={computedDropdownClass}
-                        onblur={handlePrivateBlur}
                         data-element-id="div-dropdown"
+                        tabindex="-1"
+                        onmouseenter={handleMenuMouseEnter}
+                        onmouseleave={handleMenuMouseLeave}
+                        onkeydown={handleMenuKeydown}
+                        onkeyup={handleMenuKeyup}
+                        onblur={handleMenuBlur}
                     >
                         <!-- Loading spinner -->
                         <template if:true={isLoading}>
@@ -116,8 +118,7 @@
                                     avonni-color-picker__popover-body
                                     slds-tabs_default
                                 "
-                                onprivateblur={handlePrivateBlur}
-                                onprivatefocus={handlePrivateFocus}
+                                onblur={handleMenuBlur}
                                 onchange={handleDefaultAndTokenChange}
                             >
                                 <!-- Tabs -->
@@ -140,10 +141,10 @@
                                             href="javascript:void(0);"
                                             role="tab"
                                             data-group-name="tabs"
+                                            data-element-id="default"
                                             data-tab-name="default"
                                             onclick={handleTabClick}
-                                            onblur={handlePrivateBlur}
-                                            onfocus={handlePrivateFocus}
+                                            onblur={handleTabBlur}
                                             >Default</a
                                         >
                                     </li>
@@ -162,8 +163,7 @@
                                             data-group-name="tabs"
                                             data-tab-name="tokens"
                                             onclick={handleTabClick}
-                                            onblur={handlePrivateBlur}
-                                            onfocus={handlePrivateFocus}
+                                            onblur={handleMenuBlur}
                                             >Tokens</a
                                         >
                                     </li>
@@ -177,10 +177,10 @@
                                             href="javascript:void(0);"
                                             role="tab"
                                             data-group-name="tabs"
+                                            data-element-id="custom"
                                             data-tab-name="custom"
                                             onclick={handleTabClick}
-                                            onblur={handlePrivateBlur}
-                                            onfocus={handlePrivateFocus}
+                                            onblur={handleMenuBlur}
                                             >Custom</a
                                         >
                                     </li>
@@ -201,6 +201,7 @@
                                         read-only={readOnly}
                                         variant={colorPaletteVariant}
                                         data-element-id="avonni-color-palette"
+                                        onblur={handleMenuBlur}
                                     ></c-color-palette>
 
                                     <!-- Color Gradient -->
@@ -212,10 +213,16 @@
                                         read-only={readOnly}
                                         data-element-id="avonni-color-gradient"
                                         onchange={handleChange}
+                                        onblur={handleMenuBlur}
                                     ></c-color-gradient>
                                 </div>
                             </div>
-
+                            <div
+                                if:false={showColorGradient}
+                                data-element-id="stopper"
+                                tabindex="0"
+                                onfocus={handleStopperFocus}
+                            ></div>
                             <!-- Footer -->
                             <footer
                                 if:true={showColorGradient}
@@ -241,6 +248,7 @@
                                         title="Done"
                                         data-element-id="lightning-button-done"
                                         onclick={handleDone}
+                                        onblur={handleDoneButtonBlur}
                                     ></lightning-button>
                                 </div>
                             </footer>
@@ -272,8 +280,7 @@
                             value={inputValue}
                             name={name}
                             onchange={handleInputColor}
-                            onfocus={handleInputFocus}
-                            onblur={handleInputBlur}
+                            onblur={handleMenuBlur}
                             disabled={disabled}
                             data-element-id="input"
                             required={required}

@@ -31,9 +31,7 @@
  */
 
 .slds-tabs_default__link:focus {
-    background-color: #ecebea;
-    padding: 0 0.5rem;
-    border-radius: 3px;
+    text-decoration: underline;
 }
 
 .slds-form-element_stacked .slds-form-element {

@@ -204,6 +204,10 @@ export default class ColorPicker extends LightningElement {
     helpMessage;
     newValue;
     showError = false;
+    tabPressed = false;
+    shiftPressed = false;
+    isInsideMenu = false;
+    denyBlurOnMenuButtonClick = false;
 
     _inputValue = '';
     _isConnected = false;
@@ -219,6 +223,7 @@ export default class ColorPicker extends LightningElement {
     renderedCallback() {
         if (!this._rendered) {
             this.initSwatchColor();
+            this.initEventListeners();
             this._rendered = true;
         }
 
@@ -945,6 +950,34 @@ export default class ColorPicker extends LightningElement {
      */
 
     /**
+     * Initializes the event listeners.
+     * The listeners are used to monitur a blur of the popover by clicking the menu button.
+     */
+    initEventListeners() {
+        this.template.addEventListener('mousedown', (event) => {
+            if (this.dropdownOpened) {
+                let clickedElement = event.target;
+                while (
+                    clickedElement !== null &&
+                    clickedElement.tagName !== 'BUTTON'
+                ) {
+                    clickedElement = clickedElement.parentElement;
+                }
+
+                if (
+                    clickedElement !== null &&
+                    clickedElement.tagName === 'BUTTON'
+                ) {
+                    this.denyBlurOnMenuButtonClick = true;
+                }
+            }
+        });
+        this.template.addEventListener('click', () => {
+            this.denyBlurOnMenuButtonClick = false;
+        });
+    }
+
+    /**
      * Initialize swatch colors.
      */
     initSwatchColor() {
@@ -1040,9 +1073,7 @@ export default class ColorPicker extends LightningElement {
             this.dispatchChange(generateColors(this.value));
         }
 
-        // this.handleBlur();
-        this.close();
-        this.focus();
+        this.toggleMenuVisibility();
     }
 
     /**
@@ -1054,9 +1085,7 @@ export default class ColorPicker extends LightningElement {
         if (this.colorGradient) {
             this.colorGradient.renderValue(this.value);
         }
-        // this.handleBlur();
-        this.close();
-        this.handleBlur();
+        this.toggleMenuVisibility();
     }
 
     /**
@@ -1064,81 +1093,113 @@ export default class ColorPicker extends LightningElement {
      */
     handleButtonClick() {
         if (!this.readOnly) {
-            this.allowBlur();
             this.toggleMenuVisibility();
-            this.focusOnButton();
         }
     }
 
     /**
-     * Handle mouse down on Button.
+     * Handles a mouseenter in the icon menu.
      *
      * @param {Event} event
      */
-    handleButtonMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
+    handleMenuMouseEnter() {
+        this.isInsideMenu = true;
     }
 
     /**
-     * Dropdown menu mouse down handler.
+     * Handles a blur of any element in the icon menu.
      *
      * @param {Event} event
      */
-    handleDropdownMouseDown(event) {
-        const mainButton = 0;
-        if (event.button === mainButton) {
-            this.cancelBlur();
-        }
-    }
-
-    /**
-     * Dropdown menu mouse up handler.
-     */
-    handleDropdownMouseUp() {
-        this.allowBlur();
-    }
-
-    /**
-     * Sets blur.
-     */
-    allowBlur() {
-        this._cancelBlur = false;
-    }
-
-    /**
-     * Cancels blur.
-     */
-    cancelBlur() {
-        this._cancelBlur = true;
-    }
-
-    /**
-     * Blur handler.
-     */
-    handleBlur(event) {
-        // if (this._cancelBlur) {
-        //     return;
-        // }
-
-        // if (this.dropdownVisible) {
-        //     // this.toggleMenuVisibility();
-        //     console.log('ici');
-        // }
-        const menuElement = this.template.querySelector('.slds-dropdown');
-        const dropArrow = this.template.querySelector(
-            '[data-element-id="button"]'
-        );
+    handleMenuBlur() {
         if (
-            !(
-                menuElement.matches(':focus-within') ||
-                event.target === dropArrow
-            )
+            !this.isInsideMenu &&
+            this.dropdownVisible &&
+            !this.denyBlurOnMenuButtonClick &&
+            !this.tabPressed
         ) {
-            this._menuHasFocus = false;
-            this.close();
+            this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Handles a mouseleave from the icon menu.
+     *
+     * @param {Event} event
+     */
+    handleMenuMouseLeave() {
+        this.isInsideMenu = false;
+    }
+
+    /**
+     * Handles a blur of the tab element in the popover.
+     * Focus will be given to the 'Done' button if Shift+Tab is pressed when the focus is on the first field.
+     */
+    handleTabBlur() {
+        this.handleMenuBlur();
+        const focusNext =
+            this._currentTab === 'custom'
+                ? this.template.querySelector(
+                      '[data-element-id="lightning-button-done"]'
+                  )
+                : this.template.querySelector('[data-element-id="stopper"]');
+        // Trap focus on Tab press
+        if (this.tabPressed && this.shiftPressed) {
+            focusNext.focus();
+        }
+    }
+
+    /**
+     * Handles a blur of the 'Done' button in the popover.
+     * Focus will be given to the first input field if Tab is pressed when the focus is on the 'Done' button.
+     */
+    handleDoneButtonBlur() {
+        this.handleMenuBlur();
+
+        // Trap focus on Tab press
+        if (this.tabPressed && !this.shiftPressed) {
+            this.template.querySelector('.slds-tabs_default__link').focus();
+        }
+    }
+
+    /**
+     * Handles a keydown inside the popover.
+     *
+     * @param {Event} event
+     */
+    handleMenuKeydown(event) {
+        if (event.keyCode === 9) {
+            this.tabPressed = true;
+        } else if (event.keyCode === 16) {
+            this.shiftPressed = true;
+        } else if (event.keyCode === 27) {
+            this.handleCancel();
+        }
+    }
+
+    /**
+     * Handles a keyup inside the popover.
+     *
+     * @param {Event} event
+     */
+    handleMenuKeyup(event) {
+        if (event.keyCode === 9) {
+            this.tabPressed = false;
+        } else if (event.keyCode === 16) {
+            this.shiftPressed = false;
+        }
+    }
+
+    /**
+     * Handles a focus of the 'stopper' div in the popover.
+     * Focus will be given to the default tab if Tab is pressed when the focus is on the stopper button.
+     */
+    handleStopperFocus() {
+        // Trap focus on Tab press
+        if (this.tabPressed && !this.shiftPressed) {
+            this.template.querySelector('[data-element-id="default"]').focus();
+        } else if (this.tabPressed && this.shiftPressed) {
+            this.template.querySelector('[data-element-id="custom"]').focus();
         }
     }
 
@@ -1149,6 +1210,16 @@ export default class ColorPicker extends LightningElement {
         if (!this.disabled) {
             this.dropdownVisible = !this.dropdownVisible;
 
+            // eslint-disable-next-line @lwc/lwc/no-async-operation
+            setTimeout(() => {
+                const tab = this.template.querySelector(
+                    '.slds-tabs_default__link'
+                );
+
+                if (tab) {
+                    tab.focus();
+                }
+            }, 0);
             if (!this.dropdownOpened && this.dropdownVisible) {
                 this.dropdownOpened = true;
             }
@@ -1161,15 +1232,6 @@ export default class ColorPicker extends LightningElement {
             this.template
                 .querySelector('.slds-dropdown-trigger')
                 .classList.toggle('slds-is-open');
-        }
-    }
-
-    /**
-     * Close dropdown menu.
-     */
-    close() {
-        if (this.dropdownVisible) {
-            this.toggleMenuVisibility();
         }
     }
 
@@ -1226,28 +1288,6 @@ export default class ColorPicker extends LightningElement {
             '[data-element-id="avonni-color-palette-default"]'
         );
         if (palette) palette.colors = [...this.computedColors];
-    }
-
-    /**
-     * Private focus handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateFocus(event) {
-        event.stopPropagation();
-        this.cancelBlur();
-        this._menuHasFocus = true;
-    }
-
-    /**
-     * Private blur handler.
-     *
-     * @param {Event} event
-     */
-    handlePrivateBlur(event) {
-        event.stopPropagation();
-
-        this.handleBlur(event);
     }
 
     /**
