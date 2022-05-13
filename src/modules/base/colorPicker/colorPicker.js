@@ -1198,8 +1198,6 @@ export default class ColorPicker extends LightningElement {
         // Trap focus on Tab press
         if (this.tabPressed && !this.shiftPressed) {
             this.template.querySelector('[data-element-id="default"]').focus();
-        } else if (this.tabPressed && this.shiftPressed) {
-            this.template.querySelector('[data-element-id="custom"]').focus();
         }
     }
 

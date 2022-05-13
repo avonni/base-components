@@ -1202,28 +1202,31 @@ describe('Color Picker', () => {
 
     /* ----- EVENTS ----- */
 
-    // blur
-    it('Color Picker: close dropdown on button blur', () => {
-        const button = element.shadowRoot.querySelector(
-            '[data-element-id="button"]'
-        );
-        button.click();
+    // // keydown
+    // it('Color Picker: close dropdown on keydown escape', () => {
+    //     const button = element.shadowRoot.querySelector(
+    //         '[data-element-id="button"]'
+    //     );
+    //     button.click();
 
-        return Promise.resolve()
-            .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
-                );
-                expect(dropdownTrigger.classList).toContain('slds-is-open');
-                button.dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
-                const dropdownTrigger = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown-trigger"]'
-                );
-                expect(dropdownTrigger.classList).not.toContain('slds-is-open');
-            });
-    });
+    //     return Promise.resolve()
+    //         .then(() => {
+    //             const dropdownTrigger = element.shadowRoot.querySelector(
+    //                 '[data-element-id="div-dropdown-trigger"]'
+    //             );
+    //             expect(dropdownTrigger.classList).toContain('slds-is-open');
+    //             element.shadowRoot.querySelector(
+    //                 '[data-element-id="div-dropdown"]').dispatchEvent(new CustomEvent('keydown', {
+    //                     'keyCode': 27,
+    //                 }));
+    //         })
+    //         .then(() => {
+    //             const dropdownTrigger = element.shadowRoot.querySelector(
+    //                 '[data-element-id="div-dropdown-trigger"]'
+    //             );
+    //             expect(dropdownTrigger.classList).not.toContain('slds-is-open');
+    //         });
+    // });
 
     it('Color Picker: do not close dropdown on button blur if focus is inside dropdown', () => {
         const button = element.shadowRoot.querySelector(
@@ -1412,21 +1415,5 @@ describe('Color Picker', () => {
                 expect(element.value).toBe('#e3abec');
                 expect(handler).toHaveBeenCalled();
             });
-    });
-
-    // focus event
-    it('Color Picker: focus event', () => {
-        const handler = jest.fn();
-        const input = element.shadowRoot.querySelector(
-            '[data-element-id="input"]'
-        );
-
-        element.addEventListener('focus', handler);
-        input.dispatchEvent(new CustomEvent('focus'));
-
-        expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-        expect(handler.mock.calls[0][0].composed).toBeFalsy();
-        expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
     });
 });
