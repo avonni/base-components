@@ -86,4 +86,14 @@
             >
         </div>
     </div>
+    <template if:true={helpMessage}>
+        <div
+            id="help-message"
+            class="slds-form-element__help"
+            data-help-message
+            role="alert"
+        >
+            {helpMessage}
+        </div>
+    </template>
 </template>
