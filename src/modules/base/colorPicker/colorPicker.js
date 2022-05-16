@@ -1098,7 +1098,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Handles a mouseenter in the icon menu.
+     * Handles a mouseenter in the color picker.
      *
      * @param {Event} event
      */
@@ -1107,7 +1107,7 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Handles a blur of any element in the icon menu.
+     * Handles a blur of any element in the color picker.
      *
      * @param {Event} event
      */
@@ -1123,43 +1123,12 @@ export default class ColorPicker extends LightningElement {
     }
 
     /**
-     * Handles a mouseleave from the icon menu.
+     * Handles a mouseleave from the color picker.
      *
      * @param {Event} event
      */
     handleMenuMouseLeave() {
         this.isInsideMenu = false;
-    }
-
-    /**
-     * Handles a blur of the tab element in the popover.
-     * Focus will be given to the 'Done' button if Shift+Tab is pressed when the focus is on the first field.
-     */
-    handleTabBlur() {
-        this.handleMenuBlur();
-        const focusNext =
-            this._currentTab === 'custom'
-                ? this.template.querySelector(
-                      '[data-element-id="lightning-button-done"]'
-                  )
-                : this.template.querySelector('[data-element-id="stopper"]');
-        // Trap focus on Tab press
-        if (this.tabPressed && this.shiftPressed) {
-            focusNext.focus();
-        }
-    }
-
-    /**
-     * Handles a blur of the 'Done' button in the popover.
-     * Focus will be given to the first input field if Tab is pressed when the focus is on the 'Done' button.
-     */
-    handleDoneButtonBlur() {
-        this.handleMenuBlur();
-
-        // Trap focus on Tab press
-        if (this.tabPressed && !this.shiftPressed) {
-            this.template.querySelector('.slds-tabs_default__link').focus();
-        }
     }
 
     /**
@@ -1187,17 +1156,6 @@ export default class ColorPicker extends LightningElement {
             this.tabPressed = false;
         } else if (event.keyCode === 16) {
             this.shiftPressed = false;
-        }
-    }
-
-    /**
-     * Handles a focus of the 'stopper' div in the popover.
-     * Focus will be given to the default tab if Tab is pressed when the focus is on the stopper button.
-     */
-    handleStopperFocus() {
-        // Trap focus on Tab press
-        if (this.tabPressed && !this.shiftPressed) {
-            this.template.querySelector('[data-element-id="default"]').focus();
         }
     }
 
