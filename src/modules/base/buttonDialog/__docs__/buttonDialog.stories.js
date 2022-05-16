@@ -90,7 +90,6 @@ export default {
                 'inverse',
                 'success'
             ],
-            defaultValue: 'neutral',
             description:
                 'The variant changes the appearance of the button. Accepted variants include base, neutral, brand, brand-outline, destructive, destructive-text, inverse, and success.',
             table: {
@@ -104,7 +103,6 @@ export default {
                 type: 'radio'
             },
             options: ['left', 'right'],
-            defaultValue: 'left',
             description:
                 'Describes the position of the icon with respect to body. Options include left and right.',
             table: {
@@ -117,7 +115,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, the popover can be opened by users.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -126,7 +123,9 @@ export default {
         }
     },
     args: {
-        disabled: false
+        disabled: false,
+        iconPosition: 'left',
+        variant: 'neutral'
     }
 };
 
@@ -195,5 +194,5 @@ Disabled.args = {
     label: 'Show modal',
     iconName: 'utility:animal_and_nature',
     variant: 'success',
-    disabled: 'true'
+    disabled: true
 };

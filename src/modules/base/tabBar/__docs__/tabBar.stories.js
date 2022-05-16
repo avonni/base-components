@@ -16,7 +16,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 0,
             description: 'Number of tabs hidden.',
             table: {
                 defaultValue: { summary: 0 },
@@ -33,7 +32,9 @@ export default {
             }
         }
     },
-    args: {}
+    args: {
+        tabsHidden: 0
+    }
 };
 
 const labels = ['Tab 1', 'Tab 2', 'Tab 3', 'Tab 4', 'Tab 5'];

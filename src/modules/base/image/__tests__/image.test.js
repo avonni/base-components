@@ -38,7 +38,7 @@ import Image from 'c/image';
 // cannot test aspect-ratio//most crop-size output. Jest/JS-Dom does not recognize its attribute within dom element. The JS function goes through, however since aspect-ratio computes only with 1 dimension ( e.g. width or height ) - we can only test the input dimension to match the same output dimension which is pointless.
 
 const src =
-    'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
+    'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
 
 let element;
 describe('Image', () => {
@@ -55,7 +55,7 @@ describe('Image', () => {
         document.body.appendChild(element);
     });
 
-    it('Image - Default attributes', () => {
+    it('Image: Default attributes', () => {
         expect(element.alternativeText).toBeUndefined();
         expect(element.cropFit).toBe('cover');
         expect(element.cropPositionX).toBe('50');
@@ -77,7 +77,7 @@ describe('Image', () => {
     /* ----- ATTRIBUTES ----- */
 
     // alt
-    it('Image - alternative text', () => {
+    it('Image: alternative text', () => {
         element.src = src;
         element.alternativeText = 'This is an Alternative text';
 
@@ -90,7 +90,7 @@ describe('Image', () => {
     });
 
     // Crop Fit
-    it('Image - Crop Fit Cover', () => {
+    it('Image: Crop Fit Cover', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'cover';
@@ -103,7 +103,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Crop Fit Contain', () => {
+    it('Image: Crop Fit Contain', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'contain';
@@ -116,7 +116,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Crop Fit Fill', () => {
+    it('Image: Crop Fit Fill', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'fill';
@@ -129,7 +129,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Crop Fit None', () => {
+    it('Image: Crop Fit None', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'none';
@@ -143,7 +143,7 @@ describe('Image', () => {
     });
 
     // Crop Position
-    it('Image - Crop Position', () => {
+    it('Image: Crop Position', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.cropFit = 'none';
@@ -159,7 +159,7 @@ describe('Image', () => {
     });
 
     // Cropped Img Alignment - left, right, centre
-    it('Image - Cropped Image Left', () => {
+    it('Image: Cropped Image Left', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
@@ -173,7 +173,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Cropped Image Center', () => {
+    it('Image: Cropped Image Center', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
@@ -189,7 +189,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Cropped Image - Right', () => {
+    it('Image: Cropped Image - Right', () => {
         element.src = src;
         element.cropSize = '16x9';
         element.width = '300';
@@ -204,7 +204,7 @@ describe('Image', () => {
     });
 
     // img NO Crop - Height Only
-    it('Image - No crop - Height Only', () => {
+    it('Image: No crop - Height Only', () => {
         element.src = src;
         element.height = '225';
 
@@ -218,7 +218,7 @@ describe('Image', () => {
     });
 
     // fluid
-    it('Image - Fluid', () => {
+    it('Image: Fluid', () => {
         element.src = src;
         element.fluid = true;
 
@@ -231,7 +231,7 @@ describe('Image', () => {
     });
 
     // fluid grow
-    it('Image - Fluid grow', () => {
+    it('Image: Fluid grow', () => {
         element.src = src;
         element.fluidGrow = true;
 
@@ -246,7 +246,7 @@ describe('Image', () => {
     });
 
     // position
-    it('Image - Position left', () => {
+    it('Image: Position left', () => {
         element.src = src;
         element.position = 'left';
 
@@ -258,7 +258,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Position right', () => {
+    it('Image: Position right', () => {
         element.src = src;
         element.position = 'right';
 
@@ -270,7 +270,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Position center', () => {
+    it('Image: Position center', () => {
         element.src = src;
         element.position = 'center';
 
@@ -285,9 +285,9 @@ describe('Image', () => {
     });
 
     // sizes
-    it('Image - Sizes', () => {
+    it('Image: Sizes', () => {
         element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg 320w';
         element.sizes =
             '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px';
 
@@ -301,9 +301,9 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Sizes[]', () => {
+    it('Image: Sizes[]', () => {
         element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg 320w';
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg 320w';
         element.sizes = [
             '(max-width: 320px) 280px, (max-width: 480px) 440px, 800px'
         ];
@@ -319,7 +319,7 @@ describe('Image', () => {
     });
 
     // src
-    it('Image - Src', () => {
+    it('Image: Src', () => {
         element.src = src;
 
         return Promise.resolve().then(() => {
@@ -327,29 +327,29 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.src).toBe(
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
             );
         });
     });
 
     // srcset
-    it('Image - Srcset string', () => {
+    it('Image: Srcset string', () => {
         element.srcset =
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg';
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
 
         return Promise.resolve().then(() => {
             const img = element.shadowRoot.querySelector(
                 '[data-element-id="img"]'
             );
             expect(img.srcset).toBe(
-                'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
             );
         });
     });
 
-    it('Image - srcset string[]', () => {
+    it('Image: srcset string[]', () => {
         element.srcset = [
-            'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            'https://www.avonni.app/, https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
         ];
 
         return Promise.resolve().then(() => {
@@ -357,13 +357,13 @@ describe('Image', () => {
                 '[data-element-id="img"]'
             );
             expect(img.srcset).toBe(
-                'https://www.avonni.app/, https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+                'https://www.avonni.app/, https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
             );
         });
     });
 
     // Static Images NO CROP
-    it('Image - Static Image - No Crop - Width - No Height', () => {
+    it('Image: Static Image - No Crop - Width - No Height', () => {
         element.src = src;
         element.staticImages = true;
         element.width = '400';
@@ -377,7 +377,7 @@ describe('Image', () => {
             expect(img.style.height).toBeFalsy();
         });
     });
-    it('Image - Static Image - No Crop - No Width - Height', () => {
+    it('Image: Static Image - No Crop - No Width - Height', () => {
         element.src = src;
         element.staticImages = true;
         element.height = '400';
@@ -392,7 +392,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Static Image - No Crop - No Width - No Height', () => {
+    it('Image: Static Image - No Crop - No Width - No Height', () => {
         element.src = src;
         element.staticImages = true;
         document.body.appendChild(element);
@@ -403,9 +403,7 @@ describe('Image', () => {
                 const img = element.shadowRoot.querySelector(
                     '[data-element-id="img"]'
                 );
-                expect(img.className).toBe(
-                    'avonni-image'
-                );
+                expect(img.className).toBe('avonni-image');
                 expect(img.style.minWidth).toBe('0px');
                 expect(img.style.minHeight).toBe('0px');
                 expect(img.style.maxWidth).toBe('0px');
@@ -413,7 +411,7 @@ describe('Image', () => {
             });
     });
 
-    it('Image - Static Image - No Crop - Width - Height', () => {
+    it('Image: Static Image - No Crop - Width - Height', () => {
         element.src = src;
         element.staticImages = true;
         element.height = 400;
@@ -433,7 +431,7 @@ describe('Image', () => {
     });
 
     // Static Images - Cropped
-    it('Image - Static Image - Crop 1x1 - Width - No Height', () => {
+    it('Image: Static Image - Crop 1x1 - Width - No Height', () => {
         element.src = src;
         element.staticImages = true;
         element.width = '400';
@@ -452,7 +450,7 @@ describe('Image', () => {
     });
 
     // thumbnail
-    it('Image - Thumbnail', () => {
+    it('Image: Thumbnail', () => {
         element.src = src;
         element.thumbnail = true;
 
@@ -465,7 +463,7 @@ describe('Image', () => {
     });
 
     // width & height
-    it('Image - Width & height numbers', () => {
+    it('Image: Width & height numbers', () => {
         element.src = src;
         element.width = 120;
         element.height = 100;
@@ -479,7 +477,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - Width & height strings', () => {
+    it('Image: Width & height strings', () => {
         element.src = src;
         element.width = '120';
         element.height = '100';
@@ -493,7 +491,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - % on width', () => {
+    it('Image: % on width', () => {
         element.src = src;
         element.width = '50%';
 
@@ -505,7 +503,7 @@ describe('Image', () => {
         });
     });
 
-    it('Image - % on height', () => {
+    it('Image: % on height', () => {
         element.src = src;
         element.height = '50%';
 

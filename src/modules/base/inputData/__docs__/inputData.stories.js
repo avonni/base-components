@@ -39,7 +39,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'Whether the input is checked. Only has an effect with type boolean.',
             table: {
@@ -51,7 +50,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the input field is disabled and users cannot interact with it.',
             table: {
@@ -112,7 +110,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the input field is read-only and cannot be edited by users.',
             table: {
@@ -124,7 +121,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the input field must be filled out before the form is submitted.',
             table: {
@@ -150,7 +146,6 @@ export default {
             ],
             description:
                 'Type of the input. Accepted types include boolean, currency, date, email, location, number, percent, phone, url and text. This value defaults to text.',
-            defaultValue: 'text',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'text' }
@@ -178,12 +173,19 @@ export default {
             ],
             description:
                 'The variant changes the appearance of an input field. Accepted variants include standard, label-inline, label-hidden, and label-stacked. This value defaults to standard, which displays the label above the field. Use label-hidden to hide the label but make it available to assistive technology. Use label-inline to horizontally align the label and input field. Use label-stacked to place the label above the input field.',
-            defaultValue: 'standard',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'standard' }
             }
         }
+    },
+    args: {
+        checked: false,
+        disabled: false,
+        readOnly: false,
+        required: false,
+        type: 'text',
+        variant: 'standard'
     }
 };
 

@@ -75,7 +75,7 @@ describe('PrimitiveWizardNavigation', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
+    it('Wizard navigation: Default attributes', () => {
         expect(element.actionPosition).toBe('left');
         expect(element.buttonAlignmentBump).toBeUndefined();
         expect(element.currentStepHasError).toBeFalsy();
@@ -104,7 +104,7 @@ describe('PrimitiveWizardNavigation', () => {
     /* ----- ATTRIBUTES ----- */
 
     // action-position
-    it('actionPosition = left', () => {
+    it('Wizard navigation: actionPosition = left', () => {
         element.actionPosition = 'left';
 
         return Promise.resolve().then(() => {
@@ -119,7 +119,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('actionPosition = right', () => {
+    it('Wizard navigation: actionPosition = right', () => {
         element.actionPosition = 'right';
 
         return Promise.resolve().then(() => {
@@ -135,13 +135,14 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     // button-alignment-bump
-    it('buttonAlignmentBump = left', () => {
+    it('Wizard navigation: buttonAlignmentBump = left', () => {
         element.buttonAlignmentBump = 'left';
 
         return Promise.resolve().then(() => {
-            const leftActionsNextFinishButtonCol = element.shadowRoot.querySelector(
-                'lightning-layout-item.slds-order_2'
-            );
+            const leftActionsNextFinishButtonCol =
+                element.shadowRoot.querySelector(
+                    'lightning-layout-item.slds-order_2'
+                );
             const leftProgressCol = element.shadowRoot.querySelector(
                 'lightning-layout-item.slds-order_3.slds-text-align_right'
             );
@@ -149,9 +150,10 @@ describe('PrimitiveWizardNavigation', () => {
                 'lightning-layout-item.slds-order_1'
             );
 
-            const rightActionsNextFinishButtonCol = element.shadowRoot.querySelector(
-                'lightning-layout-item.slds-order_3'
-            );
+            const rightActionsNextFinishButtonCol =
+                element.shadowRoot.querySelector(
+                    'lightning-layout-item.slds-order_3'
+                );
             const rightProgressCol = element.shadowRoot.querySelector(
                 'lightning-layout-item.slds-order_1.slds-text-align_left'
             );
@@ -172,13 +174,14 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('buttonAlignmentBump = right', () => {
+    it('Wizard navigation: buttonAlignmentBump = right', () => {
         element.buttonAlignmentBump = 'right';
 
         return Promise.resolve().then(() => {
-            const leftActionsNextFinishButtonCol = element.shadowRoot.querySelector(
-                'lightning-layout-item.slds-order_2'
-            );
+            const leftActionsNextFinishButtonCol =
+                element.shadowRoot.querySelector(
+                    'lightning-layout-item.slds-order_2'
+                );
             const leftProgressCol = element.shadowRoot.querySelector(
                 'lightning-layout-item.slds-order_3.slds-text-align_right'
             );
@@ -186,9 +189,10 @@ describe('PrimitiveWizardNavigation', () => {
                 'lightning-layout-item.slds-order_1'
             );
 
-            const rightActionsNextFinishButtonCol = element.shadowRoot.querySelector(
-                'lightning-layout-item.slds-order_3'
-            );
+            const rightActionsNextFinishButtonCol =
+                element.shadowRoot.querySelector(
+                    'lightning-layout-item.slds-order_3'
+                );
             const rightProgressCol = element.shadowRoot.querySelector(
                 'lightning-layout-item.slds-order_1.slds-text-align_left'
             );
@@ -211,7 +215,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-icon-name
     // Depends on steps and currentStep
-    it('finishButtonIconName', () => {
+    it('Wizard navigation: finishButtonIconName', () => {
         element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
@@ -232,7 +236,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-icon-position
     // Depends on steps and currentStep
-    it('finishButtonIconPosition', () => {
+    it('Wizard navigation: finishButtonIconPosition', () => {
         element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
@@ -254,7 +258,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-label
     // Depends on steps and currentStep
-    it('finishButtonLabel', () => {
+    it('Wizard navigation: finishButtonLabel', () => {
         element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
@@ -276,7 +280,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-finish-variant
     // Depends on steps and currentStep
-    it('finishButtonVariant', () => {
+    it('Wizard navigation: finishButtonVariant', () => {
         element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
@@ -298,7 +302,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-icon-name
     // Depends on steps
-    it('nextButtonIconName', () => {
+    it('Wizard navigation: nextButtonIconName', () => {
         element.nextButtonIconName = 'utility:apps';
         element.steps = STEPS;
 
@@ -312,7 +316,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-icon-position
     // Depends on steps
-    it('nextButtonIconPosition', () => {
+    it('Wizard navigation: nextButtonIconPosition', () => {
         element.nextButtonIconPosition = 'right';
         element.steps = STEPS;
 
@@ -326,7 +330,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-label
     // Depends on steps
-    it('nextButtonLabel', () => {
+    it('Wizard navigation: nextButtonLabel', () => {
         element.nextButtonLabel = 'A string label';
         element.steps = STEPS;
 
@@ -341,7 +345,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-next-variant
     // Depends on steps
-    it('nextButtonVariant', () => {
+    it('Wizard navigation: nextButtonVariant', () => {
         element.nextButtonVariant = 'brand';
         element.steps = STEPS;
 
@@ -356,7 +360,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-icon-name
     // Depends on steps
-    it('previousButtonIconName', () => {
+    it('Wizard navigation: previousButtonIconName', () => {
         element.previousButtonIconName = 'utility:user';
         element.steps = STEPS;
 
@@ -371,7 +375,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-icon-position
     // Depends on steps
-    it('previousButtonIconPosition', () => {
+    it('Wizard navigation: previousButtonIconPosition', () => {
         element.previousButtonIconPosition = 'right';
         element.steps = STEPS;
 
@@ -386,7 +390,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-label
     // Depends on steps
-    it('previousButtonLabel', () => {
+    it('Wizard navigation: previousButtonLabel', () => {
         element.previousButtonLabel = 'A string label';
         element.steps = STEPS;
 
@@ -401,7 +405,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // button-previous-variant
     // Depends on steps
-    it('previousButtonVariant', () => {
+    it('Wizard navigation: previousButtonVariant', () => {
         element.previousButtonVariant = 'destructive';
         element.steps = STEPS;
 
@@ -416,7 +420,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // current-step
     // Depends on steps
-    it('currentStep = last step', () => {
+    it('Wizard navigation: currentStep = last step', () => {
         element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
@@ -434,7 +438,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('currentStep = first step', () => {
+    it('Wizard navigation: currentStep = first step', () => {
         element = createElement('base-primitive-wizard-navigation', {
             is: PrimitiveWizardNavigation
         });
@@ -452,7 +456,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('currentStep = middle step', () => {
+    it('Wizard navigation: currentStep = middle step', () => {
         element.currentStep = 'step-2';
         element.steps = STEPS;
 
@@ -469,7 +473,7 @@ describe('PrimitiveWizardNavigation', () => {
     });
 
     // indicatorPosition and position
-    it('indicatorPosition = top and position = top', () => {
+    it('Wizard navigation: indicatorPosition = top and position = top', () => {
         element.indicatorPosition = 'top';
         element.position = 'top';
 
@@ -485,7 +489,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorPosition = top and position = bottom', () => {
+    it('Wizard navigation: indicatorPosition = top and position = bottom', () => {
         element.indicatorPosition = 'top';
         element.position = 'bottom';
 
@@ -494,7 +498,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorPosition = left and position = side', () => {
+    it('Wizard navigation: indicatorPosition = left and position = side', () => {
         element.indicatorPosition = 'left';
         element.position = 'side';
 
@@ -513,7 +517,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // indicator-type
     // Depends on steps
-    it('indicatorType = base', () => {
+    it('Wizard navigation: indicatorType = base', () => {
         element.indicatorType = 'base';
 
         return Promise.resolve().then(() => {
@@ -538,7 +542,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorType = base-shaded', () => {
+    it('Wizard navigation: indicatorType = base-shaded', () => {
         element.indicatorType = 'base-shaded';
 
         return Promise.resolve().then(() => {
@@ -563,7 +567,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorType = path', () => {
+    it('Wizard navigation: indicatorType = path', () => {
         element.indicatorType = 'path';
 
         return Promise.resolve().then(() => {
@@ -588,7 +592,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorType = bullet', () => {
+    it('Wizard navigation: indicatorType = bullet', () => {
         element.indicatorType = 'bullet';
         element.steps = STEPS;
 
@@ -618,7 +622,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorType = fractions', () => {
+    it('Wizard navigation: indicatorType = fractions', () => {
         element.indicatorType = 'fractions';
         element.steps = STEPS;
 
@@ -643,7 +647,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('indicatorType = bar', () => {
+    it('Wizard navigation: indicatorType = bar', () => {
         element.indicatorType = 'bar';
         element.steps = STEPS;
 
@@ -670,7 +674,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // fraction-label and fraction-prefix-label
     // Depends on indicatorType and steps
-    it('fractionLabel and prefixFractionLabel', () => {
+    it('Wizard navigation: fractionLabel and prefixFractionLabel', () => {
         element.indicatorType = 'fractions';
         element.steps = STEPS;
         element.fractionLabel = 'Label';
@@ -688,7 +692,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // hide-indicator
     // Depends on steps
-    it('hideIndicator = true', () => {
+    it('Wizard navigation: hideIndicator = true', () => {
         element.hideIndicator = true;
         element.steps = STEPS;
 
@@ -701,7 +705,7 @@ describe('PrimitiveWizardNavigation', () => {
         });
     });
 
-    it('hideIndicator = false', () => {
+    it('Wizard navigation: hideIndicator = false', () => {
         element.hideIndicator = false;
         element.steps = STEPS;
 
@@ -716,7 +720,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // Attributes updates after first render
     // Depends on steps, indicatorType and currentStep
-    it('Attributes updated after first render', () => {
+    it('Wizard navigation: Attributes updated after first render', () => {
         // Only steps are set
         element.steps = [STEPS[0], STEPS[2]];
 
@@ -742,7 +746,7 @@ describe('PrimitiveWizardNavigation', () => {
 
     // change
     // Depends on steps
-    it('change event', () => {
+    it('Wizard navigation: change event', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
         element.steps = STEPS;

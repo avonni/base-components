@@ -73,7 +73,7 @@ const EVENTS = [
 ];
 
 describe('SchedulerRow', () => {
-    it('Default attributes', () => {
+    it('Scheduler row: Default attributes', () => {
         const element = new SchedulerRow({});
 
         expect(element.color).toBeUndefined();
@@ -90,7 +90,7 @@ describe('SchedulerRow', () => {
 
     // columns
     // Depends on referenceColumns
-    it('columns', () => {
+    it('Scheduler row: columns', () => {
         const element = new SchedulerRow({
             referenceColumns: REFERENCE_COLUMNS
         });
@@ -103,7 +103,7 @@ describe('SchedulerRow', () => {
 
     // events
     // Depends on referenceColumns
-    it('events', () => {
+    it('Scheduler row: events', () => {
         const element = new SchedulerRow({
             referenceColumns: REFERENCE_COLUMNS,
             events: EVENTS
@@ -123,7 +123,7 @@ describe('SchedulerRow', () => {
 
     // removeEvent()
     // Depends on referenceColumns and events
-    it('removeEvent method', () => {
+    it('Scheduler row: removeEvent method', () => {
         const element = new SchedulerRow({
             referenceColumns: REFERENCE_COLUMNS,
             events: EVENTS
@@ -139,7 +139,7 @@ describe('SchedulerRow', () => {
 
     // getColumnFromStart()
     // Depends on referenceColumns
-    it('getColumnFromStart method', () => {
+    it('Scheduler row: getColumnFromStart method', () => {
         const element = new SchedulerRow({
             referenceColumns: REFERENCE_COLUMNS
         });

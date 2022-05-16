@@ -296,8 +296,8 @@ describe('Activity Timeline', () => {
     // sorted direction
     it('Activity Timeline: sorted direction desc', () => {
         element.items = testItems;
-        const firstDateContent = '05/21/2025';
-        const secondDateContent = '05/21/2022';
+        const firstDateContent = '05/21/2055';
+        const secondDateContent = '05/21/2038';
         const thirdDateContent = '01/01/2022';
         const fourthDateContent = '05/21/2021';
 
@@ -326,8 +326,8 @@ describe('Activity Timeline', () => {
         element.sortedDirection = 'asc';
         const firstDateContent = '05/21/2021';
         const secondDateContent = '01/01/2022';
-        const thirdDateContent = '05/21/2022';
-        const fourthDateContent = '05/21/2025';
+        const thirdDateContent = '05/21/2038';
+        const fourthDateContent = '05/21/2055';
 
         return Promise.resolve().then(() => {
             const firstDate = element.shadowRoot.querySelectorAll(

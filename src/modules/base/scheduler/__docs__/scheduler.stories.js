@@ -56,7 +56,6 @@ export default {
             },
             description:
                 'Specifies the minimum date the calendar can show. It can be a Date object, timestamp, or an ISO8601 formatted string.',
-            defaultValue: new Date(),
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: 'Date()' },
@@ -81,7 +80,6 @@ export default {
                 'quartersAndYear',
                 'fiveYears'
             ],
-            defaultValue: 'hourAndDay',
             description:
                 'Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. ',
             table: {
@@ -115,7 +113,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, column resizing is disabled.',
             table: {
                 type: { summary: 'boolean' },
@@ -127,7 +124,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the schedule column is not collapsible or expandable.',
             table: {
@@ -163,7 +159,6 @@ export default {
             },
             description:
                 'Object used to set the duration of the scheduler. It has two keys: unit (valid values include minute, hour, day, month and year) and span (number).',
-            defaultValue: { unit: 'hour', span: 12 },
             table: {
                 type: { summary: 'object' },
                 defaultValue: { summary: "{ unit: 'hour', span: 12 }" }
@@ -184,7 +179,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the scheduler is not editable. The events cannot be dragged and the default actions (edit, delete and add event) will be hidden from the context menus.',
             table: {
@@ -197,7 +191,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, a loading spinner will be visible.',
             table: {
                 type: { summary: 'boolean' },
@@ -209,7 +202,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'Loading',
             description: 'Alternative text of the loading spinner.',
             table: {
                 type: { summary: 'string' },
@@ -221,7 +213,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: ['all', 'one'],
             description:
                 'Allowed edition modes for recurrent events. Available options are: - "all": All recurrent event occurrences will be updated when a change is made to one occurrence. - "one": Only the selected occurrence will be updated when a change is made.',
             table: {
@@ -245,7 +236,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: ['00:00-23:59'],
             description:
                 'Array of available time frames. If present, the scheduler will only show the available time frames. Defaults to the full day being available. \nEach time frame string must follow the pattern ‘start-end’, with start and end being ISO8601 formatted time strings.',
             table: {
@@ -259,7 +249,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: [0, 1, 2, 3, 4, 5, 6],
             description:
                 'Array of available days of the week. If present, the scheduler will only show the available days of the week. Defaults to all days being available. \nThe days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.',
             table: {
@@ -273,7 +262,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
             description:
                 'Array of available months. If present, the scheduler will only show the available months. Defaults to all months being available. \nThe months are represented by a number, starting from 0 for January, and ending with 11 for December.',
             table: {
@@ -289,7 +277,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'ff',
             description:
                 "The date format to use in the events' details popup and the labels. See Luxon’s documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
             table: {
@@ -314,9 +301,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: {
-                center: { fieldName: 'title' }
-            },
             description:
                 'Labels of the events, by their position. Valid keys include: top, bottom, left, right, center. \nThe values can be the name of a row key, or the name of an event key. If the row and the event both have a key with the same name, the event value will be used.',
             table: {
@@ -331,7 +315,6 @@ export default {
                 type: 'select'
             },
             options: ['default', 'transparent', 'line', 'hollow', 'rounded'],
-            defaultValue: 'default',
             description:
                 'Theme of the events. Valid values include default, transparent, line, hollow and rounded.',
             table: {
@@ -361,7 +344,6 @@ export default {
                 'watermelon',
                 'wildflowers'
             ],
-            defaultValue: 'aurora',
             description:
                 'Default palette used for the event colors. Valid values include aurora, bluegrass, dusk, fire, heat, lake, mineral, nightfall, ocean, pond, sunrise, water, watermelon, wildflowers.',
             table: {
@@ -418,18 +400,6 @@ export default {
             control: {
                 type: 'object'
             },
-            defaultValue: {
-                title: 'Title',
-                from: 'From',
-                to: 'To',
-                resources: 'Resources',
-                saveButton: 'Save',
-                saveOneRecurrent: 'Only this event',
-                saveAllRecurrent: 'All events',
-                editRecurrent: 'Edit recurring event.',
-                cancelButton: 'Cancel',
-                newEventTitle: 'New event'
-            },
             description: 'Labels used in the edit and delete dialogs.',
             table: {
                 type: { summary: 'object' },
@@ -454,6 +424,48 @@ export default {
                 category: 'Events'
             }
         }
+    },
+    args: {
+        availableDaysOfTheWeek: [0, 1, 2, 3, 4, 5, 6],
+        availableMonths: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+        availableTimeFrames: ['00:00-23:59'],
+        collapseDisabled: false,
+        contextMenuEmptySpotActions: [
+            { name: 'add-event', label: 'Add event', iconName: 'utility:add' }
+        ],
+        contextMenuEventActions: [
+            { name: 'edit', label: 'Edit', iconName: 'utility:edit' },
+            { name: 'delete', label: 'Delete', iconName: 'utility:delete' }
+        ],
+        dateFormat: 'ff',
+        dialogLabels: {
+            title: 'Title',
+            from: 'From',
+            to: 'To',
+            resources: 'Resources',
+            saveButton: 'Save',
+            saveOneRecurrent: 'Only this event',
+            saveAllRecurrent: 'All events',
+            editRecurrent: 'Edit recurring event.',
+            cancelButton: 'Cancel',
+            deleteButton: 'Delete',
+            deleteTitle: 'Delete Event',
+            deleteMessage: 'Are you sure you want to delete this event?',
+            newEventTitle: 'New event'
+        },
+        eventsLabels: {
+            center: { fieldName: 'title' }
+        },
+        eventsPalette: 'aurora',
+        eventsTheme: 'default',
+        headers: 'hourAndDay',
+        isLoading: false,
+        loadingStateAlternativeText: 'Loading',
+        recurrentEditModes: ['all', 'one'],
+        readOnly: false,
+        resizeColumnDisabled: false,
+        start: new Date(),
+        timeSpan: { unit: 'hour', span: 12 }
     }
 };
 

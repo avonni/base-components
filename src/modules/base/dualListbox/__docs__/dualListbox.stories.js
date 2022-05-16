@@ -49,7 +49,6 @@ export default {
             },
             description:
                 "The name of the icon to be used in the format 'utility:right'.",
-            defaultValue: 'utility:right',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:right' }
@@ -70,7 +69,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, a search box is added to the first listbox.',
             table: {
@@ -84,7 +82,6 @@ export default {
                 type: 'select'
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-            defaultValue: 'medium',
             description:
                 'For the bare variant, valid values include x-small, small, medium, and large. For non-bare variants, valid values include xx-small, x-small, small, and medium.',
             table: {
@@ -106,7 +103,6 @@ export default {
                 'bare-inverse',
                 'border-inverse'
             ],
-            defaultValue: 'border',
             description:
                 'Use this variant for all button icons (add, up, down and remove). Valid values inlcude bare, container, brand, border, border-filled, bare-inverse and border-inverse.',
             table: {
@@ -119,7 +115,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the Up and Down buttons used for reordering are hidden.',
             table: {
@@ -131,7 +126,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the listbox is disabled and users cannot interact with it.',
             table: {
@@ -146,7 +140,6 @@ export default {
             },
             description:
                 "The name of the icon to be used in the format 'utility:down'.",
-            defaultValue: 'utility:down',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:down' }
@@ -166,7 +159,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, the options are draggable.',
             table: {
                 type: { summary: 'boolean' },
@@ -189,7 +181,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If present, hides the bottom divider.',
             table: {
                 type: { summary: 'boolean' },
@@ -201,7 +192,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the source options listbox is in a loading state and shows a spinner.',
             table: {
@@ -224,7 +214,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: 5,
             description:
                 'Number of items that display in the listboxes before vertical scrollbars are displayed. Determines the vertical size of the listbox.',
             table: {
@@ -246,7 +235,6 @@ export default {
             control: {
                 type: 'number'
             },
-            defaultValue: '0',
             description:
                 'Minimum number of options required in the selected options listbox.',
             table: {
@@ -314,7 +302,6 @@ export default {
             },
             description:
                 "The name of the icon to be used in the format 'utility:left'.",
-            defaultValue: 'utility:left',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:left' }
@@ -334,7 +321,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the user must add an item to the selected listbox before submitting the form.',
             table: {
@@ -378,7 +364,6 @@ export default {
                 type: 'select'
             },
             options: ['small', 'medium', 'large', 'responsive'],
-            defaultValue: 'medium',
             description:
                 'It defines the width of the source options listbox and the selected options listbox. Valid values include small, medium, large and responsive.',
             table: {
@@ -404,7 +389,6 @@ export default {
             },
             description:
                 "The name of the icon to be used in the format 'utility:up'.",
-            defaultValue: 'utility:up',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'utility:up' }
@@ -445,7 +429,6 @@ export default {
                 type: 'select'
             },
             options: ['standard', 'label-hidden', 'label-stacked'],
-            defaultValue: 'standard',
             description:
                 'The variant changes the appearance of the dual listbox. Valid variants include standard, label-hidden and label-stacked. Use label-hidden to hide the label but make it available to assistive technology. Use label-stacked to place the label above the dual listbox.',
             table: {
@@ -454,13 +437,23 @@ export default {
             }
         },
         args: {
+            addButtonIconName: 'utility:right',
             allowSearch: false,
+            buttonSize: 'medium',
+            buttonVariant: 'border',
             disableReordering: false,
             disabled: false,
+            downButtonIconName: 'utility:down',
             draggable: false,
             hideBottomDivider: false,
             isLoading: false,
-            required: false
+            maxVisibleOptions: 5,
+            min: 0,
+            removeButtonIconName: 'utility:left',
+            required: false,
+            size: 'medium',
+            upButtonIconName: 'utility:up',
+            variant: 'standard'
         }
     }
 };

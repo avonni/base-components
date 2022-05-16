@@ -32,7 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 import {
+    normalizeArray,
     normalizeBoolean,
+    normalizeString,
     deepCopy,
     getRealDOMId,
     isRTL
@@ -154,13 +156,41 @@ function PARSE_INT_STYLE(element, value) {
     return parseInt(element.style[value], 10);
 }
 
-const DEFAULT_VARIANT = 'top-toolbar';
+const VARIANTS = {
+    default: 'top-toolbar',
+    valid: ['top-toolbar', 'bottom-toolbar']
+};
 
 /**
  * @class
  * @descriptor avonni-input-rich-text
  */
 export default class InputRichText extends LightningElement {
+    /**
+     * Custom buttons to add to the toolbar.
+     *
+     * @type {object}
+     * @public
+     */
+    @api customButtons;
+
+    /**
+     * A comma-separated list of button categories to remove from the toolbar.
+     *
+     * @type {object}
+     * @public
+     */
+    @api disabledCategories = '';
+
+    /**
+     * Check if editor is in Publisher category.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api isPublisher = false;
+
     /**
      * The label of the rich text editor.
      *
@@ -179,41 +209,6 @@ export default class InputRichText extends LightningElement {
     @api labelVisible = false;
 
     /**
-     * Text that is displayed when the field is empty, to prompt the user for a valid entry.
-     *
-     * @type {string}
-     * @public
-     */
-    @api placeholder;
-
-    /**
-     * A comma-separated list of button categories to remove from the toolbar.
-     *
-     * @type {object}
-     * @public
-     */
-    @api disabledCategories = '';
-
-    /**
-     * A list of allowed formats. By default, the list is computed based on enabled categories.
-     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
-     *
-     * @type {object}
-     * @public
-     */
-    @api formats = '';
-
-    /**
-     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes
-     * the toolbar to be displayed below the text box.
-     *
-     * @type {string}
-     * @public
-     * @default top-toolbar
-     */
-    @api variant = DEFAULT_VARIANT;
-
-    /**
      * Error message to be displayed when invalid input is detected.
      *
      * @type {string}
@@ -222,12 +217,12 @@ export default class InputRichText extends LightningElement {
     @api messageWhenBadInput;
 
     /**
-     * Custom buttons to add to the toolbar.
+     * Text that is displayed when the field is empty, to prompt the user for a valid entry.
      *
-     * @type {object}
+     * @type {string}
      * @public
      */
-    @api customButtons;
+    @api placeholder;
 
     /**
      * Entity ID to share the image with.
@@ -237,18 +232,41 @@ export default class InputRichText extends LightningElement {
      */
     @api shareWithEntityId;
 
-    /**
-     * Check if editor is in Publisher category.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api isPublisher = false;
+    connectedCallback() {
+        this.classList.add('slds-form-element__control');
+    }
 
-    _valid = true;
+    renderedCallback() {
+        this.setEditorAndButtonState();
+
+        if (this.queueLinkPanelOpen) {
+            this.queueLinkPanelOpen = false;
+
+            const popoverBody = this.template.querySelector(
+                '.slds-popover__body'
+            );
+            const buttons = this.template.querySelectorAll(BUTTON_SELECTOR);
+
+            this.calculateLinkPanelPositioning(popoverBody, buttons);
+            this.template.querySelector('.link-input').focus();
+        }
+    }
+
+    disconnectedCallback() {
+        if (
+            this.removeQuillEmitterEventListeners &&
+            typeof this.removeQuillEmitterEventListeners == 'function'
+        ) {
+            this.removeQuillEmitterEventListeners();
+        }
+    }
+
     _disabled = false;
+    _formats = [];
     _readOnly = false;
+    _valid = true;
+    _variant = VARIANTS.default;
+
     linkPanelOpen = false;
     queueLinkPanelOpen = false;
     selectedFontValue = DEFAULT_FONT;
@@ -265,6 +283,90 @@ export default class InputRichText extends LightningElement {
         fontList: FONT_LIST,
         sizeList: SIZE_LIST
     };
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * If present, the editor is disabled and users cannot interact with it.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get disabled() {
+        return this._disabled;
+    }
+
+    set disabled(value) {
+        this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * A list of allowed formats. By default, the list is computed based on enabled categories.
+     * The 'table' format is always enabled to support copying and pasting of tables if formats are not provided.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get formats() {
+        return this._formats;
+    }
+    set formats(value) {
+        this._formats = normalizeArray(value);
+    }
+
+    /**
+     * If present, the editor is read-only and cannot be edited by users.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
+    }
+
+    /**
+     * Sets focus on the rich text editor.
+     *
+     * @type {boolean}
+     * @default true
+     * @public
+     */
+    @api
+    get valid() {
+        return this._valid;
+    }
+
+    set valid(value) {
+        this._valid = normalizeBoolean(value);
+
+        if (this.quill) {
+            const editor = this.template.querySelector(
+                '.slds-rich-text-editor'
+            );
+            const root = this.quill.root;
+
+            if (this._valid) {
+                editor.classList.remove('slds-has-error');
+                root.removeAttribute('aria-describedby');
+            } else {
+                editor.classList.add('slds-has-error');
+                root.setAttribute('aria-describedby', this.errorMessageId);
+            }
+        }
+    }
 
     /**
      * The HTML content in the rich text editor.
@@ -296,137 +398,53 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-     * Represent the validity state the editor can be in, with respect to constraint validation.
+     * The variant changes the appearance of the toolbar. Accepted variant is bottom-toolbar which causes the toolbar to be displayed below the text box.
      *
-     * @type {boolean}
-     * @default true
+     * @type {string}
      * @public
+     * @default top-toolbar
      */
     @api
-    get valid() {
-        return this._valid;
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+
+        if (this.quill) this.resetQuill();
     }
 
-    set valid(value) {
-        this._valid = normalizeBoolean(value);
-
-        if (this.quill) {
-            const editor = this.template.querySelector(
-                '.slds-rich-text-editor'
-            );
-            const root = this.quill.root;
-
-            if (this._valid) {
-                editor.classList.remove('slds-has-error');
-                root.removeAttribute('aria-describedby');
-            } else {
-                editor.classList.add('slds-has-error');
-                root.setAttribute('aria-describedby', this.errorMessageId);
-            }
-        }
-    }
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
-     * If present, the editor is disabled and users cannot interact with it.
+     * Get unique label Id.
      *
-     * @type {boolean}
-     * @default false
-     * @public
+     * @type {string}
      */
-    @api
-    get disabled() {
-        return this._disabled;
-    }
-
-    set disabled(value) {
-        this._disabled = normalizeBoolean(value);
+    get uniqueLabelId() {
+        const label = this.template.querySelector('[data-label]');
+        return getRealDOMId(label);
     }
 
     /**
-     * If present, the editor is read-only and cannot be edited by users.
-     *
-     * @type {boolean}
-     * @default false
-     * @public
+     * Check if device is Desktop.
      */
-    @api
-    get readOnly() {
-        return this._readOnly;
-    }
-
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
+    get isDesktop() {
+        return true;
     }
 
     /**
-     * Sets focus on the rich text editor.
-     *
-     * @public
+     * Check if placeholder needed.
      */
-    @api
-    focus() {
-        if (!this.quill) {
-            this.activateEditor();
-        }
-
-        this.quill.root.focus();
-    }
-
-    /**
-     * Removes focus from the rich text editor.
-     *
-     * @public
-     */
-    @api
-    blur() {
-        if (this.quill) {
-            this.quill.root.blur();
-        }
-    }
-
-    /**
-     * Sets a format in the editor from the cursor point onwards.
-     * The format also applies to currently selected content.
-     * Valid formats are font, size, and align.
-     *
-     * @param {object} value A key-value pair with format names and values.
-     * @public
-     */
-    @api
-    setFormat(value) {
-        if (value && this.quill) {
-            inputRichTextLibrary.applyFormats(this.quill, deepCopy(value));
-
-            if (this.quill.getSelection().length === 0) {
-                this.syncFontMenus();
-            }
-        } else if (value) {
-            this._pendingFormats.push(value);
-        }
-    }
-
-    /**
-     * Returns an object representing the formats applied to the current selection.
-     * Formats supported are align, background, bold, code, code-block, color, font,
-     * header, italic, link, size, strike, underline.
-     *
-     * @returns {object} formats
-     */
-    @api
-    getFormat() {
-        if (!this.quill) {
-            this.activateEditor();
-        }
-        return inputRichTextLibrary.filterFormats(this.quill.getFormat());
-    }
-
-    /**
-     * Synchronize Font and Size menus based on current format.
-     */
-    syncFontMenus() {
-        const format = this.quill.getFormat();
-        this.updateFontMenu(format);
-        this.updateSizeMenu(format);
+    get shouldShowPlaceholder() {
+        return !this.value && this.placeholder;
     }
 
     /**
@@ -734,6 +752,89 @@ export default class InputRichText extends LightningElement {
         return categories;
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Sets focus on the rich text editor.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        if (!this.quill) {
+            this.activateEditor();
+        }
+
+        this.quill.root.focus();
+    }
+
+    /**
+     * Removes focus from the rich text editor.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        if (this.quill) {
+            this.quill.root.blur();
+        }
+    }
+
+    /**
+     * Sets a format in the editor from the cursor point onwards.
+     * The format also applies to currently selected content.
+     * Valid formats are font, size, and align.
+     *
+     * @param {object} value A key-value pair with format names and values.
+     * @public
+     */
+    @api
+    setFormat(value) {
+        if (value && this.quill) {
+            inputRichTextLibrary.applyFormats(this.quill, deepCopy(value));
+
+            if (this.quill.getSelection().length === 0) {
+                this.syncFontMenus();
+            }
+        } else if (value) {
+            this._pendingFormats.push(value);
+        }
+    }
+
+    /**
+     * Returns an object representing the formats applied to the current selection.
+     * Formats supported are align, background, bold, code, code-block, color, font,
+     * header, italic, link, size, strike, underline.
+     *
+     * @returns {object} formats
+     */
+    @api
+    getFormat() {
+        if (!this.quill) {
+            this.activateEditor();
+        }
+        return inputRichTextLibrary.filterFormats(this.quill.getFormat());
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Synchronize Font and Size menus based on current format.
+     */
+    syncFontMenus() {
+        const format = this.quill.getFormat();
+        this.updateFontMenu(format);
+        this.updateSizeMenu(format);
+    }
+
     /**
      * If custom buttons are present merge them to the categories format.
      *
@@ -948,12 +1049,10 @@ export default class InputRichText extends LightningElement {
             'span[style*=text-decoration]',
             (element, text) => {
                 const elementStyle = getComputedStyle(element) || element.style;
-                const underline = elementStyle.textDecoration.match(
-                    /underline/
-                );
-                const strike = elementStyle.textDecoration.match(
-                    /line-through/
-                );
+                const underline =
+                    elementStyle.textDecoration.match(/underline/);
+                const strike =
+                    elementStyle.textDecoration.match(/line-through/);
 
                 return text.compose(
                     new Quill.Delta().retain(text.length(), {
@@ -1225,20 +1324,6 @@ export default class InputRichText extends LightningElement {
         }
     }
 
-    connectedCallback() {
-        this.classList.add('slds-form-element__control');
-    }
-
-    /**
-     * Get unique label Id.
-     *
-     * @type {string}
-     */
-    get uniqueLabelId() {
-        const label = this.template.querySelector('[data-label]');
-        return getRealDOMId(label);
-    }
-
     /**
      * Activate Editor's intializing parameters.
      *
@@ -1266,30 +1351,12 @@ export default class InputRichText extends LightningElement {
                 this.quill.setSelection(this.quill.getLength());
             }
         }
-    }
-
-    disconnectedCallback() {
-        if (
-            this.removeQuillEmitterEventListeners &&
-            typeof this.removeQuillEmitterEventListeners == 'function'
-        ) {
-            this.removeQuillEmitterEventListeners();
-        }
-    }
-
-    renderedCallback() {
-        this.setEditorAndButtonState();
 
         if (this.queueLinkPanelOpen) {
-            this.queueLinkPanelOpen = false;
-
-            const popoverBody = this.template.querySelector(
-                '.slds-popover__body'
+            const link = this.template.querySelector(
+                '[data-element-id="lightning-input-link"]'
             );
-            const buttons = this.template.querySelectorAll(BUTTON_SELECTOR);
-
-            this.calculateLinkPanelPositioning(popoverBody, buttons);
-            this.template.querySelector('.link-input').focus();
+            if (link) link.focus();
         }
     }
 
@@ -1592,6 +1659,17 @@ export default class InputRichText extends LightningElement {
         this.linkPanelHasFocus = true;
     }
 
+    resetQuill() {
+        this.removeQuillEmitterEventListeners();
+        this.quill = null;
+        this.quillNotReady = true;
+        this.initialRender = true;
+        this._hasBeenFocused = false;
+        this._pendingFormats = [];
+        this.linkPanelOpen = false;
+        this.queueLinkPanelOpen = false;
+    }
+
     /**
      * Font selection event handler.
      *
@@ -1696,7 +1774,9 @@ export default class InputRichText extends LightningElement {
         const buttons = this.template.querySelectorAll(BUTTON_SELECTOR);
         const format = item ? this.quill.getFormat(item) : {};
 
-        let emojiContainer = this.template.querySelector('[data-element-id="avonni-emoji-picker"]');
+        let emojiContainer = this.template.querySelector(
+            '[data-element-id="avonni-emoji-picker"]'
+        );
 
         if (emojiContainer && !emojiContainer.classList.contains('slds-hide')) {
             emojiContainer.classList.add('slds-hide');
@@ -1723,13 +1803,6 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
-     * Check if device is Desktop.
-     */
-    get isDesktop() {
-        return true;
-    }
-
-    /**
      * Change event dispatcher.
      */
     dispatchChangeEvent() {
@@ -1753,13 +1826,6 @@ export default class InputRichText extends LightningElement {
                 }
             })
         );
-    }
-
-    /**
-     * Check if placeholder needed.
-     */
-    get shouldShowPlaceholder() {
-        return !this.value && this.placeholder;
     }
 
     /**

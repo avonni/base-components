@@ -1,7 +1,7 @@
 {
     "name": "@avonni/base-components",
     "description": "Base components",
-    "version": "1.2.5",
+    "version": "1.2.6",
     "repository": {
         "type": "git",
         "url": "git+https://github.com/avonni/base-components.git"
@@ -22,6 +22,7 @@
         "@storybook/addon-links": "^6.2.8",
         "@storybook/storybook-deployer": "^2.8.7",
         "@storybook/web-components": "^6.2.8",
+        "autoprefixer": "^9.8.7",
         "babel-loader": "^8.2.2",
         "chromatic": "^5.6.2",
         "eslint": "^7.19.0",
@@ -33,6 +34,8 @@
         "lit-html": "^1.3.0",
         "lwc-services": "^3.1.2",
         "lwc-webpack-plugin": "^2.0.2",
+        "postcss": "^8.3.5",
+        "postcss-cli": "^9.1.0",
         "prettier": "^2.2.1"
     },
     "engines": {
@@ -55,6 +58,7 @@
     },
     "scripts": {
         "storybook": "start-storybook -s ./static",
+        "prepublishOnly": "npx postcss **/*.css --use autoprefixer --replace --no-map",
         "deploy": "npm publish",
         "deploy-storybook": "storybook-to-ghpages",
         "build-storybook": "build-storybook -s ./static",

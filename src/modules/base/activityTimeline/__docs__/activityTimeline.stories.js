@@ -49,7 +49,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description: 'If true, close the section.',
             table: {
                 type: { summary: 'boolean' },
@@ -60,7 +59,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If true, the section is collapsible, the left icon is present.',
             table: {

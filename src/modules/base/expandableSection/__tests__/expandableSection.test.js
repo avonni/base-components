@@ -48,7 +48,7 @@ describe('Expandable Section', () => {
         document.body.appendChild(element);
     });
 
-    it('Expandable Section Default attributes', () => {
+    it('Expandable Section: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.closed).toBeFalsy();
         expect(element.collapsible).toBeFalsy();
@@ -58,7 +58,7 @@ describe('Expandable Section', () => {
     /* ----- ATTRIBUTES ----- */
 
     // title
-    it('Expandable Section title', () => {
+    it('Expandable Section: title', () => {
         element.title = 'This is a title';
 
         return Promise.resolve().then(() => {
@@ -69,13 +69,13 @@ describe('Expandable Section', () => {
         });
     });
 
-    it('Expandable Section empty title and no collapsible', () => {
+    it('Expandable Section: empty title and no collapsible', () => {
         const header = element.shadowRoot.querySelector('.slds-section__title');
         expect(header).toBeFalsy();
     });
 
     // closed
-    it('Expandable Section closed', () => {
+    it('Expandable Section: closed', () => {
         element.closed = true;
         element.collapsible = true;
 
@@ -87,7 +87,7 @@ describe('Expandable Section', () => {
 
     // collapsible
     // Depends on title
-    it('Expandable Section collapsible true', () => {
+    it('Expandable Section: collapsible true', () => {
         element.collapsible = true;
 
         return Promise.resolve().then(() => {
@@ -97,9 +97,8 @@ describe('Expandable Section', () => {
                 '.slds-section__title'
             );
             expect(title.className).not.toContain('slds-theme_shade');
-            const spanTitle = element.shadowRoot.querySelector(
-                '.slds-truncate'
-            );
+            const spanTitle =
+                element.shadowRoot.querySelector('.slds-truncate');
             expect(spanTitle.className).not.toContain(
                 'slds-p-horizontal_small'
             );
@@ -110,7 +109,7 @@ describe('Expandable Section', () => {
         });
     });
 
-    it('Expandable Section collapsible false', () => {
+    it('Expandable Section: collapsible false', () => {
         element.title = 'Some title';
         element.collapsible = false;
 
@@ -131,7 +130,7 @@ describe('Expandable Section', () => {
 
     // variant
     // Depends on title and collapsible
-    it('Expandable Section shaded variant, with no collapsible', () => {
+    it('Expandable Section: shaded variant, with no collapsible', () => {
         element.title = 'Some title';
         element.variant = 'shaded';
 
@@ -143,7 +142,7 @@ describe('Expandable Section', () => {
         });
     });
 
-    it('Expandable Section base variant, with no collapsible', () => {
+    it('Expandable Section: base variant, with no collapsible', () => {
         element.title = 'Some title';
         element.variant = 'base';
 
@@ -155,7 +154,7 @@ describe('Expandable Section', () => {
         });
     });
 
-    it('Expandable Section base variant, with collapsible', () => {
+    it('Expandable Section: base variant, with collapsible', () => {
         element.variant = 'base';
         element.collapsible = true;
 
@@ -173,7 +172,7 @@ describe('Expandable Section', () => {
         });
     });
 
-    it('Expandable Section shaded variant, with collapsible', () => {
+    it('Expandable Section: shaded variant, with collapsible', () => {
         element.variant = 'shaded';
         element.collapsible = true;
 
@@ -195,7 +194,7 @@ describe('Expandable Section', () => {
 
     // toggle
     // Depends on collapsible
-    it('Expandable Section toggle event', () => {
+    it('Expandable Section: toggle event', () => {
         element.collapsible = true;
 
         const handler = jest.fn();

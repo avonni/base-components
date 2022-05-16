@@ -53,7 +53,6 @@ export default {
                 type: 'select'
             },
             options: ['cover', 'contain', 'fill', 'none'],
-            defaultValue: 'cover',
             description:
                 'Specifies the "fit" behaviour for the cropped image. Options: "cover"(default), "contain", "fill", "none"',
             table: {
@@ -70,7 +69,6 @@ export default {
                 max: 100,
                 step: 1
             },
-            defaultValue: '50',
             description:
                 'Specifies the cropping point of interest on the X axis of the image, in percentage',
             table: {
@@ -88,7 +86,6 @@ export default {
                 max: 100,
                 step: 1
             },
-            defaultValue: '50',
             description:
                 'Specifies the cropping point of interest on the Y axis of the image, in percentage',
             table: {
@@ -104,7 +101,6 @@ export default {
                 type: 'select'
             },
             options: ['1x1', '4x3', '16x9', 'none'],
-            defaultValue: 'none',
             description:
                 'Specifies the cropping ratio for the image, which is constrained to the parents width. Options : 1:1, 4:3, 16:9, none',
             table: {
@@ -117,7 +113,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: '',
             table: {
                 defaultValue: { summary: false },
@@ -129,7 +124,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description:
                 "Makes the image responsive. The image will shrink as needed or grow up the the image's native width.",
             table: {
@@ -152,12 +146,11 @@ export default {
                 type: 'select'
             },
             options: ['auto', 'lazy'],
-            defaultValue: 'auto',
             description:
                 'Enables lazy loading for images that are offscreen. If set to lazy, the property ensures that offscreen images are loaded early enough so that they have finished loading once the user scrolls near them. Valid values are auto and lazy. Note: Keep in mind that the property uses the loading attribute of HTML <img> element which is not supported for Internet Explorer.',
             table: {
-                default: { summary: false },
-                type: { summary: 'boolean' }
+                default: { summary: 'auto' },
+                type: { summary: 'string' }
             }
         },
         position: {
@@ -165,7 +158,6 @@ export default {
                 type: 'select'
             },
             options: ['left', 'right', 'center'],
-            defaultValue: 'left',
             description:
                 'Specifies the position of the image. Valid values include left, center and right.',
             table: {
@@ -207,7 +199,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'Set Images as Static - images will be fixed dimensions and will not be responsive on resize',
             table: {
@@ -219,7 +210,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'Adds a thumbnail border around the image.',
             table: {
                 defaultValue: { summary: false },
@@ -237,10 +227,16 @@ export default {
         }
     },
     args: {
+        cropFit: 'cover',
+        cropPositionX: 50,
+        cropPositionY: 50,
+        cropSize: 'none',
         fluid: false,
         fluidGrow: false,
-        thumbnail: false,
-        staticImages: false
+        lazyLoading: 'auto',
+        position: 'left',
+        staticImages: false,
+        thumbnail: false
     }
 };
 
@@ -250,20 +246,20 @@ const ListTemplate = (args) => ImageList(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text'
 };
 
 export const BaseSmall = Template.bind({});
 BaseSmall.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '150'
 };
 
 export const BaseLarge = Template.bind({});
 BaseLarge.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '600'
 };
@@ -271,8 +267,6 @@ BaseLarge.args = {
 export const BaseWithLazyLoading = ListTemplate.bind({});
 BaseWithLazyLoading.args = {
     src: [
-        'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
-        'https://dutchsfcommunity.org/wp-content/uploads/2020/01/SF-Amsterdam-Background.jpg',
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg',
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg',
@@ -296,14 +290,14 @@ BaseWithLazyLoading.args = {
 
 export const Thumbnail = Template.bind({});
 Thumbnail.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     thumbnail: true
 };
 
 export const Center = Template.bind({});
 Center.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     position: 'center',
     width: '600'
@@ -311,7 +305,7 @@ Center.args = {
 
 export const Right = Template.bind({});
 Right.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     position: 'right',
     width: '600'
@@ -324,7 +318,7 @@ CropImageStaticThumbnailMobile.parameters = {
     }
 };
 CropImageStaticThumbnailMobile.args = {
-    src: 'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg',
+    src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
     alternativeText: 'Alternative text',
     width: '280',
     cropSize: '1x1',

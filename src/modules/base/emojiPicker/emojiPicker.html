@@ -40,12 +40,20 @@
                     <div class="avonni-emoji-viewer">
                         <template for:each={emojiGroups} for:item="item">
                             <section
-                                class="slds-p-vertical_x-small slds-p-horizontal_small"
+                                class="
+                                    slds-p-vertical_x-small
+                                    slds-p-horizontal_small
+                                "
                                 key={item.title}
                                 data-value={item.value}
                             >
                                 <h2
-                                    class="slds-text-heading_x-small slds-m-bottom_xx-small slds-text-title_caps emoji-category-text"
+                                    class="
+                                        slds-text-heading_x-small
+                                        slds-m-bottom_xx-small
+                                        slds-text-title_caps
+                                        emoji-category-text
+                                    "
                                 >
                                     {item.title}
                                 </h2>
@@ -63,6 +71,7 @@
                                         >
                                             <button
                                                 tabindex="-1"
+                                                type="button"
                                                 onclick={dispatchSelectEmojiEvent}
                                                 value={emoji.value}
                                             >

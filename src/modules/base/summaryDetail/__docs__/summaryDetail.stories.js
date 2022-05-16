@@ -51,7 +51,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the summary detail will take the full width available.',
             table: {
@@ -64,7 +63,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If present, the body left indentation will be removed.',
             table: {
@@ -77,7 +75,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:chevrondown',
             description: 'Icon used to close the summary detail.',
             table: {
                 type: { summary: 'string' },
@@ -89,7 +86,6 @@ export default {
             control: {
                 type: 'text'
             },
-            defaultValue: 'utility:chevronright',
             description: 'Icon used to expand the summary detail.',
             table: {
                 type: { summary: 'string' },
@@ -100,7 +96,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, hide details.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -112,7 +107,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: 0,
             description: 'If present, the icon to close/expand is hidden.',
             table: {
                 defaultValue: { summary: 'false' },
@@ -121,10 +115,12 @@ export default {
         }
     },
     args: {
-        fullWidth: false,
-        removeBodyIndentation: false,
         closed: false,
-        hideIcon: false
+        expandIconName: 'utility:chevronright',
+        fullWidth: false,
+        hideIcon: false,
+        removeBodyIndentation: false,
+        shrinkIconName: 'utility:chevrondown'
     }
 };
 

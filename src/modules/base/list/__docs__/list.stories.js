@@ -73,7 +73,6 @@ export default {
                 type: 'select'
             },
             options: ['small', 'medium', 'large'],
-            defaultValue: 'large',
             description:
                 'Fixed width of image (3 sizes: (small 48px, medium 72px and large 128px)',
             table: {
@@ -103,7 +102,6 @@ export default {
             control: {
                 type: 'boolean'
             },
-            defaultValue: false,
             description:
                 'If true, it will be possible to reorder the list items.',
             table: {
@@ -128,7 +126,6 @@ export default {
                 type: 'select'
             },
             options: ['left', 'right'],
-            defaultValue: 'right',
             description:
                 'Position of the sortable icon. Valid values include left and right.',
             table: {
@@ -136,6 +133,11 @@ export default {
                 defaultValue: { summary: 'right' }
             }
         }
+    },
+    args: {
+        imageWidth: 'large',
+        sortable: false,
+        sortableIconPosition: 'right'
     }
 };
 
@@ -176,7 +178,7 @@ const itemsWithImages = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-03.jpg'
     },
     {
         label: 'Item 2',
@@ -263,7 +265,7 @@ const itemsWithImagesAndAvatars = [
         description:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
         imageSrc:
-            'https://trailblazers.salesforce.com/resource/1618442007000/tdxlib/img/header_about_background_2x.jpg'
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         label: 'Item 2',
