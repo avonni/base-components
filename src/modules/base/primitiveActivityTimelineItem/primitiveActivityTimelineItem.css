@@ -75,60 +75,60 @@
     margin-left: 1px;
 }
 
-.avonni-activity-timeline-item-timeline-action-icon-xx-small {
+.avonni-primitive-activity-timeline-item__action-icon_xx-small {
     margin: -0.1rem 0 0 -0.5rem;
     transform: scale(0.55);
 }
 
-.avonni-activity-timeline-item-timeline-action-icon-x-small {
+.avonni-primitive-activity-timeline-item__action-icon_x-small {
     margin: -0.15rem 0 0 -0.5rem;
     transform: scale(0.6);
 }
 
-.avonni-activity-timeline-item-timeline-action-icon-small {
+.avonni-primitive-activity-timeline-item__action-icon_small {
     margin: -0.3rem 0 0 -0.5rem;
     transform: scale(0.7);
 }
 
-.avonni-activity-timeline-item-timeline-action-icon-medium {
+.avonni-primitive-activity-timeline-item__action-icon_medium {
     margin: -0.5rem 0 0 -0.5rem;
     transform: scale(0.8);
 }
 
-.avonni-activity-timeline-item-timeline-action-icon-large {
+.avonni-primitive-activity-timeline-item__action-icon_large {
     margin: -0.7rem 0 0 -0.5rem;
     transform: scale(0.85);
 }
 
-.avonni-activity-timeline-item-timeline-icon-xx-small {
+.avonni-primitive-activity-timeline-item__icon_xx-small {
     margin-top: 0.4rem;
 }
 
-.avonni-activity-timeline-item-timeline-icon-x-small {
+.avonni-primitive-activity-timeline-item__icon_x-small {
     margin-top: 0.35rem;
 }
 
-.avonni-activity-timeline-item-timeline-icon-small {
+.avonni-primitive-activity-timeline-item__icon_small {
     margin-top: 0.2rem;
 }
 
-.avonni-activity-timeline-item-icon-size-xx-small:before {
+.avonni-primitive-activity-timeline-item__icon_xx-small:before {
     left: 1.95rem;
 }
 
-.avonni-activity-timeline-item-icon-size-x-small:before {
+.avonni-primitive-activity-timeline-item__icon_x-small:before {
     left: 2rem;
 }
 
-.avonni-activity-timeline-item-icon-size-small:before {
+.avonni-primitive-activity-timeline-item__icon_small:before {
     left: 2.25rem;
 }
 
-.avonni-activity-timeline-item-icon-size-medium:before {
+.avonni-primitive-activity-timeline-item__icon_medium:before {
     left: 2.45rem;
 }
 
-.avonni-activity-timeline-item-icon-size-large:before {
+.avonni-primitive-activity-timeline-item__icon_large:before {
     left: 3rem;
 }
 
