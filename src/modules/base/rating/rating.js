@@ -33,8 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUUID, classSet } from 'c/utils';
-import { FieldConstraintApi } from '../inputUtils/validity';
-import { InteractingState } from '../inputUtils/interacting';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 
 const RATING_SELECTIONS = {
     valid: ['continuous', 'single'],
@@ -289,16 +288,16 @@ export default class Rating extends LightningElement {
         this._required = normalizeBoolean(value);
     }
 
-        /**
+    /**
      * Sets a custom error message to be displayed when a form is submitted.
      *
      * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
      * @public
      */
-         @api
-         setCustomValidity(message) {
-             this._constraint.setCustomValidity(message);
-         }
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
 
     /**
      * Valid values include continuous and single.
