@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
 
 const SYMBOLOGY = {
     valid: [
@@ -85,4 +85,144 @@ export default class Barcode extends LightningElement {
     _checksum = DEFAULT_CHECKSUM;
     _textColor = DEFAULT_TEXT_COLOR;
     _type = SYMBOLOGY.default;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * The color of the background. Valid values include color name, HEX and RGB.
+     *
+     * @public
+     * @type {string}
+     * @default #fff
+     */
+    @api
+    get background() {
+        return this._background;
+    }
+
+    set background(value) {
+        this._background = value;
+    }
+
+    /**
+     * The color of the barcode. Valid values include color name, HEX and RGB.
+     *
+     * @public
+     * @type {string}
+     */
+    @api
+    get color() {
+        return this._color;
+    }
+    set color(value) {
+        this._color = value;
+    }
+
+    /**
+     * The rendering engine of the barcode.
+     *
+     * @public
+     * @type {string}
+     * @default svg
+     */
+    @api
+    get renderAs() {
+        return this._renderAs;
+    }
+    set renderAs(value) {
+        this._renderAs = value;
+    }
+
+    /**
+     * The width of the barcode in pixels.
+     *
+     * @public
+     * @type {number}
+     * @default 300
+     */
+    @api
+    get size() {
+        return this._size;
+    }
+    set size(value) {
+        this._size = value;
+    }
+
+    /**
+     * The value of the barcode.
+     *
+     * @public
+     * @type {number}
+     */
+    @api
+    get value() {
+        return this._value;
+    }
+    set value(value) {
+        this._value = value;
+    }
+
+    /**
+     * Hide the value of the barcode.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideValue() {
+        return this._hideValue;
+    }
+    set hideValue(value) {
+        this._hideValue = value;
+    }
+
+    /**
+     * Hide the value of the barcode checksum. If true, the barcode will display the checksum digit next to the value in the text area.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get checksum() {
+        return this._checksum;
+    }
+    set checksum(value) {
+        this._checksum = value;
+    }
+
+    /**
+     * The color of the text.
+     *
+     * @public
+     * @type {string}
+     * @default #000000
+     */
+    @api
+    get textColor() {
+        return this._textColor;
+    }
+    set textColor(value) {
+        this._textColor = value;
+    }
+
+    /**
+     * The type of the symbology (barcode encoding). Valid values include EAN8, EAN13, UPCE, UPCA, Code11, Code39, Code39Extended, Code93, Code93Extended, Code128, Code128A, Code128B, Code128C, GS1-128, MSImod10, MSImod11, MSImod1010, MSImod1110 and POSTNET.
+     *
+     * @public
+     * @type {string}
+     * @default code39
+     */
+    @api
+    get type() {
+        return this._type;
+    }
+    set type(value) {
+        this._type = value;
+    }
 }
