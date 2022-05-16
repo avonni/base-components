@@ -417,6 +417,16 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * Check if the type of the icon is action
+     */
+    get isActionIcon() {
+        return (
+            typeof this.iconName === 'string' &&
+            this.iconName.split(':')[0] === 'action'
+        );
+    }
+
+    /**
      * Classes for timeline icons
      *
      * @type {string}
@@ -425,21 +435,21 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         return classSet('slds-timeline__icon')
             .add({
                 'avonni-primitive-activity-timeline-item__icon_xx-small':
-                    !this.isActionIcon() && this.iconSize === 'xx-small',
+                    !this.isActionIcon && this.iconSize === 'xx-small',
                 'avonni-primitive-activity-timeline-item__icon_x-small':
-                    !this.isActionIcon() && this.iconSize === 'x-small',
+                    !this.isActionIcon && this.iconSize === 'x-small',
                 'avonni-primitive-activity-timeline-item__icon_small':
-                    !this.isActionIcon() && this.iconSize === 'small',
+                    !this.isActionIcon && this.iconSize === 'small',
                 'avonni-primitive-activity-timeline-item__action-icon_xx-small':
-                    this.isActionIcon() && this.iconSize === 'xx-small',
+                    this.isActionIcon && this.iconSize === 'xx-small',
                 'avonni-primitive-activity-timeline-item__action-icon_x-small':
-                    this.isActionIcon() && this.iconSize === 'x-small',
+                    this.isActionIcon && this.iconSize === 'x-small',
                 'avonni-primitive-activity-timeline-item__action-icon_small':
-                    this.isActionIcon() && this.iconSize === 'small',
+                    this.isActionIcon && this.iconSize === 'small',
                 'avonni-primitive-activity-timeline-item__action-icon_medium':
-                    this.isActionIcon() && this.iconSize === 'medium',
+                    this.isActionIcon && this.iconSize === 'medium',
                 'avonni-primitive-activity-timeline-item__action-icon_large':
-                    this.isActionIcon() && this.iconSize === 'large'
+                    this.isActionIcon && this.iconSize === 'large'
             })
             .toString();
     }
@@ -525,13 +535,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                 composed: true
             })
         );
-    }
-
-    /**
-     * Check if the type of the icon is action
-     */
-    isActionIcon() {
-        return this.iconName.split(':')[0] === 'action';
     }
 
     /**
