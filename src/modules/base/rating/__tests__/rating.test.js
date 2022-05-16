@@ -57,6 +57,7 @@ describe('Rating', () => {
         expect(element.max).toBe(5);
         expect(element.min).toBe(1);
         expect(element.readOnly).toBeFalsy();
+        expect(element.required).toBeFalsy();
         expect(element.selection).toBe('continuous');
         expect(element.value).toBeUndefined();
         expect(element.valueHidden).toBeFalsy();
@@ -214,6 +215,17 @@ describe('Rating', () => {
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons[1].click();
             expect(element.value).toBe(3);
+        });
+    });
+
+    // required
+    it('Rating: required', () => {
+        element.required = true;
+
+        return Promise.resolve().then(() => {
+            const required = element.shadowRoot.querySelector('.slds-required');
+            expect(required).toBeTruthy();
+            expect(required.textContent).toBe('*');
         });
     });
 
@@ -438,6 +450,46 @@ describe('Rating', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+       /* ----- METHODS ----- */
+
+
+
+    // reportValidity
+    // Depends on required
+    it('Rating: reportValidity method', () => {
+        element.required = true;
+        element.reportValidity();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+        // setCustomValidity
+        it('Rating: setCustomValidity method', () => {
+            const spy = jest.spyOn(element, 'setCustomValidity');
+    
+            element.setCustomValidity('Something');
+            expect(spy).toHaveBeenCalled();
+        });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('Rating: showHelpMessageIfInvalid method', () => {
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '.slds-form-element__help'
+            );
+            expect(help).toBeTruthy();
         });
     });
 });
