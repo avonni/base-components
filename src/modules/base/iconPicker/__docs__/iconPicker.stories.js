@@ -361,3 +361,13 @@ StandardActionIcon.args = {
     menuIconSize: 'large',
     placeholder: 'Type icon name'
 };
+
+export const ActionIconWithMenuLabel = Template.bind({});
+ActionIconWithMenuLabel.args = {
+    label: 'Icon label',
+    fieldLevelHelp: 'Help text',
+    value: 'action:add_file',
+    menuLabel: 'Menu',
+    menuIconSize: 'large',
+    placeholder: 'Type icon name'
+};

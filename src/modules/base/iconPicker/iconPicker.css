@@ -63,3 +63,22 @@ button:disabled {
 .avonni-builder-icon-picker-small-icon-padding {
     padding: 0.05rem;
 }
+
+.avonni-icon-picker__action-icon_small-scaling {
+    margin: 0 -0.4rem 0 -0.6rem;
+    transform: scale(0.38);
+}
+
+.avonni-icon-picker__action-icon_medium-scaling {
+    margin: 0 -0.4rem 0 -0.6rem;
+    transform: scale(0.55);
+}
+
+.avonni-icon-picker__action-icon_large-scaling {
+    margin: 0 -0.4rem 0 -0.6rem;
+    transform: scale(0.6);
+}
+
+.avonni-icon-picker__toggle-button_size-limit {
+    max-height: 2rem;
+}

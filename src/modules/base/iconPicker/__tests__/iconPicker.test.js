@@ -349,6 +349,48 @@ describe('IconPicker', () => {
             });
     });
 
+    it('Small action icon  scaling class', () => {
+        element.value = 'action:add_file';
+        element.menuIconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="button-icon-menu-container"]'
+            );
+            expect(container.classList).toContain(
+                'avonni-icon-picker__action-icon_small-scaling'
+            );
+        });
+    });
+
+    it('Medium action icon scaling class', () => {
+        element.value = 'action:add_file';
+        element.menuIconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="button-icon-menu-container"]'
+            );
+            expect(container.classList).toContain(
+                'avonni-icon-picker__action-icon_medium-scaling'
+            );
+        });
+    });
+
+    it('Large action icon large scaling class', () => {
+        element.value = 'action:add_file';
+        element.menuIconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const container = element.shadowRoot.querySelector(
+                '[data-element-id="button-icon-menu-container"]'
+            );
+            expect(container.classList).toContain(
+                'avonni-icon-picker__action-icon_large-scaling'
+            );
+        });
+    });
+
     /* ----- TABS ----- */
 
     it('Initial tabs on no hidden categories', () => {

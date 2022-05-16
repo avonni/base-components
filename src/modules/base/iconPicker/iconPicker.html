@@ -36,7 +36,11 @@
                     >
                         {menuLabel}
                     </label>
-                    <span if:false={showEmptyIcon} class="slds-icon_container">
+                    <span
+                        if:false={showEmptyIcon}
+                        class={computedIconContainerClass}
+                        data-element-id="button-icon-menu-container"
+                    >
                         <lightning-icon
                             class={computedIconClass}
                             icon-name={computedValue}

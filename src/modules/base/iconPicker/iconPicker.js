@@ -523,7 +523,8 @@ export default class IconPicker extends LightningElement {
             classes.add({
                 'slds-p-horizontal_xx-small': true,
                 'slds-button_neutral': this.menuVariant === 'border',
-                'slds-button_inverse': this.menuVariant === 'border-inverse'
+                'slds-button_inverse': this.menuVariant === 'border-inverse',
+                'avonni-icon-picker__toggle-button_size-limit': true
             });
         } else {
             classes.add({
@@ -561,13 +562,7 @@ export default class IconPicker extends LightningElement {
      */
     get computedIconClass() {
         const classes = classSet();
-
-        if (this.value && this.value.split(':')[0] === 'action') {
-            classes.add({
-                'medium-icon-padding': this.menuIconSize === 'xx-small',
-                'large-icon-padding': this.menuIconSize !== 'xx-small'
-            });
-        } else {
+        if (!this.value.split(':')[0] === 'action') {
             classes.add({
                 'avonni-builder-icon-picker-x-small-icon-padding':
                     this.menuIconSize === 'x-small',
@@ -577,6 +572,29 @@ export default class IconPicker extends LightningElement {
             });
         }
 
+        return classes.toString();
+    }
+
+    /**
+     * Computed CSS classes for the button icon container.
+     * Adds a scaling class if icon is of type "action".
+     *
+     * @type {string}
+     */
+    get computedIconContainerClass() {
+        const classes = classSet('slds-icon_container');
+        if (this.value && this.value.split(':')[0] === 'action') {
+            classes.add({
+                'avonni-icon-picker__action-icon_small-scaling':
+                    this.menuIconSize === 'xx-small',
+                'avonni-icon-picker__action-icon_medium-scaling':
+                    this.menuIconSize === 'x-small' ||
+                    this.menuIconSize === 'small' ||
+                    this.menuIconSize === 'medium',
+                'avonni-icon-picker__action-icon_large-scaling':
+                    this.menuIconSize === 'large'
+            });
+        }
         return classes.toString();
     }
 
