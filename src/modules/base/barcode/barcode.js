@@ -32,4 +32,57 @@
 
 import { LightningElement } from 'lwc';
 
-export default class Barcode extends LightningElement {}
+const SYMBOLOGY = {
+    valid: [
+        'EAN8',
+        'EAN13',
+        'UPCE',
+        'UPCA',
+        'Code11',
+        'Code39',
+        'Code39Extended',
+        'Code93',
+        'Code93Extended',
+        'Code128',
+        'Code128A',
+        'Code128B',
+        'Code128C',
+        'GS1-128',
+        'MSImod10',
+        'MSImod11',
+        'MSImod1010',
+        'MSImod1110',
+        'POSTNET'
+    ],
+    default: 'Code39'
+};
+
+const RENDERING_ENGINE = {
+    valid: ['canvas', 'svg'],
+    default: 'svg'
+};
+
+const DEFAULT_BACKGROUND = 0xfff;
+const DEFAULT_SIZE = 300;
+const DEFAULT_HIDE_VALUE = false;
+const DEFAULT_CHECKSUM = false;
+const DEFAULT_TEXT_COLOR = 0x000000;
+
+/**
+ * @class
+ * @name Barcode
+ * @descriptor avonni-barcode
+ * @storyId example-barcode--base
+ * @public
+ */
+export default class Barcode extends LightningElement {
+    _background = DEFAULT_BACKGROUND;
+    _color;
+    _renderAs = RENDERING_ENGINE.default;
+    _size = DEFAULT_SIZE;
+    _value;
+    _hideValue = DEFAULT_HIDE_VALUE;
+    _checksum = DEFAULT_CHECKSUM;
+    _textColor = DEFAULT_TEXT_COLOR;
+    _type = SYMBOLOGY.default;
+}
