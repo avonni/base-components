@@ -37,34 +37,15 @@
         <ul data-element-id="chip-container-list">
             <template for:each={items} for:item="chip" for:index="index">
                 <li key={uniqueKey} role="presentation" data-index={index}>
-                    <c-chip
+                    <c-primitive-chip
                         label={chip.label}
                         variant={chip.variant}
                         outline={chip.outline}
+                        avatar={chip.avatar}
+                        avatar-position={chip.avatarPosition}
+                        data-index={index}
                     >
-                        <template if:true={chip.avatar}>
-                            <template if:true={showAvatarLeft}>
-                                <c-avatar
-                                    slot="left"
-                                    size="x-small"
-                                    src={chip.avatar.src}
-                                    fallback-icon-name={chip.avatar.fallbackIconName}
-                                    initials={chip.avatar.initials}
-                                    variant={chip.avatar.variant}
-                                ></c-avatar>
-                            </template>
-                            <template if:false={showAvatarLeft}>
-                                <c-avatar
-                                    slot="right"
-                                    size="x-small"
-                                    src={chip.avatar.src}
-                                    fallback-icon-name={chip.avatar.fallbackIconName}
-                                    initials={chip.avatar.initials}
-                                    variant={chip.avatar.variant}
-                                ></c-avatar>
-                            </template>
-                        </template>
-                    </c-chip>
+                    </c-primitive-chip>
                 </li>
             </template>
         </ul>

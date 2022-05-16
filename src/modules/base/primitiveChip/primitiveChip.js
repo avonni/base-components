@@ -133,9 +133,9 @@ export default class PrimitiveChip extends LightningElement {
         return this._avatarPosition;
     }
     set avatarPosition(position) {
-        this._avatarPosition = this._variant = normalizeString(position, {
-            fallbackValue: CHIP_VARIANTS.default,
-            validValues: CHIP_VARIANTS.valid
+        this._avatarPosition = normalizeString(position, {
+            fallbackValue: AVATAR_POSITIONS.default,
+            validValues: AVATAR_POSITIONS.valid
         });
     }
 
@@ -143,6 +143,7 @@ export default class PrimitiveChip extends LightningElement {
      *  Returns true if avatar is left, if not, returns false.
      */
     get showAvatarLeft() {
-        return this.avatarPosition === 'left';
+        console.log(this.avatarPosition);
+        return this.avatarPosition !== 'right';
     }
 }

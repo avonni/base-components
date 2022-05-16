@@ -75,8 +75,4 @@ export default class ChipContainer extends LightningElement {
     get uniqueKey() {
         return generateUUID();
     }
-
-    get showAvatarLeft() {
-        return true;
-    }
 }

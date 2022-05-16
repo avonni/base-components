@@ -36,14 +36,20 @@ import ChipContainer from '../chipContainer';
 const MOCK_ITEM_SET = [
     {
         label: 'First chip',
-        name: 'first',
         variant: 'base',
-        avatarPosition: 'left'
+        outline: true
     },
     {
         label: 'Second chip',
-        name: 'second',
-        variant: 'base',
+        variant: 'warning',
+        avatar: {
+            fallbackIconName: 'custom:custom1',
+            variant: 'circle'
+        }
+    },
+    {
+        label: 'third chip',
+        avatarPosition: 'right',
         avatar: {
             fallbackIconName: 'custom:custom1',
             variant: 'circle'
@@ -82,7 +88,7 @@ describe('Chip Container', () => {
             const itemsContainer = element.shadowRoot.querySelector(
                 '[data-element-id="chip-container-list"]'
             );
-            expect(itemsContainer.childElementCount).toBe(2);
+            expect(itemsContainer.childElementCount).toBe(3);
         });
     });
 
@@ -94,6 +100,19 @@ describe('Chip Container', () => {
                 '[data-element-id="span-alternative-text"]'
             );
             expect(itemsContainer.textContent).toEqual('alternative text');
+        });
+    });
+
+    /* ----- ITEM ATTRIBUTES ----- */
+
+    // avatar position
+    it('Chip container : avatar position', () => {
+        element.items = [...MOCK_ITEM_SET];
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-index=2] [data-element-id="avatar-right"]'
+            );
+            expect(avatar.slot).toEqual('right');
         });
     });
 });

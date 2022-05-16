@@ -1,14 +1,12 @@
 const ITEMS = [
     {
         label: 'First chip',
-        name: 'first',
-        variant: 'base',
-        avatarPosition: 'left'
+        variant: 'base'
     },
     {
         label: 'Second chip',
-        name: 'second',
         variant: 'base',
+        avatarPosition: 'left',
         avatar: {
             fallbackIconName: 'custom:custom1',
             variant: 'circle'
@@ -16,7 +14,6 @@ const ITEMS = [
     },
     {
         label: 'Third chip',
-        name: 'third',
         variant: 'warning',
         avatar: {
             fallbackIconName: 'standard:user',
@@ -27,8 +24,8 @@ const ITEMS = [
     },
     {
         label: 'Fourth chip',
-        name: 'fourth',
         variant: 'base',
+        avatarPosition: 'left',
         avatar: {
             fallbackIconName: 'standard:user',
             variant: 'circle',
@@ -37,13 +34,10 @@ const ITEMS = [
     },
     {
         label: 'Fifth chip',
-        name: 'fifth',
-        outline: false,
-        avatarPosition: 'left'
+        outline: false
     },
     {
         label: 'Sixth chip',
-        name: 'sixth',
         outline: true,
         avatar: {
             variant: 'circle',
@@ -52,17 +46,16 @@ const ITEMS = [
     },
     {
         label: 'Seventh chip',
-        name: 'seventh',
         avatar: {
             variant: 'circle',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
         },
         variant: 'offline',
+        avatarPosition: 'right',
         outline: true
     },
     {
-        label: 'Eighth chip',
-        name: 'eighth'
+        label: 'Eighth chip'
     }
 ];
 

@@ -41,7 +41,7 @@
     >
         <template if:true={avatar}>
             <template if:true={showAvatarLeft}>
-                <c-avatar
+                <c-primitive-avatar
                     slot="left"
                     size="x-small"
                     src={avatar.src}
@@ -49,10 +49,10 @@
                     initials={avatar.initials}
                     variant={avatar.variant}
                     data-element-id="avatar-left"
-                ></c-avatar>
+                ></c-primitive-avatar>
             </template>
             <template if:false={showAvatarLeft}>
-                <c-avatar
+                <c-primitive-avatar
                     slot="right"
                     size="x-small"
                     src={avatar.src}
@@ -60,7 +60,7 @@
                     initials={avatar.initials}
                     variant={avatar.variant}
                     data-element-id="avatar-right"
-                ></c-avatar>
+                ></c-primitive-avatar>
             </template>
         </template>
     </c-chip>
