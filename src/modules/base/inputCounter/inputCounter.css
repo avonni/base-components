@@ -85,11 +85,11 @@
 }
 
 .slds-input__button_decrement {
-    z-index: 1000;
+    z-index: 90;
 }
 
 .slds-input__button_increment {
-    z-index: 1000;
+    z-index: 90;
 }
 
 .avonni-input-counter_standard-top {
