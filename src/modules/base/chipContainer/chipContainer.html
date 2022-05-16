@@ -33,10 +33,18 @@
 -->
 
 <template>
-    <div data-element-id="div-wrapper">
-        <ul data-element-id="chip-container-list">
+    <span data-element-id="div-wrapper">
+        <ul
+            data-element-id="chip-container-list"
+            class="slds-listbox slds-is-relative slds-listbox_horizontal"
+        >
             <template for:each={items} for:item="chip" for:index="index">
-                <li key={uniqueKey} role="presentation" data-index={index}>
+                <li
+                    key={uniqueKey}
+                    role="presentation"
+                    data-index={index}
+                    class="slds-listbox-item"
+                >
                     <c-primitive-chip
                         label={chip.label}
                         variant={chip.variant}
@@ -49,7 +57,7 @@
                 </li>
             </template>
         </ul>
-    </div>
+    </span>
     <span
         if:true={alternativeText}
         class="slds-assistive-text"
