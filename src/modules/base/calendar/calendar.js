@@ -100,6 +100,13 @@ export default class Calendar extends LightningElement {
     calendarData;
 
     connectedCallback() {
+        let setDate = new Date(DEFAULT_DATE);
+        if (this._value[0]) setDate = new Date(this._value[0]);
+        if (setDate < this.min) setDate = new Date(this.min);
+        if (setDate > this.max) setDate = new Date(this.max);
+
+        this.displayDate = new Date(setDate);
+
         this.updateDateParameters();
         this.computeFocus(false);
     }
@@ -218,6 +225,10 @@ export default class Calendar extends LightningElement {
     set max(max) {
         this._max = this.formattedWithTimezoneOffset(new Date(max));
         this._max.setHours(0, 0, 0, 0);
+        if (this.displayDate > this.max) {
+            this.displayDate = new Date(this.max);
+            this.updateDateParameters();
+        }
     }
 
     /**
@@ -235,6 +246,10 @@ export default class Calendar extends LightningElement {
     set min(min) {
         this._min = this.formattedWithTimezoneOffset(new Date(min));
         this._min.setHours(0, 0, 0, 0);
+        if (this.displayDate < this.min) {
+            this.displayDate = new Date(this.min);
+            this.updateDateParameters();
+        }
     }
 
     /**
@@ -287,18 +302,7 @@ export default class Calendar extends LightningElement {
                 return x.setHours(0, 0, 0, 0) !== NULL_DATE;
             });
 
-            let setDate;
-            if (this._value[0]) {
-                setDate = new Date(this._value[0]);
-            } else {
-                setDate = new Date(DEFAULT_DATE);
-            }
-            if (setDate < this.min) {
-                setDate = new Date(this.min);
-            } else if (setDate > this.max) {
-                setDate = new Date(this.max);
-            }
-            this.displayDate = new Date(setDate);
+            this.displayDate = new Date(this._value[0]);
         }
         this.updateDateParameters();
     }
