@@ -113,8 +113,6 @@ export default class SchedulerHeader {
 
     /**
      * Create the header columns.
-     *
-     * @param {boolean} firstRender If true, this is the first render of the header.
      */
     initColumns() {
         const { unit, label, span, isReference } = this;
@@ -183,8 +181,6 @@ export default class SchedulerHeader {
             // If the current date is bigger than the reference end, stop adding columns
             if (!isReference && this.dateIsBiggerThanEnd(date)) {
                 this.columns[this.columns.length - 1].end = this.end.ts;
-                this.setHeaderEnd();
-                this.cleanEmptyLastColumn();
                 break;
             }
 
@@ -288,26 +284,28 @@ export default class SchedulerHeader {
             );
         }
 
-        if (isReference && canExpandOverEndOfUnit) {
-            // If the start date is in the middle of the unit,
-            // make sure the end date is too
-            if (unit === 'year') {
-                end = end.set({ months: start.month });
-            }
-            if ((unit === 'month' || unit === 'year') && start.day > 1) {
-                end = end.set({ days: start.day - 1 });
-            }
-            if (unit === 'week') {
-                if (start.weekday === 1) {
-                    end = addToDate(end, 'day', 1);
+        if (isReference) {
+            if (canExpandOverEndOfUnit) {
+                // If the start date is in the middle of the unit,
+                // make sure the end date is too
+                if (unit === 'year') {
+                    end = end.set({ months: start.month });
                 }
-                end = end.set({ weekday: start.weekday - 1 });
-            }
-            if (unit === 'day' && start.hour !== 0) {
-                end = end.set({ hours: start.hour - 1 });
-            }
-            if (unit === 'hour' && start.minute !== 0) {
-                end = end.set({ minutes: start.minute - 1 });
+                if ((unit === 'month' || unit === 'year') && start.day > 1) {
+                    end = end.set({ days: start.day - 1 });
+                }
+                if (unit === 'week') {
+                    if (start.weekday === 1) {
+                        end = addToDate(end, 'day', 1);
+                    }
+                    end = end.set({ weekday: start.weekday - 1 });
+                }
+                if (unit === 'day' && start.hour !== 0) {
+                    end = end.set({ hours: start.hour - 1 });
+                }
+                if (unit === 'hour' && start.minute !== 0) {
+                    end = end.set({ minutes: start.minute - 1 });
+                }
             }
 
             lastColumn.end = end.ts;
