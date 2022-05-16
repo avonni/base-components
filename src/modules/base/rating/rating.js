@@ -33,6 +33,8 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUUID, classSet } from 'c/utils';
+import { FieldConstraintApi } from '../inputUtils/validity';
+import { InteractingState } from '../inputUtils/interacting';
 
 const RATING_SELECTIONS = {
     valid: ['continuous', 'single'],
@@ -96,9 +98,16 @@ export default class Rating extends LightningElement {
     _value;
     _valueHidden = false;
     _variant = LABEL_VARIANTS.default;
+    _required = false;
 
     init = false;
     initStyles = false;
+    helpMessage;
+
+    connectedCallback() {
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+    }
 
     renderedCallback() {
         this.ratingRecalculation();
@@ -252,6 +261,35 @@ export default class Rating extends LightningElement {
     }
 
     /**
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
+     *
+     * @returns {boolean} False if invalid, true if valid.
+     * @public
+     */
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
+        });
+    }
+
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get required() {
+        return this._required;
+    }
+
+    set required(value) {
+        this._required = normalizeBoolean(value);
+    }
+
+    /**
      * Valid values include continuous and single.
      *
      * @type {string}
@@ -272,6 +310,17 @@ export default class Rating extends LightningElement {
         if (this.init) {
             this.ratingRecalculation();
         }
+    }
+
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
     }
 
     /**
@@ -387,6 +436,21 @@ export default class Rating extends LightningElement {
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
             .toString();
+    }
+
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && !this._value
+            });
+        }
+        return this._constraintApi;
     }
 
     /*

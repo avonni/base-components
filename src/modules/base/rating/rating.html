@@ -34,6 +34,7 @@
 
 <template>
     <div class={computedContainerClass} data-element-id="div-wrapper">
+        <abbr if:true={required} title="required" class="slds-required">*</abbr>
         <template if:true={label}>
             <label class={computedLegendClass} data-element-id="label">
                 {label}
