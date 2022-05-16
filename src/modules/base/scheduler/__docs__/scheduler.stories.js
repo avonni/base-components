@@ -33,7 +33,6 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
     columns,
-    oneColumn,
     rows,
     headers,
     events,
@@ -42,8 +41,6 @@ import {
     disabledDatesTimes,
     referenceLines,
     start,
-    lotsOfEvents,
-    lotsOfRows,
     basicEvents
 } from './data';
 
@@ -490,19 +487,6 @@ Base.args = {
     rows,
     start,
     events: basicEvents
-};
-
-export const BigDataSet = Template.bind({});
-BigDataSet.args = {
-    columns: oneColumn,
-    rowsKeyField: 'id',
-    rows: lotsOfRows(),
-    start,
-    events: lotsOfEvents(),
-    timeSpan: {
-        unit: 'year',
-        span: 3
-    }
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});

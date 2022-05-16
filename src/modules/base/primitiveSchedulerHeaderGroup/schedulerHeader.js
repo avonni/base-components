@@ -41,9 +41,6 @@ import {
     numberOfUnitsBetweenDates
 } from 'c/utilsPrivate';
 
-// Number of cells displayed on a 4K screen, if the label was empty
-const MAX_VISIBLE_COLUMNS = Math.ceil(3840 / 17);
-
 /**
  * Represent one row of the scheduler header group.
  *
@@ -76,6 +73,8 @@ const MAX_VISIBLE_COLUMNS = Math.ceil(3840 / 17);
  *
  * @param {DateTime} start Starting date of the header.
  *
+ * @param {boolean} canExpandOverEndOfUnit If true, the header end does not have to stop at the exact end of its unit.
+ *
  * @param {string} unit Unit used by the header (minute, hour, day, week, month or year).
  */
 export default class SchedulerHeader {
@@ -83,6 +82,7 @@ export default class SchedulerHeader {
         this.availableDaysOfTheWeek = props.availableDaysOfTheWeek;
         this.availableMonths = props.availableMonths;
         this.availableTimeFrames = props.availableTimeFrames;
+        this.canExpandOverEndOfUnit = props.canExpandOverEndOfUnit;
         this._end = props.end;
         this.columns = [];
         this.columnWidths = [];
@@ -96,7 +96,7 @@ export default class SchedulerHeader {
         this.start = props.start;
         this.unit = props.unit;
 
-        this.initColumns(DateTime.fromMillis(this.start.ts), true);
+        this.initColumns();
     }
 
     get end() {
@@ -114,14 +114,13 @@ export default class SchedulerHeader {
     /**
      * Create the header columns.
      *
-     * @param {DateTime} startDate Starting date of the header.
-     * @param {boolean} firstRender If true, this is the first render of the header. Only one column will be created.
+     * @param {boolean} firstRender If true, this is the first render of the header.
      */
-    initColumns(startDate, firstRender = false) {
+    initColumns() {
         const { unit, label, span, isReference } = this;
-        let iterations = this.computeNumberOfColumns(firstRender);
+        let iterations = this.numberOfColumns;
         this.columns = [];
-        let date = startDate;
+        let date = this.start;
 
         for (let i = 0; i < iterations; i++) {
             // If this is not the first column, we start the month on the first day
@@ -160,7 +159,6 @@ export default class SchedulerHeader {
             // because of the allowed dates/times
             if (
                 isReference &&
-                firstRender &&
                 i === 0 &&
                 date.ts !== this.start.ts &&
                 unit === 'week'
@@ -204,28 +202,9 @@ export default class SchedulerHeader {
                     : date.startOf(unit);
         }
 
-        if (firstRender) {
-            this.start = DateTime.fromMillis(this.columns[0].start);
-        } else {
-            this.setHeaderEnd();
-            this.cleanEmptyLastColumn();
-        }
-    }
-
-    /**
-     * Computes the number of columns that should be created.
-     *
-     * @param {boolean} firstRender Should be true if it is the first render of the header.
-     * @returns {number} Number of visible columns.
-     */
-    computeNumberOfColumns(firstRender) {
-        // On the first render, we create only one column, to compute the default cell width.
-        if (firstRender || this.numberOfColumns < 1) {
-            return 1;
-        }
-        return this.numberOfColumns > MAX_VISIBLE_COLUMNS
-            ? MAX_VISIBLE_COLUMNS
-            : this.numberOfColumns;
+        this.start = DateTime.fromMillis(this.columns[0].start);
+        this.setHeaderEnd();
+        this.cleanEmptyLastColumn();
     }
 
     /**
@@ -283,8 +262,15 @@ export default class SchedulerHeader {
      * Adjust the header end when the start or end is in the middle of a unit.
      */
     setHeaderEnd() {
-        const { unit, duration, span, columns, isReference, numberOfColumns } =
-            this;
+        const {
+            unit,
+            duration,
+            span,
+            columns,
+            isReference,
+            numberOfColumns,
+            canExpandOverEndOfUnit
+        } = this;
         const lastColumn = columns[columns.length - 1];
         const start = DateTime.fromMillis(columns[0].start);
         let end = DateTime.fromMillis(lastColumn.end);
@@ -302,9 +288,9 @@ export default class SchedulerHeader {
             );
         }
 
-        // If the start date is in the middle of the unit,
-        // make sure the end date is too
-        if (isReference) {
+        if (isReference && canExpandOverEndOfUnit) {
+            // If the start date is in the middle of the unit,
+            // make sure the end date is too
             if (unit === 'year') {
                 end = end.set({ months: start.month });
             }

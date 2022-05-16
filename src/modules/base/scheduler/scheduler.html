@@ -208,22 +208,6 @@
 
         <!-- Schedule -->
         <div class="slds-col slds-grid avonni-scheduler__schedule-col">
-            <!-- Left infinite loading spinner -->
-            <div if:true={showLeftInfiniteLoadSpinner} class="slds-is-relative">
-                <div
-                    role="status"
-                    class="
-                        avonni-scheduler__infinite-load-spinner_left
-                        slds-spinner slds-spinner_medium
-                    "
-                >
-                    <span class="slds-assistive-text"
-                        >{loadingStateAlternativeText}</span
-                    >
-                    <div class="slds-spinner__dot-a"></div>
-                    <div class="slds-spinner__dot-b"></div>
-                </div>
-            </div>
             <div class="slds-col">
                 <!-- Headers -->
                 <c-primitive-scheduler-header-group
@@ -237,10 +221,8 @@
                     start={start}
                     time-span={timeSpan}
                     data-element-id="avonni-primitive-scheduler-header-group"
-                    onprivateheaderregister={handleHeaderRegister}
                     onprivatecellwidthchange={handleHeaderCellWidthChange}
                     onprivateheaderchange={handleHeaderChange}
-                    onprivateheaderfirstrender={handleHeaderFirstRender}
                     onprivatevisibleheaderchange={handleHeaderVisibleCellsChange}
                 ></c-primitive-scheduler-header-group>
                 <!-- Rows -->
@@ -329,25 +311,6 @@
                             </div>
                         </template>
                     </div>
-                </div>
-            </div>
-            <!-- Right infinite loading spinner -->
-            <div
-                if:true={showRightInfiniteLoadSpinner}
-                class="slds-is-relative"
-            >
-                <div
-                    role="status"
-                    class="
-                        avonni-scheduler__infinite-load-spinner
-                        slds-spinner slds-spinner_medium
-                    "
-                >
-                    <span class="slds-assistive-text"
-                        >{loadingStateAlternativeText}</span
-                    >
-                    <div class="slds-spinner__dot-a"></div>
-                    <div class="slds-spinner__dot-b"></div>
                 </div>
             </div>
         </div>

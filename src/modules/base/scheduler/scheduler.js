@@ -106,14 +106,12 @@ export default class Scheduler extends LightningElement {
     _datatableRowsHeight;
     _draggedEvent;
     _draggedSplitter = false;
-    _headerHeightChange = false;
     _initialDatatableWidth;
     _initialState = {};
     _mouseIsDown = false;
     _numberOfVisibleCells = 0;
     _resizedEvent;
     _toolbarCalendarIsFocused = false;
-    _visibleInterval;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -124,9 +122,6 @@ export default class Scheduler extends LightningElement {
     datatableIsHidden = false;
     datatableIsOpen = false;
     datatableWidth = 0;
-    scrollHeadersTo = () => {
-        return true;
-    };
     selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
     selectedEvent;
     showContextMenu = false;
@@ -140,24 +135,13 @@ export default class Scheduler extends LightningElement {
     connectedCallback() {
         this.crud = eventCrudMethods(this);
         this.initHeaders();
+        this.initEvents();
         this._connected = true;
     }
 
     renderedCallback() {
-        if (this._headerHeightChange) {
-            // The first header primitive render will set this variable to true
-            // and trigger a re-render. So we return to prevent running the other calculations twice.
-            this.updateDatatablePosition();
-            this._headerHeightChange = false;
-            return;
-        }
-
         // Save the default datatable column width
-        if (!this._initialDatatableWidth) {
-            this._initialDatatableWidth =
-                this.datatableCol.getBoundingClientRect().width;
-            this.datatableWidth = this._initialDatatableWidth;
-        }
+        if (!this._initialDatatableWidth) this.resetDatatableWidth();
 
         // Save the datatable row height and update the body styles
         if (!this._datatableRowsHeight) {
@@ -1040,37 +1024,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * If true, a loading spinner is displayed on the left of the schedule.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get showLeftInfiniteLoadSpinner() {
-        if (!this.smallestHeader || this.isLoading) return false;
-
-        const firstVisibleColumn = this.smallestHeader.columns[0];
-        const firstVisibleTime =
-            firstVisibleColumn && dateTimeObjectFrom(firstVisibleColumn.start);
-        return firstVisibleTime > this.smallestHeader.start;
-    }
-
-    /**
-     * If true, a loading spinner is displayed on the right of the schedule.
-     *
-     * @type {boolean}
-     * @default false
-     */
-    get showRightInfiniteLoadSpinner() {
-        if (!this.smallestHeader || this.isLoading) return false;
-
-        const lastVisibleColumn =
-            this.smallestHeader.columns[this.smallestHeader.columns.length - 1];
-        const lastVisibleTime =
-            lastVisibleColumn && dateTimeObjectFrom(lastVisibleColumn.end);
-        return lastVisibleTime < this.smallestHeader.end;
-    }
-
-    /**
      * Duration of one column of the smallest unit header, in milliseconds.
      *
      * @type {number}
@@ -1135,7 +1088,7 @@ export default class Scheduler extends LightningElement {
      * @type {string}
      */
     get visibleIntervalLabel() {
-        if (!this._visibleInterval) return null;
+        if (!this.visibleInterval) return null;
 
         const unit = this.timeSpan.unit;
         let format;
@@ -1159,9 +1112,22 @@ export default class Scheduler extends LightningElement {
                 break;
         }
 
-        const start = this._visibleInterval.s.toFormat(format);
-        const end = this._visibleInterval.e.toFormat(format);
+        const start = this.visibleInterval.s.toFormat(format);
+        const end = this.visibleInterval.e.toFormat(format);
         return start === end ? start : `${start} - ${end}`;
+    }
+
+    /**
+     * Currently visible date interval, as a Luxon Interval object.
+     *
+     * @type {Interval}
+     */
+    get visibleInterval() {
+        const header = this.template.querySelector(
+            '[data-element-id="avonni-primitive-scheduler-header-group"]'
+        );
+        if (header) return header.visibleInterval;
+        return null;
     }
 
     /*
@@ -1234,7 +1200,6 @@ export default class Scheduler extends LightningElement {
             }
         }
         this._start = start;
-        this.initHeaders();
     }
 
     /**
@@ -1282,14 +1247,15 @@ export default class Scheduler extends LightningElement {
      * Create the computed events.
      */
     initEvents() {
-        if (!this.smallestHeader) return;
-
         // The disabled dates/times and reference lines are special events
         this._allEvents = this.events
             .concat(this.computedDisabledDatesTimes)
             .concat(this.computedReferenceLines);
 
-        if (!this._allEvents.length) return;
+        if (!this._allEvents.length) {
+            this.computedEvents = [];
+            return;
+        }
 
         this._allEvents.sort((first, second) => {
             return (
@@ -1305,7 +1271,10 @@ export default class Scheduler extends LightningElement {
      * Create the computed rows.
      */
     initRows() {
-        if (!this.smallestHeader || !this.rows || !this.rowsKeyField) return;
+        if (!this.smallestHeader || !this.rows || !this.rowsKeyField) {
+            this.computedRows = [];
+            return;
+        }
 
         let colorIndex = 0;
         this.computedRows = this.rows.map((row) => {
@@ -1475,8 +1444,8 @@ export default class Scheduler extends LightningElement {
         // We store the initial event object in a variable,
         // in case a custom field is used by the labels
         event.data = { ...event };
-        event.schedulerEnd = this._visibleInterval.e;
-        event.schedulerStart = this._visibleInterval.s;
+        event.schedulerEnd = this.visibleInterval.e;
+        event.schedulerStart = this.visibleInterval.s;
         event.availableMonths = this.availableMonths;
         event.availableDaysOfTheWeek = this.availableDaysOfTheWeek;
         event.availableTimeFrames = this.availableTimeFrames;
@@ -1747,10 +1716,10 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Create the computed events that are included in the currently loaded interval of time.
+     * Create the computed events that are included in the currently visible interval of time.
      */
     createVisibleEvents() {
-        const interval = this._visibleInterval;
+        const interval = this.visibleInterval;
         if (!interval) return [];
 
         const events = this._allEvents.filter((event) => {
@@ -1824,6 +1793,12 @@ export default class Scheduler extends LightningElement {
             y,
             draftValues: {}
         };
+    }
+
+    resetDatatableWidth() {
+        const columnWidth = this.datatableCol.getBoundingClientRect().width;
+        this._initialDatatableWidth = columnWidth;
+        this.datatableWidth = columnWidth;
     }
 
     /**
@@ -2023,13 +1998,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the privateheaderregister event fired by the primitive header. Save the header callback method to a variable.
-     */
-    handleHeaderRegister(event) {
-        this.scrollHeadersTo = event.detail.callbacks.scrollHeadersTo;
-    }
-
-    /**
      * Handle the privatecellwidthchange event fired by the primitive header. Save the smallest unit header cell width to a variable.
      */
     handleHeaderCellWidthChange(event) {
@@ -2041,23 +2009,10 @@ export default class Scheduler extends LightningElement {
      */
     handleHeaderChange(event) {
         this.smallestHeader = event.detail.smallestHeader;
-        this._headerHeightChange = true;
-    }
-
-    /**
-     * Handle the privatevisibleheaderchange event fired by the primitive header. Create the computed events and computed rows of the new visible interval.
-     */
-    handleHeaderVisibleCellsChange(event) {
-        const { direction, visibleCells, visibleInterval } = event.detail;
-        this._numberOfVisibleCells = visibleCells;
-        this._visibleInterval = visibleInterval;
 
         // Create the visible events
-        if (!this.computedEvents.length) {
-            this.initEvents();
-        } else {
-            this.computedEvents = this.createVisibleEvents();
-        }
+        this.computedEvents = this.createVisibleEvents();
+
         // Create the rows or update the visible columns
         if (!this.computedRows.length) {
             this.initRows();
@@ -2065,17 +2020,10 @@ export default class Scheduler extends LightningElement {
             this.updateVisibleRows();
         }
 
-        if (direction) {
-            const schedule = this.template.querySelector(
-                '.avonni-scheduler__wrapper'
-            );
-            const scrollOffset = this.cellWidth * visibleCells;
-            const scrollValue =
-                schedule.scrollLeft <= scrollOffset * 2
-                    ? schedule.scrollLeft + scrollOffset
-                    : schedule.scrollLeft - scrollOffset;
-            schedule.scrollTo({ left: scrollValue });
-        }
+        requestAnimationFrame(() => {
+            this.resetDatatableWidth();
+            this.updateDatatablePosition();
+        });
     }
 
     /**
@@ -2518,23 +2466,6 @@ export default class Scheduler extends LightningElement {
             this.hideDetailPopover();
             this.hideContextMenu();
         }
-
-        const schedule = this.template.querySelector(
-            '.avonni-scheduler__wrapper'
-        );
-        const scroll = schedule.scrollLeft;
-        const scrollOffset = this.cellWidth * this._numberOfVisibleCells;
-        const startOfSchedule =
-            this._visibleInterval.s.ts === this.smallestHeader.start.ts;
-        const loadLeftSchedule = !startOfSchedule && scroll <= scrollOffset;
-        const loadRightSchedule = scroll >= scrollOffset * 3;
-
-        // If the scroll value is at less or more than a quarter of the visible interval,
-        // reload the schedule with a new interval
-        if (loadRightSchedule || loadLeftSchedule) {
-            const direction = loadRightSchedule ? 'right' : 'left';
-            this.scrollHeadersTo(direction);
-        }
     }
 
     /**
@@ -2636,13 +2567,15 @@ export default class Scheduler extends LightningElement {
     }
 
     handleToolbarNextClick() {
-        const unit = this.timeSpan.unit;
-        this._start = addToDate(this.start, unit, 1);
+        const { unit, span } = this.timeSpan;
+        const date = addToDate(this.start, unit, span);
+        this.goToDate(date);
     }
 
     handleToolbarPrevClick() {
-        const unit = this.timeSpan.unit;
-        this._start = removeFromDate(this.start, unit, 1);
+        const { unit, span } = this.timeSpan;
+        const date = removeFromDate(this.start, unit, span);
+        this.goToDate(date);
     }
 
     /**
@@ -2669,8 +2602,6 @@ export default class Scheduler extends LightningElement {
             fallbackValue: HEADERS.default,
             toLowerCase: false
         });
-        this.computedRows = [];
-        this.computedEvents = [];
         this.initHeaders();
     }
 
