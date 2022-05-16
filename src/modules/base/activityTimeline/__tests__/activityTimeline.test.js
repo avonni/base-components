@@ -179,7 +179,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+                '[data-element-id="avonni-activity-timeline-icon"]'
             );
             expect(icon.iconName).toBe('standard:case');
         });
@@ -192,7 +192,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+                '[data-element-id="avonni-activity-timeline-icon"]'
             );
             expect(icon.size).toBe('xx-small');
         });
@@ -204,7 +204,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+                '[data-element-id="avonni-activity-timeline-icon"]'
             );
             expect(icon.size).toBe('x-small');
         });
@@ -216,7 +216,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+                '[data-element-id="avonni-activity-timeline-icon"]'
             );
             expect(icon.size).toBe('small');
         });
@@ -228,7 +228,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+                '[data-element-id="avonni-activity-timeline-icon"]'
             );
             expect(icon.size).toBe('medium');
         });
@@ -240,7 +240,7 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+                '[data-element-id="avonni-activity-timeline-icon"]'
             );
             expect(icon.size).toBe('large');
         });
