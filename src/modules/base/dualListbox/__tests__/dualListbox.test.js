@@ -870,7 +870,7 @@ describe('DualListbox', () => {
     /* ----- EVENTS ----- */
 
     // change
-    it('change event add', () => {
+    it('Dual Listbox change event add', () => {
         element.options = Options;
         element.value = ['1', '2'];
         element.addButtonLabel = 'add';
@@ -899,7 +899,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('change event remove', () => {
+    it('Dual Listbox change event remove', () => {
         element.options = Options;
         element.value = ['1', '2'];
         element.removeButtonLabel = 'remove';
@@ -927,7 +927,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('change event down', () => {
+    it('Dual Listbox change event down', () => {
         element.options = Options;
         element.value = ['1', '2', '3'];
         element.downButtonLabel = 'down';
@@ -959,7 +959,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('change event up', () => {
+    it('Dual Listbox change event up', () => {
         element.options = Options;
         element.value = ['1', '2', '3'];
         element.upButtonLabel = 'up';
@@ -992,7 +992,7 @@ describe('DualListbox', () => {
     });
 
     // blur
-    it('blur event', () => {
+    it('Dual Listbox blur event', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
@@ -1005,7 +1005,7 @@ describe('DualListbox', () => {
     });
 
     // focus
-    it('focus event', () => {
+    it('Dual Listbox focus event', () => {
         const handler = jest.fn();
         element.addEventListener('focus', handler);
         element.dispatchEvent(new CustomEvent('focus'));
@@ -1017,7 +1017,7 @@ describe('DualListbox', () => {
     });
 
     // optionclick
-    it('optionclick event', () => {
+    it('Dual Listbox optionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('optionclick', handler);
         element.options = Options;
@@ -1042,7 +1042,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('optionclick event using the keyboard', () => {
+    it('Dual Listbox optionclick event using the keyboard', () => {
         const handler = jest.fn();
         element.addEventListener('optionclick', handler);
         element.options = Options;

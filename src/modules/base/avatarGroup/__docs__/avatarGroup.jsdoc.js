@@ -20,7 +20,7 @@
  * @property {string} primaryText Primary text displayed next to the avatar.
  * @property {string} secondaryText Secondary text displayed next to the avatar.
  * @property {string} tertiaryText Tertiary text displayed next to the avatar.
- * @property {object[]} tags Array of tag objects. The tags will be displayed as badges in the avatar’s details. See <a href="/components/avatar/">Avatar</a> for allowed keys.
+ * @property {object[]} tags Array of tag objects. The tags will be displayed as chips in the avatar’s details. See <a href="/components/avatar/">Avatar</a> for allowed keys.
  * @property {object[]} actions Array of action objects. One action is displayed as a button icon. Two or more actions are displayed in a button menu.
  * @property {string} actionPosition Position of action button. Valid values are top-right, bottom-right, bottom-left or top-left.
  * @property {string} actionMenuIcon Optional custom icon to replace the button menu down arrow default.
@@ -30,7 +30,8 @@
  * @typedef {Object} AvatarGroupTag
  * @name tags
  * @property {string} label Tag label.
- * @property {string} variant The variant changes the style of the badge. Valid values include default, warning, error, success, lightest, inverse. Defaults to default.
+ * @property {string} variant The variant changes the style of the chip. Valid values include base, brand, warning, error, success, info, alt-inverse, inverse, offline. Defaults to base.
+ * @property {boolean} outline If true, display an outline style chip.
  */
 
 /**
