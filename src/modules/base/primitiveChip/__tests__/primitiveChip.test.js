@@ -58,6 +58,7 @@ describe('Primitive Chip', () => {
         expect(element.label).toEqual('');
         expect(element.outline).toEqual(false);
         expect(element.avatar).toEqual(null);
+        expect(element.avatarPosition).toEqual('left');
         expect(element.variant).toEqual('base');
     });
 
@@ -112,6 +113,23 @@ describe('Primitive Chip', () => {
                 '[data-element-id="chip"]'
             );
             expect(chip.outline).toBe(true);
+        });
+    });
+
+    // avatarPosition
+    it('avatarPosition', () => {
+        element.avatar = MOCK_AVATAR;
+        element.avatarPosition = 'right';
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="avatar-left"]'
+                )
+            ).toBeFalsy();
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avatar-right"]'
+            );
+            expect(avatar.slot).toBe('right');
         });
     });
 });

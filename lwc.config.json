@@ -335,6 +335,14 @@
             "path": "src/modules/base/primitiveCellTextarea/primitiveCellTextarea.js"
         },
         {
+            "name": "c/primitiveChip",
+            "path": "src/modules/base/primitiveChip/primitiveChip.js"
+        },
+        {
+            "name": "c/chipContainer",
+            "path": "src/modules/base/chipContainer/chipContainer.js"
+        },
+        {
             "name": "c/primitiveColorpickerButton",
             "path": "src/modules/base/primitiveColorpickerButton/primitiveColorpickerButton.js"
         },
@@ -597,6 +605,10 @@
         {
             "name": "avonni/chip",
             "path": "src/modules/base/chip/chip.js"
+        },
+        {
+            "name": "avonni/chipContainer",
+            "path": "src/modules/base/chipContainer/chipContainer.js"
         },
         {
             "name": "avonni/colorGradient",
@@ -873,6 +885,7 @@
         "avonni/calendar",
         "avonni/carousel",
         "avonni/chip",
+        "avonni/chipContainer",
         "avonni/colorGradient",
         "avonni/colorPalette",
         "avonni/colorPicker",

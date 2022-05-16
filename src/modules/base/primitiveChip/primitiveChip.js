@@ -48,11 +48,17 @@ const CHIP_VARIANTS = {
     default: 'base'
 };
 
+const AVATAR_POSITIONS = {
+    valid: ['left', 'right'],
+    default: 'left'
+};
+
 export default class PrimitiveChip extends LightningElement {
     _label = '';
     _outline = false;
     _variant = CHIP_VARIANTS.default;
     _avatar = null;
+    _avatarPosition = AVATAR_POSITIONS.default;
 
     /**
      * Label displayed in the chip.
@@ -104,6 +110,9 @@ export default class PrimitiveChip extends LightningElement {
 
     /**
      *  The avatar to display. Set to null by default
+     *  @public
+     *  @type {Object}
+     *  @default null
      */
     @api
     get avatar() {
@@ -113,11 +122,27 @@ export default class PrimitiveChip extends LightningElement {
         this._avatar = value;
     }
 
+    /**
+     *  The position of the avatar to display. Can be set to 'left' or 'right'. Left by default.
+     *  @public
+     *  @type {string}
+     *  @default left
+     */
+    @api
+    get avatarPosition() {
+        return this._avatarPosition;
+    }
+    set avatarPosition(position) {
+        this._avatarPosition = this._variant = normalizeString(position, {
+            fallbackValue: CHIP_VARIANTS.default,
+            validValues: CHIP_VARIANTS.valid
+        });
+    }
+
+    /**
+     *  Returns true if avatar is left, if not, returns false.
+     */
     get showAvatarLeft() {
-        if (this.avatar) {
-            if (!this.avatar.avatarPosition) return true;
-            return this.avatar.avatarPosition === 'left';
-        }
-        return false;
+        return this.avatarPosition === 'left';
     }
 }
