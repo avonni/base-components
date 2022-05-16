@@ -95,7 +95,7 @@ export default {
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                "The size of title's icon. Valid values are x-small, small, medium and large.",
+                "The size of title's icon. Valid values are xx-small, x-small, small, medium and large.",
             table: {
                 defaultValue: { summary: 'medium' },
                 type: { summary: 'string' }
@@ -108,7 +108,7 @@ export default {
             },
             options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
             description:
-                "The size of all the items' icon. Valid values are x-small, small, medium and large.",
+                "The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large.",
             table: {
                 defaultValue: { summary: 'small' },
                 type: { summary: 'string' }

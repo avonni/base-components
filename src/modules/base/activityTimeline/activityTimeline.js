@@ -190,7 +190,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * The size of the title's icon. Valid values are x-small, small, medium and large.
+     * The size of the title's icon. Valid values are xx-small, x-small, small, medium and large.
      *
      * @public
      * @type {string}
@@ -209,7 +209,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
-     * The size of all the items' icon. Valid values are x-small, small, medium and large.
+     * The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large.
      *
      * @public
      * @type {string}
