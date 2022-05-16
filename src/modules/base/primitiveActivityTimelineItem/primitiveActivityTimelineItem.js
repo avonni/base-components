@@ -393,7 +393,15 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get timelineItemBullet() {
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
-                'avonni-timeline-item__active-bullet': this.isActive
+                'avonni-timeline-item__active-bullet': this.isActive,
+                'avonni-primitive-activity-timeline-item__bullet-xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__bullet-x-small':
+                    this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__bullet-medium':
+                    this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__bullet-large':
+                    this.iconSize === 'large'
             })
             .toString();
     }

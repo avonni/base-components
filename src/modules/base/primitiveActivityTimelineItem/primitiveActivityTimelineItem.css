@@ -43,6 +43,22 @@
     box-shadow: 0 0 0 2px white;
 }
 
+.avonni-primitive-activity-timeline-item__bullet-xx-small {
+    left: -5px;
+}
+
+.avonni-primitive-activity-timeline-item__bullet-x-small {
+    left: -4px;
+}
+
+.avonni-primitive-activity-timeline-item__bullet-medium {
+    left: 3.2px;
+}
+
+.avonni-primitive-activity-timeline-item__bullet-large {
+    left: 12px;
+}
+
 .slds-timeline__icon.avonni-timeline-item__bullet.avonni-timeline-item__active-bullet::after {
     position: absolute;
     content: '';
