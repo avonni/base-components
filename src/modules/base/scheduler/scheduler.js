@@ -2010,6 +2010,9 @@ export default class Scheduler extends LightningElement {
     handleHeaderChange(event) {
         this.smallestHeader = event.detail.smallestHeader;
 
+        // Update the start date in case it was not available
+        this._start = this.smallestHeader.start;
+
         // Create the visible events
         this.computedEvents = this.createVisibleEvents();
 

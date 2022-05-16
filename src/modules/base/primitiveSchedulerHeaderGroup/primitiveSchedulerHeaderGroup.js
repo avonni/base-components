@@ -202,6 +202,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     set start(value) {
         const start =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
+        if (start.ts === this._start.ts) return;
+
         this._start =
             start instanceof DateTime
                 ? start
