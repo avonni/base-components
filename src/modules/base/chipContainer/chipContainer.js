@@ -42,7 +42,10 @@ export default class ChipContainer extends LightningElement {
     _outline = false;
 
     /**
-     * les items a display
+     * Items to display as chips
+     *
+     * @type {Object}
+     * @public
      */
     @api
     get items() {

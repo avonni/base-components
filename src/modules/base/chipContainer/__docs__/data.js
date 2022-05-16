@@ -59,4 +59,6 @@ const ITEMS = [
     }
 ];
 
-export { ITEMS };
+const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
+
+export { ITEMS, DEFAULT_ALTERNATIVE_TEXT };

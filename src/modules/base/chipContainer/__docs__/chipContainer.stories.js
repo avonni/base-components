@@ -31,7 +31,7 @@
  */
 
 import { ChipContainer } from '../__examples__/chipContainer';
-import { ITEMS } from './data.js';
+import { ITEMS, DEFAULT_ALTERNATIVE_TEXT } from './data.js';
 
 export default {
     title: 'Example/Chip Container',
@@ -41,7 +41,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Array of item objects to display as pills in the container.',
+                'Array of item objects to display as chips in the container.',
             table: {
                 type: { summary: 'object[]' }
             }
@@ -53,5 +53,6 @@ const Template = (args) => ChipContainer(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    items: ITEMS
+    items: ITEMS,
+    alternativeText: DEFAULT_ALTERNATIVE_TEXT
 };
