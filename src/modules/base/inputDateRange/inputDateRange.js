@@ -1173,7 +1173,10 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showStartDate = true;
                 this.showEndDate = false;
-                this.setFocusDate(this.startDate || todayMidnight, 'start');
+                this.setFocusDate(
+                    this.startDate || this.endDate || todayMidnight,
+                    'start'
+                );
                 break;
             case 'input-end-date':
                 this.selectionModeEndDate = !this._startDate
@@ -1188,7 +1191,10 @@ export default class InputDateRange extends LightningElement {
                     : 'interval';
                 this.showEndDate = true;
                 this.showStartDate = false;
-                this.setFocusDate(this.endDate || todayMidnight, 'end');
+                this.setFocusDate(
+                    this.endDate || this.startDate || todayMidnight,
+                    'end'
+                );
                 break;
 
             default:
