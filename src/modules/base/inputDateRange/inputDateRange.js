@@ -597,6 +597,8 @@ export default class InputDateRange extends LightningElement {
      */
     @api
     blur() {
+        this.showStartDate = false;
+        this.showEndDate = false;
         this.handleFocusOut();
     }
 
