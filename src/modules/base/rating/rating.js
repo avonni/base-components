@@ -113,7 +113,7 @@ export default class Rating extends LightningElement {
                 style.innerText = `
                     .avonni-icon-selected .slds-button:disabled svg {fill: #a5a4a2;}
                     .avonni-icon-selected svg {fill: #1b5297 !important;}
-                    .avonni-rating:hover .avonni-active-star svg {
+                    .avonni-rating:hover .avonni-active-star.avonni-continuous-star svg {
                         fill: #1b5297;
                         opacity: 1;
                     }
