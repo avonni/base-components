@@ -37,7 +37,7 @@ import {
     HSVToHSL,
     normalizeBoolean
 } from 'c/utilsPrivate';
-import { classSet } from '../utils/classSet';
+import { classSet } from 'c/utils';
 
 const INDICATOR_SIZE = 12;
 
