@@ -75,7 +75,7 @@
                         value={startDateString}
                         disabled={disabled}
                         required={required}
-                        onblur={blurDateInput}
+                        onblur={handleBlurDateInput}
                         onclick={handleClickDateInput}
                         data-element-id="input-start-date"
                         onkeydown={handleInputKeyDown}
@@ -87,7 +87,7 @@
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
                         onclick={handleClickDateInput}
-                        onblur={blurDateInput}
+                        onblur={handleBlurDateInput}
                         onkeydown={handleInputKeyDown}
                         data-element-id="lightning-icon-start-date"
                     ></lightning-button-icon>
@@ -99,11 +99,11 @@
                     <lightning-focus-trap>
                         <c-calendar
                             aria-label="Start date input calendar"
-                            value={startDateEndDate}
+                            value={calendarValue}
                             selection-mode={selectionModeStartDate}
                             onchange={handleChangeStartDate}
-                            onfocusin={calendarFocusIn}
-                            onfocusout={calendarFocusStartOut}
+                            onfocusin={handleCalendarFocusIn}
+                            onfocusout={handleCalendarFocusStartOut}
                             onkeydown={calendarKeyListener}
                             data-element-id="calendar-start-date"
                         ></c-calendar
@@ -140,7 +140,7 @@
                     {startTimeString}
                 </p>
             </div>
-            <div class="slds-form-element">
+            <div class={computedEndInputClasses}>
                 <label
                     if:true={labelEndDate}
                     class="
@@ -163,7 +163,7 @@
                         class="slds-input end-date"
                         value={endDateString}
                         disabled={disabled}
-                        onblur={blurDateInput}
+                        onblur={handleBlurDateInput}
                         onclick={handleClickDateInput}
                         data-element-id="input-end-date"
                         onkeydown={handleInputKeyDown}
@@ -175,7 +175,7 @@
                         size="medium"
                         class="slds-input__icon slds-input__icon_right"
                         onclick={handleClickDateInput}
-                        onblur={blurDateInput}
+                        onblur={handleBlurDateInput}
                         onkeydown={handleInputKeyDown}
                         data-element-id="lightning-icon-end-date"
                     ></lightning-button-icon>
@@ -187,10 +187,10 @@
                     <lightning-focus-trap>
                         <c-calendar
                             aria-label="End date input calendar"
-                            value={startDateEndDate}
+                            value={calendarValue}
                             selection-mode={selectionModeEndDate}
                             onchange={handleChangeEndDate}
-                            onfocusin={calendarFocusIn}
+                            onfocusin={handleCalendarFocusIn}
                             onfocusout={calendarFocusEndOut}
                             onkeydown={calendarKeyListener}
                             data-element-id="calendar-end-date"

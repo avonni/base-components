@@ -322,22 +322,31 @@ export default class Calendar extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PRIVATE PROPERTIES
+     *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
 
     /**
      * Set initial focus
      *
-     * @param {Date}
+     * @param {Date} date A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @public
      */
     @api
-    focusDate(value) {
+    focusDate(dateValue) {
+        const value = new Date(dateValue);
         if (value && !value.getTime()) return;
+
+        this.displayDate = new Date(value);
         this._focusDate = new Date(value);
         this.computeFocus(true);
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
     /**
      * Compute days from week.
      */
@@ -435,7 +444,7 @@ export default class Calendar extends LightningElement {
 
     /**
      *
-     * @returns string
+     * @type {string}
      */
     get tableClasses() {
         const isLabeled = this._dateLabels.length > 0;
@@ -931,7 +940,7 @@ export default class Calendar extends LightningElement {
          * @public
          * @name change
          * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
-         * @param {string} clickedDate Clicked date, as an formatted string. Useful in the event where the clicked date is not in the value, like when it is deselected.
+         * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
          * @param {string} selectionMethod
          */
         this.dispatchEvent(
@@ -1149,26 +1158,21 @@ export default class Calendar extends LightningElement {
                 );
                 break;
             case keyCodes.pageup:
+                console.log('page up');
                 nextDate = initialFocusDate.setMonth(
                     initialFocusDate.getMonth() + 1
                 );
                 break;
             case keyCodes.space:
-                // eslint-disable-next-line no-case-declarations
-                const selectedDayButton = event.target.querySelector(
-                    '[data-element-id="span-day-label"]'
-                );
-                if (selectedDayButton) selectedDayButton.click();
-                break;
             case keyCodes.enter:
-                // eslint-disable-next-line no-case-declarations
-                const currentDayButton = event.target.querySelector(
-                    '[data-element-id="span-day-label"]'
-                );
-                if (currentDayButton) currentDayButton.click();
+                {
+                    const selectedDayButton = event.target.querySelector(
+                        '[data-element-id="span-day-label"]'
+                    );
+                    if (selectedDayButton) selectedDayButton.click();
+                }
                 break;
             default:
-                break;
         }
 
         if (!nextDate) return;
@@ -1188,7 +1192,7 @@ export default class Calendar extends LightningElement {
     /**
      * Place focus according to keyboard selection
      *
-     * @param {number} nextDate The datetime of the keyboard navigation target
+     * @param {boolean} applyFocus Focus point is always computed, but is only focused if applyFocus is true.
      */
     computeFocus(applyFocus) {
         // if a date was previously selected or focused, focus the same date in this month.

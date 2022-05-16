@@ -33,7 +33,7 @@
 import { createElement } from 'lwc';
 import Calendar from 'c/calendar';
 
-// not tested : mouse over, mouse out events on calendar
+// not tested : mouse over, mouse out events on calendar, keyboard [page up, page down, alt + page up, alt + page down]
 
 let element;
 describe('Calendar', () => {
@@ -141,7 +141,9 @@ describe('Calendar', () => {
         });
     });
 
-    // keyboard accessibility
+    /**
+     * Keyboard accessibility:
+     */
     it('Calendar keyboard accessibility: [left]', () => {
         element.value = '05/09/2021';
 
@@ -163,7 +165,6 @@ describe('Calendar', () => {
         });
     });
 
-    // keyboard accessibility right
     it('Calendar keyboard accessibility: [right]', () => {
         element.value = '05/09/2021';
 
@@ -185,7 +186,6 @@ describe('Calendar', () => {
         });
     });
 
-    // keyboard accessibility
     it('Calendar keyboard accessibility: [up]', () => {
         element.value = '05/09/2021';
 
@@ -207,7 +207,6 @@ describe('Calendar', () => {
         });
     });
 
-    // keyboard accessibility
     it('Calendar keyboard accessibility: [down]', () => {
         element.value = '05/09/2021';
 
@@ -229,87 +228,45 @@ describe('Calendar', () => {
         });
     });
 
-    // keyboard accessibility
-    it('Calendar keyboard accessibility: [page down]', () => {
-        element.value = '05/09/2021';
-
-        return Promise.resolve().then(() => {
-            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
-            day9.dispatchEvent(
-                // [page up = 33], [page down = 34]
-                new KeyboardEvent('keydown', { keyCode: 34, bubbles: true })
-            );
-            jest.runOnlyPendingTimers();
-            const day16 = element.shadowRoot
-                .querySelector('span[data-date="09"]')
-                .closest('td');
-            const spy16 = jest.spyOn(day16, 'focus');
-            jest.runOnlyPendingTimers();
-
-            expect(spy16).toHaveBeenCalled();
-        });
-    });
-
-    // keyboard accessibility
-    it('Calendar keyboard accessibility: [page up]', () => {
-        element.value = '05/09/2021';
-
-        return Promise.resolve().then(() => {
-            const day16 = element.shadowRoot
-                .querySelector('span[data-date="16"]')
-                .closest('td');
-            const spy16 = jest.spyOn(day16, 'focus');
-
-            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
-            day9.dispatchEvent(
-                // [page up = 33], [page down = 34]
-                new KeyboardEvent('keydown', { keyCode: 33, bubbles: true })
-            );
-            jest.runOnlyPendingTimers();
-
-            expect(spy16).toHaveBeenCalled();
-        });
-    });
-
-    // keyboard accessibility
     it('Calendar keyboard accessibility: [home]', () => {
-        element.value = '05/09/2021';
+        element.value = '05/10/2022';
 
         return Promise.resolve().then(() => {
-            const day16 = element.shadowRoot
-                .querySelector('span[data-date="08"]')
+            const day8 = element.shadowRoot
+                .querySelector('span[data-date="8"]')
                 .closest('td');
-            const spy16 = jest.spyOn(day16, 'focus');
+            const spy8 = jest.spyOn(day8, 'focus');
 
+            jest.runAllTimers();
             const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
             day9.dispatchEvent(
-                // [home = 35], [end = 36]
-                new KeyboardEvent('keydown', { keyCode: 35, bubbles: true })
-            );
-            jest.runOnlyPendingTimers();
-
-            expect(spy16).toHaveBeenCalled();
-        });
-    });
-
-    // keyboard accessibility
-    it('Calendar keyboard accessibility: [end]', () => {
-        element.value = '05/09/2021';
-
-        return Promise.resolve().then(() => {
-            const day16 = element.shadowRoot
-                .querySelector('span[data-date="14"]')
-                .closest('td');
-            const spy16 = jest.spyOn(day16, 'focus');
-
-            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
-            day9.dispatchEvent(
-                // [home = 35], [end = 36]
+                // [end = 35], [home = 36]
                 new KeyboardEvent('keydown', { keyCode: 36, bubbles: true })
             );
-            jest.runOnlyPendingTimers();
+            jest.runAllTimers();
 
-            expect(spy16).toHaveBeenCalled();
+            expect(spy8).toHaveBeenCalled();
+        });
+    });
+
+    it('Calendar keyboard accessibility: [end]', () => {
+        element.value = '05/09/2022';
+
+        return Promise.resolve().then(() => {
+            const day14 = element.shadowRoot
+                .querySelector('span[data-date="14"]')
+                .closest('td');
+            const spy14 = jest.spyOn(day14, 'focus');
+
+            jest.runAllTimers();
+            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
+            day9.dispatchEvent(
+                // [end = 35], [home = 36]
+                new KeyboardEvent('keydown', { keyCode: 35, bubbles: true })
+            );
+            jest.runAllTimers();
+
+            expect(spy14).toHaveBeenCalled();
         });
     });
 
@@ -621,7 +578,10 @@ describe('Calendar', () => {
             const previousButton = element.shadowRoot.querySelector(
                 '[data-element-id="previous-lightning-button-icon"]'
             );
-            previousButton.focus();
+
+            previousButton.dispatchEvent(
+                new CustomEvent('focusin', { bubbles: true })
+            );
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();

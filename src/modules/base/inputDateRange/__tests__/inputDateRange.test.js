@@ -51,6 +51,10 @@ describe('Input Date Range', () => {
         element = createElement('base-input-date-range', {
             is: InputDateRange
         });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
         document.body.appendChild(element);
     });
 
@@ -388,6 +392,7 @@ describe('Input Date Range', () => {
                 element.focus();
                 element.blur();
                 element.showHelpMessageIfInvalid();
+                jest.runAllTimers();
             })
             .then(() => {
                 const lightningInputs = element.shadowRoot.querySelectorAll(
