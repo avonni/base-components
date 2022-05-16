@@ -53,6 +53,22 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const DATE_TIME_FORMATS = {
+    valid: ['numeric', '2-digit'],
+    dayDefault: 'numeric',
+    hourDefault: 'numeric',
+    minuteDefault: '2-digit',
+    yearDefault: 'numeric'
+};
+const WEEKDAY_FORMATS = {
+    valid: ['narrow', 'short', 'long'],
+    default: 'short'
+};
+const MONTH_FORMATS = {
+    valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
+    default: 'long'
+};
+
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
 const DEFAULT_MAX_VISIBLE_ITEMS = 11;
@@ -127,10 +143,18 @@ export default class ActivityTimeline extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _collapsible = false;
+    _dateFormatDay = DATE_TIME_FORMATS.dayDefault;
+    _dateFormatWeekday = WEEKDAY_FORMATS.default;
+    _dateFormatMonth = MONTH_FORMATS.default;
+    _dateFormatYear = DATE_TIME_FORMATS.yearDefault;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _maxVisibleItems = DEFAULT_MAX_VISIBLE_ITEMS;
     _sortedDirection = SORTED_DIRECTIONS.default;
+    _timeFormatHour;
+    _timeFormatHour12;
+    _timeFormatMinute;
+    _timeFormatSecond;
 
     _key;
     _isConnected = false;
@@ -255,6 +279,82 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @default numeric
+     * @public
+     */
+    @api
+    get dateFormatDay() {
+        return this._dateFormatDay;
+    }
+
+    set dateFormatDay(value) {
+        this._dateFormatDay = normalizeString(value, {
+            fallbackValue: DATE_TIME_FORMATS.dayDefault,
+            validValues: DATE_TIME_FORMATS.valid
+        });
+    }
+
+    /**
+     * Valid values are numeric, 2-digit, long, short or narrow.
+     *
+     * @type {string}
+     * @default long
+     * @public
+     */
+    @api
+    get dateFormatMonth() {
+        return this._dateFormatMonth;
+    }
+
+    set dateFormatMonth(value) {
+        this._dateFormatMonth = normalizeString(value, {
+            fallbackValue: MONTH_FORMATS.default,
+            validValues: MONTH_FORMATS.valid
+        });
+    }
+
+    /**
+     * Specifies how to display the day of the week. Valid values are narrow, short, or long.
+     *
+     * @type {string}
+     * @default short
+     * @public
+     */
+    @api
+    get dateFormatWeekday() {
+        return this._dateFormatWeekday;
+    }
+
+    set dateFormatWeekday(value) {
+        this._dateFormatWeekday = normalizeString(value, {
+            fallbackValue: WEEKDAY_FORMATS.default,
+            validValues: WEEKDAY_FORMATS.valid
+        });
+    }
+
+    /**
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @default numeric
+     * @public
+     */
+    @api
+    get dateFormatYear() {
+        return this._dateFormatYear;
+    }
+
+    set dateFormatYear(value) {
+        this._dateFormatYear = normalizeString(value, {
+            fallbackValue: DATE_TIME_FORMATS.yearDefault,
+            validValues: DATE_TIME_FORMATS.valid
+        });
+    }
+
+    /**
      * If present, the value will define how the items will be grouped. Valid values include week, month or year.
      *
      * @public
@@ -320,6 +420,77 @@ export default class ActivityTimeline extends LightningElement {
         this._sortedDirection = normalizeString(value, {
             fallbackValue: SORTED_DIRECTIONS.default,
             validValues: SORTED_DIRECTIONS.valid
+        });
+    }
+
+    /**
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @default numeric
+     * @public
+     */
+    @api
+    get timeFormatHour() {
+        return this._timeFormatHour || undefined;
+    }
+
+    set timeFormatHour(value) {
+        this._timeFormatHour = normalizeString(value, {
+            validValues: DATE_TIME_FORMATS.valid
+        });
+    }
+
+    /**
+     * Determines whether time is displayed as 12-hour.
+     * If false, time displays as 24-hour. The default setting is determined by the user's locale.
+     *
+     * @type {boolean}
+     * @public
+     */
+    @api
+    get timeFormatHour12() {
+        return this._timeFormatHour12;
+    }
+
+    set timeFormatHour12(boolean) {
+        if (boolean !== undefined) {
+            this._timeFormatHour12 = normalizeBoolean(boolean);
+        }
+    }
+
+    /**
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @default 2-digit
+     * @public
+     */
+    @api
+    get timeFormatMinute() {
+        return this._timeFormatMinute || undefined;
+    }
+
+    set timeFormatMinute(value) {
+        this._timeFormatMinute = normalizeString(value, {
+            validValues: DATE_TIME_FORMATS.valid
+        });
+    }
+
+    /**
+     * Valid values include numeric and 2-digit.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get timeFormatSecond() {
+        return this._timeFormatSecond || undefined;
+    }
+
+    set timeFormatSecond(value) {
+        this._timeFormatSecond = normalizeString(value, {
+            validValues: DATE_TIME_FORMATS.valid
         });
     }
 
