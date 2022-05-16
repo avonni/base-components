@@ -48,11 +48,19 @@ export const ActivityTimeline = ({
     buttonShowLessLabel,
     closed,
     collapsible,
+    dateFormatDay,
+    dateFormatWeekday,
+    dateFormatMonth,
+    dateFormatYear,
     iconName,
     items,
     groupBy,
     maxVisibleItems,
     sortedDirection,
+    timeFormatHour,
+    timeFormatHour12,
+    timeFormatMinute,
+    timeFormatSecond,
     title
 }) => {
     const element = document.createElement('ac-activity-timeline');
@@ -66,11 +74,19 @@ export const ActivityTimeline = ({
     element.buttonShowLessLabel = buttonShowLessLabel;
     element.closed = closed;
     element.collapsible = collapsible;
+    element.dateFormatDay = dateFormatDay;
+    element.dateFormatWeekday = dateFormatWeekday;
+    element.dateFormatMonth = dateFormatMonth;
+    element.dateFormatYear = dateFormatYear;
     element.groupBy = groupBy;
     element.iconName = iconName;
     element.items = items;
     element.maxVisibleItems = maxVisibleItems;
     element.sortedDirection = sortedDirection;
+    element.timeFormatHour = timeFormatHour;
+    element.timeFormatHour12 = timeFormatHour12;
+    element.timeFormatMinute = timeFormatMinute;
+    element.timeFormatSecond = timeFormatSecond;
     element.title = title;
     return element;
 };
