@@ -143,8 +143,6 @@ export default class ActivityTimeline extends LightningElement {
     @track orderedDates = [];
 
     connectedCallback() {
-        if (!this.maxVisibleItems)
-            this._maxVisibleItems = DEFAULT_MAX_VISIBLE_ITEMS;
         this._isConnected = true;
         this.initActivityTimeline();
     }
