@@ -237,6 +237,9 @@ Base.args = {
     dateFormatWeekday: 'long',
     dateFormatMonth: 'long',
     dateFormatYear: 'numeric',
+    timeFormatHour12: true,
+    timeFormatHour: 'numeric',
+    timeFormatMinute: 'numeric',
     actions: actions
 };
 
@@ -260,6 +263,8 @@ Weekly.args = {
     dateFormatWeekday: 'long',
     dateFormatMonth: 'long',
     dateFormatYear: 'numeric',
+    timeFormatHour: 'numeric',
+    timeFormatMinute: 'numeric',
     actions: actions,
     groupBy: 'week'
 };
@@ -274,6 +279,8 @@ WeeklyNotCollapsible.args = {
     dateFormatWeekday: 'long',
     dateFormatMonth: 'long',
     dateFormatYear: 'numeric',
+    timeFormatHour: 'numeric',
+    timeFormatMinute: 'numeric',
     actions: actions,
     groupBy: 'week'
 };
