@@ -37,6 +37,7 @@ import {
     HSVToHSL,
     normalizeBoolean
 } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const INDICATOR_SIZE = 12;
 
@@ -103,7 +104,7 @@ export default class ColorGradient extends LightningElement {
 
             this.setPaletteColor(this.colors.H);
             this.setSwatchColor(this.value);
-            this.setindIcatorPosition();
+            this.setIndicatorPosition();
 
             this.init = true;
         }
@@ -197,7 +198,7 @@ export default class ColorGradient extends LightningElement {
             if (this.init) {
                 this.setPaletteColor(this.colors.H);
                 this.setSwatchColor(this.value);
-                this.setindIcatorPosition();
+                this.setIndicatorPosition();
             }
         }
     }
@@ -207,6 +208,20 @@ export default class ColorGradient extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Disable cursor if disabled or readOnly.
+     *
+     * @type {string}
+     */
+    get computedDisabledClass() {
+        return classSet('slds-color-picker__custom-range')
+            .add({
+                'slds-color-picker__custom-range_disabled':
+                    this._disabled || this._readOnly
+            })
+            .toString();
+    }
 
     /**
      * Disable input handler.
@@ -251,7 +266,7 @@ export default class ColorGradient extends LightningElement {
 
             this.setPaletteColor(this.colors.H);
             this.setSwatchColor(this.value);
-            this.setindIcatorPosition();
+            this.setIndicatorPosition();
         }
     }
 
@@ -345,11 +360,21 @@ export default class ColorGradient extends LightningElement {
     }
 
     /**
+     * Change event handler.
+     *
+     * @param {object} event
+     */
+    handleChange(event) {
+        event.stopPropagation();
+    }
+
+    /**
      * Input event handler.
      *
      * @param {object} event
      */
     handlerInput(event) {
+        event.stopPropagation();
         if (!this.readOnly) {
             let H = event.target.value;
 
@@ -473,7 +498,6 @@ export default class ColorGradient extends LightningElement {
      */
     processingRGBColor(event) {
         let color = `rgba(${this.colors.R},${this.colors.G},${this.colors.B},${this.colors.A})`;
-
         if (colorType(color) !== null) {
             this.hideErrors();
             this.updateColors(color);
@@ -517,8 +541,8 @@ export default class ColorGradient extends LightningElement {
         this.data = {
             x: event.x,
             y: event.y,
-            top: event.target.offsetTop,
-            left: event.target.offsetLeft,
+            top: event.offsetY - INDICATOR_SIZE,
+            left: event.offsetX,
             width: this.paletteWidth,
             height: this.paletteHeight - INDICATOR_SIZE
         };
@@ -537,7 +561,7 @@ export default class ColorGradient extends LightningElement {
      * @param {object} event
      */
     handlerMouseMove(event) {
-        if (this.down && !this.readOnly) {
+        if (this.down && !this.readOnly && !this.disabled) {
             let indicator = this.template.querySelector(
                 '.slds-color-picker__range-indicator'
             );
@@ -601,25 +625,21 @@ export default class ColorGradient extends LightningElement {
             lightness = 100;
         }
 
-        if (this.opacity) {
-            let color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, ${this.colors.A})`;
+        const opacity = this.opacity ? this.colors.A : 100;
 
-            if (colorType(color) === null) {
-                color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, 1)`;
-            }
+        let color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, ${opacity})`;
 
-            let colors = generateColors(color);
-
-            if (colors.H !== this.colors.H) {
-                colors.H = this.colors.H;
-            }
-
-            this.colors = colors;
-        } else {
-            this.colors = generateColors(
-                `hsl(${this.colors.H}, ${saturation}%, ${lightness}%)`
-            );
+        if (colorType(color) === null) {
+            color = `hsla(${this.colors.H}, ${saturation}%, ${lightness}%, 1)`;
         }
+
+        let colors = generateColors(color);
+
+        if (colors.H !== this.colors.H) {
+            colors.H = this.colors.H;
+        }
+
+        this.colors = colors;
 
         this.positionX = x;
         this.positionY = y;
@@ -643,14 +663,14 @@ export default class ColorGradient extends LightningElement {
 
         this.setPaletteColor(this.colors.H);
         this.setSwatchColor(this.colors.hexa);
-        this.setindIcatorPosition();
+        this.setIndicatorPosition();
         this.dispatchChange();
     }
 
     /**
      * Set indicator position based on color value.
      */
-    setindIcatorPosition() {
+    setIndicatorPosition() {
         let x = this.paletteWidth * this.colors.hsv.s;
         let y = this.paletteHeight * (1 - this.colors.hsv.v);
 
