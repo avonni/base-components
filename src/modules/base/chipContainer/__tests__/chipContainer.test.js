@@ -40,7 +40,7 @@ const MOCK_ITEM_SET = [
         outline: true
     },
     {
-        label: 'Second chip',
+        label: 'loooooooooooooooooooooooooooooooooooooooooooooooong 2nd chip',
         variant: 'warning',
         avatar: {
             fallbackIconName: 'custom:custom1',
@@ -58,6 +58,10 @@ const MOCK_ITEM_SET = [
 ];
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
+
+// not tested
+// AvonniResizeObserver callback()
+// computedButtonLabel on resize (check for correct value)
 
 let element;
 describe('Chip Container', () => {
@@ -77,12 +81,14 @@ describe('Chip Container', () => {
     it('Default attributes', () => {
         expect(element.items).toEqual([]);
         expect(element.alternativeText).toEqual(DEFAULT_ALTERNATIVE_TEXT);
+        expect(element.isCollapsible).toEqual(false);
+        expect(element.isExpanded).toEqual(false);
     });
 
     /* ----- ATTRIBUTES ----- */
 
     // items
-    it('Chip container : items', () => {
+    it('items', () => {
         element.items = MOCK_ITEM_SET;
         return Promise.resolve().then(() => {
             const itemsContainer = element.shadowRoot.querySelector(
@@ -93,13 +99,88 @@ describe('Chip Container', () => {
     });
 
     // alternative text
-    it('Chip container : alternative text', () => {
+    it('alternative text', () => {
         element.alternativeText = 'alternative text';
         return Promise.resolve().then(() => {
             const itemsContainer = element.shadowRoot.querySelector(
                 '[data-element-id="span-alternative-text"]'
             );
             expect(itemsContainer.textContent).toEqual('alternative text');
+        });
+    });
+
+    // isCollapsible
+    it('isCollapsible', () => {
+        element.items = MOCK_ITEM_SET;
+        element.isCollapsible = true;
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="show-more-button"]'
+                )
+            ).toBeTruthy();
+        });
+    });
+
+    // isExpanded
+    it('isExpanded (without isCollapsible)', () => {
+        element.items = MOCK_ITEM_SET;
+        element.isExpanded = true;
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="show-more-button"]'
+                )
+            ).toBeFalsy();
+        });
+    });
+
+    it('isExpanded (with isCollapsible)', () => {
+        element.items = MOCK_ITEM_SET;
+        element.isCollapsible = true;
+        element.isExpanded = false;
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="show-more-button"]'
+                )
+            ).toBeTruthy();
+        });
+    });
+
+    /* ----- SCENARIOS ----- */
+
+    it('div wrapper height changes with isExpanded value', () => {
+        element.items = MOCK_ITEM_SET;
+        element.isCollapsible = true;
+        element.isExpanded = false;
+        return Promise.resolve()
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    ).style.height
+                ).toEqual('0px'); // since dom is mocked, its size is 0
+                element.isExpanded = true;
+            })
+            .then(
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="div-wrapper"]'
+                    ).style.height
+                ).toEqual('') // since dom is mocked, fit-content corresponds to nothing
+            );
+    });
+
+    it('clicking on the show more button sets isExpanded to true', () => {
+        element.items = MOCK_ITEM_SET;
+        element.isCollapsible = true;
+        element.isExpanded = false;
+        return Promise.resolve().then(() => {
+            element.shadowRoot
+                .querySelector('[data-element-id="show-more-button"]')
+                .click();
+            expect(element.isExpanded).toEqual(true);
         });
     });
 });

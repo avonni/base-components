@@ -41,7 +41,6 @@ const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
 export default class ChipContainer extends LightningElement {
     _items = [];
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
-    _outline = false;
     _isCollapsible = false;
     _isExpanded = false;
 
@@ -207,7 +206,7 @@ export default class ChipContainer extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     *  PUBLIC METHODS
+     *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
 
