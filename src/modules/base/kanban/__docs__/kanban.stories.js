@@ -31,7 +31,7 @@
  */
 
 import { Kanban } from '../__examples__/kanban';
-import { GROUP_VALUES } from './data';
+import { GROUP_VALUES, FIELDS, RECORDS } from './data';
 
 export default {
     title: 'Example/Kanban',
@@ -45,6 +45,26 @@ export default {
             table: {
                 type: { summary: 'object[]' }
             }
+        },
+        fields: {
+            control: {
+                type: 'object'
+            },
+            description:
+                ' Array of field objects, used to define the allowed data fields.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
+        records: {
+            control: {
+                type: 'object'
+            },
+            description:
+                ' Array of data objects. Each object will be displayed as a data card in one of the steps. The objects should have a key <code>id</code>, used as their unique identifier. The other keys should correspond to the available fields, and/or the summarize and group field names.',
+            table: {
+                type: { summary: 'object[]' }
+            }
         }
     },
     args: {}
@@ -54,5 +74,7 @@ const Template = (args) => Kanban(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    groupValues: GROUP_VALUES
+    groupValues: GROUP_VALUES,
+    fields: FIELDS,
+    records: RECORDS
 };

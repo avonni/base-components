@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <div class="slds-path">
+    <div class="slds-path progress-bar">
         <div class="slds-grid slds-path__track">
             <div class="slds-grid slds-path__scroller-container">
                 <div class="slds-path__scroller">
@@ -67,6 +67,34 @@
                         </ul>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="avonni-kanban__field_container">
+            <div
+                class="avonni-kanban__field slds-has-dividers_around-space"
+                for:each={groupValues}
+                for:item="item"
+                key={item.value}
+            >
+                <p class="avonni-kanban__summary">$500,000.00</p>
+                <lightning-tile
+                    for:each={computedVisibleRecords}
+                    for:item="record"
+                    key={record.index}
+                    class="avonni-kanban__tile slds-item"
+                >
+                    <ul>
+                        <li
+                            for:each={record.field}
+                            for:item="field"
+                            key={field.label}
+                        >
+                            <p>
+                                <strong>{field.label} :</strong> {field.value}
+                            </p>
+                        </li>
+                    </ul>
+                </lightning-tile>
             </div>
         </div>
     </div>

@@ -34,8 +34,10 @@ import Component from '../kanban';
 
 customElements.define('ac-kanban', Component.CustomElementConstructor);
 
-export const Kanban = ({ groupValues }) => {
+export const Kanban = ({ groupValues, fields, records }) => {
     const element = document.createElement('ac-kanban');
     element.groupValues = groupValues;
+    element.fields = fields;
+    element.records = records;
     return element;
 };

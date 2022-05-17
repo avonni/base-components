@@ -35,9 +35,11 @@ import { normalizeArray } from '../utilsPrivate/normalize';
 
 export default class Kanban extends LightningElement {
     _groupValues = [];
+    _fields = [];
+    _records = [];
 
     /**
-     * Name of the data field containing the group label the data belonds to.
+     * Name of the data field containing the group label the data belongs to.
      *
      * @type {string}
      * @public
@@ -73,7 +75,13 @@ export default class Kanban extends LightningElement {
      * @type {object[]}
      * @public
      */
-    @api fields;
+    @api
+    get fields() {
+        return this._fields;
+    }
+    set fields(values) {
+        this._fields = normalizeArray(values);
+    }
 
     /**
      * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
@@ -90,7 +98,13 @@ export default class Kanban extends LightningElement {
      * @type {object[]}
      * @public
      */
-    @api records;
+    @api
+    get records() {
+        return this._records;
+    }
+    set records(values) {
+        this._records = normalizeArray(values);
+    }
 
     /**
      *
@@ -112,4 +126,24 @@ export default class Kanban extends LightningElement {
      * @default false
      */
     @api notDraggable;
+
+    // TODO: METHODS
+    get computedVisibleRecords() {
+        let computedFields = [];
+        this._records.forEach((record, i) => {
+            computedFields.push({
+                index: i,
+                field: []
+            });
+            this._fields.forEach((field) => {
+                if (JSON.stringify(record[field.fieldName])) {
+                    computedFields[i].field.push({
+                        label: field.label,
+                        value: record[field.fieldName]
+                    });
+                }
+            });
+        });
+        return computedFields;
+    }
 }

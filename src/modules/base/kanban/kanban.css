@@ -1,0 +1,33 @@
+.progress-bar {
+    position: relative;
+}
+
+.avonni-kanban__field_container {
+    position: relative;
+    top: 10px;
+    right: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.avonni-kanban__field {
+    width: 100%;
+    border-right: 1px solid #c9c7c5;
+}
+
+.avonni-kanban__field:first-of-type {
+    border-left: 1px solid #c9c7c5;
+}
+
+.avonni-kanban__tile {
+    margin: 5px;
+}
+
+.avonni-kanban__summary {
+    text-align: center;
+    /* TODO: maybe slds class pour ca */
+    color: rgb(74, 190, 74);
+    font-size: 2rem;
+}
