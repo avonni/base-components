@@ -52,7 +52,7 @@
 }
 
 .avonni-primitive-activity-timeline-item__bullet-medium {
-    left: 3.2px;
+    left: 3.95px;
 }
 
 .avonni-primitive-activity-timeline-item__bullet-large {
@@ -128,6 +128,10 @@
     margin-top: 0.2rem;
 }
 
+.avonni-primitive-activity-timeline-item__icon_medium {
+    margin-top: -0.15rem;
+}
+
 .avonni-primitive-activity-timeline-item__icon_xx-small:before {
     left: 1.95rem;
 }
@@ -141,7 +145,7 @@
 }
 
 .avonni-primitive-activity-timeline-item__icon_medium:before {
-    left: 2.45rem;
+    left: 2.5rem;
 }
 
 .avonni-primitive-activity-timeline-item__icon_large:before {

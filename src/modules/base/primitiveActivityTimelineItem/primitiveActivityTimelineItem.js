@@ -448,6 +448,8 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
                     !this.isActionIcon && this.iconSize === 'x-small',
                 'avonni-primitive-activity-timeline-item__icon_small':
                     !this.isActionIcon && this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__icon_medium':
+                    !this.isActionIcon && this.iconSize === 'medium',
                 'avonni-primitive-activity-timeline-item__action-icon_xx-small':
                     this.isActionIcon && this.iconSize === 'xx-small',
                 'avonni-primitive-activity-timeline-item__action-icon_x-small':
