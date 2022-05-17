@@ -127,14 +127,18 @@
                         "
                     >
                         <lightning-formatted-date-time
+                            if:true={hasDateAndTimeFormat}
                             value={computedDatetimeValue}
                             class="slds-timeline__date"
-                            day="2-digit"
-                            month="long"
-                            year="numeric"
-                            hour="2-digit"
-                            minute="2-digit"
-                            hour12="true"
+                            day={dateFormatDay}
+                            weekday={dateFormatWeekday}
+                            month={dateFormatMonth}
+                            year={dateFormatYear}
+                            hour={timeFormatHour}
+                            hour12={timeFormatHour12}
+                            minute={timeFormatMinute}
+                            second={timeFormatSecond}
+                            data-element-id="avonni-formated-date-time"
                         ></lightning-formatted-date-time>
                         <div slot="figure-inverse" if:true={hasActions}>
                             <lightning-button-menu
