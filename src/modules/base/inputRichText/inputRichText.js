@@ -785,6 +785,28 @@ export default class InputRichText extends LightningElement {
     }
 
     /**
+     * Reserved for internal use. Insert text in the rich text editor at cursor position.
+     *
+     * @param {string} text Text to insert.
+     * @public
+     */
+    @api
+    insertTextAtCursor(text) {
+        if (!this.quill) {
+            this.activateEditor();
+        }
+
+        const selection = this.quill.getSelection(true);
+        const index = selection ? selection.index : this.quill.getLength() - 1;
+
+        if (selection && selection.length !== 0) {
+            this.quill.deleteText(selection.index, selection.length);
+        }
+
+        this.quill.insertText(index, text);
+    }
+
+    /**
      * Sets a format in the editor from the cursor point onwards.
      * The format also applies to currently selected content.
      * Valid formats are font, size, and align.
@@ -810,7 +832,8 @@ export default class InputRichText extends LightningElement {
      * Formats supported are align, background, bold, code, code-block, color, font,
      * header, italic, link, size, strike, underline.
      *
-     * @returns {object} formats
+     * @returns {object} A key-value pair with format names and values.
+     * @public
      */
     @api
     getFormat() {
@@ -1835,27 +1858,6 @@ export default class InputRichText extends LightningElement {
      */
     handleStandInClick(event) {
         event.preventDefault();
-    }
-
-    /**
-     * Reserved for internal use. Insert text in the rich text editor at cursor position.
-     *
-     * @param {*} t
-     */
-    @api
-    insertTextAtCursor(t) {
-        if (!this.quill) {
-            this.activateEditor();
-        }
-
-        const selection = this.quill.getSelection(true);
-        const index = selection ? selection.index : this.quill.getLength() - 1;
-
-        if (selection && selection.length !== 0) {
-            this.quill.deleteText(selection.index, selection.length);
-        }
-
-        this.quill.insertText(index, t);
     }
 
     /**
