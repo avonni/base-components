@@ -46,15 +46,16 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        name: 'alternative-text',
-        control: {
-            type: 'text'
-        },
-        type: { required: true },
-        description:
-            'The alternative text used to describe the chip container.',
-        table: {
-            type: { summary: 'string' }
+        alternativeText: {
+            name: 'alternative-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The alternative text used to describe the chip container.',
+            table: {
+                type: { summary: 'string' }
+            }
         },
         isCollapsible: {
             name: 'is-collapsible',
