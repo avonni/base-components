@@ -104,4 +104,6 @@ export default class KanbanBase extends LightningElement {
             available: true
         }
     ];
+
+    summarizeFieldName = 'Amount';
 }

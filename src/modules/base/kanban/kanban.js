@@ -31,10 +31,11 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray } from '../utilsPrivate/normalize';
+import { normalizeArray, normalizeString } from '../utilsPrivate/normalize';
 
 export default class Kanban extends LightningElement {
     _groupValues = [];
+    _summarizeFieldName;
     _fields = [];
     _records = [];
 
@@ -67,7 +68,13 @@ export default class Kanban extends LightningElement {
      * @type {string}
      * @public
      */
-    @api summarizeFieldName;
+    @api
+    get summarizeFieldName() {
+        return this._summarizeFieldName;
+    }
+    set summarizeFieldName(value) {
+        this._summarizeFieldName = normalizeString(value);
+    }
 
     /**
      * Array of field objects, used to define the allowed data fields.
@@ -128,11 +135,18 @@ export default class Kanban extends LightningElement {
     @api notDraggable;
 
     // TODO: METHODS
-    get computedVisibleRecords() {
+    get computedGroups() {
+        let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
+        computedGroups.forEach((group) => {
+            group.tiles = [];
+            // TODO: Probably bad idea to do that here and that way
+            group.summarizeField = 0;
+        });
         let computedFields = [];
         this._records.forEach((record, i) => {
             computedFields.push({
-                index: i,
+                index: record.id,
+                group: record.status,
                 field: []
             });
             this._fields.forEach((field) => {
@@ -144,6 +158,22 @@ export default class Kanban extends LightningElement {
                 }
             });
         });
-        return computedFields;
+
+        computedFields.forEach((tile) => {
+            const group = computedGroups.find(
+                (computedGroup) => computedGroup.label === tile.group
+            );
+            if (group) {
+                group.tiles.push(tile);
+                const toSummarize = tile.field.find(
+                    (field) =>
+                        normalizeString(field.label) ===
+                        this._summarizeFieldName
+                );
+                if (toSummarize) group.summarizeField += toSummarize.value;
+            }
+        });
+
+        return computedGroups;
     }
 }

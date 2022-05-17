@@ -65,6 +65,16 @@ export default {
             table: {
                 type: { summary: 'object[]' }
             }
+        },
+        summarizeFieldName: {
+            control: {
+                type: 'text'
+            },
+            description:
+                ' Name of the data field containing the number to add to the group summarization, at the top of each column.',
+            table: {
+                type: { summary: 'String' }
+            }
         }
     },
     args: {}
@@ -76,5 +86,6 @@ export const Base = Template.bind({});
 Base.args = {
     groupValues: GROUP_VALUES,
     fields: FIELDS,
-    records: RECORDS
+    records: RECORDS,
+    summarizeFieldName: 'Amount'
 };

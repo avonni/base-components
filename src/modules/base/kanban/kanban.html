@@ -72,13 +72,13 @@
         <div class="avonni-kanban__field_container">
             <div
                 class="avonni-kanban__field slds-has-dividers_around-space"
-                for:each={groupValues}
-                for:item="item"
-                key={item.value}
+                for:each={computedGroups}
+                for:item="group"
+                key={group.label}
             >
-                <p class="avonni-kanban__summary">$500,000.00</p>
+                <p class="avonni-kanban__summary">{group.summarizeField}</p>
                 <lightning-tile
-                    for:each={computedVisibleRecords}
+                    for:each={group.tiles}
                     for:item="record"
                     key={record.index}
                     class="avonni-kanban__tile slds-item"
