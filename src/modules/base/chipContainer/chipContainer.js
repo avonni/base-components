@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import { generateUUID } from 'c/inputUtils';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
 
@@ -44,21 +45,9 @@ export default class ChipContainer extends LightningElement {
     _isCollapsible = false;
     _isExpanded = false;
 
-    _pillsNotFittingCount = 2;
-
-    /**
-     * Items to display as chips
-     *
-     * @type {Object}
-     * @public
-     */
-    @api
-    get items() {
-        return this._items;
-    }
-    set items(value) {
-        this._items = value;
-    }
+    _nbItems;
+    _wrappedChips;
+    _resizeObserver;
 
     /**
      * Alternative text used to describe the chip container.
@@ -77,7 +66,22 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * If present, the pill list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of pills.
+     * Items to display as chips
+     *
+     * @type {Object}
+     * @public
+     */
+    @api
+    get items() {
+        return this._items;
+    }
+    set items(value) {
+        this._items = value;
+        this._nbItems = this.items.length;
+    }
+
+    /**
+     * If present, the chip list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of chips.
      *
      * @type {boolean}
      * @public
@@ -92,7 +96,7 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * If present and `is-collapsible` too, the list of pills is expanded. This attribute is ignored when `is-collapsible` is false, and the list of pills is expanded even if `is-expanded` is false or not set.
+     * If present and `is-collapsible` too, the list of chips is expanded. This attribute is ignored when `is-collapsible` is false, and the list of chips is expanded even if `is-expanded` is false or not set.
      *
      * @type {boolean}
      * @public
@@ -107,30 +111,30 @@ export default class ChipContainer extends LightningElement {
     }
 
     renderedCallback() {
-        // set the wrapper height to be as high as the biggest element
         if (this.showMore) {
+            // set the wrapper height to be as high as the biggest element
             const tallest = [
                 ...this.template.querySelectorAll(
                     '[data-element-id="chip-container-list"] *'
                 )
             ].sort((prev, next) => next.clientHeight - prev.clientHeight)[0];
-            console.log(tallest.clientHeight);
             this.template.querySelector(
                 '[data-element-id="div-wrapper"]'
             ).style.height = `${tallest.clientHeight}px`;
+            this._resizeObserver = this.initWrapObserver();
         } else {
             this.template.querySelector(
                 '[data-element-id="div-wrapper"]'
-            ).style.height = `${
-                this.template.querySelector(
-                    '[data-element-id="chip-container-list"]'
-                ).clientHeight
-            }px`;
+            ).style.height = 'fit-content';
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+                this._resizeObserver = undefined;
+            }
         }
     }
 
     /**
-     * True if the pill container is considered collapsible.
+     * True if the chip container is considered collapsible.
      *
      * @type {boolean}
      */
@@ -139,7 +143,7 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * True of the pill container is considered expanded.
+     * True of the chip container is considered expanded.
      *
      * @type {boolean}
      */
@@ -165,22 +169,60 @@ export default class ChipContainer extends LightningElement {
     get computedShowMoreLabel() {
         if (
             this.computedIsExpanded ||
-            isNaN(this._pillsNotFittingCount) ||
-            this._pillsNotFittingCount <= 0
+            isNaN(this._wrappedChips) ||
+            this._wrappedChips <= 0
         ) {
             return undefined;
         }
-        return `+${this._pillsNotFittingCount} more`;
+        return `+${this._wrappedChips} more`;
     }
 
+    /**
+     * Setup the screen resize observer. That counts the number of wrapped chips.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initWrapObserver() {
+        const resizeObserver = new AvonniResizeObserver(() => {
+            let wrappedChips = 0;
+            const items = this.template.querySelectorAll(
+                '[data-element-id="chip"]'
+            );
+            for (let i = 0; i < items.length; i++) {
+                const node = items[i];
+                if (node.offsetTop > 10) {
+                    wrappedChips += 1;
+                }
+            }
+            this._wrappedChips = wrappedChips;
+        });
+        resizeObserver.observe(
+            this.template.querySelector(
+                '[data-element-id="chip-container-list"]'
+            )
+        );
+        return resizeObserver;
+    }
+
+    /**
+     * Computes the wrapper class. Adds a class if showMore button is visible.
+     */
     get computedWrapperClass() {
-        return classSet('slds-listbox_selection-group');
+        return classSet('slds-listbox_selection-group').add({
+            'avonni-chip-container__wrapper_is-collapsed': this.showMore
+        });
     }
 
+    /**
+     * Get a unique key for li element.
+     */
     get uniqueKey() {
         return generateUUID();
     }
 
+    /**
+     * Sets isExpanded to true on expand button click
+     */
     handleMoreClick() {
         this._isExpanded = true;
     }
