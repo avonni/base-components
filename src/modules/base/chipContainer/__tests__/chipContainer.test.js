@@ -102,17 +102,4 @@ describe('Chip Container', () => {
             expect(itemsContainer.textContent).toEqual('alternative text');
         });
     });
-
-    /* ----- ITEM ATTRIBUTES ----- */
-
-    // avatar position
-    it('Chip container : avatar position', () => {
-        element.items = [...MOCK_ITEM_SET];
-        return Promise.resolve().then(() => {
-            const avatar = element.shadowRoot.querySelector(
-                '[data-index=2] [data-element-id="avatar-right"]'
-            );
-            expect(avatar.slot).toEqual('right');
-        });
-    });
 });
