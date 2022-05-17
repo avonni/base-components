@@ -624,7 +624,6 @@ export default class ButtonMenu extends LightningElement {
      */
     focusOnMenuItemAfterRender() {
         let focusOnIndex = this._focusOnIndexDuringRenderedCallback || 0;
-
         const menuItems = this.getMenuItems();
 
         if (focusOnIndex === 'LAST') {
@@ -641,10 +640,8 @@ export default class ButtonMenu extends LightningElement {
             }
 
             this.focusOnMenuItem(focusOnIndex);
-
             this._focusOnIndexDuringRenderedCallback = null;
         }
-
         this._rerenderFocus = false;
     }
 
