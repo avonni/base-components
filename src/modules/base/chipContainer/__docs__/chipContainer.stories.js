@@ -54,6 +54,7 @@ export default {
             description:
                 'The alternative text used to describe the chip container.',
             table: {
+                defaultValue: { summary: 'Task List' },
                 type: { summary: 'string' }
             }
         },
@@ -65,6 +66,7 @@ export default {
             description:
                 'If present, the pill list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of pills.',
             table: {
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         },
@@ -76,6 +78,7 @@ export default {
             description:
                 'If present and `is-collapsible` too, the list of pills is expanded. This attribute is ignored when `is-collapsible` is false, and the list of pills is expanded even if `is-expanded` is false or not set',
             table: {
+                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         }
