@@ -1,12 +1,14 @@
 const ITEMS = [
     {
         label: 'First chip',
-        variant: 'base'
+        variant: 'base',
+        iconName: 'utility:table',
+        iconSize: 'xx-small'
     },
     {
         label: 'Second chip',
         variant: 'base',
-        avatarPosition: 'left',
+        mediaPosition: 'left',
         avatar: {
             fallbackIconName: 'custom:custom1',
             variant: 'circle'
@@ -25,7 +27,7 @@ const ITEMS = [
     {
         label: 'Fourth chip',
         variant: 'base',
-        avatarPosition: 'left',
+        mediaPosition: 'left',
         avatar: {
             fallbackIconName: 'standard:user',
             variant: 'circle',
@@ -39,6 +41,7 @@ const ITEMS = [
     {
         label: 'Sixth chip',
         outline: true,
+        iconName: 'utility:down', // not shown since there is an avatar
         avatar: {
             variant: 'circle',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg'
@@ -51,7 +54,7 @@ const ITEMS = [
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
         },
         variant: 'offline',
-        avatarPosition: 'right',
+        mediaPosition: 'right',
         outline: true
     },
     {
