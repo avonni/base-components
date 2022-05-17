@@ -57,11 +57,7 @@ describe('IconPicker', () => {
         expect(element.label).toBeUndefined();
         expect(element.name).toBeUndefined();
         expect(element.variant).toBe('standard');
-        expect(element.hiddenCategories).toEqual([
-            'Utility',
-            'Doctype',
-            'Action'
-        ]);
+        expect(element.hiddenCategories).toEqual([]);
         expect(element.menuVariant).toBe('border');
         expect(element.menuIconSize).toBe('medium');
         expect(element.menuLabel).toBeUndefined();
@@ -463,11 +459,10 @@ describe('IconPicker', () => {
                 expect(tabs.labels).toEqual([
                     'Standard',
                     'Custom',
-                    'Doctype',
-                    'Action',
-                    'Utility'
+                    'Utility',
+                    'Action'
                 ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.tabsHidden).toBe(2);
             });
     });
 
@@ -484,14 +479,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Utility',
-                    'Doctype',
-                    'Standard',
-                    'Custom',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.labels).toEqual(['Utility', 'Doctype', 'Action']);
+                expect(tabs.tabsHidden).toBe(1);
             });
     });
 
@@ -508,14 +497,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Doctype',
-                    'Action',
-                    'Standard',
-                    'Custom',
-                    'Utility'
-                ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.labels).toEqual(['Doctype', 'Action']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 
@@ -532,14 +515,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Utility',
-                    'Standard',
-                    'Custom',
-                    'Doctype',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(4);
+                expect(tabs.labels).toEqual(['Utility']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 
@@ -562,14 +539,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Standard',
-                    'Custom',
-                    'Utility',
-                    'Doctype',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(4);
+                expect(tabs.labels).toEqual(['Standard']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 
@@ -592,14 +563,8 @@ describe('IconPicker', () => {
                 const tabs = element.shadowRoot.querySelector(
                     '[data-element-id="avonni-builder-tab-bar"]'
                 );
-                expect(tabs.labels).toEqual([
-                    'Utility',
-                    'Doctype',
-                    'Standard',
-                    'Custom',
-                    'Action'
-                ]);
-                expect(tabs.tabsHidden).toBe(3);
+                expect(tabs.labels).toEqual(['Utility', 'Doctype']);
+                expect(tabs.tabsHidden).toBe(0);
             });
     });
 

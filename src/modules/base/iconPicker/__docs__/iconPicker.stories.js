@@ -150,7 +150,7 @@ export default {
             }
         },
         hideFooter: {
-            name: 'hidden-categories',
+            name: 'hide-footer',
             control: {
                 type: 'boolean'
             },

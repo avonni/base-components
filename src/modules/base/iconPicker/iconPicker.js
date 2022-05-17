@@ -64,7 +64,7 @@ const TABS = {
     default: 'Standard'
 };
 
-const DEFAULT_HIDDEN_CATEGORIES = ['Utility', 'Doctype', 'Action'];
+const NB_VISIBLE_TABS = 2;
 
 /**
  * @class
@@ -118,7 +118,7 @@ export default class IconPicker extends LightningElement {
     @api placeholder;
 
     _disabled = false;
-    _hiddenCategories = DEFAULT_HIDDEN_CATEGORIES.slice();
+    _hiddenCategories = [];
     _hideFooter = false;
     _hideInputText = false;
     _menuIconSize = MENU_ICON_SIZES.default;
@@ -177,7 +177,6 @@ export default class IconPicker extends LightningElement {
      * The icon categories that will be hidden by default.
      *
      * @type {string[]}
-     * @default ['Utility', 'Doctype', 'Action']
      * @public
      */
     @api
@@ -188,29 +187,16 @@ export default class IconPicker extends LightningElement {
     set hiddenCategories(value) {
         this._hiddenCategories = [];
         const categories =
-            value === undefined
-                ? DEFAULT_HIDDEN_CATEGORIES
-                : JSON.parse(JSON.stringify(value));
+            value === undefined ? [] : JSON.parse(JSON.stringify(value));
         for (const category of TABS.valid) {
             if (categories.includes(category)) {
                 this._hiddenCategories.push(category);
             }
         }
-
         if (this._hiddenCategories.length === 5) {
             let index = this._hiddenCategories.indexOf(TABS.default);
             if (index !== -1) {
                 this._hiddenCategories.splice(index, 1);
-            }
-        } else if (this._hiddenCategories.length < 3) {
-            let i;
-            for (i = TABS.valid.length - 1; i >= 0; i--) {
-                if (!this._hiddenCategories.includes(TABS.valid[i])) {
-                    this._hiddenCategories.push(TABS.valid[i]);
-                    if (this._hiddenCategories.length === 3) {
-                        return;
-                    }
-                }
             }
         }
     }
@@ -382,7 +368,7 @@ export default class IconPicker extends LightningElement {
 
     /**
      * The tabs of the icon picker.
-     * The tabs are ordered as they should be displayed: the array starts with the visible tabs, followed by the hidden tabs.
+     * Hidden tabs are not displayed.
      *
      * @type {string[]}
      */
@@ -393,8 +379,7 @@ export default class IconPicker extends LightningElement {
                 orderedTabs.push(tab);
             }
         });
-
-        return [...orderedTabs, ...this.hiddenCategories];
+        return [...orderedTabs];
     }
 
     get computedValue() {
@@ -422,7 +407,10 @@ export default class IconPicker extends LightningElement {
      * @type {number}
      */
     get nHiddenCategories() {
-        return this.hiddenCategories.length;
+        return Math.max(
+            0,
+            TABS.valid.length - NB_VISIBLE_TABS - this.hiddenCategories.length
+        );
     }
 
     /**
