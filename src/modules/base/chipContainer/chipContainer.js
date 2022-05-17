@@ -49,6 +49,12 @@ export default class ChipContainer extends LightningElement {
     _wrappedChips;
     _resizeObserver;
 
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * Alternative text used to describe the chip container.
      *
@@ -133,6 +139,12 @@ export default class ChipContainer extends LightningElement {
         }
     }
 
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     /**
      * True if the chip container is considered collapsible.
      *
@@ -178,6 +190,35 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
+     * Computes the wrapper class. Adds a class if showMore button is visible.
+     */
+    get computedWrapperClass() {
+        return classSet('slds-listbox_selection-group').add({
+            'avonni-chip-container__wrapper_is-collapsed': this.showMore
+        });
+    }
+
+    /**
+     * Get a unique key for li element.
+     */
+    get uniqueKey() {
+        return generateUUID();
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Sets isExpanded to true on expand button click
+     */
+    handleMoreClick() {
+        this._isExpanded = true;
+    }
+
+    /**
      * Setup the screen resize observer. That counts the number of wrapped chips.
      *
      * @returns {AvonniResizeObserver} Resize observer.
@@ -202,28 +243,5 @@ export default class ChipContainer extends LightningElement {
             )
         );
         return resizeObserver;
-    }
-
-    /**
-     * Computes the wrapper class. Adds a class if showMore button is visible.
-     */
-    get computedWrapperClass() {
-        return classSet('slds-listbox_selection-group').add({
-            'avonni-chip-container__wrapper_is-collapsed': this.showMore
-        });
-    }
-
-    /**
-     * Get a unique key for li element.
-     */
-    get uniqueKey() {
-        return generateUUID();
-    }
-
-    /**
-     * Sets isExpanded to true on expand button click
-     */
-    handleMoreClick() {
-        this._isExpanded = true;
     }
 }
