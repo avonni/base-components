@@ -187,7 +187,7 @@ export default class PrimitiveChip extends LightningElement {
                 fallbackValue: DEFAULT_ICON_NAME
             });
             this._showIcon = true;
-        }
+        } else this._showIcon = false;
     }
 
     /** The size of the icon to display. Values range from 'xx-small' to 'large'

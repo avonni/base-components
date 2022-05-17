@@ -33,6 +33,8 @@
 import { createElement } from 'lwc';
 import PrimitiveChip from '../primitiveChip';
 
+const DEFAULT_ICON_NAME = 'utility:check';
+
 const MOCK_AVATAR = {
     fallbackIconName: 'standard:user',
     variant: 'circle',
@@ -58,8 +60,11 @@ describe('Primitive Chip', () => {
         expect(element.label).toEqual('');
         expect(element.outline).toEqual(false);
         expect(element.avatar).toEqual(null);
-        expect(element.avatarPosition).toEqual('left');
+        expect(element.avatarSize).toEqual('x-small');
         expect(element.variant).toEqual('base');
+        expect(element.iconName).toEqual(DEFAULT_ICON_NAME);
+        expect(element.iconSize).toEqual('x-small');
+        expect(element.mediaPosition).toEqual('left');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -116,10 +121,26 @@ describe('Primitive Chip', () => {
         });
     });
 
-    // avatarPosition
-    it('avatarPosition', () => {
+    // mediaPosition
+    it('mediaPosition (icon)', () => {
+        element.iconName = 'utility:down';
+        element.mediaPosition = 'right';
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="icon-left"]'
+                )
+            ).toBeFalsy();
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="icon-right"]'
+            );
+            expect(icon.slot).toBe('right');
+        });
+    });
+
+    it('mediaPosition (avatar)', () => {
         element.avatar = MOCK_AVATAR;
-        element.avatarPosition = 'right';
+        element.mediaPosition = 'right';
         return Promise.resolve().then(() => {
             expect(
                 element.shadowRoot.querySelector(
@@ -130,6 +151,30 @@ describe('Primitive Chip', () => {
                 '[data-element-id="avatar-right"]'
             );
             expect(avatar.slot).toBe('right');
+        });
+    });
+
+    // iconSize
+    it('iconSize', () => {
+        element.iconName = 'utility:down';
+        element.iconSize = 'large';
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="icon-left"]'
+            );
+            expect(icon.size).toBe('large');
+        });
+    });
+
+    // avatarSize
+    it('avatarSize', () => {
+        element.avatar = MOCK_AVATAR;
+        element.avatarSize = 'large';
+        return Promise.resolve().then(() => {
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avatar-left"]'
+            );
+            expect(avatar.size).toBe('large');
         });
     });
 });
