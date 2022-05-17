@@ -2600,12 +2600,13 @@ export default class Scheduler extends LightningElement {
             this._start = removeFromDate(this.start, 'day', 1);
         }
 
-        this._headers = normalizeString(headers, {
+        const normalizedHeaders = normalizeString(headers, {
             validValues: HEADERS.valid,
             fallbackValue: HEADERS.default,
             toLowerCase: false
         });
-        this.initHeaders();
+
+        this.computedHeaders = deepCopy(PRESET_HEADERS[normalizedHeaders]);
     }
 
     /**
