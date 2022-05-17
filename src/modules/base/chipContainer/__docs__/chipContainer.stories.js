@@ -45,6 +45,38 @@ export default {
             table: {
                 type: { summary: 'object[]' }
             }
+        },
+        name: 'alternative-text',
+        control: {
+            type: 'text'
+        },
+        type: { required: true },
+        description:
+            'The alternative text used to describe the chip container.',
+        table: {
+            type: { summary: 'string' }
+        },
+        isCollapsible: {
+            name: 'is-collapsible',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the pill list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of pills.',
+            table: {
+                type: { summary: 'boolean' }
+            }
+        },
+        isExpanded: {
+            name: 'is-expanded',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present and `is-collapsible` too, the list of pills is expanded. This attribute is ignored when `is-collapsible` is false, and the list of pills is expanded even if `is-expanded` is false or not set',
+            table: {
+                type: { summary: 'boolean' }
+            }
         }
     }
 };
@@ -54,5 +86,15 @@ const Template = (args) => ChipContainer(args);
 export const Base = Template.bind({});
 Base.args = {
     items: ITEMS,
-    alternativeText: DEFAULT_ALTERNATIVE_TEXT
+    alternativeText: DEFAULT_ALTERNATIVE_TEXT,
+    isCollapsible: false,
+    isExpanded: false
+};
+
+export const Collapsed = Template.bind({});
+Collapsed.args = {
+    items: ITEMS,
+    alternativeText: DEFAULT_ALTERNATIVE_TEXT,
+    isCollapsible: true,
+    isExpanded: false
 };

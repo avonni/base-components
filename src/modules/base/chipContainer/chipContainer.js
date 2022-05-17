@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { generateUUID } from 'c/inputUtils';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
 
@@ -40,6 +41,10 @@ export default class ChipContainer extends LightningElement {
     _items = [];
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _outline = false;
+    _isCollapsible = false;
+    _isExpanded = false;
+
+    _pillsNotFittingCount = 2;
 
     /**
      * Items to display as chips
@@ -56,7 +61,7 @@ export default class ChipContainer extends LightningElement {
     }
 
     /**
-     * Alternative text used to describe the pill container. If the pill container is sortable, it should describe its behavior, for example: "Sortable pills. Press spacebar to grab or drop an item. Press right and left arrow keys to change position. Press escape to cancel."
+     * Alternative text used to describe the chip container.
      *
      * @type {string}
      * @public
@@ -71,11 +76,112 @@ export default class ChipContainer extends LightningElement {
         });
     }
 
-    get showAlternativeText() {
-        return normalizeBoolean(this._alternativeText);
+    /**
+     * If present, the pill list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of pills.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isCollapsible() {
+        return this._isCollapsible;
+    }
+    set isCollapsible(value) {
+        this._isCollapsible = normalizeBoolean(value);
+    }
+
+    /**
+     * If present and `is-collapsible` too, the list of pills is expanded. This attribute is ignored when `is-collapsible` is false, and the list of pills is expanded even if `is-expanded` is false or not set.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get isExpanded() {
+        return this._isExpanded;
+    }
+    set isExpanded(value) {
+        this._isExpanded = normalizeBoolean(value);
+    }
+
+    renderedCallback() {
+        // set the wrapper height to be as high as the biggest element
+        if (this.showMore) {
+            const tallest = [
+                ...this.template.querySelectorAll(
+                    '[data-element-id="chip-container-list"] *'
+                )
+            ].sort((prev, next) => next.clientHeight - prev.clientHeight)[0];
+            console.log(tallest.clientHeight);
+            this.template.querySelector(
+                '[data-element-id="div-wrapper"]'
+            ).style.height = `${tallest.clientHeight}px`;
+        } else {
+            this.template.querySelector(
+                '[data-element-id="div-wrapper"]'
+            ).style.height = `${
+                this.template.querySelector(
+                    '[data-element-id="chip-container-list"]'
+                ).clientHeight
+            }px`;
+        }
+    }
+
+    /**
+     * True if the pill container is considered collapsible.
+     *
+     * @type {boolean}
+     */
+    get computedIsCollapsible() {
+        return (!this.isCollapsible && !this.isExpanded) || this.isCollapsible;
+    }
+
+    /**
+     * True of the pill container is considered expanded.
+     *
+     * @type {boolean}
+     */
+    get computedIsExpanded() {
+        return (this.isCollapsible && this.isExpanded) || !this.isCollapsible;
+    }
+
+    /**
+     * True if the "show more" button should be visible.
+     *
+     * @type {boolean}
+     * @default false
+     */
+    get showMore() {
+        return this.computedIsCollapsible && !this.computedIsExpanded;
+    }
+
+    /**
+     * Label of the "show more" button.
+     *
+     * @type {string}
+     */
+    get computedShowMoreLabel() {
+        if (
+            this.computedIsExpanded ||
+            isNaN(this._pillsNotFittingCount) ||
+            this._pillsNotFittingCount <= 0
+        ) {
+            return undefined;
+        }
+        return `+${this._pillsNotFittingCount} more`;
+    }
+
+    get computedWrapperClass() {
+        return classSet('slds-listbox_selection-group');
     }
 
     get uniqueKey() {
         return generateUUID();
+    }
+
+    handleMoreClick() {
+        this._isExpanded = true;
     }
 }

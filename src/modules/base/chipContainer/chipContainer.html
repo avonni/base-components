@@ -33,10 +33,26 @@
 -->
 
 <template>
-    <span data-element-id="div-wrapper">
+    <div class={computedWrapperClass} data-element-id="div-wrapper">
+        <span
+            if:true={alternativeText}
+            class="slds-assistive-text"
+            data-element-id="span-alternative-text"
+            >{alternativeText}</span
+        >
+        <lightning-button
+            if:true={showMore}
+            aria-hidden="true"
+            class="slds-listbox-toggle"
+            label={computedShowMoreLabel}
+            variant="base"
+            data-element-id="show-more-button"
+            onclick={handleMoreClick}
+        >
+        </lightning-button>
         <ul
             data-element-id="chip-container-list"
-            class="slds-listbox slds-is-relative slds-listbox_horizontal"
+            class="slds-listbox slds-listbox_horizontal"
         >
             <template for:each={items} for:item="chip" for:index="index">
                 <li
@@ -60,11 +76,5 @@
                 </li>
             </template>
         </ul>
-    </span>
-    <span
-        if:true={alternativeText}
-        class="slds-assistive-text"
-        data-element-id="span-alternative-text"
-        >{alternativeText}</span
-    >
+    </div>
 </template>

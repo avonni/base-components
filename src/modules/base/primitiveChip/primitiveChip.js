@@ -211,7 +211,7 @@ export default class PrimitiveChip extends LightningElement {
      *  If icon media is to be shown.
      */
     get showIcon() {
-        return this._showIcon;
+        return this._showIcon && this.avatar == null;
     }
 
     /**
