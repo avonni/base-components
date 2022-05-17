@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 
 const SYMBOLOGY = {
     valid: [
@@ -62,11 +63,11 @@ const RENDERING_ENGINE = {
     default: 'svg'
 };
 
-const DEFAULT_BACKGROUND = 0xfff;
+const DEFAULT_BACKGROUND = '#ffffff';
 const DEFAULT_SIZE = 300;
 const DEFAULT_HIDE_VALUE = false;
 const DEFAULT_CHECKSUM = false;
-const DEFAULT_TEXT_COLOR = 0x000000;
+const DEFAULT_TEXT_COLOR = '#000000';
 
 /**
  * @class
@@ -76,11 +77,18 @@ const DEFAULT_TEXT_COLOR = 0x000000;
  * @public
  */
 export default class Barcode extends LightningElement {
+    /**
+     * The value of the barcode.
+     *
+     * @public
+     * @type {number}
+     */
+    @api value;
+
     _background = DEFAULT_BACKGROUND;
     _color;
     _renderAs = RENDERING_ENGINE.default;
     _size = DEFAULT_SIZE;
-    _value;
     _hideValue = DEFAULT_HIDE_VALUE;
     _checksum = DEFAULT_CHECKSUM;
     _textColor = DEFAULT_TEXT_COLOR;
@@ -93,7 +101,7 @@ export default class Barcode extends LightningElement {
      */
 
     /**
-     * The color of the background. Valid values include color name, HEX and RGB.
+     * The color of the background. Valid formats include color name, HEX and RGB.
      *
      * @public
      * @type {string}
@@ -109,7 +117,7 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The color of the barcode. Valid values include color name, HEX and RGB.
+     * The color of the barcode. Valid formats include color name, HEX and RGB.
      *
      * @public
      * @type {string}
@@ -123,7 +131,7 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The rendering engine of the barcode.
+     * The rendering engine of the barcode. Valid values include svg and canvas.
      *
      * @public
      * @type {string}
@@ -134,7 +142,10 @@ export default class Barcode extends LightningElement {
         return this._renderAs;
     }
     set renderAs(value) {
-        this._renderAs = value;
+        this._renderAs = normalizeString(value, {
+            fallbackValue: RENDERING_ENGINE.actionDefault,
+            validValues: RENDERING_ENGINE.valid
+        });
     }
 
     /**
@@ -153,20 +164,6 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The value of the barcode.
-     *
-     * @public
-     * @type {number}
-     */
-    @api
-    get value() {
-        return this._value;
-    }
-    set value(value) {
-        this._value = value;
-    }
-
-    /**
      * Hide the value of the barcode.
      *
      * @public
@@ -178,7 +175,7 @@ export default class Barcode extends LightningElement {
         return this._hideValue;
     }
     set hideValue(value) {
-        this._hideValue = value;
+        this._hideValue = normalizeBoolean(value);
     }
 
     /**
@@ -193,7 +190,7 @@ export default class Barcode extends LightningElement {
         return this._checksum;
     }
     set checksum(value) {
-        this._checksum = value;
+        this._checksum = normalizeBoolean(value);
     }
 
     /**
@@ -223,6 +220,29 @@ export default class Barcode extends LightningElement {
         return this._type;
     }
     set type(value) {
-        this._type = value;
+        this._type = normalizeString(value, {
+            fallbackValue: SYMBOLOGY.actionDefault,
+            validValues: SYMBOLOGY.valid
+        });
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+    @api
+    get computeBgStyle() {
+        return `
+            background-color: ${this._background};
+            width: ${this._size}px;
+        `;
+    }
+
+    @api
+    get computeBarcodeStyle() {
+        return `
+            color: ${this._color};
+        `;
     }
 }

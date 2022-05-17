@@ -32,4 +32,11 @@
  */
 -->
 
-<template> </template>
+<template>
+    <div style={computeBgStyle}>
+        <div style={computeBarcodeStyle}>barcode</div>
+        <template if:false={hideValue}>
+            <div>{value}</div>
+        </template>
+    </div>
+</template>
