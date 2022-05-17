@@ -48,17 +48,33 @@ const CHIP_VARIANTS = {
     default: 'base'
 };
 
-const AVATAR_POSITIONS = {
+const MEDIA_POSITION = {
     valid: ['left', 'right'],
     default: 'left'
 };
+
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
+
+const AVATAR_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'x-small'
+};
+
+const DEFAULT_ICON_NAME = 'utility:check';
 
 export default class PrimitiveChip extends LightningElement {
     _label = '';
     _outline = false;
     _variant = CHIP_VARIANTS.default;
     _avatar = null;
-    _avatarPosition = AVATAR_POSITIONS.default;
+    _avatarSize = AVATAR_SIZES.default;
+    _mediaPosition = MEDIA_POSITION.default;
+    _iconName = DEFAULT_ICON_NAME;
+    _iconSize = ICON_SIZES.default;
+    _showIcon = false;
 
     /**
      * Label displayed in the chip.
@@ -123,27 +139,85 @@ export default class PrimitiveChip extends LightningElement {
     }
 
     /**
-     *  The position of the avatar to display. Can be set to 'left' or 'right'. Left by default.
+     *  The position of the media to display. Can be set to 'left' or 'right'. Left by default.
      *  @public
      *  @type {string}
      *  @default left
      */
     @api
-    get avatarPosition() {
-        return this._avatarPosition;
+    get mediaPosition() {
+        return this._mediaPosition;
     }
-    set avatarPosition(position) {
-        this._avatarPosition = normalizeString(position, {
-            fallbackValue: AVATAR_POSITIONS.default,
-            validValues: AVATAR_POSITIONS.valid
+    set mediaPosition(position) {
+        this._mediaPosition = normalizeString(position, {
+            fallbackValue: MEDIA_POSITION.default,
+            validValues: MEDIA_POSITION.valid
         });
+    }
+
+    /** The size of the avatar to display. Values range from 'xx-small' to 'large'
+     *  @public
+     *  @type {string}
+     *  @default x-small
+     */
+    @api
+    get avatarSize() {
+        return this._avatarSize;
+    }
+
+    set avatarSize(value) {
+        this._avatarSize = normalizeString(value, {
+            fallbackValue: AVATAR_SIZES.default,
+            validValues: AVATAR_SIZES.valid
+        });
+    }
+
+    /** The name of the icon to display.
+     *  @public
+     *  @type {string}
+     *  @default x-small
+     */
+    @api
+    get iconName() {
+        return this._iconName;
+    }
+    set iconName(value) {
+        if (value) {
+            this._iconName = this._iconName = normalizeString(value, {
+                fallbackValue: DEFAULT_ICON_NAME
+            });
+            this._showIcon = true;
+        }
+    }
+
+    /** The size of the icon to display. Values range from 'xx-small' to 'large'
+     *  @public
+     *  @type {string}
+     *  @default x-small
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     *  If icon media is to be shown.
+     */
+    get showIcon() {
+        return this._showIcon;
     }
 
     /**
      *  Returns true if avatar is left, if not, returns false.
      */
-    get showAvatarLeft() {
-        console.log(this.avatarPosition);
-        return this.avatarPosition !== 'right';
+    get showMediaLeft() {
+        return this.mediaPosition !== 'right';
     }
 }
