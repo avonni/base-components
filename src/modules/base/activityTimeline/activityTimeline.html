@@ -68,6 +68,14 @@
                         button-variant={item.buttonVariant}
                         button-icon-position={item.buttonIconPosition}
                         button-disabled={item.buttonDisabled}
+                        date-format-day={dateFormatDay}
+                        date-format-weekday={dateFormatWeekday}
+                        date-format-month={dateFormatMonth}
+                        date-format-year={dateFormatYear}
+                        time-format-hour={timeFormatHour}
+                        time-format-hour12={timeFormatHour12}
+                        time-format-minute={timeFormatMinute}
+                        time-format-second={timeFormatSecond}
                         is-loading={item.isLoading}
                         is-active={item.isActive}
                         loading-state-alternative-text={item.loadingStateAlternativeText}
@@ -85,10 +93,7 @@
         </ul>
     </template>
     <template if:true={hasDates}>
-        <template
-            for:each={orderedDates}
-            for:item="date"
-        >
+        <template for:each={orderedDates} for:item="date">
             <template if:false={noGroupBy}>
                 <c-expandable-section
                     key={date.label}
@@ -98,10 +103,7 @@
                     data-element-id="avonni-expandable-section"
                 >
                     <ul class="slds-timeline">
-                        <template
-                            for:each={date.items}
-                            for:item="item"
-                        >
+                        <template for:each={date.items} for:item="item">
                             <li key={item.name}>
                                 <c-primitive-activity-timeline-item
                                     title={item.title}
@@ -119,6 +121,14 @@
                                     button-variant={item.buttonVariant}
                                     button-icon-position={item.buttonIconPosition}
                                     button-disabled={item.buttonDisabled}
+                                    date-format-day={dateFormatDay}
+                                    date-format-weekday={dateFormatWeekday}
+                                    date-format-month={dateFormatMonth}
+                                    date-format-year={dateFormatYear}
+                                    time-format-hour={timeFormatHour}
+                                    time-format-hour12={timeFormatHour12}
+                                    time-format-minute={timeFormatMinute}
+                                    time-format-second={timeFormatSecond}
                                     is-loading={item.isLoading}
                                     is-active={item.isActive}
                                     loading-state-alternative-text={item.loadingStateAlternativeText}

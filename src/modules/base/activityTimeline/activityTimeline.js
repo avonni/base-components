@@ -37,21 +37,11 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 
-const DATE_TIME_FORMATS = {
-    valid: ['numeric', '2-digit'],
-    dayDefault: 'numeric',
-    hourDefault: 'numeric',
-    minuteDefault: '2-digit',
-    yearDefault: 'numeric'
-};
-const WEEKDAY_FORMATS = {
-    valid: ['narrow', 'short', 'long'],
-    default: 'short'
-};
+const DATE_TIME_FORMATS = { valid: ['numeric', '2-digit'] };
 const MONTH_FORMATS = {
-    valid: ['2-digit', 'numeric', 'narrow', 'short', 'long'],
-    default: 'long'
+    valid: ['2-digit', 'numeric', 'narrow', 'short', 'long']
 };
+const WEEKDAY_FORMATS = { valid: ['narrow', 'short', 'long'] };
 
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
@@ -90,10 +80,10 @@ export default class ActivityTimeline extends LightningElement {
     _actions = [];
     _closed = false;
     _collapsible = false;
-    _dateFormatDay = DATE_TIME_FORMATS.dayDefault;
-    _dateFormatWeekday = WEEKDAY_FORMATS.default;
-    _dateFormatMonth = MONTH_FORMATS.default;
-    _dateFormatYear = DATE_TIME_FORMATS.yearDefault;
+    _dateFormatDay;
+    _dateFormatWeekday;
+    _dateFormatMonth;
+    _dateFormatYear;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _sortedDirection = SORTED_DIRECTIONS.default;
@@ -172,7 +162,6 @@ export default class ActivityTimeline extends LightningElement {
      * Valid values include numeric and 2-digit.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -182,7 +171,6 @@ export default class ActivityTimeline extends LightningElement {
 
     set dateFormatDay(value) {
         this._dateFormatDay = normalizeString(value, {
-            fallbackValue: DATE_TIME_FORMATS.dayDefault,
             validValues: DATE_TIME_FORMATS.valid
         });
     }
@@ -191,7 +179,6 @@ export default class ActivityTimeline extends LightningElement {
      * Valid values are numeric, 2-digit, long, short or narrow.
      *
      * @type {string}
-     * @default long
      * @public
      */
     @api
@@ -201,7 +188,6 @@ export default class ActivityTimeline extends LightningElement {
 
     set dateFormatMonth(value) {
         this._dateFormatMonth = normalizeString(value, {
-            fallbackValue: MONTH_FORMATS.default,
             validValues: MONTH_FORMATS.valid
         });
     }
@@ -210,7 +196,6 @@ export default class ActivityTimeline extends LightningElement {
      * Specifies how to display the day of the week. Valid values are narrow, short, or long.
      *
      * @type {string}
-     * @default short
      * @public
      */
     @api
@@ -220,7 +205,6 @@ export default class ActivityTimeline extends LightningElement {
 
     set dateFormatWeekday(value) {
         this._dateFormatWeekday = normalizeString(value, {
-            fallbackValue: WEEKDAY_FORMATS.default,
             validValues: WEEKDAY_FORMATS.valid
         });
     }
@@ -229,7 +213,6 @@ export default class ActivityTimeline extends LightningElement {
      * Valid values include numeric and 2-digit.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -239,7 +222,6 @@ export default class ActivityTimeline extends LightningElement {
 
     set dateFormatYear(value) {
         this._dateFormatYear = normalizeString(value, {
-            fallbackValue: DATE_TIME_FORMATS.yearDefault,
             validValues: DATE_TIME_FORMATS.valid
         });
     }
@@ -302,7 +284,6 @@ export default class ActivityTimeline extends LightningElement {
      * Valid values include numeric and 2-digit.
      *
      * @type {string}
-     * @default numeric
      * @public
      */
     @api
@@ -338,7 +319,6 @@ export default class ActivityTimeline extends LightningElement {
      * Valid values include numeric and 2-digit.
      *
      * @type {string}
-     * @default 2-digit
      * @public
      */
     @api
