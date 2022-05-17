@@ -36,6 +36,7 @@ import ButtonMenu from 'c/buttonMenu';
 // not tested
 // tooltip
 // selected event
+// Keyboard navigation (focus)
 
 let element;
 describe('Button Menu', () => {
