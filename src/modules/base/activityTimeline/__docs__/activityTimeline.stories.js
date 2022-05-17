@@ -118,6 +118,110 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        timeFormatHour: {
+            name: 'time-format-hour',
+            control: {
+                type: 'select'
+            },
+            options: ['2-digit', 'numeric'],
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'numeric' },
+                category: 'Time'
+            }
+        },
+        timeFormatHour12: {
+            name: 'time-format-hour12',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                "Determines whether time is displayed as 12-hour. If false, time displays as 24-hour. The default setting is determined by the user's locale.",
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Time'
+            }
+        },
+        timeFormatMinute: {
+            name: 'time-format-minute',
+            control: {
+                type: 'select'
+            },
+            options: ['2-digit', 'numeric'],
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '2-digit' },
+                category: 'Time'
+            }
+        },
+        timeFormatSecond: {
+            name: 'time-format-second',
+            control: {
+                type: 'select'
+            },
+            options: ['2-digit', 'numeric'],
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Time'
+            }
+        },
+        dateFormatDay: {
+            name: 'date-format-day',
+            control: {
+                type: 'select'
+            },
+            options: ['2-digit', 'numeric'],
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'numeric' },
+                category: 'Date'
+            }
+        },
+        dateFormatWeekday: {
+            name: 'date-format-weekday',
+            control: {
+                type: 'select'
+            },
+            options: ['narrow', 'short', 'long'],
+            description:
+                'Specifies how to display the day of the week. Allowed values are narrow, short, or long.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'short' },
+                category: 'Date'
+            }
+        },
+        dateFormatMonth: {
+            name: 'date-format-month',
+            control: {
+                type: 'select'
+            },
+            options: ['numeric', '2-digit', 'narrow', 'short', 'long'],
+            description:
+                'Allowed values are numeric, 2-digit, long, short or narrow.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'long' },
+                category: 'Date'
+            }
+        },
+        dateFormatYear: {
+            name: 'date-format-year',
+            control: {
+                type: 'select'
+            },
+            options: ['2-digit', 'numeric'],
+            description: 'Valid values include numeric and 2-digit.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'numeric' },
+                category: 'Date'
+            }
         }
     },
     args: {
