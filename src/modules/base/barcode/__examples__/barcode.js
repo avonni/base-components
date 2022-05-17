@@ -34,8 +34,26 @@ import Component from '../barcode';
 
 customElements.define('ac-barcode', Component.CustomElementConstructor);
 
-export const Barcode = () => {
+export const Barcode = ({
+    background,
+    color,
+    renderAs,
+    size,
+    value,
+    hideValue,
+    checksum,
+    textColor,
+    type
+}) => {
     const element = document.createElement('ac-barcode');
-    // element.title = title;
+    element.background = background;
+    element.color = color;
+    element.renderAs = renderAs;
+    element.size = size;
+    element.value = value;
+    element.hideValue = hideValue;
+    element.checksum = checksum;
+    element.textColor = textColor;
+    element.type = type;
     return element;
 };

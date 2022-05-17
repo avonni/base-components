@@ -35,16 +35,56 @@ import { Barcode } from '../__examples__/barcode';
 export default {
     title: 'Example/Barcode',
     argTypes: {
-        // title: {
-        //     control: {
-        //         type: 'text'
-        //     },
-        //     description:
-        //         'The title can include text, and is displayed in the header.',
-        //     table: {
-        //         type: { summary: 'string' }
-        //     }
-        // }
+        background: {
+            control: 'color',
+            description: 'Defines the background color of the barcode.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#ffffff' },
+                category: 'Color'
+            }
+        },
+        color: {
+            control: 'color',
+            description: 'Defines the color of the barcode.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#000000' },
+                category: 'Color'
+            }
+        },
+        size: {
+            control: {
+                type: 'number'
+            },
+            description: 'Defines the width of the barcode.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 300 },
+                category: 'Layout'
+            }
+        },
+        value: {
+            control: {
+                type: 'number'
+            },
+            description: 'Defines the value of the barcode.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Values'
+            }
+        },
+        hideValue: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the barcode value is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+                category: 'Layout'
+            }
+        }
     }
 };
 
@@ -52,5 +92,8 @@ const Template = (args) => Barcode(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    // title: 'Barcode'
+    background: '#ffffff',
+    color: '#000000',
+    size: 300,
+    hideValue: false
 };
