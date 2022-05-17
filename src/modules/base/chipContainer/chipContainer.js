@@ -166,7 +166,6 @@ export default class ChipContainer extends LightningElement {
      * True if the "show more" button should be visible.
      *
      * @type {boolean}
-     * @default false
      */
     get showMore() {
         return this.computedIsCollapsible && !this.computedIsExpanded;
