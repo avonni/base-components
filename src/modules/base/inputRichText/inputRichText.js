@@ -843,6 +843,21 @@ export default class InputRichText extends LightningElement {
         return inputRichTextLibrary.filterFormats(this.quill.getFormat());
     }
 
+    /**
+     * Retrieve the user's selection range.
+     *
+     * @param {boolean} focus If true, the editor will be focused first.
+     * @returns {object|null} Object with two keys: index and length. Return null if there is no selection.
+     * @public
+     */
+    @api
+    getSelection(focus) {
+        if (this.quill) {
+            return this.quill.getSelection(focus);
+        }
+        return null;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
