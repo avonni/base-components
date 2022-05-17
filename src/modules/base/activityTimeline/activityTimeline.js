@@ -55,7 +55,6 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
-const DEFAULT_MAX_VISIBLE_ITEMS = 11;
 
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
@@ -129,7 +128,7 @@ export default class ActivityTimeline extends LightningElement {
     _collapsible = false;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
-    _maxVisibleItems = DEFAULT_MAX_VISIBLE_ITEMS;
+    _maxVisibleItems;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _key;
@@ -293,7 +292,6 @@ export default class ActivityTimeline extends LightningElement {
     /**
      * The maximum number of visible items to display
      * @type {number}
-     * @default 11
      * @public
      */
     @api
@@ -302,7 +300,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set maxVisibleItems(value) {
-        this._maxVisibleItems = value > 0 ? value : DEFAULT_MAX_VISIBLE_ITEMS;
+        if (value && value > 0) this._maxVisibleItems = value;
     }
 
     /**
@@ -383,7 +381,9 @@ export default class ActivityTimeline extends LightningElement {
      * @type {boolean}
      */
     get isShowButtonHidden() {
-        return this.maxVisibleItems >= this.items.length;
+        return (
+            !this.maxVisibleItems || this.maxVisibleItems >= this.items.length
+        );
     }
 
     /**
@@ -409,8 +409,8 @@ export default class ActivityTimeline extends LightningElement {
                       (a, b) =>
                           new Date(a.datetimeValue) - new Date(b.datetimeValue)
                   );
-        return this.showMore && !this.isShowButtonHidden
-            ? items.splice(0, this._maxVisibleItems)
+        return this.showMore && !this.isShowButtonHidden && this.maxVisibleItems
+            ? items.splice(0, this.maxVisibleItems)
             : items;
     }
 

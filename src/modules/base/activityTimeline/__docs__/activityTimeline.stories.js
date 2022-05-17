@@ -104,8 +104,7 @@ export default {
             },
             description: 'The maximum number of visible items to display.',
             table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: '11' }
+                type: { summary: 'number' }
             }
         },
         sortedDirection: {

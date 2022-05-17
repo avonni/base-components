@@ -58,7 +58,6 @@ describe('Activity Timeline', () => {
         expect(element.items).toMatchObject([]);
         expect(element.sortedDirection).toBe('desc');
         expect(element.title).toBeUndefined();
-        expect(element.maxVisibleItems).toBe(11);
         expect(element.buttonShowLessIconName).toBeUndefined();
         expect(element.buttonShowLessIconPosition).toBe('left');
         expect(element.buttonShowLessLabel).toBe('Show less');
