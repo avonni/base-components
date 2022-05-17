@@ -128,7 +128,6 @@ export default {
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'numeric' },
                 category: 'Time'
             }
         },
@@ -153,7 +152,6 @@ export default {
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '2-digit' },
                 category: 'Time'
             }
         },
@@ -178,7 +176,6 @@ export default {
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'numeric' },
                 category: 'Date'
             }
         },
@@ -192,7 +189,6 @@ export default {
                 'Specifies how to display the day of the week. Allowed values are narrow, short, or long.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'short' },
                 category: 'Date'
             }
         },
@@ -206,7 +202,6 @@ export default {
                 'Allowed values are numeric, 2-digit, long, short or narrow.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'long' },
                 category: 'Date'
             }
         },
@@ -219,7 +214,6 @@ export default {
             description: 'Valid values include numeric and 2-digit.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'numeric' },
                 category: 'Date'
             }
         }
@@ -239,6 +233,10 @@ Base.args = {
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: true,
+    dateFormatDay: 'numeric',
+    dateFormatWeekday: 'long',
+    dateFormatMonth: 'long',
+    dateFormatYear: 'numeric',
     actions: actions
 };
 
@@ -258,6 +256,10 @@ Weekly.args = {
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: true,
+    dateFormatDay: 'numeric',
+    dateFormatWeekday: 'long',
+    dateFormatMonth: 'long',
+    dateFormatYear: 'numeric',
     actions: actions,
     groupBy: 'week'
 };
@@ -268,6 +270,10 @@ WeeklyNotCollapsible.args = {
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: false,
+    dateFormatDay: 'numeric',
+    dateFormatWeekday: 'long',
+    dateFormatMonth: 'long',
+    dateFormatYear: 'numeric',
     actions: actions,
     groupBy: 'week'
 };
@@ -279,6 +285,8 @@ Monthly.args = {
     groupBy: 'month',
     items: items,
     collapsible: true,
+    dateFormatDay: 'numeric',
+    dateFormatWeekday: 'long',
     actions: actions
 };
 
@@ -289,6 +297,9 @@ Yearly.args = {
     groupBy: 'year',
     items: yearlyItems,
     collapsible: true,
+    dateFormatDay: 'numeric',
+    dateFormatWeekday: 'long',
+    dateFormatMonth: 'long',
     actions: actions
 };
 
