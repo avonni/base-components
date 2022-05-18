@@ -35,7 +35,8 @@ import {
     normalizeBoolean,
     normalizeArray,
     normalizeString,
-    deepCopy
+    deepCopy,
+    dateTimeObjectFrom
 } from 'c/utilsPrivate';
 
 import { classSet } from 'c/utils';
@@ -159,6 +160,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
+    _dateFormat;
     _dateFormatDay;
     _dateFormatWeekday;
     _dateFormatMonth;
@@ -251,6 +253,23 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     set closed(value) {
         this._closed = normalizeBoolean(value);
+    }
+
+    /**
+     * The date format to use for the item. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format.
+     * If you want to insert text in the label, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get dateFormat() {
+        return this._dateFormat;
+    }
+
+    set dateFormat(value) {
+        if (value && typeof value === 'string') this._dateFormat = value;
     }
 
     /**
@@ -567,6 +586,17 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     get computedDatetimeValue() {
         return new Date(this.datetimeValue).getTime();
+    }
+
+    /**
+     * Formatted date to display
+     *
+     * @type {string}
+     */
+    get formattedDate() {
+        return dateTimeObjectFrom(this.computedDatetimeValue).toFormat(
+            this.dateFormat
+        );
     }
 
     /*

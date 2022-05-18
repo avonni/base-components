@@ -126,7 +126,14 @@
                             avonni-activity-timeline-item-header-date
                         "
                     >
-                        <lightning-formatted-date-time
+                        <div
+                            if:true={dateFormat}
+                            class="slds-timeline__date"
+                            data-element-id="avonni-formatted-date-time"
+                        >
+                            {formattedDate}
+                        </div>
+                        <!-- <lightning-formatted-date-time
                             if:true={hasDateAndTimeFormat}
                             value={computedDatetimeValue}
                             class="slds-timeline__date"
@@ -138,8 +145,8 @@
                             hour12={timeFormatHour12}
                             minute={timeFormatMinute}
                             second={timeFormatSecond}
-                            data-element-id="avonni-formated-date-time"
-                        ></lightning-formatted-date-time>
+                            data-element-id="avonni-formatted-date-time"
+                        ></lightning-formatted-date-time> -->
                         <div slot="figure-inverse" if:true={hasActions}>
                             <lightning-button-menu
                                 alternative-text="Show menu"
