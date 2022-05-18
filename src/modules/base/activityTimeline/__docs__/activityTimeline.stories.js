@@ -167,6 +167,7 @@ Weekly.args = {
     items: items,
     collapsible: true,
     actions: actions,
+    dateFormat: 'DDDD - t',
     groupBy: 'week'
 };
 
@@ -177,6 +178,7 @@ WeeklyNotCollapsible.args = {
     items: items,
     collapsible: false,
     actions: actions,
+    dateFormat: 'DDDD - t',
     groupBy: 'week'
 };
 
@@ -187,6 +189,7 @@ Monthly.args = {
     groupBy: 'month',
     items: items,
     collapsible: true,
+    dateFormat: 'dd MMM - t',
     actions: actions
 };
 
@@ -197,6 +200,7 @@ Yearly.args = {
     groupBy: 'year',
     items: yearlyItems,
     collapsible: true,
+    dateFormat: 'DDD',
     actions: actions
 };
 
