@@ -81,6 +81,7 @@ describe('Primitive Activity Timeline Item', () => {
         expect(element.datetimeValue).toBeUndefined();
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
+        expect(element.iconSize).toBe('small');
         expect(element.fields).toMatchObject([]);
         expect(element.hasCheckbox).toBeFalsy();
         expect(element.hasError).toBeFalsy();
@@ -156,6 +157,67 @@ describe('Primitive Activity Timeline Item', () => {
         });
     });
 
+    // icon size
+    it('Activity Timeline item: icon size (xx-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('xx-small');
+        });
+    });
+
+    it('Activity Timeline item: icon size (x-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('x-small');
+        });
+    });
+
+    it('Activity Timeline item: icon size (small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('small');
+        });
+    });
+
+    it('Activity Timeline item: icon size (medium)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('medium');
+        });
+    });
+
+    it('Activity Timeline item: icon size (large)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="item-marker"]'
+            );
+            expect(icon.size).toBe('large');
+        });
+    });
+
     // fields
     it('Activity timeline item: fields', () => {
         element.fields = FIELDS;
@@ -174,6 +236,7 @@ describe('Primitive Activity Timeline Item', () => {
                 expect(field.value).toBe(correspondingField.value);
                 expect(field.type).toBe(correspondingField.type);
                 if (correspondingField.typeAttributes) {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(field.typeAttributes).toMatchObject(
                         correspondingField.typeAttributes
                     );
