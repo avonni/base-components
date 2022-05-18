@@ -38,6 +38,7 @@ export default class Kanban extends LightningElement {
     _summarizeFieldName;
     _fields = [];
     _records = [];
+    _actions = [];
 
     /**
      * Name of the data field containing the group label the data belongs to.
@@ -96,7 +97,13 @@ export default class Kanban extends LightningElement {
      * @type {object[]}
      * @public
      */
-    @api actions;
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(values) {
+        this._actions = normalizeArray(values);
+    }
 
     /**
      * Array of data objects. Each object will be displayed as a data card in one of the steps.
@@ -137,23 +144,28 @@ export default class Kanban extends LightningElement {
     // TODO: METHODS
     get computedGroups() {
         let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
-        computedGroups.forEach((group) => {
+        computedGroups.forEach((group, i) => {
             group.tiles = [];
-            // TODO: Probably bad idea to do that here and that way
-            group.summarizeField = 0;
+            group.summarize = {
+                value: 0,
+                type: '',
+                typeAttributes: {}
+            };
+            group.index = i;
         });
         let computedFields = [];
         this._records.forEach((record, i) => {
             computedFields.push({
                 index: record.id,
                 group: record.status,
+                warningIcon: record.warningIcon,
                 field: []
             });
             this._fields.forEach((field) => {
                 if (JSON.stringify(record[field.fieldName])) {
                     computedFields[i].field.push({
                         label: field.label,
-                        value: record[field.fieldName].toString(),
+                        value: record[field.fieldName],
                         type: field.type,
                         typeAttributes: field.typeAttributes
                     });
@@ -172,43 +184,84 @@ export default class Kanban extends LightningElement {
                         normalizeString(field.label) ===
                         this._summarizeFieldName
                 );
-                if (toSummarize)
-                    group.summarizeField += parseInt(toSummarize.value, 10);
+                if (toSummarize && typeof toSummarize.value === 'number') {
+                    group.summarize.type = toSummarize.type;
+                    group.summarize.typeAttributes = toSummarize.typeAttributes;
+                    group.summarize.value += toSummarize.value;
+                    // TODO: ANIMATION
+                    // setTimeout(() => {
+                    //     const summary = this.template.querySelectorAll(
+                    //         '.avonni-kanban__summary'
+                    //     )[group.index];
+                    //     summary.style.setProperty(
+                    //         '--num',
+                    //         group.summarize.value.toString()
+                    //     );
+                    // }, 0);
+                    // setTimeout(() => {
+                    //     const summary = this.template.querySelectorAll(
+                    //         '.avonni-kanban__summary'
+                    //     )[group.index];
+                    //     if (group.summarize.type === 'currency') {
+                    //         summary.setAttribute(
+                    //             'data-value',
+                    //             group.summarize.value.toLocaleString('en-US', {
+                    //                 style: 'currency',
+                    //                 currency:
+                    //                     group.summarize.typeAttributes
+                    //                         .currencyCode
+                    //             })
+                    //         );
+                    //     } else if (group.summarize.type === 'percent') {
+                    //         summary.setAttribute(
+                    //             'data-value',
+                    //             `${parseInt(group.summarize.value * 100, 10)}%`
+                    //         );
+                    //     }
+                    // }, 750);
+                }
             }
         });
 
         return computedGroups;
     }
 
-    formatField(field, fieldValue) {
-        let formatedField;
-        switch (field.type) {
-            case 'date':
-                formatedField = new Date(
-                    parseInt(fieldValue, 10)
-                ).toLocaleDateString();
-                break;
+    /**
+     * Check if actions exist.
+     *
+     * @type {boolean}
+     */
+    get hasActions() {
+        return this.actions && this.actions.length > 0;
+    }
 
-            case 'currency':
-                formatedField = parseInt(fieldValue, 10).toLocaleString(
-                    'en-IN',
-                    {
-                        style: 'currency',
-                        currency: 'EUR',
-                        minimumFractionDigits: 2
-                    }
-                );
-                break;
-
-            case 'percent':
-                formatedField = `${parseInt(fieldValue * 100, 10)}%`;
-                break;
-
-            default:
-                formatedField = fieldValue;
-                break;
-        }
-
-        return formatedField;
+    /**
+     * Actionclick handler.
+     *
+     * @param {Event} event
+     */
+    handleActionClick(event) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} id Unique data id.
+         * @param {string} action Unique name of the action.
+         * @public
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    id: event.currentTarget.id,
+                    action: event.currentTarget.action
+                },
+                composed: false,
+                bubbles: true,
+                cancelable: true
+            })
+        );
     }
 }

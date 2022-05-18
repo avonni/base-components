@@ -31,11 +31,21 @@
  */
 
 import { Kanban } from '../__examples__/kanban';
-import { GROUP_VALUES, FIELDS, RECORDS } from './data';
+import { GROUP_VALUES, FIELDS, RECORDS, ACTIONS } from './data';
 
 export default {
     title: 'Example/Kanban',
     argTypes: {
+        actions: {
+            control: {
+                type: 'object'
+            },
+            description:
+                ' Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         groupValues: {
             control: {
                 type: 'object'
@@ -87,5 +97,6 @@ Base.args = {
     groupValues: GROUP_VALUES,
     fields: FIELDS,
     records: RECORDS,
+    actions: ACTIONS,
     summarizeFieldName: 'Amount'
 };

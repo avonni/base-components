@@ -105,5 +105,11 @@ export default class KanbanBase extends LightningElement {
         }
     ];
 
+    actions = [
+        { disabled: false, label: 'Action 1', name: 'Action 1' },
+        { disabled: false, label: 'Action 2', name: 'Action 2' },
+        { disabled: true, label: 'Action 3', name: 'Action 3' }
+    ];
+
     summarizeFieldName = 'Amount';
 }

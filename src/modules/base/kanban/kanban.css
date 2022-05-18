@@ -31,3 +31,41 @@
     color: rgb(74, 190, 74);
     font-size: 2rem;
 }
+
+.avonni-kanban__tile_icon {
+    position: absolute;
+    right: 3px;
+    bottom: 3px;
+}
+
+.avonni-kanban__tile_actions {
+    position: absolute;
+    right: 3px;
+    top: 3px;
+}
+
+/* @property --num {
+    syntax: '<integer>';
+    initial-value: 0;
+    inherits: false;
+  }
+  
+  .avonni-kanban__summary {
+    transition: --num 0.75s ease-out;
+    --num: 0;
+    counter-reset: num var(--num);
+  }
+
+  .avonni-kanban__summary::after {
+    content: counter(num);
+    animation: hide 0.01ms 0.75s forwards;
+  }
+
+  .avonni-kanban__summary::before {
+      content: attr(data-value);
+  }
+
+  @keyframes hide {
+    99% {width: initial; height: initial; opacity: 1;}
+    100% {width: 0; opacity: 0; height: 0;}
+  } */

@@ -134,4 +134,10 @@ const RECORDS = [
     }
 ];
 
-export { GROUP_VALUES, FIELDS, RECORDS };
+const ACTIONS = [
+    { disabled: false, label: 'Action 1', name: 'Action 1' },
+    { disabled: false, label: 'Action 2', name: 'Action 2' },
+    { disabled: true, label: 'Action 3', name: 'Action 3' }
+];
+
+export { GROUP_VALUES, FIELDS, RECORDS, ACTIONS };

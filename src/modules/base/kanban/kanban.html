@@ -76,7 +76,14 @@
                 for:item="group"
                 key={group.label}
             >
-                <p class="avonni-kanban__summary">{group.summarizeField}</p>
+                <c-output-data
+                    value={group.summarize.value}
+                    type={group.summarize.type}
+                    type-attributes={group.summarize.typeAttributes}
+                    variant="label-hidden"
+                    class="avonni-kanban__summary"
+                ></c-output-data>
+                <!-- <p class="avonni-kanban__summary"></p> -->
                 <lightning-tile
                     for:each={group.tiles}
                     for:item="record"
@@ -99,6 +106,37 @@
                                 ></c-output-data>
                             </p>
                         </li>
+                        <li>
+                            <lightning-icon
+                                class="avonni-kanban__tile_icon"
+                                size="x-small"
+                                variant="warning"
+                                icon-name={record.warningIcon}
+                            ></lightning-icon>
+                        </li>
+                        <div
+                            class="avonni-kanban__tile_actions"
+                            if:true={hasActions}
+                        >
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="right"
+                                variant={buttonMenuVariant}
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        onclick={handleActionClick}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        class="slds-text-color_default"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
                     </ul>
                 </lightning-tile>
             </div>

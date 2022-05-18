@@ -38,12 +38,14 @@ export const Kanban = ({
     groupValues,
     fields,
     records,
-    summarizeFieldName
+    summarizeFieldName,
+    actions
 }) => {
     const element = document.createElement('ac-kanban');
     element.groupValues = groupValues;
     element.fields = fields;
     element.records = records;
     element.summarizeFieldName = summarizeFieldName;
+    element.actions = actions;
     return element;
 };
