@@ -41,6 +41,7 @@ export const ActivityTimeline = ({
     actions,
     closed,
     collapsible,
+    dateFormat,
     dateFormatDay,
     dateFormatWeekday,
     dateFormatMonth,
@@ -59,6 +60,7 @@ export const ActivityTimeline = ({
     element.actions = actions;
     element.closed = closed;
     element.collapsible = collapsible;
+    element.dateFormat = dateFormat;
     element.dateFormatDay = dateFormatDay;
     element.dateFormatWeekday = dateFormatWeekday;
     element.dateFormatMonth = dateFormatMonth;
