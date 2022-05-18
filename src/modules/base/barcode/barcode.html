@@ -33,13 +33,7 @@
 -->
 
 <template>
-    <div style={computeBgStyle}>
-        <canvas data-element-id="barcode" lwc:dom="manual"></canvas>
-        <div style={computeBarcodeStyle}>barcode</div>
-        <template if:false={hideValue}>
-            <div>{value}</div>
-        </template>
-    </div>
+    <canvas data-element-id="barcode" lwc:dom="manual"></canvas>
 </template>
 
 <!-- <template>
