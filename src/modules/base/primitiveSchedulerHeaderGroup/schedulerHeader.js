@@ -170,9 +170,8 @@ export default class SchedulerHeader {
                     numberOfUnitsBetweenDates(unit, date, pushedEnd) / span;
             }
 
-            // Compensate the fact that luxon weeks start on Monday
+            // Compute the column end
             let columnEnd = addToDate(date, unit, span - 1);
-
             columnEnd =
                 unit === 'week'
                     ? columnEnd.plus({ day: 1 }).endOf(unit).minus({ day: 1 })
@@ -190,7 +189,7 @@ export default class SchedulerHeader {
                 end: columnEnd.ts
             });
 
-            // Compensate the fact that luxon week starts on Monday
+            // Set date to the next column's start
             date = addToDate(columnEnd, unit, 1);
             date =
                 unit === 'week'
@@ -201,6 +200,7 @@ export default class SchedulerHeader {
         this.start = DateTime.fromMillis(this.columns[0].start);
         this.setHeaderEnd();
         this.cleanEmptyLastColumn();
+        this.numberOfColumns = this.columns.length;
     }
 
     /**
@@ -279,9 +279,9 @@ export default class SchedulerHeader {
                 partialColumn * span > duration
                     ? duration
                     : partialColumn * span;
-            end = DateTime.fromMillis(
-                addToDate(lastColumnStart, unit, visibleUnits) - 1
-            );
+            const unitsToAddToStart = visibleUnits - 1;
+            end = addToDate(lastColumnStart, unit, unitsToAddToStart);
+            end = DateTime.fromMillis(end.ts - 1);
         }
 
         if (isReference) {
