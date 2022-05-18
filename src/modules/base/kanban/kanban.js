@@ -38,7 +38,18 @@ export default class Kanban extends LightningElement {
     _summarizeFieldName;
     _fields = [];
     _records = [];
+    _kanbanPos = {
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0
+    };
+    _initialPos = { x: 0, y: 0 };
+    _releasedGroupIndex = 0;
+    _clickedGroupIndex = 0;
     _actions = [];
+    _draggedTile;
+    _isDragged = false;
 
     /**
      * Name of the data field containing the group label the data belongs to.
@@ -263,5 +274,70 @@ export default class Kanban extends LightningElement {
                 cancelable: true
             })
         );
+    }
+
+    handleKanbanMouseDown(event) {
+        const groupWidth =
+            event.currentTarget.offsetWidth / this.groupValues.length;
+        this._clickedGroupIndex = Math.floor(event.clientX / groupWidth);
+        this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
+        this._kanbanPos.bottom =
+            this._kanbanPos.top + event.currentTarget.offsetHeight;
+        this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
+        this._kanbanPos.right =
+            this._kanbanPos.left + event.currentTarget.offsetWidth;
+        console.log(this._kanbanPos);
+    }
+
+    handleKanbanMouseUp(event) {
+        const groupWidth =
+            event.currentTarget.offsetWidth / this.groupValues.length;
+        this._releasedGroupIndex = Math.floor(event.clientX / groupWidth);
+    }
+
+    handleTileMouseDown(event) {
+        this._draggedTile = event.currentTarget;
+        this._initialPos.x =
+            event.target.getBoundingClientRect().x +
+            event.target.offsetWidth / 2;
+        this._initialPos.y =
+            event.target.getBoundingClientRect().y +
+            event.target.offsetHeight / 2;
+    }
+
+    handleTileMouseUp(event) {
+        // TODO: CONDITION POUR SAVOIR SI DRAG VALIDE
+        // if(true) {
+        //     this._draggedTile.
+        // }
+        console.log(event);
+        this._draggedTile = null;
+    }
+
+    handleTileMouseMove(event) {
+        if (!this._draggedTile) return;
+        const mouseY =
+            event.type === 'touchmove'
+                ? event.touches[0].clientY
+                : event.clientY;
+        const mouseX =
+            event.type === 'touchmove'
+                ? event.touches[0].clientX
+                : event.clientX;
+        let currentY = mouseY;
+        let currentX = mouseX;
+        if (mouseY < this._kanbanPos.top) {
+            currentY = this._kanbanPos.top;
+        } else if (mouseY > this._kanbanPos.bottom) {
+            currentY = this._kanbanPos.bottom;
+        }
+        if (mouseX < this._kanbanPos.left) {
+            currentX = this._kanbanPos.left;
+        } else if (mouseX > this._kanbanPos.right) {
+            currentX = this._kanbanPos.right;
+        }
+        this._draggedTile.style.transform = `translate(${
+            currentX - this._initialPos.x
+        }px, ${currentY - this._initialPos.y}px)`;
     }
 }
