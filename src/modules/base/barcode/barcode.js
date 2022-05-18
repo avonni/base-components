@@ -84,7 +84,7 @@ export default class Barcode extends LightningElement {
      * @public
      * @type {number}
      */
-    @api value;
+    @api value = 1234;
 
     _background = DEFAULT_BACKGROUND;
     _color;
@@ -94,32 +94,24 @@ export default class Barcode extends LightningElement {
     _checksum = DEFAULT_CHECKSUM;
     _textColor = DEFAULT_TEXT_COLOR;
     _type = SYMBOLOGY.default;
+    _initialRender = false;
+
+    checksumValue;
 
     renderedCallback() {
-        // let element = this.template.querySelector('.barcode');
-        // if (!element) console.log('hello');
-        // else console.log(element.nodeName);
-
-        // let element = this.template.querySelector('.barcode');
-
-        // JsBarcode('[data-element-id="barcodeId"]', "Example1234");
-
-        // JsBarcode('canvas', "Example1234");
-        // JsBarcode('canvas').init();
-
+        if (!this._initialRender) this.initBarcode();
+        this._initialRender = true;
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
         );
-        console.log(canvas.nodeName);
         JsBarcode(canvas, this.value, {
-            format: this._type,
+            format: this.type,
             lineColor: this.color,
-            background: this._background,
+            background: this.background,
             text: this.value,
-            hideValue: this._hideValue,
-            width: this._size
+            displayValue: !this.hideValue,
+            width: this.size
         });
-        console.log('hello');
         JsBarcode('.barcode').init();
     }
 
@@ -223,6 +215,20 @@ export default class Barcode extends LightningElement {
     }
 
     /**
+     * The value of the barcode checksum. It is calculated using the calculateChecksum private method.
+     *
+     * @public
+     * @type {number}
+     */
+    // @api
+    // get checksumValue() {
+    //     return this._checksumValue;
+    // }
+    // set checksumValue(value) {
+    //     this._checksumValue = this.calculateChecksum();
+    // }
+
+    /**
      * The color of the text.
      *
      * @public
@@ -242,17 +248,14 @@ export default class Barcode extends LightningElement {
      *
      * @public
      * @type {string}
-     * @default code39
+     * @default CODE39
      */
     @api
     get type() {
         return this._type;
     }
     set type(value) {
-        this._type = normalizeString(value, {
-            fallbackValue: SYMBOLOGY.actionDefault,
-            validValues: SYMBOLOGY.valid
-        });
+        this._type = value;
     }
 
     /*
@@ -260,19 +263,34 @@ export default class Barcode extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-    @api
-    get computeBgStyle() {
-        return `
-            background-color: ${this._background};
-            width: ${this._size}px;
-        `;
+    initBarcode() {
+        this.calculateChecksum();
     }
 
-    @api
-    get computeBarcodeStyle() {
-        return `
-            color: ${this._color};
-        `;
+    calculateChecksum() {
+        let valueCopy = this.value;
+        let barcodeSum = 0;
+        let barcodeImpairIndexSum = 0;
+
+        let barcodeNumArray = Array.from(String(valueCopy), (num) =>
+            Number(num)
+        );
+
+        barcodeNumArray.forEach((num) => {
+            barcodeSum += num;
+        });
+
+        barcodeNumArray = barcodeNumArray.filter(
+            (num, index) => index % 2 !== 0
+        );
+
+        barcodeNumArray.forEach((num) => {
+            barcodeImpairIndexSum += num;
+        });
+        barcodeImpairIndexSum *= 2;
+
+        this.checksumValue = 10 - ((barcodeSum + barcodeImpairIndexSum) % 10);
+        console.log(this.checksumValue);
     }
 }
 
