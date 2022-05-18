@@ -30,6 +30,27 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+.slds-listbox_selection-group {
+    height: fit-content;
+}
+
 .avonni-chip-container__wrapper_is-collapsed {
-    max-width: 400px;
+    /* max-width: 400px; */
+}
+
+.avonni-chip-container__wrapper_is-collapsed .wrapped {
+    visibility: hidden;
+    height: 0px;
+}
+
+.avonni-chip-container__wrapper_small {
+    height: 32px;
+}
+
+.avonni-chip-container__wrapper_medium {
+    height: 40px;
+}
+
+.avonni-chip-container__wrapper_medium {
+    height: 48px;
 }

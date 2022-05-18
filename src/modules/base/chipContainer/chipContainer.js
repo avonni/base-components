@@ -45,6 +45,7 @@ export default class ChipContainer extends LightningElement {
     _isExpanded = false;
 
     _nbItems;
+    _itemNodes;
     _wrappedChips;
     _resizeObserver;
 
@@ -118,19 +119,10 @@ export default class ChipContainer extends LightningElement {
     renderedCallback() {
         if (this.showMore) {
             // set the wrapper height to be as high as the biggest element
-            const tallest = [
-                ...this.template.querySelectorAll(
-                    '[data-element-id="chip-container-list"] *'
-                )
-            ].sort((prev, next) => next.clientHeight - prev.clientHeight)[0];
-            this.template.querySelector(
-                '[data-element-id="div-wrapper"]'
-            ).style.height = `${tallest.clientHeight}px`;
-            this._resizeObserver = this.initWrapObserver();
+            this.computeWrapperStyle();
+            this.calculateWrappedNodes();
+            this.initWrapObserver();
         } else {
-            this.template.querySelector(
-                '[data-element-id="div-wrapper"]'
-            ).style.height = 'fit-content';
             if (this._resizeObserver) {
                 this._resizeObserver.disconnect();
                 this._resizeObserver = undefined;
@@ -222,24 +214,44 @@ export default class ChipContainer extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initWrapObserver() {
-        const resizeObserver = new AvonniResizeObserver(() => {
-            let wrappedChips = 0;
-            const items = this.template.querySelectorAll(
-                '[data-element-id="chip"]'
+        if (!this._resizeObserver) {
+            const resizeObserver = new AvonniResizeObserver(() => {
+                this.calculateWrappedNodes();
+            });
+            resizeObserver.observe(
+                this.template.querySelector(
+                    '[data-element-id="chip-container-list"]'
+                )
             );
-            for (let i = 0; i < items.length; i++) {
-                const node = items[i];
-                if (node.offsetTop > 10) {
-                    wrappedChips += 1;
-                }
-            }
-            this._wrappedChips = wrappedChips;
-        });
-        resizeObserver.observe(
-            this.template.querySelector(
-                '[data-element-id="chip-container-list"]'
-            )
+            this._resizeObserver = resizeObserver;
+        }
+    }
+
+    calculateWrappedNodes() {
+        let wrappedChips = 0;
+        const items = this.template.querySelectorAll(
+            '[data-element-id="chip"]'
         );
-        return resizeObserver;
+        for (let i = 0; i < items.length; i++) {
+            const node = items[i];
+            node.classList.remove('wrapped');
+            if (node.offsetTop > 18) {
+                wrappedChips += 1;
+                node.classList.add('wrapped');
+            }
+        }
+        this._wrappedChips = wrappedChips;
+        this.computeWrapperStyle();
+    }
+
+    computeWrapperStyle() {
+        const tallest = [
+            ...this.template.querySelectorAll(
+                '[data-element-id="chip-container-list"] *'
+            )
+        ].sort((prev, next) => next.clientHeight - prev.clientHeight)[0];
+        this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        ).style.height = `${tallest.clientHeight}px`;
     }
 }
