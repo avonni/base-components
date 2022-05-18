@@ -43,7 +43,7 @@
             <template if:true={avatar}>
                 <c-primitive-avatar
                     slot="left"
-                    size={avatarSize}
+                    size={avatar.size}
                     src={avatar.src}
                     fallback-icon-name={avatar.fallbackIconName}
                     initials={avatar.initials}
@@ -65,7 +65,7 @@
             <template if:true={avatar}>
                 <c-primitive-avatar
                     slot="right"
-                    size={avatarSize}
+                    size={avatar.size}
                     src={avatar.src}
                     fallback-icon-name={avatar.fallbackIconName}
                     initials={avatar.initials}

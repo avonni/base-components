@@ -135,7 +135,13 @@ export default class PrimitiveChip extends LightningElement {
         return this._avatar;
     }
     set avatar(value) {
-        this._avatar = value;
+        if (value) {
+            const tempAvatar = JSON.parse(JSON.stringify(value));
+            if (!tempAvatar.size) {
+                tempAvatar.size = AVATAR_SIZES.default;
+            }
+            this._avatar = tempAvatar;
+        }
     }
 
     /**
@@ -152,23 +158,6 @@ export default class PrimitiveChip extends LightningElement {
         this._mediaPosition = normalizeString(position, {
             fallbackValue: MEDIA_POSITION.default,
             validValues: MEDIA_POSITION.valid
-        });
-    }
-
-    /** The size of the avatar to display. Values range from 'xx-small' to 'large'
-     *  @public
-     *  @type {string}
-     *  @default x-small
-     */
-    @api
-    get avatarSize() {
-        return this._avatarSize;
-    }
-
-    set avatarSize(value) {
-        this._avatarSize = normalizeString(value, {
-            fallbackValue: AVATAR_SIZES.default,
-            validValues: AVATAR_SIZES.valid
         });
     }
 
