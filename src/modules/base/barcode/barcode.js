@@ -84,7 +84,7 @@ export default class Barcode extends LightningElement {
      * @public
      * @type {number}
      */
-    @api value = 1234;
+    @api value;
 
     _background = DEFAULT_BACKGROUND;
     _color;
@@ -99,7 +99,9 @@ export default class Barcode extends LightningElement {
     checksumValue;
 
     renderedCallback() {
+        console.log('RERENDERED');
         if (!this._initialRender) this.initBarcode();
+        this.computeContainerClass();
         this._initialRender = true;
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
@@ -109,7 +111,7 @@ export default class Barcode extends LightningElement {
             lineColor: this.color,
             background: this.background,
             text: this.value,
-            displayValue: !this.hideValue,
+            displayValue: false,
             width: this.size
         });
         JsBarcode('.barcode').init();
@@ -215,20 +217,6 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * The value of the barcode checksum. It is calculated using the calculateChecksum private method.
-     *
-     * @public
-     * @type {number}
-     */
-    // @api
-    // get checksumValue() {
-    //     return this._checksumValue;
-    // }
-    // set checksumValue(value) {
-    //     this._checksumValue = this.calculateChecksum();
-    // }
-
-    /**
      * The color of the text.
      *
      * @public
@@ -263,8 +251,27 @@ export default class Barcode extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /*
+     * ------------------------------------------------------------
+     * PRIVATE METHODS
+     * ------------------------------------------------------------
+     */
     initBarcode() {
         this.calculateChecksum();
+    }
+
+    computeContainerClass() {
+        let element = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        console.log(`${element.width}px`);
+        // if (!element) {
+        this.template.querySelector(
+            '[data-element-id="container"]'
+        ).style.width = `${element.width}px`;
+        console.log('hello');
+        // }
     }
 
     calculateChecksum() {

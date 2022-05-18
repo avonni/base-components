@@ -34,7 +34,16 @@
 
 <template>
     <canvas data-element-id="barcode" lwc:dom="manual"></canvas>
-    <div data-element-id="checksum">{checksumValue}</div>
+    <template if:false={hideValue}>
+        <div class="container" data-element-id="container">
+            <div class="slds-align_absolute-center" data-element-id="value">
+                {value}
+                <template if:true={checksum}>
+                    <div data-element-id="checksum">&nbsp;{checksumValue}</div>
+                </template>
+            </div>
+        </div>
+    </template>
 </template>
 
 <!-- <template>

@@ -75,6 +75,18 @@ export default {
                 category: 'Layout'
             }
         },
+        checksum: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If set to true, the Barcode will display the checksum digit next to the value in the text area.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: false },
+                category: 'Layout'
+            }
+        },
         type: {
             control: {
                 type: 'select'
