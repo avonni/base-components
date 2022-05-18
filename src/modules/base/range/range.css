@@ -174,3 +174,16 @@
     font-style: var(--avonni-range-header-font-style, normal);
     font-weight: var(--avonni-range-header-font-weight, 400);
 }
+
+.slds-slider__range {
+    margin-top: -4px;
+}
+
+.avonni-range__slider-left {
+    z-index: 100;
+}
+
+.avonni-range__slider-right {
+    background: transparent;
+    z-index: 100;
+}

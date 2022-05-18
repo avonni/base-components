@@ -601,7 +601,6 @@ export default class Range extends LightningElement {
      */
     initRange() {
         this.showHelpMessageIfInvalid();
-        this.setInputsWidth();
         this.addProgressLine();
         this.setBubblesPosition();
     }
@@ -612,11 +611,9 @@ export default class Range extends LightningElement {
      * @param {Event} event
      */
     handleChangeLeft(event) {
+        console.log(event);
         this._valueLower = event.target.value;
-        this.setInputsWidth();
         this.addProgressLine();
-        this.changeRange();
-        this.setBubblesPosition();
     }
 
     /**
@@ -626,10 +623,19 @@ export default class Range extends LightningElement {
      */
     handleChangeRight(event) {
         this._valueUpper = event.target.value;
-        this.setInputsWidth();
         this.addProgressLine();
-        this.changeRange();
-        this.setBubblesPosition();
+    }
+
+    handleClosestValue(event) {
+        console.log(event);
+        //TODO: on click of any of the two thumbs, find the closest, swap positions and manipulate the one on top.
+
+        // if (
+        //     Math.abs(event.target.value - this._valueLower) <
+        //     Math.abs(event.target.value - this._valueUpper)
+        // )
+        //     this._valueLower = event.target.value;
+        // else this._valueUpper = event.target.value;
     }
 
     /**
@@ -677,62 +683,11 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Calculate inputs width between left and right inputs.
-     */
-    setInputsWidth() {
-        let inputWidth = this.max - this.min;
-        let leftStep = this.stepsCount('left');
-
-        let leftInputWidth =
-            ((Number(this.valueLower - this.min) / this.step + leftStep) /
-                (inputWidth / this.step)) *
-            100;
-
-        let rightInputWidth = 100 - leftInputWidth;
-
-        let leftInput = this.template.querySelector('.inverse-right');
-
-        leftInput.style.width = rightInputWidth + '%';
-
-        let rightInput = this.template.querySelector('.inverse-left');
-
-        rightInput.style.width = leftInputWidth + '%';
-    }
-
-    /**
      * Progress indicator line.
      */
     addProgressLine() {
         if (!this._disabled) {
-            let leftInput = this.template.querySelector(
-                '.avonni-range__slider-left'
-            );
-            let rightInput = this.template.querySelector(
-                '.avonni-range__slider-right'
-            );
-
-            let leftProgressLine =
-                ((this.calculateMax - this.valueLower) /
-                    (this.calculateMax - this.min)) *
-                100;
-            let rightProgressLine =
-                ((this.valueUpper - this.calculateMin) /
-                    (this.max - this.calculateMin)) *
-                100;
-
-            leftInput.style.background =
-                'linear-gradient(to left, #1a5296 0%, #1a5296 ' +
-                leftProgressLine +
-                '%, #ecebea ' +
-                leftProgressLine +
-                '%, #ecebea 100%)';
-
-            rightInput.style.background =
-                'linear-gradient(to right, #1a5296 0%, #1a5296 ' +
-                rightProgressLine +
-                '%, #ecebea ' +
-                rightProgressLine +
-                '%, #ecebea 100%)';
+            //TODO: compute progress line
         }
     }
 
@@ -779,39 +734,7 @@ export default class Range extends LightningElement {
     /**
      * Calculate Bubbles position.
      */
-    setBubblesPosition() {
-        if (this._pin) {
-            setTimeout(() => {
-                let bubbleLeft = this.template.querySelector('.left-bubble');
-                let bubbleRight = this.template.querySelector('.right-bubble');
-
-                let rightProgressBubble =
-                    ((this.valueUpper - this.calculateMin) /
-                        (this.max - this.calculateMin)) *
-                    100;
-
-                let leftProgressBubble =
-                    (1 -
-                        (this.calculateMax - this.valueLower) /
-                            (this.calculateMax - this.min)) *
-                    100;
-
-                bubbleLeft.style.left =
-                    'calc(' +
-                    leftProgressBubble +
-                    '% - ' +
-                    (leftProgressBubble * 0.16 + 8) +
-                    'px)';
-
-                bubbleRight.style.left =
-                    'calc(' +
-                    rightProgressBubble +
-                    '% - ' +
-                    (rightProgressBubble * 0.16 + 8) +
-                    'px)';
-            }, 1);
-        }
-    }
+    setBubblesPosition() {}
 
     /**
      * Update input left proxy attributes.
