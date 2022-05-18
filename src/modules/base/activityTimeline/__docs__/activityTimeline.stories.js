@@ -122,6 +122,19 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        position: {
+            name: 'position',
+            control: {
+                type: 'select'
+            },
+            options: ['vertical', 'horizontal'],
+            description:
+                'Position of the activity timeline. Valid values include vertical and horizontal.',
+            table: {
+                defaultValue: { summary: 'vertical' },
+                type: { summary: 'string' }
+            }
+        },
         sortedDirection: {
             name: 'sorted-direction',
             control: {
@@ -151,6 +164,7 @@ export default {
         collapsible: false,
         iconSize: 'medium',
         itemIconSize: 'small',
+        position: 'vertical',
         sortedDirection: 'desc'
     }
 };

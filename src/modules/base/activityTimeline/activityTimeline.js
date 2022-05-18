@@ -49,6 +49,11 @@ const ICON_SIZES = {
     default: 'medium'
 };
 
+const POSITIONS = {
+    valid: ['vertical', 'horizontal'],
+    default: 'vertical'
+};
+
 const SORTED_DIRECTIONS = {
     valid: ['asc', 'desc'],
     default: 'desc'
@@ -85,6 +90,7 @@ export default class ActivityTimeline extends LightningElement {
     _items = [];
     _iconSize = ICON_SIZES.default;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
+    _position = POSITIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _key;
@@ -224,6 +230,25 @@ export default class ActivityTimeline extends LightningElement {
         this._itemIconSize = normalizeString(value, {
             fallbackValue: DEFAULT_ITEM_ICON_SIZE,
             validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * Position of the activity timeline. Valid values include vertical and horizontal.
+     *
+     * @public
+     * @type {string}
+     * @default vertical
+     */
+    @api
+    get position() {
+        return this._position;
+    }
+
+    set position(value) {
+        this._position = normalizeString(value, {
+            fallbackValue: POSITIONS.default,
+            validValues: POSITIONS.valid
         });
     }
 
