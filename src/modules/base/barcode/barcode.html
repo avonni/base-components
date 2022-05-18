@@ -34,9 +34,26 @@
 
 <template>
     <div style={computeBgStyle}>
+        <canvas data-element-id="barcode" lwc:dom="manual"></canvas>
         <div style={computeBarcodeStyle}>barcode</div>
         <template if:false={hideValue}>
             <div>{value}</div>
         </template>
     </div>
 </template>
+
+<!-- <template>
+    <lightning-card title="Generate Barcode">
+        <lightning-layout>
+            <div class="slds-p-around_small" >
+                <template if:false={boolShowSpinner}>
+                    <lightning-button variant="brand" label="Generate Barcode" onclick={generateBarcode}></lightning-button>
+                </template>
+                <template if:true={boolShowSpinner}>
+                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                </template>
+            </div>
+            <canvas data-id="barcode" lwc:dom="manual"></canvas>
+        </lightning-layout>
+    </lightning-card>
+</template> -->
