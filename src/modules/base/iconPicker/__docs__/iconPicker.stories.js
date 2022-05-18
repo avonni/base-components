@@ -150,7 +150,7 @@ export default {
             }
         },
         hideFooter: {
-            name: 'hidden-categories',
+            name: 'hide-footer',
             control: {
                 type: 'boolean'
             },
@@ -358,6 +358,16 @@ StandardActionIcon.args = {
     label: 'Icon label',
     fieldLevelHelp: 'Help text',
     value: 'action:add_file',
+    menuIconSize: 'large',
+    placeholder: 'Type icon name'
+};
+
+export const ActionIconWithMenuLabel = Template.bind({});
+ActionIconWithMenuLabel.args = {
+    label: 'Icon label',
+    fieldLevelHelp: 'Help text',
+    value: 'action:add_file',
+    menuLabel: 'Menu',
     menuIconSize: 'large',
     placeholder: 'Type icon name'
 };
