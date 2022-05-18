@@ -56,12 +56,6 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
-const DATE_TIME_FORMATS = { valid: ['numeric', '2-digit'] };
-const MONTH_FORMATS = {
-    valid: ['2-digit', 'numeric', 'narrow', 'short', 'long']
-};
-const WEEKDAY_FORMATS = { valid: ['narrow', 'short', 'long'] };
-
 const DEFAULT_LOADING_TEXT = 'Loading';
 
 /**
@@ -161,19 +155,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _dateFormat;
-    _dateFormatDay;
-    _dateFormatWeekday;
-    _dateFormatMonth;
-    _dateFormatYear;
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
     _isLoading = false;
     _color;
-    _timeFormatHour;
-    _timeFormatHour12;
-    _timeFormatMinute;
-    _timeFormatSecond;
 
     renderedCallback() {
         this.setLineColor();
@@ -273,75 +259,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
-     * Valid values include numeric and 2-digit.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get dateFormatDay() {
-        return this._dateFormatDay || undefined;
-    }
-
-    set dateFormatDay(value) {
-        this._dateFormatDay = normalizeString(value, {
-            validValues: DATE_TIME_FORMATS.valid
-        });
-    }
-
-    /**
-     * Valid values are numeric, 2-digit, long, short or narrow.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get dateFormatMonth() {
-        return this._dateFormatMonth || undefined;
-    }
-
-    set dateFormatMonth(value) {
-        this._dateFormatMonth = normalizeString(value, {
-            validValues: MONTH_FORMATS.valid
-        });
-    }
-
-    /**
-     * Specifies how to display the day of the week. Valid values are narrow, short, or long.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get dateFormatWeekday() {
-        return this._dateFormatWeekday || undefined;
-    }
-
-    set dateFormatWeekday(value) {
-        this._dateFormatWeekday = normalizeString(value, {
-            validValues: WEEKDAY_FORMATS.valid
-        });
-    }
-
-    /**
-     * Valid values include numeric and 2-digit.
-     *
-     * @type {string}
-     * @default numeric
-     * @public
-     */
-    @api
-    get dateFormatYear() {
-        return this._dateFormatYear || undefined;
-    }
-
-    set dateFormatYear(value) {
-        this._dateFormatYear = normalizeString(value, {
-            validValues: DATE_TIME_FORMATS.valid
-        });
-    }
-
-    /**
      * Array of output data objects (see Output Data for valid keys). It is displayed in the details section.
      *
      * @public
@@ -404,75 +321,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
         this._isLoading = normalizeBoolean(value);
     }
 
-    /**
-     * Valid values include numeric and 2-digit.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get timeFormatHour() {
-        return this._timeFormatHour || undefined;
-    }
-
-    set timeFormatHour(value) {
-        this._timeFormatHour = normalizeString(value, {
-            validValues: DATE_TIME_FORMATS.valid
-        });
-    }
-
-    /**
-     * Determines whether time is displayed as 12-hour.
-     * If false, time displays as 24-hour. The default setting is determined by the user's locale.
-     *
-     * @type {boolean}
-     * @public
-     */
-    @api
-    get timeFormatHour12() {
-        return this._timeFormatHour12;
-    }
-
-    set timeFormatHour12(boolean) {
-        if (boolean !== undefined) {
-            this._timeFormatHour12 = normalizeBoolean(boolean);
-        }
-    }
-
-    /**
-     * Valid values include numeric and 2-digit.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get timeFormatMinute() {
-        return this._timeFormatMinute || undefined;
-    }
-
-    set timeFormatMinute(value) {
-        this._timeFormatMinute = normalizeString(value, {
-            validValues: DATE_TIME_FORMATS.valid
-        });
-    }
-
-    /**
-     * Valid values include numeric and 2-digit.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get timeFormatSecond() {
-        return this._timeFormatSecond || undefined;
-    }
-
-    set timeFormatSecond(value) {
-        this._timeFormatSecond = normalizeString(value, {
-            validValues: DATE_TIME_FORMATS.valid
-        });
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -504,43 +352,6 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      */
     get backgroundColor() {
         return `--line-color: ${this._color}`;
-    }
-
-    /**
-     * Check if date or time format is defined
-     *
-     * @type {boolean}
-     */
-    get hasDateAndTimeFormat() {
-        return this.hasDateFormat || this.hasTimeFormat;
-    }
-
-    /**
-     * Check if at least one field of date format is defined
-     *
-     * @type {boolean}
-     */
-    get hasDateFormat() {
-        return (
-            this.dateFormatDay ||
-            this.dateFormatWeekday ||
-            this.dateFormatMonth ||
-            this.dateFormatYear
-        );
-    }
-
-    /**
-     * Check if at least one field of time format is defined
-     *
-     * @type {boolean}
-     */
-    get hasTimeFormat() {
-        return (
-            this.timeFormatSecond ||
-            this.timeFormatMinute ||
-            this.timeFormatHour ||
-            this.timeFormatHour12
-        );
     }
 
     /**
