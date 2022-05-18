@@ -508,42 +508,6 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * True if readOnly and startDateString.
-     *
-     * @type {boolean}
-     */
-    get readOnlyAndDate() {
-        return this.readOnly && this.startDateString;
-    }
-
-    /**
-     * Returns true if only the start date is present.
-     *
-     * @type {boolean}
-     */
-    get isOnlyStartDate() {
-        return this.startDate && !this.endDate;
-    }
-
-    /**
-     * Returns true if only the end date is present.
-     *
-     * @type {boolean}
-     */
-    get isOnlyEndDate() {
-        return !this.startDate && this.endDate;
-    }
-
-    /**
-     * Returns true if the start date and end date are present.
-     *
-     * @type {boolean}
-     */
-    get areBothDatePresent() {
-        return this.startDate && this.endDate;
-    }
-
-    /**
      * Array with the start date and end date.
      * With added fallback to return one date or the other or none at all.
      *
@@ -597,6 +561,8 @@ export default class InputDateRange extends LightningElement {
      */
     @api
     blur() {
+        this.startDateInput.blur();
+        this.endDateInput.blur();
         this.showStartDate = false;
         this.showEndDate = false;
         this.handleFocusOut();
@@ -660,7 +626,8 @@ export default class InputDateRange extends LightningElement {
      * Removes it from every input when valid.
      */
     updateClassListWhenError() {
-        if (!this.validity.valid && !this._readOnly) {
+        if (this.readOnly) return;
+        if (!this.validity.valid) {
             this.classList.remove('slds-has-error');
             this.startDateInput.classList.add('slds-has-error');
             this.startDateInput.classList.add('avonni-date-range__input_error');
@@ -670,8 +637,7 @@ export default class InputDateRange extends LightningElement {
                 this.startTimeInput.classList.add('slds-has-error');
                 this.endTimeInput.classList.add('slds-has-error');
             }
-        }
-        if (this.validity.valid && !this._readOnly) {
+        } else if (this.validity.valid) {
             this.startDateInput.classList.remove('slds-has-error');
             this.startDateInput.classList.remove(
                 'avonni-date-range__input_error'
@@ -1212,13 +1178,14 @@ export default class InputDateRange extends LightningElement {
     handleInputKeyDown(event) {
         if (event.key === 'Escape') {
             if (
-                event.target === this.startDateInput ||
-                event.target === this.startDateIcon
-            )
+                event.currentTarget === this.startDateInput ||
+                event.currentTarget === this.startDateIcon
+            ) {
                 this.showStartDate = false;
+            }
             if (
-                event.target === this.endDateInput ||
-                event.target === this.endDateIcon
+                event.currentTarget === this.endDateInput ||
+                event.currentTarget === this.endDateIcon
             )
                 this.showEndDate = false;
         }

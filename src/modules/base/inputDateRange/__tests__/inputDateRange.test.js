@@ -34,7 +34,7 @@ import { createElement } from 'lwc';
 import InputDateRange from 'avonni/inputDateRange';
 
 // not tested
-// timezone
+// timezone, date changes (occur inside lightning-focus-trap), calendar focus in
 
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
@@ -75,6 +75,10 @@ describe('Input Date Range', () => {
         expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.startDate).toBeUndefined();
         expect(element.endDate).toBeUndefined();
+        expect(element.value).toMatchObject({
+            endDate: undefined,
+            startDate: undefined
+        });
         expect(element.validity).toMatchObject({});
         expect(element.variant).toBe('standard');
     });
@@ -265,6 +269,121 @@ describe('Input Date Range', () => {
             expect(helpText).toBeTruthy();
             expect(helpText.content).toBe('This is a field level help text');
         });
+    });
+
+    // keyboard access
+    it('Input Date Range: open start calendar with keyboard', () => {
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-start-date"]'
+                );
+                startInput.click();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date-dropdown"]'
+                );
+                expect(startCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: open and escape start calendar with keyboard on icon', () => {
+        return Promise.resolve()
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.click();
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date-dropdown"]'
+                );
+                expect(startCalendar).toBeTruthy();
+            })
+            .then(() => {
+                const startInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-start-date"]'
+                );
+                startInput.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        key: 'Escape',
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                const startCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-start-date-dropdown"]'
+                );
+                expect(startCalendar).toBeFalsy();
+            });
+    });
+
+    it('Input Date Range: open and escape end calendar with keyboard on icon', () => {
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date-dropdown"]'
+                );
+                expect(endCalendar).toBeTruthy();
+            })
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        key: 'Escape',
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date-dropdown"]'
+                );
+                expect(endCalendar).toBeFalsy();
+            });
+    });
+
+    it('Input Date Range: open end calendar with keyboard', () => {
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="input-end-date"]'
+                );
+                endInput.click();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date-dropdown"]'
+                );
+                expect(endCalendar).toBeTruthy();
+            });
+    });
+
+    it('Input Date Range: open end calendar with keyboard on icon', () => {
+        return Promise.resolve()
+            .then(() => {
+                const endInput = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-icon-end-date"]'
+                );
+                endInput.click();
+            })
+            .then(() => {
+                const endCalendar = element.shadowRoot.querySelector(
+                    '[data-element-id="calendar-end-date-dropdown"]'
+                );
+                expect(endCalendar).toBeTruthy();
+            });
     });
 
     // label

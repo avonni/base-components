@@ -323,29 +323,6 @@ export default class Calendar extends LightningElement {
         this._weekNumber = normalizeBoolean(value);
         this.updateDateParameters();
     }
-
-    /*
-     * ------------------------------------------------------------
-     *  PRIVATE METHODS
-     * -------------------------------------------------------------
-     */
-
-    /**
-     * Set initial focus
-     *
-     * @param {Date} date A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
-     * @public
-     */
-    @api
-    focusDate(dateValue) {
-        const value = new Date(dateValue);
-        if (value && !value.getTime()) return;
-
-        this.displayDate = new Date(value);
-        this._focusDate = new Date(value);
-        this.computeFocus(true);
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -459,6 +436,28 @@ export default class Calendar extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set initial focus
+     *
+     * @param {Date} date A value to be focused, which can be a Date object, timestamp, or an ISO8601 formatted string.
+     * @public
+     */
+    @api
+    focusDate(dateValue) {
+        const value = new Date(dateValue);
+        if (value && !value.getTime()) return;
+
+        this.displayDate = new Date(value);
+        this._focusDate = new Date(value);
+        this.computeFocus(true);
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
@@ -510,6 +509,7 @@ export default class Calendar extends LightningElement {
 
         array.forEach((date) => {
             if (typeof date === 'number') {
+                console.log(date);
                 dates.push(date);
             }
         });
@@ -711,8 +711,8 @@ export default class Calendar extends LightningElement {
     /**
      * Return an index if the days date is in the date array.
      *
-     * @param {object | Date} date
-     * @param {object[]} array
+     * @param {object | Date} date Date to find in array
+     * @param {object[]} array Array of dates
      * @returns index
      */
     findArrayPosition(day, array) {
@@ -1112,71 +1112,71 @@ export default class Calendar extends LightningElement {
 
         if (event.altKey) {
             if (event.keyCode === keyCodes.pageup) {
-                nextDate = initialFocusDate.setFullYear(
-                    initialFocusDate.getFullYear() - 1
+                nextDate = new Date(
+                    initialFocusDate.setFullYear(
+                        initialFocusDate.getFullYear() - 1
+                    )
                 );
-                return;
             }
             if (event.keyCode === keyCodes.pagedown) {
                 nextDate = initialFocusDate.setFullYear(
                     initialFocusDate.getFullYear() + 1
                 );
-                return;
             }
-        }
-
-        switch (event.keyCode) {
-            case keyCodes.left:
-                nextDate = initialFocusDate.setDate(
-                    initialFocusDate.getDate() - 1
-                );
-                break;
-            case keyCodes.right:
-                nextDate = initialFocusDate.setDate(
-                    initialFocusDate.getDate() + 1
-                );
-                break;
-            case keyCodes.up:
-                nextDate = initialFocusDate.setDate(
-                    initialFocusDate.getDate() - 7
-                );
-                break;
-            case keyCodes.down:
-                nextDate = initialFocusDate.setDate(
-                    initialFocusDate.getDate() + 7
-                );
-                break;
-            case keyCodes.home:
-                nextDate = initialFocusDate.setDate(
-                    initialFocusDate.getDate() - initialFocusDate.getDay()
-                );
-                break;
-            case keyCodes.end:
-                nextDate = initialFocusDate.setDate(
-                    initialFocusDate.getDate() + (6 - initialFocusDate.getDay())
-                );
-                break;
-            case keyCodes.pagedown:
-                nextDate = initialFocusDate.setMonth(
-                    initialFocusDate.getMonth() - 1
-                );
-                break;
-            case keyCodes.pageup:
-                console.log('page up');
-                nextDate = initialFocusDate.setMonth(
-                    initialFocusDate.getMonth() + 1
-                );
-                break;
-            case keyCodes.space:
-            case keyCodes.enter:
-                {
-                    const selectedDayButton = event.target.querySelector(
-                        '[data-element-id="span-day-label"]'
+        } else {
+            switch (event.keyCode) {
+                case keyCodes.left:
+                    nextDate = initialFocusDate.setDate(
+                        initialFocusDate.getDate() - 1
                     );
-                    if (selectedDayButton) selectedDayButton.click();
-                }
-                break;
-            default:
+                    break;
+                case keyCodes.right:
+                    nextDate = initialFocusDate.setDate(
+                        initialFocusDate.getDate() + 1
+                    );
+                    break;
+                case keyCodes.up:
+                    nextDate = initialFocusDate.setDate(
+                        initialFocusDate.getDate() - 7
+                    );
+                    break;
+                case keyCodes.down:
+                    nextDate = initialFocusDate.setDate(
+                        initialFocusDate.getDate() + 7
+                    );
+                    break;
+                case keyCodes.home:
+                    nextDate = initialFocusDate.setDate(
+                        initialFocusDate.getDate() - initialFocusDate.getDay()
+                    );
+                    break;
+                case keyCodes.end:
+                    nextDate = initialFocusDate.setDate(
+                        initialFocusDate.getDate() +
+                            (6 - initialFocusDate.getDay())
+                    );
+                    break;
+                case keyCodes.pagedown:
+                    nextDate = initialFocusDate.setMonth(
+                        initialFocusDate.getMonth() - 1
+                    );
+                    break;
+                case keyCodes.pageup:
+                    nextDate = initialFocusDate.setMonth(
+                        initialFocusDate.getMonth() + 1
+                    );
+                    break;
+                case keyCodes.space:
+                case keyCodes.enter:
+                    {
+                        const selectedDayButton = event.target.querySelector(
+                            '[data-element-id="span-day-label"]'
+                        );
+                        if (selectedDayButton) selectedDayButton.click();
+                    }
+                    break;
+                default:
+            }
         }
 
         if (!nextDate) return;
