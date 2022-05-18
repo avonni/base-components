@@ -153,7 +153,9 @@ export default class Kanban extends LightningElement {
                 if (JSON.stringify(record[field.fieldName])) {
                     computedFields[i].field.push({
                         label: field.label,
-                        value: record[field.fieldName]
+                        value: record[field.fieldName].toString(),
+                        type: field.type,
+                        typeAttributes: field.typeAttributes
                     });
                 }
             });
@@ -170,10 +172,43 @@ export default class Kanban extends LightningElement {
                         normalizeString(field.label) ===
                         this._summarizeFieldName
                 );
-                if (toSummarize) group.summarizeField += toSummarize.value;
+                if (toSummarize)
+                    group.summarizeField += parseInt(toSummarize.value, 10);
             }
         });
 
         return computedGroups;
+    }
+
+    formatField(field, fieldValue) {
+        let formatedField;
+        switch (field.type) {
+            case 'date':
+                formatedField = new Date(
+                    parseInt(fieldValue, 10)
+                ).toLocaleDateString();
+                break;
+
+            case 'currency':
+                formatedField = parseInt(fieldValue, 10).toLocaleString(
+                    'en-IN',
+                    {
+                        style: 'currency',
+                        currency: 'EUR',
+                        minimumFractionDigits: 2
+                    }
+                );
+                break;
+
+            case 'percent':
+                formatedField = `${parseInt(fieldValue * 100, 10)}%`;
+                break;
+
+            default:
+                formatedField = fieldValue;
+                break;
+        }
+
+        return formatedField;
     }
 }

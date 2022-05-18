@@ -90,7 +90,13 @@
                             key={field.label}
                         >
                             <p>
-                                <strong>{field.label} :</strong> {field.value}
+                                <c-output-data
+                                    label={field.label}
+                                    value={field.value}
+                                    type={field.type}
+                                    type-attributes={field.typeAttributes}
+                                    variant="label-inline"
+                                ></c-output-data>
                             </p>
                         </li>
                     </ul>
