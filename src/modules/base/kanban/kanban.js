@@ -36,6 +36,8 @@ import { normalizeArray, normalizeString } from '../utilsPrivate/normalize';
 export default class Kanban extends LightningElement {
     _groupValues = [];
     _summarizeFieldName;
+    _initialTileIndex = 0;
+    _releasedTileIndex = 0;
     _fields = [];
     _records = [];
     _kanbanPos = {
@@ -277,22 +279,12 @@ export default class Kanban extends LightningElement {
     }
 
     handleKanbanMouseDown(event) {
-        const groupWidth =
-            event.currentTarget.offsetWidth / this.groupValues.length;
-        this._clickedGroupIndex = Math.floor(event.clientX / groupWidth);
         this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
         this._kanbanPos.bottom =
             this._kanbanPos.top + event.currentTarget.offsetHeight;
         this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
         this._kanbanPos.right =
             this._kanbanPos.left + event.currentTarget.offsetWidth;
-        console.log(this._kanbanPos);
-    }
-
-    handleKanbanMouseUp(event) {
-        const groupWidth =
-            event.currentTarget.offsetWidth / this.groupValues.length;
-        this._releasedGroupIndex = Math.floor(event.clientX / groupWidth);
     }
 
     handleTileMouseDown(event) {
@@ -303,14 +295,27 @@ export default class Kanban extends LightningElement {
         this._initialPos.y =
             event.target.getBoundingClientRect().y +
             event.target.offsetHeight / 2;
+
+        this._initialTileIndex = Math.floor(
+            event.currentTarget.getBoundingClientRect().y /
+                event.currentTarget.offsetHeight
+        );
+        const groupWidth = event.currentTarget.parentElement.offsetWidth;
+        this._clickedGroupIndex = Math.floor(event.clientX / groupWidth);
     }
 
     handleTileMouseUp(event) {
-        // TODO: CONDITION POUR SAVOIR SI DRAG VALIDE
-        // if(true) {
-        //     this._draggedTile.
-        // }
-        console.log(event);
+        // TODO: MAX NOMBRE DE ITEM DANS LE GROUPE
+        this._releasedTileIndex = Math.floor(
+            event.currentTarget.getBoundingClientRect().y /
+                event.currentTarget.offsetHeight
+        );
+
+        const groupWidth = event.currentTarget.parentElement.offsetWidth;
+        this._releasedGroupIndex = Math.floor(event.clientX / groupWidth);
+
+        this.handleDropDown();
+        this._draggedTile.style.transform = '';
         this._draggedTile = null;
     }
 
@@ -339,5 +344,55 @@ export default class Kanban extends LightningElement {
         this._draggedTile.style.transform = `translate(${
             currentX - this._initialPos.x
         }px, ${currentY - this._initialPos.y}px)`;
+    }
+
+    handleDropDown() {
+        const beforeTile = this.tileRecordFinder(
+            this._releasedTileIndex,
+            this._releasedGroupIndex
+        );
+        const currentTile = this.tileRecordFinder(
+            this._initialTileIndex,
+            this._clickedGroupIndex
+        );
+        // TODO: MOVE IN THE RIGHT GROUP... marche pas
+        const currentIndex = this._records.indexOf(currentTile);
+        const beforeIndex = this._records.indexOf(beforeTile);
+        // TODO: BAD IDEA WHEN NO TILES ....
+        this._records = this.arrayMove(currentIndex, beforeIndex);
+    }
+
+    arrayMove(fromIndex, toIndex) {
+        const arr = JSON.parse(JSON.stringify(this._records));
+        // TODO: HANDLE WHEN 0
+        arr[fromIndex].status =
+            this._groupValues[this._releasedGroupIndex].label;
+        // TODO: NOT MY CODE
+        while (fromIndex < 0) {
+            fromIndex += arr.length;
+        }
+        while (toIndex < 0) {
+            toIndex += arr.length;
+        }
+        if (toIndex >= arr.length) {
+            let k = toIndex - arr.length + 1;
+            while (k--) {
+                arr.push(undefined);
+            }
+        }
+        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+        return arr;
+    }
+
+    tileRecordFinder(tileIndex, groupIndex) {
+        let tileCount = tileIndex === this._initialTileIndex ? -1 : 0;
+        return this._records.find((record) => {
+            if (record.status === this._groupValues[groupIndex].label)
+                tileCount++;
+            return (
+                tileCount === tileIndex &&
+                record.status === this._groupValues[groupIndex].label
+            );
+        });
     }
 }
