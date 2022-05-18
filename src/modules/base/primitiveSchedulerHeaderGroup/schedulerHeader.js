@@ -260,8 +260,6 @@ export default class SchedulerHeader {
     setHeaderEnd() {
         const {
             unit,
-            duration,
-            span,
             columns,
             isReference,
             numberOfColumns,
@@ -275,12 +273,7 @@ export default class SchedulerHeader {
         const partialColumn = numberOfColumns % 1;
         if (partialColumn > 0) {
             const lastColumnStart = DateTime.fromMillis(lastColumn.start);
-            const visibleUnits =
-                partialColumn * span > duration
-                    ? duration
-                    : partialColumn * span;
-            const unitsToAddToStart = visibleUnits - 1;
-            end = addToDate(lastColumnStart, unit, unitsToAddToStart);
+            end = addToDate(lastColumnStart, unit, partialColumn);
             end = DateTime.fromMillis(end.ts - 1);
         }
 
@@ -300,10 +293,10 @@ export default class SchedulerHeader {
                     }
                     end = end.set({ weekday: start.weekday - 1 });
                 }
-                if (unit === 'day' && start.hour !== 0) {
+                if (unit !== 'hour' && start.hour !== 0) {
                     end = end.set({ hours: start.hour - 1 });
                 }
-                if (unit === 'hour' && start.minute !== 0) {
+                if (start.minute !== 0) {
                     end = end.set({ minutes: start.minute - 1 });
                 }
             }

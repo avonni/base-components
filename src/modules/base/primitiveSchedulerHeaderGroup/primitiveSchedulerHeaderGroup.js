@@ -37,7 +37,8 @@ import {
     dateTimeObjectFrom,
     numberOfUnitsBetweenDates,
     normalizeArray,
-    removeFromDate
+    removeFromDate,
+    equal
 } from 'c/utilsPrivate';
 import SchedulerHeader from './schedulerHeader';
 
@@ -104,6 +105,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableDaysOfTheWeek;
     }
     set availableDaysOfTheWeek(value) {
+        if (equal(value, this._availableDaysOfTheWeek)) return;
+
         this._availableDaysOfTheWeek = normalizeArray(value);
         if (this._connected) this.initHeaders();
     }
@@ -119,6 +122,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableMonths;
     }
     set availableMonths(value) {
+        if (equal(value, this._availableMonths)) return;
+
         this._availableMonths = normalizeArray(value);
         if (this._connected) this.initHeaders();
     }
@@ -134,6 +139,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableTimeFrames;
     }
     set availableTimeFrames(value) {
+        if (equal(value, this._availableTimeFrames)) return;
+
         this._availableTimeFrames = normalizeArray(value);
         if (this._connected) this.initHeaders();
     }
@@ -151,6 +158,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableTimeSpans;
     }
     set availableTimeSpans(value) {
+        if (equal(value, this._availableTimeSpans)) return;
+
         this._availableTimeSpans = normalizeArray(value, 'object');
         if (this._connected) this.initHeaders();
     }
@@ -166,6 +175,8 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._headers;
     }
     set headers(value) {
+        if (equal(value, this._headers)) return;
+
         this._headers = normalizeArray(value);
         if (this._connected) this.initHeaders();
     }
@@ -226,12 +237,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._timeSpan;
     }
     set timeSpan(value) {
+        if (equal(value, this._timeSpan)) return;
+
         this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
         if (this._connected) this.initHeaders();
     }
 
     /**
-     * Interval of time between the start and end of the currently loaded header columns.
+     * Interval of time between the current start and end.
      *
      * @type {Interval}
      * @public
@@ -436,8 +449,10 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
     computeCellWidth() {
         const cellText = this.template.querySelector(
-            '.avonni-scheduler__header-row:last-of-type .avonni-scheduler__header-cell span'
+            '[data-element-id="div-row"]:last-of-type [data-element-id^="span-label"]'
         );
+        if (!cellText) return;
+
         const cellTextWidth = cellText.getBoundingClientRect().width;
         // We add 20 pixels for padding
         let cellWidth = Math.ceil(cellTextWidth) + 20;
