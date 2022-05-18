@@ -43,6 +43,8 @@ export const ActivityTimeline = ({
     collapsible,
     dateFormat,
     iconName,
+    iconSize,
+    itemIconSize,
     items,
     groupBy,
     sortedDirection,
@@ -55,6 +57,8 @@ export const ActivityTimeline = ({
     element.dateFormat = dateFormat;
     element.groupBy = groupBy;
     element.iconName = iconName;
+    element.iconSize = iconSize;
+    element.itemIconSize = itemIconSize;
     element.items = items;
     element.sortedDirection = sortedDirection;
     element.title = title;

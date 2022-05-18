@@ -99,6 +99,32 @@ export default {
                 type: { summary: 'string' }
             }
         },
+        iconSize: {
+            name: 'icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            description:
+                "The size of title's icon. Valid values are xx-small, x-small, small, medium and large.",
+            table: {
+                defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
+            }
+        },
+        itemIconSize: {
+            name: 'item-icon-size',
+            control: {
+                type: 'select'
+            },
+            options: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+            description:
+                "The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large.",
+            table: {
+                defaultValue: { summary: 'small' },
+                type: { summary: 'string' }
+            }
+        },
         items: {
             control: {
                 type: 'object'
@@ -134,6 +160,8 @@ export default {
     args: {
         closed: false,
         collapsible: false,
+        iconSize: 'medium',
+        itemIconSize: 'small',
         sortedDirection: 'desc'
     }
 };
