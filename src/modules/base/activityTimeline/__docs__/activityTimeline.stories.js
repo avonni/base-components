@@ -190,6 +190,16 @@ Ascending.args = {
     sortedDirection: 'asc'
 };
 
+export const Horizontal = Template.bind({});
+Horizontal.args = {
+    title: 'Activity Timeline - Horizontal view',
+    iconName: 'standard:timesheet_entry',
+    position: 'horizontal',
+    items: items,
+    collapsible: true,
+    actions: actions
+};
+
 export const Weekly = Template.bind({});
 Weekly.args = {
     title: 'Activity Timeline grouped by week',
