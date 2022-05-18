@@ -64,16 +64,6 @@ export default {
                 category: 'Layout'
             }
         },
-        value: {
-            control: {
-                type: 'number'
-            },
-            description: 'Defines the value of the barcode.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Values'
-            }
-        },
         hideValue: {
             control: {
                 type: 'boolean'
@@ -83,6 +73,48 @@ export default {
                 type: { summary: 'boolean' },
                 defaultValue: { summary: false },
                 category: 'Layout'
+            }
+        },
+        type: {
+            control: {
+                type: 'select'
+            },
+            options: [
+                'EAN8',
+                'EAN13',
+                'UPCE',
+                'UPCA',
+                'Code11',
+                'CODE39',
+                'Code39Extended',
+                'Code93',
+                'Code93Extended',
+                'CODE128',
+                'CODE128A',
+                'CODE128B',
+                'CODE128C',
+                'GS1-128',
+                'MSI10',
+                'MSImod11',
+                'MSImod1010',
+                'MSImod1110',
+                'POSTNET'
+            ],
+            description: 'The type changes the encoding of the barcode value.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'CODE39' },
+                category: 'Values'
+            }
+        },
+        value: {
+            control: {
+                type: 'text'
+            },
+            description: 'Defines the value of the barcode.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Values'
             }
         }
     }
