@@ -78,6 +78,7 @@ describe('Primitive Activity Timeline Item', () => {
     it('Activity Timeline Item: Default attributes', () => {
         expect(element.title).toBeUndefined();
         expect(element.description).toBeUndefined();
+        expect(element.dateFormat).toBeUndefined();
         expect(element.datetimeValue).toBeUndefined();
         expect(element.href).toBeUndefined();
         expect(element.iconName).toBeUndefined();
@@ -120,61 +121,26 @@ describe('Primitive Activity Timeline Item', () => {
     // datetime value
     it('Activity timeline item: datetimeValue', () => {
         element.datetimeValue = 1621605600000;
-        element.dateFormatDay = 'numeric';
+        element.dateFormat = 'x';
 
         return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+            const dateTime = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-formatted-date-time"]'
             );
-            expect(date.value).toBe(1621605600000);
+            expect(dateTime.textContent).toBe('1621605600000');
         });
     });
 
-    // dateFormatDay
-    it('Activity timeline item: dateFormatDay', () => {
-        element.dateFormatDay = 'numeric';
+    // dateFormat
+    it('Activity timeline item: dateFormat', () => {
+        element.dateFormat = 'dd MMM yyyy';
+        element.datetimeValue = 1621605600000;
 
         return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
+            const dateTime = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-formatted-date-time"]'
             );
-            expect(date.day).toBe('numeric');
-        });
-    });
-
-    // dateFormatMonth
-    it('Activity timeline item: dateFormatMonth', () => {
-        element.dateFormatMonth = 'short';
-
-        return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
-            );
-            expect(date.month).toBe('short');
-        });
-    });
-
-    // dateFormatWeekday
-    it('Activity timeline item: dateFormatWeekday', () => {
-        element.dateFormatWeekday = 'long';
-
-        return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
-            );
-            expect(date.weekday).toBe('long');
-        });
-    });
-
-    // dateFormatYear
-    it('Activity timeline item: dateFormatYear', () => {
-        element.dateFormatYear = '2-digit';
-
-        return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
-            );
-            expect(date.year).toBe('2-digit');
+            expect(dateTime.textContent).toBe('21 May 2021');
         });
     });
 
@@ -260,54 +226,6 @@ describe('Primitive Activity Timeline Item', () => {
             expect(icon.classList).not.toContain(
                 'avonni-timeline-item__active-bullet'
             );
-        });
-    });
-
-    // timeFormatHour
-    it('Activity timeline item: timeFormatHour', () => {
-        element.timeFormatHour = 'numeric';
-
-        return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
-            );
-            expect(date.hour).toBe('numeric');
-        });
-    });
-
-    // timeFormatHour12
-    it('Activity timeline item: timeFormatHour12', () => {
-        element.timeFormatHour12 = true;
-
-        return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
-            );
-            expect(date.hour12).toBeTruthy();
-        });
-    });
-
-    // timeFormatMinute
-    it('Activity timeline item: timeFormatMinute', () => {
-        element.timeFormatMinute = '2-digit';
-
-        return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
-            );
-            expect(date.minute).toBe('2-digit');
-        });
-    });
-
-    // timeFormatSecond
-    it('Activity timeline item: timeFormatSecond', () => {
-        element.timeFormatSecond = '2-digit';
-
-        return Promise.resolve().then(() => {
-            const date = element.shadowRoot.querySelector(
-                'lightning-formatted-date-time'
-            );
-            expect(date.second).toBe('2-digit');
         });
     });
 
