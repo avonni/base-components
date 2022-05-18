@@ -405,9 +405,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     get formattedDate() {
-        return dateTimeObjectFrom(this.computedDatetimeValue).toFormat(
-            this.dateFormat
-        );
+        return this.computedDatetimeValue && this.dateFormat
+            ? dateTimeObjectFrom(this.computedDatetimeValue).toFormat(
+                  this.dateFormat
+              )
+            : '';
     }
 
     /*
