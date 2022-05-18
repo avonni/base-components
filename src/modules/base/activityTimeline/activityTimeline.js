@@ -80,6 +80,7 @@ export default class ActivityTimeline extends LightningElement {
     _actions = [];
     _closed = false;
     _collapsible = false;
+    _dateFormat;
     _dateFormatDay;
     _dateFormatWeekday;
     _dateFormatMonth;
@@ -156,6 +157,22 @@ export default class ActivityTimeline extends LightningElement {
 
     set collapsible(value) {
         this._collapsible = normalizeBoolean(value);
+    }
+
+    /**
+     * The date format to use for each item. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format.
+     * If you want to insert text in the label, you need to escape it using single quote.
+     * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get dateFormat() {
+        return this._dateFormat;
+    }
+    set dateFormat(value) {
+        this._dateFormat = value && typeof value === 'string' ? value : '';
     }
 
     /**
