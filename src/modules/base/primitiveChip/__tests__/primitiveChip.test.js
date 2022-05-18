@@ -41,6 +41,13 @@ const MOCK_AVATAR = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
 };
 
+const MOCK_AVATAR_WITH_SIZE = {
+    fallbackIconName: 'standard:user',
+    variant: 'circle',
+    size: 'large',
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+};
+
 let element;
 describe('Primitive Chip', () => {
     afterEach(() => {
@@ -60,7 +67,6 @@ describe('Primitive Chip', () => {
         expect(element.label).toEqual('');
         expect(element.outline).toEqual(false);
         expect(element.avatar).toEqual(null);
-        expect(element.avatarSize).toEqual('x-small');
         expect(element.variant).toEqual('base');
         expect(element.iconName).toEqual(DEFAULT_ICON_NAME);
         expect(element.iconSize).toEqual('x-small');
@@ -94,8 +100,30 @@ describe('Primitive Chip', () => {
             );
             expect(avatar.slot).toBe('left');
             expect(avatar.src).toBe(MOCK_AVATAR.src);
+            expect(avatar.size).toBe('x-small');
             expect(avatar.variant).toBe(MOCK_AVATAR.variant);
             expect(avatar.fallbackIconName).toBe(MOCK_AVATAR.fallbackIconName);
+        });
+    });
+
+    it('avatar (with size)', () => {
+        element.avatar = MOCK_AVATAR_WITH_SIZE;
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="avatar-right"]'
+                )
+            ).toBeFalsy();
+            const avatar = element.shadowRoot.querySelector(
+                '[data-element-id="avatar-left"]'
+            );
+            expect(avatar.slot).toBe('left');
+            expect(avatar.src).toBe(MOCK_AVATAR_WITH_SIZE.src);
+            expect(avatar.size).toBe(MOCK_AVATAR_WITH_SIZE.size);
+            expect(avatar.variant).toBe(MOCK_AVATAR_WITH_SIZE.variant);
+            expect(avatar.fallbackIconName).toBe(
+                MOCK_AVATAR_WITH_SIZE.fallbackIconName
+            );
         });
     });
 
@@ -163,18 +191,6 @@ describe('Primitive Chip', () => {
                 '[data-element-id="icon-left"]'
             );
             expect(icon.size).toBe('large');
-        });
-    });
-
-    // avatarSize
-    it('avatarSize', () => {
-        element.avatar = MOCK_AVATAR;
-        element.avatarSize = 'large';
-        return Promise.resolve().then(() => {
-            const avatar = element.shadowRoot.querySelector(
-                '[data-element-id="avatar-left"]'
-            );
-            expect(avatar.size).toBe('large');
         });
     });
 });
