@@ -34,17 +34,19 @@
 
 <template>
     <div class="canvas-value-wrapper">
-        <canvas data-element-id="barcode" lwc:dom="manual"></canvas>
-        <div class="value-wrapper" data-element-id="container">
+        <div class="canvas-wrapper" data-element-id="canvas-wrapper">
+            <canvas
+                class="canvas"
+                data-element-id="barcode"
+                lwc:dom="manual"
+            ></canvas>
+        </div>
+        <div class="value-wrapper">
             <template if:false={hideValue}>
-                <div class={valueChecksumStyle} data-element-id="value">
-                    {value}
-                </div>
+                <div class={valueChecksumStyle}>{value}</div>
             </template>
             <template if:true={checksum}>
-                <div class={valueChecksumStyle} data-element-id="checksum">
-                    &nbsp;{checksumValue}
-                </div>
+                <div class={valueChecksumStyle}>&nbsp;{checksumValue}</div>
             </template>
         </div>
     </div>

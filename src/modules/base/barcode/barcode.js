@@ -113,8 +113,7 @@ export default class Barcode extends LightningElement {
             lineColor: this.color,
             background: this.background,
             text: this.value,
-            displayValue: false,
-            width: this.size
+            displayValue: false
         });
         JsBarcode('.barcode').init();
     }
@@ -262,9 +261,9 @@ export default class Barcode extends LightningElement {
     get valueChecksumStyle() {
         return classSet('slds-text-font_monospace')
             .add({
-                'slds-text-heading_small': this.size > 0 && this.size < 1,
-                'slds-text-heading_medium': this.size > 1 && this.size < 2,
-                'slds-text-heading_large': this.size > 2
+                'slds-text-heading_small': this.size > 0 && this.size < 125,
+                'slds-text-heading_medium': this.size > 125 && this.size < 225,
+                'slds-text-heading_large': this.size > 225
             })
             .toString();
     }
@@ -276,6 +275,14 @@ export default class Barcode extends LightningElement {
      */
     initBarcode() {
         this.calculateChecksum();
+        this.computeSize();
+    }
+
+    computeSize() {
+        let element = this.template.querySelector(
+            '[data-element-id="canvas-wrapper"]'
+        );
+        element.style.width = `${this.size}px`;
     }
 
     // computeContainerClass() {
