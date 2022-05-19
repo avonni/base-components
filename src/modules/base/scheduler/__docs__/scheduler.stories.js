@@ -431,6 +431,26 @@ export default {
                 },
                 category: 'Events'
             }
+        },
+        toolbarTimeSpans: {
+            name: 'toolbar-time-spans',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Time spans, to display as buttons in the toolbar. On click on the button, the scheduler time span will be updated. Only three options can be visible, the others will be listed in a button menu.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: {
+                    summary: `[
+                        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+                        { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+                        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+                        { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+                    ]`
+                },
+                category: 'Events'
+            }
         }
     },
     args: {
@@ -474,7 +494,13 @@ export default {
         readOnly: false,
         resizeColumnDisabled: false,
         start: new Date(),
-        timeSpan: { unit: 'day', span: 1 }
+        timeSpan: { unit: 'day', span: 1 },
+        toolbarTimeSpans: [
+            { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+            { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+            { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+            { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+        ]
     }
 };
 
@@ -500,6 +526,11 @@ AvailableAndDisabledTimes.args = {
         span: 2
     },
     start,
+    toolbarTimeSpans: [
+        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+        { unit: 'week', span: 2, label: 'Sprint', headers: 'hourDayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
+    ],
     availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
@@ -569,5 +600,6 @@ ThemesAndColors.args = {
     rows,
     start,
     events: eventsThemed,
-    eventsPalette: 'wildflowers'
+    eventsPalette: 'wildflowers',
+    hideToolbar: true
 };
