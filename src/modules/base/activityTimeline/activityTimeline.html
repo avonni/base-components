@@ -135,4 +135,20 @@
             </template>
         </template>
     </template>
+    <template if:false={isShowButtonHidden}>
+        <lightning-button
+            variant={buttonVariant}
+            label={currentShowButtonLabel}
+            icon-name={currentShowButtonIcon}
+            icon-position={currentShowButtonPosition}
+            data-element-id="lightning-button"
+            class="
+                slds-m-top_small
+                slds-m-bottom_small
+                slds-m-left_small
+                slds-show
+            "
+            onclick={handleToggleShowMoreButton}
+        ></lightning-button>
+    </template>
 </template>
