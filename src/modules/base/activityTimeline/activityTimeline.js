@@ -300,7 +300,9 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     set maxVisibleItems(value) {
-        if (value && value > 0) this._maxVisibleItems = value;
+        if (value && value > 0) {
+            this._maxVisibleItems = value;
+        }
     }
 
     /**
