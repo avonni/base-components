@@ -132,6 +132,12 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'right' }
             }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['list', 'grid']
         }
     },
     args: {
@@ -408,4 +414,17 @@ SortableWithImagesAndAvatars.args = {
     sortable: true,
     divider: 'around',
     imageWidth: 'medium'
+};
+
+export const SortableGridWithImagesAndAvatars = Template.bind({});
+SortableGridWithImagesAndAvatars.args = {
+    label: 'Sortable grid with Images, Avatars and Icons',
+    items: itemsWithImagesAndAvatars,
+    actions: actions,
+    sortableIconName: 'utility:drag_and_drop',
+    sortableIconPosition: 'left',
+    sortable: true,
+    divider: 'around',
+    imageWidth: 'medium',
+    variant: 'grid'
 };

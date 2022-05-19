@@ -38,6 +38,8 @@ import {
     deepCopy
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
+import verticalList from './list.html';
+import gridList from './listGrid.html';
 
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
@@ -53,6 +55,11 @@ const DEFAULT_ITEM_HEIGHT = 44;
 const IMAGE_WIDTH = {
     valid: ['small', 'medium', 'large'],
     default: 'large'
+};
+
+const VARIANTS = {
+    valid: ['list', 'grid'],
+    default: 'list'
 };
 
 /**
@@ -105,6 +112,19 @@ export default class List extends LightningElement {
     computedActions = [];
     computedItems = [];
     _hasImages;
+    _variant;
+
+    /**
+     * Render html template based on variant 'trid'.
+     *
+     * @returns {File} verticalList | gridList
+     */
+    render() {
+        if (this._variant === 'grid') {
+            return gridList;
+        }
+        return verticalList;
+    }
 
     /*
      * ------------------------------------------------------------
@@ -212,6 +232,25 @@ export default class List extends LightningElement {
         this._sortableIconPosition = normalizeString(value, {
             fallbackValue: ICON_POSITIONS.default,
             validValues: ICON_POSITIONS.valid
+        });
+    }
+
+    /**
+     * Variant to display as grid or list. Default is list.
+     *
+     * @type {string}
+     * @public
+     * @default 'list'
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
         });
     }
 
@@ -360,9 +399,7 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemClass() {
-        return classSet(
-            'slds-grid avonni-list__item slds-item avonni-list__item-grid'
-        )
+        return classSet('slds-grid avonni-list__item slds-item')
             .add({
                 'avonni-list__item-sortable': this.sortable,
                 'avonni-list__item-expanded': this._hasActions,

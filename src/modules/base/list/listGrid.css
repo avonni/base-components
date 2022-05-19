@@ -30,32 +30,14 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'c/list';
+ul {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
 
-customElements.define('ac-base-list', Component.CustomElementConstructor);
-
-export const List = ({
-    label,
-    alternativeText,
-    sortable,
-    items,
-    actions,
-    sortableIconName,
-    sortableIconPosition,
-    divider,
-    imageWidth,
-    variant
-}) => {
-    const element = document.createElement('ac-base-list');
-    element.label = label;
-    element.alternativeText = alternativeText;
-    element.sortable = sortable;
-    element.items = items;
-    element.actions = actions;
-    element.sortableIconName = sortableIconName;
-    element.sortableIconPosition = sortableIconPosition;
-    element.divider = divider;
-    element.imageWidth = imageWidth;
-    element.variant = variant;
-    return element;
-};
+li {
+    display: block;
+    width: 300px;
+    height: 400px;
+}
