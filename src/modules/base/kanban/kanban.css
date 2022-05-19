@@ -28,6 +28,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    z-index: 1;
 }
 
 .avonni-kanban__tile:not(.avonni-kanban__dragged) {
@@ -39,9 +40,6 @@
     /* TODO: maybe slds class pour ca */
     color: rgb(74, 190, 74);
     font-size: 2rem;
-}
-
-.avonni-kanban__tile_moved {
 }
 
 .avonni-kanban__drop_indicator {
@@ -62,4 +60,13 @@
     position: absolute;
     right: 3px;
     top: 3px;
+}
+
+.avonni-kanban__dragged {
+    z-index: 9999;
+    position: relative;
+}
+
+.avonni-kanban__moved {
+    z-index: 1;
 }
