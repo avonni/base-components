@@ -55,10 +55,16 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
+const DEFAULT_ITEM_ICON_SIZE = 'small';
 
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
     default: undefined
+};
+
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
 };
 
 const SORTED_DIRECTIONS = {
@@ -129,6 +135,8 @@ export default class ActivityTimeline extends LightningElement {
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _maxVisibleItems;
+    _iconSize = ICON_SIZES.default;
+    _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _key;
@@ -286,7 +294,9 @@ export default class ActivityTimeline extends LightningElement {
 
     set items(value) {
         this._items = normalizeArray(value);
-        if (this._isConnected) this.initActivityTimeline();
+        if (this._isConnected) {
+          this.initActivityTimeline();
+        }
     }
 
     /**
@@ -303,6 +313,43 @@ export default class ActivityTimeline extends LightningElement {
         if (value && value > 0) {
             this._maxVisibleItems = value;
         }
+    }
+
+     * The size of the title's icon. Valid values are xx-small, x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default medium
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default small
+     */
+    @api
+    get itemIconSize() {
+        return this._itemIconSize;
+    }
+
+    set itemIconSize(value) {
+        this._itemIconSize = normalizeString(value, {
+            fallbackValue: DEFAULT_ITEM_ICON_SIZE,
+            validValues: ICON_SIZES.valid
+        });
     }
 
     /**

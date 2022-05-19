@@ -74,7 +74,7 @@ const BUTTON_SIZES = {
 
 const BOXES_SIZES = {
     valid: ['small', 'medium', 'large', 'responsive'],
-    default: 'medium'
+    default: 'responsive'
 };
 
 const i18n = {
@@ -201,6 +201,9 @@ export default class DualListbox extends LightningElement {
     _upButtonIconName = DEFAULT_UP_BUTTON_ICON_NAME;
     _variant = LABEL_VARIANTS.default;
 
+    _connected = false;
+    _rendered = false;
+
     _selectedValues = [];
     _groupedValues = [];
     highlightedOptions = [];
@@ -240,6 +243,7 @@ export default class DualListbox extends LightningElement {
             // reset the optionToFocus otherwise dualListbox will steal the focus any time it's rerendered.
             this.optionToFocus = null;
         });
+
         this._connected = true;
     }
 
@@ -249,6 +253,7 @@ export default class DualListbox extends LightningElement {
         if (this.disabled) {
             this._upButtonDisabled = true;
             this._downButtonDisabled = true;
+            this.updateBoxesHeight();
             return;
         }
 
@@ -262,13 +267,13 @@ export default class DualListbox extends LightningElement {
                 option.focus();
             }
         }
-        this.disabledButtons();
         this.updateBoxesHeight();
+        this.disabledButtons();
         this.setOptionIndexes();
-        if (!this.rendered) {
+        if (!this._rendered) {
             this.getGroupValues();
         }
-        this.rendered = true;
+        this._rendered = true;
     }
 
     /*
@@ -553,10 +558,6 @@ export default class DualListbox extends LightningElement {
         this._options = Array.isArray(value)
             ? JSON.parse(JSON.stringify(value))
             : [];
-
-        if (this._connected) {
-            this.updateBoxesHeight();
-        }
     }
 
     /**
@@ -618,7 +619,7 @@ export default class DualListbox extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default medium
+     * @default responsive
      */
     @api
     get size() {
@@ -1002,6 +1003,26 @@ export default class DualListbox extends LightningElement {
      */
     get validity() {
         return this._constraint.validity;
+    }
+
+    /**
+     * Validation with constraint Api.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled &&
+                    this.required &&
+                    this.computedSelectedList.length < 1,
+                rangeUnderflow: () =>
+                    this.computedSelectedList.length < this.min,
+                rangeOverflow: () => this.computedSelectedList.length > this.max
+            });
+        }
+        return this._constraintApi;
     }
 
     /*
@@ -1572,26 +1593,6 @@ export default class DualListbox extends LightningElement {
             // value was changed
             this.dispatchChangeEvent(this._selectedValues);
         }
-    }
-
-    /**
-     * Validation with constraint Api.
-     *
-     * @type {object}
-     */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApi(() => this, {
-                valueMissing: () =>
-                    !this.disabled &&
-                    this.required &&
-                    this.computedSelectedList.length < 1,
-                rangeUnderflow: () =>
-                    this.computedSelectedList.length < this.min,
-                rangeOverflow: () => this.computedSelectedList.length > this.max
-            });
-        }
-        return this._constraintApi;
     }
 
     /**

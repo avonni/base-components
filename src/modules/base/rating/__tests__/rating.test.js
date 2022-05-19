@@ -178,7 +178,7 @@ describe('Rating', () => {
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             expect(buttons).toHaveLength(8);
-            expect(buttons[0].textContent).toBe('8');
+            expect(buttons[buttons.length - 1].textContent).toBe('8');
         });
     });
 
@@ -189,7 +189,7 @@ describe('Rating', () => {
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             expect(buttons).toHaveLength(4);
-            expect(buttons[buttons.length - 1].textContent).toBe('2');
+            expect(buttons[0].textContent).toBe('2');
         });
     });
 
@@ -202,7 +202,7 @@ describe('Rating', () => {
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons[1].click();
-            expect(element.value).toBe(4);
+            expect(element.value).toBe(2);
         });
     });
 
@@ -278,7 +278,7 @@ describe('Rating', () => {
         return Promise.resolve().then(() => {
             const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
             buttons.forEach((button, index) => {
-                if (index < 2) {
+                if (index > 2) {
                     expect(button.classList).toContain(
                         'slds-button_outline-brand'
                     );

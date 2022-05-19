@@ -49,6 +49,8 @@ export const ActivityTimeline = ({
     closed,
     collapsible,
     iconName,
+    iconSize,
+    itemIconSize,
     items,
     groupBy,
     maxVisibleItems,
@@ -68,6 +70,8 @@ export const ActivityTimeline = ({
     element.collapsible = collapsible;
     element.groupBy = groupBy;
     element.iconName = iconName;
+    element.iconSize = iconSize;
+    element.itemIconSize = itemIconSize;
     element.items = items;
     element.maxVisibleItems = maxVisibleItems;
     element.sortedDirection = sortedDirection;

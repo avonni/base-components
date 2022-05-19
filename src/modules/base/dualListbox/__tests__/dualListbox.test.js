@@ -85,7 +85,7 @@ describe('DualListbox', () => {
         expect(element.validity).toBeUndefined();
         expect(element.value).toMatchObject([]);
         expect(element.variant).toBe('standard');
-        expect(element.size).toBe('medium');
+        expect(element.size).toBe('responsive');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -744,6 +744,9 @@ describe('DualListbox', () => {
                 expect(box.className).not.toContain(
                     'avonni-dual-listbox__box_size-large'
                 );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-responsive'
+                );
             });
         });
     });
@@ -777,6 +780,9 @@ describe('DualListbox', () => {
                 expect(box.className).not.toContain(
                     'avonni-dual-listbox__box_size-large'
                 );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-responsive'
+                );
             });
         });
     });
@@ -809,6 +815,34 @@ describe('DualListbox', () => {
                 );
                 expect(box.className).toContain(
                     'avonni-dual-listbox__box_size-large'
+                );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-responsive'
+                );
+            });
+        });
+    });
+
+    it('Dual Listbox: size responsive', () => {
+        element.size = 'responsive';
+
+        return Promise.resolve().then(() => {
+            const boxes = element.shadowRoot.querySelectorAll(
+                '.slds-dueling-list__options'
+            );
+
+            boxes.forEach((box) => {
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-small'
+                );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-medium'
+                );
+                expect(box.className).not.toContain(
+                    'avonni-dual-listbox__box_size-large'
+                );
+                expect(box.className).toContain(
+                    'avonni-dual-listbox__box_size-responsive'
                 );
             });
         });
@@ -870,7 +904,7 @@ describe('DualListbox', () => {
     /* ----- EVENTS ----- */
 
     // change
-    it('change event add', () => {
+    it('Dual Listbox change event add', () => {
         element.options = Options;
         element.value = ['1', '2'];
         element.addButtonLabel = 'add';
@@ -899,7 +933,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('change event remove', () => {
+    it('Dual Listbox change event remove', () => {
         element.options = Options;
         element.value = ['1', '2'];
         element.removeButtonLabel = 'remove';
@@ -927,7 +961,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('change event down', () => {
+    it('Dual Listbox change event down', () => {
         element.options = Options;
         element.value = ['1', '2', '3'];
         element.downButtonLabel = 'down';
@@ -959,7 +993,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('change event up', () => {
+    it('Dual Listbox change event up', () => {
         element.options = Options;
         element.value = ['1', '2', '3'];
         element.upButtonLabel = 'up';
@@ -992,7 +1026,7 @@ describe('DualListbox', () => {
     });
 
     // blur
-    it('blur event', () => {
+    it('Dual Listbox blur event', () => {
         const handler = jest.fn();
         element.addEventListener('blur', handler);
 
@@ -1005,7 +1039,7 @@ describe('DualListbox', () => {
     });
 
     // focus
-    it('focus event', () => {
+    it('Dual Listbox focus event', () => {
         const handler = jest.fn();
         element.addEventListener('focus', handler);
         element.dispatchEvent(new CustomEvent('focus'));
@@ -1017,7 +1051,7 @@ describe('DualListbox', () => {
     });
 
     // optionclick
-    it('optionclick event', () => {
+    it('Dual Listbox optionclick event', () => {
         const handler = jest.fn();
         element.addEventListener('optionclick', handler);
         element.options = Options;
@@ -1042,7 +1076,7 @@ describe('DualListbox', () => {
         });
     });
 
-    it('optionclick event using the keyboard', () => {
+    it('Dual Listbox optionclick event using the keyboard', () => {
         const handler = jest.fn();
         element.addEventListener('optionclick', handler);
         element.options = Options;

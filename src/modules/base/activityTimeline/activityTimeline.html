@@ -38,8 +38,9 @@
             <div class="slds-media slds-media_center">
                 <div class="slds-media__figure" if:true={iconName}>
                     <lightning-icon
+                        data-element-id="avonni-activity-timeline-icon"
                         icon-name={iconName}
-                        size="medium"
+                        size={iconSize}
                     ></lightning-icon>
                 </div>
                 <div class="slds-media__body" if:true={title}>
@@ -58,6 +59,7 @@
                         datetime-value={item.datetimeValue}
                         href={item.href}
                         icon-name={item.iconName}
+                        icon-size={itemIconSize}
                         icons={item.icons}
                         fields={item.fields}
                         has-checkbox={item.hasCheckbox}
@@ -103,6 +105,7 @@
                                     datetime-value={item.datetimeValue}
                                     href={item.href}
                                     icon-name={item.iconName}
+                                    icon-size={itemIconSize}
                                     icons={item.icons}
                                     fields={item.fields}
                                     has-checkbox={item.hasCheckbox}

@@ -666,7 +666,16 @@ export default class DateTimePicker extends LightningElement {
     }
 
     set value(value) {
-        this._value = value;
+        if (!value) {
+            this._value = [];
+        } else {
+            this._value = value instanceof Array ? value : [value];
+        }
+
+        if (this._connected) {
+            this._processValue();
+            this._generateTable();
+        }
     }
 
     /**
