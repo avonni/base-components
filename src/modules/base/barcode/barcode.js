@@ -69,6 +69,7 @@ const DEFAULT_SIZE = 300;
 const DEFAULT_HIDE_VALUE = false;
 const DEFAULT_CHECKSUM = false;
 const DEFAULT_TEXT_COLOR = '#000000';
+const DEFAULT_INITIAL_VALUE = false;
 
 /**
  * @class
@@ -94,15 +95,15 @@ export default class Barcode extends LightningElement {
     _checksum = DEFAULT_CHECKSUM;
     _textColor = DEFAULT_TEXT_COLOR;
     _type = SYMBOLOGY.default;
-    _initialRender = false;
+    _initialRender = DEFAULT_INITIAL_VALUE;
 
     checksumValue;
 
     renderedCallback() {
         console.log('RERENDERED');
         if (!this._initialRender) this.initBarcode();
-        this.computeContainerClass();
         this._initialRender = true;
+        // if (this.checksum && !this.hideValue) this.computeContainerClass();
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
         );
@@ -210,7 +211,7 @@ export default class Barcode extends LightningElement {
      */
     @api
     get checksum() {
-        return this._checksum;
+        return this._checksum && !this._hideValue;
     }
     set checksum(value) {
         this._checksum = normalizeBoolean(value);
@@ -261,18 +262,19 @@ export default class Barcode extends LightningElement {
         this.calculateChecksum();
     }
 
-    computeContainerClass() {
-        let element = this.template.querySelector(
-            '[data-element-id="barcode"]'
-        );
-        console.log(`${element.width}px`);
-        // if (!element) {
-        this.template.querySelector(
-            '[data-element-id="container"]'
-        ).style.width = `${element.width}px`;
-        console.log('hello');
-        // }
-    }
+    // computeContainerClass() {
+    //     let element = this.template.querySelector(
+    //         '[data-element-id="barcode"]'
+    //     );
+    //     console.log(`${element.width}px`);
+    //     // if (!element) {
+    //     this.template.querySelector(
+    //         '[data-element-id="value"]'
+    //     ).style.width = `${element.width}px`;
+    //     console.log(`${this.template.querySelector('[data-element-id="value"]').style.width}`);
+    //     console.log('hello');
+    //     // }
+    // }
 
     calculateChecksum() {
         let valueCopy = this.value;

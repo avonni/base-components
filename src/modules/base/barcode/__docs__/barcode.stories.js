@@ -107,9 +107,9 @@ export default {
                 'CODE128C',
                 'GS1-128',
                 'MSI10',
-                'MSImod11',
-                'MSImod1010',
-                'MSImod1110',
+                'MSI11',
+                'MSI1010',
+                'MSI1110',
                 'POSTNET'
             ],
             description: 'The type changes the encoding of the barcode value.',
