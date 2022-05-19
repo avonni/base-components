@@ -201,37 +201,6 @@ export default class Kanban extends LightningElement {
                     group.summarize.type = toSummarize.type;
                     group.summarize.typeAttributes = toSummarize.typeAttributes;
                     group.summarize.value += toSummarize.value;
-                    // TODO: ANIMATION
-                    // setTimeout(() => {
-                    //     const summary = this.template.querySelectorAll(
-                    //         '.avonni-kanban__summary'
-                    //     )[group.index];
-                    //     summary.style.setProperty(
-                    //         '--num',
-                    //         group.summarize.value.toString()
-                    //     );
-                    // }, 0);
-                    // setTimeout(() => {
-                    //     const summary = this.template.querySelectorAll(
-                    //         '.avonni-kanban__summary'
-                    //     )[group.index];
-                    //     if (group.summarize.type === 'currency') {
-                    //         summary.setAttribute(
-                    //             'data-value',
-                    //             group.summarize.value.toLocaleString('en-US', {
-                    //                 style: 'currency',
-                    //                 currency:
-                    //                     group.summarize.typeAttributes
-                    //                         .currencyCode
-                    //             })
-                    //         );
-                    //     } else if (group.summarize.type === 'percent') {
-                    //         summary.setAttribute(
-                    //             'data-value',
-                    //             `${parseInt(group.summarize.value * 100, 10)}%`
-                    //         );
-                    //     }
-                    // }, 750);
                 }
             }
         });
@@ -336,10 +305,10 @@ export default class Kanban extends LightningElement {
         Array.from(groupElements).forEach((group, i) => {
             Array.from(group.children)
                 .slice(1)
-                .forEach((tile) => {
+                .forEach((tile, j) => {
                     if (
                         i !== this._releasedGroupIndex ||
-                        i < this._releasedTileIndex
+                        j < this._releasedTileIndex
                     ) {
                         tile.classList.remove('avonni-kanban__tile_moved');
                         tile.style.transform = `translateY(0px)`;
@@ -392,6 +361,13 @@ export default class Kanban extends LightningElement {
         this._draggedTile.style.transform = `translate(${
             currentX - this._initialPos.x
         }px, ${currentY - this._initialPos.y}px)`;
+        // console.log(
+        //     `CLIC: group=${this._clickedGroupIndex}, index=${this._initialTileIndex}`
+        // );
+
+        // console.log(
+        //     `DROP: group=${this._releasedGroupIndex}, index=${this._releasedTileIndex}`
+        // );
     }
 
     handleDropDown() {
