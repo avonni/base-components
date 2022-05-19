@@ -105,17 +105,7 @@ export default class Barcode extends LightningElement {
         if (!this._initialRender) this.initBarcode();
         this._initialRender = true;
         // if (this.checksum && !this.hideValue) this.computeContainerClass();
-        const canvas = this.template.querySelector(
-            '[data-element-id="barcode"]'
-        );
-        JsBarcode(canvas, this.value, {
-            format: this.type,
-            lineColor: this.color,
-            background: this.background,
-            text: this.value,
-            displayValue: false
-        });
-        JsBarcode('.barcode').init();
+        this.renderBarcode();
     }
 
     /*
@@ -282,6 +272,20 @@ export default class Barcode extends LightningElement {
         this.computeSize();
     }
 
+    renderBarcode() {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        JsBarcode(canvas, this.value, {
+            format: this.type,
+            lineColor: this.color,
+            background: this.background,
+            text: this.value,
+            displayValue: false
+        });
+        JsBarcode('.barcode').init();
+    }
+
     computeSize() {
         let element = this.template.querySelector(
             '[data-element-id="canvas-wrapper"]'
@@ -304,29 +308,66 @@ export default class Barcode extends LightningElement {
     // }
 
     calculateChecksum() {
+        switch (this.type) {
+            case 'EAN13':
+                this.calculateChecksumEAN13();
+                break;
+            default:
+                break;
+        }
+        // let valueCopy = this.value;
+        // let barcodeSum = 0;
+        // let barcodeImpairIndexSum = 0;
+
+        // let barcodeNumArray = Array.from(String(valueCopy), (num) =>
+        //     Number(num)
+        // );
+
+        // barcodeNumArray.forEach((num) => {
+        //     barcodeSum += num;
+        // });
+
+        // barcodeNumArray = barcodeNumArray.filter(
+        //     (num, index) => index % 2 !== 0
+        // );
+
+        // barcodeNumArray.forEach((num) => {
+        //     barcodeImpairIndexSum += num;
+        // });
+        // barcodeImpairIndexSum *= 2;
+
+        // this.checksumValue = 10 - ((barcodeSum + barcodeImpairIndexSum) % 10);
+        // console.log(this.checksumValue);
+    }
+
+    calculateChecksumEAN13() {
+        let valueEvenIndexSum = 0;
+        let valueOddIndexSum = 0;
         let valueCopy = this.value;
-        let barcodeSum = 0;
-        let barcodeImpairIndexSum = 0;
-
-        let barcodeNumArray = Array.from(String(valueCopy), (num) =>
-            Number(num)
-        );
-
-        barcodeNumArray.forEach((num) => {
-            barcodeSum += num;
-        });
-
-        barcodeNumArray = barcodeNumArray.filter(
+        let valueDigits = Array.from(String(valueCopy), (num) => Number(num));
+        let evenIndexValueDigits = valueDigits.filter(
             (num, index) => index % 2 !== 0
         );
+        let oddIndexValueDigits = valueDigits.filter(
+            (num, index) => index % 2 === 0
+        );
 
-        barcodeNumArray.forEach((num) => {
-            barcodeImpairIndexSum += num;
+        evenIndexValueDigits.forEach((num) => {
+            valueEvenIndexSum += num;
         });
-        barcodeImpairIndexSum *= 2;
+        valueEvenIndexSum *= 3;
 
-        this.checksumValue = 10 - ((barcodeSum + barcodeImpairIndexSum) % 10);
-        console.log(this.checksumValue);
+        oddIndexValueDigits.forEach((num) => {
+            valueOddIndexSum += num;
+        });
+
+        let checksumValue = (valueEvenIndexSum + valueOddIndexSum) % 10;
+
+        if (checksumValue !== 0) {
+            this.checksumValue = 10 - checksumValue;
+            return;
+        }
+        this.checksumValue = checksumValue;
     }
 }
 
