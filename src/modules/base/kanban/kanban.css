@@ -23,6 +23,15 @@
 
 .avonni-kanban__tile {
     margin: 5px;
+    background-color: #ffffff;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.avonni-kanban__tile:not(.avonni-kanban__dragged) {
+    transition: transform 0.25s;
 }
 
 .avonni-kanban__summary {
@@ -30,6 +39,17 @@
     /* TODO: maybe slds class pour ca */
     color: rgb(74, 190, 74);
     font-size: 2rem;
+}
+
+.avonni-kanban__tile_moved {
+}
+
+.avonni-kanban__drop_indicator {
+    width: 95%;
+    border-radius: 3px;
+    border: 2px dashed rgb(88, 129, 206);
+    background-color: rgba(176, 197, 236, 0.263);
+    margin: 5px auto;
 }
 
 .avonni-kanban__tile_icon {

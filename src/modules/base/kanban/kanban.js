@@ -288,7 +288,9 @@ export default class Kanban extends LightningElement {
     }
 
     handleTileMouseDown(event) {
+        if (event.target.type === 'phone') return;
         this._draggedTile = event.currentTarget;
+        this._draggedTile.classList.add('avonni-kanban__dragged');
         this._initialPos.x =
             event.target.getBoundingClientRect().x +
             event.target.offsetWidth / 2;
@@ -302,10 +304,10 @@ export default class Kanban extends LightningElement {
         );
         const groupWidth = event.currentTarget.parentElement.offsetWidth;
         this._clickedGroupIndex = Math.floor(event.clientX / groupWidth);
+        this._releasedGroupIndex = this._clickedGroupIndex;
     }
-
-    handleTileMouseUp(event) {
-        // TODO: MAX NOMBRE DE ITEM DANS LE GROUPE
+    handleDropZone(event) {
+        if (event.currentTarget !== this._draggedTile) return;
         this._releasedTileIndex = Math.floor(
             event.currentTarget.getBoundingClientRect().y /
                 event.currentTarget.offsetHeight
@@ -314,8 +316,29 @@ export default class Kanban extends LightningElement {
         const groupWidth = event.currentTarget.parentElement.offsetWidth;
         this._releasedGroupIndex = Math.floor(event.clientX / groupWidth);
 
+        // const groupElements = this.template.querySelectorAll(
+        //     '[data-element-id="avonni-kanban__group"]'
+        // );
+        // const childs = Array.from(
+        //     groupElements[this._releasedGroupIndex].children
+        // ).slice(1);
+        // childs.forEach((child) => {
+        //     child.classList.remove('avonni-kanban__tile_moved');
+        //     child.style.transform = `translateY(0px)`;
+        // });
+        // for (let i = this._releasedTileIndex; i < childs.length; i++) {
+        //     if (childs[i] !== event.currentTarget) {
+        //         childs[i].classList.add('avonni-kanban__tile_moved');
+        //         childs[
+        //             i
+        //         ].style.transform = `translateY(${event.currentTarget.offsetHeight}px)`;
+        //     }
+        // }
+    }
+    handleTileMouseUp() {
         this.handleDropDown();
         this._draggedTile.style.transform = '';
+        this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
     }
 
@@ -353,20 +376,20 @@ export default class Kanban extends LightningElement {
         );
         const currentTile = this.tileRecordFinder(
             this._initialTileIndex,
-            this._clickedGroupIndex
+            this._clickedGroupIndex,
+            true
         );
-        // TODO: MOVE IN THE RIGHT GROUP... marche pas
         const currentIndex = this._records.indexOf(currentTile);
-        const beforeIndex = this._records.indexOf(beforeTile);
-        // TODO: BAD IDEA WHEN NO TILES ....
+        const beforeIndex = this._records.indexOf(beforeTile) + 1;
         this._records = this.arrayMove(currentIndex, beforeIndex);
     }
 
     arrayMove(fromIndex, toIndex) {
+        if (toIndex < 0) return this.records;
         const arr = JSON.parse(JSON.stringify(this._records));
-        // TODO: HANDLE WHEN 0
         arr[fromIndex].status =
             this._groupValues[this._releasedGroupIndex].label;
+
         // TODO: NOT MY CODE
         while (fromIndex < 0) {
             fromIndex += arr.length;
@@ -384,8 +407,8 @@ export default class Kanban extends LightningElement {
         return arr;
     }
 
-    tileRecordFinder(tileIndex, groupIndex) {
-        let tileCount = tileIndex === this._initialTileIndex ? -1 : 0;
+    tileRecordFinder(tileIndex, groupIndex, isCurrent = false) {
+        let tileCount = isCurrent ? -1 : 0;
         return this._records.find((record) => {
             if (record.status === this._groupValues[groupIndex].label)
                 tileCount++;

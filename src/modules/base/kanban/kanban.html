@@ -72,8 +72,10 @@
         <div
             class="avonni-kanban__field_container"
             onmousedown={handleKanbanMouseDown}
+            onmousemove={handleTileMouseMove}
         >
             <div
+                data-element-id="avonni-kanban__group"
                 class="avonni-kanban__field slds-has-dividers_around-space"
                 for:each={computedGroups}
                 for:item="group"
@@ -86,6 +88,7 @@
                     variant="label-hidden"
                     class="avonni-kanban__summary"
                 ></c-output-data>
+                <!-- <div class="avonni-kanban__drop_indicator" if:true={}></div> -->
                 <lightning-tile
                     for:each={group.tiles}
                     for:item="record"
@@ -93,7 +96,7 @@
                     class="avonni-kanban__tile slds-item"
                     onmousedown={handleTileMouseDown}
                     onmouseup={handleTileMouseUp}
-                    onmousemove={handleTileMouseMove}
+                    onmousemove={handleDropZone}
                 >
                     <ul>
                         <li
@@ -101,7 +104,7 @@
                             for:item="field"
                             key={field.label}
                         >
-                            <p>
+                            <p class="avonni-kanban__fields">
                                 <c-output-data
                                     label={field.label}
                                     value={field.value}
