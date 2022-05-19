@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import JsBarcode from 'jsbarcode';
+import { classSet } from 'c/utils';
 
 const SYMBOLOGY = {
     valid: [
@@ -252,6 +253,21 @@ export default class Barcode extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Sets the size of the value text depending on the size of the barcode.
+     *
+     * @type {string}
+     */
+    get valueChecksumStyle() {
+        return classSet('slds-text-font_monospace')
+            .add({
+                'slds-text-heading_small': this.size > 0 && this.size < 1,
+                'slds-text-heading_medium': this.size > 1 && this.size < 2,
+                'slds-text-heading_large': this.size > 2
+            })
+            .toString();
+    }
 
     /*
      * ------------------------------------------------------------

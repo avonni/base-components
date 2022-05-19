@@ -1,3 +1,8 @@
+:host {
+    position: absolute;
+    left: 0px;
+}
+
 .value-wrapper {
     display: flex;
     flex-direction: row;
@@ -8,9 +13,4 @@
     justify-content: center;
     flex-direction: column;
     align-items: center;
-}
-
-.wrapper {
-    position: absolute;
-    left: 0px;
 }
