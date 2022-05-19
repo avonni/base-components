@@ -53,6 +53,15 @@ export default {
                 category: 'Color'
             }
         },
+        textColor: {
+            control: 'color',
+            description: 'Defines the color of the text.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: '#000000' },
+                category: 'Color'
+            }
+        },
         size: {
             control: {
                 type: 'number'
@@ -139,5 +148,6 @@ Base.args = {
     background: '#ffffff',
     color: '#000000',
     size: 300,
-    hideValue: false
+    hideValue: false,
+    textColor: '#000000'
 };

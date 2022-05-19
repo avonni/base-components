@@ -268,6 +268,10 @@ export default class Barcode extends LightningElement {
             .toString();
     }
 
+    get computeValueChecksumColor() {
+        return `color: ${this.textColor}`;
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS

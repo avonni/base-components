@@ -43,10 +43,20 @@
         </div>
         <div class="value-wrapper">
             <template if:false={hideValue}>
-                <div class={valueChecksumStyle}>{value}</div>
+                <div
+                    class={valueChecksumStyle}
+                    style={computeValueChecksumColor}
+                >
+                    {value}
+                </div>
             </template>
             <template if:true={checksum}>
-                <div class={valueChecksumStyle}>&nbsp;{checksumValue}</div>
+                <div
+                    class={valueChecksumStyle}
+                    style={computeValueChecksumColor}
+                >
+                    &nbsp;{checksumValue}
+                </div>
             </template>
         </div>
     </div>
