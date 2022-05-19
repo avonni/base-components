@@ -820,6 +820,7 @@ export default class InputDateRange extends LightningElement {
         const dates = normalizedValue.map((date) => {
             return date ? new Date(date) : null;
         });
+
         let state;
         const clickedOnFirstValue =
             dates[0] && clickedDate.getTime() === dates[0].getTime();
@@ -837,7 +838,10 @@ export default class InputDateRange extends LightningElement {
         if (clickedOnSecondValue && dates[1] < this._endDate)
             state = 'SELECT_NEW_START';
 
-        if (clickedOnSecondValue && dates[1] > this._endDate)
+        if (
+            (clickedOnSecondValue && dates[1] > this._endDate) ||
+            dates[0] > this._endDate
+        )
             state = 'SELECT_START_ABOVE_END';
 
         if (!clickedOnFirstValue && !clickedOnSecondValue && clickedOnStartDate)
@@ -856,7 +860,7 @@ export default class InputDateRange extends LightningElement {
                 break;
 
             case 'SELECT_START_ABOVE_END':
-                this._startDate = dates[1];
+                this._startDate = dates.length === 2 ? dates[1] : dates[0];
                 this._endDate = null;
                 break;
 

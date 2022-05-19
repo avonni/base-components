@@ -509,7 +509,6 @@ export default class Calendar extends LightningElement {
 
         array.forEach((date) => {
             if (typeof date === 'number') {
-                console.log(date);
                 dates.push(date);
             }
         });
@@ -945,14 +944,12 @@ export default class Calendar extends LightningElement {
          * @name change
          * @param {string|string[]} value Selected date(s), as an ISO8601 formatted string. Returns a string if the selection mode is single. Returns an array of dates otherwise.
          * @param {string} clickedDate Clicked date, as an ISO8601 formatted string.
-         * @param {string} selectionMethod
          */
         this.dispatchEvent(
             new CustomEvent('change', {
                 detail: {
                     value: this.normalizedValue,
-                    clickedDate: this._clickedDate,
-                    selectionMethod: this._selectionMethod
+                    clickedDate: this._clickedDate
                 }
             })
         );
