@@ -629,13 +629,26 @@ export default class Range extends LightningElement {
     handleClosestValue(event) {
         console.log(event);
         //TODO: on click of any of the two thumbs, find the closest, swap positions and manipulate the one on top.
+    }
 
-        // if (
-        //     Math.abs(event.target.value - this._valueLower) <
-        //     Math.abs(event.target.value - this._valueUpper)
-        // )
-        //     this._valueLower = event.target.value;
-        // else this._valueUpper = event.target.value;
+    handleChange(event) {
+        if (this.findClosestThumb(event) === 'left-stick')
+            this.swapThumbPositions();
+    }
+
+    findClosestThumb(event) {
+        if (
+            Math.abs(event.target.value - this._valueLower) <
+            Math.abs(event.target.value - this._valueUpper)
+        )
+            return 'left-stick';
+        return 'right-stick';
+    }
+
+    swapThumbPositions() {
+        let tempValue = this._valueLower;
+        this._valueLower = this._valueUpper;
+        this._valueUpper = tempValue;
     }
 
     /**

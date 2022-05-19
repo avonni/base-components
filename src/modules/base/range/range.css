@@ -180,10 +180,9 @@
 }
 
 .avonni-range__slider-left {
-    z-index: 100;
+    z-index: 99;
 }
 
 .avonni-range__slider-right {
-    background: transparent;
     z-index: 100;
 }
