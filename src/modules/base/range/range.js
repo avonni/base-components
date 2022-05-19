@@ -162,7 +162,7 @@ export default class Range extends LightningElement {
         this._rightInput = this.template.querySelector(
             '.avonni-range__slider-right'
         );
-        this._progress = this.template.querySelector('.progress');
+        this._progress = this.template.querySelector('.avonni-range__progress');
         this.updateVisuals();
         if (!this._rendered) {
             this.initRange();
