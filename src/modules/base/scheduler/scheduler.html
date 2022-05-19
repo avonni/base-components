@@ -62,6 +62,7 @@
                 >
                     <lightning-menu-item
                         key={menuItem.label}
+                        checked={menuItem.checked}
                         label={menuItem.label}
                         data-headers={menuItem.headers}
                         data-span={menuItem.span}
@@ -128,21 +129,6 @@
                 onclick={handleToolbarNextClick}
             ></lightning-button-icon>
         </lightning-button-group>
-
-        <c-button-menu
-            class="slds-m-left_small"
-            menu-alignment="right"
-            icon-name="utility:date_input"
-        >
-            <lightning-menu-item
-                label="Calendar"
-                value="calendar"
-            ></lightning-menu-item>
-            <lightning-menu-item
-                label="Timeline"
-                value="timeline"
-            ></lightning-menu-item>
-        </c-button-menu>
     </div>
     <div
         class="
@@ -215,7 +201,7 @@
                     available-days-of-the-week={availableDaysOfTheWeek}
                     available-months={availableMonths}
                     available-time-frames={availableTimeFrames}
-                    available-time-spans={toolbarTimeSpans}
+                    available-time-spans={availableToolbarTimeSpans}
                     headers={computedHeaders}
                     scroll-left-offset={datatableWidth}
                     start={start}
@@ -250,8 +236,9 @@
                                         slds-wrap
                                         avonni-scheduler__cell
                                     "
-                                    data-start={column.start}
                                     data-end={column.end}
+                                    data-element-id="div-cell"
+                                    data-start={column.start}
                                     oncontextmenu={handleEmptySpotContextMenu}
                                     onmousedown={handleMouseDown}
                                     ondblclick={handleDoubleClick}

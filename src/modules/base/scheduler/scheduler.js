@@ -371,7 +371,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * The date format to use in the events' details popup and the labels. See {@link https://moment.github.io/luxon/#/formatting?id=table-of-tokens Luxon’s documentation} for accepted format. If you want to insert text in the label, you need to escape it using single quote.
+     * The date format to use in the events' details popup and the labels. See [Luxon’s documentation](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) for accepted format. If you want to insert text in the label, you need to escape it using single quote.
      * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
      *
      * @type {string}
@@ -841,6 +841,16 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Toolbar time spans available to the headers. If the toolbar is hidden, return an empty array.
+     *
+     * @type {object[]}
+     */
+    get availableToolbarTimeSpans() {
+        if (this.hideToolbar) return [];
+        return this.toolbarTimeSpans;
+    }
+
+    /**
      * Array of resources options. The objects have two keys: label and value. Used in the edit form to generate a combobox of key fields.
      *
      * @type {object[]}
@@ -1079,7 +1089,14 @@ export default class Scheduler extends LightningElement {
      * @type {object[]}
      */
     get toolbarTimeSpanMenuItems() {
-        return this.toolbarTimeSpans.slice(3);
+        const items = deepCopy(this.toolbarTimeSpans.slice(3));
+        const { span, unit } = this.timeSpan;
+        items.forEach((item) => {
+            if (item.span === span && item.unit === unit) {
+                item.checked = true;
+            }
+        });
+        return items;
     }
 
     /**
