@@ -102,7 +102,7 @@
                         class="slds-slider__range avonni-range__slider-right"
                         disabled={disabled}
                         data-element-id="input-right"
-                        oninput={handleChangeRight}
+                        oninput={handleChange}
                         onmousedown={showRightBubble}
                         onmouseup={hideRightBubble}
                     />
@@ -124,6 +124,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="slider">
+            <div class="progress"></div>
         </div>
         <div if:false={isVertical} class="avonni-range__unit-container">
             <lightning-formatted-number

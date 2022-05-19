@@ -148,10 +148,22 @@ export default class Range extends LightningElement {
     _variant = LABEL_VARIANTS.default;
 
     _helpMessage;
+    _leftInput;
+    _rightInput;
+    _progress;
+    _valGap;
 
     _rendered = false;
 
     renderedCallback() {
+        this._leftInput = this.template.querySelector(
+            '.avonni-range__slider-left'
+        );
+        this._rightInput = this.template.querySelector(
+            '.avonni-range__slider-right'
+        );
+        this._progress = this.template.querySelector('.progress');
+        this.updateVisuals();
         if (!this._rendered) {
             this.initRange();
             this._rendered = true;
@@ -606,49 +618,51 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Handle left slider point value change.
+     * Handle any slider value change.
      *
      * @param {Event} event
      */
-    handleChangeLeft(event) {
-        console.log(event);
-        this._valueLower = event.target.value;
-        this.addProgressLine();
-    }
-
-    /**
-     * Handle right slider point value change.
-     *
-     * @param {Event} event
-     */
-    handleChangeRight(event) {
-        this._valueUpper = event.target.value;
-        this.addProgressLine();
-    }
-
-    handleClosestValue(event) {
-        console.log(event);
-        //TODO: on click of any of the two thumbs, find the closest, swap positions and manipulate the one on top.
-    }
-
     handleChange(event) {
-        if (this.findClosestThumb(event) === 'left-stick')
-            this.swapThumbPositions();
+        this.updateVisuals(event);
     }
 
-    findClosestThumb(event) {
-        if (
-            Math.abs(event.target.value - this._valueLower) <
-            Math.abs(event.target.value - this._valueUpper)
-        )
-            return 'left-stick';
-        return 'right-stick';
+    updateVisuals(event) {
+        this._valGap = 1;
+        let minVal = parseInt(this._leftInput.value, 10);
+        let maxVal = parseInt(this._rightInput.value, 10);
+        if (!event) {
+            this.updateMinVisuals(minVal);
+            this.updateMaxVisuals(maxVal);
+        } else if (
+            maxVal - minVal >= this._valGap &&
+            maxVal <= this._rightInput.max
+        ) {
+            this.updateMinVisuals(minVal);
+            this.updateMaxVisuals(maxVal);
+        } else if (maxVal - minVal < this._valGap) {
+            if (event.target.classList.contains('avonni-range__slider-left')) {
+                this._leftInput.value = maxVal - this._valGap;
+                this._progress.style.left =
+                    (minVal / this._leftInput.max) * 100 + '%';
+            } else {
+                this._rightInput.value = minVal + this._valGap;
+                this._progress.style.right =
+                    100 - (maxVal / this._rightInput.max) * 100 + '%';
+            }
+        }
     }
 
-    swapThumbPositions() {
-        let tempValue = this._valueLower;
-        this._valueLower = this._valueUpper;
-        this._valueUpper = tempValue;
+    updateMinVisuals(minVal) {
+        this._valueLower = minVal;
+        this._leftInput.value = minVal;
+        this._progress.style.left = (minVal / this._leftInput.max) * 100 + '%';
+    }
+
+    updateMaxVisuals(maxVal) {
+        this._valueUpper = maxVal;
+        this._rightInput.value = maxVal;
+        this._progress.style.right =
+            100 - (maxVal / this._rightInput.max) * 100 + '%';
     }
 
     /**
