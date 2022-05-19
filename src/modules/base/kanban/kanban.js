@@ -306,6 +306,7 @@ export default class Kanban extends LightningElement {
         this._clickedGroupIndex = Math.floor(event.clientX / groupWidth);
         this._releasedGroupIndex = this._clickedGroupIndex;
     }
+
     handleDropZone(event) {
         if (event.currentTarget !== this._draggedTile) return;
         this._releasedTileIndex = Math.floor(
@@ -316,30 +317,54 @@ export default class Kanban extends LightningElement {
         const groupWidth = event.currentTarget.parentElement.offsetWidth;
         this._releasedGroupIndex = Math.floor(event.clientX / groupWidth);
 
-        // const groupElements = this.template.querySelectorAll(
-        //     '[data-element-id="avonni-kanban__group"]'
-        // );
-        // const childs = Array.from(
-        //     groupElements[this._releasedGroupIndex].children
-        // ).slice(1);
-        // childs.forEach((child) => {
-        //     child.classList.remove('avonni-kanban__tile_moved');
-        //     child.style.transform = `translateY(0px)`;
-        // });
-        // for (let i = this._releasedTileIndex; i < childs.length; i++) {
-        //     if (childs[i] !== event.currentTarget) {
-        //         childs[i].classList.add('avonni-kanban__tile_moved');
-        //         childs[
-        //             i
-        //         ].style.transform = `translateY(${event.currentTarget.offsetHeight}px)`;
-        //     }
-        // }
+        const groupElements = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        const childs = Array.from(
+            groupElements[this._releasedGroupIndex].children
+        ).slice(1);
+        for (let i = this._releasedTileIndex; i < childs.length; i++) {
+            if (childs[i] !== event.currentTarget) {
+                childs[i].classList.add('avonni-kanban__tile_moved');
+                childs[
+                    i
+                ].style.transform = `translateY(${event.currentTarget.offsetHeight}px)`;
+            }
+        }
+
+        Array.from(groupElements).forEach((group, i) => {
+            Array.from(group.children)
+                .slice(1)
+                .forEach((tile) => {
+                    if (
+                        i !== this._releasedGroupIndex ||
+                        i < this._releasedTileIndex
+                    ) {
+                        tile.classList.remove('avonni-kanban__tile_moved');
+                        tile.style.transform = `translateY(0px)`;
+                    }
+                });
+        });
     }
     handleTileMouseUp() {
         this.handleDropDown();
         this._draggedTile.style.transform = '';
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
+
+        // removes the animation class
+        const groupElements = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+        Array.from(groupElements).forEach((group) => {
+            Array.from(group.children)
+                .slice(1)
+                .forEach((tile) => {
+                    tile.classList.remove('avonni-kanban__tile_moved');
+                    tile.style.transform = `translateY(0px)`;
+                });
+        });
     }
 
     handleTileMouseMove(event) {
@@ -390,19 +415,6 @@ export default class Kanban extends LightningElement {
         arr[fromIndex].status =
             this._groupValues[this._releasedGroupIndex].label;
 
-        // TODO: NOT MY CODE
-        while (fromIndex < 0) {
-            fromIndex += arr.length;
-        }
-        while (toIndex < 0) {
-            toIndex += arr.length;
-        }
-        if (toIndex >= arr.length) {
-            let k = toIndex - arr.length + 1;
-            while (k--) {
-                arr.push(undefined);
-            }
-        }
         arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
         return arr;
     }
