@@ -200,8 +200,6 @@
 
 .avonni-range__progress {
     height: 100%;
-    left: 25%;
-    right: 25%;
     position: absolute;
     border-radius: 5px;
     background: #0176d3;

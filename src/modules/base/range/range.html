@@ -64,8 +64,8 @@
                 <div class="slds-slider">
                     <input
                         type="range"
-                        min="0"
-                        max="100"
+                        min={min}
+                        max={max}
                         step={step}
                         value={valueLower}
                         class="slds-slider__range avonni-range__slider-left"
@@ -92,11 +92,13 @@
                         </p>
                     </div>
                 </div>
+            </div>
+            <div class="slds-form-element__control">
                 <div class="slds-slider">
                     <input
                         type="range"
-                        min="0"
-                        max="100"
+                        min={min}
+                        max={max}
                         step={step}
                         value={valueUpper}
                         class="slds-slider__range avonni-range__slider-right"

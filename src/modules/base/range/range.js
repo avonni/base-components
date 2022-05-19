@@ -475,13 +475,13 @@ export default class Range extends LightningElement {
      * @type {number}
      */
     get calculateMin() {
-        let minVaule =
+        let minValue =
             Number(this.valueUpper) - this.stepsCount('right') * this.step;
-        if (minVaule === this.calculateMax) {
-            minVaule = minVaule + Number(this.step);
+        if (minValue === this.calculateMax) {
+            minValue = minValue + Number(this.step);
         }
 
-        return minVaule.toFixed(3);
+        return minValue.toFixed(3);
     }
 
     /**
@@ -624,6 +624,7 @@ export default class Range extends LightningElement {
      */
     handleChange(event) {
         this.updateVisuals(event);
+        this.setBubblesPosition();
     }
 
     updateVisuals(event) {
@@ -643,11 +644,16 @@ export default class Range extends LightningElement {
             if (event.target.classList.contains('avonni-range__slider-left')) {
                 this._leftInput.value = maxVal - this._valGap;
                 this._progress.style.left =
-                    (minVal / this._leftInput.max) * 100 + '%';
+                    (minVal / (this._leftInput.max - this._leftInput.min)) *
+                        100 +
+                    '%';
             } else {
                 this._rightInput.value = minVal + this._valGap;
                 this._progress.style.right =
-                    100 - (maxVal / this._rightInput.max) * 100 + '%';
+                    100 -
+                    (maxVal / (this._rightInput.max - this._rightInput.min)) *
+                        100 +
+                    '%';
             }
         }
     }
@@ -655,14 +661,22 @@ export default class Range extends LightningElement {
     updateMinVisuals(minVal) {
         this._valueLower = minVal;
         this._leftInput.value = minVal;
-        this._progress.style.left = (minVal / this._leftInput.max) * 100 + '%';
+        this._progress.style.left =
+            ((minVal - this._leftInput.min) /
+                (this._leftInput.max - this._leftInput.min)) *
+                100 +
+            '%';
     }
 
     updateMaxVisuals(maxVal) {
         this._valueUpper = maxVal;
         this._rightInput.value = maxVal;
         this._progress.style.right =
-            100 - (maxVal / this._rightInput.max) * 100 + '%';
+            100 -
+            ((maxVal - this._rightInput.min) /
+                (this._rightInput.max - this._rightInput.min)) *
+                100 +
+            '%';
     }
 
     /**
@@ -761,7 +775,38 @@ export default class Range extends LightningElement {
     /**
      * Calculate Bubbles position.
      */
-    setBubblesPosition() {}
+    setBubblesPosition() {
+        if (this._pin) {
+            setTimeout(() => {
+                let bubbleLeft = this.template.querySelector('.left-bubble');
+                let bubbleRight = this.template.querySelector('.right-bubble');
+
+                let rightProgressBubble =
+                    ((this.valueUpper - this._leftInput.min) /
+                        (this._leftInput.max - this._leftInput.min)) *
+                    100;
+
+                let leftProgressBubble =
+                    ((this.valueLower - this._leftInput.min) /
+                        (this._leftInput.max - this._leftInput.min)) *
+                    100;
+
+                bubbleLeft.style.left =
+                    'calc(' +
+                    leftProgressBubble +
+                    '% - ' +
+                    (leftProgressBubble * 0.16 + 8) +
+                    'px)';
+
+                bubbleRight.style.left =
+                    'calc(' +
+                    rightProgressBubble +
+                    '% - ' +
+                    (rightProgressBubble * 0.16 + 8) +
+                    'px)';
+            }, 1);
+        }
+    }
 
     /**
      * Update input left proxy attributes.
