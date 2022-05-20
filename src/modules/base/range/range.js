@@ -163,7 +163,9 @@ export default class Range extends LightningElement {
             '.avonni-range__slider-right'
         );
         this._progress = this.template.querySelector('.avonni-range__progress');
-        this.updateVisuals();
+        this.updateMinProgressBar(this.valueLower);
+        this.updateMaxProgressBar(this.valueUpper);
+
         if (!this._rendered) {
             this.initRange();
             this._rendered = true;
@@ -458,33 +460,6 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Calculate the max range from the lower value.
-     *
-     * @type {number}
-     */
-    get calculateMax() {
-        return (
-            Number(this.valueLower) +
-            this.stepsCount('left') * this.step
-        ).toFixed(3);
-    }
-
-    /**
-     * Calculate the max range from the lower value.
-     *
-     * @type {number}
-     */
-    get calculateMin() {
-        let minValue =
-            Number(this.valueUpper) - this.stepsCount('right') * this.step;
-        if (minValue === this.calculateMax) {
-            minValue = minValue + Number(this.step);
-        }
-
-        return minValue.toFixed(3);
-    }
-
-    /**
      * Get the left constraint API via proxy input.
      *
      * @return {object} constraintApiLeft
@@ -613,7 +588,6 @@ export default class Range extends LightningElement {
      */
     initRange() {
         this.showHelpMessageIfInvalid();
-        this.addProgressLine();
         this.setBubblesPosition();
     }
 
@@ -623,60 +597,46 @@ export default class Range extends LightningElement {
      * @param {Event} event
      */
     handleChange(event) {
+        this.findClosestNode(event);
         this.updateVisuals(event);
         this.setBubblesPosition();
+    }
+
+    findClosestNode(event) {
+        let isLeft =
+            Math.abs(event.target.value - this._valueLower) <
+            Math.abs(event.target.value - this._valueUpper);
+        return isLeft;
     }
 
     updateVisuals(event) {
         this._valGap = 1;
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
-        if (!event) {
-            this.updateMinVisuals(minVal);
-            this.updateMaxVisuals(maxVal);
-        } else if (
-            maxVal - minVal >= this._valGap &&
-            maxVal <= this._rightInput.max
-        ) {
-            this.updateMinVisuals(minVal);
-            this.updateMaxVisuals(maxVal);
+        if (maxVal - minVal >= this._valGap && maxVal <= this._rightInput.max) {
+            this.updateMinProgressBar(minVal);
+            this.updateMaxProgressBar(maxVal);
         } else if (maxVal - minVal < this._valGap) {
             if (event.target.classList.contains('avonni-range__slider-left')) {
-                this._leftInput.value = maxVal - this._valGap;
-                this._progress.style.left =
-                    (minVal / (this._leftInput.max - this._leftInput.min)) *
-                        100 +
-                    '%';
+                this.updateMinProgressBar(maxVal - this._valGap, false);
             } else {
-                this._rightInput.value = minVal + this._valGap;
-                this._progress.style.right =
-                    100 -
-                    (maxVal / (this._rightInput.max - this._rightInput.min)) *
-                        100 +
-                    '%';
+                this.updateMaxProgressBar(minVal + this._valGap, false);
             }
         }
     }
 
-    updateMinVisuals(minVal) {
-        this._valueLower = minVal;
-        this._leftInput.value = minVal;
+    updateMinProgressBar(value, setPrivateAttribute = true) {
+        if (setPrivateAttribute) this._valueLower = value;
+        this._leftInput.value = value;
         this._progress.style.left =
-            ((minVal - this._leftInput.min) /
-                (this._leftInput.max - this._leftInput.min)) *
-                100 +
-            '%';
+            ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }
 
-    updateMaxVisuals(maxVal) {
-        this._valueUpper = maxVal;
-        this._rightInput.value = maxVal;
+    updateMaxProgressBar(value, setPrivateAttribute = true) {
+        if (setPrivateAttribute) this._valueUpper = value;
+        this._rightInput.value = value;
         this._progress.style.right =
-            100 -
-            ((maxVal - this._rightInput.min) /
-                (this._rightInput.max - this._rightInput.min)) *
-                100 +
-            '%';
+            100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }
 
     /**
@@ -703,33 +663,6 @@ export default class Range extends LightningElement {
         });
 
         this.dispatchEvent(selectedEvent);
-    }
-
-    /**
-     * Calculate Steps count from position method.
-     *
-     * @param {string} position
-     * @returns {number} stepsForPosition
-     */
-    stepsCount(position) {
-        let stepCount = (this.valueUpper - this.valueLower) / this.step;
-        let stepsForPosition = 0;
-
-        stepsForPosition =
-            position === 'left'
-                ? Math.floor(stepCount / 2)
-                : Math.round(stepCount / 2);
-
-        return stepsForPosition;
-    }
-
-    /**
-     * Progress indicator line.
-     */
-    addProgressLine() {
-        if (!this._disabled) {
-            //TODO: compute progress line
-        }
     }
 
     /**
