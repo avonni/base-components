@@ -2475,7 +2475,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the scroll event fired by the schedule. Trigger the headers, events and rows reloading if the scroll is big enough. Hide the popovers of the events that are scrolled out of the screen.
+     * Handle the scroll event fired by the schedule. Hide the popovers of the events that are scrolled out of the screen.
      */
     handleScroll() {
         if (this.showDetailPopover) {

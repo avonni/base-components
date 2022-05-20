@@ -37,6 +37,7 @@
     <div
         if:false={hideToolbar}
         class="slds-grid slds-m-bottom_medium slds-grid_vertical-align-center"
+        data-element-id="div-toolbar"
     >
         <lightning-button-group
             if:true={toolbarTimeSpans.length}
@@ -50,11 +51,13 @@
                     data-headers={button.headers}
                     data-span={button.span}
                     data-unit={button.unit}
+                    data-element-id="lightning-button-toolbar-time-span"
                 ></lightning-button>
             </template>
             <c-button-menu
                 if:true={toolbarTimeSpanMenuItems.length}
                 icon-name="utility:down"
+                data-element-id="avonni-button-menu-toolbar-spans"
             >
                 <template
                     for:each={toolbarTimeSpanMenuItems}
@@ -67,6 +70,7 @@
                         data-headers={menuItem.headers}
                         data-span={menuItem.span}
                         data-unit={menuItem.unit}
+                        data-element-id="lightning-menu-item-toolbar-time-span"
                     ></lightning-menu-item>
                 </template>
             </c-button-menu>
@@ -89,6 +93,7 @@
                     avonni-scheduler__toolbar-date-range
                 "
                 type="button"
+                data-element-id="button-toolbar-calendar"
                 onclick={handleToggleToolbarCalendar}
             >
                 <span class="slds-truncate">{visibleIntervalLabel}</span>
@@ -118,14 +123,17 @@
         <lightning-button-group>
             <lightning-button-icon
                 icon-name="utility:chevronleft"
+                data-element-id="lightning-button-icon-toolbar-prev"
                 onclick={handleToolbarPrevClick}
             ></lightning-button-icon>
             <lightning-button
                 label="Today"
+                data-element-id="lightning-button-icon-toolbar-today"
                 onclick={handleToolbarTodayClick}
             ></lightning-button>
             <lightning-button-icon
                 icon-name="utility:chevronright"
+                data-element-id="lightning-button-icon-toolbar-next"
                 onclick={handleToolbarNextClick}
             ></lightning-button-icon>
         </lightning-button-group>
