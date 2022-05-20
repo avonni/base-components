@@ -63,7 +63,9 @@
                                         role="option"
                                         tabindex="0"
                                     >
-                                        <span class="slds-path__title"
+                                        <span
+                                            class="slds-path__title"
+                                            data-element-id="path-group"
                                             >{item.label}</span
                                         >
                                     </a>
@@ -96,6 +98,7 @@
                             slds-text-heading_large
                             slds-text-color_success
                         "
+                        data-element-id="summarize"
                     ></c-output-data>
                     <lightning-tile
                         for:each={group.tiles}
@@ -107,7 +110,7 @@
                         onmouseup={handleTileMouseUp}
                         onmousemove={handleDropZone}
                     >
-                        <ul>
+                        <ul data-element-id="fields">
                             <li
                                 for:each={record.field}
                                 for:item="field"
@@ -154,6 +157,7 @@
                                             disabled={action.disabled}
                                             prefix-icon-name={action.iconName}
                                             class="slds-text-color_default"
+                                            data-element-id="avonni-kanban__action"
                                         ></lightning-menu-item>
                                     </template>
                                 </lightning-button-menu>

@@ -2,6 +2,10 @@
     position: relative;
 }
 
+.slds-path__nav {
+    pointer-events: none;
+}
+
 .avonni-kanban__field_container {
     position: relative;
     top: 10px;

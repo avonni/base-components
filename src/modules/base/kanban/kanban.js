@@ -51,7 +51,7 @@ export default class Kanban extends LightningElement {
     _fields = [];
     _groupFieldName;
     _groupValues = [];
-    _groupWidth = 0;
+    _groupWidth = 1;
     _initialPos = { x: 0, y: 0 };
     _initialTileIndex = 0;
     _isDragged = false;
