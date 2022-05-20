@@ -151,7 +151,7 @@ export default class Range extends LightningElement {
     _leftInput;
     _rightInput;
     _progress;
-    _moveEventWait;
+    _moveEventWait = false;
 
     _rendered = false;
 
@@ -546,22 +546,21 @@ export default class Range extends LightningElement {
     @api
     reportValidity() {
         let helpMessage = '';
-
-        let leftInput = this._constraintLeft.reportValidity((message) => {
-            helpMessage = helpMessage + message;
-        });
-
-        let rightInput = this._constraintRight.reportValidity((message) => {
-            if (!leftInput) {
-                helpMessage = helpMessage + ', ';
+        let leftInputValidity = this._constraintLeft.reportValidity(
+            (message) => {
+                helpMessage = helpMessage + message;
             }
-
-            helpMessage = helpMessage + message;
-        });
-
+        );
+        let rightInputValidity = this._constraintRight.reportValidity(
+            (message) => {
+                if (!leftInputValidity) {
+                    helpMessage = helpMessage + ', ';
+                }
+                helpMessage = helpMessage + message;
+            }
+        );
         this._helpMessage = helpMessage;
-
-        return leftInput && rightInput;
+        return leftInputValidity && rightInputValidity;
     }
 
     /**
@@ -609,6 +608,7 @@ export default class Range extends LightningElement {
     handleChange(event) {
         this.updateInputRange(event);
         this.setBubblesPosition();
+        this.changeRange();
     }
 
     /**
@@ -620,10 +620,12 @@ export default class Range extends LightningElement {
         let total = this._leftInput.clientWidth;
         let leftInputPos =
             total *
-            ((this._leftInput.value - this.min) / (this.max - this.min));
+            (parseInt(this._leftInput.value - this.min, 10) /
+                (this.max - this.min));
         let rightInputPos =
             total *
-            ((this._rightInput.value - this.min) / (this.max - this.min));
+            ((parseInt(this._rightInput.value, 10) - this.min) /
+                (this.max - this.min));
         if (
             Math.abs(event.offsetX - leftInputPos + 1) <
             Math.abs(event.offsetX - rightInputPos - 1)
@@ -646,9 +648,9 @@ export default class Range extends LightningElement {
             this.updateMaxProgressBar(maxVal);
         } else if (maxVal - minVal < 0) {
             if (event.target.classList.contains('avonni-range__slider-left')) {
-                this.updateMinProgressBar(maxVal, false);
+                this.updateMinProgressBar(maxVal);
             } else {
-                this.updateMaxProgressBar(minVal, false);
+                this.updateMaxProgressBar(minVal);
             }
         }
     }
@@ -657,11 +659,10 @@ export default class Range extends LightningElement {
      * Updates the lower progress bar position based on value.
      *
      * @param {number} value
-     * @param {boolean} setPrivateAttribute set to false if the private attribute is to be changed.
      */
-    updateMinProgressBar(value, setPrivateAttribute = true) {
+    updateMinProgressBar(value) {
         this._leftInput.value = value;
-        if (setPrivateAttribute) this._valueLower = value;
+        this._valueLower = value;
         this._progress.style.left =
             ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }
@@ -670,11 +671,10 @@ export default class Range extends LightningElement {
      * Updates the higher progress bar position based on value.
      *
      * @param {number} value
-     * @param {boolean} setPrivateAttribute set to false if the private attribute is to be changed.
      */
-    updateMaxProgressBar(value, setPrivateAttribute = true) {
+    updateMaxProgressBar(value) {
         this._rightInput.value = value;
-        if (setPrivateAttribute) this._valueUpper = value;
+        this._valueUpper = value;
         this._progress.style.right =
             100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }
@@ -710,8 +710,9 @@ export default class Range extends LightningElement {
      */
     showLeftBubble() {
         if (this._pin) {
-            let bubbleLeft = this.template.querySelector('.left-bubble');
-            bubbleLeft.style.opacity = '1';
+            this.template
+                .querySelector('.left-bubble')
+                .classList.add('avonni-range__bubble_visible');
         }
     }
 
@@ -720,8 +721,9 @@ export default class Range extends LightningElement {
      */
     showRightBubble() {
         if (this._pin) {
-            let bubbleRight = this.template.querySelector('.right-bubble');
-            bubbleRight.style.opacity = '1';
+            this.template
+                .querySelector('.right-bubble')
+                .classList.add('avonni-range__bubble_visible');
         }
     }
 
@@ -730,8 +732,9 @@ export default class Range extends LightningElement {
      */
     hideLeftBubble() {
         if (this._pin) {
-            let bubbleLeft = this.template.querySelector('.left-bubble');
-            bubbleLeft.style.opacity = '0';
+            this.template
+                .querySelector('.left-bubble')
+                .classList.remove('avonni-range__bubble_visible');
         }
     }
 
@@ -740,8 +743,9 @@ export default class Range extends LightningElement {
      */
     hideRightBubble() {
         if (this._pin) {
-            let bubbleRight = this.template.querySelector('.right-bubble');
-            bubbleRight.style.opacity = '0';
+            this.template
+                .querySelector('.right-bubble')
+                .classList.remove('avonni-range__bubble_visible');
         }
     }
 

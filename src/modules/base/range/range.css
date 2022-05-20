@@ -208,3 +208,7 @@
     border-radius: 5px;
     background: #0176d3;
 }
+
+.avonni-range__bubble_visible {
+    opacity: 1;
+}
