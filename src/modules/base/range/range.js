@@ -163,6 +163,9 @@ export default class Range extends LightningElement {
             '.avonni-range__slider-right'
         );
         this._progress = this.template.querySelector('.avonni-range__progress');
+        this.template.addEventListener('mousemove', (event) => {
+            this.superposeClosestNode(event);
+        });
         this.updateMinProgressBar(this._leftInput.value);
         this.updateMaxProgressBar(this._rightInput.value);
 
@@ -597,20 +600,29 @@ export default class Range extends LightningElement {
      * @param {Event} event
      */
     handleChange(event) {
-        this.findClosestNode(event);
         this.updateVisuals(event);
         this.setBubblesPosition();
     }
 
-    findClosestNode(event) {
-        let isLeft =
-            Math.abs(event.target.value - this._valueLower) <
-            Math.abs(event.target.value - this._valueUpper);
-        return isLeft;
+    superposeClosestNode(event) {
+        console.log('Xoffset:' + event.offsetX);
+
+        let totalWidth = this._leftInput.clientWidth;
+
+        if (
+            event.offsetX <
+            totalWidth *
+                ((this._leftInput.value - this.min) / (this.max - this.min))
+        )
+            this._leftInput.classList.add('.avonni-range__slider-left_above');
+        else
+            this._leftInput.classList.remove(
+                '.avonni-range__slider-left_above'
+            );
     }
 
     updateVisuals(event) {
-        this._valGap = this.step;
+        this._valGap = 0;
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
         if (maxVal - minVal >= this._valGap && maxVal <= this._rightInput.max) {
