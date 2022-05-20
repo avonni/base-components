@@ -37,6 +37,7 @@ export * from './linkUtils';
 export { deepCopy, arraysEqual, ArraySlice } from './utility';
 export { guid } from './guid';
 export { classListMutation } from './classListMutation';
+export { BARCODE_CATEGORY } from './code39';
 export {
     normalizeBoolean,
     normalizeString,

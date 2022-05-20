@@ -33,7 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import { CODE39_VALUES } from 'c/utilsPrivate';
+import { CODE39_VALUES, BARCODE_CATEGORY } from 'c/utilsPrivate';
 import JsBarcode from 'jsbarcode';
 
 const SYMBOLOGY = {
@@ -100,6 +100,7 @@ export default class Barcode extends LightningElement {
     _initialRender = DEFAULT_INITIAL_VALUE;
 
     checksumValue;
+    barcodeCategory;
 
     renderedCallback() {
         console.log('RERENDERED');
@@ -263,6 +264,13 @@ export default class Barcode extends LightningElement {
         return `color: ${this.textColor}`;
     }
 
+    getCanvas() {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        return canvas;
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -270,29 +278,24 @@ export default class Barcode extends LightningElement {
      */
     initBarcode() {
         // this.calculateChecksum();
+        this.getBarcodeCategory();
         this.computeSize();
     }
 
+    getBarcodeCategory() {
+        this.barcodeCategory = BARCODE_CATEGORY.get(this.type);
+    }
+
     renderBarcode() {
-        const canvas = this.template.querySelector(
-            '[data-element-id="barcode"]'
-        );
-        switch (this.type) {
+        switch (this.barcodeCategory) {
             case 'CODE39':
                 this.renderCODE39();
                 break;
-            case 'EAN8':
-                this.renderEAN8();
+            case 'EANUPC':
+                this.renderEANUPC();
                 break;
             default:
-                JsBarcode(canvas, this.value, {
-                    format: this.type,
-                    lineColor: this.color,
-                    background: this.background,
-                    // text: this.value,
-                    displayValue: !this.hideValue
-                });
-                JsBarcode('.barcode').init();
+                this.defaultRender();
                 break;
         }
     }
@@ -327,7 +330,7 @@ export default class Barcode extends LightningElement {
         // JsBarcode('.barcode').init();
     }
 
-    renderEAN8() {
+    renderEANUPC() {
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
         );
@@ -346,6 +349,20 @@ export default class Barcode extends LightningElement {
             lineColor: this.color,
             background: this.background,
             text: this.value,
+            displayValue: !this.hideValue
+        });
+        JsBarcode('.barcode').init();
+    }
+
+    defaultRender() {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        JsBarcode(canvas, this.value, {
+            format: this.type,
+            lineColor: this.color,
+            background: this.background,
+            // text: this.value,
             displayValue: !this.hideValue
         });
         JsBarcode('.barcode').init();
