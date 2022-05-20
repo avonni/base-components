@@ -141,7 +141,9 @@ export default class Scheduler extends LightningElement {
 
     renderedCallback() {
         // Save the default datatable column width
-        if (!this._initialDatatableWidth) this.resetDatatableWidth();
+        if (!this._initialDatatableWidth) {
+            this.resetDatatableWidth();
+        }
 
         // Save the datatable row height and update the body styles
         if (!this._datatableRowsHeight) {
@@ -332,7 +334,9 @@ export default class Scheduler extends LightningElement {
     set customEventsPalette(value) {
         this._customEventsPalette = normalizeArray(value);
 
-        if (this._connected) this.initRows();
+        if (this._connected) {
+            this.initRows();
+        }
     }
 
     /**
@@ -761,7 +765,9 @@ export default class Scheduler extends LightningElement {
     set rows(value) {
         this._rows = normalizeArray(value);
 
-        if (this._connected) this.initRows();
+        if (this._connected) {
+            this.initRows();
+        }
     }
 
     /**
@@ -778,7 +784,9 @@ export default class Scheduler extends LightningElement {
     set rowsKeyField(value) {
         this._rowsKeyField = value.toString();
 
-        if (this._connected) this.initRows();
+        if (this._connected) {
+            this.initRows();
+        }
     }
 
     /**
@@ -797,7 +805,9 @@ export default class Scheduler extends LightningElement {
         this._start = computedDate || dateTimeObjectFrom(DEFAULT_START_DATE);
         this.selectedDate = dateTimeObjectFrom(this._start);
 
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -817,7 +827,9 @@ export default class Scheduler extends LightningElement {
     set timeSpan(value) {
         this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
 
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -846,7 +858,9 @@ export default class Scheduler extends LightningElement {
      * @type {object[]}
      */
     get availableToolbarTimeSpans() {
-        if (this.hideToolbar) return [];
+        if (this.hideToolbar) {
+            return [];
+        }
         return this.toolbarTimeSpans;
     }
 
@@ -1041,7 +1055,9 @@ export default class Scheduler extends LightningElement {
      */
     get smallestColumnDuration() {
         const header = this.smallestHeader;
-        if (!header) return 0;
+        if (!header) {
+            return 0;
+        }
 
         const headerColumnEnd =
             addToDate(header.start, header.unit, header.span) - 1;
@@ -1105,7 +1121,9 @@ export default class Scheduler extends LightningElement {
      * @type {string}
      */
     get visibleIntervalLabel() {
-        if (!this.visibleInterval) return null;
+        if (!this.visibleInterval) {
+            return null;
+        }
 
         const unit = this.timeSpan.unit;
         let format;
@@ -1143,7 +1161,9 @@ export default class Scheduler extends LightningElement {
         const header = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group"]'
         );
-        if (header) return header.visibleInterval;
+        if (header) {
+            return header.visibleInterval;
+        }
         return null;
     }
 
@@ -1607,10 +1627,16 @@ export default class Scheduler extends LightningElement {
 
             // Handle the cases where the events are on the side
             // and the mouse moved out of the schedule
-            if (index === 0 && left >= x) return td;
-            if (index === cells.length - 1 && x > right) return td;
+            if (index === 0 && left >= x) {
+                return td;
+            }
+            if (index === cells.length - 1 && x > right) {
+                return td;
+            }
 
-            if (x >= left && x < right) return td;
+            if (x >= left && x < right) {
+                return td;
+            }
             return undefined;
         });
     }
@@ -1659,7 +1685,9 @@ export default class Scheduler extends LightningElement {
             const top = tr.getBoundingClientRect().top;
             const bottom = tr.getBoundingClientRect().bottom;
 
-            if (y >= top && y <= bottom) return tr;
+            if (y >= top && y <= bottom) {
+                return tr;
+            }
             return undefined;
         });
     }
@@ -1737,7 +1765,9 @@ export default class Scheduler extends LightningElement {
      */
     createVisibleEvents() {
         const interval = this.visibleInterval;
-        if (!interval) return [];
+        if (!interval) {
+            return [];
+        }
 
         const events = this._allEvents.filter((event) => {
             const from = dateTimeObjectFrom(event.from);
@@ -2094,7 +2124,9 @@ export default class Scheduler extends LightningElement {
      * Handle the mousedown event fired by an empty cell or a disabled primitive event occurrence. Prepare the scheduler for a new event to be created on drag.
      */
     handleMouseDown(mouseEvent) {
-        if (mouseEvent.button || this.readOnly) return;
+        if (mouseEvent.button || this.readOnly) {
+            return;
+        }
 
         this._mouseIsDown = true;
         this.hideAllPopovers();
@@ -2110,7 +2142,9 @@ export default class Scheduler extends LightningElement {
      * Handle the privatemouseenter event fired by a primitive event occurrence. Select the hovered event and show the detail popover.
      */
     handleEventMouseEnter(event) {
-        if (this._mouseIsDown || this.showContextMenu) return;
+        if (this._mouseIsDown || this.showContextMenu) {
+            return;
+        }
 
         this.selectEvent(event);
         this.showDetailPopover = true;
@@ -2135,7 +2169,9 @@ export default class Scheduler extends LightningElement {
      * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizong or dragging.
      */
     handleMouseMove(mouseEvent) {
-        if (!this._mouseIsDown) return;
+        if (!this._mouseIsDown) {
+            return;
+        }
 
         // Prevent scrolling
         mouseEvent.preventDefault();
@@ -2188,7 +2224,9 @@ export default class Scheduler extends LightningElement {
      */
     handleMouseUp(mouseEvent) {
         this._mouseIsDown = false;
-        if (mouseEvent.button !== 0) return;
+        if (mouseEvent.button !== 0) {
+            return;
+        }
 
         if (this._draggedSplitter) {
             this._draggedSplitter = false;
@@ -2216,11 +2254,15 @@ export default class Scheduler extends LightningElement {
             switch (side) {
                 case 'right':
                     draftValues.to = to.toUTC().toISO();
-                    if (newEvent) occurrence.to = to;
+                    if (newEvent) {
+                        occurrence.to = to;
+                    }
                     break;
                 case 'left':
                     draftValues.from = from.toUTC().toISO();
-                    if (newEvent) occurrence.from = from;
+                    if (newEvent) {
+                        occurrence.from = from;
+                    }
                     break;
                 default:
                     this.dragEventTo(rowElement, cellElement);
@@ -2270,7 +2312,9 @@ export default class Scheduler extends LightningElement {
      */
     handleEventContextMenu(mouseEvent) {
         const target = mouseEvent.currentTarget;
-        if (target.disabled || target.referenceLine) return;
+        if (target.disabled || target.referenceLine) {
+            return;
+        }
 
         if (this.computedContextMenuEvent.length) {
             this.hideAllPopovers();
@@ -2438,12 +2482,18 @@ export default class Scheduler extends LightningElement {
         } else {
             // Update the event with the selected occurrence values,
             // in case the selected occurrence had already been edited
-            if (occurrence.from !== event.from) event._from = occurrence.from;
-            if (occurrence.to !== event.to) event._to = occurrence.to;
-            if (occurrence.title !== event.title)
+            if (occurrence.from !== event.from) {
+                event._from = occurrence.from;
+            }
+            if (occurrence.to !== event.to) {
+                event._to = occurrence.to;
+            }
+            if (occurrence.title !== event.title) {
                 event.title = occurrence.title;
-            if (occurrence.keyFields !== event.keyFields)
+            }
+            if (occurrence.keyFields !== event.keyFields) {
                 event.keyFields = occurrence.keyFields;
+            }
 
             // Update the event with the draft values from the edit form
             this.crud.saveEvent();
@@ -2481,7 +2531,9 @@ export default class Scheduler extends LightningElement {
         if (this.showDetailPopover) {
             // Hide the detail popover only if it goes off screen
             const right = this._draggedEvent.getBoundingClientRect().right;
-            if (right < 0) this.hideDetailPopover();
+            if (right < 0) {
+                this.hideDetailPopover();
+            }
         } else {
             this.hideDetailPopover();
             this.hideContextMenu();
@@ -2560,14 +2612,18 @@ export default class Scheduler extends LightningElement {
             const calendar = this.template.querySelector(
                 '[data-element-id="calendar-toolbar"]'
             );
-            if (calendar) calendar.focus();
+            if (calendar) {
+                calendar.focus();
+            }
         });
     }
 
     handleToolbarCalendarChange(event) {
         this.showToolbarCalendar = false;
         const { value } = event.detail;
-        if (!value) return;
+        if (!value) {
+            return;
+        }
 
         this.goToDate(value);
     }
@@ -2606,7 +2662,9 @@ export default class Scheduler extends LightningElement {
     handleToolbarTimeSpanClick(event) {
         const span = Number(event.target.dataset.span);
         const { unit, headers } = event.target.dataset;
-        if (!unit) return;
+        if (!unit) {
+            return;
+        }
 
         const selectedDate = this.selectedDate || this.start;
         this._start = selectedDate.startOf(unit);

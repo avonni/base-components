@@ -105,10 +105,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableDaysOfTheWeek;
     }
     set availableDaysOfTheWeek(value) {
-        if (equal(value, this._availableDaysOfTheWeek)) return;
+        if (equal(value, this._availableDaysOfTheWeek)) {
+            return;
+        }
 
         this._availableDaysOfTheWeek = normalizeArray(value);
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -122,10 +126,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableMonths;
     }
     set availableMonths(value) {
-        if (equal(value, this._availableMonths)) return;
+        if (equal(value, this._availableMonths)) {
+            return;
+        }
 
         this._availableMonths = normalizeArray(value);
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -139,10 +147,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableTimeFrames;
     }
     set availableTimeFrames(value) {
-        if (equal(value, this._availableTimeFrames)) return;
+        if (equal(value, this._availableTimeFrames)) {
+            return;
+        }
 
         this._availableTimeFrames = normalizeArray(value);
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -158,10 +170,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._availableTimeSpans;
     }
     set availableTimeSpans(value) {
-        if (equal(value, this._availableTimeSpans)) return;
+        if (equal(value, this._availableTimeSpans)) {
+            return;
+        }
 
         this._availableTimeSpans = normalizeArray(value, 'object');
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -175,10 +191,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._headers;
     }
     set headers(value) {
-        if (equal(value, this._headers)) return;
+        if (equal(value, this._headers)) {
+            return;
+        }
 
         this._headers = normalizeArray(value);
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -214,14 +234,18 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         const start =
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
         const msStart = start && start.ts;
-        if (msStart === this._start.ts) return;
+        if (msStart === this._start.ts) {
+            return;
+        }
 
         this._start =
             start instanceof DateTime
                 ? start
                 : dateTimeObjectFrom(DEFAULT_START_DATE);
 
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -238,10 +262,14 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._timeSpan;
     }
     set timeSpan(value) {
-        if (equal(value, this._timeSpan)) return;
+        if (equal(value, this._timeSpan)) {
+            return;
+        }
 
         this._timeSpan = typeof value === 'object' ? value : DEFAULT_TIME_SPAN;
-        if (this._connected) this.initHeaders();
+        if (this._connected) {
+            this.initHeaders();
+        }
     }
 
     /**
@@ -252,7 +280,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      */
     @api
     get visibleInterval() {
-        if (!this.smallestHeader) return undefined;
+        if (!this.smallestHeader) {
+            return undefined;
+        }
 
         const columns = this.smallestHeader.columns;
         const lastIndex = columns.length - 1;
@@ -299,7 +329,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * @type {SchedulerHeader}
      */
     get smallestHeader() {
-        if (!this.computedHeaders.length) return null;
+        if (!this.computedHeaders.length) {
+            return null;
+        }
 
         const lastIndex = this.computedHeaders.length - 1;
         return this.computedHeaders[lastIndex];
@@ -452,7 +484,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         const cellText = this.template.querySelector(
             '[data-element-id="div-row"]:last-of-type [data-element-id^="span-label"]'
         );
-        if (!cellText) return;
+        if (!cellText) {
+            return;
+        }
 
         const cellTextWidth = cellText.getBoundingClientRect().width;
         // We add 20 pixels for padding

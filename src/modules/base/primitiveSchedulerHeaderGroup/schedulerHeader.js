@@ -223,15 +223,16 @@ export default class SchedulerHeader {
             endUnit = end.endOf(unit);
         }
 
-        if (endUnit < dateUnit) return true;
-        return false;
+        return endUnit < dateUnit;
     }
 
     /**
      * Make sure the last column contains allowed dates/times and remove it if not.
      */
     cleanEmptyLastColumn() {
-        if (this.columns.length <= 1) return;
+        if (this.columns.length <= 1) {
+            return;
+        }
 
         const lastColumn = this.columns[this.columns.length - 1];
         const nextDay = nextAllowedDay(
@@ -349,7 +350,9 @@ export default class SchedulerHeader {
                     const endUnit = normalizedEnd.startOf(unit);
 
                     // Stop if the next smallestHeader column belongs to the next header unit
-                    if (endUnit <= startUnit) break;
+                    if (endUnit <= startUnit) {
+                        break;
+                    }
 
                     width += cellWidth;
                     columnIndex += 1;
