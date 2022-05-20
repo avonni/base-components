@@ -46,6 +46,16 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        fields: {
+            control: {
+                type: 'object'
+            },
+            description:
+                ' Array of field objects, used to define the allowed data fields.',
+            table: {
+                type: { summary: 'object[]' }
+            }
+        },
         groupValues: {
             name: 'group-values',
             control: {
@@ -57,14 +67,15 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
-        fields: {
+        groupFieldName: {
+            name: 'group-field-name',
             control: {
-                type: 'object'
+                type: 'text'
             },
             description:
-                ' Array of field objects, used to define the allowed data fields.',
+                ' Name of the data field containing the group label the data belongs to. ',
             table: {
-                type: { summary: 'object[]' }
+                type: { summary: 'String' }
             }
         },
         readOnly: {
@@ -113,5 +124,6 @@ Base.args = {
     records: RECORDS,
     actions: ACTIONS,
     readOnly: false,
-    summarizeFieldName: 'Amount'
+    summarizeFieldName: 'Amount',
+    groupFieldName: 'status'
 };

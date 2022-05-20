@@ -31,12 +31,12 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { classSet } from '../utils/classSet';
+import { classSet } from 'c/utils';
 import {
     normalizeArray,
     normalizeBoolean,
     normalizeString
-} from '../utilsPrivate/normalize';
+} from 'c/utilsPrivate';
 
 export default class Kanban extends LightningElement {
     _groupValues = [];
@@ -57,6 +57,7 @@ export default class Kanban extends LightningElement {
     _clickedGroupIndex = 0;
     _actions = [];
     _draggedTile;
+    _groupFieldName;
     _isDragged = false;
 
     /**
@@ -65,7 +66,13 @@ export default class Kanban extends LightningElement {
      * @type {string}
      * @public
      */
-    @api groupFieldName;
+    @api
+    get groupFieldName() {
+        return this._groupFieldName;
+    }
+    set groupFieldName(values) {
+        this._groupFieldName = normalizeString(values);
+    }
 
     /**
      * Array of group objects. Each group represents one step of the path.
@@ -188,7 +195,7 @@ export default class Kanban extends LightningElement {
         this._records.forEach((record, i) => {
             computedFields.push({
                 index: record.id,
-                group: record.status,
+                group: record[this.groupFieldName],
                 warningIcon: record.warningIcon,
                 field: []
             });
@@ -448,7 +455,7 @@ export default class Kanban extends LightningElement {
     arrayMove(fromIndex, toIndex) {
         if (toIndex < 0) return this.records;
         const arr = JSON.parse(JSON.stringify(this._records));
-        arr[fromIndex].status =
+        arr[fromIndex][this.groupFieldName] =
             this._groupValues[this._releasedGroupIndex].label;
 
         arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
@@ -458,11 +465,15 @@ export default class Kanban extends LightningElement {
     tileRecordFinder(tileIndex, groupIndex, isCurrent = false) {
         let tileCount = isCurrent ? -1 : 0;
         return this._records.find((record) => {
-            if (record.status === this._groupValues[groupIndex].label)
+            if (
+                record[this.groupFieldName] ===
+                this._groupValues[groupIndex].label
+            )
                 tileCount++;
             return (
                 tileCount === tileIndex &&
-                record.status === this._groupValues[groupIndex].label
+                record[this.groupFieldName] ===
+                    this._groupValues[groupIndex].label
             );
         });
     }
