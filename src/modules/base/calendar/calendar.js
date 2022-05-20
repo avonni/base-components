@@ -429,6 +429,10 @@ export default class Calendar extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Set the focus on the fist focusable element of the calendar.
+     * @public
+     */
     @api
     focus() {
         const button = this.template.querySelector(
