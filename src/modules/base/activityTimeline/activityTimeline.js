@@ -295,7 +295,7 @@ export default class ActivityTimeline extends LightningElement {
     set items(value) {
         this._items = normalizeArray(value);
         if (this._isConnected) {
-          this.initActivityTimeline();
+            this.initActivityTimeline();
         }
     }
 
@@ -315,6 +315,7 @@ export default class ActivityTimeline extends LightningElement {
         }
     }
 
+    /**
      * The size of the title's icon. Valid values are xx-small, x-small, small, medium and large.
      *
      * @public
