@@ -34,7 +34,7 @@ import { createElement } from 'lwc';
 import InputDateRange from 'avonni/inputDateRange';
 
 // not tested
-// timezone, date changes (occur inside lightning-focus-trap), calendar focus in
+// timezone
 
 const startDate = new Date('7/20/2021 10:00');
 const endDate = new Date('7/21/2021 18:15');
