@@ -148,9 +148,10 @@
         onmousemove={handleMouseMove}
         onscroll={handleScroll}
     >
-        <!-- Datatable -->
-        <div class={datatableColClass}>
+        <!-- Datatable or vertical headers -->
+        <div class={firstColClass} data-element-id="div-first-column">
             <c-datatable
+                if:false={isVertical}
                 class="slds-show slds-border_top avonni-scheduler__datatable"
                 max-column-width="9999999999"
                 columns={columns}
@@ -161,6 +162,23 @@
                 data-element-id="avonni-datatable"
                 onresize={handleDatatableResize}
             ></c-datatable>
+
+            <c-primitive-scheduler-header-group
+                if:true={isVertical}
+                class="avonni-scheduler__header"
+                available-days-of-the-week={availableDaysOfTheWeek}
+                available-months={availableMonths}
+                available-time-frames={availableTimeFrames}
+                available-time-spans={availableToolbarTimeSpans}
+                headers={computedHeaders}
+                scroll-left-offset={datatableWidth}
+                start={start}
+                time-span={timeSpan}
+                variant="vertical"
+                data-element-id="avonni-primitive-scheduler-header-group"
+                onprivatecellsizechange={handleHeaderCellSizeChange}
+                onprivateheaderchange={handleHeaderChange}
+            ></c-primitive-scheduler-header-group>
 
             <!-- Resizing splitter -->
             <div class="slds-is-relative">
@@ -205,6 +223,7 @@
             <div class="slds-col">
                 <!-- Headers -->
                 <c-primitive-scheduler-header-group
+                    if:false={isVertical}
                     class="avonni-scheduler__header"
                     available-days-of-the-week={availableDaysOfTheWeek}
                     available-months={availableMonths}
@@ -215,11 +234,14 @@
                     start={start}
                     time-span={timeSpan}
                     data-element-id="avonni-primitive-scheduler-header-group"
-                    onprivatecellwidthchange={handleHeaderCellWidthChange}
+                    onprivatecellsizechange={handleHeaderCellSizeChange}
                     onprivateheaderchange={handleHeaderChange}
                 ></c-primitive-scheduler-header-group>
-                <!-- Rows -->
-                <div class="slds-is-relative avonni-scheduler__body">
+                <!-- Rows (horizontal variant) or columns (vertical variant) -->
+                <div
+                    class={scheduleBodyClass}
+                    data-element-id="div-schedule-body"
+                >
                     <template
                         for:each={computedRows}
                         for:item="row"
@@ -227,10 +249,8 @@
                     >
                         <div
                             key={row.key}
-                            class="
-                                slds-grid slds-is-relative
-                                avonni-scheduler__row
-                            "
+                            class={rowClass}
+                            data-element-id="div-row"
                             data-index={index}
                             data-key={row.key}
                         >

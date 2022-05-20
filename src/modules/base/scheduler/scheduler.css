@@ -36,18 +36,20 @@
     overflow: auto;
 }
 
-.avonni-scheduler__datatable-col {
+.avonni-scheduler__first-col {
     background-color: #f3f3f3;
-    width: var(--avonni-scheduler-datatable-column-width, 300px);
     position: sticky;
     left: 0;
     z-index: 4;
     height: 100%;
 }
-.avonni-scheduler__datatable-col.avonni-scheduler__datatable-col_hidden {
+.avonni-scheduler__first-col_horizontal {
+    width: var(--avonni-scheduler-datatable-column-width, 300px);
+}
+.avonni-scheduler__first-col.avonni-scheduler__first-col_hidden {
     width: auto;
 }
-.avonni-scheduler__datatable-col.avonni-scheduler__datatable-col_open {
+.avonni-scheduler__first-col.avonni-scheduler__first-col_open {
     width: 100%;
 }
 .avonni-scheduler__datatable {
@@ -57,7 +59,6 @@
 
 .avonni-scheduler__header {
     position: sticky;
-    position: -webkit-sticky;
     top: 0;
     z-index: 3;
 }
@@ -82,6 +83,11 @@
 .avonni-scheduler__cell {
     width: var(--avonni-scheduler-cell-width);
     min-width: var(--avonni-scheduler-cell-width);
+}
+
+.avonni-scheduler__schedule-body_vertical .avonni-scheduler__cell {
+    height: var(--avonni-scheduler-cell-height);
+    min-height: var(--avonni-scheduler-cell-height);
 }
 
 .avonni-scheduler__infinite-load-spinner_right {

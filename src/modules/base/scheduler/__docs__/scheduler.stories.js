@@ -169,7 +169,8 @@ export default {
             description: 'If present, the toolbar is hidden.',
             table: {
                 type: { summary: 'boolean' },
-                defaultValue: { summary: 'false' }
+                defaultValue: { summary: 'false' },
+                category: 'Toolbar'
             }
         },
         events: {
@@ -449,7 +450,19 @@ export default {
                         { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
                     ]`
                 },
-                category: 'Events'
+                category: 'Toolbar'
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['horizontal', 'vertical'],
+            description:
+                'Orientation of the scheduler. Valid values include horizontal and vertical.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'horizontal' }
             }
         }
     },
@@ -500,7 +513,8 @@ export default {
             { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
             { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
             { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
-        ]
+        ],
+        variant: 'horizontal'
     }
 };
 
@@ -513,6 +527,23 @@ Base.args = {
     rows,
     start,
     events: basicEvents
+};
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    columns,
+    rowsKeyField: 'id',
+    rows,
+    start,
+    events: basicEvents,
+    timeSpan: {
+        unit: 'year',
+        span: 4
+    },
+    availableMonths: [1, 3],
+    availableDaysOfTheWeek: [0, 2, 4],
+    headers: 'dayWeekAndMonth',
+    variant: 'vertical'
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});

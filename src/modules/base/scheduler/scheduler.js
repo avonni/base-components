@@ -60,7 +60,8 @@ import {
     DEFAULT_TOOLBAR_TIME_SPANS,
     HEADERS,
     PALETTES,
-    PRESET_HEADERS
+    PRESET_HEADERS,
+    VARIANTS
 } from './defaults';
 import SchedulerRow from './row';
 import SchedulerEvent from './event';
@@ -101,17 +102,19 @@ export default class Scheduler extends LightningElement {
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _timeSpan = DEFAULT_TIME_SPAN;
     _toolbarTimeSpans = DEFAULT_TOOLBAR_TIME_SPANS;
+    _variant = VARIANTS.default;
 
     _allEvents = [];
-    _datatableRowsHeight;
+    _rowsHeight = [];
     _draggedEvent;
     _draggedSplitter = false;
-    _initialDatatableWidth;
+    _initialFirstColWidth;
     _initialState = {};
     _mouseIsDown = false;
     _numberOfVisibleCells = 0;
     _resizedEvent;
     _toolbarCalendarIsFocused = false;
+    cellHeight = 0;
     cellWidth = 0;
     computedDisabledDatesTimes = [];
     computedHeaders = [];
@@ -119,9 +122,9 @@ export default class Scheduler extends LightningElement {
     computedRows = [];
     @track computedEvents = [];
     contextMenuActions = [];
-    datatableIsHidden = false;
-    datatableIsOpen = false;
-    datatableWidth = 0;
+    firstColumnIsHidden = false;
+    firstColumnIsOpen = false;
+    firstColumnWidth = 0;
     selectedDate = dateTimeObjectFrom(DEFAULT_START_DATE);
     selectedEvent;
     showContextMenu = false;
@@ -140,14 +143,16 @@ export default class Scheduler extends LightningElement {
     }
 
     renderedCallback() {
+        if (!this.smallestHeader) return;
+
         // Save the default datatable column width
-        if (!this._initialDatatableWidth) {
-            this.resetDatatableWidth();
+        if (!this._initialFirstColWidth && !this.isVertical) {
+            this.resetFirstColumnWidth();
         }
 
         // Save the datatable row height and update the body styles
-        if (!this._datatableRowsHeight) {
-            this.updateDatatableRowsHeight();
+        if (!this._rowsHeight.length) {
+            this.updateRowsHeight();
         }
         this.updateOccurrencesOffsetTop();
         this.updateRowsStyle();
@@ -752,7 +757,11 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of datatable data objects. Each object represents a row of the scheduler. For more details, see the Data Table component.
+     * Array of datatable data objects (see [Data Table](https://www.avonnicomponents.com/components/datatable/) for allowed keys). Each object represents a row (horizontal variant) or a column (vertical variant) of the scheduler.
+     * If the objects have a `resourceName` key, its value will be used:
+     * * In the combobox of the edit event dialog.
+     * * As the column header, in the vertical variant.
+     * Otherwise, the `rows-key-field` will be used.
      *
      * @type {object[]}
      * @public
@@ -846,6 +855,26 @@ export default class Scheduler extends LightningElement {
         this._toolbarTimeSpans = normalizeArray(value, 'object');
     }
 
+    /**
+     * Orientation of the scheduler. Valid values include horizontal and vertical.
+     *
+     * @type {string}
+     * @default horizontal
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
+
+        this._initialFirstColWidth = null;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -894,33 +923,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Datatable column HTML Element.
-     *
-     * @type {HTMLElement}
-     */
-    get datatableCol() {
-        return this.template.querySelector('.avonni-scheduler__datatable-col');
-    }
-
-    /**
-     * Class list of the datable column.
-     *
-     * @type {string}
-     * @default 'slds-border_right avonni-scheduler__datatable-col slds-grid'
-     */
-    get datatableColClass() {
-        return classSet(
-            'slds-border_right avonni-scheduler__datatable-col slds-grid'
-        )
-            .add({
-                'avonni-scheduler__datatable-col_hidden':
-                    this.datatableIsHidden,
-                'avonni-scheduler__datatable-col_open': this.datatableIsOpen
-            })
-            .toString();
-    }
-
-    /**
     * Array of action objects, used by the context menu when opened on an empty spot of the schedule.
     *
     * @type {object[]}
@@ -961,17 +963,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of color strings.
-     *
-     * @type {string[]}
-     */
-    get palette() {
-        return this.customEventsPalette.length
-            ? this.customEventsPalette
-            : PALETTES[this.eventsPalette];
-    }
-
-    /**
      * Computed title of the edit dialog.
      *
      * @type {string}
@@ -981,6 +972,43 @@ export default class Scheduler extends LightningElement {
             (this.selection && this.selection.event.title) ||
             this.dialogLabels.newEventTitle
         );
+    }
+
+    /**
+     * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
+     *
+     * @type {HTMLElement}
+     */
+    get firstCol() {
+        return this.template.querySelector(
+            '[data-element-id="div-first-column"]'
+        );
+    }
+
+    /**
+     * Computed CSS classes for the first column.
+     *
+     * @type {string}
+     */
+    get firstColClass() {
+        return classSet(
+            'slds-border_right avonni-scheduler__first-col slds-grid'
+        )
+            .add({
+                'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
+                'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
+                'avonni-scheduler__first-col_horizontal': !this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * True if the variant is vertical.
+     *
+     * @type {boolean}
+     */
+    get isVertical() {
+        return this.variant === 'vertical';
     }
 
     /**
@@ -994,6 +1022,44 @@ export default class Scheduler extends LightningElement {
             this.recurrentEditModes.length === 1 &&
             this.recurrentEditModes[0] === 'one'
         );
+    }
+
+    /**
+     * Array of color strings.
+     *
+     * @type {string[]}
+     */
+    get palette() {
+        return this.customEventsPalette.length
+            ? this.customEventsPalette
+            : PALETTES[this.eventsPalette];
+    }
+
+    /**
+     * Computed CSS class for the schedule rows.
+     *
+     * @type {string}
+     */
+    get rowClass() {
+        return classSet('slds-grid slds-is-relative')
+            .add({
+                'slds-grid_vertical': this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS class for the schedule body.
+     *
+     * @type {string}
+     */
+    get scheduleBodyClass() {
+        return classSet('slds-is-relative')
+            .add({
+                'slds-grid avonni-scheduler__schedule-body_vertical':
+                    this.isVertical
+            })
+            .toString();
     }
 
     /**
@@ -1021,7 +1087,7 @@ export default class Scheduler extends LightningElement {
      * @default true
      */
     get showCollapseLeft() {
-        return !this.collapseDisabled && !this.datatableIsHidden;
+        return !this.collapseDisabled && !this.firstColumnIsHidden;
     }
 
     /**
@@ -1031,7 +1097,7 @@ export default class Scheduler extends LightningElement {
      * @default true
      */
     get showCollapseRight() {
-        return !this.collapseDisabled && !this.datatableIsOpen;
+        return !this.collapseDisabled && !this.firstColumnIsOpen;
     }
 
     /**
@@ -1076,7 +1142,7 @@ export default class Scheduler extends LightningElement {
             .add({
                 'avonni-scheduler__splitter_disabled':
                     this.resizeColumnDisabled,
-                'slds-grid_align-end': this.datatableIsOpen
+                'slds-grid_align-end': this.firstColumnIsOpen
             })
             .toString();
     }
@@ -1337,8 +1403,8 @@ export default class Scheduler extends LightningElement {
 
             // If there's already been a render and we know the datatable rows height,
             // assign the min-height of the row
-            if (this._datatableRowsHeight) {
-                const dataRowHeight = this._datatableRowsHeight.find(
+            if (this._rowsHeight.length) {
+                const dataRowHeight = this._rowsHeight.find(
                     (dataRow) => dataRow.rowKey === rowKey
                 ).height;
                 computedRow.minHeight = dataRowHeight;
@@ -1358,7 +1424,7 @@ export default class Scheduler extends LightningElement {
     initDraggedEventState(mouseX, mouseY) {
         // Save the initial position values
         const scheduleElement = this.template.querySelector(
-            '.avonni-scheduler__body'
+            '[data-element-id="div-schedule-body"]'
         );
         const schedulePosition = scheduleElement.getBoundingClientRect();
         const eventPosition = this._draggedEvent.getBoundingClientRect();
@@ -1392,14 +1458,16 @@ export default class Scheduler extends LightningElement {
      * Set the rows height and cell width.
      */
     updateRowsStyle() {
-        const rows = this.template.querySelectorAll('.avonni-scheduler__row');
+        const rows = this.template.querySelectorAll(
+            '[data-element-id="div-row"]'
+        );
 
         rows.forEach((row, index) => {
             const key = row.dataset.key;
             const computedRow = this.getRowFromKey(key);
             const rowHeight = computedRow.height;
 
-            const dataRowHeight = this._datatableRowsHeight.find(
+            const dataRowHeight = this._rowsHeight.find(
                 (dataRow) => dataRow.rowKey === key
             ).height;
 
@@ -1407,12 +1475,15 @@ export default class Scheduler extends LightningElement {
                 min-height: ${dataRowHeight}px;
                 height: ${rowHeight}px;
                 --avonni-scheduler-cell-width: ${this.cellWidth}px;
+                --avonni-scheduler-cell-height: ${this.cellHeight}px;
             `;
 
-            if (index === 0) {
-                this.datatable.setRowHeight(key, rowHeight - 1);
-            } else {
-                this.datatable.setRowHeight(key, rowHeight);
+            if (!this.isVertical) {
+                // Patch inconsistency in the datatable row heights
+                const normalizedHeight =
+                    index === 0 ? rowHeight - 1 : rowHeight;
+                // Reset the datatable row height, in case the height was set by events
+                this.datatable.setRowHeight(key, normalizedHeight);
             }
         });
     }
@@ -1421,7 +1492,9 @@ export default class Scheduler extends LightningElement {
      * Update the cell width property if the cells grew because the splitter moved.
      */
     updateCellWidth() {
-        const cell = this.template.querySelector('.avonni-scheduler__cell');
+        const cell = this.template.querySelector(
+            '[data-element-id="div-cell"]'
+        );
         const cellWidth = cell.getBoundingClientRect().width;
         if (cellWidth !== this.cellWidth) {
             this.cellWidth = cellWidth;
@@ -1433,25 +1506,14 @@ export default class Scheduler extends LightningElement {
      * Vertically align the datatable header with the smallest unit schedule header.
      */
     updateDatatablePosition() {
+        if (this.isVertical) {
+            return;
+        }
+
         const headers = this.template.querySelector(
             '[data-element-id="avonni-primitive-scheduler-header-group"]'
         );
         this.datatable.style.marginTop = `${headers.offsetHeight - 39}px`;
-    }
-
-    /**
-     * Save the datatable rows heights and use them as a min-height for the schedule rows.
-     */
-    updateDatatableRowsHeight() {
-        if (!this.datatable || !this.computedRows.length) return;
-
-        this._datatableRowsHeight = [];
-        this.computedRows.forEach((row) => {
-            const rowKey = row.key;
-            const height = this.datatable.getRowHeight(rowKey);
-            this._datatableRowsHeight.push({ rowKey, height });
-            row.minHeight = height;
-        });
     }
 
     /**
@@ -1499,7 +1561,9 @@ export default class Scheduler extends LightningElement {
      * Compute the vertical position of the events and the rows height, so the events don't overlap.
      */
     updateOccurrencesOffsetTop() {
-        const schedule = this.template.querySelector('.avonni-scheduler__body');
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
         const scheduleRightBorder = schedule.getBoundingClientRect().right;
 
         // For each row
@@ -1599,6 +1663,28 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Save the datatable rows heights and use them as a min-height for the schedule rows.
+     */
+    updateRowsHeight() {
+        if (!this.isVertical && !this.datatable) {
+            return;
+        }
+
+        this._rowsHeight = [];
+        this.computedRows.forEach((row) => {
+            const rowKey = row.key;
+            let height = 0;
+            if (this.isVertical) {
+                height = this.cellHeight;
+            } else {
+                height = this.datatable.getRowHeight(rowKey);
+            }
+            this._rowsHeight.push({ rowKey, height });
+            row.minHeight = height;
+        });
+    }
+
+    /**
      * Update the columns and events of the currently loaded rows.
      */
     updateVisibleRows() {
@@ -1618,7 +1704,7 @@ export default class Scheduler extends LightningElement {
      */
     getCellFromPosition(row, x) {
         const cells = Array.from(
-            row.querySelectorAll('.avonni-scheduler__cell')
+            row.querySelectorAll('[data-element-id="div-cell"]')
         );
 
         return cells.find((td, index) => {
@@ -1679,7 +1765,7 @@ export default class Scheduler extends LightningElement {
      */
     getRowFromPosition(y) {
         const rows = Array.from(
-            this.template.querySelectorAll('.avonni-scheduler__row')
+            this.template.querySelectorAll('[data-element-id="div-row"]')
         );
         return rows.find((tr) => {
             const top = tr.getBoundingClientRect().top;
@@ -1725,6 +1811,9 @@ export default class Scheduler extends LightningElement {
      * Remove the initial width of the datatable last column if there was one, so it will be resized when the splitter is moved.
      */
     clearDatatableColumnWidth() {
+        if (this.isVertical) {
+            return;
+        }
         const lastColumn = this.columns[this.columns.length - 1];
         if (lastColumn.initialWidth) {
             lastColumn.initialWidth = undefined;
@@ -1842,10 +1931,10 @@ export default class Scheduler extends LightningElement {
         };
     }
 
-    resetDatatableWidth() {
-        const columnWidth = this.datatableCol.getBoundingClientRect().width;
-        this._initialDatatableWidth = columnWidth;
-        this.datatableWidth = columnWidth;
+    resetFirstColumnWidth() {
+        const columnWidth = this.firstCol.getBoundingClientRect().width;
+        this._initialFirstColWidth = columnWidth;
+        this.firstColWidth = columnWidth;
     }
 
     /**
@@ -2045,10 +2134,16 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the privatecellwidthchange event fired by the primitive header. Save the smallest unit header cell width to a variable.
+     * Handle the privatecellsizechange event fired by the primitive header. Save the smallest unit header cell size to a variable.
      */
-    handleHeaderCellWidthChange(event) {
-        this.cellWidth = event.detail.cellWidth;
+    handleHeaderCellSizeChange(event) {
+        const cellSize = event.detail.cellSize;
+
+        if (this.isVertical) {
+            this.cellHeight = cellSize;
+        } else {
+            this.cellWidth = cellSize;
+        }
     }
 
     /**
@@ -2070,8 +2165,10 @@ export default class Scheduler extends LightningElement {
             this.updateVisibleRows();
         }
 
+        this._initialFirstColWidth = 0;
+        this._rowsHeight = [];
+
         requestAnimationFrame(() => {
-            this.resetDatatableWidth();
             this.updateDatatablePosition();
         });
     }
@@ -2183,8 +2280,8 @@ export default class Scheduler extends LightningElement {
             const width = datatableWidth + (x - mouseX);
 
             this.datatable.style.width = `${width}px`;
-            this.datatableCol.style.width = `${width}px`;
-            this.datatableWidth = width;
+            this.firstCol.style.width = `${width}px`;
+            this.firstColWidth = width;
             this.updateCellWidth();
 
             // An event is being dragged
@@ -2296,13 +2393,13 @@ export default class Scheduler extends LightningElement {
     handleDatatableResize(event) {
         if (event.detail.isUserTriggered) {
             this.datatable.style.width = null;
-            this._datatableRowsHeight = undefined;
+            this._rowsHeight = [];
             this.computedRows.forEach((row) => {
                 row.minHeight = undefined;
             });
             this.computedRows = [...this.computedRows];
         } else {
-            this.updateDatatableRowsHeight();
+            this.updateRowsHeight();
             this.updateRowsStyle();
         }
     }
@@ -2558,8 +2655,8 @@ export default class Scheduler extends LightningElement {
             mouseX: mouseEvent.clientX,
             datatableWidth: this.datatable.offsetWidth
         };
-        this.datatableIsHidden = false;
-        this.datatableIsOpen = false;
+        this.firstColumnIsHidden = false;
+        this.firstColumnIsOpen = false;
         this.hideAllPopovers();
     }
 
@@ -2568,16 +2665,16 @@ export default class Scheduler extends LightningElement {
      */
     handleHideDatatable() {
         this.hideAllPopovers();
-        this.datatableCol.style.width = null;
+        this.firstCol.style.width = null;
 
-        if (this.datatableIsOpen) {
-            this.datatableIsOpen = false;
+        if (this.firstColumnIsOpen) {
+            this.firstColumnIsOpen = false;
             this.datatable.style.width = null;
-            this.datatableWidth = this._initialDatatableWidth;
+            this.firstColWidth = this._initialFirstColWidth;
         } else {
-            this.datatableIsHidden = true;
+            this.firstColumnIsHidden = true;
             this.datatable.style.width = 0;
-            this.datatableWidth = 0;
+            this.firstColWidth = 0;
         }
 
         this.updateCellWidth();
@@ -2588,20 +2685,20 @@ export default class Scheduler extends LightningElement {
      */
     handleOpenDatatable() {
         this.hideAllPopovers();
-        this.datatableCol.style.width = null;
+        this.firstCol.style.width = null;
         this.datatable.style.width = null;
         this.clearDatatableColumnWidth();
 
-        if (this.datatableIsHidden) {
-            this.datatableIsHidden = false;
-            this.datatable.style.width = `${this._initialDatatableWidth}px`;
-            this.datatableWidth = this._initialDatatableWidth;
+        if (this.firstColumnIsHidden) {
+            this.firstColumnIsHidden = false;
+            this.datatable.style.width = `${this._initialFirstColWidth}px`;
+            this.firstColWidth = this._initialFirstColWidth;
             this.updateCellWidth();
         } else {
-            this.datatableIsOpen = true;
+            this.firstColumnIsOpen = true;
             const width = this.template.host.getBoundingClientRect().width;
             this.datatable.style.width = `${width}px`;
-            this.datatableWidth = width;
+            this.firstColWidth = width;
         }
     }
 
