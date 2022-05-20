@@ -31,11 +31,17 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeArray, normalizeString } from '../utilsPrivate/normalize';
+import { classSet } from '../utils/classSet';
+import {
+    normalizeArray,
+    normalizeBoolean,
+    normalizeString
+} from '../utilsPrivate/normalize';
 
 export default class Kanban extends LightningElement {
     _groupValues = [];
     _summarizeFieldName;
+    _readOnly = false;
     _initialTileIndex = 0;
     _releasedTileIndex = 0;
     _fields = [];
@@ -146,13 +152,25 @@ export default class Kanban extends LightningElement {
     /**
      *
      *
-     * If present, the cards are not draggable.
+     * If present, the tiles are read-only and cannot be dragged by users.
      *
      * @type {boolean}
      * @public
      * @default false
      */
-    @api notDraggable;
+    @api
+    get readOnly() {
+        return this._readOnly;
+    }
+    set readOnly(value) {
+        this._readOnly = normalizeBoolean(value);
+    }
+
+    get computedTileClass() {
+        return classSet('avonni-kanban__tile slds-item').add({
+            'avonni-kanban__tile_read_only': this.readOnly
+        });
+    }
 
     // TODO: METHODS
     get computedGroups() {
@@ -247,6 +265,38 @@ export default class Kanban extends LightningElement {
         );
     }
 
+    /**
+     * Change handler.
+     *
+     */
+    handleChange(event) {
+        // TODO: NOT SURE IF DONE RIGHT
+        /**
+         * The event fired when a card is moved from a step to another.
+         *
+         * @event
+         * @name change
+         * @param {string} id Unique data id.
+         * @param {string} action Label of the group the data card has been moved to.
+         * @param {object[]} records New records of the Kanban.
+         * @public
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    id: event.currentTarget.id,
+                    action: event.currentTarget.action,
+                    records: this.records
+                },
+                composed: false,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+    }
+
     handleKanbanMouseDown(event) {
         this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
         this._kanbanPos.bottom =
@@ -257,7 +307,7 @@ export default class Kanban extends LightningElement {
     }
 
     handleTileMouseDown(event) {
-        if (event.target.type === 'phone') return;
+        if (event.target.type === 'phone' || this.readOnly) return;
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
         this._initialPos.x =
@@ -290,13 +340,28 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
 
-        const childs = Array.from(
+        // TODO: Empty the gap in the clicked group
+        // const clickedChilds = Array.from(
+        //     groupElements[this._clickedGroupIndex].children
+        // ).slice(1);
+
+        // for (let i = this._initialTileIndex; i < clickedChilds.length; i++) {
+        //     if (clickedChilds[i] !== event.currentTarget) {
+        //         clickedChilds[i].classList.add('avonni-kanban__tile_moved');
+        //         clickedChilds[i].style.transform = `translateY(${-event
+        //             .currentTarget.offsetHeight}px)`;
+        //         console.log(clickedChilds[i]);
+        //     }
+        // }
+
+        const releasedChilds = Array.from(
             groupElements[this._releasedGroupIndex].children
         ).slice(1);
-        for (let i = this._releasedTileIndex; i < childs.length; i++) {
-            if (childs[i] !== event.currentTarget) {
-                childs[i].classList.add('avonni-kanban__tile_moved');
-                childs[
+
+        for (let i = this._releasedTileIndex; i < releasedChilds.length; i++) {
+            if (releasedChilds[i] !== event.currentTarget) {
+                releasedChilds[i].classList.add('avonni-kanban__tile_moved');
+                releasedChilds[
                     i
                 ].style.transform = `translateY(${event.currentTarget.offsetHeight}px)`;
             }
@@ -316,7 +381,9 @@ export default class Kanban extends LightningElement {
                 });
         });
     }
-    handleTileMouseUp() {
+
+    handleTileMouseUp(event) {
+        if (event.target.type === 'phone' || this.readOnly) return;
         this.handleDropDown();
         this._draggedTile.style.transform = '';
         this._draggedTile.classList.remove('avonni-kanban__dragged');
@@ -361,13 +428,6 @@ export default class Kanban extends LightningElement {
         this._draggedTile.style.transform = `translate(${
             currentX - this._initialPos.x
         }px, ${currentY - this._initialPos.y}px)`;
-        // console.log(
-        //     `CLIC: group=${this._clickedGroupIndex}, index=${this._initialTileIndex}`
-        // );
-
-        // console.log(
-        //     `DROP: group=${this._releasedGroupIndex}, index=${this._releasedTileIndex}`
-        // );
     }
 
     handleDropDown() {

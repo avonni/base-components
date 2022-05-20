@@ -93,7 +93,7 @@
                     for:each={group.tiles}
                     for:item="record"
                     key={record.index}
-                    class="avonni-kanban__tile slds-item"
+                    class={computedTileClass}
                     onmousedown={handleTileMouseDown}
                     onmouseup={handleTileMouseUp}
                     onmousemove={handleDropZone}

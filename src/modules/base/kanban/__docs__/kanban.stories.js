@@ -47,6 +47,7 @@ export default {
             }
         },
         groupValues: {
+            name: 'group-values',
             control: {
                 type: 'object'
             },
@@ -66,6 +67,18 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        readOnly: {
+            name: 'read-only',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                ' If present, the tiles are read-only and cannot be dragged by users.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         records: {
             control: {
                 type: 'object'
@@ -77,6 +90,7 @@ export default {
             }
         },
         summarizeFieldName: {
+            name: 'summarize-field-name',
             control: {
                 type: 'text'
             },
@@ -98,5 +112,6 @@ Base.args = {
     fields: FIELDS,
     records: RECORDS,
     actions: ACTIONS,
+    readOnly: false,
     summarizeFieldName: 'Amount'
 };

@@ -112,4 +112,6 @@ export default class KanbanBase extends LightningElement {
     ];
 
     summarizeFieldName = 'Amount';
+
+    readOnly = false;
 }

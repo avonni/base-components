@@ -31,6 +31,11 @@
     z-index: 1;
 }
 
+.avonni-kanban__tile:hover:not(.avonni-kanban__dragged):not(.avonni-kanban__tile_read_only) {
+    background-color: #f7f7f7;
+    cursor: grab;
+}
+
 .avonni-kanban__tile:not(.avonni-kanban__dragged) {
     transition: transform 0.25s;
 }
@@ -65,6 +70,9 @@
 .avonni-kanban__dragged {
     z-index: 9999;
     position: relative;
+    cursor: grabbing;
+    border: 1px dashed #c0c0c0;
+    background-color: #e2e2e2;
 }
 
 .avonni-kanban__moved {

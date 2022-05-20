@@ -39,7 +39,8 @@ export const Kanban = ({
     fields,
     records,
     summarizeFieldName,
-    actions
+    actions,
+    readOnly
 }) => {
     const element = document.createElement('ac-kanban');
     element.groupValues = groupValues;
@@ -47,5 +48,6 @@ export const Kanban = ({
     element.records = records;
     element.summarizeFieldName = summarizeFieldName;
     element.actions = actions;
+    element.readOnly = readOnly;
     return element;
 };
