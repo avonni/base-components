@@ -327,13 +327,13 @@ describe('Range', () => {
             const wrapper =
                 element.shadowRoot.querySelector('.avonni-vertical');
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-range__unit-container'
+                '[data-element-id="vertical-max-unit-container"]'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-vertical + .avonni-range__unit-container'
+                '[data-element-id="vertical-min-unit-container"]'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-range__container + .avonni-range__unit-container'
+                '[data-element-id="horizontal-unit-container"]'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
                 '.avonni-range__bubble'
@@ -356,13 +356,13 @@ describe('Range', () => {
                 '.avonni-range__vertical'
             );
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-range__unit-container'
+                '[data-element-id="vertical-max-unit-container"]'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-range__vertical + .avonni-range__unit-container'
+                '[data-element-id="vertical-min-unit-container"]'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-range__container + .avonni-range__unit-container'
+                '[data-element-id="horizontal-unit-container"]'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
                 '.avonni-range__bubble-vertical'

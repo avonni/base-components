@@ -151,7 +151,7 @@ export default class Range extends LightningElement {
     _leftInput;
     _rightInput;
     _progress;
-    _valGap;
+    _moveEventWait;
 
     _rendered = false;
 
@@ -164,7 +164,14 @@ export default class Range extends LightningElement {
         );
         this._progress = this.template.querySelector('.avonni-range__progress');
         this.template.addEventListener('mousemove', (event) => {
-            this.superposeClosestNode(event);
+            if (!this._moveEventWait) {
+                this.setClosestOnTop(event);
+                this._moveEventWait = true;
+                // after a fraction of a second, allow events again
+                setTimeout(() => {
+                    this._moveEventWait = false;
+                }, 50);
+            }
         });
         this.updateMinProgressBar(this._leftInput.value);
         this.updateMaxProgressBar(this._rightInput.value);
@@ -600,53 +607,74 @@ export default class Range extends LightningElement {
      * @param {Event} event
      */
     handleChange(event) {
-        this.updateVisuals(event);
+        this.updateInputRange(event);
         this.setBubblesPosition();
     }
 
-    superposeClosestNode(event) {
-        let totalWidth = this._leftInput.clientWidth;
-        let leftInputX =
-            totalWidth *
+    /**
+     * If left slider is closer to mouse, adds a class which puts it above the right.
+     *
+     * @param {Event} event
+     */
+    setClosestOnTop(event) {
+        let total = this._leftInput.clientWidth;
+        let leftInputPos =
+            total *
             ((this._leftInput.value - this.min) / (this.max - this.min));
-        let rightInputX =
-            totalWidth *
+        let rightInputPos =
+            total *
             ((this._rightInput.value - this.min) / (this.max - this.min));
         if (
-            Math.abs(event.offsetX - leftInputX + 1) <
-            Math.abs(event.offsetX - rightInputX - 1)
+            Math.abs(event.offsetX - leftInputPos + 1) <
+            Math.abs(event.offsetX - rightInputPos - 1)
         )
             this._leftInput.classList.add('avonni-range__slider-left_above');
         else
             this._leftInput.classList.remove('avonni-range__slider-left_above');
     }
 
-    updateVisuals(event) {
-        this._valGap = 0;
+    /**
+     * Updates the input range values based on its current value. Also handle the collision if two slider are equal.
+     *
+     * @param {Event} event
+     */
+    updateInputRange(event) {
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
-        if (maxVal - minVal >= this._valGap && maxVal <= this._rightInput.max) {
+        if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
             this.updateMinProgressBar(minVal);
             this.updateMaxProgressBar(maxVal);
-        } else if (maxVal - minVal < this._valGap) {
+        } else if (maxVal - minVal < 0) {
             if (event.target.classList.contains('avonni-range__slider-left')) {
-                this.updateMinProgressBar(maxVal - this._valGap, false);
+                this.updateMinProgressBar(maxVal, false);
             } else {
-                this.updateMaxProgressBar(minVal + this._valGap, false);
+                this.updateMaxProgressBar(minVal, false);
             }
         }
     }
 
+    /**
+     * Updates the lower progress bar position based on value.
+     *
+     * @param {number} value
+     * @param {boolean} setPrivateAttribute set to false if the private attribute is to be changed.
+     */
     updateMinProgressBar(value, setPrivateAttribute = true) {
-        if (setPrivateAttribute) this._valueLower = value;
         this._leftInput.value = value;
+        if (setPrivateAttribute) this._valueLower = value;
         this._progress.style.left =
             ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }
 
+    /**
+     * Updates the higher progress bar position based on value.
+     *
+     * @param {number} value
+     * @param {boolean} setPrivateAttribute set to false if the private attribute is to be changed.
+     */
     updateMaxProgressBar(value, setPrivateAttribute = true) {
-        if (setPrivateAttribute) this._valueUpper = value;
         this._rightInput.value = value;
+        if (setPrivateAttribute) this._valueUpper = value;
         this._progress.style.right =
             100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }

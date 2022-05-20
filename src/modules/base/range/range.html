@@ -44,7 +44,11 @@
             >
         </span>
     </label>
-    <div if:true={isVertical} class="avonni-range__unit-container">
+    <div
+        if:true={isVertical}
+        class="avonni-range__unit-container"
+        data-element-id="vertical-max-unit-container"
+    >
         <lightning-formatted-number
             value={max}
             format-style={unit}
@@ -130,7 +134,11 @@
         <div class="avonni-range__progress-container">
             <div class="avonni-range__progress"></div>
         </div>
-        <div if:false={isVertical} class="avonni-range__unit-container">
+        <div
+            if:false={isVertical}
+            class="avonni-range__unit-container"
+            data-element-id="horizontal-unit-container"
+        >
             <lightning-formatted-number
                 value={min}
                 format-style={unit}
@@ -157,7 +165,11 @@
             ></lightning-formatted-number>
         </div>
     </div>
-    <div if:true={isVertical} class="avonni-range__unit-container">
+    <div
+        if:true={isVertical}
+        class="avonni-range__unit-container"
+        data-element-id="vertical-min-unit-container"
+    >
         <lightning-formatted-number
             value={min}
             format-style={unit}
