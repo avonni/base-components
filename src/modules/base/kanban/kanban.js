@@ -199,8 +199,15 @@ export default class Kanban extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    /**
+     * Filters the record array to remove unused fields and separates them in groups
+     *
+     * @type {object[]}
+     */
     get computedGroups() {
         let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
+
+        // creates the group
         computedGroups.forEach((group, i) => {
             group.tiles = [];
             group.summarize = {
@@ -211,6 +218,8 @@ export default class Kanban extends LightningElement {
             group.index = i;
         });
         let computedFields = [];
+
+        // filters each record and adds it to the right group
         this._records.forEach((record, i) => {
             computedFields.push({
                 index: record.id,
@@ -230,6 +239,7 @@ export default class Kanban extends LightningElement {
             });
         });
 
+        // updates the summarize field if needed
         computedFields.forEach((tile) => {
             const group = computedGroups.find(
                 (computedGroup) => computedGroup.label === tile.group
@@ -334,8 +344,8 @@ export default class Kanban extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    id: event.currentTarget.id,
-                    action: event.currentTarget.action
+                    id: event.detail.id,
+                    action: event.detail.action
                 },
                 composed: false,
                 bubbles: true,
@@ -363,6 +373,7 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
 
+        // translates the tiles down when the dragged tile hovers over them
         const releasedChilds = Array.from(
             groupElements[this._releasedGroupIndex].children
         ).slice(1);
@@ -379,6 +390,7 @@ export default class Kanban extends LightningElement {
             }
         }
 
+        // removes the translation on the other tiles
         Array.from(groupElements).forEach((group, i) => {
             Array.from(group.children)
                 .slice(1)
@@ -436,6 +448,8 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseDown(event) {
+        // this handles when the user dragged a tile out of the kanban, and released his click.
+        // a second click on the dragged tile (impossible otherwise) behaves has a click release
         if (event.currentTarget === this._draggedTile) {
             this.handleTileMouseUp(event);
             return;
@@ -518,7 +532,7 @@ export default class Kanban extends LightningElement {
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
 
-        // removes the animation class
+        // removes the translation on all tiles
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
