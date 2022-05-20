@@ -42,7 +42,7 @@
             ></canvas>
         </div>
         <!-- <div class="value-wrapper">
-            <template if:false={hideValue}>
+            <template if:false={showValue}>
                 <div
                     class={valueChecksumStyle}
                     style={computeValueChecksumColor}
@@ -50,7 +50,7 @@
                     {value}
                 </div>
             </template>
-            <template if:true={checksum}>
+            <template if:true={showValue}>
                 <div
                     class={valueChecksumStyle}
                     style={computeValueChecksumColor}

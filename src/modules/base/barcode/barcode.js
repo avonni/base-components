@@ -34,7 +34,8 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { CODE39_VALUES, BARCODE_CATEGORY } from 'c/utilsPrivate';
-// import bwipjs from 'bwip-js';
+import bwipjs from 'bwip-js';
+// import { gs1_128 } from 'bwip-js';
 import JsBarcode from 'jsbarcode';
 
 const SYMBOLOGY = {
@@ -204,7 +205,7 @@ export default class Barcode extends LightningElement {
      */
     @api
     get checksum() {
-        return this._checksum && !this._hideValue;
+        return this._checksum;
     }
     set checksum(value) {
         this._checksum = normalizeBoolean(value);
@@ -265,6 +266,11 @@ export default class Barcode extends LightningElement {
         return `color: ${this.textColor}`;
     }
 
+    // get showValue() {
+    //     if (this.type === 'UPCA') return true;
+    //     return false;
+    // }
+
     getCanvas() {
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
@@ -295,6 +301,15 @@ export default class Barcode extends LightningElement {
             case 'EANUPC':
                 this.renderEANUPC();
                 break;
+            case 'UPCA':
+                this.renderUPCA();
+                break;
+            case 'GS1-128':
+                this.renderGS1128();
+                break;
+            case 'MSI':
+                this.renderMSI();
+                break;
             default:
                 this.defaultRender();
                 break;
@@ -302,21 +317,29 @@ export default class Barcode extends LightningElement {
     }
 
     renderCODE39() {
-        // if (this.checksum) {
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
         );
-        JsBarcode(canvas, this.value, {
-            format: this.type,
-            lineColor: this.color,
-            background: this.background,
-            // text: this.value,
-            displayValue: !this.hideValue,
-            mod43: this.checksum
+        if (this.checksum) {
+            console.log('with checksum');
+            bwipjs.toCanvas(canvas, {
+                bcid: 'code39', // Barcode type
+                text: this.value, // Text to encode
+                includetext: !this.hideValue, // Show human-readable text
+                includecheck: true,
+                includecheckintext: true,
+                textxalign: 'center' // Always good to set this
+            });
+            return;
+        }
+        console.log('without checksum');
+        bwipjs.toCanvas(canvas, {
+            bcid: 'code39', // Barcode type
+            text: this.value, // Text to encode
+            includetext: !this.hideValue, // Show human-readable text
+            includecheck: false,
+            textxalign: 'center' // Always good to set this
         });
-        JsBarcode('.barcode').init();
-        // return;
-        // }
         // const canvas = this.template.querySelector(
         //     '[data-element-id="barcode"]'
         // );
@@ -324,14 +347,75 @@ export default class Barcode extends LightningElement {
         //     format: this.type,
         //     lineColor: this.color,
         //     background: this.background,
-        //     // text: this.value,
         //     displayValue: !this.hideValue,
-        //     mod43: false
+        //     mod43: this.checksum
         // });
         // JsBarcode('.barcode').init();
     }
 
     renderEANUPC() {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        if (this.checksum) {
+            JsBarcode(canvas, this.value, {
+                format: this.type,
+                lineColor: this.color,
+                background: this.background,
+                displayValue: !this.hideValue
+            });
+            JsBarcode('.barcode').init();
+            return;
+        }
+        JsBarcode(canvas, this.value, {
+            format: this.type,
+            lineColor: this.color,
+            background: this.background,
+            text: this.value,
+            displayValue: !this.hideValue
+        });
+        JsBarcode('.barcode').init();
+    }
+
+    renderUPCA() {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        if (this.checksum) {
+            console.log('with checksum');
+            bwipjs.toCanvas(canvas, {
+                bcid: 'upca', // Barcode type
+                text: this.value, // Text to encode
+                includetext: !this.hideValue, // Show human-readable text
+                textxalign: 'center' // Always good to set this
+            });
+            return;
+        }
+        console.log('without checksum');
+        bwipjs.toCanvas(canvas, {
+            bcid: 'upca', // Barcode type
+            text: this.value, // Text to encode
+            includetext: !this.hideValue, // Show human-readable text
+            alttext: this.value,
+            includecheck: false,
+            includecheckintext: false,
+            textxalign: 'center' // Always good to set this
+        });
+    }
+
+    renderGS1128() {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        bwipjs.toCanvas(canvas, {
+            bcid: 'gs1-128', // Barcode type
+            text: this.value, // Text to encode
+            includetext: !this.hideValue, // Show human-readable text
+            textxalign: 'center' // Always good to set this
+        });
+    }
+
+    renderMSI() {
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
         );
@@ -389,6 +473,36 @@ export default class Barcode extends LightningElement {
     //     console.log('hello');
     //     // }
     // }
+
+    UPCAvalue() {
+        let valueEvenIndexSum = 0;
+        let valueOddIndexSum = 0;
+        let valueCopy = this.value;
+        let valueDigits = Array.from(String(valueCopy), (num) => Number(num));
+        let evenIndexValueDigits = valueDigits.filter(
+            (num, index) => index % 2 !== 0
+        );
+        let oddIndexValueDigits = valueDigits.filter(
+            (num, index) => index % 2 === 0
+        );
+
+        oddIndexValueDigits.forEach((num) => {
+            valueOddIndexSum += num;
+        });
+        valueOddIndexSum *= 3;
+
+        evenIndexValueDigits.forEach((num) => {
+            valueEvenIndexSum += num;
+        });
+
+        let checksumValue = (valueEvenIndexSum + valueOddIndexSum) % 10;
+
+        if (checksumValue !== 0) {
+            this.checksumValue = 10 - checksumValue;
+            return;
+        }
+        this.checksumValue = checksumValue;
+    }
 
     calculateChecksum() {
         switch (this.type) {
