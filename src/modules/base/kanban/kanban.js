@@ -60,7 +60,7 @@ export default class Kanban extends LightningElement {
     _draggedTile;
     _groupFieldName;
     _isDragged = false;
-
+    _isLoading = false;
     /**
      * Name of the data field containing the group label the data belongs to.
      *
@@ -155,7 +155,13 @@ export default class Kanban extends LightningElement {
      * @public
      * @default false
      */
-    @api isLoading;
+    @api
+    get isLoading() {
+        return this._isLoading;
+    }
+    set isLoading(value) {
+        this._isLoading = normalizeBoolean(value);
+    }
 
     /**
      *
@@ -265,38 +271,6 @@ export default class Kanban extends LightningElement {
                 detail: {
                     id: event.currentTarget.id,
                     action: event.currentTarget.action
-                },
-                composed: false,
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    }
-
-    /**
-     * Change handler.
-     *
-     */
-    handleChange(event) {
-        // TODO: NOT SURE IF DONE RIGHT
-        /**
-         * The event fired when a card is moved from a step to another.
-         *
-         * @event
-         * @name change
-         * @param {string} id Unique data id.
-         * @param {string} action Label of the group the data card has been moved to.
-         * @param {object[]} records New records of the Kanban.
-         * @public
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    id: event.currentTarget.id,
-                    action: event.currentTarget.action,
-                    records: this.records
                 },
                 composed: false,
                 bubbles: true,
@@ -496,6 +470,31 @@ export default class Kanban extends LightningElement {
         const arr = JSON.parse(JSON.stringify(this._records));
         arr[fromIndex][this.groupFieldName] =
             this._groupValues[this._releasedGroupIndex].label;
+
+        /**
+         * The event fired when a card is moved from a step to another.
+         *
+         * @event
+         * @name change
+         * @param {string} id Unique data id.
+         * @param {string} action Label of the group the data card has been moved to.
+         * @param {object[]} records New records of the Kanban.
+         * @public
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    id: arr[fromIndex].id,
+                    action: arr[fromIndex][this._groupFieldName],
+                    records: this.records
+                },
+                composed: false,
+                bubbles: true,
+                cancelable: true
+            })
+        );
 
         arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
         return arr;

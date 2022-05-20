@@ -41,7 +41,8 @@ export const Kanban = ({
     summarizeFieldName,
     actions,
     readOnly,
-    groupFieldName
+    groupFieldName,
+    isLoading
 }) => {
     const element = document.createElement('ac-kanban');
     element.groupValues = groupValues;
@@ -51,5 +52,6 @@ export const Kanban = ({
     element.actions = actions;
     element.readOnly = readOnly;
     element.groupFieldName = groupFieldName;
+    element.isLoading = isLoading;
     return element;
 };

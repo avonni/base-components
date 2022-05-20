@@ -78,6 +78,18 @@ export default {
                 type: { summary: 'String' }
             }
         },
+        isLoading: {
+            name: 'is-loading',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                '  If present, the Kanban is in a loading state and shows a spinner.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         readOnly: {
             name: 'read-only',
             control: {
@@ -124,6 +136,7 @@ Base.args = {
     records: RECORDS,
     actions: ACTIONS,
     readOnly: false,
+    isLoading: false,
     summarizeFieldName: 'Amount',
     groupFieldName: 'status'
 };
