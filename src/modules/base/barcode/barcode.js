@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { CODE39_VALUES, BARCODE_CATEGORY } from 'c/utilsPrivate';
+// import bwipjs from 'bwip-js';
 import JsBarcode from 'jsbarcode';
 
 const SYMBOLOGY = {
