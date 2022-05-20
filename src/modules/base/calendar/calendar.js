@@ -456,6 +456,19 @@ export default class Calendar extends LightningElement {
         this.computeFocus(true);
     }
 
+    /**
+     * Set the focus on the first focusable element of the calendar.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="previous-lightning-button-icon"]'
+        );
+        if (button) button.focus();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS

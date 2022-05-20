@@ -7,5 +7,5 @@
 import { LightningElement, api } from 'lwc';
 
 export default class FocusTrap extends LightningElement {
-    @api focus;
+    @api focus() {}
 }

@@ -33,7 +33,6 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
     columns,
-    oneColumn,
     rows,
     headers,
     events,
@@ -42,8 +41,6 @@ import {
     disabledDatesTimes,
     referenceLines,
     start,
-    lotsOfEvents,
-    lotsOfRows,
     basicEvents
 } from './data';
 
@@ -161,7 +158,18 @@ export default {
                 'Object used to set the duration of the scheduler. It has two keys: unit (valid values include minute, hour, day, month and year) and span (number).',
             table: {
                 type: { summary: 'object' },
-                defaultValue: { summary: "{ unit: 'hour', span: 12 }" }
+                defaultValue: { summary: "{ unit: 'day', span: 1 }" }
+            }
+        },
+        hideToolbar: {
+            name: 'hide-toolbar',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the toolbar is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
             }
         },
         events: {
@@ -423,6 +431,26 @@ export default {
                 },
                 category: 'Events'
             }
+        },
+        toolbarTimeSpans: {
+            name: 'toolbar-time-spans',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Time spans, to display as buttons in the toolbar. On click on the button, the scheduler time span will be updated. Only three options can be visible, the others will be listed in a button menu.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: {
+                    summary: `[
+                        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+                        { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+                        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+                        { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+                    ]`
+                },
+                category: 'Events'
+            }
         }
     },
     args: {
@@ -459,13 +487,20 @@ export default {
         eventsPalette: 'aurora',
         eventsTheme: 'default',
         headers: 'hourAndDay',
+        hideToolbar: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         recurrentEditModes: ['all', 'one'],
         readOnly: false,
         resizeColumnDisabled: false,
         start: new Date(),
-        timeSpan: { unit: 'hour', span: 12 }
+        timeSpan: { unit: 'day', span: 1 },
+        toolbarTimeSpans: [
+            { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+            { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+            { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+            { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+        ]
     }
 };
 
@@ -480,19 +515,6 @@ Base.args = {
     events: basicEvents
 };
 
-export const BigDataSet = Template.bind({});
-BigDataSet.args = {
-    columns: oneColumn,
-    rowsKeyField: 'id',
-    rows: lotsOfRows(),
-    start,
-    events: lotsOfEvents(),
-    timeSpan: {
-        unit: 'year',
-        span: 3
-    }
-};
-
 export const AvailableAndDisabledTimes = Template.bind({});
 AvailableAndDisabledTimes.args = {
     columns,
@@ -504,6 +526,11 @@ AvailableAndDisabledTimes.args = {
         span: 2
     },
     start,
+    toolbarTimeSpans: [
+        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+        { unit: 'week', span: 2, label: 'Sprint', headers: 'hourDayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
+    ],
     availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
@@ -573,5 +600,6 @@ ThemesAndColors.args = {
     rows,
     start,
     events: eventsThemed,
-    eventsPalette: 'wildflowers'
+    eventsPalette: 'wildflowers',
+    hideToolbar: true
 };
