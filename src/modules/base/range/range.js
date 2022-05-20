@@ -163,8 +163,8 @@ export default class Range extends LightningElement {
             '.avonni-range__slider-right'
         );
         this._progress = this.template.querySelector('.avonni-range__progress');
-        this.updateMinProgressBar(this.valueLower);
-        this.updateMaxProgressBar(this.valueUpper);
+        this.updateMinProgressBar(this._leftInput.value);
+        this.updateMaxProgressBar(this._rightInput.value);
 
         if (!this._rendered) {
             this.initRange();
@@ -610,7 +610,7 @@ export default class Range extends LightningElement {
     }
 
     updateVisuals(event) {
-        this._valGap = 1;
+        this._valGap = this.step;
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
         if (maxVal - minVal >= this._valGap && maxVal <= this._rightInput.max) {
