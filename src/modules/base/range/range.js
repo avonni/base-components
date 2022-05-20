@@ -605,20 +605,20 @@ export default class Range extends LightningElement {
     }
 
     superposeClosestNode(event) {
-        console.log('Xoffset:' + event.offsetX);
-
         let totalWidth = this._leftInput.clientWidth;
-
-        if (
-            event.offsetX <
+        let leftInputX =
             totalWidth *
-                ((this._leftInput.value - this.min) / (this.max - this.min))
+            ((this._leftInput.value - this.min) / (this.max - this.min));
+        let rightInputX =
+            totalWidth *
+            ((this._rightInput.value - this.min) / (this.max - this.min));
+        if (
+            Math.abs(event.offsetX - leftInputX + 1) <
+            Math.abs(event.offsetX - rightInputX - 1)
         )
-            this._leftInput.classList.add('.avonni-range__slider-left_above');
+            this._leftInput.classList.add('avonni-range__slider-left_above');
         else
-            this._leftInput.classList.remove(
-                '.avonni-range__slider-left_above'
-            );
+            this._leftInput.classList.remove('avonni-range__slider-left_above');
     }
 
     updateVisuals(event) {
