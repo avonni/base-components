@@ -147,7 +147,9 @@ export const Base = Template.bind({});
 Base.args = {
     background: '#ffffff',
     color: '#000000',
-    size: 300,
+    value: '12000-311123',
+    size: 200,
+    type: 'CODE128',
     hideValue: false,
     textColor: '#000000'
 };

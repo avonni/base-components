@@ -32,7 +32,7 @@
 
 import Component from '../barcode';
 
-customElements.define('ac-barcode', Component.CustomElementConstructor);
+customElements.define('ac-base-barcode', Component.CustomElementConstructor);
 
 export const Barcode = ({
     background,
@@ -45,7 +45,7 @@ export const Barcode = ({
     textColor,
     type
 }) => {
-    const element = document.createElement('ac-barcode');
+    const element = document.createElement('ac-base-barcode');
     element.background = background;
     element.color = color;
     element.renderAs = renderAs;
