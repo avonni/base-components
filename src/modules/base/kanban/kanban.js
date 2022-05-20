@@ -38,29 +38,70 @@ import {
     normalizeString
 } from 'c/utilsPrivate';
 
+/**
+ * @class
+ * @storyId example-kanban--base
+ * @descriptor avonni-kanban
+ * @public
+ */
 export default class Kanban extends LightningElement {
-    _groupValues = [];
-    _summarizeFieldName;
-    _readOnly = false;
-    _initialTileIndex = 0;
-    _releasedTileIndex = 0;
+    _actions = [];
+    _clickedGroupIndex = 0;
+    _draggedTile;
     _fields = [];
-    _records = [];
+    _groupFieldName;
+    _groupValues = [];
+    _groupWidth = 0;
+    _initialPos = { x: 0, y: 0 };
+    _initialTileIndex = 0;
+    _isDragged = false;
+    _isLoading = false;
     _kanbanPos = {
         top: 0,
         bottom: 0,
         left: 0,
         right: 0
     };
-    _initialPos = { x: 0, y: 0 };
+    _readOnly = false;
+    _records = [];
     _releasedGroupIndex = 0;
-    _clickedGroupIndex = 0;
-    _actions = [];
-    _groupWidth = 0;
-    _draggedTile;
-    _groupFieldName;
-    _isDragged = false;
-    _isLoading = false;
+    _releasedTileIndex = 0;
+    _summarizeFieldName;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get actions() {
+        return this._actions;
+    }
+    set actions(values) {
+        this._actions = normalizeArray(values);
+    }
+
+    /**
+     * Array of field objects, used to define the allowed data fields.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get fields() {
+        return this._fields;
+    }
+    set fields(values) {
+        this._fields = normalizeArray(values);
+    }
+
     /**
      * Name of the data field containing the group label the data belongs to.
      *
@@ -87,64 +128,6 @@ export default class Kanban extends LightningElement {
     }
     set groupValues(values) {
         this._groupValues = normalizeArray(values);
-    }
-
-    /**
-     *
-     * Name of the data field containing the number to add to the group summarization, at the top of each column.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get summarizeFieldName() {
-        return this._summarizeFieldName;
-    }
-    set summarizeFieldName(value) {
-        this._summarizeFieldName = normalizeString(value);
-    }
-
-    /**
-     * Array of field objects, used to define the allowed data fields.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get fields() {
-        return this._fields;
-    }
-    set fields(values) {
-        this._fields = normalizeArray(values);
-    }
-
-    /**
-     * Array of action objects. The actions are displayed on each card and refer to tasks you can perform, such as updating or deleting the card.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get actions() {
-        return this._actions;
-    }
-    set actions(values) {
-        this._actions = normalizeArray(values);
-    }
-
-    /**
-     * Array of data objects. Each object will be displayed as a data card in one of the steps.
-     * The objects should have a key <code>id</code>, used as their unique identifier. The other keys should correspond to the available fields, and/or the summarize and group field names.
-     *
-     * @type {object[]}
-     * @public
-     */
-    @api
-    get records() {
-        return this._records;
-    }
-    set records(values) {
-        this._records = normalizeArray(values);
     }
 
     /**
@@ -180,13 +163,42 @@ export default class Kanban extends LightningElement {
         this._readOnly = normalizeBoolean(value);
     }
 
-    get computedTileClass() {
-        return classSet('avonni-kanban__tile slds-item').add({
-            'avonni-kanban__tile_read_only': this.readOnly
-        });
+    /**
+     * Array of data objects. Each object will be displayed as a data card in one of the steps.
+     * The objects should have a key <code>id</code>, used as their unique identifier. The other keys should correspond to the available fields, and/or the summarize and group field names.
+     *
+     * @type {object[]}
+     * @public
+     */
+    @api
+    get records() {
+        return this._records;
+    }
+    set records(values) {
+        this._records = normalizeArray(values);
     }
 
-    // TODO: METHODS
+    /**
+     *
+     * Name of the data field containing the number to add to the group summarization, at the top of each column.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get summarizeFieldName() {
+        return this._summarizeFieldName;
+    }
+    set summarizeFieldName(value) {
+        this._summarizeFieldName = normalizeString(value);
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
     get computedGroups() {
         let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
         computedGroups.forEach((group, i) => {
@@ -240,6 +252,12 @@ export default class Kanban extends LightningElement {
         return computedGroups;
     }
 
+    get computedTileClass() {
+        return classSet('avonni-kanban__tile slds-item').add({
+            'avonni-kanban__tile_read_only': this.readOnly
+        });
+    }
+
     /**
      * Check if actions exist.
      *
@@ -249,222 +267,18 @@ export default class Kanban extends LightningElement {
         return this.actions && this.actions.length > 0;
     }
 
-    /**
-     * Actionclick handler.
-     *
-     * @param {Event} event
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
      */
-    handleActionClick(event) {
-        /**
-         * The event fired when a user clicks on an action.
-         *
-         * @event
-         * @name actionclick
-         * @param {string} id Unique data id.
-         * @param {string} action Unique name of the action.
-         * @public
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('actionclick', {
-                detail: {
-                    id: event.currentTarget.id,
-                    action: event.currentTarget.action
-                },
-                composed: false,
-                bubbles: true,
-                cancelable: true
-            })
-        );
-    }
 
-    handleKanbanMouseDown(event) {
-        this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
-        this._kanbanPos.bottom =
-            this._kanbanPos.top + event.currentTarget.offsetHeight;
-        this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
-        this._kanbanPos.right =
-            this._kanbanPos.left + event.currentTarget.offsetWidth;
-    }
-
-    handleTileMouseDown(event) {
-        if (event.currentTarget === this._draggedTile) {
-            this.handleTileMouseUp(event);
-            return;
-        }
-        if (event.target.type === 'phone' || this.readOnly) return;
-        this._groupWidth = event.currentTarget.parentElement.offsetWidth;
-        this._draggedTile = event.currentTarget;
-        this._draggedTile.classList.add('avonni-kanban__dragged');
-        this._draggedTile.style.width = `${
-            parseInt(this._groupWidth, 10) - 10
-        }px`;
-        this._initialPos.x =
-            event.target.getBoundingClientRect().x +
-            event.target.offsetWidth / 2;
-        this._initialPos.y =
-            event.target.getBoundingClientRect().y +
-            event.target.offsetHeight / 2;
-
-        this._initialTileIndex = Math.floor(
-            event.currentTarget.getBoundingClientRect().y /
-                event.currentTarget.offsetHeight
-        );
-        this._clickedGroupIndex = Math.floor(event.clientX / this._groupWidth);
-        this._releasedGroupIndex = this._clickedGroupIndex;
-        this.handleDropZone(event);
-    }
-
-    handleDropZone(event) {
-        if (event.currentTarget !== this._draggedTile) return;
-        this._releasedTileIndex = Math.floor(
-            event.currentTarget.getBoundingClientRect().y /
-                event.currentTarget.offsetHeight
-        );
-
-        this._releasedGroupIndex = Math.floor(event.clientX / this._groupWidth);
-
-        const groupElements = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
-
-        // const dropIndicators = this.template.querySelectorAll(
-        //     '[data-element-id="avonni-kanban__drop_indicator"]'
-        // );
-
-        // Array.from(dropIndicators).forEach((dropIndicator) => {
-        //     dropIndicator.classList.add('avonni-kanban__drop_indicator_hidden');
-        // });
-
-        // dropIndicators[this._releasedGroupIndex].classList.remove(
-        //     'avonni-kanban__drop_indicator_hidden'
-        // );
-
-        // dropIndicators[
-        //     this._releasedGroupIndex
-        // ].style.height = `${this._draggedTile.offsetHeight}px`;
-
-        // dropIndicators[
-        //     this._releasedGroupIndex
-        // ].style.width = `${this._draggedTile.offsetWidth}px`;
-
-        // dropIndicators[
-        //     this._releasedGroupIndex
-        // ].style.transform = `translateY(${
-        //     event.currentTarget.offsetHeight * this._releasedTileIndex
-        // }px)`;
-
-        const releasedChilds = Array.from(
-            groupElements[this._releasedGroupIndex].children
-        ).slice(1);
-
-        for (let i = this._releasedTileIndex; i < releasedChilds.length; i++) {
-            if (
-                releasedChilds[i] &&
-                releasedChilds[i] !== event.currentTarget
-            ) {
-                releasedChilds[i].classList.add('avonni-kanban__tile_moved');
-                releasedChilds[
-                    i
-                ].style.transform = `translateY(${event.currentTarget.offsetHeight}px)`;
-            }
-        }
-
-        Array.from(groupElements).forEach((group, i) => {
-            Array.from(group.children)
-                .slice(1)
-                .forEach((tile, j) => {
-                    if (
-                        i !== this._releasedGroupIndex ||
-                        j < this._releasedTileIndex
-                    ) {
-                        tile.classList.remove('avonni-kanban__tile_moved');
-                        tile.style.transform = `translateY(0px)`;
-                    }
-                });
-        });
-    }
-
-    handleTileMouseUp(event) {
-        if (
-            event.target.type === 'phone' ||
-            this.readOnly ||
-            event.currentTarget !== this._draggedTile
-        )
-            return;
-        this.handleDropDown();
-        this._draggedTile.style.transform = '';
-        this._draggedTile.style.width = `${
-            parseInt(this._groupWidth, 10) - 10
-        }px`;
-        this._draggedTile.classList.remove('avonni-kanban__dragged');
-        this._draggedTile = null;
-
-        // removes the animation class
-        const groupElements = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
-        Array.from(groupElements).forEach((group) => {
-            Array.from(group.children)
-                .slice(1)
-                .forEach((tile) => {
-                    tile.classList.remove('avonni-kanban__tile_moved');
-                    tile.style.transform = `translateY(0px)`;
-                });
-        });
-
-        // const dropIndicators = this.template.querySelectorAll(
-        //     '[data-element-id="avonni-kanban__drop_indicator"]'
-        // );
-
-        // Array.from(dropIndicators).forEach((dropIndicator) => {
-        //     dropIndicator.classList.add('avonni-kanban__drop_indicator_hidden');
-        // });
-    }
-
-    handleTileMouseMove(event) {
-        if (!this._draggedTile) return;
-        const mouseY =
-            event.type === 'touchmove'
-                ? event.touches[0].clientY
-                : event.clientY;
-        const mouseX =
-            event.type === 'touchmove'
-                ? event.touches[0].clientX
-                : event.clientX;
-        let currentY = mouseY;
-        let currentX = mouseX;
-        if (mouseY < this._kanbanPos.top) {
-            currentY = this._kanbanPos.top;
-        } else if (mouseY > this._kanbanPos.bottom) {
-            currentY = this._kanbanPos.bottom;
-        }
-        if (mouseX < this._kanbanPos.left) {
-            currentX = this._kanbanPos.left;
-        } else if (mouseX > this._kanbanPos.right) {
-            currentX = this._kanbanPos.right;
-        }
-        this._draggedTile.style.transform = `translate(${
-            currentX - this._initialPos.x
-        }px, ${currentY - this._initialPos.y}px)`;
-    }
-
-    handleDropDown() {
-        const beforeTile = this.tileRecordFinder(
-            this._releasedTileIndex,
-            this._releasedGroupIndex
-        );
-        const currentTile = this.tileRecordFinder(
-            this._initialTileIndex,
-            this._clickedGroupIndex,
-            true
-        );
-        const currentIndex = this._records.indexOf(currentTile);
-        const beforeIndex = this._records.indexOf(beforeTile) + 1;
-        this._records = this.arrayMove(currentIndex, beforeIndex);
-    }
-
+    /**
+     *
+     * Moves the dragged tile at the right index in the record array and updates the group field value.
+     * @param {number} fromIndex Index of the initial position of the tile
+     * @param {number} toIndex Index of the final position of the tile
+     */
     arrayMove(fromIndex, toIndex) {
         if (toIndex < 0) return this.records;
         const arr = JSON.parse(JSON.stringify(this._records));
@@ -500,6 +314,231 @@ export default class Kanban extends LightningElement {
         return arr;
     }
 
+    /**
+     * Actionclick handler.
+     *
+     * @param {Event} event
+     */
+    handleActionClick(event) {
+        /**
+         * The event fired when a user clicks on an action.
+         *
+         * @event
+         * @name actionclick
+         * @param {string} id Unique data id.
+         * @param {string} action Unique name of the action.
+         * @public
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('actionclick', {
+                detail: {
+                    id: event.currentTarget.id,
+                    action: event.currentTarget.action
+                },
+                composed: false,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+    }
+
+    /**
+     *
+     *  Moves the tiles down when the dragged tile is hovering over
+     *
+     * @param {Event} event
+     */
+    handleDropZone(event) {
+        if (event.currentTarget !== this._draggedTile) return;
+        this._releasedTileIndex = Math.floor(
+            event.currentTarget.getBoundingClientRect().y /
+                event.currentTarget.offsetHeight
+        );
+
+        this._releasedGroupIndex = Math.floor(event.clientX / this._groupWidth);
+
+        const groupElements = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        const releasedChilds = Array.from(
+            groupElements[this._releasedGroupIndex].children
+        ).slice(1);
+
+        for (let i = this._releasedTileIndex; i < releasedChilds.length; i++) {
+            if (
+                releasedChilds[i] &&
+                releasedChilds[i] !== event.currentTarget
+            ) {
+                releasedChilds[i].classList.add('avonni-kanban__tile_moved');
+                releasedChilds[
+                    i
+                ].style.transform = `translateY(${event.currentTarget.offsetHeight}px)`;
+            }
+        }
+
+        Array.from(groupElements).forEach((group, i) => {
+            Array.from(group.children)
+                .slice(1)
+                .forEach((tile, j) => {
+                    if (
+                        i !== this._releasedGroupIndex ||
+                        j < this._releasedTileIndex
+                    ) {
+                        tile.classList.remove('avonni-kanban__tile_moved');
+                        tile.style.transform = `translateY(0px)`;
+                    }
+                });
+        });
+    }
+
+    /**
+     * Sets the position of the kanban
+     *
+     * @param {Event} event
+     */
+    handleKanbanMouseDown(event) {
+        this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
+        this._kanbanPos.bottom =
+            this._kanbanPos.top + event.currentTarget.offsetHeight;
+        this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
+        this._kanbanPos.right =
+            this._kanbanPos.left + event.currentTarget.offsetWidth;
+    }
+
+    /**
+     *
+     * Finds the index of initial and final position of the dragged tile
+     *
+     */
+    handleTileDrop() {
+        const beforeTile = this.tileRecordFinder(
+            this._releasedTileIndex,
+            this._releasedGroupIndex
+        );
+        const currentTile = this.tileRecordFinder(
+            this._initialTileIndex,
+            this._clickedGroupIndex,
+            true
+        );
+        const currentIndex = this._records.indexOf(currentTile);
+        const beforeIndex = this._records.indexOf(beforeTile) + 1;
+        this._records = this.arrayMove(currentIndex, beforeIndex);
+    }
+
+    /**
+     *
+     *  Sets the position and the index of the initial position of the dragged tile.
+     *  Starts drag.
+     *
+     * @param {Event} event
+     */
+    handleTileMouseDown(event) {
+        if (event.currentTarget === this._draggedTile) {
+            this.handleTileMouseUp(event);
+            return;
+        }
+        if (event.target.type === 'phone' || this.readOnly) return;
+        this._groupWidth = event.currentTarget.parentElement.offsetWidth;
+        this._draggedTile = event.currentTarget;
+        this._draggedTile.classList.add('avonni-kanban__dragged');
+        this._draggedTile.style.width = `${
+            parseInt(this._groupWidth, 10) - 10
+        }px`;
+        this._initialPos.x =
+            event.target.getBoundingClientRect().x +
+            event.target.offsetWidth / 2;
+        this._initialPos.y =
+            event.target.getBoundingClientRect().y +
+            event.target.offsetHeight / 2;
+
+        this._initialTileIndex = Math.floor(
+            event.currentTarget.getBoundingClientRect().y /
+                event.currentTarget.offsetHeight
+        );
+        this._clickedGroupIndex = Math.floor(event.clientX / this._groupWidth);
+        this._releasedGroupIndex = this._clickedGroupIndex;
+        this.handleDropZone(event);
+    }
+
+    /**
+     *
+     * Drags the tile
+     *
+     * @param {Event} event
+     */
+    handleTileMouseMove(event) {
+        if (!this._draggedTile) return;
+        const mouseY =
+            event.type === 'touchmove'
+                ? event.touches[0].clientY
+                : event.clientY;
+        const mouseX =
+            event.type === 'touchmove'
+                ? event.touches[0].clientX
+                : event.clientX;
+        let currentY = mouseY;
+        let currentX = mouseX;
+        if (mouseY < this._kanbanPos.top) {
+            currentY = this._kanbanPos.top;
+        } else if (mouseY > this._kanbanPos.bottom) {
+            currentY = this._kanbanPos.bottom;
+        }
+        if (mouseX < this._kanbanPos.left) {
+            currentX = this._kanbanPos.left;
+        } else if (mouseX > this._kanbanPos.right) {
+            currentX = this._kanbanPos.right;
+        }
+        this._draggedTile.style.transform = `translate(${
+            currentX - this._initialPos.x
+        }px, ${currentY - this._initialPos.y}px)`;
+    }
+
+    /**
+     *
+     * Sets the dragged tile in the right position in the records array.
+     * Ends drag.
+     *
+     * @param {Event} event
+     */
+    handleTileMouseUp(event) {
+        if (
+            event.target.type === 'phone' ||
+            this.readOnly ||
+            event.currentTarget !== this._draggedTile
+        )
+            return;
+        this.handleTileDrop();
+        this._draggedTile.style.transform = '';
+        this._draggedTile.style.width = `${
+            parseInt(this._groupWidth, 10) - 10
+        }px`;
+        this._draggedTile.classList.remove('avonni-kanban__dragged');
+        this._draggedTile = null;
+
+        // removes the animation class
+        const groupElements = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+        Array.from(groupElements).forEach((group) => {
+            Array.from(group.children)
+                .slice(1)
+                .forEach((tile) => {
+                    tile.classList.remove('avonni-kanban__tile_moved');
+                    tile.style.transform = `translateY(0px)`;
+                });
+        });
+    }
+
+    /**
+     *
+     * Finds a tile in the record array depending of it's index and it's group
+     * @param {number} tileIndex Index of the tile
+     * @param {number} groupIndex Index of the group
+     * @param {boolean} isCurrent Indicates if group is the current group. Defaults to false.
+     */
     tileRecordFinder(tileIndex, groupIndex, isCurrent = false) {
         let tileCount = isCurrent ? -1 : 0;
         return this._records.find((record) => {
