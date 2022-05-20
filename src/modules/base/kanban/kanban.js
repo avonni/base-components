@@ -56,6 +56,7 @@ export default class Kanban extends LightningElement {
     _releasedGroupIndex = 0;
     _clickedGroupIndex = 0;
     _actions = [];
+    _groupWidth = 0;
     _draggedTile;
     _groupFieldName;
     _isDragged = false;
@@ -314,9 +315,17 @@ export default class Kanban extends LightningElement {
     }
 
     handleTileMouseDown(event) {
+        if (event.currentTarget === this._draggedTile) {
+            this.handleTileMouseUp(event);
+            return;
+        }
         if (event.target.type === 'phone' || this.readOnly) return;
+        this._groupWidth = event.currentTarget.parentElement.offsetWidth;
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
+        this._draggedTile.style.width = `${
+            parseInt(this._groupWidth, 10) - 10
+        }px`;
         this._initialPos.x =
             event.target.getBoundingClientRect().x +
             event.target.offsetWidth / 2;
@@ -328,9 +337,9 @@ export default class Kanban extends LightningElement {
             event.currentTarget.getBoundingClientRect().y /
                 event.currentTarget.offsetHeight
         );
-        const groupWidth = event.currentTarget.parentElement.offsetWidth;
-        this._clickedGroupIndex = Math.floor(event.clientX / groupWidth);
+        this._clickedGroupIndex = Math.floor(event.clientX / this._groupWidth);
         this._releasedGroupIndex = this._clickedGroupIndex;
+        this.handleDropZone(event);
     }
 
     handleDropZone(event) {
@@ -340,33 +349,47 @@ export default class Kanban extends LightningElement {
                 event.currentTarget.offsetHeight
         );
 
-        const groupWidth = event.currentTarget.parentElement.offsetWidth;
-        this._releasedGroupIndex = Math.floor(event.clientX / groupWidth);
+        this._releasedGroupIndex = Math.floor(event.clientX / this._groupWidth);
 
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
 
-        // TODO: Empty the gap in the clicked group
-        // const clickedChilds = Array.from(
-        //     groupElements[this._clickedGroupIndex].children
-        // ).slice(1);
+        // const dropIndicators = this.template.querySelectorAll(
+        //     '[data-element-id="avonni-kanban__drop_indicator"]'
+        // );
 
-        // for (let i = this._initialTileIndex; i < clickedChilds.length; i++) {
-        //     if (clickedChilds[i] !== event.currentTarget) {
-        //         clickedChilds[i].classList.add('avonni-kanban__tile_moved');
-        //         clickedChilds[i].style.transform = `translateY(${-event
-        //             .currentTarget.offsetHeight}px)`;
-        //         console.log(clickedChilds[i]);
-        //     }
-        // }
+        // Array.from(dropIndicators).forEach((dropIndicator) => {
+        //     dropIndicator.classList.add('avonni-kanban__drop_indicator_hidden');
+        // });
+
+        // dropIndicators[this._releasedGroupIndex].classList.remove(
+        //     'avonni-kanban__drop_indicator_hidden'
+        // );
+
+        // dropIndicators[
+        //     this._releasedGroupIndex
+        // ].style.height = `${this._draggedTile.offsetHeight}px`;
+
+        // dropIndicators[
+        //     this._releasedGroupIndex
+        // ].style.width = `${this._draggedTile.offsetWidth}px`;
+
+        // dropIndicators[
+        //     this._releasedGroupIndex
+        // ].style.transform = `translateY(${
+        //     event.currentTarget.offsetHeight * this._releasedTileIndex
+        // }px)`;
 
         const releasedChilds = Array.from(
             groupElements[this._releasedGroupIndex].children
         ).slice(1);
 
         for (let i = this._releasedTileIndex; i < releasedChilds.length; i++) {
-            if (releasedChilds[i] !== event.currentTarget) {
+            if (
+                releasedChilds[i] &&
+                releasedChilds[i] !== event.currentTarget
+            ) {
                 releasedChilds[i].classList.add('avonni-kanban__tile_moved');
                 releasedChilds[
                     i
@@ -390,9 +413,17 @@ export default class Kanban extends LightningElement {
     }
 
     handleTileMouseUp(event) {
-        if (event.target.type === 'phone' || this.readOnly) return;
+        if (
+            event.target.type === 'phone' ||
+            this.readOnly ||
+            event.currentTarget !== this._draggedTile
+        )
+            return;
         this.handleDropDown();
         this._draggedTile.style.transform = '';
+        this._draggedTile.style.width = `${
+            parseInt(this._groupWidth, 10) - 10
+        }px`;
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
 
@@ -408,6 +439,14 @@ export default class Kanban extends LightningElement {
                     tile.style.transform = `translateY(0px)`;
                 });
         });
+
+        // const dropIndicators = this.template.querySelectorAll(
+        //     '[data-element-id="avonni-kanban__drop_indicator"]'
+        // );
+
+        // Array.from(dropIndicators).forEach((dropIndicator) => {
+        //     dropIndicator.classList.add('avonni-kanban__drop_indicator_hidden');
+        // });
     }
 
     handleTileMouseMove(event) {

@@ -7,7 +7,6 @@
     top: 10px;
     right: 0;
     left: 0;
-    height: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -50,9 +49,16 @@
 .avonni-kanban__drop_indicator {
     width: 95%;
     border-radius: 3px;
-    border: 2px dashed rgb(88, 129, 206);
+    border: 1px dashed rgb(88, 129, 206);
     background-color: rgba(176, 197, 236, 0.263);
     margin: 5px auto;
+    position: absolute;
+}
+
+.avonni-kanban__drop_indicator.avonni-kanban__drop_indicator_hidden {
+    height: 0;
+    border: none;
+    visibility: hidden;
 }
 
 .avonni-kanban__tile_icon {
@@ -69,7 +75,7 @@
 
 .avonni-kanban__dragged {
     z-index: 9999;
-    position: relative;
+    position: absolute;
     cursor: grabbing;
     border: 1px dashed #c0c0c0;
     background-color: #e2e2e2;

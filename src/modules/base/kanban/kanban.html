@@ -71,6 +71,7 @@
         </div>
         <div
             class="avonni-kanban__field_container"
+            data-element-id="avonni-kanban__field_container"
             onmousedown={handleKanbanMouseDown}
             onmousemove={handleTileMouseMove}
         >
@@ -88,11 +89,13 @@
                     variant="label-hidden"
                     class="avonni-kanban__summary"
                 ></c-output-data>
-                <!-- <div class="avonni-kanban__drop_indicator" if:true={}></div> -->
+                <!-- <div class="avonni-kanban__drop_indicator avonni-kanban__drop_indicator_hidden"
+                data-element-id="avonni-kanban__drop_indicator"></div> -->
                 <lightning-tile
                     for:each={group.tiles}
                     for:item="record"
                     key={record.index}
+                    data-element-id="avonni-kanban__tile"
                     class={computedTileClass}
                     onmousedown={handleTileMouseDown}
                     onmouseup={handleTileMouseUp}
