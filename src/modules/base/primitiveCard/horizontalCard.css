@@ -39,7 +39,7 @@
     padding-right: var(--avonni-list-item-spacing-inline-end);
 }
 
-.avonni-list__item-sortable {
+.avonni-card__sortable {
     background-color: var(
         --avonni-list-item-color-background-sortable,
         var(--avonni-list-item-color-background, transparent)
@@ -58,7 +58,7 @@
     line-height: var(--avonni-list-header-line-height, 1.25);
 }
 
-.avonni-list__item-sortable-icon-cursor {
+.avonni-card__sortable-icon-cursor {
     cursor: grab;
 }
 
@@ -69,7 +69,7 @@
         background-color: var(--avonni-list-item-color-background-hover);
     }
 
-    .avonni-list__item-sortable:hover {
+    .avonni-card__sortable:hover {
         cursor: var(
             --avonni-list-item-cursor-sortable,
             var(--avonni-list-item-cursor, grab)
@@ -81,19 +81,19 @@
     }
 }
 
-.avonni-list__item-sortable > div {
+.avonni-card__sortable > div {
     width: 100%;
 }
 
-.avonni-list__item-expanded > div {
+.avonni-card__expanded > div {
     width: 100%;
 }
 
-.avonni-list__item-sortable_moved {
+.avonni-card__sortable_moved {
     transition: transform 300ms;
 }
 
-.avonni-list__item-sortable.avonni-list__item-sortable_dragged {
+.avonni-card__sortable.avonni-card__sortable_dragged {
     position: relative;
     z-index: 1;
     border: none;
@@ -103,55 +103,60 @@
     background-color: var(--avonni-list-item-color-background, transparent);
 }
 
-.avonni-list__item-img {
+.avonni-card__img {
     position: absolute;
     height: 100%;
     object-fit: cover;
     pointer-events: none;
 }
 
-.avonni-list__item-image-container {
+.avonni-card__image-container {
     position: relative;
+    width: 50px;
     overflow: hidden;
     height: 100%;
 }
 
-.avonni-list__item-image-container_rounded-corners {
+.avonni-card__image-container_rounded-corners {
     border-top-left-radius: 0.16rem;
     border-bottom-left-radius: 0.16rem;
 }
 
-.avonni-list__item-divider_around {
+.avonni-card__divider_around {
     border-width: var(--avonni-list-item-sizing-border, 1px);
     border-style: var(--avonni-list-item-styling-border, solid);
     border-color: var(--avonni-list-item-color-border, #dddbda);
     border-radius: var(--avonni-list-item-around-border-radius, 0.25rem);
 }
 
-.avonni-list__item-divider_top {
+.avonni-card__divider_top {
     border-top-width: var(--avonni-list-item-sizing-border, 1px);
     border-top-style: var(--avonni-list-item-styling-border, solid);
     border-top-color: var(--avonni-list-item-color-border, #dddbda);
 }
 
-.avonni-list__item-divider_bottom {
+.avonni-card__divider_bottom {
     border-bottom-width: var(--avonni-list-item-sizing-border, 1px);
     border-bottom-style: var(--avonni-list-item-styling-border, solid);
     border-bottom-color: var(--avonni-list-item-color-border, #dddbda);
 }
 
-.avonni-list__item-header_font {
+.avonni-card__header_font {
     color: var(--avonni-list-item-header-text-color, #080707);
     font-size: var(--avonni-list-item-header-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-header-font-style, normal);
     font-weight: var(--avonni-list-item-header-font-weight, 400);
 }
 
-.avonni-list__item-description_font {
+.avonni-card__description_font {
     color: var(--avonni-list-item-description-text-color, #080707);
     font-size: var(--avonni-list-item-description-font-size, 0.8125rem);
     font-style: var(--avonni-list-item-description-font-style, normal);
     font-weight: var(--avonni-list-item-description-font-weight, 400);
+}
+
+.slds-card.avonni-card__no-shadow {
+    --slds-c-card-shadow: none;
 }
 
 @media (max-width: 320px) {

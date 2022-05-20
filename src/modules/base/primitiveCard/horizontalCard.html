@@ -1,0 +1,310 @@
+<!--
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+-->
+
+<template>
+    <article class={computedItemClass}>
+        <!-- <div class="slds-card__header slds-grid">
+            <header
+                class="slds-media slds-media_center slds-has-flexi-truncate"
+            >
+                <div class="slds-media__figure">
+                    <span
+                        class="slds-icon_container slds-icon-standard-account"
+                        title="account"
+                    >
+                        <svg
+                            class="slds-icon slds-icon_small"
+                            aria-hidden="true"
+                        >
+                            <use
+                                xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"
+                            ></use>
+                        </svg>
+                        <span class="slds-assistive-text">account</span>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <a
+                            href="#"
+                            class="slds-card__header-link slds-truncate"
+                            title="Accounts"
+                        >
+                            <span>vertical card</span>
+                        </a>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">Card Body</div>
+        <footer class="slds-card__footer"></footer> -->
+
+        <div class="slds-grid slds-grid_vertical-align-center">
+            <!-- Sort icon -->
+            <lightning-icon
+                icon-name="utility:drag_and_drop"
+                size="x-small"
+                data-element-id="lightning-icon-sort-right"
+            ></lightning-icon>
+            <!-- <lightning-icon
+                if:true={showIconLeft}
+                class="
+                    slds-p-horizontal_xx-small
+                    icon-left
+                    avonni-card__sortable-icon-cursor
+                "
+                icon-name={sortableIconName}
+                size="x-small"
+                data-element-id="lightning-icon-sort-left"
+            ></lightning-icon> -->
+
+            <!-- Image -->
+            <div class="avonni-card__image-container">
+                <img
+                    class="avonni-card__img"
+                    src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
+                    alt=""
+                />
+            </div>
+            <!-- <div
+                if:true={item.imageSrc}
+                class={computedImageContainerClass}
+                style={computedImageContainerStyle}
+            >
+                <img
+                    key={item.imageSrc}
+                    class="avonni-card__img"
+                    alt=""
+                    width={computedImageWidth}
+                    src={item.imageSrc}
+                    draggable="false"
+                    data-element-id="img"
+                />
+            </div> -->
+
+            <div
+                class="
+                    slds-grid slds-col
+                    slds-grid_vertical-align-center
+                    slds-p-around_x-small
+                    slds-has-flexi-truncate
+                "
+            >
+                <!-- Avatar -->
+
+                <c-avatar fallback-icon-name="custom:custom11"></c-avatar>
+                <!-- <c-avatar
+                    if:true={item.avatar}
+                    class="slds-m-right_x-small"
+                    fallback-icon-name={item.avatar.fallbackIconName}
+                    src={item.avatar.src}
+                    size={item.avatar.size}
+                    initials={item.avatar.initials}
+                    variant={item.avatar.variant}
+                    presence={item.presence}
+                    presence-position={item.presencePosition}
+                    hide-avatar-details="true"
+                    data-element-id="avonni-avatar"
+                ></c-avatar> -->
+                <div class="slds-col slds-has-flexi-truncate">
+                    <!-- Item label and icons -->
+                    <div
+                        class="
+                            slds-grid slds-grid_vertical-align-center
+                            slds-margin-bottom_xx-small
+                        "
+                    >
+                        <div
+                            class="slds-truncate avonni-card__header_font"
+                            data-element-id="div-item-label"
+                        >
+                            label, icons
+                        </div>
+                    </div>
+                    <!-- <div
+                        class="
+                            slds-grid slds-grid_vertical-align-center
+                            slds-margin-bottom_xx-small
+                        "
+                    >
+                        <div
+                            class="
+                                slds-truncate
+                                avonni-card__header_font
+                            "
+                            data-element-id="div-item-label"
+                        >
+                            <template if:true={item.href}>
+                                <a href={item.href}>{item.label}</a>
+                            </template>
+                            <template if:false={item.href}>
+                                {item.label}
+                            </template>
+                        </div>
+                        <template if:true={item.icons}>
+                            <template
+                                for:each={item.icons}
+                                for:item="icon"
+                            >
+                                <lightning-icon
+                                    key={generateKey}
+                                    icon-name={icon}
+                                    size="xx-small"
+                                    class="slds-p-left_x-small"
+                                ></lightning-icon>
+                            </template>
+                        </template>
+                    </div> -->
+
+                    <!-- Description -->
+                    <p
+                        class="
+                            slds-text-body_regular
+                            slds-line-clamp_x-small
+                            avonni-card__description_font
+                        "
+                    >
+                        <lightning-formatted-rich-text
+                            >description</lightning-formatted-rich-text
+                        >
+                    </p>
+
+                    <!-- Info -->
+                    <ul
+                        class="
+                            slds-list_horizontal
+                            slds-has-dividers_left
+                            slds-has-block-links
+                        "
+                    >
+                        infos
+                    </ul>
+                    <!-- <template if:true={item.infos}>
+                        <ul
+                            if:true={item.infos.length}
+                            class="
+                                slds-list_horizontal
+                                slds-has-dividers_left
+                                slds-has-block-links
+                            "
+                        >
+                            <template
+                                for:each={item.infos}
+                                for:item="info"
+                            >
+                                <li key={info.label} class="slds-item">
+                                    <a href={info.href}>{info.label}</a>
+                                </li>
+                            </template>
+                        </ul>
+                    </template> -->
+                </div>
+            </div>
+
+            <!-- Sort icon -->
+            <lightning-icon
+                icon-name="utility:drag_and_drop"
+                size="x-small"
+                data-element-id="lightning-icon-sort-right"
+            >
+            </lightning-icon>
+            <!-- <lightning-icon
+                if:true={showIconRight}
+                class="
+                    slds-m-right_x-small
+                    icon-right
+                    avonni-card__sortable-icon-cursor
+                "
+                icon-name={sortableIconName}
+                size="x-small"
+                data-element-id="lightning-icon-sort-right"
+            ></lightning-icon> -->
+
+            <!-- Actions -->
+            <!-- <div>{actions}</div> -->
+            <div if:true={actions.length} class="slds-m-right_x-small">
+                <lightning-button-menu
+                    if:true={hasMultipleActions}
+                    class="slds-m-right_none"
+                    menu-alignment="right"
+                    icon-size="x-small"
+                    data-element-id="lightning-button-menu"
+                    data-item-index={index}
+                    onmousedown={stopPropagation}
+                    ontouchstart={stopPropagation}
+                    onselect={handleActionClick}
+                >
+                    <template for:each={computedActions} for:item="action">
+                        <lightning-menu-item
+                            key={action.name}
+                            value={action.name}
+                            label={action.label}
+                            disabled={action.disabled}
+                            icon-name={action.iconName}
+                            data-element-id="lightning-menu-item"
+                        ></lightning-menu-item>
+                    </template>
+                </lightning-button-menu>
+                <!-- <template if:false={hasMultipleActions}>
+                    <lightning-button
+                        if:true={firstAction.label}
+                        class="slds-m-right_none"
+                        key={firstAction.name}
+                        value={firstAction.name}
+                        label={firstAction.label}
+                        disabled={firstAction.disabled}
+                        icon-name={firstAction.iconName}
+                        data-item-index={index}
+                        data-element-id="lightning-button"
+                        onclick={handleActionClick}
+                        ontouchstart={stopPropagation}
+                    ></lightning-button>
+                    <lightning-button-icon
+                        if:false={firstAction.label}
+                        class="slds-m-right_none"
+                        key={firstAction.name}
+                        value={firstAction.name}
+                        disabled={firstAction.disabled}
+                        icon-name={firstAction.iconName}
+                        variant="bare"
+                        data-item-index={index}
+                        data-element-id="lightning-button-icon"
+                        onclick={handleActionClick}
+                        ontouchstart={stopPropagation}
+                    ></lightning-button-icon>
+                </template> -->
+            </div>
+        </div>
+    </article>
+</template>
