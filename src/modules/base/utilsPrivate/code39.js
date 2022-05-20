@@ -59,14 +59,14 @@ export const BARCODE_CATEGORY = new Map([
     ['CODE128B', 'CODE128'],
     ['CODE128C', 'CODE128'],
     ['GS1-128', 'GS1-128'],
-    ['MSI10', 'MSI'],
-    ['MSI11', 'MSI'],
-    ['MSI1010', 'MSI'],
-    ['MSI1110', 'MSI'],
+    ['MSImod10', 'MSI'],
+    ['MSImod11', 'MSI'],
+    ['MSImod1010', 'MSI'],
+    ['MSImod1110', 'MSI'],
     ['POSTNET', 9]
 ]);
 
-export const BARCODETYPE_BWIPJSVALUE = new Map([
+export const BARCODETYPE_LIBRARYVALUE = new Map([
     ['EAN8', 'ean8'],
     ['EAN13', 'ean13'],
     ['UPCE', 'upce'],
@@ -81,9 +81,31 @@ export const BARCODETYPE_BWIPJSVALUE = new Map([
     ['CODE128B', 'CODE128'],
     ['CODE128C', 'CODE128'],
     ['GS1-128', 'gsi-128'],
-    ['MSImod10', 'MSI'],
-    ['MSImod11', 'MSI'],
-    ['MSImod1010', 'MSI'],
-    ['MSImod1110', 'MSI'],
+    ['MSImod10', 'MSI10'],
+    ['MSImod11', 'MSI11'],
+    ['MSImod1010', 'MSI1010'],
+    ['MSImod1110', 'MSI1110'],
     ['POSTNET', 'postnet']
+]);
+
+export const BARCODE_LIBRARY = new Map([
+    ['EAN8', 'bwipjs'],
+    ['EAN13', 'bwipjs'],
+    ['UPCE', 'bwipjs'],
+    ['UPCA', 'bwipjs'],
+    ['Code11', 'bwipjs'],
+    ['CODE39', 'bwipjs'],
+    ['Code39Extended', 'bwipjs'],
+    ['Code93', 'bwipjs'],
+    ['Code93Extended', 'bwipjs'],
+    ['CODE128', 'jsbarcode'],
+    ['CODE128A', 'jsbarcode'],
+    ['CODE128B', 'jsbarcode'],
+    ['CODE128C', 'jsbarcode'],
+    ['GS1-128', 'bwipjs'],
+    ['MSImod10', 'jsbarcode'],
+    ['MSImod11', 'jsbarcode'],
+    ['MSImod1010', 'jsbarcode'],
+    ['MSImod1110', 'jsbarcode'],
+    ['POSTNET', 'bwipjs']
 ]);

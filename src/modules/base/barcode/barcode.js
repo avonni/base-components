@@ -33,7 +33,11 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import { CODE39_VALUES, BARCODE_CATEGORY } from 'c/utilsPrivate';
+import {
+    CODE39_VALUES,
+    BARCODETYPE_LIBRARYVALUE,
+    BARCODE_LIBRARY
+} from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
 // import { gs1_128 } from 'bwip-js';
 import JsBarcode from 'jsbarcode';
@@ -54,10 +58,10 @@ const SYMBOLOGY = {
         'CODE128B',
         'CODE128C',
         'GS1-128',
-        'MSI10',
-        'MSI11',
-        'MSI1010',
-        'MSI1110',
+        'MSImod10',
+        'MSImod11',
+        'MSImod1010',
+        'MSImod1110',
         'POSTNET'
     ],
     default: 'CODE39'
@@ -262,9 +266,9 @@ export default class Barcode extends LightningElement {
             .toString();
     }
 
-    get computeValueChecksumColor() {
-        return `color: ${this.textColor}`;
-    }
+    // get computeValueChecksumColor() {
+    //     return `color: ${this.textColor}`;
+    // }
 
     // get showValue() {
     //     if (this.type === 'UPCA') return true;
@@ -285,35 +289,102 @@ export default class Barcode extends LightningElement {
      */
     initBarcode() {
         // this.calculateChecksum();
-        this.getBarcodeCategory();
+        // this.getBarcodeCategory();
         this.computeSize();
     }
 
-    getBarcodeCategory() {
-        this.barcodeCategory = BARCODE_CATEGORY.get(this.type);
+    // getBarcodeCategory() {
+    //     this.barcodeCategory = BARCODE_CATEGORY.get(this.type);
+    // }
+
+    getBarcodeLibrary() {
+        return BARCODE_LIBRARY.get(this.type);
+    }
+
+    getlibraryType() {
+        return BARCODETYPE_LIBRARYVALUE.get(this.type);
     }
 
     renderBarcode() {
-        switch (this.barcodeCategory) {
-            case 'CODE39':
-                this.renderCODE39();
+        switch (this.getBarcodeLibrary()) {
+            case 'bwipjs':
+                this.renderWithBwipJs();
                 break;
-            case 'EANUPC':
-                this.renderEANUPC();
-                break;
-            case 'UPCA':
-                this.renderUPCA();
-                break;
-            case 'GS1-128':
-                this.renderGS1128();
-                break;
-            case 'MSI':
-                this.renderMSI();
+            case 'jsbarcode':
+                this.renderWithJsBarCode();
                 break;
             default:
                 this.defaultRender();
                 break;
         }
+    }
+
+    extractColor(color) {
+        return color.substring(1);
+    }
+
+    renderWithBwipJs() {
+        const canvas = this.getCanvas();
+        const libraryType = this.getlibraryType();
+        if (this.checksum) {
+            console.log('with checksum');
+            bwipjs.toCanvas(canvas, {
+                bcid: libraryType, // Barcode type
+                text: this.value, // Text to encode
+                includetext: !this.hideValue, // Show human-readable text
+                includecheck: true,
+                includecheckintext: true,
+                textxalign: 'center', // Always good to set this
+                barcolor: this.extractColor(this.color),
+                backgroundcolor: this.extractColor(this.background),
+                textcolor: this.extractColor(this.textColor)
+                // showborder: true
+            });
+            return;
+        }
+        console.log('without checksum');
+        bwipjs.toCanvas(canvas, {
+            bcid: libraryType, // Barcode type
+            text: this.value, // Text to encode
+            alttext: this.value,
+            includetext: !this.hideValue, // Show human-readable text
+            includecheck: false,
+            includecheckintext: false,
+            textxalign: 'center',
+            barcolor: this.extractColor(this.color),
+            backgroundcolor: this.extractColor(this.background),
+            textcolor: this.extractColor(this.textColor)
+            // showborder: true
+        });
+    }
+
+    renderWithJsBarCode() {
+        const canvas = this.getCanvas();
+        const libraryType = this.getlibraryType();
+        if (this.checksum) {
+            JsBarcode(canvas, this.value, {
+                format: libraryType,
+                lineColor: this.color,
+                background: this.background,
+                displayValue: !this.hideValue,
+                margin: 0,
+                fontSize: 15
+                // textMargin: 0
+            });
+            JsBarcode('.barcode').init();
+            return;
+        }
+        JsBarcode(canvas, this.value, {
+            format: libraryType,
+            lineColor: this.color,
+            background: this.background,
+            text: this.value,
+            displayValue: !this.hideValue,
+            margin: 0,
+            fontSize: 15
+            // textMargin: 0
+        });
+        JsBarcode('.barcode').init();
     }
 
     renderCODE39() {
@@ -338,6 +409,7 @@ export default class Barcode extends LightningElement {
             text: this.value, // Text to encode
             includetext: !this.hideValue, // Show human-readable text
             includecheck: false,
+            includecheckintext: false,
             textxalign: 'center' // Always good to set this
         });
         // const canvas = this.template.querySelector(
