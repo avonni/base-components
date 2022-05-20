@@ -37,10 +37,12 @@ import {
     dateTimeObjectFrom,
     numberOfUnitsBetweenDates,
     normalizeArray,
+    normalizeString,
     removeFromDate,
     equal
 } from 'c/utilsPrivate';
 import SchedulerHeader from './schedulerHeader';
+import { classSet } from 'c/utils';
 
 const UNITS = ['minute', 'hour', 'day', 'week', 'month', 'year'];
 const DEFAULT_START_DATE = dateTimeObjectFrom(new Date());
@@ -70,6 +72,11 @@ const DEFAULT_HEADERS = [
     }
 ];
 
+const VARIANTS = {
+    valid: ['horizontal', 'vertical'],
+    default: 'horizontal'
+};
+
 /**
  * @class
  * @descriptor avonni-primitive-scheduler-header-group
@@ -83,8 +90,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _scrollLeftOffset = 0;
     _start = DEFAULT_START_DATE;
     _timeSpan = DEFAULT_TIME_SPAN;
+    _variant = VARIANTS.default;
 
-    _cellWidth = 0;
+    _cellSize = 0;
     _connected = false;
     _initHeadersTimeout;
     computedHeaders = [];
@@ -93,6 +101,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         this.initHeaders();
         this._connected = true;
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Array of available days of the week. The days are represented by a number, starting from 0 for Sunday, and ending with 6 for Saturday.
@@ -273,6 +287,24 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
+     * Orientation of the headers. Valid values include horizontal or vertical.
+     *
+     * @type {string}
+     * @default horizontal
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            validValues: VARIANTS.valid,
+            fallbackValue: VARIANTS.default
+        });
+    }
+
+    /**
      * Interval of time between the current start and end.
      *
      * @type {Interval}
@@ -290,6 +322,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         const end = dateTimeObjectFrom(columns[lastIndex].end);
         return Interval.fromDateTimes(start, end);
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
      * Computed end date of the headers.
@@ -324,6 +362,38 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
+     * True if the headers must stop at the end of the time span unit. If false, the headers can end in the middle of the time span unit.
+     *
+     * @type {boolean}
+     */
+    get endOnTimeSpanUnit() {
+        return this.availableTimeSpans.find((timeSpan) => {
+            return (
+                timeSpan.unit === this.timeSpan.unit &&
+                timeSpan.span === this.timeSpan.span
+            );
+        });
+    }
+
+    /**
+     * Computed CSS class of each header line/column (depending on the variant).
+     *
+     * @type {string}
+     */
+    get headerClass() {
+        return classSet('slds-grid slds-is-relative')
+            .add({
+                'slds-grid_vertical avonni-scheduler-header-group__header_vertical':
+                    this.isVertical
+            })
+            .toString();
+    }
+
+    get isVertical() {
+        return this.variant === 'vertical';
+    }
+
+    /**
      * Header with the smallest unit.
      *
      * @type {SchedulerHeader}
@@ -338,18 +408,23 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
-     * True if the headers must stop at the end of the time span unit. If false, the headers can end in the middle of the time span unit.
+     * Computed CSS classes of the wrapper div.
      *
-     * @type {boolean}
+     * @type {string}
      */
-    get endOnTimeSpanUnit() {
-        return this.availableTimeSpans.find((timeSpan) => {
-            return (
-                timeSpan.unit === this.timeSpan.unit &&
-                timeSpan.span === this.timeSpan.span
-            );
-        });
+    get wrapperClass() {
+        return classSet()
+            .add({
+                'slds-grid': this.isVertical
+            })
+            .toString();
     }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE METHODS
+     * -------------------------------------------------------------
+     */
 
     /**
      * Create the headers.
@@ -475,12 +550,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             );
 
             requestAnimationFrame(() => {
-                this.computeCellWidth();
+                this.computeCellSize();
             });
         }, 0);
     }
 
-    computeCellWidth() {
+    computeCellSize() {
         const cellText = this.template.querySelector(
             '[data-element-id="div-row"]:last-of-type [data-element-id^="span-label"]'
         );
@@ -488,24 +563,27 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             return;
         }
 
-        const cellTextWidth = cellText.getBoundingClientRect().width;
+        const cellDimensions = cellText.getBoundingClientRect();
+        const cellTextSize = this.isVertical
+            ? cellDimensions.height
+            : cellDimensions.width;
         // We add 20 pixels for padding
-        let cellWidth = Math.ceil(cellTextWidth) + 20;
+        let cellSize = Math.ceil(cellTextSize) + 20;
 
         const totalWidth = this.template.host.getBoundingClientRect().width;
-        const numberOfVisibleCells = Math.ceil(totalWidth / cellWidth);
+        const numberOfVisibleCells = Math.ceil(totalWidth / cellSize);
         const totalNumberOfCells = this.smallestHeader.numberOfColumns;
 
         // If the maximum number of visible cells on the screen is bigger
         // than the actual number of cells, recompute the cell width so the
         // schedule takes the full screen
         if (totalNumberOfCells < numberOfVisibleCells) {
-            cellWidth = totalWidth / totalNumberOfCells;
+            cellSize = totalWidth / totalNumberOfCells;
         }
         this.computedHeaders.forEach((header) => {
-            header.computeColumnWidths(cellWidth, this.smallestHeader.columns);
+            header.computeColumnWidths(cellSize, this.smallestHeader.columns);
         });
-        this.dispatchCellWidth(cellWidth);
+        this.dispatchCellSizeChange(cellSize);
         this.updateCellsWidths();
     }
 
@@ -515,7 +593,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     updateCellsWidths() {
         // Get rows and sort them from the shortest unit to the longest
         const rows = Array.from(
-            this.template.querySelectorAll('.avonni-scheduler__header-row')
+            this.template.querySelectorAll('[data-element-id="div-row"]')
         ).reverse();
 
         rows.forEach((row) => {
@@ -523,12 +601,10 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 return computedHeader.key === row.dataset.key;
             });
 
-            // Give cells their width
-            const cells = row.querySelectorAll(
-                '.avonni-scheduler__header-cell'
-            );
+            // Give cells their width/height
+            const cells = row.querySelectorAll('[data-element-id="div-cell"]');
             cells.forEach((cell, index) => {
-                cell.style = `--avonni-scheduler-cell-width: ${header.columnWidths[index]}px`;
+                cell.style = `--avonni-scheduler-cell-size: ${header.columnWidths[index]}px`;
             });
         });
     }
@@ -538,7 +614,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      */
     updateStickyLabels() {
         const stickyLabel = this.template.querySelectorAll(
-            '.avonni-scheduler__header-label_sticky'
+            '[data-element-id="span-label-sticky"]'
         );
         if (stickyLabel.length) {
             stickyLabel.forEach((label) => {
@@ -548,20 +624,20 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
-     * Dispatch the privatecellwidthchange event.
+     * Dispatch the privatecellsizechange event.
      */
-    dispatchCellWidth(width) {
+    dispatchCellSizeChange(size) {
         /**
-         * The event fired when the cell width variable is changed.
+         * The event fired when the cell size is changed.
          *
          * @event
-         * @name privatecellwidthchange
-         * @param {number} cellWidth The new cell width value, in pixels.
+         * @name privatecellsizechange
+         * @param {number} cellSize The new cell size value, in pixels.
          */
         this.dispatchEvent(
-            new CustomEvent('privatecellwidthchange', {
+            new CustomEvent('privatecellsizechange', {
                 detail: {
-                    cellWidth: width
+                    cellSize: size
                 }
             })
         );
