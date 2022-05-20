@@ -168,39 +168,24 @@ describe('Kanban', () => {
 
     /* ----- EVENTS ----- */
 
-    // it('Kanban : tile drag', () => {
-    //     element.groupValues = GROUP_VALUES;
-    //     element.records = RECORDS;
-    //     element.fields = FIELDS;
-    //     element.groupFieldName = 'status';
-    //     element.summarizeFieldName = 'amount';
-    //     element.actions = ACTIONS;
-    //     return Promise.resolve().then(() => {
-    //         const tile = element.shadowRoot.querySelector(
-    //             '[data-element-id="avonni-kanban__tile"]'
-    //         );
-    //         Object.setPrototypeOf(tile.parentElement, {
-    //             offsetWidth: 100
-    //         });
-    //         tile.dispatchEvent(new MouseEvent('mousedown'), {
-    //             clientX: 100,
-    //             clientY: 100,
-
-    //             currentTarget: tile,
-    //             target: {
-    //                 type: 'number'
-    //             }
-    //         });
-    //         tile.dispatchEvent(new MouseEvent('mousemove'), {
-    //             clientX: 100,
-    //             clientY: 100,
-
-    //             currentTarget: tile,
-    //             target: {
-    //                 type: 'number'
-    //             }
-    //         });
-    //         expect(tile.classList).toContain('avonni-kanban__dragged');
-    //     });
-    // });
+    it('Kanban : tile drag', () => {
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.actions = ACTIONS;
+        return Promise.resolve().then(() => {
+            const tile = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__tile"]'
+            );
+            // otherwise : divided by 0
+            Object.defineProperty(tile.parentElement, 'offsetWidth', {
+                value: 100
+            });
+            tile.dispatchEvent(new MouseEvent('mousedown'));
+            tile.dispatchEvent(new MouseEvent('mousemove'));
+            expect(tile.classList).toContain('avonni-kanban__dragged');
+        });
+    });
 });
