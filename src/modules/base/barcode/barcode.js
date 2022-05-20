@@ -32,8 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import JsBarcode from 'jsbarcode';
 import { classSet } from 'c/utils';
+import { CODE39_VALUES } from 'c/utilsPrivate';
+import JsBarcode from 'jsbarcode';
 
 const SYMBOLOGY = {
     valid: [
@@ -268,7 +269,7 @@ export default class Barcode extends LightningElement {
      * ------------------------------------------------------------
      */
     initBarcode() {
-        this.calculateChecksum();
+        // this.calculateChecksum();
         this.computeSize();
     }
 
@@ -276,12 +277,76 @@ export default class Barcode extends LightningElement {
         const canvas = this.template.querySelector(
             '[data-element-id="barcode"]'
         );
+        switch (this.type) {
+            case 'CODE39':
+                this.renderCODE39();
+                break;
+            case 'EAN8':
+                this.renderEAN8();
+                break;
+            default:
+                JsBarcode(canvas, this.value, {
+                    format: this.type,
+                    lineColor: this.color,
+                    background: this.background,
+                    // text: this.value,
+                    displayValue: !this.hideValue
+                });
+                JsBarcode('.barcode').init();
+                break;
+        }
+    }
+
+    renderCODE39() {
+        // if (this.checksum) {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        JsBarcode(canvas, this.value, {
+            format: this.type,
+            lineColor: this.color,
+            background: this.background,
+            // text: this.value,
+            displayValue: !this.hideValue,
+            mod43: this.checksum
+        });
+        JsBarcode('.barcode').init();
+        // return;
+        // }
+        // const canvas = this.template.querySelector(
+        //     '[data-element-id="barcode"]'
+        // );
+        // JsBarcode(canvas, this.value, {
+        //     format: this.type,
+        //     lineColor: this.color,
+        //     background: this.background,
+        //     // text: this.value,
+        //     displayValue: !this.hideValue,
+        //     mod43: false
+        // });
+        // JsBarcode('.barcode').init();
+    }
+
+    renderEAN8() {
+        const canvas = this.template.querySelector(
+            '[data-element-id="barcode"]'
+        );
+        if (this.checksum) {
+            JsBarcode(canvas, this.value, {
+                format: this.type,
+                lineColor: this.color,
+                background: this.background,
+                displayValue: !this.hideValue
+            });
+            JsBarcode('.barcode').init();
+            return;
+        }
         JsBarcode(canvas, this.value, {
             format: this.type,
             lineColor: this.color,
             background: this.background,
             text: this.value,
-            displayValue: false
+            displayValue: !this.hideValue
         });
         JsBarcode('.barcode').init();
     }
@@ -310,7 +375,16 @@ export default class Barcode extends LightningElement {
     calculateChecksum() {
         switch (this.type) {
             case 'EAN13':
-                this.calculateChecksumEAN13();
+                this.calculateChecksumEAN();
+                break;
+            case 'EAN8':
+                this.calculateChecksumEAN();
+                break;
+            case 'UPCE':
+                this.calculateChecksumEAN();
+                break;
+            case 'CODE39':
+                this.calculateChecksumCODE39Extended();
                 break;
             default:
                 break;
@@ -340,7 +414,7 @@ export default class Barcode extends LightningElement {
         // console.log(this.checksumValue);
     }
 
-    calculateChecksumEAN13() {
+    calculateChecksumEAN() {
         let valueEvenIndexSum = 0;
         let valueOddIndexSum = 0;
         let valueCopy = this.value;
@@ -368,6 +442,14 @@ export default class Barcode extends LightningElement {
             return;
         }
         this.checksumValue = checksumValue;
+    }
+
+    calculateChecksumCODE39Extended() {
+        let valueCopy = this.value;
+        let valueDigits = Array.from(String(valueCopy), (num) => Number(num));
+        valueDigits.forEach((num, index) => {
+            valueDigits[index] = CODE39_VALUES.get(num.toString);
+        });
     }
 }
 
