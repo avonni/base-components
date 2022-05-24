@@ -227,10 +227,10 @@ export default class ChipContainer extends LightningElement {
         );
         for (let i = 0; i < items.length; i++) {
             const node = items[i];
-            node.classList.remove('wrapped');
+            node.hidden = false;
             if (node.offsetTop > 18) {
                 wrappedChips += 1;
-                node.classList.add('wrapped');
+                node.hidden = true;
             }
         }
         this._wrappedChips = wrappedChips;

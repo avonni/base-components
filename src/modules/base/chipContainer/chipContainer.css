@@ -34,11 +34,6 @@
     height: fit-content;
 }
 
-.avonni-chip-container__wrapper_is-collapsed .wrapped {
-    visibility: hidden;
-    height: 0px;
-}
-
 .avonni-chip-container__show-more_centered {
     padding-bottom: 4px;
 }

@@ -53,30 +53,27 @@
             onclick={handleMoreClick}
         >
         </lightning-button>
-        <ul
+        <div
+            role="listbox"
             data-element-id="chip-container-list"
             class="slds-listbox slds-listbox_horizontal"
         >
             <template for:each={items} for:item="chip" for:index="index">
-                <li
+                <c-primitive-chip
                     key={uniqueKey}
-                    role="presentation"
-                    data-index={index}
                     class="slds-listbox-item"
+                    label={chip.label}
+                    variant={chip.variant}
+                    outline={chip.outline}
+                    avatar={chip.avatar}
+                    icon-name={chip.iconName}
+                    media-position={chip.mediaPosition}
+                    data-index={index}
+                    role="listbox"
                     data-element-id="chip"
                 >
-                    <c-primitive-chip
-                        label={chip.label}
-                        variant={chip.variant}
-                        outline={chip.outline}
-                        avatar={chip.avatar}
-                        icon-name={chip.iconName}
-                        media-position={chip.mediaPosition}
-                        data-index={index}
-                    >
-                    </c-primitive-chip>
-                </li>
+                </c-primitive-chip>
             </template>
-        </ul>
+        </div>
     </div>
 </template>

@@ -65,17 +65,6 @@ describe('Primitive Chip', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    // label
-    it('label', () => {
-        element.label = 'This is a label text';
-        return Promise.resolve().then(() => {
-            const chip = element.shadowRoot.querySelector(
-                '[data-element-id="chip"]'
-            );
-            expect(chip.label).toBe('This is a label text');
-        });
-    });
-
     //avatar
     it('avatar', () => {
         element.avatar = MOCK_AVATAR;
@@ -85,36 +74,51 @@ describe('Primitive Chip', () => {
                     '[data-element-id="avatar-right"]'
                 )
             ).toBeFalsy();
-            const avatar = element.shadowRoot.querySelector(
+            const chip = element.shadowRoot.querySelector(
                 '[data-element-id="avatar-left"]'
             );
-            expect(avatar.slot).toBe('left');
-            expect(avatar.src).toBe(MOCK_AVATAR.src);
-            expect(avatar.size).toBe('x-small');
-            expect(avatar.variant).toBe(MOCK_AVATAR.variant);
-            expect(avatar.fallbackIconName).toBe(MOCK_AVATAR.fallbackIconName);
+            expect(chip.slot).toBe('left');
+            expect(chip.src).toBe(MOCK_AVATAR.src);
+            expect(chip.size).toBe('x-small');
+            expect(chip.hidden).toBe(false);
+            expect(chip.variant).toBe(MOCK_AVATAR.variant);
+            expect(chip.fallbackIconName).toBe(MOCK_AVATAR.fallbackIconName);
         });
     });
 
-    // variant
-    it('variant', () => {
-        element.variant = 'warning';
+    // hidden
+    it('hidden', () => {
+        element.hidden = true;
+
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot
+                    .querySelector('[data-element-id="chip"]')
+                    .classList.contains('avonni-primitive-chip__hidden')
+            ).toBeTruthy();
+            expect(element.hidden).toBe(true);
+        });
+    });
+
+    // iconName
+    it('iconName', () => {
+        element.iconName = 'utility:user';
+
+        return Promise.resolve().then(() => {
+            expect(element.iconName).toBe('utility:user');
+            // cannot test the value of the html element that displays the icon
+            // since primitive-icon does not expose the icon name in its html
+        });
+    });
+
+    // label
+    it('label', () => {
+        element.label = 'This is a label text';
         return Promise.resolve().then(() => {
             const chip = element.shadowRoot.querySelector(
                 '[data-element-id="chip"]'
             );
-            expect(chip.variant).toBe('warning');
-        });
-    });
-
-    // outline
-    it('outline', () => {
-        element.outline = true;
-        return Promise.resolve().then(() => {
-            const chip = element.shadowRoot.querySelector(
-                '[data-element-id="chip"]'
-            );
-            expect(chip.outline).toBe(true);
+            expect(chip.label).toBe('This is a label text');
         });
     });
 
@@ -151,14 +155,25 @@ describe('Primitive Chip', () => {
         });
     });
 
-    // iconName
-    it('iconName', () => {
-        element.iconName = 'utility:user';
-
+    // outline
+    it('outline', () => {
+        element.outline = true;
         return Promise.resolve().then(() => {
-            expect(element.iconName).toBe('utility:user');
-            // cannot test the value of the html element that displays the icon
-            // since primitive-icon does not expose the icon name in its html
+            const chip = element.shadowRoot.querySelector(
+                '[data-element-id="chip"]'
+            );
+            expect(chip.outline).toBe(true);
+        });
+    });
+
+    // variant
+    it('variant', () => {
+        element.variant = 'warning';
+        return Promise.resolve().then(() => {
+            const chip = element.shadowRoot.querySelector(
+                '[data-element-id="chip"]'
+            );
+            expect(chip.variant).toBe('warning');
         });
     });
 });

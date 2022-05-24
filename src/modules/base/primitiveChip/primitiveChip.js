@@ -38,6 +38,8 @@ import {
     deepCopy
 } from 'c/utilsPrivate';
 
+import { classSet } from 'c/utils';
+
 const CHIP_VARIANTS = {
     valid: [
         'alt-inverse',
@@ -70,6 +72,7 @@ export default class PrimitiveChip extends LightningElement {
     _mediaPosition = MEDIA_POSITION.default;
     _iconName = DEFAULT_ICON_NAME;
     _showIcon = false;
+    _hidden = false;
 
     /**
      * Label displayed in the chip.
@@ -172,6 +175,14 @@ export default class PrimitiveChip extends LightningElement {
         } else this._showIcon = false;
     }
 
+    @api
+    get hidden() {
+        return this._hidden;
+    }
+    set hidden(value) {
+        this._hidden = normalizeBoolean(value);
+    }
+
     /**
      *  If icon media is to be shown.
      */
@@ -184,5 +195,17 @@ export default class PrimitiveChip extends LightningElement {
      */
     get showMediaLeft() {
         return this.mediaPosition !== 'right';
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+
+    get computedChipClass() {
+        return classSet('').add({
+            'avonni-primitive-chip__hidden': this._hidden
+        });
     }
 }
