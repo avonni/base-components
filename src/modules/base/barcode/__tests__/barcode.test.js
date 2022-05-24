@@ -31,15 +31,20 @@
  */
 
 import { createElement } from 'lwc';
-import Barcode from '../barcode';
+import Barcode from 'c/barcode';
+jest.mock('bwip-js', () => {
+    const a = require('./mocked-version-of-bwip');
+    a.toCanvas = () => {};
+    return a;
+});
 
 let element;
 describe('Barcode', () => {
-    // afterEach(() => {
-    //     while (document.body.firstChild) {
-    //         document.body.removeChild(document.body.firstChild);
-    //     }
-    // });
+    afterEach(() => {
+        while (document.body.firstChild) {
+            document.body.removeChild(document.body.firstChild);
+        }
+    });
 
     beforeEach(() => {
         element = createElement('avonni-barcode', {
@@ -48,31 +53,45 @@ describe('Barcode', () => {
         document.body.appendChild(element);
     });
 
-    it('test', () => {
-        expect(true).toBe(true);
+    it('Barcode: Default attributes', () => {
+        expect(element.background).toBe('#ffffff');
+        expect(element.color).toBe('#000000');
+        expect(element.renderAs).toBe('svg');
+        expect(element.size).toBe(300);
+        expect(element.hideValue).toBe(false);
+        expect(element.checksum).toBe(false);
+        expect(element.textColor).toBe('#000000');
+        expect(element.type).toBe('CODE39');
     });
-
-    // it('Default attributes', () => {
-    //     expect(element.background).toBe('#ffffff');
-    //     expect(element.color).toBe('#000000');
-    //     expect(element.renderAs).toBe('svg');
-    //     expect(element.size).toBe(300);
-    //     expect(element.hideValue).toBe(false);
-    //     expect(element.checksum).toBe(false);
-    //     expect(element.textColor).toBe('#000000');
-    //     expect(element.type).toBe('CODE39');
-    // });
 
     /* ----- ATTRIBUTES ----- */
 
-    // alternative background
-    // it('Barcode: alternative background', () => {
-    //     element.background = '#123456';
-    //     return Promise.resolve().then(() => {
-    //         const barcode = element.shadowRoot.querySelector(
-    //             '[data-element-id="avonni-barcode"]'
-    //         );
-    //         expect(barcode.background).toBe('#123456');
-    //     });
-    // });
+    // alternative type
+    it('Barcode: alternative type', () => {
+        element.type = 'CODE128';
+        element.renderBarcode();
+        expect(element.type).toBe('CODE128');
+    });
+
+    // non valid alternative type
+    it('Barcode: non valid alternative type', () => {
+        element.type = 'NON VALID';
+        element.renderBarcode();
+        expect(element.type).toBe('NON VALID');
+    });
+
+    // alternative checksum with bwipjs
+    it('Barcode: alternative checksum with jsbarcode', () => {
+        element.checksum = true;
+        element.renderBarcode();
+        expect(element.checksum).toBe(true);
+    });
+
+    // alternative checksum with jsbarcode
+    it('Barcode: alternative checksum with bwipjs', () => {
+        element.checksum = true;
+        element.type = 'CODE128';
+        element.renderBarcode();
+        expect(element.type).toBe('CODE128');
+    });
 });
