@@ -53,15 +53,7 @@ const MEDIA_POSITION = {
     default: 'left'
 };
 
-const ICON_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'x-small'
-};
-
-const AVATAR_SIZES = {
-    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
-    default: 'x-small'
-};
+const DEFAULT_AVATAR_SIZE = 'x-small';
 
 const DEFAULT_ICON_NAME = 'utility:check';
 
@@ -70,10 +62,8 @@ export default class PrimitiveChip extends LightningElement {
     _outline = false;
     _variant = CHIP_VARIANTS.default;
     _avatar = null;
-    _avatarSize = AVATAR_SIZES.default;
     _mediaPosition = MEDIA_POSITION.default;
     _iconName = DEFAULT_ICON_NAME;
-    _iconSize = ICON_SIZES.default;
     _showIcon = false;
 
     /**
@@ -138,7 +128,7 @@ export default class PrimitiveChip extends LightningElement {
         if (value) {
             const tempAvatar = JSON.parse(JSON.stringify(value));
             if (!tempAvatar.size) {
-                tempAvatar.size = AVATAR_SIZES.default;
+                tempAvatar.size = DEFAULT_AVATAR_SIZE;
             }
             this._avatar = tempAvatar;
         }
@@ -177,23 +167,6 @@ export default class PrimitiveChip extends LightningElement {
             });
             this._showIcon = true;
         } else this._showIcon = false;
-    }
-
-    /** The size of the icon to display. Values range from 'xx-small' to 'large'
-     *  @public
-     *  @type {string}
-     *  @default x-small
-     */
-    @api
-    get iconSize() {
-        return this._iconSize;
-    }
-
-    set iconSize(value) {
-        this._iconSize = normalizeString(value, {
-            fallbackValue: ICON_SIZES.default,
-            validValues: ICON_SIZES.valid
-        });
     }
 
     /**
