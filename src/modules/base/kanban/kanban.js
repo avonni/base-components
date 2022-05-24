@@ -344,8 +344,9 @@ export default class Kanban extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    id: event.detail.id,
-                    action: event.detail.action
+                    ...event.detail,
+                    id: event.currentTarget.key,
+                    action: event.currentTarget.label
                 },
                 composed: false,
                 bubbles: true,

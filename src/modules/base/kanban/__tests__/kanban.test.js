@@ -168,7 +168,31 @@ describe('Kanban', () => {
 
     /* ----- EVENTS ----- */
 
-    it('Kanban : tile drag', () => {
+    it('Kanban: action clicked event', () => {
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.actions = ACTIONS;
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__action"]'
+            );
+            action.dispatchEvent(new CustomEvent('actionclick'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.action).toBe('Action 1');
+            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
+        });
+    });
+
+    it('Kanban : tile drag and drop', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
@@ -179,13 +203,23 @@ describe('Kanban', () => {
             const tile = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__tile"]'
             );
-            // otherwise : divided by 0
+            // To avoid division by 0
             Object.defineProperty(tile.parentElement, 'offsetWidth', {
-                value: 100
+                value: 1
+            });
+            // To avoid division by 0
+            Object.defineProperty(tile, 'offsetHeight', {
+                value: 1
             });
             tile.dispatchEvent(new MouseEvent('mousedown'));
-            tile.dispatchEvent(new MouseEvent('mousemove'));
+
+            // mousemove is handled on the kanban, not the tile
+            tile.parentElement.parentElement.dispatchEvent(
+                new MouseEvent('mousemove')
+            );
             expect(tile.classList).toContain('avonni-kanban__dragged');
+            tile.dispatchEvent(new MouseEvent('mouseup'));
+            expect(tile.classList).not.toContain('avonni-kanban__dragged');
         });
     });
 });
