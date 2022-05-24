@@ -87,17 +87,6 @@ describe('Chip Container', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    // items
-    it('items', () => {
-        element.items = MOCK_ITEM_SET;
-        return Promise.resolve().then(() => {
-            const itemsContainer = element.shadowRoot.querySelector(
-                '[data-element-id="chip-container-list"]'
-            );
-            expect(itemsContainer.childElementCount).toBe(3);
-        });
-    });
-
     // alternative text
     it('alternative text', () => {
         element.alternativeText = 'alternative text';
@@ -148,29 +137,18 @@ describe('Chip Container', () => {
         });
     });
 
-    /* ----- SCENARIOS ----- */
-
-    it('div wrapper height changes with isExpanded value', () => {
+    // items
+    it('items', () => {
         element.items = MOCK_ITEM_SET;
-        element.isCollapsible = true;
-        element.isExpanded = false;
-        return Promise.resolve()
-            .then(() => {
-                expect(
-                    element.shadowRoot.querySelector(
-                        '[data-element-id="div-wrapper"]'
-                    ).style.height
-                ).toEqual('0px'); // since dom is mocked, its size is 0
-                element.isExpanded = true;
-            })
-            .then(
-                expect(
-                    element.shadowRoot.querySelector(
-                        '[data-element-id="div-wrapper"]'
-                    ).style.height
-                ).toEqual('') // since dom is mocked, fit-content corresponds to nothing
+        return Promise.resolve().then(() => {
+            const itemsContainer = element.shadowRoot.querySelector(
+                '[data-element-id="chip-container-list"]'
             );
+            expect(itemsContainer.childElementCount).toBe(3);
+        });
     });
+
+    /* ----- SCENARIOS ----- */
 
     it('clicking on the show more button sets isExpanded to true', () => {
         element.items = MOCK_ITEM_SET;

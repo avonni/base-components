@@ -162,9 +162,7 @@ export default class PrimitiveChip extends LightningElement {
     }
     set iconName(value) {
         if (value) {
-            this._iconName = this._iconName = normalizeString(value, {
-                fallbackValue: DEFAULT_ICON_NAME
-            });
+            this._iconName = value;
             this._showIcon = true;
         } else this._showIcon = false;
     }

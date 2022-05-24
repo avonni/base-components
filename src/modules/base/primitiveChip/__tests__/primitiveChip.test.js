@@ -41,13 +41,6 @@ const MOCK_AVATAR = {
     src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
 };
 
-const MOCK_AVATAR_WITH_SIZE = {
-    fallbackIconName: 'standard:user',
-    variant: 'circle',
-    size: 'large',
-    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-};
-
 let element;
 describe('Primitive Chip', () => {
     afterEach(() => {
@@ -69,7 +62,6 @@ describe('Primitive Chip', () => {
         expect(element.avatar).toEqual(null);
         expect(element.variant).toEqual('base');
         expect(element.iconName).toEqual(DEFAULT_ICON_NAME);
-        expect(element.iconSize).toEqual('x-small');
         expect(element.mediaPosition).toEqual('left');
     });
 
@@ -103,27 +95,6 @@ describe('Primitive Chip', () => {
             expect(avatar.size).toBe('x-small');
             expect(avatar.variant).toBe(MOCK_AVATAR.variant);
             expect(avatar.fallbackIconName).toBe(MOCK_AVATAR.fallbackIconName);
-        });
-    });
-
-    it('avatar (with size)', () => {
-        element.avatar = MOCK_AVATAR_WITH_SIZE;
-        return Promise.resolve().then(() => {
-            expect(
-                element.shadowRoot.querySelector(
-                    '[data-element-id="avatar-right"]'
-                )
-            ).toBeFalsy();
-            const avatar = element.shadowRoot.querySelector(
-                '[data-element-id="avatar-left"]'
-            );
-            expect(avatar.slot).toBe('left');
-            expect(avatar.src).toBe(MOCK_AVATAR_WITH_SIZE.src);
-            expect(avatar.size).toBe(MOCK_AVATAR_WITH_SIZE.size);
-            expect(avatar.variant).toBe(MOCK_AVATAR_WITH_SIZE.variant);
-            expect(avatar.fallbackIconName).toBe(
-                MOCK_AVATAR_WITH_SIZE.fallbackIconName
-            );
         });
     });
 
@@ -182,15 +153,14 @@ describe('Primitive Chip', () => {
         });
     });
 
-    // iconSize
-    it('iconSize', () => {
-        element.iconName = 'utility:down';
-        element.iconSize = 'large';
+    // iconName
+    it('iconName', () => {
+        element.iconName = 'utility:user';
+
         return Promise.resolve().then(() => {
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="icon-left"]'
-            );
-            expect(icon.size).toBe('large');
+            expect(element.iconName).toBe('utility:user');
+            // cannot test the value of the html element that displays the icon
+            // since primitive-icon does not expose the icon name in its html
         });
     });
 });

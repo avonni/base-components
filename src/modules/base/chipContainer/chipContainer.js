@@ -32,22 +32,41 @@
 
 import { LightningElement, api } from 'lwc';
 import { generateUUID } from 'c/inputUtils';
-import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeArray } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 
+/**
+ * @class
+ * @name ChipContainer
+ * @descriptor avonni-chip-container
+ * @description List of items displayed as chips. Avatars and icons can be displayed in the chips as well.
+ * @storyId example-chip-container--base
+ * @public
+ */
 export default class ChipContainer extends LightningElement {
     _items = [];
     _alternativeText = DEFAULT_ALTERNATIVE_TEXT;
     _isCollapsible = false;
     _isExpanded = false;
 
-    _nbItems;
-    _itemNodes;
-    _wrappedChips;
+    _wrappedChips = 0;
     _resizeObserver;
+
+    renderedCallback() {
+        if (this.showMore) {
+            // set the wrapper height to be as high as the biggest element
+            this.calculateWrappedNodes();
+            this.initWrapObserver();
+        } else {
+            if (this._resizeObserver) {
+                this._resizeObserver.disconnect();
+                this._resizeObserver = undefined;
+            }
+        }
+    }
 
     /*
      * ------------------------------------------------------------
@@ -59,6 +78,7 @@ export default class ChipContainer extends LightningElement {
      * Alternative text used to describe the chip container.
      *
      * @type {string}
+     * @default Selected Options:
      * @public
      */
     @api
@@ -66,24 +86,7 @@ export default class ChipContainer extends LightningElement {
         return this._alternativeText;
     }
     set alternativeText(value) {
-        this._alternativeText = normalizeString(value, {
-            fallbackValue: DEFAULT_ALTERNATIVE_TEXT
-        });
-    }
-
-    /**
-     * Items to display as chips
-     *
-     * @type {Object}
-     * @public
-     */
-    @api
-    get items() {
-        return this._items;
-    }
-    set items(value) {
-        this._items = value;
-        this._nbItems = this.items.length;
+        this._alternativeText = value;
     }
 
     /**
@@ -116,17 +119,18 @@ export default class ChipContainer extends LightningElement {
         this._isExpanded = normalizeBoolean(value);
     }
 
-    renderedCallback() {
-        if (this.showMore) {
-            // set the wrapper height to be as high as the biggest element
-            this.calculateWrappedNodes();
-            this.initWrapObserver();
-        } else {
-            if (this._resizeObserver) {
-                this._resizeObserver.disconnect();
-                this._resizeObserver = undefined;
-            }
-        }
+    /**
+     * Items to display as chips
+     *
+     * @type {Object[]}
+     * @public
+     */
+    @api
+    get items() {
+        return this._items;
+    }
+    set items(value) {
+        this._items = normalizeArray(value, 'object');
     }
 
     /*
@@ -134,15 +138,6 @@ export default class ChipContainer extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    /**
-     * True if the chip container is considered collapsible.
-     *
-     * @type {boolean}
-     */
-    get computedIsCollapsible() {
-        return (!this.isCollapsible && !this.isExpanded) || this.isCollapsible;
-    }
 
     /**
      * True of the chip container is considered expanded.
@@ -159,7 +154,9 @@ export default class ChipContainer extends LightningElement {
      * @type {boolean}
      */
     get showMore() {
-        return this.computedIsCollapsible && !this.computedIsExpanded;
+        let isCollapsible =
+            (!this.isCollapsible && !this.isExpanded) || this.isCollapsible;
+        return isCollapsible && !this.computedIsExpanded;
     }
 
     /**
@@ -168,11 +165,7 @@ export default class ChipContainer extends LightningElement {
      * @type {string}
      */
     get computedShowMoreLabel() {
-        if (
-            this.computedIsExpanded ||
-            isNaN(this._wrappedChips) ||
-            this._wrappedChips <= 0
-        ) {
+        if (this.computedIsExpanded || this._wrappedChips <= 0) {
             return undefined;
         }
         return `+${this._wrappedChips} more`;
@@ -183,6 +176,7 @@ export default class ChipContainer extends LightningElement {
      */
     get computedWrapperClass() {
         return classSet('slds-listbox_selection-group').add({
+            'avonni-chip-container__list-box_height': true,
             'avonni-chip-container__wrapper_is-collapsed': this.showMore
         });
     }
