@@ -147,6 +147,7 @@
                                 menu-alignment="right"
                                 variant={buttonMenuVariant}
                                 class="avonni-kanban__actions_menu"
+                                disabled={readOnly}
                             >
                                 <template for:each={actions} for:item="action">
                                     <lightning-menu-item
