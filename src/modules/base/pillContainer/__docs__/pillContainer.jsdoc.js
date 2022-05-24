@@ -21,6 +21,7 @@
  * @name items
  * @property {string} href Url of the page that the pill's link goes to.
  * @property {string} label Text to display in the pill.
+ * @property {string} name Name to identify the pill.
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label.
  */
 

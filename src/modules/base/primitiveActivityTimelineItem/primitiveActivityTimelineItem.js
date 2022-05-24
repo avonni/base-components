@@ -58,6 +58,11 @@ const BUTTON_VARIANTS = {
 
 const DEFAULT_LOADING_TEXT = 'Loading';
 
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'small'
+};
+
 /**
  * @class
  * @descriptor c-primitive-activity-timeline-item
@@ -157,6 +162,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _color;
 
@@ -288,6 +294,25 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * The size of the item's icon. Valid values are x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default small
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
      * If present, the detail section is in a loading state and shows a spinner.
      *
      * @public
@@ -344,7 +369,17 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get activityTimelineItemOuterClass() {
         return classSet('slds-timeline__item_expandable')
             .add({
-                'slds-is-open': !this.closed
+                'slds-is-open': !this.closed,
+                'avonni-primitive-activity-timeline-item__icon_xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__icon_x-small':
+                    this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__icon_small':
+                    this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__icon_medium':
+                    this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__icon_large':
+                    this.iconSize === 'large'
             })
             .toString();
     }
@@ -358,7 +393,15 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     get timelineItemBullet() {
         return classSet('slds-timeline__icon avonni-timeline-item__bullet')
             .add({
-                'avonni-timeline-item__active-bullet': this.isActive
+                'avonni-timeline-item__active-bullet': this.isActive,
+                'avonni-primitive-activity-timeline-item__bullet-xx-small':
+                    this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__bullet-x-small':
+                    this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__bullet-medium':
+                    this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__bullet-large':
+                    this.iconSize === 'large'
             })
             .toString();
     }
@@ -379,6 +422,46 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
 
     get computedDatetimeValue() {
         return new Date(this.datetimeValue).getTime();
+    }
+
+    /**
+     * Check if the type of the icon is action
+     */
+    get isActionIcon() {
+        return (
+            typeof this.iconName === 'string' &&
+            this.iconName.split(':')[0] === 'action'
+        );
+    }
+
+    /**
+     * Classes for timeline icons
+     *
+     * @type {string}
+     */
+    get timelineIconClass() {
+        return classSet('slds-timeline__icon')
+            .add({
+                'avonni-primitive-activity-timeline-item__icon_xx-small':
+                    !this.isActionIcon && this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__icon_x-small':
+                    !this.isActionIcon && this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__icon_small':
+                    !this.isActionIcon && this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__icon_medium':
+                    !this.isActionIcon && this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__action-icon_xx-small':
+                    this.isActionIcon && this.iconSize === 'xx-small',
+                'avonni-primitive-activity-timeline-item__action-icon_x-small':
+                    this.isActionIcon && this.iconSize === 'x-small',
+                'avonni-primitive-activity-timeline-item__action-icon_small':
+                    this.isActionIcon && this.iconSize === 'small',
+                'avonni-primitive-activity-timeline-item__action-icon_medium':
+                    this.isActionIcon && this.iconSize === 'medium',
+                'avonni-primitive-activity-timeline-item__action-icon_large':
+                    this.isActionIcon && this.iconSize === 'large'
+            })
+            .toString();
     }
 
     /*

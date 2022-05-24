@@ -425,6 +425,24 @@ export default class Calendar extends LightningElement {
 
     /*
      * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Set the focus on the fist focusable element of the calendar.
+     * @public
+     */
+    @api
+    focus() {
+        const button = this.template.querySelector(
+            '[data-element-id="previous-lightning-button-icon"]'
+        );
+        if (button) button.focus();
+    }
+
+    /*
+     * ------------------------------------------------------------
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
