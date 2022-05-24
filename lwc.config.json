@@ -567,6 +567,10 @@
             "path": "src/modules/base/avatarGroup/avatarGroup.js"
         },
         {
+            "name": "avonni/barcode",
+            "path": "src/modules/base/barcode/barcode.js"
+        },
+        {
             "name": "avonni/blockquote",
             "path": "src/modules/base/blockquote/blockquote.js"
         },

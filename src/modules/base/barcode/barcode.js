@@ -102,7 +102,6 @@ export default class Barcode extends LightningElement {
     _initialRender = DEFAULT_INITIAL_VALUE;
 
     renderedCallback() {
-        console.log('RERENDERED');
         if (!this._initialRender) this.initBarcode();
         this._initialRender = true;
         this.renderBarcode();
@@ -113,7 +112,9 @@ export default class Barcode extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
+    /**
+     * Returns wether the barcode can be rendered as an svg element.
+     */
     @api
     get renderAsSVG() {
         return (
@@ -331,7 +332,6 @@ export default class Barcode extends LightningElement {
     renderWithBwipJs() {
         const canvas = this.getCanvas();
         if (this.checksum) {
-            console.log('with checksum');
             bwipjs.toCanvas(canvas, {
                 bcid: this.getLibraryEncodingValue(),
                 text: this.value,
@@ -345,7 +345,6 @@ export default class Barcode extends LightningElement {
             });
             return;
         }
-        console.log('without checksum');
         bwipjs.toCanvas(canvas, {
             bcid: this.getLibraryEncodingValue(),
             text: this.value,
