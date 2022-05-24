@@ -177,11 +177,13 @@
             class="avonni-range__custom-labels-container_horizontal"
         >
             <template for:each={customLabels} for:item="customLabel">
-                <div class="custom-label-container" key={customLabel.value}>
+                <div
+                    class="custom-label-container"
+                    key={customLabel.value}
+                    data-value={customLabel.value}
+                >
                     <div class="tick">l</div>
-                    <!-- <div>
-                        {customLabel.label}
-                    </div> -->
+                    <div>{customLabel.label}</div>
                 </div>
             </template>
         </span>

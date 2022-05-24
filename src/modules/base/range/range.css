@@ -33,10 +33,10 @@
 :host {
     --input-size: 694.4px;
     --ball-radius: 7px;
-    --number-of-labels: 4;
+    --number-of-steps: 11;
     --hash-width: calc(var(--input-size) - calc(var(--ball-radius)) * 2);
     --label-column-width: calc(
-        var(--hash-width) / calc(var(--number-of-labels) - 1)
+        var(--hash-width) / calc(var(--number-of-steps) - 1)
     );
 }
 
@@ -229,13 +229,14 @@
     margin-left: var(--ball-radius);
     display: grid;
     grid-template-columns: repeat(
-        var(--number-of-labels),
+        var(--number-of-steps),
         var(--label-column-width)
     );
     transform: translate(calc(0px - calc(var(--label-column-width) / 2)));
 }
 
 .custom-label-container {
+    grid-row-start: 1;
     display: grid;
     grid-template-columns: 1fr;
     text-align: center;

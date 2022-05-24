@@ -721,7 +721,21 @@ export default class Range extends LightningElement {
      * Displays the custom labels for the range
      */
     displayCustomLabels() {
-        console.log(this._customLabels);
+        let inputWidth = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        ).clientWidth;
+        for (let customLabel of this._customLabels) {
+            this.template.querySelector(
+                `[data-value='${customLabel.value}'].custom-label-container`
+            ).style.gridColumnStart = customLabel.value + 1;
+        }
+        this.template.host.style.setProperty('--input-size', `${inputWidth}px`);
+        console.log(`${(this.max - this.min) / this.step + 1}`);
+        this.template.host.style.setProperty(
+            '--number-of-steps',
+            `${(this.max - this.min) / this.step + 1}`
+        );
+        //TODO: resize with resize observer
     }
 
     /**
