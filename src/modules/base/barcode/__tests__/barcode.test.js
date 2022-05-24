@@ -35,11 +35,11 @@ import Barcode from '../barcode';
 
 let element;
 describe('Barcode', () => {
-    afterEach(() => {
-        while (document.body.firstChild) {
-            document.body.removeChild(document.body.firstChild);
-        }
-    });
+    // afterEach(() => {
+    //     while (document.body.firstChild) {
+    //         document.body.removeChild(document.body.firstChild);
+    //     }
+    // });
 
     beforeEach(() => {
         element = createElement('avonni-barcode', {
@@ -48,20 +48,31 @@ describe('Barcode', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
-        // expect(element.title).toBeUndefined();
+    it('test', () => {
+        expect(true).toBe(true);
     });
+
+    // it('Default attributes', () => {
+    //     expect(element.background).toBe('#ffffff');
+    //     expect(element.color).toBe('#000000');
+    //     expect(element.renderAs).toBe('svg');
+    //     expect(element.size).toBe(300);
+    //     expect(element.hideValue).toBe(false);
+    //     expect(element.checksum).toBe(false);
+    //     expect(element.textColor).toBe('#000000');
+    //     expect(element.type).toBe('CODE39');
+    // });
 
     /* ----- ATTRIBUTES ----- */
 
-    // title
-    it('title', () => {
-        // element.title = 'This is a title text';
-        // return Promise.resolve().then(() => {
-        //     const title = element.shadowRoot.querySelector(
-        //         '.slds-section__title'
-        //     );
-        //     expect(title.textContent).toBe('This is a title text');
-        // });
-    });
+    // alternative background
+    // it('Barcode: alternative background', () => {
+    //     element.background = '#123456';
+    //     return Promise.resolve().then(() => {
+    //         const barcode = element.shadowRoot.querySelector(
+    //             '[data-element-id="avonni-barcode"]'
+    //         );
+    //         expect(barcode.background).toBe('#123456');
+    //     });
+    // });
 });

@@ -67,6 +67,7 @@ const RENDERING_ENGINE = {
 };
 
 const DEFAULT_BACKGROUND = '#ffffff';
+const DEFAULT_COLOR = '#000000';
 const DEFAULT_SIZE = 300;
 const DEFAULT_HIDE_VALUE = false;
 const DEFAULT_CHECKSUM = false;
@@ -90,7 +91,7 @@ export default class Barcode extends LightningElement {
     @api value;
 
     _background = DEFAULT_BACKGROUND;
-    _color;
+    _color = DEFAULT_COLOR;
     _renderAs = RENDERING_ENGINE.default;
     _size = DEFAULT_SIZE;
     _hideValue = DEFAULT_HIDE_VALUE;
@@ -320,9 +321,10 @@ export default class Barcode extends LightningElement {
      */
 
     renderWithBwipJs() {
+        const canvas = this.getCanvas();
         if (this.checksum) {
             console.log('with checksum');
-            bwipjs.toCanvas(this.getCanvas(), {
+            bwipjs.toCanvas(canvas, {
                 bcid: this.getLibraryEncodingValue(),
                 text: this.value,
                 includetext: !this.hideValue,
@@ -336,7 +338,7 @@ export default class Barcode extends LightningElement {
             return;
         }
         console.log('without checksum');
-        bwipjs.toCanvas(this.getCanvas(), {
+        bwipjs.toCanvas(canvas, {
             bcid: this.getLibraryEncodingValue(),
             text: this.value,
             alttext: this.value,
