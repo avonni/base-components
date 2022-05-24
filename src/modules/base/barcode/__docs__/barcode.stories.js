@@ -137,6 +137,18 @@ export default {
                 type: { summary: 'string' },
                 category: 'Values'
             }
+        },
+        renderAs: {
+            control: {
+                type: 'select'
+            },
+            options: ['svg', 'canvas'],
+            description: 'Sets the preferred rendering engine.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'svg' },
+                category: 'Values'
+            }
         }
     }
 };
@@ -151,5 +163,6 @@ Base.args = {
     size: 200,
     type: 'CODE128',
     hideValue: false,
-    textColor: '#000000'
+    textColor: '#000000',
+    renderAs: 'svg'
 };

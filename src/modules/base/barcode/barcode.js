@@ -114,6 +114,13 @@ export default class Barcode extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    @api
+    get renderAsSVG() {
+        return (
+            this.renderAs === 'svg' && this.getBarcodeLibrary() === 'jsbarcode'
+        );
+    }
+
     /**
      * The color of the background. Valid formats include color name, HEX and RGB.
      *
