@@ -41,39 +41,5 @@
                 lwc:dom="manual"
             ></canvas>
         </div>
-        <!-- <div class="value-wrapper">
-            <template if:false={showValue}>
-                <div
-                    class={valueChecksumStyle}
-                    style={computeValueChecksumColor}
-                >
-                    {value}
-                </div>
-            </template>
-            <template if:true={showValue}>
-                <div
-                    class={valueChecksumStyle}
-                    style={computeValueChecksumColor}
-                >
-                    &nbsp;{checksumValue}
-                </div>
-            </template>
-        </div> -->
     </div>
 </template>
-
-<!-- <template>
-    <lightning-card title="Generate Barcode">
-        <lightning-layout>
-            <div class="slds-p-around_small" >
-                <template if:false={boolShowSpinner}>
-                    <lightning-button variant="brand" label="Generate Barcode" onclick={generateBarcode}></lightning-button>
-                </template>
-                <template if:true={boolShowSpinner}>
-                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
-                </template>
-            </div>
-            <canvas data-id="barcode" lwc:dom="manual"></canvas>
-        </lightning-layout>
-    </lightning-card>
-</template> -->
