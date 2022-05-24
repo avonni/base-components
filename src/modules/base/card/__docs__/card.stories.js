@@ -35,6 +35,17 @@ import { Card } from '../__examples__/card';
 export default {
     title: 'Example/Card',
     argTypes: {
+        backgroundImage: {
+            name: 'background-image',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the media image is set as background.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         title: {
             control: {
                 type: 'text'
@@ -63,15 +74,15 @@ export default {
                 type: { summary: 'string' }
             }
         },
-        variant: {
+        mediaPosition: {
             control: {
                 type: 'select'
             },
-            options: ['horizontal', 'vertical'],
-            description: 'Card layout.',
+            options: ['left', 'right', 'top', 'bottom', 'center'],
+            description: 'Image position.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'horizontal' }
+                defaultValue: { summary: 'top' }
             }
         },
         actions: {
@@ -104,11 +115,11 @@ export default {
         },
         icons: {
             control: {
-                type: 'text'
+                type: 'object'
             },
             description: 'Icons to be displayed beside the label',
             table: {
-                type: { summary: 'string' }
+                type: { summary: 'object' }
             }
         },
         infos: {
@@ -128,7 +139,70 @@ const Template = (args) => Card(args);
 export const Base = Template.bind({});
 Base.args = {
     title: 'Card title',
-    variant: 'horizontal',
+    href: 'href link',
+    avatar: {
+        fallbackIconName: 'custom:custom1',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+    },
+    description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    infos: [{ label: 'info 1', href: '' }],
+    icons: ['utility:share'],
+    imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+};
+
+export const ImageLeft = Template.bind({});
+ImageLeft.args = {
+    title: 'Card title',
+    mediaPosition: 'left',
+    href: 'href link',
+    avatar: {
+        fallbackIconName: 'custom:custom1',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+    },
+    description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    infos: [{ label: 'info 1', href: '' }],
+    icons: ['utility:share'],
+    imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+};
+
+export const ImageRight = Template.bind({});
+ImageRight.args = {
+    title: 'Card title',
+    mediaPosition: 'right',
+    href: 'href link',
+    avatar: {
+        fallbackIconName: 'custom:custom1',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+    },
+    description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    infos: [{ label: 'info 1', href: '' }],
+    icons: ['utility:share'],
+    imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+};
+
+export const ImageCenter = Template.bind({});
+ImageCenter.args = {
+    title: 'Card title',
+    mediaPosition: 'center',
+    href: 'href link',
+    avatar: {
+        fallbackIconName: 'custom:custom1',
+        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+    },
+    description:
+        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    infos: [{ label: 'info 1', href: '' }],
+    icons: ['utility:share'],
+    imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+};
+
+export const ImageBottom = Template.bind({});
+ImageBottom.args = {
+    title: 'Card title',
+    mediaPosition: 'bottom',
     href: 'href link',
     avatar: {
         fallbackIconName: 'custom:custom1',

@@ -36,7 +36,7 @@ customElements.define('ac-card', Component.CustomElementConstructor);
 
 export const Card = ({
     actions,
-    avatar,
+    mediaPosition,
     description,
     href,
     icons,
@@ -47,7 +47,7 @@ export const Card = ({
 }) => {
     const element = document.createElement('ac-card');
     element.actions = actions;
-    element.avatar = avatar;
+    element.mediaPosition = mediaPosition;
     element.description = description;
     element.href = href;
     element.icons = icons;

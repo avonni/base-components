@@ -37,11 +37,74 @@ import {
 } from 'c/utils';
 import { normalizeString } from '../utilsPrivate/normalize';
 
+const MEDIA_POSITIONS = {
+    valid: ['left', 'right', 'top', 'bottom', 'center'],
+    default: 'top'
+};
+
 export default class Card extends LightningElement {
     _description;
     _href;
     _title;
-    _variant;
+    _mediaPosition;
+
+    /**
+     * Get the title slot DOM element.
+     *
+     * @type {Element}
+     */
+    get titleSlot() {
+        return this.template.querySelector('slot[name=title]');
+    }
+
+    // SLOTS //
+
+    /**
+     * Get the media slot DOM element.
+     *
+     * @type {Element}
+     */
+    get mediaSlot() {
+        return this.template.querySelector('slot[name=media]');
+    }
+
+    /**
+     * Get the media actions slot DOM element.
+     *
+     * @type {Element}
+     */
+    get mediaActionsSlot() {
+        return this.template.querySelector('slot[name=media-actions]');
+    }
+
+    // /**
+    //  * Get the actions slot DOM element.
+    //  *
+    //  * @type {Element}
+    //  */
+    // get actionsSlot() {
+    //     return this.template.querySelector('slot[name=actions]');
+    // }
+
+    // /**
+    //  * Get the actions slot DOM element.
+    //  *
+    //  * @type {Element}
+    //  */
+    // get actionsSlot() {
+    //     return this.template.querySelector('slot[name=actions]');
+    // }
+
+    // /**
+    //  * Get the actions slot DOM element.
+    //  *
+    //  * @type {Element}
+    //  */
+    // get actionsSlot() {
+    //     return this.template.querySelector('slot[name=actions]');
+    // }
+
+    // PROPS //
 
     /**
      * Title
@@ -89,19 +152,22 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Card layout variant, horizontal or vertical.
+     * Image position in the card. Valid values are
      *
      * @type {string}
      * @public
      * @default vertical
      */
     @api
-    get variant() {
-        return this._variant;
+    get mediaPosition() {
+        return this._mediaPosition;
     }
 
-    set variant(value) {
-        this._variant = normalizeString(value);
+    set mediaPosition(value) {
+        this._mediaPosition = normalizeString(value, {
+            fallbackValue: MEDIA_POSITIONS.default,
+            validValues: MEDIA_POSITIONS.valid
+        });
     }
 
     /**
@@ -170,6 +236,35 @@ export default class Card extends LightningElement {
     }
 
     // private
+
+    /**
+     * Check if Title text is specified.
+     *
+     * @type {string}
+     */
+    get hasStringTitle() {
+        return !!this.title;
+    }
+
+    get showLeftMedia() {
+        return !!this.imageSrc && this.mediaPosition === 'left';
+    }
+
+    get showTopMedia() {
+        return !!this.imageSrc && this.mediaPosition === 'top';
+    }
+
+    get showRightMedia() {
+        return !!this.imageSrc && this.mediaPosition === 'right';
+    }
+
+    get showBottomMedia() {
+        return !!this.imageSrc && this.mediaPosition === 'bottom';
+    }
+
+    get showCenterMedia() {
+        return !!this.imageSrc && this.mediaPosition === 'center';
+    }
 
     get generateKey() {
         return generateUUID();
