@@ -590,3 +590,105 @@ export const actions = [
         iconName: 'utility:edit'
     }
 ];
+
+export const horizontalItems = [
+    {
+        name: 'item1',
+        title: 'Review proposals for EBC deck with larger team and have marketing review this',
+        description: 'You created a task with Charlie Gomez',
+        datetimeValue: '01/01/2022 7:45',
+        href: 'salesforce.com',
+        iconName: 'standard:task',
+        icons: ['utility:refresh'],
+        hasCheckbox: true
+    },
+    {
+        name: 'item2',
+        title: 'Mobile conversation on Monday',
+        description: 'You logged a call with Adam Chan',
+        href: '#',
+        datetimeValue: new Date(),
+        iconName: 'standard:log_a_call'
+    },
+    {
+        name: 'item3',
+        title: 'Re: Mobile conversation on Monday with the new global team',
+        description: 'You emailed Lea Chan',
+        datetimeValue: '02/20/2023 08:00',
+        href: '#',
+        iconName: 'standard:email',
+        icons: ['utility:groups', 'utility:attach'],
+        buttonLabel: 'Public Sharing',
+        buttonIconName: 'utility:world'
+    },
+    {
+        name: 'item4',
+        title: 'EBC Follow up call',
+        description: 'You created an event with Aida Lee and 5 others',
+        icons: ['utility:world'],
+        datetimeValue: '04/21/2021 8:00',
+        href: '#',
+        iconName: 'standard:event',
+        buttonLabel: 'Public Sharing',
+        buttonIconName: 'utility:world',
+        closed: true
+    },
+    {
+        name: 'item5',
+        title: 'Create one task',
+        description: 'Fields are loading',
+        datetimeValue: '02/14/2022 10:00',
+        href: '#',
+        iconName: 'standard:dashboard',
+        loadingStateAlternativeText: 'Is Loading',
+        hasCheckbox: true,
+        isLoading: true,
+        buttonLabel: 'Public Sharing',
+        buttonIconName: 'utility:world'
+    },
+    {
+        name: 'item6',
+        title: 'Create another task',
+        datetimeValue: '01/21/2022 11:30',
+        href: '#',
+        iconName: 'standard:case',
+        hasCheckbox: true,
+        hasError: true
+    },
+    {
+        name: 'item7',
+        title: 'Another item',
+        datetimeValue: '03/14/2022 8:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: true
+    },
+    {
+        name: 'item8',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 3:30',
+        href: '#',
+        iconName: 'standard:case',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item9',
+        title: 'Another item',
+        datetimeValue: '01/30/2022 2:00',
+        href: '#',
+        iconName: 'standard:case',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item10',
+        title: 'Another new item',
+        datetimeValue: '01/04/2022 10:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    }
+];

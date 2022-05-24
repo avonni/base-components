@@ -31,7 +31,13 @@
  */
 
 import { ActivityTimeline } from '../__examples__/activityTimeline';
-import { actions, items, yearlyItems, itemsWithoutIcons } from './data';
+import {
+    actions,
+    items,
+    horizontalItems,
+    yearlyItems,
+    itemsWithoutIcons
+} from './data';
 
 export default {
     title: 'Example/Activity Timeline',
@@ -195,7 +201,7 @@ Horizontal.args = {
     title: 'Activity Timeline - Horizontal view',
     iconName: 'standard:timesheet_entry',
     position: 'horizontal',
-    items: items,
+    items: horizontalItems,
     collapsible: true,
     actions: actions
 };
