@@ -60,6 +60,7 @@
                     type="button"
                     data-element-id="button"
                     onclick={handleButtonClick}
+                    onmousedown={handleButtonMouseDown}
                 >
                     <template if:false={readOnly}>
                         {menuLabel}
@@ -142,7 +143,10 @@
                                             role="presentation"
                                         >
                                             <a
-                                                class="slds-tabs_default__link"
+                                                class="
+                                                    slds-tabs_default__link
+                                                    avonni-color-picker__tab
+                                                "
                                                 href="javascript:void(0);"
                                                 role="tab"
                                                 data-group-name="tabs"
@@ -161,7 +165,10 @@
                                             data-element-id="li-tokens-tab"
                                         >
                                             <a
-                                                class="slds-tabs_default__link"
+                                                class="
+                                                    slds-tabs_default__link
+                                                    avonni-color-picker__tab
+                                                "
                                                 href="javascript:void(0);"
                                                 role="tab"
                                                 data-element-id="a-tokens-tab"
@@ -178,7 +185,10 @@
                                             role="presentation"
                                         >
                                             <a
-                                                class="slds-tabs_default__link"
+                                                class="
+                                                    slds-tabs_default__link
+                                                    avonni-color-picker__tab
+                                                "
                                                 href="javascript:void(0);"
                                                 role="tab"
                                                 data-group-name="tabs"

@@ -1210,28 +1210,11 @@ describe('Color Picker', () => {
                     .click();
             })
             .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('mouseenter'));
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('mouseleave'));
-            })
-            .then(() => {
-                const popover = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdown"]'
-                ).parentElement;
-                popover.dispatchEvent(new CustomEvent('blur'));
-            })
-            .then(() => {
                 const popoverElement = element.shadowRoot.querySelector(
-                    '[data-element-id="div-dropdownt"]'
+                    '[data-element-id="div-dropdown"]'
                 );
-                expect(popoverElement).toBeNull();
+                popoverElement.dispatchEvent(new CustomEvent('blur'));
+                expect(popoverElement.classList).not.toContain('slds-is-open');
             });
     });
 

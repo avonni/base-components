@@ -223,7 +223,6 @@ export default class ColorPicker extends LightningElement {
     renderedCallback() {
         if (!this._rendered) {
             this.initSwatchColor();
-            this.initEventListeners();
             this._rendered = true;
         }
 
@@ -950,34 +949,6 @@ export default class ColorPicker extends LightningElement {
      */
 
     /**
-     * Initializes the event listeners.
-     * The listeners are used to monitur a blur of the popover by clicking the menu button.
-     */
-    initEventListeners() {
-        this.template.addEventListener('mousedown', (event) => {
-            if (this.dropdownOpened) {
-                let clickedElement = event.target;
-                while (
-                    clickedElement !== null &&
-                    clickedElement.tagName !== 'BUTTON'
-                ) {
-                    clickedElement = clickedElement.parentElement;
-                }
-
-                if (
-                    clickedElement !== null &&
-                    clickedElement.tagName === 'BUTTON'
-                ) {
-                    this.denyBlurOnMenuButtonClick = true;
-                }
-            }
-        });
-        this.template.addEventListener('click', () => {
-            this.denyBlurOnMenuButtonClick = false;
-        });
-    }
-
-    /**
      * Initialize swatch colors.
      */
     initSwatchColor() {
@@ -1092,8 +1063,31 @@ export default class ColorPicker extends LightningElement {
      * Button click handler.
      */
     handleButtonClick() {
+        this.denyBlurOnMenuButtonClick = false;
         if (!this.readOnly) {
             this.toggleMenuVisibility();
+        }
+    }
+
+    /**
+     * Button mousedown handler.
+     */
+    handleButtonMouseDown(event) {
+        if (this.dropdownOpened) {
+            let clickedElement = event.target;
+            while (
+                clickedElement !== null &&
+                clickedElement.tagName !== 'BUTTON'
+            ) {
+                clickedElement = clickedElement.parentElement;
+            }
+
+            if (
+                clickedElement !== null &&
+                clickedElement.tagName === 'BUTTON'
+            ) {
+                this.denyBlurOnMenuButtonClick = true;
+            }
         }
     }
 
@@ -1165,17 +1159,15 @@ export default class ColorPicker extends LightningElement {
     toggleMenuVisibility() {
         if (!this.disabled) {
             this.dropdownVisible = !this.dropdownVisible;
-
-            // eslint-disable-next-line @lwc/lwc/no-async-operation
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 const tab = this.template.querySelector(
-                    '.slds-tabs_default__link'
+                    '[data-element-id="default"]'
                 );
 
                 if (tab) {
                     tab.focus();
                 }
-            }, 0);
+            });
             if (!this.dropdownOpened && this.dropdownVisible) {
                 this.dropdownOpened = true;
             }
@@ -1186,7 +1178,7 @@ export default class ColorPicker extends LightningElement {
             }
 
             this.template
-                .querySelector('.slds-dropdown-trigger')
+                .querySelector('[data-element-id="div-dropdown-trigger"]')
                 .classList.toggle('slds-is-open');
         }
     }
