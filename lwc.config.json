@@ -211,6 +211,10 @@
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
+            "name": "c/kanban",
+            "path": "src/modules/base/kanban/kanban.js"
+        },
+        {
             "name": "c/link",
             "path": "src/modules/base/link/link.js"
         },
