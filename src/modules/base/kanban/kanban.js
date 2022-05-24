@@ -330,6 +330,31 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Ends the drag and drop
+     *
+     */
+    endDrag() {
+        this.handleTileDrop();
+        this._draggedTile.style.transform = '';
+        this._draggedTile.style.width = 'calc(100% - 10px)';
+        this._draggedTile.classList.remove('avonni-kanban__dragged');
+        this._draggedTile = null;
+
+        // removes the translation on all tiles
+        const groupElements = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+        Array.from(groupElements).forEach((group) => {
+            Array.from(group.children)
+                .slice(1)
+                .forEach((tile) => {
+                    tile.classList.remove('avonni-kanban__tile_moved');
+                    tile.style.transform = `translateY(0px)`;
+                });
+        });
+    }
+
+    /**
      * Actionclick handler.
      *
      * @param {Event} event
@@ -492,6 +517,18 @@ export default class Kanban extends LightningElement {
 
     /**
      *
+     * Hangles mouseenter on not dragged tiles
+     *
+     * @param {Event} event
+     */
+    handleTileMouseEnter(event) {
+        if (!this._draggedTile || event.currentTarget === this._draggedTile)
+            return;
+        this.endDrag();
+    }
+
+    /**
+     *
      * Drags the tile
      *
      * @param {Event} event
@@ -532,24 +569,7 @@ export default class Kanban extends LightningElement {
      */
     handleTileMouseUp(event) {
         if (this.readOnly || event.currentTarget !== this._draggedTile) return;
-        this.handleTileDrop();
-        this._draggedTile.style.transform = '';
-        this._draggedTile.style.width = 'calc(100% - 10px)';
-        this._draggedTile.classList.remove('avonni-kanban__dragged');
-        this._draggedTile = null;
-
-        // removes the translation on all tiles
-        const groupElements = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
-        Array.from(groupElements).forEach((group) => {
-            Array.from(group.children)
-                .slice(1)
-                .forEach((tile) => {
-                    tile.classList.remove('avonni-kanban__tile_moved');
-                    tile.style.transform = `translateY(0px)`;
-                });
-        });
+        this.endDrag();
     }
 
     /**
