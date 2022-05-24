@@ -35,13 +35,20 @@
     z-index: 1;
 }
 
+.avonni-kanban__actions_menu {
+    position: relative;
+}
+
 .avonni-kanban__tile:hover:not(.avonni-kanban__dragged):not(.avonni-kanban__tile_read_only) {
     background-color: #f7f7f7;
     cursor: grab;
+    z-index: 9999;
+    position: relative;
 }
 
 .avonni-kanban__tile:not(.avonni-kanban__dragged) {
     transition: transform 0.25s;
+    z-index: 1;
 }
 
 .avonni-kanban__tile_icon {
@@ -52,6 +59,7 @@
 
 .avonni-kanban__tile_actions {
     position: absolute;
+    z-index: 99999;
     right: 3px;
     top: 3px;
 }

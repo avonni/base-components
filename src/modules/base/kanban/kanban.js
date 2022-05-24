@@ -531,9 +531,7 @@ export default class Kanban extends LightningElement {
             return;
         this.handleTileDrop();
         this._draggedTile.style.transform = '';
-        this._draggedTile.style.width = `${
-            parseInt(this._groupWidth, 10) - 10
-        }px`;
+        this._draggedTile.style.width = '100%';
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
 

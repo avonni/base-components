@@ -135,34 +135,35 @@
                                     icon-name={record.warningIcon}
                                 ></lightning-icon>
                             </li>
-                            <div
-                                class="avonni-kanban__tile_actions"
-                                if:true={hasActions}
-                            >
-                                <lightning-button-menu
-                                    alternative-text="Show menu"
-                                    icon-size="x-small"
-                                    menu-alignment="right"
-                                    variant={buttonMenuVariant}
-                                >
-                                    <template
-                                        for:each={actions}
-                                        for:item="action"
-                                    >
-                                        <lightning-menu-item
-                                            key={action.name}
-                                            value={action.name}
-                                            label={action.label}
-                                            onactionclick={handleActionClick}
-                                            disabled={action.disabled}
-                                            prefix-icon-name={action.iconName}
-                                            class="slds-text-color_default"
-                                            data-element-id="avonni-kanban__action"
-                                        ></lightning-menu-item>
-                                    </template>
-                                </lightning-button-menu>
-                            </div>
                         </ul>
+                        <div
+                            class="avonni-kanban__tile_actions"
+                            if:true={hasActions}
+                        >
+                            <lightning-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="right"
+                                variant={buttonMenuVariant}
+                                class="avonni-kanban__actions_menu"
+                            >
+                                <template for:each={actions} for:item="action">
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        onactionclick={handleActionClick}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        class="
+                                            slds-text-color_default
+                                            avonni-kanban__actions_item
+                                        "
+                                        data-element-id="avonni-kanban__action"
+                                    ></lightning-menu-item>
+                                </template>
+                            </lightning-button-menu>
+                        </div>
                     </lightning-tile>
                 </div>
             </div>
