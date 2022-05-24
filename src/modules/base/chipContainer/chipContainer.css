@@ -43,14 +43,6 @@
     height: 0px;
 }
 
-.avonni-chip-container__wrapper_small {
-    height: 32px;
-}
-
-.avonni-chip-container__wrapper_medium {
-    height: 40px;
-}
-
-.avonni-chip-container__wrapper_medium {
-    height: 48px;
+.avonni-chip-container__show-more_centered {
+    padding-bottom: 4px;
 }

@@ -119,7 +119,6 @@ export default class ChipContainer extends LightningElement {
     renderedCallback() {
         if (this.showMore) {
             // set the wrapper height to be as high as the biggest element
-            this.computeWrapperStyle();
             this.calculateWrappedNodes();
             this.initWrapObserver();
         } else {
@@ -241,17 +240,5 @@ export default class ChipContainer extends LightningElement {
             }
         }
         this._wrappedChips = wrappedChips;
-        this.computeWrapperStyle();
-    }
-
-    computeWrapperStyle() {
-        const tallest = [
-            ...this.template.querySelectorAll(
-                '[data-element-id="chip-container-list"] *'
-            )
-        ].sort((prev, next) => next.clientHeight - prev.clientHeight)[0];
-        this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        ).style.height = `${tallest.clientHeight}px`;
     }
 }
