@@ -36,6 +36,7 @@ import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import Range from 'c/range';
 
 // Not tested because not used:
+// Debounce on mousemove of 50ms
 // messageWhenRangeOverflow
 // messageWhenRangeUnderflow
 // messageWhenStepMismatch
@@ -613,54 +614,81 @@ describe('Range', () => {
         });
     });
 
-    //mousedown on input
+    //mousedown on input with pins
     it('Range: onmousedown to right input', () => {
         element.pin = true;
-        const inputRight = element.shadowRoot.querySelector(
-            '[data-element-id="input-right"]'
-        );
-        inputRight.dispatchEvent(new MouseEvent('mousedown'));
 
         return Promise.resolve()
             .then(() => {
+                const inputRight = element.shadowRoot.querySelector(
+                    '[data-element-id="input-right"]'
+                );
+                inputRight.dispatchEvent(new MouseEvent('mousedown'));
                 expect(
                     element.shadowRoot
-                        .querySelector('.right-bubble')
+                        .querySelector('[data-element-id="right-bubble"]')
                         .classList.contains('avonni-range__bubble_visible')
                 ).toBeTruthy();
                 inputRight.dispatchEvent(new MouseEvent('mouseup'));
             })
-            .then(
+            .then(() => {
                 expect(
                     element.shadowRoot
-                        .querySelector('.right-bubble')
+                        .querySelector('[data-element-id="right-bubble"]')
                         .classList.contains('avonni-range__bubble_visible')
-                ).toBeFalsy()
-            );
+                ).toBeFalsy();
+            });
     });
 
     it('Range: onmousedown to left input', () => {
         element.pin = true;
-        const inputLeft = element.shadowRoot.querySelector(
-            '[data-element-id="input-left"]'
-        );
-        inputLeft.dispatchEvent(new MouseEvent('mousedown'));
 
         return Promise.resolve()
             .then(() => {
+                const inputLeft = element.shadowRoot.querySelector(
+                    '[data-element-id="input-left"]'
+                );
+                inputLeft.dispatchEvent(new MouseEvent('mousedown'));
                 expect(
                     element.shadowRoot
-                        .querySelector('.right-bubble')
+                        .querySelector('[data-element-id="left-bubble"]')
                         .classList.contains('avonni-range__bubble_visible')
                 ).toBeTruthy();
                 inputLeft.dispatchEvent(new MouseEvent('mouseup'));
             })
-            .then(
+            .then(() => {
                 expect(
                     element.shadowRoot
-                        .querySelector('.right-bubble')
+                        .querySelector('[data-element-id="left-bubble"]')
                         .classList.contains('avonni-range__bubble_visible')
-                ).toBeFalsy()
-            );
+                ).toBeFalsy();
+            });
+    });
+
+    // setBubblePosition with pins
+    it('Range: setBubblePosition() should place bubbles', () => {
+        element.pin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const inputRight = element.shadowRoot.querySelector(
+                    '[data-element-id="input-right"]'
+                );
+                inputRight.value = 20;
+                inputRight.dispatchEvent(new CustomEvent('input'));
+                jest.advanceTimersToNextTimer();
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="right-bubble"]'
+                    ).style.left
+                ).toEqual('calc(20% - 11.2px)');
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="left-bubble"]'
+                    ).style.left
+                ).toEqual('calc(0% - 8px)');
+            });
     });
 });

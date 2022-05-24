@@ -444,9 +444,11 @@ export default class Range extends LightningElement {
      * @type {string}
      */
     get computedBubbleLeftClass() {
-        return this._type === 'vertical'
-            ? 'avonni-range__bubble-vertical left-bubble'
-            : 'avonni-range__bubble left-bubble';
+        return classSet('left-bubble').add({
+            'avonni-range__bubble-vertical left-bubble':
+                this._type === 'vertical',
+            'avonni-range__bubble': this._type !== 'vertical'
+        });
     }
 
     /**
@@ -711,7 +713,7 @@ export default class Range extends LightningElement {
     showLeftBubble() {
         if (this._pin) {
             this.template
-                .querySelector('.left-bubble')
+                .querySelector('[data-element-id="left-bubble"]')
                 .classList.add('avonni-range__bubble_visible');
         }
     }
@@ -722,7 +724,7 @@ export default class Range extends LightningElement {
     showRightBubble() {
         if (this._pin) {
             this.template
-                .querySelector('.right-bubble')
+                .querySelector('[data-element-id="right-bubble"]')
                 .classList.add('avonni-range__bubble_visible');
         }
     }
@@ -733,7 +735,7 @@ export default class Range extends LightningElement {
     hideLeftBubble() {
         if (this._pin) {
             this.template
-                .querySelector('.left-bubble')
+                .querySelector('[data-element-id="left-bubble"]')
                 .classList.remove('avonni-range__bubble_visible');
         }
     }
@@ -744,7 +746,7 @@ export default class Range extends LightningElement {
     hideRightBubble() {
         if (this._pin) {
             this.template
-                .querySelector('.right-bubble')
+                .querySelector('[data-element-id="right-bubble"]')
                 .classList.remove('avonni-range__bubble_visible');
         }
     }

@@ -79,7 +79,11 @@
                         onmousedown={showLeftBubble}
                         onmouseup={hideLeftBubble}
                     />
-                    <div if:true={pin} class={computedBubbleLeftClass}>
+                    <div
+                        if:true={pin}
+                        class={computedBubbleLeftClass}
+                        data-element-id="left-bubble"
+                    >
                         <p>
                             <lightning-formatted-number
                                 value={valueLower}
@@ -112,7 +116,11 @@
                         onmousedown={showRightBubble}
                         onmouseup={hideRightBubble}
                     />
-                    <div if:true={pin} class={computedBubbleRightClass}>
+                    <div
+                        if:true={pin}
+                        class={computedBubbleRightClass}
+                        data-element-id="right-bubble"
+                    >
                         <p>
                             <lightning-formatted-number
                                 value={valueUpper}
