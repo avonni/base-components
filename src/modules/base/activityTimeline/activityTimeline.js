@@ -31,13 +31,18 @@
  */
 
 import { LightningElement, api, track } from 'lwc';
+import * as d3 from 'd3';
 import {
     normalizeBoolean,
     normalizeString,
-    normalizeArray
+    normalizeArray,
+    dateTimeObjectFrom
 } from 'c/utilsPrivate';
 
 const DEFAULT_ITEM_ICON_SIZE = 'small';
+const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
+const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
+const DEFAULT_INTERVAL_MIN_DATE = new Date(2022, 0, 1);
 
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
@@ -93,17 +98,84 @@ export default class ActivityTimeline extends LightningElement {
     _position = POSITIONS.default;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
+    // Horizontal view properties
+    _intervalMinDate = DEFAULT_INTERVAL_MIN_DATE;
+    _intervalMaxDate;
+    _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
+    _intervalIncrement = 2;
+    _displayedItems = [];
+    _dateFormat = DEFAULT_DATE_FORMAT;
+    _timelineWidth = 1300; // TO DO : Change to container width
+    _timelineHeight = 50;
+    _numberOfScrollAxisTicks = 10;
+
     _key;
     _isConnected = false;
     _presentDates = [];
     _pastDates = [];
     _upcomingDates = [];
 
+    showItemPopOver = false;
+    selectedItem;
+
     @track orderedDates = [];
 
     connectedCallback() {
         this._isConnected = true;
         this.initActivityTimeline();
+        if (this.isTimelineHorizontal) this.findDefaultIntervalMinDate();
+    }
+
+    renderedCallback() {
+        this.createTimelineAxis();
+        this.createTimelineScrollAxis();
+
+        // ONLY FOR TESTING AND LEARNING
+        this.testingD3();
+    }
+
+    // AJOUT  - TESTING
+    testingD3() {
+        const divD3Testing = this.template.querySelector('.testing-d3');
+        d3.select(divD3Testing).selectAll('*').remove();
+        d3.select(divD3Testing).append('span').text('AJOUT DE TEXTE !!');
+        d3.select(divD3Testing)
+            .style('color', 'orange')
+            .transition()
+            .style('color', 'yellow')
+            .duration(5000)
+            .transition()
+            .style('color', 'red')
+            .duration(5000);
+
+        // AJOUT DE DONNEES , data binding
+        d3.select(divD3Testing)
+            .append('p')
+            .selectAll('p')
+            .data(['a', 'b', 'c'])
+            .enter()
+            .append('p')
+            .text(function (d) {
+                return d;
+            });
+
+        // TESTONS SCALE TIME
+        const svg = d3
+            .select(divD3Testing)
+            .append('svg')
+            .attr('width', this._timelineWidth)
+            .attr('height', this._timelineHeight);
+        const scale = d3
+            .scaleTime()
+            .domain([this.minDate, this.maxDate])
+            .range([0, 1000]);
+        const scrollAxis = d3.axisBottom(scale);
+        svg.append('g')
+            .attr(
+                'transform',
+                'translate(40, ' + this._timelineHeight / 2 + ')'
+            )
+            .call(scrollAxis);
     }
 
     /*
@@ -277,6 +349,32 @@ export default class ActivityTimeline extends LightningElement {
      */
 
     /**
+     * Calculate the numbers of days between the min and max dates in items
+     *
+     * @type {boolean}
+     */
+    get daysBetweenMinAndMax() {
+        const conversionFactorFromMillisecondToDay = 1000 * 3600 * 24;
+        return Math.ceil(
+            (this.maxDate.getTime() - this.minDate.getTime()) /
+                conversionFactorFromMillisecondToDay
+        );
+    }
+
+    /**
+     * Select only items in min-max interval for horizontal view of the timeline
+     *
+     * @type {array}
+     */
+    get displayedItems() {
+        this._displayedItems = this.sortedItems.filter((item) => {
+            const date = new Date(item.datetimeValue);
+            return date > this._intervalMinDate && date < this._intervalMaxDate;
+        });
+        return this._displayedItems;
+    }
+
+    /**
      * Verify if dates exist.
      *
      * @type {boolean}
@@ -292,6 +390,68 @@ export default class ActivityTimeline extends LightningElement {
      */
     get hasHeader() {
         return this.title || this.iconName;
+    }
+
+    /**
+     * Return the number of days in the interval for the horizontal timeline
+     *
+     * @type {number}
+     */
+    get intervalDaysLength() {
+        return this._intervalDaysLength;
+    }
+
+    /**
+     * Return the max date for the horizontal timeline with the correct format
+     *
+     * @type {Date}
+     */
+    get intervalMaxDate() {
+        this._intervalMaxDate = new Date(this._intervalMinDate);
+        this._intervalMaxDate.setDate(
+            this._intervalMaxDate.getDate() + this._intervalDaysLength - 1
+        );
+        return this.convertDateToFormat(this._intervalMaxDate);
+    }
+
+    /**
+     * Return the min date for the horizontal timeline with the correct format
+     *
+     * @type {Date}
+     */
+    get intervalMinDate() {
+        return this.convertDateToFormat(this._intervalMinDate);
+    }
+
+    /**
+     * Check if timeline's position is horizontal
+     *
+     * @type {boolean}
+     */
+    get isTimelineHorizontal() {
+        return this.position === 'horizontal';
+    }
+
+    /**
+     * Find the min date in items
+     *
+     * @type {Date}
+     */
+    get minDate() {
+        const minIndex =
+            this._sortedDirection === 'desc' ? this.sortedItems.length - 1 : 0;
+        return new Date(this.sortedItems[minIndex].datetimeValue);
+    }
+
+    /**
+     * Find the max date in items
+     *
+     * @type {Date}
+     */
+    get maxDate() {
+        const maxIndex =
+            this._sortedDirection === 'desc' ? 0 : this.sortedItems.length - 1;
+        return new Date(this.sortedItems[maxIndex].datetimeValue);
     }
 
     /**
@@ -323,6 +483,112 @@ export default class ActivityTimeline extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Convert a date to the correct format
+     *
+     * @param {Date} date
+     * @returns string
+     */
+    convertDateToFormat(date) {
+        return dateTimeObjectFrom(date).toFormat(this._dateFormat);
+    }
+
+    /**
+     * Create the axis below the horizontal timeline to display the min-max interval
+     */
+    createTimelineAxis() {
+        const axisDiv = d3.select(
+            this.template.querySelector(
+                '.avonni-activity-timeline__horizontal-timeline-axis'
+            )
+        );
+        axisDiv.selectAll('*').remove();
+        const axisSVG = axisDiv
+            .append('svg')
+            .attr('width', this._timelineWidth)
+            .attr('height', this._timelineHeight);
+        const domainDates = this.createTimelineDateDomain(
+            this.intervalMinDate,
+            this._intervalIncrement,
+            this._intervalDaysLength / this._intervalIncrement
+        );
+        const xScale = d3
+            .scaleBand()
+            .domain(domainDates)
+            .range([0, this._timelineWidth - 50]);
+        const scrollAxis = d3.axisBottom(xScale);
+        axisSVG
+            .append('g')
+            .attr(
+                'transform',
+                'translate(40, ' + this._timelineHeight / 2 + ')'
+            )
+            .call(scrollAxis);
+    }
+
+    /**
+     * Create the scroll axis for horizontal timeline to display all dates
+     */
+    createTimelineScrollAxis() {
+        const scrollAxisDiv = d3.select(
+            this.template.querySelector(
+                '.avonni-activity-timeline__horizontal-timeline-scroll-axis'
+            )
+        );
+        scrollAxisDiv.selectAll('*').remove();
+        const scrollAxisSVG = scrollAxisDiv
+            .append('svg')
+            .attr('width', this._timelineWidth)
+            .attr('height', this._timelineHeight);
+        const domainDates = this.createTimelineDateDomain(
+            this.minDate,
+            this.daysBetweenMinAndMax / this._numberOfScrollAxisTicks,
+            this._numberOfScrollAxisTicks
+        );
+        const xScale = d3
+            .scaleBand()
+            .domain(domainDates)
+            .range([0, this._timelineWidth - 50]);
+        const scrollAxis = d3.axisBottom(xScale);
+        scrollAxisSVG
+            .append('g')
+            .attr(
+                'transform',
+                'translate(40, ' + this._timelineHeight / 2 + ')'
+            )
+            .call(scrollAxis);
+    }
+
+    /**
+     * Create a date domain that contains domainLength values, start at minDate and increment of dayIncrement days
+     *
+     * @param {Date} minDate
+     * @param {number} dayIncrement
+     * @param {number} domainLength
+     * @returns array of date
+     */
+    createTimelineDateDomain(minDate, dayIncrement, domainLength) {
+        const dateDomain = [];
+        const dateToAdd = new Date(minDate);
+        dateDomain.push(this.convertDateToFormat(dateToAdd));
+
+        for (let i = 0; i < domainLength; ++i) {
+            dateToAdd.setDate(dateToAdd.getDate() + dayIncrement);
+            dateDomain.push(this.convertDateToFormat(dateToAdd));
+        }
+        return dateDomain;
+    }
+
+    /**
+     * Set the interval's min date to the middle datetime value of all items
+     *
+     */
+    findDefaultIntervalMinDate() {
+        this._intervalMinDate = new Date(
+            this.sortedItems[this.sortedItems.length / 2 - 1].datetimeValue
+        );
+    }
 
     /**
      * Compute Number of the week in the year.
@@ -524,5 +790,28 @@ export default class ActivityTimeline extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Handle the mouse enter on item for horizontal view timeline.
+     *
+     * @param {Event} mouseEvent
+     */
+    handleItemMouseEnter(mouseEvent) {
+        this.showItemPopOver = true;
+        this.selectedItem = this.displayedItems.find((item) => {
+            return (
+                mouseEvent.target.getAttribute('data-element-id') === item.name
+            );
+        });
+    }
+
+    /**
+     * Handle the mouse leave on item for horizontal view timeline.
+     *
+     */
+    handleItemMouseLeave() {
+        this.showItemPopOver = false;
+        this.selectedItem = null;
     }
 }

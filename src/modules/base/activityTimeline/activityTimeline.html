@@ -33,106 +33,212 @@
 -->
 
 <template>
-    <template if:true={hasHeader}>
-        <div class="slds-card__header">
-            <div class="slds-media slds-media_center">
-                <div class="slds-media__figure" if:true={iconName}>
-                    <lightning-icon
-                        data-element-id="avonni-activity-timeline-icon"
-                        icon-name={iconName}
-                        size={iconSize}
-                    ></lightning-icon>
-                </div>
-                <div class="slds-media__body" if:true={title}>
-                    <h2 class="slds-section__title">{title}</h2>
+    <div class="avonni-activity-timeline__container">
+        <template if:true={hasHeader}>
+            <div class="slds-card__header">
+                <div class="slds-media slds-media_center">
+                    <div class="slds-media__figure" if:true={iconName}>
+                        <lightning-icon
+                            data-element-id="avonni-activity-timeline-icon"
+                            icon-name={iconName}
+                            size={iconSize}
+                        ></lightning-icon>
+                    </div>
+                    <div class="slds-media__body" if:true={title}>
+                        <h2 class="slds-section__title">{title}</h2>
+                    </div>
+                    <div
+                        class="slds-text-align_right"
+                        if:true={isTimelineHorizontal}
+                    >
+                        Showing : {intervalMinDate} - {intervalMaxDate}
+                        <span>&#8226;</span> {intervalDaysLength} day(s)
+                        <span>&#8226;</span> {displayedItems.length} item(s)
+                    </div>
                 </div>
             </div>
-        </div>
-    </template>
-    <template if:true={noGroupBy}>
-        <ul class="slds-timeline">
-            <template for:each={sortedItems} for:item="item">
-                <li key={item.name}>
+        </template>
+        <!-- HORIZONTAL TIMELINE -->
+        <template if:true={isTimelineHorizontal}>
+            <!-- TESTING - DISPLAY ALL ITEMS -->
+            <!-- <div for:each={sortedItems} for:item="item" key={item.name}>
+                <p>{item.name} - {item.datetimeValue}</p>
+            </div> -->
+
+            <div class="testing-d3" lwc:dom="manual"></div>
+
+            <!-- TIMELINE WITH D3 -->
+            <div class="avonni-activity-timeline__horizontal-timeline">
+                <div
+                    class="avonni-activity-timeline__horizontal-timeline-items"
+                    lwc:dom="manual"
+                ></div>
+                <div
+                    class="avonni-activity-timeline__horizontal-timeline-axis"
+                    lwc:dom="manual"
+                ></div>
+                <div
+                    class="
+                        avonni-activity-timeline__horizontal-timeline-scroll-axis
+                    "
+                    lwc:dom="manual"
+                ></div>
+            </div>
+
+            <!-- ITEMS IN INTERVAL -->
+            <div>
+                <template
+                    for:each={displayedItems}
+                    for:item="item"
+                    key={item.name}
+                >
+                    <div
+                        key={item.name}
+                        data-element-id={item.name}
+                        onmouseenter={handleItemMouseEnter}
+                        onmouseleave={handleItemMouseLeave}
+                    >
+                        <lightning-icon
+                            icon-name={item.iconName}
+                            size={itemIconSize}
+                            data-element-id="item-marker"
+                        ></lightning-icon>
+                        - {item.title}
+                    </div>
+                </template>
+            </div>
+
+            <!-- POP OVER INFORMATION OF SELECTED ITEM -->
+            <div
+                if:true={showItemPopOver}
+                class="
+                    slds-popover slds-dropdown
+                    avonni-activity-timeline__item-popover
+                "
+                role="tooltip"
+            >
+                <div
+                    class="
+                        slds-popover__body
+                        avonni-activity-timeline__item-popover
+                    "
+                >
                     <c-primitive-activity-timeline-item
-                        title={item.title}
-                        description={item.description}
-                        datetime-value={item.datetimeValue}
-                        href={item.href}
-                        icon-name={item.iconName}
+                        title={selectedItem.title}
+                        description={selectedItem.description}
+                        datetime-value={selectedItem.datetimeValue}
+                        href={selectedItem.href}
+                        icon-name={selectedItem.iconName}
                         icon-size={itemIconSize}
-                        icons={item.icons}
-                        fields={item.fields}
-                        has-checkbox={item.hasCheckbox}
-                        has-error={item.hasError}
-                        closed={item.closed}
-                        button-label={item.buttonLabel}
-                        button-icon-name={item.buttonIconName}
-                        button-variant={item.buttonVariant}
-                        button-icon-position={item.buttonIconPosition}
-                        button-disabled={item.buttonDisabled}
-                        is-loading={item.isLoading}
-                        is-active={item.isActive}
-                        loading-state-alternative-text={item.loadingStateAlternativeText}
-                        actions={actions}
-                        name={item.name}
+                        icons={selectedItem.icons}
+                        fields={selectedItem.fields}
+                        has-checkbox={selectedItem.hasCheckbox}
+                        has-error={selectedItem.hasError}
+                        closed={selectedItem.closed}
+                        button-label={selectedItem.buttonLabel}
+                        button-icon-name={selectedItem.buttonIconName}
+                        button-variant={selectedItem.buttonVariant}
+                        button-icon-position={selectedItem.buttonIconPosition}
+                        button-disabled={selectedItem.buttonDisabled}
+                        is-loading={selectedItem.isLoading}
+                        is-active={selectedItem.isActive}
+                        loading-state-alternative-text={selectedItem.loadingStateAlternativeText}
+                        name={selectedItem.name}
                         data-element-id="avonni-primitive-activity-timeline-item"
-                        data-name={item.name}
-                        onactionclick={handleActionClick}
-                        onbuttonclick={handleButtonClick}
-                        oncheck={handleCheck}
+                        data-name={selectedItem.name}
                     >
                     </c-primitive-activity-timeline-item>
-                </li>
+                </div>
+            </div>
+        </template>
+        <!-- VERTICAL TIMELINE -->
+        <template if:false={isTimelineHorizontal}>
+            <template if:true={noGroupBy}>
+                <ul class="slds-timeline">
+                    <template for:each={sortedItems} for:item="item">
+                        <li key={item.name}>
+                            <c-primitive-activity-timeline-item
+                                title={item.title}
+                                description={item.description}
+                                datetime-value={item.datetimeValue}
+                                href={item.href}
+                                icon-name={item.iconName}
+                                icon-size={itemIconSize}
+                                icons={item.icons}
+                                fields={item.fields}
+                                has-checkbox={item.hasCheckbox}
+                                has-error={item.hasError}
+                                closed={item.closed}
+                                button-label={item.buttonLabel}
+                                button-icon-name={item.buttonIconName}
+                                button-variant={item.buttonVariant}
+                                button-icon-position={item.buttonIconPosition}
+                                button-disabled={item.buttonDisabled}
+                                is-loading={item.isLoading}
+                                is-active={item.isActive}
+                                loading-state-alternative-text={item.loadingStateAlternativeText}
+                                actions={actions}
+                                name={item.name}
+                                data-element-id="avonni-primitive-activity-timeline-item"
+                                data-name={item.name}
+                                onactionclick={handleActionClick}
+                                onbuttonclick={handleButtonClick}
+                                oncheck={handleCheck}
+                            >
+                            </c-primitive-activity-timeline-item>
+                        </li>
+                    </template>
+                </ul>
             </template>
-        </ul>
-    </template>
-    <template if:true={hasDates}>
-        <template for:each={orderedDates} for:item="date">
-            <template if:false={noGroupBy}>
-                <c-expandable-section
-                    key={date.label}
-                    title={date.label}
-                    collapsible={collapsible}
-                    closed={closed}
-                    data-element-id="avonni-expandable-section"
-                >
-                    <ul class="slds-timeline">
-                        <template for:each={date.items} for:item="item">
-                            <li key={item.name}>
-                                <c-primitive-activity-timeline-item
-                                    title={item.title}
-                                    description={item.description}
-                                    datetime-value={item.datetimeValue}
-                                    href={item.href}
-                                    icon-name={item.iconName}
-                                    icon-size={itemIconSize}
-                                    icons={item.icons}
-                                    fields={item.fields}
-                                    has-checkbox={item.hasCheckbox}
-                                    has-error={item.hasError}
-                                    closed={item.closed}
-                                    button-label={item.buttonLabel}
-                                    button-icon-name={item.buttonIconName}
-                                    button-variant={item.buttonVariant}
-                                    button-icon-position={item.buttonIconPosition}
-                                    button-disabled={item.buttonDisabled}
-                                    is-loading={item.isLoading}
-                                    is-active={item.isActive}
-                                    loading-state-alternative-text={item.loadingStateAlternativeText}
-                                    actions={actions}
-                                    name={item.name}
-                                    data-element-id="avonni-primitive-activity-timeline-item"
-                                    data-name={item.name}
-                                    onactionclick={handleActionClick}
-                                    onbuttonclick={handleButtonClick}
-                                    oncheck={handleCheck}
-                                >
-                                </c-primitive-activity-timeline-item>
-                            </li>
-                        </template>
-                    </ul>
-                </c-expandable-section>
+            <template if:true={hasDates}>
+                <template for:each={orderedDates} for:item="date">
+                    <template if:false={noGroupBy}>
+                        <c-expandable-section
+                            key={date.label}
+                            title={date.label}
+                            collapsible={collapsible}
+                            closed={closed}
+                            data-element-id="avonni-expandable-section"
+                        >
+                            <ul class="slds-timeline">
+                                <template for:each={date.items} for:item="item">
+                                    <li key={item.name}>
+                                        <c-primitive-activity-timeline-item
+                                            title={item.title}
+                                            description={item.description}
+                                            datetime-value={item.datetimeValue}
+                                            href={item.href}
+                                            icon-name={item.iconName}
+                                            icon-size={itemIconSize}
+                                            icons={item.icons}
+                                            fields={item.fields}
+                                            has-checkbox={item.hasCheckbox}
+                                            has-error={item.hasError}
+                                            closed={item.closed}
+                                            button-label={item.buttonLabel}
+                                            button-icon-name={item.buttonIconName}
+                                            button-variant={item.buttonVariant}
+                                            button-icon-position={item.buttonIconPosition}
+                                            button-disabled={item.buttonDisabled}
+                                            is-loading={item.isLoading}
+                                            is-active={item.isActive}
+                                            loading-state-alternative-text={item.loadingStateAlternativeText}
+                                            actions={actions}
+                                            name={item.name}
+                                            data-element-id="avonni-primitive-activity-timeline-item"
+                                            data-name={item.name}
+                                            onactionclick={handleActionClick}
+                                            onbuttonclick={handleButtonClick}
+                                            oncheck={handleCheck}
+                                        >
+                                        </c-primitive-activity-timeline-item>
+                                    </li>
+                                </template>
+                            </ul>
+                        </c-expandable-section>
+                    </template>
+                </template>
             </template>
         </template>
-    </template>
+    </div>
 </template>
