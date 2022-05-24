@@ -86,7 +86,7 @@
                     class="avonni-kanban__field slds-has-dividers_around-space"
                     for:each={computedGroups}
                     for:item="group"
-                    key={group.label}
+                    key={group.index}
                 >
                     <c-output-data
                         value={group.summarize.value}
