@@ -455,7 +455,11 @@ export default class Kanban extends LightningElement {
             this.handleTileMouseUp(event);
             return;
         }
-        if (event.target.type === 'phone' || this.readOnly) return;
+        if (
+            this.readOnly ||
+            event.target.classList.contains('slds-dropdown-trigger')
+        )
+            return;
         this._groupWidth = event.currentTarget.parentElement.offsetWidth;
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');

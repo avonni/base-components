@@ -30,6 +30,7 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+    position: relative;
     user-select: none;
     z-index: 1;
 }
