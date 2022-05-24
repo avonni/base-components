@@ -56,6 +56,7 @@ export default class Kanban extends LightningElement {
     _initialTileIndex = 0;
     _isDragged = false;
     _isLoading = false;
+    _groupsLength = [];
     _kanbanPos = {
         top: 0,
         bottom: 0,
@@ -258,7 +259,10 @@ export default class Kanban extends LightningElement {
                 }
             }
         });
-
+        // Gets the length of each group
+        computedGroups.forEach((group) => {
+            this._groupsLength.push(group.tiles.length);
+        });
         return computedGroups;
     }
 
@@ -294,7 +298,8 @@ export default class Kanban extends LightningElement {
         const arr = JSON.parse(JSON.stringify(this._records));
         arr[fromIndex][this.groupFieldName] =
             this._groupValues[this._releasedGroupIndex].label;
-
+        this._groupsLength[this._clickedGroupIndex]--;
+        this._groupsLength[this._releasedGroupIndex]++;
         /**
          * The event fired when a card is moved from a step to another.
          *
@@ -473,11 +478,14 @@ export default class Kanban extends LightningElement {
             event.target.getBoundingClientRect().y +
             event.target.offsetHeight / 2;
 
-        this._initialTileIndex = Math.floor(
-            event.currentTarget.getBoundingClientRect().y /
-                event.currentTarget.offsetHeight
-        );
         this._clickedGroupIndex = Math.floor(event.clientX / this._groupWidth);
+        this._initialTileIndex = Math.min(
+            Math.floor(
+                event.currentTarget.getBoundingClientRect().y /
+                    event.currentTarget.offsetHeight
+            ),
+            this._groupsLength[this._clickedGroupIndex] - 1
+        );
         this._releasedGroupIndex = this._clickedGroupIndex;
         this.handleDropZone(event);
     }
@@ -523,15 +531,10 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseUp(event) {
-        if (
-            event.target.type === 'phone' ||
-            this.readOnly ||
-            event.currentTarget !== this._draggedTile
-        )
-            return;
+        if (this.readOnly || event.currentTarget !== this._draggedTile) return;
         this.handleTileDrop();
         this._draggedTile.style.transform = '';
-        this._draggedTile.style.width = '100%';
+        this._draggedTile.style.width = 'calc(100% - 10px)';
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
 
