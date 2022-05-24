@@ -74,7 +74,7 @@ const BUTTON_SIZES = {
 
 const BOXES_SIZES = {
     valid: ['small', 'medium', 'large', 'responsive'],
-    default: 'medium'
+    default: 'responsive'
 };
 
 const i18n = {
@@ -619,7 +619,7 @@ export default class DualListbox extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default medium
+     * @default responsive
      */
     @api
     get size() {

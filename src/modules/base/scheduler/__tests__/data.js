@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-export const START = new Date(2021, 8, 1);
+export const START = new Date(2021, 8, 2);
 
 export const COLUMNS = [
     {
@@ -115,7 +115,12 @@ export const DISABLED_DATES_TIMES = [
     {
         keyFields: ['row-3'],
         title: 'Disabled date 3',
-        from: new Date(2021, 8, 3),
+        from: new Date(2021, 7, 31),
         to: new Date(2021, 8, 5)
     }
 ];
+
+export const MONTH_TIME_SPAN = {
+    unit: 'month',
+    span: 1
+};
