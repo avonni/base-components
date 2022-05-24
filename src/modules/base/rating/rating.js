@@ -153,6 +153,17 @@ export default class Rating extends LightningElement {
      */
 
     /**
+     * Checks if the input is valid.
+     *
+     * @returns {boolean} True if the element meets all constraint validations.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
+
+    /**
      * If present, the rating component is disabled and users cannot interact with it.
      *
      * @type {boolean}
@@ -342,6 +353,17 @@ export default class Rating extends LightningElement {
         if (this.init) {
             this.ratingRecalculation();
         }
+    }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
     }
 
     /**
