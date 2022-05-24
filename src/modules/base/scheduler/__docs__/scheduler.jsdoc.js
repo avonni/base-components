@@ -35,6 +35,7 @@
  * It has to be a Hexadecimal or an RGB color. For example <code>#3A7D44</code> or <code>rgb(58, 125, 68)</code>.
  * @property {string} theme Custom theme for the event. If present, it will overwrite the default event theme. Valid values include default, transparent, line, hollow and rounded.
  * @property {object} labels Custom labels for the event. If present, it will overwrite the default event labels.
+ * Not supported for vertical variant.
  */
 
 /**

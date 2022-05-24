@@ -221,7 +221,7 @@
         <!-- Schedule -->
         <div class="slds-col slds-grid avonni-scheduler__schedule-col">
             <div class="slds-col">
-                <!-- Headers -->
+                <!-- Horizontal headers -->
                 <c-primitive-scheduler-header-group
                     if:false={isVertical}
                     class="avonni-scheduler__header"
@@ -237,6 +237,7 @@
                     onprivatecellsizechange={handleHeaderCellSizeChange}
                     onprivateheaderchange={handleHeaderChange}
                 ></c-primitive-scheduler-header-group>
+
                 <!-- Rows (horizontal variant) or columns (vertical variant) -->
                 <div
                     class={scheduleBodyClass}
@@ -254,6 +255,33 @@
                             data-index={index}
                             data-key={row.key}
                         >
+                            <!-- Vertical header -->
+                            <div
+                                if:true={isVertical}
+                                class="
+                                    slds-border_right slds-border_bottom
+                                    slds-col
+                                    slds-p-horizontal_x-small
+                                    avonni-scheduler__vertical-header-cell
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-theme_shade
+                                "
+                            >
+                                <c-primitive-avatar
+                                    if:true={row.resourceAvatar}
+                                    class="slds-m-right_x-small"
+                                    fallback-icon-name={row.resourceAvatar.fallbackIconName}
+                                    initials={row.resourceAvatar.initials}
+                                    src={row.resourceAvatar.src}
+                                    size="small"
+                                    variant="circle"
+                                ></c-primitive-avatar>
+                                <div class="slds-truncate">
+                                    {row.resourceName}
+                                </div>
+                            </div>
+
+                            <!-- Cells -->
                             <template for:each={row.columns} for:item="column">
                                 <div
                                     key={column.start}

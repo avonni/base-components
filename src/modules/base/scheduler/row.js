@@ -40,6 +40,7 @@ export default class SchedulerRow {
         this.columns = [];
         this.minHeight = 0;
         this.referenceColumns = normalizeArray(props.referenceColumns);
+        this.resourceName = props.resourceName;
         this.events = normalizeArray(props.events);
         this._height = 0;
         this.initColumns();
@@ -50,6 +51,26 @@ export default class SchedulerRow {
     }
     set height(value) {
         this._height = value;
+    }
+
+    get resourceAvatar() {
+        const {
+            resourceAvatarSrc,
+            resourceAvatarFallbackIconName,
+            resourceAvatarInitials
+        } = this.data;
+        if (
+            resourceAvatarFallbackIconName ||
+            resourceAvatarInitials ||
+            resourceAvatarSrc
+        ) {
+            return {
+                src: resourceAvatarSrc,
+                fallbackIconName: resourceAvatarFallbackIconName,
+                initials: resourceAvatarInitials
+            };
+        }
+        return null;
     }
 
     initColumns() {

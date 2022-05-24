@@ -510,6 +510,7 @@ export default class Scheduler extends LightningElement {
      * * right
      * * center
      * The value of each key should be a label object.
+     * Not supported for vertical variant.
      *
      * @type {object}
      * @public
@@ -758,10 +759,9 @@ export default class Scheduler extends LightningElement {
 
     /**
      * Array of datatable data objects (see [Data Table](https://www.avonnicomponents.com/components/datatable/) for allowed keys). Each object represents a row (horizontal variant) or a column (vertical variant) of the scheduler.
-     * If the objects have a `resourceName` key, its value will be used:
-     * * In the combobox of the edit event dialog.
-     * * As the column header, in the vertical variant.
-     * Otherwise, the `rows-key-field` will be used.
+     * Some reserved keys are used by the scheduler outside of the data table columns:
+     * * `resourceName`: Displayed in the event edit dialog, and in the column header (vertical variant). Otherwise, the rows key field is used.
+     * * `resourceAvatarSrc`, `resourceAvatarFallbackIconName` and `resourceAvatarInitials`: If present, an avatar will be displayed to the left of the resource name, in the column header (vertical variant).
      *
      * @type {object[]}
      * @public
@@ -774,6 +774,9 @@ export default class Scheduler extends LightningElement {
     set rows(value) {
         this._rows = normalizeArray(value);
 
+        if (this.isVertical) {
+            this.cellWidth = this.rows.length ? 100 / this.rows.length : 0;
+        }
         if (this._connected) {
             this.initRows();
         }
@@ -873,6 +876,9 @@ export default class Scheduler extends LightningElement {
         });
 
         this._initialFirstColWidth = null;
+        if (this.isVertical) {
+            this.cellWidth = this.rows.length ? 100 / this.rows.length : 0;
+        }
     }
 
     /*
@@ -997,7 +1003,8 @@ export default class Scheduler extends LightningElement {
             .add({
                 'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
                 'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
-                'avonni-scheduler__first-col_horizontal': !this.isVertical
+                'avonni-scheduler__first-col_horizontal': !this.isVertical,
+                'slds-m-top_xx-large slds-p-right_x-small': this.isVertical
             })
             .toString();
     }
@@ -1142,7 +1149,8 @@ export default class Scheduler extends LightningElement {
             .add({
                 'avonni-scheduler__splitter_disabled':
                     this.resizeColumnDisabled,
-                'slds-grid_align-end': this.firstColumnIsOpen
+                'slds-grid_align-end': this.firstColumnIsOpen,
+                'avonni-scheduler__splitter_vertical': this.isVertical
             })
             .toString();
     }
@@ -1395,6 +1403,7 @@ export default class Scheduler extends LightningElement {
                 color: this.palette[colorIndex],
                 key: rowKey,
                 referenceColumns: this.smallestHeader.columns,
+                resourceName: row.resourceName,
                 events: occurrences,
                 // We store the initial row object in a variable,
                 // in case one of its fields is used by an event's label
@@ -1471,20 +1480,28 @@ export default class Scheduler extends LightningElement {
                 (dataRow) => dataRow.rowKey === key
             ).height;
 
-            row.style = `
+            let style = `
                 min-height: ${dataRowHeight}px;
                 height: ${rowHeight}px;
-                --avonni-scheduler-cell-width: ${this.cellWidth}px;
-                --avonni-scheduler-cell-height: ${this.cellHeight}px;
             `;
 
-            if (!this.isVertical) {
+            if (this.isVertical) {
+                style += `
+                    width: ${this.cellWidth}%;
+                    min-width: 50px;
+                    --avonni-scheduler-cell-height: ${this.cellHeight}px;
+                `;
+            } else {
+                style += `--avonni-scheduler-cell-width: ${this.cellWidth}px;`;
+
                 // Patch inconsistency in the datatable row heights
                 const normalizedHeight =
                     index === 0 ? rowHeight - 1 : rowHeight;
                 // Reset the datatable row height, in case the height was set by events
                 this.datatable.setRowHeight(key, normalizedHeight);
             }
+
+            row.style = style;
         });
     }
 
@@ -1505,7 +1522,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Vertically align the datatable header with the smallest unit schedule header.
      */
-    updateDatatablePosition() {
+    pushDatatableDown() {
         if (this.isVertical) {
             return;
         }
@@ -2169,7 +2186,7 @@ export default class Scheduler extends LightningElement {
         this._rowsHeight = [];
 
         requestAnimationFrame(() => {
-            this.updateDatatablePosition();
+            this.pushDatatableDown();
         });
     }
 

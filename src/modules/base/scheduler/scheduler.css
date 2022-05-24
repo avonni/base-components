@@ -90,6 +90,13 @@
     min-height: var(--avonni-scheduler-cell-height);
 }
 
+.avonni-scheduler__vertical-header-cell {
+    color: #514f4d;
+    font-weight: 700;
+    min-height: 3rem;
+    height: 3rem;
+}
+
 .avonni-scheduler__infinite-load-spinner_right {
     right: 0;
     left: auto;
@@ -135,5 +142,8 @@
 }
 .avonni-scheduler__splitter-icon {
     left: 30px;
+}
+.avonni-scheduler__splitter.avonni-scheduler__splitter_vertical {
+    left: 0;
 }
 /* ---------- */

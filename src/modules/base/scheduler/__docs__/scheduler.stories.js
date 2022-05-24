@@ -536,13 +536,6 @@ Vertical.args = {
     rows,
     start,
     events: basicEvents,
-    timeSpan: {
-        unit: 'year',
-        span: 4
-    },
-    availableMonths: [1, 3],
-    availableDaysOfTheWeek: [0, 2, 4],
-    headers: 'dayWeekAndMonth',
     variant: 'vertical'
 };
 
