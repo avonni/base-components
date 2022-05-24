@@ -240,7 +240,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['decimal', 'currency', 'percent'],
+            options: ['decimal', 'currency', 'percent', 'custom'],
             description:
                 'Accepted unit include decimal, currency and percent. \nFormat the value displayed (lightning-formatted-number)',
             table: {
@@ -346,6 +346,33 @@ CurrencyLarge.args = {
         currencyCode: 'CAD'
     },
     pin: true
+};
+
+export const CustomLabel = Template.bind({});
+CustomLabel.args = {
+    label: 'Custom label range',
+    step: 1,
+    valueUpper: 5,
+    min: 0,
+    max: 10,
+    size: 'full',
+    unit: 'custom',
+    unitAttributes: {
+        customLabels: [
+            {
+                label: 'Jan 1',
+                value: 0
+            },
+            {
+                label: 'Jan 6',
+                value: 5
+            },
+            {
+                label: 'Jan 11',
+                value: 10
+            }
+        ]
+    }
 };
 
 export const MinMaxStep = Template.bind({});

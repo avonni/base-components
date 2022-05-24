@@ -45,7 +45,7 @@
         </span>
     </label>
     <div
-        if:true={isVertical}
+        if:true={isNormalVertical}
         class="avonni-range__unit-container"
         data-element-id="vertical-max-unit-container"
     >
@@ -143,7 +143,7 @@
             <div class="avonni-range__progress"></div>
         </div>
         <div
-            if:false={isVertical}
+            if:true={isNormalHorizontal}
             class="avonni-range__unit-container"
             data-element-id="horizontal-unit-container"
         >
@@ -172,9 +172,22 @@
                 data-element-id="lightning-formatted-number-max"
             ></lightning-formatted-number>
         </div>
+        <span
+            if:true={hasCustomLabelsHorizontal}
+            class="avonni-range__custom-labels-container_horizontal"
+        >
+            <template for:each={customLabels} for:item="customLabel">
+                <div class="custom-label-container" key={customLabel.value}>
+                    <div class="tick">l</div>
+                    <!-- <div>
+                        {customLabel.label}
+                    </div> -->
+                </div>
+            </template>
+        </span>
     </div>
     <div
-        if:true={isVertical}
+        if:true={isNormalVertical}
         class="avonni-range__unit-container"
         data-element-id="vertical-min-unit-container"
     >

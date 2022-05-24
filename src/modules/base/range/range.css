@@ -30,6 +30,16 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+:host {
+    --input-size: 694.4px;
+    --ball-radius: 7px;
+    --number-of-labels: 4;
+    --hash-width: calc(var(--input-size) - calc(var(--ball-radius)) * 2);
+    --label-column-width: calc(
+        var(--hash-width) / calc(var(--number-of-labels) - 1)
+    );
+}
+
 .slds-slider-label__label {
     padding-bottom: 0.5rem;
 }
@@ -211,4 +221,27 @@
 
 .avonni-range__bubble_visible {
     opacity: 1;
+}
+
+.avonni-range__custom-labels-container_horizontal {
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-left: var(--ball-radius);
+    display: grid;
+    grid-template-columns: repeat(
+        var(--number-of-labels),
+        var(--label-column-width)
+    );
+    transform: translate(calc(0px - calc(var(--label-column-width) / 2)));
+}
+
+.custom-label-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    text-align: center;
+}
+
+.tick {
+    margin: -4px 0 -4px;
+    color: #b9b9b9;
 }

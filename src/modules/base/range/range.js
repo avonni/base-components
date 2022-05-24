@@ -31,7 +31,12 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeObject,
+    normalizeArray
+} from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
@@ -52,7 +57,7 @@ const LABEL_VARIANTS = {
     default: 'standard'
 };
 const RANGE_UNITS = {
-    valid: ['decimal', 'currency', 'percent'],
+    valid: ['decimal', 'currency', 'percent', 'custom'],
     default: 'decimal'
 };
 
@@ -126,14 +131,6 @@ export default class Range extends LightningElement {
      * @public
      */
     @api messageWhenTypeMismatch;
-    /**
-     * Object containing selected fields for the unit type (currencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits).
-     *
-     * @type {object}
-     * @public
-     * @default
-     */
-    @api unitAttributes = {};
 
     _disabled = false;
     _max = DEFAULT_MAX;
@@ -143,6 +140,7 @@ export default class Range extends LightningElement {
     _step = DEFAULT_STEP;
     _type = RANGE_TYPES.default;
     _unit = RANGE_UNITS.default;
+    _unitAttributes = {};
     _valueLower;
     _valueUpper;
     _variant = LABEL_VARIANTS.default;
@@ -152,6 +150,7 @@ export default class Range extends LightningElement {
     _rightInput;
     _progress;
     _moveEventWait = false;
+    _customLabels = [];
 
     _rendered = false;
 
@@ -175,7 +174,9 @@ export default class Range extends LightningElement {
         });
         this.updateMinProgressBar(this._leftInput.value);
         this.updateMaxProgressBar(this._rightInput.value);
-
+        if (this._unit === 'custom') {
+            this.displayCustomLabels();
+        }
         if (!this._rendered) {
             this.initRange();
             this._rendered = true;
@@ -319,6 +320,7 @@ export default class Range extends LightningElement {
      */
     @api
     get unit() {
+        if (this._unit === 'custom') return RANGE_UNITS.default;
         return this._unit;
     }
 
@@ -327,6 +329,28 @@ export default class Range extends LightningElement {
             fallbackValue: RANGE_UNITS.default,
             validValues: RANGE_UNITS.valid
         });
+    }
+
+    /**
+     * Object containing selected fields for the unit type (currencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, customLabels).
+     *
+     * @type {object}
+     * @public
+     * @default
+     */
+    @api
+    set unitAttributes(value) {
+        if (value && value.customLabels)
+            this._customLabels = normalizeArray(value.customLabels, 'object');
+        else this._unitAttributes = normalizeObject(value);
+    }
+    get unitAttributes() {
+        return this._unitAttributes;
+    }
+
+    @api
+    get customLabels() {
+        return this._customLabels;
     }
 
     /**
@@ -463,12 +487,24 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Verify if range is vertical.
+     * Verify if range is vertical and does not have custom labels.
      *
      * @type {boolean}
      */
-    get isVertical() {
-        return this._type === 'vertical';
+    get isNormalVertical() {
+        return this._type === 'vertical' && this.customLabels.length === 0;
+    }
+
+    get isNormalHorizontal() {
+        return this._type === 'vertical' && this.customLabels.length === 0;
+    }
+
+    get hasCustomLabelsHorizontal() {
+        return this._customLabels.length !== 0 && this._type !== 'vertical';
+    }
+
+    get hasCustomLabelsVertical() {
+        return this._customLabels.length !== 0 && this._type === 'vertical';
     }
 
     /**
@@ -679,6 +715,13 @@ export default class Range extends LightningElement {
         this._valueUpper = value;
         this._progress.style.right =
             100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
+    }
+
+    /**
+     * Displays the custom labels for the range
+     */
+    displayCustomLabels() {
+        console.log(this._customLabels);
     }
 
     /**
