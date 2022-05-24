@@ -106,8 +106,11 @@ export default class ActivityTimeline extends LightningElement {
     _displayedItems = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _timelineWidth = 1300; // TO DO : Change to container width
-    _timelineHeight = 50;
+    _timelineHeight = 300;
+    _timelineAxisHeight = 30;
     _numberOfScrollAxisTicks = 10;
+    _offsetAxis = 40;
+    _scrollAxisColor = '#1c82bd';
 
     _key;
     _isConnected = false;
@@ -127,8 +130,9 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
-        this.createTimelineAxis();
         this.createTimelineScrollAxis();
+        this.createTimeline();
+        this.createTimelineAxis();
 
         // ONLY FOR TESTING AND LEARNING
         this.testingD3();
@@ -149,33 +153,33 @@ export default class ActivityTimeline extends LightningElement {
             .duration(5000);
 
         // AJOUT DE DONNEES , data binding
-        d3.select(divD3Testing)
-            .append('p')
-            .selectAll('p')
-            .data(['a', 'b', 'c'])
-            .enter()
-            .append('p')
-            .text(function (d) {
-                return d;
-            });
+        // d3.select(divD3Testing)
+        //     .append('p')
+        //     .selectAll('p')
+        //     .data(['a', 'b', 'c'])
+        //     .enter()
+        //     .append('p')
+        //     .text(function (d) {
+        //         return d;
+        //     });
 
         // TESTONS SCALE TIME
-        const svg = d3
-            .select(divD3Testing)
-            .append('svg')
-            .attr('width', this._timelineWidth)
-            .attr('height', this._timelineHeight);
-        const scale = d3
-            .scaleTime()
-            .domain([this.minDate, this.maxDate])
-            .range([0, 1000]);
-        const scrollAxis = d3.axisBottom(scale);
-        svg.append('g')
-            .attr(
-                'transform',
-                'translate(40, ' + this._timelineHeight / 2 + ')'
-            )
-            .call(scrollAxis);
+        // const svg = d3
+        //     .select(divD3Testing)
+        //     .append('svg')
+        //     .attr('width', this._timelineWidth)
+        //     .attr('height', this._timelineHeight);
+        // const scale = d3
+        //     .scaleTime()
+        //     .domain([this.minDate, this.maxDate])
+        //     .range([0, 1000]);
+        // const scrollAxis = d3.axisBottom(scale);
+        // svg.append('g')
+        //     .attr(
+        //         'transform',
+        //         'translate(' + this._offsetAxis + ', ' + this._timelineHeight / 2 + ')'
+        //     )
+        //     .call(scrollAxis);
     }
 
     /*
@@ -495,19 +499,88 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Create horizontal view timeline
+     */
+    createTimeline() {
+        // <--- SELECT AND REMOVE PREVIOUS TIMELINE --->
+        const timelineDiv = d3.select(
+            this.template.querySelector(
+                '.avonni-activity-timeline__horizontal-timeline-items'
+            )
+        );
+        timelineDiv.selectAll('*').remove();
+
+        // <--- CREATE NEW SVG FOR TIMELINE --->
+        const timelineSVG = timelineDiv
+            .append('svg')
+            .attr('width', this._timelineWidth)
+            .attr('height', this._timelineHeight)
+            .attr('transform', 'translate(0, ' + 30 + ')');
+
+        timelineSVG
+            .append('rect')
+            .attr('x', this._offsetAxis)
+            .attr('y', 0)
+            .attr('width', this._timelineWidth - this._offsetAxis - 10)
+            .attr('height', this._timelineHeight)
+            .attr('stroke', 'black')
+            .attr('fill', 'white');
+
+        //  <--- CREATE DASHED LINES ALIGN TO AXIS TICKS --->
+        const xScale = d3
+            .scaleBand()
+            .domain(
+                this.createTimelineDateDomain(
+                    this.intervalMinDate,
+                    this._intervalIncrement,
+                    this._intervalDaysLength / this._intervalIncrement
+                )
+            )
+            .range([0, this._timelineWidth - 50]);
+        const axis = d3
+            .axisBottom(xScale)
+            .tickSizeInner(this._timelineHeight + this._timelineAxisHeight)
+            .tickSizeOuter(0);
+        timelineSVG
+            .append('g')
+            .attr('transform', 'translate(40, 0)')
+            .attr('opacity', 0.15)
+            .style('stroke-dasharray', '8 8')
+            .call(axis);
+
+        // TODO: Inserer des donnees aux bonnes positions
+
+        // TODO: Over permet d'afficher plus d'informations
+    }
+
+    /**
      * Create the axis below the horizontal timeline to display the min-max interval
      */
     createTimelineAxis() {
+        // <--- SELECT AND REMOVE PREVIOUS AXIS --->
         const axisDiv = d3.select(
             this.template.querySelector(
                 '.avonni-activity-timeline__horizontal-timeline-axis'
             )
         );
         axisDiv.selectAll('*').remove();
+
         const axisSVG = axisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
-            .attr('height', this._timelineHeight);
+            .attr('height', this._timelineAxisHeight * 2);
+
+        // <--- CREATE RECT AROUND AXIS --->
+        axisSVG
+            .append('rect')
+            .attr('x', this._offsetAxis)
+            .attr('y', this._timelineAxisHeight)
+            .attr('width', this._timelineWidth - this._offsetAxis - 10)
+            .attr('height', 25)
+            .attr('stroke', 'black')
+            .attr('fill', 'white');
+
+        // <--- CREATE TICKS OF AXIS --->
         const domainDates = this.createTimelineDateDomain(
             this.intervalMinDate,
             this._intervalIncrement,
@@ -522,9 +595,12 @@ export default class ActivityTimeline extends LightningElement {
             .append('g')
             .attr(
                 'transform',
-                'translate(40, ' + this._timelineHeight / 2 + ')'
+                'translate(40, ' + this._timelineAxisHeight + ')'
             )
             .call(scrollAxis);
+
+        // <--- REMOVE ALL TICK MARKS  --->
+        axisSVG.selectAll('.tick').selectAll('line').remove();
     }
 
     /**
@@ -537,10 +613,12 @@ export default class ActivityTimeline extends LightningElement {
             )
         );
         scrollAxisDiv.selectAll('*').remove();
+
+        // <--- CREATE TICKS OF SCROLL AXIS --->
         const scrollAxisSVG = scrollAxisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
-            .attr('height', this._timelineHeight);
+            .attr('height', this._timelineAxisHeight * 2);
         const domainDates = this.createTimelineDateDomain(
             this.minDate,
             this.daysBetweenMinAndMax / this._numberOfScrollAxisTicks,
@@ -550,14 +628,94 @@ export default class ActivityTimeline extends LightningElement {
             .scaleBand()
             .domain(domainDates)
             .range([0, this._timelineWidth - 50]);
-        const scrollAxis = d3.axisBottom(xScale);
+        const scrollAxis = d3.axisBottom(xScale).tickSizeOuter(0);
         scrollAxisSVG
             .append('g')
             .attr(
                 'transform',
-                'translate(40, ' + this._timelineHeight / 2 + ')'
+                'translate(' +
+                    this._offsetAxis +
+                    ', ' +
+                    this._timelineAxisHeight +
+                    ')'
             )
             .call(scrollAxis);
+
+        // <--- CREATE RECT AROUND SCROLL AXIS --->
+        scrollAxisSVG
+            .append('rect')
+            .attr('x', this._offsetAxis) // POSITION X -- TEMPS
+            .attr('y', 1) // POSITION Y - GERER SI PLUSIEURS MEMES DATES
+            .attr('width', this._timelineWidth - this._offsetAxis - 10) // longueur du rectangle du data
+            .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
+            .attr('stroke', this._scrollAxisColor)
+            .attr('fill', 'white');
+
+        // <--- CREATE RECT ON SCROLL AXIS TO REPRESENT DATA --->
+
+        // CALCULATE X AXIS VALUE
+        const rectWidth = 5;
+        const intervalSize =
+            this._timelineWidth / (this._numberOfScrollAxisTicks + 3);
+        const dividerFactor = 100000000000.0;
+        let xDateData = [];
+
+        const scaleFactor =
+            (this._timelineWidth -
+                2 * intervalSize +
+                this._offsetAxis -
+                rectWidth) /
+            ((dateTimeObjectFrom(this.maxDate).toFormat('x') -
+                dateTimeObjectFrom(this.minDate).toFormat('x')) /
+                dividerFactor);
+        this.sortedItems.forEach((item) => {
+            const xValue =
+                dateTimeObjectFrom(item.datetimeValue).toFormat('x') -
+                dateTimeObjectFrom(this.minDate).toFormat('x');
+            xDateData.push(
+                (xValue / dividerFactor) * scaleFactor +
+                    intervalSize -
+                    rectWidth
+            );
+        });
+
+        // DRAW RECT FOR EACH DATE
+        scrollAxisSVG
+            .append('g')
+            .selectAll('rect')
+            .data(xDateData)
+            .enter()
+            .append('rect')
+            .attr('x', (x) => x) // POSITION DU DATA (X)
+            .attr('y', 8) // TODO: CHANGE Y POSITION IF SAME DATES
+            .attr('width', rectWidth)
+            .attr('height', 3)
+            .attr('fill', this._scrollAxisColor);
+
+        // <--- DRAW VIEW INTERVAL (BLUE RECT) -->
+        const xMinIntervalDate =
+            ((dateTimeObjectFrom(this._intervalMinDate).toFormat('x') -
+                dateTimeObjectFrom(this.minDate).toFormat('x')) /
+                dividerFactor) *
+                scaleFactor +
+            intervalSize;
+        const xMaxIntervalDate =
+            ((dateTimeObjectFrom(this._intervalMaxDate).toFormat('x') -
+                dateTimeObjectFrom(this.minDate).toFormat('x')) /
+                dividerFactor) *
+                scaleFactor +
+            intervalSize;
+        scrollAxisSVG
+            .append('g')
+            .append('rect')
+            .attr('x', xMinIntervalDate) // Debut date min interval (valeur x convertie)
+            .attr('y', 0.5)
+            .attr('width', xMaxIntervalDate - xMinIntervalDate) // length of the interval
+            .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
+            .attr('opacity', 0.3)
+            .attr('fill', this._scrollAxisColor);
+
+        // TODO: DRAG RECT TO CHANGE INTERVAL
     }
 
     /**
