@@ -43,6 +43,13 @@
     transform: rotate(180deg);
 }
 
+.avonni-scheduler-header-group__header-cell {
+    width: var(--avonni-scheduler-cell-size);
+    min-width: var(--avonni-scheduler-cell-size);
+    color: #514f4d;
+    font-weight: 700;
+}
+
 .avonni-scheduler-header-group__header_vertical
     .avonni-scheduler-header-group__header-cell {
     width: auto;
@@ -51,16 +58,11 @@
     writing-mode: vertical-rl;
 }
 
-.avonni-scheduler-header-group__header-cell,
 .avonni-scheduler-header-group__header_vertical:last-of-type
     .avonni-scheduler-header-group__header-cell {
     height: auto;
-    width: var(--avonni-scheduler-cell-size);
-    min-width: var(--avonni-scheduler-cell-size);
-    background-color: #f3f3f3;
-    color: #514f4d;
-    font-weight: 700;
     writing-mode: initial;
+    padding: 0 0.75rem;
 }
 
 .avonni-scheduler-header-group__header-label_sticky {

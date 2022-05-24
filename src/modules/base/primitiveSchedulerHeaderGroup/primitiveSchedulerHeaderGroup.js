@@ -92,7 +92,6 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _timeSpan = DEFAULT_TIME_SPAN;
     _variant = VARIANTS.default;
 
-    _cellSize = 0;
     _connected = false;
     _initHeadersTimeout;
     computedHeaders = [];
@@ -584,13 +583,13 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             header.computeColumnWidths(cellSize, this.smallestHeader.columns);
         });
         this.dispatchCellSizeChange(cellSize);
-        this.updateCellsWidths();
+        this.updateCellsSize();
     }
 
     /**
      * Update the header cells style with their computed width.
      */
-    updateCellsWidths() {
+    updateCellsSize() {
         // Get rows and sort them from the shortest unit to the longest
         const rows = Array.from(
             this.template.querySelectorAll('[data-element-id="div-row"]')
