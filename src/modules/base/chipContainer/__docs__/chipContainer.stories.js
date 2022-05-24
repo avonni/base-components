@@ -54,7 +54,7 @@ export default {
             description:
                 'The alternative text used to describe the chip container.',
             table: {
-                defaultValue: { summary: 'Task List' },
+                defaultValue: { summary: 'Selected Options:' },
                 type: { summary: 'string' }
             }
         },

@@ -62,6 +62,6 @@ const ITEMS = [
     }
 ];
 
-const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
+const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 
 export { ITEMS, DEFAULT_ALTERNATIVE_TEXT };

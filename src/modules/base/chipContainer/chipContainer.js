@@ -36,7 +36,7 @@ import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 
-const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
+const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 
 export default class ChipContainer extends LightningElement {
     _items = [];

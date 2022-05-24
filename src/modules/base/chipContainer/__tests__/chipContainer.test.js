@@ -57,7 +57,7 @@ const MOCK_ITEM_SET = [
     }
 ];
 
-const DEFAULT_ALTERNATIVE_TEXT = 'Task list';
+const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 
 // not tested
 // AvonniResizeObserver callback()
