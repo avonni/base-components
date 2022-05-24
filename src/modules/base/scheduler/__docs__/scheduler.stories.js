@@ -534,8 +534,22 @@ Vertical.args = {
     columns,
     rowsKeyField: 'id',
     rows,
+    customHeaders: headers,
+    timeSpan: {
+        unit: 'week',
+        span: 2
+    },
     start,
-    events: basicEvents,
+    toolbarTimeSpans: [
+        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+        { unit: 'week', span: 2, label: 'Sprint', headers: 'hourDayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
+    ],
+    availableTimeFrames: ['08:00-17:00'],
+    availableDaysOfTheWeek: [1, 2, 3, 4, 5],
+    events,
+    disabledDatesTimes: disabledDatesTimes,
+    referenceLines: referenceLines,
     variant: 'vertical'
 };
 

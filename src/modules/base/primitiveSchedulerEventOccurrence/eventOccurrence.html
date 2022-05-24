@@ -35,8 +35,9 @@
 <template>
     <!-- Events -->
     <div
-        class="slds-grid slds-grid_vertical-align-center avonni-scheduler__event-wrapper slds-p-vertical_x-small"
+        class={eventOccurrenceClass}
         tabindex="0"
+        data-element-id="div-event-occurrence"
         data-from={from}
         data-to={to}
         oncontextmenu={handleContextMenu}
@@ -51,7 +52,11 @@
         <!-- Left label -->
         <div
             if:true={computedLabels.left}
-            class="slds-p-around_xx-small slds-grid slds-is-absolute avonni-scheduler__event-label_left"
+            class="
+                slds-p-around_xx-small
+                slds-grid slds-is-absolute
+                avonni-scheduler__event-label_left
+            "
         >
             <lightning-icon
                 if:true={computedLabels.left.iconName}
@@ -68,7 +73,12 @@
             <!-- Top label -->
             <div
                 if:true={computedLabels.top}
-                class="slds-grid_align-center slds-p-around_xx-small slds-grid avonni-scheduler__event-label_top"
+                class="
+                    slds-grid_align-center
+                    slds-p-around_xx-small
+                    slds-grid
+                    avonni-scheduler__event-label_top
+                "
             >
                 <lightning-icon
                     if:true={computedLabels.top.iconName}
@@ -83,10 +93,13 @@
 
             <!-- Event -->
             <div class={computedClass} style={style}>
-                <!-- Resize left icon -->
+                <!-- Start resize icon -->
                 <lightning-icon
                     if:false={readOnly}
-                    class="avonni-scheduler__event-resize-icon avonni-scheduler__event-resize-icon_left"
+                    class="
+                        avonni-scheduler__event-resize-icon
+                        avonni-scheduler__event-resize-icon_start
+                    "
                     icon-name="utility:drag_and_drop"
                     size="xx-small"
                     data-resize="left"
@@ -95,7 +108,7 @@
                 <!-- Center label -->
                 <div
                     if:true={computedLabels.center}
-                    class="slds-truncate slds-grid slds-p-horizontal_x-small avonni-scheduler__event-label_center"
+                    class={eventOccurrenceCenterLabelClass}
                 >
                     <lightning-icon
                         if:true={computedLabels.center.iconName}
@@ -110,10 +123,13 @@
                     >
                 </div>
 
-                <!-- Resize right icon -->
+                <!-- End resize icon -->
                 <lightning-icon
                     if:false={readOnly}
-                    class="avonni-scheduler__event-resize-icon avonni-scheduler__event-resize-icon_right"
+                    class="
+                        avonni-scheduler__event-resize-icon
+                        avonni-scheduler__event-resize-icon_end
+                    "
                     icon-name="utility:drag_and_drop"
                     size="xx-small"
                     data-resize="right"
@@ -123,7 +139,12 @@
             <!-- Bottom label -->
             <div
                 if:true={computedLabels.bottom}
-                class="slds-grid_align-center slds-p-around_xx-small slds-grid avonni-scheduler__event-label_bottom"
+                class="
+                    slds-grid_align-center
+                    slds-p-around_xx-small
+                    slds-grid
+                    avonni-scheduler__event-label_bottom
+                "
             >
                 <lightning-icon
                     if:true={computedLabels.bottom.iconName}
@@ -142,7 +163,11 @@
         <!-- Right label -->
         <div
             if:true={computedLabels.right}
-            class="slds-p-around_xx-small slds-grid slds-is-absolute avonni-scheduler__event-label_right"
+            class="
+                slds-p-around_xx-small
+                slds-grid slds-is-absolute
+                avonni-scheduler__event-label_right
+            "
         >
             <lightning-icon
                 if:true={computedLabels.right.iconName}

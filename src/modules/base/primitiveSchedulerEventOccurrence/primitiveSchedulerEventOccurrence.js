@@ -36,13 +36,18 @@ import { DateTime } from 'c/luxon';
 import {
     dateTimeObjectFrom,
     normalizeArray,
-    normalizeBoolean
+    normalizeBoolean,
+    normalizeString
 } from 'c/utilsPrivate';
 import disabled from './disabled.html';
 import eventOccurrence from './eventOccurrence.html';
 import referenceLine from './referenceLine.html';
 
 const DEFAULT_DATE_FORMAT = 'ff';
+const VARIANTS = {
+    default: 'horizontal',
+    valid: ['horizontal', 'vertical']
+};
 
 /**
  * Event occurrence displayed by the scheduler.
@@ -92,9 +97,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api theme;
 
-    _columnDuration = 0;
-    _columns = [];
-    _columnWidth = 0;
+    _cellDuration = 0;
+    _cellHeight = 0;
+    _cellWidth = 0;
+    _headerCells = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _eventData = {};
     _scrollLeftOffset = 0;
@@ -110,11 +116,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _rows = [];
     _title;
     _to;
-
-    _focused = false;
-    _offsetX = 0;
+    _variant = VARIANTS.default;
     _x = 0;
     _y = 0;
+
+    _focused = false;
+    _offsetSize = 0;
     computedLabels = {};
 
     connectedCallback() {
@@ -129,7 +136,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     renderedCallback() {
         this.updatePosition();
-        this.updateWidth();
+        this.updateSize();
         this.updateHeight();
         this.updateStickyLabels();
     }
@@ -148,56 +155,76 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @default 0
      */
     @api
-    get columnDuration() {
-        return this._columnDuration;
+    get cellDuration() {
+        return this._cellDuration;
     }
-    set columnDuration(value) {
-        this._columnDuration = !isNaN(Number(value)) ? Number(value) : 0;
+    set cellDuration(value) {
+        this._cellDuration = !isNaN(Number(value)) ? Number(value) : 0;
 
         if (this._connected) {
-            this.updateWidth();
+            this.updateSize();
             this.updateStickyLabels();
         }
     }
 
     /**
-     * The columns of the shortest header unit of the scheduler.
+     * The cells of the shortest header unit of the scheduler.
      *
      * @type {object[]}
      * @public
      * @required
      */
     @api
-    get columns() {
-        return this._columns;
+    get headerCells() {
+        return this._headerCells;
     }
-    set columns(value) {
-        this._columns = normalizeArray(value);
+    set headerCells(value) {
+        this._headerCells = normalizeArray(value);
 
         if (this._connected) {
             this.updatePosition();
-            this.updateWidth();
+            this.updateSize();
             this.updateStickyLabels();
         }
     }
 
     /**
-     * Width of a column, in pixels.
+     * Height of a cell, in pixels.
      *
      * @type {number}
      * @public
      * @default 0
      */
     @api
-    get columnWidth() {
-        return this._columnWidth;
+    get cellHeight() {
+        return this._cellHeight;
     }
-    set columnWidth(value) {
-        this._columnWidth = !isNaN(Number(value)) ? Number(value) : 0;
+    set cellHeight(value) {
+        this._cellHeight = !isNaN(Number(value)) ? Number(value) : 0;
 
         if (this._connected) {
             this.updatePosition();
-            this.updateWidth();
+            this.updateSize();
+        }
+    }
+
+    /**
+     * Width of a cell, in pixels.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get cellWidth() {
+        return this._cellWidth;
+    }
+    set cellWidth(value) {
+        this._cellWidth = !isNaN(Number(value)) ? Number(value) : 0;
+
+        if (this._connected) {
+            this.updatePosition();
+            this.updateSize();
             this.updateStickyLabels();
         }
     }
@@ -272,7 +299,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this._connected) {
             this.updatePosition();
-            this.updateWidth();
+            this.updateSize();
             this.updateStickyLabels();
         }
     }
@@ -419,9 +446,27 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
 
         if (this._connected) {
-            this.updateWidth();
+            this.updateSize();
             this.updateStickyLabels();
         }
+    }
+
+    /**
+     * Orientation of the scheduler. Valid values include horizontal and vertical.
+     *
+     * @type {string}
+     * @public
+     * @default horizontal
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+    set variant(value) {
+        this._variant = normalizeString(value, {
+            fallbackValue: VARIANTS.default,
+            validValues: VARIANTS.valid
+        });
     }
 
     /**
@@ -470,7 +515,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     get leftPosition() {
-        const left = this.x + this._offsetX - this.leftLabelWidth;
+        const left = this.x + this._offsetSize - this.leftLabelWidth;
         return left > 0 ? left : 0;
     }
 
@@ -485,7 +530,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get rightPosition() {
         return (
             this.x +
-            this._offsetX +
+            this._offsetSize +
             this.hostElement.getBoundingClientRect().width +
             this.rightLabelWidth
         );
@@ -539,12 +584,52 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Computed CSS classes of the event occurence center label.
+     *
+     * @type {string}
+     */
+    get eventOccurrenceCenterLabelClass() {
+        return classSet(
+            'slds-truncate slds-grid  avonni-scheduler__event-label_center'
+        )
+            .add({
+                'slds-p-vertical_x-small': this.isVertical,
+                'slds-p-horizontal_x-small': !this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS classes of the event occurrences.
+     *
+     * @type {string}
+     */
+    get eventOccurrenceClass() {
+        return classSet('slds-grid')
+            .add({
+                'slds-grid_vertical-align-center slds-p-vertical_x-small':
+                    !this.isVertical,
+                'avonni-scheduler__event-wrapper_vertical': this.isVertical
+            })
+            .toString();
+    }
+
+    /**
      * Outermost HTML element of the component.
      *
      * @type {HTMLElement}
      */
     get hostElement() {
         return this.template.host;
+    }
+
+    /**
+     * True if the variant is vertical.
+     *
+     * @type {boolean}
+     */
+    get isVertical() {
+        return this.variant === 'vertical';
     }
 
     /**
@@ -670,7 +755,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     focus() {
-        this.template.querySelector('.avonni-scheduler__event-wrapper').focus();
+        this.template
+            .querySelector('[data-element-id="div-event-occurrence"]')
+            .focus();
     }
 
     /**
@@ -710,20 +797,24 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     @api
     updatePosition() {
-        const { from, columns, columnWidth } = this;
+        const { from, headerCells, cellHeight, cellWidth } = this;
 
-        // Find the column where the event starts
-        let i = columns.findIndex((column) => {
+        // Find the cell where the event starts
+        let i = headerCells.findIndex((column) => {
             return column.end > from;
         });
 
         if (i < 0) return;
 
-        // Set the horizontal position
-        this._x = i * columnWidth;
+        // Place the event at the right header
+        if (this.isVertical) {
+            this._y = i * cellHeight;
+        } else {
+            this._x = i * cellWidth;
+        }
 
-        // Set the vertical position
-        if (!this.referenceLine) {
+        // Place the event at the right resource,
+        if (!this.referenceLine && !this.isVertical) {
             const rows = this.rows;
             let y = 0;
             for (let j = 0; j < rows.length; j++) {
@@ -734,6 +825,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             }
             y += this.offsetTop;
             this._y = y;
+        } else if (!this.referenceLine && this.isVertical) {
+            const rowIndex = this.rows.findIndex((row) => {
+                return row.key === this.rowKey;
+            });
+            this._x = rowIndex * cellWidth;
         }
 
         this.updateHostTranslate();
@@ -745,64 +841,74 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api
-    updateWidth() {
-        const { from, to, columns, columnWidth, columnDuration } = this;
+    updateSize() {
+        const { from, to, headerCells, cellHeight, cellWidth, cellDuration } =
+            this;
         const element = this.hostElement;
+        const cellSize = this.isVertical ? cellHeight : cellWidth;
 
-        // Find the column where the event starts
-        let i = columns.findIndex((column) => {
+        // Find the cell where the event starts
+        let i = headerCells.findIndex((column) => {
             return column.end > from;
         });
 
         if (i < 0) return;
 
-        let width = 0;
+        let size = 0;
 
-        // If the event starts in the middle of a column,
-        // add only the appropriate width in the first column
-        if (columns[i].start < from) {
-            const columnEnd = DateTime.fromMillis(columns[i].end);
-            const eventDuration = columnEnd.diff(from).milliseconds;
-            const emptyDuration = columnDuration - eventDuration;
-            const emptyPercentageOfCol = emptyDuration / columnDuration;
-            this._offsetX = columnWidth * emptyPercentageOfCol;
+        // If the event starts in the middle of a cell,
+        // add only the appropriate size in the first cell
+        if (headerCells[i].start < from) {
+            const cellEnd = DateTime.fromMillis(headerCells[i].end);
+            const eventDuration = cellEnd.diff(from).milliseconds;
+            const emptyDuration = cellDuration - eventDuration;
+            const emptyPercentageOfCell = emptyDuration / cellDuration;
+            this._offsetSize = cellSize * emptyPercentageOfCell;
             this.updateHostTranslate();
             if (this.referenceLine) return;
 
-            const eventPercentageOfCol = eventDuration / columnDuration;
-            const offsetWidth = columnWidth * eventPercentageOfCol;
-            width += offsetWidth;
+            const eventPercentageOfCell = eventDuration / cellDuration;
+            const offsetSize = cellSize * eventPercentageOfCell;
+            size += offsetSize;
 
             // If the event ends before the end of the first column
-            // remove the appropriate width of the first column
-            if (columnEnd > to) {
-                const durationLeft = columnEnd.diff(to).milliseconds;
-                const percentageLeft = durationLeft / columnDuration;
-                width = width - percentageLeft * columnWidth;
-                element.style.width = `${width}px`;
+            // remove the appropriate size of the first column
+            if (cellEnd > to) {
+                const durationLeft = cellEnd.diff(to).milliseconds;
+                const percentageLeft = durationLeft / cellDuration;
+                size = size - percentageLeft * cellSize;
+                if (this.isVertical) {
+                    element.style.height = `${size}px`;
+                } else {
+                    element.style.width = `${size}px`;
+                }
                 return;
             }
 
             i += 1;
         } else if (this.referenceLine) return;
 
-        // Add the width of the columns completely filled by the event
-        while (i < columns.length) {
-            if (columns[i].start + columnDuration > to) break;
-            width += columnWidth;
+        // Add the size of the header cells completely filled by the event
+        while (i < headerCells.length) {
+            if (headerCells[i].start + cellDuration > to) break;
+            size += cellSize;
             i += 1;
         }
 
         // If the event ends in the middle of a column,
         // add the remaining width
-        if (columns[i] && columns[i].start < to) {
-            const columnStart = DateTime.fromMillis(columns[i].start);
-            const eventDurationLeft = to.diff(columnStart).milliseconds;
-            const colPercentEnd = eventDurationLeft / columnDuration;
-            width += columnWidth * colPercentEnd;
+        if (headerCells[i] && headerCells[i].start < to) {
+            const cellStart = DateTime.fromMillis(headerCells[i].start);
+            const eventDurationLeft = to.diff(cellStart).milliseconds;
+            const colPercentEnd = eventDurationLeft / cellDuration;
+            size += cellSize * colPercentEnd;
         }
 
-        element.style.width = `${width}px`;
+        if (this.isVertical) {
+            element.style.height = `${size}px`;
+        } else {
+            element.style.width = `${size}px`;
+        }
     }
 
     /**
@@ -832,7 +938,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         );
         if (stickyLabel) {
             stickyLabel.style.left = `${
-                this.scrollLeftOffset - this._x - this._offsetX
+                this.scrollLeftOffset - this._x - this._offsetSize
             }px`;
         }
     }
@@ -887,10 +993,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Add the computed position to the inline style of the component host.
      */
     updateHostTranslate() {
+        const x = this.isVertical ? this.x : this.x + this._offsetSize;
+        const y = this.isVertical ? this.y + this._offsetSize : this.y;
         if (this.hostElement) {
-            this.hostElement.style.transform = `translate(${
-                this.x + this._offsetX
-            }px, ${this.y}px)`;
+            this.hostElement.style.transform = `translate(${x}px, ${y}px)`;
         }
     }
 

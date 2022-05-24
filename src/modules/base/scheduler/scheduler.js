@@ -774,9 +774,6 @@ export default class Scheduler extends LightningElement {
     set rows(value) {
         this._rows = normalizeArray(value);
 
-        if (this.isVertical) {
-            this.cellWidth = this.rows.length ? 100 / this.rows.length : 0;
-        }
         if (this._connected) {
             this.initRows();
         }
@@ -876,9 +873,6 @@ export default class Scheduler extends LightningElement {
         });
 
         this._initialFirstColWidth = null;
-        if (this.isVertical) {
-            this.cellWidth = this.rows.length ? 100 / this.rows.length : 0;
-        }
     }
 
     /*
@@ -897,6 +891,21 @@ export default class Scheduler extends LightningElement {
             return [];
         }
         return this.toolbarTimeSpans;
+    }
+
+    /**
+     * Computed CSS classes of the cells.
+     *
+     * @type {string}
+     */
+    get cellClass() {
+        return classSet(
+            'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
+        )
+            .add({
+                'slds-col': !this.isVertical
+            })
+            .toString();
     }
 
     /**
@@ -981,6 +990,19 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Computed CSS classes of the events wrapper.
+     *
+     * @type {string}
+     */
+    get eventsWrapperClass() {
+        return classSet('avonni-scheduler__events slds-is-absolute')
+            .add({
+                'slds-m-top_xx-large': this.isVertical
+            })
+            .toString();
+    }
+
+    /**
      * First column HTML Element. It contains the datatable (horizontal variant) or the headers (vertical variant).
      *
      * @type {HTMLElement}
@@ -1050,7 +1072,7 @@ export default class Scheduler extends LightningElement {
     get rowClass() {
         return classSet('slds-grid slds-is-relative')
             .add({
-                'slds-grid_vertical': this.isVertical
+                'slds-grid_vertical slds-col': this.isVertical
             })
             .toString();
     }
@@ -1422,6 +1444,12 @@ export default class Scheduler extends LightningElement {
             colorIndex += 1;
             return computedRow;
         });
+
+        if (this.isVertical) {
+            requestAnimationFrame(() => {
+                this.updateCellWidth();
+            });
+        }
     }
 
     /**
@@ -1672,7 +1700,7 @@ export default class Scheduler extends LightningElement {
                 occurrence.updateHeight();
             }
             if (this._updateOccurrencesWidth) {
-                occurrence.updateWidth();
+                occurrence.updateSize();
             }
             occurrence.updatePosition();
         });
