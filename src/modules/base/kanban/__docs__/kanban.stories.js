@@ -140,3 +140,15 @@ Base.args = {
     summarizeFieldName: 'Amount',
     groupFieldName: 'status'
 };
+
+export const readOnly = Template.bind({});
+readOnly.args = {
+    groupValues: GROUP_VALUES,
+    fields: FIELDS,
+    records: RECORDS,
+    actions: ACTIONS,
+    readOnly: true,
+    isLoading: false,
+    summarizeFieldName: 'percent',
+    groupFieldName: 'status'
+};
