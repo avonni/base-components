@@ -303,6 +303,7 @@ export default class Barcode extends LightningElement {
     /**
      * Switch case switches based on the library used to render the barcode. The libraries are BwipJs and JsBarCode.Each case calls the corresponding render method.
      */
+    @api
     renderBarcode() {
         switch (this.getBarcodeLibrary()) {
             case 'bwipjs':
@@ -341,7 +342,6 @@ export default class Barcode extends LightningElement {
         bwipjs.toCanvas(canvas, {
             bcid: this.getLibraryEncodingValue(),
             text: this.value,
-            alttext: this.value,
             includetext: !this.hideValue,
             includecheck: false,
             includecheckintext: false,
