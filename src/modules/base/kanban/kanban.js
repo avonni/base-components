@@ -398,8 +398,10 @@ export default class Kanban extends LightningElement {
                 event.currentTarget.offsetHeight
         );
 
-        this._releasedGroupIndex = Math.floor(event.clientX / this._groupWidth);
-
+        this._releasedGroupIndex = Math.min(
+            Math.floor(event.clientX / this._groupWidth),
+            this.groupValues.length - 1
+        );
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
