@@ -31,6 +31,7 @@
  */
 
 import { ChipContainer } from '../__examples__/chipContainer';
+import { MaxWidthChipContainer } from '../__examples__/maxWidthChipContainer';
 import { ITEMS, DEFAULT_ALTERNATIVE_TEXT } from './data.js';
 
 export default {
@@ -54,7 +55,6 @@ export default {
             description:
                 'The alternative text used to describe the chip container.',
             table: {
-                defaultValue: { summary: 'Selected Options:' },
                 type: { summary: 'string' }
             }
         },
@@ -66,7 +66,6 @@ export default {
             description:
                 'If present, the pill list can be collapsed. Use `is-collapsible` with the `is-expanded` attribute to expand and collapse the list of pills.',
             table: {
-                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         },
@@ -78,14 +77,20 @@ export default {
             description:
                 'If present and `is-collapsible` too, the list of pills is expanded. This attribute is ignored when `is-collapsible` is false, and the list of pills is expanded even if `is-expanded` is false or not set',
             table: {
-                defaultValue: { summary: false },
                 type: { summary: 'boolean' }
             }
         }
+    },
+    args: {
+        isCollapsible: false,
+        alternativeText: 'Selected Options:',
+        isExpanded: false,
+        sortable: false
     }
 };
 
 const Template = (args) => ChipContainer(args);
+const TemplateWithMaxWidth = (args) => MaxWidthChipContainer(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -95,7 +100,7 @@ Base.args = {
     isExpanded: false
 };
 
-export const Collapsed = Template.bind({});
+export const Collapsed = TemplateWithMaxWidth.bind({});
 Collapsed.args = {
     items: ITEMS,
     alternativeText: DEFAULT_ALTERNATIVE_TEXT,
