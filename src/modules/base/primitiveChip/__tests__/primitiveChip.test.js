@@ -33,8 +33,6 @@
 import { createElement } from 'lwc';
 import PrimitiveChip from '../primitiveChip';
 
-const DEFAULT_ICON_NAME = 'utility:check';
-
 const MOCK_AVATAR = {
     fallbackIconName: 'standard:user',
     variant: 'circle',
@@ -61,7 +59,7 @@ describe('Primitive Chip', () => {
         expect(element.outline).toEqual(false);
         expect(element.avatar).toEqual(null);
         expect(element.variant).toEqual('base');
-        expect(element.iconName).toEqual(DEFAULT_ICON_NAME);
+        expect(element.iconName).toEqual('utility:check');
         expect(element.mediaPosition).toEqual('left');
     });
 

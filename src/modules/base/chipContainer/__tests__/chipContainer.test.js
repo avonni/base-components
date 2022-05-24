@@ -36,23 +36,30 @@ import ChipContainer from '../chipContainer';
 const MOCK_ITEM_SET = [
     {
         label: 'First chip',
+        iconName: 'utility:table',
         variant: 'base',
         outline: true
     },
     {
         label: 'loooooooooooooooooooooooooooooooooooooooooooooooong 2nd chip',
         variant: 'warning',
+        mediaPosition: 'left',
+        outline: false,
         avatar: {
             fallbackIconName: 'custom:custom1',
+            size: 'x-small',
             variant: 'circle'
         }
     },
     {
         label: 'third chip',
-        avatarPosition: 'right',
+        mediaPosition: 'right',
+        outline: false,
+        variant: 'base',
         avatar: {
             fallbackIconName: 'custom:custom1',
-            variant: 'circle'
+            variant: 'circle',
+            size: 'x-small'
         }
     }
 ];
@@ -141,10 +148,25 @@ describe('Chip Container', () => {
     it('items', () => {
         element.items = MOCK_ITEM_SET;
         return Promise.resolve().then(() => {
-            const itemsContainer = element.shadowRoot.querySelector(
-                '[data-element-id="chip-container-list"]'
+            const chips = element.shadowRoot.querySelectorAll(
+                '[data-element-id="chip"]'
             );
-            expect(itemsContainer.childElementCount).toBe(3);
+            expect(chips.length).toBe(3);
+            chips.forEach((chipParent, index) => {
+                let chip = chipParent.firstChild;
+                expect(chip.label).toBe(MOCK_ITEM_SET[index].label);
+                expect(chip.variant).toBe(MOCK_ITEM_SET[index].variant);
+                expect(chip.iconName).toBe(
+                    MOCK_ITEM_SET[index].iconName || 'utility:check'
+                );
+                expect(chip.avatar).toEqual(
+                    MOCK_ITEM_SET[index].avatar || null
+                );
+                expect(chip.avatarPosition).toBe(
+                    MOCK_ITEM_SET[index].avatarPosition
+                );
+                expect(chip.outline).toBe(MOCK_ITEM_SET[index].outline);
+            });
         });
     });
 

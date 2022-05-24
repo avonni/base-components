@@ -31,7 +31,12 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    normalizeObject,
+    deepCopy
+} from 'c/utilsPrivate';
 
 const CHIP_VARIANTS = {
     valid: [
@@ -126,7 +131,7 @@ export default class PrimitiveChip extends LightningElement {
     }
     set avatar(value) {
         if (value) {
-            const tempAvatar = JSON.parse(JSON.stringify(value));
+            const tempAvatar = deepCopy(normalizeObject(value));
             if (!tempAvatar.size) {
                 tempAvatar.size = DEFAULT_AVATAR_SIZE;
             }
