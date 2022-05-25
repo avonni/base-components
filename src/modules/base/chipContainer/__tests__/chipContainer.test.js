@@ -152,8 +152,7 @@ describe('Chip Container', () => {
                 '[data-element-id="chip"]'
             );
             expect(chips.length).toBe(3);
-            chips.forEach((chipParent, index) => {
-                let chip = chipParent.firstChild;
+            chips.forEach((chip, index) => {
                 expect(chip.label).toBe(MOCK_ITEM_SET[index].label);
                 expect(chip.variant).toBe(MOCK_ITEM_SET[index].variant);
                 expect(chip.iconName).toBe(

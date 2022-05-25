@@ -95,7 +95,7 @@ describe('Primitive Chip', () => {
             expect(
                 element.shadowRoot
                     .querySelector('[data-element-id="chip-wrapper"]')
-                    .classList.contains('avonni-primitive-chip__hidden')
+                    .classList.contains('slds-hide')
             ).toBeTruthy();
             expect(element.hidden).toBe(true);
         });
