@@ -712,7 +712,7 @@ export const horizontalItems = [
     {
         name: 'item13',
         title: 'Another item',
-        datetimeValue: '02/09/2022 08:00',
+        datetimeValue: '02/08/2022 08:00',
         href: '#',
         iconName: 'standard:email',
         hasCheckbox: true,
@@ -785,6 +785,24 @@ export const horizontalItems = [
         name: 'item21',
         title: 'Event 21',
         datetimeValue: '02/02/2022 08:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item22',
+        title: 'Long Title Item With More Than 30 Characters',
+        datetimeValue: '02/02/2022 08:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item23',
+        title: 'Really long title event with a lot of characters',
+        datetimeValue: '02/09/2022 08:30',
         href: '#',
         iconName: 'standard:email',
         hasCheckbox: true,

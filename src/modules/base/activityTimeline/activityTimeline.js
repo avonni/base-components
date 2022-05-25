@@ -43,6 +43,9 @@ const DEFAULT_ITEM_ICON_SIZE = 'small';
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_INTERVAL_MIN_DATE = new Date(2022, 0, 1);
+const DEFAULT_TIMELINE_WIDTH = 1300;
+const DEFAULT_TIMELINE_AXIS_OFFSET = 40;
+const MAX_LENGTH_TITLE_ITEM = 30;
 
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
@@ -63,6 +66,9 @@ const SORTED_DIRECTIONS = {
     valid: ['asc', 'desc'],
     default: 'desc'
 };
+
+// TODO: Deplacer les fonctions timeline horizontal dans un nouveau fichier
+// TODO: Mettre un max de caracteres sur la longueur affichee du titre pour eviter des overlaps
 
 /**
  * @class
@@ -105,11 +111,11 @@ export default class ActivityTimeline extends LightningElement {
     _intervalIncrement = 2;
     _displayedItems = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
-    _timelineWidth = 1300; // TO DO : Change to container width
-    _timelineHeight = 300;
+    _timelineWidth = DEFAULT_TIMELINE_WIDTH; // TODO : Change to container width
+    _timelineHeight = 350;
     _timelineAxisHeight = 30;
     _numberOfScrollAxisTicks = 10;
-    _offsetAxis = 40;
+    _offsetAxis = DEFAULT_TIMELINE_AXIS_OFFSET;
     _scrollAxisColor = '#1c82bd';
 
     _key;
@@ -140,6 +146,8 @@ export default class ActivityTimeline extends LightningElement {
 
     // AJOUT  - TESTING
     testingD3() {
+        const minPosition = 100;
+        const maxPosition = 1000;
         d3.select(this.template.querySelector('.slds-section__title'))
             .style('color', 'orange')
             .transition()
@@ -159,16 +167,34 @@ export default class ActivityTimeline extends LightningElement {
             .transition()
             .duration(3000);
 
-        // AJOUT DE DONNEES , data binding
-        // d3.select(divD3Testing)
-        //     .append('p')
-        //     .selectAll('p')
-        //     .data(['a', 'b', 'c'])
-        //     .enter()
-        //     .append('p')
-        //     .text(function (d) {
-        //         return d;
-        //     });
+        // TESTING DRAG
+        d3.select(this.template.querySelector('.testing-d3'))
+            .selectAll('*')
+            .remove();
+        const testing = d3
+            .select(this.template.querySelector('.testing-d3'))
+            .append('svg')
+            .attr('width', this._timelineWidth)
+            .attr('height', 50);
+
+        testing
+            .append('circle')
+            .attr('id', 'dragCircle')
+            .attr('r', 20)
+            .attr('cx', 500)
+            .attr('cy', 20)
+            .attr('fill', '#abc432')
+            .call(
+                d3.drag().on('drag', function (event) {
+                    const xPosition =
+                        event.x > maxPosition
+                            ? maxPosition
+                            : event.x < minPosition
+                            ? minPosition
+                            : event.x;
+                    d3.select(this).attr('cx', xPosition).attr('cy', 20);
+                })
+            );
 
         // TESTONS SCALE TIME
         // const svg = d3
@@ -497,7 +523,7 @@ export default class ActivityTimeline extends LightningElement {
         return d3
             .scaleTime()
             .domain([this._intervalMinDate, this._intervalMaxDate]) // TODO: Think if add +/- 1 to show all dates
-            .range([this._offsetAxis, this._timelineWidth - 10]);
+            .range([this._offsetAxis, this._timelineWidth]);
     }
 
     /*
@@ -592,7 +618,7 @@ export default class ActivityTimeline extends LightningElement {
             .append('rect')
             .attr('x', this._offsetAxis)
             .attr('y', 0)
-            .attr('width', this._timelineWidth - this._offsetAxis - 10)
+            .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', this._timelineHeight)
             .attr('stroke', 'black')
             .attr('fill', 'white');
@@ -643,11 +669,23 @@ export default class ActivityTimeline extends LightningElement {
             )
             .attr('y', (item) => item.yPosition + rectWidth * 0.68)
             .text((item) => {
-                return ' - ' + item.title;
+                return this.computedItemTitle(item);
             })
             .attr('fill', 'black');
 
         // TODO: Over permet d'afficher plus d'informations
+    }
+
+    /**
+     * Formatted item's title to prevent text longer than 30 characters on horizontal timeline
+     * @param {Object} item
+     * @returns string
+     */
+    computedItemTitle(item) {
+        if (item.title.length > MAX_LENGTH_TITLE_ITEM) {
+            return ' - ' + item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ... ';
+        }
+        return ' - ' + item.title;
     }
 
     /**
@@ -672,13 +710,13 @@ export default class ActivityTimeline extends LightningElement {
             .append('rect')
             .attr('x', this._offsetAxis)
             .attr('y', this._timelineAxisHeight)
-            .attr('width', this._timelineWidth - this._offsetAxis - 10)
+            .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', 25)
             .attr('stroke', 'black')
             .attr('fill', 'white');
 
         // <--- CREATE TICKS OF AXIS --->
-        const scrollAxis = d3
+        const timeAxis = d3
             .axisBottom(this.viewTimeScale)
             .tickFormat(d3.timeFormat('%d/%m/%Y'))
             .ticks(9);
@@ -688,7 +726,7 @@ export default class ActivityTimeline extends LightningElement {
                 'transform',
                 'translate(' + 0 + ', ' + this._timelineAxisHeight + ')'
             )
-            .call(scrollAxis);
+            .call(timeAxis);
 
         // <--- REMOVE ALL TICK MARKS  --->
         axisSVG.selectAll('.tick').selectAll('line').remove();
@@ -737,7 +775,7 @@ export default class ActivityTimeline extends LightningElement {
             .append('rect')
             .attr('x', this._offsetAxis) // POSITION X -- TEMPS
             .attr('y', 1) // POSITION Y - GERER SI PLUSIEURS MEMES DATES
-            .attr('width', this._timelineWidth - this._offsetAxis - 10) // longueur du rectangle du data
+            .attr('width', this._timelineWidth - this._offsetAxis) // longueur du rectangle du data
             .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
             .attr('stroke', this._scrollAxisColor)
             .attr('fill', 'white');
@@ -797,6 +835,10 @@ export default class ActivityTimeline extends LightningElement {
                 dividerFactor) *
                 scaleFactor +
             intervalSize;
+
+        // DRAG MANGE LE THIS
+        let temporaryThis = this;
+
         scrollAxisSVG
             .append('g')
             .append('rect')
@@ -805,9 +847,35 @@ export default class ActivityTimeline extends LightningElement {
             .attr('width', xMaxIntervalDate - xMinIntervalDate) // length of the interval
             .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
             .attr('opacity', 0.3)
-            .attr('fill', this._scrollAxisColor);
+            .attr('fill', this._scrollAxisColor)
+            .call(
+                d3
+                    .drag()
+                    .on('drag', function (event) {
+                        // ATTENTION : THIS ANORMAL -- COMME ARROW FUNCTION
+                        // IMPOSSIBLE --≥ THIS.FONCTION ou THIS.PROPRIETE
+                        // Temporary this working
+                        console.log(temporaryThis._offsetAxis);
 
-        // TODO: DRAG RECT TO CHANGE INTERVAL
+                        // To allow only horizontal drag
+                        const maxPosition =
+                            DEFAULT_TIMELINE_WIDTH -
+                            (xMaxIntervalDate - xMinIntervalDate);
+                        const minPosition = DEFAULT_TIMELINE_AXIS_OFFSET;
+
+                        let xPosition = event.x;
+                        if (event.x > maxPosition) {
+                            xPosition = maxPosition;
+                        } else if (event.x < minPosition) {
+                            xPosition = minPosition;
+                        }
+
+                        d3.select(this).attr('x', xPosition).attr('y', 0.5);
+                    })
+                    .on('end', function () {
+                        // TODO: CHANGE INTERVAL AND RERENDER. ATTENTION THIS.
+                    })
+            );
     }
 
     /**
