@@ -59,6 +59,7 @@ describe('Primitive Chip', () => {
         expect(element.outline).toEqual(false);
         expect(element.avatar).toEqual(null);
         expect(element.variant).toEqual('base');
+        expect(element.hidden).toEqual(false);
         expect(element.iconName).toEqual('utility:check');
         expect(element.mediaPosition).toEqual('left');
     });
@@ -93,7 +94,7 @@ describe('Primitive Chip', () => {
         return Promise.resolve().then(() => {
             expect(
                 element.shadowRoot
-                    .querySelector('[data-element-id="chip"]')
+                    .querySelector('[data-element-id="chip-wrapper"]')
                     .classList.contains('avonni-primitive-chip__hidden')
             ).toBeTruthy();
             expect(element.hidden).toBe(true);
