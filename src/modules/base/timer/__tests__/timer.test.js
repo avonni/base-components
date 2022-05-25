@@ -40,6 +40,7 @@ describe('Timer', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
@@ -48,6 +49,9 @@ describe('Timer', () => {
         Date.now = jest.spyOn(Date, 'now').mockImplementation(() => {
             return (dateMock += 50);
         });
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) =>
+            cb()
+        );
         element = createElement('base-timer', {
             is: Timer
         });
@@ -71,21 +75,25 @@ describe('Timer', () => {
     // auto-start
     it('Timer: autoStart = false', () => {
         element.autoStart = false;
+        element.value = 0;
+        const initialValue = element.value;
 
         return Promise.resolve().then(() => {
-            expect(setTimeout).not.toHaveBeenCalled();
-            jest.advanceTimersByTime(500);
-            expect(setInterval).not.toHaveBeenCalled();
+            expect(requestAnimationFrame).not.toHaveBeenCalled();
+            jest.advanceTimersToNextTimer(10);
+            expect(initialValue).toEqual(element.value);
         });
     });
 
     it('Timer: autoStart = true', () => {
         element.autoStart = true;
+        element.value = 0;
+        const initialValue = element.value;
 
         return Promise.resolve().then(() => {
-            expect(setTimeout).toHaveBeenCalled();
-            jest.advanceTimersByTime(500);
-            expect(setInterval).toHaveBeenCalled();
+            expect(requestAnimationFrame).toHaveBeenCalled();
+            jest.advanceTimersToNextTimer(10);
+            expect(initialValue).toBeLessThan(element.value);
         });
     });
 
@@ -121,12 +129,14 @@ describe('Timer', () => {
         element.duration = 10;
         const handler = jest.fn();
         element.addEventListener('timerstop', handler);
+        const intialValue = element.value;
 
         return Promise.resolve().then(() => {
             expect(element.type).toBe('count-up');
             element.start();
             jest.advanceTimersToNextTimer(2);
             expect(handler).toHaveBeenCalled();
+            expect(intialValue).toBeLessThan(element.value);
         });
     });
 
@@ -136,12 +146,14 @@ describe('Timer', () => {
         element.duration = 10;
         const handler = jest.fn();
         element.addEventListener('timerstop', handler);
+        const intialValue = element.value;
 
         return Promise.resolve().then(() => {
             expect(element.type).toBe('count-down');
             element.start();
-            jest.advanceTimersToNextTimer(20);
+            jest.advanceTimersToNextTimer(2);
             expect(handler).toHaveBeenCalled();
+            expect(intialValue).toBeGreaterThan(element.value);
         });
     });
 
@@ -158,30 +170,35 @@ describe('Timer', () => {
     it('Timer: repeat = false', () => {
         element.repeat = false;
         element.value = 0;
-        element.duration = 10;
+        element.duration = 100;
         const handler = jest.fn();
         element.addEventListener('timerreset', handler);
+        const finalDurationValue = element.duration;
 
         return Promise.resolve().then(() => {
             element.start();
             expect(setInterval).toHaveBeenCalledTimes(1);
-            jest.advanceTimersToNextTimer(1);
+            jest.advanceTimersToNextTimer(3);
             expect(handler).not.toHaveBeenCalled();
+            expect(element.value).toEqual(finalDurationValue);
         });
     });
 
     it('Timer: repeat = true', () => {
         element.repeat = true;
         element.value = 0;
-        element.duration = 10;
+        element.duration = 100;
         const handler = jest.fn();
         element.addEventListener('timerreset', handler);
+        const finalDurationValue = element.duration;
 
         return Promise.resolve().then(() => {
             element.start();
             expect(setInterval).toHaveBeenCalledTimes(1);
-            jest.advanceTimersToNextTimer(1);
+            jest.advanceTimersToNextTimer(3);
             expect(handler).toHaveBeenCalledTimes(1);
+            jest.advanceTimersToNextTimer(20);
+            expect(element.value).toBeLessThan(finalDurationValue);
         });
     });
 
