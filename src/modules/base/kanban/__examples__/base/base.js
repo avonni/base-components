@@ -5,7 +5,10 @@ export default class KanbanBase extends LightningElement {
         {
             label: 'Open',
             value: 'open',
-            backgroundColor: '#fffff'
+            backgroundColor: '#fffff',
+            headerActions: [
+                { disabled: false, label: 'Action 1', name: 'Action 1' }
+            ]
         },
         {
             label: 'In Progress',
@@ -18,6 +21,10 @@ export default class KanbanBase extends LightningElement {
                     name: 'Action 1',
                     iconName: 'utility:cart'
                 }
+            ],
+            headerActions: [
+                { disabled: false, label: 'Action 1', name: 'Action 1' },
+                { disabled: false, label: 'Action 2', name: 'Action 2' }
             ]
         },
         {

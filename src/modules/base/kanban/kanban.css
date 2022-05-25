@@ -34,11 +34,22 @@
     height: 100%;
 }
 
+.avonni-kanban__header-action {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.avonni-kanban__summarize_wrapper {
+    min-height: 30px;
+}
+
 .avonni-kanban__field {
+    position: relative;
     width: 100%;
     min-width: 185px;
     border-right: 1px solid #c9c7c5;
-    border-radius: 0.25rem;
+    /* border-radius: 0.25rem; */
     padding-top: 5px;
 }
 

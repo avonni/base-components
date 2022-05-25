@@ -34,7 +34,10 @@ const GROUP_VALUES = [
     {
         label: 'Open',
         value: 'open',
-        backgroundColor: '#fffff'
+        backgroundColor: '#fffff',
+        headerActions: [
+            { disabled: false, label: 'Action 1', name: 'Action 1' }
+        ]
     },
     {
         label: 'In Progress',
@@ -47,6 +50,10 @@ const GROUP_VALUES = [
                 name: 'Action 1',
                 iconName: 'utility:cart'
             }
+        ],
+        headerActions: [
+            { disabled: false, label: 'Action 1', name: 'Action 1' },
+            { disabled: false, label: 'Action 2', name: 'Action 2' }
         ]
     },
     {

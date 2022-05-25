@@ -94,19 +94,45 @@
                     for:item="group"
                     key={group.index}
                 >
-                    <c-output-data
-                        value={group.summarize.value}
-                        type={group.summarize.type}
-                        type-attributes={group.summarize.typeAttributes}
-                        variant="label-hidden"
-                        class="
-                            slds-text-align_center
-                            slds-text-heading_large
-                            slds-text-color_success
-                            avonni-kanban__summarize
-                        "
-                        data-element-id="summarize"
-                    ></c-output-data>
+                    <div if:true={group.headerActions}>
+                        <lightning-button-menu
+                            alternative-text="Show menu"
+                            icon-size="x-small"
+                            menu-alignment="left"
+                            class="avonni-kanban__header-action"
+                            disabled={readOnly}
+                        >
+                            <template
+                                for:each={group.headerActions}
+                                for:item="action"
+                            >
+                                <lightning-menu-item
+                                    key={action.name}
+                                    value={action.name}
+                                    label={action.label}
+                                    onactionclick={handleActionClick}
+                                    disabled={action.disabled}
+                                    prefix-icon-name={action.iconName}
+                                    class="slds-text-color_default"
+                                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                    </div>
+                    <div class="avonni-kanban__summarize_wrapper">
+                        <c-output-data
+                            value={group.summarize.value}
+                            type={group.summarize.type}
+                            type-attributes={group.summarize.typeAttributes}
+                            variant="label-hidden"
+                            class="
+                                slds-text-align_center
+                                slds-text-heading_large
+                                slds-text-color_success
+                                avonni-kanban__summarize
+                            "
+                            data-element-id="summarize"
+                        ></c-output-data>
+                    </div>
                     <div
                         data-element-id="avonni-kanban__group"
                         class="
@@ -158,7 +184,6 @@
                                     alternative-text="Show menu"
                                     icon-size="x-small"
                                     menu-alignment="right"
-                                    variant={buttonMenuVariant}
                                     class="avonni-kanban__actions_menu"
                                     disabled={readOnly}
                                 >
