@@ -275,26 +275,6 @@ export default class Timer extends LightningElement {
      */
 
     /**
-     * Return the time format to display based on inputted format ( hh, mm, ss ).
-     *
-     * @type {string|number}
-     */
-    get time() {
-        let timeFormats = this.format.split(new RegExp('[.:]')); // splits string at ":" and "." into array character
-        timeFormats[0] = this.formatToString(timeFormats[0], true);
-        for (let i = 1; i < timeFormats.length; i++) {
-            timeFormats[i] = this.formatToString(timeFormats[i], false);
-        }
-        let formattedTime = timeFormats.join(':');
-        if (this.format.includes('ms'))
-            formattedTime = formattedTime.replace(
-                new RegExp('(:)(?!.*:)'),
-                '.'
-            ); // replaces last ":" character with "."
-        return !this.isNegative ? formattedTime : '-'.concat(formattedTime);
-    }
-
-    /**
      * Compute the hours based on the timer value.
      *
      * @type {number}
@@ -302,6 +282,25 @@ export default class Timer extends LightningElement {
     get hours() {
         const hours = Math.floor(this._value / 60 / 60 / 1000);
         return hours >= 0 ? Math.abs(hours) : Math.abs(hours) - 1;
+    }
+
+    /**
+     * Boolean, is true if _value is negative.
+     *
+     * @type {number}
+     */
+    get isNegative() {
+        return this._value < 0;
+    }
+
+    /**
+     * Compute the milliseconds based on the timer value.
+     *
+     * @type {number}
+     */
+    get milliseconds() {
+        const milliseconds = Math.abs(Math.floor(this._value % 1000));
+        return milliseconds >= 0 ? milliseconds : Math.abs(milliseconds) - 1;
     }
 
     /**
@@ -325,22 +324,23 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Compute the milliseconds based on the timer value.
+     * Return the time format to display based on inputted format ( hh, mm, ss ).
      *
-     * @type {number}
+     * @type {string|number}
      */
-    get milliseconds() {
-        const milliseconds = Math.abs(Math.floor(this._value % 1000));
-        return milliseconds >= 0 ? milliseconds : Math.abs(milliseconds) - 1;
-    }
-
-    /**
-     * Boolean, is true if _value is negative.
-     *
-     * @type {number}
-     */
-    get isNegative() {
-        return this._value < 0;
+    get time() {
+        let timeFormats = this.format.split(new RegExp('[.:]')); // splits string at ":" and "." into array character
+        timeFormats[0] = this.formatToString(timeFormats[0], true);
+        for (let i = 1; i < timeFormats.length; i++) {
+            timeFormats[i] = this.formatToString(timeFormats[i], false);
+        }
+        let formattedTime = timeFormats.join(':');
+        if (this.format.includes('ms'))
+            formattedTime = formattedTime.replace(
+                new RegExp('(:)(?!.*:)'),
+                '.'
+            ); // replaces last ":" character with "."
+        return !this.isNegative ? formattedTime : '-'.concat(formattedTime);
     }
 
     /*
