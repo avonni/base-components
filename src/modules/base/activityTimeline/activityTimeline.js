@@ -169,17 +169,18 @@ export default class ActivityTimeline extends LightningElement {
         //     .append('svg')
         //     .attr('width', this._timelineWidth)
         //     .attr('height', this._timelineHeight);
-        // const scale = d3
-        //     .scaleTime()
-        //     .domain([this.minDate, this.maxDate])
-        //     .range([0, 1000]);
-        // const scrollAxis = d3.axisBottom(scale);
+
+        // const viewTimeScale = d3.scaleTime().domain([this._intervalMinDate, this._intervalMaxDate]).range([this._offsetAxis, this._timelineWidth]);
+        // const scrollAxis = d3.axisBottom(viewTimeScale).tickFormat(d3.timeFormat("%d/%m/%Y")).ticks(6);
+
         // svg.append('g')
-        //     .attr(
-        //         'transform',
-        //         'translate(' + this._offsetAxis + ', ' + this._timelineHeight / 2 + ')'
-        //     )
         //     .call(scrollAxis);
+        // svg.
+        // append("circle")
+        // .attr("r", "5")
+        // .attr("fill", "lightblue")
+        // .attr("cx", viewTimeScale(new Date("2022-02-10 01:57:00")))
+        // .attr("cy", 5);
     }
 
     /*
@@ -373,7 +374,9 @@ export default class ActivityTimeline extends LightningElement {
     get displayedItems() {
         this._displayedItems = this.sortedItems.filter((item) => {
             const date = new Date(item.datetimeValue);
-            return date > this._intervalMinDate && date < this._intervalMaxDate;
+            return (
+                date >= this._intervalMinDate && date <= this._intervalMaxDate
+            );
         });
         return this._displayedItems;
     }
@@ -482,6 +485,14 @@ export default class ActivityTimeline extends LightningElement {
               );
     }
 
+    // TODO: A CHANGER
+    get viewTimeScale() {
+        return d3
+            .scaleTime()
+            .domain([this._intervalMinDate, this._intervalMaxDate])
+            .range([0, this._timelineWidth - 50]);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -527,18 +538,10 @@ export default class ActivityTimeline extends LightningElement {
             .attr('fill', 'white');
 
         //  <--- CREATE DASHED LINES ALIGN TO AXIS TICKS --->
-        const xScale = d3
-            .scaleBand()
-            .domain(
-                this.createTimelineDateDomain(
-                    this.intervalMinDate,
-                    this._intervalIncrement,
-                    this._intervalDaysLength / this._intervalIncrement
-                )
-            )
-            .range([0, this._timelineWidth - 50]);
         const axis = d3
-            .axisBottom(xScale)
+            .axisBottom(this.viewTimeScale)
+            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .ticks(9)
             .tickSizeInner(this._timelineHeight + this._timelineAxisHeight)
             .tickSizeOuter(0);
         timelineSVG
@@ -549,6 +552,41 @@ export default class ActivityTimeline extends LightningElement {
             .call(axis);
 
         // TODO: Inserer des donnees aux bonnes positions
+        // TODO: Creer nouveau svg pour distinguer les items ?
+        const rectWidth = 20;
+        const yItem = 75;
+
+        // TODO: DISPLAY ICON INSTEAD OF RECT
+        timelineSVG
+            .append('g')
+            .selectAll('rect')
+            .data(this._displayedItems)
+            .enter()
+            .append('rect')
+            .attr('x', (item) =>
+                this.viewTimeScale(new Date(item.datetimeValue))
+            ) // POSITION DU DATA (X)
+            .attr('y', yItem) // TODO: CHANGE Y POSITION IF SAME DATES
+            .attr('width', rectWidth)
+            .attr('height', rectWidth)
+            .attr('fill', this._scrollAxisColor);
+
+        timelineSVG
+            .append('g')
+            .selectAll('text')
+            .data(this._displayedItems)
+            .enter()
+            .append('text')
+            .attr(
+                'x',
+                (item) =>
+                    this.viewTimeScale(new Date(item.datetimeValue)) + rectWidth
+            ) // POSITION DU DATA (X)
+            .attr('y', yItem + rectWidth * 0.68) // TODO: CHANGE Y POSITION IF SAME DATES
+            .text((item) => {
+                return ' - ' + item.title;
+            })
+            .attr('fill', 'black');
 
         // TODO: Over permet d'afficher plus d'informations
     }
@@ -581,16 +619,10 @@ export default class ActivityTimeline extends LightningElement {
             .attr('fill', 'white');
 
         // <--- CREATE TICKS OF AXIS --->
-        const domainDates = this.createTimelineDateDomain(
-            this.intervalMinDate,
-            this._intervalIncrement,
-            this._intervalDaysLength / this._intervalIncrement
-        );
-        const xScale = d3
-            .scaleBand()
-            .domain(domainDates)
-            .range([0, this._timelineWidth - 50]);
-        const scrollAxis = d3.axisBottom(xScale);
+        const scrollAxis = d3
+            .axisBottom(this.viewTimeScale)
+            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .ticks(9);
         axisSVG
             .append('g')
             .attr(
@@ -668,6 +700,7 @@ export default class ActivityTimeline extends LightningElement {
             ((dateTimeObjectFrom(this.maxDate).toFormat('x') -
                 dateTimeObjectFrom(this.minDate).toFormat('x')) /
                 dividerFactor);
+
         this.sortedItems.forEach((item) => {
             const xValue =
                 dateTimeObjectFrom(item.datetimeValue).toFormat('x') -
@@ -731,10 +764,11 @@ export default class ActivityTimeline extends LightningElement {
         const dateToAdd = new Date(minDate);
         dateDomain.push(this.convertDateToFormat(dateToAdd));
 
-        for (let i = 0; i < domainLength; ++i) {
+        for (let i = 0; i < Math.floor(domainLength); ++i) {
             dateToAdd.setDate(dateToAdd.getDate() + dayIncrement);
             dateDomain.push(this.convertDateToFormat(dateToAdd));
         }
+
         return dateDomain;
     }
 
@@ -743,9 +777,11 @@ export default class ActivityTimeline extends LightningElement {
      *
      */
     findDefaultIntervalMinDate() {
+        const middleIndex = Math.ceil(this.sortedItems.length / 2 - 1);
         this._intervalMinDate = new Date(
-            this.sortedItems[this.sortedItems.length / 2 - 1].datetimeValue
+            this.sortedItems[middleIndex].datetimeValue
         );
+        this._intervalMinDate.setHours(0, 0, 0, 0);
     }
 
     /**
