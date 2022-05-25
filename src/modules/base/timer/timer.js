@@ -300,7 +300,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get hours() {
-        let hours = Math.floor(this._timerValue / 60 / 60 / 1000);
+        const hours = Math.floor(this._timerValue / 60 / 60 / 1000);
         return hours >= 0 ? Math.abs(hours) : Math.abs(hours) - 1;
     }
 
@@ -310,7 +310,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get minutes() {
-        let minutes = Math.floor(this._timerValue / 60 / 1000) % 60;
+        const minutes = Math.floor(this._timerValue / 60 / 1000) % 60;
         return minutes >= 0 ? Math.abs(minutes) : Math.abs(minutes) - 1;
     }
 
@@ -320,7 +320,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get seconds() {
-        let seconds = Math.floor(this._timerValue / 1000) % 60;
+        const seconds = Math.floor(this._timerValue / 1000) % 60;
         return seconds >= 0 ? Math.abs(seconds) : Math.abs(seconds) - 1;
     }
 
@@ -330,7 +330,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get milliseconds() {
-        let milliseconds = Math.abs(Math.floor(this._timerValue % 1000));
+        const milliseconds = Math.abs(Math.floor(this._timerValue % 1000));
         return milliseconds >= 0 ? milliseconds : Math.abs(milliseconds) - 1;
     }
 
@@ -569,31 +569,21 @@ export default class Timer extends LightningElement {
                 const hasEndedCountDown =
                     !isCountUp && this._timerValue <= maxDuration;
 
-                let hasEnded = false;
+                let state;
                 if (isTimerOverflow) {
-                    this._timerValue = maxDuration;
-                    hasEnded = true;
+                    state = 'TIMER_OVERFLOW';
                 } else if (this.play && hasEndedCountUp) {
-                    this._timerValue = this.duration;
-                    hasEnded = true;
+                    state = 'COUNT_UP_ENDED';
                 } else if (this.play && hasEndedCountDown) {
-                    if (maxDuration < 0) {
-                        this._timerValue = maxDuration - 1000;
-                    } else {
-                        this._timerValue = maxDuration;
-                    }
-                    hasEnded = true;
+                    state = 'COUNT_DOWN_ENDED';
                 } else if (!this.play && isCountUp) {
-                    this.pauseBuffer =
-                        Date.now() -
-                        this.startDate -
-                        (this._timerValue - this._startTime);
+                    state = 'COUNT_UP_PAUSE';
                 } else if (!this.play && !isCountUp) {
-                    this.pauseBuffer =
-                        Date.now() -
-                        this.startDate +
-                        (this._timerValue - this._startTime);
+                    state = 'COUNT_DOWN_PAUSE';
                 }
+
+                let hasEnded = this.handleTimerState(state, maxDuration);
+
                 if (hasEnded) {
                     if (this.repeat) this.reset();
                     else this.stop();
@@ -601,6 +591,49 @@ export default class Timer extends LightningElement {
             },
             this.format.includes('ms') ? 50 : 200
         );
+    }
+
+    /**
+     *  Handles the state of the timer after an increment/decrement
+     *  @returns {boolean} if the timer has ended after state handling
+     */
+    handleTimerState(state, maxDuration) {
+        let hasEnded = false;
+
+        switch (state) {
+            case 'TIMER_OVERFLOW':
+                this._timerValue =
+                    this._timerValue < 0 ? MAX_TIMER_VALUE : -MAX_TIMER_VALUE;
+                hasEnded = true;
+                break;
+            case 'COUNT_UP_ENDED':
+                this._timerValue = maxDuration;
+                hasEnded = true;
+                break;
+            case 'COUNT_DOWN_ENDED':
+                if (maxDuration < 0) {
+                    this._timerValue = maxDuration - 1000;
+                } else {
+                    this._timerValue = maxDuration;
+                }
+                hasEnded = true;
+                break;
+            case 'COUNT_UP_PAUSE':
+                this.pauseBuffer =
+                    Date.now() -
+                    this.startDate -
+                    (this._timerValue - this._startTime);
+                break;
+            case 'COUNT_DOWN_PAUSE':
+                this.pauseBuffer =
+                    Date.now() -
+                    this.startDate +
+                    (this._timerValue - this._startTime);
+                break;
+            default:
+                break;
+        }
+        return hasEnded;
     }
 
     /**
