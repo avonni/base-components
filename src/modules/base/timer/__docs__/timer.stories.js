@@ -31,7 +31,7 @@
  */
 
 import { Timer } from '../__examples__/timer';
-import { html } from 'lit-html';
+import { TimerButtons } from '../__examples__/timerButtons';
 
 export default {
     title: 'Example/Timer',
@@ -174,50 +174,27 @@ export default {
     }
 };
 
-const Template = (args) => {
-    let component = Timer(args);
+const Template = (args) => Timer(args);
+const TemplateWithButtons = (args) => TimerButtons(args);
 
-    const btnStart = document.createElement('ac-lightning-button');
-    btnStart.onclick = () => component.start();
-    btnStart.label = 'Start';
-
-    const btnPause = document.createElement('ac-lightning-button');
-    btnPause.onclick = () => component.pause();
-    btnPause.label = 'Pause';
-
-    const btnStop = document.createElement('ac-lightning-button');
-    btnStop.onclick = () => component.stop();
-    btnStop.label = 'Stop';
-
-    const btnReset = document.createElement('ac-lightning-button');
-    btnReset.onclick = () => component.reset();
-    btnReset.label = 'Reset';
-
-    return html`
-        <div>${component}</div>
-        <div class="slds-m-vertical_small">
-            ${btnStart} ${btnPause} ${btnStop} ${btnReset}
-        </div>
-    `;
-};
-
-export const Base = Template.bind({});
+export const Base = TemplateWithButtons.bind({});
 Base.args = {
     duration: 10000
+};
+
+export const BrandIcon = TemplateWithButtons.bind({});
+BrandIcon.args = {
+    iconName: 'utility:clock',
+    duration: 10000,
+    variant: 'brand'
 };
 
 export const SuccessSeconds = Template.bind({});
 SuccessSeconds.args = {
     duration: 10000,
+    autoStart: true,
     variant: 'success',
     format: 'ss'
-};
-
-export const BrandIcon = Template.bind({});
-BrandIcon.args = {
-    iconName: 'utility:clock',
-    duration: 10000,
-    variant: 'brand'
 };
 
 export const DestructiveCountdown = Template.bind({});
