@@ -121,7 +121,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _y = 0;
 
     _focused = false;
-    _offsetSize = 0;
+    _offsetStart = 0;
     computedLabels = {};
 
     connectedCallback() {
@@ -507,33 +507,69 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Position of the left extremity of the occurrence.
+     * Deprecated. Use `start-position` instead.
      *
      * @type {number}
      * @public
      * @default 0
+     * @deprecated
      */
     @api
     get leftPosition() {
-        const left = this.x + this._offsetSize - this.leftLabelWidth;
-        return left > 0 ? left : 0;
+        return this.startPosition;
     }
 
     /**
-     * Position of the right extremity of the occurrence.
+     * Position of the end extremity of the occurrence. Right for horizontal, bottom for vertical.
      *
      * @type {number}
      * @public
      * @default 0
      */
     @api
-    get rightPosition() {
+    get endPosition() {
+        if (this.isVertical) {
+            return (
+                this.startPosition +
+                this.hostElement.getBoundingClientRect().height
+            );
+        }
         return (
             this.x +
-            this._offsetSize +
+            this._offsetStart +
             this.hostElement.getBoundingClientRect().width +
             this.rightLabelWidth
         );
+    }
+
+    /**
+     * Deprecated. Use `end-position` instead.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     * @deprecated
+     */
+    @api
+    get rightPosition() {
+        return this.endPosition;
+    }
+
+    /**
+     * Position of the start extremity of the occurrence. Left for horizontal, top for vertical.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get startPosition() {
+        if (this.isVertical) {
+            const top = this.y + this._offsetStart;
+            return top;
+        }
+        const left = this.x + this._offsetStart - this.leftLabelWidth;
+        return left > 0 ? left : 0;
     }
 
     /**
@@ -633,13 +669,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Total number of events (including this one) that overlap in this time frame.
+     *
+     * @type {number}
+     */
+    get numberOfEventsInThisTimeFrame() {
+        return this.occurrence.numberOfEventsInThisTimeFrame || 0;
+    }
+
+    /**
      * Space between the top of the occurrence and the top of its row, in pixels.
      *
      * @type {number}
      * @default 0
      */
-    get offsetTop() {
-        return this.occurrence.offsetTop || 0;
+    get offsetSide() {
+        return this.occurrence.offsetSide || 0;
     }
 
     /**
@@ -823,7 +868,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
                 y += rows[j].height;
             }
-            y += this.offsetTop;
+            y += this.offsetSide;
             this._y = y;
         } else if (!this.referenceLine && this.isVertical) {
             const rowIndex = this.rows.findIndex((row) => {
@@ -863,7 +908,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             const eventDuration = cellEnd.diff(from).milliseconds;
             const emptyDuration = cellDuration - eventDuration;
             const emptyPercentageOfCell = emptyDuration / cellDuration;
-            this._offsetSize = cellSize * emptyPercentageOfCell;
+            this._offsetStart = cellSize * emptyPercentageOfCell;
             this.updateHostTranslate();
             if (this.referenceLine) return;
 
@@ -906,6 +951,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this.isVertical) {
             element.style.height = `${size}px`;
+            if (cellWidth && this.numberOfEventsInThisTimeFrame) {
+                const width = cellWidth / this.numberOfEventsInThisTimeFrame;
+                element.style.width = `${width}px`;
+            }
         } else {
             element.style.width = `${size}px`;
         }
@@ -938,7 +987,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         );
         if (stickyLabel) {
             stickyLabel.style.left = `${
-                this.scrollLeftOffset - this._x - this._offsetSize
+                this.scrollLeftOffset - this._x - this._offsetStart
             }px`;
         }
     }
@@ -993,8 +1042,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Add the computed position to the inline style of the component host.
      */
     updateHostTranslate() {
-        const x = this.isVertical ? this.x : this.x + this._offsetSize;
-        const y = this.isVertical ? this.y + this._offsetSize : this.y;
+        const x = this.isVertical
+            ? this.x + this.offsetSide
+            : this.x + this._offsetStart;
+        const y = this.isVertical ? this.y + this._offsetStart : this.y;
         if (this.hostElement) {
             this.hostElement.style.transform = `translate(${x}px, ${y}px)`;
         }

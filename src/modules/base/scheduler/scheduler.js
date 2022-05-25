@@ -154,7 +154,7 @@ export default class Scheduler extends LightningElement {
         if (!this._rowsHeight.length) {
             this.updateRowsHeight();
         }
-        this.updateOccurrencesOffsetTop();
+        this.updateOccurrencesOffset();
         this.updateRowsStyle();
 
         // Update the position and height of occurrences
@@ -1603,9 +1603,9 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Compute the vertical position of the events and the rows height, so the events don't overlap.
+     * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
      */
-    updateOccurrencesOffsetTop() {
+    updateOccurrencesOffset() {
         const schedule = this.template.querySelector(
             '[data-element-id="div-schedule-body"]'
         );
@@ -1627,20 +1627,23 @@ export default class Scheduler extends LightningElement {
                 // Sort the occurrences by ascending start date
                 occurrenceElements.sort((a, b) => a.from - b.from);
 
-                // Compute the vertical level of the occurrences
+                // Compute the level of the occurrences in the row
                 const previousOccurrences = [];
                 occurrenceElements.forEach((occElement) => {
-                    const left = occElement.leftPosition;
-                    const level = this.computeEventVerticalLevel(
+                    const start = occElement.startPosition;
+                    const { level, levelsTotal } = this.computeEventLevelInRow(
                         previousOccurrences,
-                        left
+                        start
                     );
 
-                    // If the occurrence is taller than the previous ones,
-                    // update the default level height
-                    const height = occElement.getBoundingClientRect().height;
-                    if (height > levelHeight) {
-                        levelHeight = height;
+                    if (!this.isVertical) {
+                        // For horizontal variant, if the occurrence is taller
+                        // than the previous ones, update the default level height
+                        const height =
+                            occElement.getBoundingClientRect().height;
+                        if (height > levelHeight) {
+                            levelHeight = height;
+                        }
                     }
 
                     const occurrence = row.events.find(
@@ -1649,15 +1652,17 @@ export default class Scheduler extends LightningElement {
 
                     previousOccurrences.unshift({
                         level,
-                        left,
-                        right: occElement.rightPosition,
+                        levelsTotal,
+                        start,
+                        end: occElement.endPosition,
                         occurrence:
                             occurrence ||
                             (this.selection && this.selection.occurrence)
                     });
 
-                    // Hide the right label
-                    if (occElement.labels.right) {
+                    if (!this.isVertical && occElement.labels.right) {
+                        // For horizontal variant,
+                        // hide the right label if it overflows the schedule
                         const elementRightBorder =
                             occElement.getBoundingClientRect().right +
                             occElement.rightLabelWidth;
@@ -1669,22 +1674,35 @@ export default class Scheduler extends LightningElement {
                     }
                 });
 
-                // Add the corresponding offset to the top of the occurrences
+                // Add the corresponding offset to the top (horizontal variant)
+                // or left (vertical variant) of the occurrences
                 previousOccurrences.forEach((position) => {
-                    const offsetTop = position.level * levelHeight;
-                    position.occurrence.offsetTop = offsetTop;
+                    const { level, levelsTotal, occurrence } = position;
+                    let offsetSide = 0;
 
-                    // If the occurrence offset is bigger than the previous occurrences,
-                    // update the row height
-                    const totalHeight = levelHeight + offsetTop;
-                    if (totalHeight > rowHeight) {
-                        rowHeight = totalHeight;
+                    if (this.isVertical) {
+                        offsetSide = (level * this.cellWidth) / levelsTotal;
+                        occurrence.numberOfEventsInThisTimeFrame = levelsTotal;
+                        this._updateOccurrencesWidth = true;
+                    } else {
+                        offsetSide = level * levelHeight;
+
+                        // If the occurrence offset is bigger than the previous occurrences,
+                        // update the row height
+                        const totalHeight = levelHeight + offsetSide;
+                        if (totalHeight > rowHeight) {
+                            rowHeight = totalHeight;
+                        }
                     }
+
+                    occurrence.offsetSide = offsetSide;
                 });
             }
 
-            // Add 10 pixels to the row for padding
-            row.height = rowHeight + 10;
+            if (!this.isVertical) {
+                // Add 10 pixels to the row for padding
+                row.height = rowHeight + 10;
+            }
         });
     }
 
@@ -1870,28 +1888,41 @@ export default class Scheduler extends LightningElement {
      * Push an event occurrence down a level, until it doesn't overlap another occurrence.
      *
      * @param {object[]} previousOccurrences Array of previous occurrences for which the vertical level has already been computed.
-     * @param {number} left Left position of the occurrence.
-     * @param {number} level Vertical level of the occurrence. It starts at 0, so the occurrence is at the top of its row.
-     * @returns {number} Vertical level of the occurrence.
+     * @param {number} startPosition Start position of the occurrence.
+     * @param {number} level Level of the occurrence in their row. It starts at 0, so the occurrence is at the top of its row.
+     * @returns {number} Level of the occurrence.
      */
-    computeEventVerticalLevel(previousOccurrences, left, level = 0) {
+    computeEventLevelInRow(previousOccurrences, startPosition, level = 0) {
         // Find the last event with the same level
-        const sameOffset = previousOccurrences.find((occ) => {
+        const sameLevelEvent = previousOccurrences.find((occ) => {
             return occ.level === level;
         });
 
-        // If we find an event and their dates overlap, add one to the level
-        // and make sure there isn't another event at the same height
-        if (sameOffset && left < sameOffset.right) {
+        const overlapsEvent =
+            sameLevelEvent && startPosition < sameLevelEvent.end;
+        if (overlapsEvent) {
             level += 1;
-            level = this.computeEventVerticalLevel(
+
+            // Make sure there isn't another event at the same position
+            level = this.computeEventLevelInRow(
                 previousOccurrences,
-                left,
+                startPosition,
                 level
-            );
+            ).level;
         }
 
-        return level;
+        // Update the total count of events overlapping,
+        // for the current occurrence and the overlapped one
+        let levelsTotal = level + 1;
+        const sameLevelEventOverlapsMoreEvents =
+            sameLevelEvent && sameLevelEvent.levelsTotal > levelsTotal;
+        if (sameLevelEventOverlapsMoreEvents) {
+            levelsTotal = sameLevelEvent.levelsTotal;
+        } else if (sameLevelEvent) {
+            sameLevelEvent.levelsTotal = levelsTotal;
+        }
+
+        return { level, levelsTotal };
     }
 
     /**
@@ -2015,7 +2046,7 @@ export default class Scheduler extends LightningElement {
         // Check if any event in the cell has the same offsetTop
         const eventIsHovered = cellEvents.some((cellEvent) => {
             return (
-                cellEvent.offsetTop === occurrence.offsetTop &&
+                cellEvent.offsetSide === occurrence.offsetSide &&
                 cellEvent.key !== occurrence.key
             );
         });

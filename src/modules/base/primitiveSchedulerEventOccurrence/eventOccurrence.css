@@ -80,6 +80,10 @@
     position: -webkit-sticky;
 }
 
+.avonni-scheduler__event-wrapper_vertical {
+    padding: 0 1px 1px 0;
+}
+
 .avonni-scheduler__event-wrapper_vertical,
 .avonni-scheduler__event-wrapper_vertical * {
     height: 100%;
