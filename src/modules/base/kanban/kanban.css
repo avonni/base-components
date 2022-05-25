@@ -1,5 +1,6 @@
 .progress-bar {
     position: relative;
+    height: 100%;
 }
 
 .slds-path__nav {
@@ -13,6 +14,14 @@
     left: 0;
     display: flex;
     justify-content: space-between;
+    overflow: hidden;
+    height: 100%;
+}
+
+.avonni-kanban__tiles_container {
+    overflow-y: auto;
+    overflow-x: visible;
+    height: 100%;
 }
 
 .avonni-kanban__field {
@@ -74,4 +83,25 @@
 
 .avonni-kanban__moved {
     z-index: 1;
+}
+
+.avonni-kanban__tiles_container::-webkit-scrollbar {
+    width: 7px;
+}
+
+/* Track */
+
+.avonni-kanban__tiles_container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+.avonni-kanban__tiles_container::-webkit-scrollbar-thumb {
+    background: #dbdbdb;
+    border-radius: 5px;
+}
+
+/* Handle on hover */
+.avonni-kanban__tiles_container::-webkit-scrollbar-thumb:hover {
+    background: #c0c0c0;
 }

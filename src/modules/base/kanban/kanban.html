@@ -82,8 +82,7 @@
                 onmousemove={handleTileMouseMove}
             >
                 <div
-                    data-element-id="avonni-kanban__group"
-                    class="avonni-kanban__field slds-has-dividers_around-space"
+                    class="avonni-kanban__field"
                     for:each={computedGroups}
                     for:item="group"
                     key={group.index}
@@ -100,73 +99,83 @@
                         "
                         data-element-id="summarize"
                     ></c-output-data>
-                    <lightning-tile
-                        for:each={group.tiles}
-                        for:item="record"
-                        key={record.index}
-                        data-element-id="avonni-kanban__tile"
-                        class={computedTileClass}
-                        onmousedown={handleTileMouseDown}
-                        onmouseup={handleTileMouseUp}
-                        onmousemove={handleDropZone}
-                        onmouseenter={handleTileMouseEnter}
+                    <div
+                        data-element-id="avonni-kanban__group"
+                        class="
+                            avonni-kanban__tilescontainer
+                            slds-has-dividers_around-space
+                        "
                     >
-                        <ul data-element-id="fields">
-                            <li
-                                for:each={record.field}
-                                for:item="field"
-                                key={field.label}
-                            >
-                                <p class="avonni-kanban__fields">
-                                    <c-output-data
-                                        label={field.label}
-                                        value={field.value}
-                                        type={field.type}
-                                        type-attributes={field.typeAttributes}
-                                        variant="label-inline"
-                                    ></c-output-data>
-                                </p>
-                            </li>
-                            <li>
-                                <lightning-icon
-                                    if:true={record.warningIcon}
-                                    class="avonni-kanban__tile_icon"
-                                    size="x-small"
-                                    variant="warning"
-                                    icon-name={record.warningIcon}
-                                ></lightning-icon>
-                            </li>
-                        </ul>
-                        <div
-                            class="avonni-kanban__tile_actions"
-                            if:true={hasActions}
+                        <lightning-tile
+                            for:each={group.tiles}
+                            for:item="record"
+                            key={record.index}
+                            data-element-id="avonni-kanban__tile"
+                            class={computedTileClass}
+                            onmousedown={handleTileMouseDown}
+                            onmouseup={handleTileMouseUp}
+                            onmousemove={handleDropZone}
                         >
-                            <lightning-button-menu
-                                alternative-text="Show menu"
-                                icon-size="x-small"
-                                menu-alignment="right"
-                                variant={buttonMenuVariant}
-                                class="avonni-kanban__actions_menu"
-                                disabled={readOnly}
+                            <ul data-element-id="fields">
+                                <li
+                                    for:each={record.field}
+                                    for:item="field"
+                                    key={field.label}
+                                >
+                                    <p class="avonni-kanban__fields">
+                                        <c-output-data
+                                            label={field.label}
+                                            value={field.value}
+                                            type={field.type}
+                                            type-attributes={field.typeAttributes}
+                                            variant="label-inline"
+                                        ></c-output-data>
+                                    </p>
+                                </li>
+                                <li>
+                                    <lightning-icon
+                                        if:true={record.warningIcon}
+                                        class="avonni-kanban__tile_icon"
+                                        size="x-small"
+                                        variant="warning"
+                                        icon-name={record.warningIcon}
+                                    ></lightning-icon>
+                                </li>
+                            </ul>
+                            <div
+                                class="avonni-kanban__tile_actions"
+                                if:true={hasActions}
                             >
-                                <template for:each={actions} for:item="action">
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        value={action.name}
-                                        label={action.label}
-                                        onactionclick={handleActionClick}
-                                        disabled={action.disabled}
-                                        prefix-icon-name={action.iconName}
-                                        class="
-                                            slds-text-color_default
-                                            avonni-kanban__actions_item
-                                        "
-                                        data-element-id="avonni-kanban__action"
-                                    ></lightning-menu-item>
-                                </template>
-                            </lightning-button-menu>
-                        </div>
-                    </lightning-tile>
+                                <lightning-button-menu
+                                    alternative-text="Show menu"
+                                    icon-size="x-small"
+                                    menu-alignment="right"
+                                    variant={buttonMenuVariant}
+                                    class="avonni-kanban__actions_menu"
+                                    disabled={readOnly}
+                                >
+                                    <template
+                                        for:each={actions}
+                                        for:item="action"
+                                    >
+                                        <lightning-menu-item
+                                            key={action.name}
+                                            value={action.name}
+                                            label={action.label}
+                                            onactionclick={handleActionClick}
+                                            disabled={action.disabled}
+                                            prefix-icon-name={action.iconName}
+                                            class="
+                                                slds-text-color_default
+                                                avonni-kanban__actions_item
+                                            "
+                                            data-element-id="avonni-kanban__action"
+                                        ></lightning-menu-item>
+                                    </template>
+                                </lightning-button-menu>
+                            </div>
+                        </lightning-tile>
+                    </div>
                 </div>
             </div>
         </div>

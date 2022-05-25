@@ -345,12 +345,10 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
         Array.from(groupElements).forEach((group) => {
-            Array.from(group.children)
-                .slice(1)
-                .forEach((tile) => {
-                    tile.classList.remove('avonni-kanban__tile_moved');
-                    tile.style.transform = `translateY(0px)`;
-                });
+            Array.from(group.children).forEach((tile) => {
+                tile.classList.remove('avonni-kanban__tile_moved');
+                tile.style.transform = `translateY(0px)`;
+            });
         });
     }
 
@@ -409,7 +407,7 @@ export default class Kanban extends LightningElement {
         // translates the tiles down when the dragged tile hovers over them
         const releasedChilds = Array.from(
             groupElements[this._releasedGroupIndex].children
-        ).slice(1);
+        );
 
         for (let i = this._releasedTileIndex; i < releasedChilds.length; i++) {
             if (
@@ -425,17 +423,15 @@ export default class Kanban extends LightningElement {
 
         // removes the translation on the other tiles
         Array.from(groupElements).forEach((group, i) => {
-            Array.from(group.children)
-                .slice(1)
-                .forEach((tile, j) => {
-                    if (
-                        i !== this._releasedGroupIndex ||
-                        j < this._releasedTileIndex
-                    ) {
-                        tile.classList.remove('avonni-kanban__tile_moved');
-                        tile.style.transform = `translateY(0px)`;
-                    }
-                });
+            Array.from(group.children).forEach((tile, j) => {
+                if (
+                    i !== this._releasedGroupIndex ||
+                    j < this._releasedTileIndex
+                ) {
+                    tile.classList.remove('avonni-kanban__tile_moved');
+                    tile.style.transform = `translateY(0px)`;
+                }
+            });
         });
     }
 
@@ -517,17 +513,17 @@ export default class Kanban extends LightningElement {
         this.handleDropZone(event);
     }
 
-    /**
-     *
-     * Hangles mouseenter on not dragged tiles
-     *
-     * @param {Event} event
-     */
-    handleTileMouseEnter(event) {
-        if (!this._draggedTile || event.currentTarget === this._draggedTile)
-            return;
-        this.endDrag();
-    }
+    // /**
+    //  *
+    //  * Hangles mouseenter on not dragged tiles
+    //  *
+    //  * @param {Event} event
+    //  */
+    // handleTileMouseEnter(event) {
+    //     if (!this._draggedTile || event.currentTarget === this._draggedTile)
+    //         return;
+    //     this.endDrag();
+    // }
 
     /**
      *
