@@ -1432,9 +1432,8 @@ export default class Scheduler extends LightningElement {
                 data: { ...row }
             });
 
-            // If there's already been a render and we know the datatable rows height,
-            // assign the min-height of the row
-            if (this._rowsHeight.length) {
+            // Set the min-height to the datatable rows height
+            if (this._rowsHeight.length && !this.isVertical) {
                 const dataRowHeight = this._rowsHeight.find(
                     (dataRow) => dataRow.rowKey === rowKey
                 ).height;
@@ -1543,7 +1542,7 @@ export default class Scheduler extends LightningElement {
         const cellWidth = cell.getBoundingClientRect().width;
         if (cellWidth !== this.cellWidth) {
             this.cellWidth = cellWidth;
-            this._updateOccurrencesWidth = true;
+            this._updateOccurrencesLength = true;
         }
     }
 
@@ -1683,7 +1682,7 @@ export default class Scheduler extends LightningElement {
                     if (this.isVertical) {
                         offsetSide = (level * this.cellWidth) / levelsTotal;
                         occurrence.numberOfEventsInThisTimeFrame = levelsTotal;
-                        this._updateOccurrencesWidth = true;
+                        this._updateOccurrencesLength = true;
                     } else {
                         offsetSide = level * levelHeight;
 
@@ -1715,14 +1714,25 @@ export default class Scheduler extends LightningElement {
         );
         eventOccurrences.forEach((occurrence) => {
             if (occurrence.disabled) {
-                occurrence.updateHeight();
+                occurrence.updateThickness();
             }
-            if (this._updateOccurrencesWidth) {
-                occurrence.updateSize();
+            if (this._updateOccurrencesLength) {
+                occurrence.updateLength();
             }
             occurrence.updatePosition();
         });
-        this._updateOccurrencesWidth = false;
+        this._updateOccurrencesLength = false;
+
+        if (this.isVertical) {
+            // Set the reference line height to the width of the schedule
+            const schedule = this.template.querySelector(
+                '[data-element-id="div-schedule-body"]'
+            );
+            const scheduleWidth = schedule.getBoundingClientRect().width;
+            schedule.style = `
+                --avonni-primitive-scheduler-event-reference-line-height: ${scheduleWidth}px
+            `;
+        }
     }
 
     /**
@@ -1741,9 +1751,9 @@ export default class Scheduler extends LightningElement {
                 height = this.cellHeight;
             } else {
                 height = this.datatable.getRowHeight(rowKey);
+                row.minHeight = height;
             }
             this._rowsHeight.push({ rowKey, height });
-            row.minHeight = height;
         });
     }
 

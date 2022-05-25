@@ -136,8 +136,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     renderedCallback() {
         this.updatePosition();
-        this.updateSize();
-        this.updateHeight();
+        this.updateLength();
+        this.updateThickness();
         this.updateStickyLabels();
     }
 
@@ -162,7 +162,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._cellDuration = !isNaN(Number(value)) ? Number(value) : 0;
 
         if (this._connected) {
-            this.updateSize();
+            this.updateLength();
             this.updateStickyLabels();
         }
     }
@@ -183,7 +183,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this._connected) {
             this.updatePosition();
-            this.updateSize();
+            this.updateLength();
             this.updateStickyLabels();
         }
     }
@@ -204,7 +204,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this._connected) {
             this.updatePosition();
-            this.updateSize();
+            this.updateLength();
         }
     }
 
@@ -224,7 +224,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this._connected) {
             this.updatePosition();
-            this.updateSize();
+            this.updateLength();
             this.updateStickyLabels();
         }
     }
@@ -261,7 +261,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._disabled = normalizeBoolean(value);
 
         if (this._connected) {
-            this.updateHeight();
+            this.updateThickness();
         }
     }
 
@@ -299,7 +299,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this._connected) {
             this.updatePosition();
-            this.updateSize();
+            this.updateLength();
             this.updateStickyLabels();
         }
     }
@@ -446,7 +446,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             value instanceof DateTime ? value : dateTimeObjectFrom(value);
 
         if (this._connected) {
-            this.updateSize();
+            this.updateLength();
             this.updateStickyLabels();
         }
     }
@@ -620,6 +620,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Computed CSS classes of the disabled occurrences' title.
+     *
+     * @type {string}
+     */
+    get disabledTitleClass() {
+        return classSet(
+            'avonni-scheduler__disabled-date-title slds-text-body_small slds-p-around_xx-small slds-grid slds-grid-vertical-align_center slds-text-color_weak'
+        )
+            .add({
+                'avonni-scheduler__disabled-date-title_vertical':
+                    this.isVertical
+            })
+            .toString();
+    }
+
+    /**
      * Computed CSS classes of the event occurence center label.
      *
      * @type {string}
@@ -715,6 +731,19 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             '.avonni-scheduler__event-label_right'
         );
         return label ? label.getBoundingClientRect().width : 0;
+    }
+
+    /**
+     * Computed CSS classes of the reference line.
+     *
+     * @type {string}
+     */
+    get referenceLineClass() {
+        return classSet('avonni-scheduler__reference-line slds-is-absolute')
+            .add({
+                'avonni-scheduler__reference-line_vertical': this.isVertical
+            })
+            .toString();
     }
 
     /**
@@ -836,6 +865,17 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Deprecated. Use `updateThickness` instead.
+     *
+     * @public
+     * @deprecated
+     */
+    @api
+    updateHeight() {
+        this.updateThickness();
+    }
+
+    /**
      * Update the position of the occurrence in the scheduler grid.
      *
      * @public
@@ -886,7 +926,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api
-    updateSize() {
+    updateLength() {
         const { from, to, headerCells, cellHeight, cellWidth, cellDuration } =
             this;
         const element = this.hostElement;
@@ -966,9 +1006,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @public
      */
     @api
-    updateHeight() {
-        if (this.disabled) {
-            const element = this.hostElement;
+    updateThickness() {
+        if (!this.disabled) return;
+
+        const element = this.hostElement;
+        if (this.isVertical) {
+            element.style.width = `${this.cellWidth}px`;
+        } else {
             const row = this.rows.find((rw) => rw.key === this.rowKey);
 
             if (row) {
@@ -976,6 +1020,17 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 element.style.height = `${height}px`;
             }
         }
+    }
+
+    /**
+     * Deprecated. Use `updateLength` instead.
+     *
+     * @public
+     * @deprecated
+     */
+    @api
+    updateWidth() {
+        this.updateLength();
     }
 
     /**
@@ -994,9 +1049,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     /**
      * Initialize the labels values.
-     *
-     * @returns {}
-     * @public
      */
     initLabels() {
         if (!this.eventData || !this.rows.length || !this.rowKey) return;
