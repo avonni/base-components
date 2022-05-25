@@ -549,48 +549,54 @@ export default class Timer extends LightningElement {
         }
         this.interval = setInterval(
             () => {
-                if (this.play) {
-                    // in play state
-                    if (this.type === 'count-up') {
-                        this._timerValue =
-                            this._startTime + (Date.now() - this.startDate);
-                        if (
-                            this._timerValue >=
-                            this._startTime + this.duration
-                        ) {
-                            this._timerValue = this.duration;
-                            if (this.repeat) this.reset();
-                            else this.stop();
-                        }
+                const isCountUp = this.type === 'count-up';
+
+                const maxDuration = isCountUp
+                    ? this._startTime + this.duration
+                    : this._startTime - this.duration;
+
+                if (this.play && isCountUp)
+                    this._timerValue =
+                        this._startTime + (Date.now() - this.startDate);
+                if (this.play && !isCountUp)
+                    this._timerValue =
+                        this._startTime - (Date.now() - this.startDate);
+
+                const isTimerOverflow =
+                    Math.abs(this._timerValue) >= MAX_TIMER_VALUE;
+                const hasEndedCountUp =
+                    isCountUp && this._timerValue >= maxDuration;
+                const hasEndedCountDown =
+                    !isCountUp && this._timerValue <= maxDuration;
+
+                let hasEnded = false;
+                if (isTimerOverflow) {
+                    this._timerValue = maxDuration;
+                    hasEnded = true;
+                } else if (this.play && hasEndedCountUp) {
+                    this._timerValue = this.duration;
+                    hasEnded = true;
+                } else if (this.play && hasEndedCountDown) {
+                    if (maxDuration < 0) {
+                        this._timerValue = maxDuration - 1000;
                     } else {
-                        this._timerValue =
-                            this._startTime - (Date.now() - this.startDate);
-                        let maxTime = this._startTime - this.duration;
-                        if (
-                            this._timerValue <= maxTime ||
-                            Math.abs(this._timerValue) >= MAX_TIMER_VALUE
-                        ) {
-                            if (maxTime < 0) {
-                                this._timerValue = maxTime - 1000;
-                            } else {
-                                this._timerValue = Math.abs(maxTime);
-                            }
-                            if (this.repeat) this.reset();
-                            else this.stop();
-                        }
+                        this._timerValue = maxDuration;
                     }
-                } else {
-                    // in pause state
-                    if (this.type === 'count-up')
-                        this.pauseBuffer =
-                            Date.now() -
-                            this.startDate -
-                            (this._timerValue - this._startTime);
-                    else
-                        this.pauseBuffer =
-                            Date.now() -
-                            this.startDate +
-                            (this._timerValue - this._startTime);
+                    hasEnded = true;
+                } else if (!this.play && isCountUp) {
+                    this.pauseBuffer =
+                        Date.now() -
+                        this.startDate -
+                        (this._timerValue - this._startTime);
+                } else if (!this.play && !isCountUp) {
+                    this.pauseBuffer =
+                        Date.now() -
+                        this.startDate +
+                        (this._timerValue - this._startTime);
+                }
+                if (hasEnded) {
+                    if (this.repeat) this.reset();
+                    else this.stop();
                 }
             },
             this.format.includes('ms') ? 50 : 200
