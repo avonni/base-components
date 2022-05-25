@@ -140,17 +140,24 @@ export default class ActivityTimeline extends LightningElement {
 
     // AJOUT  - TESTING
     testingD3() {
-        const divD3Testing = this.template.querySelector('.testing-d3');
-        d3.select(divD3Testing).selectAll('*').remove();
-        d3.select(divD3Testing).append('span').text('AJOUT DE TEXTE !!');
-        d3.select(divD3Testing)
+        d3.select(this.template.querySelector('.slds-section__title'))
             .style('color', 'orange')
             .transition()
             .style('color', 'yellow')
-            .duration(5000)
+            .duration(3000)
             .transition()
             .style('color', 'red')
-            .duration(5000);
+            .duration(3000)
+            .transition()
+            .style('color', 'purple')
+            .transition()
+            .duration(3000)
+            .style('color', 'blue')
+            .transition()
+            .duration(3000)
+            .style('color', 'green')
+            .transition()
+            .duration(3000);
 
         // AJOUT DE DONNEES , data binding
         // d3.select(divD3Testing)
@@ -489,8 +496,8 @@ export default class ActivityTimeline extends LightningElement {
     get viewTimeScale() {
         return d3
             .scaleTime()
-            .domain([this._intervalMinDate, this._intervalMaxDate])
-            .range([0, this._timelineWidth - 50]);
+            .domain([this._intervalMinDate, this._intervalMaxDate]) // TODO: Think if add +/- 1 to show all dates
+            .range([this._offsetAxis, this._timelineWidth - 10]);
     }
 
     /*
@@ -510,6 +517,59 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Set the yPosition value of all items to prevent overlap of elements in horizontal timeline
+     *
+     * @returns array
+     */
+    // TODO: check if overflow timeline's height
+    setYPositionOfItems() {
+        const startPosition = 10;
+        const gapBetweenItems = 28;
+
+        // Set all items with startPosition as yPosition
+        let dataToDisplay = this._displayedItems.map((element) => ({
+            ...element,
+            yPosition: startPosition
+        }));
+        dataToDisplay = [...dataToDisplay].sort(
+            (a, b) => new Date(a.datetimeValue) - new Date(b.datetimeValue)
+        );
+
+        for (let item of dataToDisplay) {
+            const itemDate = new Date(item.datetimeValue);
+
+            // Find all elements in date range of item to prevent overlapping
+            let foundElements = dataToDisplay.filter((element) => {
+                const date = new Date(element.datetimeValue);
+                return (
+                    date >= itemDate && date < this.findNextDate(itemDate, 3)
+                );
+            });
+
+            if (foundElements && foundElements.length > 0) {
+                // Add vertical gap between each element
+                foundElements.forEach((element, index) => {
+                    if (element.name !== item.name) {
+                        element.yPosition += gapBetweenItems;
+                    }
+
+                    // To prevent two elements with the same date to have the same yPosition
+                    if (
+                        index > 0 &&
+                        foundElements[index - 1].datetimeValue ===
+                            element.datetimeValue &&
+                        foundElements[index - 1].yPosition === element.yPosition
+                    ) {
+                        foundElements[index - 1].yPosition -= gapBetweenItems;
+                    }
+                });
+            }
+        }
+
+        return dataToDisplay;
+    }
+
+    /**
      * Create horizontal view timeline
      */
     createTimeline() {
@@ -526,7 +586,7 @@ export default class ActivityTimeline extends LightningElement {
             .append('svg')
             .attr('width', this._timelineWidth)
             .attr('height', this._timelineHeight)
-            .attr('transform', 'translate(0, ' + 30 + ')');
+            .attr('transform', 'translate(' + 0 + ', ' + 30 + ')');
 
         timelineSVG
             .append('rect')
@@ -546,27 +606,26 @@ export default class ActivityTimeline extends LightningElement {
             .tickSizeOuter(0);
         timelineSVG
             .append('g')
-            .attr('transform', 'translate(40, 0)')
+            .attr('transform', 'translate(' + 0 + ', 0)')
             .attr('opacity', 0.15)
             .style('stroke-dasharray', '8 8')
             .call(axis);
 
-        // TODO: Inserer des donnees aux bonnes positions
         // TODO: Creer nouveau svg pour distinguer les items ?
         const rectWidth = 20;
-        const yItem = 75;
+        const dataToDisplay = this.setYPositionOfItems();
 
         // TODO: DISPLAY ICON INSTEAD OF RECT
         timelineSVG
             .append('g')
             .selectAll('rect')
-            .data(this._displayedItems)
+            .data(dataToDisplay)
             .enter()
             .append('rect')
             .attr('x', (item) =>
                 this.viewTimeScale(new Date(item.datetimeValue))
-            ) // POSITION DU DATA (X)
-            .attr('y', yItem) // TODO: CHANGE Y POSITION IF SAME DATES
+            )
+            .attr('y', (item) => item.yPosition)
             .attr('width', rectWidth)
             .attr('height', rectWidth)
             .attr('fill', this._scrollAxisColor);
@@ -574,15 +633,15 @@ export default class ActivityTimeline extends LightningElement {
         timelineSVG
             .append('g')
             .selectAll('text')
-            .data(this._displayedItems)
+            .data(dataToDisplay)
             .enter()
             .append('text')
             .attr(
                 'x',
                 (item) =>
                     this.viewTimeScale(new Date(item.datetimeValue)) + rectWidth
-            ) // POSITION DU DATA (X)
-            .attr('y', yItem + rectWidth * 0.68) // TODO: CHANGE Y POSITION IF SAME DATES
+            )
+            .attr('y', (item) => item.yPosition + rectWidth * 0.68)
             .text((item) => {
                 return ' - ' + item.title;
             })
@@ -627,7 +686,7 @@ export default class ActivityTimeline extends LightningElement {
             .append('g')
             .attr(
                 'transform',
-                'translate(40, ' + this._timelineAxisHeight + ')'
+                'translate(' + 0 + ', ' + this._timelineAxisHeight + ')'
             )
             .call(scrollAxis);
 
@@ -761,15 +820,23 @@ export default class ActivityTimeline extends LightningElement {
      */
     createTimelineDateDomain(minDate, dayIncrement, domainLength) {
         const dateDomain = [];
-        const dateToAdd = new Date(minDate);
+        let dateToAdd = new Date(minDate);
         dateDomain.push(this.convertDateToFormat(dateToAdd));
 
         for (let i = 0; i < Math.floor(domainLength); ++i) {
-            dateToAdd.setDate(dateToAdd.getDate() + dayIncrement);
+            // dateToAdd.setDate(dateToAdd.getDate() + dayIncrement);
+            dateToAdd = this.findNextDate(dateToAdd, dayIncrement);
             dateDomain.push(this.convertDateToFormat(dateToAdd));
         }
 
         return dateDomain;
+    }
+
+    // TODO: VERIFIER
+    findNextDate(date, dayIncrement) {
+        const nextDate = new Date(date);
+        nextDate.setDate(nextDate.getDate() + dayIncrement);
+        return nextDate;
     }
 
     /**

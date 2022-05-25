@@ -717,5 +717,77 @@ export const horizontalItems = [
         iconName: 'standard:email',
         hasCheckbox: true,
         hasError: false
+    },
+    {
+        name: 'item14',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 08:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item15',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 20:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item16',
+        title: 'Magic item',
+        datetimeValue: '02/02/2022 10:45',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item17',
+        title: 'Item',
+        datetimeValue: '02/03/2022 10:45',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item18',
+        title: 'Surprise!',
+        datetimeValue: '02/04/2022 10:45',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item19',
+        title: 'Another surprise!',
+        datetimeValue: '02/04/2022 10:45',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item20',
+        title: 'Event',
+        datetimeValue: '02/02/2022 00:00',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item21',
+        title: 'Event 21',
+        datetimeValue: '02/02/2022 08:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
     }
 ];
