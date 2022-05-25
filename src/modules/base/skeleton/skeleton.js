@@ -30,6 +30,95 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement } from 'lwc';
+import { LightningElement, api } from 'lwc';
+import { normalizeString } from 'c/utilsPrivate';
 
-export default class Skeleton extends LightningElement {}
+const ANIMATION_VARIANTS = {
+    valid: ['pulse', 'wave']
+};
+
+const SKELETON_VARIANTS = {
+    valid: ['circular', 'rectangular', 'text'],
+    default: 'text'
+};
+
+/**
+ * @class
+ * @name Skeleton
+ * @public
+ * @storyId example-skeleton--base
+ * @descriptor avonni-skeleton
+ */
+export default class Skeleton extends LightningElement {
+    _animation;
+    _height;
+    _variant = SKELETON_VARIANTS.default;
+    _width;
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
+    /**
+     * The animation type changes the appearance of the skeleton. Valid values include pulse and wave.
+     * @type {string}
+     * @public
+     */
+    @api
+    get animation() {
+        return this._animation;
+    }
+    set animation(value) {
+        this._animation = normalizeString(value, {
+            fallbackValue: ANIMATION_VARIANTS.default,
+            validValues: null
+        });
+    }
+
+    /**
+     * Height of the skeleton in em.
+     * @type {number}
+     * @public
+     */
+    @api
+    get height() {
+        return this._height;
+    }
+    set height(value) {
+        const number = isNaN(parseInt(value, 10)) ? 100 : value;
+        this._height = number;
+    }
+
+    /**
+     * The variant changes the appearance of the skeleton. Valid values include circular, rectangular and text.
+     * @type {string}
+     * @default base
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            fallbackValue: SKELETON_VARIANTS.default,
+            validValues: SKELETON_VARIANTS.valid
+        });
+    }
+
+    /**
+     * Width of the skeleton in em.
+     * @type {number}
+     * @public
+     */
+    @api
+    get width() {
+        return this._width;
+    }
+    set width(value) {
+        const number = isNaN(parseInt(value, 10)) ? 100 : value;
+        this._width = number;
+    }
+}
