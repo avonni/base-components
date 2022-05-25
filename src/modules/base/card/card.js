@@ -35,7 +35,7 @@ import {
     // classSet,
     generateUUID
 } from 'c/utils';
-import { normalizeString } from '../utilsPrivate/normalize';
+import { normalizeBoolean, normalizeString } from '../utilsPrivate/normalize';
 
 const MEDIA_POSITIONS = {
     valid: ['left', 'right', 'top', 'bottom', 'center'],
@@ -47,6 +47,11 @@ export default class Card extends LightningElement {
     _href;
     _title;
     _mediaPosition;
+    _backgroundImage;
+
+    renderedCallback() {
+        console.log(this.backgroundImageStyle);
+    }
 
     /**
      * Get the title slot DOM element.
@@ -170,6 +175,15 @@ export default class Card extends LightningElement {
         });
     }
 
+    @api
+    get backgroundImage() {
+        return this._backgroundImage;
+    }
+
+    set backgroundImage(value) {
+        this._backgroundImage = normalizeBoolean(value);
+    }
+
     /**
      * Actions.
      *
@@ -236,6 +250,28 @@ export default class Card extends LightningElement {
     }
 
     // private
+
+    get backgroundImageStyle() {
+        if (!this._backgroundImage) return '';
+
+        return `background-image: url(${this.imageSrc}); width: 100%; height: 100%; background-color: red;`;
+    }
+
+    get computedCardClasses() {
+        if (this.showLeftMedia) {
+            return 'image-left';
+        }
+        if (this.showRightMedia) {
+            return 'image-right';
+        }
+        if (this.showBottomMedia) {
+            return 'image-bottom';
+        }
+        if (this.showCenterMedia) {
+            return 'image-center';
+        }
+        return 'image-top';
+    }
 
     /**
      * Check if Title text is specified.

@@ -33,45 +33,17 @@
 -->
 
 <template>
-    <article class="">
-        <!-- <article class="slds-card"> -->
+    <article class={computedCardClasses} style={backgroundImageStyle}>
         <!-- top image -->
-        <template if:true={showTopMedia}>
-            <div class="avonni-card__image-container avonni-card__top-image">
-                <img class="avonni-card__image" src={imageSrc} alt="" />
-            </div>
-        </template>
+        <div class="avonni-card__image-container" if:false={showCenterMedia}>
+            <img class="avonni-card__image" src={imageSrc} alt="" />
+            <slot name="image-action-container"></slot>
+        </div>
 
         <!-- title and action -->
-        <div class="slds-grid slds-grid_vertical-align-start">
-            <!-- left image -->
-            <template if:true={showLeftMedia}>
-                <div
-                    class="avonni-card__image-container"
-                    data-element-id="left-image"
-                >
-                    <img class="avonni-card__image" src={imageSrc} alt="" />
-                </div>
-            </template>
-
-            <div class="slds-has-flexi-truncate">
+        <div class="slds-has-flexi-truncate">
+            <div class="slds-grid slds-m-around_x-small">
                 <div class="slds-grid">
-                    <!-- <div class="slds-media__figure">
-                        <span
-                            class="
-                                slds-icon_container
-                                slds-icon-standard-account
-                            "
-                        >
-                            Avatar
-                            <span
-                                class="slds-assistive-text"
-                                if:true={hasStringTitle}
-                                >{title}</span
-                            >
-                        </span>
-                    </div> -->
-
                     <c-avatar
                         class="slds-m-right_x-small"
                         initials="lk"
@@ -86,30 +58,41 @@
                         </span>
                         <template for:each={icons} for:item="icon"
                             ><lightning-icon
-                                size="x-small"
+                                class="slds-m-left_x-small"
+                                size="xx-small"
                                 icon-name={icon}
                                 key={generateKey}
                             ></lightning-icon>
                         </template>
                     </div>
-                    <div class="slds-no-flex">
-                        <button class="slds-button slds-button_neutral">
-                            Action
-                        </button>
-                    </div>
                 </div>
-                <template if:true={showCenterMedia}>
-                    <div
-                        class="
-                            avonni-card__image-container
-                            avonni-card__center-image
-                        "
-                    >
-                        <img class="avonni-card__image" src={imageSrc} alt="" />
-                    </div>
-                </template>
 
-                <div class="">
+                <div class="slds-no-flex slds-col_bump-left">
+                    <button class="slds-button slds-button_neutral">
+                        Action
+                    </button>
+                </div>
+            </div>
+
+            <!-- bottom content -->
+            <div class="slds-m-around_x-small" if:false={showCenterMedia}>
+                <p>{description}</p>
+                <p>
+                    <template for:each={infos} for:item="info">
+                        <a key={generateKey} href={info.href}>{info.label}</a>
+                    </template>
+                </p>
+            </div>
+
+            <!-- center image -->
+            <template if:true={showCenterMedia}>
+                <div class="avonni-card__image-container">
+                    <img class="avonni-card__image" src={imageSrc} alt="" />
+                    <slot name="image-action-container"></slot>
+                </div>
+
+                <!-- center content -->
+                <div class="slds-m-around_x-small">
                     <p>{description}</p>
                     <p>
                         <template for:each={infos} for:item="info">
@@ -119,24 +102,7 @@
                         </template>
                     </p>
                 </div>
-            </div>
-
-            <!-- right image -->
-            <template if:true={showRightMedia}>
-                <div
-                    class="
-                        avonni-card__image-container avonni-card__right-image
-                    "
-                >
-                    <img class="avonni-card__image" src={imageSrc} alt="" />
-                </div>
             </template>
         </div>
-
-        <template if:true={showBottomMedia}>
-            <div class="avonni-card__image-container avonni-card__bottom-image">
-                <img class="avonni-card__image" src={imageSrc} alt="" />
-            </div>
-        </template>
     </article>
 </template>

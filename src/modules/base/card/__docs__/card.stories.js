@@ -130,6 +130,9 @@ export default {
             table: {
                 type: { summary: 'object' }
             }
+        },
+        args: {
+            backgroundImage: false
         }
     }
 };

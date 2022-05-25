@@ -43,7 +43,8 @@ export const Card = ({
     imageSrc,
     infos,
     title,
-    variant
+    variant,
+    backgroundImage
 }) => {
     const element = document.createElement('ac-card');
     element.actions = actions;
@@ -55,5 +56,6 @@ export const Card = ({
     element.infos = infos;
     element.title = title;
     element.variant = variant;
+    element.backgroundImage = backgroundImage;
     return element;
 };

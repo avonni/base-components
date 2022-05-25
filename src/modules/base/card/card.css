@@ -32,19 +32,44 @@
 
 article {
     /* border: 1px solid gray; */
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
-.avonni-card__image-container {
-    height: 100px;
-    width: 80px;
+.image-left {
+    flex-direction: row;
+}
+
+.image-right {
+    flex-direction: row-reverse;
+}
+
+.image-bottom {
+    flex-direction: column-reverse;
+}
+
+.image-left .avonni-card__image-container,
+.image-right .avonni-card__image-container {
+    /* border: 2px solid red; */
+    position: relative;
+    height: 150px;
+    width: 100px;
     background-color: yellow;
 }
 
-.avonni-card__top-image,
-.avonni-card__center-image,
-.avonni-card__bottom-image {
+.image-top .avonni-card__image-container,
+.image-center .avonni-card__image-container,
+.image-bottom .avonni-card__image-container {
     width: 100%;
     height: 200px;
+}
+
+.media-actions {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: aqua;
 }
 
 .avonni-card__image {
