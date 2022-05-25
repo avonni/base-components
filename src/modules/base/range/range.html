@@ -142,6 +142,16 @@
         <div class="avonni-range__progress-container">
             <div class="avonni-range__progress"></div>
         </div>
+        <template if:true={showHatchMarks}>
+            <svg
+                lwc:dom="manual"
+                width="100%"
+                height="10px"
+                xmlns="http://www.w3.org/2000/svg"
+                data-element-id="ruler"
+                class="slds-m-top_x-small"
+            ></svg>
+        </template>
         <div
             if:true={isNormalHorizontal}
             class="avonni-range__unit-container"
@@ -172,21 +182,17 @@
                 data-element-id="lightning-formatted-number-max"
             ></lightning-formatted-number>
         </div>
-        <span
-            if:true={hasCustomLabelsHorizontal}
-            class="avonni-range__custom-labels-container_horizontal"
-        >
-            <template for:each={customLabels} for:item="customLabel">
-                <div
-                    class="custom-label-container"
-                    key={customLabel.value}
-                    data-value={customLabel.value}
-                >
-                    <div class="tick">l</div>
-                    <div>{customLabel.label}</div>
-                </div>
-            </template>
-        </span>
+    </div>
+    <div if:true={hasCustomLabelsHorizontal} class="custom-label-container">
+        <template for:each={customLabels} for:item="customLabel">
+            <div
+                data-value={customLabel.value}
+                key={customLabel.value}
+                class="custom-label"
+            >
+                {customLabel.label}
+            </div>
+        </template>
     </div>
     <div
         if:true={isNormalVertical}

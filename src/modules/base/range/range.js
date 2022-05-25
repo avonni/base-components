@@ -60,6 +60,7 @@ const RANGE_UNITS = {
     valid: ['decimal', 'currency', 'percent', 'custom'],
     default: 'decimal'
 };
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
 /**
  * @class
@@ -144,6 +145,7 @@ export default class Range extends LightningElement {
     _valueLower;
     _valueUpper;
     _variant = LABEL_VARIANTS.default;
+    _showHatchMarks = false;
 
     _helpMessage;
     _leftInput;
@@ -174,7 +176,10 @@ export default class Range extends LightningElement {
         });
         this.updateMinProgressBar(this._leftInput.value);
         this.updateMaxProgressBar(this._rightInput.value);
-        if (this._unit === 'custom') {
+        if (this.showHatchMarks) {
+            this.drawRuler();
+        }
+        if (this._unit === 'custom' && this._customLabels.length !== 0) {
             this.displayCustomLabels();
         }
         if (!this._rendered) {
@@ -251,6 +256,21 @@ export default class Range extends LightningElement {
 
     set pin(value) {
         this._pin = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, shows the slider hatch marks at every step.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showHatchMarks() {
+        return this._showHatchMarks || this.customLabels.length !== 0;
+    }
+    set showHatchMarks(value) {
+        this._showHatchMarks = normalizeBoolean(value);
     }
 
     /**
@@ -496,7 +516,7 @@ export default class Range extends LightningElement {
     }
 
     get isNormalHorizontal() {
-        return this._type === 'vertical' && this.customLabels.length === 0;
+        return this._type !== 'vertical' && this.customLabels.length === 0;
     }
 
     get hasCustomLabelsHorizontal() {
@@ -721,21 +741,51 @@ export default class Range extends LightningElement {
      * Displays the custom labels for the range
      */
     displayCustomLabels() {
-        let inputWidth = this.template.querySelector(
+        let totalWidth = this.template.querySelector(
             '[data-element-id="div-wrapper"]'
         ).clientWidth;
-        for (let customLabel of this._customLabels) {
-            this.template.querySelector(
-                `[data-value='${customLabel.value}'].custom-label-container`
-            ).style.gridColumnStart = customLabel.value + 1;
+        this.template
+            .querySelectorAll('.custom-label')
+            .forEach((element, index) => {
+                let value = this._customLabels[index].value;
+                element.style.left =
+                    ((value - this.min) / (this.max - this.min)) * totalWidth +
+                    'px';
+            });
+    }
+
+    drawRuler() {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+        ruler.querySelectorAll('*').forEach((child) => {
+            child.remove();
+        });
+        const totalWidth = ruler.clientWidth;
+        const inputThumbRadius = 8.75;
+        const numberOfSteps = (this.max - this.min) / this.step;
+        const stepWidth = (totalWidth - inputThumbRadius * 2) / numberOfSteps;
+
+        let leftPosition = inputThumbRadius;
+
+        for (let i = 0; i < numberOfSteps + 1; i++) {
+            let isMajorStep = i === 0 || i === numberOfSteps;
+            if (this._customLabels.length !== 0) {
+                isMajorStep =
+                    isMajorStep ||
+                    this._customLabels.some(
+                        (customLabel) => customLabel.value === i - this.min
+                    );
+            }
+            let line = document.createElementNS(SVG_NAMESPACE, 'line');
+            line.setAttribute('stroke', `${isMajorStep ? '#636363' : 'gray'}`);
+            line.setAttribute('height', `10`);
+            line.setAttribute('width', `5`);
+            line.setAttribute('x1', `${leftPosition}`);
+            line.setAttribute('y1', '1');
+            line.setAttribute('x2', `${leftPosition}`);
+            line.setAttribute('y2', `${isMajorStep ? 8 : 6}`);
+            ruler.appendChild(line);
+            leftPosition += stepWidth;
         }
-        this.template.host.style.setProperty('--input-size', `${inputWidth}px`);
-        console.log(`${(this.max - this.min) / this.step + 1}`);
-        this.template.host.style.setProperty(
-            '--number-of-steps',
-            `${(this.max - this.min) / this.step + 1}`
-        );
-        //TODO: resize with resize observer
     }
 
     /**

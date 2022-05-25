@@ -199,6 +199,18 @@ export default {
                 category: 'Value'
             }
         },
+        showHatchMarks: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, shows the slider hatch marks at every step.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Value'
+            }
+        },
         size: {
             control: {
                 type: 'select'
@@ -301,6 +313,7 @@ export default {
         max: 0,
         min: 0,
         pin: false,
+        showHatchMarks: false,
         size: 'full',
         step: 1,
         type: 'horizontal',
