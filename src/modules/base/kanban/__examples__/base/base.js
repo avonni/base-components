@@ -2,13 +2,38 @@ import { LightningElement } from 'lwc';
 
 export default class KanbanBase extends LightningElement {
     groupValues = [
-        { label: 'Open', value: 'open', backgroundColor: '#fffff' },
+        {
+            label: 'Open',
+            value: 'open',
+            backgroundColor: '#fffff'
+        },
         {
             label: 'In Progress',
             value: 'inProgress',
-            backgroundColor: '#fffff'
+            backgroundColor: '#fffff',
+            footerActions: [
+                {
+                    disabled: false,
+                    label: 'Action 1',
+                    name: 'Action 1',
+                    iconName: 'utility:cart'
+                }
+            ]
         },
-        { label: 'Closed', value: 'closed', backgroundColor: '#fffff' }
+        {
+            label: 'Closed',
+            value: 'closed',
+            backgroundColor: '#fffff',
+            footerActions: [
+                {
+                    disabled: false,
+                    label: 'Action 1',
+                    name: 'Action 1',
+                    iconName: 'utility:add'
+                },
+                { disabled: true, label: 'Action 2', name: 'Action 2' }
+            ]
+        }
     ];
 
     fields = [

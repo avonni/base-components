@@ -184,6 +184,31 @@
                             </div>
                         </lightning-tile>
                     </div>
+                    <template if:true={group.footerActions}>
+                        <div class="avonni-kanban__footer_actions_container">
+                            <button
+                                onactionclick={handleActionClick}
+                                for:each={group.footerActions}
+                                for:item="action"
+                                key={action.name}
+                                disabled={action.disabled}
+                                class="avonni-kanban__footer_action"
+                            >
+                                <lightning-icon
+                                    if:true={action.iconName}
+                                    size="small"
+                                    icon-name={action.iconName}
+                                ></lightning-icon>
+                                <span
+                                    class="
+                                        slds-text-color_default
+                                        slds-text-body_regular
+                                    "
+                                    >{action.label}</span
+                                >
+                            </button>
+                        </div>
+                    </template>
                 </div>
             </div>
         </div>

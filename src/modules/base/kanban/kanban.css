@@ -99,6 +99,27 @@
     z-index: 1;
 }
 
+.avonni-kanban__footer_actions_container {
+    margin: 5px;
+}
+
+.avonni-kanban__footer_action {
+    border: none;
+    background-color: transparent;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.avonni-kanban__footer_action > span {
+    padding: 3px;
+    margin: 3px;
+}
+
+.avonni-kanban__footer_action:disabled {
+    opacity: 0.5;
+}
+
 .progress-bar::-webkit-scrollbar,
 .avonni-kanban__tiles_container::-webkit-scrollbar {
     width: 7px;

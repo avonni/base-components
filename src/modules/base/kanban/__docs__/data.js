@@ -31,9 +31,38 @@
  */
 
 const GROUP_VALUES = [
-    { label: 'Open', value: 'open', backgroundColor: '#fffff' },
-    { label: 'In Progress', value: 'inProgress', backgroundColor: '#fffff' },
-    { label: 'Closed', value: 'closed', backgroundColor: '#fffff' }
+    {
+        label: 'Open',
+        value: 'open',
+        backgroundColor: '#fffff'
+    },
+    {
+        label: 'In Progress',
+        value: 'inProgress',
+        backgroundColor: '#fffff',
+        footerActions: [
+            {
+                disabled: false,
+                label: 'Action 1',
+                name: 'Action 1',
+                iconName: 'utility:cart'
+            }
+        ]
+    },
+    {
+        label: 'Closed',
+        value: 'closed',
+        backgroundColor: '#fffff',
+        footerActions: [
+            {
+                disabled: false,
+                label: 'Action 1',
+                name: 'Action 1',
+                iconName: 'utility:add'
+            },
+            { disabled: true, label: 'Action 2', name: 'Action 2' }
+        ]
+    }
 ];
 
 const FIELDS = [
