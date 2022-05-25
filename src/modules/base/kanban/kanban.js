@@ -51,6 +51,8 @@ export default class Kanban extends LightningElement {
     _fields = [];
     _groupFieldName;
     _groupValues = [];
+    _summarizeValues = [];
+    _oldSummarizeValues = [];
     _groupWidth = 1;
     _initialPos = { x: 0, y: 0 };
     _initialTileIndex = 0;
@@ -206,11 +208,19 @@ export default class Kanban extends LightningElement {
      * @type {object[]}
      */
     get computedGroups() {
+        const SUMMARY_UPDATE_SPEED = 300;
+
         let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
+
+        this._summarizeValues = JSON.parse(
+            JSON.stringify(this._oldSummarizeValues)
+        );
 
         // creates the group
         computedGroups.forEach((group, i) => {
             group.tiles = [];
+            if (!this._summarizeValues[i]) this._summarizeValues[i] = 0;
+            this._oldSummarizeValues[i] = 0;
             group.summarize = {
                 value: 0,
                 type: '',
@@ -219,7 +229,6 @@ export default class Kanban extends LightningElement {
             group.index = i;
         });
         let computedFields = [];
-
         // filters each record and adds it to the right group
         this._records.forEach((record, i) => {
             computedFields.push({
@@ -255,13 +264,35 @@ export default class Kanban extends LightningElement {
                 if (toSummarize && typeof toSummarize.value === 'number') {
                     group.summarize.type = toSummarize.type;
                     group.summarize.typeAttributes = toSummarize.typeAttributes;
-                    group.summarize.value += toSummarize.value;
+                    this._oldSummarizeValues[group.index] += toSummarize.value;
                 }
             }
         });
+
         // Gets the length of each group
-        computedGroups.forEach((group) => {
+        computedGroups.forEach((group, i) => {
+            group.summarize.value = this.truncateNumber(
+                this._summarizeValues[i]
+            );
             this._groupsLength.push(group.tiles.length);
+            const summarizeUpdate = this.truncateNumber(
+                this._oldSummarizeValues[i] - this._summarizeValues[i]
+            );
+            if (summarizeUpdate !== 0) {
+                for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
+                    setTimeout(() => {
+                        const summary = this.template.querySelectorAll(
+                            '[data-element-id="summarize"]'
+                        )[group.index];
+
+                        summary.value += this.truncateNumber(
+                            summarizeUpdate / SUMMARY_UPDATE_SPEED
+                        );
+
+                        summary.value = this.truncateNumber(summary.value);
+                    }, 1);
+                }
+            }
         });
         return computedGroups;
     }
@@ -591,5 +622,14 @@ export default class Kanban extends LightningElement {
                     this._groupValues[groupIndex].label
             );
         });
+    }
+
+    /**
+     *
+     * Truncates a number to handle floatting point errors (4.500000000000000003 for example)
+     * @param {number} num Number to truncate
+     */
+    truncateNumber(num) {
+        return Math.round(num * 1e5) / 1e5;
     }
 }
