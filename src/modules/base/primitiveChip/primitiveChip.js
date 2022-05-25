@@ -205,7 +205,7 @@ export default class PrimitiveChip extends LightningElement {
 
     get computedChipClass() {
         return classSet('').add({
-            'avonni-primitive-chip__hidden': this._hidden
+            'slds-hide': this._hidden
         });
     }
 }

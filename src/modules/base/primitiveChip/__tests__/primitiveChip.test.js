@@ -103,12 +103,17 @@ describe('Primitive Chip', () => {
 
     // iconName
     it('iconName', () => {
+        element.mediaPosition = 'left';
         element.iconName = 'utility:user';
 
         return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="icon-left"]'
+            );
+            console.log(icon);
+
             expect(element.iconName).toBe('utility:user');
-            // cannot test the value of the html element that displays the icon
-            // since primitive-icon does not expose the icon name in its html
+            expect(icon.iconName).toBe('utility:user');
         });
     });
 
