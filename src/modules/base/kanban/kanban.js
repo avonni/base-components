@@ -271,6 +271,11 @@ export default class Kanban extends LightningElement {
 
         // Gets the length of each group
         computedGroups.forEach((group, i) => {
+            requestAnimationFrame(() => {
+                this.template.querySelectorAll(
+                    '[data-element-id="avonni-kanban__field"]'
+                )[i].style.background = group.backgroundColor;
+            });
             group.summarize.value = this.truncateNumber(
                 this._summarizeValues[i]
             );

@@ -38,6 +38,8 @@
     width: 100%;
     min-width: 185px;
     border-right: 1px solid #c9c7c5;
+    border-radius: 0.25rem;
+    padding-top: 5px;
 }
 
 .avonni-kanban__field:first-of-type {

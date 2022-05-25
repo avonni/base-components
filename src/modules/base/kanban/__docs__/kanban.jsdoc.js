@@ -11,6 +11,7 @@
 /**
  * @typedef {Object} KanbanGroup
  * @name groups
+ * @property {string} backgroundColor Color of the group's background.
  * @property {string} label Group label.
  * @property {string} value Unique value for the group.
  */
