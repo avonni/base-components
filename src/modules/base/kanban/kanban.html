@@ -39,7 +39,13 @@
     <template if:false={isLoading}>
         <div class="slds-path progress-bar">
             <div class="slds-grid slds-path__track">
-                <div class="slds-grid slds-path__scroller-container">
+                <div
+                    class="
+                        slds-grid
+                        slds-path__scroller-container
+                        avonni-kanban__path_container
+                    "
+                >
                     <div class="slds-path__scroller">
                         <div class="slds-path__scroller_inner">
                             <ul
@@ -96,6 +102,7 @@
                             slds-text-align_center
                             slds-text-heading_large
                             slds-text-color_success
+                            avonni-kanban__summarize
                         "
                         data-element-id="summarize"
                     ></c-output-data>
