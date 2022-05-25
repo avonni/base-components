@@ -92,7 +92,7 @@ export default class Timer extends LightningElement {
     _type = COUNT_TYPES.default;
     _variant = BUTTON_VARIANTS.default;
     _startTime = DEFAULT_START_TIME;
-    _timerValue = DEFAULT_START_TIME;
+    _value = DEFAULT_START_TIME;
 
     startDate = null;
     play = false;
@@ -127,9 +127,9 @@ export default class Timer extends LightningElement {
         if (this._autoStart) {
             this.startDate = Date.now();
             // start after short delay to account for properties initialization
-            setTimeout(() => {
+            requestAnimationFrame(() => {
                 this.start();
-            }, 10);
+            });
         }
     }
 
@@ -235,7 +235,7 @@ export default class Timer extends LightningElement {
      */
     @api
     get value() {
-        return this._timerValue;
+        return this._value;
     }
 
     set value(value) {
@@ -246,7 +246,7 @@ export default class Timer extends LightningElement {
                     ? Math.min(parseInt(value, 10), MAX_TIMER_VALUE)
                     : Math.max(parseInt(value, 10), -MAX_TIMER_VALUE);
         }
-        this._timerValue = this._startTime;
+        this._value = this._startTime;
     }
 
     /**
@@ -300,7 +300,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get hours() {
-        const hours = Math.floor(this._timerValue / 60 / 60 / 1000);
+        const hours = Math.floor(this._value / 60 / 60 / 1000);
         return hours >= 0 ? Math.abs(hours) : Math.abs(hours) - 1;
     }
 
@@ -310,7 +310,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get minutes() {
-        const minutes = Math.floor(this._timerValue / 60 / 1000) % 60;
+        const minutes = Math.floor(this._value / 60 / 1000) % 60;
         return minutes >= 0 ? Math.abs(minutes) : Math.abs(minutes) - 1;
     }
 
@@ -320,7 +320,7 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get seconds() {
-        const seconds = Math.floor(this._timerValue / 1000) % 60;
+        const seconds = Math.floor(this._value / 1000) % 60;
         return seconds >= 0 ? Math.abs(seconds) : Math.abs(seconds) - 1;
     }
 
@@ -330,17 +330,17 @@ export default class Timer extends LightningElement {
      * @type {number}
      */
     get milliseconds() {
-        const milliseconds = Math.abs(Math.floor(this._timerValue % 1000));
+        const milliseconds = Math.abs(Math.floor(this._value % 1000));
         return milliseconds >= 0 ? milliseconds : Math.abs(milliseconds) - 1;
     }
 
     /**
-     * Boolean, is true if _timerValue is negative.
+     * Boolean, is true if _value is negative.
      *
      * @type {number}
      */
     get isNegative() {
-        return this._timerValue < 0;
+        return this._value < 0;
     }
 
     /*
@@ -348,6 +348,31 @@ export default class Timer extends LightningElement {
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Pause the timer.
+     *
+     * @public
+     */
+    @api
+    pause() {
+        this.play = false;
+        this.dispatchTimerPause();
+    }
+
+    /**
+     * Reset the timer. Will keep on going if is still playing.
+     *
+     * @public
+     */
+    @api
+    reset() {
+        this.startDate = null;
+        this.pauseBuffer = 0;
+        this.stop();
+        this.start();
+        this.dispatchTimerReset();
+    }
 
     /**
      * Start the timer.
@@ -365,17 +390,6 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Pause the timer.
-     *
-     * @public
-     */
-    @api
-    pause() {
-        this.play = false;
-        this.dispatchTimerPause();
-    }
-
-    /**
      * Stop the timer.
      *
      * @public
@@ -388,20 +402,6 @@ export default class Timer extends LightningElement {
         this.clearCurrentInterval();
     }
 
-    /**
-     * Reset the timer. Will keep on going if is still playing.
-     *
-     * @public
-     */
-    @api
-    reset() {
-        this.startDate = null;
-        this.pauseBuffer = 0;
-        this.stop();
-        this.start();
-        this.dispatchTimerReset();
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -409,35 +409,72 @@ export default class Timer extends LightningElement {
      */
 
     /**
-     * Timer start event dispatcher.
+     * Clear the current interval.
      */
-    dispatchTimerStart() {
-        /**
-         * The event fired when the timer start.
-         *
-         * @event
-         * @name timerstart
-         * @param {string} time the time value.
-         * @param {string} hours the hours value.
-         * @param {string} minutes the minutes value.
-         * @param {string} seconds the seconds value.
-         * @param {string} duration the duration value.
-         * @param {string} format the format value.
-         * @param {string} type the type value.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('timerstart', {
-                detail: {
-                    time: this.time,
-                    hours: this.hours,
-                    minutes: this.minutes,
-                    seconds: this.seconds,
-                    duration: this.duration,
-                    format: this.format,
-                    type: this.type
+    clearCurrentInterval() {
+        clearInterval(this.interval);
+        this.interval = null;
+        this.consumePauseBuffer();
+        this.dispatchTimerStop();
+    }
+
+    /**
+     *  Consumes pause buffer.
+     */
+    consumePauseBuffer() {
+        if (this.startDate !== null) this.startDate += this.pauseBuffer;
+        this.pauseBuffer = 0;
+    }
+
+    /**
+     * Create timer interval.
+     */
+    createInterval() {
+        if (this.startDate === null) {
+            this.startDate = Date.now();
+        }
+        this.interval = setInterval(
+            () => {
+                const isCountUp = this.type === 'count-up';
+
+                const maxDuration = isCountUp
+                    ? this._startTime + this.duration
+                    : this._startTime - this.duration;
+
+                if (this.play && isCountUp)
+                    this._value =
+                        this._startTime + (Date.now() - this.startDate);
+                if (this.play && !isCountUp)
+                    this._value =
+                        this._startTime - (Date.now() - this.startDate);
+
+                const isTimerOverflow =
+                    Math.abs(this._value) >= MAX_TIMER_VALUE;
+                const hasEndedCountUp = isCountUp && this._value >= maxDuration;
+                const hasEndedCountDown =
+                    !isCountUp && this._value <= maxDuration;
+
+                let state;
+                if (isTimerOverflow) {
+                    state = 'TIMER_OVERFLOW';
+                } else if (this.play && hasEndedCountUp) {
+                    state = 'COUNT_UP_ENDED';
+                } else if (this.play && hasEndedCountDown) {
+                    state = 'COUNT_DOWN_ENDED';
+                } else if (!this.play && isCountUp) {
+                    state = 'COUNT_UP_PAUSE';
+                } else if (!this.play && !isCountUp) {
+                    state = 'COUNT_DOWN_PAUSE';
                 }
-            })
+
+                let hasEnded = this.handleTimerState(state, maxDuration);
+
+                if (hasEnded) {
+                    if (this.repeat) this.reset();
+                    else this.stop();
+                }
+            },
+            this.format.includes('ms') ? 50 : 200
         );
     }
 
@@ -461,39 +498,6 @@ export default class Timer extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('timerpause', {
-                detail: {
-                    time: this.time,
-                    hours: this.hours,
-                    minutes: this.minutes,
-                    seconds: this.seconds,
-                    duration: this.duration,
-                    format: this.format,
-                    type: this.type
-                }
-            })
-        );
-    }
-
-    /**
-     * Timer stop event dispatcher.
-     */
-    dispatchTimerStop() {
-        /**
-         * The event fired when the timer stop.
-         *
-         * @event
-         * @name timerstop
-         * @param {string} time the time value.
-         * @param {string} hours the hours value.
-         * @param {string} minutes the minutes value.
-         * @param {string} seconds the seconds value.
-         * @param {string} duration the duration value.
-         * @param {string} format the format value.
-         * @param {string} type the type value.
-         * @public
-         */
-        this.dispatchEvent(
-            new CustomEvent('timerstop', {
                 detail: {
                     time: this.time,
                     hours: this.hours,
@@ -541,121 +545,73 @@ export default class Timer extends LightningElement {
     }
 
     /**
-     * Create timer interval.
+     * Timer start event dispatcher.
      */
-    createInterval() {
-        if (this.startDate === null) {
-            this.startDate = Date.now();
-        }
-        this.interval = setInterval(
-            () => {
-                const isCountUp = this.type === 'count-up';
-
-                const maxDuration = isCountUp
-                    ? this._startTime + this.duration
-                    : this._startTime - this.duration;
-
-                if (this.play && isCountUp)
-                    this._timerValue =
-                        this._startTime + (Date.now() - this.startDate);
-                if (this.play && !isCountUp)
-                    this._timerValue =
-                        this._startTime - (Date.now() - this.startDate);
-
-                const isTimerOverflow =
-                    Math.abs(this._timerValue) >= MAX_TIMER_VALUE;
-                const hasEndedCountUp =
-                    isCountUp && this._timerValue >= maxDuration;
-                const hasEndedCountDown =
-                    !isCountUp && this._timerValue <= maxDuration;
-
-                let state;
-                if (isTimerOverflow) {
-                    state = 'TIMER_OVERFLOW';
-                } else if (this.play && hasEndedCountUp) {
-                    state = 'COUNT_UP_ENDED';
-                } else if (this.play && hasEndedCountDown) {
-                    state = 'COUNT_DOWN_ENDED';
-                } else if (!this.play && isCountUp) {
-                    state = 'COUNT_UP_PAUSE';
-                } else if (!this.play && !isCountUp) {
-                    state = 'COUNT_DOWN_PAUSE';
+    dispatchTimerStart() {
+        /**
+         * The event fired when the timer start.
+         *
+         * @event
+         * @name timerstart
+         * @param {string} time the time value.
+         * @param {string} hours the hours value.
+         * @param {string} minutes the minutes value.
+         * @param {string} seconds the seconds value.
+         * @param {string} duration the duration value.
+         * @param {string} format the format value.
+         * @param {string} type the type value.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('timerstart', {
+                detail: {
+                    time: this.time,
+                    hours: this.hours,
+                    minutes: this.minutes,
+                    seconds: this.seconds,
+                    duration: this.duration,
+                    format: this.format,
+                    type: this.type
                 }
-
-                let hasEnded = this.handleTimerState(state, maxDuration);
-
-                if (hasEnded) {
-                    if (this.repeat) this.reset();
-                    else this.stop();
-                }
-            },
-            this.format.includes('ms') ? 50 : 200
+            })
         );
     }
 
     /**
-     *  Handles the state of the timer after an increment/decrement
-     *  @returns {boolean} if the timer has ended after state handling
+     * Timer stop event dispatcher.
      */
-    handleTimerState(state, maxDuration) {
-        let hasEnded = false;
-
-        switch (state) {
-            case 'TIMER_OVERFLOW':
-                this._timerValue =
-                    this._timerValue < 0 ? MAX_TIMER_VALUE : -MAX_TIMER_VALUE;
-                hasEnded = true;
-                break;
-            case 'COUNT_UP_ENDED':
-                this._timerValue = maxDuration;
-                hasEnded = true;
-                break;
-            case 'COUNT_DOWN_ENDED':
-                if (maxDuration < 0) {
-                    this._timerValue = maxDuration - 1000;
-                } else {
-                    this._timerValue = maxDuration;
+    dispatchTimerStop() {
+        /**
+         * The event fired when the timer stop.
+         *
+         * @event
+         * @name timerstop
+         * @param {string} time the time value.
+         * @param {string} hours the hours value.
+         * @param {string} minutes the minutes value.
+         * @param {string} seconds the seconds value.
+         * @param {string} duration the duration value.
+         * @param {string} format the format value.
+         * @param {string} type the type value.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('timerstop', {
+                detail: {
+                    time: this.time,
+                    hours: this.hours,
+                    minutes: this.minutes,
+                    seconds: this.seconds,
+                    duration: this.duration,
+                    format: this.format,
+                    type: this.type
                 }
-                hasEnded = true;
-                break;
-            case 'COUNT_UP_PAUSE':
-                this.pauseBuffer =
-                    Date.now() -
-                    this.startDate -
-                    (this._timerValue - this._startTime);
-                break;
-            case 'COUNT_DOWN_PAUSE':
-                this.pauseBuffer =
-                    Date.now() -
-                    this.startDate +
-                    (this._timerValue - this._startTime);
-                break;
-            default:
-                break;
-        }
-        return hasEnded;
+            })
+        );
     }
 
     /**
-     * Clear the current interval.
-     */
-    clearCurrentInterval() {
-        clearInterval(this.interval);
-        this.interval = null;
-        this.consumePauseBuffer();
-        this.dispatchTimerStop();
-    }
-
-    /**
-     *  Consumes pause buffer.
-     */
-    consumePauseBuffer() {
-        if (this.startDate !== null) this.startDate += this.pauseBuffer;
-        this.pauseBuffer = 0;
-    }
-
-    /**
-     *  Transforms format string to _timerValue equivalent.
+     *  Transforms format string to _value equivalent.
      *  @param format the string to transform.
      *  @param isFirst is the first element in the timer.
      */
@@ -687,5 +643,50 @@ export default class Timer extends LightningElement {
                     return '??';
             }
         }
+    }
+
+    /**
+     *  Handles the state of the timer after an increment/decrement
+     *  @param state the state the timer is currently in
+     *  @param state the maximum duration for which the timer should run
+     *  @returns {boolean} if the timer has ended after state handling
+     */
+    handleTimerState(state, maxDuration) {
+        let hasEnded = false;
+
+        switch (state) {
+            case 'TIMER_OVERFLOW':
+                this._value =
+                    this._value < 0 ? MAX_TIMER_VALUE : -MAX_TIMER_VALUE;
+                hasEnded = true;
+                break;
+            case 'COUNT_UP_ENDED':
+                this._value = maxDuration;
+                hasEnded = true;
+                break;
+            case 'COUNT_DOWN_ENDED':
+                if (maxDuration < 0) {
+                    this._value = maxDuration - 1000;
+                } else {
+                    this._value = maxDuration;
+                }
+                hasEnded = true;
+                break;
+            case 'COUNT_UP_PAUSE':
+                this.pauseBuffer =
+                    Date.now() -
+                    this.startDate -
+                    (this._value - this._startTime);
+                break;
+            case 'COUNT_DOWN_PAUSE':
+                this.pauseBuffer =
+                    Date.now() -
+                    this.startDate +
+                    (this._value - this._startTime);
+                break;
+            default:
+                break;
+        }
+        return hasEnded;
     }
 }
