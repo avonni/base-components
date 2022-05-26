@@ -217,7 +217,7 @@
     opacity: 1;
 }
 
-.custom-label-container {
+.avonni-range__custom-label-container_horizontal {
     position: relative;
     left: var(--input-thumb-radius);
     width: calc(100% - calc(var(--input-thumb-radius) * 2));
@@ -225,13 +225,34 @@
     display: inline-block;
 }
 
-.custom-label-single-container {
-    position: absolute;
-}
-
-.custom-label {
+.avonni-range__custom-label_horizontal {
     position: absolute;
     white-space: nowrap;
     left: 50%;
     transform: translate(-50%);
+}
+
+.avonni-range__custom-label-wrapper_horizontal {
+    position: absolute;
+}
+
+.avonni-range__custom-label-container_vertical {
+    position: absolute;
+    transform: rotate(90deg);
+    transform-origin: top left;
+    height: calc(100% - calc(var(--input-thumb-radius) * 2));
+    width: fit-content;
+    display: inline-block;
+}
+
+.avonni-range__custom-label-wrapper_vertical {
+    position: absolute;
+    left: 1.9rem;
+}
+
+.avonni-range__custom-label_vertical {
+    position: absolute;
+    white-space: nowrap;
+    top: calc(var(--input-thumb-radius) - 2px);
+    transform: translate(0, -50%);
 }

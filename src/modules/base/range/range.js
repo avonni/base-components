@@ -465,6 +465,14 @@ export default class Range extends LightningElement {
         return classes.toString();
     }
 
+    get computedInputWrapperClass() {
+        const isVertical = this.type === 'vertical';
+        return classSet('').add({
+            'avonni-range__input-wrapper_horizontal': !isVertical,
+            'avonni-range__input-wrapper_vertical': isVertical
+        });
+    }
+
     /**
      * Computed container class styling ( size, vertical ).
      *
@@ -738,17 +746,38 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Displays the custom labels for the range
+     * Displays and positions the custom labels for the range
      */
     displayCustomLabels() {
-        this.template
-            .querySelectorAll('.custom-label-single-container')
-            .forEach((element, index) => {
-                let value = this._customLabels[index].value;
-                element.style.left = `calc(${
-                    ((value - this.min) / (this.max - this.min)) * 100
-                }%`;
-            });
+        if (this.type === 'vertical') {
+            this.template
+                .querySelectorAll(
+                    '.avonni-range__custom-label-wrapper_vertical'
+                )
+                .forEach((element, index) => {
+                    let value = this._customLabels[index].value;
+                    element.style.top = `${
+                        ((value - this.min) / (this.max - this.min)) * 100
+                    }%`;
+                    console.log(
+                        `${((value - this.min) / (this.max - this.min)) * 100}%`
+                    );
+                });
+        } else {
+            this.template
+                .querySelectorAll(
+                    '.avonni-range__custom-label-wrapper_horizontal'
+                )
+                .forEach((element, index) => {
+                    let value = this._customLabels[index].value;
+                    element.style.left = `${
+                        ((value - this.min) / (this.max - this.min)) * 100
+                    }%`;
+                    console.log(
+                        `${((value - this.min) / (this.max - this.min)) * 100}%`
+                    );
+                });
+        }
     }
 
     drawRuler() {
@@ -769,7 +798,7 @@ export default class Range extends LightningElement {
                 isMajorStep =
                     isMajorStep ||
                     this._customLabels.some(
-                        (customLabel) => customLabel.value === i - this.min
+                        (customLabel) => customLabel.value === i + this.min
                     );
             }
             let line = document.createElementNS(SVG_NAMESPACE, 'line');

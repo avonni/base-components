@@ -62,6 +62,7 @@
             data-element-id="lightning-formatted-number-max-vertical"
         ></lightning-formatted-number>
     </div>
+
     <div class={computedContainerClass} data-element-id="div-wrapper">
         <div class="slds-form-element">
             <div class="slds-form-element__control">
@@ -182,15 +183,42 @@
                 data-element-id="lightning-formatted-number-max"
             ></lightning-formatted-number>
         </div>
-    </div>
-    <div if:true={hasCustomLabelsHorizontal} class="custom-label-container">
-        <template for:each={customLabels} for:item="customLabel">
-            <div class="custom-label-single-container" key={customLabel.value}>
-                <div data-value={customLabel.value} class="custom-label">
-                    {customLabel.label}
+        <div
+            if:true={hasCustomLabelsVertical}
+            class="avonni-range__custom-label-container_vertical"
+        >
+            <template for:each={customLabels} for:item="customLabel">
+                <div
+                    class="avonni-range__custom-label-wrapper_vertical"
+                    key={customLabel.value}
+                >
+                    <div
+                        data-value={customLabel.value}
+                        class="avonni-range__custom-label_vertical"
+                    >
+                        {customLabel.label}
+                    </div>
                 </div>
-            </div>
-        </template>
+            </template>
+        </div>
+        <div
+            if:true={hasCustomLabelsHorizontal}
+            class="avonni-range__custom-label-container_horizontal"
+        >
+            <template for:each={customLabels} for:item="customLabel">
+                <div
+                    class="avonni-range__custom-label-wrapper_horizontal"
+                    key={customLabel.value}
+                >
+                    <div
+                        data-value={customLabel.value}
+                        class="avonni-range__custom-label_horizontal"
+                    >
+                        {customLabel.label}
+                    </div>
+                </div>
+            </template>
+        </div>
     </div>
     <div
         if:true={isNormalVertical}
