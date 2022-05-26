@@ -239,8 +239,9 @@ export default class Timer extends LightningElement {
     }
 
     set value(value) {
-        if (isNaN(parseInt(value, 10))) this._startTime = DEFAULT_START_TIME;
-        else {
+        if (isNaN(parseInt(value, 10))) {
+            this._startTime = DEFAULT_START_TIME;
+        } else {
             this._startTime =
                 parseInt(value, 10) > 0
                     ? Math.min(parseInt(value, 10), MAX_TIMER_VALUE)
@@ -335,11 +336,12 @@ export default class Timer extends LightningElement {
             timeFormats[i] = this.formatToString(timeFormats[i], false);
         }
         let formattedTime = timeFormats.join(':');
-        if (this.format.includes('ms'))
+        if (this.format.includes('ms')) {
             formattedTime = formattedTime.replace(
                 new RegExp('(:)(?!.*:)'),
                 '.'
             ); // replaces last ":" character with "."
+        }
         return !this.isNegative ? formattedTime : '-'.concat(formattedTime);
     }
 
@@ -370,7 +372,10 @@ export default class Timer extends LightningElement {
         this.startDate = null;
         this.pauseBuffer = 0;
         this.stop();
-        this.start();
+        this._value = this._startTime;
+        if (this.autoStart) {
+            this.start();
+        }
         this.dispatchTimerReset();
     }
 
@@ -441,12 +446,14 @@ export default class Timer extends LightningElement {
                     ? this._startTime + this.duration
                     : this._startTime - this.duration;
 
-                if (this.play && isCountUp)
+                if (this.play && isCountUp) {
                     this._value =
                         this._startTime + (Date.now() - this.startDate);
-                if (this.play && !isCountUp)
+                }
+                if (this.play && !isCountUp) {
                     this._value =
                         this._startTime - (Date.now() - this.startDate);
+                }
 
                 const isTimerOverflow =
                     Math.abs(this._value) >= MAX_TIMER_VALUE;
@@ -470,8 +477,10 @@ export default class Timer extends LightningElement {
                 let hasEnded = this.handleTimerState(state, maxDuration);
 
                 if (hasEnded) {
-                    if (this.repeat) this.reset();
-                    else this.stop();
+                    if (this.repeat) {
+                        this.reset();
+                        this.start();
+                    } else this.stop();
                 }
             },
             this.format.includes('ms') ? 50 : 200

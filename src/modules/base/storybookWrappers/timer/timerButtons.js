@@ -44,7 +44,7 @@ export default class Timer extends LightningElement {
     @api format;
 
     get timer() {
-        return this.template.querySelector('c-timer');
+        return this.template.querySelector('avonni-timer');
     }
 
     start() {
