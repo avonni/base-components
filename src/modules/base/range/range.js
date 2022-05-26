@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import {
     normalizeBoolean,
     normalizeString,
@@ -153,6 +154,7 @@ export default class Range extends LightningElement {
     _progress;
     _moveEventWait = false;
     _customLabels = [];
+    _resizeObserver;
 
     _rendered = false;
 
@@ -176,6 +178,9 @@ export default class Range extends LightningElement {
         });
         this.updateMinProgressBar(this._leftInput.value);
         this.updateMaxProgressBar(this._rightInput.value);
+        if (!this.resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
         if (this.showHatchMarks) {
             this.drawRuler();
         }
@@ -783,6 +788,23 @@ export default class Range extends LightningElement {
                     }%`;
                 }
             });
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.hasCustomLabels && !this.showHatchMarks) return null;
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this.drawRuler();
+            this.displayCustomLabels();
+        });
+        resizeObserver.observe(
+            this.template.querySelector('[data-element-id="div-wrapper"]')
+        );
+        return resizeObserver;
     }
 
     drawRuler() {
