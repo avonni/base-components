@@ -184,35 +184,17 @@
             ></lightning-formatted-number>
         </div>
         <div
-            if:true={hasCustomLabelsVertical}
-            class="avonni-range__custom-label-container_vertical"
+            if:true={hasCustomLabels}
+            class={computedCustomLabelContainerClass}
         >
             <template for:each={customLabels} for:item="customLabel">
                 <div
-                    class="avonni-range__custom-label-wrapper_vertical"
+                    class="avonni-range__custom-label-wrapper"
                     key={customLabel.value}
                 >
                     <div
                         data-value={customLabel.value}
-                        class="avonni-range__custom-label_vertical"
-                    >
-                        {customLabel.label}
-                    </div>
-                </div>
-            </template>
-        </div>
-        <div
-            if:true={hasCustomLabelsHorizontal}
-            class="avonni-range__custom-label-container_horizontal"
-        >
-            <template for:each={customLabels} for:item="customLabel">
-                <div
-                    class="avonni-range__custom-label-wrapper_horizontal"
-                    key={customLabel.value}
-                >
-                    <div
-                        data-value={customLabel.value}
-                        class="avonni-range__custom-label_horizontal"
+                        class={computedCustomLabelClass}
                     >
                         {customLabel.label}
                     </div>

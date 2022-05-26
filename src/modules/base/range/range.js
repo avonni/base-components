@@ -465,11 +465,29 @@ export default class Range extends LightningElement {
         return classes.toString();
     }
 
-    get computedInputWrapperClass() {
+    /**
+     * Computed custom label class styling.
+     *
+     * @type {string}
+     */
+    get computedCustomLabelClass() {
         const isVertical = this.type === 'vertical';
         return classSet('').add({
-            'avonni-range__input-wrapper_horizontal': !isVertical,
-            'avonni-range__input-wrapper_vertical': isVertical
+            'avonni-range__custom-label_horizontal': !isVertical,
+            'avonni-range__custom-label_vertical': isVertical
+        });
+    }
+
+    /**
+     * Computed custom label container class styling.
+     *
+     * @type {string}
+     */
+    get computedCustomLabelContainerClass() {
+        const isVertical = this.type === 'vertical';
+        return classSet('').add({
+            'avonni-range__custom-label-container_horizontal': !isVertical,
+            'avonni-range__custom-label-container_vertical': isVertical
         });
     }
 
@@ -520,19 +538,20 @@ export default class Range extends LightningElement {
      * @type {boolean}
      */
     get isNormalVertical() {
-        return this._type === 'vertical' && this.customLabels.length === 0;
+        return this._type === 'vertical' && !this.hasCustomLabels;
     }
 
+    /**
+     * Verify if range is vertical and does not have custom labels.
+     *
+     * @type {boolean}
+     */
     get isNormalHorizontal() {
-        return this._type !== 'vertical' && this.customLabels.length === 0;
+        return this._type !== 'vertical' && !this.hasCustomLabels;
     }
 
-    get hasCustomLabelsHorizontal() {
-        return this._customLabels.length !== 0 && this._type !== 'vertical';
-    }
-
-    get hasCustomLabelsVertical() {
-        return this._customLabels.length !== 0 && this._type === 'vertical';
+    get hasCustomLabels() {
+        return this._customLabels.length !== 0 && this._unit === 'custom';
     }
 
     /**
@@ -749,35 +768,21 @@ export default class Range extends LightningElement {
      * Displays and positions the custom labels for the range
      */
     displayCustomLabels() {
-        if (this.type === 'vertical') {
-            this.template
-                .querySelectorAll(
-                    '.avonni-range__custom-label-wrapper_vertical'
-                )
-                .forEach((element, index) => {
-                    let value = this._customLabels[index].value;
+        const isVertical = this.type === 'vertical';
+        this.template
+            .querySelectorAll(`${'.avonni-range__custom-label-wrapper'}`)
+            .forEach((element, index) => {
+                let value = this._customLabels[index].value;
+                if (isVertical) {
                     element.style.top = `${
                         ((value - this.min) / (this.max - this.min)) * 100
                     }%`;
-                    console.log(
-                        `${((value - this.min) / (this.max - this.min)) * 100}%`
-                    );
-                });
-        } else {
-            this.template
-                .querySelectorAll(
-                    '.avonni-range__custom-label-wrapper_horizontal'
-                )
-                .forEach((element, index) => {
-                    let value = this._customLabels[index].value;
+                } else {
                     element.style.left = `${
                         ((value - this.min) / (this.max - this.min)) * 100
                     }%`;
-                    console.log(
-                        `${((value - this.min) / (this.max - this.min)) * 100}%`
-                    );
-                });
-        }
+                }
+            });
     }
 
     drawRuler() {
@@ -802,7 +807,7 @@ export default class Range extends LightningElement {
                     );
             }
             let line = document.createElementNS(SVG_NAMESPACE, 'line');
-            line.setAttribute('stroke', `${isMajorStep ? '#636363' : 'gray'}`);
+            line.setAttribute('stroke', `${isMajorStep ? 'black' : 'gray'}`);
             line.setAttribute('height', `10`);
             line.setAttribute('width', `5`);
             line.setAttribute('x1', `${leftPosition}`);
