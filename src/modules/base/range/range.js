@@ -919,7 +919,7 @@ export default class Range extends LightningElement {
     updateInputRange(event) {
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
-        if (maxVal - minVal > 0) {
+        if (maxVal - minVal >= 0) {
             this.updateMinProgressBar(minVal);
             this.updateMaxProgressBar(maxVal);
         } else if (maxVal - minVal < 0) {
