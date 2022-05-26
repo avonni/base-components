@@ -510,13 +510,7 @@ export default class Kanban extends LightningElement {
         // filters the footer actions from the group
         const currentGroupTiles = Array.from(
             groupElements[this._releasedGroupIndex].children
-        ).filter(
-            (elem) =>
-                !elem.classList.contains(
-                    'avonni-kanban__footer_actions_container'
-                )
         );
-
         // calculates the index of the drop, depending on the previous tiles heights
         for (let [i, tile] of currentGroupTiles.entries()) {
             if (tile !== this._draggedTile) {
