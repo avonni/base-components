@@ -35,16 +35,48 @@ import { Skeleton } from '../__examples__/skeleton';
 export default {
     title: 'Example/Skeleton',
     argTypes: {
-        // title: {
-        //     control: {
-        //         type: 'text'
-        //     },
-        //     description:
-        //         'The title can include text, and is displayed in the header.',
-        //     table: {
-        //         type: { summary: 'string' }
-        //     }
-        // }
+        animation: {
+            control: {
+                type: 'select'
+            },
+            description:
+                'The animation type changes the appearance of the skeleton.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Layout'
+            }
+        },
+        height: {
+            control: {
+                type: 'number'
+            },
+            description: 'Height of the skeleton in em.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            description: 'The variant changes the appearance of the skeleton.',
+            table: {
+                type: { summary: 'string' },
+                default: { summary: 'text' },
+                category: 'Layout'
+            }
+        },
+        width: {
+            control: {
+                type: 'number'
+            },
+            description: 'Width of the skeleton in em.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
+        }
     }
 };
 

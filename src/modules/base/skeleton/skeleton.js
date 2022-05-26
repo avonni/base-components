@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
+import { classSet } from 'c/utils';
 
 const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
@@ -120,5 +121,20 @@ export default class Skeleton extends LightningElement {
     set width(value) {
         const number = isNaN(parseInt(value, 10)) ? 100 : value;
         this._width = number;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
+    /**
+     * Wrapper div class, depending on the variant value.
+     * @type {string}
+     */
+    get variantClass() {
+        return classSet('avonni-skeleton__base')
+            .add(`avonni-alert_${this._variant}`)
+            .toString();
     }
 }
