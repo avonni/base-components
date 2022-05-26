@@ -98,6 +98,7 @@ export default class Calendar extends LightningElement {
     months = MONTHS;
     day;
     calendarData;
+    _showTodayButton = false;
 
     connectedCallback() {
         let setDate = new Date(DEFAULT_DATE);
@@ -275,6 +276,22 @@ export default class Calendar extends LightningElement {
     }
 
     /**
+     * Display a button to selecte todays date.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showTodayButton() {
+        return this._showTodayButton;
+    }
+
+    set showTodayButton(value) {
+        this._showTodayButton = normalizeBoolean(value);
+    }
+
+    /**
      * The value of the selected date(s). Dates can be a Date object, timestamp, or an ISO8601 formatted string.
      *
      * @public
@@ -434,6 +451,28 @@ export default class Calendar extends LightningElement {
             .toString();
     }
 
+    /**
+     * Check if today button should be disabled
+     *
+     * @type {boolean}
+     */
+    get todayDisabled() {
+        const today = new Date().setHours(0, 0, 0, 0);
+        let disabledToday = this.isInArray(new Date(today), this.disabledDates);
+        if (today < this.min) disabledToday = true;
+        if (today > this.max) disabledToday = true;
+        return disabledToday;
+    }
+
+    /**
+     * Apply class to disabled today button
+     */
+    get computedTodayButtonClasses() {
+        return classSet('')
+            .add({ 'avonni-calendar__disabled-cell': this.todayDisabled })
+            .toString();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -550,6 +589,10 @@ export default class Calendar extends LightningElement {
         this.endDate = array[length - 1];
     }
 
+    get todayButton() {
+        return new Date().setHours(0, 0, 0, 0);
+    }
+
     /**
      * Compute view data for Calendar.
      */
@@ -612,7 +655,7 @@ export default class Calendar extends LightningElement {
 
                 if (today === time) {
                     dateClass += ' slds-is-today';
-                    currentDate = true;
+                    currentDate = 'date';
                 }
 
                 // chip label
@@ -832,7 +875,7 @@ export default class Calendar extends LightningElement {
     handlerPreviousMonth() {
         this.displayDate.setMonth(this.displayDate.getMonth() - 1);
         this.updateDateParameters();
-        this.computeFocus(true);
+        this.computeFocus(false);
     }
 
     /**
@@ -841,7 +884,7 @@ export default class Calendar extends LightningElement {
     handlerNextMonth() {
         this.displayDate.setMonth(this.displayDate.getMonth() + 1);
         this.updateDateParameters();
-        this.computeFocus(true);
+        this.computeFocus(false);
     }
 
     /**

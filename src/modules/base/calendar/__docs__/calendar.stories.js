@@ -109,6 +109,18 @@ export default {
                 defaultValue: { summary: 'single' }
             }
         },
+        showTodayButton: {
+            name: 'show-today-button',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If true, a button appears below the calendar to easily select today',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         value: {
             control: {
                 type: 'object'
@@ -139,6 +151,7 @@ export default {
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
         selectionMode: 'single',
+        showTodayButton: false,
         weekNumber: false
     }
 };
@@ -175,6 +188,12 @@ Interval.args = {
 export const Disabled = Template.bind({});
 Disabled.args = {
     disabled: true
+};
+
+export const BaseWithTodayButton = Template.bind({});
+BaseWithTodayButton.args = {
+    value: '05/08/2022',
+    showTodayButton: true
 };
 
 export const BaseWithWeekNumber = Template.bind({});

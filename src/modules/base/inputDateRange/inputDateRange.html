@@ -103,11 +103,12 @@
                             selection-mode={selectionModeStartDate}
                             onchange={handleChangeStartDate}
                             onfocusin={handleCalendarFocusIn}
+                            show-today-button
                             onfocusout={handleCalendarFocusStartOut}
                             onkeydown={calendarKeyListener}
                             data-element-id="calendar-start-date"
-                        ></c-calendar
-                    ></lightning-focus-trap>
+                        ></c-calendar>
+                    </lightning-focus-trap>
                 </div>
                 <p data-element-id="start-date" if:true={readOnly}>
                     {startDateString}
@@ -190,6 +191,7 @@
                             value={calendarValue}
                             selection-mode={selectionModeEndDate}
                             onchange={handleChangeEndDate}
+                            show-today-button
                             onfocusin={handleCalendarFocusIn}
                             onfocusout={calendarFocusEndOut}
                             onkeydown={calendarKeyListener}
