@@ -65,6 +65,7 @@ const ACTIONS_VARIANTS = {
 };
 
 const ITEMS_PER_PANEL = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
+const ITEMS_MOBILE_PER_PANEL = ['1', '2', '3'];
 
 const INDICATOR_VARIANTS = { valid: ['base', 'shaded'], default: 'base' };
 
@@ -144,6 +145,7 @@ export default class Carousel extends LightningElement {
     };
     _carouselItems = [];
     _itemsPerPanel = DEFAULT_ITEMS_PER_PANEL;
+    _itemsMobilePerPanel = DEFAULT_ITEMS_PER_PANEL;
     _initialRender = false;
     _indicatorVariant = INDICATOR_VARIANTS.default;
     _hideIndicator = false;
@@ -157,6 +159,11 @@ export default class Carousel extends LightningElement {
     panelItems = [];
     paginationItems = [];
     panelStyle;
+    isMobile;
+
+    connectedCallback() {
+        this.detectMobileDevice();
+    }
 
     renderedCallback() {
         if (!this._initialRender) {
@@ -315,12 +322,40 @@ export default class Carousel extends LightningElement {
     }
 
     set itemsPerPanel(value) {
+        console.log(`value in setter of itemsPerPanel ${value}`);
         this._itemsPerPanel = Number(
             normalizeString(
                 typeof value === 'number' ? value.toString() : value,
                 {
                     fallbackValue: '1',
                     validValues: ITEMS_PER_PANEL
+                }
+            )
+        );
+        if (this._initialRender) {
+            this.initCarousel();
+        }
+    }
+
+    /**
+     * Number of items to be displayed at a time in the carousel. Maximum of 3 items per panel.
+     *
+     * @type {number}
+     * @public
+     * @default 1
+     */
+    @api
+    get itemsMobilePerPanel() {
+        return this._itemsMobilePerPanel;
+    }
+    set itemsMobilePerPanel(value) {
+        console.log(`value in setter of itemsMobilePerPanel ${value}`);
+        this._itemsMobilePerPanel = Number(
+            normalizeString(
+                typeof value === 'number' ? value.toString() : value,
+                {
+                    fallbackValue: '1',
+                    validValues: ITEMS_MOBILE_PER_PANEL
                 }
             )
         );
@@ -379,7 +414,9 @@ export default class Carousel extends LightningElement {
      * Sets the width of each item, depending on the number of items per panel
      */
     get carouselItemStyle() {
-        const itemWidth = 100 / this.itemsPerPanel;
+        const itemWidth = this.isMobile
+            ? 100 / this.itemsMobilePerPanel
+            : 100 / this.itemsPerPanel;
         return `flex-basis: ${itemWidth}%; width: ${itemWidth}%`;
     }
 
@@ -562,6 +599,35 @@ export default class Carousel extends LightningElement {
     }
 
     /**
+     * Creates an array of panels, each containing an array of items for mobile.
+     */
+    initializeMobilePanels() {
+        const panelItems = [];
+        let panelIndex = 0;
+        for (
+            let i = 0;
+            i < this._carouselItems.length;
+            i += this.itemsMobilePerPanel
+        ) {
+            panelItems.push({
+                index: panelIndex,
+                key: `panel-${panelIndex}`,
+                items: this._carouselItems.slice(
+                    i,
+                    i + this.itemsMobilePerPanel
+                ),
+                ariaHidden:
+                    this.activeIndexPanel === i ? FALSE_STRING : TRUE_STRING
+            });
+            panelIndex += 1;
+        }
+        this.panelItems = panelItems;
+        this.panelStyle = `transform: translateX(-${
+            this.activeIndexPanel * 100
+        }%);`;
+    }
+
+    /**
      * Call the auto scroll.
      */
     startAutoScroll() {
@@ -666,12 +732,39 @@ export default class Carousel extends LightningElement {
      * Initialize Carousel method.
      */
     initCarousel() {
-        const numberOfPanels = Math.ceil(
-            this._carouselItems.length / this.itemsPerPanel
-        );
+        let numberOfPanels;
+        console.log(`Items Per Mobile Panel: ${this.itemsMobilePerPanel}`);
+        if (this.isMobile) {
+            numberOfPanels = Math.ceil(
+                this._carouselItems.length / this.itemsMobilePerPanel
+            );
+        } else {
+            numberOfPanels = Math.ceil(
+                this._carouselItems.length / this.itemsPerPanel
+            );
+        }
+        console.log(numberOfPanels);
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
+        if (this.isMobile) {
+            this.initializeMobilePanels();
+            return;
+        }
         this.initializePanels();
+    }
+    /**
+     * Detect if it is a mobile device.
+     */
+    detectMobileDevice() {
+        // let uaParser = new UAParser();
+        // let results = uaParser.getResult();
+        console.log(
+            window.matchMedia('only screen and (max-width: 480px)').matches
+        );
+        // this.isMobile = results.device.type === 'mobile' ? true : false;
+        this.isMobile = window.matchMedia(
+            'only screen and (max-width: 480px)'
+        ).matches;
     }
 
     /**
