@@ -184,7 +184,7 @@ export default class Range extends LightningElement {
         if (this.showHatchMarks) {
             this.drawRuler();
         }
-        if (this._unit === 'custom' && this._customLabels.length !== 0) {
+        if (this.hasCustomLabels) {
             this.displayCustomLabels();
         }
         if (!this._rendered) {
@@ -272,7 +272,7 @@ export default class Range extends LightningElement {
      */
     @api
     get showHatchMarks() {
-        return this._showHatchMarks || this.customLabels.length !== 0;
+        return this._showHatchMarks || this.hasCustomLabels;
     }
     set showHatchMarks(value) {
         this._showHatchMarks = normalizeBoolean(value);
@@ -365,9 +365,9 @@ export default class Range extends LightningElement {
      */
     @api
     set unitAttributes(value) {
-        if (value && value.customLabels)
+        if (value && value.customLabels) {
             this._customLabels = normalizeArray(value.customLabels, 'object');
-        else this._unitAttributes = normalizeObject(value);
+        } else this._unitAttributes = normalizeObject(value);
     }
     get unitAttributes() {
         return this._unitAttributes;
@@ -761,7 +761,7 @@ export default class Range extends LightningElement {
 
         for (let i = 0; i < numberOfSteps + 1; i++) {
             let isMajorStep = i === 0 || i === numberOfSteps;
-            if (this._customLabels.length !== 0) {
+            if (this.hasCustomLabels) {
                 isMajorStep =
                     isMajorStep ||
                     this._customLabels.some(
