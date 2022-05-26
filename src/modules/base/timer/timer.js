@@ -427,7 +427,9 @@ export default class Timer extends LightningElement {
      *  Consumes pause buffer.
      */
     consumePauseBuffer() {
-        if (this.startDate !== null) this.startDate += this.pauseBuffer;
+        if (this.startDate !== null) {
+            this.startDate += this.pauseBuffer;
+        }
         this.pauseBuffer = 0;
     }
 
