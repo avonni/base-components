@@ -162,6 +162,9 @@ export default class Range extends LightningElement {
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
+        if (this.showHatchMarks) {
+            this.drawRuler();
+        }
         if (!this._rendered) {
             this._leftInput = this.template.querySelector(
                 '.avonni-range__slider-left'
@@ -172,9 +175,7 @@ export default class Range extends LightningElement {
             this._progress = this.template.querySelector(
                 '.avonni-range__progress'
             );
-            if (this.showHatchMarks) {
-                this.drawRuler();
-            }
+
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
             }
@@ -780,7 +781,7 @@ export default class Range extends LightningElement {
             circle.setAttribute('cy', `5`);
             circle.setAttribute(
                 'r',
-                `${(isMajorStep ? 3 : 2) + (isColored ? 1 : 0)}`
+                `${(isMajorStep ? 3 : 2) + (isColored ? 1.5 : 0)}`
             );
             ruler.appendChild(circle);
             leftPosition += stepWidth;
