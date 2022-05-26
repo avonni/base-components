@@ -777,7 +777,10 @@ export default class Range extends LightningElement {
             circle.setAttribute('fill', `${isColored ? '#0176D3' : 'gray'}`);
             circle.setAttribute('cx', `${leftPosition}`);
             circle.setAttribute('cy', `5`);
-            circle.setAttribute('r', `${isMajorStep ? 4 : 3}`);
+            circle.setAttribute(
+                'r',
+                `${(isMajorStep ? 3 : 2) + (isColored ? 1 : 0)}`
+            );
             ruler.appendChild(circle);
             leftPosition += stepWidth;
         }
