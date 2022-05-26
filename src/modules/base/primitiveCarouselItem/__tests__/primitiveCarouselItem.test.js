@@ -205,6 +205,27 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
+    // render html variant
+    it('Primitive Carousel Item: tag variant', () => {
+        return Promise.resolve().then(() => {
+            const tag = element.shadowRoot.querySelectorAll(
+                '[data-element-id="a-tag"]'
+            );
+            expect(tag.href).not.toBe(null);
+        });
+    });
+
+    it('Primitive Carousel Item: noTag variant', () => {
+        element.href = null;
+
+        return Promise.resolve().then(() => {
+            const tag = element.shadowRoot.querySelectorAll(
+                '[data-element-id="a-noTag"]'
+            );
+            expect(tag).not.toBe(null);
+        });
+    });
+
     // actions position
     it('Primitive Carousel Item: actions position bottom-center', () => {
         element.actions = bareActions;
