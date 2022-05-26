@@ -80,7 +80,8 @@
     position: relative;
 }
 
-.avonni-kanban__tile:not(.avonni-kanban__dragged) {
+.avonni-kanban__tile:not(.avonni-kanban__dragged),
+.avonni-kanban__footer_actions_container {
     transition: transform 0.25s;
     z-index: 1;
 }
