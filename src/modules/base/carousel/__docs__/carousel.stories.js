@@ -71,6 +71,18 @@ export default {
                 type: { summary: 'number' }
             }
         },
+        itemsMobilePerPanel: {
+            name: 'items-mobile-per-panel',
+            control: {
+                type: 'number'
+            },
+            description:
+                'Number of items to be displayed at a time in the carousel on a mobile device.',
+            table: {
+                defaultValue: { summary: 1 },
+                type: { summary: 'number' }
+            }
+        },
         disableAutoRefresh: {
             name: 'disable-auto-refresh',
             control: {
@@ -164,10 +176,10 @@ export default {
             table: {
                 defaultValue: {
                     summary: `{
-                        nextPanel: 'Next Panel',
-                        previousPanel: 'Previous Panel',
-                        autoplayButton: 'Start / Stop auto-play'
-                    }`
+                          nextPanel: 'Next Panel',
+                          previousPanel: 'Previous Panel',
+                          autoplayButton: 'Start / Stop auto-play'
+                      }`
                 },
                 type: { summary: 'object' }
             }
@@ -220,6 +232,7 @@ export default {
         indicatorVariant: 'base',
         isInfinite: false,
         itemsPerPanel: 1,
+        itemsMobilePerPanel: 1,
         scrollDuration: 5
     }
 };
@@ -300,4 +313,15 @@ WithoutPanelNavigationWithFiveItemsPerPanel.args = {
     hidePreviousNextPanelNavigation: true,
     actionsVariant: 'menu',
     actionsPosition: 'top-right'
+};
+
+export const BaseMobile = Template.bind({});
+BaseMobile.parameters = {
+    viewport: {
+        defaultViewport: 'mobile1'
+    }
+};
+BaseMobile.args = {
+    items: items,
+    itemsMobilePerPanel: 1
 };
