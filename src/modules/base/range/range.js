@@ -143,8 +143,8 @@ export default class Range extends LightningElement {
     _type = RANGE_TYPES.default;
     _unit = RANGE_UNITS.default;
     _unitAttributes = {};
-    _valueLower;
-    _valueUpper;
+    _valueLower = DEFAULT_MIN;
+    _valueUpper = DEFAULT_MAX;
     _variant = LABEL_VARIANTS.default;
     _showHatchMarks = false;
 
@@ -159,35 +159,37 @@ export default class Range extends LightningElement {
     _rendered = false;
 
     renderedCallback() {
-        this._leftInput = this.template.querySelector(
-            '.avonni-range__slider-left'
-        );
-        this._rightInput = this.template.querySelector(
-            '.avonni-range__slider-right'
-        );
-        this._progress = this.template.querySelector('.avonni-range__progress');
-        this.template.addEventListener('mousemove', (event) => {
-            if (!this._moveEventWait) {
-                this.setClosestOnTop(event);
-                this._moveEventWait = true;
-                // after a fraction of a second, allow events again
-                setTimeout(() => {
-                    this._moveEventWait = false;
-                }, 50);
-            }
-        });
-        this.updateMinProgressBar(this._leftInput.value);
-        this.updateMaxProgressBar(this._rightInput.value);
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
-        if (this.showHatchMarks) {
-            this.drawRuler();
-        }
-        if (this.hasCustomLabels) {
-            this.displayCustomLabels();
-        }
         if (!this._rendered) {
+            this._leftInput = this.template.querySelector(
+                '.avonni-range__slider-left'
+            );
+            this._rightInput = this.template.querySelector(
+                '.avonni-range__slider-right'
+            );
+            this._progress = this.template.querySelector(
+                '.avonni-range__progress'
+            );
+            if (this.showHatchMarks) {
+                this.drawRuler();
+            }
+            if (this.hasCustomLabels) {
+                this.displayCustomLabels();
+            }
+            this.template.addEventListener('mousemove', (event) => {
+                if (!this._moveEventWait) {
+                    this.setClosestOnTop(event);
+                    this._moveEventWait = true;
+                    // after a fraction of a second, allow events again
+                    setTimeout(() => {
+                        this._moveEventWait = false;
+                    }, 50);
+                }
+            });
+            this.updateMinProgressBar(this._leftInput.value);
+            this.updateMaxProgressBar(this._rightInput.value);
             this.initRange();
             this._rendered = true;
         }
@@ -401,7 +403,7 @@ export default class Range extends LightningElement {
      */
     @api
     get valueLower() {
-        return this._valueLower ? this._valueLower : this.min;
+        return this._valueLower;
     }
 
     set valueLower(value) {
@@ -416,12 +418,6 @@ export default class Range extends LightningElement {
      */
     @api
     get valueUpper() {
-        if (!this._valueUpper) {
-            return this.valueLower > this.min
-                ? Number(this.valueLower) + Number(this.step)
-                : this.min;
-        }
-
         return this._valueUpper;
     }
     set valueUpper(value) {
@@ -893,12 +889,12 @@ export default class Range extends LightningElement {
                 let bubbleRight = this.template.querySelector('.right-bubble');
 
                 let rightProgressBubble =
-                    ((this.valueUpper - this._leftInput.min) /
+                    ((this._valueUpper - this._leftInput.min) /
                         (this._leftInput.max - this._leftInput.min)) *
                     100;
 
                 let leftProgressBubble =
-                    ((this.valueLower - this._leftInput.min) /
+                    ((this._valueLower - this._leftInput.min) /
                         (this._leftInput.max - this._leftInput.min)) *
                     100;
 
@@ -927,7 +923,9 @@ export default class Range extends LightningElement {
     updateInputRange(event) {
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
-        if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
+        console.log(`minVal : ${minVal}`);
+        console.log(`maxVal : ${maxVal}`);
+        if (maxVal - minVal > 0) {
             this.updateMinProgressBar(minVal);
             this.updateMaxProgressBar(maxVal);
         } else if (maxVal - minVal < 0) {
@@ -945,6 +943,7 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMaxProgressBar(value) {
+        console.log(`value max changed to : ${value}`);
         this._rightInput.value = value;
         this._valueUpper = value;
         this._progress.style.right =
@@ -957,6 +956,7 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMinProgressBar(value) {
+        console.log(`value min changed to : ${value}`);
         this._leftInput.value = value;
         this._valueLower = value;
         this._progress.style.left =

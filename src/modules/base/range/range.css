@@ -203,6 +203,10 @@
     position: relative;
     background: #ecebea;
     border-radius: 5px;
+    width: calc(100% - calc(var(--input-thumb-radius) * 1.5));
+    left: calc(
+        var(--input-thumb-radius) - calc(var(--input-thumb-radius) * 0.3)
+    );
     top: 0px;
     z-index: -1;
 }
