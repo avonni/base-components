@@ -297,7 +297,7 @@ export default class RelationshipGraph extends LightningElement {
      */
     get childLevel() {
         return this.template.querySelector(
-            'c-primitive-relationship-graph-level'
+            '[data-element-id="avonni-primitive-relationship-graph-level"]'
         );
     }
 
@@ -359,7 +359,7 @@ export default class RelationshipGraph extends LightningElement {
      * @type {string}
      */
     get lineClass() {
-        return classSet('line').add({
+        return classSet().add({
             line_vertical: this.variant === 'horizontal',
             'line_horizontal slds-m-bottom_large': this.variant === 'vertical'
         });
@@ -377,7 +377,7 @@ export default class RelationshipGraph extends LightningElement {
      * @type {string}
      */
     updateLine() {
-        const line = this.template.querySelector('.line');
+        const line = this.template.querySelector('[data-element-id="div-line"]');
         const currentLevel = this.childLevel;
 
         if (this.variant === 'vertical') {
