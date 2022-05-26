@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+:host {
+    --input-thumb-radius: 8.75px;
+}
+
 .slds-slider-label__label {
     padding-bottom: 0.5rem;
 }
@@ -214,15 +218,20 @@
 }
 
 .custom-label-container {
-    box-sizing: border-box;
-    height: 2rem;
-    width: 100%;
-    display: inline;
+    position: relative;
+    left: var(--input-thumb-radius);
+    width: calc(100% - calc(var(--input-thumb-radius) * 2));
+    height: 1.5rem;
+    display: inline-block;
+}
+
+.custom-label-single-container {
+    position: absolute;
 }
 
 .custom-label {
-    box-sizing: border-box;
-    margin: -10px;
-    position: relative;
-    float: left;
+    position: absolute;
+    white-space: nowrap;
+    left: 50%;
+    transform: translate(-50%);
 }

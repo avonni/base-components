@@ -741,16 +741,13 @@ export default class Range extends LightningElement {
      * Displays the custom labels for the range
      */
     displayCustomLabels() {
-        let totalWidth = this.template.querySelector(
-            '[data-element-id="div-wrapper"]'
-        ).clientWidth;
         this.template
-            .querySelectorAll('.custom-label')
+            .querySelectorAll('.custom-label-single-container')
             .forEach((element, index) => {
                 let value = this._customLabels[index].value;
-                element.style.left =
-                    ((value - this.min) / (this.max - this.min)) * totalWidth +
-                    'px';
+                element.style.left = `calc(${
+                    ((value - this.min) / (this.max - this.min)) * 100
+                }%`;
             });
     }
 

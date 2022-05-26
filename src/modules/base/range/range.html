@@ -185,12 +185,10 @@
     </div>
     <div if:true={hasCustomLabelsHorizontal} class="custom-label-container">
         <template for:each={customLabels} for:item="customLabel">
-            <div
-                data-value={customLabel.value}
-                key={customLabel.value}
-                class="custom-label"
-            >
-                {customLabel.label}
+            <div class="custom-label-single-container" key={customLabel.value}>
+                <div data-value={customLabel.value} class="custom-label">
+                    {customLabel.label}
+                </div>
             </div>
         </template>
     </div>
