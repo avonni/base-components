@@ -181,7 +181,6 @@ describe('Primitive Carousel Item', () => {
             const action = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-menu"]'
             );
-            expect(action).toBeTruthy();
             expect(action.menuAlignment).toBe('auto');
         });
     });
@@ -200,7 +199,6 @@ describe('Primitive Carousel Item', () => {
             const action = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-menu"]'
             );
-            expect(action).toBeTruthy();
             expect(action.menuAlignment).toBe('auto');
         });
     });
@@ -211,7 +209,7 @@ describe('Primitive Carousel Item', () => {
             const tag = element.shadowRoot.querySelectorAll(
                 '[data-element-id="a-tag"]'
             );
-            expect(tag.href).not.toBe(null);
+            expect(tag).toBeTruthy();
         });
     });
 
@@ -222,7 +220,7 @@ describe('Primitive Carousel Item', () => {
             const tag = element.shadowRoot.querySelectorAll(
                 '[data-element-id="a-noTag"]'
             );
-            expect(tag).not.toBe(null);
+            expect(tag).toBeTruthy();
         });
     });
 
