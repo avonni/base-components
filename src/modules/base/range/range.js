@@ -162,6 +162,9 @@ export default class Range extends LightningElement {
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
+        if (this.showHatchMarks) {
+            this.drawRuler();
+        }
         if (!this._rendered) {
             this._leftInput = this.template.querySelector(
                 '.avonni-range__slider-left'
@@ -172,9 +175,6 @@ export default class Range extends LightningElement {
             this._progress = this.template.querySelector(
                 '.avonni-range__progress'
             );
-            if (this.showHatchMarks) {
-                this.drawRuler();
-            }
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
             }
@@ -188,8 +188,8 @@ export default class Range extends LightningElement {
                     }, 50);
                 }
             });
-            this.updateMinProgressBar(this._valueLower);
-            this.updateMaxProgressBar(this._valueUpper);
+            this.updateMinProgressBar(this._leftInput.value);
+            this.updateMaxProgressBar(this._rightInput.value);
             this.initRange();
             this._rendered = true;
         }
