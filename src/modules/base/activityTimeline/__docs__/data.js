@@ -807,5 +807,14 @@ export const horizontalItems = [
         iconName: 'standard:email',
         hasCheckbox: true,
         hasError: false
+    },
+    {
+        name: 'item24',
+        title: 'Really long title event with a lot of characters',
+        datetimeValue: '02/09/2024 08:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
     }
 ];

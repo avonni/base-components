@@ -46,6 +46,11 @@ const DEFAULT_INTERVAL_MIN_DATE = new Date(2022, 0, 1);
 const DEFAULT_TIMELINE_WIDTH = 1300;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 40;
 const MAX_LENGTH_TITLE_ITEM = 30;
+const Y_START_POSITION_TIMELINE_ITEM = 10;
+const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
+const Y_START_POSITION_SCROLL_ITEM = 4;
+const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
+const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
 
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
@@ -168,9 +173,10 @@ export default class ActivityTimeline extends LightningElement {
             .duration(3000);
 
         // TESTING DRAG
-        d3.select(this.template.querySelector('.testing-d3'))
-            .selectAll('*')
-            .remove();
+        const divD3Testing = d3.select(
+            this.template.querySelector('.testing-d3')
+        );
+        divD3Testing.selectAll('*').remove();
         const testing = d3
             .select(this.template.querySelector('.testing-d3'))
             .append('svg')
@@ -197,22 +203,26 @@ export default class ActivityTimeline extends LightningElement {
             );
 
         // TESTONS SCALE TIME
-        // const svg = d3
-        //     .select(divD3Testing)
+        // const svg = divD3Testing
         //     .append('svg')
         //     .attr('width', this._timelineWidth)
         //     .attr('height', this._timelineHeight);
 
         // const viewTimeScale = d3.scaleTime().domain([this._intervalMinDate, this._intervalMaxDate]).range([this._offsetAxis, this._timelineWidth]);
-        // const scrollAxis = d3.axisBottom(viewTimeScale).tickFormat(d3.timeFormat("%d/%m/%Y")).ticks(6);
+        // const scrollAxis = d3.axisBottom(this.scrollTimeScale).tickFormat(d3.timeFormat("%d/%m/%Y")).ticks(12);
+        // const xDateTest = this.scrollTimeScale(new Date("2022-01-01 01:57:00"));
+        // console.log(xDateTest);
+        // console.log(this.scrollTimeScale.invert(xDateTest));
+        // console.log('date should be : ' + new Date("2022-01-01 01:57:00"));
 
-        // svg.append('g')
-        //     .call(scrollAxis);
+        // console.log(this.scrollTimeScale.invert(this._timelineWidth));
+
+        // svg.append('g').call(scrollAxis);
         // svg.
         // append("circle")
         // .attr("r", "5")
         // .attr("fill", "lightblue")
-        // .attr("cx", viewTimeScale(new Date("2022-02-10 01:57:00")))
+        // .attr("cx", this.scrollTimeScale(new Date("2022-01-01 01:57:00")))
         // .attr("cy", 5);
     }
 
@@ -526,6 +536,14 @@ export default class ActivityTimeline extends LightningElement {
             .range([this._offsetAxis, this._timelineWidth]);
     }
 
+    // TODO: A CHANGER
+    get scrollTimeScale() {
+        return d3
+            .scaleTime()
+            .domain([this.minDate, this.maxDate]) // TODO: Think if add +/- 1 to show all dates
+            .range([this._offsetAxis, this._timelineWidth]);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -547,15 +565,12 @@ export default class ActivityTimeline extends LightningElement {
      *
      * @returns array
      */
-    // TODO: check if overflow timeline's height
-    setYPositionOfItems() {
-        const startPosition = 10;
-        const gapBetweenItems = 28;
-
+    // TODO: check if overflow timeline's height -- > add value to height if overflow ?
+    setYPositionOfItems(items, yStartPosition, yGapBetweenItems) {
         // Set all items with startPosition as yPosition
-        let dataToDisplay = this._displayedItems.map((element) => ({
+        let dataToDisplay = items.map((element) => ({
             ...element,
-            yPosition: startPosition
+            yPosition: yStartPosition
         }));
         dataToDisplay = [...dataToDisplay].sort(
             (a, b) => new Date(a.datetimeValue) - new Date(b.datetimeValue)
@@ -576,7 +591,7 @@ export default class ActivityTimeline extends LightningElement {
                 // Add vertical gap between each element
                 foundElements.forEach((element, index) => {
                     if (element.name !== item.name) {
-                        element.yPosition += gapBetweenItems;
+                        element.yPosition += yGapBetweenItems;
                     }
 
                     // To prevent two elements with the same date to have the same yPosition
@@ -586,7 +601,7 @@ export default class ActivityTimeline extends LightningElement {
                             element.datetimeValue &&
                         foundElements[index - 1].yPosition === element.yPosition
                     ) {
-                        foundElements[index - 1].yPosition -= gapBetweenItems;
+                        foundElements[index - 1].yPosition -= yGapBetweenItems;
                     }
                 });
             }
@@ -639,7 +654,11 @@ export default class ActivityTimeline extends LightningElement {
 
         // TODO: Creer nouveau svg pour distinguer les items ?
         const rectWidth = 20;
-        const dataToDisplay = this.setYPositionOfItems();
+        const dataToDisplay = this.setYPositionOfItems(
+            this._displayedItems,
+            Y_START_POSITION_TIMELINE_ITEM,
+            Y_GAP_BETWEEN_ITEMS_TIMELINE
+        );
 
         // TODO: DISPLAY ICON INSTEAD OF RECT
         timelineSVG
@@ -748,103 +767,67 @@ export default class ActivityTimeline extends LightningElement {
             .append('svg')
             .attr('width', this._timelineWidth)
             .attr('height', this._timelineAxisHeight * 2);
-        const domainDates = this.createTimelineDateDomain(
-            this.minDate,
-            this.daysBetweenMinAndMax / this._numberOfScrollAxisTicks,
-            this._numberOfScrollAxisTicks
-        );
-        const xScale = d3
-            .scaleBand()
-            .domain(domainDates)
-            .range([0, this._timelineWidth - 50]);
-        const scrollAxis = d3.axisBottom(xScale).tickSizeOuter(0);
+
+        const scrollAxis = d3
+            .axisBottom(this.scrollTimeScale)
+            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .ticks(12)
+            .tickSizeOuter(0);
         scrollAxisSVG
             .append('g')
             .attr(
                 'transform',
-                'translate(' +
-                    this._offsetAxis +
-                    ', ' +
-                    this._timelineAxisHeight +
-                    ')'
+                'translate(' + 0 + ', ' + this._timelineAxisHeight + ')'
             )
             .call(scrollAxis);
 
         // <--- CREATE RECT AROUND SCROLL AXIS --->
         scrollAxisSVG
             .append('rect')
-            .attr('x', this._offsetAxis) // POSITION X -- TEMPS
-            .attr('y', 1) // POSITION Y - GERER SI PLUSIEURS MEMES DATES
-            .attr('width', this._timelineWidth - this._offsetAxis) // longueur du rectangle du data
-            .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
+            .attr('x', this._offsetAxis)
+            .attr('y', 1)
+            .attr('width', this._timelineWidth - this._offsetAxis)
+            .attr('height', this._timelineAxisHeight)
             .attr('stroke', this._scrollAxisColor)
             .attr('fill', 'white');
 
         // <--- CREATE RECT ON SCROLL AXIS TO REPRESENT DATA --->
-
-        // CALCULATE X AXIS VALUE
-        const rectWidth = 5;
-        const intervalSize =
-            this._timelineWidth / (this._numberOfScrollAxisTicks + 3);
-        const dividerFactor = 100000000000.0;
-        let xDateData = [];
-
-        const scaleFactor =
-            (this._timelineWidth -
-                2 * intervalSize +
-                this._offsetAxis -
-                rectWidth) /
-            ((dateTimeObjectFrom(this.maxDate).toFormat('x') -
-                dateTimeObjectFrom(this.minDate).toFormat('x')) /
-                dividerFactor);
-
-        this.sortedItems.forEach((item) => {
-            const xValue =
-                dateTimeObjectFrom(item.datetimeValue).toFormat('x') -
-                dateTimeObjectFrom(this.minDate).toFormat('x');
-            xDateData.push(
-                (xValue / dividerFactor) * scaleFactor +
-                    intervalSize -
-                    rectWidth
-            );
-        });
+        // To find y position of all items
+        const itemsToDisplay = this.setYPositionOfItems(
+            this.sortedItems,
+            Y_START_POSITION_SCROLL_ITEM,
+            Y_GAP_BETWEEN_ITEMS_SCROLL
+        );
 
         // DRAW RECT FOR EACH DATE
         scrollAxisSVG
             .append('g')
             .selectAll('rect')
-            .data(xDateData)
+            .data(itemsToDisplay)
             .enter()
             .append('rect')
-            .attr('x', (x) => x) // POSITION DU DATA (X)
-            .attr('y', 8) // TODO: CHANGE Y POSITION IF SAME DATES
-            .attr('width', rectWidth)
+            .attr('x', (item) =>
+                this.scrollTimeScale(new Date(item.datetimeValue))
+            ) // POSITION DU DATA (X)
+            .attr('y', (item) => item.yPosition)
+            .attr('width', SCROLL_ITEM_RECTANGLE_WIDTH)
             .attr('height', 3)
             .attr('fill', this._scrollAxisColor);
 
         // <--- DRAW VIEW INTERVAL (BLUE RECT) -->
-        const xMinIntervalDate =
-            ((dateTimeObjectFrom(this._intervalMinDate).toFormat('x') -
-                dateTimeObjectFrom(this.minDate).toFormat('x')) /
-                dividerFactor) *
-                scaleFactor +
-            intervalSize;
-        const xMaxIntervalDate =
-            ((dateTimeObjectFrom(this._intervalMaxDate).toFormat('x') -
-                dateTimeObjectFrom(this.minDate).toFormat('x')) /
-                dividerFactor) *
-                scaleFactor +
-            intervalSize;
-
-        // DRAG MANGE LE THIS
-        let temporaryThis = this;
+        // We save the this because it changes in drag function of scrollAxisSVG
+        let activityTimelineThis = this;
+        const intervalWidth = Math.abs(
+            this.scrollTimeScale(new Date(this._intervalMaxDate)) -
+                this.scrollTimeScale(new Date(this._intervalMinDate))
+        );
 
         scrollAxisSVG
             .append('g')
             .append('rect')
-            .attr('x', xMinIntervalDate) // Debut date min interval (valeur x convertie)
+            .attr('x', this.scrollTimeScale(new Date(this._intervalMinDate))) // Debut date min interval (valeur x convertie) == >xMinIntervalDate
             .attr('y', 0.5)
-            .attr('width', xMaxIntervalDate - xMinIntervalDate) // length of the interval
+            .attr('width', intervalWidth) // length of the interval
             .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
             .attr('opacity', 0.3)
             .attr('fill', this._scrollAxisColor)
@@ -852,17 +835,11 @@ export default class ActivityTimeline extends LightningElement {
                 d3
                     .drag()
                     .on('drag', function (event) {
-                        // ATTENTION : THIS ANORMAL -- COMME ARROW FUNCTION
-                        // IMPOSSIBLE --≥ THIS.FONCTION ou THIS.PROPRIETE
-                        // Temporary this working
-                        console.log(temporaryThis._offsetAxis);
-
+                        // WARNING : this = scrollAxisSVG, activityTimelineThis = regular this
                         // To allow only horizontal drag
                         const maxPosition =
-                            DEFAULT_TIMELINE_WIDTH -
-                            (xMaxIntervalDate - xMinIntervalDate);
+                            DEFAULT_TIMELINE_WIDTH - intervalWidth;
                         const minPosition = DEFAULT_TIMELINE_AXIS_OFFSET;
-
                         let xPosition = event.x;
                         if (event.x > maxPosition) {
                             xPosition = maxPosition;
@@ -873,7 +850,11 @@ export default class ActivityTimeline extends LightningElement {
                         d3.select(this).attr('x', xPosition).attr('y', 0.5);
                     })
                     .on('end', function () {
-                        // TODO: CHANGE INTERVAL AND RERENDER. ATTENTION THIS.
+                        activityTimelineThis._intervalMinDate =
+                            activityTimelineThis.scrollTimeScale.invert(
+                                this.getAttribute('x')
+                            );
+                        activityTimelineThis.renderedCallback();
                     })
             );
     }
