@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class KanbanBase extends LightningElement {
+export default class KanbanPath extends LightningElement {
     groupValues = [
         {
             label: 'Open',
@@ -153,5 +153,5 @@ export default class KanbanBase extends LightningElement {
 
     isLoading = false;
 
-    variant = 'base';
+    variant = 'path';
 }

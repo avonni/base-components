@@ -122,6 +122,18 @@ export default {
             table: {
                 type: { summary: 'String' }
             }
+        },
+        variant: {
+            name: 'variant',
+            control: {
+                type: 'text'
+            },
+            description:
+                'The variant change the apparence of the kanban. Valid values include base and path. Default to base.',
+            table: {
+                defaultValue: { summary: 'base' },
+                type: { summary: 'String' }
+            }
         }
     },
     args: {}
@@ -132,6 +144,7 @@ const Template = (args) => Kanban(args);
 export const Base = Template.bind({});
 Base.args = {
     groupValues: GROUP_VALUES,
+    variant: 'base',
     fields: FIELDS,
     records: RECORDS,
     actions: ACTIONS,
@@ -139,6 +152,18 @@ Base.args = {
     isLoading: false,
     summarizeFieldName: 'Amount',
     groupFieldName: 'status'
+};
+
+export const path = Template.bind({});
+path.args = {
+    groupValues: GROUP_VALUES,
+    fields: FIELDS,
+    records: RECORDS,
+    actions: ACTIONS,
+    isLoading: false,
+    summarizeFieldName: 'percent',
+    groupFieldName: 'status',
+    variant: 'path'
 };
 
 export const readOnly = Template.bind({});

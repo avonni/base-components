@@ -38,6 +38,11 @@ import {
     normalizeString
 } from 'c/utilsPrivate';
 
+const KANBAN_VARIANTS = {
+    valid: ['base', 'path'],
+    default: 'base'
+};
+
 /**
  * @class
  * @storyId example-kanban--base
@@ -194,6 +199,34 @@ export default class Kanban extends LightningElement {
     }
     set summarizeFieldName(value) {
         this._summarizeFieldName = normalizeString(value);
+    }
+
+    /**
+     * The variant change the apparence of the kanban. Valid values include base and path. Default to base.
+     * @type {string}
+     * @default base
+     * @public
+     */
+    @api
+    get variant() {
+        return this._variant;
+    }
+
+    set variant(variant) {
+        this._variant = normalizeString(variant, {
+            fallbackValue: KANBAN_VARIANTS.default,
+            validValues: KANBAN_VARIANTS.valid
+        });
+    }
+
+    /**
+     * Wrapper div class, depending on the variant value.
+     * @type {string}
+     */
+    get variantClass() {
+        return classSet()
+            .add(`avonni-kanban__variant_${this._variant}`)
+            .toString();
     }
 
     /*

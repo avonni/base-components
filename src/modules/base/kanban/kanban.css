@@ -30,11 +30,11 @@
 
 .avonni-kanban__tiles_container {
     overflow-y: auto;
-    overflow-x: visible;
+    max-height: 100vh;
     height: 100%;
 }
 
-.avonni-kanban__header-action {
+.avonni-kanban__header_action {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -49,8 +49,11 @@
     width: 100%;
     min-width: 185px;
     border-right: 1px solid #c9c7c5;
-    /* border-radius: 0.25rem; */
     padding-top: 5px;
+}
+
+.avonni-kanban__variant_base .avonni-kanban__field {
+    height: 100%;
 }
 
 .avonni-kanban__field:first-of-type {
@@ -78,6 +81,48 @@
     cursor: grab;
     z-index: 9999;
     position: relative;
+}
+
+.avonni-kanban__variant_base .slds-path__track {
+    display: none;
+}
+.avonni-kanban__variant_base .avonni-kanban__field {
+    border-radius: 0.25rem;
+    /* box-shadow: 0 0 15px #e1e1e168; */
+    background-color: rgb(252, 252, 252);
+    margin: 5px;
+    border: 1px solid #dbdbdb;
+}
+
+.avonni-kanban__variant_base .avonni-kanban__summarize_wrapper {
+    display: flex;
+    text-align: left;
+    flex-direction: column;
+    margin-left: 30px;
+}
+
+.avonni-kanban__variant_base .avonni-kanban__header_action {
+    top: 10px;
+    right: 10px;
+    left: initial;
+}
+
+.avonni-kanban__variant_base .avonni-kanban__summarize {
+    text-align: left;
+    font-weight: 500;
+}
+
+.avonni-kanban__variant_base .avonni-kanban__tile {
+    border-bottom: 1px solid #c0c0c0;
+}
+
+.avonni-kanban__tile-title {
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+.avonni-kanban__variant_path .avonni-kanban__tile-title {
+    display: none;
 }
 
 .avonni-kanban__tile:not(.avonni-kanban__dragged),
@@ -112,7 +157,7 @@
 }
 
 .avonni-kanban__footer_actions_container {
-    margin: 5px;
+    margin: 5px 30px;
 }
 
 .avonni-kanban__footer_action {
@@ -121,6 +166,12 @@
     width: 100%;
     display: flex;
     align-items: center;
+    transition: background 0.1s;
+    border-radius: 0.25rem;
+}
+
+.avonni-kanban__footer_action:not(:disabled):hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 .avonni-kanban__footer_action > span {
