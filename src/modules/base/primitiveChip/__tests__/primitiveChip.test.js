@@ -110,7 +110,6 @@ describe('Primitive Chip', () => {
             const icon = element.shadowRoot.querySelector(
                 '[data-element-id="icon-left"]'
             );
-            console.log(icon);
 
             expect(element.iconName).toBe('utility:user');
             expect(icon.iconName).toBe('utility:user');
