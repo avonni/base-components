@@ -175,7 +175,6 @@ export default class Range extends LightningElement {
             this._progress = this.template.querySelector(
                 '.avonni-range__progress'
             );
-
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
             }
@@ -189,8 +188,8 @@ export default class Range extends LightningElement {
                     }, 50);
                 }
             });
-            this.updateMinProgressBar(this._valueLower);
-            this.updateMaxProgressBar(this._valueUpper);
+            this.updateMinProgressBar(this._leftInput.value);
+            this.updateMaxProgressBar(this._rightInput.value);
             this.initRange();
             this._rendered = true;
         }
