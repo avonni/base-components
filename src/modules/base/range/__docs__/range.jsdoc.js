@@ -9,7 +9,16 @@
  * @property {number} maximumFractionDigits The maximum number of fraction digits that are allowed.
  * @property {number} minimumSignificantDigits The minimum number of significant digits that are required. Possible values are from 1 to 21.
  * @property {number} maximumSignificantDigits The maximum number of significant digits that are allowed. Possible values are from 1 to 21.
+ * @property {Object[]} customLabels The maximum number of significant digits that are allowed. Possible values are from 1 to 21.
  */
+
+/**
+ * @typedef {Object[]} CustomLabels
+ * @name customLabels
+ * @property {string} label Label to be displayed as custom label.
+ * @property {number} value Decimal value associated with custom label. Custom label will be displayed at the decimal equivalent of this value on the range.
+ */
+
 /**
  * @namespace stylingHooks
  */

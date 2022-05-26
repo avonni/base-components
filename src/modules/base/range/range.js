@@ -424,7 +424,6 @@ export default class Range extends LightningElement {
 
         return this._valueUpper;
     }
-
     set valueUpper(value) {
         this._valueUpper = Number(value);
     }
@@ -439,7 +438,6 @@ export default class Range extends LightningElement {
     @api get variant() {
         return this._variant;
     }
-
     set variant(variant) {
         this._variant = normalizeString(variant, {
             fallbackValue: LABEL_VARIANTS.default,
@@ -454,20 +452,44 @@ export default class Range extends LightningElement {
      */
 
     /**
-     * Computed label class styling.
+     * Computed left bubble class styling.
      *
      * @type {string}
      */
-    get computedLabelClass() {
-        const classes = classSet();
+    get computedBubbleLeftClass() {
+        return classSet('left-bubble').add({
+            'avonni-range__bubble-vertical left-bubble':
+                this._type === 'vertical',
+            'avonni-range__bubble': this._type !== 'vertical'
+        });
+    }
 
-        classes.add(
-            this._variant === 'label-hidden'
-                ? 'slds-assistive-text'
-                : 'slds-slider-label__label'
-        );
+    /**
+     * Computed right bubble class styling.
+     *
+     * @type {string}
+     */
+    get computedBubbleRightClass() {
+        return this._type === 'vertical'
+            ? 'avonni-range__bubble-vertical right-bubble'
+            : 'avonni-range__bubble right-bubble';
+    }
 
-        return classes.toString();
+    /**
+     * Computed container class styling ( size, vertical ).
+     *
+     * @type {string}
+     */
+    get computedContainerClass() {
+        return classSet('')
+            .add({
+                [`avonni-range__container-horizontal-size_${this._size}`]:
+                    this._size,
+                'avonni-range__vertical': this._type === 'vertical',
+                [`avonni-range__container-vertical-size_${this._size}`]:
+                    this._size && this._type === 'vertical'
+            })
+            .toString();
     }
 
     /**
@@ -497,44 +519,20 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Computed container class styling ( size, vertical ).
+     * Computed label class styling.
      *
      * @type {string}
      */
-    get computedContainerClass() {
-        return classSet('')
-            .add({
-                [`avonni-range__container-horizontal-size_${this._size}`]:
-                    this._size,
-                'avonni-range__vertical': this._type === 'vertical',
-                [`avonni-range__container-vertical-size_${this._size}`]:
-                    this._size && this._type === 'vertical'
-            })
-            .toString();
-    }
+    get computedLabelClass() {
+        const classes = classSet();
 
-    /**
-     * Computed left bubble class styling.
-     *
-     * @type {string}
-     */
-    get computedBubbleLeftClass() {
-        return classSet('left-bubble').add({
-            'avonni-range__bubble-vertical left-bubble':
-                this._type === 'vertical',
-            'avonni-range__bubble': this._type !== 'vertical'
-        });
-    }
+        classes.add(
+            this._variant === 'label-hidden'
+                ? 'slds-assistive-text'
+                : 'slds-slider-label__label'
+        );
 
-    /**
-     * Computed right bubble class styling.
-     *
-     * @type {string}
-     */
-    get computedBubbleRightClass() {
-        return this._type === 'vertical'
-            ? 'avonni-range__bubble-vertical right-bubble'
-            : 'avonni-range__bubble right-bubble';
+        return classes.toString();
     }
 
     /**
@@ -555,6 +553,11 @@ export default class Range extends LightningElement {
         return this._type !== 'vertical' && !this.hasCustomLabels;
     }
 
+    /**
+     * Verify if the range has custom labels.
+     *
+     * @type {boolean}
+     */
     get hasCustomLabels() {
         return this._customLabels.length !== 0 && this._unit === 'custom';
     }
@@ -683,165 +686,6 @@ export default class Range extends LightningElement {
      */
 
     /**
-     * Initialize range cmp.
-     */
-    initRange() {
-        this.showHelpMessageIfInvalid();
-        this.setBubblesPosition();
-    }
-
-    /**
-     * Handle any slider value change.
-     *
-     * @param {Event} event
-     */
-    handleChange(event) {
-        this.updateInputRange(event);
-        this.setBubblesPosition();
-        this.changeRange();
-    }
-
-    /**
-     * If left slider is closer to mouse, adds a class which puts it above the right.
-     *
-     * @param {Event} event
-     */
-    setClosestOnTop(event) {
-        let total = this._leftInput.clientWidth;
-        let leftInputPos =
-            total *
-            (parseInt(this._leftInput.value - this.min, 10) /
-                (this.max - this.min));
-        let rightInputPos =
-            total *
-            ((parseInt(this._rightInput.value, 10) - this.min) /
-                (this.max - this.min));
-        if (
-            Math.abs(event.offsetX - leftInputPos + 1) <
-            Math.abs(event.offsetX - rightInputPos - 1)
-        )
-            this._leftInput.classList.add('avonni-range__slider-left_above');
-        else
-            this._leftInput.classList.remove('avonni-range__slider-left_above');
-    }
-
-    /**
-     * Updates the input range values based on its current value. Also handle the collision if two slider are equal.
-     *
-     * @param {Event} event
-     */
-    updateInputRange(event) {
-        let minVal = parseInt(this._leftInput.value, 10);
-        let maxVal = parseInt(this._rightInput.value, 10);
-        if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
-            this.updateMinProgressBar(minVal);
-            this.updateMaxProgressBar(maxVal);
-        } else if (maxVal - minVal < 0) {
-            if (event.target.classList.contains('avonni-range__slider-left')) {
-                this.updateMinProgressBar(maxVal);
-            } else {
-                this.updateMaxProgressBar(minVal);
-            }
-        }
-    }
-
-    /**
-     * Updates the lower progress bar position based on value.
-     *
-     * @param {number} value
-     */
-    updateMinProgressBar(value) {
-        this._leftInput.value = value;
-        this._valueLower = value;
-        this._progress.style.left =
-            ((value - this.min) / (this.max - this.min)) * 100 + '%';
-    }
-
-    /**
-     * Updates the higher progress bar position based on value.
-     *
-     * @param {number} value
-     */
-    updateMaxProgressBar(value) {
-        this._rightInput.value = value;
-        this._valueUpper = value;
-        this._progress.style.right =
-            100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
-    }
-
-    /**
-     * Displays and positions the custom labels for the range
-     */
-    displayCustomLabels() {
-        const isVertical = this.type === 'vertical';
-        this.template
-            .querySelectorAll(`${'.avonni-range__custom-label-wrapper'}`)
-            .forEach((element, index) => {
-                let value = this._customLabels[index].value;
-                if (isVertical) {
-                    element.style.top = `${
-                        ((value - this.min) / (this.max - this.min)) * 100
-                    }%`;
-                } else {
-                    element.style.left = `${
-                        ((value - this.min) / (this.max - this.min)) * 100
-                    }%`;
-                }
-            });
-    }
-
-    /**
-     * Initialize the screen resize observer.
-     *
-     * @returns {AvonniResizeObserver} Resize observer.
-     */
-    initResizeObserver() {
-        if (!this.hasCustomLabels && !this.showHatchMarks) return null;
-        const resizeObserver = new AvonniResizeObserver(() => {
-            this.drawRuler();
-            this.displayCustomLabels();
-        });
-        resizeObserver.observe(
-            this.template.querySelector('[data-element-id="div-wrapper"]')
-        );
-        return resizeObserver;
-    }
-
-    drawRuler() {
-        const ruler = this.template.querySelector('[data-element-id="ruler"]');
-        ruler.querySelectorAll('*').forEach((child) => {
-            child.remove();
-        });
-        const totalWidth = ruler.clientWidth;
-        const inputThumbRadius = 8.75;
-        const numberOfSteps = (this.max - this.min) / this.step;
-        const stepWidth = (totalWidth - inputThumbRadius * 2) / numberOfSteps;
-
-        let leftPosition = inputThumbRadius;
-
-        for (let i = 0; i < numberOfSteps + 1; i++) {
-            let isMajorStep = i === 0 || i === numberOfSteps;
-            if (this._customLabels.length !== 0) {
-                isMajorStep =
-                    isMajorStep ||
-                    this._customLabels.some(
-                        (customLabel) => customLabel.value === i + this.min
-                    );
-            }
-            let line = document.createElementNS(SVG_NAMESPACE, 'line');
-            line.setAttribute('stroke', `${isMajorStep ? 'black' : 'gray'}`);
-            line.setAttribute('height', `10`);
-            line.setAttribute('width', `5`);
-            line.setAttribute('x1', `${leftPosition}`);
-            line.setAttribute('y1', '1');
-            line.setAttribute('x2', `${leftPosition}`);
-            line.setAttribute('y2', `${isMajorStep ? 8 : 6}`);
-            ruler.appendChild(line);
-            leftPosition += stepWidth;
-        }
-    }
-
-    /**
      * Update range upper and lower values.
      */
     changeRange() {
@@ -879,14 +723,72 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Display right bubble.
+     * Displays and positions the custom labels for the range
      */
-    showRightBubble() {
-        if (this._pin) {
-            this.template
-                .querySelector('[data-element-id="right-bubble"]')
-                .classList.add('avonni-range__bubble_visible');
+    displayCustomLabels() {
+        const isVertical = this.type === 'vertical';
+        this.template
+            .querySelectorAll(`${'.avonni-range__custom-label-wrapper'}`)
+            .forEach((element, index) => {
+                let value = this._customLabels[index].value;
+                if (isVertical) {
+                    element.style.top = `${
+                        ((value - this.min) / (this.max - this.min)) * 100
+                    }%`;
+                } else {
+                    element.style.left = `${
+                        ((value - this.min) / (this.max - this.min)) * 100
+                    }%`;
+                }
+            });
+    }
+
+    /**
+     * Draws the hatch marks as SVG depending on inputWidth
+     */
+    drawRuler() {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+        ruler.querySelectorAll('*').forEach((child) => {
+            child.remove();
+        });
+        const totalWidth = ruler.clientWidth;
+        const inputThumbRadius = 8.75;
+        const numberOfSteps = (this.max - this.min) / this.step;
+        const stepWidth = (totalWidth - inputThumbRadius * 2) / numberOfSteps;
+
+        let leftPosition = inputThumbRadius;
+
+        for (let i = 0; i < numberOfSteps + 1; i++) {
+            let isMajorStep = i === 0 || i === numberOfSteps;
+            if (this._customLabels.length !== 0) {
+                isMajorStep =
+                    isMajorStep ||
+                    this._customLabels.some(
+                        (customLabel) => customLabel.value === i + this.min
+                    );
+            }
+            let line = document.createElementNS(SVG_NAMESPACE, 'line');
+            line.setAttribute('stroke', `${isMajorStep ? 'black' : 'gray'}`);
+            line.setAttribute('height', `10`);
+            line.setAttribute('width', `5`);
+            line.setAttribute('x1', `${leftPosition}`);
+            line.setAttribute('y1', '1');
+            line.setAttribute('x2', `${leftPosition}`);
+            line.setAttribute('y2', `${isMajorStep ? 8 : 6}`);
+            ruler.appendChild(line);
+            leftPosition += stepWidth;
         }
+    }
+
+    /**
+     * Handle any slider value change.
+     *
+     * @param {Event} event
+     */
+    handleChange(event) {
+        this.updateInputRange(event);
+        this.setBubblesPosition();
+        this.changeRange();
     }
 
     /**
@@ -908,6 +810,66 @@ export default class Range extends LightningElement {
             this.template
                 .querySelector('[data-element-id="right-bubble"]')
                 .classList.remove('avonni-range__bubble_visible');
+        }
+    }
+
+    /**
+     * Initialize range cmp.
+     */
+    initRange() {
+        this.showHelpMessageIfInvalid();
+        this.setBubblesPosition();
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.hasCustomLabels && !this.showHatchMarks) return null;
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this.drawRuler();
+            this.displayCustomLabels();
+        });
+        resizeObserver.observe(
+            this.template.querySelector('[data-element-id="div-wrapper"]')
+        );
+        return resizeObserver;
+    }
+
+    /**
+     * If left slider is closer to mouse, adds a class which puts it above the right.
+     *
+     * @param {Event} event
+     */
+    setClosestOnTop(event) {
+        let total = this._leftInput.clientWidth;
+        let leftInputPos =
+            total *
+            (parseInt(this._leftInput.value - this.min, 10) /
+                (this.max - this.min));
+        let rightInputPos =
+            total *
+            ((parseInt(this._rightInput.value, 10) - this.min) /
+                (this.max - this.min));
+        if (
+            Math.abs(event.offsetX - leftInputPos + 1) <
+            Math.abs(event.offsetX - rightInputPos - 1)
+        )
+            this._leftInput.classList.add('avonni-range__slider-left_above');
+        else
+            this._leftInput.classList.remove('avonni-range__slider-left_above');
+    }
+
+    /**
+     * Display right bubble.
+     */
+    showRightBubble() {
+        if (this._pin) {
+            this.template
+                .querySelector('[data-element-id="right-bubble"]')
+                .classList.add('avonni-range__bubble_visible');
         }
     }
 
@@ -945,6 +907,50 @@ export default class Range extends LightningElement {
                     'px)';
             }, 1);
         }
+    }
+
+    /**
+     * Updates the input range values based on its current value. Also handle the collision if two slider are equal.
+     *
+     * @param {Event} event
+     */
+    updateInputRange(event) {
+        let minVal = parseInt(this._leftInput.value, 10);
+        let maxVal = parseInt(this._rightInput.value, 10);
+        if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
+            this.updateMinProgressBar(minVal);
+            this.updateMaxProgressBar(maxVal);
+        } else if (maxVal - minVal < 0) {
+            if (event.target.classList.contains('avonni-range__slider-left')) {
+                this.updateMinProgressBar(maxVal);
+            } else {
+                this.updateMaxProgressBar(minVal);
+            }
+        }
+    }
+
+    /**
+     * Updates the higher progress bar position based on value.
+     *
+     * @param {number} value
+     */
+    updateMaxProgressBar(value) {
+        this._rightInput.value = value;
+        this._valueUpper = value;
+        this._progress.style.right =
+            100 - ((value - this.min) / (this.max - this.min)) * 100 + '%';
+    }
+
+    /**
+     * Updates the lower progress bar position based on value.
+     *
+     * @param {number} value
+     */
+    updateMinProgressBar(value) {
+        this._leftInput.value = value;
+        this._valueLower = value;
+        this._progress.style.left =
+            ((value - this.min) / (this.max - this.min)) * 100 + '%';
     }
 
     /**

@@ -267,7 +267,7 @@ export default {
                 type: 'object'
             },
             description:
-                'Fields: \ncurrencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits',
+                'Fields: \ncurrencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, customLabels',
             table: {
                 type: { summary: 'object' },
                 category: 'Value'
