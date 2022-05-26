@@ -188,8 +188,8 @@ export default class Range extends LightningElement {
                     }, 50);
                 }
             });
-            this.updateMinProgressBar(this._leftInput.value);
-            this.updateMaxProgressBar(this._rightInput.value);
+            this.updateMinProgressBar(this._valueLower);
+            this.updateMaxProgressBar(this._valueUpper);
             this.initRange();
             this._rendered = true;
         }
@@ -407,7 +407,9 @@ export default class Range extends LightningElement {
     }
 
     set valueLower(value) {
-        this._valueLower = Number(value);
+        if (value) {
+            this._valueLower = parseInt(value, 10);
+        }
     }
 
     /**
@@ -415,13 +417,16 @@ export default class Range extends LightningElement {
      *
      * @type {string}
      * @public
+     * @default 100
      */
     @api
     get valueUpper() {
         return this._valueUpper;
     }
     set valueUpper(value) {
-        this._valueUpper = Number(value);
+        if (value) {
+            this._valueUpper = parseInt(value, 10);
+        }
     }
 
     /**
@@ -923,9 +928,7 @@ export default class Range extends LightningElement {
     updateInputRange(event) {
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
-        console.log(`minVal : ${minVal}`);
-        console.log(`maxVal : ${maxVal}`);
-        if (maxVal - minVal > 0) {
+        if (maxVal - minVal >= 0) {
             this.updateMinProgressBar(minVal);
             this.updateMaxProgressBar(maxVal);
         } else if (maxVal - minVal < 0) {
@@ -943,7 +946,6 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMaxProgressBar(value) {
-        console.log(`value max changed to : ${value}`);
         this._rightInput.value = value;
         this._valueUpper = value;
         this._progress.style.right =
@@ -956,7 +958,6 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMinProgressBar(value) {
-        console.log(`value min changed to : ${value}`);
         this._leftInput.value = value;
         this._valueLower = value;
         this._progress.style.left =

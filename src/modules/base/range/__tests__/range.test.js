@@ -107,7 +107,7 @@ describe('Range', () => {
         expect(element.unitAttributes).toMatchObject({});
         expect(element.type).toBe('horizontal');
         expect(parseInt(element.valueLower, 10)).toBe(0);
-        expect(parseInt(element.valueUpper, 10)).toBe(0);
+        expect(parseInt(element.valueUpper, 10)).toBe(100);
         expect(element.validity).toBeTruthy();
         expect(element.variant).toBe('standard');
     });
