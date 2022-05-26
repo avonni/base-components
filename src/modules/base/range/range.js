@@ -727,20 +727,21 @@ export default class Range extends LightningElement {
      */
     displayCustomLabels() {
         const isVertical = this.type === 'vertical';
-        this.template
-            .querySelectorAll(`${'.avonni-range__custom-label-wrapper'}`)
-            .forEach((element, index) => {
-                let value = this._customLabels[index].value;
-                if (isVertical) {
-                    element.style.top = `${
-                        ((value - this.min) / (this.max - this.min)) * 100
-                    }%`;
-                } else {
-                    element.style.left = `${
-                        ((value - this.min) / (this.max - this.min)) * 100
-                    }%`;
-                }
-            });
+        const customLabelNodes = this.template.querySelectorAll(
+            `${'.avonni-range__custom-label-wrapper'}`
+        );
+        customLabelNodes.forEach((element, index) => {
+            let value = this._customLabels[index].value;
+            if (isVertical) {
+                element.style.top = `${
+                    100 - ((value - this.min) / (this.max - this.min)) * 100
+                }%`;
+            } else {
+                element.style.left = `${
+                    ((value - this.min) / (this.max - this.min)) * 100
+                }%`;
+            }
+        });
     }
 
     /**

@@ -35,6 +35,25 @@ import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
 import Range from 'c/range';
 
+const MOCK_CUSTOM_LABELS = [
+    {
+        label: 'Custom 0',
+        value: 0
+    },
+    {
+        label: 'Custom 1',
+        value: 1
+    },
+    {
+        label: 'Custom 2',
+        value: 2
+    },
+    {
+        label: 'Custom 3',
+        value: 3
+    }
+];
+
 // Not tested because not used:
 // Debounce on mousemove of 50ms
 // messageWhenRangeOverflow
@@ -76,7 +95,8 @@ describe('Range', () => {
         expect(element.messageWhenPatternMismatch).toBeUndefined();
         expect(element.messageWhenTypeMismatch).toBeUndefined();
         expect(element.min).toBe(0);
-        expect(element.pin).toBeFalsy();
+        expect(element.pin).toEqual(false);
+        expect(element.showHatchMarks).toEqual(false);
         expect(element.size).toBe('full');
         expect(element.step).toBe(1);
         expect(element.unit).toBe('decimal');
@@ -181,6 +201,27 @@ describe('Range', () => {
                 '.avonni-range__bubble'
             );
             expect(bubbles).toHaveLength(2);
+        });
+    });
+
+    // showHatchMarks
+    it('Range: showHatchMarks = false', () => {
+        element.pin = false;
+
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="ruler"]')
+            ).toBeFalsy();
+        });
+    });
+
+    it('Range: showHatchMarks = true', () => {
+        element.pin = true;
+
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="ruler"]')
+            ).toBeFalsy();
         });
     });
 
@@ -318,6 +359,27 @@ describe('Range', () => {
                     unitAttributes.minimumSignificantDigits
                 );
             });
+        });
+    });
+
+    // unit-attributes ~ customLabels
+    it('Range: customLabels', () => {
+        element.unit = 'custom';
+        element.unitAttributes = {
+            customLabels: MOCK_CUSTOM_LABELS
+        };
+
+        return Promise.resolve().then(() => {
+            const customLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="custom-label"]'
+            );
+            customLabels.forEach((customLabel, index) => {
+                expect(customLabel.dataset.value).toEqual(`${index}`);
+                expect(customLabel.textContent).toEqual(`Custom ${index}`);
+            });
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="ruler"]')
+            ).toBeTruthy();
         });
     });
 
