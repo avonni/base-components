@@ -32,7 +32,9 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
+import tag from './tag.html';
+import noTag from './noTag.html';
 
 const ACTIONS_POSITIONS = {
     valid: [
@@ -69,6 +71,10 @@ export default class PrimitiveCarouselItem extends LightningElement {
     _actionsPosition = ACTIONS_POSITIONS.default;
     _actionsVariant = ACTIONS_VARIANTS.default;
     _carouselContentHeight = DEFAULT_CAROUSEL_HEIGHT;
+
+    render() {
+        return normalizeBoolean(this.href) ? tag : noTag;
+    }
 
     /*
      * ------------------------------------------------------------
