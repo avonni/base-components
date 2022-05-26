@@ -760,6 +760,11 @@ export default class Range extends LightningElement {
         let leftPosition = inputThumbRadius;
 
         for (let i = 0; i < numberOfSteps + 1; i++) {
+            const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
+            const isColored =
+                this.valueLower <= valueOfStep &&
+                valueOfStep <= this.valueUpper;
+
             let isMajorStep = i === 0 || i === numberOfSteps;
             if (this.hasCustomLabels) {
                 isMajorStep =
@@ -768,17 +773,18 @@ export default class Range extends LightningElement {
                         (customLabel) => customLabel.value === i + this.min
                     );
             }
-            let line = document.createElementNS(SVG_NAMESPACE, 'line');
-            line.setAttribute('stroke', `${isMajorStep ? 'black' : 'gray'}`);
-            line.setAttribute('height', `10`);
-            line.setAttribute('width', `5`);
-            line.setAttribute('x1', `${leftPosition}`);
-            line.setAttribute('y1', '1');
-            line.setAttribute('x2', `${leftPosition}`);
-            line.setAttribute('y2', `${isMajorStep ? 8 : 6}`);
-            ruler.appendChild(line);
+            let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
+            circle.setAttribute('fill', `${isColored ? '#0176D3' : 'gray'}`);
+            circle.setAttribute('cx', `${leftPosition}`);
+            circle.setAttribute('cy', `5`);
+            circle.setAttribute('r', `${isMajorStep ? 4 : 3}`);
+            ruler.appendChild(circle);
             leftPosition += stepWidth;
         }
+    }
+
+    asPercent(value) {
+        return (value - this.min) / (this.max - this.min);
     }
 
     /**

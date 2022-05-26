@@ -204,6 +204,7 @@
     background: #ecebea;
     border-radius: 5px;
     top: 0px;
+    z-index: -1;
 }
 
 .avonni-range__progress {
@@ -211,6 +212,7 @@
     position: absolute;
     border-radius: 5px;
     background: #0176d3;
+    z-index: 1;
 }
 
 .avonni-range__bubble_visible {
@@ -230,6 +232,7 @@
     white-space: nowrap;
     left: 50%;
     transform: translate(-50%);
+    top: -0.6rem;
 }
 
 .avonni-range__custom-label-wrapper {
@@ -250,4 +253,12 @@
     top: calc(var(--input-thumb-radius) - 2px);
     left: 1.8rem;
     transform: translate(0, -50%);
+}
+
+[data-element-id='ruler'] {
+    pointer-events: none;
+    position: relative;
+    width: 100%;
+    margin-top: -28px;
+    z-index: 0;
 }
