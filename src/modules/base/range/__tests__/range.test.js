@@ -54,8 +54,12 @@ const MOCK_CUSTOM_LABELS = [
     }
 ];
 
+// Not tested:
+// AvonniResizeObserver (tested Visually)
+// Debounce on mousemove of 50ms (tested Visually)
+// Ruler Hatch positions (tested Visually)
+// Custom Label positions (tested Visually)
 // Not tested because not used:
-// Debounce on mousemove of 50ms
 // messageWhenRangeOverflow
 // messageWhenRangeUnderflow
 // messageWhenStepMismatch
@@ -206,7 +210,7 @@ describe('Range', () => {
 
     // showHatchMarks
     it('Range: showHatchMarks = false', () => {
-        element.pin = false;
+        element.showHatchMarks = false;
 
         return Promise.resolve().then(() => {
             expect(
@@ -216,13 +220,25 @@ describe('Range', () => {
     });
 
     it('Range: showHatchMarks = true', () => {
-        element.pin = true;
+        element.showHatchMarks = true;
 
-        return Promise.resolve().then(() => {
-            expect(
-                element.shadowRoot.querySelector('[data-element-id="ruler"]')
-            ).toBeFalsy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="ruler"]'
+                    )
+                ).toBeTruthy();
+                element.step = 2;
+            })
+            .then(() => {
+                // should redraw ruler with new step
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="ruler"]'
+                    )
+                ).toBeTruthy();
+            });
     });
 
     // size
@@ -363,8 +379,30 @@ describe('Range', () => {
     });
 
     // unit-attributes ~ customLabels
-    it('Range: customLabels', () => {
+    it('Range: customLabels on horizontal component', () => {
         element.unit = 'custom';
+        element.type = 'horizontal';
+        element.unitAttributes = {
+            customLabels: MOCK_CUSTOM_LABELS
+        };
+
+        return Promise.resolve().then(() => {
+            const customLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="custom-label"]'
+            );
+            customLabels.forEach((customLabel, index) => {
+                expect(customLabel.dataset.value).toEqual(`${index}`);
+                expect(customLabel.textContent).toEqual(`Custom ${index}`);
+            });
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="ruler"]')
+            ).toBeTruthy();
+        });
+    });
+
+    it('Range: customLabels on vertical component', () => {
+        element.unit = 'custom';
+        element.type = 'vertical';
         element.unitAttributes = {
             customLabels: MOCK_CUSTOM_LABELS
         };
