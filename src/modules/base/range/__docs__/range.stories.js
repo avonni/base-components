@@ -377,6 +377,10 @@ CustomLabel.args = {
                 value: 0
             },
             {
+                label: 'Jan 3',
+                value: 2
+            },
+            {
                 label: 'Jan 6',
                 value: 5
             },
