@@ -180,7 +180,6 @@ export default class Carousel extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
-
     /**
      * Position of the actions. Valid values include top-left, top-right,  bottom-left, bottom-right and bottom-center.
      *
@@ -322,7 +321,6 @@ export default class Carousel extends LightningElement {
     }
 
     set itemsPerPanel(value) {
-        console.log(`value in setter of itemsPerPanel ${value}`);
         this._itemsPerPanel = Number(
             normalizeString(
                 typeof value === 'number' ? value.toString() : value,
@@ -349,7 +347,6 @@ export default class Carousel extends LightningElement {
         return this._itemsMobilePerPanel;
     }
     set itemsMobilePerPanel(value) {
-        console.log(`value in setter of itemsMobilePerPanel ${value}`);
         this._itemsMobilePerPanel = Number(
             normalizeString(
                 typeof value === 'number' ? value.toString() : value,
@@ -733,7 +730,6 @@ export default class Carousel extends LightningElement {
      */
     initCarousel() {
         let numberOfPanels;
-        console.log(`Items Per Mobile Panel: ${this.itemsMobilePerPanel}`);
         if (this.isMobile) {
             numberOfPanels = Math.ceil(
                 this._carouselItems.length / this.itemsMobilePerPanel
@@ -743,7 +739,6 @@ export default class Carousel extends LightningElement {
                 this._carouselItems.length / this.itemsPerPanel
             );
         }
-        console.log(numberOfPanels);
         this.initializeCurrentPanel(numberOfPanels);
         this.initializePaginationItems(numberOfPanels);
         if (this.isMobile) {
@@ -758,9 +753,6 @@ export default class Carousel extends LightningElement {
     detectMobileDevice() {
         // let uaParser = new UAParser();
         // let results = uaParser.getResult();
-        console.log(
-            window.matchMedia('only screen and (max-width: 480px)').matches
-        );
         // this.isMobile = results.device.type === 'mobile' ? true : false;
         this.isMobile = window.matchMedia(
             'only screen and (max-width: 480px)'

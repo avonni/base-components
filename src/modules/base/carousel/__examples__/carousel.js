@@ -46,6 +46,7 @@ export const Carousel = ({
     hideIndicator,
     hidePreviousNextPanelNavigation,
     itemsPerPanel,
+    itemsMobilePerPanel,
     actionsPosition,
     actionsVariant
 }) => {
@@ -61,6 +62,7 @@ export const Carousel = ({
     element.hideIndicator = hideIndicator;
     element.hidePreviousNextPanelNavigation = hidePreviousNextPanelNavigation;
     element.itemsPerPanel = itemsPerPanel;
+    element.itemsMobilePerPanel = itemsMobilePerPanel;
     element.actionsPosition = actionsPosition;
     element.actionsVariant = actionsVariant;
     return element;
