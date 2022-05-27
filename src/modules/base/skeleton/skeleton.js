@@ -152,6 +152,7 @@ export default class Skeleton extends LightningElement {
      */
     get variantClass() {
         return classSet('avonni-skeleton__base')
+            .add(`avonni-skeleton__variant-${this.variant}`)
             .add(`avonni-skeleton__animation-${this.animation}`)
             .toString();
     }

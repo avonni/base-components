@@ -1,13 +1,35 @@
+:host {
+    --avonni-skeleton-color-border: transparent;
+    --avonni-skeleton-radius-border: 00.25rem;
+    --avonni-skeleton-sizing-border: 0;
+    --avonni-skeleton-styling-border: solid;
+    --avonni-skeleton-color-background: #ecebea;
+}
+
 .avonni-skeleton__base {
-    border-color: var(--avonni-skeleton-color-border, transparent);
-    border-radius: var(--avonni-skeleton-radius-border, 00.25rem);
-    border-width: var(--avonni-skeleton-sizing-border, 0);
-    border-style: var(--avonni-skeleton-styling-border, solid);
-    background-color: var(--avonni-skeleton-color-background, #ecebea);
+    border-color: var(--avonni-skeleton-color-border);
+    border-radius: var(--avonni-skeleton-radius-border);
+    border-width: var(--avonni-skeleton-sizing-border);
+    border-style: var(--avonni-skeleton-styling-border);
+    background-color: var(--avonni-skeleton-color-background);
+}
+
+.avonni-skeleton__variant-circular {
+    --avonni-skeleton-radius-border: 50%;
+    border-radius: var(--avonni-skeleton-radius-border);
+}
+
+.avonni-skeleton__variant-rectangular {
+    border-radius: var(--avonni-skeleton-radius-border);
+}
+
+.avonni-skeleton__variant-text {
+    border-radius: var(--avonni-skeleton-radius-border);
+    height: 2px;
 }
 
 .avonni-skeleton__wave-container {
-    background-color: #ecebea;
+    background-color: var(--avonni-skeleton-color-background);
 }
 
 .avonni-skeleton__animation-wave {
@@ -17,18 +39,18 @@
 }
 
 .avonni-skeleton__animation-pulse {
-    animation: pulse-animation 2s infinite;
+    animation: pulse-animation 1s infinite;
 }
 
 @keyframes pulse-animation {
     0% {
-        background-color: #ecebea;
+        background-color: var(--avonni-skeleton-color-background);
     }
     50% {
         background-color: #dedede;
     }
     100% {
-        background-color: #ecebea;
+        background-color: var(--avonni-skeleton-color-background);
     }
 }
 
@@ -42,15 +64,7 @@
 }
 
 .background-masker {
-    background-color: #fff;
     position: absolute;
-}
-
-.btn-divide-left {
-    top: 0;
-    left: 25%;
-    height: 100%;
-    width: 5%;
 }
 
 .animated-background {
@@ -60,8 +74,13 @@
     animation-name: placeHolderShimmer;
     animation-timing-function: linear;
     background-color: #f6f7f8;
-    background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%);
-    background-size: 800px 104px;
+    background: linear-gradient(
+        to right,
+        var(--avonni-skeleton-color-background) 8%,
+        #dedede 18%,
+        var(--avonni-skeleton-color-background) 33%
+    );
+    background-size: 800px 10px;
     height: 70px;
     position: relative;
 }
