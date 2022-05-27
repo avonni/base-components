@@ -396,15 +396,17 @@ export default class Kanban extends LightningElement {
             }
 
             // removes the translation on the other tiles
-            Array.from(group.children).forEach((tile, j) => {
-                if (
-                    i !== this._releasedGroupIndex ||
-                    j < this._releasedTileIndex
-                ) {
-                    tile.classList.remove('avonni-kanban__tile_moved');
-                    tile.style.transform = `translateY(0px)`;
-                }
-            });
+            Array.from(group.children)
+                .filter((child) => child !== this._draggedTile)
+                .forEach((tile, j) => {
+                    if (
+                        i !== this._releasedGroupIndex ||
+                        j < this._releasedTileIndex
+                    ) {
+                        tile.classList.remove('avonni-kanban__tile_moved');
+                        tile.style.transform = `translateY(0px)`;
+                    }
+                });
         });
     }
 
@@ -523,7 +525,6 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
         let offsetHeight = 0;
-        let dragIndex = Number.MAX_SAFE_INTEGER;
 
         // filters the footer actions from the group
         const currentGroupTiles = Array.from(
@@ -531,27 +532,21 @@ export default class Kanban extends LightningElement {
         );
         // calculates the index of the drop, depending on the previous tiles heights
         for (let [i, tile] of currentGroupTiles.entries()) {
-            if (tile !== this._draggedTile) {
-                offsetHeight += tile.offsetHeight;
-                this._releasedTileIndex = i;
-                if (
-                    this._clickedGroupIndex === this._releasedGroupIndex &&
-                    i >= dragIndex
-                )
-                    this._releasedTileIndex--;
-                if (
-                    this._draggedTile.getBoundingClientRect().y <
-                    offsetHeight - tile.offsetHeight / 2
-                ) {
-                    break;
-                } else {
-                    this._releasedTileIndex++;
-                }
+            offsetHeight += tile.offsetHeight;
+            this._releasedTileIndex = i;
+
+            if (this._clickedGroupIndex === this._releasedGroupIndex)
+                this._releasedTileIndex--;
+            if (
+                this._draggedTile.getBoundingClientRect().y <
+                offsetHeight - tile.offsetHeight / 2
+            ) {
+                break;
             } else {
-                dragIndex = i;
+                this._releasedTileIndex++;
             }
         }
-
+        if (this._releasedTileIndex < 0) this._releasedTileIndex = 0;
         this.animateTiles(groupElements);
     }
 
