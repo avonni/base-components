@@ -31,7 +31,6 @@
 .avonni-kanban__tiles_container {
     overflow-y: scroll;
     overflow-x: hidden;
-    max-height: 350px;
 }
 
 .avonni-kanban__variant_base .avonni-kanban__tiles_container {
@@ -53,7 +52,7 @@
     width: 100%;
     min-width: 188px;
     border-right: 1px solid #c9c7c5;
-    padding-top: 5px;
+    padding: 5px 0;
 }
 
 .avonni-kanban__variant_base .avonni-kanban__field {

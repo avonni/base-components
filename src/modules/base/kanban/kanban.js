@@ -581,6 +581,7 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseDown(event) {
+        event.preventDefault();
         // this handles when the user dragged a tile out of the kanban, and released his click.
         // a second click on the dragged tile (impossible otherwise) behaves has a click release
         if (event.currentTarget === this._draggedTile) {
