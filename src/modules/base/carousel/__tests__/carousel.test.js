@@ -139,6 +139,20 @@ describe('Carousel', () => {
     });
 
     beforeEach(() => {
+        Object.defineProperty(window, 'matchMedia', {
+            writable: true,
+            value: jest.fn().mockImplementation((query) => ({
+                matches: false,
+                media: query,
+                onchange: null,
+                addListener: jest.fn(), // Deprecated
+                removeListener: jest.fn(), // Deprecated
+                addEventListener: jest.fn(),
+                removeEventListener: jest.fn(),
+                dispatchEvent: jest.fn()
+            }))
+        });
+
         element = createElement('base-carousel', {
             is: Carousel
         });
@@ -410,6 +424,32 @@ describe('Carousel', () => {
                 '.avonni-carousel__panel'
             );
             expect(panels).toHaveLength(4);
+        });
+    });
+
+    // items mobile per panel
+    it('Carousel: items mobile per panel not a number', () => {
+        element.items = items;
+        element.itemsMobilePerPanel = 'hello';
+
+        return Promise.resolve().then(() => {
+            const panels = element.shadowRoot.querySelectorAll(
+                '.avonni-carousel__panel'
+            );
+            expect(element.itemsMobilePerPanel).toBe(1);
+            expect(panels).toHaveLength(7);
+        });
+    });
+
+    it('Carousel: items mobile per panel', () => {
+        element.itemsMobilePerPanel = 2;
+        element.items = items;
+
+        return Promise.resolve().then(() => {
+            const panels = element.shadowRoot.querySelectorAll(
+                '.avonni-carousel__panel'
+            );
+            expect(panels).toHaveLength(7);
         });
     });
 
