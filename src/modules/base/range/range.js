@@ -44,6 +44,7 @@ import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_STEP = 1;
+const INPUT_THUMB_RADIUS = 8.75;
 
 const RANGE_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'full'],
@@ -60,6 +61,10 @@ const LABEL_VARIANTS = {
 const RANGE_UNITS = {
     valid: ['decimal', 'currency', 'percent', 'custom'],
     default: 'decimal'
+};
+const TICK_MARK_STYLES = {
+    valid: ['none', 'dot', 'tick', 'progress'],
+    default: 'none'
 };
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -146,7 +151,6 @@ export default class Range extends LightningElement {
     _valueLower = DEFAULT_MIN;
     _valueUpper = DEFAULT_MAX;
     _variant = LABEL_VARIANTS.default;
-    _showHatchMarks = false;
 
     _helpMessage;
     _leftInput;
@@ -154,6 +158,7 @@ export default class Range extends LightningElement {
     _progress;
     _moveEventWait = false;
     _customLabels = [];
+    _tickMarkStyle = TICK_MARK_STYLES.default;
     _resizeObserver;
 
     _rendered = false;
@@ -162,7 +167,7 @@ export default class Range extends LightningElement {
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
-        if (this.showHatchMarks) {
+        if (this.showTickMarks) {
             this.drawRuler();
         }
         if (!this._rendered) {
@@ -266,18 +271,21 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * If present, shows the slider hatch marks at every step.
+     * If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and progress.
      *
      * @type {boolean}
      * @public
-     * @default false
+     * @default 'none'
      */
     @api
-    get showHatchMarks() {
-        return this._showHatchMarks || this.hasCustomLabels;
+    get tickMarkStyle() {
+        return this._tickMarkStyle;
     }
-    set showHatchMarks(value) {
-        this._showHatchMarks = normalizeBoolean(value);
+    set tickMarkStyle(value) {
+        this._tickMarkStyle = normalizeString(value, {
+            fallbackValue: TICK_MARK_STYLES.default,
+            validValues: TICK_MARK_STYLES.valid
+        });
     }
 
     /**
@@ -564,6 +572,24 @@ export default class Range extends LightningElement {
     }
 
     /**
+     * Verify if the range has custom labels and does not want to show ticks.
+     *
+     * @type {boolean}
+     */
+    get hasOnlyCustomLabels() {
+        return this.hasCustomLabels && this._tickMarkStyle === 'none';
+    }
+
+    /**
+     * To show or not the tick marks.
+     *
+     * @type {boolean}
+     */
+    get showTickMarks() {
+        return this.tickMarkStyle !== 'none' || this.hasCustomLabels;
+    }
+
+    /**
      * Get the left constraint API via proxy input.
      *
      * @return {object} constraintApiLeft
@@ -746,7 +772,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * Draws the hatch marks as SVG depending on inputWidth
+     * Draws the tick marks as SVG depending on its style.
      */
     drawRuler() {
         const ruler = this.template.querySelector('[data-element-id="ruler"]');
@@ -754,11 +780,32 @@ export default class Range extends LightningElement {
             child.remove();
         });
         const totalWidth = ruler.clientWidth;
-        const inputThumbRadius = 8.75;
         const numberOfSteps = (this.max - this.min) / this.step;
-        const stepWidth = (totalWidth - inputThumbRadius * 2) / numberOfSteps;
+        const stepWidth = (totalWidth - INPUT_THUMB_RADIUS * 2) / numberOfSteps;
+        let leftPosition = INPUT_THUMB_RADIUS;
 
-        let leftPosition = inputThumbRadius;
+        switch (this._tickMarkStyle) {
+            case 'tick':
+                this.drawTickRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+            case 'dot':
+                this.drawDotRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+            case 'progress':
+                this.drawProgressRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+            default:
+                this.drawTickRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+        }
+    }
+
+    drawDotRuler() {}
+
+    drawTickRuler() {}
+
+    drawProgressRuler(numberOfSteps, leftPosition, stepWidth) {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
 
         for (let i = 0; i < numberOfSteps + 1; i++) {
             const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
@@ -785,10 +832,6 @@ export default class Range extends LightningElement {
             ruler.appendChild(circle);
             leftPosition += stepWidth;
         }
-    }
-
-    asPercent(value) {
-        return (value - this.min) / (this.max - this.min);
     }
 
     /**
@@ -838,7 +881,7 @@ export default class Range extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!this.hasCustomLabels && !this.showHatchMarks) return null;
+        if (!this.hasCustomLabels && !this.showTickMarks) return null;
         const resizeObserver = new AvonniResizeObserver(() => {
             this.drawRuler();
             this.displayCustomLabels();

@@ -44,7 +44,7 @@ export const Range = ({
     valueLower,
     valueUpper,
     pin,
-    showHatchMarks,
+    tickMarkStyle,
     min,
     max,
     step,
@@ -68,7 +68,7 @@ export const Range = ({
     element.valueLower = valueLower;
     element.valueUpper = valueUpper;
     element.pin = pin;
-    element.showHatchMarks = showHatchMarks;
+    element.tickMarkStyle = tickMarkStyle;
     element.min = min || 0;
     element.max = max || 100;
     element.step = step || 1;

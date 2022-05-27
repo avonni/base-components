@@ -199,15 +199,16 @@ export default {
                 category: 'Value'
             }
         },
-        showHatchMarks: {
+        tickMarkStyle: {
             control: {
-                type: 'boolean'
+                type: 'select'
             },
+            options: ['none', 'tick', 'dot', 'progress'],
             description:
-                'If present, shows the slider hatch marks at every step.',
+                'If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and progress.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
+                defaultValue: { summary: 'none' },
+                type: { summary: 'string' },
                 category: 'Value'
             }
         },
@@ -313,7 +314,7 @@ export default {
         max: 0,
         min: 0,
         pin: false,
-        showHatchMarks: false,
+        tickMarkStyle: 'none',
         size: 'full',
         step: 1,
         type: 'horizontal',
