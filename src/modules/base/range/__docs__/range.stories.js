@@ -433,6 +433,51 @@ CustomProgressRange.args = {
     }
 };
 
+export const Time = TemplateMargins.bind({});
+Time.args = {
+    label: 'Pick a time range',
+    step: 10,
+    valueLower: 10,
+    valueUpper: 50,
+    min: 0,
+    max: 60,
+    size: 'full',
+    tickMarkStyle: 'dot',
+    unit: 'custom',
+    unitAttributes: {
+        customLabels: [
+            {
+                label: '0h00',
+                value: 0
+            },
+            {
+                label: '0h10',
+                value: 10
+            },
+            {
+                label: '0h20',
+                value: 20
+            },
+            {
+                label: '0h30',
+                value: 30
+            },
+            {
+                label: '0h40',
+                value: 40
+            },
+            {
+                label: '0h50',
+                value: 50
+            },
+            {
+                label: '1h00',
+                value: 60
+            }
+        ]
+    }
+};
+
 export const MinMaxStep = Template.bind({});
 MinMaxStep.args = {
     label: 'Input with min 30, max 80 and step 3',

@@ -1,15 +1,15 @@
 <template>
     <div style="margin: 0 20px 0 10px">
         <avonni-range
-            label="What is your emotional range"
-            step="1"
+            label="Pick a time range"
+            step="10"
             value-lower="1"
             value-upper="3"
             min="0"
-            max="4"
+            max="60"
             size="full"
+            tick-mark-style="dot"
             unit="custom"
-            tick-mark-style="progress"
             unit-attributes={unitAttributes}
         ></avonni-range>
     </div>
