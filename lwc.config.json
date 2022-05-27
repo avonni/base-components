@@ -475,6 +475,10 @@
             "path": "src/modules/base/separator/separator.js"
         },
         {
+            "name": "c/skeleton",
+            "path": "src/modules/base/skeleton/skeleton.js"
+        },
+        {
             "name": "c/list",
             "path": "src/modules/base/list/list.js"
         },
@@ -799,6 +803,10 @@
             "path": "src/modules/base/separator/separator.js"
         },
         {
+            "name": "avonni/skeleton",
+            "path": "src/modules/base/skeleton/skeleton.js"
+        },
+        {
             "name": "avonni/splitter",
             "path": "src/modules/base/splitter/splitter.js"
         },
@@ -922,6 +930,7 @@
         "avonni/scheduler",
         "avonni/scopedNotification",
         "avonni/separator",
+        "avonni/skeleton",
         "avonni/splitter",
         "avonni/splitterPane",
         "avonni/submenu",
