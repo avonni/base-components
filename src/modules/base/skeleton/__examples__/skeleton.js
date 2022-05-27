@@ -32,10 +32,13 @@
 
 import Component from '../skeleton';
 
-customElements.define('ac-skeleton', Component.CustomElementConstructor);
+customElements.define('ac-base-skeleton', Component.CustomElementConstructor);
 
-export const Skeleton = () => {
-    const element = document.createElement('ac-skeleton');
-    // element.title = title;
+export const Skeleton = ({ animation, variant, height, width }) => {
+    const element = document.createElement('ac-base-skeleton');
+    element.animation = animation;
+    element.variant = variant;
+    element.height = height;
+    element.width = width;
     return element;
 };
