@@ -34,17 +34,24 @@
     --input-thumb-radius: 8.75px;
 }
 
-.slds-slider-label__label {
+.avonni-slider__label {
     padding-bottom: 0.5rem;
 }
-.slds-slider__range {
+
+.avonni-range__slider-left,
+.avonni-range__slider-right {
     background: #ecebea;
     height: 4px;
     outline: none;
     transition: background 450ms ease-in;
     -webkit-appearance: none;
+    position: relative;
+    background: transparent;
+    height: 0px;
+    top: 1.5px;
 }
-.slds-slider__range::-webkit-slider-runnable-track {
+.avonni-range__slider-left::-webkit-slider-runnable-track,
+.avonni-range__slider-right::-webkit-slider-runnable-track {
     background: none;
     border-radius: 0px;
 }
@@ -171,12 +178,6 @@
     font-size: var(--avonni-range-header-font-size, 0.75rem);
     font-style: var(--avonni-range-header-font-style, normal);
     font-weight: var(--avonni-range-header-font-weight, 400);
-}
-
-.slds-slider__range {
-    position: absolute;
-    height: 0px;
-    top: 1.5px;
 }
 
 .avonni-range__slider-left_above {

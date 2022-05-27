@@ -153,15 +153,26 @@ export default class Range extends LightningElement {
     _variant = LABEL_VARIANTS.default;
 
     _helpMessage;
-    _leftInput;
-    _rightInput;
-    _progress;
     _moveEventWait = false;
     _customLabels = [];
     _tickMarkStyle = TICK_MARK_STYLES.default;
     _resizeObserver;
 
     _rendered = false;
+
+    constructor() {
+        super();
+        this.template.addEventListener('mousemove', (event) => {
+            if (!this._moveEventWait) {
+                this.setClosestOnTop(event);
+                this._moveEventWait = true;
+                // after a fraction of a second, allow events again
+                setTimeout(() => {
+                    this._moveEventWait = false;
+                }, 50);
+            }
+        });
+    }
 
     renderedCallback() {
         if (!this.resizeObserver) {
@@ -171,30 +182,11 @@ export default class Range extends LightningElement {
             this.drawRuler();
         }
         if (!this._rendered) {
-            this._leftInput = this.template.querySelector(
-                '[data-element-id="input-left"]'
-            );
-            this._rightInput = this.template.querySelector(
-                '[data-element-id="input-right"]'
-            );
-            this._progress = this.template.querySelector(
-                '.avonni-range__progress'
-            );
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
             }
-            this.template.addEventListener('mousemove', (event) => {
-                if (!this._moveEventWait) {
-                    this.setClosestOnTop(event);
-                    this._moveEventWait = true;
-                    // after a fraction of a second, allow events again
-                    setTimeout(() => {
-                        this._moveEventWait = false;
-                    }, 50);
-                }
-            });
-            this.updateMinProgressBar(this._leftInput.value);
-            this.updateMaxProgressBar(this._rightInput.value);
+            this.updateMinProgressBar(parseInt(this._leftInput.value, 10));
+            this.updateMaxProgressBar(parseInt(this._rightInput.value, 10));
             this.initRange();
             this._rendered = true;
         }
@@ -235,7 +227,7 @@ export default class Range extends LightningElement {
     }
 
     set min(value) {
-        this._min = Number(value);
+        this._min = parseInt(value, 10);
     }
 
     /**
@@ -251,7 +243,7 @@ export default class Range extends LightningElement {
     }
 
     set max(value) {
-        this._max = Number(value);
+        this._max = parseInt(value, 10);
     }
 
     /**
@@ -657,6 +649,27 @@ export default class Range extends LightningElement {
         return this._constraintApiRight;
     }
 
+    /**
+     *  Returns the progress bar html element.
+     */
+    get _progress() {
+        return this.template.querySelector('[data-element-id="progress-bar"]');
+    }
+
+    /**
+     *  Returns the left (lowerValue) input html element.
+     */
+    get _leftInput() {
+        return this.template.querySelector('[data-element-id="input-left"]');
+    }
+
+    /**
+     *  Returns the right (higherValue) input html element.
+     */
+    get _rightInput() {
+        return this.template.querySelector('[data-element-id="input-right"]');
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBIC METHODS
@@ -1056,11 +1069,11 @@ export default class Range extends LightningElement {
     updateInputRange(event) {
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
-        if (maxVal - minVal >= 0) {
+        if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
             this.updateMinProgressBar(minVal);
             this.updateMaxProgressBar(maxVal);
         } else if (maxVal - minVal < 0) {
-            if (event.target.classList.contains('avonni-range__slider-left')) {
+            if (event.target.dataset.elementId === 'input-left') {
                 this.updateMinProgressBar(maxVal);
             } else {
                 this.updateMaxProgressBar(minVal);
