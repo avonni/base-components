@@ -38,8 +38,7 @@
     padding-bottom: 0.5rem;
 }
 
-.avonni-range__slider-left,
-.avonni-range__slider-right {
+.avonni-range__slider {
     background: #ecebea;
     height: 4px;
     outline: none;
@@ -50,8 +49,7 @@
     height: 0px;
     top: 1.5px;
 }
-.avonni-range__slider-left::-webkit-slider-runnable-track,
-.avonni-range__slider-right::-webkit-slider-runnable-track {
+.avonni-range__slider::-webkit-slider-runnable-track {
     background: none;
     border-radius: 0px;
 }

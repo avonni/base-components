@@ -457,6 +457,7 @@ export default class Range extends LightningElement {
      */
     get computedInputClass() {
         return classSet('slds-slider__range').add({
+            'avonni-range__slider': true,
             'avonni-range__input_progress': this.tickMarkStyle === 'progress'
         });
     }
@@ -536,7 +537,7 @@ export default class Range extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        const classes = classSet();
+        const classes = classSet('avonni-slider__label');
 
         classes.add(
             this._variant === 'label-hidden'
