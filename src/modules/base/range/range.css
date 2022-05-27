@@ -48,6 +48,7 @@
     background: transparent;
     height: 0px;
     top: 1.5px;
+    z-index: 3;
 }
 .avonni-range__slider::-webkit-slider-runnable-track {
     background: none;
@@ -179,7 +180,7 @@
 }
 
 .avonni-range__slider-left_above {
-    z-index: 3;
+    z-index: 4;
 }
 
 .avonni-range__progress-container {
@@ -192,7 +193,7 @@
         var(--input-thumb-radius) - calc(var(--input-thumb-radius) * 0.3)
     );
     top: 0px;
-    z-index: -1;
+    z-index: 1;
 }
 
 .avonni-range__progress {
@@ -202,7 +203,7 @@
     background: #0176d3;
     top: 50%;
     transform: translate(0, -55%);
-    z-index: 0;
+    z-index: 2;
 }
 
 .avonni-range__bubble_visible {
