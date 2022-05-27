@@ -29,9 +29,9 @@
 }
 
 .avonni-kanban__tiles_container {
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
-    /* max-height: 350px; */
+    max-height: 350px;
 }
 
 .avonni-kanban__variant_base .avonni-kanban__tiles_container {
@@ -130,10 +130,13 @@
     display: none;
 }
 
-.avonni-kanban__tile:not(.avonni-kanban__dragged),
-.avonni-kanban__footer_actions_container {
-    transition: transform 0.25s;
+.avonni-kanban__tile:not(.avonni-kanban__dragged) {
+    transition: transform 0.2s;
     z-index: 1;
+}
+
+.avonni-kanban__dragging {
+    overflow: hidden;
 }
 
 .avonni-kanban__tile_icon {
