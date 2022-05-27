@@ -2545,12 +2545,14 @@ export default class Scheduler extends LightningElement {
             const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
             switch (side) {
                 case 'end':
+                    draftValues.allDay = false;
                     draftValues.to = to.toUTC().toISO();
                     if (newEvent) {
                         occurrence.to = to;
                     }
                     break;
                 case 'start':
+                    draftValues.allDay = false;
                     draftValues.from = from.toUTC().toISO();
                     if (newEvent) {
                         occurrence.from = from;

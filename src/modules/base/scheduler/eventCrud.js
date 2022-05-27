@@ -123,7 +123,7 @@ function saveEvent() {
     Object.entries(draftValues).forEach((entry) => {
         const [key, value] = entry;
 
-        if (value.length) {
+        if (value.length || key === 'allDay') {
             event[key] = value;
         }
     });
@@ -187,7 +187,7 @@ function saveOccurrence() {
             Object.entries(draftValues).forEach((entry) => {
                 const [key, value] = entry;
 
-                if (value.length) {
+                if (value.length || key === 'allDay') {
                     if (key === 'from' || key === 'to') {
                         // Convert the ISO dates into DateTime objects
                         occ[key] = dateTimeObjectFrom(value);
