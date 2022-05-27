@@ -397,7 +397,7 @@ export default class Range extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        const classes = classSet();
+        const classes = classSet('avonni-slider__label');
 
         classes.add(
             this._variant === 'label-hidden'
