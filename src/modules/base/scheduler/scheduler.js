@@ -1498,38 +1498,12 @@ export default class Scheduler extends LightningElement {
      */
     initDraggedEventState(mouseX, mouseY) {
         // Save the initial position values
-        const schedulePosition = this.schedulePosition;
         const eventPosition = this._draggedEvent.getBoundingClientRect();
-        const resizeEnd = this._resizeSide === 'end';
-
-        let right, left, top, bottom;
-        if (this.isVertical) {
-            const topOfEvent = eventPosition.top + 24;
-            const topOfSchedule =
-                schedulePosition.top + (mouseY - eventPosition.top);
-            top = resizeEnd ? topOfEvent : topOfSchedule;
-
-            const bottomOfEvent = eventPosition.bottom - 24;
-            const bottomOfSchedule =
-                schedulePosition.bottom + (mouseY - eventPosition.bottom);
-            bottom = resizeEnd ? bottomOfSchedule : bottomOfEvent;
-
-            left = schedulePosition.left + (mouseX - eventPosition.left);
-            right = schedulePosition.right + (mouseY - eventPosition.right);
-        } else {
-            const leftOfEvent = eventPosition.left + 24;
-            const leftOfSchedule =
-                schedulePosition.left + (mouseX - eventPosition.left);
-            left = resizeEnd ? leftOfEvent : leftOfSchedule;
-
-            const rightOfEvent = eventPosition.right - 24;
-            const rightOfSchedule =
-                schedulePosition.right + (mouseX - eventPosition.right);
-            right = resizeEnd ? rightOfSchedule : rightOfEvent;
-
-            top = schedulePosition.top + (mouseY - eventPosition.top);
-            bottom = schedulePosition.bottom + (mouseY - eventPosition.bottom);
-        }
+        const { right, left, top, bottom } = this.getDraggingBoundaries(
+            eventPosition,
+            mouseX,
+            mouseY
+        );
 
         const row = this.isVertical
             ? this.getRowFromPosition(mouseX)
@@ -1886,6 +1860,51 @@ export default class Scheduler extends LightningElement {
             }
             return undefined;
         });
+    }
+
+    /**
+     * Get the boundaries of the dragging/resizing zone.
+     *
+     * @param {DOMRect} eventPosition The position and dimensions of the dragged event.
+     * @param {number} mouseX The position of the mouse on the X axis.
+     * @param {number} mouseY The position of the mouse on the Y axis.
+     * @returns {object} The dragging zone coordinates.
+     */
+    getDraggingBoundaries(eventPosition, mouseX, mouseY) {
+        const resizeEnd = this._resizeSide === 'end';
+        const isDragged = !this._resizeSide;
+        const schedulePosition = this.schedulePosition;
+
+        let right, left, top, bottom;
+        if (this.isVertical) {
+            const topOfEvent = eventPosition.top + 24;
+            const topOfSchedule =
+                schedulePosition.top + (mouseY - eventPosition.top);
+            top = resizeEnd ? topOfEvent : topOfSchedule;
+
+            const bottomOfEvent = eventPosition.bottom - 24;
+            const bottomOfSchedule =
+                schedulePosition.bottom + (mouseY - eventPosition.bottom);
+            bottom = resizeEnd || isDragged ? bottomOfSchedule : bottomOfEvent;
+
+            left = schedulePosition.left + (mouseX - eventPosition.left);
+            right = schedulePosition.right + (mouseX - eventPosition.right);
+        } else {
+            const leftOfEvent = eventPosition.left + 24;
+            const leftOfSchedule =
+                schedulePosition.left + (mouseX - eventPosition.left);
+            left = resizeEnd ? leftOfEvent : leftOfSchedule;
+
+            const rightOfEvent = eventPosition.right - 24;
+            const rightOfSchedule =
+                schedulePosition.right + (mouseX - eventPosition.right);
+            right = resizeEnd || isDragged ? rightOfSchedule : rightOfEvent;
+
+            top = schedulePosition.top + (mouseY - eventPosition.top);
+            bottom = schedulePosition.bottom + (mouseY - eventPosition.bottom);
+        }
+
+        return { right, left, top, bottom };
     }
 
     /**
@@ -2527,7 +2546,7 @@ export default class Scheduler extends LightningElement {
                 : position.x + (eventEndPosition - mouseX);
 
             const valueOnTheResourceAxis =
-                side === 'start' ? startPosition : endPosition;
+                side === 'end' ? endPosition : startPosition;
 
             const valueOnTheHeadersAxis = this.isVertical
                 ? position.x
