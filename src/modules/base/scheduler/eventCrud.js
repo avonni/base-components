@@ -73,13 +73,16 @@ function focusEvent(eventName) {
  * @param {boolean} showDialog If true, the edit dialog will be opened. Defaults to true.
  */
 function newEvent(x, y, showDialog = true) {
+    const resourceAxisPosition = this.isVertical ? y : x;
+    const headersAxisPosition = this.isVertical ? x : y;
+
     this.hideDetailPopover();
     this.hideEditDialog();
 
     let keyFields, from, to;
-    if (!isNaN(x) && !isNaN(y)) {
-        const row = this.getRowFromPosition(y);
-        const cell = this.getCellFromPosition(row, x);
+    if (!isNaN(resourceAxisPosition) && !isNaN(headersAxisPosition)) {
+        const row = this.getRowFromPosition(headersAxisPosition);
+        const cell = this.getCellFromPosition(row, resourceAxisPosition);
         keyFields = [row.dataset.key];
         from = Number(cell.dataset.start);
         to = Number(cell.dataset.end) + 1;

@@ -1687,20 +1687,8 @@ export default class Scheduler extends LightningElement {
                 const previousOccurrences = [];
                 occurrenceElements.forEach((occElement) => {
                     const start = occElement.startPosition;
-                    const { level, levelsTotal } = this.computeEventLevelInRow(
-                        previousOccurrences,
-                        start
-                    );
-
-                    if (!this.isVertical) {
-                        // For horizontal variant, if the occurrence is taller
-                        // than the previous ones, update the default level height
-                        const height =
-                            occElement.getBoundingClientRect().height;
-                        if (height > levelHeight) {
-                            levelHeight = height;
-                        }
-                    }
+                    const { level, levelsTotal, overlappingEvents } =
+                        this.computeEventLevelInRow(previousOccurrences, start);
 
                     const occurrence = row.events.find(
                         (occ) => occ.key === occElement.occurrenceKey
@@ -1713,19 +1701,29 @@ export default class Scheduler extends LightningElement {
                         end: occElement.endPosition,
                         occurrence:
                             occurrence ||
-                            (this.selection && this.selection.occurrence)
+                            (this.selection && this.selection.occurrence),
+                        overlappingEvents: normalizeArray(overlappingEvents)
                     });
 
-                    if (!this.isVertical && occElement.labels.right) {
-                        // For horizontal variant,
-                        // hide the right label if it overflows the schedule
-                        const elementRightBorder =
-                            occElement.getBoundingClientRect().right +
-                            occElement.rightLabelWidth;
-                        if (elementRightBorder >= scheduleRightBorder) {
-                            occElement.hideRightLabel();
-                        } else {
-                            occElement.showRightLabel();
+                    if (!this.isVertical) {
+                        if (occElement.labels.right) {
+                            // Hide the right label if it overflows the schedule
+                            const elementRightBorder =
+                                occElement.getBoundingClientRect().right +
+                                occElement.rightLabelWidth;
+                            if (elementRightBorder >= scheduleRightBorder) {
+                                occElement.hideRightLabel();
+                            } else {
+                                occElement.showRightLabel();
+                            }
+                        }
+
+                        // If the occurrence is taller than the previous ones,
+                        // update the default level height
+                        const height =
+                            occElement.getBoundingClientRect().height;
+                        if (height > levelHeight) {
+                            levelHeight = height;
                         }
                     }
                 });
@@ -1733,10 +1731,16 @@ export default class Scheduler extends LightningElement {
                 // Add the corresponding offset to the top (horizontal variant)
                 // or left (vertical variant) of the occurrences
                 previousOccurrences.forEach((position) => {
-                    const { level, levelsTotal, occurrence } = position;
+                    const { level, occurrence, overlappingEvents } = position;
                     let offsetSide = 0;
 
                     if (this.isVertical) {
+                        let levelsTotal = position.levelsTotal;
+                        overlappingEvents.forEach((event) => {
+                            if (event.levelsTotal > levelsTotal) {
+                                levelsTotal = event.levelsTotal;
+                            }
+                        });
                         offsetSide = (level * this.cellWidth) / levelsTotal;
                         occurrence.numberOfEventsInThisTimeFrame = levelsTotal;
                         this._updateOccurrencesLength = true;
@@ -1787,8 +1791,8 @@ export default class Scheduler extends LightningElement {
             );
             const scheduleWidth = this.schedulePosition.width;
             schedule.style = `
-                --avonni-primitive-scheduler-event-reference-line-height: ${scheduleWidth}px
-            `;
+                 --avonni-primitive-scheduler-event-reference-line-height: ${scheduleWidth}px
+             `;
         }
     }
 
@@ -2010,8 +2014,13 @@ export default class Scheduler extends LightningElement {
      * @returns {object} Object with two keys:
      * * level (number): level of the event occurrence in the row.
      * * levelsTotal (number): Total number of levels in the row.
+     * * overlappingEvents (object[]): Array of overlapping events.
      */
     computeEventLevelInRow(previousOccurrences, startPosition, level = 0) {
+        const overlappingEvents = previousOccurrences.filter((occ) => {
+            return startPosition < occ.end;
+        });
+
         // Find the last event with the same level
         const sameLevelEvent = previousOccurrences.find((occ) => {
             return occ.level === level;
@@ -2041,7 +2050,7 @@ export default class Scheduler extends LightningElement {
             sameLevelEvent.levelsTotal = levelsTotal;
         }
 
-        return { level, levelsTotal };
+        return { level, levelsTotal, overlappingEvents };
     }
 
     /**
@@ -2166,9 +2175,15 @@ export default class Scheduler extends LightningElement {
 
         // Check if any event in the cell has the same offsetTop
         const eventIsHovered = cellEvents.some((cellEvent) => {
+            const isDifferent = cellEvent.key !== occurrence.key;
+            if (this.isVertical) {
+                return (
+                    isDifferent &&
+                    cellEvent.offsetSide === occurrence.offsetSide
+                );
+            }
             return (
-                cellEvent.offsetSide === occurrence.offsetSide &&
-                cellEvent.key !== occurrence.key
+                cellEvent.offsetSide === occurrence.offsetSide && isDifferent
             );
         });
 
