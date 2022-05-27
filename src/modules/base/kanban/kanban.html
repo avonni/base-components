@@ -96,13 +96,15 @@
                         key={group.index}
                     >
                         <div if:true={group.headerActions}>
-                            <lightning-button-menu
+                            <c-button-menu
                                 alternative-text="Show menu"
                                 icon-size="x-small"
                                 menu-alignment="left"
                                 class="avonni-kanban__header_action"
                                 disabled={readOnly}
                                 variant="bare"
+                                icon-name="action:more"
+                                hide-down-arrow
                             >
                                 <template
                                     for:each={group.headerActions}
@@ -118,7 +120,7 @@
                                         class="slds-text-color_default"
                                     ></lightning-menu-item>
                                 </template>
-                            </lightning-button-menu>
+                            </c-button-menu>
                         </div>
                         <div class="avonni-kanban__summarize_wrapper">
                             <h2
@@ -224,27 +226,52 @@
                             <div
                                 class="avonni-kanban__footer_actions_container"
                             >
-                                <button
-                                    onactionclick={handleActionClick}
-                                    for:each={group.footerActions}
-                                    for:item="action"
-                                    key={action.name}
-                                    disabled={action.disabled}
-                                    class="avonni-kanban__footer_action"
-                                >
-                                    <lightning-icon
-                                        if:true={action.iconName}
-                                        size="small"
-                                        icon-name={action.iconName}
-                                    ></lightning-icon>
-                                    <span
-                                        class="
-                                            slds-text-color_default
-                                            slds-text-body_regular
-                                        "
-                                        >{action.label}</span
+                                <template if:true={readOnly}>
+                                    <button
+                                        onactionclick={handleActionClick}
+                                        for:each={group.footerActions}
+                                        for:item="action"
+                                        key={action.name}
+                                        disabled={readOnly}
+                                        class="avonni-kanban__footer_action"
                                     >
-                                </button>
+                                        <lightning-icon
+                                            if:true={action.iconName}
+                                            size="small"
+                                            icon-name={action.iconName}
+                                        ></lightning-icon>
+                                        <span
+                                            class="
+                                                slds-text-color_default
+                                                slds-text-body_regular
+                                            "
+                                            >{action.label}</span
+                                        >
+                                    </button>
+                                </template>
+                                <template if:false={readOnly}>
+                                    <button
+                                        onactionclick={handleActionClick}
+                                        for:each={group.footerActions}
+                                        for:item="action"
+                                        key={action.name}
+                                        disabled={action.disabled}
+                                        class="avonni-kanban__footer_action"
+                                    >
+                                        <lightning-icon
+                                            if:true={action.iconName}
+                                            size="small"
+                                            icon-name={action.iconName}
+                                        ></lightning-icon>
+                                        <span
+                                            class="
+                                                slds-text-color_default
+                                                slds-text-body_regular
+                                            "
+                                            >{action.label}</span
+                                        >
+                                    </button>
+                                </template>
                             </div>
                         </template>
                     </div>

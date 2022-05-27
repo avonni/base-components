@@ -30,6 +30,9 @@
 
 .avonni-kanban__tiles_container {
     overflow-y: auto;
+    /* TODO: if nothing works C'EST A CAUSE DE CA */
+    /* height: 100%; */
+    /* max-height: 350px; */
 }
 
 .avonni-kanban__header_action {
