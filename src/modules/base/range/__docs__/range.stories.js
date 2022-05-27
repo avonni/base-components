@@ -31,6 +31,7 @@
  */
 
 import { Range } from '../__examples__/range';
+import { RangeMargins } from '../__examples__/rangeMargins';
 
 export default {
     title: 'Example/Range',
@@ -325,6 +326,7 @@ export default {
 };
 
 const Template = (args) => Range(args);
+const TemplateMargins = (args) => RangeMargins(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -389,6 +391,43 @@ CustomLabel.args = {
             {
                 label: 'Jan 11',
                 value: 10
+            }
+        ]
+    }
+};
+
+export const CustomProgressRange = TemplateMargins.bind({});
+CustomProgressRange.args = {
+    label: 'What is your emotional range',
+    step: 1,
+    valueLower: 1,
+    valueUpper: 3,
+    min: 0,
+    max: 4,
+    size: 'full',
+    tickMarkStyle: 'progress',
+    unit: 'custom',
+    unitAttributes: {
+        customLabels: [
+            {
+                label: 'Very Sad',
+                value: 0
+            },
+            {
+                label: 'Sad',
+                value: 1
+            },
+            {
+                label: 'Normal',
+                value: 2
+            },
+            {
+                label: 'Happy',
+                value: 3
+            },
+            {
+                label: 'Very Happy',
+                value: 4
             }
         ]
     }
