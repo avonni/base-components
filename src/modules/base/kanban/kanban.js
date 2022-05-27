@@ -364,11 +364,12 @@ export default class Kanban extends LightningElement {
      */
     animateTiles(groups) {
         // creates space for the translated tiles
-        if (this._variant === 'base')
-            groups[this._releasedGroupIndex].style.height = `${
-                this._groupsHeight[this._releasedGroupIndex] +
-                this._draggedTile.offsetHeight
-            }px`;
+
+        groups[this._releasedGroupIndex].style.height = `${
+            this._groupsHeight[this._releasedGroupIndex] +
+            this._draggedTile.offsetHeight +
+            10
+        }px`;
 
         // translates the tiles down when the dragged tile hovers over them
         const releasedChilds = Array.from(
@@ -461,24 +462,18 @@ export default class Kanban extends LightningElement {
         this._draggedTile = null;
 
         // removes the translation on all tiles
+        // resets the height to 100% on all fields
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
         Array.from(groupElements).forEach((group) => {
+            if (this._variant === 'base') {
+                group.style.height = '100%';
+            }
             Array.from(group.children).forEach((tile) => {
                 tile.classList.remove('avonni-kanban__tile_moved');
                 tile.style.transform = `translateY(0px)`;
             });
-        });
-
-        const fields = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__field"]'
-        );
-        // resets the height to 100% on all fields
-        Array.from(fields).forEach((field) => {
-            if (this._variant === 'base') {
-                field.style.height = '100%';
-            }
         });
     }
 
