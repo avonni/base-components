@@ -143,26 +143,17 @@ export default class Range extends LightningElement {
     _step = DEFAULT_STEP;
     _type = RANGE_TYPES.default;
     _unit = RANGE_UNITS.default;
-    _valueLower;
-    _valueUpper;
+    _valueLower = DEFAULT_MIN;
+    _valueUpper = DEFAULT_MAX;
     _variant = LABEL_VARIANTS.default;
 
     _helpMessage;
-    _leftInput;
-    _rightInput;
-    _progress;
     _moveEventWait = false;
 
     _rendered = false;
 
-    renderedCallback() {
-        this._leftInput = this.template.querySelector(
-            '.avonni-range__slider-left'
-        );
-        this._rightInput = this.template.querySelector(
-            '.avonni-range__slider-right'
-        );
-        this._progress = this.template.querySelector('.avonni-range__progress');
+    constructor() {
+        super();
         this.template.addEventListener('mousemove', (event) => {
             if (!this._moveEventWait) {
                 this.setClosestOnTop(event);
@@ -173,10 +164,12 @@ export default class Range extends LightningElement {
                 }, 50);
             }
         });
-        this.updateMinProgressBar(this._leftInput.value);
-        this.updateMaxProgressBar(this._rightInput.value);
+    }
 
+    renderedCallback() {
         if (!this._rendered) {
+            this.updateMinProgressBar(parseInt(this._leftInput.value, 10));
+            this.updateMaxProgressBar(parseInt(this._rightInput.value, 10));
             this.initRange();
             this._rendered = true;
         }
@@ -217,7 +210,7 @@ export default class Range extends LightningElement {
     }
 
     set min(value) {
-        this._min = Number(value);
+        this._min = parseInt(value, 10);
     }
 
     /**
@@ -233,7 +226,7 @@ export default class Range extends LightningElement {
     }
 
     set max(value) {
-        this._max = Number(value);
+        this._max = parseInt(value, 10);
     }
 
     /**
@@ -352,11 +345,11 @@ export default class Range extends LightningElement {
      */
     @api
     get valueLower() {
-        return this._valueLower ? this._valueLower : this.min;
+        return this._valueLower;
     }
 
     set valueLower(value) {
-        this._valueLower = Number(value);
+        this._valueLower = parseInt(value, 10);
     }
 
     /**
@@ -367,17 +360,11 @@ export default class Range extends LightningElement {
      */
     @api
     get valueUpper() {
-        if (!this._valueUpper) {
-            return this.valueLower > this.min
-                ? Number(this.valueLower) + Number(this.step)
-                : this.min;
-        }
-
         return this._valueUpper;
     }
 
     set valueUpper(value) {
-        this._valueUpper = Number(value);
+        this._valueUpper = parseInt(value, 10);
     }
 
     /**
@@ -519,6 +506,27 @@ export default class Range extends LightningElement {
         return this._constraintApiRight;
     }
 
+    /**
+     *  Returns the progress bar html element.
+     */
+    get _progress() {
+        return this.template.querySelector('[data-element-id="progress-bar"]');
+    }
+
+    /**
+     *  Returns the left (lowerValue) input html element.
+     */
+    get _leftInput() {
+        return this.template.querySelector('[data-element-id="input-left"]');
+    }
+
+    /**
+     *  Returns the right (higherValue) input html element.
+     */
+    get _rightInput() {
+        return this.template.querySelector('[data-element-id="input-right"]');
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBIC METHODS
@@ -645,11 +653,14 @@ export default class Range extends LightningElement {
     updateInputRange(event) {
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
+        console.log(event.target.classList[1]);
+        console.log('minValBefore : ' + minVal);
+        console.log('maxValBefore : ' + maxVal);
         if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
             this.updateMinProgressBar(minVal);
             this.updateMaxProgressBar(maxVal);
         } else if (maxVal - minVal < 0) {
-            if (event.target.classList.contains('avonni-range__slider-left')) {
+            if (event.target.dataset.elementId === 'input-left') {
                 this.updateMinProgressBar(maxVal);
             } else {
                 this.updateMaxProgressBar(minVal);
@@ -663,6 +674,7 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMinProgressBar(value) {
+        console.log('Minvalue set after : ' + value);
         this._leftInput.value = value;
         this._valueLower = value;
         this._progress.style.left =
@@ -675,6 +687,7 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMaxProgressBar(value) {
+        console.log('Maxvalue set after : ' + value);
         this._rightInput.value = value;
         this._valueUpper = value;
         this._progress.style.right =

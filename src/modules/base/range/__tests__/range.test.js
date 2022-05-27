@@ -82,8 +82,8 @@ describe('Range', () => {
         expect(element.unit).toBe('decimal');
         expect(element.unitAttributes).toMatchObject({});
         expect(element.type).toBe('horizontal');
-        expect(parseInt(element.valueLower, 10)).toBe(0);
-        expect(parseInt(element.valueUpper, 10)).toBe(0);
+        expect(element.valueLower).toBe(0);
+        expect(element.valueUpper).toBe(100);
         expect(element.validity).toBeTruthy();
         expect(element.variant).toBe('standard');
     });
@@ -96,7 +96,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id="input"]'
+                '.slds-slider__range'
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeFalsy();
@@ -108,9 +108,7 @@ describe('Range', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id="input"]'
-            );
+            const inputs = element.shadowRoot.querySelectorAll('.slds');
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
             });
@@ -256,7 +254,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id="input"]'
+                '.slds-slider__range'
             );
             inputs.forEach((input) => {
                 expect(input.step).toBe('3');
@@ -270,7 +268,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const formattedNumbers = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-formatted-number"]'
+                '[data-element-id^="lightning-formatted-number"]'
             );
             formattedNumbers.forEach((formattedNumber) => {
                 expect(formattedNumber.formatStyle).toBe('currency');
@@ -293,7 +291,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const formattedNumbers = element.shadowRoot.querySelectorAll(
-                '[data-element-id="lightning-formatted-number"]'
+                '[data-element-id^="lightning-formatted-number"]'
             );
             formattedNumbers.forEach((formattedNumber) => {
                 expect(formattedNumber.currencyCode).toBe(
