@@ -653,9 +653,6 @@ export default class Range extends LightningElement {
     updateInputRange(event) {
         let minVal = parseInt(this._leftInput.value, 10);
         let maxVal = parseInt(this._rightInput.value, 10);
-        console.log(event.target.classList[1]);
-        console.log('minValBefore : ' + minVal);
-        console.log('maxValBefore : ' + maxVal);
         if (maxVal - minVal >= 0 && maxVal <= this._rightInput.max) {
             this.updateMinProgressBar(minVal);
             this.updateMaxProgressBar(maxVal);
@@ -674,7 +671,6 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMinProgressBar(value) {
-        console.log('Minvalue set after : ' + value);
         this._leftInput.value = value;
         this._valueLower = value;
         this._progress.style.left =
@@ -687,7 +683,6 @@ export default class Range extends LightningElement {
      * @param {number} value
      */
     updateMaxProgressBar(value) {
-        console.log('Maxvalue set after : ' + value);
         this._rightInput.value = value;
         this._valueUpper = value;
         this._progress.style.right =
