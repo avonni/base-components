@@ -1092,6 +1092,45 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Position and dimensions of the schedule body.
+     *
+     * @type {object}
+     */
+    get schedulePosition() {
+        const scheduleElement = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        if (!scheduleElement) return {};
+
+        const scheduleDOMRectPosition = scheduleElement.getBoundingClientRect();
+        const schedulePosition = {
+            top: scheduleDOMRectPosition.top,
+            right: scheduleDOMRectPosition.right,
+            bottom: scheduleDOMRectPosition.bottom,
+            left: scheduleDOMRectPosition.left,
+            width: scheduleDOMRectPosition.width,
+            height: scheduleDOMRectPosition.height,
+            x: scheduleDOMRectPosition.x,
+            y: scheduleDOMRectPosition.y
+        };
+
+        if (this.isVertical) {
+            // Remove the resource headers from the schedule dimensions
+            const resourceHeader = this.template.querySelector(
+                '[data-element-id="div-vertical-resource-header"]'
+            );
+            if (resourceHeader) {
+                const headerPosition = resourceHeader.getBoundingClientRect();
+                schedulePosition.top = headerPosition.bottom;
+                schedulePosition.y = headerPosition.bottom;
+                schedulePosition.height =
+                    schedulePosition.height - headerPosition.height;
+            }
+        }
+        return schedulePosition;
+    }
+
+    /**
      * Formated starting date of the currently selected event.
      *
      * @type {string}
@@ -1459,34 +1498,68 @@ export default class Scheduler extends LightningElement {
      */
     initDraggedEventState(mouseX, mouseY) {
         // Save the initial position values
-        const scheduleElement = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        const schedulePosition = scheduleElement.getBoundingClientRect();
+        const schedulePosition = this.schedulePosition;
         const eventPosition = this._draggedEvent.getBoundingClientRect();
+        const resizeEnd = this._resizeSide === 'end';
 
-        const leftBoundary =
-            this._resizeSide === 'right'
-                ? eventPosition.left + 24
-                : schedulePosition.left + (mouseX - eventPosition.left);
-        const rightBoundary =
-            this._resizeSide === 'left'
-                ? eventPosition.right - 24
-                : schedulePosition.right + (mouseX - eventPosition.right);
+        let right, left, top, bottom;
+        if (this.isVertical) {
+            const topOfEvent = eventPosition.top + 24;
+            const topOfSchedule =
+                schedulePosition.top + (mouseY - eventPosition.top);
+            top = resizeEnd ? topOfEvent : topOfSchedule;
+
+            const bottomOfEvent = eventPosition.bottom - 24;
+            const bottomOfSchedule =
+                schedulePosition.bottom + (mouseY - eventPosition.bottom);
+            bottom = resizeEnd ? bottomOfSchedule : bottomOfEvent;
+
+            left = schedulePosition.left + (mouseX - eventPosition.left);
+            right = schedulePosition.right + (mouseY - eventPosition.right);
+        } else {
+            const leftOfEvent = eventPosition.left + 24;
+            const leftOfSchedule =
+                schedulePosition.left + (mouseX - eventPosition.left);
+            left = resizeEnd ? leftOfEvent : leftOfSchedule;
+
+            const rightOfEvent = eventPosition.right - 24;
+            const rightOfSchedule =
+                schedulePosition.right + (mouseX - eventPosition.right);
+            right = resizeEnd ? rightOfSchedule : rightOfEvent;
+
+            top = schedulePosition.top + (mouseY - eventPosition.top);
+            bottom = schedulePosition.bottom + (mouseY - eventPosition.bottom);
+        }
+
+        const row = this.isVertical
+            ? this.getRowFromPosition(mouseX)
+            : this.getRowFromPosition(mouseY);
+
+        const eventStartPosition = this.isVertical
+            ? eventPosition.top
+            : eventPosition.left;
+
+        const eventEndPosition = this.isVertical
+            ? eventPosition.bottom
+            : eventPosition.right;
+
+        const eventSize = this.isVertical
+            ? eventPosition.height
+            : eventPosition.width;
 
         this._initialState = {
             mouseX,
             mouseY,
             initialX: this._draggedEvent.x,
             initialY: this._draggedEvent.y,
-            eventLeft: eventPosition.left,
-            eventRight: eventPosition.right,
-            eventWidth: eventPosition.width,
-            left: leftBoundary,
-            right: rightBoundary,
-            top: schedulePosition.top + (mouseY - eventPosition.top),
-            bottom: schedulePosition.bottom + (mouseY - eventPosition.bottom),
-            row: this.getRowFromPosition(mouseY)
+            eventStartPosition,
+            eventEndPosition,
+            eventSize,
+            left,
+            right,
+            top,
+            bottom,
+            row
         };
     }
 
@@ -1499,27 +1572,27 @@ export default class Scheduler extends LightningElement {
         );
 
         rows.forEach((row, index) => {
-            const key = row.dataset.key;
-            const computedRow = this.getRowFromKey(key);
-            const rowHeight = computedRow.height;
-
-            const dataRowHeight = this._rowsHeight.find(
-                (dataRow) => dataRow.rowKey === key
-            ).height;
-
-            let style = `
-                min-height: ${dataRowHeight}px;
-                height: ${rowHeight}px;
-            `;
-
+            let style;
             if (this.isVertical) {
-                style += `
+                style = `
                     width: ${this.cellWidth}%;
                     min-width: 50px;
                     --avonni-scheduler-cell-height: ${this.cellHeight}px;
                 `;
             } else {
-                style += `--avonni-scheduler-cell-width: ${this.cellWidth}px;`;
+                const key = row.dataset.key;
+                const computedRow = this.getRowFromKey(key);
+                const rowHeight = computedRow.height;
+
+                const dataRowHeight = this._rowsHeight.find(
+                    (dataRow) => dataRow.rowKey === key
+                ).height;
+
+                style = `
+                    min-height: ${dataRowHeight}px;
+                    height: ${rowHeight}px;
+                    --avonni-scheduler-cell-width: ${this.cellWidth}px;
+                `;
 
                 // Patch inconsistency in the datatable row heights
                 const normalizedHeight =
@@ -1563,18 +1636,31 @@ export default class Scheduler extends LightningElement {
     /**
      * Update the width of the resized event.
      */
-    updateDraggedEventStyleAfterResize(x) {
+    updateDraggedEventStyleAfterResize(distanceMoved) {
+        const { eventSize, initialY, initialX } = this._initialState;
         const side = this._resizeSide;
-        const eventWidth = this._initialState.eventWidth;
         const event = this._draggedEvent;
-        const multiplier = side === 'left' ? -1 : 1;
-        const computedX = side === 'left' ? x + this._initialState.initialX : x;
+        const multiplier = side === 'start' ? -1 : 1;
 
-        const width = eventWidth + x * multiplier;
-        event.style.width = `${width}px`;
+        const size = eventSize + distanceMoved * multiplier;
+        if (this.isVertical) {
+            event.style.height = `${size}px`;
+        } else {
+            event.style.width = `${size}px`;
+        }
 
-        if (side === 'left') {
-            event.x = computedX;
+        if (side === 'start') {
+            const initialPosition = this.isVertical ? initialY : initialX;
+            const computedStart =
+                side === 'start'
+                    ? distanceMoved + initialPosition
+                    : distanceMoved;
+
+            if (this.isVertical) {
+                event.y = computedStart;
+            } else {
+                event.x = computedStart;
+            }
         }
     }
 
@@ -1605,10 +1691,7 @@ export default class Scheduler extends LightningElement {
      * Prevent the events from overlapping. In the horizontal variant, compute the vertical position of the events and the rows height. In the vertical variant, compute the horizontal position of the events.
      */
     updateOccurrencesOffset() {
-        const schedule = this.template.querySelector(
-            '[data-element-id="div-schedule-body"]'
-        );
-        const scheduleRightBorder = schedule.getBoundingClientRect().right;
+        const scheduleRightBorder = this.schedulePosition.right;
 
         // For each row
         this.computedRows.forEach((row) => {
@@ -1728,7 +1811,7 @@ export default class Scheduler extends LightningElement {
             const schedule = this.template.querySelector(
                 '[data-element-id="div-schedule-body"]'
             );
-            const scheduleWidth = schedule.getBoundingClientRect().width;
+            const scheduleWidth = this.schedulePosition.width;
             schedule.style = `
                 --avonni-primitive-scheduler-event-reference-line-height: ${scheduleWidth}px
             `;
@@ -1772,28 +1855,33 @@ export default class Scheduler extends LightningElement {
      * Find the cell element at a given schedule position.
      *
      * @param {HTMLElement} row The row element the cell is in.
-     * @param {number} x The horizontal position of the cell.
+     * @param {number} position The position of the cell.
      * @returns {(HTMLElement|undefined)} The cell element or undefined.
      */
-    getCellFromPosition(row, x) {
+    getCellFromPosition(row, position) {
         const cells = Array.from(
             row.querySelectorAll('[data-element-id="div-cell"]')
         );
 
         return cells.find((td, index) => {
-            const left = td.getBoundingClientRect().left;
-            const right = td.getBoundingClientRect().right;
+            const cellPosition = td.getBoundingClientRect();
+            const start = this.isVertical
+                ? cellPosition.top
+                : cellPosition.left;
+            const end = this.isVertical
+                ? cellPosition.bottom
+                : cellPosition.right;
 
             // Handle the cases where the events are on the side
             // and the mouse moved out of the schedule
-            if (index === 0 && left >= x) {
+            if (index === 0 && start >= position) {
                 return td;
             }
-            if (index === cells.length - 1 && x > right) {
+            if (index === cells.length - 1 && position > end) {
                 return td;
             }
 
-            if (x >= left && x < right) {
+            if (position >= start && position < end) {
                 return td;
             }
             return undefined;
@@ -1833,21 +1921,21 @@ export default class Scheduler extends LightningElement {
     /**
      * Find a row element from its position in the schedule.
      *
-     * @param {number} y The vertical position of the row.
+     * @param {number} position A position on the row to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
      * @returns {(HTMLElement|undefined)} The row element or undefined.
      */
-    getRowFromPosition(y) {
+    getRowFromPosition(position) {
         const rows = Array.from(
             this.template.querySelectorAll('[data-element-id="div-row"]')
         );
         return rows.find((tr) => {
-            const top = tr.getBoundingClientRect().top;
-            const bottom = tr.getBoundingClientRect().bottom;
+            const rowPosition = tr.getBoundingClientRect();
+            const start = this.isVertical ? rowPosition.left : rowPosition.top;
+            const end = this.isVertical
+                ? rowPosition.right
+                : rowPosition.bottom;
 
-            if (y >= top && y <= bottom) {
-                return tr;
-            }
-            return undefined;
+            return position >= start && position <= end;
         });
     }
 
@@ -1900,7 +1988,9 @@ export default class Scheduler extends LightningElement {
      * @param {object[]} previousOccurrences Array of previous occurrences for which the vertical level has already been computed.
      * @param {number} startPosition Start position of the occurrence.
      * @param {number} level Level of the occurrence in their row. It starts at 0, so the occurrence is at the top of its row.
-     * @returns {number} Level of the occurrence.
+     * @returns {object} Object with two keys:
+     * * level (number): level of the event occurrence in the row.
+     * * levelsTotal (number): Total number of levels in the row.
      */
     computeEventLevelInRow(previousOccurrences, startPosition, level = 0) {
         // Find the last event with the same level
@@ -2026,27 +2116,29 @@ export default class Scheduler extends LightningElement {
     /**
      * Make sure the currently resized event occurrence doesn't overlap another event. If it is, save the resizing to the event so the schedule rerenders. Else, visually resize it without saving the change in the event.
      *
-     * @param {number} x New horizontal position of the occurrence.
+     * @param {number} position New position of the occurrence.
      */
-    resizeEventToX(x) {
+    resizeEventToPosition(position) {
         const occurrence = this.selection.occurrence;
-        const { row, mouseX } = this._initialState;
-        const distanceMoved = x - mouseX;
+        const { row, mouseX, mouseY } = this._initialState;
+        const distanceMoved = this.isVertical
+            ? position - mouseY
+            : position - mouseX;
 
         // If a new event is created through click and drag,
         // Set the direction the user is going to
         if (this.selection.newEvent) {
-            this._resizeSide = distanceMoved >= 0 ? 'right' : 'left';
+            this._resizeSide = distanceMoved >= 0 ? 'end' : 'start';
         }
 
         const labelWidth =
-            this._resizeSide === 'left'
+            this._resizeSide === 'start'
                 ? this._draggedEvent.leftLabelWidth * -1
                 : this._draggedEvent.rightLabelWidth;
-        const computedX = x + labelWidth;
+        const computedPosition = position + labelWidth;
 
         // Get the events present in the cell crossed
-        const hoveredCell = this.getCellFromPosition(row, computedX);
+        const hoveredCell = this.getCellFromPosition(row, computedPosition);
         const computedRow = this.getRowFromKey(row.dataset.key);
         const computedCell = computedRow.getColumnFromStart(
             Number(hoveredCell.dataset.start)
@@ -2066,7 +2158,7 @@ export default class Scheduler extends LightningElement {
         if (eventIsHovered) {
             const cell = labelWidth
                 ? hoveredCell
-                : this.getCellFromPosition(row, x);
+                : this.getCellFromPosition(row, position);
             this.resizeEventToCell(cell);
         } else {
             // If we are not passing above another event,
@@ -2089,10 +2181,10 @@ export default class Scheduler extends LightningElement {
         const row = this.getRowFromKey(rowKey);
         row.removeEvent(occurrence);
 
-        if (side === 'right') {
+        if (side === 'end') {
             // Update the end date if the event was resized from the right
             occurrence.to = dateTimeObjectFrom(Number(cell.dataset.end) + 1);
-        } else if (side === 'left') {
+        } else if (side === 'start') {
             // Update the start date if the event was resized from the left
             occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
         }
@@ -2349,7 +2441,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizong or dragging.
+     * Handle the mousemove event fired by the schedule. If the splitter is being clicked, compute its movement. If an event is being clicked, compute its resizing or dragging.
      */
     handleMouseMove(mouseEvent) {
         if (!this._mouseIsDown) {
@@ -2359,7 +2451,7 @@ export default class Scheduler extends LightningElement {
         // Prevent scrolling
         mouseEvent.preventDefault();
 
-        // The splitter between the datatable and the schedule is being dragged
+        // The splitter between the left column and the schedule is being dragged
         if (this._draggedSplitter) {
             const { mouseX, datatableWidth } = this._initialState;
             const x = mouseEvent.clientX;
@@ -2385,7 +2477,10 @@ export default class Scheduler extends LightningElement {
 
             if (this._resizeSide || this.selection.newEvent) {
                 // Resizing
-                this.resizeEventToX(position.x);
+                const resizePosition = this.isVertical
+                    ? position.y
+                    : position.x;
+                this.resizeEventToPosition(resizePosition);
             } else {
                 // Drag and drop
                 const x = position.x - mouseX;
@@ -2415,33 +2510,47 @@ export default class Scheduler extends LightningElement {
             this._draggedSplitter = false;
         } else if (this.selection && this.selection.isMoving) {
             // Get the new position
-            const { mouseX, eventLeft, eventRight } = this._initialState;
+            const { mouseX, mouseY, eventStartPosition, eventEndPosition } =
+                this._initialState;
             const { draftValues, newEvent, event, occurrence } = this.selection;
             const side = this._resizeSide;
             const position = this.normalizeMousePosition(
                 mouseEvent.clientX,
                 mouseEvent.clientY
             );
-            const leftX = position.x - (mouseX - eventLeft);
-            const rightX = position.x + (eventRight - mouseX);
-            const x = side === 'right' ? rightX : leftX;
-            const y = position.y;
+            const startPosition = this.isVertical
+                ? position.y - (mouseY - eventStartPosition)
+                : position.x - (mouseX - eventStartPosition);
+
+            const endPosition = this.isVertical
+                ? position.y + (eventEndPosition - mouseY)
+                : position.x + (eventEndPosition - mouseX);
+
+            const valueOnTheResourceAxis =
+                side === 'start' ? startPosition : endPosition;
+
+            const valueOnTheHeadersAxis = this.isVertical
+                ? position.x
+                : position.y;
 
             // Find the row and cell the event was dropped on
-            const rowElement = this.getRowFromPosition(y);
-            const cellElement = this.getCellFromPosition(rowElement, x);
+            const rowElement = this.getRowFromPosition(valueOnTheHeadersAxis);
+            const cellElement = this.getCellFromPosition(
+                rowElement,
+                valueOnTheResourceAxis
+            );
 
             // Update the draft values
             const to = dateTimeObjectFrom(Number(cellElement.dataset.end) + 1);
             const from = dateTimeObjectFrom(Number(cellElement.dataset.start));
             switch (side) {
-                case 'right':
+                case 'end':
                     draftValues.to = to.toUTC().toISO();
                     if (newEvent) {
                         occurrence.to = to;
                     }
                     break;
-                case 'left':
+                case 'start':
                     draftValues.from = from.toUTC().toISO();
                     if (newEvent) {
                         occurrence.from = from;
@@ -2634,13 +2743,13 @@ export default class Scheduler extends LightningElement {
     handleCloseRecurrenceDialog() {
         if (this._resizeSide) {
             const row = this._initialState.row;
-            let x;
-            if (this._resizeSide === 'left') {
-                x = this._initialState.eventLeft;
+            let position;
+            if (this._resizeSide === 'start') {
+                position = this._initialState.eventStartPosition;
             } else {
-                x = this._initialState.eventRight;
+                position = this._initialState.eventEndPosition;
             }
-            const initialCell = this.getCellFromPosition(row, x);
+            const initialCell = this.getCellFromPosition(row, position);
             this.resizeEventToCell(initialCell);
         }
         this.cleanDraggedElement();

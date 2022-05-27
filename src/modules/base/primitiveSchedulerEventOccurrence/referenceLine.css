@@ -56,4 +56,6 @@
 
 .avonni-scheduler__reference-line_vertical {
     transform: rotate(-90deg);
+    bottom: auto;
+    left: 0;
 }

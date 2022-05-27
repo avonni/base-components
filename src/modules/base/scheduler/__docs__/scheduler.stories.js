@@ -548,8 +548,8 @@ Vertical.args = {
     availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
-    disabledDatesTimes: disabledDatesTimes,
-    referenceLines: referenceLines,
+    disabledDatesTimes,
+    referenceLines,
     variant: 'vertical'
 };
 
@@ -572,8 +572,8 @@ AvailableAndDisabledTimes.args = {
     availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
-    disabledDatesTimes: disabledDatesTimes,
-    referenceLines: referenceLines
+    disabledDatesTimes,
+    referenceLines
 };
 
 export const ReadOnly = Template.bind({});

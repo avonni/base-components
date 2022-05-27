@@ -604,7 +604,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     theme === 'rounded' ||
                     (this._focused && theme === 'transparent'),
                 'avonni-scheduler__event-wrapper_focused': this._focused,
-                'slds-p-vertical_xx-small': theme !== 'line',
+                'slds-p-vertical_xx-small':
+                    theme !== 'line' && !this.isVertical,
+                'slds-p-vertical_x-small': theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line'
             })
             .toString();
@@ -645,7 +647,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             'slds-truncate slds-grid  avonni-scheduler__event-label_center'
         )
             .add({
-                'slds-p-vertical_x-small': this.isVertical,
                 'slds-p-horizontal_x-small': !this.isVertical
             })
             .toString();
@@ -694,7 +695,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Space between the top of the occurrence and the top of its row, in pixels.
+     * Offset space between the start of the row and the start position of the occurrence.
      *
      * @type {number}
      * @default 0
@@ -866,8 +867,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
     /**
      * Deprecated. Use `updateThickness` instead.
-     *
-     * @public
      * @deprecated
      */
     @api
@@ -1025,7 +1024,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     /**
      * Deprecated. Use `updateLength` instead.
      *
-     * @public
      * @deprecated
      */
     @api

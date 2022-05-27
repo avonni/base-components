@@ -39,6 +39,7 @@
         class="slds-grid slds-m-bottom_medium slds-grid_vertical-align-center"
         data-element-id="div-toolbar"
     >
+        <!-- Toolbar time spans -->
         <lightning-button-group
             if:true={toolbarTimeSpans.length}
             onclick={handleToolbarTimeSpanClick}
@@ -76,6 +77,7 @@
             </c-button-menu>
         </lightning-button-group>
 
+        <!-- Toolbar middle calendar selector -->
         <div
             class="
                 slds-col
@@ -120,6 +122,7 @@
             </div>
         </div>
 
+        <!-- Toolbar next/today/previous navigation -->
         <lightning-button-group>
             <lightning-button-icon
                 icon-name="utility:chevronleft"
@@ -265,6 +268,7 @@
                                     slds-grid slds-grid_vertical-align-center
                                     slds-theme_shade
                                 "
+                                data-element-id="div-vertical-resource-header"
                             >
                                 <c-primitive-avatar
                                     if:true={row.resourceAvatar}
