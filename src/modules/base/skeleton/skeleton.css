@@ -3,5 +3,8 @@
     border-radius: var(--avonni-skeleton-radius-border, 00.25rem);
     border-width: var(--avonni-skeleton-sizing-border, 0);
     border-style: var(--avonni-skeleton-styling-border, solid);
-    background-color: var(--avonni-skeleton-color-background, #ecebea);
+    background-color: var(--avonni-skeleton-color-background, #000000);
+}
+
+.avonni-skeleton__animation-wave {
 }
