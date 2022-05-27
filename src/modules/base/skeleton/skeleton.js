@@ -80,7 +80,6 @@ export default class Skeleton extends LightningElement {
         return this._animation;
     }
     set animation(value) {
-        console.log(`setter animation: ${this._animation}`);
         this._animation = normalizeString(value, {
             fallbackValue: ANIMATION_VARIANTS.default,
             validValues: null
@@ -99,7 +98,6 @@ export default class Skeleton extends LightningElement {
     }
 
     set variant(variant) {
-        console.log(`setter variant: ${this._variant}`);
         this._variant = normalizeString(variant, {
             fallbackValue: SKELETON_VARIANTS.default,
             validValues: SKELETON_VARIANTS.valid
@@ -113,13 +111,11 @@ export default class Skeleton extends LightningElement {
      */
     @api
     get height() {
-        console.log(`in getter height: ${this._height}`);
         return this._height;
     }
     set height(value) {
         // const number = isNaN(parseInt(value, 10)) ? 100 : value;
         this._height = value;
-        console.log(`in setter height: ${this._height}`);
     }
 
     /**
@@ -129,13 +125,11 @@ export default class Skeleton extends LightningElement {
      */
     @api
     get width() {
-        console.log(`in getter width: ${this._height}`);
         return this._width;
     }
     set width(value) {
         // const number = isNaN(parseInt(value, 10)) ? 100 : value;
         this._width = value;
-        console.log(`in setter width: ${this._height}`);
     }
 
     /*
@@ -162,8 +156,6 @@ export default class Skeleton extends LightningElement {
         let element = this.template.querySelector(
             '[data-element-id="avonni-skeleton"]'
         );
-        console.log(`width: ${this.width}`);
-        console.log(`height: ${this.height}`);
         element.style.width = `${this.width}px`;
         element.style.height = `${this.height}px`;
     }

@@ -3,8 +3,25 @@
     border-radius: var(--avonni-skeleton-radius-border, 00.25rem);
     border-width: var(--avonni-skeleton-sizing-border, 0);
     border-style: var(--avonni-skeleton-styling-border, solid);
-    background-color: var(--avonni-skeleton-color-background, #000000);
+    background-color: var(--avonni-skeleton-color-background, #ecebea);
+    /* box-shadow: 0px 0px 1px 1px #0000001a; */
 }
 
 .avonni-skeleton__animation-wave {
+}
+
+.avonni-skeleton__animation-pulse {
+    animation: pulse-animation 2.3s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+        background-color: #ecebea;
+    }
+    50% {
+        background-color: #dedede;
+    }
+    100% {
+        background-color: #ecebea;
+    }
 }
