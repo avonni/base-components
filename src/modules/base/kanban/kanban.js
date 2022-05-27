@@ -63,6 +63,7 @@ export default class Kanban extends LightningElement {
     _initialTileIndex = 0;
     _isDragged = false;
     _isLoading = false;
+    _groupsAnimation = [];
     _groupsLength = [];
     _groupsHeight = [];
     _kanbanPos = {
@@ -305,6 +306,7 @@ export default class Kanban extends LightningElement {
 
         // Gets the length of each group
         computedGroups.forEach((group, i) => {
+            this._groupsAnimation[i] = false;
             requestAnimationFrame(() => {
                 this.template.querySelectorAll(
                     '[data-element-id="avonni-kanban__field"]'
@@ -364,7 +366,6 @@ export default class Kanban extends LightningElement {
      */
     animateTiles(groups) {
         // creates space for the translated tiles
-
         groups[this._releasedGroupIndex].style.height = `${
             this._groupsHeight[this._releasedGroupIndex] +
             this._draggedTile.offsetHeight +
@@ -388,11 +389,10 @@ export default class Kanban extends LightningElement {
         // resets animations
         Array.from(groups).forEach((group, i) => {
             // resets the height to 100% on other fields
-            if (
-                group !== groups[this._releasedGroupIndex] &&
-                this._variant === 'base'
-            ) {
-                group.style.height = '100%';
+            if (group !== groups[this._releasedGroupIndex]) {
+                group.style.height =
+                    this._variant === 'base' ? '100%' : 'fit-content';
+                this._groupsAnimation[i] = false;
             }
 
             // removes the translation on the other tiles
@@ -467,9 +467,8 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
         Array.from(groupElements).forEach((group) => {
-            if (this._variant === 'base') {
-                group.style.height = '100%';
-            }
+            group.style.height =
+                this._variant === 'base' ? '100%' : 'fit-content';
             Array.from(group.children).forEach((tile) => {
                 tile.classList.remove('avonni-kanban__tile_moved');
                 tile.style.transform = `translateY(0px)`;

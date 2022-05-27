@@ -30,6 +30,7 @@
 
 .avonni-kanban__tiles_container {
     overflow-y: auto;
+
     /* max-height: 350px; */
 }
 
