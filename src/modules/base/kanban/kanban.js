@@ -380,10 +380,7 @@ export default class Kanban extends LightningElement {
         );
 
         for (let i = this._releasedTileIndex; i < releasedChilds.length; i++) {
-            if (
-                releasedChilds[i] &&
-                releasedChilds[i] !== this._draggedTile.currentTarget
-            ) {
+            if (releasedChilds[i] && releasedChilds[i] !== this._draggedTile) {
                 releasedChilds[i].classList.add('avonni-kanban__tile_moved');
                 releasedChilds[
                     i
@@ -393,8 +390,6 @@ export default class Kanban extends LightningElement {
 
         // removes the translation on the other tiles
         Array.from(groups).forEach((group, i) => {
-            // if (i !== this._releasedGroupIndex && this._variant === 'base')
-            //     group.style.height = '100%';
             Array.from(group.children).forEach((tile, j) => {
                 if (
                     i !== this._releasedGroupIndex ||
