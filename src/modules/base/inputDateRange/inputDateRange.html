@@ -96,18 +96,26 @@
                     if:true={showStartDate}
                     class="slds-datepicker slds-dropdown slds-dropdown_left"
                 >
-                    <lightning-focus-trap>
+                    <lightning-focus-trap
+                        onfocusout={handleStartCalendarFocusOut}
+                        onfocusin={handleStartCalendarFocusIn}
+                        onkeydown={handleCalendarDialogKeyDown}
+                        data-element-id="calendar-start-date-dialog"
+                    >
                         <c-calendar
                             aria-label="Start date input calendar"
                             value={calendarValue}
                             selection-mode={selectionModeStartDate}
                             onchange={handleChangeStartDate}
-                            onfocusin={handleCalendarFocusIn}
-                            show-today-button
-                            onfocusout={handleCalendarFocusStartOut}
-                            onkeydown={calendarKeyListener}
                             data-element-id="calendar-start-date"
                         ></c-calendar>
+                        <div class="slds-align_absolute-center">
+                            <lightning-button
+                                onclick={handleSelectStartToday}
+                                variant="base"
+                                label="Today"
+                            ></lightning-button>
+                        </div>
                     </lightning-focus-trap>
                 </div>
                 <p data-element-id="start-date" if:true={readOnly}>
@@ -185,18 +193,26 @@
                     if:true={showEndDate}
                     class="slds-datepicker slds-dropdown slds-dropdown_left"
                 >
-                    <lightning-focus-trap>
+                    <lightning-focus-trap
+                        onfocusout={handleEndCalendarFocusOut}
+                        onfocusin={handleEndCalendarFocusIn}
+                        onkeydown={handleCalendarDialogKeyDown}
+                        data-element-id="calendar-end-date-dialog"
+                    >
                         <c-calendar
                             aria-label="End date input calendar"
                             value={calendarValue}
                             selection-mode={selectionModeEndDate}
                             onchange={handleChangeEndDate}
-                            show-today-button
-                            onfocusin={handleCalendarFocusIn}
-                            onfocusout={calendarFocusEndOut}
-                            onkeydown={calendarKeyListener}
                             data-element-id="calendar-end-date"
                         ></c-calendar>
+                        <div class="slds-align_absolute-center">
+                            <lightning-button
+                                onclick={handleSelectEndToday}
+                                variant="base"
+                                label="Today"
+                            ></lightning-button>
+                        </div>
                     </lightning-focus-trap>
                 </div>
                 <p data-element-id="end-date" if:true={readOnly}>

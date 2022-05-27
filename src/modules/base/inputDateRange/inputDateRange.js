@@ -107,7 +107,7 @@ export default class InputDateRange extends LightningElement {
     @api labelEndTime;
 
     /**
-     * Error message to be displayed when the start-date is missing.
+     * Error message to be displayed when a required date is missing.
      *
      * @type {string}
      * @public
@@ -844,10 +844,15 @@ export default class InputDateRange extends LightningElement {
         )
             state = 'SELECT_START_ABOVE_END';
 
-        if (!clickedOnFirstValue && !clickedOnSecondValue && clickedOnStartDate)
-            state = 'DESELECT_START';
-
         if (clickedOnEndDate) state = 'SELECT_START_EQUAL_END';
+
+        if (
+            (clickedOnEndDate && clickedOnStartDate) ||
+            (!clickedOnFirstValue &&
+                !clickedOnSecondValue &&
+                clickedOnStartDate)
+        )
+            state = 'DESELECT_START';
 
         // Case execution
         switch (state) {
@@ -925,10 +930,13 @@ export default class InputDateRange extends LightningElement {
 
         if (clickedOnSecondValue) state = 'SELECT_NEW_END';
 
-        if (!clickedOnFirstValue && !clickedOnSecondValue && clickedOnEndDate)
-            state = 'DESELECT_END';
-
         if (clickedOnStartDate) state = 'SELECT_END_EQUAL_START';
+
+        if (
+            (clickedOnEndDate && clickedOnStartDate) ||
+            (!clickedOnFirstValue && !clickedOnSecondValue && clickedOnEndDate)
+        )
+            state = 'DESELECT_END';
 
         // Case execution
         switch (state) {
@@ -1037,28 +1045,30 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
-     * Register that focus has entered a calendar
+     * Register that focus is in start calendar
      *
      * @param {Event} event
      */
-    handleCalendarFocusIn(event) {
-        if (!event.target) return;
-        const focusedElementId = event.target.dataset.elementId;
+    handleStartCalendarFocusIn() {
+        if (this.keepFocus) this.keepFocus = false;
+        this.enteredStartCalendar = true;
+    }
 
-        if (focusedElementId === 'calendar-start-date') {
-            if (this.keepFocus) this.keepFocus = false;
-            this.enteredStartCalendar = true;
-        } else if (focusedElementId === 'calendar-end-date') {
-            if (this.keepFocus) this.keepFocus = false;
-            this.enteredEndCalendar = true;
-        }
+    /**
+     * Register that focus is in end calendar
+     *
+     * @param {Event} event
+     */
+    handleEndCalendarFocusIn() {
+        if (this.keepFocus) this.keepFocus = false;
+        this.enteredEndCalendar = true;
     }
 
     /**
      * On calendar focus out, close calendar and
      * bring back focus to input
      */
-    handleCalendarFocusStartOut() {
+    handleStartCalendarFocusOut() {
         this.keepFocus = true;
 
         setTimeout(() => {
@@ -1075,7 +1085,7 @@ export default class InputDateRange extends LightningElement {
      * On calendar focus out, close calendar and
      * bring back focus to input
      */
-    calendarFocusEndOut() {
+    handleEndCalendarFocusOut() {
         this.keepFocus = true;
 
         requestAnimationFrame(() => {
@@ -1089,20 +1099,63 @@ export default class InputDateRange extends LightningElement {
     }
 
     /**
+     * Click the today button on start calendar
+     */
+    handleSelectStartToday() {
+        this._startDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        if (this._startDate > this._endDate) this._endDate = null;
+
+        this.dispatchChange();
+
+        requestAnimationFrame(() => {
+            this.showStartDate = false;
+            if (this.calendarKeyEvent === 'keyboard')
+                this.startDateIcon.focus();
+            else if (!this.endDate) {
+                this.setFocusDate(this._startDate, 'end');
+                this.showEndDate = true;
+            }
+            this.calendarKeyEvent = null;
+        });
+    }
+
+    /**
+     * Click the today button on end calendar
+     */
+    handleSelectEndToday() {
+        this._endDate = new Date(new Date().setHours(0, 0, 0, 0));
+
+        if (this._endDate < this._startDate) this._startDate = null;
+
+        this.dispatchChange();
+
+        requestAnimationFrame(() => {
+            this.showEndDate = false;
+            if (this.calendarKeyEvent === 'keyboard') this.endDateIcon.focus();
+            else if (!this.startDate) {
+                this.setFocusDate(this._endDate, 'start');
+                this.showStartDate = true;
+            }
+            this.calendarKeyEvent = null;
+        });
+    }
+
+    /**
      * Listen for the escape key to escape the calendar
      *
      * @param {Event} event
      */
-    calendarKeyListener(event) {
+    handleCalendarDialogKeyDown(event) {
         if (!event.keyCode || !event.target) return;
         const elementId = event.target.dataset.elementId;
 
         switch (event.keyCode) {
             case keyCodes.escape:
-                if (elementId === 'calendar-start-date') {
+                if (elementId.includes('start-date')) {
                     this.showStartDate = false;
                     this.startDateIcon.focus();
-                } else if (elementId === 'calendar-end-date') {
+                } else if (elementId.includes('end-date')) {
                     this.showEndDate = false;
                     this.endDateIcon.focus();
                 }
@@ -1123,8 +1176,7 @@ export default class InputDateRange extends LightningElement {
      * @param {Event} event
      */
     handleClickDateInput(event) {
-        const today = new Date();
-        const todayMidnight = new Date(today.setHours(0, 0, 0, 0));
+        const today = new Date(new Date().setHours(0, 0, 0, 0));
         this.interactingState.enter();
 
         switch (event.target.dataset.elementId) {
@@ -1146,7 +1198,7 @@ export default class InputDateRange extends LightningElement {
                 this.showStartDate = true;
                 this.showEndDate = false;
                 this.setFocusDate(
-                    this.startDate || this.endDate || todayMidnight,
+                    this.startDate || this.endDate || today,
                     'start'
                 );
                 break;
@@ -1164,7 +1216,7 @@ export default class InputDateRange extends LightningElement {
                 this.showEndDate = true;
                 this.showStartDate = false;
                 this.setFocusDate(
-                    this.endDate || this.startDate || todayMidnight,
+                    this.endDate || this.startDate || today,
                     'end'
                 );
                 break;
