@@ -36,9 +36,11 @@ export default {
     title: 'Example/Skeleton',
     argTypes: {
         animation: {
+            name: 'animation',
             control: {
                 type: 'select'
             },
+            options: ['pulse', 'wave'],
             description:
                 'The animation type changes the appearance of the skeleton.',
             table: {
@@ -46,20 +48,12 @@ export default {
                 category: 'Layout'
             }
         },
-        height: {
-            control: {
-                type: 'number'
-            },
-            description: 'Height of the skeleton in em.',
-            table: {
-                type: { summary: 'number' },
-                category: 'Layout'
-            }
-        },
         variant: {
+            name: 'variant',
             control: {
                 type: 'select'
             },
+            options: ['circular', 'rectangular', 'text'],
             description: 'The variant changes the appearance of the skeleton.',
             table: {
                 type: { summary: 'string' },
@@ -67,16 +61,35 @@ export default {
                 category: 'Layout'
             }
         },
-        width: {
+        height: {
+            name: 'height',
             control: {
                 type: 'number'
             },
-            description: 'Width of the skeleton in em.',
+            description: 'Height of the skeleton in px.',
             table: {
                 type: { summary: 'number' },
+                defaultValue: { summary: 50 },
+                category: 'Layout'
+            }
+        },
+        width: {
+            name: 'width',
+            control: {
+                type: 'number'
+            },
+            description: 'Width of the skeleton in px.',
+            table: {
+                type: { summary: 'number' },
+                defaultValue: { summary: 50 },
                 category: 'Layout'
             }
         }
+    },
+    args: {
+        variant: 'text',
+        width: 50,
+        height: 50
     }
 };
 
@@ -84,5 +97,5 @@ const Template = (args) => Skeleton(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    // title: 'Skeleton'
+    animation: 'wave'
 };
