@@ -469,6 +469,9 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
         Array.from(groupElements).forEach((group) => {
+            setTimeout(() => {
+                group.classList.remove('avonni-kanban__dragging');
+            }, 100);
             group.style.height =
                 this._variant === 'base' ? '100%' : 'fit-content';
             Array.from(group.children).forEach((tile) => {
@@ -592,6 +595,11 @@ export default class Kanban extends LightningElement {
         this._groupWidth = event.currentTarget.parentElement.offsetWidth;
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
+        this.template
+            .querySelectorAll('[data-element-id="avonni-kanban__group"]')
+            .forEach((group) => {
+                group.classList.add('avonni-kanban__dragging');
+            });
         this._draggedTile.style.width = `${
             parseInt(this._groupWidth, 10) - 10
         }px`;
