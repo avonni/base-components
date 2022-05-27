@@ -306,7 +306,7 @@ export default class Range extends LightningElement {
      *
      * @type {boolean}
      * @public
-     * @default 'none'
+     * @default none
      */
     @api
     get tickMarkStyle() {
