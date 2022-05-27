@@ -73,7 +73,7 @@
                         max={max}
                         step={step}
                         value={valueLower}
-                        class="slds-slider__range avonni-range__slider-left"
+                        class={computedInputClass}
                         disabled={disabled}
                         data-element-id="input-left"
                         oninput={handleChange}
@@ -110,7 +110,7 @@
                         max={max}
                         step={step}
                         value={valueUpper}
-                        class="slds-slider__range avonni-range__slider-right"
+                        class={computedInputClass}
                         disabled={disabled}
                         data-element-id="input-right"
                         oninput={handleChange}
@@ -147,9 +147,10 @@
             <svg
                 lwc:dom="manual"
                 width="100%"
-                height="10px"
+                height="40px"
                 xmlns="http://www.w3.org/2000/svg"
                 data-element-id="ruler"
+                class="avonni-range__tick-mark-container"
             ></svg>
         </template>
         <div

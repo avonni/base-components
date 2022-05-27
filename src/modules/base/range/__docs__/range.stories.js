@@ -200,6 +200,7 @@ export default {
             }
         },
         tickMarkStyle: {
+            name: 'tick-mark-style',
             control: {
                 type: 'select'
             },
