@@ -263,24 +263,6 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and progress.
-     *
-     * @type {boolean}
-     * @public
-     * @default 'none'
-     */
-    @api
-    get tickMarkStyle() {
-        return this._tickMarkStyle;
-    }
-    set tickMarkStyle(value) {
-        this._tickMarkStyle = normalizeString(value, {
-            fallbackValue: TICK_MARK_STYLES.default,
-            validValues: TICK_MARK_STYLES.valid
-        });
-    }
-
-    /**
      * Size of the slider. Accepted values are full, x-small, small, medium, and large.
      *
      * @type {string}
@@ -317,6 +299,24 @@ export default class Range extends LightningElement {
         if (this._rendered) {
             this.initRange();
         }
+    }
+
+    /**
+     * If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and progress.
+     *
+     * @type {boolean}
+     * @public
+     * @default 'none'
+     */
+    @api
+    get tickMarkStyle() {
+        return this._tickMarkStyle;
+    }
+    set tickMarkStyle(value) {
+        this._tickMarkStyle = normalizeString(value, {
+            fallbackValue: TICK_MARK_STYLES.default,
+            validValues: TICK_MARK_STYLES.valid
+        });
     }
 
     /**
@@ -453,16 +453,6 @@ export default class Range extends LightningElement {
      */
 
     /**
-     * Computed input class styling.
-     */
-    get computedInputClass() {
-        return classSet('slds-slider__range').add({
-            'avonni-range__slider': true,
-            'avonni-range__input_progress': this.tickMarkStyle === 'progress'
-        });
-    }
-
-    /**
      * Computed left bubble class styling.
      *
      * @type {string}
@@ -528,6 +518,16 @@ export default class Range extends LightningElement {
             'avonni-range__custom-label-container_vertical': isVertical,
             'avonni-range__custom-label-container_progress':
                 this.tickMarkStyle === 'progress'
+        });
+    }
+
+    /**
+     * Computed input class styling.
+     */
+    get computedInputClass() {
+        return classSet('slds-slider__range').add({
+            'avonni-range__slider': true,
+            'avonni-range__input_progress': this.tickMarkStyle === 'progress'
         });
     }
 
@@ -834,29 +834,6 @@ export default class Range extends LightningElement {
         }
     }
 
-    drawDotRuler(numberOfSteps, leftPosition, stepWidth) {
-        const ruler = this.template.querySelector('[data-element-id="ruler"]');
-
-        for (let i = 0; i < numberOfSteps + 1; i++) {
-            let isMajorStep = i === 0 || i === numberOfSteps;
-
-            if (this.hasCustomLabels) {
-                isMajorStep =
-                    isMajorStep ||
-                    this._customLabels.some(
-                        (customLabel) => customLabel.value === i + this.min
-                    );
-            }
-            let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
-            circle.setAttribute('fill', `${'#979797'}`);
-            circle.setAttribute('cx', `${leftPosition}`);
-            circle.setAttribute('cy', `32`);
-            circle.setAttribute('r', `${isMajorStep ? 2.5 : 2}`);
-            ruler.appendChild(circle);
-            leftPosition += stepWidth;
-        }
-    }
-
     drawTickRuler(numberOfSteps, leftPosition, stepWidth) {
         const ruler = this.template.querySelector('[data-element-id="ruler"]');
 
@@ -882,6 +859,29 @@ export default class Range extends LightningElement {
             line.setAttribute('x2', `${leftPosition}`);
             line.setAttribute('y2', `${isMajorStep ? 34 : 32}`);
             ruler.appendChild(line);
+            leftPosition += stepWidth;
+        }
+    }
+
+    drawDotRuler(numberOfSteps, leftPosition, stepWidth) {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+
+        for (let i = 0; i < numberOfSteps + 1; i++) {
+            let isMajorStep = i === 0 || i === numberOfSteps;
+
+            if (this.hasCustomLabels) {
+                isMajorStep =
+                    isMajorStep ||
+                    this._customLabels.some(
+                        (customLabel) => customLabel.value === i + this.min
+                    );
+            }
+            let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
+            circle.setAttribute('fill', `${'#979797'}`);
+            circle.setAttribute('cx', `${leftPosition}`);
+            circle.setAttribute('cy', `32`);
+            circle.setAttribute('r', `${isMajorStep ? 2.5 : 2}`);
+            ruler.appendChild(circle);
             leftPosition += stepWidth;
         }
     }
