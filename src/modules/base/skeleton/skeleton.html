@@ -33,5 +33,14 @@
 -->
 
 <template>
-    <div class={variantClass} data-element-id="avonni-skeleton"></div>
+    <div class={variantClass} data-element-id="avonni-skeleton">
+        <template if:true={isWaveAnimation}>
+            <!-- <div class="avonni-skeleton__wave-container" data-element-id="avonni-skeleton__wave-container">
+                <div class="avonni-skeleton__animation-wave" data-element-id="avonni-skeleton__wave-bar"></div>
+            </div> -->
+            <div class="animated-background">
+                <div class="background-masker btn-divide-left"></div>
+            </div>
+        </template>
+    </div>
 </template>

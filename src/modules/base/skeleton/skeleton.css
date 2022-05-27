@@ -4,14 +4,20 @@
     border-width: var(--avonni-skeleton-sizing-border, 0);
     border-style: var(--avonni-skeleton-styling-border, solid);
     background-color: var(--avonni-skeleton-color-background, #ecebea);
-    /* box-shadow: 0px 0px 1px 1px #0000001a; */
+}
+
+.avonni-skeleton__wave-container {
+    background-color: #ecebea;
 }
 
 .avonni-skeleton__animation-wave {
+    position: relative;
+    background-color: #dedede;
+    animation: wave-animation 2s infinite;
 }
 
 .avonni-skeleton__animation-pulse {
-    animation: pulse-animation 2.3s infinite;
+    animation: pulse-animation 2s infinite;
 }
 
 @keyframes pulse-animation {
@@ -23,5 +29,48 @@
     }
     100% {
         background-color: #ecebea;
+    }
+}
+
+@keyframes wave-animation {
+    0% {
+        background-position: 0px;
+    }
+    100% {
+        background-position: 100px;
+    }
+}
+
+.background-masker {
+    background-color: #fff;
+    position: absolute;
+}
+
+.btn-divide-left {
+    top: 0;
+    left: 25%;
+    height: 100%;
+    width: 5%;
+}
+
+.animated-background {
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: placeHolderShimmer;
+    animation-timing-function: linear;
+    background-color: #f6f7f8;
+    background: linear-gradient(to right, #eeeeee 8%, #bbbbbb 18%, #eeeeee 33%);
+    background-size: 800px 104px;
+    height: 70px;
+    position: relative;
+}
+
+@keyframes placeHolderShimmer {
+    0% {
+        background-position: -800px 0;
+    }
+    100% {
+        background-position: 800px 0;
     }
 }

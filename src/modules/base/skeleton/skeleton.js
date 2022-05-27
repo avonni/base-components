@@ -58,10 +58,14 @@ export default class Skeleton extends LightningElement {
     _variant = SKELETON_VARIANTS.default;
     _width;
 
+    _waveVariant;
     _initialRender = DEFAULT_INITIAL_VALUE;
 
     renderedCallback() {
-        if (!this._initialRender) this.setSkeletonSize();
+        if (!this._initialRender) {
+            this.setSkeletonSize();
+            if (this.isWaveAnimation) this.setWaveSize();
+        }
         this._initialRender = true;
     }
 
@@ -70,6 +74,11 @@ export default class Skeleton extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+    @api
+    get isWaveAnimation() {
+        return this.animation === 'wave';
+    }
+
     /**
      * The animation type changes the appearance of the skeleton. Valid values include pulse and wave.
      * @type {string}
@@ -158,5 +167,19 @@ export default class Skeleton extends LightningElement {
         );
         element.style.width = `${this.width}px`;
         element.style.height = `${this.height}px`;
+    }
+
+    setWaveSize() {
+        let waveContainer = this.template.querySelector(
+            '[data-element-id="avonni-skeleton__wave-container"]'
+        );
+        waveContainer.style.height = `${this.height}px`;
+        waveContainer.style.width = `${this.width}px`;
+
+        let waveBar = this.template.querySelector(
+            '[data-element-id="avonni-skeleton__wave-bar"]'
+        );
+        waveBar.style.height = `${this.height}px`;
+        waveBar.style.width = '10px';
     }
 }
