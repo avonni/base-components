@@ -847,10 +847,6 @@ export default class Range extends LightningElement {
                         (customLabel) => customLabel.value === i + this.min
                     );
             }
-            if (this.showOnlyMajorTicks && !isMajorStep) {
-                leftPosition += stepWidth;
-                continue;
-            }
             let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
             circle.setAttribute('fill', `${'#979797'}`);
             circle.setAttribute('cx', `${leftPosition}`);
@@ -905,10 +901,6 @@ export default class Range extends LightningElement {
                     this._customLabels.some(
                         (customLabel) => customLabel.value === i + this.min
                     );
-            }
-            if (this.showOnlyMajorTicks && !isMajorStep) {
-                leftPosition += stepWidth;
-                continue;
             }
             let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
             circle.setAttribute('fill', `${isColored ? '#0176D3' : '#ecebea'}`);

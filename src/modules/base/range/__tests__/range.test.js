@@ -57,7 +57,7 @@ const MOCK_CUSTOM_LABELS = [
 // Not tested:
 // AvonniResizeObserver (tested Visually)
 // Debounce on mousemove of 50ms (tested Visually)
-// Ruler Hatch positions (tested Visually)
+// Tick Marks positions (tested Visually)
 // Custom Label positions (tested Visually)
 // Not tested because not used:
 // messageWhenRangeOverflow
@@ -100,7 +100,7 @@ describe('Range', () => {
         expect(element.messageWhenTypeMismatch).toBeUndefined();
         expect(element.min).toBe(0);
         expect(element.pin).toEqual(false);
-        expect(element.showHatchMarks).toEqual(false);
+        expect(element.tickMarkStyle).toEqual('none');
         expect(element.size).toBe('full');
         expect(element.step).toBe(1);
         expect(element.unit).toBe('decimal');
@@ -206,37 +206,77 @@ describe('Range', () => {
         });
     });
 
-    // showHatchMarks
-    it('Range: showHatchMarks = false', () => {
-        element.showHatchMarks = false;
+    // tickMarkStyle
+    it('Range: tickMarkStyle = "none"', () => {
+        element.tickMarkStyle = 'none';
+        element.valueLower = 0;
+        element.valueUpper = 10;
+        element.step = 5;
 
         return Promise.resolve().then(() => {
-            expect(
-                element.shadowRoot.querySelector('[data-element-id="ruler"]')
-            ).toBeFalsy();
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeFalsy();
         });
     });
 
-    it('Range: showHatchMarks = true', () => {
-        element.showHatchMarks = true;
+    it('Range: tickMarkStyle = "tick"', () => {
+        element.tickMarkStyle = 'tick';
+        element.min = 0;
+        element.max = 10;
+        element.step = 5;
 
         return Promise.resolve()
             .then(() => {
-                expect(
-                    element.shadowRoot.querySelector(
-                        '[data-element-id="ruler"]'
-                    )
-                ).toBeTruthy();
+                const ruler = element.shadowRoot.querySelector(
+                    '[data-element-id="ruler"]'
+                );
+                expect(ruler).toBeTruthy();
+                expect(ruler.firstChild.tagName).toEqual('line');
+                expect(ruler.childElementCount).toEqual(3);
                 element.step = 2;
             })
             .then(() => {
-                // should redraw ruler with new step
-                expect(
-                    element.shadowRoot.querySelector(
-                        '[data-element-id="ruler"]'
-                    )
-                ).toBeTruthy();
+                const ruler = element.shadowRoot.querySelector(
+                    '[data-element-id="ruler"]'
+                );
+                expect(ruler).toBeTruthy();
+                expect(ruler.firstChild.tagName).toEqual('line');
+                expect(ruler.childElementCount).toEqual(6);
             });
+    });
+
+    it('Range: tickMarkStyle = "dot"', () => {
+        element.tickMarkStyle = 'dot';
+        element.min = 0;
+        element.max = 10;
+        element.step = 5;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('circle');
+            expect(ruler.childElementCount).toEqual(3);
+        });
+    });
+
+    it('Range: tickMarkStyle = "progress"', () => {
+        element.tickMarkStyle = 'progress';
+        element.min = 0;
+        element.max = 10;
+        element.step = 5;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('circle');
+            expect(ruler.childElementCount).toEqual(5);
+        });
     });
 
     // size
@@ -416,6 +456,112 @@ describe('Range', () => {
             expect(
                 element.shadowRoot.querySelector('[data-element-id="ruler"]')
             ).toBeTruthy();
+        });
+    });
+
+    it('Range: customLabels and tickMarkers (none)', () => {
+        element.unit = 'custom';
+        element.type = 'horizontal';
+        element.tickMarkStyle = 'none';
+        element.unitAttributes = {
+            customLabels: MOCK_CUSTOM_LABELS
+        };
+
+        return Promise.resolve().then(() => {
+            const customLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="custom-label"]'
+            );
+            customLabels.forEach((customLabel, index) => {
+                expect(customLabel.dataset.value).toEqual(`${index}`);
+                expect(customLabel.textContent).toEqual(`Custom ${index}`);
+            });
+
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(5);
+        });
+    });
+
+    it('Range: customLabels and tickMarkers (tick)', () => {
+        element.unit = 'custom';
+        element.type = 'horizontal';
+        element.tickMarkStyle = 'tick';
+        element.unitAttributes = {
+            customLabels: MOCK_CUSTOM_LABELS
+        };
+
+        return Promise.resolve().then(() => {
+            const customLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="custom-label"]'
+            );
+            customLabels.forEach((customLabel, index) => {
+                expect(customLabel.dataset.value).toEqual(`${index}`);
+                expect(customLabel.textContent).toEqual(`Custom ${index}`);
+            });
+
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(101);
+        });
+    });
+
+    it('Range: customLabels and tickMarkers (dot)', () => {
+        element.unit = 'custom';
+        element.type = 'horizontal';
+        element.tickMarkStyle = 'dot';
+        element.unitAttributes = {
+            customLabels: MOCK_CUSTOM_LABELS
+        };
+
+        return Promise.resolve().then(() => {
+            const customLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="custom-label"]'
+            );
+            customLabels.forEach((customLabel, index) => {
+                expect(customLabel.dataset.value).toEqual(`${index}`);
+                expect(customLabel.textContent).toEqual(`Custom ${index}`);
+            });
+
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('circle');
+            expect(ruler.childElementCount).toEqual(101);
+        });
+    });
+
+    it('Range: customLabels and tickMarkers (progress)', () => {
+        element.unit = 'custom';
+        element.type = 'horizontal';
+        element.valueUpper = 25;
+        element.valueLower = 75;
+        element.tickMarkStyle = 'progress';
+        element.unitAttributes = {
+            customLabels: MOCK_CUSTOM_LABELS
+        };
+
+        return Promise.resolve().then(() => {
+            const customLabels = element.shadowRoot.querySelectorAll(
+                '[data-element-id="custom-label"]'
+            );
+            customLabels.forEach((customLabel, index) => {
+                expect(customLabel.dataset.value).toEqual(`${index}`);
+                expect(customLabel.textContent).toEqual(`Custom ${index}`);
+            });
+
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('circle');
+            expect(ruler.childElementCount).toEqual(103);
         });
     });
 
