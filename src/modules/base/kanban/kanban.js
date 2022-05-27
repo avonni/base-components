@@ -556,20 +556,6 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * Sets the position of the kanban
-     *
-     * @param {Event} event
-     */
-    handleKanbanMouseDown(event) {
-        this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
-        this._kanbanPos.bottom =
-            this._kanbanPos.top + event.currentTarget.offsetHeight;
-        this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
-        this._kanbanPos.right =
-            this._kanbanPos.left + event.currentTarget.offsetWidth;
-    }
-
-    /**
      *
      * Finds the index of initial and final position of the dragged tile
      *
@@ -649,24 +635,22 @@ export default class Kanban extends LightningElement {
      */
     handleTileMouseMove(event) {
         if (!this._draggedTile) return;
-        const mouseY =
-            event.type === 'touchmove'
-                ? event.touches[0].clientY
-                : event.clientY;
-        const mouseX =
-            event.type === 'touchmove'
-                ? event.touches[0].clientX
-                : event.clientX;
-        let currentY = mouseY;
-        let currentX = mouseX;
-        if (mouseY < this._kanbanPos.top) {
+        this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
+        this._kanbanPos.bottom =
+            this._kanbanPos.top + event.currentTarget.offsetHeight;
+        this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
+        this._kanbanPos.right =
+            this._kanbanPos.left + event.currentTarget.scrollWidth;
+        let currentY = event.clientY;
+        let currentX = event.clientX;
+        if (currentY < this._kanbanPos.top) {
             currentY = this._kanbanPos.top;
-        } else if (mouseY > this._kanbanPos.bottom) {
+        } else if (currentY > this._kanbanPos.bottom) {
             currentY = this._kanbanPos.bottom;
         }
-        if (mouseX < this._kanbanPos.left) {
+        if (currentX < this._kanbanPos.left) {
             currentX = this._kanbanPos.left;
-        } else if (mouseX > this._kanbanPos.right) {
+        } else if (currentX > this._kanbanPos.right) {
             currentX = this._kanbanPos.right;
         }
         this._draggedTile.style.transform = `translate(${
