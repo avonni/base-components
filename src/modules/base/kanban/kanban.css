@@ -35,7 +35,6 @@
 
 .avonni-kanban__variant_base .avonni-kanban__tiles_container {
     height: 100%;
-    transition: height 0.3s ease-out;
 }
 
 .avonni-kanban__header_action {

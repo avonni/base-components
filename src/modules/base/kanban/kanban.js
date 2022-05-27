@@ -64,7 +64,7 @@ export default class Kanban extends LightningElement {
     _isDragged = false;
     _isLoading = false;
     _groupsLength = [];
-    _fieldsHeight = [];
+    _groupsHeight = [];
     _kanbanPos = {
         top: 0,
         bottom: 0,
@@ -364,13 +364,9 @@ export default class Kanban extends LightningElement {
      */
     animateTiles(groups) {
         // creates space for the translated tiles
-        const fields = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__field"]'
-        );
-
         if (this._variant === 'base')
-            fields[this._releasedGroupIndex].style.height = `${
-                this._fieldsHeight[this._releasedGroupIndex] +
+            groups[this._releasedGroupIndex].style.height = `${
+                this._groupsHeight[this._releasedGroupIndex] +
                 this._draggedTile.offsetHeight
             }px`;
 
@@ -388,8 +384,17 @@ export default class Kanban extends LightningElement {
             }
         }
 
-        // removes the translation on the other tiles
+        // resets animations
         Array.from(groups).forEach((group, i) => {
+            // resets the height to 100% on other fields
+            if (
+                group !== groups[this._releasedGroupIndex] &&
+                this._variant === 'base'
+            ) {
+                group.style.height = '100%';
+            }
+
+            // removes the translation on the other tiles
             Array.from(group.children).forEach((tile, j) => {
                 if (
                     i !== this._releasedGroupIndex ||
@@ -399,16 +404,6 @@ export default class Kanban extends LightningElement {
                     tile.style.transform = `translateY(0px)`;
                 }
             });
-        });
-
-        // resets the height to 100% on other fields
-        Array.from(fields).forEach((field) => {
-            if (
-                field !== fields[this._releasedGroupIndex] &&
-                this._variant === 'base'
-            ) {
-                field.style.height = '100%';
-            }
         });
     }
 
@@ -474,7 +469,6 @@ export default class Kanban extends LightningElement {
                 tile.classList.remove('avonni-kanban__tile_moved');
                 tile.style.transform = `translateY(0px)`;
             });
-            if (this._variant === 'base') group.style.height = '100%';
         });
 
         const fields = this.template.querySelectorAll(
@@ -645,9 +639,9 @@ export default class Kanban extends LightningElement {
 
         // Calculates the height of each group
         this.template
-            .querySelectorAll('[data-element-id="avonni-kanban__field"]')
-            .forEach((field, i) => {
-                this._fieldsHeight[i] = field.offsetHeight;
+            .querySelectorAll('[data-element-id="avonni-kanban__group"]')
+            .forEach((group, i) => {
+                this._groupsHeight[i] = group.offsetHeight;
             });
 
         this.handleDropZone(event);
