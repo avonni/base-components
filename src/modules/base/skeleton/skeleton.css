@@ -6,38 +6,6 @@
     --avonni-skeleton-color-background: #ecebea;
 }
 
-.avonni-skeleton__base {
-    border-color: var(--avonni-skeleton-color-border);
-    border-radius: var(--avonni-skeleton-radius-border);
-    border-width: var(--avonni-skeleton-sizing-border);
-    border-style: var(--avonni-skeleton-styling-border);
-    background-color: var(--avonni-skeleton-color-background);
-}
-
-.avonni-skeleton__variant-circular {
-    --avonni-skeleton-radius-border: 50%;
-    border-radius: var(--avonni-skeleton-radius-border);
-}
-
-.avonni-skeleton__variant-rectangular {
-    border-radius: var(--avonni-skeleton-radius-border);
-}
-
-.avonni-skeleton__variant-text {
-    border-radius: var(--avonni-skeleton-radius-border);
-    height: 2px;
-}
-
-.avonni-skeleton__wave-container {
-    background-color: var(--avonni-skeleton-color-background);
-}
-
-.avonni-skeleton__animation-wave {
-    position: relative;
-    background-color: #dedede;
-    /* animation: wave-animation 2s infinite; */
-}
-
 .avonni-skeleton__animation-pulse {
     animation: pulse-animation 1s infinite;
 }
@@ -54,24 +22,13 @@
     }
 }
 
-/* @keyframes wave-animation {
-    0% {
-        background-position: 0px;
-    }
-    100% {
-        background-position: 100px;
-    }
-} */
-
-/* .background-masker {
-    position: absolute;
-} */
-
-.animated-background {
+.avonni-skeleton__animation-wave {
+    position: relative;
+    background-color: #dedede;
     animation-duration: 2s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
-    animation-name: placeHolderShimmer;
+    animation-name: wave-animation;
     animation-timing-function: linear;
     background-color: #f6f7f8;
     background: linear-gradient(
@@ -85,11 +42,33 @@
     position: relative;
 }
 
-@keyframes placeHolderShimmer {
+@keyframes wave-animation {
     0% {
         background-position: -800px 0;
     }
     100% {
         background-position: 800px 0;
     }
+}
+
+.avonni-skeleton__base {
+    border-color: var(--avonni-skeleton-color-border);
+    border-radius: var(--avonni-skeleton-radius-border);
+    border-width: var(--avonni-skeleton-sizing-border);
+    border-style: var(--avonni-skeleton-styling-border);
+    background-color: var(--avonni-skeleton-color-background);
+}
+
+.avonni-skeleton__variant-circular {
+    --avonni-skeleton-radius-border: 50%;
+    border-radius: var(--avonni-skeleton-radius-border);
+}
+
+.avonni-skeleton__variant-rectangular {
+    --avonni-skeleton-radius-border: 0;
+    border-radius: var(--avonni-skeleton-radius-border);
+}
+
+.avonni-skeleton__variant-text {
+    border-radius: var(--avonni-skeleton-radius-border);
 }

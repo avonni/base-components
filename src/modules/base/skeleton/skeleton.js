@@ -157,9 +157,6 @@ export default class Skeleton extends LightningElement {
      */
     get variantClass() {
         return classSet('avonni-skeleton__base')
-            .add({
-                'animated-background': this.isWaveAnimation
-            })
             .add(`avonni-skeleton__variant-${this.variant}`)
             .add(`avonni-skeleton__animation-${this.animation}`)
             .toString();
@@ -174,7 +171,9 @@ export default class Skeleton extends LightningElement {
         let element = this.template.querySelector(
             '[data-element-id="avonni-skeleton"]'
         );
+        if (this.variant === 'text')
+            element.style.height = `${this.height / 1.5}px`;
+        else element.style.height = `${this.height}px`;
         element.style.width = `${this.width}px`;
-        element.style.height = `${this.height}px`;
     }
 }
