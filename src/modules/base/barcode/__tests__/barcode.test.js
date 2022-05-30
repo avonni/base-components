@@ -33,7 +33,7 @@
 import { createElement } from 'lwc';
 import Barcode from 'c/barcode';
 jest.mock('bwip-js', () => {
-    const a = require('./mocked-version-of-bwip');
+    const a = require('');
     a.toCanvas = () => {};
     return a;
 });

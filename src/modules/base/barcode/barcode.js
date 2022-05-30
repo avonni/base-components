@@ -84,6 +84,50 @@ const DEFAULT_TEXT_COLOR = '#000000';
  */
 export default class Barcode extends LightningElement {
     /**
+     * The color of the background. Valid formats include color name, HEX and RGB.
+     *
+     * @public
+     * @type {string}
+     * @default #fff
+     */
+    @api background = DEFAULT_BACKGROUND;
+
+    /**
+     * The color of the barcode. Valid formats include color name, HEX and RGB.
+     *
+     * @public
+     * @type {string}
+     */
+    @api color = DEFAULT_COLOR;
+
+    /**
+     * The width of the barcode in pixels.
+     *
+     * @public
+     * @type {number}
+     * @default 300
+     */
+    @api size = DEFAULT_SIZE;
+
+    /**
+     * The color of the text.
+     *
+     * @public
+     * @type {string}
+     * @default #000000
+     */
+    @api textColor = DEFAULT_TEXT_COLOR;
+
+    /**
+     * The type of the symbology (barcode encoding). Valid values include EAN8, EAN13, UPCE, UPCA, Code11, Code39, Code39Extended, Code93, Code93Extended, Code128, Code128A, Code128B, Code128C, GS1-128, MSImod10, MSImod11, MSImod1010, MSImod1110 and POSTNET.
+     *
+     * @public
+     * @type {string}
+     * @default CODE39
+     */
+    @api type = SYMBOLOGY.default;
+
+    /**
      * The value of the barcode.
      *
      * @public
@@ -91,13 +135,9 @@ export default class Barcode extends LightningElement {
      */
     @api value;
 
-    _background = DEFAULT_BACKGROUND;
-    _color = DEFAULT_COLOR;
     _renderAs = RENDERING_ENGINE.default;
-    _size = DEFAULT_SIZE;
     _hideValue = false;
     _checksum = false;
-    _textColor = DEFAULT_TEXT_COLOR;
     _type = SYMBOLOGY.default;
 
     _initialRender = false;
@@ -116,27 +156,10 @@ export default class Barcode extends LightningElement {
     /**
      * Returns wether the barcode can be rendered as an svg element.
      */
-    @api
     get renderAsSVG() {
         return (
             this.renderAs === 'svg' && this.getBarcodeLibrary() === 'jsbarcode'
         );
-    }
-
-    /**
-     * The color of the background. Valid formats include color name, HEX and RGB.
-     *
-     * @public
-     * @type {string}
-     * @default #fff
-     */
-    @api
-    get background() {
-        return this._background;
-    }
-
-    set background(value) {
-        this._background = value;
     }
 
     /**
@@ -152,20 +175,6 @@ export default class Barcode extends LightningElement {
     }
     set checksum(value) {
         this._checksum = normalizeBoolean(value);
-    }
-
-    /**
-     * The color of the barcode. Valid formats include color name, HEX and RGB.
-     *
-     * @public
-     * @type {string}
-     */
-    @api
-    get color() {
-        return this._color;
-    }
-    set color(value) {
-        this._color = value;
     }
 
     /**
@@ -199,51 +208,6 @@ export default class Barcode extends LightningElement {
             fallbackValue: RENDERING_ENGINE.actionDefault,
             validValues: RENDERING_ENGINE.valid
         });
-    }
-
-    /**
-     * The width of the barcode in pixels.
-     *
-     * @public
-     * @type {number}
-     * @default 300
-     */
-    @api
-    get size() {
-        return this._size;
-    }
-    set size(value) {
-        this._size = value;
-    }
-
-    /**
-     * The color of the text.
-     *
-     * @public
-     * @type {string}
-     * @default #000000
-     */
-    @api
-    get textColor() {
-        return this._textColor;
-    }
-    set textColor(value) {
-        this._textColor = value;
-    }
-
-    /**
-     * The type of the symbology (barcode encoding). Valid values include EAN8, EAN13, UPCE, UPCA, Code11, Code39, Code39Extended, Code93, Code93Extended, Code128, Code128A, Code128B, Code128C, GS1-128, MSImod10, MSImod11, MSImod1010, MSImod1110 and POSTNET.
-     *
-     * @public
-     * @type {string}
-     * @default CODE39
-     */
-    @api
-    get type() {
-        return this._type;
-    }
-    set type(value) {
-        this._type = value;
     }
 
     /*
