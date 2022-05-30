@@ -581,14 +581,29 @@ export default class Kanban extends LightningElement {
             ),
             this.groupValues.length - 1
         );
-        console.log(this._releasedGroupIndex);
-        // const groups = this.template.querySelectorAll(
-        //     '[data-element-id="avonni-kanban__field"]'
-        // );
-        // groups.forEach((group, i) => {
-        //     if (this._clickedGroupIndex < i)
-        //         group.classList.add('avonni-kanban__translate_right');
-        // });
+        const groups = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__field"]'
+        );
+        groups.forEach((group, i) => {
+            if (group !== this._draggedGroup)
+                group.classList.add('avonni-kanban__field_moved');
+            if (
+                this._releasedGroupIndex <= i &&
+                this._clickedGroupIndex > i &&
+                group !== this._draggedGroup
+            )
+                group.classList.add('avonni-kanban__translate_right');
+            else if (
+                this._releasedGroupIndex >= i &&
+                this._clickedGroupIndex < i &&
+                group !== this._draggedGroup
+            )
+                group.classList.add('avonni-kanban__translate_left');
+            else {
+                group.classList.remove('avonni-kanban__translate_right');
+                group.classList.remove('avonni-kanban__translate_left');
+            }
+        });
     }
 
     handleGroupMouseUp() {
@@ -608,6 +623,7 @@ export default class Kanban extends LightningElement {
             .forEach((group) => {
                 group.classList.remove('avonni-kanban__translate_left');
                 group.classList.remove('avonni-kanban__translate_right');
+                group.classList.remove('avonni-kanban__field_moved');
             });
     }
 
