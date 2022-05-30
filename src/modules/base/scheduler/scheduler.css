@@ -32,6 +32,7 @@
 
 .avonni-scheduler__wrapper {
     height: 100%;
+    min-height: 5rem;
     max-height: 100vh;
     overflow: auto;
 }

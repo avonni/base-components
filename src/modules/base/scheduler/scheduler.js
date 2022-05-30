@@ -108,6 +108,7 @@ export default class Scheduler extends LightningElement {
     _rowsHeight = [];
     _draggedEvent;
     _draggedSplitter = false;
+    _headersAreLoading = false;
     _initialFirstColWidth;
     _initialState = {};
     _mouseIsDown = false;
@@ -766,7 +767,7 @@ export default class Scheduler extends LightningElement {
         return this._resourcesKeyField;
     }
     set resourcesKeyField(value) {
-        this._resourcesKeyField = value.toString();
+        this._resourcesKeyField = value ? value.toString() : undefined;
 
         if (this._connected) {
             this.initResources();
@@ -802,7 +803,7 @@ export default class Scheduler extends LightningElement {
         return this._resourcesKeyField;
     }
     set rowsKeyField(value) {
-        this._resourcesKeyField = value.toString();
+        this._resourcesKeyField = value ? value.toString() : undefined;
 
         if (this._connected) {
             this.initResources();
@@ -1220,6 +1221,15 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * True if the loading spinner should be displayed.
+     *
+     * @type {boolean}
+     */
+    get showSpinner() {
+        return this.isLoading || this._headersAreLoading;
+    }
+
+    /**
      * Duration of one cell of the smallest unit header, in milliseconds.
      *
      * @type {number}
@@ -1446,6 +1456,8 @@ export default class Scheduler extends LightningElement {
      * Create the computed headers.
      */
     initHeaders() {
+        this._headersAreLoading = true;
+
         // Use the custom headers or a preset
         const headers = this.customHeaders.length
             ? this.customHeaders
@@ -1627,6 +1639,7 @@ export default class Scheduler extends LightningElement {
         const cell = this.template.querySelector(
             '[data-element-id="div-cell"]'
         );
+        if (!cell) return;
         const cellWidth = cell.getBoundingClientRect().width;
         if (cellWidth !== this.cellWidth) {
             this.cellWidth = cellWidth;
@@ -2434,6 +2447,7 @@ export default class Scheduler extends LightningElement {
 
         requestAnimationFrame(() => {
             this.pushDatatableDown();
+            this._headersAreLoading = false;
         });
     }
 
