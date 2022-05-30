@@ -49,19 +49,9 @@
     max-width: 40rem;
 }
 
-/* .avonni-activity-timeline__horizontal-timeline-items-scroll-container {
-    height: 400px;
-    width: 1300px;
-    background-color: red;
+.avonni-activity-timeline__horizontal-timeline-items {
+    margin: 0px;
+    padding: 0px;
     overflow: scroll;
-    margin:0px;
-    padding:0px;
-} 
-*/
-
-/* .testing-selection{
-    color:red;
-    visibility: hidden;
-    position: absolute;
-    z-index: 10;
-} */
+    height: 350px;
+}

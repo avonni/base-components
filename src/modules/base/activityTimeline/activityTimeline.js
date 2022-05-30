@@ -124,6 +124,7 @@ export default class ActivityTimeline extends LightningElement {
     _numberOfScrollAxisTicks = 10;
     _offsetAxis = DEFAULT_TIMELINE_AXIS_OFFSET;
     _scrollAxisColor = '#1c82bd';
+    _maxYPositionOfItem = 0;
 
     // D3 selector
     _timelineDiv;
@@ -624,6 +625,11 @@ export default class ActivityTimeline extends LightningElement {
                     ) {
                         foundElements[index - 1].yPosition -= yGapBetweenItems;
                     }
+
+                    // To find max y position
+                    if (item.yPosition > this._maxYPositionOfItem) {
+                        this._maxYPositionOfItem = item.yPosition;
+                    }
                 });
             }
         }
@@ -642,6 +648,15 @@ export default class ActivityTimeline extends LightningElement {
             )
         );
         this._timelineDiv.selectAll('*').remove();
+
+        // Calculate each items y position and set timeline height
+        const dataToDisplay = this.setYPositionOfItems(
+            this._displayedItems,
+            Y_START_POSITION_TIMELINE_ITEM,
+            Y_GAP_BETWEEN_ITEMS_TIMELINE
+        );
+
+        this._timelineHeight = this._maxYPositionOfItem + 30;
 
         // <--- CREATE NEW SVG FOR TIMELINE --->
         this._timelineSVG = this._timelineDiv
@@ -674,11 +689,6 @@ export default class ActivityTimeline extends LightningElement {
 
         //  <--- CREATE EACH ITEM --->
         const rectWidth = 20;
-        const dataToDisplay = this.setYPositionOfItems(
-            this._displayedItems,
-            Y_START_POSITION_TIMELINE_ITEM,
-            Y_GAP_BETWEEN_ITEMS_TIMELINE
-        );
 
         // TODO: DISPLAY ICON INSTEAD OF RECT
         this._timelineSVG
