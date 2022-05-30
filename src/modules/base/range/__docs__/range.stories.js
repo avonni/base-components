@@ -214,6 +214,19 @@ export default {
                 category: 'Value'
             }
         },
+        showTickMarks: {
+            name: 'show-tick-marks',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, minor tick marks are displayed at every step.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
         size: {
             control: {
                 type: 'select'
@@ -317,6 +330,7 @@ export default {
         min: 0,
         pin: false,
         tickMarkStyle: 'none',
+        showTickMarks: false,
         size: 'full',
         step: 1,
         type: 'horizontal',
@@ -396,8 +410,8 @@ CustomLabel.args = {
     }
 };
 
-export const CustomInnerTickRange = TemplateMargins.bind({});
-CustomInnerTickRange.args = {
+export const CustomDotRange = TemplateMargins.bind({});
+CustomDotRange.args = {
     label: 'What is your emotional range',
     step: 1,
     valueLower: 1,
@@ -405,7 +419,7 @@ CustomInnerTickRange.args = {
     min: 0,
     max: 4,
     size: 'full',
-    tickMarkStyle: 'inner-tick',
+    tickMarkStyle: 'dot',
     unit: 'custom',
     unitAttributes: {
         customLabels: [
@@ -436,13 +450,14 @@ CustomInnerTickRange.args = {
 export const Time = TemplateMargins.bind({});
 Time.args = {
     label: 'Pick a time range',
-    step: 10,
+    step: 1,
     valueLower: 10,
     valueUpper: 50,
     min: 0,
     max: 60,
     size: 'full',
-    tickMarkStyle: 'dot',
+    tickMarkStyle: 'inner-tick',
+    showTickMarks: true,
     unit: 'custom',
     unitAttributes: {
         customLabels: [

@@ -2,15 +2,16 @@
     <div style="margin: 0 20px 0 10px">
         <avonni-range
             label="Pick a time range"
-            step="10"
+            step="1"
             value-lower="1"
             value-upper="3"
             min="0"
             max="60"
             size="full"
-            tick-mark-style="dot"
+            tick-mark-style="inner-tick"
             unit="custom"
             unit-attributes={unitAttributes}
+            show-tick-marks
         ></avonni-range>
     </div>
 </template>

@@ -151,6 +151,7 @@ export default class Range extends LightningElement {
     _valueLower = DEFAULT_MIN;
     _valueUpper = DEFAULT_MAX;
     _variant = LABEL_VARIANTS.default;
+    _showTickMarks = false;
 
     _helpMessage;
     _moveEventWait = false;
@@ -178,7 +179,7 @@ export default class Range extends LightningElement {
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
-        if (this.showTickMarks) {
+        if (this.showAnyTickMarks) {
             this.drawRuler();
         }
         if (!this._rendered) {
@@ -317,6 +318,21 @@ export default class Range extends LightningElement {
             fallbackValue: TICK_MARK_STYLES.default,
             validValues: TICK_MARK_STYLES.valid
         });
+    }
+
+    /**
+     * If present, minor tick marks are displayed at every step.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showTickMarks() {
+        return this._showTickMarks;
+    }
+    set showTickMarks(value) {
+        this._showTickMarks = normalizeBoolean(value);
     }
 
     /**
@@ -589,8 +605,12 @@ export default class Range extends LightningElement {
      *
      * @type {boolean}
      */
-    get showTickMarks() {
-        return this.tickMarkStyle !== 'none' || this.hasCustomLabels;
+    get showAnyTickMarks() {
+        return (
+            this.hasCustomLabels ||
+            this._showTickMarks ||
+            !this._tickMarkStyle === 'none'
+        );
     }
 
     /**
@@ -599,7 +619,7 @@ export default class Range extends LightningElement {
      * @type {boolean}
      */
     get showOnlyMajorTicks() {
-        return this.tickMarkStyle === 'none' && this.hasCustomLabels;
+        return this.hasCustomLabels && !this._showTickMarks;
     }
 
     /**
@@ -986,7 +1006,7 @@ export default class Range extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!this.hasCustomLabels && !this.showTickMarks) return null;
+        if (!this.showAnyTickMarks) return null;
         const resizeObserver = new AvonniResizeObserver(() => {
             this.drawRuler();
             this.displayCustomLabels();
