@@ -48,6 +48,17 @@ export default {
                 category: 'Layout'
             }
         },
+        height: {
+            name: 'height',
+            control: {
+                type: 'number'
+            },
+            description: 'Height of the skeleton in px.',
+            table: {
+                type: { summary: 'number' },
+                category: 'Layout'
+            }
+        },
         variant: {
             name: 'variant',
             control: {
@@ -61,18 +72,6 @@ export default {
                 category: 'Layout'
             }
         },
-        height: {
-            name: 'height',
-            control: {
-                type: 'number'
-            },
-            description: 'Height of the skeleton in px.',
-            table: {
-                type: { summary: 'number' },
-                defaultValue: { summary: 50 },
-                category: 'Layout'
-            }
-        },
         width: {
             name: 'width',
             control: {
@@ -81,15 +80,12 @@ export default {
             description: 'Width of the skeleton in px.',
             table: {
                 type: { summary: 'number' },
-                defaultValue: { summary: 50 },
                 category: 'Layout'
             }
         }
     },
     args: {
-        variant: 'text',
-        width: 50,
-        height: 50
+        variant: 'text'
     }
 };
 
