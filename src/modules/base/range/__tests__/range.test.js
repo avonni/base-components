@@ -100,7 +100,8 @@ describe('Range', () => {
         expect(element.messageWhenTypeMismatch).toBeUndefined();
         expect(element.min).toBe(0);
         expect(element.pin).toEqual(false);
-        expect(element.tickMarkStyle).toEqual('none');
+        expect(element.tickMarkStyle).toEqual('inner-tick');
+        expect(element.showTickMarks).toEqual(false);
         expect(element.size).toBe('full');
         expect(element.step).toBe(1);
         expect(element.unit).toBe('decimal');
@@ -206,23 +207,60 @@ describe('Range', () => {
         });
     });
 
-    // tickMarkStyle
-    it('Range: tickMarkStyle = "none"', () => {
-        element.tickMarkStyle = 'none';
-        element.valueLower = 0;
-        element.valueUpper = 10;
+    // showTickMarks
+    it('Range: showTickMarks = false', () => {
+        element.showTickMarks = false;
+        element.tickMarkStyle = 'tick';
+        element.min = 0;
+        element.max = 10;
+        element.step = 5;
+
+        return Promise.resolve().then(() => {
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="ruler"]')
+            ).toBeFalsy();
+        });
+    });
+
+    it('Range: showTickMarks = true', () => {
+        element.showTickMarks = true;
+        element.tickMarkStyle = 'tick';
+        element.min = 0;
+        element.max = 10;
         element.step = 5;
 
         return Promise.resolve().then(() => {
             const ruler = element.shadowRoot.querySelector(
                 '[data-element-id="ruler"]'
             );
-            expect(ruler).toBeFalsy();
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(3);
+        });
+    });
+
+    // tickMarkStyle
+    it('Range: tickMarkStyle = "inner-tick"', () => {
+        element.tickMarkStyle = 'inner-tick';
+        element.showTickMarks = true;
+        element.min = 0;
+        element.max = 10;
+        element.step = 5;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('rect');
+            expect(ruler.childNodes[3].tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(5);
         });
     });
 
     it('Range: tickMarkStyle = "tick"', () => {
         element.tickMarkStyle = 'tick';
+        element.showTickMarks = true;
         element.min = 0;
         element.max = 10;
         element.step = 5;
@@ -249,6 +287,7 @@ describe('Range', () => {
 
     it('Range: tickMarkStyle = "dot"', () => {
         element.tickMarkStyle = 'dot';
+        element.showTickMarks = true;
         element.min = 0;
         element.max = 10;
         element.step = 5;
@@ -260,22 +299,6 @@ describe('Range', () => {
             expect(ruler).toBeTruthy();
             expect(ruler.firstChild.tagName).toEqual('circle');
             expect(ruler.childElementCount).toEqual(3);
-        });
-    });
-
-    it('Range: tickMarkStyle = "progress"', () => {
-        element.tickMarkStyle = 'progress';
-        element.min = 0;
-        element.max = 10;
-        element.step = 5;
-
-        return Promise.resolve().then(() => {
-            const ruler = element.shadowRoot.querySelector(
-                '[data-element-id="ruler"]'
-            );
-            expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('circle');
-            expect(ruler.childElementCount).toEqual(5);
         });
     });
 
@@ -459,32 +482,6 @@ describe('Range', () => {
         });
     });
 
-    it('Range: customLabels and tickMarkers (none)', () => {
-        element.unit = 'custom';
-        element.type = 'horizontal';
-        element.tickMarkStyle = 'none';
-        element.unitAttributes = {
-            customLabels: MOCK_CUSTOM_LABELS
-        };
-
-        return Promise.resolve().then(() => {
-            const customLabels = element.shadowRoot.querySelectorAll(
-                '[data-element-id="custom-label"]'
-            );
-            customLabels.forEach((customLabel, index) => {
-                expect(customLabel.dataset.value).toEqual(`${index}`);
-                expect(customLabel.textContent).toEqual(`Custom ${index}`);
-            });
-
-            const ruler = element.shadowRoot.querySelector(
-                '[data-element-id="ruler"]'
-            );
-            expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('line');
-            expect(ruler.childElementCount).toEqual(5);
-        });
-    });
-
     it('Range: customLabels and tickMarkers (tick)', () => {
         element.unit = 'custom';
         element.type = 'horizontal';
@@ -507,7 +504,7 @@ describe('Range', () => {
             );
             expect(ruler).toBeTruthy();
             expect(ruler.firstChild.tagName).toEqual('line');
-            expect(ruler.childElementCount).toEqual(101);
+            expect(ruler.childElementCount).toEqual(5);
         });
     });
 
@@ -533,16 +530,17 @@ describe('Range', () => {
             );
             expect(ruler).toBeTruthy();
             expect(ruler.firstChild.tagName).toEqual('circle');
-            expect(ruler.childElementCount).toEqual(101);
+            expect(ruler.childElementCount).toEqual(5);
         });
     });
 
-    it('Range: customLabels and tickMarkers (progress)', () => {
+    it('Range: customLabels and tickMarkers (inner-tick)', () => {
         element.unit = 'custom';
         element.type = 'horizontal';
         element.valueUpper = 25;
         element.valueLower = 75;
-        element.tickMarkStyle = 'progress';
+        element.tickMarkStyle = 'inner-tick';
+        element.showTickMarks = true;
         element.unitAttributes = {
             customLabels: MOCK_CUSTOM_LABELS
         };
@@ -560,7 +558,8 @@ describe('Range', () => {
                 '[data-element-id="ruler"]'
             );
             expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('circle');
+            expect(ruler.firstChild.tagName).toEqual('rect');
+            expect(ruler.childNodes[3].tagName).toEqual('line');
             expect(ruler.childElementCount).toEqual(103);
         });
     });

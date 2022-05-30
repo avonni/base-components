@@ -303,7 +303,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * If present, tick marks are displayed with the according style. Accepted styles are 'inner-tick', 'tick', 'dot'.
+     * If present, tick marks are displayed with the according style. Accepted styles are inner-tick, tick, dot.
      *
      * @type {boolean}
      * @public
@@ -876,14 +876,14 @@ export default class Range extends LightningElement {
         let leftPosition = INPUT_THUMB_RADIUS;
 
         switch (this._tickMarkStyle) {
+            case 'inner-tick':
+                this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
             case 'tick':
                 this.drawTickRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
             case 'dot':
                 this.drawDotRuler(numberOfSteps, leftPosition, stepWidth);
-                break;
-            case 'inner-tick':
-                this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
             default:
                 this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
@@ -935,6 +935,10 @@ export default class Range extends LightningElement {
                     this._customLabels.some(
                         (customLabel) => customLabel.value === i + this.min
                     );
+            }
+            if (this.showOnlyMajorTicks && !isMajorStep) {
+                leftPosition += stepWidth;
+                continue;
             }
             let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
             circle.setAttribute('fill', `${isColored ? '#ffffff' : '#979797'}`);

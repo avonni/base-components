@@ -205,11 +205,11 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['none', 'tick', 'dot', 'inner-tick'],
+            options: ['inner-tick', 'tick', 'dot'],
             description:
-                'If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and inner-tick.',
+                'If present, tick marks are displayed with the according style. Accepted styles are inner-tick, tick, dot',
             table: {
-                defaultValue: { summary: 'none' },
+                defaultValue: { summary: 'inner-tick' },
                 type: { summary: 'string' },
                 category: 'Value'
             }
@@ -329,7 +329,7 @@ export default {
         max: 0,
         min: 0,
         pin: false,
-        tickMarkStyle: 'none',
+        tickMarkStyle: 'inner-tick',
         showTickMarks: false,
         size: 'full',
         step: 1,
@@ -387,6 +387,7 @@ CustomLabel.args = {
     min: 0,
     max: 10,
     size: 'full',
+    tickMarkStyle: 'tick',
     unit: 'custom',
     unitAttributes: {
         customLabels: [
