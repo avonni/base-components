@@ -35,7 +35,7 @@
 .avonni-skeleton__animation-wave {
     position: relative;
     background-color: #dedede;
-    animation: wave-animation 2s infinite;
+    /* animation: wave-animation 2s infinite; */
 }
 
 .avonni-skeleton__animation-pulse {
@@ -54,14 +54,14 @@
     }
 }
 
-@keyframes wave-animation {
+/* @keyframes wave-animation {
     0% {
         background-position: 0px;
     }
     100% {
         background-position: 100px;
     }
-}
+} */
 
 .background-masker {
     position: absolute;
@@ -80,8 +80,8 @@
         #dedede 18%,
         var(--avonni-skeleton-color-background) 33%
     );
-    background-size: 800px 10px;
-    height: 70px;
+    background-size: 800px;
+    height: 100%;
     position: relative;
 }
 
