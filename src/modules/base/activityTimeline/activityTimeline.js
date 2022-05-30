@@ -75,7 +75,6 @@ const SORTED_DIRECTIONS = {
 };
 
 // TODO: Deplacer les fonctions timeline horizontal dans un nouveau fichier
-// TODO: Mettre un max de caracteres sur la longueur affichee du titre pour eviter des overlaps
 
 /**
  * @class
@@ -129,6 +128,7 @@ export default class ActivityTimeline extends LightningElement {
     // D3 selector
     _timelineDiv;
     _timelineSVG;
+    _scrollAxisSVG;
 
     _key;
     _isConnected = false;
@@ -153,7 +153,7 @@ export default class ActivityTimeline extends LightningElement {
         this.createTimelineAxis();
 
         // ONLY FOR TESTING AND LEARNING
-        this.testingD3();
+        // this.testingD3();
     }
 
     // AJOUT  - TESTING
@@ -404,6 +404,30 @@ export default class ActivityTimeline extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get divTimelineItemsSelector() {
+        return this.template.querySelector(
+            '.avonni-activity-timeline__horizontal-timeline-items'
+        );
+    }
+
+    get divTimelineAxisSelector() {
+        return this.template.querySelector(
+            '.avonni-activity-timeline__horizontal-timeline-axis'
+        );
+    }
+
+    get divTimelineScrollAxisSelector() {
+        return this.template.querySelector(
+            '.avonni-activity-timeline__horizontal-timeline-scroll-axis'
+        );
+    }
+
+    get itemPopoverSelector() {
+        return this.template.querySelector(
+            '.avonni-activity-timeline__item-popover'
+        );
+    }
+
     /**
      * Calculate the numbers of days between the min and max dates in items
      *
@@ -587,9 +611,8 @@ export default class ActivityTimeline extends LightningElement {
      *
      * @returns array
      */
-    // TODO: check if overflow timeline's height -- > add value to height if overflow ?
     setYPositionOfItems(items, yStartPosition, yGapBetweenItems) {
-        // Set all items with startPosition as yPosition
+        // Set all items with startPosition as yPosition and sort them by date
         let dataToDisplay = items.map((element) => ({
             ...element,
             yPosition: yStartPosition
@@ -598,14 +621,14 @@ export default class ActivityTimeline extends LightningElement {
             (a, b) => new Date(a.datetimeValue) - new Date(b.datetimeValue)
         );
 
-        for (let item of dataToDisplay) {
+        dataToDisplay.forEach((item, itemIndex) => {
             const itemDate = new Date(item.datetimeValue);
 
             // Find all elements in date range of item to prevent overlapping
             let foundElements = dataToDisplay.filter((element) => {
                 const date = new Date(element.datetimeValue);
                 return (
-                    date >= itemDate && date < this.findNextDate(itemDate, 3)
+                    date >= itemDate && date <= this.findNextDate(itemDate, 3)
                 );
             });
 
@@ -625,15 +648,24 @@ export default class ActivityTimeline extends LightningElement {
                     ) {
                         foundElements[index - 1].yPosition -= yGapBetweenItems;
                     }
-
-                    // To find max y position
-                    if (item.yPosition > this._maxYPositionOfItem) {
-                        this._maxYPositionOfItem = item.yPosition;
-                    }
                 });
-            }
-        }
 
+                // TODO: to improve
+                if (
+                    itemIndex > 1 &&
+                    dataToDisplay[itemIndex - 2].yPosition ===
+                        dataToDisplay[itemIndex - 1].yPosition
+                ) {
+                    dataToDisplay[itemIndex - 1].yPosition += yGapBetweenItems;
+                    item.yPosition += yGapBetweenItems;
+                }
+
+                // To find max y position
+                if (item.yPosition > this._maxYPositionOfItem) {
+                    this._maxYPositionOfItem = item.yPosition;
+                }
+            }
+        });
         return dataToDisplay;
     }
 
@@ -642,11 +674,7 @@ export default class ActivityTimeline extends LightningElement {
      */
     createTimeline() {
         // <--- SELECT AND REMOVE PREVIOUS TIMELINE --->
-        this._timelineDiv = d3.select(
-            this.template.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-items'
-            )
-        );
+        this._timelineDiv = d3.select(this.divTimelineItemsSelector);
         this._timelineDiv.selectAll('*').remove();
 
         // Calculate each items y position and set timeline height
@@ -656,7 +684,10 @@ export default class ActivityTimeline extends LightningElement {
             Y_GAP_BETWEEN_ITEMS_TIMELINE
         );
 
-        this._timelineHeight = this._maxYPositionOfItem + 30;
+        this._timelineHeight = Math.max(
+            this._maxYPositionOfItem + 30,
+            DEFAULT_TIMELINE_HEIGHT
+        );
 
         // <--- CREATE NEW SVG FOR TIMELINE --->
         this._timelineSVG = this._timelineDiv
@@ -682,11 +713,14 @@ export default class ActivityTimeline extends LightningElement {
             .tickSizeOuter(0);
         this._timelineSVG
             .append('g')
-            .attr('transform', 'translate(' + 0 + ', 0)')
             .attr('opacity', 0.15)
             .style('stroke-dasharray', '8 8')
             .call(axis);
 
+        this.addItemsToTimeline(dataToDisplay);
+    }
+
+    addItemsToTimeline(dataToDisplay) {
         //  <--- CREATE EACH ITEM --->
         const rectWidth = 20;
 
@@ -708,6 +742,33 @@ export default class ActivityTimeline extends LightningElement {
         // Necessary to use this in function() of mouseover and mouseout that changes the this to element
         const activityTimelineThis = this;
 
+        const handleMouseOverOnItem = function (event, item) {
+            activityTimelineThis.showItemPopOver = true;
+            activityTimelineThis.selectedItem = item;
+            const tooltipElement = d3.select(
+                activityTimelineThis.itemPopoverSelector
+            );
+            const sizeClassToAdd =
+                (item.fields && item.fields.length > 0) ||
+                item.buttonLabel !== undefined
+                    ? 'avonni-activity-timeline__item-popover-with-fields'
+                    : item.hasError || item.description !== undefined
+                    ? 'avonni-activity-timeline__item-popover-with-errors'
+                    : '';
+
+            tooltipElement
+                .attr(
+                    'class',
+                    'avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
+                        sizeClassToAdd
+                )
+                .style('top', event.pageY + 'px')
+                .style('left', event.pageX + 'px')
+                .on('mouseout', function () {
+                    activityTimelineThis.handleItemMouseLeave();
+                });
+        };
+
         this._timelineSVG
             .append('g')
             .selectAll('text')
@@ -725,34 +786,7 @@ export default class ActivityTimeline extends LightningElement {
             })
             .attr('fill', 'black')
             // TODO: change size to better fit popover content
-            .on('mouseover', function (event, item) {
-                activityTimelineThis.showItemPopOver = true;
-                activityTimelineThis.selectedItem = item;
-                const tooltipElement = d3.select(
-                    activityTimelineThis.template.querySelector(
-                        '.avonni-activity-timeline__item-popover'
-                    )
-                );
-                const sizeClassToAdd =
-                    (item.fields && item.fields.length > 0) ||
-                    item.buttonLabel !== undefined
-                        ? 'avonni-activity-timeline__item-popover-with-fields'
-                        : item.hasError || item.description !== undefined
-                        ? 'avonni-activity-timeline__item-popover-with-errors'
-                        : '';
-
-                tooltipElement
-                    .attr(
-                        'class',
-                        'avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
-                            sizeClassToAdd
-                    )
-                    .style('top', event.pageY + 'px')
-                    .style('left', event.pageX + 'px')
-                    .on('mouseout', function () {
-                        activityTimelineThis.handleItemMouseLeave();
-                    });
-            })
+            .on('mouseover', handleMouseOverOnItem)
             .on('mouseout', function () {
                 activityTimelineThis.handleItemMouseLeave();
             });
@@ -775,18 +809,13 @@ export default class ActivityTimeline extends LightningElement {
      */
     createTimelineAxis() {
         // <--- SELECT AND REMOVE PREVIOUS AXIS --->
-        const axisDiv = d3.select(
-            this.template.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-axis'
-            )
-        );
+        const axisDiv = d3.select(this.divTimelineAxisSelector);
         axisDiv.selectAll('*').remove();
 
         const axisSVG = axisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
-            .attr('height', this._timelineAxisHeight * 2)
-            .attr('transform', 'translate(' + 0 + ')');
+            .attr('height', this._timelineAxisHeight * 2);
 
         // <--- CREATE RECT AROUND AXIS --->
         axisSVG
@@ -813,15 +842,11 @@ export default class ActivityTimeline extends LightningElement {
      * Create the scroll axis for horizontal timeline to display all dates
      */
     createTimelineScrollAxis() {
-        const scrollAxisDiv = d3.select(
-            this.template.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-scroll-axis'
-            )
-        );
+        const scrollAxisDiv = d3.select(this.divTimelineScrollAxisSelector);
         scrollAxisDiv.selectAll('*').remove();
 
         // <--- CREATE TICKS OF SCROLL AXIS --->
-        const scrollAxisSVG = scrollAxisDiv
+        this._scrollAxisSVG = scrollAxisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
             .attr('height', this._timelineAxisHeight * 2)
@@ -832,16 +857,14 @@ export default class ActivityTimeline extends LightningElement {
             .tickFormat(d3.timeFormat('%d/%m/%Y'))
             .ticks(12)
             .tickSizeOuter(0);
-        scrollAxisSVG
+
+        this._scrollAxisSVG
             .append('g')
-            .attr(
-                'transform',
-                'translate(' + 0 + ', ' + this._timelineAxisHeight + ')'
-            )
+            .attr('transform', 'translate(0 ' + this._timelineAxisHeight + ')')
             .call(scrollAxis);
 
         // <--- CREATE RECT AROUND SCROLL AXIS --->
-        scrollAxisSVG
+        this._scrollAxisSVG
             .append('rect')
             .attr('x', this._offsetAxis)
             .attr('y', 1)
@@ -850,6 +873,11 @@ export default class ActivityTimeline extends LightningElement {
             .attr('stroke', this._scrollAxisColor)
             .attr('fill', 'white');
 
+        this.addItemsToScrollAxis();
+        this.addTimeIntervalToScrollAxis();
+    }
+
+    addItemsToScrollAxis() {
         // <--- CREATE RECT ON SCROLL AXIS TO REPRESENT DATA --->
         // To find y position of all items
         let itemsToDisplay = this.setYPositionOfItems(
@@ -864,7 +892,7 @@ export default class ActivityTimeline extends LightningElement {
         );
 
         // DRAW RECT FOR EACH DATE
-        scrollAxisSVG
+        this._scrollAxisSVG
             .append('g')
             .selectAll('rect')
             .data(itemsToDisplay)
@@ -877,7 +905,9 @@ export default class ActivityTimeline extends LightningElement {
             .attr('width', SCROLL_ITEM_RECTANGLE_WIDTH)
             .attr('height', 3)
             .attr('fill', this._scrollAxisColor);
+    }
 
+    addTimeIntervalToScrollAxis() {
         // <--- DRAW VIEW INTERVAL (BLUE RECT) -->
         // We save the this because it changes in drag function of scrollAxisSVG
         let activityTimelineThis = this;
@@ -886,7 +916,30 @@ export default class ActivityTimeline extends LightningElement {
                 this.scrollTimeScale(new Date(this._intervalMinDate))
         );
 
-        scrollAxisSVG
+        const handleTimeIntervalDrag = function (event) {
+            // WARNING : this = scrollAxisSVG, activityTimelineThis = regular this
+            // To allow only horizontal drag
+            const maxPosition = DEFAULT_TIMELINE_WIDTH - intervalWidth;
+            const minPosition = DEFAULT_TIMELINE_AXIS_OFFSET;
+            let xPosition = event.x;
+            if (event.x > maxPosition) {
+                xPosition = maxPosition;
+            } else if (event.x < minPosition) {
+                xPosition = minPosition;
+            }
+
+            d3.select(this).attr('x', xPosition).attr('y', 0.5);
+        };
+
+        const handleEndOfTimeIntervalDrag = function () {
+            activityTimelineThis._intervalMinDate =
+                activityTimelineThis.scrollTimeScale
+                    .invert(this.getAttribute('x'))
+                    .setHours(0, 0, 0, 0);
+            activityTimelineThis.renderedCallback();
+        };
+
+        this._scrollAxisSVG
             .append('g')
             .append('rect')
             .attr('x', this.scrollTimeScale(new Date(this._intervalMinDate))) // Debut date min interval (valeur x convertie) == >xMinIntervalDate
@@ -898,28 +951,8 @@ export default class ActivityTimeline extends LightningElement {
             .call(
                 d3
                     .drag()
-                    .on('drag', function (event) {
-                        // WARNING : this = scrollAxisSVG, activityTimelineThis = regular this
-                        // To allow only horizontal drag
-                        const maxPosition =
-                            DEFAULT_TIMELINE_WIDTH - intervalWidth;
-                        const minPosition = DEFAULT_TIMELINE_AXIS_OFFSET;
-                        let xPosition = event.x;
-                        if (event.x > maxPosition) {
-                            xPosition = maxPosition;
-                        } else if (event.x < minPosition) {
-                            xPosition = minPosition;
-                        }
-
-                        d3.select(this).attr('x', xPosition).attr('y', 0.5);
-                    })
-                    .on('end', function () {
-                        activityTimelineThis._intervalMinDate =
-                            activityTimelineThis.scrollTimeScale
-                                .invert(this.getAttribute('x'))
-                                .setHours(0, 0, 0, 0);
-                        activityTimelineThis.renderedCallback();
-                    })
+                    .on('drag', handleTimeIntervalDrag)
+                    .on('end', handleEndOfTimeIntervalDrag)
             );
     }
 

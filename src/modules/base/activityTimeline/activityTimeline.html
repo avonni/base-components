@@ -60,12 +60,7 @@
         </template>
         <!-- HORIZONTAL TIMELINE -->
         <template if:true={isTimelineHorizontal}>
-            <!-- TESTING - DISPLAY ALL ITEMS -->
-            <!-- <div for:each={sortedItems} for:item="item" key={item.name}>
-                <p>{item.name} - {item.datetimeValue}</p>
-            </div> -->
-
-            <!-- TIMELINE WITH D3 -->
+            <!-- HORIZONTAL TIMELINE WITH D3 -->
             <div class="avonni-activity-timeline__horizontal-timeline">
                 <div
                     class="avonni-activity-timeline__horizontal-timeline-items"
@@ -86,30 +81,7 @@
             <!-- TESTING -->
             <div class="testing-d3" lwc:dom="manual"></div>
 
-            <!-- ITEMS IN INTERVAL -->
-            <!-- <div>
-                <template
-                    for:each={displayedItems}
-                    for:item="item"
-                    key={item.name}
-                >
-                    <div
-                        key={item.name}
-                        data-element-id={item.name}
-                        onmouseenter={handleItemMouseEnter}
-                        onmouseleave={handleItemMouseLeave}
-                    >
-                        <lightning-icon
-                            icon-name={item.iconName}
-                            size={itemIconSize}
-                            data-element-id="item-marker"
-                        ></lightning-icon>
-                        - {item.title}
-                    </div>
-                </template>
-            </div> -->
-
-            <!-- TESTING POPOVER ITEM -->
+            <!-- POPOVER ITEM -->
             <div
                 if:true={showItemPopOver}
                 class="avonni-activity-timeline__item-popover"
@@ -138,49 +110,6 @@
                 >
                 </c-primitive-activity-timeline-item>
             </div>
-
-            <!-- POP OVER INFORMATION OF SELECTED ITEM -->
-            <!-- <div
-                if:true={showItemPopOver}
-                class="
-                    slds-popover slds-dropdown
-                    avonni-activity-timeline__item-popover
-                "
-                role="tooltip"
-            >
-                <div
-                    class="
-                        slds-popover__body
-                        avonni-activity-timeline__item-popover
-                    "
-                >
-                    <c-primitive-activity-timeline-item
-                        title={selectedItem.title}
-                        description={selectedItem.description}
-                        datetime-value={selectedItem.datetimeValue}
-                        href={selectedItem.href}
-                        icon-name={selectedItem.iconName}
-                        icon-size={itemIconSize}
-                        icons={selectedItem.icons}
-                        fields={selectedItem.fields}
-                        has-checkbox={selectedItem.hasCheckbox}
-                        has-error={selectedItem.hasError}
-                        closed={selectedItem.closed}
-                        button-label={selectedItem.buttonLabel}
-                        button-icon-name={selectedItem.buttonIconName}
-                        button-variant={selectedItem.buttonVariant}
-                        button-icon-position={selectedItem.buttonIconPosition}
-                        button-disabled={selectedItem.buttonDisabled}
-                        is-loading={selectedItem.isLoading}
-                        is-active={selectedItem.isActive}
-                        loading-state-alternative-text={selectedItem.loadingStateAlternativeText}
-                        name={selectedItem.name}
-                        data-element-id="avonni-primitive-activity-timeline-item"
-                        data-name={selectedItem.name}
-                    >
-                    </c-primitive-activity-timeline-item>
-                </div> 
-            </div>-->
         </template>
         <!-- VERTICAL TIMELINE -->
         <template if:false={isTimelineHorizontal}>
