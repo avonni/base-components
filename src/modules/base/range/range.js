@@ -644,6 +644,15 @@ export default class Range extends LightningElement {
     }
 
     /**
+     * Returns the color corresponding to highlight (depends on disabled)
+     *
+     * @type {string}
+     */
+    get highlightColor() {
+        return this.disabled ? '#919191' : '#0176D3';
+    }
+
+    /**
      * To show or not the tick marks.
      *
      * @type {boolean}
@@ -998,7 +1007,10 @@ export default class Range extends LightningElement {
                 continue;
             }
             let line = document.createElementNS(SVG_NAMESPACE, 'line');
-            line.setAttribute('stroke', `${isColored ? '#0176D3' : '#ecebea'}`);
+            line.setAttribute(
+                'stroke',
+                `${isColored ? this.highlightColor : '#ecebea'}`
+            );
             line.setAttribute('height', `10`);
             line.setAttribute('width', `5`);
             line.setAttribute('x1', `${leftPosition}`);
