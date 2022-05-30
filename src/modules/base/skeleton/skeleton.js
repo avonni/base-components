@@ -74,6 +74,12 @@ export default class Skeleton extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+    /**
+     * Returns wether the current animation is wave or not.
+     *
+     * @type {boolean}
+     * @public
+     */
     @api
     get isWaveAnimation() {
         return this.animation === 'wave';
@@ -96,6 +102,20 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Height of the skeleton in px.
+     * @type {number}
+     * @public
+     */
+    @api
+    get height() {
+        return this._height;
+    }
+    set height(value) {
+        const number = isNaN(parseInt(value, 10)) ? 100 : value;
+        this._height = number;
+    }
+
+    /**
      * The variant changes the appearance of the skeleton. Valid values include circular, rectangular and text.
      * @type {string}
      * @default text
@@ -111,20 +131,6 @@ export default class Skeleton extends LightningElement {
             fallbackValue: SKELETON_VARIANTS.default,
             validValues: SKELETON_VARIANTS.valid
         });
-    }
-
-    /**
-     * Height of the skeleton in px.
-     * @type {number}
-     * @public
-     */
-    @api
-    get height() {
-        return this._height;
-    }
-    set height(value) {
-        const number = isNaN(parseInt(value, 10)) ? 100 : value;
-        this._height = number;
     }
 
     /**
