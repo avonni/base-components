@@ -205,9 +205,9 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['none', 'tick', 'dot', 'progress'],
+            options: ['none', 'tick', 'dot', 'inner-tick'],
             description:
-                'If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and progress.',
+                'If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and inner-tick.',
             table: {
                 defaultValue: { summary: 'none' },
                 type: { summary: 'string' },
@@ -396,8 +396,8 @@ CustomLabel.args = {
     }
 };
 
-export const CustomProgressRange = TemplateMargins.bind({});
-CustomProgressRange.args = {
+export const CustomInnerTickRange = TemplateMargins.bind({});
+CustomInnerTickRange.args = {
     label: 'What is your emotional range',
     step: 1,
     valueLower: 1,
@@ -405,7 +405,7 @@ CustomProgressRange.args = {
     min: 0,
     max: 4,
     size: 'full',
-    tickMarkStyle: 'progress',
+    tickMarkStyle: 'inner-tick',
     unit: 'custom',
     unitAttributes: {
         customLabels: [

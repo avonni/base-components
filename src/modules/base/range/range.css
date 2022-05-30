@@ -238,8 +238,12 @@
     height: calc(100% - calc(var(--input-thumb-radius) * 2));
 }
 
-.avonni-range__custom-label-container_horizontal.avonni-range__custom-label-container_progress {
+.avonni-range__custom-label-container_horizontal.avonni-range__custom-label-container_close {
     top: -0.75rem;
+}
+
+.avonni-range__custom-label-container_vertical.avonni-range__custom-label-container_close {
+    top: -0.9rem;
 }
 
 .avonni-range__custom-label_vertical {
@@ -248,17 +252,6 @@
     top: calc(var(--input-thumb-radius) - 2px);
     left: 1.5rem;
     transform: translate(0, -50%);
-}
-
-.avonni-range__input_progress::-webkit-slider-thumb {
-    outline: solid 3px #0176d3;
-    outline-offset: -3px;
-    background: white;
-    box-shadow: 0px 1px 2.5px #a0a0a0;
-}
-
-.avonni-range__input_progress:hover::-webkit-slider-thumb {
-    background: #93bee1;
 }
 
 .avonni-range__tick-mark-container {

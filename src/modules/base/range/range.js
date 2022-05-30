@@ -63,7 +63,7 @@ const RANGE_UNITS = {
     default: 'decimal'
 };
 const TICK_MARK_STYLES = {
-    valid: ['none', 'dot', 'tick', 'progress'],
+    valid: ['none', 'dot', 'tick', 'inner-tick'],
     default: 'none'
 };
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
@@ -302,7 +302,7 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and progress.
+     * If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and inner-tick.
      *
      * @type {boolean}
      * @public
@@ -516,8 +516,9 @@ export default class Range extends LightningElement {
         return classSet('').add({
             'avonni-range__custom-label-container_horizontal': !isVertical,
             'avonni-range__custom-label-container_vertical': isVertical,
-            'avonni-range__custom-label-container_progress':
-                this.tickMarkStyle === 'progress'
+            'avonni-range__custom-label-container_close':
+                this.tickMarkStyle === 'dot' ||
+                this.tickMarkStyle === 'inner-tick'
         });
     }
 
@@ -526,8 +527,7 @@ export default class Range extends LightningElement {
      */
     get computedInputClass() {
         return classSet('slds-slider__range').add({
-            'avonni-range__slider': true,
-            'avonni-range__input_progress': this.tickMarkStyle === 'progress'
+            'avonni-range__slider': true
         });
     }
 
@@ -825,8 +825,8 @@ export default class Range extends LightningElement {
             case 'dot':
                 this.drawDotRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
-            case 'progress':
-                this.drawProgressRuler(numberOfSteps, leftPosition, stepWidth);
+            case 'inner-tick':
+                this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
             default:
                 this.drawTickRuler(numberOfSteps, leftPosition, stepWidth);
@@ -867,29 +867,6 @@ export default class Range extends LightningElement {
         const ruler = this.template.querySelector('[data-element-id="ruler"]');
 
         for (let i = 0; i < numberOfSteps + 1; i++) {
-            let isMajorStep = i === 0 || i === numberOfSteps;
-
-            if (this.hasCustomLabels) {
-                isMajorStep =
-                    isMajorStep ||
-                    this._customLabels.some(
-                        (customLabel) => customLabel.value === i + this.min
-                    );
-            }
-            let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
-            circle.setAttribute('fill', `${'#979797'}`);
-            circle.setAttribute('cx', `${leftPosition}`);
-            circle.setAttribute('cy', `32`);
-            circle.setAttribute('r', `${isMajorStep ? 2.5 : 2}`);
-            ruler.appendChild(circle);
-            leftPosition += stepWidth;
-        }
-    }
-
-    drawProgressRuler(numberOfSteps, leftPosition, stepWidth) {
-        const ruler = this.template.querySelector('[data-element-id="ruler"]');
-
-        for (let i = 0; i < numberOfSteps + 1; i++) {
             const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
             const isColored =
                 this.valueLower <= valueOfStep &&
@@ -903,25 +880,62 @@ export default class Range extends LightningElement {
                     );
             }
             let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
-            circle.setAttribute('fill', `${isColored ? '#0176D3' : '#ecebea'}`);
+            circle.setAttribute('fill', `${isColored ? '#ffffff' : '#979797'}`);
             circle.setAttribute('cx', `${leftPosition}`);
             circle.setAttribute('cy', `16.5`);
-            circle.setAttribute('r', `${isMajorStep ? 4.5 : 3.5}`);
+            circle.setAttribute('r', `${isMajorStep ? 1.2 : 1.2}`);
             ruler.appendChild(circle);
             leftPosition += stepWidth;
         }
+    }
 
-        for (let inputValues of [this._valueLower, this.valueUpper]) {
-            const circlePos =
-                ((inputValues - this.min) / (this.max - this.min)) *
-                    (numberOfSteps * stepWidth) +
-                INPUT_THUMB_RADIUS;
-            let inputMargin = document.createElementNS(SVG_NAMESPACE, 'circle');
-            inputMargin.setAttribute('fill', '#ffffff');
-            inputMargin.setAttribute('cx', `${circlePos - 0.2}`);
-            inputMargin.setAttribute('cy', `16.3`);
-            inputMargin.setAttribute('r', `11`);
-            ruler.appendChild(inputMargin);
+    drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth) {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+
+        // square slider edges
+        const upperEdgePos = numberOfSteps * stepWidth;
+        for (let i = 0; i < 2; i++) {
+            let line = document.createElementNS(SVG_NAMESPACE, 'rect');
+            line.setAttribute('fill', '#ffffff');
+            line.setAttribute('height', `15`);
+            line.setAttribute('width', `5`);
+            line.setAttribute(
+                'x',
+                `${i === 0 ? leftPosition - 5 : leftPosition + upperEdgePos}`
+            );
+            line.setAttribute('y', '10');
+            ruler.appendChild(line);
+        }
+
+        // drawTicks
+        for (let i = 0; i < numberOfSteps + 1; i++) {
+            const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
+            const isColored =
+                this.valueLower <= valueOfStep &&
+                valueOfStep <= this.valueUpper;
+            let isMajorStep = i === 0 || i === numberOfSteps;
+            if (this.hasCustomLabels) {
+                isMajorStep =
+                    isMajorStep ||
+                    this._customLabels.some(
+                        (customLabel) => customLabel.value === i + this.min
+                    );
+            }
+            if (this.showOnlyMajorTicks && !isMajorStep) {
+                leftPosition += stepWidth;
+                continue;
+            }
+
+            let line = document.createElementNS(SVG_NAMESPACE, 'line');
+            line.setAttribute('stroke', `${isColored ? '#0176D3' : '#ecebea'}`);
+            line.setAttribute('height', `10`);
+            line.setAttribute('width', `5`);
+            line.setAttribute('x1', `${leftPosition}`);
+            line.setAttribute('y1', `${isMajorStep ? 10 : 12}`);
+            line.setAttribute('x2', `${leftPosition}`);
+            line.setAttribute('y2', `${isMajorStep ? 23 : 21}`);
+            ruler.appendChild(line);
+            leftPosition += stepWidth;
         }
     }
 
