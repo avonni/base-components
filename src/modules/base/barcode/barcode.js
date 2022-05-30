@@ -143,7 +143,7 @@ export default class Barcode extends LightningElement {
     _initialRender = false;
 
     renderedCallback() {
-        if (!this._initialRender) this.initBarcode();
+        if (!this._initialRender) this.setCanvasWidth();
         this._initialRender = true;
         this.renderBarcode();
     }
@@ -252,17 +252,10 @@ export default class Barcode extends LightningElement {
     }
 
     /**
-     * Calls the methods necessary to initials the barcode attributes.
-     */
-    initBarcode() {
-        this.setCanvasWidth();
-    }
-
-    /**
      * Sets the width for the canvas.
      */
     setCanvasWidth() {
-        let element = this.template.querySelector(
+        const element = this.template.querySelector(
             '[data-element-id="canvas-wrapper"]'
         );
         element.style.width = `${this.size}px`;
@@ -288,29 +281,14 @@ export default class Barcode extends LightningElement {
     /**
      * Renders barcode with Bwipjs library.
      */
-
     renderWithBwipJs() {
         const canvas = this.canvas;
-        if (this.checksum) {
-            bwipjs.toCanvas(canvas, {
-                bcid: this.libraryEncodingValue,
-                text: this.value,
-                includetext: !this.hideValue,
-                includecheck: true,
-                includecheckintext: true,
-                textxalign: 'center',
-                barcolor: this.extractColorFromHEX(this.color),
-                backgroundcolor: this.extractColorFromHEX(this.background),
-                textcolor: this.extractColorFromHEX(this.textColor)
-            });
-            return;
-        }
         bwipjs.toCanvas(canvas, {
             bcid: this.libraryEncodingValue,
             text: this.value,
             includetext: !this.hideValue,
-            includecheck: false,
-            includecheckintext: false,
+            includecheck: this.checksum,
+            includecheckintext: this.checksum,
             textxalign: 'center',
             barcolor: this.extractColorFromHEX(this.color),
             backgroundcolor: this.extractColorFromHEX(this.background),
