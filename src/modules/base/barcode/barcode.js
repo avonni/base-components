@@ -31,8 +31,12 @@
 //  */
 
 import { LightningElement, api } from 'lwc';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
-import { LIBRARY_ENCODING_VALUE, BARCODE_LIBRARY } from 'c/utilsPrivate';
+import {
+    normalizeBoolean,
+    normalizeString,
+    LIBRARY_ENCODING_VALUE,
+    BARCODE_LIBRARY
+} from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
 import JsBarcode from 'jsbarcode';
 
@@ -69,10 +73,7 @@ const RENDERING_ENGINE = {
 const DEFAULT_BACKGROUND = '#ffffff';
 const DEFAULT_COLOR = '#000000';
 const DEFAULT_SIZE = 300;
-const DEFAULT_HIDE_VALUE = false;
-const DEFAULT_CHECKSUM = false;
 const DEFAULT_TEXT_COLOR = '#000000';
-const DEFAULT_INITIAL_VALUE = false;
 
 /**
  * @class
@@ -86,7 +87,7 @@ export default class Barcode extends LightningElement {
      * The value of the barcode.
      *
      * @public
-     * @type {number}
+     * @type {string}
      */
     @api value;
 
@@ -94,12 +95,12 @@ export default class Barcode extends LightningElement {
     _color = DEFAULT_COLOR;
     _renderAs = RENDERING_ENGINE.default;
     _size = DEFAULT_SIZE;
-    _hideValue = DEFAULT_HIDE_VALUE;
-    _checksum = DEFAULT_CHECKSUM;
+    _hideValue = false;
+    _checksum = false;
     _textColor = DEFAULT_TEXT_COLOR;
     _type = SYMBOLOGY.default;
 
-    _initialRender = DEFAULT_INITIAL_VALUE;
+    _initialRender = false;
 
     renderedCallback() {
         if (!this._initialRender) this.initBarcode();
