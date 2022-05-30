@@ -1,3 +1,3 @@
 import { LightningElement } from 'lwc';
 
-export default class Skeleton extends LightningElement {}
+export default class Base extends LightningElement {}
