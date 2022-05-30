@@ -40,8 +40,18 @@ export default {
             description: 'Defines the background color of the barcode.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#ffffff' },
                 category: 'Color'
+            }
+        },
+        checksum: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If set to true, the Barcode will display the checksum digit next to the value in the text area.',
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Layout'
             }
         },
         color: {
@@ -49,17 +59,28 @@ export default {
             description: 'Defines the color of the barcode.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#000000' },
                 category: 'Color'
             }
         },
-        textColor: {
-            control: 'color',
-            description: 'Defines the color of the text.',
+        hideValue: {
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the barcode value is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                category: 'Layout'
+            }
+        },
+        renderAs: {
+            control: {
+                type: 'select'
+            },
+            options: ['svg', 'canvas'],
+            description: 'Sets the preferred rendering engine.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: '#000000' },
-                category: 'Color'
+                category: 'Values'
             }
         },
         size: {
@@ -73,27 +94,12 @@ export default {
                 category: 'Layout'
             }
         },
-        hideValue: {
-            control: {
-                type: 'boolean'
-            },
-            description: 'If present, the barcode value is hidden.',
+        textColor: {
+            control: 'color',
+            description: 'Defines the color of the text.',
             table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-                category: 'Layout'
-            }
-        },
-        checksum: {
-            control: {
-                type: 'boolean'
-            },
-            description:
-                'If set to true, the Barcode will display the checksum digit next to the value in the text area.',
-            table: {
-                type: { summary: 'boolean' },
-                defaultValue: { summary: false },
-                category: 'Layout'
+                type: { summary: 'string' },
+                category: 'Color'
             }
         },
         type: {
@@ -124,7 +130,6 @@ export default {
             description: 'The type changes the encoding of the barcode value.',
             table: {
                 type: { summary: 'string' },
-                defaultValue: { summary: 'CODE39' },
                 category: 'Values'
             }
         },
@@ -137,19 +142,17 @@ export default {
                 type: { summary: 'string' },
                 category: 'Values'
             }
-        },
-        renderAs: {
-            control: {
-                type: 'select'
-            },
-            options: ['svg', 'canvas'],
-            description: 'Sets the preferred rendering engine.',
-            table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'svg' },
-                category: 'Values'
-            }
         }
+    },
+    args: {
+        background: '#ffffff',
+        checksum: false,
+        color: '#000000',
+        hideValue: false,
+        renderAs: 'svg',
+        size: 300,
+        textColor: '#000000',
+        type: 'CODE39'
     }
 };
 
@@ -157,12 +160,8 @@ const Template = (args) => Barcode(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    background: '#ffffff',
-    color: '#000000',
     value: '12000-311123',
     size: 200,
     type: 'CODE128',
-    hideValue: false,
-    textColor: '#000000',
-    renderAs: 'svg'
+    hideValue: false
 };
