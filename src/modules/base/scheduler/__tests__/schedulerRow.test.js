@@ -30,7 +30,7 @@
 //  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //  */
 
-import SchedulerRow from '../row';
+import SchedulerResource from '../resource';
 
 const REFERENCE_COLUMNS = [
     {
@@ -72,9 +72,9 @@ const EVENTS = [
     }
 ];
 
-describe('SchedulerRow', () => {
-    it('Scheduler row: Default attributes', () => {
-        const element = new SchedulerRow({});
+describe('SchedulerResource', () => {
+    it('Scheduler resource: Default attributes', () => {
+        const element = new SchedulerResource({});
 
         expect(element.color).toBeUndefined();
         expect(element.columns).toMatchObject([]);
@@ -90,8 +90,8 @@ describe('SchedulerRow', () => {
 
     // columns
     // Depends on referenceColumns
-    it('Scheduler row: columns', () => {
-        const element = new SchedulerRow({
+    it('Scheduler resource: columns', () => {
+        const element = new SchedulerResource({
             referenceColumns: REFERENCE_COLUMNS
         });
         expect(element.columns).toHaveLength(REFERENCE_COLUMNS.length);
@@ -103,8 +103,8 @@ describe('SchedulerRow', () => {
 
     // events
     // Depends on referenceColumns
-    it('Scheduler row: events', () => {
-        const element = new SchedulerRow({
+    it('Scheduler resource: events', () => {
+        const element = new SchedulerResource({
             referenceColumns: REFERENCE_COLUMNS,
             events: EVENTS
         });
@@ -123,8 +123,8 @@ describe('SchedulerRow', () => {
 
     // removeEvent()
     // Depends on referenceColumns and events
-    it('Scheduler row: removeEvent method', () => {
-        const element = new SchedulerRow({
+    it('Scheduler resource: removeEvent method', () => {
+        const element = new SchedulerResource({
             referenceColumns: REFERENCE_COLUMNS,
             events: EVENTS
         });
@@ -139,8 +139,8 @@ describe('SchedulerRow', () => {
 
     // getColumnFromStart()
     // Depends on referenceColumns
-    it('Scheduler row: getColumnFromStart method', () => {
-        const element = new SchedulerRow({
+    it('Scheduler resource: getColumnFromStart method', () => {
+        const element = new SchedulerResource({
             referenceColumns: REFERENCE_COLUMNS
         });
 

@@ -19,7 +19,7 @@
 /**
  * @typedef {Object} SchedulerEvent
  * @name events
- * @property {string[]} keyFields Required. Array of unique row IDs. The event will be shown in the scheduler for each of these rows.
+ * @property {string[]} keyFields Required. Array of unique resource IDs. The event will be shown in the scheduler for each of these resources.
  * @property {string} name Required. Unique name for the event. It will be returned by the <code>eventclick</code> and <code>actionclick</code> events.
  * @property {string} title Title of the event.
  * @property {(Date|number|string)} from Required. Start of the event. It can be a Date object, timestamp, or an ISO8601 formatted string.
@@ -41,7 +41,7 @@
 /**
  * @typedef {Object} SchedulerDisabledDatesTimes
  * @name disabledDates/times
- * @property {string[]} keyFields Required. Array of unique row IDs. The disabled dates/times will be shown in the scheduler for each of these rows.
+ * @property {string[]} keyFields Required. Array of unique resource IDs. The disabled dates/times will be shown in the scheduler for each of these resources.
  * @property {string} title Title of the disabled date/time.
  * @property {string} iconName The Lightning Design System name of the icon. Names are written in the format utility:user. The icon is appended to the left of the title.
  * @property {(Date|number|string)} from Required. Start of the disabled date/time. It can be a Date object, timestamp, or an ISO8601 formatted string.
@@ -58,8 +58,8 @@
 /**
  * @typedef {Object} SchedulerLabel
  * @name labels
- * @property {string} fieldName Name of a row key or an event key. The value corresponding to this key in the object will be used as the label.
- * If both the event and the row have a field with this name, the event field will be used.
+ * @property {string} fieldName Name of a resource key or an event key. The value corresponding to this key in the object will be used as the label.
+ * If both the event and the resource have a field with this name, the event field will be used.
  */
 
 /**

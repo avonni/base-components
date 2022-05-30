@@ -63,7 +63,7 @@ import {
     PRESET_HEADERS,
     VARIANTS
 } from './defaults';
-import SchedulerRow from './row';
+import SchedulerResource from './resource';
 import SchedulerEvent from './event';
 
 /**
@@ -97,8 +97,8 @@ export default class Scheduler extends LightningElement {
     _recurrentEditModes = EDIT_MODES;
     _referenceLines = [];
     _resizeColumnDisabled = false;
-    _rows = [];
-    _rowsKeyField;
+    _resources = [];
+    _resourcesKeyField;
     _start = dateTimeObjectFrom(DEFAULT_START_DATE);
     _timeSpan = DEFAULT_TIME_SPAN;
     _toolbarTimeSpans = DEFAULT_TOOLBAR_TIME_SPANS;
@@ -119,7 +119,7 @@ export default class Scheduler extends LightningElement {
     computedDisabledDatesTimes = [];
     computedHeaders = [];
     computedReferenceLines = [];
-    computedRows = [];
+    computedResources = [];
     @track computedEvents = [];
     contextMenuActions = [];
     firstColumnIsHidden = false;
@@ -145,7 +145,7 @@ export default class Scheduler extends LightningElement {
     renderedCallback() {
         if (!this.smallestHeader) return;
 
-        // Save the default datatable column width
+        // Save the default first column width
         if (!this._initialFirstColWidth && !this.isVertical) {
             this.resetFirstColumnWidth();
         }
@@ -155,7 +155,7 @@ export default class Scheduler extends LightningElement {
             this.updateRowsHeight();
         }
         this.updateOccurrencesOffset();
-        this.updateRowsStyle();
+        this.updateResourcesStyle();
 
         // Update the position and height of occurrences
         this.updateOccurrencesPosition();
@@ -220,13 +220,6 @@ export default class Scheduler extends LightningElement {
         const days = normalizeArray(value);
         this._availableDaysOfTheWeek =
             days.length > 0 ? days : DEFAULT_AVAILABLE_DAYS_OF_THE_WEEK;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
     }
 
     /**
@@ -246,13 +239,6 @@ export default class Scheduler extends LightningElement {
         const months = normalizeArray(value);
         this._availableMonths =
             months.length > 0 ? months : DEFAULT_AVAILABLE_MONTHS;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
     }
 
     /**
@@ -272,17 +258,10 @@ export default class Scheduler extends LightningElement {
         const timeFrames = normalizeArray(value);
         this._availableTimeFrames =
             timeFrames.length > 0 ? timeFrames : DEFAULT_AVAILABLE_TIME_FRAMES;
-
-        // The variable change will trigger the primitive header rerender,
-        // which will trigger the creation of events and rows if they are empty
-        if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
-        }
     }
 
     /**
-     * Array of datatable column objects. The columns are displayed to the left of the schedule. For more details on the allowed object keys, see the Data Table component.
+     * Array of data table column objects (see [Data Table](/components/datatable/) for allowed keys). The columns are displayed to the left of the schedule and visible only for the horizontal variant.
      *
      * @type {object[]}
      * @public
@@ -340,7 +319,7 @@ export default class Scheduler extends LightningElement {
         this._customEventsPalette = normalizeArray(value);
 
         if (this._connected) {
-            this.initRows();
+            this.initResources();
         }
     }
 
@@ -358,8 +337,6 @@ export default class Scheduler extends LightningElement {
         this._customHeaders = normalizeArray(value);
 
         if (this._connected) {
-            this.computedEvents = [];
-            this.computedRows = [];
             this.initHeaders();
         }
     }
@@ -419,7 +396,7 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
+            this.updateVisibleResources();
         }
     }
 
@@ -498,7 +475,7 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
+            this.updateVisibleResources();
         }
     }
 
@@ -530,7 +507,7 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
+            this.updateVisibleResources();
         }
     }
 
@@ -552,7 +529,7 @@ export default class Scheduler extends LightningElement {
         });
 
         if (this._connected) {
-            this.initRows();
+            this.initResources();
         }
     }
 
@@ -575,12 +552,12 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
+            this.updateVisibleResources();
         }
     }
 
     /**
-     * Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. Valid values include:
+     * Name of the header preset to use. The headers are displayed in columns (horizontal variant) or in rows (vertical variant). Valid values include:
      * * minuteAndHour
      * * minuteHourAndDay
      * * hourAndDay
@@ -611,8 +588,6 @@ export default class Scheduler extends LightningElement {
         });
 
         if (this._connected) {
-            this.computedRows = [];
-            this.computedEvents = [];
             this.initHeaders();
         }
     }
@@ -738,7 +713,7 @@ export default class Scheduler extends LightningElement {
 
         if (this._connected) {
             this.initEvents();
-            this.updateVisibleRows();
+            this.updateVisibleResources();
         }
     }
 
@@ -758,9 +733,9 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Array of datatable data objects (see [Data Table](https://www.avonnicomponents.com/components/datatable/) for allowed keys). Each object represents a row (horizontal variant) or a column (vertical variant) of the scheduler.
+     * Array of datatable data objects (see [Data Table](/components/datatable/) for allowed keys). Each object represents a row (horizontal variant) or a column (vertical variant) of the scheduler.
      * Some reserved keys are used by the scheduler outside of the data table columns:
-     * * `resourceName`: Displayed in the event edit dialog, and in the column header (vertical variant). Otherwise, the rows key field is used.
+     * * `resourceName`: Displayed in the event edit dialog, and in the column header (vertical variant). Otherwise, the resources key field is used.
      * * `resourceAvatarSrc`, `resourceAvatarFallbackIconName` and `resourceAvatarInitials`: If present, an avatar will be displayed to the left of the resource name, in the column header (vertical variant).
      *
      * @type {object[]}
@@ -768,33 +743,69 @@ export default class Scheduler extends LightningElement {
      * @required
      */
     @api
-    get rows() {
-        return this._rows;
+    get resources() {
+        return this._resources;
     }
-    set rows(value) {
-        this._rows = normalizeArray(value);
+    set resources(value) {
+        this._resources = normalizeArray(value, 'object');
 
         if (this._connected) {
-            this.initRows();
+            this.initResources();
         }
     }
 
     /**
-     * Name of a key of the row objects. This key needs to be present in all row objects. Its value needs to be unique to a row, as it will be used as the row identifier.
+     * Name of a key of the resource objects. This key needs to be present in all resource objects. Its value needs to be unique to a resource, as it will be used as its identifier.
      *
      * @type {string}
      * @public
      * @required
      */
     @api
-    get rowsKeyField() {
-        return this._rowsKeyField;
+    get resourcesKeyField() {
+        return this._resourcesKeyField;
     }
-    set rowsKeyField(value) {
-        this._rowsKeyField = value.toString();
+    set resourcesKeyField(value) {
+        this._resourcesKeyField = value.toString();
 
         if (this._connected) {
-            this.initRows();
+            this.initResources();
+        }
+    }
+
+    /**
+     * Deprecated. Use `resources` instead.
+     *
+     * @type {object[]}
+     * @deprecated
+     */
+    @api
+    get rows() {
+        return this._resources;
+    }
+    set rows(value) {
+        this._resources = normalizeArray(value, 'object');
+
+        if (this._connected) {
+            this.initResources();
+        }
+    }
+
+    /**
+     * Deprecated. Use `resourcesKeyField` instead.
+     *
+     * @type {string}
+     * @deprecated
+     */
+    @api
+    get rowsKeyField() {
+        return this._resourcesKeyField;
+    }
+    set rowsKeyField(value) {
+        this._resourcesKeyField = value.toString();
+
+        if (this._connected) {
+            this.initResources();
         }
     }
 
@@ -915,11 +926,11 @@ export default class Scheduler extends LightningElement {
      */
     get resourcesComboboxOptions() {
         const options = [];
-        this.rows.forEach((row) => {
-            if (row.resourceName) {
+        this.resources.forEach((resource) => {
+            if (resource.resourceName) {
                 options.push({
-                    label: row.resourceName,
-                    value: row[this.rowsKeyField]
+                    label: resource.resourceName,
+                    value: resource[this.resourcesKeyField]
                 });
             }
         });
@@ -1065,11 +1076,11 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Computed CSS class for the schedule rows.
+     * Computed CSS class for the schedule resources.
      *
      * @type {string}
      */
-    get rowClass() {
+    get resourceClass() {
         return classSet('slds-grid slds-is-relative')
             .add({
                 'slds-grid_vertical slds-col': this.isVertical
@@ -1182,20 +1193,20 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Duration of one column of the smallest unit header, in milliseconds.
+     * Duration of one cell of the smallest unit header, in milliseconds.
      *
      * @type {number}
      * @default 0
      */
-    get smallestColumnDuration() {
+    get smallestCellDuration() {
         const header = this.smallestHeader;
         if (!header) {
             return 0;
         }
 
-        const headerColumnEnd =
+        const headerCellEnd =
             addToDate(header.start, header.unit, header.span) - 1;
-        return dateTimeObjectFrom(headerColumnEnd).diff(header.start)
+        return dateTimeObjectFrom(headerCellEnd).diff(header.start)
             .milliseconds;
     }
 
@@ -1440,17 +1451,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Create the computed rows.
+     * Create the computed resources.
      */
-    initRows() {
-        if (!this.smallestHeader || !this.rows || !this.rowsKeyField) {
-            this.computedRows = [];
+    initResources() {
+        if (
+            !this.smallestHeader ||
+            !this.resources ||
+            !this.resourcesKeyField
+        ) {
+            this.computedResources = [];
             return;
         }
 
         let colorIndex = 0;
-        this.computedRows = this.rows.map((row) => {
-            const rowKey = row[this.rowsKeyField];
+        this.computedResources = this.resources.map((resource) => {
+            const resourceKey = resource[this.resourcesKeyField];
 
             // If there is no color left in the palette,
             // restart from the beginning
@@ -1458,29 +1473,29 @@ export default class Scheduler extends LightningElement {
                 colorIndex = 0;
             }
 
-            const occurrences = this.getOccurrencesFromRowKey(rowKey);
+            const occurrences = this.getOccurrencesFromResourceKey(resourceKey);
 
-            const computedRow = new SchedulerRow({
+            const computedResource = new SchedulerResource({
                 color: this.palette[colorIndex],
-                key: rowKey,
-                referenceColumns: this.smallestHeader.columns,
-                resourceName: row.resourceName,
+                key: resourceKey,
+                referenceCells: this.smallestHeader.cells,
+                resourceName: resource.resourceName,
                 events: occurrences,
-                // We store the initial row object in a variable,
+                // We store the initial resource object in a variable,
                 // in case one of its fields is used by an event's label
-                data: { ...row }
+                data: { ...resource }
             });
 
             // Set the min-height to the datatable rows height
             if (this._rowsHeight.length && !this.isVertical) {
                 const dataRowHeight = this._rowsHeight.find(
-                    (dataRow) => dataRow.rowKey === rowKey
+                    (dataRow) => dataRow.resourceKey === resourceKey
                 ).height;
-                computedRow.minHeight = dataRowHeight;
+                computedResource.minHeight = dataRowHeight;
             }
 
             colorIndex += 1;
-            return computedRow;
+            return computedResource;
         });
 
         if (this.isVertical) {
@@ -1505,9 +1520,8 @@ export default class Scheduler extends LightningElement {
             mouseY
         );
 
-        const row = this.isVertical
-            ? this.getRowFromPosition(mouseX)
-            : this.getRowFromPosition(mouseY);
+        const resourceAxis = this.isVertical ? mouseX : mouseY;
+        const resource = this.getResourceElementFromPosition(resourceAxis);
 
         const eventStartPosition = this.isVertical
             ? eventPosition.top
@@ -1533,19 +1547,19 @@ export default class Scheduler extends LightningElement {
             right,
             top,
             bottom,
-            row
+            resource
         };
     }
 
     /**
-     * Set the rows height and cell width.
+     * Set the resources height and cell width.
      */
-    updateRowsStyle() {
-        const rows = this.template.querySelectorAll(
-            '[data-element-id="div-row"]'
+    updateResourcesStyle() {
+        const resourceElements = this.template.querySelectorAll(
+            '[data-element-id="div-resource"]'
         );
 
-        rows.forEach((row, index) => {
+        resourceElements.forEach((resourceElement, index) => {
             let style;
             if (this.isVertical) {
                 style = `
@@ -1554,13 +1568,14 @@ export default class Scheduler extends LightningElement {
                     --avonni-scheduler-cell-height: ${this.cellHeight}px;
                 `;
             } else {
-                const key = row.dataset.key;
-                const computedRow = this.getRowFromKey(key);
-                const rowHeight = computedRow.height;
+                const key = resourceElement.dataset.key;
+                const computedResource = this.getResourceFromKey(key);
+                const rowHeight = computedResource.height;
 
-                const dataRowHeight = this._rowsHeight.find(
-                    (dataRow) => dataRow.rowKey === key
-                ).height;
+                const dataRow = this._rowsHeight.find(row => {
+                    return row.resourceKey === key;
+                });
+                const dataRowHeight = dataRow.height;
 
                 style = `
                     min-height: ${dataRowHeight}px;
@@ -1575,7 +1590,7 @@ export default class Scheduler extends LightningElement {
                 this.datatable.setRowHeight(key, normalizedHeight);
             }
 
-            row.style = style;
+            resourceElement.style = style;
         });
     }
 
@@ -1667,15 +1682,15 @@ export default class Scheduler extends LightningElement {
     updateOccurrencesOffset() {
         const scheduleRightBorder = this.schedulePosition.right;
 
-        // For each row
-        this.computedRows.forEach((row) => {
+        // For each resource
+        this.computedResources.forEach((resource) => {
             let rowHeight = 0;
             let levelHeight = 0;
 
-            // Get all the event occurrences of the row
+            // Get all the event occurrences of the resource
             const occurrenceElements = Array.from(
                 this.template.querySelectorAll(
-                    `.avonni-scheduler__primitive-event[data-row-key="${row.key}"]`
+                    `.avonni-scheduler__primitive-event[data-resource-key="${resource.key}"]`
                 )
             );
 
@@ -1683,14 +1698,17 @@ export default class Scheduler extends LightningElement {
                 // Sort the occurrences by ascending start date
                 occurrenceElements.sort((a, b) => a.from - b.from);
 
-                // Compute the level of the occurrences in the row
+                // Compute the level of the occurrences in the resource
                 const previousOccurrences = [];
                 occurrenceElements.forEach((occElement) => {
                     const start = occElement.startPosition;
                     const { level, levelsTotal, overlappingEvents } =
-                        this.computeEventLevelInRow(previousOccurrences, start);
+                        this.computeEventLevelInResource(
+                            previousOccurrences,
+                            start
+                        );
 
-                    const occurrence = row.events.find(
+                    const occurrence = resource.events.find(
                         (occ) => occ.key === occElement.occurrenceKey
                     );
 
@@ -1761,7 +1779,7 @@ export default class Scheduler extends LightningElement {
 
             if (!this.isVertical) {
                 // Add 10 pixels to the row for padding
-                row.height = rowHeight + 10;
+                resource.height = rowHeight + 10;
             }
         });
     }
@@ -1805,44 +1823,44 @@ export default class Scheduler extends LightningElement {
         }
 
         this._rowsHeight = [];
-        this.computedRows.forEach((row) => {
-            const rowKey = row.key;
+        this.computedResources.forEach((resource) => {
+            const resourceKey = resource.key;
             let height = 0;
             if (this.isVertical) {
                 height = this.cellHeight;
             } else {
-                height = this.datatable.getRowHeight(rowKey);
-                row.minHeight = height;
+                height = this.datatable.getRowHeight(resourceKey);
+                resource.minHeight = height;
             }
-            this._rowsHeight.push({ rowKey, height });
+            this._rowsHeight.push({ resourceKey, height });
         });
     }
 
     /**
-     * Update the columns and events of the currently loaded rows.
+     * Update the cells and events of the currently loaded resources.
      */
-    updateVisibleRows() {
-        this.computedRows.forEach((computedRow) => {
-            computedRow.events = this.getOccurrencesFromRowKey(computedRow.key);
-            computedRow.referenceColumns = this.smallestHeader.columns;
-            computedRow.initColumns();
+    updateVisibleResources() {
+        this.computedResources.forEach((resource) => {
+            resource.events = this.getOccurrencesFromResourceKey(resource.key);
+            resource.referenceCells = this.smallestHeader.cells;
+            resource.initCells();
         });
     }
 
     /**
      * Find the cell element at a given schedule position.
      *
-     * @param {HTMLElement} row The row element the cell is in.
+     * @param {HTMLElement} resource The resource element the cell is in.
      * @param {number} position The position of the cell.
      * @returns {(HTMLElement|undefined)} The cell element or undefined.
      */
-    getCellFromPosition(row, position) {
-        const cells = Array.from(
-            row.querySelectorAll('[data-element-id="div-cell"]')
+    getCellFromPosition(resource, position) {
+        const cellElements = Array.from(
+            resource.querySelectorAll('[data-element-id="div-cell"]')
         );
 
-        return cells.find((td, index) => {
-            const cellPosition = td.getBoundingClientRect();
+        return cellElements.find((cellElement, index) => {
+            const cellPosition = cellElement.getBoundingClientRect();
             const start = this.isVertical
                 ? cellPosition.top
                 : cellPosition.left;
@@ -1853,14 +1871,14 @@ export default class Scheduler extends LightningElement {
             // Handle the cases where the events are on the side
             // and the mouse moved out of the schedule
             if (index === 0 && start >= position) {
-                return td;
+                return cellElement;
             }
-            if (index === cells.length - 1 && position > end) {
-                return td;
+            if (index === cellElements.length - 1 && position > end) {
+                return cellElement;
             }
 
             if (position >= start && position < end) {
-                return td;
+                return cellElement;
             }
             return undefined;
         });
@@ -1912,17 +1930,17 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Find the event occurrences for a given row key field.
+     * Find the event occurrences for a given resource key field.
      *
-     * @param {string} key The unique key of the row.
+     * @param {string} key The unique key of the resource.
      * @returns {object[]} Array of occurrence objects.
      */
-    getOccurrencesFromRowKey(key) {
+    getOccurrencesFromResourceKey(key) {
         const occurrences = [];
         this.computedEvents.forEach((event) => {
             if (!event.disabled) {
                 const occ = event.occurrences.filter((occurrence) => {
-                    return occurrence.rowKey === key;
+                    return occurrence.resourceKey === key;
                 });
                 occurrences.push(occ);
             }
@@ -1932,31 +1950,31 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Find a computed row from its key field value.
+     * Find a computed resource from its key field value.
      *
-     * @param {string} key The unique key of the row.
-     * @returns {SchedulerRow} The computed row object.
+     * @param {string} key The unique key of the resource.
+     * @returns {SchedulerResource} The computed resource object.
      */
-    getRowFromKey(key) {
-        return this.computedRows.find((row) => row.key === key);
+    getResourceFromKey(key) {
+        return this.computedResources.find((resource) => resource.key === key);
     }
 
     /**
-     * Find a row element from its position in the schedule.
+     * Find a resource element from its position in the schedule.
      *
-     * @param {number} position A position on the row to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
-     * @returns {(HTMLElement|undefined)} The row element or undefined.
+     * @param {number} position A position on the resource to find, on the Y axis (horizontal variant) or the X axis (vertical variant).
+     * @returns {(HTMLElement|undefined)} The resource `<div>` element or undefined.
      */
-    getRowFromPosition(position) {
-        const rows = Array.from(
-            this.template.querySelectorAll('[data-element-id="div-row"]')
+    getResourceElementFromPosition(position) {
+        const resources = Array.from(
+            this.template.querySelectorAll('[data-element-id="div-resource"]')
         );
-        return rows.find((tr) => {
-            const rowPosition = tr.getBoundingClientRect();
-            const start = this.isVertical ? rowPosition.left : rowPosition.top;
+        return resources.find((div) => {
+            const divPosition = div.getBoundingClientRect();
+            const start = this.isVertical ? divPosition.left : divPosition.top;
             const end = this.isVertical
-                ? rowPosition.right
-                : rowPosition.bottom;
+                ? divPosition.right
+                : divPosition.bottom;
 
             return position >= start && position <= end;
         });
@@ -2010,13 +2028,13 @@ export default class Scheduler extends LightningElement {
      *
      * @param {object[]} previousOccurrences Array of previous occurrences for which the vertical level has already been computed.
      * @param {number} startPosition Start position of the occurrence.
-     * @param {number} level Level of the occurrence in their row. It starts at 0, so the occurrence is at the top of its row.
+     * @param {number} level Level of the occurrence in their resource. It starts at 0, so the occurrence is at the top of its resource.
      * @returns {object} Object with two keys:
-     * * level (number): level of the event occurrence in the row.
-     * * levelsTotal (number): Total number of levels in the row.
-     * * overlappingEvents (object[]): Array of overlapping events.
+     * * level (number): level of the event occurrence in the resource.
+     * * levelsTotal (number): Total number of levels in the resource (used for the vertical variant).
+     * * overlappingEvents (object[]): Array of overlapping events (used for the vertical variant).
      */
-    computeEventLevelInRow(previousOccurrences, startPosition, level = 0) {
+    computeEventLevelInResource(previousOccurrences, startPosition, level = 0) {
         const overlappingEvents = previousOccurrences.filter((occ) => {
             return startPosition < occ.end;
         });
@@ -2032,22 +2050,24 @@ export default class Scheduler extends LightningElement {
             level += 1;
 
             // Make sure there isn't another event at the same position
-            level = this.computeEventLevelInRow(
+            level = this.computeEventLevelInResource(
                 previousOccurrences,
                 startPosition,
                 level
             ).level;
         }
 
-        // Update the total count of events overlapping,
-        // for the current occurrence and the overlapped one
         let levelsTotal = level + 1;
-        const sameLevelEventOverlapsMoreEvents =
-            sameLevelEvent && sameLevelEvent.levelsTotal > levelsTotal;
-        if (sameLevelEventOverlapsMoreEvents) {
-            levelsTotal = sameLevelEvent.levelsTotal;
-        } else if (sameLevelEvent) {
-            sameLevelEvent.levelsTotal = levelsTotal;
+        if (this.isVertical) {
+            // Update the total count of events overlapping,
+            // for the current occurrence and the overlapped one
+            const sameLevelEventOverlapsMoreEvents =
+                sameLevelEvent && sameLevelEvent.levelsTotal > levelsTotal;
+            if (sameLevelEventOverlapsMoreEvents) {
+                levelsTotal = sameLevelEvent.levelsTotal;
+            } else if (sameLevelEvent) {
+                sameLevelEvent.levelsTotal = levelsTotal;
+            }
         }
 
         return { level, levelsTotal, overlappingEvents };
@@ -2135,6 +2155,9 @@ export default class Scheduler extends LightningElement {
         };
     }
 
+    /**
+    * Reset the width of the first column to the width it had before being collapsed.
+    */
     resetFirstColumnWidth() {
         const columnWidth = this.firstCol.getBoundingClientRect().width;
         this._initialFirstColWidth = columnWidth;
@@ -2148,7 +2171,7 @@ export default class Scheduler extends LightningElement {
      */
     resizeEventToPosition(position) {
         const occurrence = this.selection.occurrence;
-        const { row, mouseX, mouseY } = this._initialState;
+        const { resource, mouseX, mouseY } = this._initialState;
         const distanceMoved = this.isVertical
             ? position - mouseY
             : position - mouseX;
@@ -2166,9 +2189,12 @@ export default class Scheduler extends LightningElement {
         const computedPosition = position + labelWidth;
 
         // Get the events present in the cell crossed
-        const hoveredCell = this.getCellFromPosition(row, computedPosition);
-        const computedRow = this.getRowFromKey(row.dataset.key);
-        const computedCell = computedRow.getColumnFromStart(
+        const hoveredCell = this.getCellFromPosition(
+            resource,
+            computedPosition
+        );
+        const computedResource = this.getResourceFromKey(resource.dataset.key);
+        const computedCell = computedResource.getCellFromStart(
             Number(hoveredCell.dataset.start)
         );
         const cellEvents = computedCell.events;
@@ -2188,11 +2214,11 @@ export default class Scheduler extends LightningElement {
         });
 
         // If one of them do, the dragged event is overlapping it.
-        // We have to rerender the scheduler so the row height enlarges.
+        // We have to rerender the scheduler so the resource height enlarges.
         if (eventIsHovered) {
             const cell = labelWidth
                 ? hoveredCell
-                : this.getCellFromPosition(row, position);
+                : this.getCellFromPosition(resource, position);
             this.resizeEventToCell(cell);
         } else {
             // If we are not passing above another event,
@@ -2210,10 +2236,10 @@ export default class Scheduler extends LightningElement {
         const side = this._resizeSide;
         const occurrence = this.selection.occurrence;
 
-        // Remove the occurrence from the row
-        const rowKey = occurrence.rowKey;
-        const row = this.getRowFromKey(rowKey);
-        row.removeEvent(occurrence);
+        // Remove the occurrence from the resource
+        const resourceKey = occurrence.resourceKey;
+        const resource = this.getResourceFromKey(resourceKey);
+        resource.removeEvent(occurrence);
 
         if (side === 'end') {
             // Update the end date if the event was resized from the right
@@ -2223,9 +2249,9 @@ export default class Scheduler extends LightningElement {
             occurrence.from = dateTimeObjectFrom(Number(cell.dataset.start));
         }
 
-        // Add the occurrence to the row with the updated start/end date
-        row.events.push(occurrence);
-        row.addEventToColumns(occurrence);
+        // Add the occurrence to the resource with the updated start/end date
+        resource.events.push(occurrence);
+        resource.addEventToCells(occurrence);
 
         // Force the rerender
         this.computedEvents = [...this.computedEvents];
@@ -2234,10 +2260,10 @@ export default class Scheduler extends LightningElement {
     /**
      * Drag an event to a cell and save the change.
      *
-     * @param {HTMLElement} row The row element the event is being dragged to.
+     * @param {HTMLElement} resource The resource element the event is being dragged to.
      * @param {HTMLElement} cell The cell element the event is being dragged to.
      */
-    dragEventTo(row, cell) {
+    dragEventTo(resource, cell) {
         const { occurrence, draftValues } = this.selection;
 
         // Update the start and end date
@@ -2248,19 +2274,19 @@ export default class Scheduler extends LightningElement {
             .toUTC()
             .toISO();
 
-        // Update the rows
-        const rowKey = row.dataset.key;
-        const previousRowKey = occurrence.rowKey;
+        // Update the resources
+        const resourceKey = resource.dataset.key;
+        const previousResourceKey = occurrence.resourceKey;
 
-        if (previousRowKey !== rowKey) {
+        if (previousResourceKey !== resourceKey) {
             const keyFieldIndex = occurrence.keyFields.findIndex(
-                (key) => key === previousRowKey
+                (key) => key === previousResourceKey
             );
             draftValues.keyFields = [...occurrence.keyFields];
             draftValues.keyFields.splice(keyFieldIndex, 1);
 
-            if (!draftValues.keyFields.includes(rowKey)) {
-                draftValues.keyFields.push(rowKey);
+            if (!draftValues.keyFields.includes(resourceKey)) {
+                draftValues.keyFields.push(resourceKey);
             }
         }
     }
@@ -2370,11 +2396,11 @@ export default class Scheduler extends LightningElement {
         // Create the visible events
         this.computedEvents = this.createVisibleEvents();
 
-        // Create the rows or update the visible columns
-        if (!this.computedRows.length) {
-            this.initRows();
+        // Create the resources or update the existing ones
+        if (!this.computedResources.length) {
+            this.initResources();
         } else {
-            this.updateVisibleRows();
+            this.updateVisibleResources();
         }
 
         this._initialFirstColWidth = 0;
@@ -2527,7 +2553,7 @@ export default class Scheduler extends LightningElement {
             // On the first move, display the new event on the schedule.
         } else if (this.selection && this.selection.newEvent) {
             this.computedEvents.push(this.selection.event);
-            this.updateVisibleRows();
+            this.updateVisibleResources();
         }
     }
 
@@ -2567,10 +2593,12 @@ export default class Scheduler extends LightningElement {
                 ? position.x
                 : position.y;
 
-            // Find the row and cell the event was dropped on
-            const rowElement = this.getRowFromPosition(valueOnTheHeadersAxis);
+            // Find the resource and cell the event was dropped on
+            const resourceElement = this.getResourceElementFromPosition(
+                valueOnTheHeadersAxis
+            );
             const cellElement = this.getCellFromPosition(
-                rowElement,
+                resourceElement,
                 valueOnTheResourceAxis
             );
 
@@ -2593,7 +2621,7 @@ export default class Scheduler extends LightningElement {
                     }
                     break;
                 default:
-                    this.dragEventTo(rowElement, cellElement);
+                    this.dragEventTo(resourceElement, cellElement);
                     break;
             }
 
@@ -2609,7 +2637,7 @@ export default class Scheduler extends LightningElement {
                 } else {
                     this.crud.saveEvent();
                 }
-                this.updateVisibleRows();
+                this.updateVisibleResources();
                 this.cleanSelection();
             }
         } else if (this.selection) {
@@ -2625,13 +2653,13 @@ export default class Scheduler extends LightningElement {
         if (event.detail.isUserTriggered) {
             this.datatable.style.width = null;
             this._rowsHeight = [];
-            this.computedRows.forEach((row) => {
-                row.minHeight = undefined;
+            this.computedResources.forEach((resource) => {
+                resource.minHeight = undefined;
             });
-            this.computedRows = [...this.computedRows];
+            this.computedResources = [...this.computedResources];
         } else {
             this.updateRowsHeight();
-            this.updateRowsStyle();
+            this.updateResourcesStyle();
         }
     }
 
@@ -2757,7 +2785,7 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the change event fired by the edit dialog key fields combobox. Save the new row keys to the draft values.
+     * Handle the change event fired by the edit dialog key fields combobox. Save the new resource keys to the draft values.
      */
     handleEventKeyFieldsChange(event) {
         const keyFields = event.detail.value;
@@ -2778,20 +2806,20 @@ export default class Scheduler extends LightningElement {
      */
     handleCloseRecurrenceDialog() {
         if (this._resizeSide) {
-            const row = this._initialState.row;
+            const resource = this._initialState.resource;
             let position;
             if (this._resizeSide === 'start') {
                 position = this._initialState.eventStartPosition;
             } else {
                 position = this._initialState.eventEndPosition;
             }
-            const initialCell = this.getCellFromPosition(row, position);
+            const initialCell = this.getCellFromPosition(resource, position);
             this.resizeEventToCell(initialCell);
         }
         this.cleanDraggedElement();
         this.cleanSelection();
         this.hideRecurrenceDialog();
-        this.updateVisibleRows();
+        this.updateVisibleResources();
     }
 
     /**
@@ -2827,7 +2855,7 @@ export default class Scheduler extends LightningElement {
             this.crud.saveEvent();
         }
 
-        this.updateVisibleRows();
+        this.updateVisibleResources();
         this.cleanDraggedElement();
         this.cleanSelection();
 

@@ -158,9 +158,9 @@
                 class="slds-show slds-border_top avonni-scheduler__datatable"
                 max-column-width="9999999999"
                 columns={columns}
-                records={rows}
+                records={resources}
                 hide-checkbox-column
-                key-field={rowsKeyField}
+                key-field={resourcesKeyField}
                 resize-column-disabled={resizeColumnDisabled}
                 data-element-id="avonni-datatable"
                 onresize={handleDatatableResize}
@@ -247,16 +247,16 @@
                     data-element-id="div-schedule-body"
                 >
                     <template
-                        for:each={computedRows}
-                        for:item="row"
+                        for:each={computedResources}
+                        for:item="resource"
                         for:index="index"
                     >
                         <div
-                            key={row.key}
-                            class={rowClass}
-                            data-element-id="div-row"
+                            key={resource.key}
+                            class={resourceClass}
+                            data-element-id="div-resource"
                             data-index={index}
-                            data-key={row.key}
+                            data-key={resource.key}
                         >
                             <!-- Vertical header -->
                             <div
@@ -271,27 +271,27 @@
                                 data-element-id="div-vertical-resource-header"
                             >
                                 <c-primitive-avatar
-                                    if:true={row.resourceAvatar}
+                                    if:true={resource.resourceAvatar}
                                     class="slds-m-right_x-small"
-                                    fallback-icon-name={row.resourceAvatar.fallbackIconName}
-                                    initials={row.resourceAvatar.initials}
-                                    src={row.resourceAvatar.src}
+                                    fallback-icon-name={resource.resourceAvatar.fallbackIconName}
+                                    initials={resource.resourceAvatar.initials}
+                                    src={resource.resourceAvatar.src}
                                     size="small"
                                     variant="circle"
                                 ></c-primitive-avatar>
                                 <div class="slds-truncate">
-                                    {row.resourceName}
+                                    {resource.resourceName}
                                 </div>
                             </div>
 
                             <!-- Cells -->
-                            <template for:each={row.columns} for:item="column">
+                            <template for:each={resource.cells} for:item="cell">
                                 <div
-                                    key={column.start}
+                                    key={cell.start}
                                     class={cellClass}
-                                    data-end={column.end}
+                                    data-end={cell.end}
                                     data-element-id="div-cell"
-                                    data-start={column.start}
+                                    data-start={cell.start}
                                     oncontextmenu={handleEmptySpotContextMenu}
                                     onmousedown={handleMouseDown}
                                     ondblclick={handleDoubleClick}
@@ -310,8 +310,8 @@
                                     <c-primitive-scheduler-event-occurrence
                                         key={occurrence.key}
                                         color={event.color}
-                                        header-cells={smallestHeader.columns}
-                                        cell-duration={smallestColumnDuration}
+                                        header-cells={smallestHeader.cells}
+                                        cell-duration={smallestCellDuration}
                                         cell-height={cellHeight}
                                         cell-width={cellWidth}
                                         date-format={dateFormat}
@@ -325,8 +325,8 @@
                                         occurrence-key={occurrence.key}
                                         read-only={readOnly}
                                         reference-line={event.referenceLine}
-                                        row-key={occurrence.rowKey}
-                                        rows={computedRows}
+                                        resource-key={occurrence.resourceKey}
+                                        resources={computedResources}
                                         scroll-left-offset={datatableWidth}
                                         title={occurrence.title}
                                         theme={event.theme}
@@ -335,7 +335,7 @@
                                         data-element-id="avonni-primitive-scheduler-event-occurrence"
                                         data-event-name={event.name}
                                         data-key={occurrence.key}
-                                        data-row-key={occurrence.rowKey}
+                                        data-resource-key={occurrence.resourceKey}
                                         onprivatefocus={handleEventFocus}
                                         onprivateblur={hideDetailPopover}
                                         onprivatecontextmenu={handleEventContextMenu}

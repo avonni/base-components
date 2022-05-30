@@ -112,8 +112,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _occurrence = {};
     _readOnly = false;
     _referenceLine = false;
-    _rowKey;
-    _rows = [];
+    _resourceKey;
+    _resources = [];
     _title;
     _to;
     _variant = VARIANTS.default;
@@ -366,34 +366,66 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Unique key of the scheduler row this occurrence appears on.
+     * Unique key of the scheduler resource this occurrence appears on.
      *
      * @type {string}
      * @public
      * @required
      */
     @api
-    get rowKey() {
-        return this._rowKey;
+    get resourceKey() {
+        return this._resourceKey;
     }
-    set rowKey(value) {
-        this._rowKey = value;
+    set resourceKey(value) {
+        this._resourceKey = value;
 
         if (this._connected) this.initLabels();
     }
-
+    
     /**
-     * Array of the scheduler row objects.
+     * Array of the scheduler resource objects.
      *
      * @type {object[]}
      * @public
      */
     @api
+    get resources() {
+        return this._resources;
+    }
+    set resources(value) {
+        this._resources = normalizeArray(value);
+
+        if (this._connected) this.initLabels();
+    }
+    
+    /**
+     * Deprecated. Use `resource-key` instead.
+     *
+     * @type {string}
+     * @deprecated
+     */
+    @api
+    get rowKey() {
+        return this._resourceKey;
+    }
+    set rowKey(value) {
+        this._resourceKey = value;
+
+        if (this._connected) this.initLabels();
+    }
+
+    /**
+     * Deprecated. Use `resources` instead.
+     *
+     * @type {object[]}
+     * @deprecated
+     */
+    @api
     get rows() {
-        return this._rows;
+        return this._resources;
     }
     set rows(value) {
-        this._rows = normalizeArray(value);
+        this._resources = normalizeArray(value);
 
         if (this._connected) this.initLabels();
     }
@@ -618,7 +650,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @type {string}
      */
     get computedColor() {
-        return this.color || this.rowColor;
+        return this.color || this.resourceColor;
     }
 
     /**
@@ -695,7 +727,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Offset space between the start of the row and the start position of the occurrence.
+     * Offset space between the start of the resource and the start position of the occurrence.
      *
      * @type {number}
      * @default 0
@@ -748,15 +780,15 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Default color of the occurrence's row.
+     * Default color of the occurrence's resource.
      *
      * @type {string}
      */
-    get rowColor() {
-        const row = this.rows.find(
-            (computedRow) => computedRow.key === this.rowKey
+    get resourceColor() {
+        const resource = this.resources.find(
+            (computedResource) => computedResource.key === this.resourceKey
         );
-        return row && row.color;
+        return resource && resource.color;
     }
 
     /**
@@ -899,21 +931,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         // Place the event at the right resource,
         if (!this.referenceLine && !this.isVertical) {
-            const rows = this.rows;
+            const resources = this.resources;
             let y = 0;
-            for (let j = 0; j < rows.length; j++) {
-                const rowKey = rows[j].key;
-                if (rowKey === this.rowKey) break;
+            for (let j = 0; j < resources.length; j++) {
+                const resourceKey = resources[j].key;
+                if (resourceKey === this.resourceKey) break;
 
-                y += rows[j].height;
+                y += resources[j].height;
             }
             y += this.offsetSide;
             this._y = y;
         } else if (!this.referenceLine && this.isVertical) {
-            const rowIndex = this.rows.findIndex((row) => {
-                return row.key === this.rowKey;
+            const resourceIndex = this.resources.findIndex((resource) => {
+                return resource.key === this.resourceKey;
             });
-            this._x = rowIndex * cellWidth;
+            this._x = resourceIndex * cellWidth;
         }
 
         this.updateHostTranslate();
@@ -938,10 +970,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (i < 0) return;
 
-        let size = 0;
+        let length = 0;
 
         // If the event starts in the middle of a cell,
-        // add only the appropriate size in the first cell
+        // add only the appropriate length in the first cell
         if (headerCells[i].start < from) {
             const cellEnd = DateTime.fromMillis(headerCells[i].end);
             const eventDuration = cellEnd.diff(from).milliseconds;
@@ -953,18 +985,18 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
             const eventPercentageOfCell = eventDuration / cellDuration;
             const offsetSize = cellSize * eventPercentageOfCell;
-            size += offsetSize;
+            length += offsetSize;
 
             // If the event ends before the end of the first column
-            // remove the appropriate size of the first column
+            // remove the appropriate length of the first column
             if (cellEnd > to) {
                 const durationLeft = cellEnd.diff(to).milliseconds;
                 const percentageLeft = durationLeft / cellDuration;
-                size = size - percentageLeft * cellSize;
+                length = length - percentageLeft * cellSize;
                 if (this.isVertical) {
-                    element.style.height = `${size}px`;
+                    element.style.height = `${length}px`;
                 } else {
-                    element.style.width = `${size}px`;
+                    element.style.width = `${length}px`;
                 }
                 return;
             }
@@ -972,30 +1004,30 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             i += 1;
         } else if (this.referenceLine) return;
 
-        // Add the size of the header cells completely filled by the event
+        // Add the length of the header cells completely filled by the event
         while (i < headerCells.length) {
             if (headerCells[i].start + cellDuration > to) break;
-            size += cellSize;
+            length += cellSize;
             i += 1;
         }
 
         // If the event ends in the middle of a column,
-        // add the remaining width
+        // add the remaining length
         if (headerCells[i] && headerCells[i].start < to) {
             const cellStart = DateTime.fromMillis(headerCells[i].start);
             const eventDurationLeft = to.diff(cellStart).milliseconds;
             const colPercentEnd = eventDurationLeft / cellDuration;
-            size += cellSize * colPercentEnd;
+            length += cellSize * colPercentEnd;
         }
 
         if (this.isVertical) {
-            element.style.height = `${size}px`;
+            element.style.height = `${length}px`;
             if (cellWidth && this.numberOfEventsInThisTimeFrame) {
                 const width = cellWidth / this.numberOfEventsInThisTimeFrame;
                 element.style.width = `${width}px`;
             }
         } else {
-            element.style.width = `${size}px`;
+            element.style.width = `${length}px`;
         }
     }
 
@@ -1012,10 +1044,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (this.isVertical) {
             element.style.width = `${this.cellWidth}px`;
         } else {
-            const row = this.rows.find((rw) => rw.key === this.rowKey);
+            const resource = this.resources.find((rw) => rw.key === this.resourceKey);
 
-            if (row) {
-                const height = row.height;
+            if (resource) {
+                const height = resource.height;
                 element.style.height = `${height}px`;
             }
         }
@@ -1049,12 +1081,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Initialize the labels values.
      */
     initLabels() {
-        if (!this.eventData || !this.rows.length || !this.rowKey) return;
+        if (!this.eventData || !this.resources.length || !this.resourceKey) return;
 
         const labels = {};
-        const row = this.rows.find((rw) => rw.key === this.rowKey);
+        const resource = this.resources.find((rw) => rw.key === this.resourceKey);
 
-        if (row) {
+        if (resource) {
             Object.entries(this.labels).forEach((label) => {
                 const position = label[0];
                 const { value, fieldName, iconName } = label[1];
@@ -1065,11 +1097,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                     labels[position].value = value;
                 } else if (fieldName) {
                     // Else, search for a field name in the occurrence,
-                    // then the event, then the row
+                    // then the event, then the resource
                     const computedValue =
                         this[fieldName] ||
                         this.eventData[fieldName] ||
-                        row.data[fieldName];
+                        resource.data[fieldName];
 
                     // If the field name is a date, parse it with the date format
                     labels[position].value =

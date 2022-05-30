@@ -315,10 +315,10 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             return undefined;
         }
 
-        const columns = this.smallestHeader.columns;
-        const lastIndex = columns.length - 1;
-        const start = dateTimeObjectFrom(columns[0].start);
-        const end = dateTimeObjectFrom(columns[lastIndex].end);
+        const cells = this.smallestHeader.cells;
+        const lastIndex = cells.length - 1;
+        const start = dateTimeObjectFrom(cells[0].start);
+        const end = dateTimeObjectFrom(cells[lastIndex].end);
         return Interval.fromDateTimes(start, end);
     }
 
@@ -375,7 +375,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     /**
-     * Computed CSS class of each header line/column (depending on the variant).
+     * Computed CSS class of each header cell.
      *
      * @type {string}
      */
@@ -455,7 +455,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 (header) => header.unit === referenceUnit
             );
 
-            const referenceColumns = numberOfUnitsBetweenDates(
+            const referenceCells = numberOfUnitsBetweenDates(
                 referenceUnit,
                 this.start,
                 this.end
@@ -475,7 +475,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 availableTimeFrames: this.availableTimeFrames,
                 availableDaysOfTheWeek: this.availableDaysOfTheWeek,
                 availableMonths: this.availableMonths,
-                numberOfColumns: referenceColumns / referenceSpan,
+                numberOfCells: referenceCells / referenceSpan,
                 isReference: true,
                 canExpandOverEndOfUnit: !this.endOnTimeSpanUnit,
                 // If there is no header using the timeSpan unit,
@@ -504,7 +504,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                 ) {
                     headerObject = reference;
                 } else {
-                    const columns = numberOfUnitsBetweenDates(
+                    const cells = numberOfUnitsBetweenDates(
                         unit,
                         this.start,
                         this.end
@@ -519,7 +519,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
                         availableTimeFrames: this.availableTimeFrames,
                         availableDaysOfTheWeek: this.availableDaysOfTheWeek,
                         availableMonths: this.availableMonths,
-                        numberOfColumns: columns / header.span
+                        numberOfCells: cells / header.span
                     });
                 }
 
@@ -571,7 +571,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
 
         const totalWidth = this.template.host.getBoundingClientRect().width;
         const numberOfVisibleCells = Math.ceil(totalWidth / cellSize);
-        const totalNumberOfCells = this.smallestHeader.numberOfColumns;
+        const totalNumberOfCells = this.smallestHeader.numberOfCells;
 
         // If the maximum number of visible cells on the screen is bigger
         // than the actual number of cells, recompute the cell width so the
@@ -580,7 +580,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             cellSize = totalWidth / totalNumberOfCells;
         }
         this.computedHeaders.forEach((header) => {
-            header.computeColumnWidths(cellSize, this.smallestHeader.columns);
+            header.computeCellWidths(cellSize, this.smallestHeader.cells);
         });
         this.dispatchCellSizeChange(cellSize);
         this.updateCellsSize();
@@ -603,7 +603,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             // Give cells their width/height
             const cells = row.querySelectorAll('[data-element-id="div-cell"]');
             cells.forEach((cell, index) => {
-                cell.style = `--avonni-scheduler-cell-size: ${header.columnWidths[index]}px`;
+                cell.style = `--avonni-scheduler-cell-size: ${header.cellWidths[index]}px`;
             });
         });
     }
