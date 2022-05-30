@@ -126,8 +126,9 @@ export default {
         variant: {
             name: 'variant',
             control: {
-                type: 'text'
+                type: 'select'
             },
+            options: ['base', 'path'],
             description:
                 'The variant change the apparence of the kanban. Valid values include base and path. Default to base.',
             table: {
