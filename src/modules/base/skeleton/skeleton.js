@@ -64,7 +64,6 @@ export default class Skeleton extends LightningElement {
     renderedCallback() {
         if (!this._initialRender) {
             this.setSkeletonSize();
-            if (this.isWaveAnimation) this.setWaveSize();
         }
         this._initialRender = true;
     }
@@ -177,19 +176,5 @@ export default class Skeleton extends LightningElement {
         );
         element.style.width = `${this.width}px`;
         element.style.height = `${this.height}px`;
-    }
-
-    setWaveSize() {
-        let waveContainer = this.template.querySelector(
-            '[data-element-id="avonni-skeleton__wave-container"]'
-        );
-        waveContainer.style.height = `${this.height}px`;
-        waveContainer.style.width = `${this.width}px`;
-
-        let waveBar = this.template.querySelector(
-            '[data-element-id="avonni-skeleton__wave-bar"]'
-        );
-        waveBar.style.height = `${this.height}px`;
-        waveBar.style.width = '10px';
     }
 }
