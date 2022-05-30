@@ -76,6 +76,7 @@
                         class={computedInputClass}
                         disabled={disabled}
                         data-element-id="input-left"
+                        data-group-name="input"
                         oninput={handleChange}
                         onmousedown={showLeftBubble}
                         onmouseup={hideLeftBubble}
@@ -84,6 +85,7 @@
                         if:true={pin}
                         class={computedBubbleLeftClass}
                         data-element-id="left-bubble"
+                        data-group-name="bubble"
                     >
                         <p>
                             <lightning-formatted-number
@@ -113,6 +115,7 @@
                         class={computedInputClass}
                         disabled={disabled}
                         data-element-id="input-right"
+                        data-group-name="input"
                         oninput={handleChange}
                         onmousedown={showRightBubble}
                         onmouseup={hideRightBubble}
@@ -121,6 +124,7 @@
                         if:true={pin}
                         class={computedBubbleRightClass}
                         data-element-id="right-bubble"
+                        data-group-name="bubble"
                     >
                         <p>
                             <lightning-formatted-number
@@ -142,7 +146,7 @@
         </div>
         <div class="avonni-range__progress-container">
             <div
-                class="avonni-range__progress"
+                class={computedProgressClass}
                 data-element-id="progress-bar"
             ></div>
         </div>

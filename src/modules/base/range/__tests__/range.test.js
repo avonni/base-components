@@ -121,10 +121,15 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '.slds-slider__range'
+                '[data-group-name="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeFalsy();
+                expect(
+                    element.shadowRoot
+                        .querySelector('[data-element-id="progress-bar"]')
+                        .classList.contains('avonni-range__progress_disabled')
+                ).toEqual(false);
             });
         });
     });
@@ -133,9 +138,16 @@ describe('Range', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const inputs = element.shadowRoot.querySelectorAll('.slds');
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-group-name="input"]'
+            );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
+                expect(
+                    element.shadowRoot
+                        .querySelector('[data-element-id="progress-bar"]')
+                        .classList.contains('avonni-range__progress_disabled')
+                ).toEqual(true);
             });
         });
     });
@@ -190,7 +202,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range__bubble'
+                '[data-group-name="bubble"]'
             );
             expect(bubbles).toHaveLength(0);
         });
@@ -201,7 +213,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range__bubble'
+                '[data-group-name="bubble"]'
             );
             expect(bubbles).toHaveLength(2);
         });
@@ -374,7 +386,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '.slds-slider__range'
+                '[data-group-name="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.step).toBe('3');
@@ -583,7 +595,7 @@ describe('Range', () => {
                 '[data-element-id="horizontal-unit-container"]'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range__bubble'
+                '[data-group-name="bubble"]'
             );
 
             expect(wrapper).toBeFalsy();

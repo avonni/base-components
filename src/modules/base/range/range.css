@@ -232,6 +232,10 @@
     z-index: 2;
 }
 
+.avonni-range__progress_disabled {
+    background: #919191;
+}
+
 .avonni-range__bubble_visible {
     opacity: 1;
 }
