@@ -469,7 +469,18 @@ export default class Range extends LightningElement {
      */
 
     /**
-     * Computed left bubble class styling.
+     * Computed progressr class styling.
+     *
+     * @type {string}
+     */
+    get computedProgressClass() {
+        return classSet('avonni-range__progress').add({
+            'avonni-range__progress_disabled': this.disabled
+        });
+    }
+
+    /**
+     * Computed label class styling.
      *
      * @type {string}
      */
