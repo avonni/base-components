@@ -94,56 +94,62 @@
                         for:item="group"
                         key={group.index}
                     >
-                        <div if:true={group.headerActions}>
-                            <c-button-menu
-                                alternative-text="Show menu"
-                                icon-size="x-small"
-                                menu-alignment="left"
-                                class="avonni-kanban__header_action"
-                                disabled={readOnly}
-                                variant="bare"
-                                icon-name="action:more"
-                                hide-down-arrow
-                            >
-                                <template
-                                    for:each={group.headerActions}
-                                    for:item="action"
+                        <div
+                            class="avonni-kanban__group_header"
+                            onmousedown={handleGroupMouseDown}
+                            onmouseup={handleGroupMouseUp}
+                        >
+                            <div if:true={group.headerActions}>
+                                <c-button-menu
+                                    alternative-text="Show menu"
+                                    icon-size="x-small"
+                                    menu-alignment="left"
+                                    class="avonni-kanban__header_action"
+                                    disabled={readOnly}
+                                    variant="bare"
+                                    icon-name="action:more"
+                                    hide-down-arrow
                                 >
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        value={action.name}
-                                        label={action.label}
-                                        onactionclick={handleActionClick}
-                                        disabled={action.disabled}
-                                        prefix-icon-name={action.iconName}
-                                        class="slds-text-color_default"
-                                    ></lightning-menu-item>
-                                </template>
-                            </c-button-menu>
-                        </div>
-                        <div class="avonni-kanban__summarize_wrapper">
-                            <h2
-                                class="
-                                    avonni-kanban__tile-title
-                                    slds-text-heading_medium
-                                    slds-text-color_weak
-                                "
-                            >
-                                {group.label}
-                            </h2>
-                            <c-output-data
-                                value={group.summarize.value}
-                                type={group.summarize.type}
-                                type-attributes={group.summarize.typeAttributes}
-                                variant="label-hidden"
-                                class="
-                                    slds-text-align_center
-                                    slds-text-heading_large
-                                    slds-text-color_success
-                                    avonni-kanban__summarize
-                                "
-                                data-element-id="summarize"
-                            ></c-output-data>
+                                    <template
+                                        for:each={group.headerActions}
+                                        for:item="action"
+                                    >
+                                        <lightning-menu-item
+                                            key={action.name}
+                                            value={action.name}
+                                            label={action.label}
+                                            onactionclick={handleActionClick}
+                                            disabled={action.disabled}
+                                            prefix-icon-name={action.iconName}
+                                            class="slds-text-color_default"
+                                        ></lightning-menu-item>
+                                    </template>
+                                </c-button-menu>
+                            </div>
+                            <div class="avonni-kanban__summarize_wrapper">
+                                <h2
+                                    class="
+                                        avonni-kanban__tile-title
+                                        slds-text-heading_medium
+                                        slds-text-color_weak
+                                    "
+                                >
+                                    {group.label}
+                                </h2>
+                                <c-output-data
+                                    value={group.summarize.value}
+                                    type={group.summarize.type}
+                                    type-attributes={group.summarize.typeAttributes}
+                                    variant="label-hidden"
+                                    class="
+                                        slds-text-align_center
+                                        slds-text-heading_large
+                                        slds-text-color_success
+                                        avonni-kanban__summarize
+                                    "
+                                    data-element-id="summarize"
+                                ></c-output-data>
+                            </div>
                         </div>
                         <div
                             data-element-id="avonni-kanban__group"

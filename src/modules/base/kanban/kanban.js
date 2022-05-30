@@ -53,6 +53,7 @@ export default class Kanban extends LightningElement {
     _actions = [];
     _clickedGroupIndex = 0;
     _draggedTile;
+    _draggedGroup;
     _fields = [];
     _groupFieldName;
     _groupValues = [];
@@ -553,6 +554,63 @@ export default class Kanban extends LightningElement {
         this.animateTiles(groupElements);
     }
 
+    handleGroupMouseDown(event) {
+        if (this._variant !== 'base') return;
+
+        this._initialPos.x =
+            event.currentTarget.getBoundingClientRect().x +
+            event.currentTarget.offsetWidth / 2;
+        this._initialPos.y = event.currentTarget.getBoundingClientRect().y + 15;
+
+        this._clickedGroupIndex = Array.from(
+            this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field"]'
+            )
+        ).indexOf(event.currentTarget.parentElement);
+        this._draggedGroup = event.currentTarget.parentElement;
+        this._draggedGroup.classList.add('avonni-kanban__dragged_group');
+    }
+
+    handleGroupMouseMove(event) {
+        if (!this._draggedGroup) return;
+        this._releasedGroupIndex = Math.min(
+            Math.floor(
+                event.clientX /
+                    event.currentTarget.children[this._clickedGroupIndex]
+                        .offsetWidth
+            ),
+            this.groupValues.length - 1
+        );
+        console.log(this._releasedGroupIndex);
+        // const groups = this.template.querySelectorAll(
+        //     '[data-element-id="avonni-kanban__field"]'
+        // );
+        // groups.forEach((group, i) => {
+        //     if (this._clickedGroupIndex < i)
+        //         group.classList.add('avonni-kanban__translate_right');
+        // });
+    }
+
+    handleGroupMouseUp() {
+        if (!this._draggedGroup) return;
+        const groups = JSON.parse(JSON.stringify(this._groupValues));
+        groups.splice(
+            this._releasedGroupIndex,
+            0,
+            groups.splice(this._clickedGroupIndex, 1)[0]
+        );
+        this._groupValues = groups;
+        this._draggedGroup.style.transform = '';
+        this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
+        this._draggedGroup = null;
+        this.template
+            .querySelectorAll('[data-element-id="avonni-kanban__field"]')
+            .forEach((group) => {
+                group.classList.remove('avonni-kanban__translate_left');
+                group.classList.remove('avonni-kanban__translate_right');
+            });
+    }
+
     /**
      *
      * Finds the index of initial and final position of the dragged tile
@@ -638,7 +696,7 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseMove(event) {
-        if (!this._draggedTile) return;
+        if (!this._draggedTile && !this._draggedGroup) return;
         this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
         this._kanbanPos.bottom =
             this._kanbanPos.top + event.currentTarget.offsetHeight;
@@ -657,9 +715,16 @@ export default class Kanban extends LightningElement {
         } else if (currentX > this._kanbanPos.right) {
             currentX = this._kanbanPos.right;
         }
-        this._draggedTile.style.transform = `translate(${
-            currentX - this._initialPos.x
-        }px, ${currentY - this._initialPos.y}px)`;
+        if (this._draggedTile)
+            this._draggedTile.style.transform = `translate(${
+                currentX - this._initialPos.x
+            }px, ${currentY - this._initialPos.y}px)`;
+        if (this._draggedGroup) {
+            this.handleGroupMouseMove(event);
+            this._draggedGroup.style.transform = `translate(${
+                currentX - this._initialPos.x
+            }px, ${currentY - this._initialPos.y}px)`;
+        }
     }
 
     /**
