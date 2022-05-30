@@ -447,8 +447,8 @@ CustomDotRange.args = {
     }
 };
 
-export const Time = TemplateMargins.bind({});
-Time.args = {
+export const TimeRange = TemplateMargins.bind({});
+TimeRange.args = {
     label: 'Pick a time range',
     step: 1,
     valueLower: 10,

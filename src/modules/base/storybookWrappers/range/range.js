@@ -43,6 +43,7 @@ export default class Dialog extends LightningElement {
     @api valueUpper;
     @api pin;
     @api tickMarkStyle;
+    @api showTickMarks;
     @api min;
     @api max;
     @api step;

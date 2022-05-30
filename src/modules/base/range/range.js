@@ -945,7 +945,6 @@ export default class Range extends LightningElement {
                 leftPosition += stepWidth;
                 continue;
             }
-
             let line = document.createElementNS(SVG_NAMESPACE, 'line');
             line.setAttribute('stroke', `${isColored ? '#0176D3' : '#ecebea'}`);
             line.setAttribute('height', `10`);
