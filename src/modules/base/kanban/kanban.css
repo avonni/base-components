@@ -1,8 +1,8 @@
 .avonni-kanban__container {
     position: relative;
     height: 100%;
-    overflow-x: scroll;
-    overflow-y: visible;
+    /* overflow-x: scroll;
+    overflow-y: visible; */
 }
 
 .slds-path__nav {
@@ -11,7 +11,6 @@
 
 .avonni-kanban__path_container {
     overflow: visible;
-
 }
 
 .slds-path__item {
@@ -27,12 +26,13 @@
     justify-content: space-between;
     min-width: 175px;
     height: 100%;
+    width: 100%;
+    overflow-x: scroll;
 }
 
 .avonni-kanban__tiles_container {
     overflow-y: scroll;
     overflow-x: hidden;
-
 }
 
 .avonni-kanban__variant_base .avonni-kanban__tiles_container {
@@ -195,20 +195,20 @@
     opacity: 0.5;
 }
 
-.avonni-kanban__container::-webkit-scrollbar,
+.avonni-kanban__field_container::-webkit-scrollbar,
 .avonni-kanban__tiles_container::-webkit-scrollbar {
     width: 7px;
     height: 7px;
 }
 
 /* Track */
-.avonni-kanban__container::-webkit-scrollbar-track,
+.avonni-kanban__field_container::-webkit-scrollbar-track,
 .avonni-kanban__tiles_container::-webkit-scrollbar-track {
     background: transparent;
 }
 
 /* Handle */
-.avonni-kanban__container::-webkit-scrollbar-thumb,
+.avonni-kanban__field_container::-webkit-scrollbar-thumb,
 .avonni-kanban__tiles_container::-webkit-scrollbar-thumb {
     background: #dbdbdb;
     border-radius: 5px;
@@ -220,7 +220,7 @@
 }
 
 /* Handle on hover */
-.avonni-kanban__container::-webkit-scrollbar-thumb:hover,
+.avonni-kanban__field_container::-webkit-scrollbar-thumb:hover,
 .avonni-kanban__tiles_container::-webkit-scrollbar-thumb:hover {
     background: #c0c0c0;
 }

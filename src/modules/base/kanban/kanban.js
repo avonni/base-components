@@ -77,7 +77,9 @@ export default class Kanban extends LightningElement {
     _records = [];
     _releasedGroupIndex = 0;
     _releasedTileIndex = 0;
-    _scrolling;
+    _scrollingY;
+    _scrollingX;
+    _scrollWidth = 0;
     _summarizeFieldName;
 
     /*
@@ -337,6 +339,12 @@ export default class Kanban extends LightningElement {
                 }
             }
         });
+        requestAnimationFrame(() => {
+            this._scrollWidth = this.template.querySelector(
+                '[data-element-id="avonni-kanban__field_container"]'
+            ).scrollWidth;
+        });
+
         return computedGroups;
     }
 
@@ -419,7 +427,7 @@ export default class Kanban extends LightningElement {
      * @param {number} toIndex Index of the final position of the tile
      */
     arrayMove(fromIndex, toIndex) {
-        if (toIndex < 0) return this.records;
+        if (toIndex < 0 || fromIndex < 0) return this.records;
         const arr = JSON.parse(JSON.stringify(this._records));
         arr[fromIndex][this.groupFieldName] =
             this._groupValues[this._releasedGroupIndex].label;
@@ -465,8 +473,11 @@ export default class Kanban extends LightningElement {
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
 
-        window.clearInterval(this._scrolling);
-        this._scrolling = null;
+        window.clearInterval(this._scrollingX);
+        window.clearInterval(this._scrollingY);
+        this._scrollingX = null;
+        this._scrollingY = null;
+
         // removes the translation on all tiles
         // resets the height to 100% on all fields
         const groupElements = this.template.querySelectorAll(
@@ -529,6 +540,13 @@ export default class Kanban extends LightningElement {
             Math.floor(event.clientX / this._groupWidth),
             this.groupValues.length - 1
         );
+
+        this._releasedGroupIndex += Math.floor(
+            this.template.querySelector(
+                '[data-element-id="avonni-kanban__field_container"]'
+            ).scrollLeft / this._groupWidth
+        );
+
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
@@ -569,8 +587,13 @@ export default class Kanban extends LightningElement {
     handleGroupMouseDown(event) {
         if (this._variant !== 'base' || this._readOnly) return;
 
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+
         this._initialPos.x =
             event.currentTarget.getBoundingClientRect().x +
+            fieldContainer.scrollLeft +
             event.currentTarget.offsetWidth / 2;
         this._initialPos.y = event.currentTarget.getBoundingClientRect().y + 15;
 
@@ -579,6 +602,7 @@ export default class Kanban extends LightningElement {
                 '[data-element-id="avonni-kanban__field"]'
             )
         ).indexOf(event.currentTarget.parentElement);
+
         this._draggedGroup = event.currentTarget.parentElement;
         this._draggedGroup.classList.add('avonni-kanban__dragged_group');
     }
@@ -587,7 +611,7 @@ export default class Kanban extends LightningElement {
         if (!this._draggedGroup) return;
         this._releasedGroupIndex = Math.min(
             Math.floor(
-                event.clientX /
+                (event.clientX + 10) /
                     event.currentTarget.children[this._clickedGroupIndex]
                         .offsetWidth
             ),
@@ -691,13 +715,29 @@ export default class Kanban extends LightningElement {
         this._draggedTile.style.width = `${
             parseInt(this._groupWidth, 10) - 10
         }px`;
+
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+
         this._initialPos.x =
             event.target.getBoundingClientRect().x +
+            fieldContainer.scrollLeft +
             event.target.offsetWidth / 2;
         this._initialPos.y =
             event.target.getBoundingClientRect().y +
             event.target.offsetHeight / 2;
-        this._clickedGroupIndex = Math.floor(event.clientX / this._groupWidth);
+        this._clickedGroupIndex = Math.min(
+            Math.floor(event.clientX / this._groupWidth),
+            this.groupValues.length - 1
+        );
+
+        this._clickedGroupIndex += Math.floor(
+            this.template.querySelector(
+                '[data-element-id="avonni-kanban__field_container"]'
+            ).scrollLeft / this._groupWidth
+        );
+
         this._initialTileIndex = Math.min(
             Math.floor(
                 event.currentTarget.getBoundingClientRect().y /
@@ -731,8 +771,14 @@ export default class Kanban extends LightningElement {
         this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
         this._kanbanPos.right =
             this._kanbanPos.left + event.currentTarget.scrollWidth;
+
+        const fieldContainer = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
+
         let currentY = event.clientY;
-        let currentX = event.clientX;
+        let currentX = event.clientX + fieldContainer.scrollLeft;
+
         if (currentY < this._kanbanPos.top) {
             currentY = this._kanbanPos.top;
         } else if (currentY > this._kanbanPos.bottom) {
@@ -740,9 +786,10 @@ export default class Kanban extends LightningElement {
         }
         if (currentX < this._kanbanPos.left) {
             currentX = this._kanbanPos.left;
-        } else if (currentX > this._kanbanPos.right) {
-            currentX = this._kanbanPos.right;
+        } else if (currentX > this._scrollWidth) {
+            currentX = this._scrollWidth;
         }
+
         if (this._draggedTile)
             this._draggedTile.style.transform = `translate(${
                 currentX - this._initialPos.x
@@ -753,28 +800,50 @@ export default class Kanban extends LightningElement {
                 currentX - this._initialPos.x
             }px, ${currentY - this._initialPos.y}px)`;
         }
+
+        const right = fieldContainer.offsetWidth + fieldContainer.scrollLeft;
+
+        const left =
+            fieldContainer.getBoundingClientRect().left +
+            fieldContainer.scrollLeft;
+
+        const group = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        )[this._releasedGroupIndex];
+
         // auto scroll when the user is dragging the tile out of the list
         if (currentY + 50 > this._kanbanPos.bottom) {
-            if (!this._scrolling)
-                this._scrolling = window.setInterval(() => {
-                    this.template
-                        .querySelectorAll(
-                            '[data-element-id="avonni-kanban__group"]'
-                        )
-                        [this._releasedGroupIndex].scrollBy(0, 10);
+            if (!this._scrollingY)
+                this._scrollingY = window.setInterval(() => {
+                    group.scrollBy(0, 10);
                 }, 20);
-        } else if (currentY - 100 < this._kanbanPos.top) {
-            if (!this._scrolling)
-                this._scrolling = window.setInterval(() => {
-                    this.template
-                        .querySelectorAll(
-                            '[data-element-id="avonni-kanban__group"]'
-                        )
-                        [this._releasedGroupIndex].scrollBy(0, -10);
+        } else if (currentY - 50 < this._kanbanPos.top) {
+            if (!this._scrollingY)
+                this._scrollingY = window.setInterval(() => {
+                    group.scrollBy(0, -10);
                 }, 20);
+        } else if (currentX + 50 > right) {
+            if (!this._scrollingX) {
+                this._scrollingX = window.setInterval(() => {
+                    if (
+                        fieldContainer.scrollLeft <=
+                        this._scrollWidth - fieldContainer.clientWidth
+                    ) {
+                        fieldContainer.scrollBy(10, 0);
+                    }
+                }, 15);
+            }
+        } else if (currentX - 50 < left) {
+            if (!this._scrollingX)
+                this._scrollingX = window.setInterval(() => {
+                    if (fieldContainer.scrollLeft >= 0)
+                        fieldContainer.scrollBy(-10, 0);
+                }, 15);
         } else {
-            window.clearInterval(this._scrolling);
-            this._scrolling = null;
+            window.clearInterval(this._scrollingY);
+            this._scrollingY = null;
+            window.clearInterval(this._scrollingX);
+            this._scrollingX = null;
         }
     }
 
