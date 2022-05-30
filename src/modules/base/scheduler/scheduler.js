@@ -997,6 +997,21 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Width of the first column (horizontal variant) or height of the header row (vertical variant). Used by the events to make the labels sticky.
+     *
+     * @type {number}
+     */
+    get scrollOffset() {
+        if (this.isVertical) {
+            const headerCell = this.template.querySelector(
+                '[data-element-id="div-vertical-resource-header"]'
+            );
+            return headerCell ? headerCell.getBoundingClientRect().height : 0;
+        }
+        return this.firstColWidth;
+    }
+
+    /**
      * Computed CSS classes of the events wrapper.
      *
      * @type {string}
@@ -2899,8 +2914,8 @@ export default class Scheduler extends LightningElement {
     handleScroll() {
         if (this.showDetailPopover) {
             // Hide the detail popover only if it goes off screen
-            const right = this._draggedEvent.getBoundingClientRect().right;
-            if (right < 0) {
+            const eventPosition = this._draggedEvent.getBoundingClientRect();
+            if (eventPosition.right < 0 || eventPosition.bottom < 0) {
                 this.hideDetailPopover();
             }
         } else {

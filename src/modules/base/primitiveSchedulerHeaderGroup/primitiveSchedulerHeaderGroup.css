@@ -67,6 +67,6 @@
 
 .avonni-scheduler-header-group__header-label_sticky {
     position: sticky;
-    position: -webkit-sticky;
     left: 0;
+    top: 10px;
 }

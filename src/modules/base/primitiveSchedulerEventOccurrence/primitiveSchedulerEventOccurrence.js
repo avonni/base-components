@@ -103,7 +103,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _headerCells = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _eventData = {};
-    _scrollLeftOffset = 0;
+    _scrollOffset = 0;
     _disabled = false;
     _event;
     _from;
@@ -381,7 +381,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this._connected) this.initLabels();
     }
-    
+
     /**
      * Array of the scheduler resource objects.
      *
@@ -397,7 +397,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         if (this._connected) this.initLabels();
     }
-    
+
     /**
      * Deprecated. Use `resource-key` instead.
      *
@@ -431,6 +431,21 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
+     * Deprecated. Use `scrollOffset` instead.
+     *
+     * @type {number}
+     * @deprecated
+     */
+    @api
+    get scrollLeftOffset() {
+        return this._scrollOffset;
+    }
+    set scrollLeftOffset(value) {
+        this._scrollOffset = !isNaN(Number(value)) ? Number(value) : 0;
+        if (this._connected) this.updateStickyLabels();
+    }
+
+    /**
      * Width of the scheduler datatable column. It is used as an offset by the sticky labels.
      *
      * @type {number}
@@ -438,11 +453,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * @default 0
      */
     @api
-    get scrollLeftOffset() {
-        return this._scrollLeftOffset;
+    get scrollOffset() {
+        return this._scrollOffset;
     }
-    set scrollLeftOffset(value) {
-        this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
+    set scrollOffset(value) {
+        this._scrollOffset = !isNaN(Number(value)) ? Number(value) : 0;
         if (this._connected) this.updateStickyLabels();
     }
 
@@ -628,7 +643,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     get computedClass() {
         const theme = this.theme;
         return classSet(
-            `avonni-scheduler__event slds-p-horizontal_x-small slds-grid slds-grid_vertical-align-center slds-has-flexi-truncate avonni-scheduler__event_${theme}`
+            `avonni-scheduler__event slds-p-horizontal_x-small slds-grid slds-has-flexi-truncate avonni-scheduler__event_${theme}`
         )
             .add({
                 'slds-text-color_inverse slds-current-color':
@@ -1044,7 +1059,9 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         if (this.isVertical) {
             element.style.width = `${this.cellWidth}px`;
         } else {
-            const resource = this.resources.find((rw) => rw.key === this.resourceKey);
+            const resource = this.resources.find(
+                (rw) => rw.key === this.resourceKey
+            );
 
             if (resource) {
                 const height = resource.height;
@@ -1070,10 +1087,12 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const stickyLabel = this.template.querySelector(
             '.avonni-scheduler__event-label_center'
         );
-        if (stickyLabel) {
-            stickyLabel.style.left = `${
-                this.scrollLeftOffset - this._x - this._offsetStart
-            }px`;
+        if (stickyLabel && this.isVertical) {
+            const top = this.scrollOffset - this.y - this._offsetStart;
+            stickyLabel.style.top = `${top}px`;
+        } else if (stickyLabel) {
+            const left = this.scrollOffset - this.x - this._offsetStart;
+            stickyLabel.style.left = `${left}px`;
         }
     }
 
@@ -1081,10 +1100,13 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      * Initialize the labels values.
      */
     initLabels() {
-        if (!this.eventData || !this.resources.length || !this.resourceKey) return;
+        if (!this.eventData || !this.resources.length || !this.resourceKey)
+            return;
 
         const labels = {};
-        const resource = this.resources.find((rw) => rw.key === this.resourceKey);
+        const resource = this.resources.find(
+            (rw) => rw.key === this.resourceKey
+        );
 
         if (resource) {
             Object.entries(this.labels).forEach((label) => {

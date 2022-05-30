@@ -624,7 +624,7 @@ Labels.args = {
             fieldName: 'to'
         },
         center: {
-            fieldName: 'firstName',
+            fieldName: 'resourceName',
             iconName: 'utility:user'
         }
     },

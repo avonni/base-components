@@ -227,9 +227,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     set scrollLeftOffset(value) {
         this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
 
-        requestAnimationFrame(() => {
-            this.updateStickyLabels();
-        });
+        if (!this.isVertical) {
+            requestAnimationFrame(() => {
+                this.updateStickyLabels();
+            });
+        }
     }
 
     /**
@@ -301,6 +303,12 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             validValues: VARIANTS.valid,
             fallbackValue: VARIANTS.default
         });
+
+        if (this.isVertical) {
+            requestAnimationFrame(() => {
+                this.updateStickyLabels();
+            });
+        }
     }
 
     /**
@@ -612,11 +620,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
      * Set the left position of the sticky labels.
      */
     updateStickyLabels() {
-        const stickyLabel = this.template.querySelectorAll(
+        const stickyLabels = this.template.querySelectorAll(
             '[data-element-id="span-label-sticky"]'
         );
-        if (stickyLabel.length) {
-            stickyLabel.forEach((label) => {
+        if (stickyLabels.length) {
+            stickyLabels.forEach((label) => {
                 label.style.left = `${this.scrollLeftOffset}px`;
             });
         }
