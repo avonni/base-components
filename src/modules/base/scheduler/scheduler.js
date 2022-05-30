@@ -925,16 +925,12 @@ export default class Scheduler extends LightningElement {
      * @type {object[]}
      */
     get resourcesComboboxOptions() {
-        const options = [];
-        this.resources.forEach((resource) => {
-            if (resource.resourceName) {
-                options.push({
-                    label: resource.resourceName,
-                    value: resource[this.resourcesKeyField]
-                });
-            }
+        return this.computedResources.map((resource) => {
+            return {
+                label: resource.label,
+                value: resource.key
+            };
         });
-        return options;
     }
 
     /**
@@ -1572,7 +1568,7 @@ export default class Scheduler extends LightningElement {
                 const computedResource = this.getResourceFromKey(key);
                 const rowHeight = computedResource.height;
 
-                const dataRow = this._rowsHeight.find(row => {
+                const dataRow = this._rowsHeight.find((row) => {
                     return row.resourceKey === key;
                 });
                 const dataRowHeight = dataRow.height;
@@ -2156,8 +2152,8 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-    * Reset the width of the first column to the width it had before being collapsed.
-    */
+     * Reset the width of the first column to the width it had before being collapsed.
+     */
     resetFirstColumnWidth() {
         const columnWidth = this.firstCol.getBoundingClientRect().width;
         this._initialFirstColWidth = columnWidth;

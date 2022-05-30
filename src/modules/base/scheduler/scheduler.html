@@ -271,16 +271,16 @@
                                 data-element-id="div-vertical-resource-header"
                             >
                                 <c-primitive-avatar
-                                    if:true={resource.resourceAvatar}
+                                    if:true={resource.avatar}
                                     class="slds-m-right_x-small"
-                                    fallback-icon-name={resource.resourceAvatar.fallbackIconName}
-                                    initials={resource.resourceAvatar.initials}
-                                    src={resource.resourceAvatar.src}
+                                    fallback-icon-name={resource.avatar.fallbackIconName}
+                                    initials={resource.avatar.initials}
+                                    src={resource.avatar.src}
                                     size="small"
                                     variant="circle"
                                 ></c-primitive-avatar>
                                 <div class="slds-truncate">
-                                    {resource.resourceName}
+                                    {resource.label}
                                 </div>
                             </div>
 

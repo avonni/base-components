@@ -53,7 +53,7 @@ export default class SchedulerResource {
         this._height = value;
     }
 
-    get resourceAvatar() {
+    get avatar() {
         const {
             resourceAvatarSrc,
             resourceAvatarFallbackIconName,
@@ -71,6 +71,10 @@ export default class SchedulerResource {
             };
         }
         return null;
+    }
+
+    get label() {
+        return this.resourceName || this.key;
     }
 
     initCells() {
