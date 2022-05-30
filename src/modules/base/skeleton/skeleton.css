@@ -4,6 +4,7 @@
     --avonni-skeleton-sizing-border: 0;
     --avonni-skeleton-styling-border: solid;
     --avonni-skeleton-color-background: #ecebea;
+    --avonni-skeleton-color-background-animation: #dedede;
 }
 
 .avonni-skeleton__animation-pulse {
@@ -15,7 +16,7 @@
         background-color: var(--avonni-skeleton-color-background);
     }
     50% {
-        background-color: #dedede;
+        background-color: var(--avonni-skeleton-color-background-animation);
     }
     100% {
         background-color: var(--avonni-skeleton-color-background);
@@ -24,17 +25,16 @@
 
 .avonni-skeleton__animation-wave {
     position: relative;
-    background-color: #dedede;
+    background-color: var(--avonni-skeleton-color-background-animation);
     animation-duration: 2s;
     animation-fill-mode: forwards;
     animation-iteration-count: infinite;
     animation-name: wave-animation;
     animation-timing-function: linear;
-    background-color: #f6f7f8;
     background: linear-gradient(
         to right,
         var(--avonni-skeleton-color-background) 8%,
-        #dedede 18%,
+        var(--avonni-skeleton-color-background-animation) 18%,
         var(--avonni-skeleton-color-background) 33%
     );
     background-size: 800px;
