@@ -123,8 +123,8 @@ export default class Skeleton extends LightningElement {
         return this._height;
     }
     set height(value) {
-        // const number = isNaN(parseInt(value, 10)) ? 100 : value;
-        this._height = value;
+        const number = isNaN(parseInt(value, 10)) ? 100 : value;
+        this._height = number;
     }
 
     /**
@@ -137,8 +137,8 @@ export default class Skeleton extends LightningElement {
         return this._width;
     }
     set width(value) {
-        // const number = isNaN(parseInt(value, 10)) ? 100 : value;
-        this._width = value;
+        const number = isNaN(parseInt(value, 10)) ? 100 : value;
+        this._width = number;
     }
 
     /*
