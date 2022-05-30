@@ -1033,7 +1033,8 @@ export default class Scheduler extends LightningElement {
                 'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
                 'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
                 'avonni-scheduler__first-col_horizontal': !this.isVertical,
-                'slds-m-top_xx-large slds-p-right_x-small': this.isVertical
+                'slds-m-top_xx-large slds-p-right_x-small avonni-scheduler__first-col_vertical slds-border_top':
+                    this.isVertical
             })
             .toString();
     }
@@ -1094,6 +1095,21 @@ export default class Scheduler extends LightningElement {
             .add({
                 'slds-grid avonni-scheduler__schedule-body_vertical':
                     this.isVertical
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS class for the schedule column.
+     *
+     * @type {string}
+     */
+    get scheduleColClass() {
+        return classSet(
+            'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
+        )
+            .add({
+                'slds-hide': this.firstColumnIsOpen
             })
             .toString();
     }
@@ -1560,7 +1576,6 @@ export default class Scheduler extends LightningElement {
             if (this.isVertical) {
                 style = `
                     width: ${this.cellWidth}%;
-                    min-width: 50px;
                     --avonni-scheduler-cell-height: ${this.cellHeight}px;
                 `;
             } else {
@@ -2509,11 +2524,13 @@ export default class Scheduler extends LightningElement {
 
         // The splitter between the left column and the schedule is being dragged
         if (this._draggedSplitter) {
-            const { mouseX, datatableWidth } = this._initialState;
+            const { mouseX, firstColWidth } = this._initialState;
             const x = mouseEvent.clientX;
-            const width = datatableWidth + (x - mouseX);
+            const width = firstColWidth + (x - mouseX);
 
-            this.datatable.style.width = `${width}px`;
+            if (!this.isVertical) {
+                this.datatable.style.width = `${width}px`;
+            }
             this.firstCol.style.width = `${width}px`;
             this.firstColWidth = width;
             this.updateCellWidth();
@@ -2906,9 +2923,12 @@ export default class Scheduler extends LightningElement {
         this.clearDatatableColumnWidth();
         this._mouseIsDown = true;
         this._draggedSplitter = true;
+        const firstColWidth = this.isVertical
+            ? this.firstCol.offsetWidth
+            : this.datatable.offsetWidth;
         this._initialState = {
             mouseX: mouseEvent.clientX,
-            datatableWidth: this.datatable.offsetWidth
+            firstColWidth
         };
         this.firstColumnIsHidden = false;
         this.firstColumnIsOpen = false;
@@ -2916,44 +2936,54 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Handle the click event fired by the splitter left collapse button. If the datatable column was taking the full screen, resize it to its initial width. Else, hide the datatable column.
+     * Handle the click event fired by the splitter left collapse button. If the first column was taking the full screen, resize it to its initial width. Else, hide the first column.
      */
-    handleHideDatatable() {
+    handleHideFirstCol() {
         this.hideAllPopovers();
         this.firstCol.style.width = null;
 
         if (this.firstColumnIsOpen) {
             this.firstColumnIsOpen = false;
-            this.datatable.style.width = null;
             this.firstColWidth = this._initialFirstColWidth;
+            if (!this.isVertical) {
+                this.datatable.style.width = null;
+            }
         } else {
             this.firstColumnIsHidden = true;
-            this.datatable.style.width = 0;
             this.firstColWidth = 0;
+            if (!this.isVertical) {
+                this.datatable.style.width = 0;
+            }
         }
 
         this.updateCellWidth();
     }
 
     /**
-     * Handle the click event fired by the splitter right collapse button. If the datatable column was hidden, resize it to its initial width. Else, make it full screen.
+     * Handle the click event fired by the splitter right collapse button. If the first column was hidden, resize it to its initial width. Else, make it full screen.
      */
-    handleOpenDatatable() {
+    handleOpenFirstCol() {
         this.hideAllPopovers();
         this.firstCol.style.width = null;
-        this.datatable.style.width = null;
         this.clearDatatableColumnWidth();
+        if (!this.isVertical) {
+            this.datatable.style.width = null;
+        }
 
         if (this.firstColumnIsHidden) {
             this.firstColumnIsHidden = false;
-            this.datatable.style.width = `${this._initialFirstColWidth}px`;
             this.firstColWidth = this._initialFirstColWidth;
             this.updateCellWidth();
+            if (!this.isVertical) {
+                this.datatable.style.width = `${this._initialFirstColWidth}px`;
+            }
         } else {
             this.firstColumnIsOpen = true;
             const width = this.template.host.getBoundingClientRect().width;
-            this.datatable.style.width = `${width}px`;
             this.firstColWidth = width;
+            if (!this.isVertical) {
+                this.datatable.style.width = `${width}px`;
+            }
         }
     }
 

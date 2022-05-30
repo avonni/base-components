@@ -145,7 +145,7 @@
         class="
             slds-grid slds-is-relative
             avonni-scheduler__wrapper
-            slds-theme_default
+            slds-theme_shade
         "
         onmouseup={handleMouseUp}
         onmousemove={handleMouseMove}
@@ -155,7 +155,7 @@
         <div class={firstColClass} data-element-id="div-first-column">
             <c-datatable
                 if:false={isVertical}
-                class="slds-show slds-border_top avonni-scheduler__datatable"
+                class="slds-show avonni-scheduler__datatable"
                 max-column-width="9999999999"
                 columns={columns}
                 records={resources}
@@ -174,7 +174,7 @@
                 available-time-frames={availableTimeFrames}
                 available-time-spans={availableToolbarTimeSpans}
                 headers={computedHeaders}
-                scroll-left-offset={datatableWidth}
+                scroll-left-offset={firstColWidth}
                 start={start}
                 time-span={timeSpan}
                 variant="vertical"
@@ -198,23 +198,17 @@
                     >
                         <lightning-button-icon
                             if:true={showCollapseLeft}
-                            class="
-                                avonni-scheduler__splitter-icon
-                                slds-is-relative
-                            "
+                            class="avonni-scheduler__splitter-icon"
                             icon-name="utility:left"
                             variant="bare"
-                            onclick={handleHideDatatable}
+                            onclick={handleHideFirstCol}
                         ></lightning-button-icon>
                         <lightning-button-icon
                             if:true={showCollapseRight}
-                            class="
-                                avonni-scheduler__splitter-icon
-                                slds-is-relative
-                            "
+                            class="avonni-scheduler__splitter-icon"
                             icon-name="utility:right"
                             variant="bare"
-                            onclick={handleOpenDatatable}
+                            onclick={handleOpenFirstCol}
                         ></lightning-button-icon>
                     </div>
                 </div>
@@ -222,7 +216,7 @@
         </div>
 
         <!-- Schedule -->
-        <div class="slds-col slds-grid avonni-scheduler__schedule-col">
+        <div class={scheduleColClass}>
             <div class="slds-col">
                 <!-- Horizontal headers -->
                 <c-primitive-scheduler-header-group
@@ -233,7 +227,7 @@
                     available-time-frames={availableTimeFrames}
                     available-time-spans={availableToolbarTimeSpans}
                     headers={computedHeaders}
-                    scroll-left-offset={datatableWidth}
+                    scroll-left-offset={firstColWidth}
                     start={start}
                     time-span={timeSpan}
                     data-element-id="avonni-primitive-scheduler-header-group"
@@ -327,7 +321,7 @@
                                         reference-line={event.referenceLine}
                                         resource-key={occurrence.resourceKey}
                                         resources={computedResources}
-                                        scroll-left-offset={datatableWidth}
+                                        scroll-left-offset={firstColWidth}
                                         title={occurrence.title}
                                         theme={event.theme}
                                         to={occurrence.to}

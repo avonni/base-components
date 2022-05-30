@@ -46,8 +46,15 @@
 .avonni-scheduler__first-col_horizontal {
     width: var(--avonni-scheduler-datatable-column-width, 300px);
 }
+.avonni-scheduler__first-col_vertical {
+    /* We can't use slds-grid_align-end because it will prevent the smallest header cells from growing */
+    justify-content: right;
+}
 .avonni-scheduler__first-col.avonni-scheduler__first-col_hidden {
     width: auto;
+}
+.avonni-scheduler__first-col.avonni-scheduler__first-col_hidden.avonni-scheduler__first-col_vertical {
+    width: 0;
 }
 .avonni-scheduler__first-col.avonni-scheduler__first-col_open {
     width: 100%;
@@ -117,11 +124,12 @@
     left: -5px;
     width: 20px;
 }
-.avonni-scheduler__datatable-col_hidden .avonni-scheduler__splitter {
+.avonni-scheduler__first-col_hidden .avonni-scheduler__splitter {
     left: 0;
 }
-.avonni-scheduler__datatable-col_open .avonni-scheduler__splitter {
-    left: -20px;
+.avonni-scheduler__first-col_open
+    .avonni-scheduler__splitter.avonni-scheduler__splitter_vertical {
+    left: -12px;
 }
 .avonni-scheduler__splitter:hover > div,
 .avonni-scheduler__splitter:focus-within > div {
@@ -134,7 +142,7 @@
 .avonni-scheduler__splitter > div {
     height: 100%;
     overflow: hidden;
-    width: 5px;
+    width: 4px;
     transition: width 300ms;
 }
 .avonni-scheduler__splitter:not(.avonni-scheduler__splitter_disabled) > div {
