@@ -565,6 +565,25 @@ export default class Range extends LightningElement {
     }
 
     /**
+     * Computed right bubble class styling.
+     *
+     * @type {string}
+     */
+    get computedUnitContainerClass() {
+        const isHorizontal = this.type === 'horizontal';
+        return classSet('avonni-range__unit-container').add({
+            'avonni-range__unit-container_ticks-horizontal':
+                isHorizontal &&
+                this.showAnyTickMarks &&
+                this.tickMarkStyle !== 'tick',
+            'avonni-range__unit-container_ticks-horizontal-tick':
+                isHorizontal &&
+                this.showAnyTickMarks &&
+                this.tickMarkStyle === 'tick'
+        });
+    }
+
+    /**
      * Verify if range is vertical and does not have custom labels.
      *
      * @type {boolean}
@@ -849,7 +868,7 @@ export default class Range extends LightningElement {
                 this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
             default:
-                this.drawTickRuler(numberOfSteps, leftPosition, stepWidth);
+                this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
         }
     }
@@ -950,9 +969,9 @@ export default class Range extends LightningElement {
             line.setAttribute('height', `10`);
             line.setAttribute('width', `5`);
             line.setAttribute('x1', `${leftPosition}`);
-            line.setAttribute('y1', `${isMajorStep ? 10 : 12}`);
+            line.setAttribute('y1', `${isMajorStep ? 11 : 11.5}`);
             line.setAttribute('x2', `${leftPosition}`);
-            line.setAttribute('y2', `${isMajorStep ? 23 : 21}`);
+            line.setAttribute('y2', `${isMajorStep ? 22 : 20.5}`);
             ruler.appendChild(line);
             leftPosition += stepWidth;
         }

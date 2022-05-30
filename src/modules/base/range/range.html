@@ -46,7 +46,7 @@
     </label>
     <div
         if:true={isNormalVertical}
-        class="avonni-range__unit-container"
+        class={computedUnitContainerClass}
         data-element-id="vertical-max-unit-container"
     >
         <lightning-formatted-number
@@ -158,7 +158,7 @@
         </template>
         <div
             if:true={isNormalHorizontal}
-            class="avonni-range__unit-container"
+            class={computedUnitContainerClass}
             data-element-id="horizontal-unit-container"
         >
             <lightning-formatted-number
@@ -208,7 +208,7 @@
     </div>
     <div
         if:true={isNormalVertical}
-        class="avonni-range__unit-container"
+        class={computedUnitContainerClass}
         data-element-id="vertical-min-unit-container"
     >
         <lightning-formatted-number

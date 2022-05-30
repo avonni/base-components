@@ -88,6 +88,7 @@
     width: 30rem;
     height: 30rem;
 }
+
 .avonni-range__unit-container {
     display: flex;
     justify-content: space-between;
@@ -97,6 +98,7 @@
     font-style: var(--avonni-range-unit-font-style, normal);
     font-weight: var(--avonni-range-unit-font-weight, 400);
 }
+
 .avonni-range__vertical {
     transform: rotate(-90deg);
     top: 70px;
@@ -238,14 +240,6 @@
     height: calc(100% - calc(var(--input-thumb-radius) * 2));
 }
 
-.avonni-range__custom-label-container_horizontal.avonni-range__custom-label-container_close {
-    top: -0.75rem;
-}
-
-.avonni-range__custom-label-container_vertical.avonni-range__custom-label-container_close {
-    top: -0.9rem;
-}
-
 .avonni-range__custom-label_vertical {
     position: absolute;
     white-space: nowrap;
@@ -260,4 +254,12 @@
     width: 100%;
     margin-top: -20px;
     z-index: 3;
+}
+
+.avonni-range__unit-container_ticks-horizontal {
+    margin-top: -20px;
+}
+
+.avonni-range__unit-container_ticks-horizontal-tick {
+    margin-top: -8px;
 }
