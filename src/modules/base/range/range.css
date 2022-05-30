@@ -48,7 +48,7 @@
     background: transparent;
     height: 0px;
     top: 1.5px;
-    z-index: 3;
+    z-index: 4;
 }
 .avonni-range__slider::-webkit-slider-runnable-track {
     background: none;
@@ -180,7 +180,7 @@
 }
 
 .avonni-range__slider-left_above {
-    z-index: 4;
+    z-index: 5;
 }
 
 .avonni-range__progress-container {
@@ -266,5 +266,5 @@
     position: relative;
     width: 100%;
     margin-top: -20px;
-    z-index: -1;
+    z-index: 3;
 }
