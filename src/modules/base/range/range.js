@@ -63,8 +63,8 @@ const RANGE_UNITS = {
     default: 'decimal'
 };
 const TICK_MARK_STYLES = {
-    valid: ['none', 'dot', 'tick', 'inner-tick'],
-    default: 'none'
+    valid: ['inner-tick', 'tick', 'dot'],
+    default: 'inner-tick'
 };
 const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
@@ -303,11 +303,11 @@ export default class Range extends LightningElement {
     }
 
     /**
-     * If present, tick marks are displayed with the according style. Accepted styles are none, tick, dot and inner-tick.
+     * If present, tick marks are displayed with the according style. Accepted styles are 'inner-tick', 'tick', 'dot'.
      *
      * @type {boolean}
      * @public
-     * @default none
+     * @default inner-tick
      */
     @api
     get tickMarkStyle() {
@@ -503,8 +503,8 @@ export default class Range extends LightningElement {
                 [`avonni-range__container-horizontal-size_${this._size}`]:
                     this._size,
                 'avonni-range__vertical': this._type === 'vertical',
-                [`avonni-range__container-vertical-size_${this._size}`]:
-                    this._size && this._type === 'vertical'
+                [`avonni-range__container-vertical-origin_${this._size}`]:
+                    this._type === 'vertical'
             })
             .toString();
     }
@@ -533,8 +533,8 @@ export default class Range extends LightningElement {
             'avonni-range__custom-label-container_horizontal': !isVertical,
             'avonni-range__custom-label-container_vertical': isVertical,
             'avonni-range__custom-label-container_close':
-                this.tickMarkStyle === 'dot' ||
-                this.tickMarkStyle === 'inner-tick'
+                this._tickMarkStyle !== 'tick',
+            [`avonni-range__container-vertical-size_${this._size}`]: isVertical
         });
     }
 
@@ -564,6 +564,10 @@ export default class Range extends LightningElement {
         return classes.toString();
     }
 
+    get computedSpacerClass() {
+        return classSet(`avonni-range__container-vertical-size_${this._size}`);
+    }
+
     /**
      * Computed right bubble class styling.
      *
@@ -581,6 +585,15 @@ export default class Range extends LightningElement {
                 this.showAnyTickMarks &&
                 this.tickMarkStyle === 'tick'
         });
+    }
+
+    /**
+     * Verify if range is horizontal.
+     *
+     * @type {boolean}
+     */
+    get isHorizontal() {
+        return this._type === 'horizontal';
     }
 
     /**
@@ -616,7 +629,7 @@ export default class Range extends LightningElement {
      * @type {boolean}
      */
     get hasOnlyCustomLabels() {
-        return this.hasCustomLabels && this._tickMarkStyle === 'none';
+        return this.hasCustomLabels && !this._showTickMarks;
     }
 
     /**
@@ -625,11 +638,7 @@ export default class Range extends LightningElement {
      * @type {boolean}
      */
     get showAnyTickMarks() {
-        return (
-            this.hasCustomLabels ||
-            this._showTickMarks ||
-            !this._tickMarkStyle === 'none'
-        );
+        return this.hasCustomLabels || this._showTickMarks;
     }
 
     /**
@@ -830,16 +839,25 @@ export default class Range extends LightningElement {
         const customLabelNodes = this.template.querySelectorAll(
             `${'.avonni-range__custom-label-wrapper'}`
         );
+        const totalWidth = isVertical
+            ? this.template.querySelector('[data-element-id="spacer"]')
+                  .clientHeight -
+              2 * INPUT_THUMB_RADIUS
+            : this.template.querySelector(
+                  '[data-element-id="custom-label-container"]'
+              ).clientWidth;
+
         customLabelNodes.forEach((element, index) => {
             let value = this._customLabels[index].value;
             if (isVertical) {
                 element.style.top = `${
-                    100 - ((value - this.min) / (this.max - this.min)) * 100
-                }%`;
+                    totalWidth -
+                    ((value - this.min) / (this.max - this.min)) * totalWidth
+                }px`;
             } else {
                 element.style.left = `${
-                    ((value - this.min) / (this.max - this.min)) * 100
-                }%`;
+                    ((value - this.min) / (this.max - this.min)) * totalWidth
+                }px`;
             }
         });
     }

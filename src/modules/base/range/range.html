@@ -189,6 +189,7 @@
         <div
             if:true={hasCustomLabels}
             class={computedCustomLabelContainerClass}
+            data-element-id="custom-label-container"
         >
             <template for:each={customLabels} for:item="customLabel">
                 <div
@@ -206,6 +207,11 @@
             </template>
         </div>
     </div>
+    <div
+        if:false={isHorizontal}
+        class={computedSpacerClass}
+        data-element-id="spacer"
+    ></div>
     <div
         if:true={isNormalVertical}
         class={computedUnitContainerClass}

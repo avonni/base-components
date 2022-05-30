@@ -85,7 +85,6 @@
     height: var(--lwc-sizeLarge, 25rem);
 }
 .avonni-range__container-vertical-size_full {
-    width: 30rem;
     height: 30rem;
 }
 
@@ -101,10 +100,35 @@
 
 .avonni-range__vertical {
     transform: rotate(-90deg);
-    top: 70px;
-    bottom: 0;
-    position: inherit;
+    position: absolute;
+    margin-left: 4px;
 }
+
+.avonni-range__container-vertical-origin_x-small {
+    transform-origin: calc(var(--lwc-sizeXSmall, 12rem) / 2)
+        calc(var(--lwc-sizeXSmall, 12rem) / 2);
+}
+
+.avonni-range__container-vertical-origin_small {
+    transform-origin: calc(var(--lwc-sizeSmall, 15rem) / 2)
+        calc(var(--lwc-sizeSmall, 15rem) / 2);
+}
+
+.avonni-range__container-vertical-origin_medium {
+    transform-origin: calc(var(--lwc-sizeMedium, 20rem) / 2)
+        calc(var(--lwc-sizeMedium, 20rem) / 2);
+}
+
+.avonni-range__container-vertical-origin_large {
+    transform-origin: calc(var(--lwc-sizeLarge, 25rem) / 2)
+        calc(var(--lwc-sizeLarge, 25rem) / 2);
+}
+
+.avonni-range__container-vertical-origin_full {
+    max-width: 30rem;
+    transform-origin: calc(30rem / 2) calc(30rem / 2);
+}
+
 .avonni-range__bubble {
     opacity: 0;
     position: absolute;
@@ -262,4 +286,8 @@
 
 .avonni-range__unit-container_ticks-horizontal-tick {
     margin-top: -8px;
+}
+
+.avonni-range__custom-label-container_close {
+    top: -10px;
 }
