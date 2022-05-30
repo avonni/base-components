@@ -74,17 +74,6 @@ export default class Skeleton extends LightningElement {
      * -------------------------------------------------------------
      */
     /**
-     * Returns wether the current animation is wave or not.
-     *
-     * @type {boolean}
-     * @public
-     */
-    @api
-    get isWaveAnimation() {
-        return this.animation === 'wave';
-    }
-
-    /**
      * The animation type changes the appearance of the skeleton. Valid values include pulse and wave.
      * @type {string}
      * @public

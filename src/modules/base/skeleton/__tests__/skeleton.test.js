@@ -48,20 +48,63 @@ describe('Skeleton', () => {
         document.body.appendChild(element);
     });
 
-    it('Default attributes', () => {
-        // expect(element.title).toBeUndefined();
+    it('Skeleton: Default attributes', () => {
+        expect(element.animation).toBeUndefined();
+        expect(element.height).toBeUndefined();
+        expect(element.variant).toBe('text');
+        expect(element.width).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
 
-    // title
-    it('title', () => {
-        // element.title = 'This is a title text';
-        // return Promise.resolve().then(() => {
-        //     const title = element.shadowRoot.querySelector(
-        //         '.slds-section__title'
-        //     );
-        //     expect(title.textContent).toBe('This is a title text');
-        // });
+    // skeleton-variant
+    it('Skeleton: text variant', () => {
+        element.variant = 'text';
+        return Promise.resolve().then(() => {
+            expect(element.variant).toBe('text');
+        });
+    });
+
+    // skeleton-animation
+    it('Skeleton: animation = pulse', () => {
+        element.animation = 'pulse';
+        return Promise.resolve().then(() => {
+            expect(element.animation).toBe('pulse');
+        });
+    });
+
+    // Skeleton-width
+    it('Skeleton: width = 100px', () => {
+        element.width = 100;
+        return Promise.resolve().then(() => {
+            expect(element.width).toBe(100);
+        });
+    });
+
+    // Skeleton-width isNaN
+    it('Skeleton: width = a should set width to 100', () => {
+        element.variant = 'rectangular';
+        element.width = 'a';
+        return Promise.resolve().then(() => {
+            expect(element.width).toBe(100);
+        });
+    });
+
+    // Skeleton-height variant rectangular
+    it('Skeleton: height = 100px with rectangular variant', () => {
+        element.variant = 'rectangular';
+        element.height = 100;
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe(100);
+        });
+    });
+
+    // Skeleton-height isNaN with rectangular variant
+    it('Skeleton: height = a with rectangular variant should set width to 100', () => {
+        element.variant = 'rectangular';
+        element.height = 'a';
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe(100);
+        });
     });
 });
