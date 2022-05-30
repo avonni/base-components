@@ -529,7 +529,7 @@ export default class Range extends LightningElement {
     get computedCustomLabelContainerClass() {
         return classSet('').add({
             'avonni-range__custom-label-container_horizontal':
-                !this.isHorizontal,
+                this.isHorizontal,
             'avonni-range__custom-label-container_vertical': !this.isHorizontal,
             'avonni-range__custom-label-container_close':
                 this._tickMarkStyle !== 'tick',
@@ -854,7 +854,7 @@ export default class Range extends LightningElement {
             : this.template.querySelector(
                   '[data-element-id="custom-label-container"]'
               ).clientWidth;
-
+        console.log(totalWidth);
         customLabelNodes.forEach((element, index) => {
             let value = this._customLabels[index].value;
             if (!this.isHorizontal) {

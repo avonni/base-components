@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class RangeBase extends LightningElement {
+export default class RangeCustomLabel extends LightningElement {
     unitAttributes = {
         customLabels: [
             {

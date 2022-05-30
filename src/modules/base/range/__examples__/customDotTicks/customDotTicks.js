@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class CustomProgressRange extends LightningElement {
+export default class RangeCustomDotTicks extends LightningElement {
     unitAttributes = {
         customLabels: [
             {

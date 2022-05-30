@@ -411,8 +411,8 @@ CustomLabel.args = {
     }
 };
 
-export const CustomDotRange = TemplateMargins.bind({});
-CustomDotRange.args = {
+export const CustomDotTicks = TemplateMargins.bind({});
+CustomDotTicks.args = {
     label: 'What is your emotional range',
     step: 1,
     valueLower: 1,
@@ -463,31 +463,31 @@ TimeRange.args = {
     unitAttributes: {
         customLabels: [
             {
-                label: '0h00',
+                label: '8h00',
                 value: 0
             },
             {
-                label: '0h10',
+                label: '8h10',
                 value: 10
             },
             {
-                label: '0h20',
+                label: '8h20',
                 value: 20
             },
             {
-                label: '0h30',
+                label: '8h30',
                 value: 30
             },
             {
-                label: '0h40',
+                label: '8h40',
                 value: 40
             },
             {
-                label: '0h50',
+                label: '8h50',
                 value: 50
             },
             {
-                label: '1h00',
+                label: '9h00',
                 value: 60
             }
         ]
@@ -528,4 +528,14 @@ VerticalLarge.args = {
     valueUpper: 73,
     type: 'vertical',
     size: 'large'
+};
+
+export const Disabled = Template.bind({});
+Disabled.args = {
+    label: 'Disabled input',
+    step: 5,
+    valueLower: 25,
+    valueUpper: 75,
+    disabled: true,
+    showTickMarks: true
 };
