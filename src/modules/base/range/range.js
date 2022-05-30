@@ -264,6 +264,21 @@ export default class Range extends LightningElement {
     }
 
     /**
+     * If present, minor tick marks are displayed at every step.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showTickMarks() {
+        return this._showTickMarks;
+    }
+    set showTickMarks(value) {
+        this._showTickMarks = normalizeBoolean(value);
+    }
+
+    /**
      * Size of the slider. Accepted values are full, x-small, small, medium, and large.
      *
      * @type {string}
@@ -318,21 +333,6 @@ export default class Range extends LightningElement {
             fallbackValue: TICK_MARK_STYLES.default,
             validValues: TICK_MARK_STYLES.valid
         });
-    }
-
-    /**
-     * If present, minor tick marks are displayed at every step.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get showTickMarks() {
-        return this._showTickMarks;
-    }
-    set showTickMarks(value) {
-        this._showTickMarks = normalizeBoolean(value);
     }
 
     /**
