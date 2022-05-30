@@ -155,11 +155,11 @@ export default class Barcode extends LightningElement {
      */
     /**
      * Returns wether the barcode can be rendered as an svg element.
+     *
+     * @returns {boolean}
      */
     get renderAsSVG() {
-        return (
-            this.renderAs === 'svg' && this.getBarcodeLibrary() === 'jsbarcode'
-        );
+        return this.renderAs === 'svg' && this.barcodeLibrary === 'jsbarcode';
     }
 
     /**
@@ -212,7 +212,7 @@ export default class Barcode extends LightningElement {
 
     /*
      * ------------------------------------------------------------
-     * PRIVATE PROPERTIES
+     * PRIVATE METHODS
      * ------------------------------------------------------------
      */
     /**
@@ -229,7 +229,7 @@ export default class Barcode extends LightningElement {
      *
      * @returns {string} canvas
      */
-    getBarcodeLibrary() {
+    get barcodeLibrary() {
         return BARCODE_LIBRARY.get(this.type);
     }
 
@@ -238,7 +238,7 @@ export default class Barcode extends LightningElement {
      *
      * @returns {object} canvas
      */
-    getCanvas() {
+    get canvas() {
         return this.template.querySelector('[data-element-id="barcode"]');
     }
 
@@ -247,7 +247,7 @@ export default class Barcode extends LightningElement {
      *
      * @returns {string} canvas
      */
-    getLibraryEncodingValue() {
+    get libraryEncodingValue() {
         return LIBRARY_ENCODING_VALUE.get(this.type);
     }
 
@@ -258,11 +258,6 @@ export default class Barcode extends LightningElement {
         this.setCanvasWidth();
     }
 
-    /*
-     * ------------------------------------------------------------
-     * PRIVATE METHODS
-     * ------------------------------------------------------------
-     */
     /**
      * Sets the width for the canvas.
      */
@@ -278,7 +273,7 @@ export default class Barcode extends LightningElement {
      */
     @api
     renderBarcode() {
-        switch (this.getBarcodeLibrary()) {
+        switch (this.barcodeLibrary) {
             case 'bwipjs':
                 this.renderWithBwipJs();
                 break;
@@ -295,10 +290,10 @@ export default class Barcode extends LightningElement {
      */
 
     renderWithBwipJs() {
-        const canvas = this.getCanvas();
+        const canvas = this.canvas;
         if (this.checksum) {
             bwipjs.toCanvas(canvas, {
-                bcid: this.getLibraryEncodingValue(),
+                bcid: this.libraryEncodingValue,
                 text: this.value,
                 includetext: !this.hideValue,
                 includecheck: true,
@@ -311,7 +306,7 @@ export default class Barcode extends LightningElement {
             return;
         }
         bwipjs.toCanvas(canvas, {
-            bcid: this.getLibraryEncodingValue(),
+            bcid: this.libraryEncodingValue,
             text: this.value,
             includetext: !this.hideValue,
             includecheck: false,
@@ -328,8 +323,8 @@ export default class Barcode extends LightningElement {
      */
     renderWithJsBarCode() {
         if (this.checksum) {
-            JsBarcode(this.getCanvas(), this.value, {
-                format: this.getLibraryEncodingValue(),
+            JsBarcode(this.canvas, this.value, {
+                format: this.libraryEncodingValue,
                 lineColor: this.color,
                 background: this.background,
                 displayValue: !this.hideValue,
@@ -339,8 +334,8 @@ export default class Barcode extends LightningElement {
             JsBarcode('.barcode').init();
             return;
         }
-        JsBarcode(this.getCanvas(), this.value, {
-            format: this.getLibraryEncodingValue(),
+        JsBarcode(this.canvas, this.value, {
+            format: this.libraryEncodingValue,
             lineColor: this.color,
             background: this.background,
             text: this.value,
