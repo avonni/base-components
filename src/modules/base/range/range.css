@@ -42,7 +42,6 @@
     background: #ecebea;
     height: 4px;
     outline: none;
-    transition: background 450ms ease-in;
     -webkit-appearance: none;
     position: relative;
     background: transparent;
