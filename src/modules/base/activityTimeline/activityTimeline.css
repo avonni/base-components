@@ -32,10 +32,36 @@
 
 .avonni-activity-timeline__item-popover {
     min-width: 20rem;
-    width: 30rem;
+    width: 37rem;
     max-width: 40rem;
+    height: 80px;
+}
+
+.avonni-activity-timeline__item-popover-with-fields {
+    height: 130px;
+}
+
+.avonni-activity-timeline__item-popover-with-errors {
+    height: 100px;
 }
 
 .slds-dropdown {
     max-width: 40rem;
 }
+
+/* .avonni-activity-timeline__horizontal-timeline-items-scroll-container {
+    height: 400px;
+    width: 1300px;
+    background-color: red;
+    overflow: scroll;
+    margin:0px;
+    padding:0px;
+} 
+*/
+
+/* .testing-selection{
+    color:red;
+    visibility: hidden;
+    position: absolute;
+    z-index: 10;
+} */

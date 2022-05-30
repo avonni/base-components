@@ -44,7 +44,9 @@ const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_INTERVAL_MIN_DATE = new Date(2022, 0, 1);
 const DEFAULT_TIMELINE_WIDTH = 1300;
+const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 40;
+const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const Y_START_POSITION_TIMELINE_ITEM = 10;
 const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
@@ -117,11 +119,15 @@ export default class ActivityTimeline extends LightningElement {
     _displayedItems = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
     _timelineWidth = DEFAULT_TIMELINE_WIDTH; // TODO : Change to container width
-    _timelineHeight = 350;
-    _timelineAxisHeight = 30;
+    _timelineHeight = DEFAULT_TIMELINE_HEIGHT;
+    _timelineAxisHeight = DEFAULT_TIMELINE_AXIS_HEIGHT;
     _numberOfScrollAxisTicks = 10;
     _offsetAxis = DEFAULT_TIMELINE_AXIS_OFFSET;
     _scrollAxisColor = '#1c82bd';
+
+    // D3 selector
+    _timelineDiv;
+    _timelineSVG;
 
     _key;
     _isConnected = false;
@@ -177,6 +183,7 @@ export default class ActivityTimeline extends LightningElement {
             this.template.querySelector('.testing-d3')
         );
         divD3Testing.selectAll('*').remove();
+
         const testing = d3
             .select(this.template.querySelector('.testing-d3'))
             .append('svg')
@@ -529,18 +536,32 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     // TODO: A CHANGER
+    /**
+     * Function that calculate the time scale for the horizontal activity timeline's time axis. If we pass a date, it returns the corresponding x value. If we use invert, we can pass an x value to return date.
+     * We add +/- 1 to view all interval
+     */
     get viewTimeScale() {
         return d3
             .scaleTime()
-            .domain([this._intervalMinDate, this._intervalMaxDate]) // TODO: Think if add +/- 1 to show all dates
+            .domain([
+                this.findNextDate(this._intervalMinDate, -1),
+                this.findNextDate(this._intervalMaxDate, 1)
+            ])
             .range([this._offsetAxis, this._timelineWidth]);
     }
 
     // TODO: A CHANGER
+    /**
+     * Function that calculate the time scale for the horizontal activity timeline's time scroll axis. If we pass a date, it returns the corresponding x value. If we use invert, we can pass an x value to return date.
+     * We add -1 and +4 to display all dates in interval
+     */
     get scrollTimeScale() {
         return d3
             .scaleTime()
-            .domain([this.minDate, this.maxDate]) // TODO: Think if add +/- 1 to show all dates
+            .domain([
+                this.findNextDate(this.minDate, -1),
+                this.findNextDate(this.maxDate, 4)
+            ])
             .range([this._offsetAxis, this._timelineWidth]);
     }
 
@@ -615,21 +636,20 @@ export default class ActivityTimeline extends LightningElement {
      */
     createTimeline() {
         // <--- SELECT AND REMOVE PREVIOUS TIMELINE --->
-        const timelineDiv = d3.select(
+        this._timelineDiv = d3.select(
             this.template.querySelector(
                 '.avonni-activity-timeline__horizontal-timeline-items'
             )
         );
-        timelineDiv.selectAll('*').remove();
+        this._timelineDiv.selectAll('*').remove();
 
         // <--- CREATE NEW SVG FOR TIMELINE --->
-        const timelineSVG = timelineDiv
+        this._timelineSVG = this._timelineDiv
             .append('svg')
             .attr('width', this._timelineWidth)
-            .attr('height', this._timelineHeight)
-            .attr('transform', 'translate(' + 0 + ', ' + 30 + ')');
+            .attr('height', this._timelineHeight);
 
-        timelineSVG
+        this._timelineSVG
             .append('rect')
             .attr('x', this._offsetAxis)
             .attr('y', 0)
@@ -645,14 +665,14 @@ export default class ActivityTimeline extends LightningElement {
             .ticks(9)
             .tickSizeInner(this._timelineHeight + this._timelineAxisHeight)
             .tickSizeOuter(0);
-        timelineSVG
+        this._timelineSVG
             .append('g')
             .attr('transform', 'translate(' + 0 + ', 0)')
             .attr('opacity', 0.15)
             .style('stroke-dasharray', '8 8')
             .call(axis);
 
-        // TODO: Creer nouveau svg pour distinguer les items ?
+        //  <--- CREATE EACH ITEM --->
         const rectWidth = 20;
         const dataToDisplay = this.setYPositionOfItems(
             this._displayedItems,
@@ -661,7 +681,7 @@ export default class ActivityTimeline extends LightningElement {
         );
 
         // TODO: DISPLAY ICON INSTEAD OF RECT
-        timelineSVG
+        this._timelineSVG
             .append('g')
             .selectAll('rect')
             .data(dataToDisplay)
@@ -675,7 +695,10 @@ export default class ActivityTimeline extends LightningElement {
             .attr('height', rectWidth)
             .attr('fill', this._scrollAxisColor);
 
-        timelineSVG
+        // Necessary to use this in function() of mouseover and mouseout that changes the this to element
+        const activityTimelineThis = this;
+
+        this._timelineSVG
             .append('g')
             .selectAll('text')
             .data(dataToDisplay)
@@ -690,9 +713,39 @@ export default class ActivityTimeline extends LightningElement {
             .text((item) => {
                 return this.computedItemTitle(item);
             })
-            .attr('fill', 'black');
+            .attr('fill', 'black')
+            // TODO: change size to better fit popover content
+            .on('mouseover', function (event, item) {
+                activityTimelineThis.showItemPopOver = true;
+                activityTimelineThis.selectedItem = item;
+                const tooltipElement = d3.select(
+                    activityTimelineThis.template.querySelector(
+                        '.avonni-activity-timeline__item-popover'
+                    )
+                );
+                const sizeClassToAdd =
+                    (item.fields && item.fields.length > 0) ||
+                    item.buttonLabel !== undefined
+                        ? 'avonni-activity-timeline__item-popover-with-fields'
+                        : item.hasError || item.description !== undefined
+                        ? 'avonni-activity-timeline__item-popover-with-errors'
+                        : '';
 
-        // TODO: Over permet d'afficher plus d'informations
+                tooltipElement
+                    .attr(
+                        'class',
+                        'avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
+                            sizeClassToAdd
+                    )
+                    .style('top', event.pageY + 'px')
+                    .style('left', event.pageX + 'px')
+                    .on('mouseout', function () {
+                        activityTimelineThis.handleItemMouseLeave();
+                    });
+            })
+            .on('mouseout', function () {
+                activityTimelineThis.handleItemMouseLeave();
+            });
     }
 
     /**
@@ -722,13 +775,14 @@ export default class ActivityTimeline extends LightningElement {
         const axisSVG = axisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
-            .attr('height', this._timelineAxisHeight * 2);
+            .attr('height', this._timelineAxisHeight * 2)
+            .attr('transform', 'translate(' + 0 + ')');
 
         // <--- CREATE RECT AROUND AXIS --->
         axisSVG
             .append('rect')
             .attr('x', this._offsetAxis)
-            .attr('y', this._timelineAxisHeight)
+            .attr('y', 0) // change position du rectangle blanc sous timeline
             .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', 25)
             .attr('stroke', 'black')
@@ -739,13 +793,7 @@ export default class ActivityTimeline extends LightningElement {
             .axisBottom(this.viewTimeScale)
             .tickFormat(d3.timeFormat('%d/%m/%Y'))
             .ticks(9);
-        axisSVG
-            .append('g')
-            .attr(
-                'transform',
-                'translate(' + 0 + ', ' + this._timelineAxisHeight + ')'
-            )
-            .call(timeAxis);
+        axisSVG.append('g').call(timeAxis);
 
         // <--- REMOVE ALL TICK MARKS  --->
         axisSVG.selectAll('.tick').selectAll('line').remove();
@@ -766,7 +814,8 @@ export default class ActivityTimeline extends LightningElement {
         const scrollAxisSVG = scrollAxisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
-            .attr('height', this._timelineAxisHeight * 2);
+            .attr('height', this._timelineAxisHeight * 2)
+            .attr('transform', 'translate(0, -25)');
 
         const scrollAxis = d3
             .axisBottom(this.scrollTimeScale)
@@ -793,10 +842,15 @@ export default class ActivityTimeline extends LightningElement {
 
         // <--- CREATE RECT ON SCROLL AXIS TO REPRESENT DATA --->
         // To find y position of all items
-        const itemsToDisplay = this.setYPositionOfItems(
+        let itemsToDisplay = this.setYPositionOfItems(
             this.sortedItems,
             Y_START_POSITION_SCROLL_ITEM,
             Y_GAP_BETWEEN_ITEMS_SCROLL
+        );
+
+        // To remove all items that exceed the scroll axis
+        itemsToDisplay = itemsToDisplay.filter(
+            (item) => item.yPosition < DEFAULT_TIMELINE_AXIS_HEIGHT
         );
 
         // DRAW RECT FOR EACH DATE
@@ -851,9 +905,9 @@ export default class ActivityTimeline extends LightningElement {
                     })
                     .on('end', function () {
                         activityTimelineThis._intervalMinDate =
-                            activityTimelineThis.scrollTimeScale.invert(
-                                this.getAttribute('x')
-                            );
+                            activityTimelineThis.scrollTimeScale
+                                .invert(this.getAttribute('x'))
+                                .setHours(0, 0, 0, 0);
                         activityTimelineThis.renderedCallback();
                     })
             );

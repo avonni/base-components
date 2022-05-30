@@ -87,7 +87,7 @@
             <div class="testing-d3" lwc:dom="manual"></div>
 
             <!-- ITEMS IN INTERVAL -->
-            <div>
+            <!-- <div>
                 <template
                     for:each={displayedItems}
                     for:item="item"
@@ -107,10 +107,40 @@
                         - {item.title}
                     </div>
                 </template>
+            </div> -->
+
+            <!-- TESTING POPOVER ITEM -->
+            <div
+                if:true={showItemPopOver}
+                class="avonni-activity-timeline__item-popover"
+            >
+                <c-primitive-activity-timeline-item
+                    title={selectedItem.title}
+                    description={selectedItem.description}
+                    datetime-value={selectedItem.datetimeValue}
+                    href={selectedItem.href}
+                    icon-name={selectedItem.iconName}
+                    icon-size={itemIconSize}
+                    fields={selectedItem.fields}
+                    has-error={selectedItem.hasError}
+                    closed={selectedItem.closed}
+                    button-label={selectedItem.buttonLabel}
+                    button-icon-name={selectedItem.buttonIconName}
+                    button-variant={selectedItem.buttonVariant}
+                    button-icon-position={selectedItem.buttonIconPosition}
+                    button-disabled={selectedItem.buttonDisabled}
+                    is-loading={selectedItem.isLoading}
+                    is-active={selectedItem.isActive}
+                    loading-state-alternative-text={selectedItem.loadingStateAlternativeText}
+                    name={selectedItem.name}
+                    data-element-id="avonni-primitive-activity-timeline-item"
+                    data-name={selectedItem.name}
+                >
+                </c-primitive-activity-timeline-item>
             </div>
 
             <!-- POP OVER INFORMATION OF SELECTED ITEM -->
-            <div
+            <!-- <div
                 if:true={showItemPopOver}
                 class="
                     slds-popover slds-dropdown
@@ -149,8 +179,8 @@
                         data-name={selectedItem.name}
                     >
                     </c-primitive-activity-timeline-item>
-                </div>
-            </div>
+                </div> 
+            </div>-->
         </template>
         <!-- VERTICAL TIMELINE -->
         <template if:false={isTimelineHorizontal}>

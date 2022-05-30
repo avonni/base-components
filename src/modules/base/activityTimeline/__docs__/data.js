@@ -816,5 +816,32 @@ export const horizontalItems = [
         iconName: 'standard:email',
         hasCheckbox: true,
         hasError: false
+    },
+    {
+        name: 'item25',
+        title: 'Mysterious item',
+        datetimeValue: '02/02/2022 08:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item26',
+        title: 'Random event',
+        datetimeValue: '02/02/2022 09:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item27',
+        title: 'Surprise event!',
+        datetimeValue: '02/02/2022 22:30',
+        href: '#',
+        iconName: 'standard:email',
+        hasCheckbox: true,
+        hasError: false
     }
 ];
