@@ -1175,7 +1175,7 @@ export default class PrimitiveTreeItem extends LightningElement {
      *
      * @param {Event} event
      */
-    handleLabelInlineKeyDown(event) {
+    handleLabelInlineKeyUp(event) {
         event.stopPropagation();
         this.draftValues.label = event.currentTarget.value;
 
