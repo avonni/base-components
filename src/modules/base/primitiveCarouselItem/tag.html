@@ -37,7 +37,7 @@
         class="slds-carousel__panel-action slds-text-link_reset"
         data-panel-index={panelIndex}
         data-item-index={itemIndex}
-        data-element-id="a-actions"
+        data-element-id="a-actions-tag"
         href={href}
         onclick={handleItemClick}
     >
@@ -45,7 +45,10 @@
             <template if:false={isBottomPosition}>
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
-                        <div class="slds-show_small">
+                        <div
+                            class="slds-show_small"
+                            data-element-id="button-bare-border"
+                        >
                             <template for:each={actions} for:item="action">
                                 <lightning-button
                                     if:true={action.label}
@@ -72,7 +75,10 @@
                                 ></lightning-button-icon>
                             </template>
                         </div>
-                        <div class="slds-hide_small">
+                        <div
+                            class="slds-hide_small"
+                            data-element-id="button-menu"
+                        >
                             <lightning-button-menu
                                 alternative-text="Show menu"
                                 icon-size="x-small"
@@ -146,7 +152,10 @@
             <template if:true={isBottomPosition}>
                 <div class={computedActionsContainerClass} if:true={hasActions}>
                     <template if:false={isMenuVariant}>
-                        <div class="slds-show_small">
+                        <div
+                            class="slds-show_small"
+                            data-element-id="button-bare-border"
+                        >
                             <template for:each={actions} for:item="action">
                                 <lightning-button
                                     if:true={action.label}
@@ -173,7 +182,10 @@
                                 ></lightning-button-icon>
                             </template>
                         </div>
-                        <div class="slds-hide_small">
+                        <div
+                            class="slds-hide_small"
+                            data-element-id="button-menu"
+                        >
                             <lightning-button-menu
                                 alternative-text="Show menu"
                                 icon-size="x-small"
