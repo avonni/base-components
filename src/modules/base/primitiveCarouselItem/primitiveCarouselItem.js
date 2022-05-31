@@ -363,4 +363,13 @@ export default class PrimitiveCarouselItem extends LightningElement {
             })
         );
     }
+
+    /**
+     * Menu select event handler
+     *
+     * @param {Event}
+     */
+    handleMenuSelect(event) {
+        event.preventDefault();
+    }
 }
