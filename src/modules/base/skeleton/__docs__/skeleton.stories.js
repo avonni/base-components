@@ -51,11 +51,11 @@ export default {
         height: {
             name: 'height',
             control: {
-                type: 'number'
+                type: 'text'
             },
             description: 'Height of the skeleton in px.',
             table: {
-                type: { summary: 'number' },
+                type: { summary: 'string' },
                 category: 'Layout'
             }
         },
@@ -68,18 +68,17 @@ export default {
             description: 'The variant changes the appearance of the skeleton.',
             table: {
                 type: { summary: 'string' },
-                default: { summary: 'text' },
                 category: 'Layout'
             }
         },
         width: {
             name: 'width',
             control: {
-                type: 'number'
+                type: 'text'
             },
             description: 'Width of the skeleton in px.',
             table: {
-                type: { summary: 'number' },
+                type: { summary: 'string' },
                 category: 'Layout'
             }
         }

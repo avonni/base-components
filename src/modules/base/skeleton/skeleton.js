@@ -99,8 +99,7 @@ export default class Skeleton extends LightningElement {
         return this._height;
     }
     set height(value) {
-        const number = isNaN(parseInt(value, 10)) ? 100 : value;
-        this._height = number;
+        this._height = value;
     }
 
     /**
@@ -131,8 +130,7 @@ export default class Skeleton extends LightningElement {
         return this._width;
     }
     set width(value) {
-        const number = isNaN(parseInt(value, 10)) ? 100 : value;
-        this._width = number;
+        this._width = value;
     }
 
     /*
@@ -156,13 +154,55 @@ export default class Skeleton extends LightningElement {
      * PRIVATE METHODS
      * ------------------------------------------------------------
      */
-    setSkeletonSize() {
-        let element = this.template.querySelector(
+    /**
+     * Returns the avonni-skeleton DOM element
+     *
+     * @returns {object} avonni-skeleton
+     */
+    get skeleton() {
+        return this.template.querySelector(
             '[data-element-id="avonni-skeleton"]'
         );
-        if (this.variant === 'text') {
-            element.style.height = `${this.height / 1.5}px`;
-        } else element.style.height = `${this.height}px`;
-        element.style.width = `${this.width}px`;
+    }
+
+    /**
+     * Switch case to call the appropriate sizing function. Variants include: text, rectangular, circular.
+     */
+    setSkeletonSize() {
+        switch (this.variant) {
+            case 'text':
+                this.setTextSize();
+                break;
+            case 'rectangular':
+                this.setRectangularCircularSize();
+                break;
+            case 'circular':
+                this.setRectangularCircularSize();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Sets the width and heigh for text variant
+     */
+    setTextSize() {
+        let element = this.skeleton;
+        element.style.height =
+            this.height === undefined ? '0.7em' : `${this.height}`;
+        element.style.width =
+            this.width === undefined ? '100%' : `${this.width}`;
+    }
+
+    /**
+     * Sets the width and heigh for rectangular and circular variants
+     */
+    setRectangularCircularSize() {
+        let element = this.skeleton;
+        element.style.height =
+            this.height === undefined ? '1.2em' : `${this.height}`;
+        element.style.width =
+            this.width === undefined ? '100%' : `${this.width}`;
     }
 }
