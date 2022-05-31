@@ -1741,7 +1741,7 @@ export default class Scheduler extends LightningElement {
                 const previousOccurrences = [];
                 occurrenceElements.forEach((occElement) => {
                     const start = occElement.startPosition;
-                    const { level, levelsTotal, overlappingEvents } =
+                    const { level, numberOfOverlap } =
                         this.computeEventLevelInResource(
                             previousOccurrences,
                             start
@@ -1753,13 +1753,12 @@ export default class Scheduler extends LightningElement {
 
                     previousOccurrences.unshift({
                         level,
-                        levelsTotal,
+                        numberOfOverlap,
                         start,
                         end: occElement.endPosition,
                         occurrence:
                             occurrence ||
-                            (this.selection && this.selection.occurrence),
-                        overlappingEvents: normalizeArray(overlappingEvents)
+                            (this.selection && this.selection.occurrence)
                     });
 
                     if (!this.isVertical) {
@@ -1788,18 +1787,13 @@ export default class Scheduler extends LightningElement {
                 // Add the corresponding offset to the top (horizontal variant)
                 // or left (vertical variant) of the occurrences
                 previousOccurrences.forEach((position) => {
-                    const { level, occurrence, overlappingEvents } = position;
+                    const { level, occurrence, numberOfOverlap } = position;
                     let offsetSide = 0;
 
                     if (this.isVertical) {
-                        let levelsTotal = position.levelsTotal;
-                        overlappingEvents.forEach((event) => {
-                            if (event.levelsTotal > levelsTotal) {
-                                levelsTotal = event.levelsTotal;
-                            }
-                        });
-                        offsetSide = (level * this.cellWidth) / levelsTotal;
-                        occurrence.numberOfEventsInThisTimeFrame = levelsTotal;
+                        offsetSide = (level * this.cellWidth) / numberOfOverlap;
+                        occurrence.numberOfEventsInThisTimeFrame =
+                            numberOfOverlap;
                         this._updateOccurrencesLength = true;
                     } else {
                         offsetSide = level * levelHeight;
@@ -2020,6 +2014,42 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Get the total number of event occurrences that overlap one.
+     *
+     * @param {object[]} previousOccurrences The computed occurrences that appear before the current one.
+     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
+     * @param {number} numberOfOverlap Minimum overlapped occurrences. This number correspond to the occurrence level + 1.
+     * @returns {number} The total number of occurrences overlapping, including the one evaluated.
+     */
+    getTotalOfOccurrencesOverlapping(
+        previousOccurrences,
+        startPosition,
+        minOverlap
+    ) {
+        let numberOfOverlap = minOverlap;
+
+        const overlappingOccurrences = previousOccurrences.filter((occ) => {
+            return startPosition < occ.end;
+        });
+
+        overlappingOccurrences.forEach((occ) => {
+            if (occ.numberOfOverlap >= numberOfOverlap) {
+                numberOfOverlap = occ.numberOfOverlap;
+            } else {
+                // Update the total of levels of the overlapped event occurrence
+                occ.numberOfOverlap = numberOfOverlap;
+                numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
+                    previousOccurrences,
+                    occ.start,
+                    numberOfOverlap
+                );
+            }
+        });
+
+        return numberOfOverlap;
+    }
+
+    /**
      * Clear the dragged class and empty the _draggedEvent and _resizeSide variables.
      */
     cleanDraggedElement() {
@@ -2065,19 +2095,14 @@ export default class Scheduler extends LightningElement {
     /**
      * Push an event occurrence down a level, until it doesn't overlap another occurrence.
      *
-     * @param {object[]} previousOccurrences Array of previous occurrences for which the vertical level has already been computed.
-     * @param {number} startPosition Start position of the occurrence.
-     * @param {number} level Level of the occurrence in their resource. It starts at 0, so the occurrence is at the top of its resource.
+     * @param {object[]} previousOccurrences Array of previous occurrences for which the level has already been computed.
+     * @param {number} startPosition Start position of the evaluated occurrence, on the X axis (horizontal variant) or the Y axis (vertical variant).
+     * @param {number} level Level of the occurrence in their resource. It starts at 0, so the occurrence is at the top (horizontal variant) or the left (vertical variant) of its resource.
      * @returns {object} Object with two keys:
      * * level (number): level of the event occurrence in the resource.
-     * * levelsTotal (number): Total number of levels in the resource (used for the vertical variant).
-     * * overlappingEvents (object[]): Array of overlapping events (used for the vertical variant).
+     * * numberOfOverlap (number): Total of occurrences overlaping, including the evaluated one.
      */
     computeEventLevelInResource(previousOccurrences, startPosition, level = 0) {
-        const overlappingEvents = previousOccurrences.filter((occ) => {
-            return startPosition < occ.end;
-        });
-
         // Find the last event with the same level
         const sameLevelEvent = previousOccurrences.find((occ) => {
             return occ.level === level;
@@ -2096,20 +2121,16 @@ export default class Scheduler extends LightningElement {
             ).level;
         }
 
-        let levelsTotal = level + 1;
+        let numberOfOverlap = level + 1;
         if (this.isVertical) {
-            // Update the total count of events overlapping,
-            // for the current occurrence and the overlapped one
-            const sameLevelEventOverlapsMoreEvents =
-                sameLevelEvent && sameLevelEvent.levelsTotal > levelsTotal;
-            if (sameLevelEventOverlapsMoreEvents) {
-                levelsTotal = sameLevelEvent.levelsTotal;
-            } else if (sameLevelEvent) {
-                sameLevelEvent.levelsTotal = levelsTotal;
-            }
+            numberOfOverlap = this.getTotalOfOccurrencesOverlapping(
+                previousOccurrences,
+                startPosition,
+                numberOfOverlap
+            );
         }
 
-        return { level, levelsTotal, overlappingEvents };
+        return { level, numberOfOverlap };
     }
 
     /**

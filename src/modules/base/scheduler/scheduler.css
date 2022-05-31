@@ -105,7 +105,7 @@
     height: 3rem;
     position: sticky;
     top: 0;
-    z-index: 2;
+    z-index: 4;
 }
 
 .avonni-scheduler__infinite-load-spinner_right {
