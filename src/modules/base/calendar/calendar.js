@@ -101,9 +101,15 @@ export default class Calendar extends LightningElement {
 
     connectedCallback() {
         let setDate = new Date(DEFAULT_DATE);
-        if (this._value[0]) setDate = new Date(this._value[0]);
-        if (setDate < this.min) setDate = new Date(this.min);
-        if (setDate > this.max) setDate = new Date(this.max);
+        if (this._value[0]) {
+            setDate = new Date(this._value[0]);
+        }
+        if (setDate < this.min) {
+            setDate = new Date(this.min);
+        }
+        if (setDate > this.max) {
+            setDate = new Date(this.max);
+        }
 
         this.displayDate = new Date(setDate);
 
@@ -333,7 +339,9 @@ export default class Calendar extends LightningElement {
      */
     get days() {
         const days = [];
-        if (this.weekNumber) days.push('');
+        if (this.weekNumber) {
+            days.push('');
+        }
         return days.concat(DAYS);
     }
 
@@ -405,8 +413,9 @@ export default class Calendar extends LightningElement {
     }
 
     get normalizedValue() {
-        if (!this.value.length)
+        if (!this.value.length) {
             return this.selectionMode === 'single' ? null : [];
+        }
 
         const stringDates = this.value.map((date) => {
             return date.toISOString();
@@ -449,7 +458,9 @@ export default class Calendar extends LightningElement {
     @api
     focusDate(dateValue) {
         const value = new Date(dateValue);
-        if (value && !value.getTime()) return;
+        if (value && !value.getTime()) {
+            return;
+        }
 
         this.displayDate = new Date(value);
         this._focusDate = new Date(value);
@@ -466,7 +477,9 @@ export default class Calendar extends LightningElement {
         const button = this.template.querySelector(
             '[data-element-id="previous-lightning-button-icon"]'
         );
-        if (button) button.focus();
+        if (button) {
+            button.focus();
+        }
     }
 
     /*
@@ -580,16 +593,16 @@ export default class Calendar extends LightningElement {
                     class: 'avonni-calendar__week-cell',
                     dayClass: '',
                     selected: false,
-                    currentDate: false,
+                    currentDate: null,
                     fullDate: ''
                 });
             }
 
             for (let a = 0; a < 7; a++) {
-                let currentDate = false;
                 let selected = false;
                 let dateClass = 'avonni-calendar__date-cell';
                 let dayClass = 'slds-day';
+                let currentDate = null;
                 let disabled = this.isInArray(date, this.disabledDates);
                 const marked = this.isInArray(date, this.markedDatesArray);
                 const markedColors = this.isInArrayMarker(date);
@@ -631,10 +644,12 @@ export default class Calendar extends LightningElement {
                         validValues: LABEL_ICON_POSITIONS.valid,
                         fallbackValue: LABEL_ICON_POSITIONS.default
                     });
-                    if (iconPosition === 'left' && labelItem.iconName)
+                    if (iconPosition === 'left' && labelItem.iconName) {
                         showLeft = true;
-                    if (iconPosition === 'right' && labelItem.iconName)
+                    }
+                    if (iconPosition === 'right' && labelItem.iconName) {
                         showRight = true;
+                    }
 
                     labelClasses = classSet('avonni-calendar__chip-label')
                         .add({
@@ -914,7 +929,9 @@ export default class Calendar extends LightningElement {
      */
     handlerSelectDate(event) {
         this.handleDateFocus(event);
-        if (!event.currentTarget.dataset.day) return;
+        if (!event.currentTarget.dataset.day) {
+            return;
+        }
 
         this._selectionMethod = event.pointerType === '' ? 'keyboard' : 'mouse';
         let date = new Date(Number(event.target.dataset.day));
@@ -1012,10 +1029,14 @@ export default class Calendar extends LightningElement {
      * Record focus if a cell is clicked.
      */
     handleDateFocus(event) {
-        if (!event.currentTarget) return;
+        if (!event.currentTarget) {
+            return;
+        }
 
         let focusDate = new Date(Number(event.currentTarget.dataset.day));
-        if (focusDate) this._focusDate = focusDate;
+        if (focusDate) {
+            this._focusDate = focusDate;
+        }
     }
 
     // HOVERED DATES AND RANGES APPEARANCE
@@ -1182,14 +1203,18 @@ export default class Calendar extends LightningElement {
                         const selectedDay = event.target.querySelector(
                             '[data-element-id="span-day-label"]'
                         );
-                        if (selectedDay) selectedDay.click();
+                        if (selectedDay) {
+                            selectedDay.click();
+                        }
                     }
                     break;
                 default:
             }
         }
 
-        if (!nextDate) return;
+        if (!nextDate) {
+            return;
+        }
 
         if (nextDate < this.min) {
             this._focusDate = this.min;
@@ -1261,10 +1286,11 @@ export default class Calendar extends LightningElement {
 
             const existingFocusPoints =
                 this.template.querySelectorAll('td[tabindex="0"]');
-            if (existingFocusPoints)
+            if (existingFocusPoints) {
                 existingFocusPoints.forEach((focusPoint) => {
                     focusPoint.setAttribute('tabindex', '-1');
                 });
+            }
 
             if (selectedDate) {
                 if (this.selectionMode === 'single') {
@@ -1288,7 +1314,9 @@ export default class Calendar extends LightningElement {
                     if (applyFocus) focusTarget[0].focus();
                 } else {
                     focusTarget.setAttribute('tabindex', '0');
-                    if (applyFocus) focusTarget.focus();
+                    if (applyFocus) {
+                        focusTarget.focus();
+                    }
                 }
             }
         });

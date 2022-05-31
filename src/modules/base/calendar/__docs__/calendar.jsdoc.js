@@ -74,9 +74,6 @@
  * @type styling
  */
 /**
- * @namespace stylingHooks
- */
-/**
  * @memberof stylingHooks
  * @name --avonni-calendar-week-label-text-color
  * @default #747474

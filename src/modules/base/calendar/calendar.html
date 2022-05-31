@@ -216,15 +216,5 @@
                 </table>
             </div>
         </div>
-        <div if:true={showTodayButton} class="slds-align_absolute-center">
-            <lightning-button
-                onclick={handlerSelectDate}
-                data-day={todayButton}
-                class={computedTodayButtonClasses}
-                disabled={todayDisabled}
-                variant="base"
-                label="Today"
-            ></lightning-button>
-        </div>
     </div>
 </template>
