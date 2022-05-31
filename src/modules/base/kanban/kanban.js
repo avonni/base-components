@@ -413,6 +413,8 @@ export default class Kanban extends LightningElement {
             }
         }
 
+        let offsetHeight = 0;
+        let offsetCount = 0;
         // resets animations
         Array.from(groups).forEach((group, i) => {
             // resets the height to 100% on other fields
@@ -433,8 +435,37 @@ export default class Kanban extends LightningElement {
                         tile.classList.remove('avonni-kanban__tile_moved');
                         tile.style.transform = `translateY(0px)`;
                     }
+
+                    if (
+                        i === this._releasedGroupIndex &&
+                        j < this._releasedTileIndex
+                    ) {
+                        offsetHeight += tile.offsetHeight;
+                        offsetCount++;
+                    }
                 });
         });
+
+        this.template
+            .querySelectorAll(
+                '[data-element-id="avonni-kanban__tile_dropzone"]'
+            )
+            .forEach((zone) => {
+                zone.style.height = `0px`;
+                zone.style.width = `0px`;
+            });
+
+        const summarizeHeight = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__summarize_wrapper"]'
+        )[this._releasedGroupIndex].offsetHeight;
+        const dropZone = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__tile_dropzone"]'
+        )[this._releasedGroupIndex];
+        dropZone.style.height = `${this._draggedTile.offsetHeight}px`;
+        dropZone.style.width = `${this._draggedTile.offsetWidth}px`;
+        dropZone.style.top = `${
+            8 * offsetCount + offsetHeight + summarizeHeight
+        }px`;
     }
 
     /**
@@ -512,6 +543,15 @@ export default class Kanban extends LightningElement {
                 tile.style.transform = `translateY(0px)`;
             });
         });
+
+        this.template
+            .querySelectorAll(
+                '[data-element-id="avonni-kanban__tile_dropzone"]'
+            )
+            .forEach((zone) => {
+                zone.style.height = `0px`;
+                zone.style.width = `0px`;
+            });
     }
 
     /**
@@ -618,6 +658,7 @@ export default class Kanban extends LightningElement {
         }
         if (this._releasedTileIndex < 0) this._releasedTileIndex = 0;
         this._releasedTileIndex += scrollTopIndex;
+
         this.animateTiles(groupElements);
     }
 
@@ -804,6 +845,7 @@ export default class Kanban extends LightningElement {
      */
     handleTileMouseMove(event) {
         if (!this._draggedTile && !this._draggedGroup) return;
+
         this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
         this._kanbanPos.bottom =
             this._kanbanPos.top + event.currentTarget.offsetHeight;
