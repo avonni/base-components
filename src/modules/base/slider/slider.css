@@ -1,0 +1,202 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+.avonni-slider__label {
+    padding-bottom: 0.5rem;
+}
+
+.avonni-range__slider {
+    height: 0px;
+    outline: none;
+    -webkit-appearance: none;
+    position: relative;
+    background: transparent;
+    top: 1.5px;
+    z-index: 3;
+}
+.avonni-range__slider::-webkit-slider-runnable-track {
+    background: none;
+    border-radius: 0px;
+}
+.avonni-range__container {
+    display: flex;
+}
+.avonni-range__container-horizontal-size_x-small {
+    width: var(--lwc-sizeXSmall, 12rem);
+}
+.avonni-range__container-horizontal-size_small {
+    width: var(--lwc-sizeSmall, 15rem);
+}
+.avonni-range__container-horizontal-size_medium {
+    width: var(--lwc-sizeMedium, 20rem);
+}
+.avonni-range__container-horizontal-size_large {
+    width: var(--lwc-sizeLarge, 25rem);
+}
+.avonni-range__container-horizontal-size_full {
+    width: 100%;
+}
+.avonni-range__container-vertical-size_x-small {
+    height: var(--lwc-sizeXSmall, 12rem);
+}
+.avonni-range__container-vertical-size_small {
+    height: var(--lwc-sizeSmall, 15rem);
+}
+.avonni-range__container-vertical-size_medium {
+    height: var(--lwc-sizeMedium, 20rem);
+}
+.avonni-range__container-vertical-size_large {
+    height: var(--lwc-sizeLarge, 25rem);
+}
+.avonni-range__container-vertical-size_full {
+    width: 30rem;
+    height: 30rem;
+}
+.avonni-range__unit-container {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 0.5rem;
+    color: var(--avonni-range-unit-text-color, #3e3e3c);
+    font-size: var(--avonni-range-unit-font-size, 0.75rem);
+    font-style: var(--avonni-range-unit-font-style, normal);
+    font-weight: var(--avonni-range-unit-font-weight, 400);
+}
+.avonni-range__vertical {
+    transform: rotate(-90deg);
+    top: 70px;
+    bottom: 0;
+    position: inherit;
+}
+.avonni-range__bubble {
+    opacity: 0;
+    position: absolute;
+    top: -50px;
+    z-index: 3;
+    background-color: #1a5296;
+    color: #fff;
+    height: 32px;
+    border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+    width: fit-content;
+    min-width: 2rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+    align-items: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    line-height: 32px;
+    white-space: nowrap;
+}
+.avonni-range__bubble:after {
+    position: absolute;
+    content: '';
+    left: 0;
+    border-radius: 19px;
+    top: 22px;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top-width: 19px;
+    border-top-style: solid;
+    border-top-color: #1a5296;
+}
+.avonni-range__bubble-vertical {
+    opacity: 0;
+    position: absolute;
+    top: 19px;
+    z-index: 3;
+    background-color: #1a5296;
+    color: #fff;
+    border-radius: 0.25rem;
+    -webkit-border-radius: 0.25rem;
+    height: auto;
+    min-height: 2rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 12px;
+    line-height: 32px;
+    white-space: nowrap;
+    transform-origin: 17% 57%;
+    transform: rotate(90deg);
+    min-width: 80px;
+}
+.avonni-range__bubble-vertical:after {
+    position: absolute;
+    content: '';
+    left: -18px;
+    border-radius: 19px;
+    top: 6px;
+    border-left: 16px solid transparent;
+    border-right: 16px solid transparent;
+    border-top-width: 19px;
+    border-top-style: solid;
+    border-top-color: #1a5296;
+    transform: rotate(90deg);
+}
+
+.avonni-range__label {
+    color: var(--avonni-range-header-text-color, #080707);
+    font-size: var(--avonni-range-header-font-size, 0.75rem);
+    font-style: var(--avonni-range-header-font-style, normal);
+    font-weight: var(--avonni-range-header-font-weight, 400);
+}
+
+.avonni-range__slider_above {
+    z-index: 5;
+}
+
+.avonni-range__progress-container {
+    height: 4px;
+    position: relative;
+    background: #ecebea;
+    border-radius: 5px;
+    top: 0px;
+    z-index: 1;
+}
+
+.avonni-range__progress {
+    height: 100%;
+    position: absolute;
+    border-radius: 5px;
+    background: #0176d3;
+    z-index: 2;
+}
+
+.avonni-range__progress_disabled {
+    background: #919191;
+}
+
+.avonni-range__bubble_visible {
+    opacity: 1;
+}
