@@ -172,7 +172,8 @@
     background-color: #e2e2e2;
 }
 
-.avonni-kanban__tile_dropzone {
+.avonni-kanban__tile_dropzone,
+.avonni-kanban__group_dropzone {
     position: absolute;
     background-color: rgba(0, 0, 0, 0.05);
     margin: 5px;
@@ -182,6 +183,7 @@
 .avonni-kanban__dragged::after {
     content: '';
     position: absolute;
+    opacity: 0.5;
     top: -25%;
     left: -25%;
     width: 150%;
@@ -259,12 +261,12 @@
 }
 
 .avonni-kanban__field.avonni-kanban__translate_left {
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% - 10px));
 }
 
 .avonni-kanban__variant_base
     .avonni-kanban__field.avonni-kanban__translate_right {
-    transform: translateX(100%);
+    transform: translateX(calc(100% + 10px));
 }
 
 .avonni-kanban__variant_base

@@ -669,10 +669,16 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__container"]'
         );
 
+        this._groupWidth = event.currentTarget.offsetWidth;
+        this._clickOffset.x =
+            event.clientX - event.currentTarget.getBoundingClientRect().x;
+        this._clickOffset.y =
+            event.clientY - event.currentTarget.getBoundingClientRect().y;
+
         this._initialPos.x =
             event.currentTarget.getBoundingClientRect().x +
             fieldContainer.scrollLeft;
-        this._initialPos.y = event.currentTarget.getBoundingClientRect().y + 15;
+        this._initialPos.y = event.currentTarget.getBoundingClientRect().y;
 
         this._clickedGroupIndex = Array.from(
             this.template.querySelectorAll(
@@ -680,6 +686,7 @@ export default class Kanban extends LightningElement {
             )
         ).indexOf(event.currentTarget.parentElement);
 
+        this._releasedGroupIndex = this._clickedGroupIndex;
         this._draggedGroup = event.currentTarget.parentElement;
         this._draggedGroup.classList.add('avonni-kanban__dragged_group');
     }
@@ -687,13 +694,10 @@ export default class Kanban extends LightningElement {
     handleGroupMouseMove(event) {
         if (!this._draggedGroup) return;
         this._releasedGroupIndex = Math.min(
-            Math.floor(
-                (event.clientX + 10) /
-                    event.currentTarget.children[this._clickedGroupIndex]
-                        .offsetWidth
-            ),
+            Math.floor((event.clientX + 10) / this._groupWidth),
             this.groupValues.length - 1
         );
+
         const groups = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__field"]'
         );
@@ -717,6 +721,20 @@ export default class Kanban extends LightningElement {
                 group.classList.remove('avonni-kanban__translate_left');
             }
         });
+
+        const dropZone = this.template.querySelector(
+            '[data-element-id="avonni-kanban__group_dropzone"]'
+        );
+        dropZone.style.height = `${
+            groups[this._clickedGroupIndex].offsetHeight
+        }px`;
+        dropZone.style.width = `${
+            groups[this._clickedGroupIndex].offsetWidth
+        }px`;
+        dropZone.style.transform = `translateX(${
+            (groups[this._clickedGroupIndex].offsetWidth + 10) *
+            this._releasedGroupIndex
+        }px)`;
     }
 
     handleGroupMouseUp() {
@@ -738,6 +756,12 @@ export default class Kanban extends LightningElement {
                 group.classList.remove('avonni-kanban__translate_right');
                 group.classList.remove('avonni-kanban__field_moved');
             });
+
+        const groupDropZone = this.template.querySelector(
+            '[data-element-id="avonni-kanban__group_dropzone"]'
+        );
+        groupDropZone.style.height = `0px`;
+        groupDropZone.style.width = `0px`;
     }
 
     /**
@@ -780,6 +804,7 @@ export default class Kanban extends LightningElement {
             event.clientX - event.currentTarget.getBoundingClientRect().x;
         this._clickOffset.y =
             event.clientY - event.currentTarget.getBoundingClientRect().y;
+
         if (
             this.readOnly ||
             event.target.classList.contains('slds-dropdown-trigger')
@@ -880,7 +905,9 @@ export default class Kanban extends LightningElement {
             this.handleGroupMouseMove(event);
             this._draggedGroup.style.transform = `translate(${
                 currentX - this._initialPos.x - this._clickOffset.x
-            }px, ${currentY - this._initialPos.y}px) rotate(3deg)`;
+            }px, ${
+                currentY - this._initialPos.y - this._clickOffset.y
+            }px) rotate(3deg)`;
         }
 
         const right = fieldContainer.offsetWidth + fieldContainer.scrollLeft;
