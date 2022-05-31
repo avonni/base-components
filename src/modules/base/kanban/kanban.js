@@ -54,28 +54,27 @@ const KANBAN_VARIANTS = {
 export default class Kanban extends LightningElement {
     _actions = [];
     _clickedGroupIndex = 0;
+    _clickOffset = { x: 0, y: 0 };
     _draggedTile;
     _draggedGroup;
     _fields = [];
+    _groupsAnimation = [];
     _groupFieldName;
     _groupValues = [];
-    _summarizeValues = [];
-    _oldSummarizeValues = [];
+    _groupsHeight = [];
+    _groupsLength = [];
     _groupWidth = 1;
     _initialPos = { x: 0, y: 0 };
-    _clickOffset = { x: 0, y: 0 };
     _initialTileIndex = 0;
     _isDragged = false;
     _isLoading = false;
-    _groupsAnimation = [];
-    _groupsLength = [];
-    _groupsHeight = [];
     _kanbanPos = {
         top: 0,
         bottom: 0,
         left: 0,
         right: 0
     };
+    _oldSummarizeValues = [];
     _readOnly = false;
     _records = [];
     _releasedGroupIndex = 0;
@@ -86,6 +85,7 @@ export default class Kanban extends LightningElement {
     _scrollingX;
     _scrollWidth = 0;
     _summarizeFieldName;
+    _summarizeValues = [];
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -365,6 +365,11 @@ export default class Kanban extends LightningElement {
         return computedGroups;
     }
 
+    /**
+     * Gets the class of the tile depending on readOnly
+     *
+     * @type {string}
+     */
     get computedTileClass() {
         return classSet('avonni-kanban__tile slds-item').add({
             'avonni-kanban__tile_read_only': this.readOnly
@@ -462,7 +467,7 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__tile_dropzone"]'
         )[this._releasedGroupIndex];
         dropZone.style.height = `${this._draggedTile.offsetHeight}px`;
-        dropZone.style.width = `${this._draggedTile.offsetWidth}px`;
+        dropZone.style.width = `${this._draggedTile.offsetWidth - 5}px`;
         dropZone.style.top = `${
             8 * offsetCount + offsetHeight + summarizeHeight
         }px`;
@@ -662,6 +667,12 @@ export default class Kanban extends LightningElement {
         this.animateTiles(groupElements);
     }
 
+    /**
+     *
+     *  Starts the drag of a list
+     *
+     * @param {Event} event
+     */
     handleGroupMouseDown(event) {
         if (this._variant !== 'base' || this._readOnly) return;
 
@@ -691,6 +702,12 @@ export default class Kanban extends LightningElement {
         this._draggedGroup.classList.add('avonni-kanban__dragged_group');
     }
 
+    /**
+     *
+     *  Handles the drag of a list
+     *
+     * @param {Event} event
+     */
     handleGroupMouseMove(event) {
         if (!this._draggedGroup) return;
         this._releasedGroupIndex = Math.min(
@@ -737,6 +754,11 @@ export default class Kanban extends LightningElement {
         }px)`;
     }
 
+    /**
+     *
+     *  Handles the end of the drag of a list
+     *
+     */
     handleGroupMouseUp() {
         if (!this._draggedGroup) return;
         const groups = JSON.parse(JSON.stringify(this._groupValues));
