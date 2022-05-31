@@ -31,14 +31,19 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import {
-    // classSet,
-    generateUUID
-} from 'c/utils';
-import { normalizeBoolean, normalizeString } from '../utilsPrivate/normalize';
+import { classSet, generateUUID } from 'c/utils';
+import { normalizeArray, normalizeString } from '../utilsPrivate/normalize';
 
 const MEDIA_POSITIONS = {
-    valid: ['left', 'right', 'top', 'bottom', 'center'],
+    valid: [
+        'left',
+        'right',
+        'top',
+        'bottom',
+        'center',
+        'background',
+        'overlay'
+    ],
     default: 'top'
 };
 
@@ -49,9 +54,13 @@ export default class Card extends LightningElement {
     _mediaPosition;
     _backgroundImage;
 
-    renderedCallback() {
-        console.log(this.backgroundImageStyle);
-    }
+    // how many actions position should there be...
+    // array of
+    actionPositions = new Array();
+    titleActions = new Array();
+    imageTopRightActions = new Array();
+
+    renderedCallback() {}
 
     /**
      * Get the title slot DOM element.
@@ -161,7 +170,6 @@ export default class Card extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default vertical
      */
     @api
     get mediaPosition() {
@@ -173,15 +181,6 @@ export default class Card extends LightningElement {
             fallbackValue: MEDIA_POSITIONS.default,
             validValues: MEDIA_POSITIONS.valid
         });
-    }
-
-    @api
-    get backgroundImage() {
-        return this._backgroundImage;
-    }
-
-    set backgroundImage(value) {
-        this._backgroundImage = normalizeBoolean(value);
     }
 
     /**
@@ -196,8 +195,23 @@ export default class Card extends LightningElement {
     }
 
     set actions(value) {
-        // normalize...
-        this._actions = value;
+        this._actions = normalizeArray(value);
+        this.sortActions(this._actions);
+    }
+
+    sortActions(actions) {
+        actions.forEach((action) => {
+            switch (action.position) {
+                case 'title':
+                    this.titleActions.push(action);
+                    break;
+                case 'image-top-right':
+                    this.imageTopRightActions.push(action);
+                    break;
+                default:
+                    break;
+            }
+        });
     }
 
     /**
@@ -238,6 +252,7 @@ export default class Card extends LightningElement {
      * Image link for the main image.
      *
      * @type {string}
+     * @default ''
      * @public
      */
     @api
@@ -251,26 +266,36 @@ export default class Card extends LightningElement {
 
     // private
 
-    get backgroundImageStyle() {
-        if (!this._backgroundImage) return '';
+    get hasActions() {
+        console.log(this.actions.length);
+        return true;
+    }
 
-        return `background-image: url(${this.imageSrc}); width: 100%; height: 100%; background-color: red;`;
+    /**
+     * Generate unique ID key.
+     */
+    get generateKey() {
+        return generateUUID();
+    }
+
+    get hasAction() {
+        return false;
     }
 
     get computedCardClasses() {
-        if (this.showLeftMedia) {
-            return 'image-left';
-        }
-        if (this.showRightMedia) {
-            return 'image-right';
-        }
-        if (this.showBottomMedia) {
-            return 'image-bottom';
-        }
-        if (this.showCenterMedia) {
-            return 'image-center';
-        }
-        return 'image-top';
+        if (!this.imageSrc) return '';
+
+        return classSet('')
+            .add({ 'image-top': this.mediaPosition === 'top' })
+            .add({ 'image-left': this.mediaPosition === 'left' })
+            .add({ 'image-right': this.mediaPosition === 'right' })
+            .add({ 'image-center': this.mediaPosition === 'center' })
+            .add({ 'image-bottom': this.mediaPosition === 'bottom' })
+            .add({ background: this.mediaPosition === 'background' })
+            .add({
+                'background overlay-card': this.mediaPosition === 'overlay'
+            })
+            .toString();
     }
 
     /**
@@ -282,27 +307,11 @@ export default class Card extends LightningElement {
         return !!this.title;
     }
 
-    get showLeftMedia() {
-        return !!this.imageSrc && this.mediaPosition === 'left';
-    }
-
-    get showTopMedia() {
-        return !!this.imageSrc && this.mediaPosition === 'top';
-    }
-
-    get showRightMedia() {
-        return !!this.imageSrc && this.mediaPosition === 'right';
-    }
-
-    get showBottomMedia() {
-        return !!this.imageSrc && this.mediaPosition === 'bottom';
-    }
-
     get showCenterMedia() {
-        return !!this.imageSrc && this.mediaPosition === 'center';
+        return this.mediaPosition === 'center';
     }
 
-    get generateKey() {
-        return generateUUID();
+    get showMedia() {
+        return !!this.imageSrc;
     }
 }

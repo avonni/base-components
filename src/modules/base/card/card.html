@@ -33,15 +33,67 @@
 -->
 
 <template>
-    <article class={computedCardClasses} style={backgroundImageStyle}>
+    <article class={computedCardClasses}>
+        <div class="slds-m-around_x-small" if:true={showCenterMedia}>
+            <p>{description}</p>
+            <p>
+                <template for:each={infos} for:item="info">
+                    <a key={generateKey} href={info.href}>{info.label}</a>
+                </template>
+            </p>
+        </div>
         <!-- top image -->
-        <div class="avonni-card__image-container" if:false={showCenterMedia}>
+        <div class="avonni-card__image-container" if:true={showMedia}>
             <img class="avonni-card__image" src={imageSrc} alt="" />
             <slot name="image-action-container"></slot>
+
+            <!-- action button -->
+            <template
+                for:each={actionPositions}
+                for:item="actionList"
+            ></template>
+            <c-button-menu
+                if:true={hasActions}
+                class="media-actions"
+                variant="border-filled"
+                icon-name="standard:live_chat"
+                icon-size="small"
+                alternative-text="Actions"
+                data-element-id="action-menu-icon"
+                hide-down-arrow
+            >
+                <template for:each={actions} for:item="action">
+                    <lightning-menu-item
+                        key={action.name}
+                        icon-name={action.iconName}
+                        value={action.name}
+                        label={action.label}
+                        onclick={handleActionClick}
+                    >
+                    </lightning-menu-item>
+                </template>
+            </c-button-menu>
+
+            <button
+                if:true={hasAction}
+                class="avonni-avatar-action-button slds-button slds-button_icon"
+                data-element-id="action-icon"
+                title={action.label}
+                type="button"
+                value={action.name}
+                alternative-text={action.label}
+                onclick={handleActionClick}
+            >
+                <c-primitive-icon
+                    class="avonni-avatar-action-button-icon"
+                    icon-name={action.iconName}
+                >
+                </c-primitive-icon>
+            </button>
         </div>
 
         <!-- title and action -->
-        <div class="slds-has-flexi-truncate">
+        <div class="slds-has-flexi-truncate card-content">
             <div class="slds-grid slds-m-around_x-small">
                 <div class="slds-grid">
                     <c-avatar
@@ -83,26 +135,6 @@
                     </template>
                 </p>
             </div>
-
-            <!-- center image -->
-            <template if:true={showCenterMedia}>
-                <div class="avonni-card__image-container">
-                    <img class="avonni-card__image" src={imageSrc} alt="" />
-                    <slot name="image-action-container"></slot>
-                </div>
-
-                <!-- center content -->
-                <div class="slds-m-around_x-small">
-                    <p>{description}</p>
-                    <p>
-                        <template for:each={infos} for:item="info">
-                            <a key={generateKey} href={info.href}
-                                >{info.label}</a
-                            >
-                        </template>
-                    </p>
-                </div>
-            </template>
         </div>
     </article>
 </template>
