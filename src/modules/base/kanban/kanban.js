@@ -341,7 +341,7 @@ export default class Kanban extends LightningElement {
         });
         requestAnimationFrame(() => {
             this._scrollWidth = this.template.querySelector(
-                '[data-element-id="avonni-kanban__field_container"]'
+                '[data-element-id="avonni-kanban__container"]'
             ).scrollWidth;
         });
 
@@ -543,7 +543,7 @@ export default class Kanban extends LightningElement {
 
         this._releasedGroupIndex += Math.floor(
             this.template.querySelector(
-                '[data-element-id="avonni-kanban__field_container"]'
+                '[data-element-id="avonni-kanban__container"]'
             ).scrollLeft / this._groupWidth
         );
 
@@ -588,7 +588,7 @@ export default class Kanban extends LightningElement {
         if (this._variant !== 'base' || this._readOnly) return;
 
         const fieldContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__field_container"]'
+            '[data-element-id="avonni-kanban__container"]'
         );
 
         this._initialPos.x =
@@ -717,7 +717,7 @@ export default class Kanban extends LightningElement {
         }px`;
 
         const fieldContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__field_container"]'
+            '[data-element-id="avonni-kanban__container"]'
         );
 
         this._initialPos.x =
@@ -734,7 +734,7 @@ export default class Kanban extends LightningElement {
 
         this._clickedGroupIndex += Math.floor(
             this.template.querySelector(
-                '[data-element-id="avonni-kanban__field_container"]'
+                '[data-element-id="avonni-kanban__container"]'
             ).scrollLeft / this._groupWidth
         );
 
@@ -773,7 +773,7 @@ export default class Kanban extends LightningElement {
             this._kanbanPos.left + event.currentTarget.scrollWidth;
 
         const fieldContainer = this.template.querySelector(
-            '[data-element-id="avonni-kanban__field_container"]'
+            '[data-element-id="avonni-kanban__container"]'
         );
 
         let currentY = event.clientY;
