@@ -38,17 +38,6 @@
     padding-bottom: 0.5rem;
 }
 
-.avonni-range__slider {
-    background: #ecebea;
-    height: 4px;
-    outline: none;
-    -webkit-appearance: none;
-    position: relative;
-    background: transparent;
-    height: 0px;
-    top: 1.5px;
-    z-index: 4;
-}
 .avonni-range__slider::-webkit-slider-runnable-track {
     background: none;
     border-radius: 0px;
@@ -204,8 +193,18 @@
     font-weight: var(--avonni-range-header-font-weight, 400);
 }
 
+.avonni-range__slider {
+    position: relative;
+    -webkit-appearance: none;
+    outline: none;
+    background: transparent;
+    transform: translate(0, 2px);
+    height: 0px;
+    z-index: 4;
+}
+
 .avonni-range__slider-left_above {
-    z-index: 5;
+    z-index: 7;
 }
 
 .avonni-range__progress-container {
@@ -214,21 +213,18 @@
     background: #ecebea;
     border-radius: 5px;
     width: calc(100% - calc(var(--input-thumb-radius) * 1.5));
-    left: calc(
-        var(--input-thumb-radius) - calc(var(--input-thumb-radius) * 0.3)
-    );
-    top: 0px;
+    margin: 0 auto;
     z-index: 1;
 }
 
 .avonni-range__progress {
-    height: 125%;
+    height: 150%;
     position: absolute;
     border-radius: 5px;
     background: #0176d3;
     top: 50%;
-    transform: translate(0, -55%);
     z-index: 2;
+    transform: translate(0, -50%);
 }
 
 .avonni-range__progress_disabled {
