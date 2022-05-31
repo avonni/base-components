@@ -210,7 +210,10 @@ export default class Range extends LightningElement {
     }
 
     set min(value) {
-        this._min = parseInt(value, 10);
+        const intValue = parseInt(value, 10);
+        if (!isNaN(intValue)) {
+            this._min = intValue;
+        }
     }
 
     /**
@@ -226,7 +229,10 @@ export default class Range extends LightningElement {
     }
 
     set max(value) {
-        this._max = parseInt(value, 10);
+        const intValue = parseInt(value, 10);
+        if (!isNaN(intValue)) {
+            this._max = intValue;
+        }
     }
 
     /**
@@ -349,7 +355,10 @@ export default class Range extends LightningElement {
     }
 
     set valueLower(value) {
-        this._valueLower = parseInt(value, 10);
+        const intValue = parseInt(value, 10);
+        if (!isNaN(intValue)) {
+            this._valueLower = intValue;
+        }
     }
 
     /**
@@ -364,7 +373,10 @@ export default class Range extends LightningElement {
     }
 
     set valueUpper(value) {
-        this._valueUpper = parseInt(value, 10);
+        const intValue = parseInt(value, 10);
+        if (!isNaN(intValue)) {
+            this._valueUpper = parseInt(value, 10);
+        }
     }
 
     /**
