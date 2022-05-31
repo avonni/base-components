@@ -951,8 +951,11 @@ export default class PrimitiveTreeItem extends LightningElement {
      * Update the visual level offset of the item.
      */
     updateLevel() {
-        if (this.itemElement)
-            this.itemElement.style = `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        if (wrapper)
+            wrapper.style = `--avonni-tree-item-spacing-inline-left: ${this.level}rem;`;
     }
 
     /**
