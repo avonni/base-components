@@ -65,6 +65,7 @@ import {
 } from './defaults';
 import SchedulerResource from './resource';
 import SchedulerEvent from './event';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 /**
  * @class
@@ -114,6 +115,7 @@ export default class Scheduler extends LightningElement {
     _mouseIsDown = false;
     _numberOfVisibleCells = 0;
     _resizedEvent;
+    _resizeObserver;
     _toolbarCalendarIsFocused = false;
     cellHeight = 0;
     cellWidth = 0;
@@ -195,6 +197,16 @@ export default class Scheduler extends LightningElement {
             this.template
                 .querySelector('[data-element-id="avonni-dialog"]')
                 .focusOnCloseButton();
+        }
+
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
         }
     }
 
@@ -1487,6 +1499,22 @@ export default class Scheduler extends LightningElement {
 
         // Create only the visible events
         this.computedEvents = this.createVisibleEvents();
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this.updateCellWidth();
+        });
+        const schedule = this.template.querySelector(
+            '[data-element-id="div-schedule-body"]'
+        );
+        resizeObserver.observe(schedule);
+        return resizeObserver;
     }
 
     /**
