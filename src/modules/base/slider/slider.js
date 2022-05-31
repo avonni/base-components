@@ -38,10 +38,12 @@ import {
     normalizeObject
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const DEFAULT_STEP = 1;
+const INPUT_THUMB_RADIUS = 8.5;
 
 const SLIDER_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'full'],
@@ -59,6 +61,11 @@ const SLIDER_UNITS = {
     valid: ['decimal', 'currency', 'percent', 'custom'],
     default: 'decimal'
 };
+const TICK_MARK_STYLES = {
+    valid: ['inner-tick', 'tick', 'dot'],
+    default: 'inner-tick'
+};
+const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
 export default class Slider extends LightningElement {
     /**
@@ -136,8 +143,11 @@ export default class Slider extends LightningElement {
     _values = [(DEFAULT_MAX - DEFAULT_MIN) / 2];
     _variant = LABEL_VARIANTS.default;
     _unitAttributes = {};
+    _showTickMarks = false;
+    _tickMarkStyle = TICK_MARK_STYLES.default;
 
     _helpMessage;
+    _resizeObserver;
     _isFirstInput = true;
     _moveEventWait = false;
 
@@ -158,6 +168,12 @@ export default class Slider extends LightningElement {
     }
 
     renderedCallback() {
+        if (!this.resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+        if (this.showAnyTickMarks) {
+            this.drawRuler();
+        }
         if (!this._rendered) {
             this.initRange();
             this._rendered = true;
@@ -241,6 +257,21 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * If present, minor tick marks are displayed at every step.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showTickMarks() {
+        return this._showTickMarks;
+    }
+    set showTickMarks(value) {
+        this._showTickMarks = normalizeBoolean(value);
+    }
+
+    /**
      * Size of the slider. Accepted values are full, x-small, small, medium, and large.
      *
      * @type {string}
@@ -273,6 +304,24 @@ export default class Slider extends LightningElement {
 
     set step(value) {
         this._step = Number(value);
+    }
+
+    /**
+     * If present, tick marks are displayed with the according style. Accepted styles are inner-tick, tick, dot.
+     *
+     * @type {boolean}
+     * @public
+     * @default inner-tick
+     */
+    @api
+    get tickMarkStyle() {
+        return this._tickMarkStyle;
+    }
+    set tickMarkStyle(value) {
+        this._tickMarkStyle = normalizeString(value, {
+            fallbackValue: TICK_MARK_STYLES.default,
+            validValues: TICK_MARK_STYLES.valid
+        });
     }
 
     /**
@@ -328,6 +377,7 @@ export default class Slider extends LightningElement {
     get unitAttributes() {
         return this._unitAttributes;
     }
+
     @api
     get customLabels() {
         return this._customLabels;
@@ -438,7 +488,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Computed left bubble class styling.
+     * Computed bubble class styling.
      *
      * @type {string}
      */
@@ -461,6 +511,65 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Computed custom label class styling.
+     *
+     * @type {string}
+     */
+    get computedCustomLabelClass() {
+        return classSet('').add({
+            'avonni-range__custom-label_horizontal': this.isHorizontal,
+            'avonni-range__custom-label_vertical': !this.isHorizontal
+        });
+    }
+    /**
+     * Computed custom label container class styling.
+     *
+     * @type {string}
+     */
+    get computedCustomLabelContainerClass() {
+        return classSet('').add({
+            'avonni-range__custom-label-container_horizontal':
+                this.isHorizontal,
+            'avonni-range__custom-label-container_vertical': !this.isHorizontal,
+            'avonni-range__custom-label-container_close':
+                this._tickMarkStyle !== 'tick',
+            [`avonni-range__container-vertical-size_${this._size}`]:
+                !this.isHorizontal
+        });
+    }
+    /**
+     * Computed input class styling.
+     */
+    get computedInputClass() {
+        return classSet('slds-slider__range').add({
+            'avonni-range__slider': true
+        });
+    }
+
+    get computedSpacerClass() {
+        return classSet(`avonni-range__container-vertical-size_${this._size}`);
+    }
+
+    /**
+     * Computed right bubble class styling.
+     *
+     * @type {string}
+     */
+    get computedUnitContainerClass() {
+        const isHorizontal = this.type === 'horizontal';
+        return classSet('avonni-range__unit-container').add({
+            'avonni-range__unit-container_ticks-horizontal':
+                isHorizontal &&
+                this.showAnyTickMarks &&
+                this.tickMarkStyle !== 'tick',
+            'avonni-range__unit-container_ticks-horizontal-tick':
+                isHorizontal &&
+                this.showAnyTickMarks &&
+                this.tickMarkStyle === 'tick'
+        });
+    }
+
+    /**
      * Verify if range is vertical.
      *
      * @type {boolean}
@@ -469,10 +578,76 @@ export default class Slider extends LightningElement {
         return this._type === 'vertical';
     }
 
+    /**
+     * Verify if range is horizontal.
+     *
+     * @type {boolean}
+     */
+    get isHorizontal() {
+        return this._type === 'horizontal';
+    }
+    /**
+     * Verify if range is vertical and does not have custom labels.
+     *
+     * @type {boolean}
+     */
+    get isNormalVertical() {
+        return this._type === 'vertical' && !this.hasCustomLabels;
+    }
+    /**
+     * Verify if range is vertical and does not have custom labels.
+     *
+     * @type {boolean}
+     */
+    get isNormalHorizontal() {
+        return this._type !== 'vertical' && !this.hasCustomLabels;
+    }
+
     get isFirstInput() {
         let boolean = this._isFirstInput;
         this._isFirstInput = false;
         return boolean;
+    }
+
+    /**
+     * Verify if the range has custom labels.
+     *
+     * @type {boolean}
+     */
+    get hasCustomLabels() {
+        return this._customLabels.length !== 0 && this._unit === 'custom';
+    }
+    /**
+     * Verify if the range has custom labels and does not want to show ticks.
+     *
+     * @type {boolean}
+     */
+    get hasOnlyCustomLabels() {
+        return this.hasCustomLabels && !this._showTickMarks;
+    }
+    /**
+     * Returns the color corresponding to highlight (depends on disabled)
+     *
+     * @type {string}
+     */
+    get highlightColor() {
+        return this.disabled ? '#919191' : '#0176D3';
+    }
+    /**
+     * To show or not the tick marks.
+     *
+     * @type {boolean}
+     */
+    get showAnyTickMarks() {
+        return this.hasCustomLabels || this._showTickMarks;
+    }
+    /**
+     * To show or not the major tick marks.
+     *
+     * @type {boolean}
+     */
+    get showOnlyMajorTicks() {
+        return this.hasCustomLabels && !this._showTickMarks;
     }
 
     /*
@@ -482,10 +657,216 @@ export default class Slider extends LightningElement {
      */
 
     /**
+     * Displays and positions the custom labels for the range
+     */
+    displayCustomLabels() {
+        const customLabelNodes = this.template.querySelectorAll(
+            `${'.avonni-range__custom-label-wrapper'}`
+        );
+        const totalWidth = !this.isHorizontal
+            ? this.template.querySelector('[data-element-id="spacer"]')
+                  .clientHeight -
+              2 * INPUT_THUMB_RADIUS
+            : this.template.querySelector(
+                  '[data-element-id="custom-label-container"]'
+              ).clientWidth;
+        console.log(totalWidth);
+        customLabelNodes.forEach((element, index) => {
+            let value = this._customLabels[index].value;
+            if (!this.isHorizontal) {
+                element.style.top = `${
+                    totalWidth - this.getPercentOfValue(value) * totalWidth
+                }px`;
+            } else {
+                element.style.left = `${
+                    this.getPercentOfValue(value) * totalWidth
+                }px`;
+            }
+        });
+    }
+    /**
+     * Draws the tick marks as SVG depending on its style.
+     */
+    drawRuler() {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+        ruler.querySelectorAll('*').forEach((child) => {
+            child.remove();
+        });
+        const totalWidth = ruler.clientWidth;
+        const numberOfSteps = (this.max - this.min) / this.step;
+        const stepWidth = (totalWidth - INPUT_THUMB_RADIUS * 2) / numberOfSteps;
+        let leftPosition = INPUT_THUMB_RADIUS;
+
+        switch (this._tickMarkStyle) {
+            case 'inner-tick':
+                this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+            case 'tick':
+                this.drawTickRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+            case 'dot':
+                this.drawDotRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+            default:
+                this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
+                break;
+        }
+    }
+
+    /**
+     * draws the tick marks for inner-tick style
+     */
+    drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth) {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+
+        // square slider edges
+        const upperEdgePos = numberOfSteps * stepWidth;
+        for (let i = 0; i < 2; i++) {
+            let line = document.createElementNS(SVG_NAMESPACE, 'rect');
+            line.setAttribute('fill', '#ffffff');
+            line.setAttribute('height', `15`);
+            line.setAttribute('width', `5`);
+            line.setAttribute(
+                'x',
+                `${i === 0 ? leftPosition - 5 : leftPosition + upperEdgePos}`
+            );
+            line.setAttribute('y', '10');
+            ruler.appendChild(line);
+        }
+
+        // drawTicks
+        for (let i = 0; i < numberOfSteps + 1; i++) {
+            const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
+            const isColored =
+                this.valueLower <= valueOfStep &&
+                valueOfStep <= this.valueUpper;
+            let isMajorStep = i === 0 || i === numberOfSteps;
+            if (this.hasCustomLabels) {
+                isMajorStep =
+                    isMajorStep ||
+                    this._customLabels.some(
+                        (customLabel) => customLabel.value === i + this.min
+                    );
+            }
+            if (this.showOnlyMajorTicks && !isMajorStep) {
+                leftPosition += stepWidth;
+                continue;
+            }
+            let line = document.createElementNS(SVG_NAMESPACE, 'line');
+            line.setAttribute(
+                'stroke',
+                `${isColored ? this.highlightColor : '#ecebea'}`
+            );
+            line.setAttribute('height', `15`);
+            line.setAttribute('width', `5`);
+            line.setAttribute('x1', `${leftPosition}`);
+            line.setAttribute('y1', `${isMajorStep ? 11.3 : 11.8}`);
+            line.setAttribute('x2', `${leftPosition}`);
+            line.setAttribute('y2', `${isMajorStep ? 22 : 20.8}`);
+            ruler.appendChild(line);
+            leftPosition += stepWidth;
+        }
+    }
+
+    /**
+     * draws the tick marks for tick style
+     */
+    drawTickRuler(numberOfSteps, leftPosition, stepWidth) {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+
+        for (let i = 0; i < numberOfSteps + 1; i++) {
+            let isMajorStep = i === 0 || i === numberOfSteps;
+            if (this.hasCustomLabels) {
+                isMajorStep =
+                    isMajorStep ||
+                    this._customLabels.some(
+                        (customLabel) => customLabel.value === i + this.min
+                    );
+            }
+            if (this.showOnlyMajorTicks && !isMajorStep) {
+                leftPosition += stepWidth;
+                continue;
+            }
+            let line = document.createElementNS(SVG_NAMESPACE, 'line');
+            line.setAttribute('stroke', `${isMajorStep ? 'black' : 'gray'}`);
+            line.setAttribute('height', `10`);
+            line.setAttribute('width', `5`);
+            line.setAttribute('x1', `${leftPosition}`);
+            line.setAttribute('y1', '27');
+            line.setAttribute('x2', `${leftPosition}`);
+            line.setAttribute('y2', `${isMajorStep ? 34 : 32}`);
+            ruler.appendChild(line);
+            leftPosition += stepWidth;
+        }
+    }
+
+    /**
+     * draws the tick marks for dot style
+     */
+    drawDotRuler(numberOfSteps, leftPosition, stepWidth) {
+        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+
+        for (let i = 0; i < numberOfSteps + 1; i++) {
+            const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
+            const isColored =
+                this.valueLower <= valueOfStep &&
+                valueOfStep <= this.valueUpper;
+            let isMajorStep = i === 0 || i === numberOfSteps;
+            if (this.hasCustomLabels) {
+                isMajorStep =
+                    isMajorStep ||
+                    this._customLabels.some(
+                        (customLabel) => customLabel.value === i + this.min
+                    );
+            }
+            if (this.showOnlyMajorTicks && !isMajorStep) {
+                leftPosition += stepWidth;
+                continue;
+            }
+            let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
+            circle.setAttribute('fill', `${isColored ? '#ffffff' : '#979797'}`);
+            circle.setAttribute('cx', `${leftPosition}`);
+            circle.setAttribute('cy', '16.4');
+            circle.setAttribute('r', '1.2');
+            ruler.appendChild(circle);
+            leftPosition += stepWidth;
+        }
+    }
+
+    /**
      * Initialize range cmp.
      */
     initRange() {
         this.updateProgressBar(this._values);
+        if (this.hasCustomLabels) {
+            this.displayCustomLabels();
+        }
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.showAnyTickMarks) return null;
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this.drawRuler();
+            this.displayCustomLabels();
+        });
+        resizeObserver.observe(
+            this.template.querySelector('[data-element-id="div-wrapper"]')
+        );
+        return resizeObserver;
+    }
+
+    /**
+     * Get the percentage associated to a value of the range
+     * @param value
+     * @type {number}
+     */
+    getPercentOfValue(value) {
+        return (value - this.min) / (this.max - this.min);
     }
 
     /**
@@ -500,7 +881,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * If left slider is closer to mouse, adds a class which puts it above the right.
+     * If slider is closer to mouse, adds a class which puts it above the others.
      *
      * @param {Event} event
      */
@@ -534,7 +915,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Display left bubble.
+     * Display bubble.
      */
     showBubble(event) {
         if (this._pin) {
@@ -611,7 +992,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Update range upper and lower values.
+     * Update slider values.
      */
     changeRange() {
         /**

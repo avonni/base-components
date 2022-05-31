@@ -47,6 +47,8 @@ export const Slider = ({
     max,
     step,
     disabled,
+    tickMarkStyle,
+    showTickMarks,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
     messageWhenStepMismatch,
@@ -63,6 +65,8 @@ export const Slider = ({
     element.variant = variant;
     element.unit = unit;
     element.unitAttributes = unitAttributes;
+    element.tickMarkStyle = tickMarkStyle;
+    element.showTickMarks = showTickMarks;
     element.value = value;
     element.pin = pin;
     element.min = min || 0;

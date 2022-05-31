@@ -107,7 +107,33 @@ export default {
                 category: 'Value'
             }
         },
-
+        tickMarkStyle: {
+            name: 'tick-mark-style',
+            control: {
+                type: 'select'
+            },
+            options: ['inner-tick', 'tick', 'dot'],
+            description:
+                'If present, tick marks are displayed with the according style. Accepted styles are inner-tick, tick, dot',
+            table: {
+                defaultValue: { summary: 'inner-tick' },
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
+        showTickMarks: {
+            name: 'show-tick-marks',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, minor tick marks are displayed at every step.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
         type: {
             control: {
                 type: 'select'
@@ -125,7 +151,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['decimal', 'currency', 'percent'],
+            options: ['decimal', 'currency', 'percent', 'custom'],
             description:
                 'Accepted unit include decimal, currency and percent. \nFormat the value displayed (lightning-formatted-number)',
             table: {
@@ -288,6 +314,8 @@ export default {
         max: 0,
         min: 0,
         pin: false,
+        tickMarkStyle: 'inner-tick',
+        showTickMarks: false,
         size: 'full',
         step: 1,
         type: 'horizontal',
@@ -302,4 +330,36 @@ export const Base = Template.bind({});
 Base.args = {
     label: 'Slider label',
     value: [50]
+};
+
+export const CustomLabel = Template.bind({});
+CustomLabel.args = {
+    label: 'Custom label slider',
+    step: 1,
+    value: 5,
+    min: 0,
+    max: 10,
+    size: 'full',
+    tickMarkStyle: 'inner-tick',
+    unit: 'custom',
+    unitAttributes: {
+        customLabels: [
+            {
+                label: 'Jan 1',
+                value: 0
+            },
+            {
+                label: 'Jan 3',
+                value: 2
+            },
+            {
+                label: 'Jan 6',
+                value: 5
+            },
+            {
+                label: 'Jan 11',
+                value: 10
+            }
+        ]
+    }
 };
