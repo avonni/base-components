@@ -30,38 +30,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/rating';
+import { LightningElement, api } from 'lwc';
 
-customElements.define('ac-base-rating', Component.CustomElementConstructor);
+export default class Timer extends LightningElement {
+    @api value;
+    @api variant;
+    @api type;
+    @api duration;
+    @api autoStart;
+    @api repeat;
+    @api iconName;
+    @api iconPosition;
+    @api format;
 
-export const Rating = ({
-    label,
-    fieldLevelHelp,
-    value,
-    variant,
-    iconName,
-    iconSize,
-    min,
-    max,
-    selection,
-    disabled,
-    readOnly,
-    required,
-    valueHidden
-}) => {
-    const element = document.createElement('ac-base-rating');
-    element.label = label;
-    element.fieldLevelHelp = fieldLevelHelp;
-    element.value = value;
-    element.variant = variant;
-    element.iconName = iconName;
-    element.iconSize = iconSize;
-    element.min = min || 1;
-    element.max = max || 5;
-    element.selection = selection;
-    element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.required = required;
-    element.valueHidden = valueHidden;
-    return element;
-};
+    get timer() {
+        return this.template.querySelector('c-timer');
+    }
+
+    start() {
+        this.timer.start();
+    }
+
+    pause() {
+        this.timer.pause();
+    }
+
+    stopTimer() {
+        this.timer.stop();
+    }
+
+    reset() {
+        this.timer.reset();
+    }
+}

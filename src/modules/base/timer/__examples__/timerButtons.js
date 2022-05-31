@@ -30,38 +30,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from 'avonni/rating';
+import Component from '../../storybookWrappers/timer/timerButtons';
 
-customElements.define('ac-base-rating', Component.CustomElementConstructor);
+customElements.define(
+    'ac-base-timer-buttons',
+    Component.CustomElementConstructor
+);
 
-export const Rating = ({
-    label,
-    fieldLevelHelp,
-    value,
+export const TimerButtons = ({
+    value = 0,
     variant,
+    type,
+    duration = 1,
+    autoStart,
+    repeat,
     iconName,
-    iconSize,
-    min,
-    max,
-    selection,
-    disabled,
-    readOnly,
-    required,
-    valueHidden
+    iconPosition,
+    format
 }) => {
-    const element = document.createElement('ac-base-rating');
-    element.label = label;
-    element.fieldLevelHelp = fieldLevelHelp;
+    const element = document.createElement('ac-base-timer-buttons');
     element.value = value;
     element.variant = variant;
+    element.type = type;
+    element.duration = duration;
+    element.autoStart = autoStart;
+    element.repeat = repeat;
     element.iconName = iconName;
-    element.iconSize = iconSize;
-    element.min = min || 1;
-    element.max = max || 5;
-    element.selection = selection;
-    element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.required = required;
-    element.valueHidden = valueHidden;
+    element.iconPosition = iconPosition;
+    element.format = format;
     return element;
 };

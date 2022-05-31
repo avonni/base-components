@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -24,44 +25,53 @@
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * SERVICES={} LOSS OF USE, DATA, OR PROFITS={} OR BUSINESS INTERRUPTION) HOWEVER
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-import Component from 'avonni/rating';
+<template>
+    <c-timer
+        value={value}
+        variant={variant}
+        type={type}
+        duration={duration}
+        auto-start={autoStart}
+        repeat={repeat}
+        icon-name={iconName}
+        icon-position={iconPosition}
+        format={format}
+    >
+    </c-timer>
+    <div class="slds-m-top_small slds-m-bottom_medium">
+        <lightning-button-icon
+            onclick={start}
+            icon-name="utility:play"
+            size="x-small"
+        >
+        </lightning-button-icon>
 
-customElements.define('ac-base-rating', Component.CustomElementConstructor);
+        <lightning-button-icon
+            onclick={pause}
+            icon-name="utility:pause"
+            size="x-small"
+        >
+        </lightning-button-icon>
 
-export const Rating = ({
-    label,
-    fieldLevelHelp,
-    value,
-    variant,
-    iconName,
-    iconSize,
-    min,
-    max,
-    selection,
-    disabled,
-    readOnly,
-    required,
-    valueHidden
-}) => {
-    const element = document.createElement('ac-base-rating');
-    element.label = label;
-    element.fieldLevelHelp = fieldLevelHelp;
-    element.value = value;
-    element.variant = variant;
-    element.iconName = iconName;
-    element.iconSize = iconSize;
-    element.min = min || 1;
-    element.max = max || 5;
-    element.selection = selection;
-    element.disabled = disabled;
-    element.readOnly = readOnly;
-    element.required = required;
-    element.valueHidden = valueHidden;
-    return element;
-};
+        <lightning-button-icon
+            onclick={stopTimer}
+            icon-name="utility:stop"
+            size="x-small"
+        >
+        </lightning-button-icon>
+
+        <lightning-button-icon
+            onclick={reset}
+            icon-name="utility:refresh"
+            size="x-small"
+        >
+        </lightning-button-icon>
+    </div>
+</template>

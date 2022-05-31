@@ -33,20 +33,25 @@
 import { createElement } from 'lwc';
 import Timer from 'c/timer';
 
-// Not tested because of setInterval
-// repeat
-// type
-
 let element;
+let dateMock;
 describe('Timer', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
     });
 
     beforeEach(() => {
+        dateMock = 0;
         jest.useFakeTimers();
+        Date.now = jest.spyOn(Date, 'now').mockImplementation(() => {
+            return (dateMock += 50);
+        });
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) =>
+            cb()
+        );
         element = createElement('base-timer', {
             is: Timer
         });
@@ -55,13 +60,13 @@ describe('Timer', () => {
 
     it('Timer: Default attributes', () => {
         expect(element.autoStart).toBeFalsy();
-        expect(element.duration).toBe(1);
+        expect(element.value).toBe(0);
+        expect(element.duration).toBe(10000);
         expect(element.format).toBe('hh:mm:ss');
         expect(element.iconName).toBeUndefined();
         expect(element.iconPosition).toBe('left');
         expect(element.repeat).toBeFalsy();
         expect(element.type).toBe('count-up');
-        expect(element.value).toBe(0);
         expect(element.variant).toBe('neutral');
     });
 
@@ -70,17 +75,25 @@ describe('Timer', () => {
     // auto-start
     it('Timer: autoStart = false', () => {
         element.autoStart = false;
+        element.value = 0;
+        const initialValue = element.value;
 
         return Promise.resolve().then(() => {
-            expect(setInterval).not.toHaveBeenCalled();
+            expect(requestAnimationFrame).not.toHaveBeenCalled();
+            jest.advanceTimersToNextTimer(10);
+            expect(initialValue).toEqual(element.value);
         });
     });
 
     it('Timer: autoStart = true', () => {
         element.autoStart = true;
+        element.value = 0;
+        const initialValue = element.value;
 
         return Promise.resolve().then(() => {
-            expect(setInterval).toHaveBeenCalled();
+            expect(requestAnimationFrame).toHaveBeenCalled();
+            jest.advanceTimersToNextTimer(10);
+            expect(initialValue).toBeLessThan(element.value);
         });
     });
 
@@ -89,28 +102,61 @@ describe('Timer', () => {
         element.duration = 86500000;
 
         return Promise.resolve().then(() => {
-            expect(element.duration).toBe(86400);
+            expect(element.duration).toBe(86400000);
         });
     });
 
     it('Timer: duration = 86200000', () => {
         element.duration = 86200000;
-        const duration = 86200000 / 1000;
 
         return Promise.resolve().then(() => {
-            expect(element.duration).toBe(duration);
+            expect(element.duration).toBe(86200000);
         });
     });
 
-    it('Timer: duration default', () => {
-        element.duration = 'test';
-        const DEFAULT_DURATION = 1;
+    it('Timer: duration negative value', () => {
+        element.duration = -86200000;
+
         return Promise.resolve().then(() => {
-            expect(element.duration).toBe(DEFAULT_DURATION);
+            expect(element.duration).toBe(10000);
         });
     });
 
     // type
+    it('Timer: type = count-up', () => {
+        element.type = 'count-up';
+        element.value = 0;
+        element.duration = 10;
+        const handler = jest.fn();
+        element.addEventListener('timerstop', handler);
+        const intialValue = element.value;
+
+        return Promise.resolve().then(() => {
+            expect(element.type).toBe('count-up');
+            element.start();
+            jest.advanceTimersToNextTimer(2);
+            expect(handler).toHaveBeenCalled();
+            expect(intialValue).toBeLessThan(element.value);
+        });
+    });
+
+    it('Timer: type = count-down', () => {
+        element.type = 'count-down';
+        element.value = 10;
+        element.duration = 10;
+        const handler = jest.fn();
+        element.addEventListener('timerstop', handler);
+        const intialValue = element.value;
+
+        return Promise.resolve().then(() => {
+            expect(element.type).toBe('count-down');
+            element.start();
+            jest.advanceTimersToNextTimer(2);
+            expect(handler).toHaveBeenCalled();
+            expect(intialValue).toBeGreaterThan(element.value);
+        });
+    });
+
     it('Timer: type', () => {
         element.type = 86400000;
         const DEFAULT_TYPE = 'count-up';
@@ -121,19 +167,38 @@ describe('Timer', () => {
     });
 
     // repeat
-    it('Timer: repeat false', () => {
+    it('Timer: repeat = false', () => {
         element.repeat = false;
+        element.value = 0;
+        element.duration = 100;
+        const handler = jest.fn();
+        element.addEventListener('timerreset', handler);
+        const finalDurationValue = element.duration;
 
         return Promise.resolve().then(() => {
-            expect(element.repeat).toBeFalsy();
+            element.start();
+            expect(setInterval).toHaveBeenCalledTimes(1);
+            jest.advanceTimersToNextTimer(3);
+            expect(handler).not.toHaveBeenCalled();
+            expect(element.value).toEqual(finalDurationValue);
         });
     });
 
-    it('Timer: repeat true', () => {
+    it('Timer: repeat = true', () => {
         element.repeat = true;
+        element.value = 0;
+        element.duration = 100;
+        const handler = jest.fn();
+        element.addEventListener('timerreset', handler);
+        const finalDurationValue = element.duration;
 
         return Promise.resolve().then(() => {
-            expect(element.repeat).toBeTruthy();
+            element.start();
+            expect(setInterval).toHaveBeenCalledTimes(1);
+            jest.advanceTimersToNextTimer(3);
+            expect(handler).toHaveBeenCalledTimes(1);
+            jest.advanceTimersToNextTimer(20);
+            expect(element.value).toBeLessThan(finalDurationValue);
         });
     });
 
@@ -206,7 +271,31 @@ describe('Timer', () => {
             const button = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button"]'
             );
-            expect(button.label).toBe(46789);
+            expect(button.label).toBe('46789');
+        });
+    });
+
+    it('Timer: format = mm:ss.ms', () => {
+        element.format = 'mm:ss.ms';
+        element.value = 46789020;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            expect(button.label).toBe('779:49.020');
+        });
+    });
+
+    it('Timer: format = ss.ms', () => {
+        element.format = 'ss.ms';
+        element.value = 46789020;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            expect(button.label).toBe('46789.020');
         });
     });
 
@@ -233,25 +322,6 @@ describe('Timer', () => {
             expect(button.iconPosition).toBe('right');
         });
     });
-
-    // repeat
-    // Depends on value, duration and start()
-    // it('Timer: repeat = true', () => {
-    //     const element = createElement('base-timer', {
-    //         is: Timer
-    //     });
-
-    //     document.body.appendChild(element);
-
-    //     const handler = jest.fn();
-    //     element.addEventListener('timereset', handler);
-    //     element.value = 3000;
-    //     element.duration = 2000;
-    //     element.repeat = true;
-    //     element.start();
-
-    //     expect(handler).toHaveBeenCalled();
-    // });
 
     // variant
     it('Timer: variant = neutral', () => {
@@ -357,7 +427,7 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
@@ -377,12 +447,51 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
         expect(handler.mock.calls[0][0].composable).toBeFalsy();
         expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+    });
+
+    it('Timer: pause and start behaviour (positive timer)', () => {
+        element.value = 0;
+        element.duration = 150;
+        const handler = jest.fn();
+        element.addEventListener('timerstop', handler);
+
+        return Promise.resolve().then(() => {
+            element.start();
+            expect(setInterval).toHaveBeenCalledTimes(1);
+            jest.advanceTimersToNextTimer(1);
+            element.pause();
+            jest.advanceTimersToNextTimer(2);
+            element.start();
+            expect(handler).not.toHaveBeenCalled();
+            jest.advanceTimersToNextTimer(2);
+            expect(handler).toHaveBeenCalled();
+        });
+    });
+
+    it('Timer: pause and start behaviour (negative timer)', () => {
+        element.type = 'count-down';
+        element.value = 0;
+        element.duration = 150;
+        const handler = jest.fn();
+        element.addEventListener('timerstop', handler);
+
+        return Promise.resolve().then(() => {
+            element.start();
+            expect(setInterval).toHaveBeenCalledTimes(1);
+            jest.advanceTimersToNextTimer(1);
+            element.pause();
+            jest.advanceTimersToNextTimer(2);
+            element.start();
+            expect(handler).not.toHaveBeenCalled();
+            jest.advanceTimersToNextTimer(2);
+            expect(handler).toHaveBeenCalled();
+        });
     });
 
     // stop method and timerstop event
@@ -397,7 +506,7 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
@@ -417,7 +526,7 @@ describe('Timer', () => {
         expect(handler.mock.calls[0][0].detail.minutes).toBe(0);
         expect(handler.mock.calls[0][0].detail.hours).toBe(0);
         expect(handler.mock.calls[0][0].detail.seconds).toBe(0);
-        expect(handler.mock.calls[0][0].detail.duration).toBe(1);
+        expect(handler.mock.calls[0][0].detail.duration).toBe(10000);
         expect(handler.mock.calls[0][0].detail.format).toBe('hh:mm:ss');
         expect(handler.mock.calls[0][0].detail.type).toBe('count-up');
         expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
