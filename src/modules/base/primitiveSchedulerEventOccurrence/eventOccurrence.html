@@ -64,9 +64,13 @@
                 size="x-small"
                 class="slds-m-right_xx-small"
             ></lightning-icon>
-            <span if:true={computedLabels.left.value} class="slds-truncate"
-                >{computedLabels.left.value}</span
+            <span
+                if:true={computedLabels.left.value}
+                class="slds-truncate"
+                title={computedLabels.left.value}
             >
+                {computedLabels.left.value}
+            </span>
         </div>
 
         <div class="slds-col slds-has-flexi-truncate">
@@ -86,9 +90,13 @@
                     size="x-small"
                     class="slds-m-right_xx-small"
                 ></lightning-icon>
-                <span if:true={computedLabels.top.value} class="slds-truncate"
-                    >{computedLabels.top.value}</span
+                <span
+                    if:true={computedLabels.top.value}
+                    class="slds-truncate"
+                    title={computedLabels.top.value}
                 >
+                    {computedLabels.top.value}
+                </span>
             </div>
 
             <!-- Event -->
@@ -122,8 +130,10 @@
                             slds-truncate
                             avonni-scheduler__event-label-span_center
                         "
-                        >{computedLabels.center.value}</span
+                        title={computedLabels.center.value}
                     >
+                        {computedLabels.center.value}
+                    </span>
                 </div>
 
                 <!-- End resize icon -->
@@ -158,8 +168,10 @@
                 <span
                     if:true={computedLabels.bottom.value}
                     class="slds-truncate"
-                    >{computedLabels.bottom.value}</span
+                    title={computedLabels.bottom.value}
                 >
+                    {computedLabels.bottom.value}
+                </span>
             </div>
         </div>
 

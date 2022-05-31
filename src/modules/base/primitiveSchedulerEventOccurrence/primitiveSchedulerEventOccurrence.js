@@ -1105,12 +1105,17 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
 
         const labels = {};
         const resource = this.resources.find(
-            (rw) => rw.key === this.resourceKey
+            (res) => res.key === this.resourceKey
         );
 
         if (resource) {
-            Object.entries(this.labels).forEach((label) => {
+            for (let i = 0; i < Object.entries(this.labels).length; i++) {
+                const label = Object.entries(this.labels)[i];
                 const position = label[0];
+                if (this.isVertical && position !== 'center') {
+                    continue;
+                }
+
                 const { value, fieldName, iconName } = label[1];
 
                 labels[position] = {};
@@ -1132,7 +1137,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                             : computedValue;
                 }
                 labels[position].iconName = iconName;
-            });
+            }
         }
 
         this.computedLabels = labels;
