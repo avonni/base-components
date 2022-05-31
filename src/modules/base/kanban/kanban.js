@@ -703,7 +703,6 @@ export default class Kanban extends LightningElement {
             event.clientX - event.currentTarget.getBoundingClientRect().x;
         this._clickOffset.y =
             event.clientY - event.currentTarget.getBoundingClientRect().y;
-
         if (
             this.readOnly ||
             event.target.classList.contains('slds-dropdown-trigger')
@@ -727,8 +726,9 @@ export default class Kanban extends LightningElement {
         );
 
         this._initialPos.x =
-            event.target.getBoundingClientRect().x + fieldContainer.scrollLeft;
-        this._initialPos.y = event.target.getBoundingClientRect().y;
+            event.currentTarget.getBoundingClientRect().x +
+            fieldContainer.scrollLeft;
+        this._initialPos.y = event.currentTarget.getBoundingClientRect().y;
         this._clickedGroupIndex = Math.min(
             Math.floor(event.clientX / this._groupWidth),
             this.groupValues.length - 1
@@ -792,11 +792,12 @@ export default class Kanban extends LightningElement {
         } else if (currentX > this._scrollWidth) {
             currentX = this._scrollWidth;
         }
-
         if (this._draggedTile)
             this._draggedTile.style.transform = `translate(${
                 currentX - this._initialPos.x - this._clickOffset.x
-            }px, ${currentY - this._initialPos.y}px) rotate(3deg)`;
+            }px, ${
+                currentY - this._initialPos.y - this._clickOffset.y
+            }px) rotate(3deg)`;
         if (this._draggedGroup) {
             this.handleGroupMouseMove(event);
             this._draggedGroup.style.transform = `translate(${
