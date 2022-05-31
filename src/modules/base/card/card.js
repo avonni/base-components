@@ -285,7 +285,7 @@ export default class Card extends LightningElement {
     get computedCardClasses() {
         if (!this.imageSrc) return '';
 
-        return classSet('')
+        return classSet('slds-card')
             .add({ 'image-top': this.mediaPosition === 'top' })
             .add({ 'image-left': this.mediaPosition === 'left' })
             .add({ 'image-right': this.mediaPosition === 'right' })
@@ -294,6 +294,10 @@ export default class Card extends LightningElement {
             .add({ background: this.mediaPosition === 'background' })
             .add({
                 'background overlay-card': this.mediaPosition === 'overlay'
+            })
+            .add({
+                'background-centered':
+                    this.mediaPosition === 'background-center'
             })
             .toString();
     }

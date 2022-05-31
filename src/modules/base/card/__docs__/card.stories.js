@@ -135,6 +135,8 @@ export default {
 };
 
 // action positions ?: image-[top-right,  top-left, bottom-right, bottom-left], title, bottom
+// media-action slot
+// title-action slot
 
 const actions = [
     {
