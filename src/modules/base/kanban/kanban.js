@@ -31,6 +31,8 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
+
 import { classSet } from 'c/utils';
 import {
     normalizeArray,
@@ -78,10 +80,24 @@ export default class Kanban extends LightningElement {
     _records = [];
     _releasedGroupIndex = 0;
     _releasedTileIndex = 0;
+    _resizeObserver;
+
     _scrollingY;
     _scrollingX;
     _scrollWidth = 0;
     _summarizeFieldName;
+
+    renderedCallback() {
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+    }
+
+    disconnectedCallback() {
+        if (this._resizeObserver) {
+            this._resizeObserver.disconnect();
+        }
+    }
 
     /*
      * ------------------------------------------------------------
@@ -496,6 +512,26 @@ export default class Kanban extends LightningElement {
                 tile.style.transform = `translateY(0px)`;
             });
         });
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        const container = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        );
+        if (!container) return null;
+
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this._scrollWidth = this.template.querySelector(
+                '[data-element-id="avonni-kanban__container"]'
+            ).scrollWidth;
+        });
+        resizeObserver.observe(container);
+        return resizeObserver;
     }
 
     /**

@@ -175,8 +175,8 @@
 .avonni-kanban__dragged::after {
     content: '';
     position: absolute;
-    top: -50%;
-    left: -50%;
+    top: -25%;
+    left: -25%;
     width: 150%;
     transform: rotate(-3deg);
     height: 150%;
