@@ -81,15 +81,6 @@ describe('Skeleton', () => {
         });
     });
 
-    // Skeleton-width isNaN
-    it('Skeleton: width = a should set width to 100', () => {
-        element.variant = 'rectangular';
-        element.width = 'a';
-        return Promise.resolve().then(() => {
-            expect(element.width).toBe(100);
-        });
-    });
-
     // Skeleton-height variant rectangular
     it('Skeleton: height = 100px with rectangular variant', () => {
         element.variant = 'rectangular';
@@ -99,12 +90,62 @@ describe('Skeleton', () => {
         });
     });
 
-    // Skeleton-height isNaN with rectangular variant
-    it('Skeleton: height = a with rectangular variant should set width to 100', () => {
-        element.variant = 'rectangular';
-        element.height = 'a';
+    // Skeleton-height variant text
+    it('Skeleton: switch case calls setTextSize on text variant with undefined width and height', () => {
+        element.variant = 'text';
         return Promise.resolve().then(() => {
-            expect(element.height).toBe(100);
+            expect(element.height).toBe('0.7em');
+            expect(element.width).toBe('100%');
+        });
+    });
+
+    // Skeleton-height variant rectangular
+    it('Skeleton: switch case calls setRectangularCircularSize on rectangular variant with undefined width and height', () => {
+        element.variant = 'rectangular';
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe('1.2em');
+            expect(element.width).toBe('100%');
+        });
+    });
+
+    // Skeleton-height variant circular
+    it('Skeleton: switch case calls setRectangularCircularSize on circular variant with undefined width and height', () => {
+        element.variant = 'circular';
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe('1.2em');
+            expect(element.width).toBe('100%');
+        });
+    });
+
+    it('Skeleton: switch case calls setTextSize on text variant without undefined width and height', () => {
+        element.variant = 'text';
+        element.height = '10px';
+        element.width = '100%';
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe('10px');
+            expect(element.width).toBe('100%');
+        });
+    });
+
+    // Skeleton-height variant rectangular
+    it('Skeleton: switch case calls setRectangularCircularSize on rectangular variant without undefined width and height', () => {
+        element.variant = 'rectangular';
+        element.height = '50px';
+        element.width = '100%';
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe('50px');
+            expect(element.width).toBe('100%');
+        });
+    });
+
+    // Skeleton-height variant circular
+    it('Skeleton: switch case calls setRectangularCircularSize on circular variant without undefined width and height', () => {
+        element.variant = 'circular';
+        element.height = '50px';
+        element.width = '100%';
+        return Promise.resolve().then(() => {
+            expect(element.height).toBe('50px');
+            expect(element.width).toBe('100%');
         });
     });
 });
