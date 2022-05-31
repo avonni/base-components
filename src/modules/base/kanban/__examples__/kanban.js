@@ -30,7 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../kanban';
+import Component from '../../storybookWrappers/kanban/kanban';
 
 customElements.define('ac-kanban', Component.CustomElementConstructor);
 
