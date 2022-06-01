@@ -267,7 +267,9 @@ export default class Card extends LightningElement {
     // private
 
     get hasActions() {
-        console.log(this.actions.length);
+        if (!this._actions) {
+            return false;
+        }
         return true;
     }
 

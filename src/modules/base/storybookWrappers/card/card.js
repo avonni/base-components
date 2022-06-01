@@ -30,30 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/card/card';
+import { LightningElement, api } from 'lwc';
 
-customElements.define('ac-card', Component.CustomElementConstructor);
-
-export const Card = ({
-    actions,
-    mediaPosition,
-    description,
-    href,
-    icons,
-    imageSrc,
-    infos,
-    title,
-    variant
-}) => {
-    const element = document.createElement('ac-card');
-    element.actions = actions;
-    element.mediaPosition = mediaPosition;
-    element.description = description;
-    element.href = href;
-    element.icons = icons;
-    element.imageSrc = imageSrc;
-    element.infos = infos;
-    element.title = title;
-    element.variant = variant;
-    return element;
-};
+export default class Card extends LightningElement {
+    @api title;
+    @api imageSrc;
+    @api mediaPosition;
+    @api avatar;
+    @api icons;
+    @api infos;
+    @api description;
+    @api actions;
+    @api href;
+    @api variant;
+}
