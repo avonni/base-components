@@ -96,6 +96,7 @@ const SORTED_DIRECTIONS = {
 // TODO: Fix overlap of item
 // TODO: Scroll --> prevent scroll if no item to show
 // TODO: Fix mouse out
+// TODO: FIX drag max date
 
 /**
  * @class
@@ -150,6 +151,7 @@ export default class ActivityTimeline extends LightningElement {
     _timelineDiv;
     _timelineSVG;
     _scrollAxisSVG;
+    _timeIntervalSelector;
 
     _key;
     _isConnected = false;
@@ -426,6 +428,13 @@ export default class ActivityTimeline extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    get intervalWidth() {
+        return Math.abs(
+            this.scrollTimeScale(new Date(this._intervalMaxDate)) -
+                this.scrollTimeScale(new Date(this._intervalMinDate))
+        );
+    }
+
     get divTimelineItemsSelector() {
         return this.template.querySelector(
             '.avonni-activity-timeline__horizontal-timeline-items'
@@ -605,11 +614,16 @@ export default class ActivityTimeline extends LightningElement {
     get scrollTimeScale() {
         return d3
             .scaleTime()
-            .domain([
-                this.findNextDate(this.minDate, -1),
-                this.findNextDate(this.maxDate, 4)
-            ])
+            .domain([this.scrollAxisMinDate, this.scrollAxisMaxDate])
             .range([this._offsetAxis, this._timelineWidth]);
+    }
+
+    get scrollAxisMaxDate() {
+        return this.findNextDate(this.maxDate, 4);
+    }
+
+    get scrollAxisMinDate() {
+        return this.findNextDate(this.minDate, -1);
     }
 
     /*
@@ -942,6 +956,7 @@ export default class ActivityTimeline extends LightningElement {
     createTimelineScrollAxis() {
         const scrollAxisDiv = d3.select(this.divTimelineScrollAxisSelector);
         scrollAxisDiv.selectAll('*').remove();
+        let activityTimelineThis = this;
 
         // <--- CREATE TICKS OF SCROLL AXIS --->
         this._scrollAxisSVG = scrollAxisDiv
@@ -961,6 +976,25 @@ export default class ActivityTimeline extends LightningElement {
             .attr('transform', 'translate(0 ' + this._timelineAxisHeight + ')')
             .call(scrollAxis);
 
+        // To handle click on scroll axis to change interval value
+        const handleClickOnScrollAxis = function (event) {
+            let xPosition = event.x - activityTimelineThis.intervalWidth;
+            const highestMinDateXPosition =
+                activityTimelineThis.scrollTimeScale(
+                    activityTimelineThis.scrollAxisMaxDate
+                ) - activityTimelineThis.intervalWidth;
+
+            if (xPosition > highestMinDateXPosition) {
+                xPosition = highestMinDateXPosition;
+            }
+
+            activityTimelineThis._intervalMinDate =
+                activityTimelineThis.scrollTimeScale
+                    .invert(xPosition)
+                    .setHours(0, 0, 0, 0);
+            activityTimelineThis.renderedCallback();
+        };
+
         // <--- CREATE RECT AROUND SCROLL AXIS --->
         this._scrollAxisSVG
             .append('rect')
@@ -969,7 +1003,8 @@ export default class ActivityTimeline extends LightningElement {
             .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', this._timelineAxisHeight)
             .attr('stroke', this._scrollAxisColor)
-            .attr('fill', 'white');
+            .attr('fill', 'white')
+            .on('click', handleClickOnScrollAxis);
 
         this.addItemsToScrollAxis();
         this.addTimeIntervalToScrollAxis();
@@ -1009,15 +1044,11 @@ export default class ActivityTimeline extends LightningElement {
         // <--- DRAW VIEW INTERVAL (BLUE RECT) -->
         // We save the this because it changes in drag function of scrollAxisSVG
         let activityTimelineThis = this;
-        const intervalWidth = Math.abs(
-            this.scrollTimeScale(new Date(this._intervalMaxDate)) -
-                this.scrollTimeScale(new Date(this._intervalMinDate))
-        );
 
         const handleTimeIntervalDrag = function (event) {
             // WARNING : this = scrollAxisSVG, activityTimelineThis = regular this
             // To allow only horizontal drag
-            const maxPosition = DEFAULT_TIMELINE_WIDTH - intervalWidth;
+            const maxPosition = DEFAULT_TIMELINE_WIDTH - this.intervalWidth;
             const minPosition = DEFAULT_TIMELINE_AXIS_OFFSET;
             let xPosition = event.x;
             if (event.x > maxPosition) {
@@ -1037,12 +1068,12 @@ export default class ActivityTimeline extends LightningElement {
             activityTimelineThis.renderedCallback();
         };
 
-        this._scrollAxisSVG
+        this._timeIntervalSelector = this._scrollAxisSVG
             .append('g')
             .append('rect')
             .attr('x', this.scrollTimeScale(new Date(this._intervalMinDate))) // Debut date min interval (valeur x convertie) == >xMinIntervalDate
             .attr('y', 0.5)
-            .attr('width', intervalWidth) // length of the interval
+            .attr('width', this.intervalWidth) // length of the interval
             .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
             .attr('opacity', 0.3)
             .attr('fill', this._scrollAxisColor)
@@ -1068,7 +1099,6 @@ export default class ActivityTimeline extends LightningElement {
         dateDomain.push(this.convertDateToFormat(dateToAdd));
 
         for (let i = 0; i < Math.floor(domainLength); ++i) {
-            // dateToAdd.setDate(dateToAdd.getDate() + dayIncrement);
             dateToAdd = this.findNextDate(dateToAdd, dayIncrement);
             dateDomain.push(this.convertDateToFormat(dateToAdd));
         }
