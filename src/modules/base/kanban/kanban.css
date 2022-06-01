@@ -24,7 +24,6 @@
 .avonni-kanban__field_container {
     position: relative;
     height: 100%;
-    max-height: 100%;
     margin-top: 10px;
     right: 0;
     left: 0;
@@ -37,11 +36,11 @@
 .avonni-kanban__tiles_container {
     overflow-y: scroll;
     overflow-x: hidden;
+    max-height: 500px;
 }
 
 .avonni-kanban__variant_base .avonni-kanban__tiles_container {
     height: 100%;
-    max-height: 100%;
 }
 
 .avonni-kanban__header_action {
@@ -53,6 +52,7 @@
 .avonni-kanban__summarize_wrapper {
     min-height: 30px;
     height: 100%;
+    z-index: 2;
 }
 
 .avonni-kanban__variant_base .avonni-kanban__group_header {
@@ -178,6 +178,7 @@
     background-color: rgba(0, 0, 0, 0.05);
     margin: 5px;
     border-radius: 0.25rem;
+    z-index: 1;
 }
 
 .avonni-kanban__dragged::after {

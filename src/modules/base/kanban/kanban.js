@@ -85,6 +85,7 @@ export default class Kanban extends LightningElement {
     _scrollingX;
     _scrollWidth = 0;
     _summarizeFieldName;
+    _summaryTimeoutsId = [];
     _summarizeValues = [];
 
     renderedCallback() {
@@ -264,6 +265,8 @@ export default class Kanban extends LightningElement {
      * @type {object[]}
      */
     get computedGroups() {
+        this.clearSummarizeTimeouts();
+
         const SUMMARY_UPDATE_SPEED = 300;
 
         let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
@@ -325,7 +328,7 @@ export default class Kanban extends LightningElement {
             }
         });
 
-        // Gets the length of each group
+        // Gets the length of each group and updates the summarize value
         computedGroups.forEach((group, i) => {
             this._groupsAnimation[i] = false;
             requestAnimationFrame(() => {
@@ -342,7 +345,7 @@ export default class Kanban extends LightningElement {
             );
             if (summarizeUpdate !== 0) {
                 for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
-                    setTimeout(() => {
+                    this._summaryTimeoutsId[i] = window.setTimeout(() => {
                         const summary = this.template.querySelectorAll(
                             '[data-element-id="summarize"]'
                         )[group.index];
@@ -425,6 +428,7 @@ export default class Kanban extends LightningElement {
             // resets the height to 100% on other fields
             if (group !== groups[this._releasedGroupIndex]) {
                 group.style.height =
+                    // TODO: CHECK IF THIS DOESN'T BREAK EVERYTHING
                     this._variant === 'base' ? '100%' : 'fit-content';
                 this._groupsAnimation[i] = false;
             }
@@ -459,17 +463,28 @@ export default class Kanban extends LightningElement {
                 zone.style.height = `0px`;
                 zone.style.width = `0px`;
             });
-
+        const increment =
+            this._releasedGroupIndex === this._clickedGroupIndex &&
+            this._initialTileIndex === 0
+                ? 5
+                : 0;
         const summarizeHeight = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__summarize_wrapper"]'
         )[this._releasedGroupIndex].offsetHeight;
         const dropZone = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__tile_dropzone"]'
         )[this._releasedGroupIndex];
+        const tilesContainer = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        )[this._releasedGroupIndex];
         dropZone.style.height = `${this._draggedTile.offsetHeight}px`;
         dropZone.style.width = `${this._draggedTile.offsetWidth - 5}px`;
         dropZone.style.top = `${
-            8 * offsetCount + offsetHeight + summarizeHeight
+            8 * offsetCount +
+            offsetHeight +
+            summarizeHeight +
+            increment -
+            tilesContainer.scrollTop
         }px`;
     }
 
@@ -513,6 +528,25 @@ export default class Kanban extends LightningElement {
 
         arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
         return arr;
+    }
+
+    /**
+     * Clears the timeouts to avoid summarize inconsistencies.
+     *
+     */
+    clearSummarizeTimeouts() {
+        // TODO: THIS DOESNT WORK
+        if (this._summaryTimeoutsId) {
+            this._summaryTimeoutsId.forEach((timeout) => {
+                clearTimeout(timeout);
+            });
+
+            // this.template
+            //     .querySelectorAll('[data-element-id="summarize"]')
+            //     .forEach((summarize, i) => {
+            //         summarize.value = this._oldSummarizeValues[i];
+            //     });
+        }
     }
 
     /**
@@ -618,8 +652,14 @@ export default class Kanban extends LightningElement {
      */
     handleDropZone(event) {
         if (event.currentTarget !== this._draggedTile) return;
+        let distance =
+            event.clientX -
+            this._clickOffset.x +
+            this._draggedTile.offsetWidth / 2;
+        if (distance < 0) distance = 0;
+
         this._releasedGroupIndex = Math.min(
-            Math.floor(event.clientX / this._groupWidth),
+            Math.floor(distance / this._groupWidth),
             this.groupValues.length - 1
         );
 
@@ -628,7 +668,7 @@ export default class Kanban extends LightningElement {
                 '[data-element-id="avonni-kanban__container"]'
             ).scrollLeft / this._groupWidth
         );
-
+        console.log(this._releasedGroupIndex);
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
@@ -642,7 +682,7 @@ export default class Kanban extends LightningElement {
         let scrollTopIndex = 0;
         // calculates the index of the drop, depending on the previous tiles heights
         for (let [i, tile] of currentGroupTiles.entries()) {
-            offsetHeight += tile.offsetHeight;
+            offsetHeight += tile.offsetHeight + 10;
             this._releasedTileIndex = i;
             if (
                 groupElements[this._releasedGroupIndex].scrollTop > offsetHeight
@@ -832,7 +872,7 @@ export default class Kanban extends LightningElement {
             event.target.classList.contains('slds-dropdown-trigger')
         )
             return;
-        this._groupWidth = event.currentTarget.parentElement.offsetWidth;
+        this._groupWidth = event.currentTarget.parentElement.offsetWidth + 10;
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
         this.template
@@ -842,7 +882,7 @@ export default class Kanban extends LightningElement {
                     group.classList.add('avonni-kanban__dragging');
             });
         this._draggedTile.style.width = `${
-            parseInt(this._groupWidth, 10) - 10
+            parseInt(this._groupWidth, 10) - 20
         }px`;
 
         const fieldContainer = this.template.querySelector(
@@ -938,20 +978,24 @@ export default class Kanban extends LightningElement {
             fieldContainer.getBoundingClientRect().left +
             fieldContainer.scrollLeft;
 
-        const group = this.template.querySelectorAll(
+        const groups = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
-        )[this._releasedGroupIndex];
+        );
+
+        const group = groups[this._releasedGroupIndex];
 
         // auto scroll when the user is dragging the tile out of the list
         if (currentY + 50 > this._kanbanPos.bottom) {
-            if (!this._scrollingY)
+            if (!this._scrollingY && this._draggedTile)
                 this._scrollingY = window.setInterval(() => {
                     group.scrollBy(0, 10);
+                    this.animateTiles(groups);
                 }, 20);
-        } else if (currentY - 50 < this._kanbanPos.top) {
-            if (!this._scrollingY)
+        } else if (currentY - 100 < this._kanbanPos.top) {
+            if (!this._scrollingY && this._draggedTile)
                 this._scrollingY = window.setInterval(() => {
                     group.scrollBy(0, -10);
+                    this.animateTiles(groups);
                 }, 20);
         } else if (currentX + 50 > right) {
             if (!this._scrollingX) {
