@@ -46,6 +46,18 @@ export default {
                 category: 'View'
             }
         },
+        disableSwap: {
+            name: 'disable-swap',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the slider thumbs can swap order.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'View'
+            }
+        },
         value: {
             name: 'value',
             control: {
@@ -135,7 +147,7 @@ export default {
             }
         },
         removeTrack: {
-            name: 'show-track',
+            name: 'remove-track',
             control: {
                 type: 'boolean'
             },
@@ -143,7 +155,7 @@ export default {
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'string' },
-                category: 'Value'
+                category: 'View'
             }
         },
         type: {
@@ -343,6 +355,7 @@ export default {
         tickMarkStyle: 'inner-tick',
         showTickMarks: false,
         removeTrack: false,
+        disableSwap: false,
         minimumDistance: 0,
         size: 'full',
         step: 1,
@@ -364,7 +377,7 @@ export const CustomLabel = Template.bind({});
 CustomLabel.args = {
     label: 'Custom label slider',
     step: 1,
-    value: [1, 5],
+    value: [5],
     min: 0,
     max: 10,
     size: 'full',

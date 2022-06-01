@@ -144,6 +144,7 @@ export default class Slider extends LightningElement {
     _variant = LABEL_VARIANTS.default;
     _unitAttributes = {};
     _showTickMarks = false;
+    _disableSwap = false;
     _tickMarkStyle = TICK_MARK_STYLES.default;
     _minimumDistance = DEFAULT_MIN;
     _removeTrack = false;
@@ -172,18 +173,14 @@ export default class Slider extends LightningElement {
     }
 
     renderedCallback() {
-        this.progressValues = this._values;
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
-        if (this.showAnyTickMarks) {
-            this.drawRuler();
-        }
         if (!this._rendered) {
+            this.progressValues = this._values;
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
             }
-            this.initRange();
             this._rendered = true;
         }
     }
@@ -208,6 +205,21 @@ export default class Slider extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, the slider thumbs can swap order.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disableSwap() {
+        return this._disableSwap;
+    }
+    set disableSwap(value) {
+        this._disableSwap = value;
     }
 
     /**
@@ -439,7 +451,8 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * The value of the range.
+     * The value of the range. If an array is passed, many thumbs will displayed on slider.
+     * Returns a number if one value, returns an array if many values (array is always returned in ascending order).
      *
      * @type {string}
      * @public
@@ -448,7 +461,7 @@ export default class Slider extends LightningElement {
     @api
     get value() {
         if (this._values.length !== 1) {
-            return this._values;
+            return [...this._values].sort((a, b) => a - b);
         }
         return this._values[0];
     }
@@ -878,11 +891,6 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Initialize range cmp.
-     */
-    initRange() {}
-
-    /**
      * Initialize the screen resize observer.
      *
      * @returns {AvonniResizeObserver} Resize observer.
@@ -931,8 +939,10 @@ export default class Slider extends LightningElement {
         for (let i = 0; i < this._values.length; i++) {
             inputPos[i] =
                 total *
-                (parseInt(this.getInput(i).value - this.min, 10) /
-                    (this.max - this.min));
+                    this.getPercentOfValue(
+                        parseInt(this.getInput(i).value, 10)
+                    ) +
+                i;
         }
 
         // find closestX from mouse from input pos
@@ -985,10 +995,9 @@ export default class Slider extends LightningElement {
                 '[data-element-id="bubble"]'
             );
             let bubbleProgress =
-                ((this._values[parseInt(event.target.dataset.index, 10)] -
-                    this.min) /
-                    (this.max - this.min)) *
-                100;
+                this.getPercentOfValue(
+                    this._values[parseInt(event.target.dataset.index, 10)]
+                ) * 100;
             bubble.firstChild.firstChild.value =
                 this._values[parseInt(event.target.dataset.index, 10)];
 
@@ -1002,20 +1011,17 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Updates the input range values based on its current value. Also handle the collision if two slider are equal.
+     * Updates the input range values based on its current value.
      *
      * @param {Event} event
      */
     updateInputRange(event) {
-        let newValues = [...this.values];
-        newValues[parseInt(event.target.dataset.index, 10)] = parseInt(
-            event.target.value,
-            10
-        );
-        this.manageCollisions(
-            parseInt(event.target.dataset.index, 10),
-            newValues
-        );
+        let newValues = [...this._values];
+        const targetIndex = parseInt(event.target.dataset.index, 10);
+        newValues[targetIndex] = parseInt(event.target.value, 10);
+        if (this._disableSwap) {
+            this.manageCollisions(targetIndex, newValues);
+        }
         this.progressValues = newValues;
     }
 
@@ -1044,19 +1050,18 @@ export default class Slider extends LightningElement {
                     newValues[neighborIndex] - this._minimumDistance;
             }
         }
-        this.progressValues = newValues;
     }
 
     set progressValues(values) {
-        for (let i = 0; i < this.values.length; i++) {
+        for (let i = 0; i < this._values.length; i++) {
             this.getInput(i).value = values[i];
-            this._values[i] = values[i];
+            this.values[i] = values[i];
         }
-        if (this._removeTrack) {
-            this._progressInterval = [this.min - 1, this.min - 1];
-            return;
-        }
-        if (this._values.length === 2) {
+        // if (!this._removeTrack) {
+        //     this._progressInterval = [this.min - 1, this.min - 1];
+        //     return;
+        // }
+        if (this._values.length >= 2) {
             const lowestValue = Math.max(...[Math.min(...values), this.min]);
             this._progress.style.left =
                 this.getPercentOfValue(lowestValue) * 100 + '%';
@@ -1066,7 +1071,6 @@ export default class Slider extends LightningElement {
             this._progressInterval[0] = this.min;
         }
         const highestValue = Math.min(...[Math.max(...values), this.max]);
-
         this._progress.style.right =
             100 - this.getPercentOfValue(highestValue) * 100 + '%';
         this._progressInterval[1] = highestValue - this.min;
@@ -1089,7 +1093,7 @@ export default class Slider extends LightningElement {
          */
         const selectedEvent = new CustomEvent('change', {
             detail: {
-                value: this.value
+                value: this._value
             }
         });
 
