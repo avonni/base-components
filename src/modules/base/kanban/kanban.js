@@ -355,7 +355,7 @@ export default class Kanban extends LightningElement {
                         );
 
                         summary.value = this.truncateNumber(summary.value);
-                    }, 1);
+                    }, 0.5 * j);
                 }
             }
         });
@@ -668,7 +668,6 @@ export default class Kanban extends LightningElement {
                 '[data-element-id="avonni-kanban__container"]'
             ).scrollLeft / this._groupWidth
         );
-        console.log(this._releasedGroupIndex);
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );

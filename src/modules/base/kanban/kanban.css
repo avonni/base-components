@@ -168,8 +168,7 @@
     z-index: 9999;
     position: absolute;
     cursor: grabbing;
-    border: 1px dashed #c0c0c0;
-    background-color: #e2e2e2;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
 
 .avonni-kanban__tile_dropzone,
@@ -258,6 +257,7 @@
 .avonni-kanban__variant_base
     .avonni-kanban__field.avonni-kanban__dragged_group {
     position: relative;
+    box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.1);
     z-index: 9999;
 }
 
