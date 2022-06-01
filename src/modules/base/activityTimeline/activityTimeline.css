@@ -52,6 +52,9 @@
 .avonni-activity-timeline__horizontal-timeline-items {
     margin: 0px;
     padding: 0px;
+}
+
+.avonni-activity-timeline__horizontal-timeline-scrolling-container {
     overflow: scroll;
     height: 350px;
     width: 1300px;

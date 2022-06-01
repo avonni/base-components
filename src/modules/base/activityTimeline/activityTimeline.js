@@ -93,6 +93,7 @@ const SORTED_DIRECTIONS = {
 // TODO: Deplacer les fonctions timeline horizontal dans un nouveau fichier
 // TODO: quand drag, re-rendeder 24fps, request animation frame
 // TODO: Fix scroll
+// TODO: use d3 : brushing zoom to change rect interval
 
 /**
  * @class
@@ -176,10 +177,6 @@ export default class ActivityTimeline extends LightningElement {
 
     // AJOUT  - TESTING
     testingD3() {
-        // const divIconsTesting = d3.select(
-        //     this.template.querySelector('.avonni-activity-timeline__horizontal-timeline-icons')
-        // );
-
         // const minPosition = 100;
         // const maxPosition = 1000;
         d3.select(this.template.querySelector('.slds-section__title'))
@@ -201,11 +198,9 @@ export default class ActivityTimeline extends LightningElement {
             .transition()
             .duration(3000);
 
-        // TESTING DRAG
-        // const divD3Testing = d3.select(
-        //     this.template.querySelector('.testing-d3')
-        // ).style('border', '1px solid red');
+        // const divD3Testing = d3.select(this.template.querySelector('.testing-d3')).style('border', '1px solid red');
         // divD3Testing.selectAll('*').remove();
+        // TESTING DRAG
 
         // const testing = d3
         //     .select(this.template.querySelector('.testing-d3'))
@@ -812,6 +807,11 @@ export default class ActivityTimeline extends LightningElement {
             .call(axis);
 
         this.addItemsToTimeline(dataToDisplay);
+
+        // Set height of timeline items container to crop exceeding svg
+        this._timelineDiv
+            .style('height', this._timelineHeight + 'px')
+            .style('overflow', 'hidden');
     }
 
     addItemsToTimeline(dataToDisplay) {
@@ -819,6 +819,7 @@ export default class ActivityTimeline extends LightningElement {
         const iconsContainer = this._timelineDiv
             .append('g')
             .attr('id', 'icons-container');
+
         dataToDisplay.forEach((item, index) => {
             this.createItemIcon(iconsContainer, item, index);
         });

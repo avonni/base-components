@@ -60,12 +60,23 @@
         </template>
         <!-- HORIZONTAL TIMELINE -->
         <template if:true={isTimelineHorizontal}>
+            <!-- TESTING -->
+            <div class="testing-d3" lwc:dom="manual"></div>
+
             <!-- HORIZONTAL TIMELINE WITH D3 -->
             <div class="avonni-activity-timeline__horizontal-timeline">
                 <div
-                    class="avonni-activity-timeline__horizontal-timeline-items"
-                    lwc:dom="manual"
-                ></div>
+                    class="
+                        avonni-activity-timeline__horizontal-timeline-scrolling-container
+                    "
+                >
+                    <div
+                        class="
+                            avonni-activity-timeline__horizontal-timeline-items
+                        "
+                        lwc:dom="manual"
+                    ></div>
+                </div>
                 <div
                     class="avonni-activity-timeline__horizontal-timeline-axis"
                     lwc:dom="manual"
@@ -77,9 +88,6 @@
                     lwc:dom="manual"
                 ></div>
             </div>
-
-            <!-- TESTING -->
-            <div class="testing-d3" lwc:dom="manual"></div>
 
             <!-- POPOVER ITEM -->
             <div
