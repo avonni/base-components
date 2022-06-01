@@ -1118,7 +1118,8 @@ export default class Scheduler extends LightningElement {
             'slds-col slds-grid avonni-scheduler__schedule-col slds-theme_default'
         )
             .add({
-                'slds-hide': this.firstColumnIsOpen
+                'slds-hide': this.firstColumnIsOpen,
+                'avonni-scheduler__schedule-col_vertical': this.isVertical
             })
             .toString();
     }
