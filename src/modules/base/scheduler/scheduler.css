@@ -36,6 +36,9 @@
     max-height: 100vh;
     overflow: auto;
 }
+.avonni-scheduler__wrapper_vertical {
+    overflow-y: scroll;
+}
 
 .avonni-scheduler__first-col {
     background-color: #f3f3f3;
@@ -47,7 +50,7 @@
 .avonni-scheduler__first-col_horizontal {
     width: var(--avonni-scheduler-datatable-column-width, 300px);
 }
-.avonni-scheduler__first-col_vertical {
+.avonni-scheduler__grid_align-end {
     /* We can't use slds-grid_align-end because it will prevent the smallest header cells from growing */
     justify-content: right;
 }
@@ -98,7 +101,27 @@
     min-height: var(--avonni-scheduler-cell-height);
 }
 
-.avonni-scheduler__vertical-header-cell {
+.avonni-scheduler__vertical-header-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.avonni-scheduler__vertical-resource-header-wrapper {
+    overflow: hidden;
+}
+
+.avonni-scheduler__vertical-resource-header-first-cell {
+    width: var(--avonni-scheduler-vertical-header-first-cell-width);
+    min-width: var(--avonni-scheduler-vertical-header-first-cell-width);
+}
+
+.avonni-scheduler__vertical-resource-header-cell {
+    overflow: hidden;
+    flex: 1 1 0;
+}
+
+.avonni-scheduler__vertical-resource-header-cell,
+.avonni-scheduler__vertical-resource-header-first-cell {
     color: #514f4d;
     font-weight: 700;
     min-height: 3rem;

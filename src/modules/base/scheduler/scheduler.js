@@ -149,7 +149,7 @@ export default class Scheduler extends LightningElement {
         if (!this.smallestHeader) return;
 
         // Save the default first column width
-        if (!this._initialFirstColWidth && !this.isVertical) {
+        if (!this._initialFirstColWidth) {
             this.resetFirstColumnWidth();
         }
 
@@ -1015,26 +1015,7 @@ export default class Scheduler extends LightningElement {
      * @type {number}
      */
     get scrollOffset() {
-        if (this.isVertical) {
-            const headerCell = this.template.querySelector(
-                '[data-element-id="div-vertical-resource-header"]'
-            );
-            return headerCell ? headerCell.getBoundingClientRect().height : 0;
-        }
-        return this.firstColWidth;
-    }
-
-    /**
-     * Computed CSS classes of the events wrapper.
-     *
-     * @type {string}
-     */
-    get eventsWrapperClass() {
-        return classSet('avonni-scheduler__events slds-is-absolute')
-            .add({
-                'slds-m-top_xx-large': this.isVertical
-            })
-            .toString();
+        return this.isVertical ? 0 : this.firstColWidth;
     }
 
     /**
@@ -1061,7 +1042,7 @@ export default class Scheduler extends LightningElement {
                 'avonni-scheduler__first-col_hidden': this.firstColumnIsHidden,
                 'avonni-scheduler__first-col_open': this.firstColumnIsOpen,
                 'avonni-scheduler__first-col_horizontal': !this.isVertical,
-                'slds-m-top_xx-large slds-p-right_x-small avonni-scheduler__first-col_vertical slds-border_top':
+                'slds-p-right_x-small avonni-scheduler__first-col_vertical avonni-scheduler__grid_align-end':
                     this.isVertical
             })
             .toString();
@@ -1179,6 +1160,21 @@ export default class Scheduler extends LightningElement {
             }
         }
         return schedulePosition;
+    }
+
+    /**
+     * Computed CSS classes for the schedule wrapper.
+     *
+     * @type {string}
+     */
+    get scheduleWrapperClass() {
+        return classSet(
+            'slds-grid slds-is-relative avonni-scheduler__wrapper slds-theme_shade'
+        )
+            .add({
+                'avonni-scheduler__wrapper_vertical': this.isVertical
+            })
+            .toString();
     }
 
     /**
@@ -1360,6 +1356,16 @@ export default class Scheduler extends LightningElement {
             return header.visibleInterval;
         }
         return null;
+    }
+
+    /**
+     * Computed CSS style for the vertical resource headers.
+     *
+     * @type {string}
+     */
+    get verticalResourceHeadersStyle() {
+        const width = this.firstColWidth || this._initialFirstColWidth;
+        return `--avonni-scheduler-vertical-header-first-cell-width: ${width}px;`;
     }
 
     /*
@@ -1622,18 +1628,17 @@ export default class Scheduler extends LightningElement {
      * Set the resources height and cell width.
      */
     updateResourcesStyle() {
-        const resourceElements = this.template.querySelectorAll(
-            '[data-element-id="div-resource"]'
-        );
+        if (this.isVertical) {
+            this.template.host.style = `
+                width: ${this.cellWidth}%;
+                --avonni-scheduler-cell-height: ${this.cellHeight}px;
+            `;
+        } else {
+            const resourceElements = this.template.querySelectorAll(
+                '[data-element-id="div-resource"]'
+            );
 
-        resourceElements.forEach((resourceElement, index) => {
-            let style;
-            if (this.isVertical) {
-                style = `
-                    width: ${this.cellWidth}%;
-                    --avonni-scheduler-cell-height: ${this.cellHeight}px;
-                `;
-            } else {
+            resourceElements.forEach((resourceElement, index) => {
                 const key = resourceElement.dataset.key;
                 const computedResource = this.getResourceFromKey(key);
                 const rowHeight = computedResource.height;
@@ -1643,7 +1648,7 @@ export default class Scheduler extends LightningElement {
                 });
                 const dataRowHeight = dataRow.height;
 
-                style = `
+                const style = `
                     min-height: ${dataRowHeight}px;
                     height: ${rowHeight}px;
                     --avonni-scheduler-cell-width: ${this.cellWidth}px;
@@ -1654,10 +1659,10 @@ export default class Scheduler extends LightningElement {
                     index === 0 ? rowHeight - 1 : rowHeight;
                 // Reset the datatable row height, in case the height was set by events
                 this.datatable.setRowHeight(key, normalizedHeight);
-            }
 
-            resourceElement.style = style;
-        });
+                resourceElement.style = style;
+            });
+        }
     }
 
     /**
@@ -3059,7 +3064,14 @@ export default class Scheduler extends LightningElement {
             this.firstColumnIsOpen = true;
             const width = this.template.host.getBoundingClientRect().width;
             this.firstColWidth = width;
-            if (!this.isVertical) {
+            if (this.isVertical) {
+                const resourceHeaders = this.template.querySelector(
+                    '[data-element-id="div-vertical-resource-header"]'
+                );
+                if (resourceHeaders) {
+                    resourceHeaders.style.display = 'none';
+                }
+            } else {
                 this.datatable.style.width = `${width}px`;
             }
         }
