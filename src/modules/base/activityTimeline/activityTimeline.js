@@ -92,8 +92,10 @@ const SORTED_DIRECTIONS = {
 
 // TODO: Deplacer les fonctions timeline horizontal dans un nouveau fichier
 // TODO: quand drag, re-rendeder 24fps, request animation frame
-// TODO: Fix scroll
 // TODO: use d3 : brushing zoom to change rect interval
+// TODO: Fix overlap of item
+// TODO: Scroll --> prevent scroll if no item to show
+// TODO: Fix mouse out
 
 /**
  * @class
@@ -830,6 +832,7 @@ export default class ActivityTimeline extends LightningElement {
         const handleMouseOverOnItem = function (event, item) {
             activityTimelineThis.showItemPopOver = true;
             activityTimelineThis.selectedItem = item;
+
             const tooltipElement = d3.select(
                 activityTimelineThis.itemPopoverSelector
             );
@@ -844,12 +847,17 @@ export default class ActivityTimeline extends LightningElement {
             tooltipElement
                 .attr(
                     'class',
-                    'avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
+                    'slds-is-fixed avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
                         sizeClassToAdd
                 )
                 .style('top', event.pageY + 'px')
                 .style('left', event.pageX + 'px')
+                .style('visibility', 'visible')
                 .on('mouseout', function () {
+                    d3.select(activityTimelineThis.itemPopoverSelector).style(
+                        'visibility',
+                        'hidden'
+                    );
                     activityTimelineThis.handleItemMouseLeave();
                 });
         };
@@ -874,6 +882,10 @@ export default class ActivityTimeline extends LightningElement {
             // TODO: change size to better fit popover content
             .on('mouseover', handleMouseOverOnItem)
             .on('mouseout', function () {
+                d3.select(activityTimelineThis.itemPopoverSelector).style(
+                    'visibility',
+                    'hidden'
+                );
                 activityTimelineThis.handleItemMouseLeave();
             });
     }

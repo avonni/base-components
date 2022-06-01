@@ -35,6 +35,7 @@
     width: 37rem;
     max-width: 40rem;
     height: 80px;
+    visibility: hidden;
 }
 
 .avonni-activity-timeline__item-popover-with-fields {
