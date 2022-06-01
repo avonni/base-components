@@ -345,7 +345,7 @@ export default class Kanban extends LightningElement {
             );
             if (summarizeUpdate !== 0) {
                 for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
-                    this._summaryTimeoutsId[i] = window.setTimeout(() => {
+                    this._summaryTimeoutsId[j] = window.setTimeout(() => {
                         const summary = this.template.querySelectorAll(
                             '[data-element-id="summarize"]'
                         )[group.index];
@@ -535,17 +535,20 @@ export default class Kanban extends LightningElement {
      *
      */
     clearSummarizeTimeouts() {
-        // TODO: THIS DOESNT WORK
-        if (this._summaryTimeoutsId) {
+        if (this._summaryTimeoutsId.length > 0) {
             this._summaryTimeoutsId.forEach((timeout) => {
-                clearTimeout(timeout);
+                window.clearTimeout(timeout);
             });
 
-            // this.template
-            //     .querySelectorAll('[data-element-id="summarize"]')
-            //     .forEach((summarize, i) => {
-            //         summarize.value = this._oldSummarizeValues[i];
-            //     });
+            setTimeout(() => {
+                this.template
+                    .querySelectorAll('[data-element-id="summarize"]')
+                    .forEach((summarize, i) => {
+                        summarize.value = this._summarizeValues[i];
+                    });
+            }, 0);
+
+            this._summaryTimeoutsId = [];
         }
     }
 
