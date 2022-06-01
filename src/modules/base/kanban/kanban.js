@@ -809,6 +809,18 @@ export default class Kanban extends LightningElement {
             0,
             groups.splice(this._clickedGroupIndex, 1)[0]
         );
+
+        this._oldSummarizeValues.splice(
+            this._releasedGroupIndex,
+            0,
+            this._oldSummarizeValues.splice(this._clickedGroupIndex, 1)[0]
+        );
+
+        this._summarizeValues.splice(
+            this._releasedGroupIndex,
+            0,
+            this._summarizeValues.splice(this._clickedGroupIndex, 1)[0]
+        );
         this._groupValues = groups;
         this._draggedGroup.style.transform = '';
         this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
