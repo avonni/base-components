@@ -150,6 +150,9 @@ export default class Slider extends LightningElement {
     _resizeObserver;
     _isFirstInput = true;
     _moveEventWait = false;
+    _progressInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
+    _customLabels = [];
+    _hasNoProgressBar = false;
 
     _rendered = false;
 
@@ -168,6 +171,7 @@ export default class Slider extends LightningElement {
     }
 
     renderedCallback() {
+        this.progressValues = this._values;
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
@@ -175,6 +179,9 @@ export default class Slider extends LightningElement {
             this.drawRuler();
         }
         if (!this._rendered) {
+            if (this.hasCustomLabels) {
+                this.displayCustomLabels();
+            }
             this.initRange();
             this._rendered = true;
         }
@@ -421,6 +428,11 @@ export default class Slider extends LightningElement {
                 this._values.push(val);
             });
             this._values = this._values.sort((a, b) => a - b);
+            console.log(this._values);
+            if (this._values.length > 2) {
+                this._hasNoProgressBar = true;
+                this._progressInterval = [this.min - 1, this.min - 1];
+            }
         }
     }
 
@@ -451,6 +463,10 @@ export default class Slider extends LightningElement {
 
     get values() {
         return this._values;
+    }
+
+    get hasNoProgressBar() {
+        return this._hasNoProgressBar;
     }
 
     /**
@@ -670,7 +686,6 @@ export default class Slider extends LightningElement {
             : this.template.querySelector(
                   '[data-element-id="custom-label-container"]'
               ).clientWidth;
-        console.log(totalWidth);
         customLabelNodes.forEach((element, index) => {
             let value = this._customLabels[index].value;
             if (!this.isHorizontal) {
@@ -737,9 +752,10 @@ export default class Slider extends LightningElement {
         // drawTicks
         for (let i = 0; i < numberOfSteps + 1; i++) {
             const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
+
             const isColored =
-                this.valueLower <= valueOfStep &&
-                valueOfStep <= this.valueUpper;
+                this._progressInterval[0] <= valueOfStep &&
+                valueOfStep <= this._progressInterval[1];
             let isMajorStep = i === 0 || i === numberOfSteps;
             if (this.hasCustomLabels) {
                 isMajorStep =
@@ -760,9 +776,9 @@ export default class Slider extends LightningElement {
             line.setAttribute('height', `15`);
             line.setAttribute('width', `5`);
             line.setAttribute('x1', `${leftPosition}`);
-            line.setAttribute('y1', `${isMajorStep ? 11.3 : 11.8}`);
+            line.setAttribute('y1', `${isMajorStep ? 10.65 : 11.3}`);
             line.setAttribute('x2', `${leftPosition}`);
-            line.setAttribute('y2', `${isMajorStep ? 22 : 20.8}`);
+            line.setAttribute('y2', `${isMajorStep ? 22.65 : 22}`);
             ruler.appendChild(line);
             leftPosition += stepWidth;
         }
@@ -809,8 +825,8 @@ export default class Slider extends LightningElement {
         for (let i = 0; i < numberOfSteps + 1; i++) {
             const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
             const isColored =
-                this.valueLower <= valueOfStep &&
-                valueOfStep <= this.valueUpper;
+                this._progressInterval[0] <= valueOfStep &&
+                valueOfStep <= this._progressInterval[1];
             let isMajorStep = i === 0 || i === numberOfSteps;
             if (this.hasCustomLabels) {
                 isMajorStep =
@@ -836,12 +852,7 @@ export default class Slider extends LightningElement {
     /**
      * Initialize range cmp.
      */
-    initRange() {
-        this.updateProgressBar(this._values);
-        if (this.hasCustomLabels) {
-            this.displayCustomLabels();
-        }
-    }
+    initRange() {}
 
     /**
      * Initialize the screen resize observer.
@@ -967,28 +978,38 @@ export default class Slider extends LightningElement {
      */
     updateInputRange(event) {
         let newValues = [...this.values];
-        const sliderIndex = event.target.dataset.index;
-        newValues[sliderIndex] = parseInt(this.getInput(sliderIndex).value, 10);
-        this.updateProgressBar(newValues);
+        newValues[event.target.dataset.index] = parseInt(
+            event.target.value,
+            10
+        );
+        this.progressValues = newValues;
     }
 
-    updateProgressBar(values) {
+    set progressValues(values) {
+        if (this.hasNoProgressBar) {
+            return;
+        }
         for (let i = 0; i < this.values.length; i++) {
             this.getInput(i).value = values[i];
             this._values[i] = values[i];
         }
         if (this._values.length === 2) {
+            const lowestValue = Math.max(...[Math.min(...values), this.min]);
             this._progress.style.left =
-                ((Math.min(...values) - this.min) / (this.max - this.min)) *
-                    100 +
-                '%';
+                this.getPercentOfValue(lowestValue) * 100 + '%';
+            this._progressInterval[0] = lowestValue - this.min;
         } else {
             this._progress.style.left = '0%';
+            this._progressInterval[0] = this.min;
         }
+        const highestValue = Math.min(...[Math.max(...values), this.max]);
+
         this._progress.style.right =
-            100 -
-            ((Math.max(...values) - this.min) / (this.max - this.min)) * 100 +
-            '%';
+            100 - this.getPercentOfValue(highestValue) * 100 + '%';
+        this._progressInterval[1] = highestValue - this.min;
+        if (this.showAnyTickMarks) {
+            this.drawRuler();
+        }
     }
 
     /**
