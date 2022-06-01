@@ -691,10 +691,11 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     get eventOccurrenceCenterLabelClass() {
         return classSet(
-            'slds-truncate slds-grid  avonni-scheduler__event-label_center'
+            'slds-truncate slds-grid avonni-scheduler__event-label_center'
         )
             .add({
-                'slds-p-horizontal_x-small': !this.isVertical
+                'slds-p-horizontal_x-small': !this.isVertical,
+                'slds-m-top_small': this.isVertical && this.theme === 'line'
             })
             .toString();
     }
