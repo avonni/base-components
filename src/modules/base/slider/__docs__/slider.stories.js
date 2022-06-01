@@ -134,6 +134,18 @@ export default {
                 category: 'Value'
             }
         },
+        removeTrack: {
+            name: 'show-track',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, track progress is removed.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'string' },
+                category: 'Value'
+            }
+        },
         type: {
             control: {
                 type: 'select'
@@ -195,6 +207,20 @@ export default {
                 'The minimum value of the input slider. The default is 0.',
             table: {
                 defaultValue: { summary: '0' },
+                type: { summary: 'number' },
+                category: 'Validation'
+            }
+        },
+        minimumDistance: {
+            name: 'minimum-distance',
+            control: {
+                type: 'number',
+                min: 0
+            },
+            description:
+                'The minimum distance between nodes if there are many.',
+            table: {
+                defaultValue: { summary: 0 },
                 type: { summary: 'number' },
                 category: 'Validation'
             }
@@ -316,6 +342,8 @@ export default {
         pin: false,
         tickMarkStyle: 'inner-tick',
         showTickMarks: false,
+        removeTrack: false,
+        minimumDistance: 0,
         size: 'full',
         step: 1,
         type: 'horizontal',
@@ -336,7 +364,7 @@ export const CustomLabel = Template.bind({});
 CustomLabel.args = {
     label: 'Custom label slider',
     step: 1,
-    value: 5,
+    value: [1, 5],
     min: 0,
     max: 10,
     size: 'full',

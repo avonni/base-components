@@ -145,6 +145,8 @@ export default class Slider extends LightningElement {
     _unitAttributes = {};
     _showTickMarks = false;
     _tickMarkStyle = TICK_MARK_STYLES.default;
+    _minimumDistance = DEFAULT_MIN;
+    _removeTrack = false;
 
     _helpMessage;
     _resizeObserver;
@@ -152,7 +154,6 @@ export default class Slider extends LightningElement {
     _moveEventWait = false;
     _progressInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
     _customLabels = [];
-    _hasNoProgressBar = false;
 
     _rendered = false;
 
@@ -229,6 +230,24 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * The minimum distance between nodes if there are many.
+     *
+     * @type {number}
+     * @public
+     * @default 0
+     */
+    @api
+    get minimumDistance() {
+        return this._minimumDistance;
+    }
+    set minimumDistance(value) {
+        const intValue = parseInt(value, 10);
+        if (!isNaN(intValue)) {
+            this._minimumDistance = intValue;
+        }
+    }
+
+    /**
      * The maximum value of the input range.
      *
      * @type {number}
@@ -261,6 +280,21 @@ export default class Slider extends LightningElement {
 
     set pin(value) {
         this._pin = normalizeBoolean(value);
+    }
+
+    /**
+     * If present, track progress is removed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get removeTrack() {
+        return this._removeTrack;
+    }
+    set removeTrack(value) {
+        this._removeTrack = normalizeBoolean(value);
     }
 
     /**
@@ -428,10 +462,8 @@ export default class Slider extends LightningElement {
                 this._values.push(val);
             });
             this._values = this._values.sort((a, b) => a - b);
-            console.log(this._values);
             if (this._values.length > 2) {
-                this._hasNoProgressBar = true;
-                this._progressInterval = [this.min - 1, this.min - 1];
+                this._removeTrack = true;
             }
         }
     }
@@ -463,10 +495,6 @@ export default class Slider extends LightningElement {
 
     get values() {
         return this._values;
-    }
-
-    get hasNoProgressBar() {
-        return this._hasNoProgressBar;
     }
 
     /**
@@ -886,8 +914,8 @@ export default class Slider extends LightningElement {
      * @param {Event} event
      */
     handleChange(event) {
-        this.setBubblePosition(event);
         this.updateInputRange(event);
+        this.setBubblePosition(event);
         this.changeRange();
     }
 
@@ -957,10 +985,12 @@ export default class Slider extends LightningElement {
                 '[data-element-id="bubble"]'
             );
             let bubbleProgress =
-                ((parseInt(event.target.value, 10) - this.min) /
+                ((this._values[parseInt(event.target.dataset.index, 10)] -
+                    this.min) /
                     (this.max - this.min)) *
                 100;
-            bubble.firstChild.firstChild.value = event.target.value;
+            bubble.firstChild.firstChild.value =
+                this._values[parseInt(event.target.dataset.index, 10)];
 
             bubble.style.left =
                 'calc(' +
@@ -978,20 +1008,53 @@ export default class Slider extends LightningElement {
      */
     updateInputRange(event) {
         let newValues = [...this.values];
-        newValues[event.target.dataset.index] = parseInt(
+        newValues[parseInt(event.target.dataset.index, 10)] = parseInt(
             event.target.value,
             10
+        );
+        this.manageCollisions(
+            parseInt(event.target.dataset.index, 10),
+            newValues
         );
         this.progressValues = newValues;
     }
 
-    set progressValues(values) {
-        if (this.hasNoProgressBar) {
-            return;
+    manageCollisions(updatedSliderIndex, newValues) {
+        const hasLeftNeighbor = updatedSliderIndex - 1 >= 0;
+        const hasRightNeighbor = updatedSliderIndex + 1 < newValues.length;
+
+        let neighborIndex = 0;
+        if (hasLeftNeighbor) {
+            neighborIndex = updatedSliderIndex - 1;
+            if (
+                newValues[updatedSliderIndex] - newValues[neighborIndex] <
+                this._minimumDistance
+            ) {
+                newValues[updatedSliderIndex] =
+                    newValues[neighborIndex] + this._minimumDistance;
+            }
         }
+        if (hasRightNeighbor) {
+            neighborIndex = updatedSliderIndex + 1;
+            if (
+                newValues[neighborIndex] - newValues[updatedSliderIndex] <
+                this._minimumDistance
+            ) {
+                newValues[updatedSliderIndex] =
+                    newValues[neighborIndex] - this._minimumDistance;
+            }
+        }
+        this.progressValues = newValues;
+    }
+
+    set progressValues(values) {
         for (let i = 0; i < this.values.length; i++) {
             this.getInput(i).value = values[i];
             this._values[i] = values[i];
+        }
+        if (this._removeTrack) {
+            this._progressInterval = [this.min - 1, this.min - 1];
+            return;
         }
         if (this._values.length === 2) {
             const lowestValue = Math.max(...[Math.min(...values), this.min]);

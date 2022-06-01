@@ -49,6 +49,8 @@ export const Slider = ({
     disabled,
     tickMarkStyle,
     showTickMarks,
+    removeTrack,
+    minimumDistance,
     messageWhenRangeOverflow,
     messageWhenRangeUnderflow,
     messageWhenStepMismatch,
@@ -67,6 +69,8 @@ export const Slider = ({
     element.unitAttributes = unitAttributes;
     element.tickMarkStyle = tickMarkStyle;
     element.showTickMarks = showTickMarks;
+    element.removeTrack = removeTrack;
+    element.minimumDistance = minimumDistance;
     element.value = value;
     element.pin = pin;
     element.min = min || 0;
