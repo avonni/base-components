@@ -32,7 +32,7 @@
 
 import SchedulerResource from '../resource';
 
-const REFERENCE_COLUMNS = [
+const REFERENCE_CELLS = [
     {
         start: new Date(2021, 8, 1, 11).getTime(),
         end: new Date(2021, 8, 1, 11).getTime() - 1
@@ -77,41 +77,41 @@ describe('SchedulerResource', () => {
         const element = new SchedulerResource({});
 
         expect(element.color).toBeUndefined();
-        expect(element.columns).toMatchObject([]);
+        expect(element.cells).toMatchObject([]);
         expect(element.data).toBeUndefined();
         expect(element.events).toMatchObject([]);
         expect(element.height).toBe(0);
         expect(element.key).toBeUndefined();
         expect(element.minHeight).toBe(0);
-        expect(element.referenceColumns).toMatchObject([]);
+        expect(element.referenceCells).toMatchObject([]);
     });
 
     /* ----- ATTRIBUTES ----- */
 
-    // columns
-    // Depends on referenceColumns
-    it('Scheduler resource: columns', () => {
+    // cells
+    // Depends on referenceCells
+    it('Scheduler resource: cells', () => {
         const element = new SchedulerResource({
-            referenceColumns: REFERENCE_COLUMNS
+            referenceCells: REFERENCE_CELLS
         });
-        expect(element.columns).toHaveLength(REFERENCE_COLUMNS.length);
-        element.columns.forEach((column, index) => {
-            expect(column.start).toBe(REFERENCE_COLUMNS[index].start);
-            expect(column.end).toBe(REFERENCE_COLUMNS[index].end);
+        expect(element.cells).toHaveLength(REFERENCE_CELLS.length);
+        element.cells.forEach((column, index) => {
+            expect(column.start).toBe(REFERENCE_CELLS[index].start);
+            expect(column.end).toBe(REFERENCE_CELLS[index].end);
         });
     });
 
     // events
-    // Depends on referenceColumns
+    // Depends on referenceCells
     it('Scheduler resource: events', () => {
         const element = new SchedulerResource({
-            referenceColumns: REFERENCE_COLUMNS,
+            referenceCells: REFERENCE_CELLS,
             events: EVENTS
         });
 
-        const columns = element.columns;
+        const cells = element.cells;
         EVENTS.forEach((event) => {
-            columns.forEach((column) => {
+            cells.forEach((column) => {
                 if (column.end >= event.from && column.start < event.to) {
                     expect(column.events).toContain(event);
                 } else {
@@ -122,29 +122,29 @@ describe('SchedulerResource', () => {
     });
 
     // removeEvent()
-    // Depends on referenceColumns and events
+    // Depends on referenceCells and events
     it('Scheduler resource: removeEvent method', () => {
         const element = new SchedulerResource({
-            referenceColumns: REFERENCE_COLUMNS,
+            referenceCells: REFERENCE_CELLS,
             events: EVENTS
         });
 
         const eventToRemove = EVENTS[0];
         element.removeEvent(eventToRemove);
 
-        element.columns.forEach((column) => {
+        element.cells.forEach((column) => {
             expect(column.events).not.toContain(eventToRemove);
         });
     });
 
-    // getColumnFromStart()
-    // Depends on referenceColumns
-    it('Scheduler resource: getColumnFromStart method', () => {
+    // getCellFromStart()
+    // Depends on referenceCells
+    it('Scheduler resource: getCellFromStart method', () => {
         const element = new SchedulerResource({
-            referenceColumns: REFERENCE_COLUMNS
+            referenceCells: REFERENCE_CELLS
         });
 
-        const start = element.getColumnFromStart(REFERENCE_COLUMNS[0].start);
-        expect(start).toBe(element.columns[0]);
+        const start = element.getCellFromStart(REFERENCE_CELLS[0].start);
+        expect(start).toBe(element.cells[0]);
     });
 });
