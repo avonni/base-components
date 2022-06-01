@@ -91,9 +91,8 @@ const SORTED_DIRECTIONS = {
 };
 
 // TODO: Deplacer les fonctions timeline horizontal dans un nouveau fichier
-// TODO: quand drag, re-rendeder 24fps, request animation frame
 // TODO: use d3 : brushing zoom to change rect interval
-// TODO: Fix overlap of item
+// TODO: Fix overlap of items at specific place + consequences
 // TODO: Scroll --> prevent scroll if no item to show
 // TODO: Fix mouse out
 
@@ -210,12 +209,6 @@ export default class ActivityTimeline extends LightningElement {
         //     .append('svg')
         //     .attr('width', this._timelineWidth)
         //     .attr('height', 50);
-
-        // Testing svg icons
-
-        // this.createStandardIcon(divD3Testing, 'search', 500.222, 0);
-        // this.createStandardIcon(divD3Testing, 'recipe', 300, 0);
-        // this.createStandardIcon(divD3Testing, 'account', 100, 0);
 
         // testing
         //     .append('circle')
@@ -1045,29 +1038,29 @@ export default class ActivityTimeline extends LightningElement {
         let activityTimelineThis = this;
 
         const handleTimeIntervalDrag = function (event) {
-            // WARNING : this = scrollAxisSVG, activityTimelineThis = regular this
+            // WARNING : this = _timeIntervalSelector, activityTimelineThis = regular this
             // To allow only horizontal drag
             const maxPosition =
                 activityTimelineThis.scrollTimeScale(
                     activityTimelineThis.scrollAxisMaxDate
                 ) - activityTimelineThis.intervalWidth;
-            const minPosition = DEFAULT_TIMELINE_AXIS_OFFSET;
-            let xPosition = event.x;
+            const minPosition = activityTimelineThis.scrollTimeScale(
+                activityTimelineThis.scrollAxisMinDate
+            );
+            let xPosition = event.x - activityTimelineThis.intervalWidth;
             if (event.x > maxPosition) {
                 xPosition = maxPosition;
-            } else if (event.x < minPosition) {
+            } else if (xPosition < minPosition) {
                 xPosition = minPosition;
             }
 
             d3.select(this).attr('x', xPosition).attr('y', 0.5);
-        };
 
-        const handleEndOfTimeIntervalDrag = function () {
+            // Refresh timeline view (renderedCallback() is called)
             activityTimelineThis._intervalMinDate =
                 activityTimelineThis.scrollTimeScale
-                    .invert(this.getAttribute('x'))
+                    .invert(xPosition)
                     .setHours(0, 0, 0, 0);
-            activityTimelineThis.renderedCallback();
         };
 
         this._timeIntervalSelector = this._scrollAxisSVG
@@ -1079,12 +1072,7 @@ export default class ActivityTimeline extends LightningElement {
             .attr('height', this._timelineAxisHeight) // Hauteur du rectangle de data
             .attr('opacity', 0.3)
             .attr('fill', this._scrollAxisColor)
-            .call(
-                d3
-                    .drag()
-                    .on('drag', handleTimeIntervalDrag)
-                    .on('end', handleEndOfTimeIntervalDrag)
-            );
+            .call(d3.drag().on('drag', handleTimeIntervalDrag));
     }
 
     /**
