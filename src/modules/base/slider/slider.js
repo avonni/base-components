@@ -151,7 +151,6 @@ export default class Slider extends LightningElement {
 
     _helpMessage;
     _resizeObserver;
-    _isFirstInput = true;
     _moveEventWait = false;
     _progressInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
     _customLabels = [];
@@ -468,11 +467,14 @@ export default class Slider extends LightningElement {
 
     set value(value) {
         if (!isNaN(Number(value))) {
-            this._values[0] = Number(value);
+            this._values[0] = Math.min(
+                Math.max(Number(value), this.min),
+                this.max
+            );
         } else {
             this._values = [];
             normalizeArray(value, 'number').forEach((val) => {
-                this._values.push(val);
+                this._values.push(Math.min(Math.max(val, this.min), this.max));
             });
             this._values = this._values.sort((a, b) => a - b);
             if (this._values.length > 2) {
@@ -658,12 +660,6 @@ export default class Slider extends LightningElement {
      */
     get isNormalHorizontal() {
         return this._type !== 'vertical' && !this.hasCustomLabels;
-    }
-
-    get isFirstInput() {
-        let boolean = this._isFirstInput;
-        this._isFirstInput = false;
-        return boolean;
     }
 
     /**
@@ -898,8 +894,12 @@ export default class Slider extends LightningElement {
     initResizeObserver() {
         if (!this.showAnyTickMarks) return null;
         const resizeObserver = new AvonniResizeObserver(() => {
-            this.drawRuler();
-            this.displayCustomLabels();
+            if (this.showAnyTickMarks) {
+                this.drawRuler();
+            }
+            if (this.hasCustomLabels) {
+                this.displayCustomLabels();
+            }
         });
         resizeObserver.observe(
             this.template.querySelector('[data-element-id="div-wrapper"]')
@@ -970,7 +970,9 @@ export default class Slider extends LightningElement {
         if (this._pin) {
             this.setBubblePosition(event);
             this.template
-                .querySelector('[data-element-id="bubble"]')
+                .querySelector(
+                    `[data-group-name="bubble"][data-index="${event.target.dataset.index}"]`
+                )
                 .classList.add('avonni-range__bubble_visible');
         }
     }
@@ -978,10 +980,12 @@ export default class Slider extends LightningElement {
     /**
      * Hide right bubble.
      */
-    hideBubble() {
+    hideBubble(event) {
         if (this._pin) {
             this.template
-                .querySelector('[data-element-id="bubble"]')
+                .querySelector(
+                    `[data-group-name="bubble"][data-index="${event.target.dataset.index}"]`
+                )
                 .classList.remove('avonni-range__bubble_visible');
         }
     }
@@ -992,7 +996,7 @@ export default class Slider extends LightningElement {
     setBubblePosition(event) {
         if (this._pin) {
             let bubble = this.template.querySelector(
-                '[data-element-id="bubble"]'
+                `[data-group-name="bubble"][data-index="${event.target.dataset.index}"]`
             );
             let bubbleProgress =
                 this.getPercentOfValue(
@@ -1057,10 +1061,10 @@ export default class Slider extends LightningElement {
             this.getInput(i).value = values[i];
             this.values[i] = values[i];
         }
-        // if (!this._removeTrack) {
-        //     this._progressInterval = [this.min - 1, this.min - 1];
-        //     return;
-        // }
+        if (this._removeTrack) {
+            this._progressInterval = [this.min - 1, this.min - 1];
+            return;
+        }
         if (this._values.length >= 2) {
             const lowestValue = Math.max(...[Math.min(...values), this.min]);
             this._progress.style.left =

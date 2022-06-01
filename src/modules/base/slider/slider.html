@@ -82,33 +82,33 @@
                             onmousedown={showBubble}
                             onmouseup={hideBubble}
                         />
-                        <template if:true={isFirstInput}>
-                            <div
-                                if:true={pin}
-                                class={computedBubbleClass}
-                                data-element-id="bubble"
-                            >
-                                <p>
-                                    <lightning-formatted-number
-                                        format-style={unit}
-                                        currency-code={unitAttributes.currencyCode}
-                                        currency-display-as={unitAttributes.currencyDisplayAs}
-                                        maximum-fraction-digits={unitAttributes.maximumFractionDigits}
-                                        maximum-significant-digits={unitAttributes.maximumSignificantDigits}
-                                        minimum-fraction-digits={unitAttributes.minimumFractionDigits}
-                                        minimum-integer-digits={unitAttributes.minimumIntegerDigits}
-                                        minimum-significant-digits={unitAttributes.minimumSignificantDigits}
-                                        data-element-id="lightning-formatted-number-left"
-                                    ></lightning-formatted-number>
-                                </p>
-                            </div>
-                        </template>
+                        <div
+                            if:true={pin}
+                            class={computedBubbleClass}
+                            data-group-name="bubble"
+                            data-index={index}
+                        >
+                            <p>
+                                <lightning-formatted-number
+                                    format-style={unit}
+                                    currency-code={unitAttributes.currencyCode}
+                                    currency-display-as={unitAttributes.currencyDisplayAs}
+                                    maximum-fraction-digits={unitAttributes.maximumFractionDigits}
+                                    maximum-significant-digits={unitAttributes.maximumSignificantDigits}
+                                    minimum-fraction-digits={unitAttributes.minimumFractionDigits}
+                                    minimum-integer-digits={unitAttributes.minimumIntegerDigits}
+                                    minimum-significant-digits={unitAttributes.minimumSignificantDigits}
+                                    data-element-id="lightning-formatted-number-left"
+                                ></lightning-formatted-number>
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
         </template>
         <div class="avonni-range__progress-container">
             <div
+                if:false={removeTrack}
                 class={computedProgressClass}
                 data-element-id="progress-bar"
             ></div>
