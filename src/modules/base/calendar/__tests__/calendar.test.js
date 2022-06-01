@@ -145,15 +145,17 @@ describe('Calendar', () => {
     it('Calendar: focusDate', () => {
         element.value = '05/12/2022';
 
-        const day8 = element.shadowRoot
-            .querySelector('span[data-date="8"]')
-            .closest('td');
-        const spy8 = jest.spyOn(day8, 'focus');
+        return Promise.resolve().then(() => {
+            const day8 = element.shadowRoot
+                .querySelector('span[data-date="8"]')
+                .closest('td');
+            const spy8 = jest.spyOn(day8, 'focus');
 
-        element.focusDate('05/08/2022');
-        jest.runOnlyPendingTimers();
+            element.focusDate('05/08/2022');
+            jest.runAllTimers();
 
-        expect(spy8).toHaveBeenCalled();
+            expect(spy8).toHaveBeenCalled();
+        });
     });
 
     /**
