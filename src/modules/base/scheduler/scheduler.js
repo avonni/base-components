@@ -1133,34 +1133,7 @@ export default class Scheduler extends LightningElement {
         const scheduleElement = this.template.querySelector(
             '[data-element-id="div-schedule-body"]'
         );
-        if (!scheduleElement) return {};
-
-        const scheduleDOMRectPosition = scheduleElement.getBoundingClientRect();
-        const schedulePosition = {
-            top: scheduleDOMRectPosition.top,
-            right: scheduleDOMRectPosition.right,
-            bottom: scheduleDOMRectPosition.bottom,
-            left: scheduleDOMRectPosition.left,
-            width: scheduleDOMRectPosition.width,
-            height: scheduleDOMRectPosition.height,
-            x: scheduleDOMRectPosition.x,
-            y: scheduleDOMRectPosition.y
-        };
-
-        if (this.isVertical) {
-            // Remove the resource headers from the schedule dimensions
-            const resourceHeader = this.template.querySelector(
-                '[data-element-id="div-vertical-resource-header"]'
-            );
-            if (resourceHeader) {
-                const headerPosition = resourceHeader.getBoundingClientRect();
-                schedulePosition.top = headerPosition.bottom;
-                schedulePosition.y = headerPosition.bottom;
-                schedulePosition.height =
-                    schedulePosition.height - headerPosition.height;
-            }
-        }
-        return schedulePosition;
+        return scheduleElement.getBoundingClientRect();
     }
 
     /**
@@ -1364,9 +1337,9 @@ export default class Scheduler extends LightningElement {
      *
      * @type {string}
      */
-    get verticalResourceHeadersStyle() {
+    get verticalResourceHeadersFirstCellStyle() {
         const width = this.firstColWidth || this._initialFirstColWidth;
-        return `--avonni-scheduler-vertical-header-first-cell-width: ${width}px;`;
+        return `width: ${width}px;`;
     }
 
     /*
@@ -1631,7 +1604,6 @@ export default class Scheduler extends LightningElement {
     updateResourcesStyle() {
         if (this.isVertical) {
             this.template.host.style = `
-                width: ${this.cellWidth}%;
                 --avonni-scheduler-cell-height: ${this.cellHeight}px;
             `;
         } else {
@@ -1781,9 +1753,9 @@ export default class Scheduler extends LightningElement {
                             start
                         );
 
-                    const occurrence = resource.events.find(
-                        (occ) => occ.key === occElement.occurrenceKey
-                    );
+                    const occurrence = resource.events.find((occ) => {
+                        return occ.key === occElement.occurrenceKey;
+                    });
 
                     previousOccurrences.unshift({
                         level,
@@ -1885,20 +1857,15 @@ export default class Scheduler extends LightningElement {
      * Save the datatable rows heights and use them as a min-height for the schedule rows.
      */
     updateRowsHeight() {
-        if (!this.isVertical && !this.datatable) {
+        if (this.isVertical || (!this.isVertical && !this.datatable)) {
             return;
         }
 
         this._rowsHeight = [];
         this.computedResources.forEach((resource) => {
             const resourceKey = resource.key;
-            let height = 0;
-            if (this.isVertical) {
-                height = this.cellHeight;
-            } else {
-                height = this.datatable.getRowHeight(resourceKey);
-                resource.minHeight = height;
-            }
+            const height = this.datatable.getRowHeight(resourceKey);
+            resource.minHeight = height;
             this._rowsHeight.push({ resourceKey, height });
         });
     }
@@ -2476,6 +2443,7 @@ export default class Scheduler extends LightningElement {
         } else {
             this.cellWidth = cellSize;
         }
+        this.updateResourcesStyle();
     }
 
     /**
@@ -3065,14 +3033,7 @@ export default class Scheduler extends LightningElement {
             this.firstColumnIsOpen = true;
             const width = this.template.host.getBoundingClientRect().width;
             this.firstColWidth = width;
-            if (this.isVertical) {
-                const resourceHeaders = this.template.querySelector(
-                    '[data-element-id="div-vertical-resource-header"]'
-                );
-                if (resourceHeaders) {
-                    resourceHeaders.style.display = 'none';
-                }
-            } else {
+            if (!this.isVertical) {
                 this.datatable.style.width = `${width}px`;
             }
         }

@@ -152,14 +152,13 @@
             slds-p-right_medium
             avonni-scheduler__vertical-resource-header-wrapper
         "
-        data-element-id="div-vertical-resource-header"
-        style={verticalResourceHeadersStyle}
     >
         <div
             class="
                 avonni-scheduler__vertical-resource-header-first-cell
                 slds-border_right
             "
+            style={verticalResourceHeadersFirstCellStyle}
         ></div>
         <template for:each={computedResources} for:item="resource">
             <div
@@ -170,6 +169,7 @@
                     avonni-scheduler__vertical-resource-header-cell
                     slds-grid slds-grid_vertical-align-center
                 "
+                data-element-id="div-vertical-resource-header"
             >
                 <c-primitive-avatar
                     if:true={resource.avatar}
@@ -179,14 +179,21 @@
                     src={resource.avatar.src}
                     size="small"
                     variant="circle"
+                    data-element-id="avonni-primitive-avatar"
                 ></c-primitive-avatar>
-                <div class="slds-truncate slds-col">{resource.label}</div>
+                <div
+                    class="slds-truncate slds-col"
+                    data-element-id="div-vertical-resource-header-label"
+                >
+                    {resource.label}
+                </div>
             </div>
         </template>
     </div>
 
     <div
         class={scheduleWrapperClass}
+        data-element-id="div-schedule-wrapper"
         onmouseup={handleMouseUp}
         onmousemove={handleMouseMove}
         onscroll={handleScroll}
@@ -231,6 +238,7 @@
             <div class="slds-is-relative">
                 <div
                     class={splitterClass}
+                    data-element-id="div-splitter"
                     onmousedown={handleSplitterMouseDown}
                 >
                     <div
@@ -245,6 +253,7 @@
                             class="avonni-scheduler__splitter-icon"
                             icon-name="utility:left"
                             variant="bare"
+                            data-element-id="lightning-button-icon-collapse-col"
                             onclick={handleHideFirstCol}
                         ></lightning-button-icon>
                         <lightning-button-icon
@@ -252,6 +261,7 @@
                             class="avonni-scheduler__splitter-icon"
                             icon-name="utility:right"
                             variant="bare"
+                            data-element-id="lightning-button-icon-open-col"
                             onclick={handleOpenFirstCol}
                         ></lightning-button-icon>
                     </div>
@@ -260,7 +270,7 @@
         </div>
 
         <!-- Schedule -->
-        <div class={scheduleColClass}>
+        <div class={scheduleColClass} data-element-id="div-schedule-col">
             <div class="slds-col">
                 <!-- Horizontal headers -->
                 <c-primitive-scheduler-header-group

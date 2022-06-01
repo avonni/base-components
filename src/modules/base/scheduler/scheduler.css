@@ -114,11 +114,6 @@
     overflow: hidden;
 }
 
-.avonni-scheduler__vertical-resource-header-first-cell {
-    width: var(--avonni-scheduler-vertical-header-first-cell-width);
-    min-width: var(--avonni-scheduler-vertical-header-first-cell-width);
-}
-
 .avonni-scheduler__vertical-resource-header-cell {
     overflow: hidden;
     flex: 1 1 0;
