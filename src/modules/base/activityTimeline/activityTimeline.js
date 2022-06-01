@@ -53,6 +53,22 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
+const SMALL_ICON_SIZE = 23.99;
+const LWC_ICONS_XLINK_HREF = {
+    standard: '/assets/icons/standard-sprite/svg/symbols.svg#',
+    utility: '/assets/icons/utility-sprite/svg/symbols.svg#',
+    doctype: '/assets/icons/doctype-sprite/svg/symbols.svg#',
+    action: '/assets/icons/action-sprite/svg/symbols.svg#',
+    custom: '/assets/icons/custom-sprite/svg/symbols.svg#'
+};
+
+const LWC_ICONS_CLASS = {
+    standard: 'slds-icon-standard-',
+    utility: 'slds-icon-text-default slds-icon-utility-',
+    doctype: 'slds-icon-doctype-',
+    action: 'slds-icon-action-',
+    custom: 'slds-icon-custom-'
+};
 
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
@@ -75,6 +91,8 @@ const SORTED_DIRECTIONS = {
 };
 
 // TODO: Deplacer les fonctions timeline horizontal dans un nouveau fichier
+// TODO: quand drag, re-rendeder 24fps, request animation frame
+// TODO: Fix scroll
 
 /**
  * @class
@@ -153,13 +171,17 @@ export default class ActivityTimeline extends LightningElement {
         this.createTimelineAxis();
 
         // ONLY FOR TESTING AND LEARNING
-        // this.testingD3();
+        this.testingD3();
     }
 
     // AJOUT  - TESTING
     testingD3() {
-        const minPosition = 100;
-        const maxPosition = 1000;
+        // const divIconsTesting = d3.select(
+        //     this.template.querySelector('.avonni-activity-timeline__horizontal-timeline-icons')
+        // );
+
+        // const minPosition = 100;
+        // const maxPosition = 1000;
         d3.select(this.template.querySelector('.slds-section__title'))
             .style('color', 'orange')
             .transition()
@@ -180,35 +202,41 @@ export default class ActivityTimeline extends LightningElement {
             .duration(3000);
 
         // TESTING DRAG
-        const divD3Testing = d3.select(
-            this.template.querySelector('.testing-d3')
-        );
-        divD3Testing.selectAll('*').remove();
+        // const divD3Testing = d3.select(
+        //     this.template.querySelector('.testing-d3')
+        // ).style('border', '1px solid red');
+        // divD3Testing.selectAll('*').remove();
 
-        const testing = d3
-            .select(this.template.querySelector('.testing-d3'))
-            .append('svg')
-            .attr('width', this._timelineWidth)
-            .attr('height', 50);
+        // const testing = d3
+        //     .select(this.template.querySelector('.testing-d3'))
+        //     .append('svg')
+        //     .attr('width', this._timelineWidth)
+        //     .attr('height', 50);
 
-        testing
-            .append('circle')
-            .attr('id', 'dragCircle')
-            .attr('r', 20)
-            .attr('cx', 500)
-            .attr('cy', 20)
-            .attr('fill', '#abc432')
-            .call(
-                d3.drag().on('drag', function (event) {
-                    const xPosition =
-                        event.x > maxPosition
-                            ? maxPosition
-                            : event.x < minPosition
-                            ? minPosition
-                            : event.x;
-                    d3.select(this).attr('cx', xPosition).attr('cy', 20);
-                })
-            );
+        // Testing svg icons
+
+        // this.createStandardIcon(divD3Testing, 'search', 500.222, 0);
+        // this.createStandardIcon(divD3Testing, 'recipe', 300, 0);
+        // this.createStandardIcon(divD3Testing, 'account', 100, 0);
+
+        // testing
+        //     .append('circle')
+        //     .attr('id', 'dragCircle')
+        //     .attr('r', 20)
+        //     .attr('cx', 500)
+        //     .attr('cy', 20)
+        //     .attr('fill', '#abc432')
+        //     .call(
+        //         d3.drag().on('drag', function (event) {
+        //             const xPosition =
+        //                 event.x > maxPosition
+        //                     ? maxPosition
+        //                     : event.x < minPosition
+        //                     ? minPosition
+        //                     : event.x;
+        //             d3.select(this).attr('cx', xPosition).attr('cy', 20);
+        //         })
+        //     );
 
         // TESTONS SCALE TIME
         // const svg = divD3Testing
@@ -218,13 +246,7 @@ export default class ActivityTimeline extends LightningElement {
 
         // const viewTimeScale = d3.scaleTime().domain([this._intervalMinDate, this._intervalMaxDate]).range([this._offsetAxis, this._timelineWidth]);
         // const scrollAxis = d3.axisBottom(this.scrollTimeScale).tickFormat(d3.timeFormat("%d/%m/%Y")).ticks(12);
-        // const xDateTest = this.scrollTimeScale(new Date("2022-01-01 01:57:00"));
-        // console.log(xDateTest);
-        // console.log(this.scrollTimeScale.invert(xDateTest));
-        // console.log('date should be : ' + new Date("2022-01-01 01:57:00"));
-
         // console.log(this.scrollTimeScale.invert(this._timelineWidth));
-
         // svg.append('g').call(scrollAxis);
         // svg.
         // append("circle")
@@ -232,6 +254,9 @@ export default class ActivityTimeline extends LightningElement {
         // .attr("fill", "lightblue")
         // .attr("cx", this.scrollTimeScale(new Date("2022-01-01 01:57:00")))
         // .attr("cy", 5);
+
+        // console.log(Math.abs(this.scrollTimeScale(new Date("2022-01-01 01:57:00"))));
+        // this.createStandardIcon(divD3Testing, 'bot', this.scrollTimeScale(new Date("2022-01-01 01:57:00")), -475);
     }
 
     /*
@@ -596,6 +621,75 @@ export default class ActivityTimeline extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    // Create the lightning icon of the item using svg
+    createItemIcon(element, item, index) {
+        const xPosition = this.viewTimeScale(new Date(item.datetimeValue)) - 2;
+        const yPosition = -(index * SMALL_ICON_SIZE) + item.yPosition - 434;
+
+        let iconName;
+        let xLinkHref;
+        let categoryIconClass;
+
+        // Set icon informations according to its category
+        if (item.iconName.match('standard:*')) {
+            iconName = item.iconName.slice(
+                'standard:'.length,
+                item.iconName.length
+            );
+            xLinkHref = LWC_ICONS_XLINK_HREF.standard;
+            categoryIconClass = LWC_ICONS_CLASS.standard;
+        } else if (item.iconName.match('utility:*')) {
+            iconName = item.iconName.slice(
+                'utility:'.length,
+                item.iconName.length
+            );
+            xLinkHref = LWC_ICONS_XLINK_HREF.utility;
+            categoryIconClass = LWC_ICONS_CLASS.utility;
+        } else if (item.iconName.match('doctype:*')) {
+            iconName = item.iconName.slice(
+                'doctype:'.length,
+                item.iconName.length
+            );
+            xLinkHref = LWC_ICONS_XLINK_HREF.doctype;
+            categoryIconClass = LWC_ICONS_CLASS.doctype;
+        } else if (item.iconName.match('action:*')) {
+            iconName = item.iconName.slice(
+                'action:'.length,
+                item.iconName.length
+            );
+            xLinkHref = LWC_ICONS_XLINK_HREF.action;
+            categoryIconClass = LWC_ICONS_CLASS.action;
+        } else if (item.iconName.match('custom:*')) {
+            iconName = item.iconName.slice(
+                'custom:'.length,
+                item.iconName.length
+            );
+            xLinkHref = LWC_ICONS_XLINK_HREF.custom;
+            categoryIconClass = LWC_ICONS_CLASS.custom;
+        } else {
+            iconName = 'default';
+            xLinkHref = LWC_ICONS_XLINK_HREF.standard;
+            categoryIconClass = LWC_ICONS_CLASS.standard;
+        }
+
+        // Create SVG element of icon
+        element
+            .append('svg')
+            .style('display', 'block')
+            .style('font-size', 0)
+            .style('line-height', 0)
+            .attr('viewport', '0 0 30 30')
+            .attr(
+                'class',
+                'slds-icon slds-icon_container slds-icon_small ' +
+                    categoryIconClass +
+                    iconName.replaceAll('_', '-')
+            )
+            .attr('transform', 'translate(' + xPosition + ',' + yPosition + ')')
+            .append('use')
+            .attr('xlink:href', xLinkHref + iconName);
+    }
+
     /**
      * Convert a date to the correct format
      *
@@ -722,22 +816,12 @@ export default class ActivityTimeline extends LightningElement {
 
     addItemsToTimeline(dataToDisplay) {
         //  <--- CREATE EACH ITEM --->
-        const rectWidth = 20;
-
-        // TODO: DISPLAY ICON INSTEAD OF RECT
-        this._timelineSVG
+        const iconsContainer = this._timelineDiv
             .append('g')
-            .selectAll('rect')
-            .data(dataToDisplay)
-            .enter()
-            .append('rect')
-            .attr('x', (item) =>
-                this.viewTimeScale(new Date(item.datetimeValue))
-            )
-            .attr('y', (item) => item.yPosition)
-            .attr('width', rectWidth)
-            .attr('height', rectWidth)
-            .attr('fill', this._scrollAxisColor);
+            .attr('id', 'icons-container');
+        dataToDisplay.forEach((item, index) => {
+            this.createItemIcon(iconsContainer, item, index);
+        });
 
         // Necessary to use this in function() of mouseover and mouseout that changes the this to element
         const activityTimelineThis = this;
@@ -778,9 +862,10 @@ export default class ActivityTimeline extends LightningElement {
             .attr(
                 'x',
                 (item) =>
-                    this.viewTimeScale(new Date(item.datetimeValue)) + rectWidth
+                    this.viewTimeScale(new Date(item.datetimeValue)) +
+                    SMALL_ICON_SIZE
             )
-            .attr('y', (item) => item.yPosition + rectWidth * 0.68)
+            .attr('y', (item) => item.yPosition + SMALL_ICON_SIZE * 0.57)
             .text((item) => {
                 return this.computedItemTitle(item);
             })

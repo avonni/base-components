@@ -594,7 +594,7 @@ export const actions = [
 export const horizontalItems = [
     {
         name: 'item1',
-        title: 'Review proposals for EBC deck with larger team and have marketing review this',
+        title: '(01/01/2022 7:45) Review proposals for EBC deck with larger team and have marketing review this',
         description: 'You created a task with Charlie Gomez',
         datetimeValue: '01/01/2022 7:45',
         href: 'salesforce.com',
@@ -612,7 +612,7 @@ export const horizontalItems = [
     },
     {
         name: 'item3',
-        title: 'Re: Mobile conversation on Monday with the new global team',
+        title: '(02/20/2023 08:00) Re: Mobile conversation on Monday with the new global team',
         description: 'You emailed Lea Chan',
         datetimeValue: '02/20/2023 08:00',
         href: '#',
@@ -623,20 +623,20 @@ export const horizontalItems = [
     },
     {
         name: 'item4',
-        title: 'EBC Follow up call',
+        title: '(04/21/2021 8:00) EBC Follow up call',
         description: 'You created an event with Aida Lee and 5 others',
         icons: ['utility:world'],
         datetimeValue: '04/21/2021 8:00',
         href: '#',
         iconName: 'standard:event',
         buttonLabel: 'Public Sharing',
-        buttonIconName: 'utility:world',
+        buttonIconName: 'utility:activity',
         closed: true
     },
     {
         name: 'item5',
         title: 'Create one task',
-        description: 'Fields are loading',
+        description: '(02/14/2022 10:00) Fields are loading',
         datetimeValue: '02/14/2022 10:00',
         href: '#',
         iconName: 'standard:dashboard',
@@ -644,203 +644,275 @@ export const horizontalItems = [
         hasCheckbox: true,
         isLoading: true,
         buttonLabel: 'Public Sharing',
-        buttonIconName: 'utility:world'
+        buttonIconName: 'utility:brush'
     },
     {
         name: 'item6',
-        title: 'Create another task',
+        title: '(01/21/2022 11:30) Create another task',
         datetimeValue: '01/21/2022 11:30',
         href: '#',
-        iconName: 'standard:case',
+        iconName: 'standard:skill',
         hasCheckbox: true,
         hasError: true
     },
     {
         name: 'item7',
-        title: 'Another item',
+        title: '(03/14/2022 8:30) Another item',
         datetimeValue: '03/14/2022 8:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'custom:custom47',
         hasCheckbox: true,
         hasError: true
     },
     {
         name: 'item8',
-        title: 'Another item',
+        title: '(02/02/2022 3:30) Another item',
         datetimeValue: '02/02/2022 3:30',
         href: '#',
-        iconName: 'standard:case',
+        iconName: 'standard:solution',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item88',
+        title: '(02/02/2022 5:30) Another item with same date',
+        datetimeValue: '02/02/2022 5:30',
+        href: '#',
+        iconName: 'standard:procedure_detail',
         hasCheckbox: false,
         hasError: true
     },
     {
         name: 'item9',
-        title: 'Another item',
+        title: '(01/30/2022 2:00) This is another item to display',
         datetimeValue: '01/30/2022 2:00',
         href: '#',
-        iconName: 'standard:case',
+        iconName: 'standard:service_request_detail',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item99',
+        title: '(01/31/2022 2:00) Item',
+        datetimeValue: '01/31/2022 2:00',
+        href: '#',
+        iconName: 'action:log_event',
         hasCheckbox: false,
         hasError: true
     },
     {
         name: 'item10',
-        title: 'Another new item',
+        title: '(01/04/2022 10:30) Another new item',
         datetimeValue: '01/04/2022 10:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'utility:frozen',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item11',
-        title: 'Another new item',
-        datetimeValue: '02/02/2022 00:00',
+        title: '(02/02/2022 00:00) Another new item',
+        datetimeValue: '02/03/2022 00:00',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:bot',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item12',
-        title: 'Another new item',
+        title: '(02/16/2022 00:00) Another new item',
         datetimeValue: '02/16/2022 00:00',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'action:map',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item13',
-        title: 'Another item',
+        title: '(02/08/2022 08:00) Another item',
         datetimeValue: '02/08/2022 08:00',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:bot',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item14',
-        title: 'Another item',
+        title: '(02/02/2022 08:30) Another item',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:education',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item15',
-        title: 'Another item',
+        title: '(02/02/2022 20:30) Another item',
         datetimeValue: '02/02/2022 20:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:lead',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item16',
-        title: 'Magic item',
+        title: '(02/02/2022 10:45) Magic item',
         datetimeValue: '02/02/2022 10:45',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:thanks',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item17',
-        title: 'Item',
+        title: '(02/03/2022 10:45) Item',
         datetimeValue: '02/03/2022 10:45',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'custom:custom69',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item18',
-        title: 'Surprise!',
+        title: '(02/04/2022 10:45) Surprise!',
         datetimeValue: '02/04/2022 10:45',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:announcement',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item19',
-        title: 'Another surprise!',
+        title: '(02/04/2022 10:45) Another surprise!',
         datetimeValue: '02/04/2022 10:45',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'action:priority',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item20',
-        title: 'Event',
+        title: '(02/02/2022 00:00) Event 20',
         datetimeValue: '02/02/2022 00:00',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'utility:education',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item21',
-        title: 'Event 21',
+        title: '(02/02/2022 08:30) Event 21',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'utility:animal_and_nature',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item22',
-        title: 'Long Title Item With More Than 30 Characters',
+        title: '(02/02/2022 08:30) Long Title Item With More Than 30 Characters',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:trailhead',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item23',
-        title: 'Really long title event with a lot of characters',
+        title: '(02/09/2022 08:30) Really long title event with a lot of characters',
         datetimeValue: '02/09/2022 08:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'utility:palette',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item24',
-        title: 'Really long title event with a lot of characters',
+        title: '(02/09/2024 08:30) Really long title event with a lot of characters',
         datetimeValue: '02/09/2024 08:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'utility:pin',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item25',
-        title: 'Mysterious item',
+        title: '(02/02/2022 08:30) Mysterious item',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:recipe',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item26',
-        title: 'Random event',
+        title: '(02/02/2022 09:30) Random event',
         datetimeValue: '02/02/2022 09:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:story',
         hasCheckbox: true,
         hasError: false
     },
     {
         name: 'item27',
-        title: 'Surprise event!',
+        title: '(02/02/2022 22:30) Surprise event!',
         datetimeValue: '02/02/2022 22:30',
         href: '#',
-        iconName: 'standard:email',
+        iconName: 'standard:topic',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item28',
+        title: '(09/09/2022 22:30) Event',
+        datetimeValue: '09/09/2022 22:30',
+        href: '#',
+        iconName: 'doctype:video',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item29',
+        title: '(06/09/2022 10:30) Event',
+        datetimeValue: '06/09/2022 10:30',
+        href: '#',
+        iconName: 'doctype:folder',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item30',
+        title: '(07/09/2022 10:30) Default event',
+        datetimeValue: '07/09/2022 10:30',
+        href: '#',
+        iconName: 'invalid:name',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item31',
+        title: '(08/08/2022 11:11) Custom event',
+        datetimeValue: '08/08/2022 11:11',
+        href: '#',
+        iconName: 'custom:custom74',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item32',
+        title: '(01/01/2021 11:11) Event',
+        datetimeValue: '01/01/2021 11:11',
+        href: '#',
+        iconName: 'custom:custom74',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item33',
+        title: '(01/04/2022 8:27) Magic',
+        datetimeValue: '01/04/2022 8:27',
+        href: '#',
+        iconName: 'custom:custom1',
         hasCheckbox: true,
         hasError: false
     }
