@@ -96,7 +96,6 @@ const SORTED_DIRECTIONS = {
 // TODO: Fix overlap of item
 // TODO: Scroll --> prevent scroll if no item to show
 // TODO: Fix mouse out
-// TODO: FIX drag max date
 
 /**
  * @class
@@ -1048,7 +1047,10 @@ export default class ActivityTimeline extends LightningElement {
         const handleTimeIntervalDrag = function (event) {
             // WARNING : this = scrollAxisSVG, activityTimelineThis = regular this
             // To allow only horizontal drag
-            const maxPosition = DEFAULT_TIMELINE_WIDTH - this.intervalWidth;
+            const maxPosition =
+                activityTimelineThis.scrollTimeScale(
+                    activityTimelineThis.scrollAxisMaxDate
+                ) - activityTimelineThis.intervalWidth;
             const minPosition = DEFAULT_TIMELINE_AXIS_OFFSET;
             let xPosition = event.x;
             if (event.x > maxPosition) {
