@@ -34,8 +34,6 @@ import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
 
-const DEFAULT_INITIAL_VALUE = false;
-
 const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
 };
@@ -59,13 +57,9 @@ export default class Skeleton extends LightningElement {
     _width;
 
     _waveVariant;
-    _initialRender = DEFAULT_INITIAL_VALUE;
 
     renderedCallback() {
-        if (!this._initialRender) {
-            this.setSkeletonSize();
-        }
-        this._initialRender = true;
+        this.setSkeletonSize();
     }
 
     /*
