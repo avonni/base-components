@@ -228,7 +228,7 @@ export default class SchedulerAvailableAndDisabledTimes extends LightningElement
         }
     ];
 
-    rows = [
+    resources = [
         {
             id: '1',
             resourceAvatarSrc:

@@ -33,7 +33,7 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
     columns,
-    rows,
+    resources,
     headers,
     events,
     eventsThemed,
@@ -78,7 +78,7 @@ export default {
                 'fiveYears'
             ],
             description:
-                'Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. ',
+                'Name of the header preset to use. The headers are displayed in resources above the schedule, and used to create its columns. ',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'hourAndDay' }
@@ -128,7 +128,7 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        rows: {
+        resources: {
             control: {
                 type: 'object'
             },
@@ -138,8 +138,8 @@ export default {
                 type: { summary: 'object' }
             }
         },
-        rowsKeyField: {
-            name: 'rows-key-field',
+        resourcesKeyField: {
+            name: 'resources-key-field',
             control: {
                 type: 'text'
             },
@@ -523,28 +523,17 @@ const Template = (args) => Scheduler(args);
 export const Base = Template.bind({});
 Base.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     start,
     events: basicEvents
 };
 
 export const Vertical = Template.bind({});
 Vertical.args = {
-    columns,
-    rowsKeyField: 'id',
-    rows,
-    customHeaders: headers,
-    timeSpan: {
-        unit: 'week',
-        span: 2
-    },
+    resourcesKeyField: 'id',
+    resources,
     start,
-    toolbarTimeSpans: [
-        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
-        { unit: 'week', span: 2, label: 'Sprint', headers: 'hourDayAndWeek' },
-        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
-    ],
     availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
@@ -556,8 +545,8 @@ Vertical.args = {
 export const AvailableAndDisabledTimes = Template.bind({});
 AvailableAndDisabledTimes.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     customHeaders: headers,
     timeSpan: {
         unit: 'week',
@@ -579,8 +568,8 @@ AvailableAndDisabledTimes.args = {
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     timeSpan: {
         unit: 'day',
         span: 5
@@ -601,8 +590,8 @@ ReadOnly.args = {
 export const Labels = Template.bind({});
 Labels.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     start,
     events: eventsWithLabels,
     timeSpan: {
@@ -634,8 +623,8 @@ Labels.args = {
 export const ThemesAndColors = Template.bind({});
 ThemesAndColors.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     start,
     events: eventsThemed,
     eventsPalette: 'wildflowers',

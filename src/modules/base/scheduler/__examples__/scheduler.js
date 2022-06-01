@@ -58,8 +58,8 @@ export const Scheduler = ({
     recurrentEditModes,
     referenceLines,
     resizeColumnDisabled,
-    rows,
-    rowsKeyField,
+    resources,
+    resourcesKeyField,
     start,
     timeSpan,
     toolbarTimeSpans,
@@ -89,8 +89,8 @@ export const Scheduler = ({
     element.recurrentEditModes = recurrentEditModes;
     element.referenceLines = referenceLines;
     element.resizeColumnDisabled = resizeColumnDisabled;
-    element.rows = rows;
-    element.rowsKeyField = rowsKeyField;
+    element.resources = resources;
+    element.resourcesKeyField = resourcesKeyField;
     element.start = start;
     element.timeSpan = timeSpan;
     element.toolbarTimeSpans = toolbarTimeSpans;

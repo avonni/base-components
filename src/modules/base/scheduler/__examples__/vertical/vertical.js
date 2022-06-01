@@ -1,24 +1,32 @@
 import { LightningElement } from 'lwc';
 
-export default class SchedulerLabels extends LightningElement {
-    columns = [
+export default class SchedulerVertical extends LightningElement {
+    availableDaysOfTheWeek = [1, 2, 3, 4, 5];
+    availableTimeFrames = ['08:00-17:00'];
+
+    disabledDatesTimes = [
         {
-            label: 'Staff',
-            fieldName: 'resourceAvatarSrc',
-            type: 'avatar',
-            typeAttributes: {
-                alternativeText: 'Avatar',
-                fallbackIconName: {
-                    fieldName: 'resourceAvatarFallbackIconName'
-                },
-                initials: { fieldName: 'resourceAvatarInitials' },
-                primaryText: { fieldName: 'resourceName' }
+            keyFields: ['1', '2', '3', '4', '5'],
+            title: 'Lunch',
+            iconName: 'custom:custom51',
+            from: new Date(2021, 0, 1, 12),
+            to: new Date(2021, 0, 1, 14),
+            recurrence: 'weekly',
+            recurrenceAttributes: {
+                weekdays: [1, 2, 3, 4, 5]
             }
         },
         {
-            label: 'Role',
-            fieldName: 'role',
-            hideDefaultActions: true
+            keyFields: ['4'],
+            title: 'Vacation',
+            from: new Date(2021, 11, 6),
+            to: new Date(2021, 11, 20)
+        },
+        {
+            keyFields: ['3'],
+            title: 'Day off',
+            from: new Date(2021, 11, 23),
+            allDay: true
         }
     ];
 
@@ -28,13 +36,7 @@ export default class SchedulerLabels extends LightningElement {
             name: 'research',
             title: 'Research',
             from: new Date(2021, 11, 13, 9),
-            to: new Date(2021, 11, 14, 12),
-            labels: {
-                center: {
-                    value: 'Custom label and icon specific to this event',
-                    iconName: 'utility:key_dates'
-                }
-            }
+            to: new Date(2021, 11, 14, 12)
         },
         {
             keyFields: ['1'],
@@ -63,16 +65,21 @@ export default class SchedulerLabels extends LightningElement {
             name: 'create-wireframe',
             title: 'Create wireframe',
             from: new Date(2021, 11, 13, 10, 15),
-            to: new Date(2021, 11, 16, 12),
-            customEventField: 'Label coming from a custom field in the event',
-            labels: {
-                center: {
-                    fieldName: 'customEventField'
-                },
-                top: {
-                    fieldName: 'customRowField'
-                }
-            }
+            to: new Date(2021, 11, 16, 12)
+        },
+        {
+            keyFields: ['4'],
+            name: 'create-mockup',
+            title: 'Create mockup',
+            from: new Date(2021, 11, 20, 7),
+            to: new Date(2021, 11, 22, 10, 30)
+        },
+        {
+            keyFields: ['2'],
+            name: 'test-new-ui',
+            title: 'Test new UI',
+            from: new Date(2021, 11, 17, 15),
+            to: new Date(2021, 11, 21)
         },
         {
             keyFields: ['5'],
@@ -80,6 +87,49 @@ export default class SchedulerLabels extends LightningElement {
             title: 'Implement feature',
             from: new Date(2021, 11, 13, 14),
             to: new Date(2021, 11, 15, 16)
+        },
+        {
+            keyFields: ['1'],
+            name: 'push-to-prod',
+            title: 'Push to production',
+            from: new Date(2021, 11, 16, 11),
+            to: new Date(2021, 11, 16, 12)
+        },
+        {
+            keyFields: ['1'],
+            name: 'phone-meeting',
+            title: 'Phone meeting',
+            from: new Date(2021, 11, 21, 10),
+            to: new Date(2021, 11, 21, 12)
+        },
+        {
+            keyFields: ['3'],
+            name: 'update-documentation',
+            title: 'Update documentation',
+            from: new Date(2021, 11, 17, 11),
+            to: new Date(2021, 11, 17, 18)
+        },
+        {
+            keyFields: ['3'],
+            name: 'presentation',
+            title: 'Presentation at the conference',
+            from: new Date(2021, 11, 16, 11),
+            to: new Date(2021, 11, 16, 18)
+        },
+        {
+            keyFields: ['2', '4'],
+            name: 'ux-ui-team-meeting',
+            title: 'UI/UX team meeting',
+            from: new Date(2021, 11, 17, 11),
+            to: new Date(2021, 11, 17, 12),
+            recurrence: 'weekly'
+        },
+        {
+            keyFields: ['1', '2', '3', '4', '5'],
+            name: 'office-party',
+            title: 'Office party',
+            from: new Date(2021, 11, 24, 12),
+            to: new Date(2021, 11, 25)
         },
         {
             keyFields: ['1', '5'],
@@ -94,24 +144,22 @@ export default class SchedulerLabels extends LightningElement {
         }
     ];
 
-    eventLabels = {
-        left: {
-            fieldName: 'from'
+    referenceLines = [
+        {
+            label: 'Now',
+            variant: 'success'
         },
-        top: {
-            fieldName: 'title'
+        {
+            label: 'Deadline',
+            variant: 'error',
+            date: new Date(2021, 11, 17, 15)
         },
-        bottom: {
-            fieldName: 'role'
-        },
-        right: {
-            fieldName: 'to'
-        },
-        center: {
-            fieldName: 'firstName',
-            iconName: 'utility:user'
+        {
+            label: 'Coffee break',
+            date: new Date(2021, 1, 1, 10),
+            recurrence: 'daily'
         }
-    };
+    ];
 
     resources = [
         {
@@ -161,9 +209,4 @@ export default class SchedulerLabels extends LightningElement {
     ];
 
     start = new Date(2021, 11, 13, 8);
-
-    timeSpan = {
-        unit: 'day',
-        span: 2
-    };
 }

@@ -59,7 +59,7 @@ const oneColumn = [
     }
 ];
 
-const rows = [
+const resources = [
     {
         id: '1',
         resourceAvatarSrc:
@@ -533,7 +533,7 @@ const referenceLines = [
 export {
     columns,
     disabledDatesTimes,
-    rows,
+    resources,
     headers,
     basicEvents,
     events,
