@@ -363,6 +363,31 @@ export default class Kanban extends LightningElement {
             this._scrollWidth = this.template.querySelector(
                 '[data-element-id="avonni-kanban__container"]'
             ).scrollWidth;
+
+            const actionsContainer = this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__footer_action"]'
+            );
+
+            const fields = this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field"]'
+            );
+            const container = this.template.querySelector(
+                '[data-element-id="avonni-kanban__field_container"]'
+            );
+
+            fields.forEach((field) => {
+                field.style.height = 'fit-content';
+                if (field.offsetHeight > container.offsetHeight)
+                    field.style.height = `${container.offsetHeight}px`;
+            });
+
+            const groupElements = this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__group"]'
+            );
+            Array.from(groupElements).forEach((group, i) => {
+                group.style.height = 'fit-content';
+                group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
+            });
         });
 
         return computedGroups;
@@ -421,15 +446,18 @@ export default class Kanban extends LightningElement {
             }
         }
 
+        const actionsContainer = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__footer_action"]'
+        );
+
         let offsetHeight = 0;
         let offsetCount = 0;
         // resets animations
         Array.from(groups).forEach((group, i) => {
             // resets the height to 100% on other fields
             if (group !== groups[this._releasedGroupIndex]) {
-                group.style.height =
-                    // TODO: CHECK IF THIS DOESN'T BREAK EVERYTHING
-                    this._variant === 'base' ? '100%' : 'fit-content';
+                group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
+
                 this._groupsAnimation[i] = false;
             }
 
@@ -568,18 +596,22 @@ export default class Kanban extends LightningElement {
         this._scrollingX = null;
         this._scrollingY = null;
 
+        const actionsContainer = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__footer_action"]'
+        );
+
         // removes the translation on all tiles
         // resets the height to 100% on all fields
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
-        Array.from(groupElements).forEach((group) => {
+        Array.from(groupElements).forEach((group, i) => {
             setTimeout(() => {
                 if (group.scrollHeight !== group.clientHeight)
                     group.classList.remove('avonni-kanban__dragging');
             }, 100);
-            group.style.height =
-                this._variant === 'base' ? '100%' : 'fit-content';
+            group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
+
             Array.from(group.children).forEach((tile) => {
                 tile.classList.remove('avonni-kanban__tile_moved');
                 tile.style.transform = `translateY(0px)`;
