@@ -59,9 +59,65 @@
     background-color: var(--avonni-skeleton-color-background);
 }
 
+.avonni-skeleton__variant-avatar {
+    border-color: var(--avonni-skeleton-color-border);
+    border-radius: var(--avonni-skeleton-radius-border);
+    border-width: var(--avonni-skeleton-sizing-border);
+    border-style: var(--avonni-skeleton-styling-border);
+    background-color: var(--avonni-skeleton-color-background);
+}
+
+.avonni-avatar_xx-small {
+    font-size: 0.6rem;
+    height: 0.875rem;
+    width: 0.875rem;
+}
+
+.avonni-avatar_x-large {
+    font-size: 1.25rem;
+    width: 56px;
+    height: 56px;
+}
+
+.avonni-avatar_xx-large {
+    font-size: 1.5rem;
+    width: 72px;
+    height: 72px;
+}
+
+.avonni-skeleton__variant-button {
+}
+
+.avonni-skeleton__variant-button-icon {
+}
+
+.avonni-skeleton__variant-badge {
+}
+
+.avonni-skeleton__variant-breadcrumbs {
+}
+
 .avonni-skeleton__variant-circular {
     --avonni-skeleton-radius-border: 50%;
     border-radius: var(--avonni-skeleton-radius-border);
+}
+
+.avonni-skeleton__variant-combobox {
+}
+
+.avonni-skeleton__variant-datatable {
+}
+
+.avonni-skeleton__variant-input {
+}
+
+.avonni-skeleton__variant-paragraph {
+}
+
+.avonni-skeleton__variant-path {
+}
+
+.avonni-skeleton__variant-pill {
 }
 
 .avonni-skeleton__variant-rectangular {
@@ -69,6 +125,12 @@
     border-radius: var(--avonni-skeleton-radius-border);
 }
 
+.avonni-skeleton__variant-tabset {
+}
+
 .avonni-skeleton__variant-text {
     border-radius: var(--avonni-skeleton-radius-border);
+}
+
+.avonni-skeleton__variant-tree {
 }

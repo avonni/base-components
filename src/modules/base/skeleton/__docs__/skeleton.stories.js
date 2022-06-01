@@ -35,6 +35,26 @@ import { Skeleton } from '../__examples__/skeleton';
 export default {
     title: 'Example/Skeleton',
     argTypes: {
+        avatarSize: {
+            name: 'avatar-size',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'xx-small',
+                'x-small',
+                'small',
+                'medium',
+                'large',
+                'x-large',
+                'xx-large'
+            ],
+            description: 'The size of the avatar variant.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Layout'
+            }
+        },
         animation: {
             name: 'animation',
             control: {
@@ -64,7 +84,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['circular', 'rectangular', 'text'],
+            options: ['avatar', 'circular', 'rectangular', 'text'],
             description: 'The variant changes the appearance of the skeleton.',
             table: {
                 type: { summary: 'string' },

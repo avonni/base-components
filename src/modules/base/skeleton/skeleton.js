@@ -38,8 +38,43 @@ const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
 };
 
+const AVATAR_SIZES = {
+    valid: [
+        'xx-small',
+        'x-small',
+        'small',
+        'medium',
+        'large',
+        'x-large',
+        'xx-large'
+    ],
+    default: 'medium'
+};
+
+const AVATAR_VARIANTS = {
+    valid: ['circle', 'square'],
+    default: 'square'
+};
+
 const SKELETON_VARIANTS = {
-    valid: ['circular', 'rectangular', 'text'],
+    valid: [
+        'avatar',
+        'badge',
+        'breadcrumbs',
+        'button',
+        'button-icon',
+        'circular',
+        'combobox',
+        'datatable',
+        'input',
+        'paragraph',
+        'path',
+        'pill',
+        'rectangular',
+        'tabset',
+        'text',
+        'tree'
+    ],
     default: 'text'
 };
 
@@ -53,13 +88,26 @@ const SKELETON_VARIANTS = {
 export default class Skeleton extends LightningElement {
     _animation;
     _height;
+    _avatarSize = AVATAR_SIZES.default;
+    _avatarVariant = AVATAR_VARIANTS.default;
     _variant = SKELETON_VARIANTS.default;
     _width;
 
     _waveVariant;
+    _initialAvatarRender = false;
+
+    avatarWrapperClass;
+
+    connectedCallback() {
+        this.updateAvatarClassList();
+    }
 
     renderedCallback() {
-        this.setSkeletonSize();
+        if (!this.isAvatarVariant) this.setSkeletonSize();
+        // if (this.isAvatarVariant && !this._initialAvatarRender) {
+        //     this.updateAvatarClassList();
+        //     this._initialAvatarRender = true;
+        // }
     }
 
     /*
@@ -67,6 +115,37 @@ export default class Skeleton extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+    @api
+    get isAvatarVariant() {
+        return this.variant === 'avatar';
+    }
+
+    @api
+    get avatarSize() {
+        return this._avatarSize;
+    }
+
+    set avatarSize(value) {
+        this._avatarSize = normalizeString(value, {
+            fallbackValue: AVATAR_SIZES.default,
+            validValues: AVATAR_SIZES.valid
+        });
+        this.updateAvatarClassList();
+    }
+
+    @api
+    get avatarVariant() {
+        return this._avatarVariant;
+    }
+
+    set avatarVariant(value) {
+        this._avatarVariant = normalizeString(value, {
+            fallbackValue: AVATAR_VARIANTS.default,
+            validValues: AVATAR_VARIANTS.valid
+        });
+        this.updateAvatarClassList();
+    }
+
     /**
      * The animation type changes the appearance of the skeleton. Valid values include pulse and wave.
      * @type {string}
@@ -199,5 +278,23 @@ export default class Skeleton extends LightningElement {
             this.height === undefined ? '1.2em' : `${this.height}`;
         element.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
+    }
+
+    updateAvatarClassList() {
+        console.log('starting update avatar classes');
+        const wrapperClass = classSet('')
+            // .add(`avonni-avatar_${this.avatarVariant}`)
+            .add({
+                'avonni-avatar_xx-small': this.avatarSize === 'xx-small',
+                'slds-avatar_x-small': this.avatarSize === 'x-small',
+                'slds-avatar_small': this.avatarSize === 'small',
+                'slds-avatar_medium': this.avatarSize === 'medium',
+                'slds-avatar_large': this.avatarSize === 'large',
+                'avonni-avatar_x-large': this.avatarSize === 'x-large',
+                'avonni-avatar_xx-large': this.avatarSize === 'xx-large'
+            });
+        console.log(`wrapper class: ${wrapperClass}`);
+        this.avatarWrapperClass = wrapperClass;
+        console.log('ending update avatar classes');
     }
 }
