@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,17 +29,31 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <c-card
-        title={title}
-        image-src={imageSrc}
-        media-position={mediaPosition}
-        actions={actions}
-        icons={icons}
-        infos={infos}
-        description={description}
-    >
-    </c-card>
-</template>
+import Component from '../../storybookWrappers/card/cardSlots';
+
+customElements.define('ac-card-slots', Component.CustomElementConstructor);
+
+export const CardSlots = ({
+    actions,
+    mediaPosition,
+    description,
+    href,
+    icons,
+    imageSrc,
+    infos,
+    title,
+    variant
+}) => {
+    const element = document.createElement('ac-card-slots');
+    element.actions = actions;
+    element.mediaPosition = mediaPosition;
+    element.description = description;
+    element.href = href;
+    element.icons = icons;
+    element.imageSrc = imageSrc;
+    element.infos = infos;
+    element.title = title;
+    element.variant = variant;
+    return element;
+};

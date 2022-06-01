@@ -318,6 +318,7 @@ export default class Card extends LightningElement {
     }
 
     get showMedia() {
-        return !!this.imageSrc;
+        // return !!this.imageSrc;
+        return true;
     }
 }

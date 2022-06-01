@@ -1,4 +1,3 @@
-<!--
 /**
  * BSD 3-Clause License
  *
@@ -30,17 +29,18 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
--->
 
-<template>
-    <c-card
-        title={title}
-        image-src={imageSrc}
-        media-position={mediaPosition}
-        actions={actions}
-        icons={icons}
-        infos={infos}
-        description={description}
-    >
-    </c-card>
-</template>
+import { LightningElement, api } from 'lwc';
+
+export default class CardSlots extends LightningElement {
+    @api title;
+    @api imageSrc;
+    @api mediaPosition;
+    @api avatar;
+    @api icons;
+    @api infos;
+    @api description;
+    @api actions;
+    @api href;
+    @api variant;
+}

@@ -34,6 +34,7 @@
 
 <template>
     <article class={computedCardClasses}>
+        <!-- only used for media center -->
         <div class="slds-m-around_x-small" if:true={showCenterMedia}>
             <p>{description}</p>
             <p>
@@ -42,8 +43,10 @@
                 </template>
             </p>
         </div>
-        <!-- top image -->
+
+        <!-- media -->
         <div class="avonni-card__image-container" if:true={showMedia}>
+            <slot name="media"></slot>
             <img class="avonni-card__image" src={imageSrc} alt="" />
             <slot name="image-action-container"></slot>
 

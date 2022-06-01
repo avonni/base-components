@@ -31,6 +31,7 @@
  */
 
 import { Card } from '../__examples__/card';
+import { CardSlots } from '../__examples__/cardSlots';
 
 export default {
     title: 'Example/Card',
@@ -80,6 +81,17 @@ export default {
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'top' }
+            }
+        },
+        mediaActionPosition: {
+            control: {
+                type: 'select'
+            },
+            options: ['top-left', 'top-right', 'bottom-left', 'bottom-right'],
+            description: 'Position of the actions on the image',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'top-right' }
             }
         },
         actions: {
@@ -134,7 +146,6 @@ export default {
     }
 };
 
-// action positions ?: image-[top-right,  top-left, bottom-right, bottom-left], title, bottom
 // media-action slot
 // title-action slot
 
@@ -142,17 +153,16 @@ const actions = [
     {
         label: 'Edit item',
         name: 'edit-item',
-        position: 'image-top-right',
         iconName: 'utility:edit'
     },
     {
         label: 'Action without an icon',
-        position: 'title',
         name: 'action-name'
     }
 ];
 
 const Template = (args) => Card(args);
+const SlotsTemplate = (args) => CardSlots(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -286,4 +296,10 @@ OverlayCard.args = {
     actions: actions,
     icons: ['utility:share'],
     imageSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+};
+
+export const BaseWithSlots = SlotsTemplate.bind({});
+BaseWithSlots.args = {
+    title: 'Card title',
+    mediaPosition: 'top'
 };
