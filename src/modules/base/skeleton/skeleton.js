@@ -193,6 +193,7 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for rectangular and circular variants
      */
     setRectangularCircularSize() {
+        console.log(`this is the height: ${this.height}`);
         let element = this.skeleton;
         element.style.height =
             this.height === undefined ? '1.2em' : `${this.height}`;

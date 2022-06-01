@@ -57,95 +57,132 @@ describe('Skeleton', () => {
 
     /* ----- ATTRIBUTES ----- */
 
-    // skeleton-variant
+    // skeleton-base
+    it('Skeleton: base', () => {
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
+        return Promise.resolve().then(() => {
+            expect(skeleton.className).toBe(
+                'avonni-skeleton__base avonni-skeleton__variant-text avonni-skeleton__animation-undefined'
+            );
+        });
+    });
+
+    // skeleton-variant text
     it('Skeleton: text variant', () => {
         element.variant = 'text';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
         return Promise.resolve().then(() => {
-            expect(element.variant).toBe('text');
+            expect(skeleton.className).toBe(
+                'avonni-skeleton__base avonni-skeleton__variant-text avonni-skeleton__animation-undefined'
+            );
         });
     });
 
-    // skeleton-animation
-    it('Skeleton: animation = pulse', () => {
+    // skeleton-variant rectangular
+    it('Skeleton: rectangular variant', () => {
+        element.variant = 'rectangular';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
+        return Promise.resolve().then(() => {
+            expect(skeleton.className).toBe(
+                'avonni-skeleton__base avonni-skeleton__animation-undefined avonni-skeleton__variant-rectangular'
+            );
+        });
+    });
+
+    // skeleton-variant rectangular
+    it('Skeleton: circular variant', () => {
+        element.variant = 'circular';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
+        return Promise.resolve().then(() => {
+            expect(skeleton.className).toBe(
+                'avonni-skeleton__base avonni-skeleton__animation-undefined avonni-skeleton__variant-circular'
+            );
+        });
+    });
+
+    // skeleton-animation pulse
+    it('Skeleton: pulse animation', () => {
         element.animation = 'pulse';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
         return Promise.resolve().then(() => {
-            expect(element.animation).toBe('pulse');
+            expect(skeleton.className).toBe(
+                'avonni-skeleton__base avonni-skeleton__variant-text avonni-skeleton__animation-pulse'
+            );
         });
     });
 
-    // Skeleton-width
-    it('Skeleton: width = 100px', () => {
-        element.width = 100;
+    // skeleton-animation pulse
+    it('Skeleton: wave animation', () => {
+        element.animation = 'wave';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
         return Promise.resolve().then(() => {
-            expect(element.width).toBe(100);
+            expect(skeleton.className).toBe(
+                'avonni-skeleton__base avonni-skeleton__variant-text avonni-skeleton__animation-wave'
+            );
         });
     });
 
-    // Skeleton-height variant rectangular
-    it('Skeleton: height = 100px with rectangular variant', () => {
-        element.variant = 'rectangular';
-        element.height = 100;
-        return Promise.resolve().then(() => {
-            expect(element.height).toBe(100);
-        });
-    });
-
-    // Skeleton-height variant text
-    it('Skeleton: switch case calls setTextSize on text variant with undefined width and height', () => {
+    // skeleton-height undefined
+    it('Skeleton: undefined height should set component height to undefined and DOM avonni-skeleton height to default height for text variant (0.7em)', () => {
         element.variant = 'text';
+        element.height = undefined;
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
         return Promise.resolve().then(() => {
-            expect(element.height).toBe('0.7em');
-            expect(element.width).toBe('100%');
+            expect(skeleton.style.height).toBe('0.7em');
+            expect(element.height).toBe(undefined);
         });
     });
 
-    // Skeleton-height variant rectangular
-    it('Skeleton: switch case calls setRectangularCircularSize on rectangular variant with undefined width and height', () => {
+    // skeleton-height defined
+    it('Skeleton: 100px height should set component and DOM avonni-skeleton height to 100px', () => {
         element.variant = 'rectangular';
+        element.height = '100px';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
         return Promise.resolve().then(() => {
-            expect(element.height).toBe('1.2em');
-            expect(element.width).toBe('100%');
+            expect(element.height).toBe('100px');
+            expect(skeleton.style.height).toBe('100px');
         });
     });
 
-    // Skeleton-height variant circular
-    it('Skeleton: switch case calls setRectangularCircularSize on circular variant with undefined width and height', () => {
-        element.variant = 'circular';
-        return Promise.resolve().then(() => {
-            expect(element.height).toBe('1.2em');
-            expect(element.width).toBe('100%');
-        });
-    });
-
-    it('Skeleton: switch case calls setTextSize on text variant without undefined width and height', () => {
+    // skeleton-width undefined
+    it('Skeleton: undefined width should set component height to undefined and DOM avonni-skeleton height to default width for text variant (0.7em)', () => {
         element.variant = 'text';
-        element.height = '10px';
-        element.width = '100%';
+        element.width = undefined;
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
         return Promise.resolve().then(() => {
-            expect(element.height).toBe('10px');
-            expect(element.width).toBe('100%');
+            expect(skeleton.style.width).toBe('100%');
+            expect(element.width).toBe(undefined);
         });
     });
 
-    // Skeleton-height variant rectangular
-    it('Skeleton: switch case calls setRectangularCircularSize on rectangular variant without undefined width and height', () => {
+    // skeleton-width defined
+    it('Skeleton: 100px width should set component and DOM avonni-skeleton width to 100px', () => {
         element.variant = 'rectangular';
-        element.height = '50px';
-        element.width = '100%';
+        element.width = '100px';
+        const skeleton = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-skeleton"]'
+        );
         return Promise.resolve().then(() => {
-            expect(element.height).toBe('50px');
-            expect(element.width).toBe('100%');
-        });
-    });
-
-    // Skeleton-height variant circular
-    it('Skeleton: switch case calls setRectangularCircularSize on circular variant without undefined width and height', () => {
-        element.variant = 'circular';
-        element.height = '50px';
-        element.width = '100%';
-        return Promise.resolve().then(() => {
-            expect(element.height).toBe('50px');
-            expect(element.width).toBe('100%');
+            expect(element.width).toBe('100px');
+            expect(skeleton.style.width).toBe('100px');
         });
     });
 });
