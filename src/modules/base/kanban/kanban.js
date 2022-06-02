@@ -376,23 +376,29 @@ export default class Kanban extends LightningElement {
                 '[data-element-id="avonni-kanban__field_container"]'
             );
 
-            fields.forEach((field, i) => {
-                field.style.height = 'fit-content';
-                if (
-                    field.offsetHeight + this._droppedTileHeight >
-                        container.offsetHeight &&
-                    i === this._releasedGroupIndex
-                )
-                    field.style.height = `${container.offsetHeight}px`;
-            });
-            this._droppedTileHeight = 0;
             const groupElements = this.template.querySelectorAll(
                 '[data-element-id="avonni-kanban__group"]'
             );
+
             Array.from(groupElements).forEach((group, i) => {
                 group.style.height = 'fit-content';
                 group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
             });
+
+            fields.forEach((field, i) => {
+                const hasScroll =
+                    groupElements[i].scrollHeight >
+                    groupElements[i].clientHeight;
+
+                field.style.height = 'fit-content';
+                if (
+                    (field.offsetHeight > container.offsetHeight &&
+                        i === this._releasedGroupIndex) ||
+                    hasScroll
+                )
+                    field.style.height = `${container.offsetHeight}px`;
+            });
+            this._droppedTileHeight = 0;
         });
 
         return computedGroups;
@@ -438,8 +444,10 @@ export default class Kanban extends LightningElement {
         );
 
         fields.forEach((field) => {
-            field.style.height = `fit-content`;
-            if (field.offsetHeight > container.offsetHeight)
+            const isExtended = field.offsetHeight === container.offsetHeight;
+
+            field.style.height = 'fit-content';
+            if (field.offsetHeight > container.offsetHeight || isExtended)
                 field.style.height = `${container.offsetHeight}px`;
         });
 
@@ -614,22 +622,7 @@ export default class Kanban extends LightningElement {
     endDrag() {
         this.handleTileDrop();
         this._droppedTileHeight = this._draggedTile.offsetHeight;
-        const fields = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__field"]'
-        );
-        const container = this.template.querySelector(
-            '[data-element-id="avonni-kanban__field_container"]'
-        );
 
-        fields.forEach((field, i) => {
-            field.style.height = `fit-content`;
-            if (
-                field.offsetHeight + this._draggedTile.offsetHeight >
-                    container.offsetHeight &&
-                i === this._releasedGroupIndex
-            )
-                field.style.height = `${container.offsetHeight}px`;
-        });
         this._draggedTile.style.transform = '';
         this._draggedTile.style.width = 'calc(100% - 10px)';
         this._draggedTile.classList.remove('avonni-kanban__dragged');
@@ -649,6 +642,7 @@ export default class Kanban extends LightningElement {
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
+
         Array.from(groupElements).forEach((group, i) => {
             setTimeout(() => {
                 if (group.scrollHeight !== group.clientHeight)
