@@ -329,6 +329,13 @@ export default class Kanban extends LightningElement {
 
         computedGroups.forEach((group) => {
             this.animateSummary(group);
+
+            // Set the right background color on each group
+            requestAnimationFrame(() => {
+                this.template.querySelectorAll(
+                    '[data-element-id="avonni-kanban__field"]'
+                )[group.index].style.background = group.backgroundColor;
+            });
         });
 
         requestAnimationFrame(() => {
@@ -409,11 +416,6 @@ export default class Kanban extends LightningElement {
      */
     animateSummary(group) {
         const SUMMARY_UPDATE_SPEED = 300;
-        requestAnimationFrame(() => {
-            this.template.querySelectorAll(
-                '[data-element-id="avonni-kanban__field"]'
-            )[group.index].style.background = group.backgroundColor;
-        });
         group.summarize.value = this.truncateNumber(
             this._summarizeValues[group.index]
         );
@@ -1078,6 +1080,7 @@ export default class Kanban extends LightningElement {
      */
     swapGroups() {
         const groups = JSON.parse(JSON.stringify(this._groupValues));
+
         groups.splice(
             this._releasedGroupIndex,
             0,
