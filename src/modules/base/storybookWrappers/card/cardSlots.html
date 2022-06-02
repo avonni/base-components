@@ -39,21 +39,26 @@
         media-position={mediaPosition}
         title={title}
     >
-        <span slot="media">
-            <img
-                class="avonni-card__image"
-                style="width: 100%; height: 100%; object-fit: cover"
-                src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
-            />
-        </span>
+        <img
+            slot="media"
+            class="avonni-card__image"
+            style="width: 100%; height: 100%; object-fit: cover"
+            src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
+        />
+
+        <div slot="media-action" style="position: absolute; top: 0; left: 0">
+            media action slot
+        </div>
+
         <div slot="title">
             <h4>title slot</h4>
-            <p>subtitle</p>
         </div>
-        <div slot="default">hi<c-card> </c-card></div>
+
+        <div slot="default">default slot</div>
 
         <div slot="action">
-            <button class="slds-button slds-button_neutral">Action</button>
+            <button class="slds-button slds-button_neutral">Action slot</button>
         </div>
+        <div slot="footer">footer slot</div>
     </c-card>
 </template>

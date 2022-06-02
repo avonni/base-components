@@ -81,10 +81,10 @@
                 <!-- default content -->
                 <div if:false={showCenterMedia}>
                     <slot name="default"></slot>
-                    <slot name="footer"></slot>
                 </div>
             </div>
         </div>
-        <div>footer</div>
+
+        <slot name="footer"></slot>
     </article>
 </template>
