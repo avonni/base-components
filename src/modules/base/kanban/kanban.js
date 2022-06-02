@@ -380,7 +380,7 @@ export default class Kanban extends LightningElement {
         fields.forEach((field) => {
             const isExtended = field.offsetHeight === container.offsetHeight;
 
-            field.style.height = 'fit-content';
+            if (this.variant === 'base') field.style.height = 'fit-content';
             if (field.offsetHeight > container.offsetHeight || isExtended)
                 field.style.height = `${container.offsetHeight}px`;
         });
@@ -462,15 +462,15 @@ export default class Kanban extends LightningElement {
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
-
+        const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
         Array.from(groupElements).forEach((group, i) => {
             group.style.height = 'fit-content';
-            group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
+            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
         });
         fields.forEach((field, i) => {
             const hasScroll =
                 groupElements[i].scrollHeight > groupElements[i].clientHeight;
-            field.style.height = 'fit-content';
+            if (this.variant === 'base') field.style.height = 'fit-content';
             if (field.offsetHeight > container.offsetHeight || hasScroll)
                 field.style.height = `${container.offsetHeight}px`;
 
@@ -569,9 +569,10 @@ export default class Kanban extends LightningElement {
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
+        const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
 
         Array.from(groupElements).forEach((group, i) => {
-            group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
+            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
 
             Array.from(group.children).forEach((tile) => {
                 tile.classList.remove('avonni-kanban__tile_moved');
