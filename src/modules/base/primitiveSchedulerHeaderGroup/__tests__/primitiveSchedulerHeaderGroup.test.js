@@ -88,6 +88,7 @@ describe('Primitive Scheduler Header Group', () => {
         expect(element.scrollLeftOffset).toBe(0);
         expect(element.start).toBeInstanceOf(DateTime);
         expect(element.timeSpan).toMatchObject({ unit: 'day', span: 1 });
+        expect(element.variant).toBe('horizontal');
         expect(element.visibleInterval).toBeUndefined();
     });
 
@@ -118,7 +119,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -153,7 +154,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -182,7 +183,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -218,7 +219,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -362,7 +363,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const rows = element.shadowRoot.querySelectorAll(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             expect(rows).toHaveLength(3);
 
@@ -400,7 +401,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const weekCells = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -436,7 +437,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell'
+                '[data-element-id="div-cell"]'
             );
             expect(Number(cell.dataset.start)).toBe(date.getTime());
         });
@@ -469,7 +470,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
             const end = new Date(2023, 1, 4).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
@@ -498,7 +499,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
             const end = new Date(2021, 5, 4).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
@@ -527,7 +528,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
             const end = new Date(2021, 8, 24).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
@@ -556,7 +557,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
             const end = new Date(2021, 8, 3, 15).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
@@ -585,7 +586,7 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
             const end = new Date(2021, 8, 1, 16, 15).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
@@ -617,10 +618,55 @@ describe('Primitive Scheduler Header Group', () => {
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
             const end = new Date(2021, 8, 17, 11).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
+        });
+    });
+
+    // variant
+    it('Scheduler header group: horizontal variant', () => {
+        element.variant = 'horizontal';
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const cells = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-row"]'
+            );
+            cells.forEach((cell) => {
+                expect(cell.classList).not.toContain(
+                    'avonni-scheduler-header-group__header_vertical'
+                );
+                expect(cell.classList).not.toContain('slds-grid_vertical');
+            });
+
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).not.toContain('slds-grid');
+        });
+    });
+
+    it('Scheduler header group: vertical variant', () => {
+        element.variant = 'vertical';
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const cells = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-row"]'
+            );
+            cells.forEach((cell) => {
+                expect(cell.classList).toContain(
+                    'avonni-scheduler-header-group__header_vertical'
+                );
+                expect(cell.classList).toContain('slds-grid_vertical');
+            });
+
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain('slds-grid');
         });
     });
 

@@ -43,14 +43,21 @@
         ondblclick={handleDisabledDoubleClick}
         onmousedown={handleDisabledMouseDown}
     >
-        <div if:true={showTitle} class={disabledTitleClass} title={title}>
+        <div
+            if:true={showTitle}
+            class={disabledTitleClass}
+            title={title}
+            data-element-id="div-disabled-title-wrapper"
+        >
             <lightning-icon
                 if:true={iconName}
                 icon-name={iconName}
                 size="x-small"
                 class="slds-m-right_xx-small slds-current-color"
             ></lightning-icon>
-            <span class="slds-truncate">{title}</span>
+            <span class="slds-truncate" data-element-id="div-disabled-title"
+                >{title}</span
+            >
         </div>
     </div>
 </template>

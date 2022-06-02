@@ -57,6 +57,7 @@
                 slds-grid slds-is-absolute
                 avonni-scheduler__event-label_left
             "
+            data-element-id="div-left-label-wrapper"
         >
             <lightning-icon
                 if:true={computedLabels.left.iconName}
@@ -83,6 +84,7 @@
                     slds-grid
                     avonni-scheduler__event-label_top
                 "
+                data-element-id="div-top-label-wrapper"
             >
                 <lightning-icon
                     if:true={computedLabels.top.iconName}
@@ -100,7 +102,11 @@
             </div>
 
             <!-- Event -->
-            <div class={computedClass} style={style}>
+            <div
+                class={computedClass}
+                style={style}
+                data-element-id="div-event-content"
+            >
                 <!-- Start resize icon -->
                 <lightning-icon
                     if:false={readOnly}
@@ -110,6 +116,7 @@
                     "
                     icon-name="utility:drag_and_drop"
                     size="xx-small"
+                    data-element-id="lightning-icon-resize-start"
                     data-resize="start"
                 ></lightning-icon>
 
@@ -117,12 +124,14 @@
                 <div
                     if:true={computedLabels.center}
                     class={eventOccurrenceCenterLabelClass}
+                    data-element-id="div-center-label-wrapper"
                 >
                     <lightning-icon
                         if:true={computedLabels.center.iconName}
                         icon-name={computedLabels.center.iconName}
                         size="x-small"
                         class="slds-m-right_xx-small"
+                        data-element-id="lightning-icon-center-label"
                     ></lightning-icon>
                     <span
                         if:true={computedLabels.center.value}
@@ -131,6 +140,7 @@
                             avonni-scheduler__event-label-span_center
                         "
                         title={computedLabels.center.value}
+                        data-element-id="span-center-label"
                     >
                         {computedLabels.center.value}
                     </span>
@@ -158,6 +168,7 @@
                     slds-grid
                     avonni-scheduler__event-label_bottom
                 "
+                data-element-id="div-bottom-label-wrapper"
             >
                 <lightning-icon
                     if:true={computedLabels.bottom.iconName}
@@ -183,6 +194,7 @@
                 slds-grid slds-is-absolute
                 avonni-scheduler__event-label_right
             "
+            data-element-id="div-right-label-wrapper"
         >
             <lightning-icon
                 if:true={computedLabels.right.iconName}

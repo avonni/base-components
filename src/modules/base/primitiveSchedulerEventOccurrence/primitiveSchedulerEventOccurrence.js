@@ -973,7 +973,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     }
 
     /**
-     * Update the width of the occurrence in the scheduler grid.
+     * Update the length of the occurrence in the scheduler grid.
      *
      * @public
      */
@@ -981,7 +981,6 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     updateLength() {
         const { from, to, headerCells, cellHeight, cellWidth, cellDuration } =
             this;
-        const element = this.hostElement;
         const cellSize = this.isVertical ? cellHeight : cellWidth;
 
         // Find the cell where the event starts
@@ -1014,11 +1013,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 const durationLeft = cellEnd.diff(to).milliseconds;
                 const percentageLeft = durationLeft / cellDuration;
                 length = length - percentageLeft * cellSize;
-                if (this.isVertical) {
-                    element.style.height = `${length}px`;
-                } else {
-                    element.style.width = `${length}px`;
-                }
+                this.setLength(length);
                 return;
             }
 
@@ -1040,16 +1035,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
             const colPercentEnd = eventDurationLeft / cellDuration;
             length += cellSize * colPercentEnd;
         }
-
-        if (this.isVertical) {
-            element.style.height = `${length}px`;
-            if (cellWidth && this.numberOfEventsInThisTimeFrame) {
-                const width = cellWidth / this.numberOfEventsInThisTimeFrame;
-                element.style.width = `${width}px`;
-            }
-        } else {
-            element.style.width = `${length}px`;
-        }
+        this.setLength(length);
     }
 
     /**
@@ -1091,7 +1077,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
      */
     updateStickyLabels() {
         const stickyLabel = this.template.querySelector(
-            '.avonni-scheduler__event-label_center'
+            '[data-element-id="div-center-label-wrapper"]'
         );
         if (stickyLabel && this.isVertical) {
             const top = this.scrollOffset - this.y - this._offsetStart;
@@ -1151,6 +1137,28 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         requestAnimationFrame(() => {
             this.updateStickyLabels();
         });
+    }
+
+    /**
+     * Set the length of the event through its CSS style.
+     *
+     * @param {number} length Length of the event.
+     */
+    setLength(length) {
+        const style = this.hostElement.style;
+        if (this.isVertical) {
+            style.height = `${length}px`;
+            if (this.cellWidth && this.numberOfEventsInThisTimeFrame) {
+                const width =
+                    this.cellWidth / this.numberOfEventsInThisTimeFrame;
+                style.width = `${width}px`;
+            } else {
+                style.width = null;
+            }
+        } else {
+            style.width = `${length}px`;
+            style.height = null;
+        }
     }
 
     /**
