@@ -533,15 +533,35 @@ export default class Kanban extends LightningElement {
         const tilesContainer = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         )[this._releasedGroupIndex];
-        dropZone.style.height = `${this._draggedTile.offsetHeight}px`;
-        dropZone.style.width = `${this._draggedTile.offsetWidth - 5}px`;
-        dropZone.style.top = `${
+
+        const offsetTop =
             8 * offsetCount +
             offsetHeight +
             summarizeHeight +
             increment -
-            tilesContainer.scrollTop
-        }px`;
+            tilesContainer.scrollTop;
+
+        dropZone.style.height = `${this._draggedTile.offsetHeight}px`;
+        dropZone.style.width = `${this._draggedTile.offsetWidth - 5}px`;
+        dropZone.style.top = `${offsetTop}px`;
+
+        // clips the dropzone so that it doesnt overflow on the summarize field or on the footer actions
+        dropZone.style.clipPath = `inset(0)`;
+        if (offsetTop < summarizeHeight) {
+            dropZone.style.clipPath = `inset(${Math.abs(
+                offsetTop - summarizeHeight
+            )}px 0 0 0)`;
+        } else if (
+            offsetTop + this._draggedTile.offsetHeight >
+            summarizeHeight + tilesContainer.offsetHeight
+        ) {
+            dropZone.style.clipPath = `inset(0 0 ${
+                offsetTop +
+                this._draggedTile.offsetHeight -
+                summarizeHeight -
+                tilesContainer.offsetHeight
+            }px 0)`;
+        }
     }
 
     /**
