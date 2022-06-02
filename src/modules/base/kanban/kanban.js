@@ -268,8 +268,6 @@ export default class Kanban extends LightningElement {
     get computedGroups() {
         this.clearSummarizeTimeouts();
 
-        const SUMMARY_UPDATE_SPEED = 300;
-
         let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
 
         this._summarizeValues = JSON.parse(
@@ -329,72 +327,12 @@ export default class Kanban extends LightningElement {
             }
         });
 
-        // Gets the length of each group and updates the summarize value
-        computedGroups.forEach((group, i) => {
-            requestAnimationFrame(() => {
-                this.template.querySelectorAll(
-                    '[data-element-id="avonni-kanban__field"]'
-                )[i].style.background = group.backgroundColor;
-            });
-            group.summarize.value = this.truncateNumber(
-                this._summarizeValues[i]
-            );
-            this._groupsLength.push(group.tiles.length);
-            const summarizeUpdate = this.truncateNumber(
-                this._oldSummarizeValues[i] - this._summarizeValues[i]
-            );
-            if (summarizeUpdate !== 0) {
-                for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
-                    this._summaryTimeoutsId[j] = window.setTimeout(() => {
-                        const summary = this.template.querySelectorAll(
-                            '[data-element-id="summarize"]'
-                        )[group.index];
-
-                        summary.value += this.truncateNumber(
-                            summarizeUpdate / SUMMARY_UPDATE_SPEED
-                        );
-
-                        summary.value = this.truncateNumber(summary.value);
-                    }, 0.5 * j);
-                }
-            }
+        computedGroups.forEach((group) => {
+            this.animateSummary(group);
         });
+
         requestAnimationFrame(() => {
-            this._scrollWidth = this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).scrollWidth;
-
-            const actionsContainer = this.template.querySelectorAll(
-                '[data-element-id="avonni-kanban__footer_action"]'
-            );
-
-            const fields = this.template.querySelectorAll(
-                '[data-element-id="avonni-kanban__field"]'
-            );
-            const container = this.template.querySelector(
-                '[data-element-id="avonni-kanban__field_container"]'
-            );
-
-            const groupElements = this.template.querySelectorAll(
-                '[data-element-id="avonni-kanban__group"]'
-            );
-
-            Array.from(groupElements).forEach((group, i) => {
-                group.style.height = 'fit-content';
-                group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
-            });
-            fields.forEach((field, i) => {
-                const hasScroll =
-                    groupElements[i].scrollHeight >
-                    groupElements[i].clientHeight;
-                field.style.height = 'fit-content';
-                if (field.offsetHeight > container.offsetHeight || hasScroll)
-                    field.style.height = `${container.offsetHeight}px`;
-
-                this._fieldsDistance[i] =
-                    container.offsetHeight - field.offsetHeight;
-            });
-            this._droppedTileHeight = 0;
+            this.capFieldHeight();
         });
 
         return computedGroups;
@@ -439,14 +377,6 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__field_container"]'
         );
 
-        // const tileHeight =
-        //     this._fieldsDistance[this._releasedGroupIndex] +
-        //         this._draggedTile.offsetHeight <
-        //     container.offsetHeight
-        //         ? this._draggedTile.offsetHeight
-        //         : container.offsetHeight -
-        //           this._fieldsDistance[this._releasedGroupIndex];
-
         fields.forEach((field) => {
             const isExtended = field.offsetHeight === container.offsetHeight;
 
@@ -469,47 +399,116 @@ export default class Kanban extends LightningElement {
             }
         }
 
+        this.resetAnimations(groups);
+    }
+
+    /**
+     *
+     * Updates the summary value gradually
+     * @param {object} group Group containing the summary value to animate
+     */
+    animateSummary(group) {
+        const SUMMARY_UPDATE_SPEED = 300;
+        requestAnimationFrame(() => {
+            this.template.querySelectorAll(
+                '[data-element-id="avonni-kanban__field"]'
+            )[group.index].style.background = group.backgroundColor;
+        });
+        group.summarize.value = this.truncateNumber(
+            this._summarizeValues[group.index]
+        );
+        this._groupsLength.push(group.tiles.length);
+        const summarizeUpdate = this.truncateNumber(
+            this._oldSummarizeValues[group.index] -
+                this._summarizeValues[group.index]
+        );
+        if (summarizeUpdate !== 0) {
+            for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
+                this._summaryTimeoutsId[j] = window.setTimeout(() => {
+                    const summary = this.template.querySelectorAll(
+                        '[data-element-id="summarize"]'
+                    )[group.index];
+
+                    summary.value += this.truncateNumber(
+                        summarizeUpdate / SUMMARY_UPDATE_SPEED
+                    );
+
+                    summary.value = this.truncateNumber(summary.value);
+                }, 0.5 * j);
+            }
+        }
+    }
+
+    /**
+     *
+     * Limits the height of the fields to prevent overflow
+     */
+    capFieldHeight() {
+        this._scrollWidth = this.template.querySelector(
+            '[data-element-id="avonni-kanban__container"]'
+        ).scrollWidth;
+
         const actionsContainer = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__footer_action"]'
         );
 
-        let offsetHeight = 0;
-        let offsetCount = 0;
-        // resets animations
-        Array.from(groups).forEach((group, i) => {
-            // resets the height to 100% on other fields
-            if (group !== groups[this._releasedGroupIndex]) {
-                group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
-                group.style.height = 'fit-content';
-            } else {
-                group.style.height = `${
-                    this._groupsHeight[this._releasedGroupIndex] +
-                    this._draggedTile.offsetHeight
-                }px`;
-            }
+        const fields = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__field"]'
+        );
+        const container = this.template.querySelector(
+            '[data-element-id="avonni-kanban__field_container"]'
+        );
 
-            // removes the translation on the other tiles
-            Array.from(group.children)
-                .filter((child) => child !== this._draggedTile)
-                .forEach((tile, j) => {
-                    if (
-                        i !== this._releasedGroupIndex ||
-                        j < this._releasedTileIndex
-                    ) {
-                        tile.classList.remove('avonni-kanban__tile_moved');
-                        tile.style.transform = `translateY(0px)`;
-                    }
+        const groupElements = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
 
-                    if (
-                        i === this._releasedGroupIndex &&
-                        j < this._releasedTileIndex
-                    ) {
-                        offsetHeight += tile.offsetHeight;
-                        offsetCount++;
-                    }
-                });
+        Array.from(groupElements).forEach((group, i) => {
+            group.style.height = 'fit-content';
+            group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
         });
+        fields.forEach((field, i) => {
+            const hasScroll =
+                groupElements[i].scrollHeight > groupElements[i].clientHeight;
+            field.style.height = 'fit-content';
+            if (field.offsetHeight > container.offsetHeight || hasScroll)
+                field.style.height = `${container.offsetHeight}px`;
 
+            this._fieldsDistance[i] =
+                container.offsetHeight - field.offsetHeight;
+        });
+        this._droppedTileHeight = 0;
+    }
+
+    /**
+     * Clears the timeouts to avoid summarize inconsistencies.
+     *
+     */
+    clearSummarizeTimeouts() {
+        if (this._summaryTimeoutsId.length > 0) {
+            this._summaryTimeoutsId.forEach((timeout) => {
+                window.clearTimeout(timeout);
+            });
+
+            setTimeout(() => {
+                this.template
+                    .querySelectorAll('[data-element-id="summarize"]')
+                    .forEach((summarize, i) => {
+                        summarize.value = this._summarizeValues[i];
+                    });
+            }, 0);
+
+            this._summaryTimeoutsId = [];
+        }
+    }
+
+    /**
+     *
+     * Displays the dropzone of the tile, or the dropzone of the group
+     * @param {number} offsetHeight Cumulated height of the tiles above the dropzone
+     * @param {number} offsetCount Number of tiles above the dropzone
+     */
+    displayDropzone(offsetHeight, offsetCount) {
         this.template
             .querySelectorAll(
                 '[data-element-id="avonni-kanban__tile_dropzone"]'
@@ -541,28 +540,6 @@ export default class Kanban extends LightningElement {
             increment -
             tilesContainer.scrollTop
         }px`;
-    }
-
-    /**
-     * Clears the timeouts to avoid summarize inconsistencies.
-     *
-     */
-    clearSummarizeTimeouts() {
-        if (this._summaryTimeoutsId.length > 0) {
-            this._summaryTimeoutsId.forEach((timeout) => {
-                window.clearTimeout(timeout);
-            });
-
-            setTimeout(() => {
-                this.template
-                    .querySelectorAll('[data-element-id="summarize"]')
-                    .forEach((summarize, i) => {
-                        summarize.value = this._summarizeValues[i];
-                    });
-            }, 0);
-
-            this._summaryTimeoutsId = [];
-        }
     }
 
     /**
@@ -1040,6 +1017,58 @@ export default class Kanban extends LightningElement {
     handleTileMouseUp(event) {
         if (this.readOnly || event.currentTarget !== this._draggedTile) return;
         this.endDrag();
+    }
+
+    /**
+     *
+     * Resets the translate animations on the tiles and limits the height of the groups
+     *
+     * @param {object[]} groups Groups containing the tiles
+     */
+    resetAnimations(groups) {
+        let offsetHeight = 0;
+        let offsetCount = 0;
+
+        const actionsContainer = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__footer_action"]'
+        );
+
+        // resets animations
+        Array.from(groups).forEach((group, i) => {
+            // resets the height to 100% on other fields
+            if (group !== groups[this._releasedGroupIndex]) {
+                group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
+                group.style.height = 'fit-content';
+            } else {
+                group.style.height = `${
+                    this._groupsHeight[this._releasedGroupIndex] +
+                    this._draggedTile.offsetHeight
+                }px`;
+            }
+
+            // removes the translation on the other tiles
+            Array.from(group.children)
+                .filter((child) => child !== this._draggedTile)
+                .forEach((tile, j) => {
+                    if (
+                        i !== this._releasedGroupIndex ||
+                        j < this._releasedTileIndex
+                    ) {
+                        tile.classList.remove('avonni-kanban__tile_moved');
+                        tile.style.transform = `translateY(0px)`;
+                    }
+
+                    if (
+                        i === this._releasedGroupIndex &&
+                        j < this._releasedTileIndex
+                    ) {
+                        offsetHeight += tile.offsetHeight;
+                        offsetCount++;
+                    }
+                });
+        });
+
+        this.displayDropzone(offsetHeight, offsetCount);
     }
 
     /**
