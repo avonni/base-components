@@ -42,7 +42,14 @@
         infos={infos}
         description={description}
     >
-        <span slot="media" class="avonni-card__image">media</span>
+        <span slot="media" class="avonni-card__image">
+            <img
+                style="width: 100%; height: 100%; object-fit: cover"
+                src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
+                alt=""
+            />
+        </span>
         <span slot="test">test slot</span>
+        <span slot="description">description slot</span>
     </c-card>
 </template>

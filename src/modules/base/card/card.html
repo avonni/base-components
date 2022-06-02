@@ -47,7 +47,12 @@
         <!-- media -->
         <div class="avonni-card__image-container" if:true={showMedia}>
             <slot name="media"></slot>
-            <img class="avonni-card__image" src={imageSrc} alt="" />
+            <img
+                class="avonni-card__image"
+                src={imageSrc}
+                if:true={imageSrc}
+                alt=""
+            />
             <slot name="image-action-container"></slot>
 
             <!-- action button -->
@@ -133,7 +138,8 @@
 
             <!-- bottom content -->
             <div class="slds-m-around_x-small" if:false={showCenterMedia}>
-                <p>{description}</p>
+                <div name></div>
+                <slot name="description"></slot>
                 <p>
                     <template for:each={infos} for:item="info">
                         <a key={generateKey} href={info.href}>{info.label}</a>

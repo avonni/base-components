@@ -300,6 +300,5 @@ OverlayCard.args = {
 
 export const BaseWithSlots = SlotsTemplate.bind({});
 BaseWithSlots.args = {
-    title: 'Card title',
     mediaPosition: 'top'
 };
