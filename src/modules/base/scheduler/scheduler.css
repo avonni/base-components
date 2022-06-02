@@ -81,10 +81,6 @@
 .avonni-scheduler__schedule-col {
     height: 100%;
 }
-.avonni-scheduler__schedule-col_vertical {
-    /* Prevent the reference lines from adding a space at the bottom of the schedule */
-    overflow-y: hidden;
-}
 
 .avonni-scheduler__events {
     height: 100%;

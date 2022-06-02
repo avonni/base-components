@@ -34,6 +34,7 @@ import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
 import { DateTime } from 'c/luxon';
 import {
+    classListMutation,
     dateTimeObjectFrom,
     normalizeArray,
     normalizeBoolean,
@@ -513,6 +514,10 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._variant = normalizeString(value, {
             fallbackValue: VARIANTS.default,
             validValues: VARIANTS.valid
+        });
+
+        classListMutation(this.classList, {
+            'avonni-scheduler__event_horizontal': this._variant === 'horizontal'
         });
     }
 

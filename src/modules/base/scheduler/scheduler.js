@@ -1848,7 +1848,7 @@ export default class Scheduler extends LightningElement {
             );
             const scheduleWidth = this.schedulePosition.width;
             schedule.style = `
-                 --avonni-primitive-scheduler-event-reference-line-height: ${scheduleWidth}px
+                 --avonni-primitive-scheduler-event-reference-line-length: ${scheduleWidth}px
              `;
         }
     }

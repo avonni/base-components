@@ -2153,7 +2153,7 @@ describe('Scheduler', () => {
                 'avonni-scheduler__schedule-body_vertical'
             );
             expect(scheduleBody.style.cssText).toBe(
-                '--avonni-primitive-scheduler-event-reference-line-height: 0px;'
+                '--avonni-primitive-scheduler-event-reference-line-length: 0px;'
             );
 
             const scheduleCol = element.shadowRoot.querySelector(
