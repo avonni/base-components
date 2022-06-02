@@ -52,6 +52,9 @@ const MOCK_CUSTOM_LABELS = [
     }
 ];
 
+// Not tested:
+// AvonniResizeObserver callback function (tested visually in storybook)
+
 let element;
 describe('Slider', () => {
     afterEach(() => {
@@ -180,7 +183,7 @@ describe('Slider', () => {
     });
 
     //minimumDistance
-    it('minimumDistance = 0', () => {
+    it('minimumDistance = 0 (left to right)', () => {
         element.minimumDistance = 0;
         element.disableSwap = true;
         element.min = 0;
@@ -195,6 +198,27 @@ describe('Slider', () => {
                 );
                 firstInput.value = 8;
                 firstInput.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                expect(element.value).toEqual([5, 5]);
+            });
+    });
+
+    it('minimumDistance = 0 (right to left)', () => {
+        element.minimumDistance = 0;
+        element.disableSwap = true;
+        element.min = 0;
+        element.max = 10;
+        element.value = [5, 7];
+
+        return Promise.resolve()
+            .then(() => {
+                expect(element.minimumDistance).toEqual(0);
+                const secondInput = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="1"]'
+                );
+                secondInput.value = 2;
+                secondInput.dispatchEvent(new CustomEvent('input'));
             })
             .then(() => {
                 expect(element.value).toEqual([5, 5]);
@@ -315,14 +339,15 @@ describe('Slider', () => {
 
     it('showTickMarks = true', () => {
         element.showTickMarks = true;
-
+        let ruler;
         return Promise.resolve().then(() => {
-            const ruler = element.shadowRoot.querySelector(
+            ruler = element.shadowRoot.querySelector(
                 '[data-element-id="ruler"]'
             );
             expect(ruler).toBeTruthy();
             expect(ruler.firstChild.tagName).toEqual('rect');
             expect(ruler.childElementCount).toEqual(103);
+            element.showTickMarks = false;
         });
     });
 
@@ -815,5 +840,233 @@ describe('Slider', () => {
             );
             expect(label.classList).toContain('slds-hide');
         });
+    });
+
+    /* ----- EVENT LISTENERS ----- */
+
+    //onmousemove
+    it('onmousemove close to middle thumb node', () => {
+        element.value = [25, 50, 75];
+        let firstInput;
+        let middleInput;
+        let lastInput;
+        return Promise.resolve()
+            .then(() => {
+                firstInput = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="0"]'
+                );
+                middleInput = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="1"]'
+                );
+                lastInput = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="2"]'
+                );
+                jest.spyOn(firstInput, 'clientWidth', 'get').mockReturnValue(
+                    100
+                );
+                let customEvent = new MouseEvent('mousemove', {
+                    offsetX: 50,
+                    offsetY: 0
+                });
+                customEvent.offsetX = 50;
+                customEvent.offsetY = 0;
+                element.shadowRoot.dispatchEvent(customEvent);
+            })
+            .then(() => {
+                expect(firstInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(middleInput.classList).toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(lastInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+            });
+    });
+
+    // onmousedown and onmouseup on input
+    it('onmousedown on input && pin = true', () => {
+        element.value = 25;
+        element.pin = true;
+        let pin;
+        let input;
+        return Promise.resolve()
+            .then(() => {
+                input = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="0"]'
+                );
+                pin = element.shadowRoot.querySelector(
+                    '[data-group-name="bubble"]'
+                );
+                input.dispatchEvent(new MouseEvent('mousedown'));
+            })
+            .then(() => {
+                expect(pin.classList).toContain('avonni-range__bubble_visible');
+            })
+            .then(() => {
+                input.dispatchEvent(new MouseEvent('mouseup'));
+            })
+            .then(() => {
+                expect(pin.classList).not.toContain(
+                    'avonni-range__bubble_visible'
+                );
+            });
+    });
+
+    /* ----- SCENARIOS ----- */
+
+    it('input change with pin = true)', () => {
+        element.min = 0;
+        element.max = 10;
+        element.pin = true;
+        element.value = 5;
+        let input;
+        let pin;
+        let pinPositionBefore;
+
+        return Promise.resolve()
+            .then(() => {
+                expect(element.minimumDistance).toEqual(0);
+                input = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="0"]'
+                );
+                pin = element.shadowRoot.querySelector(
+                    '[data-group-name="bubble"]'
+                );
+                pinPositionBefore = pin.style.left;
+                input.value = 8;
+                input.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                expect(pinPositionBefore).not.toEqual(pin.style.left);
+                pinPositionBefore = pin.style.left;
+                input.value = 2;
+                input.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                expect(pinPositionBefore).not.toEqual(pin.style.left);
+                pinPositionBefore = pin.style.left;
+            });
+    });
+
+    it('ruler color redraw when input changes', () => {
+        element.value = 1;
+        element.showTickMarks = true;
+        element.tickMarkStyle = 'inner-tick';
+        let ruler;
+        let input;
+        return Promise.resolve()
+            .then(() => {
+                ruler = element.shadowRoot.querySelector(
+                    '[data-element-id="ruler"]'
+                );
+                input = element.shadowRoot.querySelector(
+                    '[data-group-name="input"]'
+                );
+                expect(ruler).toBeTruthy();
+                expect(ruler.firstChild.tagName).toEqual('rect');
+                expect(ruler.childNodes[3].getAttribute('stroke')).toEqual(
+                    '#0176D3'
+                );
+                expect(ruler.childNodes[4].getAttribute('stroke')).toEqual(
+                    '#ecebea'
+                );
+                expect(ruler.childElementCount).toEqual(103);
+                element.value = 50;
+                input.dispatchEvent(new CustomEvent('input'));
+            })
+            .then(() => {
+                expect(ruler.firstChild.tagName).toEqual('rect');
+                expect(ruler.childNodes[3].getAttribute('stroke')).toEqual(
+                    '#0176D3'
+                );
+                expect(ruler.childNodes[25].getAttribute('stroke')).toEqual(
+                    '#ecebea'
+                );
+                expect(ruler.childElementCount).toEqual(103);
+            });
+    });
+
+    it('onmousemove event debounce (moving mouse constantly)', () => {
+        element.value = [25, 50, 75];
+        let firstInput;
+        let middleInput;
+        let lastInput;
+        return Promise.resolve()
+            .then(() => {
+                firstInput = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="0"]'
+                );
+                middleInput = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="1"]'
+                );
+                lastInput = element.shadowRoot.querySelector(
+                    '[data-group-name="input"][data-index="2"]'
+                );
+                jest.spyOn(firstInput, 'clientWidth', 'get').mockReturnValue(
+                    100
+                );
+
+                // we move the mouse at offsetX = 50
+                let customEvent = new MouseEvent('mousemove', {
+                    offsetX: 50
+                });
+                customEvent.offsetX = 50;
+                element.shadowRoot.dispatchEvent(customEvent);
+            })
+            .then(() => {
+                // middle input is above
+                expect(firstInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(middleInput.classList).toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(lastInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+            })
+            .then(() => {
+                // we move the mouse at offsetX = 0
+                let customEvent = new MouseEvent('mousemove', {
+                    offsetX: 50
+                });
+                customEvent.offsetX = 50;
+                element.shadowRoot.dispatchEvent(customEvent);
+            })
+            .then(() => {
+                // we moved mouse too fast, inputs should be in same order
+                expect(firstInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(middleInput.classList).toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(lastInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+            })
+            .then(() => {
+                // we wait for timeout then move mouse to offsetX = 0
+                jest.advanceTimersToNextTimer();
+                let customEvent = new MouseEvent('mousemove', {
+                    offsetX: 0
+                });
+                customEvent.offsetX = 0;
+                element.shadowRoot.dispatchEvent(customEvent);
+            })
+            .then(() => {
+                // first input is now above, since we waited for timeout
+                expect(firstInput.classList).toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(middleInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+                expect(lastInput.classList).not.toContain(
+                    'avonni-range__slider_above'
+                );
+            });
     });
 });

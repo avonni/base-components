@@ -448,19 +448,19 @@ export default class Slider extends LightningElement {
         return this._customLabels;
     }
 
-    /**
-     * Represents the validity states of the slider inputs, with respect to constraint validation.
-     *
-     * @public
-     */
-    @api
-    get validity() {
-        return (
-            this._constraintLeft.validity +
-            ', ' +
-            this._constraintRight.validity
-        );
-    }
+    // /**
+    //  * Represents the validity states of the slider inputs, with respect to constraint validation.
+    //  *
+    //  * @public
+    //  */
+    // @api
+    // get validity() {
+    //     return (
+    //         this._constraintLeft.validity +
+    //         ', ' +
+    //         this._constraintRight.validity
+    //     );
+    // }
 
     /**
      * The value of the range. If an array is passed, many thumbs will displayed on slider.
@@ -607,14 +607,14 @@ export default class Slider extends LightningElement {
                 !this.isHorizontal
         });
     }
-    /**
-     * Computed input class styling.
-     */
-    get computedInputClass() {
-        return classSet('slds-slider__range').add({
-            'avonni-range__slider': true
-        });
-    }
+    // /**
+    //  * Computed input class styling.
+    //  */
+    // get computedInputClass() {
+    //     return classSet('slds-slider__range').add({
+    //         'avonni-range__slider': true
+    //     });
+    // }
 
     get computedSpacerClass() {
         return classSet(`avonni-range__container-vertical-size_${this._size}`);
@@ -681,14 +681,7 @@ export default class Slider extends LightningElement {
     get hasCustomLabels() {
         return this._customLabels.length !== 0 && this._unit === 'custom';
     }
-    /**
-     * Verify if the range has custom labels and does not want to show ticks.
-     *
-     * @type {boolean}
-     */
-    get hasOnlyCustomLabels() {
-        return this.hasCustomLabels && !this._showTickMarks;
-    }
+
     /**
      * Returns the color corresponding to highlight (depends on disabled)
      *
@@ -767,9 +760,6 @@ export default class Slider extends LightningElement {
         let leftPosition = INPUT_THUMB_RADIUS;
 
         switch (this._tickMarkStyle) {
-            case 'inner-tick':
-                this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
-                break;
             case 'tick':
                 this.drawTickRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
@@ -777,6 +767,7 @@ export default class Slider extends LightningElement {
                 this.drawDotRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
             default:
+                // or when = 'inner-tick'
                 this.drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth);
                 break;
         }
@@ -972,7 +963,7 @@ export default class Slider extends LightningElement {
         });
 
         // set classes accordingly
-        for (let i = 0; i < this._values.length; i++) {
+        for (let i = 0; i < inputPos.length; i++) {
             if (inputPos.indexOf(closestX) === i) {
                 this.getInput(i).classList.add('avonni-range__slider_above');
             } else {
