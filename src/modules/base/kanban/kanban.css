@@ -190,7 +190,6 @@
 .avonni-kanban__dragged::after {
     content: '';
     position: absolute;
-    opacity: 0.5;
     top: -25%;
     left: -25%;
     width: 150%;
@@ -249,11 +248,11 @@
     background: #dbdbdb;
     border-radius: 5px;
 }
-
+/* 
 .avonni-kanban__dragging.avonni-kanban__tiles_container::-webkit-scrollbar-thumb {
     background: transparent;
     border-radius: 5px;
-}
+} */
 
 /* Handle on hover */
 .avonni-kanban__container::-webkit-scrollbar-thumb:hover,

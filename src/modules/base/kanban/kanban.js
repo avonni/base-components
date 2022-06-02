@@ -59,7 +59,6 @@ export default class Kanban extends LightningElement {
     _draggedGroup;
     _droppedTileHeight = 0;
     _fields = [];
-    _groupsAnimation = [];
     _groupFieldName;
     _groupValues = [];
     _groupsHeight = [];
@@ -331,7 +330,6 @@ export default class Kanban extends LightningElement {
 
         // Gets the length of each group and updates the summarize value
         computedGroups.forEach((group, i) => {
-            this._groupsAnimation[i] = false;
             requestAnimationFrame(() => {
                 this.template.querySelectorAll(
                     '[data-element-id="avonni-kanban__field"]'
@@ -384,7 +382,6 @@ export default class Kanban extends LightningElement {
                 group.style.height = 'fit-content';
                 group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
             });
-
             fields.forEach((field, i) => {
                 const hasScroll =
                     groupElements[i].scrollHeight >
@@ -492,8 +489,6 @@ export default class Kanban extends LightningElement {
             // resets the height to 100% on other fields
             if (group !== groups[this._releasedGroupIndex]) {
                 group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
-
-                this._groupsAnimation[i] = false;
             }
 
             // removes the translation on the other tiles
@@ -552,48 +547,6 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     *
-     * Moves the dragged tile at the right index in the record array and updates the group field value.
-     * @param {number} fromIndex Index of the initial position of the tile
-     * @param {number} toIndex Index of the final position of the tile
-     */
-    arrayMove(fromIndex, toIndex) {
-        if (toIndex < 0 || fromIndex < 0) return this.records;
-        const arr = JSON.parse(JSON.stringify(this._records));
-        arr[fromIndex][this.groupFieldName] =
-            this._groupValues[this._releasedGroupIndex].label;
-        this._groupsLength[this._clickedGroupIndex]--;
-        this._groupsLength[this._releasedGroupIndex]++;
-        /**
-         * The event fired when a card is moved from a step to another.
-         *
-         * @event
-         * @name change
-         * @param {string} id Unique data id.
-         * @param {string} action Label of the group the data card has been moved to.
-         * @param {object[]} records New records of the Kanban.
-         * @public
-         * @bubbles
-         * @cancelable
-         */
-        this.dispatchEvent(
-            new CustomEvent('change', {
-                detail: {
-                    id: arr[fromIndex].id,
-                    action: arr[fromIndex][this._groupFieldName],
-                    records: this.records
-                },
-                composed: false,
-                bubbles: true,
-                cancelable: true
-            })
-        );
-
-        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
-        return arr;
-    }
-
-    /**
      * Clears the timeouts to avoid summarize inconsistencies.
      *
      */
@@ -644,10 +597,6 @@ export default class Kanban extends LightningElement {
         );
 
         Array.from(groupElements).forEach((group, i) => {
-            setTimeout(() => {
-                if (group.scrollHeight !== group.clientHeight)
-                    group.classList.remove('avonni-kanban__dragging');
-            }, 100);
             group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
 
             Array.from(group.children).forEach((tile) => {
@@ -873,25 +822,9 @@ export default class Kanban extends LightningElement {
      */
     handleGroupMouseUp() {
         if (!this._draggedGroup) return;
-        const groups = JSON.parse(JSON.stringify(this._groupValues));
-        groups.splice(
-            this._releasedGroupIndex,
-            0,
-            groups.splice(this._clickedGroupIndex, 1)[0]
-        );
 
-        this._oldSummarizeValues.splice(
-            this._releasedGroupIndex,
-            0,
-            this._oldSummarizeValues.splice(this._clickedGroupIndex, 1)[0]
-        );
+        this.swapGroups();
 
-        this._summarizeValues.splice(
-            this._releasedGroupIndex,
-            0,
-            this._summarizeValues.splice(this._clickedGroupIndex, 1)[0]
-        );
-        this._groupValues = groups;
         this._draggedGroup.style.transform = '';
         this._draggedGroup.classList.remove('avonni-kanban__dragged_group');
         this._draggedGroup = null;
@@ -927,7 +860,7 @@ export default class Kanban extends LightningElement {
         );
         const currentIndex = this._records.indexOf(currentTile);
         const beforeIndex = this._records.indexOf(beforeTile) + 1;
-        this._records = this.arrayMove(currentIndex, beforeIndex);
+        this._records = this.swapRecords(currentIndex, beforeIndex);
     }
 
     /**
@@ -959,12 +892,6 @@ export default class Kanban extends LightningElement {
         this._groupWidth = event.currentTarget.parentElement.offsetWidth + 10;
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
-        this.template
-            .querySelectorAll('[data-element-id="avonni-kanban__group"]')
-            .forEach((group) => {
-                if (group.scrollHeight === group.clientHeight)
-                    group.classList.add('avonni-kanban__dragging');
-            });
         this._draggedTile.style.width = `${
             parseInt(this._groupWidth, 10) - 20
         }px`;
@@ -1116,6 +1043,88 @@ export default class Kanban extends LightningElement {
     handleTileMouseUp(event) {
         if (this.readOnly || event.currentTarget !== this._draggedTile) return;
         this.endDrag();
+    }
+
+    /**
+     *
+     * Swaps the groups after a drag and drop, in all the group-related arrays
+     */
+    swapGroups() {
+        const groups = JSON.parse(JSON.stringify(this._groupValues));
+        groups.splice(
+            this._releasedGroupIndex,
+            0,
+            groups.splice(this._clickedGroupIndex, 1)[0]
+        );
+
+        this._oldSummarizeValues.splice(
+            this._releasedGroupIndex,
+            0,
+            this._oldSummarizeValues.splice(this._clickedGroupIndex, 1)[0]
+        );
+
+        this._summarizeValues.splice(
+            this._releasedGroupIndex,
+            0,
+            this._summarizeValues.splice(this._clickedGroupIndex, 1)[0]
+        );
+
+        this._groupsHeight.splice(
+            this._releasedGroupIndex,
+            0,
+            this._groupsHeight.splice(this._clickedGroupIndex, 1)[0]
+        );
+
+        this._groupsLength.splice(
+            this._releasedGroupIndex,
+            0,
+            this._groupsLength.splice(this._clickedGroupIndex, 1)[0]
+        );
+
+        this._groupValues = groups;
+    }
+
+    /**
+     *
+     * Moves the dragged tile at the right index in the record array and updates the group field value.
+     * @param {number} fromIndex Index of the initial position of the tile
+     * @param {number} toIndex Index of the final position of the tile
+     * @returns {object[]} The array with swapped records
+     */
+    swapRecords(fromIndex, toIndex) {
+        if (toIndex < 0 || fromIndex < 0) return this.records;
+        const arr = JSON.parse(JSON.stringify(this._records));
+        arr[fromIndex][this.groupFieldName] =
+            this._groupValues[this._releasedGroupIndex].label;
+        this._groupsLength[this._clickedGroupIndex]--;
+        this._groupsLength[this._releasedGroupIndex]++;
+        /**
+         * The event fired when a card is moved from a step to another.
+         *
+         * @event
+         * @name change
+         * @param {string} id Unique data id.
+         * @param {string} action Label of the group the data card has been moved to.
+         * @param {object[]} records New records of the Kanban.
+         * @public
+         * @bubbles
+         * @cancelable
+         */
+        this.dispatchEvent(
+            new CustomEvent('change', {
+                detail: {
+                    id: arr[fromIndex].id,
+                    action: arr[fromIndex][this._groupFieldName],
+                    records: this.records
+                },
+                composed: false,
+                bubbles: true,
+                cancelable: true
+            })
+        );
+
+        arr.splice(toIndex, 0, arr.splice(fromIndex, 1)[0]);
+        return arr;
     }
 
     /**
