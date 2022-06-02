@@ -83,9 +83,9 @@ describe('Slider', () => {
         expect(element.step).toEqual(1);
         expect(element.type).toEqual('horizontal');
         expect(element.tickMarkStyle).toEqual('inner-tick');
-        expect(element.variant).toEqual('standard');
         expect(element.unit).toEqual('decimal');
         expect(element.unitAttributes).toEqual({});
+        expect(element.variant).toEqual('standard');
         expect(element.value).toEqual(50);
     });
 
@@ -303,7 +303,7 @@ describe('Slider', () => {
     });
 
     // showTickMarks
-    it('Range: showTickMarks = false', () => {
+    it('showTickMarks = false', () => {
         element.showTickMarks = false;
 
         return Promise.resolve().then(() => {
@@ -313,16 +313,16 @@ describe('Slider', () => {
         });
     });
 
-    it('Range: showTickMarks = true', () => {
+    it('showTickMarks = true', () => {
         element.showTickMarks = true;
 
         return Promise.resolve().then(() => {
             const ruler = element.shadowRoot.querySelector(
                 '[data-element-id="ruler"]'
             );
-            //TODO: ask Nawel why it seems the tests pass on all the rendered bools and sets them to true, even though they did nothing
             expect(ruler).toBeTruthy();
-            expect(ruler.childElementCount).toEqual(3);
+            expect(ruler.firstChild.tagName).toEqual('rect');
+            expect(ruler.childElementCount).toEqual(103);
         });
     });
 
@@ -406,6 +406,108 @@ describe('Slider', () => {
         });
     });
 
+    // type
+    it('type = horizontal', () => {
+        element.type = 'horizontal';
+        element.pin = true;
+
+        return Promise.resolve().then(() => {
+            const wrapper =
+                element.shadowRoot.querySelector('.avonni-vertical');
+            const verticalMaxLabel = element.shadowRoot.querySelector(
+                '[data-element-id="vertical-max-unit-container"]'
+            );
+            const verticalMinLabel = element.shadowRoot.querySelector(
+                '[data-element-id="vertical-min-unit-container"]'
+            );
+            const horizontalMinMaxLabels = element.shadowRoot.querySelector(
+                '[data-element-id="horizontal-unit-container"]'
+            );
+            const bubbles = element.shadowRoot.querySelectorAll(
+                '[data-group-name="bubble"]'
+            );
+
+            expect(wrapper).toBeFalsy();
+            expect(verticalMaxLabel).toBeFalsy();
+            expect(verticalMinLabel).toBeFalsy();
+            expect(horizontalMinMaxLabels).toBeTruthy();
+            expect(bubbles).toHaveLength(1);
+        });
+    });
+
+    it('type = vertical', () => {
+        element.type = 'vertical';
+        element.pin = true;
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '.avonni-range__vertical'
+            );
+            const verticalMaxLabel = element.shadowRoot.querySelector(
+                '[data-element-id="vertical-max-unit-container"]'
+            );
+            const verticalMinLabel = element.shadowRoot.querySelector(
+                '[data-element-id="vertical-min-unit-container"]'
+            );
+            const horizontalMinMaxLabels = element.shadowRoot.querySelector(
+                '[data-element-id="horizontal-unit-container"]'
+            );
+            const bubbles = element.shadowRoot.querySelectorAll(
+                '[data-group-name="bubble"]'
+            );
+
+            expect(wrapper).toBeTruthy();
+            expect(verticalMaxLabel).toBeTruthy();
+            expect(verticalMinLabel).toBeTruthy();
+            expect(horizontalMinMaxLabels).toBeFalsy();
+            expect(bubbles).toHaveLength(1);
+        });
+    });
+
+    // tickMarkStyle
+    it('tickMarkStyle = "tick"', () => {
+        element.tickMarkStyle = 'tick';
+        element.showTickMarks = true;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(101);
+        });
+    });
+
+    it('tickMarkStyle = "dot"', () => {
+        element.tickMarkStyle = 'dot';
+        element.showTickMarks = true;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('circle');
+            expect(ruler.childElementCount).toEqual(101);
+        });
+    });
+
+    it('tickMarkStyle = "inner-tick"', () => {
+        element.tickMarkStyle = 'inner-tick';
+        element.showTickMarks = true;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('rect');
+            expect(ruler.childNodes[3].tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(103);
+        });
+    });
+
     // unit
     it('unit = currency', () => {
         element.unit = 'currency';
@@ -461,7 +563,7 @@ describe('Slider', () => {
     });
 
     // unit-attributes
-    it('Range: unitAttributes', () => {
+    it('unitAttributes', () => {
         const unitAttributes = {
             currencyCode: 'CAD',
             currencyDisplayAs: 'name',
@@ -504,7 +606,7 @@ describe('Slider', () => {
     });
 
     // unit-attributes ~ customLabels
-    it('Range: customLabels on horizontal component', () => {
+    it('customLabels on horizontal component', () => {
         element.unit = 'custom';
         element.type = 'horizontal';
         element.unitAttributes = {
@@ -525,7 +627,7 @@ describe('Slider', () => {
         });
     });
 
-    it('Range: customLabels on vertical component', () => {
+    it('customLabels on vertical component', () => {
         element.unit = 'custom';
         element.type = 'vertical';
         element.unitAttributes = {
@@ -546,7 +648,7 @@ describe('Slider', () => {
         });
     });
 
-    it('Range: customLabels and tickMarkers (tick)', () => {
+    it('customLabels and tickMarkers (tick)', () => {
         element.unit = 'custom';
         element.type = 'horizontal';
         element.tickMarkStyle = 'tick';
@@ -572,7 +674,7 @@ describe('Slider', () => {
         });
     });
 
-    it('Range: customLabels and tickMarkers (dot)', () => {
+    it('customLabels and tickMarkers (dot)', () => {
         element.unit = 'custom';
         element.type = 'horizontal';
         element.tickMarkStyle = 'dot';
@@ -598,7 +700,7 @@ describe('Slider', () => {
         });
     });
 
-    it('Range: customLabels and tickMarkers (inner-tick)', () => {
+    it('customLabels and tickMarkers (inner-tick)', () => {
         element.unit = 'custom';
         element.type = 'horizontal';
         element.valueUpper = 25;
@@ -625,6 +727,93 @@ describe('Slider', () => {
             expect(ruler.firstChild.tagName).toEqual('rect');
             expect(ruler.childNodes[3].tagName).toEqual('line');
             expect(ruler.childElementCount).toEqual(103);
+        });
+    });
+
+    //value
+    it('value = 5 (single value)', () => {
+        element.value = 5;
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-group-name="input"]'
+            );
+            expect(inputs.length).toEqual(1);
+            expect(element.value).toEqual(5);
+        });
+    });
+
+    it('value = [5] (single value in array)', () => {
+        element.value = [5];
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-group-name="input"]'
+            );
+            expect(inputs.length).toEqual(1);
+            expect(element.value).toEqual(5);
+        });
+    });
+
+    it('value = [1, 2, 3, 4] (multiple value in array)', () => {
+        element.value = [1, 2, 3, 4];
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-group-name="input"]'
+            );
+            expect(inputs.length).toEqual(4);
+            expect(element.value).toEqual([1, 2, 3, 4]);
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="progress-bar"]'
+                )
+            ).toBeFalsy();
+        });
+    });
+
+    it('value = 0 && 0 < min', () => {
+        element.min = 10;
+        element.value = 0;
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toEqual(10);
+        });
+    });
+
+    it('value = 20 && 20 > max', () => {
+        element.max = 10;
+        element.value = 20;
+
+        return Promise.resolve().then(() => {
+            expect(element.value).toEqual(10);
+        });
+    });
+
+    // variant
+    it('variant = standard', () => {
+        element.label = 'A string label';
+        element.variant = 'standard';
+
+        return Promise.resolve().then(() => {
+            expect(element.variant).toEqual('standard');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="span-label"]'
+            );
+            expect(label.classList).not.toContain('slds-hide');
+        });
+    });
+
+    it('variant = label-hidden', () => {
+        element.variant = 'label-hidden';
+        element.label = 'A string label';
+
+        return Promise.resolve().then(() => {
+            expect(element.variant).toEqual('label-hidden');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="span-label"]'
+            );
+            expect(label.classList).toContain('slds-hide');
         });
     });
 });

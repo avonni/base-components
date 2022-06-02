@@ -54,7 +54,7 @@ const SLIDER_TYPES = {
     default: 'horizontal'
 };
 const LABEL_VARIANTS = {
-    valid: ['standard', 'label-hidden', 'label-inline', 'label-stacked'],
+    valid: ['standard', 'label-hidden'],
     default: 'standard'
 };
 const SLIDER_UNITS = {
@@ -155,7 +155,9 @@ export default class Slider extends LightningElement {
     _progressInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
     _customLabels = [];
 
+    _domModified = false;
     _rendered = false;
+    _connected = false;
 
     constructor() {
         super();
@@ -171,16 +173,22 @@ export default class Slider extends LightningElement {
         });
     }
 
+    connectedCallback() {
+        this.capValues();
+        this._connected = true;
+    }
+
     renderedCallback() {
         if (!this.resizeObserver) {
             this._resizeObserver = this.initResizeObserver();
         }
-        if (!this._rendered) {
-            this.progressValues = this._values;
+        if (!this._rendered || this._domModified) {
+            this.updateTrack(this._values);
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
             }
             this._rendered = true;
+            this._domModified = false;
         }
     }
 
@@ -291,6 +299,7 @@ export default class Slider extends LightningElement {
 
     set pin(value) {
         this._pin = normalizeBoolean(value);
+        this._domModified = true;
     }
 
     /**
@@ -306,6 +315,7 @@ export default class Slider extends LightningElement {
     }
     set removeTrack(value) {
         this._removeTrack = normalizeBoolean(value);
+        this._domModified = true;
     }
 
     /**
@@ -321,6 +331,7 @@ export default class Slider extends LightningElement {
     }
     set showTickMarks(value) {
         this._showTickMarks = normalizeBoolean(value);
+        this._domModified = true;
     }
 
     /**
@@ -374,6 +385,7 @@ export default class Slider extends LightningElement {
             fallbackValue: TICK_MARK_STYLES.default,
             validValues: TICK_MARK_STYLES.valid
         });
+        this._domModified = true;
     }
 
     /**
@@ -421,13 +433,14 @@ export default class Slider extends LightningElement {
      * @default
      */
     @api
+    get unitAttributes() {
+        return this._unitAttributes;
+    }
     set unitAttributes(value) {
         if (value && value.customLabels) {
             this._customLabels = normalizeArray(value.customLabels, 'object');
+            this._domModified = true;
         } else this._unitAttributes = normalizeObject(value);
-    }
-    get unitAttributes() {
-        return this._unitAttributes;
     }
 
     @api
@@ -467,6 +480,7 @@ export default class Slider extends LightningElement {
 
     set value(value) {
         if (!isNaN(Number(value))) {
+            this._values = [];
             this._values[0] = Math.min(
                 Math.max(Number(value), this.min),
                 this.max
@@ -474,13 +488,15 @@ export default class Slider extends LightningElement {
         } else {
             this._values = [];
             normalizeArray(value, 'number').forEach((val) => {
-                this._values.push(Math.min(Math.max(val, this.min), this.max));
+                this._values.push(val);
             });
-            this._values = this._values.sort((a, b) => a - b);
-            if (this._values.length > 2) {
-                this._removeTrack = true;
-            }
         }
+        this._values = this._values.sort((a, b) => a - b);
+        if (this._connected) {
+            this.capValues();
+        }
+        this._removeTrack = this._values.length > 2;
+        this._domModified = true;
     }
 
     /**
@@ -518,15 +534,10 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        const classes = classSet('avonni-slider__label');
-
-        classes.add(
-            this._variant === 'label-hidden'
-                ? 'slds-assistive-text'
-                : 'slds-slider-label__label'
-        );
-
-        return classes.toString();
+        return classSet('avonni-slider__label').add({
+            'slds-slider-label__label': true,
+            'slds-hide': this._variant === 'label-hidden'
+        });
     }
 
     /**
@@ -709,6 +720,12 @@ export default class Slider extends LightningElement {
      * -------------------------------------------------------------
      */
 
+    capValues() {
+        this._values.forEach((val, index) => {
+            this._values[index] = Math.min(Math.max(val, this.min), this.max);
+        });
+    }
+
     /**
      * Displays and positions the custom labels for the range
      */
@@ -740,7 +757,7 @@ export default class Slider extends LightningElement {
      * Draws the tick marks as SVG depending on its style.
      */
     drawRuler() {
-        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+        const ruler = this._ruler;
         ruler.querySelectorAll('*').forEach((child) => {
             child.remove();
         });
@@ -769,7 +786,7 @@ export default class Slider extends LightningElement {
      * draws the tick marks for inner-tick style
      */
     drawInnerTickRuler(numberOfSteps, leftPosition, stepWidth) {
-        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+        const ruler = this._ruler;
 
         // square slider edges
         const upperEdgePos = numberOfSteps * stepWidth;
@@ -825,7 +842,7 @@ export default class Slider extends LightningElement {
      * draws the tick marks for tick style
      */
     drawTickRuler(numberOfSteps, leftPosition, stepWidth) {
-        const ruler = this.template.querySelector('[data-element-id="ruler"]');
+        const ruler = this._ruler;
 
         for (let i = 0; i < numberOfSteps + 1; i++) {
             let isMajorStep = i === 0 || i === numberOfSteps;
@@ -857,8 +874,7 @@ export default class Slider extends LightningElement {
      * draws the tick marks for dot style
      */
     drawDotRuler(numberOfSteps, leftPosition, stepWidth) {
-        const ruler = this.template.querySelector('[data-element-id="ruler"]');
-
+        const ruler = this._ruler;
         for (let i = 0; i < numberOfSteps + 1; i++) {
             const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
             const isColored =
@@ -923,7 +939,9 @@ export default class Slider extends LightningElement {
      */
     handleChange(event) {
         this.updateInputRange(event);
-        this.setBubblePosition(event);
+        if (this._pin) {
+            this.setBubblePosition(event);
+        }
         this.changeRange();
     }
 
@@ -994,24 +1012,22 @@ export default class Slider extends LightningElement {
      * Calculate Bubbles position.
      */
     setBubblePosition(event) {
-        if (this._pin) {
-            let bubble = this.template.querySelector(
-                `[data-group-name="bubble"][data-index="${event.target.dataset.index}"]`
-            );
-            let bubbleProgress =
-                this.getPercentOfValue(
-                    this._values[parseInt(event.target.dataset.index, 10)]
-                ) * 100;
-            bubble.firstChild.firstChild.value =
-                this._values[parseInt(event.target.dataset.index, 10)];
+        let bubble = this.template.querySelector(
+            `[data-group-name="bubble"][data-index="${event.target.dataset.index}"]`
+        );
+        let bubbleProgress =
+            this.getPercentOfValue(
+                this._values[parseInt(event.target.dataset.index, 10)]
+            ) * 100;
+        bubble.firstChild.firstChild.value =
+            this._values[parseInt(event.target.dataset.index, 10)];
 
-            bubble.style.left =
-                'calc(' +
-                bubbleProgress +
-                '% - ' +
-                (bubbleProgress * 0.16 + 8) +
-                'px)';
-        }
+        bubble.style.left =
+            'calc(' +
+            bubbleProgress +
+            '% - ' +
+            (bubbleProgress * 0.16 + 8) +
+            'px)';
     }
 
     /**
@@ -1026,7 +1042,7 @@ export default class Slider extends LightningElement {
         if (this._disableSwap) {
             this.manageCollisions(targetIndex, newValues);
         }
-        this.progressValues = newValues;
+        this.updateTrack(newValues);
     }
 
     manageCollisions(updatedSliderIndex, newValues) {
@@ -1056,7 +1072,7 @@ export default class Slider extends LightningElement {
         }
     }
 
-    set progressValues(values) {
+    updateTrack(values) {
         for (let i = 0; i < this._values.length; i++) {
             this.getInput(i).value = values[i];
             this.values[i] = values[i];
@@ -1109,6 +1125,13 @@ export default class Slider extends LightningElement {
      */
     get _progress() {
         return this.template.querySelector('[data-element-id="progress-bar"]');
+    }
+
+    /**
+     *  Returns the tick ruler html element.
+     */
+    get _ruler() {
+        return this.template.querySelector('[data-element-id="ruler"]');
     }
 
     /**
