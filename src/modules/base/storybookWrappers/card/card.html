@@ -34,14 +34,12 @@
 
 <template>
     <c-card
-        image-src={imageSrc}
-        media-position={mediaPosition}
         avatar={avatar}
+        media-src={mediaSrc}
+        media-position={mediaPosition}
         title={title}
-        actions={actions}
-        icons={icons}
-        infos={infos}
-        description={description}
     >
+        <div slot="action">action</div>
+        <div slot="default">default slot</div>
     </c-card>
 </template>

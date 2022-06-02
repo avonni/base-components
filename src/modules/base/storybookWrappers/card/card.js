@@ -34,13 +34,7 @@ import { LightningElement, api } from 'lwc';
 
 export default class Card extends LightningElement {
     @api title;
-    @api imageSrc;
+    @api mediaSrc;
     @api mediaPosition;
     @api avatar;
-    @api icons;
-    @api infos;
-    @api description;
-    @api actions;
-    @api href;
-    @api variant;
 }

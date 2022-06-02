@@ -30,12 +30,35 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+:host() {
+    /* --slds-c-card-shadow: 0px; */
+}
+
 article {
-    /* border: 1px solid gray; */
     overflow: hidden;
     display: flex;
     position: relative;
     flex-direction: column;
+}
+
+article.avonni-card {
+    border-width: var(
+        --slds-c-card-sizing-border,
+        var(--sds-c-card-sizing-border, 1px)
+    );
+    border-style: solid;
+    border-color: var(
+        --slds-c-card-color-border,
+        var(--sds-c-card-color-border, #c9c9c9)
+    );
+    border-radius: var(
+        --slds-c-card-radius-border,
+        var(--sds-c-card-radius-border, 0.25rem)
+    );
+    box-shadow: var(
+        --slds-c-card-shadow,
+        var(--sds-c-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1))
+    );
 }
 
 .background .avonni-card__image-container {
@@ -54,6 +77,10 @@ article {
         rgba(0, 0, 0, 0.23) 75%,
         rgba(0, 0, 0, 0) 100%
     );
+}
+
+.avonni-card__body-container {
+    padding: 0.5em;
 }
 
 .overlay-card .card-content {

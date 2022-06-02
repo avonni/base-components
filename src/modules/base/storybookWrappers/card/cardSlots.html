@@ -34,13 +34,10 @@
 
 <template>
     <c-card
-        title={title}
-        image-src={imageSrc}
+        avatar={avatar}
+        media-src={mediaSrc}
         media-position={mediaPosition}
-        actions={actions}
-        icons={icons}
-        infos={infos}
-        description={description}
+        title={title}
     >
         <span slot="media">
             <img
@@ -49,10 +46,13 @@
                 src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
             />
         </span>
-        <span slot="test">test slot</span>
-        <span slot="description">description slot</span>
+        <div slot="title">
+            <h4>title slot</h4>
+            <p>subtitle</p>
+        </div>
+        <div slot="default">hi<c-card> </c-card></div>
 
-        <div slot="title-action">
+        <div slot="action">
             <button class="slds-button slds-button_neutral">Action</button>
         </div>
     </c-card>

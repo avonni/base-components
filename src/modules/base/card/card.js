@@ -32,11 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
-import {
-    normalizeArray,
-    normalizeObject,
-    normalizeString
-} from '../utilsPrivate/normalize';
+import { normalizeObject, normalizeString } from '../utilsPrivate/normalize';
 
 const MEDIA_POSITIONS = {
     valid: [
@@ -52,20 +48,48 @@ const MEDIA_POSITIONS = {
 };
 
 export default class Card extends LightningElement {
-    _description;
-    _href;
     _avatar;
     _title;
     _mediaPosition;
-    _backgroundImage;
 
-    // how many actions position should there be...
-    // array of
-    actionPositions = new Array();
-    titleActions = new Array();
-    imageTopRightActions = new Array();
+    showTitleSlot = false;
+    showMediaSlot = false;
+    showMediaActionSlot = false;
+    showActionSlot = false;
+    showDefaultSlot = false;
+    showFooterSlot = false;
+    _showMedia = false;
 
-    renderedCallback() {}
+    connectedCallback() {}
+
+    renderedCallback() {
+        console.log(this.mediaSlot);
+        if (this.titleSlot) {
+            this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
+        }
+        if (this.mediaSlot) {
+            this.showMediaSlot = this.mediaSlot.assignedElements().length !== 0;
+        }
+        if (this.mediaActionSlot) {
+            this.showMediaActionSlot =
+                this.mediaActionSlot.assignedElements().length !== 0;
+        }
+        if (this.actionSlot) {
+            this.showActionSlot =
+                this.actionSlot.assignedElements().length !== 0;
+        }
+        if (this.defaultSlot) {
+            this.showDefaultSlot =
+                this.defaultSlot.assignedElements().length !== 0;
+        }
+        if (this.footerSlot) {
+            this.showFooterSlot =
+                this.footerSlot.assignedElements().length !== 0;
+        }
+
+        this._showMedia = !!this.mediaSrc || this.showMediaSlot;
+        console.log(this.mediaSrc, this.showMediaSlot);
+    }
 
     /**
      * Get the title slot DOM element.
@@ -92,18 +116,18 @@ export default class Card extends LightningElement {
      *
      * @type {Element}
      */
-    get mediaActionsSlot() {
+    get mediaActionSlot() {
         return this.template.querySelector('slot[name=media-actions]');
     }
 
-    // /**
-    //  * Get the actions slot DOM element.
-    //  *
-    //  * @type {Element}
-    //  */
-    // get actionsSlot() {
-    //     return this.template.querySelector('slot[name=actions]');
-    // }
+    /**
+     * Get the actions slot DOM element.
+     *
+     * @type {Element}
+     */
+    get actionSlot() {
+        return this.template.querySelector('slot[name=actions]');
+    }
 
     // /**
     //  * Get the actions slot DOM element.
@@ -141,33 +165,18 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Href link for the title.
+     * Source for the image or media
      *
      * @type {string}
      * @public
      */
     @api
-    get href() {
-        return this._href;
+    get mediaSrc() {
+        return this._mediaSrc;
     }
 
-    set href(value) {
-        this._href = normalizeString(value);
-    }
-
-    /**
-     * Card content text.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get description() {
-        return this._description;
-    }
-
-    set description(value) {
-        this._description = normalizeString(value);
+    set mediaSrc(value) {
+        this._mediaSrc = normalizeString(value);
     }
 
     /**
@@ -189,7 +198,7 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Avatar.
+     * Avatar object
      *
      * @type {object||object[]}
      * @public
@@ -200,98 +209,14 @@ export default class Card extends LightningElement {
     }
 
     set avatar(value) {
-        this._avatar = normalizeObject(value);
-    }
-
-    /**
-     * Actions.
-     *
-     * @type {object||object[]}
-     * @public
-     */
-    @api
-    get actions() {
-        return this._actions;
-    }
-
-    set actions(value) {
-        this._actions = normalizeArray(value);
-        this.sortActions(this._actions);
-    }
-
-    sortActions(actions) {
-        actions.forEach((action) => {
-            switch (action.position) {
-                case 'title':
-                    this.titleActions.push(action);
-                    break;
-                case 'image-top-right':
-                    this.imageTopRightActions.push(action);
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    /**
-     * Icons to be displayed beside the title.
-     *
-     * @type {string[]}
-     * @public
-     * @default
-     */
-    @api
-    get icons() {
-        return this._icons;
-    }
-
-    set icons(value) {
-        // normalize...
-        this._icons = value;
-    }
-
-    /**
-     * Infos to appear as tags or links.
-     *
-     * @type {object[]}
-     * @public
-     * @default
-     */
-    @api
-    get infos() {
-        return this._infos;
-    }
-
-    set infos(value) {
-        // normalize...
-        this._infos = value;
-    }
-
-    /**
-     * Image link for the main image.
-     *
-     * @type {string}
-     * @default ''
-     * @public
-     */
-    @api
-    get imageSrc() {
-        return this._imageSrc;
-    }
-
-    set imageSrc(value) {
-        this._imageSrc = normalizeString(value);
+        if (!value) {
+            this._avatar = null;
+        } else {
+            this._avatar = normalizeObject(value);
+        }
     }
 
     // private
-
-    get hasActions() {
-        if (!this._actions) {
-            return false;
-        }
-        return true;
-    }
 
     /**
      * Generate unique ID key.
@@ -300,12 +225,8 @@ export default class Card extends LightningElement {
         return generateUUID();
     }
 
-    get hasAction() {
-        return false;
-    }
-
     get computedCardClasses() {
-        return classSet('slds-card')
+        return classSet('')
             .add({ 'image-top': this.mediaPosition === 'top' })
             .add({ 'image-left': this.mediaPosition === 'left' })
             .add({ 'image-right': this.mediaPosition === 'right' })
@@ -336,7 +257,6 @@ export default class Card extends LightningElement {
     }
 
     get showMedia() {
-        // return !!this.imageSrc;
-        return true;
+        return this._showMedia;
     }
 }

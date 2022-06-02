@@ -33,114 +33,58 @@
 -->
 
 <template>
-    <article class={computedCardClasses}>
-        <!-- only used for media center -->
-        <div class="slds-m-around_x-small" if:true={showCenterMedia}>
-            <p>{description}</p>
-            <p>
-                <template for:each={infos} for:item="info">
-                    <a key={generateKey} href={info.href}>{info.label}</a>
-                </template>
-            </p>
-        </div>
+    <article class="avonni-card">
+        <div class={computedCardClasses}>
+            <!-- only used for media center -->
+            <div if:true={showCenterMedia}>
+                <slot name="default" class="avonni-card__default-area"></slot>
+            </div>
 
-        <!-- media -->
-        <div class="avonni-card__image-container" if:true={showMedia}>
-            <slot name="media"></slot>
-            <img class="avonni-card__image" src={imageSrc} if:true={imageSrc} />
-            <slot name="image-action-container"></slot>
+            <!-- media -->
+            <div class="avonni-card__image-container">
+                <img
+                    class="avonni-card__image"
+                    src={mediaSrc}
+                    if:true={mediaSrc}
+                />
+                <slot name="media"></slot>
+                <slot name="media-action"></slot>
+            </div>
 
-            <!-- action button -->
-            <template
-                for:each={actionPositions}
-                for:item="actionList"
-            ></template>
-            <c-button-menu
-                if:true={hasActions}
-                class="media-actions"
-                variant="border-filled"
-                icon-name="standard:live_chat"
-                icon-size="small"
-                alternative-text="Actions"
-                data-element-id="action-menu-icon"
-                hide-down-arrow
-            >
-                <template for:each={actions} for:item="action">
-                    <lightning-menu-item
-                        key={action.name}
-                        icon-name={action.iconName}
-                        value={action.name}
-                        label={action.label}
-                        onclick={handleActionClick}
-                    >
-                    </lightning-menu-item>
-                </template>
-            </c-button-menu>
-
-            <button
-                if:true={hasAction}
-                class="avonni-avatar-action-button slds-button slds-button_icon"
-                data-element-id="action-icon"
-                title={action.label}
-                type="button"
-                value={action.name}
-                alternative-text={action.label}
-                onclick={handleActionClick}
-            >
-                <c-primitive-icon
-                    class="avonni-avatar-action-button-icon"
-                    icon-name={action.iconName}
-                >
-                </c-primitive-icon>
-            </button>
-        </div>
-
-        <!-- title and action -->
-        <div class="slds-has-flexi-truncate card-content">
-            <div class="slds-grid slds-m-around_x-small">
+            <!-- title and action -->
+            <div class="slds-has-flexi-truncate avonni-card__body-container">
                 <div class="slds-grid">
-                    <c-avatar
-                        if:true={avatar}
-                        class="slds-m-right_x-small"
-                        fallback-icon-name={avatar.fallbackIconName}
-                        src={avatar.src}
-                        initials="lk"
-                        hide-avatar-details="true"
-                        data-element-id="avonni-avatar"
-                    ></c-avatar>
+                    <div class="slds-grid">
+                        <c-avatar
+                            if:true={avatar}
+                            class="slds-m-right_x-small"
+                            fallback-icon-name={avatar.fallbackIconName}
+                            src={avatar.src}
+                            hide-avatar-details="true"
+                            alternative-text="avatar"
+                            data-element-id="avonni-avatar"
+                        ></c-avatar>
 
-                    <div class="slds-media__body">
-                        <span if:true={hasStringTitle}>{title}</span>
-                        <span if:false={hasStringTitle}>
+                        <div if:true={hasStringTitle}>
+                            <span>{title}</span>
+                        </div>
+                        <div if:false={hasStringTitle}>
                             <slot name="title"></slot>
-                        </span>
-                        <template for:each={icons} for:item="icon"
-                            ><lightning-icon
-                                class="slds-m-left_x-small"
-                                size="xx-small"
-                                icon-name={icon}
-                                key={generateKey}
-                            ></lightning-icon>
-                        </template>
-                        <slot name="test"></slot>
+                        </div>
+                    </div>
+
+                    <div class="slds-no-flex slds-col_bump-left">
+                        <slot name="action"></slot>
                     </div>
                 </div>
 
-                <div class="slds-no-flex slds-col_bump-left">
-                    <slot name="title-action"></slot>
+                <!-- default content -->
+                <div if:false={showCenterMedia}>
+                    <slot name="default"></slot>
+                    <slot name="footer"></slot>
                 </div>
             </div>
-
-            <!-- bottom content -->
-            <div class="slds-m-around_x-small" if:false={showCenterMedia}>
-                <slot name="description"></slot>
-                <p>{description}</p>
-                <p>
-                    <template for:each={infos} for:item="info">
-                        <a key={generateKey} href={info.href}>{info.label}</a>
-                    </template>
-                </p>
-            </div>
         </div>
+        <div>footer</div>
     </article>
 </template>
