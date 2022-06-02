@@ -32,7 +32,11 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
-import { normalizeArray, normalizeString } from '../utilsPrivate/normalize';
+import {
+    normalizeArray,
+    normalizeObject,
+    normalizeString
+} from '../utilsPrivate/normalize';
 
 const MEDIA_POSITIONS = {
     valid: [
@@ -50,6 +54,7 @@ const MEDIA_POSITIONS = {
 export default class Card extends LightningElement {
     _description;
     _href;
+    _avatar;
     _title;
     _mediaPosition;
     _backgroundImage;
@@ -184,6 +189,21 @@ export default class Card extends LightningElement {
     }
 
     /**
+     * Avatar.
+     *
+     * @type {object||object[]}
+     * @public
+     */
+    @api
+    get avatar() {
+        return this._avatar;
+    }
+
+    set avatar(value) {
+        this._avatar = normalizeObject(value);
+    }
+
+    /**
      * Actions.
      *
      * @type {object||object[]}
@@ -285,8 +305,6 @@ export default class Card extends LightningElement {
     }
 
     get computedCardClasses() {
-        if (!this.imageSrc) return '';
-
         return classSet('slds-card')
             .add({ 'image-top': this.mediaPosition === 'top' })
             .add({ 'image-left': this.mediaPosition === 'left' })

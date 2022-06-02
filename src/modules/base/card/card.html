@@ -47,12 +47,7 @@
         <!-- media -->
         <div class="avonni-card__image-container" if:true={showMedia}>
             <slot name="media"></slot>
-            <img
-                class="avonni-card__image"
-                src={imageSrc}
-                if:true={imageSrc}
-                alt=""
-            />
+            <img class="avonni-card__image" src={imageSrc} if:true={imageSrc} />
             <slot name="image-action-container"></slot>
 
             <!-- action button -->
@@ -105,8 +100,10 @@
             <div class="slds-grid slds-m-around_x-small">
                 <div class="slds-grid">
                     <c-avatar
+                        if:true={avatar}
                         class="slds-m-right_x-small"
-                        fallback-icon-name="standard:avatar"
+                        fallback-icon-name={avatar.fallbackIconName}
+                        src={avatar.src}
                         initials="lk"
                         hide-avatar-details="true"
                         data-element-id="avonni-avatar"
@@ -130,16 +127,14 @@
                 </div>
 
                 <div class="slds-no-flex slds-col_bump-left">
-                    <button class="slds-button slds-button_neutral">
-                        Action
-                    </button>
+                    <slot name="title-action"></slot>
                 </div>
             </div>
 
             <!-- bottom content -->
             <div class="slds-m-around_x-small" if:false={showCenterMedia}>
-                <div name></div>
                 <slot name="description"></slot>
+                <p>{description}</p>
                 <p>
                     <template for:each={infos} for:item="info">
                         <a key={generateKey} href={info.href}>{info.label}</a>

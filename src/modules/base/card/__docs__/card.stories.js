@@ -149,6 +149,10 @@ export default {
 // media-action slot
 // title-action slot
 
+// variants, base (border), bare, flush (no padding), inline (like list)
+// imgsrc -> mediaSrc
+
+// no actions
 const actions = [
     {
         label: 'Edit item',
