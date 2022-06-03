@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { normalizeBoolean } from '../utilsPrivate/normalize';
 
 const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
@@ -86,10 +87,34 @@ const SKELETON_VARIANTS = {
  * @descriptor avonni-skeleton
  */
 export default class Skeleton extends LightningElement {
+    /**
+     * Primary text to display, usually the name of the person.
+     *
+     * @public
+     * @type {string}
+     */
+    @api primaryText;
+    /**
+     * Secondary text to display, usually the role of the user.
+     *
+     * @public
+     * @type {string}
+     */
+    @api secondaryText;
+    /**
+     * Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.
+     *
+     * @public
+     * @type {string}
+     */
+    @api tertiaryText;
+
     _animation;
-    _height;
     _avatarSize = AVATAR_SIZES.default;
     _avatarVariant = AVATAR_VARIANTS.default;
+    _height;
+    _hideAvatarDetails = false;
+    _avatarDetails = [];
     _variant = SKELETON_VARIANTS.default;
     _width;
 
@@ -177,6 +202,22 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
+     * Hide primary, secondary and tertiary text.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideAvatarDetails() {
+        return this._hideAvatarDetails;
+    }
+
+    set hideAvatarDetails(value) {
+        this._hideAvatarDetails = normalizeBoolean(value);
+    }
+
+    /**
      * The variant changes the appearance of the skeleton. Valid values include circular, rectangular and text.
      * @type {string}
      * @default text
@@ -252,6 +293,34 @@ export default class Skeleton extends LightningElement {
                 break;
             case 'circular':
                 this.setRectangularCircularSize();
+                break;
+            default:
+                break;
+        }
+    }
+
+    handleVariant() {
+        switch (this.alternativeVariant) {
+            case 'avatar':
+                this.handleAvatarVariant();
+                break;
+            case 'badge':
+                this.handleBadge();
+                break;
+            case 'breadcrumbs':
+                this.handleBreadcrumbs();
+                break;
+            case 'button':
+                this.handleAvatarVariant();
+                break;
+            case 'button-icon':
+                this.handleAvatarVariant();
+                break;
+            case 'combobox':
+                this.handleCombobox();
+                break;
+            case 'datatable':
+                this.handleDatable();
                 break;
             default:
                 break;

@@ -38,6 +38,10 @@ export const Skeleton = ({
     avatarSize,
     avatarVariant,
     animation,
+    hideAvatarDetails,
+    primaryText,
+    secondaryText,
+    tertiaryText,
     variant,
     height,
     width
@@ -46,6 +50,10 @@ export const Skeleton = ({
     element.avatarSize = avatarSize;
     element.avatarVariant = avatarVariant;
     element.animation = animation;
+    element.hideAvatarDetails = hideAvatarDetails;
+    element.primaryText = primaryText;
+    element.secondaryText = secondaryText;
+    element.tertiaryText = tertiaryText;
     element.variant = variant;
     element.height = height;
     element.width = width;

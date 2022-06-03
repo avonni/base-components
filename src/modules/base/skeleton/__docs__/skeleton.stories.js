@@ -90,6 +90,54 @@ export default {
                 category: 'Layout'
             }
         },
+        hideAvatarDetails: {
+            name: 'hide-avatar-details',
+            control: {
+                type: 'boolean'
+            },
+            description: 'Hide primary, secondary and tertiary text.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' },
+                category: 'Details'
+            }
+        },
+        primaryText: {
+            name: 'primary-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Primary text to display, usually the name of the person.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Details'
+            }
+        },
+        secondaryText: {
+            name: 'secondary-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Secondary text to display, usually the role of the user.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Details'
+            }
+        },
+        tertiaryText: {
+            name: 'tertiary-text',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
+            table: {
+                type: { summary: 'string' },
+                category: 'Details'
+            }
+        },
         variant: {
             name: 'variant',
             control: {

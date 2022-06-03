@@ -39,6 +39,27 @@
     <template if:true={isAvatarVariant}>
         <div class={avatarWrapperClass}>
             <div class={variantClass} data-element-id="avonni-skeleton"></div>
+            <template if:false={hideAvatarDetails}>
+                <p
+                    class="slds-text-title_bold avonni-avatar__primary-text"
+                    data-element-id="avonni-avatar-primary-text"
+                >
+                    {primaryText}
+                </p>
+                <p
+                    class="avonni-avatar__secondary-text"
+                    data-element-id="avonni-avatar-secondary-text"
+                >
+                    {secondaryText}
+                </p>
+                <p
+                    if:true={showTertiaryText}
+                    class="avonni-avatar__tertiary-text"
+                    data-element-id="avonni-avatar-tertiary-text"
+                >
+                    {tertiaryText}
+                </p>
+            </template>
         </div>
     </template>
 </template>
