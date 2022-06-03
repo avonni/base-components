@@ -17,3 +17,86 @@
  * @property {string} label Label to be displayed as custom label.
  * @property {number} value Decimal value associated with custom label. Custom label will be displayed at the decimal equivalent of this value on the range.
  */
+
+/**
+ * @namespace stylingHooks
+ */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-header-text-color
+ * @default #080707
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-header-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-header-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-header-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-text-color
+ * @default #3e3e3c
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-font-size
+ * @default 0.75rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-font-style
+ * @default normal
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-range-unit-font-weight
+ * @default 400
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-thumb-color
+ * @default #0176d3
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-thumb-hover-color
+ * @default #014486
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-thumb-focus-shadow-color
+ * @default #99d3ff
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-pin-color
+ * @default #1a5296
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-slider-track-color
+ * @default #0176d3
+ * @type color
+ */

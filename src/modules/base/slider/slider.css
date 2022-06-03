@@ -301,5 +301,5 @@
 .avonni-slider__slider:focus::-webkit-slider-thumb {
     background: var(--avonni-slider-thumb-hover-color, #014486);
     box-shadow: 0px 0px 3px 1px
-        var(--avonni-slider-thumb-focus-shadow-color, #0176d3);
+        var(--avonni-slider-thumb-focus-shadow-color, #99d3ff);
 }
