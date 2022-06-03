@@ -872,8 +872,8 @@ export default class ActivityTimeline extends LightningElement {
                     'slds-is-fixed avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
                         sizeClassToAdd
                 )
-                .style('top', event.pageY + 'px')
-                .style('left', event.pageX + 'px')
+                .style('top', event.pageY - 10 + 'px')
+                .style('left', event.pageX - 10 + 'px')
                 .style('visibility', 'visible')
                 .on('mouseout', handleMouseOutOnItem.bind(this));
         };
