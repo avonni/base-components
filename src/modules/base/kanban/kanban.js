@@ -1245,6 +1245,8 @@ export default class Kanban extends LightningElement {
         let scrollTopIndex = 0;
         // calculates the index of the drop, depending on the previous tiles heights
         for (let [i, tile] of currentGroupTiles.entries()) {
+            const tileIncrementMultiplier =
+                this._releasedGroupIndex === this._clickedGroupIndex ? 1 : -1;
             offsetHeight += tile.offsetHeight + 10;
             this._releasedTileIndex = i;
             if (
@@ -1256,7 +1258,9 @@ export default class Kanban extends LightningElement {
             if (this._clickedGroupIndex === this._releasedGroupIndex)
                 this._releasedTileIndex--;
             if (
-                this._draggedTile.getBoundingClientRect().y <
+                this._draggedTile.getBoundingClientRect().y +
+                    tileIncrementMultiplier *
+                        (this._draggedTile.offsetHeight / 2) <
                 offsetHeight - tile.offsetHeight / 2
             ) {
                 break;
