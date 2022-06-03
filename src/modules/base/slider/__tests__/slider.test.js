@@ -1011,7 +1011,6 @@ describe('Slider', () => {
                 jest.spyOn(firstInput, 'clientWidth', 'get').mockReturnValue(
                     100
                 );
-
                 // we move the mouse at offsetX = 50
                 let customEvent = new MouseEvent('mousemove', {
                     offsetX: 50

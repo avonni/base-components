@@ -136,6 +136,7 @@ export default class Slider extends LightningElement {
     _disabled = false;
     _value = (DEFAULT_MAX - DEFAULT_MIN) / 2;
     _min = DEFAULT_MIN;
+    _minimumDistance = DEFAULT_MIN;
     _max = DEFAULT_MAX;
     _pin = false;
     _size = SLIDER_SIZES.default;
@@ -147,7 +148,6 @@ export default class Slider extends LightningElement {
     _showTickMarks = false;
     _disableSwap = false;
     _tickMarkStyle = TICK_MARK_STYLES.default;
-    _minimumDistance = DEFAULT_MIN;
     _removeTrack = false;
 
     _computedValues = [(DEFAULT_MAX - DEFAULT_MIN) / 2];
@@ -268,12 +268,12 @@ export default class Slider extends LightningElement {
      */
     @api
     get minimumDistance() {
-        return this._computedMinimumDistance;
+        return this._minimumDistance;
     }
     set minimumDistance(value) {
         const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
-            this._computedMinimumDistance = intValue;
+            this._minimumDistance = intValue;
         }
     }
 
@@ -498,12 +498,10 @@ export default class Slider extends LightningElement {
                 this._computedValues.push(val);
             });
         }
-        if (this._connected) {
-            this.scaleValues();
-        }
         this._computedValues = this._computedValues.sort((a, b) => a - b);
         this.updatePublicValue();
         if (this._connected) {
+            this.scaleValues();
             this.capValues();
         }
         this._removeTrack =
@@ -739,7 +737,7 @@ export default class Slider extends LightningElement {
     }
 
     scaleValues() {
-        if (this._computedValues.length === 1) {
+        if (!isNaN(this._value)) {
             this._computedValues = [this._value * this._scalingFactor];
         } else {
             this._computedValues = this._value.map(
@@ -757,6 +755,7 @@ export default class Slider extends LightningElement {
             this._value = this._computedValues.map(
                 (val) => val / this._scalingFactor
             );
+            this._value = this._value.sort((a, b) => a - b);
         }
     }
 
@@ -1101,20 +1100,20 @@ export default class Slider extends LightningElement {
             neighborIndex = updatedSliderIndex - 1;
             if (
                 newValues[updatedSliderIndex] - newValues[neighborIndex] <
-                this._computedMinimumDistance
+                this._minimumDistance
             ) {
                 newValues[updatedSliderIndex] =
-                    newValues[neighborIndex] + this._computedMinimumDistance;
+                    newValues[neighborIndex] + this._minimumDistance;
             }
         }
         if (hasRightNeighbor) {
             neighborIndex = updatedSliderIndex + 1;
             if (
                 newValues[neighborIndex] - newValues[updatedSliderIndex] <
-                this._computedMinimumDistance
+                this._minimumDistance
             ) {
                 newValues[updatedSliderIndex] =
-                    newValues[neighborIndex] - this._computedMinimumDistance;
+                    newValues[neighborIndex] - this._minimumDistance;
             }
         }
     }
