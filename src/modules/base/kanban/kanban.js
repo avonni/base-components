@@ -638,6 +638,8 @@ export default class Kanban extends LightningElement {
             this._scrollWidth = this.template.querySelector(
                 '[data-element-id="avonni-kanban__container"]'
             ).scrollWidth;
+
+            this.capFieldHeight();
         });
         resizeObserver.observe(container);
         return resizeObserver;
