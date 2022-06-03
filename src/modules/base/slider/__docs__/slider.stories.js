@@ -369,13 +369,47 @@ const Template = (args) => Slider(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    label: 'Slider label',
-    value: [50]
+    label: 'Slider label'
 };
 
-export const CustomLabel = Template.bind({});
-CustomLabel.args = {
-    label: 'Custom label slider',
+export const Pin = Template.bind({});
+Pin.args = {
+    label: 'Slide to view value pin',
+    pin: true
+};
+
+export const UnitPercent = Template.bind({});
+UnitPercent.args = {
+    label: 'Unit percent slider',
+    unit: 'percent',
+    min: 0,
+    max: 1,
+    pin: true
+};
+
+export const UnitCurrencyCAD = Template.bind({});
+UnitCurrencyCAD.args = {
+    label: 'Unit currency (CAD) slider',
+    unit: 'currency',
+    unitAttributes: {
+        currencyCode: 'CAD'
+    },
+    pin: true
+};
+
+export const StepMinMax = Template.bind({});
+StepMinMax.args = {
+    label: 'StepMinMax',
+    value: 0,
+    min: -20,
+    max: 20,
+    step: 5,
+    pin: true
+};
+
+export const CustomLabels = Template.bind({});
+CustomLabels.args = {
+    label: 'Custom labels slider',
     step: 1,
     value: [5],
     min: 0,

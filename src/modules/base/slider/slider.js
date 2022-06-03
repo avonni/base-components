@@ -42,6 +42,7 @@ import { AvonniResizeObserver } from 'c/resizeObserver';
 
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
+const PERCENT_SCALING_FACTOR = 100;
 const DEFAULT_STEP = 1;
 const INPUT_THUMB_RADIUS = 8.5;
 
@@ -238,12 +239,19 @@ export default class Slider extends LightningElement {
      */
     @api
     get min() {
-        return this._min;
+        let transformedValue = this._min;
+        if (this.isPercentUnit) {
+            transformedValue = transformedValue / PERCENT_SCALING_FACTOR;
+        }
+        return transformedValue;
     }
 
     set min(value) {
-        const intValue = parseInt(value, 10);
+        let intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
+            if (this.isPercentUnit) {
+                intValue = intValue * PERCENT_SCALING_FACTOR;
+            }
             this._min = intValue;
         }
     }
@@ -275,12 +283,19 @@ export default class Slider extends LightningElement {
      */
     @api
     get max() {
-        return this._max;
+        let transformedValue = this._max;
+        if (this.isPercentUnit) {
+            transformedValue = transformedValue / PERCENT_SCALING_FACTOR;
+        }
+        return transformedValue;
     }
 
     set max(value) {
-        const intValue = parseInt(value, 10);
+        let intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
+            if (this.isPercentUnit) {
+                intValue = intValue * PERCENT_SCALING_FACTOR;
+            }
             this._max = intValue;
         }
     }
@@ -472,24 +487,34 @@ export default class Slider extends LightningElement {
      */
     @api
     get value() {
-        if (this._values.length !== 1) {
-            return [...this._values].sort((a, b) => a - b);
+        let transformedValues = [...this._values];
+        if (this.isPercentUnit) {
+            transformedValues = this._values.map(
+                (val) => val / PERCENT_SCALING_FACTOR
+            );
         }
-        return this._values[0];
+        if (this._values.length !== 1) {
+            return transformedValues.sort((a, b) => a - b);
+        }
+        return transformedValues[0];
     }
 
     set value(value) {
+        if (value !== 0 && !value) {
+            return;
+        }
         if (!isNaN(Number(value))) {
-            this._values = [];
-            this._values[0] = Math.min(
-                Math.max(Number(value), this.min),
-                this.max
-            );
+            this._values = [Number(value)];
         } else {
             this._values = [];
             normalizeArray(value, 'number').forEach((val) => {
                 this._values.push(val);
             });
+        }
+        if (this.isPercentUnit) {
+            this._values = this._values.map(
+                (val) => val * PERCENT_SCALING_FACTOR
+            );
         }
         this._values = this._values.sort((a, b) => a - b);
         if (this._connected) {
@@ -647,7 +672,6 @@ export default class Slider extends LightningElement {
     get isVertical() {
         return this._type === 'vertical';
     }
-
     /**
      * Verify if range is horizontal.
      *
@@ -655,6 +679,14 @@ export default class Slider extends LightningElement {
      */
     get isHorizontal() {
         return this._type === 'horizontal';
+    }
+    /**
+     * Verify if the unit is percent.
+     *
+     * @type {boolean}
+     */
+    get isPercentUnit() {
+        return this._unit === 'percent';
     }
     /**
      * Verify if range is vertical and does not have custom labels.
@@ -1009,9 +1041,13 @@ export default class Slider extends LightningElement {
         let bubbleProgress =
             this.getPercentOfValue(
                 this._values[parseInt(event.target.dataset.index, 10)]
-            ) * 100;
-        bubble.firstChild.firstChild.value =
+            ) * PERCENT_SCALING_FACTOR;
+        let transformedValue =
             this._values[parseInt(event.target.dataset.index, 10)];
+        if (this.isPercentUnit) {
+            transformedValue = transformedValue / PERCENT_SCALING_FACTOR;
+        }
+        bubble.firstChild.firstChild.value = transformedValue;
 
         bubble.style.left =
             'calc(' +
@@ -1075,7 +1111,8 @@ export default class Slider extends LightningElement {
         if (this._values.length >= 2) {
             const lowestValue = Math.max(...[Math.min(...values), this.min]);
             this._progress.style.left =
-                this.getPercentOfValue(lowestValue) * 100 + '%';
+                this.getPercentOfValue(lowestValue) * PERCENT_SCALING_FACTOR +
+                '%';
             this._progressInterval[0] = lowestValue - this.min;
         } else {
             this._progress.style.left = '0%';
@@ -1083,7 +1120,9 @@ export default class Slider extends LightningElement {
         }
         const highestValue = Math.min(...[Math.max(...values), this.max]);
         this._progress.style.right =
-            100 - this.getPercentOfValue(highestValue) * 100 + '%';
+            PERCENT_SCALING_FACTOR -
+            this.getPercentOfValue(highestValue) * PERCENT_SCALING_FACTOR +
+            '%';
         this._progressInterval[1] = highestValue - this.min;
         if (this.showAnyTickMarks) {
             this.drawRuler();

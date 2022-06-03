@@ -53,6 +53,8 @@ const MOCK_CUSTOM_LABELS = [
 ];
 
 // Not tested:
+// Tick Marks positions (tested visually in storybook)
+// Custom Label positions (tested visually in storybook)
 // AvonniResizeObserver callback function (tested visually in storybook)
 
 let element;
