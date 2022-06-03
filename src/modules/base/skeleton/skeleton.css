@@ -8,10 +8,13 @@
 }
 
 .avonni-avatar__primary-text {
+    animation: pulse-animation 1s infinite;
     color: var(--avonni-avatar-primary-text-color, #000000);
     font-size: var(--avonni-avatar-primary-text-font-size, 0.875rem);
     font-style: var(--avonni-avatar-primary-text-font-style, normal);
     font-weight: var(--avonni-avatar-primary-text-font-weight, 700);
+    min-height: var(--avonni-avatar-primary-text-font-size, 0.875rem);
+    height: 100%;
 }
 
 .avonni-avatar__secondary-text {
@@ -19,6 +22,8 @@
     font-size: var(--avonni-avatar-secondary-text-font-size, 0.8125rem);
     font-style: var(--avonni-avatar-secondary-text-font-style, normal);
     font-weight: var(--avonni-avatar-secondary-text-font-weight, 400);
+    min-height: var(--avonni-avatar-secondary-text-font-size, 0.8125rem);
+    height: 100%;
 }
 
 .avonni-avatar__tertiary-text {
@@ -26,11 +31,17 @@
     font-size: var(--avonni-avatar-tertiary-text-font-size, 0.8125rem);
     font-style: var(--avonni-avatar-tertiary-text-font-style, normal);
     font-weight: var(--avonni-avatar-tertiary-text-font-weight, 400);
+    min-height: var(--avonni-avatar-tertiary-text-font-size, 0.8125rem);
+    height: 100%;
 }
 
 .avonni-skeleton__animation-pulse {
     height: 100%;
     animation: pulse-animation 1s infinite;
+}
+
+.avonni-skeleton-avatar__paragraph-margin p {
+    margin-bottom: 0.25em;
 }
 
 @keyframes pulse-animation {

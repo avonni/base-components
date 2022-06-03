@@ -111,13 +111,23 @@ export default class Skeleton extends LightningElement {
         return this.variant === 'avatar';
     }
 
+    // @api
+    // get hideAvatarDetails() {
+    //     return (
+    //         !this.variantAttributes.primaryText &&
+    //         !this.variantAttributes.secondaryText &&
+    //         !this.variantAttributes.tertiaryText
+    //     );
+    // }
+
     @api
-    get hideAvatarDetails() {
-        return (
-            !this.variantAttributes.primaryText &&
-            !this.variantAttributes.secondaryText &&
-            !this.variantAttributes.tertiaryText
-        );
+    get showPrimaryText() {
+        return this.variantAttributes.primaryText;
+    }
+
+    @api
+    get showSecondaryText() {
+        return this.variantAttributes.secondaryText;
     }
 
     /**
@@ -127,8 +137,9 @@ export default class Skeleton extends LightningElement {
      */
     get showTertiaryText() {
         return (
-            this._variantAttributes.size === 'x-large' ||
-            this._variantAttributes.size === 'xx-large'
+            (this._variantAttributes.size === 'x-large' ||
+                this._variantAttributes.size === 'xx-large') &&
+            this.variantAttributes.tertiaryText
         );
     }
 
@@ -316,10 +327,12 @@ export default class Skeleton extends LightningElement {
                     this.variantAttributes.variant === 'circle'
             });
 
-        // const parentWrapperClass = classSet('').add('slds-text-align_right');
+        const parentWrapperClass = classSet('').add(
+            'avonni-skeleton-avatar__paragraph-margin'
+        );
 
         console.log('first');
-        // this.parentAvatarWrapper = parentWrapperClass;
+        this.parentAvatarWrapper = parentWrapperClass;
         this.avatarWrapperClass = wrapperClass;
     }
 }

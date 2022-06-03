@@ -37,34 +37,44 @@
         <div class={variantClass} data-element-id="avonni-skeleton"></div>
     </template>
     <template if:true={isAvatarVariant}>
-        <c-media-object class={parentAvatarWrapper}>
+        <c-media-object
+            class={parentAvatarWrapper}
+            data-element-id="avatar-media-object"
+        >
             <div class={avatarWrapperClass} slot="figure">
                 <div
                     class={variantClass}
                     data-element-id="avonni-skeleton"
                 ></div>
             </div>
-            <template if:false={hideAvatarDetails}>
-                <p
-                    class="slds-text-title_bold avonni-avatar__primary-text"
-                    data-element-id="avonni-avatar-primary-text"
-                >
-                    {primaryText}
-                </p>
-                <p
-                    class="avonni-avatar__secondary-text"
-                    data-element-id="avonni-avatar-secondary-text"
-                >
-                    {secondaryText}
-                </p>
-                <p
-                    if:true={showTertiaryText}
-                    class="avonni-avatar__tertiary-text"
-                    data-element-id="avonni-avatar-tertiary-text"
-                >
-                    {tertiaryText}
-                </p>
-            </template>
+            <!-- <template if:false={hideAvatarDetails}> -->
+            <p
+                if:true={showPrimaryText}
+                class="
+                    slds-text-title_bold
+                    avonni-avatar__primary-text
+                    avonni-skeleton__variant-text
+                "
+                data-element-id="avonni-avatar-primary-text"
+            ></p>
+            <p
+                if:true={showSecondaryText}
+                class="
+                    avonni-avatar__secondary-text
+                    avonni-skeleton__variant-text
+                    avonni-skeleton__animation-pulse
+                "
+                data-element-id="avonni-avatar-secondary-text"
+            ></p>
+            <p
+                if:true={showTertiaryText}
+                class="
+                    avonni-avatar__tertiary-text
+                    avonni-skeleton__variant-text
+                    avonni-skeleton__animation-pulse
+                "
+                data-element-id="avonni-avatar-tertiary-text"
+            ></p>
         </c-media-object>
     </template>
 </template>
