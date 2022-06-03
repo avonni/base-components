@@ -491,15 +491,15 @@ export default class Slider extends LightningElement {
             return;
         }
         if (!isNaN(Number(value))) {
-            this._computedValues = [Number(value)];
+            this._value = [Number(value)];
         } else {
-            this._computedValues = [];
+            this._value = [];
             normalizeArray(value, 'number').forEach((val) => {
-                this._computedValues.push(val);
+                this._value.push(val);
             });
         }
-        this._computedValues = this._computedValues.sort((a, b) => a - b);
-        this.updatePublicValue();
+        this._value = this._value.sort((a, b) => a - b);
+        this._computedValues = [...this._value];
         if (this._connected) {
             this.scaleValues();
             this.capValues();
@@ -983,8 +983,8 @@ export default class Slider extends LightningElement {
         if (this._pin) {
             this.setBubblePosition(event);
         }
-        this.changeRange();
         this.updatePublicValue();
+        this.changeRange();
     }
 
     /**

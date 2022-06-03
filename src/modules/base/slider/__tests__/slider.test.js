@@ -176,7 +176,7 @@ describe('Slider', () => {
     it('min = 10', () => {
         element.disableSwap = false;
         element.min = 10;
-        element.value = 5;
+        element.value = 0;
 
         return Promise.resolve().then(() => {
             expect(element.min).toEqual(10);
@@ -429,6 +429,25 @@ describe('Slider', () => {
             );
             inputs.forEach((input) => {
                 expect(input.step).toEqual('3');
+            });
+        });
+    });
+
+    it('step = 0.1', () => {
+        element.min = 0;
+        element.max = 10;
+        element.step = 0.1;
+        element.value = 5.5;
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-group-name="input"]'
+            );
+            inputs.forEach((input) => {
+                expect(input.step).toEqual('0.1');
+                expect(element.min).toEqual(0);
+                expect(element.max).toEqual(10);
+                expect(element.value).toEqual(5.5);
             });
         });
     });
@@ -846,6 +865,49 @@ describe('Slider', () => {
         });
     });
 
+    /* ----- EVENTS ------ */
+
+    // change
+    it('change event on input (single value)', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        element.value = 34;
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-group-name="input"]'
+            );
+            input.dispatchEvent(new CustomEvent('input'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toEqual(34);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    it('change event on input (multiple value)', () => {
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+
+        element.value = [1, 2, 3];
+
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-group-name="input"]'
+            );
+            input.dispatchEvent(new CustomEvent('input'));
+
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.value).toEqual([1, 2, 3]);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
     /* ----- EVENT LISTENERS ----- */
 
     //onmousemove
@@ -923,6 +985,7 @@ describe('Slider', () => {
     it('input change with pin = true)', () => {
         element.min = 0;
         element.max = 10;
+        element.step = 0.5;
         element.pin = true;
         element.value = 5;
         let input;
