@@ -382,6 +382,10 @@ export default class Slider extends LightningElement {
 
     set step(value) {
         this._step = Number(value);
+        if (this._connected) {
+            this.capValues();
+        }
+        this._domModified = true;
     }
 
     /**
@@ -520,7 +524,7 @@ export default class Slider extends LightningElement {
         if (this._connected) {
             this.capValues();
         }
-        this._removeTrack = this._values.length > 2;
+        this._removeTrack = this._values.length > 2 || this._removeTrack;
         this._domModified = true;
     }
 
@@ -722,6 +726,13 @@ export default class Slider extends LightningElement {
     get highlightColor() {
         return this.disabled ? '#919191' : '#0176D3';
     }
+    get privateMax() {
+        return this._max;
+    }
+
+    get privateMin() {
+        return this._min;
+    }
     /**
      * To show or not the tick marks.
      *
@@ -747,7 +758,9 @@ export default class Slider extends LightningElement {
 
     capValues() {
         this._values.forEach((val, index) => {
-            this._values[index] = Math.min(Math.max(val, this.min), this.max);
+            this._values[index] = Math.min(Math.max(val, this._min), this._max);
+            this._values[index] =
+                Math.round(this._values[index] / this._step) * this._step;
         });
     }
 
@@ -787,7 +800,7 @@ export default class Slider extends LightningElement {
             child.remove();
         });
         const totalWidth = ruler.clientWidth;
-        const numberOfSteps = (this.max - this.min) / this.step;
+        const numberOfSteps = (this._max - this._min) / this.step;
         const stepWidth = (totalWidth - INPUT_THUMB_RADIUS * 2) / numberOfSteps;
         let leftPosition = INPUT_THUMB_RADIUS;
 
@@ -828,7 +841,7 @@ export default class Slider extends LightningElement {
 
         // drawTicks
         for (let i = 0; i < numberOfSteps + 1; i++) {
-            const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
+            const valueOfStep = (i / numberOfSteps) * (this._max - this._min);
 
             const isColored =
                 this._progressInterval[0] <= valueOfStep &&
@@ -838,7 +851,7 @@ export default class Slider extends LightningElement {
                 isMajorStep =
                     isMajorStep ||
                     this._customLabels.some(
-                        (customLabel) => customLabel.value === i + this.min
+                        (customLabel) => customLabel.value === i + this._min
                     );
             }
             if (this.showOnlyMajorTicks && !isMajorStep) {
@@ -873,7 +886,7 @@ export default class Slider extends LightningElement {
                 isMajorStep =
                     isMajorStep ||
                     this._customLabels.some(
-                        (customLabel) => customLabel.value === i + this.min
+                        (customLabel) => customLabel.value === i + this._min
                     );
             }
             if (this.showOnlyMajorTicks && !isMajorStep) {
@@ -899,7 +912,7 @@ export default class Slider extends LightningElement {
     drawDotRuler(numberOfSteps, leftPosition, stepWidth) {
         const ruler = this._ruler;
         for (let i = 0; i < numberOfSteps + 1; i++) {
-            const valueOfStep = (i / numberOfSteps) * (this.max - this.min);
+            const valueOfStep = (i / numberOfSteps) * (this._max - this._min);
             const isColored =
                 this._progressInterval[0] <= valueOfStep &&
                 valueOfStep <= this._progressInterval[1];
@@ -908,7 +921,7 @@ export default class Slider extends LightningElement {
                 isMajorStep =
                     isMajorStep ||
                     this._customLabels.some(
-                        (customLabel) => customLabel.value === i + this.min
+                        (customLabel) => customLabel.value === i + this._min
                     );
             }
             if (this.showOnlyMajorTicks && !isMajorStep) {
@@ -952,7 +965,7 @@ export default class Slider extends LightningElement {
      * @type {number}
      */
     getPercentOfValue(value) {
-        return (value - this.min) / (this.max - this.min);
+        return (value - this._min) / (this._max - this._min);
     }
 
     /**
@@ -1105,25 +1118,25 @@ export default class Slider extends LightningElement {
             this.values[i] = values[i];
         }
         if (this._removeTrack) {
-            this._progressInterval = [this.min - 1, this.min - 1];
+            this._progressInterval = [this._min - 1, this._min - 1];
             return;
         }
         if (this._values.length >= 2) {
-            const lowestValue = Math.max(...[Math.min(...values), this.min]);
+            const lowestValue = Math.max(...[Math.min(...values), this._min]);
             this._progress.style.left =
                 this.getPercentOfValue(lowestValue) * PERCENT_SCALING_FACTOR +
                 '%';
-            this._progressInterval[0] = lowestValue - this.min;
+            this._progressInterval[0] = lowestValue - this._min;
         } else {
             this._progress.style.left = '0%';
-            this._progressInterval[0] = this.min;
+            this._progressInterval[0] = this._min;
         }
-        const highestValue = Math.min(...[Math.max(...values), this.max]);
+        const highestValue = Math.min(...[Math.max(...values), this._max]);
         this._progress.style.right =
             PERCENT_SCALING_FACTOR -
             this.getPercentOfValue(highestValue) * PERCENT_SCALING_FACTOR +
             '%';
-        this._progressInterval[1] = highestValue - this.min;
+        this._progressInterval[1] = highestValue - this._min;
         if (this.showAnyTickMarks) {
             this.drawRuler();
         }
