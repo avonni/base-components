@@ -417,6 +417,29 @@ export default class Kanban extends LightningElement {
             }
         }
 
+        // translates the tiles up when the dragged tile is hovering the last one to prevent overflow
+        if (
+            this._releasedTileIndex ===
+                this._groupsLength[this._releasedGroupIndex] &&
+            releasedChilds[this._releasedTileIndex - 1]
+        ) {
+            releasedChilds[
+                this._releasedTileIndex - 1
+            ].style.marginBottom = `${this._draggedTile.offsetHeight}px`;
+            for (let i = 0; i < releasedChilds.length; i++) {
+                if (
+                    releasedChilds[i] &&
+                    releasedChilds[i] !== this._draggedTile
+                ) {
+                    releasedChilds[i].classList.add(
+                        'avonni-kanban__tile_moved'
+                    );
+                    releasedChilds[i].style.transform = `translateY(${-this
+                        ._draggedTile.offsetHeight}px)`;
+                }
+            }
+        }
+
         this.resetAnimations(groups);
     }
 
@@ -659,7 +682,6 @@ export default class Kanban extends LightningElement {
         );
 
         // removes the translation on all tiles
-        // resets the height to 100% on all fields
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
@@ -671,6 +693,7 @@ export default class Kanban extends LightningElement {
             Array.from(group.children).forEach((tile) => {
                 tile.classList.remove('avonni-kanban__tile_moved');
                 tile.style.transform = `translateY(0px)`;
+                tile.style.marginBottom = '0px';
             });
         });
 
@@ -1063,7 +1086,6 @@ export default class Kanban extends LightningElement {
 
         // resets animations
         Array.from(groups).forEach((group, i) => {
-            // resets the height to 100% on other fields
             if (group !== groups[this._releasedGroupIndex]) {
                 group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
                 group.style.height = 'fit-content';
@@ -1078,6 +1100,8 @@ export default class Kanban extends LightningElement {
             Array.from(group.children)
                 .filter((child) => child !== this._draggedTile)
                 .forEach((tile, j) => {
+                    if (i !== this._releasedGroupIndex)
+                        tile.style.marginBottom = '0px';
                     if (
                         i !== this._releasedGroupIndex ||
                         j < this._releasedTileIndex
