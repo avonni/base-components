@@ -658,7 +658,8 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
                 'avonni-scheduler__event-wrapper_focused': this._focused,
                 'slds-p-vertical_xx-small':
                     theme !== 'line' && !this.isVertical,
-                'slds-p-vertical_x-small': theme !== 'line' && this.isVertical,
+                'avonni-scheduler__event_vertical':
+                    theme !== 'line' && this.isVertical,
                 'slds-p-bottom_xx-small': theme === 'line'
             })
             .toString();

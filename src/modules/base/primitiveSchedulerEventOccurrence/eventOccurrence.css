@@ -77,6 +77,7 @@
 
 .avonni-scheduler__event-label_center {
     position: sticky;
+    transition: transform ease-in 100ms;
 }
 
 .avonni-scheduler__event-wrapper_vertical {
@@ -158,6 +159,9 @@
 .avonni-scheduler__event:hover .avonni-scheduler__event-resize-icon {
     visibility: visible;
 }
+.avonni-scheduler__event_vertical:hover .avonni-scheduler__event-label_center {
+    transform: translateY(0.75rem);
+}
 
 .avonni-scheduler__event-resize-icon {
     visibility: hidden;
@@ -166,6 +170,7 @@
     top: 50%;
     transform: translateY(-50%);
     cursor: col-resize;
+    z-index: 1;
 }
 
 .avonni-scheduler__event-wrapper_vertical .avonni-scheduler__event-resize-icon {
