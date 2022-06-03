@@ -8,6 +8,7 @@
 }
 
 .avonni-skeleton__animation-pulse {
+    height: 100%;
     animation: pulse-animation 1s infinite;
 }
 

@@ -272,7 +272,6 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for rectangular and circular variants
      */
     setRectangularCircularSize() {
-        console.log(`this is the height: ${this.height}`);
         let element = this.skeleton;
         element.style.height =
             this.height === undefined ? '1.2em' : `${this.height}`;
@@ -281,7 +280,6 @@ export default class Skeleton extends LightningElement {
     }
 
     updateAvatarClassList() {
-        console.log('starting update avatar classes');
         const wrapperClass = classSet('')
             // .add(`avonni-avatar_${this.avatarVariant}`)
             .add({
@@ -293,8 +291,6 @@ export default class Skeleton extends LightningElement {
                 'avonni-avatar_x-large': this.avatarSize === 'x-large',
                 'avonni-avatar_xx-large': this.avatarSize === 'xx-large'
             });
-        console.log(`wrapper class: ${wrapperClass}`);
         this.avatarWrapperClass = wrapperClass;
-        console.log('ending update avatar classes');
     }
 }
