@@ -80,9 +80,9 @@ export default class Skeleton extends LightningElement {
     parentAvatarWrapper;
     avatarWrapperClass;
     avatarClass;
-    primaryText;
-    secondaryText;
-    tertiaryText;
+    primaryTextClass;
+    secondaryTextClass;
+    tertiaryTextClass;
 
     connectedCallback() {
         if (this.isAvatarVariant) this.updateAvatarClassList();
@@ -331,8 +331,24 @@ export default class Skeleton extends LightningElement {
             'avonni-skeleton-avatar__paragraph-margin'
         );
 
+        const primaryTextClass = classSet('slds-text-title_bold')
+            .add('avonni-avatar__primary-text')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+
+        const secondaryTextClass = classSet('avonni-avatar__secondary-text')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+
+        const tertiaryTextClass = classSet('avonni-avatar__tertiary-text')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+
         console.log('first');
         this.parentAvatarWrapper = parentWrapperClass;
         this.avatarWrapperClass = wrapperClass;
+        this.primaryTextClass = primaryTextClass;
+        this.secondaryTextClass = secondaryTextClass;
+        this.tertiaryTextClass = tertiaryTextClass;
     }
 }

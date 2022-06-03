@@ -8,7 +8,6 @@
 }
 
 .avonni-avatar__primary-text {
-    animation: pulse-animation 1s infinite;
     color: var(--avonni-avatar-primary-text-color, #000000);
     font-size: var(--avonni-avatar-primary-text-font-size, 0.875rem);
     font-style: var(--avonni-avatar-primary-text-font-style, normal);
