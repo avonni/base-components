@@ -14,6 +14,8 @@
  * @property {string} backgroundColor Color of the group's background.
  * @property {string} label Group label.
  * @property {string} value Unique value for the group.
+ * @property {object[]} headerActions Array of actions to be displayed in the group header.
+ * @property {object[]} footerActions Array of actions to be displayed in the group footer.
  */
 
 /**
@@ -23,4 +25,20 @@
  * @property {string} label Label of the field.
  * @property {string} type Required. The data type to be used for data formatting.
  * @property {object} typeAttributes Provides custom formatting with component attributes for the data type. For example, currency-code for the currency type.
+ */
+
+/**
+ * @namespace stylingHooks
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-column-min-width
+ * @default 14.5em
+ * @type width
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-column-max-width
+ * @default 22.5em
+ * @type width
  */
