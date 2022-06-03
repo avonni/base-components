@@ -391,6 +391,7 @@ export const UnitCurrencyCAD = Template.bind({});
 UnitCurrencyCAD.args = {
     label: 'Unit currency (CAD) slider',
     unit: 'currency',
+    step: 0.05,
     unitAttributes: {
         currencyCode: 'CAD'
     },

@@ -551,6 +551,8 @@ describe('Slider', () => {
 
     it('unit = percent', () => {
         element.unit = 'percent';
+        element.min = 0;
+        element.max = 0;
 
         return Promise.resolve().then(() => {
             const formattedNumbers = element.shadowRoot.querySelectorAll(
