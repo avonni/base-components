@@ -1,7 +1,11 @@
 <template>
-    <avonni-alert icon-name="utility:user">
+    <avonni-alert
+        close-action={closeAction}
+        icon-name="utility:user"
+        is-dismissible
+    >
         <p class="slds-m-bottom_none">
-            Logged in as John Smith (johnsmith@acme.com).
+            Logged in as John Smith (johnsmith@acme.com).&nbsp;
             <a class="slds-text-color_inverse-weak" href="javascript:void(0);"
                 >Log out</a
             >
