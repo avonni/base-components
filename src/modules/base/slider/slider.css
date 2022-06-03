@@ -295,7 +295,6 @@
 }
 .avonni-slider__slider:hover::-webkit-slider-thumb {
     background: var(--avonni-slider-thumb-hover-color, #014486);
-    filter: brightness(70%);
 }
 
 .avonni-slider__slider:focus::-webkit-slider-thumb {
