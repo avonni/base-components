@@ -35,37 +35,6 @@ import { Skeleton } from '../__examples__/skeleton';
 export default {
     title: 'Example/Skeleton',
     argTypes: {
-        avatarSize: {
-            name: 'avatar-size',
-            control: {
-                type: 'select'
-            },
-            options: [
-                'xx-small',
-                'x-small',
-                'small',
-                'medium',
-                'large',
-                'x-large',
-                'xx-large'
-            ],
-            description: 'The size of the avatar variant.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Layout'
-            }
-        },
-        avatarVariant: {
-            name: 'avatar-variant',
-            control: {
-                type: 'select'
-            },
-            options: ['circle', 'square'],
-            table: {
-                type: { summary: 'string' },
-                category: 'Layout'
-            }
-        },
         animation: {
             name: 'animation',
             control: {
@@ -90,52 +59,14 @@ export default {
                 category: 'Layout'
             }
         },
-        hideAvatarDetails: {
-            name: 'hide-avatar-details',
+        variantAttributes: {
             control: {
-                type: 'boolean'
+                name: 'variant-attributes',
+                type: 'object'
             },
-            description: 'Hide primary, secondary and tertiary text.',
+            description: 'Array of option objects.',
             table: {
-                defaultValue: { summary: 'false' },
-                type: { summary: 'boolean' },
-                category: 'Details'
-            }
-        },
-        primaryText: {
-            name: 'primary-text',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Primary text to display, usually the name of the person.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Details'
-            }
-        },
-        secondaryText: {
-            name: 'secondary-text',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Secondary text to display, usually the role of the user.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Details'
-            }
-        },
-        tertiaryText: {
-            name: 'tertiary-text',
-            control: {
-                type: 'text'
-            },
-            description:
-                'Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.',
-            table: {
-                type: { summary: 'string' },
-                category: 'Details'
+                type: { summary: 'object' }
             }
         },
         variant: {

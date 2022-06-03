@@ -33,28 +33,9 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
-import { normalizeBoolean } from '../utilsPrivate/normalize';
 
 const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
-};
-
-const AVATAR_SIZES = {
-    valid: [
-        'xx-small',
-        'x-small',
-        'small',
-        'medium',
-        'large',
-        'x-large',
-        'xx-large'
-    ],
-    default: 'medium'
-};
-
-const AVATAR_VARIANTS = {
-    valid: ['circle', 'square'],
-    default: 'square'
 };
 
 const SKELETON_VARIANTS = {
@@ -87,49 +68,33 @@ const SKELETON_VARIANTS = {
  * @descriptor avonni-skeleton
  */
 export default class Skeleton extends LightningElement {
-    /**
-     * Primary text to display, usually the name of the person.
-     *
-     * @public
-     * @type {string}
-     */
-    @api primaryText;
-    /**
-     * Secondary text to display, usually the role of the user.
-     *
-     * @public
-     * @type {string}
-     */
-    @api secondaryText;
-    /**
-     * Tertiary text to display, usually the status of the user. The tertiary text will only be shown when using size x-large and xx-large.
-     *
-     * @public
-     * @type {string}
-     */
-    @api tertiaryText;
-
+    _variantAttributes = {};
     _animation;
-    _avatarSize = AVATAR_SIZES.default;
-    _avatarVariant = AVATAR_VARIANTS.default;
     _height;
-    _hideAvatarDetails = false;
-    _avatarDetails = [];
     _variant = SKELETON_VARIANTS.default;
     _width;
 
     _waveVariant;
     _initialAvatarRender = false;
 
+    parentAvatarWrapper;
     avatarWrapperClass;
     avatarClass;
+    primaryText;
+    secondaryText;
+    tertiaryText;
 
     connectedCallback() {
-        this.updateAvatarClassList();
+        if (this.isAvatarVariant) this.updateAvatarClassList();
+        this.primaryText = this.variantAttributes.primaryText;
+        this.secondaryText = this.variantAttributes.secondaryText;
+        this.tertiaryText = this.variantAttributes.tertiaryText;
     }
 
     renderedCallback() {
-        if (!this.isAvatarVariant) this.setSkeletonSize();
+        // if (!this.isAvatarVariant) this.setSkeletonSize();
+
+        if (!this.isAvatarVariant) this.handleVariant();
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
         //     this._initialAvatarRender = true;
@@ -147,29 +112,32 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
-    get avatarSize() {
-        return this._avatarSize;
+    get hideAvatarDetails() {
+        return (
+            !this.variantAttributes.primaryText &&
+            !this.variantAttributes.secondaryText &&
+            !this.variantAttributes.tertiaryText
+        );
     }
 
-    set avatarSize(value) {
-        this._avatarSize = normalizeString(value, {
-            fallbackValue: AVATAR_SIZES.default,
-            validValues: AVATAR_SIZES.valid
-        });
-        this.updateAvatarClassList();
+    /**
+     * Tertiary text show.
+     *
+     * @type {boolean}
+     */
+    get showTertiaryText() {
+        return (
+            this._variantAttributes.size === 'x-large' ||
+            this._variantAttributes.size === 'xx-large'
+        );
     }
 
     @api
-    get avatarVariant() {
-        return this._avatarVariant;
+    get variantAttributes() {
+        return this._variantAttributes;
     }
-
-    set avatarVariant(value) {
-        this._avatarVariant = normalizeString(value, {
-            fallbackValue: AVATAR_VARIANTS.default,
-            validValues: AVATAR_VARIANTS.valid
-        });
-        this.updateAvatarClassList();
+    set variantAttributes(value) {
+        this._variantAttributes = value;
     }
 
     /**
@@ -199,22 +167,6 @@ export default class Skeleton extends LightningElement {
     }
     set height(value) {
         this._height = value;
-    }
-
-    /**
-     * Hide primary, secondary and tertiary text.
-     *
-     * @public
-     * @type {boolean}
-     * @default false
-     */
-    @api
-    get hideAvatarDetails() {
-        return this._hideAvatarDetails;
-    }
-
-    set hideAvatarDetails(value) {
-        this._hideAvatarDetails = normalizeBoolean(value);
     }
 
     /**
@@ -280,27 +232,8 @@ export default class Skeleton extends LightningElement {
         );
     }
 
-    /**
-     * Switch case to call the appropriate sizing function. Variants include: text, rectangular, circular.
-     */
-    setSkeletonSize() {
-        switch (this.variant) {
-            case 'text':
-                this.setTextSize();
-                break;
-            case 'rectangular':
-                this.setRectangularCircularSize();
-                break;
-            case 'circular':
-                this.setRectangularCircularSize();
-                break;
-            default:
-                break;
-        }
-    }
-
     handleVariant() {
-        switch (this.alternativeVariant) {
+        switch (this.variant) {
             case 'avatar':
                 this.handleAvatarVariant();
                 break;
@@ -322,9 +255,23 @@ export default class Skeleton extends LightningElement {
             case 'datatable':
                 this.handleDatable();
                 break;
+            case 'text':
+                this.setTextSize();
+                break;
+            case 'rectangular':
+                this.setRectangularCircularSize();
+                break;
+            case 'circular':
+                this.setRectangularCircularSize();
+                break;
             default:
                 break;
         }
+    }
+
+    handleAvatarVariant() {
+        if (Object.keys(this.variantAttributes).length !== 0)
+            this.updateAvatarClassList();
     }
 
     /**
@@ -354,16 +301,25 @@ export default class Skeleton extends LightningElement {
             .add('slds-avatar')
             // .add(`avonni-avatar_${this.avatarVariant}`)
             .add({
-                'avonni-avatar_xx-small': this.avatarSize === 'xx-small',
-                'slds-avatar_x-small': this.avatarSize === 'x-small',
-                'slds-avatar_small': this.avatarSize === 'small',
-                'slds-avatar_medium': this.avatarSize === 'medium',
-                'slds-avatar_large': this.avatarSize === 'large',
-                'avonni-avatar_x-large': this.avatarSize === 'x-large',
-                'avonni-avatar_xx-large': this.avatarSize === 'xx-large',
-                'slds-avatar_circle': this.avatarVariant === 'circle'
+                'avonni-avatar_xx-small':
+                    this.variantAttributes.size === 'xx-small',
+                'slds-avatar_x-small':
+                    this.variantAttributes.size === 'x-small',
+                'slds-avatar_small': this.variantAttributes.size === 'small',
+                'slds-avatar_medium': this.variantAttributes.size === 'medium',
+                'slds-avatar_large': this.variantAttributes.size === 'large',
+                'avonni-avatar_x-large':
+                    this.variantAttributes.size === 'x-large',
+                'avonni-avatar_xx-large':
+                    this.variantAttributes.size === 'xx-large',
+                'slds-avatar_circle':
+                    this.variantAttributes.variant === 'circle'
             });
 
+        // const parentWrapperClass = classSet('').add('slds-text-align_right');
+
+        console.log('first');
+        // this.parentAvatarWrapper = parentWrapperClass;
         this.avatarWrapperClass = wrapperClass;
     }
 }

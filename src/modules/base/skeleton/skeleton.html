@@ -37,8 +37,13 @@
         <div class={variantClass} data-element-id="avonni-skeleton"></div>
     </template>
     <template if:true={isAvatarVariant}>
-        <div class={avatarWrapperClass}>
-            <div class={variantClass} data-element-id="avonni-skeleton"></div>
+        <c-media-object class={parentAvatarWrapper}>
+            <div class={avatarWrapperClass} slot="figure">
+                <div
+                    class={variantClass}
+                    data-element-id="avonni-skeleton"
+                ></div>
+            </div>
             <template if:false={hideAvatarDetails}>
                 <p
                     class="slds-text-title_bold avonni-avatar__primary-text"
@@ -60,6 +65,6 @@
                     {tertiaryText}
                 </p>
             </template>
-        </div>
+        </c-media-object>
     </template>
 </template>

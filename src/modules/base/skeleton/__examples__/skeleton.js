@@ -35,25 +35,27 @@ import Component from '../skeleton';
 customElements.define('ac-base-skeleton', Component.CustomElementConstructor);
 
 export const Skeleton = ({
-    avatarSize,
-    avatarVariant,
+    // avatarSize,
+    // avatarVariant,
+    variantAttributes,
     animation,
-    hideAvatarDetails,
-    primaryText,
-    secondaryText,
-    tertiaryText,
+    // hideAvatarDetails,
+    // primaryText,
+    // secondaryText,
+    // tertiaryText,
     variant,
     height,
     width
 }) => {
     const element = document.createElement('ac-base-skeleton');
-    element.avatarSize = avatarSize;
-    element.avatarVariant = avatarVariant;
+    // element.avatarSize = avatarSize;
+    // element.avatarVariant = avatarVariant;
+    element.variantAttributes = variantAttributes;
     element.animation = animation;
-    element.hideAvatarDetails = hideAvatarDetails;
-    element.primaryText = primaryText;
-    element.secondaryText = secondaryText;
-    element.tertiaryText = tertiaryText;
+    // element.hideAvatarDetails = hideAvatarDetails;
+    // element.primaryText = primaryText;
+    // element.secondaryText = secondaryText;
+    // element.tertiaryText = tertiaryText;
     element.variant = variant;
     element.height = height;
     element.width = width;
