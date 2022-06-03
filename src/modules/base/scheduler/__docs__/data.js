@@ -54,8 +54,7 @@ const columns = [
 const oneColumn = [
     {
         label: 'Employee',
-        fieldName: 'name',
-        initialWidth: 120
+        fieldName: 'resourceName'
     }
 ];
 
@@ -248,6 +247,78 @@ const basicEvents = [
         title: 'Event 10',
         from: 1639432800000,
         to: 1639440000000
+    }
+];
+const longEvents = [
+    {
+        keyFields: ['3', '4', '5'],
+        name: 'event-1',
+        title: 'Event 1',
+        from: new Date(2021, 2, 1),
+        to: new Date(2021, 3, 1)
+    },
+    {
+        keyFields: ['5', '3', '4'],
+        name: 'event-2',
+        title: 'Event 2',
+        from: new Date(2021, 1, 15),
+        to: new Date(2021, 3, 30)
+    },
+    {
+        keyFields: ['3', '4', '2'],
+        name: 'event-3',
+        title: 'Event 3',
+        from: new Date(2020, 11, 26),
+        to: new Date(2021, 0, 31)
+    },
+    {
+        keyFields: ['1', '4'],
+        name: 'event-4',
+        title: 'Event 4',
+        from: new Date(2021, 3, 12),
+        to: new Date(2021, 4, 31)
+    },
+    {
+        keyFields: ['2', '1'],
+        name: 'event-5',
+        title: 'Event 5',
+        from: new Date(2021, 7, 1),
+        to: new Date(2021, 8, 31)
+    },
+    {
+        keyFields: ['1', '2', '3'],
+        name: 'event-6',
+        title: 'Event 6',
+        from: new Date(2021, 5, 20),
+        to: new Date(2021, 6, 31)
+    },
+    {
+        keyFields: ['1'],
+        name: 'event-7',
+        title: 'Event 7',
+        from: new Date(2021, 6, 1),
+        to: new Date(2021, 7, 31)
+    },
+    {
+        keyFields: ['3'],
+        name: 'event-8',
+        title: 'Event 8',
+        from: new Date(2021, 9, 10),
+        to: new Date(2021, 10, 31)
+    },
+    {
+        keyFields: ['1'],
+        name: 'event-9',
+        title: 'Event 9',
+        from: new Date(2021, 9, 1),
+        to: new Date(2022, 2, 3)
+    },
+    {
+        keyFields: ['2', '3', '4'],
+        name: 'event-10',
+        title: 'Event 10',
+        from: new Date(2021, 10, 1),
+        to: new Date(2021, 11, 31)
     }
 ];
 
@@ -539,6 +610,7 @@ export {
     events,
     eventsThemed,
     eventsWithLabels,
+    longEvents,
     lotsOfEvents,
     lotsOfRows,
     oneColumn,

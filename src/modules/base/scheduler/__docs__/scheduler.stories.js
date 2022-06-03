@@ -41,7 +41,9 @@ import {
     disabledDatesTimes,
     referenceLines,
     start,
-    basicEvents
+    basicEvents,
+    oneColumn,
+    longEvents
 } from './data';
 
 export default {
@@ -464,6 +466,17 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'horizontal' }
             }
+        },
+        zoomToFit: {
+            name: 'zoom-to-fit',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, horizontal scrolling will be prevented.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
         }
     },
     args: {
@@ -511,10 +524,10 @@ export default {
         toolbarTimeSpans: [
             { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
             { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
-            { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
-            { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+            { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
         ],
-        variant: 'horizontal'
+        variant: 'horizontal',
+        zoomToFit: false
     }
 };
 
@@ -584,7 +597,29 @@ ReadOnly.args = {
             name: 'see-details',
             label: 'See details'
         }
-    ]
+    ],
+    contextMenuEmptySpotActions: []
+};
+
+export const ZoomToFit = Template.bind({});
+ZoomToFit.args = {
+    zoomToFit: true,
+    columns: oneColumn,
+    resourcesKeyField: 'id',
+    resources,
+    timeSpan: {
+        unit: 'year',
+        span: 1
+    },
+    headers: 'monthAndYear',
+    toolbarTimeSpans: [
+        { unit: 'week', span: 1, label: 'Week', headers: 'dayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+        { unit: 'year', span: 1, label: 'Year', headers: 'monthAndYear' }
+    ],
+    start: new Date(2021, 0, 1),
+    events: longEvents,
+    eventsPalette: 'pond'
 };
 
 export const Labels = Template.bind({});

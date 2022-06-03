@@ -29,6 +29,8 @@ export default class SchedulerReadOnly extends LightningElement {
         }
     ];
 
+    contextMenuEmptySpotActions = [];
+
     events = [
         {
             keyFields: ['3'],

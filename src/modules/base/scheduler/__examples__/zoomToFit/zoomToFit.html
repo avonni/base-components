@@ -1,15 +1,14 @@
 <template>
     <avonni-scheduler
         columns={columns}
-        context-menu-event-actions={contextMenuEventActions}
-        context-menu-empty-spot-actions={contextMenuEmptySpotActions}
         events={events}
-        events-theme="line"
-        events-palette="dusk"
-        read-only
+        events-palette="pond"
+        headers="monthAndYear"
         resources-key-field="id"
         resources={resources}
         start={start}
         time-span={timeSpan}
+        toolbar-time-spans={toolbarTimeSpans}
+        zoom-to-fit
     ></avonni-scheduler>
 </template>
