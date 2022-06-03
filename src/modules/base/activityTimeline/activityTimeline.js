@@ -100,8 +100,6 @@ const SORTED_DIRECTIONS = {
 // TODO: Scroll --> prevent scroll if no item to show
 // TODO: Fix mouse out
 // TODO: when interval size is changed -- > check icon
-// TODO: when interval size is changed -- > check limit click/drag
-// TODO: when interval size is changed -- > click/drag
 
 /**
  * @class
@@ -173,7 +171,9 @@ export default class ActivityTimeline extends LightningElement {
     connectedCallback() {
         this._isConnected = true;
         this.initActivityTimeline();
-        if (this.isTimelineHorizontal) this.findDefaultIntervalMinDate();
+        if (this.isTimelineHorizontal) {
+            this.findDefaultIntervalMinDate();
+        }
     }
 
     renderedCallback() {
@@ -210,16 +210,20 @@ export default class ActivityTimeline extends LightningElement {
 
         // const divD3Testing = d3.select(this.template.querySelector('.testing-d3'));
         // divD3Testing.selectAll('*').remove();
-        // TESTING DRAG
+        // // TESTING DRAG
 
-        // const testSvg = divD3Testing.append('svg').attr('width', 600).attr('height', 600);
-        // const testing = d3
-        //     .select(this.template.querySelector('.testing-d3'))
-        //     .append('svg')
-        //     .attr('width', this._timelineWidth)
-        //     .attr('height', 50);
-
-        // testing
+        // const testSvg = divD3Testing.append('svg').attr('width', 1300).attr('height', 100);
+        // testSvg.append('rect').attr('x', this._offsetAxis).attr('y',0).attr('width', 100).attr('height', 100).attr('fill', 'pink');
+        //     // .transition().duration(2000).style('width', '300')
+        //     // .transition().duration(2000).attr('x', '200')
+        //     // .transition().duration(2000).attr('x', '100');
+        // testSvg.append('rect').attr('x', this._offsetAxis + 100).attr('y',0).attr('width', 100).attr('height', 100).attr('fill', 'red');
+        // testSvg.append('rect').attr('x', this._offsetAxis + 200).attr('y',0).attr('width', 100).attr('height', 100).attr('fill', 'orange');
+        // testSvg.append('rect').attr('x', this._offsetAxis + 300).attr('y', 0).attr('width', 100).attr('height', 100).attr('fill', 'purple');
+        // testSvg.append('rect').attr('x', this._offsetAxis + 400).attr('y',0).attr('width', 100).attr('height', 100).attr('fill', 'aqua');
+        // testSvg.append('rect').attr('x', this._offsetAxis + 500).attr('y',0).attr('width', 100).attr('height', 100).attr('fill', 'black');
+        // testSvg.append('rect').attr('x', this._offsetAxis + 600).attr('y', 0).attr('width', 100).attr('height', 100).attr('fill', 'goldenrod');
+        // // testing
         //     .append('circle')
         //     .attr('id', 'dragCircle')
         //     .attr('r', 20)
@@ -244,19 +248,21 @@ export default class ActivityTimeline extends LightningElement {
         //     .attr('width', this._timelineWidth)
         //     .attr('height', this._timelineHeight);
 
-        // const viewTimeScale = d3.scaleTime().domain([this._intervalMinDate, this._intervalMaxDate]).range([this._offsetAxis, this._timelineWidth]);
+        // const temporaryThis = this;
+        // // const viewTimeScale = d3.scaleTime().domain([this._intervalMinDate, this._intervalMaxDate]).range([this._offsetAxis, this._timelineWidth]);
         // const scrollAxis = d3.axisBottom(this.scrollTimeScale).tickFormat(d3.timeFormat("%d/%m/%Y")).ticks(12);
         // console.log(this.scrollTimeScale.invert(this._timelineWidth));
-        // svg.append('g').call(scrollAxis);
+        // svg.append('g').call(scrollAxis).style('border', '1px red solid').attr('transform', 'translate(0, 0)')
+        //     .on('click', function(event) {
+        //         console.log(event.x);
+        //         console.log(temporaryThis.convertDateToFormat(temporaryThis.scrollTimeScale.invert(event.x)));
+        //     });
         // svg.
         // append("circle")
         // .attr("r", "5")
         // .attr("fill", "lightblue")
         // .attr("cx", this.scrollTimeScale(new Date("2022-01-01 01:57:00")))
         // .attr("cy", 5);
-
-        // console.log(Math.abs(this.scrollTimeScale(new Date("2022-01-01 01:57:00"))));
-        // this.createStandardIcon(divD3Testing, 'bot', this.scrollTimeScale(new Date("2022-01-01 01:57:00")), -475);
     }
 
     /*
@@ -510,7 +516,7 @@ export default class ActivityTimeline extends LightningElement {
     get intervalMaxDate() {
         this._intervalMaxDate = new Date(this._intervalMinDate);
         this._intervalMaxDate.setDate(
-            this._intervalMaxDate.getDate() + this._intervalDaysLength - 1
+            this._intervalMaxDate.getDate() + this._intervalDaysLength
         );
         return this.convertDateToFormat(this._intervalMaxDate);
     }
@@ -968,7 +974,7 @@ export default class ActivityTimeline extends LightningElement {
         // To handle click on scroll axis to change interval value
         const handleClickOnScrollAxis = function (event) {
             if (!this._changeIntervalSizeMode) {
-                let xPosition = event.x - this.intervalWidth;
+                let xPosition = event.offsetX;
                 const highestMinDateXPosition =
                     this.scrollTimeScale(this.scrollAxisMaxDate) -
                     this.intervalWidth;
@@ -1037,7 +1043,9 @@ export default class ActivityTimeline extends LightningElement {
         const handleTimeIntervalDrag = function (event) {
             if (!this._changeIntervalSizeMode) {
                 // To allow only horizontal drag
-                const xPosition = this.validateXMousePosition(event.x);
+                const xPosition = this.validateXMousePosition(
+                    event.sourceEvent.offsetX
+                );
                 this._timeIntervalSelector
                     .attr('x', xPosition)
                     .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
@@ -1069,7 +1077,6 @@ export default class ActivityTimeline extends LightningElement {
                     this.scrollTimeScale(this._intervalMaxDate) - xPosition;
                 this._timeIntervalSelector
                     .attr('x', xPosition)
-                    .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
                     .attr('width', newRectangleWidth);
             }
         };
@@ -1211,7 +1218,7 @@ export default class ActivityTimeline extends LightningElement {
         const maxPosition =
             this.scrollTimeScale(this.scrollAxisMaxDate) - this.intervalWidth;
         const minPosition = this.scrollTimeScale(this.scrollAxisMinDate);
-        let xPosition = xMousePosition - this.intervalWidth;
+        let xPosition = xMousePosition;
         if (xMousePosition > maxPosition) {
             xPosition = maxPosition;
         } else if (xPosition < minPosition) {
