@@ -63,7 +63,8 @@
                                         key={item.value}
                                         class="
                                             slds-path__item
-                                            slds-is-current slds-is-active
+                                            slds-is-active
+                                            avonni-kanban__path_item
                                         "
                                         role="presentation"
                                     >
@@ -95,7 +96,7 @@
                         class="avonni-kanban__group_dropzone"
                     ></div>
                     <div
-                        class="avonni-kanban__field"
+                        class={computedFieldClass}
                         data-element-id="avonni-kanban__field"
                         for:each={computedGroups}
                         for:item="group"

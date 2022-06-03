@@ -346,6 +346,17 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Gets the class of the group depending on readOnly
+     *
+     * @type {string}
+     */
+    get computedFieldClass() {
+        return classSet('avonni-kanban__field').add({
+            'avonni-kanban__field_read_only': this.readOnly
+        });
+    }
+
+    /**
      * Gets the class of the tile depending on readOnly
      *
      * @type {string}
