@@ -778,7 +778,20 @@ describe('Slider', () => {
         });
     });
 
-    //value
+    // value
+
+    it('value = undefined', () => {
+        element.value = undefined;
+
+        return Promise.resolve().then(() => {
+            const inputs = element.shadowRoot.querySelectorAll(
+                '[data-group-name="input"]'
+            );
+            expect(inputs.length).toEqual(1);
+            expect(element.value).toEqual(50);
+        });
+    });
+
     it('value = 5 (single value)', () => {
         element.value = 5;
 
