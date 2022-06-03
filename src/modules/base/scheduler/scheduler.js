@@ -104,6 +104,7 @@ export default class Scheduler extends LightningElement {
     _timeSpan = DEFAULT_TIME_SPAN;
     _toolbarTimeSpans = DEFAULT_TOOLBAR_TIME_SPANS;
     _variant = VARIANTS.default;
+    _zoomToFit = false;
 
     _allEvents = [];
     _rowsHeight = [];
@@ -899,6 +900,21 @@ export default class Scheduler extends LightningElement {
         this._initialFirstColWidth = null;
     }
 
+    /**
+     * If present, horizontal scrolling will be prevented.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get zoomToFit() {
+        return this._zoomToFit;
+    }
+    set zoomToFit(value) {
+        this._zoomToFit = normalizeBoolean(value);
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
@@ -927,7 +943,9 @@ export default class Scheduler extends LightningElement {
             'slds-border_right slds-border_bottom slds-p-around_none slds-wrap avonni-scheduler__cell'
         )
             .add({
-                'slds-col': !this.isVertical
+                'slds-col': !this.isVertical,
+                'avonni-scheduler__cell_vertical': this.isVertical,
+                'avonni-scheduler__cell_zoom-to-fit': this.zoomToFit
             })
             .toString();
     }
@@ -1119,7 +1137,21 @@ export default class Scheduler extends LightningElement {
         )
             .add({
                 'slds-hide': this.firstColumnIsOpen,
-                'avonni-scheduler__schedule-col_vertical': this.isVertical
+                'avonni-scheduler__schedule-col_vertical': this.isVertical,
+                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
+            })
+            .toString();
+    }
+
+    /**
+     * Computed CSS class for the nested schedule column.
+     *
+     * @type {string}
+     */
+    get scheduleNestedCol() {
+        return classSet('slds-col')
+            .add({
+                'avonni-scheduler__schedule-col_zoom-to-fit': this.zoomToFit
             })
             .toString();
     }
@@ -1333,13 +1365,19 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Computed CSS style for the vertical resource headers.
+     * Computed CSS style for the vertical resource header cells.
      *
      * @type {string}
      */
-    get verticalResourceHeadersFirstCellStyle() {
-        const width = this.firstColWidth || this._initialFirstColWidth;
-        return `width: ${width}px;`;
+    get verticalResourceHeaderCellClass() {
+        return classSet(
+            'slds-border_right slds-p-horizontal_x-small avonni-scheduler__vertical-resource-header-cell slds-grid slds-grid_vertical-align-center'
+        )
+            .add({
+                'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit':
+                    this.zoomToFit
+            })
+            .toString();
     }
 
     /*
@@ -1642,6 +1680,19 @@ export default class Scheduler extends LightningElement {
      * Update the cell width property if the cells grew because the splitter moved.
      */
     updateCellWidth() {
+        if (this.zoomToFit && !this.isVertical) {
+            // The header is computing the cell width
+            const headers = this.template.querySelector(
+                '[data-element-id="avonni-primitive-scheduler-header-group"]'
+            );
+            if (headers) {
+                headers.scrollLeftOffset = this.firstColWidth;
+            }
+            return;
+        } else if (this.isVertical) {
+            this.setResourceHeaderFirstCellWidth();
+        }
+
         const cell = this.template.querySelector(
             '[data-element-id="div-cell"]'
         );
@@ -2217,12 +2268,26 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Set the CSS style of the resource header first cell, in vertical variant.
+     */
+    setResourceHeaderFirstCellWidth() {
+        const resourceHeaderFirstCell = this.template.querySelector(
+            '[data-element-id="div-vertical-resource-header-first-cell"]'
+        );
+        resourceHeaderFirstCell.style.width = `${this.firstColWidth}px`;
+        resourceHeaderFirstCell.style.minWidth = `${this.firstColWidth}px`;
+    }
+
+    /**
      * Reset the width of the first column to the width it had before being collapsed.
      */
     resetFirstColumnWidth() {
         const columnWidth = this.firstCol.getBoundingClientRect().width;
         this._initialFirstColWidth = columnWidth;
         this.firstColWidth = columnWidth;
+        if (this.isVertical) {
+            this.setResourceHeaderFirstCellWidth();
+        }
     }
 
     /**
@@ -2584,8 +2649,15 @@ export default class Scheduler extends LightningElement {
                 this.datatable.style.width = `${width}px`;
             }
             this.firstCol.style.width = `${width}px`;
+            this.firstCol.style.minWidth = `${width}px`;
             this.firstColWidth = width;
-            this.updateCellWidth();
+
+            if (this.isVertical && !this.zoomToFit) {
+                // Update the resource header first cell width
+                // even if the schedule body width has not changed (is scrolling).
+                // The rest of the time, the resize observer will trigger the update.
+                this.setResourceHeaderFirstCellWidth();
+            }
 
             // An event is being dragged
         } else if (this._draggedEvent) {
@@ -2948,7 +3020,7 @@ export default class Scheduler extends LightningElement {
     /**
      * Handle the scroll event fired by the schedule. Hide the popovers of the events that are scrolled out of the screen.
      */
-    handleScroll() {
+    handleScroll(event) {
         if (this.showDetailPopover) {
             // Hide the detail popover only if it goes off screen
             const eventPosition = this._draggedEvent.getBoundingClientRect();
@@ -2958,6 +3030,14 @@ export default class Scheduler extends LightningElement {
         } else {
             this.hideDetailPopover();
             this.hideContextMenu();
+        }
+
+        if (this.isVertical && !this.zoomToFit) {
+            // Create an artificial scroll for the resource headers in vertical
+            const resourceHeaders = this.template.querySelector(
+                '[data-element-id="div-resource-header-cells"]'
+            );
+            resourceHeaders.scroll(event.currentTarget.scrollLeft, 0);
         }
     }
 
@@ -2993,22 +3073,25 @@ export default class Scheduler extends LightningElement {
     handleHideFirstCol() {
         this.hideAllPopovers();
         this.firstCol.style.width = null;
+        this.firstCol.style.minWidth = null;
 
         if (this.firstColumnIsOpen) {
             this.firstColumnIsOpen = false;
             this.firstColWidth = this._initialFirstColWidth;
-            if (!this.isVertical) {
+            if (this.isVertical) {
+                this.setResourceHeaderFirstCellWidth();
+            } else {
                 this.datatable.style.width = null;
             }
         } else {
             this.firstColumnIsHidden = true;
             this.firstColWidth = 0;
-            if (!this.isVertical) {
+            if (this.isVertical) {
+                this.setResourceHeaderFirstCellWidth();
+            } else {
                 this.datatable.style.width = 0;
             }
         }
-
-        this.updateCellWidth();
     }
 
     /**
@@ -3025,7 +3108,6 @@ export default class Scheduler extends LightningElement {
         if (this.firstColumnIsHidden) {
             this.firstColumnIsHidden = false;
             this.firstColWidth = this._initialFirstColWidth;
-            this.updateCellWidth();
             if (!this.isVertical) {
                 this.datatable.style.width = `${this._initialFirstColWidth}px`;
             }
@@ -3116,6 +3198,7 @@ export default class Scheduler extends LightningElement {
         });
 
         this.computedHeaders = deepCopy(PRESET_HEADERS[normalizedHeaders]);
+        this._rowsHeight = [];
     }
 
     /**

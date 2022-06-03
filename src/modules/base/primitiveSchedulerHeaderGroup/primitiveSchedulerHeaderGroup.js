@@ -38,6 +38,7 @@ import {
     numberOfUnitsBetweenDates,
     normalizeArray,
     normalizeString,
+    normalizeBoolean,
     removeFromDate,
     equal
 } from 'c/utilsPrivate';
@@ -91,6 +92,7 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     _start = DEFAULT_START_DATE;
     _timeSpan = DEFAULT_TIME_SPAN;
     _variant = VARIANTS.default;
+    _zoomToFit = false;
 
     _connected = false;
     _initHeadersTimeout;
@@ -228,6 +230,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         this._scrollLeftOffset = !isNaN(Number(value)) ? Number(value) : 0;
 
         if (!this.isVertical) {
+            if (this.zoomToFit) {
+                this.computeCellSize();
+            }
             requestAnimationFrame(() => {
                 this.updateStickyLabels();
             });
@@ -308,6 +313,25 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
             requestAnimationFrame(() => {
                 this.updateStickyLabels();
             });
+        }
+    }
+
+    /**
+     * If present, horizontal scrolling will be prevented.
+     *
+     * @type {boolean}
+     * @default false
+     * @public
+     */
+    @api
+    get zoomToFit() {
+        return this._zoomToFit;
+    }
+    set zoomToFit(value) {
+        this._zoomToFit = normalizeBoolean(value);
+
+        if (this._connected) {
+            this.computeCellSize();
         }
     }
 
@@ -563,29 +587,35 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     computeCellSize() {
-        const cellText = this.template.querySelector(
-            '[data-element-id="div-row"]:last-of-type [data-element-id^="span-label"]'
-        );
-        if (!cellText) {
-            return;
-        }
-
-        const cellDimensions = cellText.getBoundingClientRect();
-        const cellTextSize = this.isVertical
-            ? cellDimensions.height
-            : cellDimensions.width;
-        // We add 20 pixels for padding
-        let cellSize = Math.ceil(cellTextSize) + 20;
-
         const totalWidth = this.template.host.getBoundingClientRect().width;
-        const numberOfVisibleCells = Math.ceil(totalWidth / cellSize);
         const totalNumberOfCells = this.smallestHeader.numberOfCells;
+        let cellSize = 0;
 
-        // If the maximum number of visible cells on the screen is bigger
-        // than the actual number of cells, recompute the cell width so the
-        // schedule takes the full screen
-        if (totalNumberOfCells < numberOfVisibleCells) {
+        if (this.zoomToFit && !this.isVertical) {
             cellSize = totalWidth / totalNumberOfCells;
+        } else {
+            const cellText = this.template.querySelector(
+                '[data-element-id="div-row"]:last-of-type [data-element-id^="span-label"]'
+            );
+            if (!cellText) {
+                return;
+            }
+
+            const cellDimensions = cellText.getBoundingClientRect();
+            const cellTextSize = this.isVertical
+                ? cellDimensions.height
+                : cellDimensions.width;
+            // We add 20 pixels for padding
+            cellSize = Math.ceil(cellTextSize) + 20;
+
+            const numberOfVisibleCells = Math.ceil(totalWidth / cellSize);
+
+            // If the maximum number of visible cells on the screen is bigger
+            // than the actual number of cells, recompute the cell width so the
+            // schedule takes the full screen
+            if (totalNumberOfCells < numberOfVisibleCells) {
+                cellSize = totalWidth / totalNumberOfCells;
+            }
         }
         this.computedHeaders.forEach((header) => {
             header.computeCellWidths(cellSize, this.smallestHeader.cells);
@@ -623,7 +653,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         const stickyLabels = this.template.querySelectorAll(
             '[data-element-id="span-label-sticky"]'
         );
-        if (stickyLabels.length) {
+        if (stickyLabels.length && this.zoomToFit) {
+            stickyLabels.forEach((stickyLabel) => {
+                stickyLabel.style.left = 'auto';
+            });
+        } else if (stickyLabels.length) {
             stickyLabels.forEach((label) => {
                 label.style.left = `${this.scrollLeftOffset}px`;
             });

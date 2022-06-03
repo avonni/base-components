@@ -82,6 +82,11 @@
     height: 100%;
 }
 
+.avonni-scheduler__schedule-col_zoom-to-fit {
+    /* Prevent the flex column from allowing overflow */
+    min-width: 0;
+}
+
 .avonni-scheduler__events {
     height: 100%;
     top: 0;
@@ -96,6 +101,10 @@
     min-width: var(--avonni-scheduler-cell-width);
 }
 
+.avonni-scheduler__cell_vertical:not(.avonni-scheduler__cell_zoom-to-fit) {
+    min-width: 75px;
+}
+
 .avonni-scheduler__schedule-body_vertical .avonni-scheduler__cell {
     height: var(--avonni-scheduler-cell-height);
     min-height: var(--avonni-scheduler-cell-height);
@@ -106,13 +115,13 @@
     overflow-x: auto;
 }
 
-.avonni-scheduler__vertical-resource-header-wrapper {
-    overflow: hidden;
-}
-
 .avonni-scheduler__vertical-resource-header-cell {
     overflow: hidden;
     flex: 1 1 0;
+    min-width: 75px;
+}
+.avonni-scheduler__vertical-resource-header-cell_zoom-to-fit {
+    min-width: auto;
 }
 
 .avonni-scheduler__vertical-resource-header-cell,

@@ -120,6 +120,7 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
     _variant = VARIANTS.default;
     _x = 0;
     _y = 0;
+    _zoomToFit = false;
 
     _focused = false;
     _offsetStart = 0;
@@ -556,6 +557,22 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         this._y = parseInt(value, 10);
 
         if (this._connected) this.updateHostTranslate();
+    }
+
+    /**
+     * If present, the event is in a zoom-to-fit scheduler.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get zoomToFit() {
+        return this._zoomToFit;
+    }
+    set zoomToFit(value) {
+        this._zoomToFit = normalizeBoolean(value);
+        this.updateStickyLabels();
     }
 
     /**
@@ -1080,10 +1097,14 @@ export default class PrimitiveSchedulerEventOccurrence extends LightningElement 
         const stickyLabel = this.template.querySelector(
             '[data-element-id="div-center-label-wrapper"]'
         );
-        if (stickyLabel && this.isVertical) {
+        if (!stickyLabel) {
+            return;
+        }
+
+        if (this.isVertical) {
             const top = this.scrollOffset - this.y - this._offsetStart;
             stickyLabel.style.top = `${top}px`;
-        } else if (stickyLabel) {
+        } else if (!this.zoomToFit) {
             const left = this.scrollOffset - this.x - this._offsetStart;
             stickyLabel.style.left = `${left}px`;
         }

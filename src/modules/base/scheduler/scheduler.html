@@ -150,45 +150,46 @@
             slds-theme_shade
             slds-border_bottom
             slds-p-right_medium
-            avonni-scheduler__vertical-resource-header-wrapper
+            slds-scrollable_none
         "
     >
         <div
             class="
                 avonni-scheduler__vertical-resource-header-first-cell
                 slds-border_right
+                slds-p-right_x-small
             "
-            style={verticalResourceHeadersFirstCellStyle}
+            data-element-id="div-vertical-resource-header-first-cell"
         ></div>
-        <template for:each={computedResources} for:item="resource">
-            <div
-                key={resource.key}
-                class="
-                    slds-border_right
-                    slds-p-horizontal_x-small
-                    avonni-scheduler__vertical-resource-header-cell
-                    slds-grid slds-grid_vertical-align-center
-                "
-                data-element-id="div-vertical-resource-header"
-            >
-                <c-primitive-avatar
-                    if:true={resource.avatar}
-                    class="slds-m-right_x-small"
-                    fallback-icon-name={resource.avatar.fallbackIconName}
-                    initials={resource.avatar.initials}
-                    src={resource.avatar.src}
-                    size="small"
-                    variant="circle"
-                    data-element-id="avonni-primitive-avatar"
-                ></c-primitive-avatar>
+        <div
+            class="slds-grid slds-col slds-scrollable_none"
+            data-element-id="div-resource-header-cells"
+        >
+            <template for:each={computedResources} for:item="resource">
                 <div
-                    class="slds-truncate slds-col"
-                    data-element-id="div-vertical-resource-header-label"
+                    key={resource.key}
+                    class={verticalResourceHeaderCellClass}
+                    data-element-id="div-vertical-resource-header"
                 >
-                    {resource.label}
+                    <c-primitive-avatar
+                        if:true={resource.avatar}
+                        class="slds-m-right_x-small"
+                        fallback-icon-name={resource.avatar.fallbackIconName}
+                        initials={resource.avatar.initials}
+                        src={resource.avatar.src}
+                        size="small"
+                        variant="circle"
+                        data-element-id="avonni-primitive-avatar"
+                    ></c-primitive-avatar>
+                    <div
+                        class="slds-truncate slds-col"
+                        data-element-id="div-vertical-resource-header-label"
+                    >
+                        {resource.label}
+                    </div>
                 </div>
-            </div>
-        </template>
+            </template>
+        </div>
     </div>
 
     <div
@@ -228,6 +229,7 @@
                     start={start}
                     time-span={timeSpan}
                     variant="vertical"
+                    zoom-to-fit={zoomToFit}
                     data-element-id="avonni-primitive-scheduler-header-group"
                     onprivatecellsizechange={handleHeaderCellSizeChange}
                     onprivateheaderchange={handleHeaderChange}
@@ -271,7 +273,7 @@
 
         <!-- Schedule -->
         <div class={scheduleColClass} data-element-id="div-schedule-col">
-            <div class="slds-col">
+            <div class={scheduleNestedCol}>
                 <!-- Horizontal headers -->
                 <c-primitive-scheduler-header-group
                     if:false={isVertical}
@@ -284,6 +286,7 @@
                     scroll-left-offset={firstColWidth}
                     start={start}
                     time-span={timeSpan}
+                    zoom-to-fit={zoomToFit}
                     data-element-id="avonni-primitive-scheduler-header-group"
                     onprivatecellsizechange={handleHeaderCellSizeChange}
                     onprivateheaderchange={handleHeaderChange}
@@ -354,6 +357,7 @@
                                         theme={event.theme}
                                         to={occurrence.to}
                                         variant={variant}
+                                        zoom-to-fit={zoomToFit}
                                         data-element-id="avonni-primitive-scheduler-event-occurrence"
                                         data-event-name={event.name}
                                         data-key={occurrence.key}

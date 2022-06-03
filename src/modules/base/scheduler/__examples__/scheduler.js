@@ -63,7 +63,8 @@ export const Scheduler = ({
     start,
     timeSpan,
     toolbarTimeSpans,
-    variant
+    variant,
+    zoomToFit
 }) => {
     const element = document.createElement('ac-base-scheduler');
     element.availableDaysOfTheWeek = availableDaysOfTheWeek;
@@ -95,5 +96,6 @@ export const Scheduler = ({
     element.timeSpan = timeSpan;
     element.toolbarTimeSpans = toolbarTimeSpans;
     element.variant = variant;
+    element.zoomToFit = zoomToFit;
     return element;
 };
