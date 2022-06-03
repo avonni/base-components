@@ -779,7 +779,6 @@ export default class Kanban extends LightningElement {
      */
     handleGroupMouseDown(event) {
         if (this._variant !== 'base' || this._readOnly) return;
-
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );

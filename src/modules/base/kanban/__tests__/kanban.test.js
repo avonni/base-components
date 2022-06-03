@@ -59,6 +59,7 @@ describe('Kanban', () => {
         expect(element.readOnly).toBeFalsy();
         expect(element.groupFieldName).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
+        expect(element.variant).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -88,7 +89,7 @@ describe('Kanban', () => {
             const records = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-kanban__group"]'
             );
-            expect(records.children.length).toBe(4);
+            expect(records.children.length).toBe(3);
         });
     });
 
@@ -104,12 +105,13 @@ describe('Kanban', () => {
             const fields = element.shadowRoot.querySelector(
                 '[data-element-id="fields"]'
             );
-            expect(fields.children.length).toBe(FIELDS.length + 2);
+            expect(fields.children.length).toBe(FIELDS.length + 1);
         });
     });
 
     // summarize
     it('Kanban : summarize', () => {
+        jest.useFakeTimers();
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
@@ -117,6 +119,7 @@ describe('Kanban', () => {
         element.summarizeFieldName = 'amount';
         element.actions = ACTIONS;
         return Promise.resolve().then(() => {
+            jest.runAllTimers();
             const summarize = element.shadowRoot.querySelector(
                 '[data-element-id="summarize"]'
             );
@@ -220,6 +223,36 @@ describe('Kanban', () => {
             expect(tile.classList).toContain('avonni-kanban__dragged');
             tile.dispatchEvent(new MouseEvent('mouseup'));
             expect(tile.classList).not.toContain('avonni-kanban__dragged');
+        });
+    });
+
+    it('Kanban : group drag and drop', () => {
+        element.groupValues = GROUP_VALUES;
+        element.records = RECORDS;
+        element.fields = FIELDS;
+        element.groupFieldName = 'status';
+        element.summarizeFieldName = 'amount';
+        element.actions = ACTIONS;
+        element.variant = 'base';
+        return Promise.resolve().then(() => {
+            const group = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__group_header"]'
+            );
+
+            group.dispatchEvent(new MouseEvent('mousedown'));
+
+            // mousemove is handled on the kanban, not the group
+            group.parentElement.parentElement.dispatchEvent(
+                new MouseEvent('mousemove')
+            );
+
+            expect(group.parentElement.classList).toContain(
+                'avonni-kanban__dragged_group'
+            );
+            group.dispatchEvent(new MouseEvent('mouseup'));
+            expect(group.parentElement.classList).not.toContain(
+                'avonni-kanban__dragged_group'
+            );
         });
     });
 });
