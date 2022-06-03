@@ -405,7 +405,27 @@ StepMinMax.args = {
     min: -20,
     max: 20,
     step: 5,
+    showTickMarks: true,
     pin: true
+};
+
+export const Range = Template.bind({});
+Range.args = {
+    label: 'Range slider',
+    value: [25, 75]
+};
+
+export const RangeCollision = Template.bind({});
+RangeCollision.args = {
+    label: 'Range slider (with Collision)',
+    value: [25, 75],
+    disableSwap: true
+};
+
+export const MultipleRange = Template.bind({});
+MultipleRange.args = {
+    label: 'Multiple range slider',
+    value: [25, 50, 75]
 };
 
 export const CustomLabels = Template.bind({});
@@ -440,9 +460,22 @@ CustomLabels.args = {
     }
 };
 
+export const disabled = Template.bind({});
+Range.args = {
+    label: 'Disabled slider',
+    value: 50,
+    disabled: true
+};
+
+//TODO: storybook wrapper for centering vertical slider
 export const Vertical = Template.bind({});
 Vertical.args = {
-    label: 'Slider label',
+    label: 'Vertical Slider',
     size: 'x-small',
     type: 'vertical'
 };
+
+//TODO: storybook wrapper for colored slider (try rainbow)
+//TODO: storybook wrapper for margin custom labels
+//TODO: storybook wrapper for
+//TODO: add class for disabled range thumb (overwritten by style hooks)
