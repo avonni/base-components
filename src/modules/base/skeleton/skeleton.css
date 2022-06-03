@@ -7,6 +7,27 @@
     --avonni-skeleton-color-background-animation: #dedede;
 }
 
+.avonni-avatar__primary-text {
+    color: var(--avonni-avatar-primary-text-color, #000000);
+    font-size: var(--avonni-avatar-primary-text-font-size, 0.875rem);
+    font-style: var(--avonni-avatar-primary-text-font-style, normal);
+    font-weight: var(--avonni-avatar-primary-text-font-weight, 700);
+}
+
+.avonni-avatar__secondary-text {
+    color: var(--avonni-avatar-secondary-text-color, #696969);
+    font-size: var(--avonni-avatar-secondary-text-font-size, 0.8125rem);
+    font-style: var(--avonni-avatar-secondary-text-font-style, normal);
+    font-weight: var(--avonni-avatar-secondary-text-font-weight, 400);
+}
+
+.avonni-avatar__tertiary-text {
+    color: var(--avonni-avatar-tertiary-text-color, #696969);
+    font-size: var(--avonni-avatar-tertiary-text-font-size, 0.8125rem);
+    font-style: var(--avonni-avatar-tertiary-text-font-style, normal);
+    font-weight: var(--avonni-avatar-tertiary-text-font-weight, 400);
+}
+
 .avonni-skeleton__animation-pulse {
     height: 100%;
     animation: pulse-animation 1s infinite;
