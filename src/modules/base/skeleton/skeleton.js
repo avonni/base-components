@@ -45,6 +45,7 @@ const SKELETON_VARIANTS = {
         'breadcrumbs',
         'button',
         'button-icon',
+        'chip',
         'circular',
         'combobox',
         'datatable',
@@ -95,6 +96,7 @@ export default class Skeleton extends LightningElement {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
 
         if (!this.isAvatarVariant) this.handleVariant();
+        console.log(this.variant);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
         //     this._initialAvatarRender = true;
@@ -109,6 +111,25 @@ export default class Skeleton extends LightningElement {
     @api
     get isAvatarVariant() {
         return this.variant === 'avatar';
+    }
+
+    @api
+    get isChipVariant() {
+        return this.variant === 'chip';
+    }
+
+    @api
+    get isRegularVariant() {
+        return (
+            this.variant === 'text' ||
+            this.variant === 'circular' ||
+            this.variant === 'rectangular'
+        );
+    }
+
+    @api
+    get chipHasIcon() {
+        return this.variantAttributes.hasIcon;
     }
 
     // @api
@@ -227,6 +248,22 @@ export default class Skeleton extends LightningElement {
             .toString();
     }
 
+    /**
+     * Compute chip class style.
+     *
+     * @type {string}
+     */
+    get chipClass() {
+        return (
+            classSet('avonni-chip')
+                // .add({
+                //     'avonni-chip_outline': this._outline
+                // })
+                .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+                .toString()
+        );
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -260,6 +297,9 @@ export default class Skeleton extends LightningElement {
             case 'button-icon':
                 this.handleAvatarVariant();
                 break;
+            case 'chip':
+                this.handleChipVariant();
+                break;
             case 'combobox':
                 this.handleCombobox();
                 break;
@@ -283,6 +323,11 @@ export default class Skeleton extends LightningElement {
     handleAvatarVariant() {
         if (Object.keys(this.variantAttributes).length !== 0)
             this.updateAvatarClassList();
+    }
+
+    handleChipVariant() {
+        if (Object.keys(this.variantAttributes).length !== 0)
+            this.updateChipClassList();
     }
 
     /**
@@ -351,4 +396,6 @@ export default class Skeleton extends LightningElement {
         this.secondaryTextClass = secondaryTextClass;
         this.tertiaryTextClass = tertiaryTextClass;
     }
+
+    updateChipClassList() {}
 }

@@ -33,7 +33,7 @@
 -->
 
 <template>
-    <template if:false={isAvatarVariant}>
+    <template if:true={isRegularVariant}>
         <div class={variantClass} data-element-id="avonni-skeleton"></div>
     </template>
     <template if:true={isAvatarVariant}>
@@ -64,5 +64,35 @@
                 data-element-id="avonni-avatar-tertiary-text"
             ></p>
         </c-media-object>
+    </template>
+    <template if:true={isChipVariant}>
+        <span class={chipClass} data-element-id="span-wrapper">
+            <span class="slds-truncate">
+                <template if:true={chipHasIcon}>
+                    <span
+                        class="
+                            slds-badge__icon slds-badge__icon_left
+                            avonni-skeleton__animation-pulse
+                        "
+                    >
+                        <slot name="chip-left"></slot>
+                    </span>
+                </template>
+                <!-- <div
+                    class={variantClass}
+                    style="min-height: 0.5em; min-width: 0.7em"
+                ></div> -->
+                <template if:true={chipHasIcon}>
+                    <span
+                        class="
+                            slds-badge__icon slds-badge__icon_right
+                            avonni-skeleton__animation-pulse
+                        "
+                    >
+                        <slot name="chip-right"></slot>
+                    </span>
+                </template>
+            </span>
+        </span>
     </template>
 </template>

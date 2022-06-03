@@ -74,7 +74,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['avatar', 'circular', 'rectangular', 'text'],
+            options: ['avatar', 'chip', 'circular', 'rectangular', 'text'],
             description: 'The variant changes the appearance of the skeleton.',
             table: {
                 type: { summary: 'string' },
@@ -101,3 +101,4 @@ export default {
 const Template = (args) => Skeleton(args);
 
 export const Base = Template.bind({});
+export const Chip = Template.bind({});
