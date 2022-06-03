@@ -587,6 +587,9 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
     }
 
     computeCellSize() {
+        if (!this.smallestHeader) {
+            return;
+        }
         const totalWidth = this.template.host.getBoundingClientRect().width;
         const totalNumberOfCells = this.smallestHeader.numberOfCells;
         let cellSize = 0;

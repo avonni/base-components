@@ -273,7 +273,10 @@
 
         <!-- Schedule -->
         <div class={scheduleColClass} data-element-id="div-schedule-col">
-            <div class={scheduleNestedCol}>
+            <div
+                class={scheduleNestedCol}
+                data-element-id="div-schedule-nested-col"
+            >
                 <!-- Horizontal headers -->
                 <c-primitive-scheduler-header-group
                     if:false={isVertical}

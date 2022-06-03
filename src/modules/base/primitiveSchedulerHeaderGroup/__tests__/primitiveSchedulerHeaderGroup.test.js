@@ -90,6 +90,7 @@ describe('Primitive Scheduler Header Group', () => {
         expect(element.timeSpan).toMatchObject({ unit: 'day', span: 1 });
         expect(element.variant).toBe('horizontal');
         expect(element.visibleInterval).toBeUndefined();
+        expect(element.zoomToFit).toBeFalsy();
     });
 
     /*
@@ -670,7 +671,7 @@ describe('Primitive Scheduler Header Group', () => {
         });
     });
 
-    // visibleInterval
+    // visible-interval
     // Depends on start and timeSpan
     it('Scheduler header group: visibleInterval', () => {
         element.start = new Date(2022, 4, 18);
@@ -686,6 +687,25 @@ describe('Primitive Scheduler Header Group', () => {
             expect(element.visibleInterval.s.ts).toBe(start);
             expect(element.visibleInterval.e.ts).toBe(end);
         });
+    });
+
+    // zoom-to-fit
+    it('Scheduler header group: zoomToFit', () => {
+        element.shadowRoot.host.getBoundingClientRect = jest.fn(() => {
+            return { width: 120 };
+        });
+        const handler = jest.fn();
+        element.addEventListener('privatecellsizechange', handler);
+        element.start = new Date(2022, 4, 18);
+        element.timeSpan = {
+            unit: 'day',
+            span: 1
+        };
+        element.zoomToFit = true;
+        jest.runAllTimers();
+
+        expect(handler).toHaveBeenCalled();
+        expect(handler.mock.calls[0][0].detail.cellSize).toBe(5);
     });
 
     /*

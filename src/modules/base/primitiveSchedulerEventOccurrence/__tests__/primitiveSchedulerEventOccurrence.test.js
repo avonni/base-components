@@ -137,6 +137,7 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
         expect(element.width).toBe(0);
         expect(element.x).toBe(0);
         expect(element.y).toBe(0);
+        expect(element.zoomToFit).toBeFalsy();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -853,6 +854,47 @@ describe('PrimitiveSchedulerEventOccurrence', () => {
 
         return Promise.resolve().then(() => {
             expect(element.style.transform).toBe('translate(0px, 70px)');
+        });
+    });
+
+    // zoom-to-fit
+    it('Scheduler event occurence: zoomToFit = false', () => {
+        element.zoomToFit = false;
+        element.title = 'Some title';
+        element.resources = RESOURCES;
+        element.resourceKey = RESOURCE_KEY;
+        element.labels = {
+            center: {
+                value: 'Some label'
+            }
+        };
+        element.scrollOffset = 30;
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="div-center-label-wrapper"]'
+            );
+            expect(label.style.left).toBe('30px');
+        });
+    });
+
+    it('Scheduler event occurence: zoomToFit = true', () => {
+        element.zoomToFit = true;
+        element.title = 'Some title';
+        element.resources = RESOURCES;
+        element.resourceKey = RESOURCE_KEY;
+        element.labels = {
+            center: {
+                value: 'Some label'
+            }
+        };
+        element.scrollOffset = 30;
+
+        return Promise.resolve().then(() => {
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="div-center-label-wrapper"]'
+            );
+            expect(label.style.left).toBe('');
         });
     });
 

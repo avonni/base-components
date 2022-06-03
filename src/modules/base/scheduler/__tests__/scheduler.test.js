@@ -142,6 +142,7 @@ describe('Scheduler', () => {
             { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
         ]);
         expect(element.variant).toBe('horizontal');
+        expect(element.zoomToFit).toBeFalsy();
     });
 
     /*
@@ -1836,6 +1837,55 @@ describe('Scheduler', () => {
             });
     });
 
+    it('Scheduler: resizeColumnDisabled = false with vertical variant', () => {
+        document.body.appendChild(element);
+
+        element.resizeColumnDisabled = false;
+        element.columns = COLUMNS;
+        element.resources = RESOURCES;
+        element.resourcesKeyField = RESOURCES_KEY_FIELD;
+        element.variant = 'vertical';
+
+        const wrapper = element.shadowRoot.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        return Promise.resolve().then(() => {
+            // Mouse down
+            const splitter = element.shadowRoot.querySelector(
+                '[data-element-id="div-splitter"]'
+            );
+            const firstCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-first-column"]'
+            );
+            const firstResourceHeaderCell = element.shadowRoot.querySelector(
+                '[data-element-id="div-vertical-resource-header-first-cell"]'
+            );
+
+            const mouseDown = new CustomEvent('mousedown');
+            mouseDown.clientX = 30;
+            mouseDown.button = 0;
+            splitter.dispatchEvent(mouseDown);
+            expect(firstCol.style.width).toBe('');
+            expect(firstCol.style.minWidth).toBe('');
+            expect(firstResourceHeaderCell.style.width).toBe('0px');
+            expect(firstResourceHeaderCell.style.minWidth).toBe('0px');
+
+            // Mouse move
+            const mouseMove = new CustomEvent('mousemove');
+            mouseMove.clientX = 10;
+            wrapper.dispatchEvent(mouseMove);
+            expect(firstCol.style.width).toBe('-20px');
+            expect(firstCol.style.minWidth).toBe('-20px');
+            expect(firstResourceHeaderCell.style.width).toBe('-20px');
+            expect(firstResourceHeaderCell.style.minWidth).toBe('-20px');
+
+            // Mouse up
+            const mouseUp = new CustomEvent('mouseup');
+            mouseUp.button = 0;
+            wrapper.dispatchEvent(mouseUp);
+        });
+    });
+
     it('Scheduler: resizeColumnDisabled = true', () => {
         document.body.appendChild(element);
         element.resizeColumnDisabled = true;
@@ -2207,6 +2257,97 @@ describe('Scheduler', () => {
                 expect(label).toBeTruthy();
                 expect(label.textContent).toBe(RESOURCES[index].resourceName);
             });
+        });
+    });
+
+    // zoom-to-fit
+    it('Scheduler: zoomToFit = false', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.resourcesKeyField = RESOURCES_KEY_FIELD;
+        element.zoomToFit = false;
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            expect(cell.classList).not.toContain(
+                'avonni-scheduler__cell_zoom-to-fit'
+            );
+
+            const scheduleCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-col"]'
+            );
+            expect(scheduleCol.classList).not.toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+            const scheduleNestedCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-nested-col"]'
+            );
+            expect(scheduleNestedCol.classList).not.toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+        });
+    });
+
+    it('Scheduler: zoomToFit = true', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.resourcesKeyField = RESOURCES_KEY_FIELD;
+        element.zoomToFit = true;
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]'
+            );
+            expect(cell.classList).toContain(
+                'avonni-scheduler__cell_zoom-to-fit'
+            );
+
+            const scheduleCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-col"]'
+            );
+            expect(scheduleCol.classList).toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+            const scheduleNestedCol = element.shadowRoot.querySelector(
+                '[data-element-id="div-schedule-nested-col"]'
+            );
+            expect(scheduleNestedCol.classList).toContain(
+                'avonni-scheduler__schedule-col_zoom-to-fit'
+            );
+        });
+    });
+
+    it('Scheduler: zoomToFit = true, with vertical variant', () => {
+        element.start = START;
+        document.body.appendChild(element);
+        setVisibleInterval();
+        jest.runAllTimers();
+
+        element.resources = RESOURCES;
+        element.columns = COLUMNS;
+        element.resourcesKeyField = RESOURCES_KEY_FIELD;
+        element.zoomToFit = true;
+        element.variant = 'vertical';
+
+        return Promise.resolve().then(() => {
+            const resourceHeader = element.shadowRoot.querySelector(
+                '[data-element-id="div-vertical-resource-header"]'
+            );
+            expect(resourceHeader.classList).toContain(
+                'avonni-scheduler__vertical-resource-header-cell_zoom-to-fit'
+            );
         });
     });
 
@@ -2627,9 +2768,9 @@ describe('Scheduler', () => {
 
     /* ----- USER ACTIONS ----- */
 
-    // datatable resize
+    // Datatable resize
     // Depends on the splitter resize flow, resources, resourcesKeyField and columns
-    it('Scheduler: User resizes one of the first columns', () => {
+    it('Scheduler: User resizes a datatable column', () => {
         document.body.appendChild(element);
 
         element.columns = COLUMNS;
@@ -2649,10 +2790,17 @@ describe('Scheduler', () => {
                 mouseDown.clientX = 30;
                 mouseDown.button = 0;
                 splitter.dispatchEvent(mouseDown);
+                const firstCol = element.shadowRoot.querySelector(
+                    '[ data-element-id="div-first-column"]'
+                );
+                expect(firstCol.style.width).toBe('');
+                expect(firstCol.style.minWidth).toBe('');
 
                 const mouseMove = new CustomEvent('mousemove');
                 mouseMove.clientX = 10;
                 wrapper.dispatchEvent(mouseMove);
+                expect(firstCol.style.width).toBe('-20px');
+                expect(firstCol.style.minWidth).toBe('-20px');
 
                 const mouseUp = new CustomEvent('mouseup');
                 mouseUp.button = 0;
@@ -2675,6 +2823,11 @@ describe('Scheduler', () => {
                 );
 
                 expect(datatable.style.width).toBeFalsy();
+                const firstCol = element.shadowRoot.querySelector(
+                    '[ data-element-id="div-first-column"]'
+                );
+                expect(firstCol.style.width).toBe('');
+                expect(firstCol.style.minWidth).toBe('');
             });
     });
 
