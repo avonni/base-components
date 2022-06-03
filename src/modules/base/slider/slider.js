@@ -551,9 +551,9 @@ export default class Slider extends LightningElement {
             .add({
                 [`avonni-slider__container-horizontal-size_${this._size}`]:
                     this._size,
-                'avonni-slider__vertical': this._type === 'vertical',
-                [`avonni-slider__container-vertical-size_${this._size}`]:
-                    this._size && this._type === 'vertical'
+                'avonni-slider__vertical': this.isVertical,
+                [`avonni-slider__container-vertical-origin_${this._size}`]:
+                    this.isVertical
             })
             .toString();
     }
@@ -598,13 +598,13 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedCustomLabelContainerClass() {
+        const isVertical = this.type === 'vertical';
         return classSet('').add({
-            'avonni-slider__custom-label-container_horizontal': this.isVertical,
-            'avonni-slider__custom-label-container_vertical': this.isVertical,
+            'avonni-slider__custom-label-container_horizontal': !isVertical,
+            'avonni-slider__custom-label-container_vertical': isVertical,
             'avonni-slider__custom-label-container_close':
                 this._tickMarkStyle !== 'tick',
-            [`avonni-slider__container-vertical-size_${this._size}`]:
-                this.isVertical
+            [`avonni-slider__container-vertical-size_${this._size}`]: isVertical
         });
     }
 
@@ -877,6 +877,9 @@ export default class Slider extends LightningElement {
             }
             // drawTicks
             for (let i = 0; i < numberOfSteps + 1; i++) {
+                let valueOfStep =
+                    (i / numberOfSteps) *
+                    (this._computedMax - this._computedMin);
                 let isMajorStep = i === 0 || i === numberOfSteps;
                 if (this.hasCustomLabels) {
                     isMajorStep =
@@ -891,7 +894,6 @@ export default class Slider extends LightningElement {
                     continue;
                 }
                 let line = document.createElementNS(SVG_NAMESPACE, 'line');
-
                 line.setAttribute('height', `15`);
                 line.setAttribute('width', `5`);
                 line.setAttribute('x1', `${leftPosition}`);
@@ -899,17 +901,15 @@ export default class Slider extends LightningElement {
                 line.setAttribute('x2', `${leftPosition}`);
                 line.setAttribute('y2', `${isMajorStep ? 22.65 : 22}`);
                 ruler.appendChild(line);
+                line.dataset.tickValue = valueOfStep;
                 leftPosition += stepWidth;
             }
         }
 
-        this.template.querySelectorAll('line').forEach((line, index) => {
-            const valueOfStep =
-                (index / numberOfSteps) *
-                (this._computedMax - this._computedMin);
+        this.template.querySelectorAll('line').forEach((line) => {
             const isColored =
-                this._progressInterval[0] <= valueOfStep &&
-                valueOfStep <= this._progressInterval[1];
+                this._progressInterval[0] <= line.dataset.tickValue &&
+                line.dataset.tickValue <= this._progressInterval[1];
             line.setAttribute(
                 'stroke',
                 `${isColored ? this.highlightColor : '#ecebea'}`
@@ -961,6 +961,9 @@ export default class Slider extends LightningElement {
         if (drawPositions) {
             const ruler = this._ruler;
             for (let i = 0; i < numberOfSteps + 1; i++) {
+                const valueOfStep =
+                    (i / numberOfSteps) *
+                    (this._computedMax - this._computedMin);
                 let isMajorStep = i === 0 || i === numberOfSteps;
                 if (this.hasCustomLabels) {
                     isMajorStep =
@@ -979,16 +982,14 @@ export default class Slider extends LightningElement {
                 circle.setAttribute('cy', '16.4');
                 circle.setAttribute('r', '1.2');
                 ruler.appendChild(circle);
+                circle.dataset.tickValue = valueOfStep;
                 leftPosition += stepWidth;
             }
         }
-        this.template.querySelectorAll('circle').forEach((circle, index) => {
-            const valueOfStep =
-                (index / numberOfSteps) *
-                (this._computedMax - this._computedMin);
+        this.template.querySelectorAll('circle').forEach((circle) => {
             const isColored =
-                this._progressInterval[0] <= valueOfStep &&
-                valueOfStep <= this._progressInterval[1];
+                this._progressInterval[0] <= circle.dataset.tickValue &&
+                circle.dataset.tickValue <= this._progressInterval[1];
             circle.setAttribute('fill', `${isColored ? '#ffffff' : '#979797'}`);
         });
     }

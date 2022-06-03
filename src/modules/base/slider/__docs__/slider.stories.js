@@ -439,3 +439,10 @@ CustomLabels.args = {
         ]
     }
 };
+
+export const Vertical = Template.bind({});
+Vertical.args = {
+    label: 'Slider label',
+    size: 'x-small',
+    type: 'vertical'
+};
