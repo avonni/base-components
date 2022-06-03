@@ -2793,6 +2793,8 @@ export default class Scheduler extends LightningElement {
             this.computedResources.forEach((resource) => {
                 resource.minHeight = undefined;
             });
+            this.firstCol.style.width = null;
+            this.firstCol.style.minWidth = null;
             this.computedResources = [...this.computedResources];
         } else {
             this.updateRowsHeight();
