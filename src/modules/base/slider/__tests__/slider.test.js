@@ -110,7 +110,7 @@ describe('Slider', () => {
                     element.shadowRoot.querySelector(
                         '[data-element-id="progress-bar"]'
                     ).classList
-                ).not.toContain('avonni-range__progress_disabled');
+                ).not.toContain('avonni-slider__progress_disabled');
             });
         });
     });
@@ -128,7 +128,7 @@ describe('Slider', () => {
                     element.shadowRoot.querySelector(
                         '[data-element-id="progress-bar"]'
                     ).classList
-                ).toContain('avonni-range__progress_disabled');
+                ).toContain('avonni-slider__progress_disabled');
             });
         });
     });
@@ -282,7 +282,7 @@ describe('Slider', () => {
             expect(element.pin).toEqual(false);
             expect(
                 element.shadowRoot.querySelector(
-                    '[data-group-name="bubble"][data-index="0"]'
+                    '[data-group-name="pin"][data-index="0"]'
                 )
             ).toBeFalsy();
         });
@@ -295,7 +295,7 @@ describe('Slider', () => {
             expect(element.pin).toEqual(true);
             expect(
                 element.shadowRoot.querySelector(
-                    '[data-group-name="bubble"][data-index="0"]'
+                    '[data-group-name="pin"][data-index="0"]'
                 )
             ).toBeTruthy();
         });
@@ -362,7 +362,7 @@ describe('Slider', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-range__container-horizontal-size_full'
+                'avonni-slider__container-horizontal-size_full'
             );
         });
     });
@@ -375,7 +375,7 @@ describe('Slider', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range__container-horizontal-size_x-small'
+                'avonni-slider__container-horizontal-size_x-small'
             );
         });
     });
@@ -388,7 +388,7 @@ describe('Slider', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range__container-horizontal-size_small'
+                'avonni-slider__container-horizontal-size_small'
             );
         });
     });
@@ -401,7 +401,7 @@ describe('Slider', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range__container-horizontal-size_medium'
+                'avonni-slider__container-horizontal-size_medium'
             );
         });
     });
@@ -414,7 +414,7 @@ describe('Slider', () => {
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.classList).toContain(
-                'avonni-range__container-horizontal-size_large'
+                'avonni-slider__container-horizontal-size_large'
             );
         });
     });
@@ -470,7 +470,7 @@ describe('Slider', () => {
                 '[data-element-id="horizontal-unit-container"]'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '[data-group-name="bubble"]'
+                '[data-group-name="pin"]'
             );
 
             expect(wrapper).toBeFalsy();
@@ -487,7 +487,7 @@ describe('Slider', () => {
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
-                '.avonni-range__vertical'
+                '.avonni-slider__vertical'
             );
             const verticalMaxLabel = element.shadowRoot.querySelector(
                 '[data-element-id="vertical-max-unit-container"]'
@@ -499,7 +499,7 @@ describe('Slider', () => {
                 '[data-element-id="horizontal-unit-container"]'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '[data-group-name="bubble"]'
+                '[data-group-name="pin"]'
             );
 
             expect(wrapper).toBeTruthy();
@@ -940,13 +940,13 @@ describe('Slider', () => {
             })
             .then(() => {
                 expect(firstInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(middleInput.classList).toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(lastInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
             });
     });
@@ -963,19 +963,21 @@ describe('Slider', () => {
                     '[data-group-name="input"][data-index="0"]'
                 );
                 pin = element.shadowRoot.querySelector(
-                    '[data-group-name="bubble"]'
+                    '[data-group-name="pin"]'
                 );
                 input.dispatchEvent(new MouseEvent('mousedown'));
             })
             .then(() => {
-                expect(pin.classList).toContain('avonni-range__bubble_visible');
+                expect(pin.classList).toContain(
+                    'avonni-slider__bubble_visible'
+                );
             })
             .then(() => {
                 input.dispatchEvent(new MouseEvent('mouseup'));
             })
             .then(() => {
                 expect(pin.classList).not.toContain(
-                    'avonni-range__bubble_visible'
+                    'avonni-slider__bubble_visible'
                 );
             });
     });
@@ -999,7 +1001,7 @@ describe('Slider', () => {
                     '[data-group-name="input"][data-index="0"]'
                 );
                 pin = element.shadowRoot.querySelector(
-                    '[data-group-name="bubble"]'
+                    '[data-group-name="pin"]'
                 );
                 pinPositionBefore = pin.style.left;
                 input.value = 8;
@@ -1084,13 +1086,13 @@ describe('Slider', () => {
             .then(() => {
                 // middle input is above
                 expect(firstInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(middleInput.classList).toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(lastInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
             })
             .then(() => {
@@ -1104,13 +1106,13 @@ describe('Slider', () => {
             .then(() => {
                 // we moved mouse too fast, inputs should be in same order
                 expect(firstInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(middleInput.classList).toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(lastInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
             })
             .then(() => {
@@ -1125,13 +1127,13 @@ describe('Slider', () => {
             .then(() => {
                 // first input is now above, since we waited for timeout
                 expect(firstInput.classList).toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(middleInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
                 expect(lastInput.classList).not.toContain(
-                    'avonni-range__slider_above'
+                    'avonni-slider__slider_above'
                 );
             });
     });

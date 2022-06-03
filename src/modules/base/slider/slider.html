@@ -34,7 +34,7 @@
 
 <template>
     <label
-        class="slds-form-element__label avonni-range__label"
+        class="slds-form-element__label avonni-slider__label"
         for="input"
         data-element-id="label"
     >
@@ -74,7 +74,7 @@
                             max={privateMax}
                             step={step}
                             value={value}
-                            class="slds-slider__range avonni-range__slider"
+                            class="slds-slider__range avonni-slider__slider"
                             disabled={disabled}
                             data-index={index}
                             data-group-name="input"
@@ -85,7 +85,7 @@
                         <div
                             if:true={pin}
                             class={computedBubbleClass}
-                            data-group-name="bubble"
+                            data-group-name="pin"
                             data-index={index}
                         >
                             <p>
@@ -98,7 +98,7 @@
                                     minimum-fraction-digits={unitAttributes.minimumFractionDigits}
                                     minimum-integer-digits={unitAttributes.minimumIntegerDigits}
                                     minimum-significant-digits={unitAttributes.minimumSignificantDigits}
-                                    data-element-id="lightning-formatted-number-left"
+                                    data-element-id="lightning-formatted-number-pin"
                                 ></lightning-formatted-number>
                             </p>
                         </div>
@@ -106,7 +106,7 @@
                 </div>
             </div>
         </template>
-        <div class="avonni-range__progress-container">
+        <div class="avonni-slider__progress-container">
             <div
                 if:false={removeTrack}
                 class={computedProgressClass}
@@ -120,7 +120,7 @@
                 height="40px"
                 xmlns="http://www.w3.org/2000/svg"
                 data-element-id="ruler"
-                class="avonni-range__tick-mark-container"
+                class="avonni-slider__tick-mark-container"
             ></svg>
         </template>
         <div
@@ -160,7 +160,7 @@
         >
             <template for:each={customLabels} for:item="customLabel">
                 <div
-                    class="avonni-range__custom-label-wrapper"
+                    class="avonni-slider__custom-label-wrapper"
                     key={customLabel.value}
                 >
                     <div
@@ -175,7 +175,7 @@
         </div>
     </div>
     <div
-        if:false={isHorizontal}
+        if:true={isVertical}
         class={computedSpacerClass}
         data-element-id="spacer"
     ></div>
