@@ -70,26 +70,26 @@ const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
 export default class Slider extends LightningElement {
     /**
-     * Text label to describe the range.
+     * Text label to describe the slider.
      *
      * @type {string}
      * @public
      */
     @api label;
     /**
-     * Error message to be displayed when a range overflow is detected.
+     * Error message to be displayed when a slider overflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api messageWhenRangeOverflow;
+    @api messageWhenSliderOverflow;
     /**
-     * Error message to be displayed when a range underflow is detected.
+     * Error message to be displayed when a slider underflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api messageWhenRangeUnderflow;
+    @api messageWhenSliderUnderflow;
     /**
      * Error message to be displayed when a step mismatch is detected.
      *
@@ -134,36 +134,36 @@ export default class Slider extends LightningElement {
     @api messageWhenTypeMismatch;
 
     _disabled = false;
-    _value = (DEFAULT_MAX - DEFAULT_MIN) / 2;
+    _disableSwap = false;
+    _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
     _minimumDistance = DEFAULT_MIN;
-    _max = DEFAULT_MAX;
     _pin = false;
+    _removeTrack = false;
+    _showTickMarks = false;
     _size = SLIDER_SIZES.default;
     _step = DEFAULT_STEP;
+    _tickMarkStyle = TICK_MARK_STYLES.default;
     _type = SLIDER_TYPES.default;
     _unit = SLIDER_UNITS.default;
-    _variant = LABEL_VARIANTS.default;
     _unitAttributes = {};
-    _showTickMarks = false;
-    _disableSwap = false;
-    _tickMarkStyle = TICK_MARK_STYLES.default;
-    _removeTrack = false;
+    _variant = LABEL_VARIANTS.default;
+    _value = (DEFAULT_MAX - DEFAULT_MIN) / 2;
 
-    _computedValues = [(DEFAULT_MAX - DEFAULT_MIN) / 2];
-    _computedMin = DEFAULT_MIN;
     _computedMax = DEFAULT_MAX;
-    _helpMessage;
-    _resizeObserver;
-    _moveEventWait = false;
-    _progressInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
+    _computedMin = DEFAULT_MIN;
+    _computedValues = [(DEFAULT_MAX - DEFAULT_MIN) / 2];
     _customLabels = [];
-    _scalingFactor = 1;
+    _helpMessage;
+    _moveEventWait = false;
     _previousScalingFactor = 1;
+    _progressInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
+    _resizeObserver;
+    _scalingFactor = 1;
 
+    _connected = false;
     _domModified = false;
     _rendered = false;
-    _connected = false;
 
     constructor() {
         super();
@@ -237,7 +237,30 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * The minimum value of the input range.
+     * The maximum value of the input slider.
+     *
+     * @type {number}
+     * @public
+     * @default 100
+     */
+    @api
+    get max() {
+        return this._max;
+    }
+
+    set max(value) {
+        let intValue = parseInt(value, 10);
+        if (!isNaN(intValue)) {
+            this._computedMax = intValue;
+            this._max = intValue;
+            if (this._connected) {
+                this.scaleValues();
+            }
+        }
+    }
+
+    /**
+     * The minimum value of the input slider.
      *
      * @type {number}
      * @public
@@ -274,29 +297,6 @@ export default class Slider extends LightningElement {
         const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
             this._minimumDistance = intValue;
-        }
-    }
-
-    /**
-     * The maximum value of the input range.
-     *
-     * @type {number}
-     * @public
-     * @default 100
-     */
-    @api
-    get max() {
-        return this._max;
-    }
-
-    set max(value) {
-        let intValue = parseInt(value, 10);
-        if (!isNaN(intValue)) {
-            this._computedMax = intValue;
-            this._max = intValue;
-            if (this._connected) {
-                this.scaleValues();
-            }
         }
     }
 
@@ -369,7 +369,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * The step increment value of the input range. Example steps include 0.1, 1, or 10.
+     * The step increment value of the input slider. Example steps include 0.1, 1, or 10.
      *
      * @type {number}
      * @public
@@ -468,13 +468,8 @@ export default class Slider extends LightningElement {
         } else this._unitAttributes = normalizeObject(value);
     }
 
-    @api
-    get customLabels() {
-        return this._customLabels;
-    }
-
     /**
-     * The value of the range. If an array is passed, many thumbs will displayed on slider.
+     * The value of the slider. If an array is passed, many thumbs will displayed on slider.
      * Returns a number if one value, returns an array if many values (array is always returned in ascending order).
      *
      * @type {string}
@@ -533,18 +528,6 @@ export default class Slider extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
-
-    get values() {
-        return this._computedValues;
-    }
-
-    get privateMin() {
-        return this._computedMin;
-    }
-
-    get privateMax() {
-        return this._computedMax;
-    }
 
     /**
      * Computed label class styling.
@@ -648,33 +631,18 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Verify if range is vertical.
-     *
-     * @type {boolean}
+     * customLabels for display in DOM
      */
-    get isVertical() {
-        return this._type === 'vertical';
+    get customLabels() {
+        return this._customLabels;
+    }
+
+    get generateKey() {
+        return generateUUID();
     }
 
     /**
-     * Verify if range is vertical and does not have custom labels.
-     *
-     * @type {boolean}
-     */
-    get isNormalVertical() {
-        return this._type === 'vertical' && !this.hasCustomLabels;
-    }
-    /**
-     * Verify if range is vertical and does not have custom labels.
-     *
-     * @type {boolean}
-     */
-    get isNormalHorizontal() {
-        return this._type !== 'vertical' && !this.hasCustomLabels;
-    }
-
-    /**
-     * Verify if the range has custom labels.
+     * Verify if the slider has custom labels.
      *
      * @type {boolean}
      */
@@ -692,6 +660,46 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Verify if slider is vertical.
+     *
+     * @type {boolean}
+     */
+    get isVertical() {
+        return this._type === 'vertical';
+    }
+
+    /**
+     * Verify if slider is vertical and does not have custom labels.
+     *
+     * @type {boolean}
+     */
+    get isNormalVertical() {
+        return this._type === 'vertical' && !this.hasCustomLabels;
+    }
+    /**
+     * Verify if slider is vertical and does not have custom labels.
+     *
+     * @type {boolean}
+     */
+    get isNormalHorizontal() {
+        return this._type !== 'vertical' && !this.hasCustomLabels;
+    }
+
+    /**
+     * min for display in DOM
+     */
+    get privateMin() {
+        return this._computedMin;
+    }
+
+    /**
+     * max for display in DOM
+     */
+    get privateMax() {
+        return this._computedMax;
+    }
+
+    /**
      * To show or not the tick marks.
      *
      * @type {boolean}
@@ -699,6 +707,7 @@ export default class Slider extends LightningElement {
     get showAnyTickMarks() {
         return this.hasCustomLabels || this._showTickMarks;
     }
+
     /**
      * To show or not the major tick marks.
      *
@@ -706,6 +715,27 @@ export default class Slider extends LightningElement {
      */
     get showOnlyMajorTicks() {
         return this.hasCustomLabels && !this._showTickMarks;
+    }
+
+    /**
+     * values for display in DOM
+     */
+    get values() {
+        return this._computedValues;
+    }
+
+    /**
+     *  Returns the progress bar html element.
+     */
+    get _progress() {
+        return this.template.querySelector('[data-element-id="progress-bar"]');
+    }
+
+    /**
+     *  Returns the tick ruler html element.
+     */
+    get _ruler() {
+        return this.template.querySelector('[data-element-id="ruler"]');
     }
 
     /*
@@ -727,31 +757,29 @@ export default class Slider extends LightningElement {
         this.updatePublicValue();
     }
 
-    scaleValues() {
-        if (!isNaN(this._value)) {
-            this._computedValues = [this._value * this._scalingFactor];
-        } else {
-            this._computedValues = this._value.map(
-                (val) => val * this._scalingFactor
-            );
-        }
-        this._computedMin = this._min * this._scalingFactor;
-        this._computedMax = this._max * this._scalingFactor;
-    }
+    /**
+     * Update slider values.
+     */
+    changeSlider() {
+        /**
+         * The event fired when the slider value changed.
+         *
+         * @event
+         * @name change
+         * @param {number} value The value of the slider.
+         * @public
+         */
+        const selectedEvent = new CustomEvent('change', {
+            detail: {
+                value: this._value
+            }
+        });
 
-    updatePublicValue() {
-        if (this._computedValues.length === 1) {
-            this._value = this._computedValues[0] / this._scalingFactor;
-        } else {
-            this._value = this._computedValues.map(
-                (val) => val / this._scalingFactor
-            );
-            this._value = this._value.sort((a, b) => a - b);
-        }
+        this.dispatchEvent(selectedEvent);
     }
 
     /**
-     * Displays and positions the custom labels for the range
+     * Displays and positions the custom labels for the slider
      */
     displayCustomLabels() {
         const customLabelNodes = this.template.querySelectorAll(
@@ -987,7 +1015,16 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Get the percentage associated to a value of the range
+     *  Returns the input html element.
+     */
+    getInput(index) {
+        return this.template.querySelector(
+            `[data-group-name="input"][data-index="${index}"]`
+        );
+    }
+
+    /**
+     * Get the percentage associated to a value of the slider
      * @param value
      * @type {number}
      */
@@ -1004,12 +1041,51 @@ export default class Slider extends LightningElement {
      * @param {Event} event
      */
     handleChange(event) {
-        this.updateInputRange(event);
+        this.updateInputSliders(event);
         if (this._pin) {
             this.setBubblePosition(event);
         }
         this.updatePublicValue();
-        this.changeRange();
+        this.changeSlider();
+    }
+
+    manageCollisions(updatedSliderIndex, newValues) {
+        const hasLeftNeighbor = updatedSliderIndex - 1 >= 0;
+        const hasRightNeighbor = updatedSliderIndex + 1 < newValues.length;
+
+        let neighborIndex = 0;
+        if (hasLeftNeighbor) {
+            neighborIndex = updatedSliderIndex - 1;
+            if (
+                newValues[updatedSliderIndex] - newValues[neighborIndex] <
+                this._minimumDistance
+            ) {
+                newValues[updatedSliderIndex] =
+                    newValues[neighborIndex] + this._minimumDistance;
+            }
+        }
+        if (hasRightNeighbor) {
+            neighborIndex = updatedSliderIndex + 1;
+            if (
+                newValues[neighborIndex] - newValues[updatedSliderIndex] <
+                this._minimumDistance
+            ) {
+                newValues[updatedSliderIndex] =
+                    newValues[neighborIndex] - this._minimumDistance;
+            }
+        }
+    }
+
+    scaleValues() {
+        if (!isNaN(this._value)) {
+            this._computedValues = [this._value * this._scalingFactor];
+        } else {
+            this._computedValues = this._value.map(
+                (val) => val * this._scalingFactor
+            );
+        }
+        this._computedMin = this._min * this._scalingFactor;
+        this._computedMax = this._max * this._scalingFactor;
     }
 
     /**
@@ -1104,11 +1180,11 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Updates the input range values based on its current value.
+     * Updates the inputslidervalues based on its current value.
      *
      * @param {Event} event
      */
-    updateInputRange(event) {
+    updateInputSliders(event) {
         let newValues = [...this._computedValues];
         const targetIndex = parseInt(event.target.dataset.index, 10);
         newValues[targetIndex] = parseInt(event.target.value, 10);
@@ -1118,30 +1194,14 @@ export default class Slider extends LightningElement {
         this.updateTrack(newValues);
     }
 
-    manageCollisions(updatedSliderIndex, newValues) {
-        const hasLeftNeighbor = updatedSliderIndex - 1 >= 0;
-        const hasRightNeighbor = updatedSliderIndex + 1 < newValues.length;
-
-        let neighborIndex = 0;
-        if (hasLeftNeighbor) {
-            neighborIndex = updatedSliderIndex - 1;
-            if (
-                newValues[updatedSliderIndex] - newValues[neighborIndex] <
-                this._minimumDistance
-            ) {
-                newValues[updatedSliderIndex] =
-                    newValues[neighborIndex] + this._minimumDistance;
-            }
-        }
-        if (hasRightNeighbor) {
-            neighborIndex = updatedSliderIndex + 1;
-            if (
-                newValues[neighborIndex] - newValues[updatedSliderIndex] <
-                this._minimumDistance
-            ) {
-                newValues[updatedSliderIndex] =
-                    newValues[neighborIndex] - this._minimumDistance;
-            }
+    updatePublicValue() {
+        if (this._computedValues.length === 1) {
+            this._value = this._computedValues[0] / this._scalingFactor;
+        } else {
+            this._value = this._computedValues.map(
+                (val) => val / this._scalingFactor
+            );
+            this._value = this._value.sort((a, b) => a - b);
         }
     }
 
@@ -1180,53 +1240,5 @@ export default class Slider extends LightningElement {
         if (this.showAnyTickMarks) {
             this.drawRuler(!this._rendered || this._domModified);
         }
-    }
-
-    /**
-     * Update slider values.
-     */
-    changeRange() {
-        /**
-         * The event fired when the range value changed.
-         *
-         * @event
-         * @name change
-         * @param {number} value The value of the range.
-         * @public
-         */
-        const selectedEvent = new CustomEvent('change', {
-            detail: {
-                value: this._value
-            }
-        });
-
-        this.dispatchEvent(selectedEvent);
-    }
-
-    /**
-     *  Returns the progress bar html element.
-     */
-    get _progress() {
-        return this.template.querySelector('[data-element-id="progress-bar"]');
-    }
-
-    /**
-     *  Returns the tick ruler html element.
-     */
-    get _ruler() {
-        return this.template.querySelector('[data-element-id="ruler"]');
-    }
-
-    /**
-     *  Returns the input html element.
-     */
-    getInput(index) {
-        return this.template.querySelector(
-            `[data-group-name="input"][data-index="${index}"]`
-        );
-    }
-
-    get generateKey() {
-        return generateUUID();
     }
 }

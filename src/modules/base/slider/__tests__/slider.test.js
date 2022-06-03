@@ -77,21 +77,21 @@ describe('Slider', () => {
     it('Default attributes', () => {
         expect(element.disabled).toEqual(false);
         expect(element.disableSwap).toEqual(false);
+        expect(element.max).toEqual(100);
         expect(element.min).toEqual(0);
         expect(element.minimumDistance).toEqual(0);
-        expect(element.max).toEqual(100);
         expect(element.label).toBeUndefined();
         expect(element.pin).toEqual(false);
         expect(element.removeTrack).toEqual(false);
         expect(element.showTickMarks).toEqual(false);
         expect(element.size).toEqual('full');
         expect(element.step).toEqual(1);
-        expect(element.type).toEqual('horizontal');
         expect(element.tickMarkStyle).toEqual('inner-tick');
+        expect(element.type).toEqual('horizontal');
         expect(element.unit).toEqual('decimal');
         expect(element.unitAttributes).toEqual({});
-        expect(element.variant).toEqual('standard');
         expect(element.value).toEqual(50);
+        expect(element.variant).toEqual('standard');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -172,6 +172,18 @@ describe('Slider', () => {
             });
     });
 
+    //max
+    it('max = 10', () => {
+        element.disableSwap = false;
+        element.max = 10;
+        element.value = 15;
+
+        return Promise.resolve().then(() => {
+            expect(element.max).toEqual(10);
+            expect(element.value).toEqual(10);
+        });
+    });
+
     //min
     it('min = 10', () => {
         element.disableSwap = false;
@@ -246,18 +258,6 @@ describe('Slider', () => {
             .then(() => {
                 expect(element.value).toEqual([4, 5]);
             });
-    });
-
-    //max
-    it('max = 10', () => {
-        element.disableSwap = false;
-        element.max = 10;
-        element.value = 15;
-
-        return Promise.resolve().then(() => {
-            expect(element.max).toEqual(10);
-            expect(element.value).toEqual(10);
-        });
     });
 
     //label
@@ -452,6 +452,50 @@ describe('Slider', () => {
         });
     });
 
+    // tickMarkStyle
+    it('tickMarkStyle = "tick"', () => {
+        element.tickMarkStyle = 'tick';
+        element.showTickMarks = true;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(101);
+        });
+    });
+
+    it('tickMarkStyle = "dot"', () => {
+        element.tickMarkStyle = 'dot';
+        element.showTickMarks = true;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('circle');
+            expect(ruler.childElementCount).toEqual(101);
+        });
+    });
+
+    it('tickMarkStyle = "inner-tick"', () => {
+        element.tickMarkStyle = 'inner-tick';
+        element.showTickMarks = true;
+
+        return Promise.resolve().then(() => {
+            const ruler = element.shadowRoot.querySelector(
+                '[data-element-id="ruler"]'
+            );
+            expect(ruler).toBeTruthy();
+            expect(ruler.firstChild.tagName).toEqual('rect');
+            expect(ruler.childNodes[3].tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(103);
+        });
+    });
+
     // type
     it('type = horizontal', () => {
         element.type = 'horizontal';
@@ -507,50 +551,6 @@ describe('Slider', () => {
             expect(verticalMinLabel).toBeTruthy();
             expect(horizontalMinMaxLabels).toBeFalsy();
             expect(bubbles).toHaveLength(1);
-        });
-    });
-
-    // tickMarkStyle
-    it('tickMarkStyle = "tick"', () => {
-        element.tickMarkStyle = 'tick';
-        element.showTickMarks = true;
-
-        return Promise.resolve().then(() => {
-            const ruler = element.shadowRoot.querySelector(
-                '[data-element-id="ruler"]'
-            );
-            expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('line');
-            expect(ruler.childElementCount).toEqual(101);
-        });
-    });
-
-    it('tickMarkStyle = "dot"', () => {
-        element.tickMarkStyle = 'dot';
-        element.showTickMarks = true;
-
-        return Promise.resolve().then(() => {
-            const ruler = element.shadowRoot.querySelector(
-                '[data-element-id="ruler"]'
-            );
-            expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('circle');
-            expect(ruler.childElementCount).toEqual(101);
-        });
-    });
-
-    it('tickMarkStyle = "inner-tick"', () => {
-        element.tickMarkStyle = 'inner-tick';
-        element.showTickMarks = true;
-
-        return Promise.resolve().then(() => {
-            const ruler = element.shadowRoot.querySelector(
-                '[data-element-id="ruler"]'
-            );
-            expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('rect');
-            expect(ruler.childNodes[3].tagName).toEqual('line');
-            expect(ruler.childElementCount).toEqual(103);
         });
     });
 
