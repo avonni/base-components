@@ -97,6 +97,7 @@ export default class Skeleton extends LightningElement {
     _initialAvatarRender = false;
 
     avatarWrapperClass;
+    avatarClass;
 
     connectedCallback() {
         this.updateAvatarClassList();
@@ -281,6 +282,7 @@ export default class Skeleton extends LightningElement {
 
     updateAvatarClassList() {
         const wrapperClass = classSet('')
+            .add('slds-avatar')
             // .add(`avonni-avatar_${this.avatarVariant}`)
             .add({
                 'avonni-avatar_xx-small': this.avatarSize === 'xx-small',
@@ -289,8 +291,10 @@ export default class Skeleton extends LightningElement {
                 'slds-avatar_medium': this.avatarSize === 'medium',
                 'slds-avatar_large': this.avatarSize === 'large',
                 'avonni-avatar_x-large': this.avatarSize === 'x-large',
-                'avonni-avatar_xx-large': this.avatarSize === 'xx-large'
+                'avonni-avatar_xx-large': this.avatarSize === 'xx-large',
+                'slds-avatar_circle': this.avatarVariant === 'circle'
             });
+
         this.avatarWrapperClass = wrapperClass;
     }
 }

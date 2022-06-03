@@ -34,9 +34,17 @@ import Component from '../skeleton';
 
 customElements.define('ac-base-skeleton', Component.CustomElementConstructor);
 
-export const Skeleton = ({ avatarSize, animation, variant, height, width }) => {
+export const Skeleton = ({
+    avatarSize,
+    avatarVariant,
+    animation,
+    variant,
+    height,
+    width
+}) => {
     const element = document.createElement('ac-base-skeleton');
     element.avatarSize = avatarSize;
+    element.avatarVariant = avatarVariant;
     element.animation = animation;
     element.variant = variant;
     element.height = height;

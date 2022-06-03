@@ -55,6 +55,17 @@ export default {
                 category: 'Layout'
             }
         },
+        avatarVariant: {
+            name: 'avatar-variant',
+            control: {
+                type: 'select'
+            },
+            options: ['circle', 'square'],
+            table: {
+                type: { summary: 'string' },
+                category: 'Layout'
+            }
+        },
         animation: {
             name: 'animation',
             control: {
