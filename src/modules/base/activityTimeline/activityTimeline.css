@@ -60,3 +60,7 @@
     height: 350px;
     width: 1300px;
 }
+
+.avonni-activity-timeline__horizontal-timeline-resize-cursor {
+    cursor: col-resize;
+}
