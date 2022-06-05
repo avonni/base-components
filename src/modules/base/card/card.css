@@ -31,7 +31,18 @@
  */
 
 :host() {
+    --avonni-card-sizing-border: 1px;
+    --avonni-card-border-color: #c9c9c9;
+    --avonni-card-radius-border: 0.5rem;
     /* --slds-c-card-shadow: 0px; */
+    --avonni-card-media-height: 200px;
+    --avonni-card-media-action-top: 0px;
+    --avonni-card-media-action-bottom: unset;
+    --avonni-card-media-action-left: unset;
+    --avonni-card-media-action-right: 0px;
+
+    --avonni-card-body-padding: 6px;
+    --avonni-card-footer-padding: 6px;
 }
 
 article {
@@ -59,6 +70,23 @@ article.avonni-card {
         --slds-c-card-shadow,
         var(--sds-c-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1))
     );
+    overflow: hidden;
+}
+
+.avonni-card__image-container {
+    border-top-right-radius: var(
+        --slds-c-card-radius-border,
+        var(--sds-c-card-radius-border, 0.25rem)
+    );
+    border-top-left-radius: var(
+        --slds-c-card-radius-border,
+        var(--sds-c-card-radius-border, 0.25rem)
+    );
+    overflow: hidden;
+}
+
+.avonni-card__title-row {
+    width: 100%;
 }
 
 .background .avonni-card__image-container {
@@ -66,7 +94,8 @@ article.avonni-card {
     width: 100%;
 }
 
-.background .card-content {
+.background .avonni-card__body-container {
+    width: 100%;
     position: absolute;
     padding-top: 20px;
     bottom: 0;
@@ -77,6 +106,12 @@ article.avonni-card {
         rgba(0, 0, 0, 0.23) 75%,
         rgba(0, 0, 0, 0) 100%
     );
+}
+.avonni-card__media-action {
+    position: absolute;
+    bottom: 0px;
+    right: 0px;
+    background-color: red;
 }
 
 .avonni-card__body-container {

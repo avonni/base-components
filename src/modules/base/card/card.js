@@ -63,7 +63,6 @@ export default class Card extends LightningElement {
     connectedCallback() {}
 
     renderedCallback() {
-        console.log(this.mediaSlot);
         if (this.titleSlot) {
             this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
         }
@@ -88,7 +87,6 @@ export default class Card extends LightningElement {
         }
 
         this._showMedia = !!this.mediaSrc || this.showMediaSlot;
-        console.log(this.mediaSrc, this.showMediaSlot);
     }
 
     /**
@@ -117,7 +115,7 @@ export default class Card extends LightningElement {
      * @type {Element}
      */
     get mediaActionSlot() {
-        return this.template.querySelector('slot[name=media-actions]');
+        return this.template.querySelector('slot[name=media-action]');
     }
 
     /**
@@ -126,26 +124,17 @@ export default class Card extends LightningElement {
      * @type {Element}
      */
     get actionSlot() {
-        return this.template.querySelector('slot[name=actions]');
+        return this.template.querySelector('slot[name=action]');
     }
 
-    // /**
-    //  * Get the actions slot DOM element.
-    //  *
-    //  * @type {Element}
-    //  */
-    // get actionsSlot() {
-    //     return this.template.querySelector('slot[name=actions]');
-    // }
-
-    // /**
-    //  * Get the actions slot DOM element.
-    //  *
-    //  * @type {Element}
-    //  */
-    // get actionsSlot() {
-    //     return this.template.querySelector('slot[name=actions]');
-    // }
+    /**
+     * Get the footer slot DOM element.
+     *
+     * @type {Element}
+     */
+    get footerSlot() {
+        return this.template.querySelector('slot[name=footer]');
+    }
 
     // PROPS //
 

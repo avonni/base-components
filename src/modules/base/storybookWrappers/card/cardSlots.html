@@ -46,19 +46,22 @@
             src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
         />
 
-        <div slot="media-action" style="position: absolute; top: 0; left: 0">
-            media action slot
+        <div slot="media-action">
+            <lightning-button-icon
+                variant="bare"
+                size="large"
+                icon-name="custom:custom1"
+            ></lightning-button-icon>
         </div>
 
-        <div slot="title">
-            <h4>title slot</h4>
-        </div>
+        <h4 slot="title">title slot</h4>
 
         <div slot="default">default slot</div>
 
-        <div slot="action">
-            <button class="slds-button slds-button_neutral">Action slot</button>
-        </div>
+        <button class="slds-button slds-button_neutral" slot="action">
+            Action slot
+        </button>
+
         <div slot="footer">footer slot</div>
     </c-card>
 </template>

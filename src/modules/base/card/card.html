@@ -48,27 +48,34 @@
                     if:true={mediaSrc}
                 />
                 <slot name="media"></slot>
-                <slot name="media-action"></slot>
+                <div class="avonni-card__media-action">
+                    <slot name="media-action"></slot>
+                </div>
             </div>
 
             <!-- title and action -->
             <div class="slds-has-flexi-truncate avonni-card__body-container">
-                <div class="slds-grid">
+                <div class="slds-grid avonni-card__title-row">
                     <div class="slds-grid">
                         <c-avatar
                             if:true={avatar}
                             class="slds-m-right_x-small"
                             fallback-icon-name={avatar.fallbackIconName}
                             src={avatar.src}
+                            variant={avatar.circle}
                             hide-avatar-details="true"
                             alternative-text="avatar"
                             data-element-id="avonni-avatar"
                         ></c-avatar>
 
-                        <div if:true={hasStringTitle}>
-                            <span>{title}</span>
-                        </div>
-                        <div if:false={hasStringTitle}>
+                        <h2
+                            if:true={hasStringTitle}
+                            class="slds-card__header-title slds-truncate"
+                        >
+                            {title}
+                        </h2>
+
+                        <div if:false={hasStringTitle} class="slds-truncate">
                             <slot name="title"></slot>
                         </div>
                     </div>
