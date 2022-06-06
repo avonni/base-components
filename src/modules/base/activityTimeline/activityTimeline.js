@@ -96,9 +96,9 @@ const SORTED_DIRECTIONS = {
 };
 
 // ** Functionalities/bug **
-// TODO: Fix overlap of items at specific place (setYPosition) + consequences
 // TODO: Scroll --> prevent scroll if no item to show
 // TODO: Responsive size, or container width size instead of fixed
+// TODO: Fix scroll --> last item not shown
 
 // ** QA/tests/Doc **
 // TODO: Move horizontal timeline to new file
@@ -708,6 +708,9 @@ export default class ActivityTimeline extends LightningElement {
             .attr('y', item.yPosition + 0.64 * SVG_ICON_SIZE)
             .text(this.computedItemTitle(item))
             .style('font-size', 13);
+
+        // Method to calculate the text width
+        // console.log(itemText.node().getComputedTextLength());        /// *****************
     }
 
     setIconInformation(iconName) {
@@ -774,57 +777,44 @@ export default class ActivityTimeline extends LightningElement {
      *
      * @returns array
      */
-    // TODO: fix bug at interval end
-    setYPositionOfItems(items, yStartPosition, yGapBetweenItems) {
+    setYPositions(items, yStartPosition, yGapBetweenItems) {
+        // TODO - CALCULATE REAL LENGTH OF EACH ITEM
+        const MAX_ITEM_LENGTH = 230;
+
         // Set all items with startPosition as yPosition and sort them by date
         let dataToDisplay = items.map((element) => ({
             ...element,
-            yPosition: yStartPosition
+            yPosition: yStartPosition,
+            xMinPosition: this.viewTimeScale(new Date(element.datetimeValue)),
+            xMaxPosition:
+                this.viewTimeScale(new Date(element.datetimeValue)) +
+                MAX_ITEM_LENGTH
         }));
+
         dataToDisplay = [...dataToDisplay].sort(
             (a, b) => new Date(a.datetimeValue) - new Date(b.datetimeValue)
         );
 
         dataToDisplay.forEach((item, itemIndex) => {
-            const itemDate = new Date(item.datetimeValue);
-            const daysOverlapInterval = Math.ceil(this._intervalDaysLength / 5);
-
             // Find all elements in date range of item to prevent overlapping
-            let foundElements = dataToDisplay.filter((element) => {
-                const date = new Date(element.datetimeValue);
-                return (
-                    date >= itemDate &&
-                    date <= this.findNextDate(itemDate, daysOverlapInterval)
-                );
-            });
+            let foundElements = dataToDisplay.filter(
+                (element, elementIndex) => {
+                    return (
+                        elementIndex > itemIndex &&
+                        element.name !== item.name &&
+                        element.xMinPosition >= item.xMinPosition &&
+                        element.xMinPosition <= item.xMaxPosition
+                    );
+                }
+            );
 
             if (foundElements && foundElements.length > 0) {
                 // Add vertical gap between each element
-                foundElements.forEach((element, index) => {
-                    if (element.name !== item.name) {
-                        element.yPosition += yGapBetweenItems;
-                    }
-
-                    // To prevent two elements with the same date to have the same yPosition
-                    if (
-                        index > 0 &&
-                        foundElements[index - 1].datetimeValue ===
-                            element.datetimeValue &&
-                        foundElements[index - 1].yPosition === element.yPosition
-                    ) {
-                        foundElements[index - 1].yPosition -= yGapBetweenItems;
+                foundElements.forEach((element) => {
+                    if (item.yPosition >= element.yPosition) {
+                        element.yPosition = item.yPosition + yGapBetweenItems;
                     }
                 });
-
-                // TODO: to improve
-                if (
-                    itemIndex > 1 &&
-                    dataToDisplay[itemIndex - 2].yPosition ===
-                        dataToDisplay[itemIndex - 1].yPosition
-                ) {
-                    dataToDisplay[itemIndex - 1].yPosition += yGapBetweenItems;
-                    item.yPosition += yGapBetweenItems;
-                }
 
                 // To find max y position
                 if (item.yPosition > this._maxYPositionOfItem) {
@@ -832,6 +822,7 @@ export default class ActivityTimeline extends LightningElement {
                 }
             }
         });
+
         return dataToDisplay;
     }
 
@@ -844,7 +835,7 @@ export default class ActivityTimeline extends LightningElement {
         this._timelineDiv.selectAll('*').remove();
 
         // Calculate each items y position and set timeline height
-        const dataToDisplay = this.setYPositionOfItems(
+        const dataToDisplay = this.setYPositions(
             this._displayedItems,
             Y_START_POSITION_TIMELINE_ITEM,
             Y_GAP_BETWEEN_ITEMS_TIMELINE
@@ -1047,7 +1038,7 @@ export default class ActivityTimeline extends LightningElement {
     addItemsToScrollAxis() {
         // <--- CREATE RECT ON SCROLL AXIS TO REPRESENT DATA --->
         // To find y position of all items
-        let itemsToDisplay = this.setYPositionOfItems(
+        let itemsToDisplay = this.setYPositions(
             this.sortedItems,
             Y_START_POSITION_SCROLL_ITEM,
             Y_GAP_BETWEEN_ITEMS_SCROLL
