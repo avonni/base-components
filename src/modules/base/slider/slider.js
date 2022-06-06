@@ -811,7 +811,7 @@ export default class Slider extends LightningElement {
      */
     @api
     checkValidity() {
-        return this._constraints.checkValidity();
+        return this._constraint.checkValidity();
     }
 
     /**
@@ -859,7 +859,7 @@ export default class Slider extends LightningElement {
      */
     @api
     setCustomValidity(message) {
-        this._constraints.setCustomValidity(message);
+        this._constraint.setCustomValidity(message);
     }
 
     /**
