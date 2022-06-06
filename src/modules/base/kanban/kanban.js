@@ -541,7 +541,7 @@ export default class Kanban extends LightningElement {
         const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
         Array.from(groupElements).forEach((group, i) => {
             group.style.height = 'fit-content';
-            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
+            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET}- ${actionsContainer[i].offsetHeight}px)`;
         });
         fields.forEach((field, i) => {
             const hasScroll =
@@ -1092,10 +1092,12 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__footer_action"]'
         );
 
+        const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
+
         // resets animations
         Array.from(groups).forEach((group, i) => {
             if (group !== groups[this._releasedGroupIndex]) {
-                group.style.maxHeight = `calc(100% - 75px - ${actionsContainer[i].offsetHeight}px)`;
+                group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
                 group.style.height = 'fit-content';
             } else {
                 group.style.height = `${
