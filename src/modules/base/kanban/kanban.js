@@ -384,7 +384,7 @@ export default class Kanban extends LightningElement {
 
     /**
      *
-     * Translates down the tiles that are being hovered
+     * Translates down the tiles that are being hovered and updates the height of the groups
      * @param {HTMLElement[]} groups Groups containing the tiles to translate
      */
     animateTiles(groups) {
@@ -454,7 +454,7 @@ export default class Kanban extends LightningElement {
 
     /**
      *
-     * Autoscrolls the tiles when the dragged tile is on the edge of the container
+     * Autoscrolls the tiles / groups when the dragged tile is on the edge of the container
      * @param {number} currentX Current x position of the dragged tile
      * @param {number} currentY Current y position of the dragged tile
      */
@@ -488,6 +488,8 @@ export default class Kanban extends LightningElement {
                     group.scrollBy(0, -10);
                     this.animateTiles(groups);
                 }, 20);
+
+            // auto scroll when the user is dragging the group out of the container
         } else if (currentX + 150 > right) {
             if (!this._scrollingX) {
                 this._scrollingX = window.setInterval(() => {
@@ -506,6 +508,7 @@ export default class Kanban extends LightningElement {
                         fieldContainer.scrollBy(-10, 0);
                 }, 15);
         } else {
+            // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
             window.clearInterval(this._scrollingY);
             this._scrollingY = null;
             window.clearInterval(this._scrollingX);
@@ -746,11 +749,6 @@ export default class Kanban extends LightningElement {
      */
     handleDropZone(event) {
         if (event.currentTarget !== this._draggedTile) return;
-        let distance =
-            event.clientX -
-            this._clickOffset.x +
-            this._draggedTile.offsetWidth / 2;
-        if (distance < 0) distance = 0;
 
         this._releasedGroupIndex = Math.min(
             Math.floor(
@@ -762,8 +760,6 @@ export default class Kanban extends LightningElement {
             ),
             this.groupValues.length - 1
         );
-
-        console.log(this._releasedGroupIndex);
 
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
