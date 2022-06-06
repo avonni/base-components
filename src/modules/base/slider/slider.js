@@ -148,8 +148,8 @@ export default class Slider extends LightningElement {
     _resizeObserver;
     _focusedInputIndex;
     _scalingFactor = 1;
-    _constraintApi;
-    _constraintApiProxyInputUpdater;
+    _constraintApis = [];
+    _constraintApiProxyInputUpdaters = [];
 
     _connected = false;
     _domModified = false;
@@ -433,8 +433,7 @@ export default class Slider extends LightningElement {
      */
     @api
     get unit() {
-        if (this._unit === 'custom') return SLIDER_UNITS.default;
-        return this._unit;
+        return this._unit === 'custom' ? SLIDER_UNITS.default : this._unit;
     }
     set unit(unit) {
         this._unit = normalizeString(unit, {
@@ -472,7 +471,9 @@ export default class Slider extends LightningElement {
      */
     @api
     get validity() {
-        return this._constraint.validity;
+        return this._constraints.reduce((result, nextConstraintApi) => {
+            return result && nextConstraintApi.validity;
+        }, true);
     }
 
     /**
@@ -744,26 +745,30 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Compute constraintApi with fieldConstraintApiWithProxyInput.
+     * Compute constraintApis with fieldConstraintApiWithProxyInputs.
      */
-    get _constraint() {
-        if (!this._constraintApi) {
-            this._constraintApi = new FieldConstraintApiWithProxyInput(
-                () => this
-            );
+    get _constraints() {
+        if (this._constraintApis.length === 0) {
+            for (let i = 0; i < this._computedValues.length; i++) {
+                let constraintApi = new FieldConstraintApiWithProxyInput(
+                    () => this
+                );
 
-            this._constraintApiProxyInputUpdater =
-                this._constraintApi.setInputAttributes({
-                    type: () => 'number',
-                    value: () => this.value,
-                    max: () => this.max,
-                    min: () => this.min,
-                    step: () => this.step,
-                    formatter: () => this.unit,
-                    disabled: () => this.disabled
-                });
+                this._constraintApiProxyInputUpdaters[i] =
+                    constraintApi.setInputAttributes({
+                        type: () => 'number',
+                        value: () => this._computedValues[i],
+                        max: () => this.max,
+                        min: () => this.min,
+                        step: () => this.step,
+                        formatter: () => this.unit,
+                        disabled: () => this.disabled
+                    });
+
+                this._constraintApis[i] = constraintApi;
+            }
         }
-        return this._constraintApi;
+        return this._constraintApis;
     }
 
     /**
@@ -811,7 +816,9 @@ export default class Slider extends LightningElement {
      */
     @api
     checkValidity() {
-        return this._constraint.checkValidity();
+        return this._constraints.reduce((result, nextConstraintApi) => {
+            return result && nextConstraintApi.checkValidity();
+        }, true);
     }
 
     /**
@@ -846,9 +853,15 @@ export default class Slider extends LightningElement {
      */
     @api
     reportValidity() {
-        return this._constraint.reportValidity((message) => {
-            this.helpMessage = message;
-        });
+        this.helpMessage = '';
+        return this._constraints.reduce((result, constraintApi, index) => {
+            return (
+                result &&
+                constraintApi.reportValidity((message) => {
+                    this.helpMessage += `Slider ${index}: ${message} `;
+                })
+            );
+        }, true);
     }
 
     /**
@@ -859,7 +872,9 @@ export default class Slider extends LightningElement {
      */
     @api
     setCustomValidity(message) {
-        this._constraint.setCustomValidity(message);
+        this._constraints.forEach((constraintApi) => {
+            constraintApi.setCustomValidity(message);
+        });
     }
 
     /**
@@ -896,6 +911,8 @@ export default class Slider extends LightningElement {
      * Update slider values.
      */
     changeSlider() {
+        this._updateProxyInputAttributes('value');
+
         /**
          * The event fired when the slider value changed.
          *
@@ -1390,8 +1407,10 @@ export default class Slider extends LightningElement {
      * @param {object} attributes
      */
     _updateProxyInputAttributes(attributes) {
-        if (this._constraintApiProxyInputUpdater) {
-            this._constraintApiProxyInputUpdater(attributes);
+        if (this._constraintApiProxyInputUpdaters.length === 0) {
+            this._constraintApiProxyInputUpdaters.forEach((updater) => {
+                updater(attributes);
+            });
         }
     }
 }
