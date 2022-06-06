@@ -426,16 +426,11 @@ export default class Kanban extends LightningElement {
             releasedChilds[
                 this._releasedTileIndex - 1
             ].style.marginBottom = `${this._draggedTile.offsetHeight}px`;
-            for (let i = 0; i < releasedChilds.length; i++) {
-                if (
-                    releasedChilds[i] &&
-                    releasedChilds[i] !== this._draggedTile
-                ) {
-                    releasedChilds[i].classList.add(
-                        'avonni-kanban__tile_moved'
-                    );
-                    releasedChilds[i].style.transform = `translateY(${-this
-                        ._draggedTile.offsetHeight}px)`;
+            for (const element of releasedChilds) {
+                if (element && element !== this._draggedTile) {
+                    element.classList.add('avonni-kanban__tile_moved');
+                    element.style.transform = `translateY(${-this._draggedTile
+                        .offsetHeight}px)`;
                 }
             }
         }
@@ -983,12 +978,12 @@ export default class Kanban extends LightningElement {
             ).scrollLeft / this._groupWidth
         );
 
-        this._initialTileIndex = Math.min(
-            Math.floor(
-                event.currentTarget.getBoundingClientRect().y /
-                    event.currentTarget.offsetHeight
-            ),
-            this._groupsLength[this._clickedGroupIndex] - 1
+        const parentGroup = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        )[this._clickedGroupIndex];
+
+        this._initialTileIndex = Array.from(parentGroup.children).indexOf(
+            this._draggedTile
         );
         this._releasedGroupIndex = this._clickedGroupIndex;
 

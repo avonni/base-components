@@ -167,6 +167,40 @@ const RECORDS = [
         date: '1547250828000',
         percent: 0.92,
         available: true
+    },
+    {
+        id: '007',
+        status: 'In Progress',
+        opportunityName: 'Opportunity 7',
+        amount: 5100,
+        phone: '+37529888888',
+        date: '1547250828000',
+        percent: 0.83,
+        available: false
+    },
+    {
+        id: '008',
+        status: 'In Progress',
+        opportunityName: 'Opportunity 8',
+        phone: '+37529888888',
+        date: '1547250828000',
+        available: false
+    },
+    {
+        id: '009',
+        status: 'In Progress',
+        opportunityName: 'Opportunity 9',
+        amount: 5100,
+        phone: '+37529888888',
+        available: false
+    },
+    {
+        id: '010',
+        status: 'In Progress',
+        opportunityName: 'Opportunity 10',
+        amount: 5100,
+        phone: '+37529888888',
+        date: '1547250828000'
     }
 ];
 
