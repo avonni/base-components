@@ -86,10 +86,12 @@ export default class Skeleton extends LightningElement {
     tertiaryTextClass;
 
     connectedCallback() {
-        if (this.isAvatarVariant) this.updateAvatarClassList();
-        this.primaryText = this.variantAttributes.primaryText;
-        this.secondaryText = this.variantAttributes.secondaryText;
-        this.tertiaryText = this.variantAttributes.tertiaryText;
+        if (this.isAvatarVariant) {
+            this.updateAvatarClassList();
+            this.primaryText = this.variantAttributes.primaryText;
+            this.secondaryText = this.variantAttributes.secondaryText;
+            this.tertiaryText = this.variantAttributes.tertiaryText;
+        }
     }
 
     renderedCallback() {

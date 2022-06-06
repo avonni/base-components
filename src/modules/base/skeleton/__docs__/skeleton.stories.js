@@ -31,6 +31,7 @@
  */
 
 import { Skeleton } from '../__examples__/skeleton';
+// import { SkeletonChip } from '../__examples__/skeleton';
 
 export default {
     title: 'Example/Skeleton',
@@ -99,6 +100,14 @@ export default {
 };
 
 const Template = (args) => Skeleton(args);
+// const TemplateChips = (args) => SkeletonChip(args);
 
 export const Base = Template.bind({});
 export const Chip = Template.bind({});
+Chip.args = {
+    variantAttributes: {
+        variant: 'chip',
+        animation: 'pulse',
+        hasIcon: true
+    }
+};
