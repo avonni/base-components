@@ -104,8 +104,9 @@ export const Base = Template.bind({});
 export const Chip = Template.bind({});
 Chip.args = {
     variantAttributes: {
-        variant: 'chip',
+        variant: 'brand',
         animation: 'pulse',
+        label: 'label',
         hasIcon: true,
         outline: false
     }

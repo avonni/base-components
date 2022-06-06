@@ -84,6 +84,7 @@ export default class Skeleton extends LightningElement {
     primaryTextClass;
     secondaryTextClass;
     tertiaryTextClass;
+    chipLabel;
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -96,7 +97,7 @@ export default class Skeleton extends LightningElement {
 
     renderedCallback() {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
-
+        if (this.isChipVariant) this.chipLabel = this.variantAttributes.label;
         if (!this.isAvatarVariant) this.handleVariant();
         console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
