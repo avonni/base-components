@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api, track } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import * as d3 from 'd3';
 import {
     normalizeBoolean,
@@ -98,6 +99,7 @@ const SORTED_DIRECTIONS = {
 // ** Functionalities/bug **
 // TODO: Responsive size, or container width size instead of fixed
 // TODO: Fix popover size
+// TODO: Handle if screen is smaller --> timeline axis label overlap, min size ?
 
 // ** QA/tests/Doc **
 // TODO: Move horizontal timeline to new file
@@ -146,7 +148,7 @@ export default class ActivityTimeline extends LightningElement {
     _intervalIncrement = 2;
     _displayedItems = [];
     _dateFormat = DEFAULT_DATE_FORMAT;
-    _timelineWidth = DEFAULT_TIMELINE_WIDTH; // TODO : Change to container width
+    _timelineWidth = DEFAULT_TIMELINE_WIDTH;
     _timelineHeight = DEFAULT_TIMELINE_HEIGHT;
     _timelineAxisHeight = DEFAULT_TIMELINE_AXIS_HEIGHT;
     _numberOfScrollAxisTicks = 10;
@@ -154,12 +156,15 @@ export default class ActivityTimeline extends LightningElement {
     _scrollAxisColor = DEFAULT_AXIS_SCROLL_COLOR;
     _maxYPositionOfItem = 0;
     _changeIntervalSizeMode = false;
+    _resizeObserver;
 
     // D3 selector
     _timelineDiv;
     _timelineSVG;
     _scrollAxisSVG;
     _timeIntervalSelector;
+    _timelineAxisDiv;
+    _scrollAxisDiv;
 
     _key;
     _isConnected = false;
@@ -181,7 +186,14 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
-        this._maxYPositionOfItem = 0;
+        if (!this._resizeObserver) {
+            this._resizeObserver = this.initResizeObserver();
+        }
+
+        // Set width to timeline div (screen)
+        this._timelineWidth = this.divHorizontalTimeline.clientWidth - 25;
+
+        this.resetHorizontalTimeline();
         this.createTimelineScrollAxis();
         this.createTimeline();
         this.createTimelineAxis();
@@ -483,6 +495,12 @@ export default class ActivityTimeline extends LightningElement {
     get divTimelineScroll() {
         return this.template.querySelector(
             '.avonni-activity-timeline__horizontal-timeline-scrolling-container'
+        );
+    }
+
+    get divHorizontalTimeline() {
+        return this.template.querySelector(
+            '.avonni-activity-timeline__horizontal-timeline'
         );
     }
 
@@ -832,14 +850,26 @@ export default class ActivityTimeline extends LightningElement {
         return dataToDisplay;
     }
 
-    /**
-     * Create horizontal view timeline
-     */
-    createTimeline() {
+    // Select and remove all elements inside the horizontal timeline to build a new one
+    resetHorizontalTimeline() {
+        this._maxYPositionOfItem = 0;
+
         // <--- SELECT AND REMOVE PREVIOUS TIMELINE --->
         this._timelineDiv = d3.select(this.divTimelineItemsSelector);
         this._timelineDiv.selectAll('*').remove();
 
+        // <--- SELECT AND REMOVE PREVIOUS AXIS --->
+        this._timelineAxisDiv = d3.select(this.divTimelineAxisSelector);
+        this._timelineAxisDiv.selectAll('*').remove();
+
+        this._scrollAxisDiv = d3.select(this.divTimelineScrollAxisSelector);
+        this._scrollAxisDiv.selectAll('*').remove();
+    }
+
+    /**
+     * Create horizontal view timeline
+     */
+    createTimeline() {
         // Calculate each items y position and set timeline height
         const dataToDisplay = this.setYPositionOfItems(
             this._displayedItems,
@@ -952,11 +982,7 @@ export default class ActivityTimeline extends LightningElement {
      * Create the axis below the horizontal timeline to display the min-max interval
      */
     createTimelineAxis() {
-        // <--- SELECT AND REMOVE PREVIOUS AXIS --->
-        const axisDiv = d3.select(this.divTimelineAxisSelector);
-        axisDiv.selectAll('*').remove();
-
-        const axisSVG = axisDiv
+        const axisSVG = this._timelineAxisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
             .attr('height', this._timelineAxisHeight * 2);
@@ -986,11 +1012,8 @@ export default class ActivityTimeline extends LightningElement {
      * Create the scroll axis for horizontal timeline to display all dates
      */
     createTimelineScrollAxis() {
-        const scrollAxisDiv = d3.select(this.divTimelineScrollAxisSelector);
-        scrollAxisDiv.selectAll('*').remove();
-
         // <--- CREATE TICKS OF SCROLL AXIS --->
-        this._scrollAxisSVG = scrollAxisDiv
+        this._scrollAxisSVG = this._scrollAxisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
             .attr('height', this._timelineAxisHeight * 2)
@@ -1075,7 +1098,6 @@ export default class ActivityTimeline extends LightningElement {
 
     addTimeIntervalToScrollAxis() {
         // <--- DRAW VIEW INTERVAL (BLUE RECT) -->
-
         const handleTimeIntervalDrag = function (event) {
             if (!this._changeIntervalSizeMode) {
                 // To allow only horizontal drag
@@ -1314,6 +1336,20 @@ export default class ActivityTimeline extends LightningElement {
         const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
         const pastDaysOfYear = (today - firstDayOfYear) / 86400000;
         return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        const resizeObserver = new AvonniResizeObserver(() => {
+            this.renderedCallback();
+        });
+
+        resizeObserver.observe(this.divHorizontalTimeline);
+        return resizeObserver;
     }
 
     /**
