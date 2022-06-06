@@ -82,8 +82,7 @@ export default class Kanban extends LightningElement {
     _releasedTileIndex = 0;
     _resizeObserver;
 
-    _scrollingY;
-    _scrollingX;
+    _scrollingInterval;
     _scrollWidth = 0;
     _summarizeFieldName;
     _summaryTimeoutsId = [];
@@ -476,42 +475,29 @@ export default class Kanban extends LightningElement {
         const group = groups[this._releasedGroupIndex];
 
         // auto scroll when the user is dragging the tile out of the list
-        if (currentY + 50 > this._kanbanPos.bottom) {
-            if (!this._scrollingY && this._draggedTile)
-                this._scrollingY = window.setInterval(() => {
-                    group.scrollBy(0, 10);
-                    this.animateTiles(groups);
-                }, 20);
-        } else if (currentY - 100 < this._kanbanPos.top) {
-            if (!this._scrollingY && this._draggedTile)
-                this._scrollingY = window.setInterval(() => {
-                    group.scrollBy(0, -10);
-                    this.animateTiles(groups);
-                }, 20);
+        let scrollYStep = 0;
+        if (currentY + 50 > this._kanbanPos.bottom) scrollYStep = 10;
+        else if (currentY - 50 < this._kanbanPos.top) scrollYStep = -10;
 
-            // auto scroll when the user is dragging the group out of the container
-        } else if (currentX + 150 > right) {
-            if (!this._scrollingX && (this._draggedGroup || this._draggedTile))
-                this._scrollingX = window.setInterval(() => {
-                    if (
-                        fieldContainer.scrollLeft <=
-                        this._scrollWidth - fieldContainer.clientWidth
-                    ) {
-                        fieldContainer.scrollBy(10, 0);
-                    }
-                }, 15);
-        } else if (currentX - 150 < left) {
-            if (!this._scrollingX && (this._draggedGroup || this._draggedTile))
-                this._scrollingX = window.setInterval(() => {
-                    if (fieldContainer.scrollLeft >= 0)
-                        fieldContainer.scrollBy(-10, 0);
-                }, 15);
-        } else {
-            // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
-            window.clearInterval(this._scrollingY);
-            this._scrollingY = null;
-            window.clearInterval(this._scrollingX);
-            this._scrollingX = null;
+        let scrollXStep = 0;
+        if (currentX + 50 > right) scrollXStep = 10;
+        else if (currentX - 50 < left) scrollXStep = -10;
+
+        const toScroll = this._draggedTile ? group : fieldContainer;
+
+        if (
+            !this._scrollingInterval &&
+            (this._draggedGroup || this._draggedTile)
+        )
+            this._scrollingInterval = window.setInterval(() => {
+                toScroll.scrollBy(scrollXStep, scrollYStep);
+                if (this._draggedTile) this.animateTiles(groups);
+            }, 20);
+
+        // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
+        if (!scrollXStep && !scrollYStep) {
+            window.clearInterval(this._scrollingInterval);
+            this._scrollingInterval = null;
         }
     }
 
@@ -541,7 +527,7 @@ export default class Kanban extends LightningElement {
         const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
         Array.from(groupElements).forEach((group, i) => {
             group.style.height = 'fit-content';
-            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET}- ${actionsContainer[i].offsetHeight}px)`;
+            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
         });
         fields.forEach((field, i) => {
             const hasScroll =
@@ -651,10 +637,8 @@ export default class Kanban extends LightningElement {
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
 
-        window.clearInterval(this._scrollingX);
-        window.clearInterval(this._scrollingY);
-        this._scrollingX = null;
-        this._scrollingY = null;
+        window.clearInterval(this._scrollingInterval);
+        this._scrollingInterval = null;
 
         const actionsContainer = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__footer_action"]'
