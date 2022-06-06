@@ -201,8 +201,13 @@
     pointer-events: none;
 }
 
+/* .avonni-kanban__tile:last-of-type {
+    margin-bottom: 135px;
+} */
+
 .avonni-kanban__footer_actions_container {
     margin: 5px 30px;
+    padding-top: 10px;
 }
 
 .avonni-kanban__footer_action {

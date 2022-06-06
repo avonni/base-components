@@ -395,43 +395,25 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__field_container"]'
         );
 
-        fields.forEach((field) => {
-            const isExtended = field.offsetHeight === container.offsetHeight;
-
+        fields.forEach((field, i) => {
             if (this.variant === 'base') field.style.height = 'fit-content';
-            if (field.offsetHeight > container.offsetHeight || isExtended)
+            if (field.offsetHeight >= container.offsetHeight)
                 field.style.height = `${container.offsetHeight}px`;
+
+            this._fieldsDistance[i] =
+                container.offsetHeight - field.offsetHeight;
         });
 
         // translates the tiles down when the dragged tile hovers over them
         const releasedChilds = Array.from(
             groups[this._releasedGroupIndex].children
-        );
-
+        ).filter((child) => child !== this._draggedTile);
         for (let i = this._releasedTileIndex; i < releasedChilds.length; i++) {
-            if (releasedChilds[i] && releasedChilds[i] !== this._draggedTile) {
+            if (releasedChilds[i]) {
                 releasedChilds[i].classList.add('avonni-kanban__tile_moved');
                 releasedChilds[
                     i
                 ].style.transform = `translateY(${this._draggedTile.offsetHeight}px)`;
-            }
-        }
-
-        // translates the tiles up when the dragged tile is hovering the last one to prevent overflow
-        if (
-            this._releasedTileIndex ===
-                this._groupsLength[this._releasedGroupIndex] &&
-            releasedChilds[this._releasedTileIndex - 1]
-        ) {
-            releasedChilds[
-                this._releasedTileIndex - 1
-            ].style.marginBottom = `${this._draggedTile.offsetHeight}px`;
-            for (const element of releasedChilds) {
-                if (element && element !== this._draggedTile) {
-                    element.classList.add('avonni-kanban__tile_moved');
-                    element.style.transform = `translateY(${-this._draggedTile
-                        .offsetHeight}px)`;
-                }
             }
         }
 
@@ -692,6 +674,7 @@ export default class Kanban extends LightningElement {
             });
         });
 
+        // Hides the dropzone
         this.template
             .querySelectorAll(
                 '[data-element-id="avonni-kanban__tile_dropzone"]'
@@ -995,6 +978,7 @@ export default class Kanban extends LightningElement {
             });
 
         this._draggedTile.style.transform = `rotate(3deg)`;
+
         this.handleDropZone(event);
     }
 
@@ -1050,6 +1034,21 @@ export default class Kanban extends LightningElement {
             }px) rotate(3deg)`;
         }
 
+        const currentGroupTiles = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        // Sets the right marginBottom on the last tile depending on the hovered group
+        currentGroupTiles.forEach((group, i) => {
+            const marginBottom =
+                i === this._releasedGroupIndex
+                    ? this._draggedTile.offsetHeight
+                    : 0;
+            group.children[
+                group.children.length - 1
+            ].style.marginBottom = `${marginBottom}px`;
+        });
+
         this.autoScroll(currentX, currentY);
     }
 
@@ -1095,8 +1094,6 @@ export default class Kanban extends LightningElement {
             Array.from(group.children)
                 .filter((child) => child !== this._draggedTile)
                 .forEach((tile, j) => {
-                    if (i !== this._releasedGroupIndex)
-                        tile.style.marginBottom = '0px';
                     if (
                         i !== this._releasedGroupIndex ||
                         j < this._releasedTileIndex
@@ -1236,8 +1233,8 @@ export default class Kanban extends LightningElement {
         const currentGroupTiles = Array.from(
             groupElements[this._releasedGroupIndex].children
         );
+        let scrolledHeight = 0;
 
-        let scrollTopIndex = 0;
         // calculates the index of the drop, depending on the previous tiles heights
         for (let [i, tile] of currentGroupTiles.entries()) {
             const tileIncrementMultiplier =
@@ -1247,13 +1244,13 @@ export default class Kanban extends LightningElement {
             if (
                 groupElements[this._releasedGroupIndex].scrollTop > offsetHeight
             ) {
-                scrollTopIndex++;
+                scrolledHeight += tile.offsetHeight + 10;
             }
-
             if (this._clickedGroupIndex === this._releasedGroupIndex)
                 this._releasedTileIndex--;
             if (
                 this._draggedTile.getBoundingClientRect().y +
+                    scrolledHeight +
                     tileIncrementMultiplier *
                         (this._draggedTile.offsetHeight / 2) <
                 offsetHeight - tile.offsetHeight / 2
@@ -1264,6 +1261,5 @@ export default class Kanban extends LightningElement {
             }
         }
         if (this._releasedTileIndex < 0) this._releasedTileIndex = 0;
-        this._releasedTileIndex += scrollTopIndex;
     }
 }

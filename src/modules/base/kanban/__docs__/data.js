@@ -162,11 +162,7 @@ const RECORDS = [
         id: '006',
         status: 'Closed',
         opportunityName: 'Opportunity 6',
-        amount: 17500,
-        phone: '+375292567896',
-        date: '1547250828000',
-        percent: 0.92,
-        available: true
+        amount: 17500
     },
     {
         id: '007',
@@ -182,6 +178,7 @@ const RECORDS = [
         id: '008',
         status: 'In Progress',
         opportunityName: 'Opportunity 8',
+        amount: 5100,
         phone: '+37529888888',
         date: '1547250828000',
         available: false
@@ -200,7 +197,9 @@ const RECORDS = [
         opportunityName: 'Opportunity 10',
         amount: 5100,
         phone: '+37529888888',
-        date: '1547250828000'
+        date: '1547250828000',
+        percent: 0.83,
+        available: false
     }
 ];
 
