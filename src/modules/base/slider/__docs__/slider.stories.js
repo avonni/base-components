@@ -32,6 +32,7 @@
 
 import { Slider } from '../__examples__/slider';
 import { VerticalSlider } from '../__examples__/verticalSlider';
+import { ColoredSlider } from '../__examples__/coloredSlider';
 
 export default {
     title: 'Example/Slider',
@@ -368,6 +369,7 @@ export default {
 
 const Template = (args) => Slider(args);
 const VerticalTemplate = (args) => VerticalSlider(args);
+const ColoredTemplate = (args) => ColoredSlider(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -462,8 +464,8 @@ CustomLabels.args = {
     }
 };
 
-export const disabled = Template.bind({});
-Range.args = {
+export const Disabled = Template.bind({});
+Disabled.args = {
     label: 'Disabled slider',
     value: 50,
     disabled: true
@@ -495,6 +497,13 @@ Vertical.args = {
             }
         ]
     }
+};
+
+export const Colored = ColoredTemplate.bind({});
+Colored.args = {
+    label: 'Colored slider',
+    value: 50,
+    pin: true
 };
 
 //TODO: storybook wrapper for colored slider (try rainbow)

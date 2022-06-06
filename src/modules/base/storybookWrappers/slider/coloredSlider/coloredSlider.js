@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 
-export default class VerticalSlider extends LightningElement {
+export default class ColoredSlider extends LightningElement {
     @api label;
     @api size;
     @api type;
@@ -51,7 +51,42 @@ export default class VerticalSlider extends LightningElement {
     @api removeTrack;
     @api minimumDistance;
 
-    get secondsSliderValues() {
-        return [25, 75];
+    _colorHue = 0;
+    _interval;
+
+    renderedCallback() {
+        this.setupColorInterval();
+    }
+
+    disconnectedCallback() {
+        clearInterval(this._interval);
+    }
+
+    setupColorInterval() {
+        console.log(this.template);
+        this._interval = setInterval(() => {
+            this.template.firstChild.style.setProperty(
+                '--avonni-slider-thumb-color',
+                `hsl(${this._colorHue}, 50%, 50%)`
+            );
+            this.template.firstChild.style.setProperty(
+                '--avonni-slider-track-color',
+                `hsl(${this._colorHue}, 50%, 50%)`
+            );
+            this.template.firstChild.style.setProperty(
+                '--avonni-slider-pin-color',
+                `hsl(${this._colorHue}, 50%, 50%)`
+            );
+            this.template.firstChild.style.setProperty(
+                '--avonni-slider-thumb-hover-color',
+                `hsl(${this._colorHue}, 50%, 30%)`
+            );
+            this.template.firstChild.style.setProperty(
+                '--avonni-slider-thumb-focus-shadow-color',
+                `hsl(${180 + this._colorHue}, 70%, 60%)`
+            );
+            this._colorHue += 5;
+            if (this._colorHue === 355) this._colorHue = 0;
+        }, 250);
     }
 }

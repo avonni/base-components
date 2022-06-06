@@ -29,30 +29,47 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-span {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
 
-/* I have applied classes individually because :nth-child() was not working as expected*/
-.first-slider {
-    z-index: 5;
-}
-.second-slider {
-    z-index: 3;
-}
-.third-slider {
-    z-index: 1;
-}
+import Component from '../../storybookWrappers/slider/coloredSlider/coloredSlider';
 
-.avonni-slider__vertical_wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-c-slider {
-    margin: 0 20px;
-}
+customElements.define('ac-colored-slider', Component.CustomElementConstructor);
+
+export const ColoredSlider = ({
+    label,
+    size,
+    type,
+    variant,
+    unit,
+    unitAttributes,
+    value,
+    pin,
+    min,
+    max,
+    step,
+    disabled,
+    tickMarkStyle,
+    showTickMarks,
+    disableSwap,
+    removeTrack,
+    minimumDistance
+}) => {
+    const element = document.createElement('ac-colored-slider');
+    element.label = label;
+    element.size = size;
+    element.type = type;
+    element.variant = variant;
+    element.unit = unit;
+    element.unitAttributes = unitAttributes;
+    element.tickMarkStyle = tickMarkStyle;
+    element.showTickMarks = showTickMarks;
+    element.disableSwap = disableSwap;
+    element.removeTrack = removeTrack;
+    element.minimumDistance = minimumDistance;
+    element.value = value;
+    element.pin = pin;
+    element.min = min || 0;
+    element.max = max || 100;
+    element.step = step || 1;
+    element.disabled = disabled;
+    return element;
+};

@@ -29,30 +29,10 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-span {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-}
-
-/* I have applied classes individually because :nth-child() was not working as expected*/
-.first-slider {
-    z-index: 5;
-}
-.second-slider {
-    z-index: 3;
-}
-.third-slider {
-    z-index: 1;
-}
-
-.avonni-slider__vertical_wrapper {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-}
-c-slider {
-    margin: 0 20px;
+:host {
+    --avonni-slider-thumb-color: hsl(0, 50%, 50%);
+    --avonni-slider-thumb-hover-color: hsl(0, 50%, 50%);
+    --avonni-slider-thumb-focus-shadow-color: hsl(0, 50%, 50%);
+    --avonni-slider-pin-color: hsl(0, 50%, 50%);
+    --avonni-slider-track-color: hsl(0, 50%, 50%);
 }

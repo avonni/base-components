@@ -464,9 +464,6 @@ export default class Slider extends LightningElement {
     set unitAttributes(value) {
         if (value && value.customLabels) {
             this._customLabels = normalizeArray(value.customLabels, 'object');
-            if (this._customLabels[0].value === 0) {
-                console.log(this._customLabels);
-            }
             this._domModified = true;
         }
         this._unitAttributes = normalizeObject(value);
@@ -567,7 +564,7 @@ export default class Slider extends LightningElement {
      *
      * @type {string}
      */
-    get computedBubbleClass() {
+    get computedPinClass() {
         return classSet('').add({
             'avonni-slider__bubble-vertical': this.isVertical,
             'avonni-slider__bubble': !this.isVertical
@@ -877,9 +874,16 @@ export default class Slider extends LightningElement {
         if (drawPositions) {
             // square slider edges
             const upperEdgePos = numberOfSteps * stepWidth;
+            let backgroundColor = getComputedStyle(
+                this.template.host
+            ).getPropertyValue('background-color');
+            console.log(backgroundColor);
+            if (!backgroundColor || backgroundColor === 'rgba(0, 0, 0, 0)') {
+                backgroundColor = 'white';
+            }
             for (let i = 0; i < 2; i++) {
                 let line = document.createElementNS(SVG_NAMESPACE, 'rect');
-                line.setAttribute('fill', '#ffffff');
+                line.setAttribute('fill', `${backgroundColor}`);
                 line.setAttribute('height', `15`);
                 line.setAttribute('width', `5`);
                 line.setAttribute(
