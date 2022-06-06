@@ -96,7 +96,7 @@ export default class Skeleton extends LightningElement {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
 
         if (!this.isAvatarVariant) this.handleVariant();
-        console.log(this.variant);
+        console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
         //     this._initialAvatarRender = true;
@@ -260,6 +260,9 @@ export default class Skeleton extends LightningElement {
                 //     'avonni-chip_outline': this._outline
                 // })
                 .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+                .add('avonni-skeleton__base')
+                .add(`avonni-skeleton__variant-${this.variant}`)
+                .add(`avonni-skeleton__animation-${this.animation}`)
                 .toString()
         );
     }

@@ -69,13 +69,8 @@
         <span class={chipClass} data-element-id="span-wrapper">
             <span class="slds-truncate">
                 <template if:true={chipHasIcon}>
-                    <span
-                        class="
-                            slds-badge__icon slds-badge__icon_left
-                            avonni-skeleton__animation-pulse
-                        "
-                    >
-                        <slot name="chip-left"></slot>
+                    <span class="slds-badge__icon slds-badge__icon_left">
+                        <slot name="left"></slot>
                     </span>
                 </template>
                 <!-- <div
@@ -83,13 +78,8 @@
                     style="min-height: 0.5em; min-width: 0.7em"
                 ></div> -->
                 <template if:true={chipHasIcon}>
-                    <span
-                        class="
-                            slds-badge__icon slds-badge__icon_right
-                            avonni-skeleton__animation-pulse
-                        "
-                    >
-                        <slot name="chip-right"></slot>
+                    <span class="slds-badge__icon slds-badge__icon_right">
+                        <slot name="right"></slot>
                     </span>
                 </template>
             </span>

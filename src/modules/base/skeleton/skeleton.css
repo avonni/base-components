@@ -55,7 +55,7 @@
     padding-left: var(--avonni-chip-spacing-inline-start, 0.5rem);
     padding-right: var(--avonni-chip-spacing-inline-end, 0.5rem);
     border-width: var(--avonni-chip-sizing-border, 1px);
-    border-style: var(--avonni-chip-styling-border, solid);
+    /* border-style: var(--avonni-chip-styling-border, solid); */
     border-radius: var(--avonni-chip-radius-border, 15rem);
     font-size: var(--avonni-chip-label-font-size, 0.75rem);
     font-weight: 700;
