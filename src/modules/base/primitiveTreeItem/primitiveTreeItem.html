@@ -190,6 +190,7 @@
                             onfocusout={stopPropagation}
                             onopen={handleActionMenuOpen}
                             onselect={handleActionClick}
+                            onkeydown={handleActionMenuKeyDown}
                         >
                             <template for:each={menuActions} for:item="action">
                                 <lightning-menu-item

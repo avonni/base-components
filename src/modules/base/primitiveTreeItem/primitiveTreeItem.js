@@ -1018,6 +1018,17 @@ export default class PrimitiveTreeItem extends LightningElement {
     }
 
     /**
+     * Handle a key pressed on the action menu. Prevent the scroll if the space bar is pressed.
+     *
+     * @param {Event} event
+     */
+    handleActionMenuKeyDown(event) {
+        if (event.key === ' ' || event.key === 'Spacebar') {
+            event.preventDefault();
+        }
+    }
+
+    /**
      * Handle the closing of the action button menu.
      */
     handleActionMenuClose() {
