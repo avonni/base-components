@@ -491,7 +491,7 @@ export default class Kanban extends LightningElement {
 
             // auto scroll when the user is dragging the group out of the container
         } else if (currentX + 150 > right) {
-            if (!this._scrollingX) {
+            if (!this._scrollingX && (this._draggedGroup || this._draggedTile))
                 this._scrollingX = window.setInterval(() => {
                     if (
                         fieldContainer.scrollLeft <=
@@ -500,9 +500,8 @@ export default class Kanban extends LightningElement {
                         fieldContainer.scrollBy(10, 0);
                     }
                 }, 15);
-            }
         } else if (currentX - 150 < left) {
-            if (!this._scrollingX)
+            if (!this._scrollingX && (this._draggedGroup || this._draggedTile))
                 this._scrollingX = window.setInterval(() => {
                     if (fieldContainer.scrollLeft >= 0)
                         fieldContainer.scrollBy(-10, 0);
@@ -778,6 +777,13 @@ export default class Kanban extends LightningElement {
      */
     handleGroupMouseDown(event) {
         if (this._variant !== 'base' || this._readOnly) return;
+        // this handles when the user dragged a group out of the kanban, and released his click.
+        // a second click on the dragged group (impossible otherwise) behaves has a click release
+        if (event.currentTarget.parentElement === this._draggedGroup) {
+            this.handleGroupMouseUp();
+            return;
+        }
+
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
@@ -1129,7 +1135,6 @@ export default class Kanban extends LightningElement {
      */
     swapGroups() {
         const groups = JSON.parse(JSON.stringify(this._groupValues));
-
         groups.splice(
             this._releasedGroupIndex,
             0,
