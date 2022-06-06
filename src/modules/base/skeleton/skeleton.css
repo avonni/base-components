@@ -263,3 +263,16 @@
 
 .avonni-skeleton__variant-tree {
 }
+
+.breadcrumbsClass {
+    /* width: 100%;
+    border-radius: var(--avonni-skeleton-radius-border); */
+    display: flex;
+    align-items: center;
+}
+
+.breadcrumbClass {
+    border-radius: var(--avonni-skeleton-radius-border);
+    height: 1.2em;
+    width: 6em;
+}

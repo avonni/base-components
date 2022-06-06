@@ -86,6 +86,7 @@ export default class Skeleton extends LightningElement {
     tertiaryTextClass;
     chipLabel;
     badgeLabel;
+    breadcrumbs = [];
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -93,6 +94,9 @@ export default class Skeleton extends LightningElement {
             this.primaryText = this.variantAttributes.primaryText;
             this.secondaryText = this.variantAttributes.secondaryText;
             this.tertiaryText = this.variantAttributes.tertiaryText;
+        }
+        if (this.isBreadcrumbsVariant) {
+            this.initializeBreadcrumbs();
         }
     }
 
@@ -121,6 +125,11 @@ export default class Skeleton extends LightningElement {
     @api
     get isBadgeVariant() {
         return this.variant === 'badge';
+    }
+
+    @api
+    get isBreadcrumbsVariant() {
+        return this.variant === 'breadcrumbs';
     }
 
     @api
@@ -286,6 +295,18 @@ export default class Skeleton extends LightningElement {
             .toString();
     }
 
+    get breadcrumbClass() {
+        return classSet('breadcrumbClass')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
+    }
+
+    get breadcrumbsClass() {
+        return classSet('slds-list_horizontal')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -355,6 +376,26 @@ export default class Skeleton extends LightningElement {
     handleBadge() {
         if (Object.keys(this.variantAttributes).length !== 0)
             this.updateBadgeClassList();
+    }
+
+    handleBreadcrumbs() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateBreadcrumbsClassList();
+            // this.initializeBreadcrumbs();
+        }
+    }
+
+    initializeBreadcrumbs() {
+        const breadcrumbs = [];
+        console.log(`first`);
+        for (let i = 0; i < this.variantAttributes.numBreadcrumbs; i++) {
+            console.log('middle');
+            breadcrumbs.push({
+                key: `panel-${i}`
+            });
+        }
+        console.log('end');
+        this.breadcrumbs = breadcrumbs;
     }
 
     /**
@@ -427,4 +468,6 @@ export default class Skeleton extends LightningElement {
     updateChipClassList() {}
 
     updateBadgeClassList() {}
+
+    updateBreadcrumbsClassList() {}
 }

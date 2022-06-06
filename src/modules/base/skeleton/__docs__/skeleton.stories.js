@@ -77,6 +77,7 @@ export default {
             options: [
                 'avatar',
                 'badge',
+                'breadcrumbs',
                 'chip',
                 'circular',
                 'rectangular',
@@ -127,5 +128,14 @@ Badge.args = {
     variantAttributes: {
         label: 'label',
         hasIcon: true
+    }
+};
+
+export const Breadcrumbs = Template.bind({});
+Breadcrumbs.args = {
+    variant: 'breadcrumbs',
+    animation: 'pulse',
+    variantAttributes: {
+        numBreadcrumbs: 3
     }
 };
