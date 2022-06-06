@@ -471,9 +471,9 @@ export default class Slider extends LightningElement {
      */
     @api
     get validity() {
-        return this._constraints.reduce((result, nextConstraintApi) => {
-            return result && nextConstraintApi.validity;
-        }, true);
+        return this._computedValues.length === 1
+            ? this._constraints[0].validity
+            : this._constraints.map((constraintApi) => constraintApi.validity);
     }
 
     /**
@@ -853,15 +853,24 @@ export default class Slider extends LightningElement {
      */
     @api
     reportValidity() {
-        this.helpMessage = '';
-        return this._constraints.reduce((result, constraintApi, index) => {
-            return (
-                result &&
-                constraintApi.reportValidity((message) => {
-                    this.helpMessage += `Slider ${index}: ${message} `;
-                })
-            );
-        }, true);
+        let helpMessage = '';
+
+        const isValid = this._constraints.reduce(
+            (result, constraintApi, index) => {
+                return (
+                    result &&
+                    constraintApi.reportValidity((message) => {
+                        helpMessage += `Slider ${index}: ${message} `;
+                    })
+                );
+            },
+            true
+        );
+        if (this._computedValues.length === 1) {
+            helpMessage = helpMessage.split(': ')[1];
+        }
+        this._helpMessage = isValid ? undefined : helpMessage.trim();
+        return isValid;
     }
 
     /**
@@ -1407,7 +1416,7 @@ export default class Slider extends LightningElement {
      * @param {object} attributes
      */
     _updateProxyInputAttributes(attributes) {
-        if (this._constraintApiProxyInputUpdaters.length === 0) {
+        if (this._constraintApiProxyInputUpdaters.length !== 0) {
             this._constraintApiProxyInputUpdaters.forEach((updater) => {
                 updater(attributes);
             });

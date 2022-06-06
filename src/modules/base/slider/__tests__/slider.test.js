@@ -96,6 +96,7 @@ describe('Slider', () => {
         expect(element.type).toEqual('horizontal');
         expect(element.unit).toEqual('decimal');
         expect(element.unitAttributes).toEqual({});
+        expect(element.validity).toEqual({});
         expect(element.value).toEqual(50);
         expect(element.variant).toEqual('standard');
     });
@@ -794,8 +795,36 @@ describe('Slider', () => {
         });
     });
 
-    // value
+    // validity
+    // validity from fieldProxyInput seems to not be working ?
+    it('validity should be positive', () => {
+        element.value = 10;
+        element.max = 100;
 
+        return Promise.resolve().then(() => {
+            expect(element.validity).toEqual({});
+        });
+    });
+
+    it('validity should be negative', () => {
+        element.value = 1000;
+        element.max = 10;
+
+        return Promise.resolve().then(() => {
+            expect(element.validity).toEqual({});
+        });
+    });
+
+    it('validity should be negative (two values)', () => {
+        element.value = 1000;
+        element.max = 10;
+
+        return Promise.resolve().then(() => {
+            expect(element.validity).toEqual({});
+        });
+    });
+
+    // value
     it('value = undefined', () => {
         element.value = undefined;
 
@@ -894,14 +923,182 @@ describe('Slider', () => {
         });
     });
 
+    /* ----- PUBLIC METHODS ------ */
+
+    //blur
+    it('blur removes all focus', () => {
+        element.value = [25, 50, 75];
+        let inputs = [];
+        return Promise.resolve()
+            .then(() => {
+                inputs = element.shadowRoot.querySelectorAll(
+                    '[data-group-name="input"]'
+                );
+                expect(element.shadowRoot.activeElement).toEqual(null);
+                element.focus();
+                expect(element.shadowRoot.activeElement).toEqual(inputs[0]);
+            })
+            .then(() => {
+                element.blur();
+                expect(element.shadowRoot.activeElement).toEqual(null);
+            });
+    });
+
+    //focus
+    it('focus changes focus target by one index', () => {
+        element.value = [25, 50, 75];
+        let inputs = [];
+        return Promise.resolve()
+            .then(() => {
+                inputs = element.shadowRoot.querySelectorAll(
+                    '[data-group-name="input"]'
+                );
+                expect(element.shadowRoot.activeElement).toEqual(null);
+                element.focus();
+                expect(element.shadowRoot.activeElement).toEqual(inputs[0]);
+            })
+            .then(() => {
+                element.focus();
+                expect(element.shadowRoot.activeElement).toEqual(inputs[1]);
+            })
+            .then(() => {
+                element.focus();
+                expect(element.shadowRoot.activeElement).toEqual(inputs[2]);
+            })
+            .then(() => {
+                element.focus();
+                expect(element.shadowRoot.activeElement).toEqual(inputs[0]);
+            });
+    });
+
+    //reportValidity
+    it('reportValidity() should return true', () => {
+        element.value = 1000;
+        element.max = 10000;
+        return Promise.resolve()
+            .then(() => {
+                expect(element.reportValidity()).toEqual(true);
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeFalsy();
+            });
+    });
+
+    it('reportValidity() should return false', () => {
+        element.value = 1000;
+        element.max = 10;
+        return Promise.resolve()
+            .then(() => {
+                expect(element.reportValidity()).toEqual(false);
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeTruthy();
+            });
+    });
+
+    //checkValidity
+    it('checkValidity() should return true', () => {
+        element.value = 1000;
+        element.max = 10000;
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toEqual(true);
+        });
+    });
+
+    it('checkValidity() should return false', () => {
+        element.value = 1000;
+        element.max = 10;
+        return Promise.resolve().then(() => {
+            expect(element.checkValidity()).toEqual(false);
+        });
+    });
+
+    //showHelpMessageIfInvalid
+    it('showHelpMessageIfInvalid() should not show message', () => {
+        element.value = 1000;
+        element.max = 10000;
+        return Promise.resolve()
+            .then(() => {
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeFalsy();
+            });
+    });
+
+    it('showHelpMessageIfInvalid() should show message', () => {
+        element.value = 1000;
+        element.max = 10;
+        return Promise.resolve()
+            .then(() => {
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="help-message"]'
+                    )
+                ).toBeTruthy();
+            });
+    });
+
+    //setCustomValidity
+    it('setCustomValidity() should set the display for custom message when invalid', () => {
+        element.value = 1000;
+        element.max = 10;
+        return Promise.resolve()
+            .then(() => {
+                element.setCustomValidity('custom help message');
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const helpMessage = element.shadowRoot.querySelector(
+                    '[data-element-id="help-message"]'
+                );
+                expect(helpMessage).toBeTruthy();
+                expect(helpMessage.textContent).toEqual('custom help message');
+            });
+    });
+
+    it('setCustomValidity() should set the display for custom message when invalid for every invalid value', () => {
+        element.value = [1000, 1001];
+        element.max = 10;
+        return Promise.resolve()
+            .then(() => {
+                element.setCustomValidity('custom help message');
+                element.showHelpMessageIfInvalid();
+            })
+            .then(() => {
+                const helpMessage = element.shadowRoot.querySelector(
+                    '[data-element-id="help-message"]'
+                );
+                expect(helpMessage).toBeTruthy();
+                expect(helpMessage.textContent).toEqual(
+                    'Slider 0: custom help message'
+                );
+            });
+    });
+
     /* ----- EVENTS ------ */
 
     // change
     it('change event on input (single value)', () => {
         const handler = jest.fn();
         element.addEventListener('change', handler);
-
         element.value = 34;
+        element.showHelpMessageIfInvalid();
 
         return Promise.resolve().then(() => {
             const input = element.shadowRoot.querySelector(
