@@ -1,7 +1,7 @@
 .avonni-kanban__container {
     position: relative;
     overflow-x: scroll;
-
+    overflow-y: hidden;
     height: 100%;
 }
 

@@ -506,7 +506,6 @@ export default class Kanban extends LightningElement {
                         fieldContainer.scrollBy(-10, 0);
                 }, 15);
         } else {
-            console.log('reset', group.scrollTop);
             window.clearInterval(this._scrollingY);
             this._scrollingY = null;
             window.clearInterval(this._scrollingX);
