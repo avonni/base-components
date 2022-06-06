@@ -33,6 +33,7 @@
 import { Slider } from '../__examples__/slider';
 import { VerticalSlider } from '../__examples__/verticalSlider';
 import { ColoredSlider } from '../__examples__/coloredSlider';
+import { CustomLabelSlider } from '../__examples__/customLabelSlider';
 
 export default {
     title: 'Example/Slider',
@@ -370,6 +371,7 @@ export default {
 const Template = (args) => Slider(args);
 const VerticalTemplate = (args) => VerticalSlider(args);
 const ColoredTemplate = (args) => ColoredSlider(args);
+const CustomLabelTemplate = (args) => CustomLabelSlider(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -432,9 +434,9 @@ MultipleRange.args = {
     value: [25, 50, 75]
 };
 
-export const CustomLabels = Template.bind({});
+export const CustomLabels = CustomLabelTemplate.bind({});
 CustomLabels.args = {
-    label: 'Custom labels slider',
+    label: 'Custom labels slider (inner-tick style)',
     step: 1,
     value: [5],
     min: 0,
@@ -459,6 +461,42 @@ CustomLabels.args = {
             {
                 label: 'Jan 11',
                 value: 10
+            }
+        ]
+    }
+};
+
+export const CustomLabelsDot = CustomLabelTemplate.bind({});
+CustomLabelsDot.args = {
+    label: 'Custom labels slider (dot style)',
+    step: 1,
+    value: [20],
+    min: 0,
+    max: 40,
+    size: 'full',
+    tickMarkStyle: 'dot',
+    unit: 'custom',
+    unitAttributes: {
+        customLabels: [
+            {
+                label: 'Very Sad',
+                value: 0
+            },
+            {
+                label: 'Sad',
+                value: 10
+            },
+            {
+                label: 'Average',
+                value: 20
+            },
+            {
+                label: 'Happy',
+                value: 30
+            },
+            {
+                label: 'Very Happy',
+                value: 40
             }
         ]
     }
