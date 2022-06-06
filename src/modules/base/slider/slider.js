@@ -464,8 +464,12 @@ export default class Slider extends LightningElement {
     set unitAttributes(value) {
         if (value && value.customLabels) {
             this._customLabels = normalizeArray(value.customLabels, 'object');
+            if (this._customLabels[0].value === 0) {
+                console.log(this._customLabels);
+            }
             this._domModified = true;
-        } else this._unitAttributes = normalizeObject(value);
+        }
+        this._unitAttributes = normalizeObject(value);
     }
 
     /**

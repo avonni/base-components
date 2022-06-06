@@ -31,6 +31,7 @@
  */
 
 import { Slider } from '../__examples__/slider';
+import { VerticalSlider } from '../__examples__/verticalSlider';
 
 export default {
     title: 'Example/Slider',
@@ -366,6 +367,7 @@ export default {
 };
 
 const Template = (args) => Slider(args);
+const VerticalTemplate = (args) => VerticalSlider(args);
 
 export const Base = Template.bind({});
 Base.args = {
@@ -467,15 +469,33 @@ Range.args = {
     disabled: true
 };
 
-//TODO: storybook wrapper for centering vertical slider
-export const Vertical = Template.bind({});
+export const Vertical = VerticalTemplate.bind({});
 Vertical.args = {
     label: 'Vertical Slider',
     size: 'x-small',
-    type: 'vertical'
+    variant: 'label-hidden',
+    type: 'vertical',
+    unitAttributes: {
+        customLabels: [
+            {
+                label: 'Jan 1',
+                value: 0
+            },
+            {
+                label: 'Jan 28',
+                value: 27
+            },
+            {
+                label: 'Fev 9',
+                value: 60
+            },
+            {
+                label: 'Fev 31',
+                value: 100
+            }
+        ]
+    }
 };
 
 //TODO: storybook wrapper for colored slider (try rainbow)
 //TODO: storybook wrapper for margin custom labels
-//TODO: storybook wrapper for
-//TODO: add class for disabled range thumb (overwritten by style hooks)
