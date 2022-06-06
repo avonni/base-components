@@ -108,6 +108,7 @@ Chip.args = {
     variantAttributes: {
         variant: 'chip',
         animation: 'pulse',
-        hasIcon: true
+        hasIcon: true,
+        outline: false
     }
 };

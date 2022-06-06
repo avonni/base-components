@@ -256,17 +256,21 @@ export default class Skeleton extends LightningElement {
      * @type {string}
      */
     get chipClass() {
-        return (
-            classSet('avonni-chip')
-                // .add({
-                //     'avonni-chip_outline': this._outline
-                // })
-                .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
-                .add('avonni-skeleton__base')
-                .add(`avonni-skeleton__variant-${this.variant}`)
-                .add(`avonni-skeleton__animation-${this.animation}`)
-                .toString()
-        );
+        return classSet('avonni-chip')
+            .add({
+                'avonni-chip_outline': this.variantAttributes.outline
+            })
+            .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+            .add('avonni-skeleton__base')
+            .add(`avonni-skeleton__variant-${this.variant}`)
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
+    }
+
+    get slotClass() {
+        return classSet('avonni-skeleton__base')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
     }
 
     /*

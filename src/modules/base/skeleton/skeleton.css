@@ -70,6 +70,11 @@
     overflow: hidden;
 }
 
+.avonni-chip_outline {
+    border-color: var(--avonni-skeleton-color-background-animation) !important;
+    border-width: 0.1em !important;
+}
+
 .avonni-avatar__primary-text {
     color: var(--avonni-avatar-primary-text-color, #000000);
     font-size: var(--avonni-avatar-primary-text-font-size, 0.875rem);
@@ -144,6 +149,13 @@
     100% {
         background-position: 800px 0;
     }
+}
+
+.slot-class {
+    border-radius: 00.25em;
+    border-width: 0.1em;
+    border-style: solid;
+    border-color: var(--avonni-skeleton-color-background-animation);
 }
 
 .avonni-skeleton__base {

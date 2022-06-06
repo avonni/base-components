@@ -69,7 +69,12 @@
         <span class={chipClass} data-element-id="span-wrapper">
             <span class="slds-truncate">
                 <template if:true={chipHasIcon}>
-                    <span class="slds-badge__icon slds-badge__icon_left">
+                    <span
+                        class="
+                            slds-badge__icon slds-badge__icon_left
+                            slot-class
+                        "
+                    >
                         <slot name="left"></slot>
                     </span>
                 </template>
@@ -78,7 +83,12 @@
                     style="min-height: 0.5em; min-width: 0.7em"
                 ></div> -->
                 <template if:true={chipHasIcon}>
-                    <span class="slds-badge__icon slds-badge__icon_right">
+                    <span
+                        class="
+                            slds-badge__icon slds-badge__icon_right
+                            slot-class
+                        "
+                    >
                         <slot name="right"></slot>
                     </span>
                 </template>
