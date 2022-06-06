@@ -111,6 +111,11 @@ describe('Slider', () => {
                         '[data-element-id="progress-bar"]'
                     ).classList
                 ).not.toContain('avonni-slider__progress_disabled');
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    ).classList
+                ).not.toContain('avonni-slider__slider_disabled');
             });
         });
     });
@@ -129,6 +134,11 @@ describe('Slider', () => {
                         '[data-element-id="progress-bar"]'
                     ).classList
                 ).toContain('avonni-slider__progress_disabled');
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-group-name="input"]'
+                    ).classList
+                ).toContain('avonni-slider__slider_disabled');
             });
         });
     });

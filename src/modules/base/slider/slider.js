@@ -571,6 +571,18 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Computed input class styling.
+     *
+     * @type {string}
+     */
+    get computedInputClass() {
+        return classSet('slds-slider__range').add({
+            'avonni-slider__slider': true,
+            'avonni-slider__slider_disabled': this.disabled
+        });
+    }
+
+    /**
      * Computed progress class styling.
      *
      * @type {string}
