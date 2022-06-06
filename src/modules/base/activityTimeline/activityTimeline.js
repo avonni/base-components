@@ -96,9 +96,8 @@ const SORTED_DIRECTIONS = {
 };
 
 // ** Functionalities/bug **
-// TODO: Scroll --> prevent scroll if no item to show
 // TODO: Responsive size, or container width size instead of fixed
-// TODO: Fix scroll --> last item not shown
+// TODO: Fix popover size
 
 // ** QA/tests/Doc **
 // TODO: Move horizontal timeline to new file
@@ -182,6 +181,7 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     renderedCallback() {
+        this._maxYPositionOfItem = 0;
         this.createTimelineScrollAxis();
         this.createTimeline();
         this.createTimelineAxis();
@@ -477,6 +477,12 @@ export default class ActivityTimeline extends LightningElement {
         return Math.abs(
             this.scrollTimeScale(new Date(this._intervalMaxDate)) -
                 this.scrollTimeScale(new Date(this._intervalMinDate))
+        );
+    }
+
+    get divTimelineScroll() {
+        return this.template.querySelector(
+            '.avonni-activity-timeline__horizontal-timeline-scrolling-container'
         );
     }
 
@@ -777,7 +783,7 @@ export default class ActivityTimeline extends LightningElement {
      *
      * @returns array
      */
-    setYPositions(items, yStartPosition, yGapBetweenItems) {
+    setYPositionOfItems(items, yStartPosition, yGapBetweenItems) {
         // TODO - CALCULATE REAL LENGTH OF EACH ITEM
         const MAX_ITEM_LENGTH = 230;
 
@@ -815,11 +821,11 @@ export default class ActivityTimeline extends LightningElement {
                         element.yPosition = item.yPosition + yGapBetweenItems;
                     }
                 });
+            }
 
-                // To find max y position
-                if (item.yPosition > this._maxYPositionOfItem) {
-                    this._maxYPositionOfItem = item.yPosition;
-                }
+            // To find max y position
+            if (item.yPosition > this._maxYPositionOfItem) {
+                this._maxYPositionOfItem = item.yPosition;
             }
         });
 
@@ -835,7 +841,7 @@ export default class ActivityTimeline extends LightningElement {
         this._timelineDiv.selectAll('*').remove();
 
         // Calculate each items y position and set timeline height
-        const dataToDisplay = this.setYPositions(
+        const dataToDisplay = this.setYPositionOfItems(
             this._displayedItems,
             Y_START_POSITION_TIMELINE_ITEM,
             Y_GAP_BETWEEN_ITEMS_TIMELINE
@@ -876,10 +882,12 @@ export default class ActivityTimeline extends LightningElement {
 
         this.addItemsToTimeline(dataToDisplay);
 
-        // Set height of timeline items container to crop exceeding svg
-        this._timelineDiv
-            .style('height', this._timelineHeight + 'px')
-            .style('overflow', 'hidden');
+        // Activate scroll only if needed
+        if (this._timelineHeight > DEFAULT_TIMELINE_HEIGHT) {
+            d3.select(this.divTimelineScroll).style('overflow', 'scroll');
+        } else {
+            d3.select(this.divTimelineScroll).style('overflow', 'hidden');
+        }
     }
 
     addItemsToTimeline(dataToDisplay) {
@@ -1038,7 +1046,7 @@ export default class ActivityTimeline extends LightningElement {
     addItemsToScrollAxis() {
         // <--- CREATE RECT ON SCROLL AXIS TO REPRESENT DATA --->
         // To find y position of all items
-        let itemsToDisplay = this.setYPositions(
+        let itemsToDisplay = this.setYPositionOfItems(
             this.sortedItems,
             Y_START_POSITION_SCROLL_ITEM,
             Y_GAP_BETWEEN_ITEMS_SCROLL
