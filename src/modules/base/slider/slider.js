@@ -39,6 +39,7 @@ import {
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
+// import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
@@ -159,7 +160,9 @@ export default class Slider extends LightningElement {
     _previousScalingFactor = 1;
     _progressInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
     _resizeObserver;
+    _focusedInputIndex;
     _scalingFactor = 1;
+    _constraintApi;
 
     _connected = false;
     _domModified = false;
@@ -175,6 +178,11 @@ export default class Slider extends LightningElement {
                 setTimeout(() => {
                     this._moveEventWait = false;
                 }, 50);
+            }
+        });
+        this.template.addEventListener('focusin', (event) => {
+            if (event.target.dataset.groupName === 'input') {
+                this._focusedInputIndex = event.target.dataset.index;
             }
         });
     }
@@ -749,6 +757,102 @@ export default class Slider extends LightningElement {
      */
     get _ruler() {
         return this.template.querySelector('[data-element-id="ruler"]');
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  PUBLIC METHODS
+     * -------------------------------------------------------------
+     */
+
+    /**
+     * Removes keyboard focus from the input element.
+     *
+     * @public
+     */
+    @api
+    blur() {
+        if (this._rendered) {
+            this.template
+                .querySelectorAll('[data-group-name="input"]')
+                .forEach((elem) => {
+                    elem.blur();
+                });
+            this._focusedInputIndex = undefined;
+        }
+    }
+
+    /**
+     * Checks if the input is valid.
+     *
+     * @returns {boolean} True if the element meets all constraint validations.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraints.checkValidity();
+    }
+
+    /**
+     * Sets focus on the next input element.
+     *
+     * @public
+     */
+    @api
+    focus() {
+        if (this._rendered) {
+            if (!this._focusedInputIndex) {
+                this._focusedInputIndex = 0;
+            } else {
+                this._focusedInputIndex++;
+            }
+            if (this._focusedInputIndex >= this._computedValues.length) {
+                this._focusedInputIndex = 0;
+            }
+            const inputs = this.template.querySelectorAll(
+                '[data-group-name="input"]'
+            );
+            inputs[this._focusedInputIndex].focus();
+            console.log('focused');
+        }
+    }
+
+    /**
+     * Displays the error messages. If the input is valid, reportValidity() clears displayed error messages.
+     *
+     * @returns {boolean} False if invalid, true if valid.
+     * @public
+     */
+    @api
+    reportValidity() {
+        let helpMessage = '';
+        const isValid = this._constraints.reportValidity(
+            (message) => (helpMessage = message)
+        );
+        this._helpMessage = helpMessage;
+        return isValid;
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     *
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        this._constraints.setCustomValidity(message);
+    }
+
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
     }
 
     /*
