@@ -30,39 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-// import Component from '../skeleton';
 import Component from '../../storybookWrappers/skeleton/chip';
 
-// customElements.define('ac-base-skeleton', Component.CustomElementConstructor);
 customElements.define('ac-base-skeleton', Component.CustomElementConstructor);
-
-// export const Skeleton = ({
-//     // avatarSize,
-//     // avatarVariant,
-//     variantAttributes,
-//     animation,
-//     // hideAvatarDetails,
-//     // primaryText,
-//     // secondaryText,
-//     // tertiaryText,
-//     variant,
-//     height,
-//     width
-// }) => {
-//     const element = document.createElement('ac-base-skeleton');
-//     // element.avatarSize = avatarSize;
-//     // element.avatarVariant = avatarVariant;
-//     element.variantAttributes = variantAttributes;
-//     element.animation = animation;
-//     // element.hideAvatarDetails = hideAvatarDetails;
-//     // element.primaryText = primaryText;
-//     // element.secondaryText = secondaryText;
-//     // element.tertiaryText = tertiaryText;
-//     element.variant = variant;
-//     element.height = height;
-//     element.width = width;
-//     return element;
-// };
 
 export const Skeleton = ({
     variantAttributes,

@@ -134,15 +134,6 @@ export default class Skeleton extends LightningElement {
         return this.variantAttributes.hasIcon;
     }
 
-    // @api
-    // get hideAvatarDetails() {
-    //     return (
-    //         !this.variantAttributes.primaryText &&
-    //         !this.variantAttributes.secondaryText &&
-    //         !this.variantAttributes.tertiaryText
-    //     );
-    // }
-
     @api
     get showPrimaryText() {
         return this.variantAttributes.primaryText;
