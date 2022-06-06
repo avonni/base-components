@@ -488,7 +488,7 @@ export default class Kanban extends LightningElement {
                     group.scrollBy(0, -10);
                     this.animateTiles(groups);
                 }, 20);
-        } else if (currentX + 50 > right) {
+        } else if (currentX + 150 > right) {
             if (!this._scrollingX) {
                 this._scrollingX = window.setInterval(() => {
                     if (
@@ -499,7 +499,7 @@ export default class Kanban extends LightningElement {
                     }
                 }, 15);
             }
-        } else if (currentX - 50 < left) {
+        } else if (currentX - 150 < left) {
             if (!this._scrollingX)
                 this._scrollingX = window.setInterval(() => {
                     if (fieldContainer.scrollLeft >= 0)
@@ -753,15 +753,17 @@ export default class Kanban extends LightningElement {
         if (distance < 0) distance = 0;
 
         this._releasedGroupIndex = Math.min(
-            Math.floor(distance / this._groupWidth),
+            Math.floor(
+                (event.clientX + 10) / this._groupWidth +
+                    this.template.querySelector(
+                        '[data-element-id="avonni-kanban__container"]'
+                    ).scrollLeft /
+                        this._groupWidth
+            ),
             this.groupValues.length - 1
         );
 
-        this._releasedGroupIndex += Math.floor(
-            this.template.querySelector(
-                '[data-element-id="avonni-kanban__container"]'
-            ).scrollLeft / this._groupWidth
-        );
+        console.log(this._releasedGroupIndex);
 
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
@@ -802,7 +804,6 @@ export default class Kanban extends LightningElement {
                 '[data-element-id="avonni-kanban__field"]'
             )
         ).indexOf(event.currentTarget.parentElement);
-
         this._releasedGroupIndex = this._clickedGroupIndex;
         this._draggedGroup = event.currentTarget.parentElement;
         this._draggedGroup.classList.add('avonni-kanban__dragged_group');
@@ -817,7 +818,11 @@ export default class Kanban extends LightningElement {
     handleGroupMouseMove(event) {
         if (!this._draggedGroup) return;
         this._releasedGroupIndex = Math.min(
-            Math.floor((event.clientX + 10) / this._groupWidth),
+            Math.floor(
+                (event.clientX + 10) / this._groupWidth +
+                    event.currentTarget.parentElement.scrollLeft /
+                        this._groupWidth
+            ),
             this.groupValues.length - 1
         );
 
