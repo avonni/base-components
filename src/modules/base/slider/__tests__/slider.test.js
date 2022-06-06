@@ -78,6 +78,12 @@ describe('Slider', () => {
         expect(element.disabled).toEqual(false);
         expect(element.disableSwap).toEqual(false);
         expect(element.max).toEqual(100);
+        expect(element.messageWhenBadInput).toBeUndefined();
+        expect(element.messageWhenRangeOverflow).toBeUndefined();
+        expect(element.messageWhenRangeUnderflow).toBeUndefined();
+        expect(element.messageWhenStepMismatch).toBeUndefined();
+        expect(element.messageWhenTypeMismatch).toBeUndefined();
+        expect(element.messageWhenValueMissing).toBeUndefined();
         expect(element.min).toEqual(0);
         expect(element.minimumDistance).toEqual(0);
         expect(element.label).toBeUndefined();

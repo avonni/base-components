@@ -39,7 +39,7 @@ import {
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-// import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 
 const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
@@ -78,19 +78,26 @@ export default class Slider extends LightningElement {
      */
     @api label;
     /**
-     * Error message to be displayed when a slider overflow is detected.
+     * Error message to be displayed when a bad input is detected.
      *
      * @type {string}
      * @public
      */
-    @api messageWhenSliderOverflow;
+    @api messageWhenBadInput;
     /**
-     * Error message to be displayed when a slider underflow is detected.
+     * Error message to be displayed when a range overflow is detected.
      *
      * @type {string}
      * @public
      */
-    @api messageWhenSliderUnderflow;
+    @api messageWhenRangeOverflow;
+    /**
+     * Error message to be displayed when a range underflow is detected.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenRangeUnderflow;
     /**
      * Error message to be displayed when a step mismatch is detected.
      *
@@ -99,40 +106,19 @@ export default class Slider extends LightningElement {
      */
     @api messageWhenStepMismatch;
     /**
-     * Error message to be displayed when the value is missing.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenValueMissing;
-    /**
-     * Error message to be displayed when the value is too long.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenTooLong;
-    /**
-     * Error message to be displayed when a bad input is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenBadInput;
-    /**
-     * Error message to be displayed when a pattern mismatch is detected.
-     *
-     * @type {string}
-     * @public
-     */
-    @api messageWhenPatternMismatch;
-    /**
      * Error message to be displayed when a type mismatch is detected.
      *
      * @type {string}
      * @public
      */
     @api messageWhenTypeMismatch;
+    /**
+     * Error message to be displayed when the value is missing.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing;
 
     _disabled = false;
     _disableSwap = false;
@@ -163,6 +149,7 @@ export default class Slider extends LightningElement {
     _focusedInputIndex;
     _scalingFactor = 1;
     _constraintApi;
+    _constraintApiProxyInputUpdater;
 
     _connected = false;
     _domModified = false;
@@ -478,6 +465,17 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
+    }
+
+    /**
      * The value of the slider. If an array is passed, many thumbs will displayed on slider.
      * Returns a number if one value, returns an array if many values (array is always returned in ascending order).
      *
@@ -746,6 +744,29 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Compute constraintApi with fieldConstraintApiWithProxyInput.
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this
+            );
+
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
+                    type: () => 'number',
+                    value: () => this.value,
+                    max: () => this.max,
+                    min: () => this.min,
+                    step: () => this.step,
+                    formatter: () => this.unit,
+                    disabled: () => this.disabled
+                });
+        }
+        return this._constraintApi;
+    }
+
+    /**
      *  Returns the progress bar html element.
      */
     get _progress() {
@@ -825,12 +846,9 @@ export default class Slider extends LightningElement {
      */
     @api
     reportValidity() {
-        let helpMessage = '';
-        const isValid = this._constraints.reportValidity(
-            (message) => (helpMessage = message)
-        );
-        this._helpMessage = helpMessage;
-        return isValid;
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
+        });
     }
 
     /**
@@ -1363,6 +1381,17 @@ export default class Slider extends LightningElement {
         this._progressInterval[1] = highestValue - this._computedMin;
         if (this.showAnyTickMarks) {
             this.drawRuler(!this._rendered || this._domModified);
+        }
+    }
+
+    /**
+     * Proxy Input Attributes updater.
+     *
+     * @param {object} attributes
+     */
+    _updateProxyInputAttributes(attributes) {
+        if (this._constraintApiProxyInputUpdater) {
+            this._constraintApiProxyInputUpdater(attributes);
         }
     }
 }
