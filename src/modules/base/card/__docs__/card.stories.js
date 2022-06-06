@@ -134,7 +134,7 @@ ImageRight.args = {
 
 export const ImageCenter = Template.bind({});
 ImageCenter.args = {
-    title: 'Card title',
+    title: 'Card title card had long truncated title that will trucate',
     mediaPosition: 'center',
     avatar: {
         fallbackIconName: 'custom:custom1',
@@ -156,7 +156,7 @@ ImageBottom.args = {
 
 export const ImageBackground = Template.bind({});
 ImageBackground.args = {
-    title: 'Card title',
+    title: 'Card title card had long truncated title that will trucate',
     mediaPosition: 'background',
     avatar: {
         fallbackIconName: 'custom:custom1',
@@ -178,5 +178,5 @@ OverlayCard.args = {
 
 export const BaseWithSlots = SlotsTemplate.bind({});
 BaseWithSlots.args = {
-    mediaPosition: 'top'
+    mediaPosition: 'center'
 };

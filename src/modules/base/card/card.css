@@ -32,63 +32,131 @@
 
 :host() {
     /* --slds-c-card-shadow: 0px; */
-}
 
-article {
-    overflow: hidden;
-    display: flex;
-    position: relative;
-    flex-direction: column;
-}
+    /* --avonni-card-border-top: 1px solid red;
+    --avonni-card-border-bottom: 1px solid red;
+    --avonni-card-border-left: 1px solid red;
+    --avonni-card-border-right: 1px solid red; */
 
-article.avonni-card {
-    border-width: var(
-        --slds-c-card-sizing-border,
-        var(--sds-c-card-sizing-border, 1px)
-    );
-    border-style: solid;
-    border-color: var(
-        --slds-c-card-color-border,
-        var(--sds-c-card-color-border, #c9c9c9)
-    );
-    border-radius: var(
-        --slds-c-card-radius-border,
-        var(--sds-c-card-radius-border, 0.25rem)
-    );
-    box-shadow: var(
-        --slds-c-card-shadow,
-        var(--sds-c-card-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1))
-    );
-}
+    --avonni-card-top-media-height: 250px;
+    --avonni-card-center-media-height: 250px;
+    --avonni-card-bottom-media-height: 250px;
+    --avonni-card-left-media-width: 120px;
+    --avonni-card-right-media-width: 60px;
+    --avonni-card-background-media-height: 250px;
+    --avonni-card-overlay-media-height: 250px;
 
-.background .avonni-card__image-container {
-    height: 300px;
-    width: 100%;
-}
+    /* media action */
+    /* how to implement this? */
+    /* --avonni-card-media-action-top: unset;
+    --avonni-card-media-action-bottom: 0px;
+    --avonni-card-media-action-left: 0px;
+    --avonni-card-media-action-right: unset; */
 
-.background .card-content {
-    position: absolute;
-    padding-top: 20px;
-    bottom: 0;
-    color: white;
-    background-image: linear-gradient(
+    /* header */
+    /* --avonni-card-header-padding-top: 0px; */
+    /* --avonni-card-header-padding-bottom: 0px; */
+    /* --avonni-card-header-padding-left: 0px;
+    --avonni-card-header-padding-right: 0px; */
+
+    /* body */
+    --avonni-card-overlay-background-color: black;
+    --avonni-card-overlay-background-text-color: white;
+
+    /* body */
+    /* --avonni-card-body-margin-top: 0px;
+    --avonni-card-body-margin-bottom: 0px;
+    --avonni-card-body-padding-left: 0px;
+    --avonni-card-body-padding-right: 0px; */
+
+    /* footer */
+    /* --avonni-card-footer-padding-top: 30px;
+    --avonni-card-footer-padding-bottom: 0px;
+    --avonni-card-footer-padding-left: 0px;
+    --avonni-card-footer-padding-right: 0px; */
+    /* --avonni-card-footer-border-top: 1px solid red; */
+
+    --avonni-card-overlay-background-image: linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.5) 0%,
         rgba(0, 0, 0, 0.23) 75%,
         rgba(0, 0, 0, 0) 100%
     );
+    --avonni-card-overlay-text-color: white;
+}
+
+article {
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.avonni-card__flex-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+}
+
+article.avonni-card {
+    border-top: var(--avonni-card-border-top, 1px solid #c9c9c9);
+    border-bottom: var(--avonni-card-border-bottom, 1px solid #c9c9c9);
+    border-left: var(--avonni-card-border-left, 1px solid #c9c9c9);
+    border-right: var(--avonni-card-border-right, 1px solid #c9c9c9);
+
+    border-top-left-radius: var(
+        --avonni-card-border-top-left-radius,
+        var(--avonni-card-border-radius, 0.25rem)
+    );
+    border-top-right-radius: var(
+        --avonni-card-border-top-right-radius,
+        var(--avonni-card-border-radius, 0.25rem)
+    );
+    border-bottom-left-radius: var(
+        --avonni-card-border-bottom-left-radius,
+        var(--avonni-card-border-radius, 0.25rem)
+    );
+    border-bottom-right-radius: var(
+        --avonni-card-border-bottom-right-radius,
+        var(--avonni-card-border-radius, 0.25rem)
+    );
+
+    box-shadow: var(--avonni-card-box-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
+}
+
+.background .avonni-card__body-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding-top: 20px;
+    color: var(--avonni-card-overlay-text-color, white);
+    background-image: var(
+        --avonni-card-overlay-background-image,
+        linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.5) 0%,
+            rgba(0, 0, 0, 0.23) 75%,
+            rgba(0, 0, 0, 0) 100%
+        )
+    );
+}
+
+.hide-media {
+    display: none;
 }
 
 .avonni-card__body-container {
-    padding: 0.5em;
+    /* padding: 0.5em; */
 }
 
-.overlay-card .card-content {
+.overlay-card .avonni-card__body-container {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
-.overlay-card:hover .card-content {
+.overlay-card:hover .avonni-card__body-container {
     opacity: 1;
 }
 
@@ -103,22 +171,46 @@ article.avonni-card {
 .image-bottom,
 .image-center {
     flex-direction: column-reverse;
+    /* background-color: rgba(127, 255, 212, 0.499); */
 }
 
-.image-left .avonni-card__image-container,
-.image-right .avonni-card__image-container {
-    /* border: 2px solid red; */
+/* 
+--avonni-card-background-media-height: 250px;
+--avonni-card-overlay-media-height: 250px; */
+
+.background .avonni-card__image-container {
+    height: var(--avonni-card-background-media-height, 200px);
+    width: 100%;
+}
+.background .avonni-card__image-container {
+    height: var(--avonni-card-background-media-height, 200px);
+    width: 100%;
+}
+.image-left .avonni-card__image-container {
     position: relative;
-    height: 150px;
-    width: 100px;
+    width: var(--avonni-card-left-media-width);
 }
-
-.image-top .avonni-card__image-container,
-.image-center .avonni-card__image-container,
+.image-right .avonni-card__image-container {
+    position: relative;
+    object-fit: cover;
+    /* max-height: 100%;
+    height: 100%; */
+    width: var(--avonni-card-right-media-width);
+}
+.image-top .avonni-card__image-container {
+    position: relative;
+    width: 100%;
+    height: var(--avonni-card-top-media-height);
+}
+.image-center .avonni-card__image-container {
+    position: relative;
+    width: 100%;
+    height: var(--avonni-card-center-media-height);
+}
 .image-bottom .avonni-card__image-container {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: var(--avonni-card-bottom-media-height);
 }
 
 .media-actions {
@@ -131,4 +223,74 @@ article.avonni-card {
     height: 100%;
     width: 100%;
     object-fit: cover;
+}
+
+.avonni-card__header {
+    padding-top: var(--avonni-card-header-padding-top, 0.75rem);
+    padding-right: var(--avonni-card-header-padding-right, 0.75rem);
+    padding-left: var(--avonni-card-header-padding-left, 0.75rem);
+    margin-bottom: var(--avonni-card-header-spacing-end, 0.75rem);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* background-color: rgba(255, 183, 183, 0.546); */
+}
+
+.avonni-card__header-title-section {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.avonni-card__title-span {
+    padding: 0;
+    margin: 0;
+    /* background-color: rgba(255, 55, 255, 0.444); */
+}
+
+.avonni-card__media-actions {
+    position: absolute;
+    top: var(--avonni-card-media-action-top, 0.75rem);
+    right: var(--avonni-card-media-action-right, 0.75rem);
+    /* border: solid 1px red; */
+}
+
+.avonni-card__action-slot {
+    /* border: solid 1px red; */
+}
+
+.image-center .avonni-card__center-default-slot {
+    display: block;
+}
+
+.hide-default-slot {
+    display: none;
+}
+
+.avonni-card__center-default-slot,
+.avonni-card__default-slot {
+    /* background-color: rgba(218, 255, 33, 0.467); */
+
+    margin-top: var(--avonni-card-body-margin-top, 0.75rem);
+    margin-bottom: var(--avonni-card-body-margin-bottom, 0.75rem);
+    padding-left: var(--avonni-card-body-padding-left, 0.75rem);
+    padding-right: var(--avonni-card-body-padding-right, 0.75rem);
+}
+
+.hide-default-slot {
+    display: none;
+}
+
+.avonni-card__footer {
+    padding: var(--avonni-card-footer-padding-top, 0.75rem)
+        var(--avonni-card-footer-padding-right, 0.75rem)
+        var(--avonni-card-footer-padding-bottom, 0.75rem)
+        var(--avonni-card-footer-padding-left, 0.75rem);
+    text-align: center;
+    font-size: 0.8125rem;
+    border-top: var(--avonni-card-footer-border-top, 1px solid #c9c9c9);
+}
+
+.hide-footer {
+    display: none;
 }

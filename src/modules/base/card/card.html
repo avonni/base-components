@@ -36,55 +36,71 @@
     <article class="avonni-card">
         <div class={computedCardClasses}>
             <!-- only used for media center -->
-            <div if:true={showCenterMedia}>
+            <div class={computedCenterDefaultSlotClasses}>
+                center
                 <slot name="default" class="avonni-card__default-area"></slot>
             </div>
 
             <!-- media -->
-            <div class="avonni-card__image-container">
+            <div class={computedMediaClasses}>
                 <img
                     class="avonni-card__image"
                     src={mediaSrc}
                     if:true={mediaSrc}
                 />
                 <slot name="media"></slot>
-                <slot name="media-action"></slot>
+                <div class="avonni-card__media-actions">
+                    <slot name="media-action"></slot>
+                </div>
             </div>
 
             <!-- title and action -->
             <div class="slds-has-flexi-truncate avonni-card__body-container">
-                <div class="slds-grid">
-                    <div class="slds-grid">
+                <header
+                    class="
+                        slds-grid slds-has-flexi-truncate
+                        avonni-card__header
+                    "
+                >
+                    <div
+                        class="
+                            slds-has-flexi-truncate
+                            avonni-card__header-title-section
+                        "
+                    >
                         <c-avatar
                             if:true={avatar}
                             class="slds-m-right_x-small"
                             fallback-icon-name={avatar.fallbackIconName}
                             src={avatar.src}
-                            hide-avatar-details="true"
+                            hide-avatar-details
                             alternative-text="avatar"
                             data-element-id="avonni-avatar"
                         ></c-avatar>
 
-                        <div if:true={hasStringTitle}>
-                            <span>{title}</span>
+                        <div if:true={hasStringTitle} class="slds-truncate">
+                            <h2 class="avonni-card__title-span">{title}</h2>
                         </div>
-                        <div if:false={hasStringTitle}>
+
+                        <div>
                             <slot name="title"></slot>
                         </div>
                     </div>
 
-                    <div class="slds-no-flex slds-col_bump-left">
+                    <div class="avonni-card__action-slot">
                         <slot name="action"></slot>
                     </div>
-                </div>
+                </header>
 
                 <!-- default content -->
-                <div if:false={showCenterMedia}>
+                <div class={computedDefaultSlotClasses}>
                     <slot name="default"></slot>
                 </div>
             </div>
         </div>
 
-        <slot name="footer"></slot>
+        <div class={computedFooterClasses}>
+            <slot name="footer"></slot>
+        </div>
     </article>
 </template>

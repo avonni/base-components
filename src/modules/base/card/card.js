@@ -63,7 +63,6 @@ export default class Card extends LightningElement {
     connectedCallback() {}
 
     renderedCallback() {
-        console.log(this.mediaSlot);
         if (this.titleSlot) {
             this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
         }
@@ -88,7 +87,8 @@ export default class Card extends LightningElement {
         }
 
         this._showMedia = !!this.mediaSrc || this.showMediaSlot;
-        console.log(this.mediaSrc, this.showMediaSlot);
+
+        // console.log(this._showMedia, this.showDefaultSlot);
     }
 
     /**
@@ -117,7 +117,7 @@ export default class Card extends LightningElement {
      * @type {Element}
      */
     get mediaActionSlot() {
-        return this.template.querySelector('slot[name=media-actions]');
+        return this.template.querySelector('slot[name=media-action]');
     }
 
     /**
@@ -126,26 +126,26 @@ export default class Card extends LightningElement {
      * @type {Element}
      */
     get actionSlot() {
-        return this.template.querySelector('slot[name=actions]');
+        return this.template.querySelector('slot[name=action]');
     }
 
-    // /**
-    //  * Get the actions slot DOM element.
-    //  *
-    //  * @type {Element}
-    //  */
-    // get actionsSlot() {
-    //     return this.template.querySelector('slot[name=actions]');
-    // }
+    /**
+     * Get the footer slot DOM element.
+     *
+     * @type {Element}
+     */
+    get footerSlot() {
+        return this.template.querySelector('slot[name=footer]');
+    }
 
-    // /**
-    //  * Get the actions slot DOM element.
-    //  *
-    //  * @type {Element}
-    //  */
-    // get actionsSlot() {
-    //     return this.template.querySelector('slot[name=actions]');
-    // }
+    /**
+     * Get the actions slot DOM element.
+     *
+     * @type {Element}
+     */
+    get defaultSlot() {
+        return this.template.querySelector('slot[name=default]');
+    }
 
     // PROPS //
 
@@ -161,7 +161,7 @@ export default class Card extends LightningElement {
     }
 
     set title(value) {
-        this._title = normalizeString(value);
+        this._title = value;
     }
 
     /**
@@ -226,7 +226,7 @@ export default class Card extends LightningElement {
     }
 
     get computedCardClasses() {
-        return classSet('')
+        return classSet('avonni-card__flex-container')
             .add({ 'image-top': this.mediaPosition === 'top' })
             .add({ 'image-left': this.mediaPosition === 'left' })
             .add({ 'image-right': this.mediaPosition === 'right' })
@@ -239,6 +239,40 @@ export default class Card extends LightningElement {
             .add({
                 'background-centered':
                     this.mediaPosition === 'background-center'
+            })
+            .toString();
+    }
+
+    get computedMediaClasses() {
+        return classSet('avonni-card__image-container')
+            .add({ 'hide-media': !this.showMedia })
+            .toString();
+    }
+
+    get computedFooterClasses() {
+        return classSet('avonni-card__footer').add({
+            'hide-footer': this.showFooterSlot === false
+        });
+    }
+
+    get computedDefaultSlotClasses() {
+        return classSet('avonni-card__default-slot')
+            .add({ 'hide-default-slot': this.mediaPosition === 'center' })
+            .toString();
+    }
+
+    get computedCenterDefaultSlotClasses() {
+        console.log(
+            this.showDefaultSlot,
+            this.showMedia,
+            this.mediaPosition !== 'center'
+        );
+        return classSet('avonni-card__center-default-slot')
+            .add({
+                'hide-default-slot':
+                    this.showDefaultSlot === false ||
+                    this.showMedia === false ||
+                    this.mediaPosition !== 'center'
             })
             .toString();
     }
