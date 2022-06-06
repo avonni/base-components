@@ -85,6 +85,7 @@ export default class Skeleton extends LightningElement {
     secondaryTextClass;
     tertiaryTextClass;
     chipLabel;
+    badgeLabel;
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -98,6 +99,7 @@ export default class Skeleton extends LightningElement {
     renderedCallback() {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (this.isChipVariant) this.chipLabel = this.variantAttributes.label;
+        if (this.isBadgeVariant) this.badgeLabel = this.variantAttributes.label;
         if (!this.isAvatarVariant) this.handleVariant();
         console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
@@ -117,6 +119,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isBadgeVariant() {
+        return this.variant === 'badge';
+    }
+
+    @api
     get isChipVariant() {
         return this.variant === 'chip';
     }
@@ -133,6 +140,14 @@ export default class Skeleton extends LightningElement {
     @api
     get chipHasIcon() {
         return this.variantAttributes.hasIcon;
+    }
+
+    @api
+    get badgeHasEndIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'end' &&
+            this.variantAttributes.hasIcon === true
+        );
     }
 
     @api
@@ -259,6 +274,12 @@ export default class Skeleton extends LightningElement {
             .toString();
     }
 
+    get badgeClass() {
+        return classSet('avonni-badge')
+            .add('avonni-skeleton__base')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
     get slotClass() {
         return classSet('avonni-skeleton__base')
             .add(`avonni-skeleton__animation-${this.animation}`)
@@ -331,6 +352,11 @@ export default class Skeleton extends LightningElement {
             this.updateChipClassList();
     }
 
+    handleBadge() {
+        if (Object.keys(this.variantAttributes).length !== 0)
+            this.updateBadgeClassList();
+    }
+
     /**
      * Sets the width and heigh for text variant
      */
@@ -399,4 +425,6 @@ export default class Skeleton extends LightningElement {
     }
 
     updateChipClassList() {}
+
+    updateBadgeClassList() {}
 }

@@ -74,7 +74,14 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['avatar', 'chip', 'circular', 'rectangular', 'text'],
+            options: [
+                'avatar',
+                'badge',
+                'chip',
+                'circular',
+                'rectangular',
+                'text'
+            ],
             description: 'The variant changes the appearance of the skeleton.',
             table: {
                 type: { summary: 'string' },
@@ -101,6 +108,7 @@ export default {
 const Template = (args) => Skeleton(args);
 
 export const Base = Template.bind({});
+
 export const Chip = Template.bind({});
 Chip.args = {
     variantAttributes: {
@@ -109,5 +117,15 @@ Chip.args = {
         label: 'label',
         hasIcon: true,
         outline: false
+    }
+};
+
+export const Badge = Template.bind({});
+Badge.args = {
+    variant: 'badge',
+    animation: 'pulse',
+    variantAttributes: {
+        label: 'label',
+        hasIcon: true
     }
 };
