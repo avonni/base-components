@@ -506,6 +506,7 @@ export default class Kanban extends LightningElement {
                         fieldContainer.scrollBy(-10, 0);
                 }, 15);
         } else {
+            console.log('reset', group.scrollTop);
             window.clearInterval(this._scrollingY);
             this._scrollingY = null;
             window.clearInterval(this._scrollingX);
@@ -1039,15 +1040,22 @@ export default class Kanban extends LightningElement {
         );
 
         // Sets the right marginBottom on the last tile depending on the hovered group
-        currentGroupTiles.forEach((group, i) => {
-            const marginBottom =
-                i === this._releasedGroupIndex
-                    ? this._draggedTile.offsetHeight
-                    : 0;
-            group.children[
-                group.children.length - 1
-            ].style.marginBottom = `${marginBottom}px`;
-        });
+        if (this._draggedTile)
+            currentGroupTiles.forEach((group, i) => {
+                if (group.children.length > 0) {
+                    const increment =
+                        this._clickedTileIndex === this._groupsLength[i] - 1
+                            ? 2
+                            : 1;
+                    const marginBottom =
+                        i === this._releasedGroupIndex
+                            ? this._draggedTile.offsetHeight
+                            : 0;
+                    group.children[
+                        group.children.length - increment
+                    ].style.marginBottom = `${marginBottom}px`;
+                }
+            });
 
         this.autoScroll(currentX, currentY);
     }
