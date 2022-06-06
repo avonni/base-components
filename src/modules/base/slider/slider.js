@@ -877,7 +877,6 @@ export default class Slider extends LightningElement {
             let backgroundColor = getComputedStyle(
                 this.template.host
             ).getPropertyValue('background-color');
-            console.log(backgroundColor);
             if (!backgroundColor || backgroundColor === 'rgba(0, 0, 0, 0)') {
                 backgroundColor = 'white';
             }
