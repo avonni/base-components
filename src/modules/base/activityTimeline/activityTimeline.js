@@ -54,7 +54,7 @@ const MAX_LENGTH_TITLE_ITEM = 30;
 const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
-const SMALL_ICON_SIZE = 23.99;
+const SVG_ICON_SIZE = 25;
 const Y_START_POSITION_TIMELINE_ITEM = 10;
 const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
@@ -95,11 +95,16 @@ const SORTED_DIRECTIONS = {
     default: 'desc'
 };
 
-// TODO: Move horizontal timeline to new file
+// ** Functionalities/bug **
 // TODO: Fix overlap of items at specific place (setYPosition) + consequences
 // TODO: Scroll --> prevent scroll if no item to show
-// TODO: Fix mouse out
-// TODO: when interval size is changed -- > check icon
+// TODO: Responsive size, or container width size instead of fixed
+
+// ** QA/tests/Doc **
+// TODO: Move horizontal timeline to new file
+// TODO: Refactor
+// TODO: Doc
+// TODO: Tests
 
 /**
  * @class
@@ -210,10 +215,43 @@ export default class ActivityTimeline extends LightningElement {
 
         // const divD3Testing = d3.select(this.template.querySelector('.testing-d3'));
         // divD3Testing.selectAll('*').remove();
-        // // TESTING DRAG
+        // // // TESTING DRAG
 
         // const testSvg = divD3Testing.append('svg').attr('width', 1300).attr('height', 100);
-        // testSvg.append('rect').attr('x', this._offsetAxis).attr('y',0).attr('width', 100).attr('height', 100).attr('fill', 'pink');
+        // testSvg.append('rect').attr('x', 0).attr('y',0).attr('width', 1300).attr('height', 100).attr('fill', 'goldenrod');
+
+        // const nestedSVG = testSvg.append('svg').attr('width', 700).attr('height', 50).attr('x', 200).attr('y', 20);
+
+        // // Testing nested svg - icon works, without container
+        // nestedSVG.append('svg')
+        //     .attr('x', '-100')
+        //     .attr('y', 0)
+        //     .append('use')
+        //     .attr('xlink:href', '/assets/icons/standard-sprite/svg/symbols.svg#bot')
+        //     .style('fill', 'purple');
+
+        // // Test to create group with text + foreign object (span container and svg icon)
+        // const testGroup = testSvg.append('g').attr('id', 'elementName');
+        // const foreignObject = testGroup.append('foreignObject');
+        // foreignObject.attr('width', 25)
+        //             .attr('height', 25)
+        //             .attr('x', 100)
+        //             .attr('y', 20);
+        // foreignObject.append("xhtml:span")
+        // .attr(
+        //     'class',
+        //     'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center slds-icon-standard-bot')
+        //     .html('<svg class="slds-icon"><use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#bot"></use></svg>');
+
+        // testGroup.append('text').attr('x', 130).attr('y', 35).text('Ceci est le titre de element');
+
+        // testGroup
+        //     .on('mouseover', function() {
+        //         console.log('mouse over works');
+        //     }).on('mouseout', function() {
+        //         console.log('mouse out works');
+        //     });
+
         //     // .transition().duration(2000).style('width', '300')
         //     // .transition().duration(2000).attr('x', '200')
         //     // .transition().duration(2000).attr('x', '100');
@@ -637,73 +675,88 @@ export default class ActivityTimeline extends LightningElement {
         );
     }
 
-    // Create the lightning icon of the item using svg
-    createItemIcon(element, item, index) {
-        const xPosition = this.viewTimeScale(new Date(item.datetimeValue)) - 2;
-        const yPosition = -(index * SMALL_ICON_SIZE) + item.yPosition - 434;
+    // Create item on horizontal timeline to display lightning icon and item's title
+    createItem(itemGroup, item) {
+        const iconInformation = this.setIconInformation(item.iconName);
+        const foreignObjectForIcon = itemGroup.append('foreignObject');
+        foreignObjectForIcon
+            .attr('width', SVG_ICON_SIZE)
+            .attr('height', SVG_ICON_SIZE)
+            .attr('x', this.viewTimeScale(new Date(item.datetimeValue)))
+            .attr('y', item.yPosition);
 
-        let iconName;
-        let xLinkHref;
-        let categoryIconClass;
-
-        // Set icon informations according to its category
-        if (item.iconName.match('standard:*')) {
-            iconName = item.iconName.slice(
-                'standard:'.length,
-                item.iconName.length
-            );
-            xLinkHref = LWC_ICONS_XLINK_HREF.standard;
-            categoryIconClass = LWC_ICONS_CLASS.standard;
-        } else if (item.iconName.match('utility:*')) {
-            iconName = item.iconName.slice(
-                'utility:'.length,
-                item.iconName.length
-            );
-            xLinkHref = LWC_ICONS_XLINK_HREF.utility;
-            categoryIconClass = LWC_ICONS_CLASS.utility;
-        } else if (item.iconName.match('doctype:*')) {
-            iconName = item.iconName.slice(
-                'doctype:'.length,
-                item.iconName.length
-            );
-            xLinkHref = LWC_ICONS_XLINK_HREF.doctype;
-            categoryIconClass = LWC_ICONS_CLASS.doctype;
-        } else if (item.iconName.match('action:*')) {
-            iconName = item.iconName.slice(
-                'action:'.length,
-                item.iconName.length
-            );
-            xLinkHref = LWC_ICONS_XLINK_HREF.action;
-            categoryIconClass = LWC_ICONS_CLASS.action;
-        } else if (item.iconName.match('custom:*')) {
-            iconName = item.iconName.slice(
-                'custom:'.length,
-                item.iconName.length
-            );
-            xLinkHref = LWC_ICONS_XLINK_HREF.custom;
-            categoryIconClass = LWC_ICONS_CLASS.custom;
-        } else {
-            iconName = 'default';
-            xLinkHref = LWC_ICONS_XLINK_HREF.standard;
-            categoryIconClass = LWC_ICONS_CLASS.standard;
-        }
-
-        // Create SVG element of icon
-        element
-            .append('svg')
-            .style('display', 'block')
-            .style('font-size', 0)
-            .style('line-height', 0)
-            .attr('viewport', '0 0 30 30')
+        foreignObjectForIcon
+            .append('xhtml:span')
             .attr(
                 'class',
-                'slds-icon slds-icon_container slds-icon_small ' +
-                    categoryIconClass +
-                    iconName.replaceAll('_', '-')
+                'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
+                    iconInformation.categoryIconClass +
+                    iconInformation.iconName.replaceAll('_', '-')
             )
-            .attr('transform', 'translate(' + xPosition + ',' + yPosition + ')')
-            .append('use')
-            .attr('xlink:href', xLinkHref + iconName);
+            .html(
+                '<svg class="slds-icon"><use xlink:href=' +
+                    iconInformation.xLinkHref +
+                    '></use></svg>'
+            );
+
+        itemGroup
+            .append('text')
+            .attr(
+                'x',
+                this.viewTimeScale(new Date(item.datetimeValue)) + SVG_ICON_SIZE
+            )
+            .attr('y', item.yPosition + 0.64 * SVG_ICON_SIZE)
+            .text(this.computedItemTitle(item))
+            .style('font-size', 13);
+    }
+
+    setIconInformation(iconName) {
+        const iconInformation = {};
+
+        // Set lightning icon informations according to its category
+        if (iconName.match('standard:*')) {
+            iconInformation.iconName = iconName.slice(
+                'standard:'.length,
+                iconName.length
+            );
+            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.standard;
+            iconInformation.categoryIconClass = LWC_ICONS_CLASS.standard;
+        } else if (iconName.match('utility:*')) {
+            iconInformation.iconName = iconName.slice(
+                'utility:'.length,
+                iconName.length
+            );
+            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.utility;
+            iconInformation.categoryIconClass = LWC_ICONS_CLASS.utility;
+        } else if (iconName.match('doctype:*')) {
+            iconInformation.iconName = iconName.slice(
+                'doctype:'.length,
+                iconName.length
+            );
+            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.doctype;
+            iconInformation.categoryIconClass = LWC_ICONS_CLASS.doctype;
+        } else if (iconName.match('action:*')) {
+            iconInformation.iconName = iconName.slice(
+                'action:'.length,
+                iconName.length
+            );
+            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.action;
+            iconInformation.categoryIconClass = LWC_ICONS_CLASS.action;
+        } else if (iconName.match('custom:*')) {
+            iconInformation.iconName = iconName.slice(
+                'custom:'.length,
+                iconName.length
+            );
+            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.custom;
+            iconInformation.categoryIconClass = LWC_ICONS_CLASS.custom;
+        } else {
+            iconInformation.iconName = 'default';
+            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.standard;
+            iconInformation.categoryIconClass = LWC_ICONS_CLASS.standard;
+        }
+        iconInformation.xLinkHref += iconInformation.iconName;
+
+        return iconInformation;
     }
 
     /**
@@ -839,30 +892,22 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     addItemsToTimeline(dataToDisplay) {
-        //  <--- CREATE EACH ITEM --->
-        const iconsContainer = this._timelineDiv
-            .append('g')
-            .attr('id', 'icons-container');
-
-        dataToDisplay.forEach((item, index) => {
-            this.createItemIcon(iconsContainer, item, index);
-        });
-
+        // Handler function for mouse over and mouse out
         const handleMouseOutOnItem = function () {
             d3.select(this.itemPopoverSelector).style('visibility', 'hidden');
             this.handleItemMouseLeave();
         };
 
-        const handleMouseOverOnItem = function (event, item) {
+        const handleMouseOverOnItem = function (element, event) {
             this.showItemPopOver = true;
-            this.selectedItem = item;
+            this.selectedItem = element;
 
             const tooltipElement = d3.select(this.itemPopoverSelector);
             const sizeClassToAdd =
-                (item.fields && item.fields.length > 0) ||
-                item.buttonLabel !== undefined
+                (element.fields && element.fields.length > 0) ||
+                element.buttonLabel !== undefined
                     ? 'avonni-activity-timeline__item-popover-with-fields'
-                    : item.hasError || item.description !== undefined
+                    : element.hasError || element.description !== undefined
                     ? 'avonni-activity-timeline__item-popover-with-errors'
                     : '';
 
@@ -878,26 +923,18 @@ export default class ActivityTimeline extends LightningElement {
                 .on('mouseout', handleMouseOutOnItem.bind(this));
         };
 
-        this._timelineSVG
-            .append('g')
-            .selectAll('text')
-            .data(dataToDisplay)
-            .enter()
-            .append('text')
-            .attr(
-                'x',
-                (item) =>
-                    this.viewTimeScale(new Date(item.datetimeValue)) +
-                    SMALL_ICON_SIZE
-            )
-            .attr('y', (item) => item.yPosition + SMALL_ICON_SIZE * 0.57)
-            .text((item) => {
-                return this.computedItemTitle(item);
-            })
-            .attr('fill', 'black')
-            // TODO: change size to better fit popover content
-            .on('mouseover', handleMouseOverOnItem.bind(this))
-            .on('mouseout', handleMouseOutOnItem.bind(this));
+        //  <--- CREATE EACH ITEM --->
+        dataToDisplay.forEach((item) => {
+            const itemGroup = this._timelineSVG
+                .append('g')
+                .attr('id', 'timeline-item-' + item.name);
+            this.createItem(itemGroup, item);
+
+            itemGroup
+                // TODO: change size to better fit popover content
+                .on('mouseover', handleMouseOverOnItem.bind(this, item))
+                .on('mouseout', handleMouseOutOnItem.bind(this, item));
+        });
     }
 
     /**
