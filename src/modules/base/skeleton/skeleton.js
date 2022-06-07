@@ -87,6 +87,7 @@ export default class Skeleton extends LightningElement {
     chipLabel;
     badgeLabel;
     breadcrumbs = [];
+    buttonWrapper;
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -98,13 +99,17 @@ export default class Skeleton extends LightningElement {
         if (this.isBreadcrumbsVariant) {
             this.initializeBreadcrumbs();
         }
+        if (this.isButtonVariant) {
+            this.updateButtonClassList();
+        }
     }
 
     renderedCallback() {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (this.isChipVariant) this.chipLabel = this.variantAttributes.label;
         if (this.isBadgeVariant) this.badgeLabel = this.variantAttributes.label;
-        if (!this.isAvatarVariant) this.handleVariant();
+        if (!this.isAvatarVariant && !this.isButtonVariant)
+            this.handleVariant();
         console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
@@ -130,6 +135,11 @@ export default class Skeleton extends LightningElement {
     @api
     get isBreadcrumbsVariant() {
         return this.variant === 'breadcrumbs';
+    }
+
+    @api
+    get isButtonVariant() {
+        return this.variant === 'button';
     }
 
     @api
@@ -335,7 +345,7 @@ export default class Skeleton extends LightningElement {
                 this.handleBreadcrumbs();
                 break;
             case 'button':
-                this.handleAvatarVariant();
+                this.handleButtonVariant();
                 break;
             case 'button-icon':
                 this.handleAvatarVariant();
@@ -382,6 +392,12 @@ export default class Skeleton extends LightningElement {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateBreadcrumbsClassList();
             // this.initializeBreadcrumbs();
+        }
+    }
+
+    handleButtonVariant() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateButtonClassList();
         }
     }
 
@@ -470,4 +486,23 @@ export default class Skeleton extends LightningElement {
     updateBadgeClassList() {}
 
     updateBreadcrumbsClassList() {}
+
+    updateButtonClassList() {
+        const buttonWrapper = classSet('slds-button')
+            .add({
+                'slds-button_neutral':
+                    this.variantAttributes.variant === 'neutral',
+                'slds-button_brand': this.variantAttributes.variant === 'brand',
+                'slds-button_outline-brand':
+                    this.variantAttributes.variant === 'brand-outline',
+                'slds-button_destructive':
+                    this.variantAttributes.variant === 'destructive',
+                'slds-button_text-destructive':
+                    this.variantAttributes.variant === 'destructive-text',
+                'slds-button_success':
+                    this.variantAttributes.variant === 'success'
+            })
+            .add(`avonni-skeleton__animation-${this.animation}`);
+        this.buttonWrapper = buttonWrapper;
+    }
 }

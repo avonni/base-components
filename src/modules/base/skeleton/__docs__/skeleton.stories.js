@@ -78,6 +78,7 @@ export default {
                 'avatar',
                 'badge',
                 'breadcrumbs',
+                'button',
                 'chip',
                 'circular',
                 'rectangular',
@@ -137,5 +138,14 @@ Breadcrumbs.args = {
     animation: 'pulse',
     variantAttributes: {
         numBreadcrumbs: 3
+    }
+};
+
+export const Button = Template.bind({});
+Button.args = {
+    variant: 'button',
+    animation: 'pulse',
+    variantAttributes: {
+        variant: 'base'
     }
 };

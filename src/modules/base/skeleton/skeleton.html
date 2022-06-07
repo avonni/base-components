@@ -119,14 +119,6 @@
             </span>
         </span>
     </template>
-    <!-- <template if:true={isBreadcrumbsVariant}>
-        <div class="breadcrumbsClass">
-            <template for:each={breadcrumbs} for:item="breadcrumb">
-                <div key={breadcrumb.key} class={breadcrumbClass}></div>
-                <div>></div>
-            </template>
-        </div>
-    </template> -->
     <template if:true={isBreadcrumbsVariant}>
         <ul class="slds-list_horizontal breadcrumbsClass">
             <template for:each={breadcrumbs} for:item="breadcrumb">
@@ -134,5 +126,8 @@
                 <div key={breadcrumb.key}>></div>
             </template>
         </ul>
+    </template>
+    <template if:true={isButtonVariant}>
+        <button class={buttonWrapper}>button</button>
     </template>
 </template>
