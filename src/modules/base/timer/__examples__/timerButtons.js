@@ -30,20 +30,33 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host {
-    display: block;
-}
+import Component from '../../storybookWrappers/timer/timerButtons';
 
-.avonni-scheduler__header-cell {
-    width: var(--avonni-scheduler-cell-width);
-    min-width: var(--avonni-scheduler-cell-width);
-    background-color: #f3f3f3;
-    color: #514f4d;
-    font-weight: 700;
-}
+customElements.define(
+    'ac-base-timer-buttons',
+    Component.CustomElementConstructor
+);
 
-.avonni-scheduler__header-label_sticky {
-    position: sticky;
-    position: -webkit-sticky;
-    left: 0;
-}
+export const TimerButtons = ({
+    value = 0,
+    variant,
+    type,
+    duration = 1,
+    autoStart,
+    repeat,
+    iconName,
+    iconPosition,
+    format
+}) => {
+    const element = document.createElement('ac-base-timer-buttons');
+    element.value = value;
+    element.variant = variant;
+    element.type = type;
+    element.duration = duration;
+    element.autoStart = autoStart;
+    element.repeat = repeat;
+    element.iconName = iconName;
+    element.iconPosition = iconPosition;
+    element.format = format;
+    return element;
+};

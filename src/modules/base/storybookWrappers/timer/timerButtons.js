@@ -30,20 +30,36 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host {
-    display: block;
-}
+import { LightningElement, api } from 'lwc';
 
-.avonni-scheduler__header-cell {
-    width: var(--avonni-scheduler-cell-width);
-    min-width: var(--avonni-scheduler-cell-width);
-    background-color: #f3f3f3;
-    color: #514f4d;
-    font-weight: 700;
-}
+export default class Timer extends LightningElement {
+    @api value;
+    @api variant;
+    @api type;
+    @api duration;
+    @api autoStart;
+    @api repeat;
+    @api iconName;
+    @api iconPosition;
+    @api format;
 
-.avonni-scheduler__header-label_sticky {
-    position: sticky;
-    position: -webkit-sticky;
-    left: 0;
+    get timer() {
+        return this.template.querySelector('c-timer');
+    }
+
+    start() {
+        this.timer.start();
+    }
+
+    pause() {
+        this.timer.pause();
+    }
+
+    stopTimer() {
+        this.timer.stop();
+    }
+
+    reset() {
+        this.timer.reset();
+    }
 }

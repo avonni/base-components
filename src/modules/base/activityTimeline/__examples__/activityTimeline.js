@@ -39,6 +39,13 @@ customElements.define(
 
 export const ActivityTimeline = ({
     actions,
+    buttonShowMoreLabel,
+    buttonVariant,
+    buttonShowMoreIconName,
+    buttonShowMoreIconPosition,
+    buttonShowLessIconPosition,
+    buttonShowLessIconName,
+    buttonShowLessLabel,
     closed,
     collapsible,
     itemDateFormat,
@@ -47,11 +54,19 @@ export const ActivityTimeline = ({
     itemIconSize,
     items,
     groupBy,
+    maxVisibleItems,
     sortedDirection,
     title
 }) => {
     const element = document.createElement('ac-activity-timeline');
     element.actions = actions;
+    element.buttonShowMoreLabel = buttonShowMoreLabel;
+    element.buttonVariant = buttonVariant;
+    element.buttonShowMoreIconName = buttonShowMoreIconName;
+    element.buttonShowMoreIconPosition = buttonShowMoreIconPosition;
+    element.buttonShowLessIconPosition = buttonShowLessIconPosition;
+    element.buttonShowLessIconName = buttonShowLessIconName;
+    element.buttonShowLessLabel = buttonShowLessLabel;
     element.closed = closed;
     element.collapsible = collapsible;
     element.itemDateFormat = itemDateFormat;
@@ -60,6 +75,7 @@ export const ActivityTimeline = ({
     element.iconSize = iconSize;
     element.itemIconSize = itemIconSize;
     element.items = items;
+    element.maxVisibleItems = maxVisibleItems;
     element.sortedDirection = sortedDirection;
     element.title = title;
     return element;

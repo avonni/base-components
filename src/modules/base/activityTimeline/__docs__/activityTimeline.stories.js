@@ -134,6 +134,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        maxVisibleItems: {
+            name: 'max-visible-items',
+            control: {
+                type: 'number',
+                min: 0
+            },
+            description: 'The maximum number of visible items to display.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         sortedDirection: {
             name: 'sorted-direction',
             control: {
@@ -156,15 +167,123 @@ export default {
             table: {
                 type: { summary: 'string' }
             }
+        },
+        buttonShowMoreLabel: {
+            name: 'button-show-more-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the button that appears when the number of items exceeds the max-visible-items number.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show more' },
+                category: 'Buttons'
+            }
+        },
+        buttonVariant: {
+            name: 'button-variant',
+            control: {
+                type: 'select'
+            },
+            options: [
+                'neutral',
+                'base',
+                'brand',
+                'brand-outline',
+                'destructive',
+                'destructive-text',
+                'inverse',
+                'success'
+            ],
+            description:
+                'Variant of the button that appears when the number of items exceeds the max-visible-items number.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'neutral' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowMoreIconName: {
+            name: 'button-show-more-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowMoreIconPosition: {
+            name: 'button-show-more-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                'Position of the showMore button’s icon. Valid values include left and right.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowLessLabel: {
+            name: 'button-show-less-label',
+            control: {
+                type: 'text'
+            },
+            description:
+                'Label of the button that appears when all items are displayed and max-visible-items value is set.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'Show less' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowLessIconName: {
+            name: 'button-show-less-icon-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The Lightning Design System name of the button icon. Specify the name in the format 'utility:up' where 'utility' is the category, and 'up' is the specific icon to be displayed.",
+            table: {
+                type: { summary: 'string' },
+                category: 'Buttons'
+            }
+        },
+        buttonShowLessIconPosition: {
+            name: 'button-show-less-icon-position',
+            control: {
+                type: 'radio'
+            },
+            options: ['left', 'right'],
+            description:
+                "Position of the show less button's icon. Valid values include left and right.",
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'left' },
+                category: 'Buttons'
+            }
         }
     },
     args: {
         closed: false,
         collapsible: false,
-        iconSize: 'medium',
-        itemIconSize: 'small',
         sortedDirection: 'desc',
-        itemDateFormat: 'LLLL dd, yyyy, t'
+        buttonShowLessLabel: 'Show less',
+        buttonShowLessIconPosition: 'left',
+        buttonShowLessIconName: 'utility:up',
+        buttonShowMoreIconPosition: 'left',
+        buttonShowMoreLabel: 'Show more',
+        buttonShowMoreIconName: 'utility:down',
+        buttonVariant: 'neutral',
+        iconSize: 'medium',
+        itemDateFormat: 'LLLL dd, yyyy, t',
+        itemIconSize: 'small'
     }
 };
 
@@ -177,7 +296,8 @@ Base.args = {
     items: items,
     collapsible: true,
     itemDateFormat: 'dd LLL yyyy',
-    actions: actions
+    actions: actions,
+    maxVisibleItems: 3
 };
 
 export const Ascending = Template.bind({});
@@ -187,7 +307,8 @@ Ascending.args = {
     items: items,
     collapsible: true,
     actions: actions,
-    sortedDirection: 'asc'
+    sortedDirection: 'asc',
+    maxVisibleItems: 3
 };
 
 export const Weekly = Template.bind({});
@@ -197,8 +318,9 @@ Weekly.args = {
     items: items,
     collapsible: true,
     actions: actions,
-    dateFormat: 'DDDD - t',
-    groupBy: 'week'
+    itemDateFormat: 'DDDD - t',
+    groupBy: 'week',
+    maxVisibleItems: 5
 };
 
 export const WeeklyNotCollapsible = Template.bind({});
@@ -208,7 +330,7 @@ WeeklyNotCollapsible.args = {
     items: items,
     collapsible: false,
     actions: actions,
-    dateFormat: 'DDDD - t',
+    itemDateFormat: 'DDDD - t',
     groupBy: 'week'
 };
 
@@ -219,7 +341,7 @@ Monthly.args = {
     groupBy: 'month',
     items: items,
     collapsible: true,
-    dateFormat: 'dd MMM - t',
+    itemDateFormat: 'dd MMM - t',
     actions: actions
 };
 
