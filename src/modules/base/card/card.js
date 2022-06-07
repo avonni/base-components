@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet, generateUUID } from 'c/utils';
-import { normalizeObject, normalizeString } from '../utilsPrivate/normalize';
+import { normalizeString } from '../utilsPrivate/normalize';
 
 const MEDIA_POSITIONS = {
     valid: [
@@ -48,7 +48,7 @@ const MEDIA_POSITIONS = {
 };
 
 export default class Card extends LightningElement {
-    _avatar;
+    _iconName;
     _title;
     _mediaPosition;
 
@@ -144,7 +144,8 @@ export default class Card extends LightningElement {
      * @type {Element}
      */
     get defaultSlot() {
-        return this.template.querySelector('slot[name=default]');
+        console.log(this.template.querySelector('slot:not([name])'));
+        return this.template.querySelector('slot:not([name])');
     }
 
     // PROPS //
@@ -198,22 +199,18 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Avatar object
+     * Icon name
      *
-     * @type {object||object[]}
+     * @type {string}
      * @public
      */
     @api
-    get avatar() {
-        return this._avatar;
+    get iconName() {
+        return this._iconName;
     }
 
-    set avatar(value) {
-        if (!value) {
-            this._avatar = null;
-        } else {
-            this._avatar = normalizeObject(value);
-        }
+    set iconName(value) {
+        this._iconName = normalizeString(value);
     }
 
     // private

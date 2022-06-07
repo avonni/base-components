@@ -38,7 +38,7 @@
             <!-- only used for media center -->
             <div class={computedCenterDefaultSlotClasses}>
                 center
-                <slot name="default" class="avonni-card__default-area"></slot>
+                <slot class="avonni-card__default-area"></slot>
             </div>
 
             <!-- media -->
@@ -64,37 +64,36 @@
                 >
                     <div
                         class="
-                            slds-has-flexi-truncate
+                            slds-col slds-has-flexi-truncate
                             avonni-card__header-title-section
                         "
                     >
-                        <c-avatar
-                            if:true={avatar}
-                            class="slds-m-right_x-small"
-                            fallback-icon-name={avatar.fallbackIconName}
-                            src={avatar.src}
-                            hide-avatar-details
-                            alternative-text="avatar"
-                            data-element-id="avonni-avatar"
-                        ></c-avatar>
+                        <lightning-icon
+                            class="avonni-card__header-icon"
+                            if:true={iconName}
+                            icon-name={iconName}
+                            size="small"
+                        ></lightning-icon>
 
                         <div if:true={hasStringTitle} class="slds-truncate">
-                            <h2 class="avonni-card__title-span">{title}</h2>
+                            <h2 class="avonni-card__title-text slds-truncate">
+                                {title}
+                            </h2>
                         </div>
 
-                        <div>
-                            <slot name="title"></slot>
+                        <div class="slds-truncate">
+                            <slot name="title" class="slds-truncate"></slot>
                         </div>
                     </div>
 
-                    <div class="avonni-card__action-slot">
+                    <div class="avonni-card__action-slot slds-col slds-no-flex">
                         <slot name="action"></slot>
                     </div>
                 </header>
 
                 <!-- default content -->
                 <div class={computedDefaultSlotClasses}>
-                    <slot name="default"></slot>
+                    <slot></slot>
                 </div>
             </div>
         </div>

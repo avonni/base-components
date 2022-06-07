@@ -34,7 +34,7 @@
 
 <template>
     <c-card
-        avatar={avatar}
+        icon-name={iconName}
         media-src={mediaSrc}
         media-position={mediaPosition}
         title={title}
@@ -42,8 +42,17 @@
         <div slot="action">
             <lightning-button label="Action"></lightning-button>
         </div>
-        <div slot="default">default slot</div>
-        <div slot="media-action">media action</div>
-        <!-- <div slot="footer">Footer</div> -->
+        <div>default slot</div>
+        <div slot="media-action">
+            <lightning-button-icon
+                icon-name="utility:bookmark"
+                size="x-small"
+                variant="border-filled"
+                alternative-text="Bookmark"
+                class="slds-m-left_xx-small"
+                title="Bookmark"
+            ></lightning-button-icon>
+        </div>
+        <div slot="footer">Footer</div>
     </c-card>
 </template>

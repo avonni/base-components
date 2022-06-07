@@ -33,50 +33,57 @@
 :host() {
     /* --slds-c-card-shadow: 0px; */
 
-    /* --avonni-card-border-top: 1px solid red;
-    --avonni-card-border-bottom: 1px solid red;
-    --avonni-card-border-left: 1px solid red;
-    --avonni-card-border-right: 1px solid red; */
+    /* --avonni-card-header-font-weight: bold; */
+
+    /* sizing top width and color */
+    --avonni-card-sizing-border-top: 0px;
+    --avonni-card-sizing-border-bottom: 0px;
+    --avonni-card-sizing-border-left: 0px;
+    --avonni-card-sizing-border-right: 0px;
+
+    /* --avonni-card-sizing-block-start: 0px;
+    --avonni-card-sizing-block-end: 0px;
+    --avonni-card-sizing-inline-start: 0px;
+    --avonni-card-sizing-inline-end: 0px; */
 
     --avonni-card-top-media-height: 250px;
     --avonni-card-center-media-height: 250px;
     --avonni-card-bottom-media-height: 250px;
     --avonni-card-left-media-width: 120px;
     --avonni-card-right-media-width: 60px;
-    --avonni-card-background-media-height: 250px;
+    --avonni-card-background-media-height: 150px;
     --avonni-card-overlay-media-height: 250px;
 
+    --avonni-card-footer-text-align: left;
+
     /* media action */
-    /* how to implement this? */
-    /* --avonni-card-media-action-top: unset;
-    --avonni-card-media-action-bottom: 0px;
-    --avonni-card-media-action-left: 0px;
-    --avonni-card-media-action-right: unset; */
+    /* --avonni-card-media-action-spacing-block-start: 0px;
+    --avonni-card-media-action-spacing-inline-end: 0px; */
 
     /* header */
-    /* --avonni-card-header-padding-top: 0px; */
-    /* --avonni-card-header-padding-bottom: 0px; */
-    /* --avonni-card-header-padding-left: 0px;
-    --avonni-card-header-padding-right: 0px; */
+    /* --avonni-card-header-spacing-block-start: 0px;
+    --avonni-card-header-padding-bottom: 0px;
+    --avonni-card-header-spacing-inline-start: 0px;
+    --avonni-card-header-spacing-inline-end: 0px; */
 
     /* body */
-    --avonni-card-overlay-background-color: black;
-    --avonni-card-overlay-background-text-color: white;
+    /* --avonni-card-overlay-background-color: black;
+    --avonni-card-overlay-background-text-color: white; */
 
     /* body */
-    /* --avonni-card-body-margin-top: 0px;
-    --avonni-card-body-margin-bottom: 0px;
-    --avonni-card-body-padding-left: 0px;
-    --avonni-card-body-padding-right: 0px; */
+    /* --avonni-card-body-spacing-block-start: 0px;
+    --avonni-card-body-spacing-block-end: 0px;
+    --avonni-card-body-spacing-inline-start: 0px;
+    --avonni-card-body-spacing-inline-end: 0px; */
 
     /* footer */
-    /* --avonni-card-footer-padding-top: 30px;
-    --avonni-card-footer-padding-bottom: 0px;
-    --avonni-card-footer-padding-left: 0px;
+    /* --avonni-card-footer-spacing-block-start: 30px;
+    --avonni-card-footer-spacing-block-end: 0px;
+    --avonni-card-footer-spacing-inline-start: 0px;
     --avonni-card-footer-padding-right: 0px; */
-    /* --avonni-card-footer-border-top: 1px solid red; */
+    /* --avonni-card-footer-sizing-border: 1px solid red; */
 
-    --avonni-card-overlay-background-image: linear-gradient(
+    --avonni-card-background-image-overlay: linear-gradient(
         0deg,
         rgba(0, 0, 0, 0.5) 0%,
         rgba(0, 0, 0, 0.23) 75%,
@@ -85,10 +92,26 @@
     --avonni-card-overlay-text-color: white;
 }
 
-article {
+article.avonni-card {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    background-color: var(--avonni-card-color-background, white);
+
+    padding-top: var(--avonni-card-sizing-block-start, 0px);
+    padding-left: var(--avonni-card-sizing-inline-start, 0px);
+    padding-right: var(--avonni-card-sizing-inline-end, 0px);
+    padding-bottom: var(--avonni-card-sizing-block-end, 0px);
+
+    border-top-width: var(--avonni-card-sizing-border-top, 1px);
+    border-bottom-width: var(--avonni-card-sizing-border-bottom, 1px);
+    border-left-width: var(--avonni-card-sizing-border-left, 1px);
+    border-right-width: var(--avonni-card-sizing-border-right, 1px);
+    border-style: solid;
+    border-color: var(--avonni-card-color-border, #c9c9c9);
+    border-radius: var(--avonni-card-border-radius, 0.25rem);
+
+    box-shadow: var(--avonni-card-box-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
 }
 
 .avonni-card__flex-container {
@@ -97,32 +120,6 @@ article {
     flex-direction: column;
     flex: 1;
     overflow: hidden;
-}
-
-article.avonni-card {
-    border-top: var(--avonni-card-border-top, 1px solid #c9c9c9);
-    border-bottom: var(--avonni-card-border-bottom, 1px solid #c9c9c9);
-    border-left: var(--avonni-card-border-left, 1px solid #c9c9c9);
-    border-right: var(--avonni-card-border-right, 1px solid #c9c9c9);
-
-    border-top-left-radius: var(
-        --avonni-card-border-top-left-radius,
-        var(--avonni-card-border-radius, 0.25rem)
-    );
-    border-top-right-radius: var(
-        --avonni-card-border-top-right-radius,
-        var(--avonni-card-border-radius, 0.25rem)
-    );
-    border-bottom-left-radius: var(
-        --avonni-card-border-bottom-left-radius,
-        var(--avonni-card-border-radius, 0.25rem)
-    );
-    border-bottom-right-radius: var(
-        --avonni-card-border-bottom-right-radius,
-        var(--avonni-card-border-radius, 0.25rem)
-    );
-
-    box-shadow: var(--avonni-card-box-shadow, 0 2px 2px 0 rgba(0, 0, 0, 0.1));
 }
 
 .background .avonni-card__body-container {
@@ -147,36 +144,28 @@ article.avonni-card {
     display: none;
 }
 
-.avonni-card__body-container {
-    /* padding: 0.5em; */
-}
-
 .overlay-card .avonni-card__body-container {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-
 .overlay-card:hover .avonni-card__body-container {
     opacity: 1;
 }
-
 .image-left {
     flex-direction: row;
 }
-
 .image-right {
     flex-direction: row-reverse;
 }
-
 .image-bottom,
 .image-center {
     flex-direction: column-reverse;
-    /* background-color: rgba(127, 255, 212, 0.499); */
 }
 
-/* 
---avonni-card-background-media-height: 250px;
---avonni-card-overlay-media-height: 250px; */
+.avonni-card__image-container {
+    height: 100%;
+    overflow: hidden;
+}
 
 .background .avonni-card__image-container {
     height: var(--avonni-card-background-media-height, 200px);
@@ -188,13 +177,14 @@ article.avonni-card {
 }
 .image-left .avonni-card__image-container {
     position: relative;
+    object-fit: cover;
+    height: auto;
     width: var(--avonni-card-left-media-width);
 }
 .image-right .avonni-card__image-container {
     position: relative;
     object-fit: cover;
-    /* max-height: 100%;
-    height: 100%; */
+    height: auto;
     width: var(--avonni-card-right-media-width);
 }
 .image-top .avonni-card__image-container {
@@ -213,12 +203,6 @@ article.avonni-card {
     height: var(--avonni-card-bottom-media-height);
 }
 
-.media-actions {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-}
-
 .avonni-card__image {
     height: 100%;
     width: 100%;
@@ -226,14 +210,18 @@ article.avonni-card {
 }
 
 .avonni-card__header {
-    padding-top: var(--avonni-card-header-padding-top, 0.75rem);
-    padding-right: var(--avonni-card-header-padding-right, 0.75rem);
-    padding-left: var(--avonni-card-header-padding-left, 0.75rem);
-    margin-bottom: var(--avonni-card-header-spacing-end, 0.75rem);
+    padding-top: var(--avonni-card-header-spacing-block-start, 0.75rem);
+    padding-right: var(--avonni-card-header-spacing-inline-end, 0.75rem);
+    padding-left: var(--avonni-card-header-spacing-inline-start, 0.75rem);
+    margin-bottom: var(--avonni-card-header-spacing-block-end, 0.75rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
     /* background-color: rgba(255, 183, 183, 0.546); */
+}
+
+.avonni-card__header-icon {
+    margin-right: 0.75rem;
 }
 
 .avonni-card__header-title-section {
@@ -242,16 +230,17 @@ article.avonni-card {
     align-items: center;
 }
 
-.avonni-card__title-span {
+.avonni-card__title-text {
     padding: 0;
     margin: 0;
+    font-weight: var(--avonni-card-header-font-weight, 700);
     /* background-color: rgba(255, 55, 255, 0.444); */
 }
 
 .avonni-card__media-actions {
     position: absolute;
-    top: var(--avonni-card-media-action-top, 0.75rem);
-    right: var(--avonni-card-media-action-right, 0.75rem);
+    top: var(--avonni-card-media-action-spacing-block-start, 0.75rem);
+    right: var(--avonni-card-media-action-spacing-inline-end, 0.75rem);
     /* border: solid 1px red; */
 }
 
@@ -271,10 +260,10 @@ article.avonni-card {
 .avonni-card__default-slot {
     /* background-color: rgba(218, 255, 33, 0.467); */
 
-    margin-top: var(--avonni-card-body-margin-top, 0.75rem);
-    margin-bottom: var(--avonni-card-body-margin-bottom, 0.75rem);
-    padding-left: var(--avonni-card-body-padding-left, 0.75rem);
-    padding-right: var(--avonni-card-body-padding-right, 0.75rem);
+    margin-top: var(--avonni-card-body-spacing-block-start, 0.75rem);
+    margin-bottom: var(--avonni-card-body-spacing-block-end, 0.75rem);
+    padding-left: var(--avonni-card-body-spacing-inline-start, 0.75rem);
+    padding-right: var(--avonni-card-body-spacing-inline-end, 0.75rem);
 }
 
 .hide-default-slot {
@@ -282,13 +271,17 @@ article.avonni-card {
 }
 
 .avonni-card__footer {
-    padding: var(--avonni-card-footer-padding-top, 0.75rem)
-        var(--avonni-card-footer-padding-right, 0.75rem)
-        var(--avonni-card-footer-padding-bottom, 0.75rem)
-        var(--avonni-card-footer-padding-left, 0.75rem);
-    text-align: center;
+    padding-top: var(--avonni-card-footer-spacing-block-start, 0.75rem);
+    padding-bottom: var(--avonni-card-footer-spacing-block-end, 0.75rem);
+    padding-left: var(--avonni-card-footer-spacing-inline-start, 0.75rem);
+    padding-right: var(--avonni-card-footer-padding-right, 0.75rem);
+
+    text-align: var(--avonni-card-footer-text-align, center);
     font-size: 0.8125rem;
-    border-top: var(--avonni-card-footer-border-top, 1px solid #c9c9c9);
+
+    border-top-width: var(--avonni-card-footer-sizing-border, 1px);
+    border-top-style: solid;
+    border-top-color: var(--avonni-card-footer-color-border, #c9c9c9);
 }
 
 .hide-footer {

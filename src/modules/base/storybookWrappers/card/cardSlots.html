@@ -34,7 +34,7 @@
 
 <template>
     <c-card
-        avatar={avatar}
+        icon-name={iconName}
         media-src={mediaSrc}
         media-position={mediaPosition}
         title={title}
@@ -42,22 +42,32 @@
         <img
             slot="media"
             class="avonni-card__image"
-            style="width: 100%; height: 50px; object-fit: cover"
+            style="width: 100%; height: 100%; object-fit: cover"
             src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
         />
 
-        <div slot="media-action">media action slot</div>
-
-        <div slot="title">
-            <h4>title slot</h4>
+        <div slot="media-action">
+            <lightning-button-icon
+                icon-name="utility:bookmark"
+                size="x-small"
+                variant="border-filled"
+                alternative-text="Bookmark"
+                class="slds-m-left_xx-small"
+                title="Bookmark"
+            ></lightning-button-icon>
         </div>
 
-        <div slot="default">default slot</div>
+        <div slot="title">
+            <h2 class="slds-truncate">
+                Card title card had long truncated title that will trucate
+            </h2>
+        </div>
 
-        <!-- <div slot="action">
+        <div>default slot</div>
+
+        <div slot="action">
             <button class="slds-button slds-button_neutral">Action slot</button>
-        </div> -->
-        <div slot="action">action slot</div>
+        </div>
 
         <div slot="footer">footer slot</div>
     </c-card>

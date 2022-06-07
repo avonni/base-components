@@ -65,14 +65,13 @@ export default {
                 defaultValue: { summary: 'top' }
             }
         },
-        avatar: {
+        iconName: {
             control: {
-                type: 'object'
+                type: 'text'
             },
-            description:
-                'Avatar object. If present, the avatar is displayed to the left of the card.',
+            description: 'Media link of the card image.',
             table: {
-                type: { summary: 'object' }
+                type: { summary: 'string' }
             }
         },
         mediaSrc: {
@@ -92,91 +91,74 @@ const SlotsTemplate = (args) => CardSlots(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Card title',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    }
+    title: 'Card title card had long truncated title that will trucate',
+    iconName: 'custom:custom1'
 };
 
 export const ImageTop = Template.bind({});
 ImageTop.args = {
-    title: 'Card title',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
+    title: 'Card title card had long truncated title that will trucate',
+    iconName: 'custom:custom1',
     mediaPosition: 'top',
-    mediaSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const ImageLeft = Template.bind({});
 ImageLeft.args = {
-    title: 'Card title',
+    title: 'Card title card had long truncated title that will trucate',
+    iconName: 'custom:custom1',
     mediaPosition: 'left',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    mediaSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const ImageRight = Template.bind({});
 ImageRight.args = {
-    title: 'Card title',
+    title: 'Card title card had long truncated title that will trucate',
+    iconName: 'custom:custom1',
     mediaPosition: 'right',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    mediaSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const ImageCenter = Template.bind({});
 ImageCenter.args = {
     title: 'Card title card had long truncated title that will trucate',
+    iconName: 'custom:custom1',
     mediaPosition: 'center',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    mediaSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const ImageBottom = Template.bind({});
 ImageBottom.args = {
-    title: 'Card title',
+    title: 'Card title card had long truncated title that will trucate',
+    iconName: 'custom:custom1',
     mediaPosition: 'bottom',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    mediaSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const ImageBackground = Template.bind({});
 ImageBackground.args = {
     title: 'Card title card had long truncated title that will trucate',
+    iconName: 'custom:custom1',
     mediaPosition: 'background',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    mediaSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const OverlayCard = Template.bind({});
 OverlayCard.args = {
     title: 'Card title',
+    iconName: 'custom:custom1',
     mediaPosition: 'overlay',
-    avatar: {
-        fallbackIconName: 'custom:custom1',
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
-    },
-    mediaSrc: 'https://ik.imagekit.io/demo/img/image10.jpeg?tr=w-400,h-300'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
 export const BaseWithSlots = SlotsTemplate.bind({});
 BaseWithSlots.args = {
-    mediaPosition: 'center'
+    mediaPosition: 'top'
 };

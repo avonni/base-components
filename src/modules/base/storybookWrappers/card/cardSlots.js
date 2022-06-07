@@ -36,5 +36,5 @@ export default class CardSlots extends LightningElement {
     @api title;
     @api mediaSrc;
     @api mediaPosition;
-    @api avatar;
+    @api iconName;
 }

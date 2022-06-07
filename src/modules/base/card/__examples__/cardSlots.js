@@ -34,9 +34,9 @@ import Component from '../../storybookWrappers/card/cardSlots';
 
 customElements.define('ac-card-slots', Component.CustomElementConstructor);
 
-export const CardSlots = ({ avatar, mediaPosition, mediaSrc, title }) => {
+export const CardSlots = ({ iconName, mediaPosition, mediaSrc, title }) => {
     const element = document.createElement('ac-card-slots');
-    element.avatar = avatar;
+    element.iconName = iconName;
     element.mediaPosition = mediaPosition;
     element.mediaSrc = mediaSrc;
     element.title = title;
