@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -24,26 +25,53 @@
  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * SERVICES={} LOSS OF USE, DATA, OR PROFITS={} OR BUSINESS INTERRUPTION) HOWEVER
  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-:host {
-    display: block;
-}
+<template>
+    <c-timer
+        value={value}
+        variant={variant}
+        type={type}
+        duration={duration}
+        auto-start={autoStart}
+        repeat={repeat}
+        icon-name={iconName}
+        icon-position={iconPosition}
+        format={format}
+    >
+    </c-timer>
+    <div class="slds-m-top_small slds-m-bottom_medium">
+        <lightning-button-icon
+            onclick={start}
+            icon-name="utility:play"
+            size="x-small"
+        >
+        </lightning-button-icon>
 
-.avonni-scheduler__header-cell {
-    width: var(--avonni-scheduler-cell-width);
-    min-width: var(--avonni-scheduler-cell-width);
-    background-color: #f3f3f3;
-    color: #514f4d;
-    font-weight: 700;
-}
+        <lightning-button-icon
+            onclick={pause}
+            icon-name="utility:pause"
+            size="x-small"
+        >
+        </lightning-button-icon>
 
-.avonni-scheduler__header-label_sticky {
-    position: sticky;
-    position: -webkit-sticky;
-    left: 0;
-}
+        <lightning-button-icon
+            onclick={stopTimer}
+            icon-name="utility:stop"
+            size="x-small"
+        >
+        </lightning-button-icon>
+
+        <lightning-button-icon
+            onclick={reset}
+            icon-name="utility:refresh"
+            size="x-small"
+        >
+        </lightning-button-icon>
+    </div>
+</template>

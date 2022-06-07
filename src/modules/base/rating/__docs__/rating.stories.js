@@ -165,6 +165,18 @@ export default {
                 category: 'Validation'
             }
         },
+        required: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field must be filled out before the form is submitted.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
+            }
+        },
         valueHidden: {
             name: 'value-hidden',
             control: {
@@ -183,6 +195,7 @@ export default {
         max: 5,
         min: 1,
         readOnly: false,
+        required: false,
         selection: 'continuous',
         valueHidden: false,
         variant: 'standard'

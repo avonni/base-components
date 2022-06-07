@@ -57,6 +57,7 @@ describe('Rating', () => {
         expect(element.max).toBe(5);
         expect(element.min).toBe(1);
         expect(element.readOnly).toBeFalsy();
+        expect(element.required).toBeFalsy();
         expect(element.selection).toBe('continuous');
         expect(element.value).toBeUndefined();
         expect(element.valueHidden).toBeFalsy();
@@ -71,7 +72,9 @@ describe('Rating', () => {
         element.disabled = false;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
@@ -83,7 +86,9 @@ describe('Rating', () => {
         element.iconName = 'standard:user';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons.forEach((button) => {
                 expect(button.disabled).toBeFalsy();
             });
@@ -94,7 +99,9 @@ describe('Rating', () => {
         element.disabled = true;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons.forEach((button) => {
                 expect(button.disabled).toBeTruthy();
             });
@@ -165,7 +172,9 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
             expect(label).toBeTruthy();
             expect(label.textContent.trim()).toBe('A string label');
         });
@@ -176,7 +185,9 @@ describe('Rating', () => {
         element.max = 8;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             expect(buttons).toHaveLength(8);
             expect(buttons[buttons.length - 1].textContent).toBe('8');
         });
@@ -187,7 +198,9 @@ describe('Rating', () => {
         element.min = 2;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             expect(buttons).toHaveLength(4);
             expect(buttons[0].textContent).toBe('2');
         });
@@ -200,7 +213,9 @@ describe('Rating', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons[1].click();
             expect(element.value).toBe(2);
         });
@@ -211,9 +226,25 @@ describe('Rating', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons[1].click();
             expect(element.value).toBe(3);
+        });
+    });
+
+    // required
+    it('Rating: required', () => {
+        element.required = true;
+        element.label = 'Label';
+
+        return Promise.resolve().then(() => {
+            const required = element.shadowRoot.querySelector(
+                '[data-element-id="required-indicator"]'
+            );
+            expect(required).toBeTruthy();
+            expect(required.textContent).toBe('*');
         });
     });
 
@@ -223,7 +254,9 @@ describe('Rating', () => {
         element.selection = 'continuous';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons.forEach((button) => {
                 expect(button.classList).toContain('avonni-continuous');
             });
@@ -248,7 +281,9 @@ describe('Rating', () => {
         element.selection = 'single';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons.forEach((button) => {
                 expect(button.classList).not.toContain('avonni-continuous');
             });
@@ -276,17 +311,23 @@ describe('Rating', () => {
         element.value = 3;
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons.forEach((button, index) => {
                 if (index > 2) {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain('slds-button_brand');
                 } else {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain('slds-button_brand');
                 }
             });
@@ -298,17 +339,23 @@ describe('Rating', () => {
         element.iconName = 'utility:apps';
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons.forEach((button, index) => {
                 if (index < 1) {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain('slds-button_brand');
                 } else {
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).not.toContain(
                         'slds-button_outline-brand'
                     );
+                    // eslint-disable-next-line jest/no-conditional-expect
                     expect(button.classList).toContain('slds-button_brand');
                 }
             });
@@ -322,7 +369,9 @@ describe('Rating', () => {
         element.value = 2;
 
         return Promise.resolve().then(() => {
-            const rating = element.shadowRoot.querySelector('[data-element-id="avonni-rating-value"]');
+            const rating = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-rating-value"]'
+            );
             expect(rating).toBeTruthy();
             expect(rating.textContent).toBe('2/5');
         });
@@ -345,13 +394,19 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).not.toContain('avonni-rating__label_inline');
+            expect(wrapper.classList).not.toContain(
+                'avonni-rating__label_inline'
+            );
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
@@ -361,8 +416,12 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
@@ -377,13 +436,19 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(wrapper.classList).not.toContain(
                 'slds-form-element_stacked'
             );
-            expect(wrapper.classList).not.toContain('avonni-rating__label_inline');
+            expect(wrapper.classList).not.toContain(
+                'avonni-rating__label_inline'
+            );
             expect(label.classList).toContain('slds-assistive-text');
         });
     });
@@ -393,11 +458,17 @@ describe('Rating', () => {
         element.label = 'A string label';
 
         return Promise.resolve().then(() => {
-            const wrapper = element.shadowRoot.querySelector('[data-element-id="div-wrapper"]');
-            const label = element.shadowRoot.querySelector('[data-element-id="label"]');
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            const label = element.shadowRoot.querySelector(
+                '[data-element-id="label"]'
+            );
 
             expect(wrapper.classList).toContain('slds-form-element_stacked');
-            expect(wrapper.classList).not.toContain('avonni-rating__label_inline');
+            expect(wrapper.classList).not.toContain(
+                'avonni-rating__label_inline'
+            );
             expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
@@ -411,7 +482,9 @@ describe('Rating', () => {
         element.addEventListener('change', handler);
 
         return Promise.resolve().then(() => {
-            const buttons = element.shadowRoot.querySelectorAll('[data-element-id="button"]');
+            const buttons = element.shadowRoot.querySelectorAll(
+                '[data-element-id="button"]'
+            );
             buttons[2].click();
 
             expect(handler).toHaveBeenCalled();
@@ -438,6 +511,50 @@ describe('Rating', () => {
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
+        });
+    });
+
+    /* ----- METHODS ----- */
+
+    // reportValidity
+    // Depends on required
+    it('Rating: reportValidity method', () => {
+        element.required = true;
+        element.reportValidity();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-element-id="form-element__help"]'
+            );
+            expect(help).toBeTruthy();
+        });
+    });
+
+    // setCustomValidity
+    it('Rating: setCustomValidity method', () => {
+        element.required = true;
+
+        element.setCustomValidity('Something');
+        element.reportValidity();
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-element-id="form-element__help"]'
+            );
+            expect(help.textContent).toBe('Something');
+        });
+    });
+
+    // showHelpMessageIfInvalid
+    // Depends on required
+    it('Rating: showHelpMessageIfInvalid method', () => {
+        element.required = true;
+        element.showHelpMessageIfInvalid();
+
+        return Promise.resolve().then(() => {
+            const help = element.shadowRoot.querySelector(
+                '[data-element-id="form-element__help"]'
+            );
+            expect(help).toBeTruthy();
         });
     });
 });
