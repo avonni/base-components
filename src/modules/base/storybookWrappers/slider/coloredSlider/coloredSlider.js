@@ -63,7 +63,6 @@ export default class ColoredSlider extends LightningElement {
     }
 
     setupColorInterval() {
-        console.log(this.template);
         this._interval = setInterval(() => {
             this.template.firstChild.style.setProperty(
                 '--avonni-slider-thumb-color',

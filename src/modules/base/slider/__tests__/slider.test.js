@@ -796,13 +796,12 @@ describe('Slider', () => {
     });
 
     // validity
-    // validity from fieldProxyInput seems to not be working ?
     it('validity should be positive', () => {
         element.value = 10;
-        element.max = 100;
+        element.max = 1000;
 
         return Promise.resolve().then(() => {
-            expect(element.validity).toEqual({});
+            expect(element.validity.valid).toEqual(true);
         });
     });
 
@@ -811,16 +810,16 @@ describe('Slider', () => {
         element.max = 10;
 
         return Promise.resolve().then(() => {
-            expect(element.validity).toEqual({});
+            expect(element.validity.valid).toEqual(false);
         });
     });
 
     it('validity should be negative (two values)', () => {
-        element.value = 1000;
+        element.value = [1000, 50];
         element.max = 10;
 
         return Promise.resolve().then(() => {
-            expect(element.validity).toEqual({});
+            expect(element.validity[0].valid).toEqual(false);
         });
     });
 

@@ -841,7 +841,6 @@ export default class Slider extends LightningElement {
                 '[data-group-name="input"]'
             );
             inputs[this._focusedInputIndex].focus();
-            console.log('focused');
         }
     }
 
