@@ -35,4 +35,5 @@
     --avonni-slider-thumb-color-shadow-focus: hsl(0, 50%, 50%);
     --avonni-slider-pin-color: hsl(0, 50%, 50%);
     --avonni-slider-track-color: hsl(0, 50%, 50%);
+    --avonni-slider-track-color-background: #ecebea;
 }

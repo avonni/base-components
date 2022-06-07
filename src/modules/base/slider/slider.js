@@ -681,7 +681,7 @@ export default class Slider extends LightningElement {
      */
     get highlightColor() {
         return this.disabled
-            ? '#919191'
+            ? 'var(--avonni-slider-track-color-background, #919191)'
             : 'var(--avonni-slider-track-color, #0176d3)';
     }
 
@@ -1100,7 +1100,11 @@ export default class Slider extends LightningElement {
                 line.dataset.tickValue <= this._trackInterval[1];
             line.setAttribute(
                 'stroke',
-                `${isColored ? this.highlightColor : '#ecebea'}`
+                `${
+                    isColored
+                        ? this.highlightColor
+                        : 'var(--avonni-slider-track-color-background, #ecebea)'
+                }`
             );
         });
     }
@@ -1372,8 +1376,21 @@ export default class Slider extends LightningElement {
         }
         pin.firstChild.firstChild.value = transformedValue;
 
-        pin.style.left =
-            'calc(' + pinProgress + '% - ' + (pinProgress * 0.16 + 8) + 'px)';
+        if (!this.isVertical) {
+            pin.style.left =
+                'calc(' +
+                pinProgress +
+                '% - ' +
+                (pinProgress * 0.16 - 8) +
+                'px)';
+        } else {
+            pin.style.left =
+                'calc(' +
+                pinProgress +
+                '% - ' +
+                (pinProgress * 0.16 + 24) +
+                'px)';
+        }
     }
 
     /**
