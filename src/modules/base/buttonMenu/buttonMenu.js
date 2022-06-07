@@ -797,16 +797,19 @@ export default class ButtonMenu extends LightningElement {
                         ? menuItemIndex - 1
                         : menuItemIndex + 1;
 
-                if (nextIndex >= this.getMenuItems().length) nextIndex = 0;
-                else if (nextIndex < 0)
+                if (nextIndex >= this.getMenuItems().length) {
+                    nextIndex = 0;
+                } else if (nextIndex < 0) {
                     nextIndex = this.getMenuItems().length - 1;
+                }
                 this.focusOnMenuItem(nextIndex);
                 break;
             }
             case keyCodes.escape: {
-                if (this._dropdownVisibles) {
-                    if (event.keyCode === keyCodes.escape)
+                if (this._dropdownVisible) {
+                    if (event.keyCode === keyCodes.escape) {
                         this.preventDefaultAndStopPropagation(event);
+                    }
                     this.toggleMenuVisibility();
                 }
                 this.focusOnMenuItem(0);
