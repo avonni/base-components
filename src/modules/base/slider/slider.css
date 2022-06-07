@@ -33,9 +33,6 @@
 :host {
     background-color: inherit;
     --input-thumb-radius: 8.75px;
-    --avonni-slider-thumb-radius-border: 0px;
-    --avonni-slider-track-radius-border: 0px;
-    --avonni-slider-pin-radius-border: 0px;
 }
 
 .avonni-slider__label {
@@ -128,7 +125,6 @@
     color: #fff;
     height: 2rem;
     border-radius: var(--avonni-slider-pin-radius-border, 0.25rem);
-    -webkit-border-radius: var(--avonni-slider-pin-radius-border, 0.25rem);
     width: fit-content;
     min-width: 2rem;
     padding-left: 0.5rem;
@@ -163,7 +159,6 @@
     background-color: var(--avonni-slider-pin-color, #1a5296);
     color: #fff;
     border-radius: var(--avonni-slider-pin-radius-border, 0.25rem);
-    -webkit-border-radius: var(--avonni-slider-pin-radius-border, 0.25rem);
     top: 12px;
     padding-left: 0.5rem;
     padding-right: 0.5rem;
@@ -217,7 +212,7 @@
     height: 4px;
     position: relative;
     background: var(--avonni-slider-track-color-background, #ecebea);
-    border-radius: 5px;
+    border-radius: var(--avonni-slider-track-radius-border, 0.5rem);
     width: calc(100% - calc(var(--input-thumb-radius) * 1.5));
     margin: 0 auto;
     z-index: 1;
@@ -226,7 +221,7 @@
 .avonni-slider__track {
     height: 150%;
     position: absolute;
-    border-radius: 5px;
+    border-radius: var(--avonni-slider-track-radius-border, 0.5rem);
     background: var(--avonni-slider-track-color, #0176d3);
     top: 50%;
     z-index: 2;
@@ -241,12 +236,17 @@
     opacity: 1;
 }
 
+.avonni-slider__custom-label_horizontal,
+.avonni-slider__custom-label-container_vertical {
+    font-size: var(--avonni-slider-unit-font-size, 0.75rem);
+}
+
 .avonni-slider__custom-label-container_horizontal {
     position: relative;
     display: inline-block;
     left: var(--input-thumb-radius);
     width: calc(100% - calc(var(--input-thumb-radius) * 2));
-    top: -0.3rem;
+    top: -5px;
     height: 1rem;
 }
 .avonni-slider__custom-label_horizontal {
@@ -293,6 +293,7 @@
 }
 
 .avonni-slider__slider::-webkit-slider-thumb {
+    border-radius: var(--avonni-slider-thumb-radius-border, 0.5rem);
     background: var(--avonni-slider-thumb-color, #0176d3);
 }
 .avonni-slider__slider:hover::-webkit-slider-thumb {

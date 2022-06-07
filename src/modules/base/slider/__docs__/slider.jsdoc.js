@@ -115,7 +115,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-slider-track-radius-border
- * @default #0176d3
+ * @default 0.5rem
  * @type radius
  */
 /**

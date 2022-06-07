@@ -1182,7 +1182,17 @@ export default class Slider extends LightningElement {
             const isColored =
                 this._trackInterval[0] <= circle.dataset.tickValue &&
                 circle.dataset.tickValue <= this._trackInterval[1];
-            circle.setAttribute('fill', `${isColored ? '#ffffff' : '#979797'}`);
+            circle.setAttribute(
+                'fill',
+                `${
+                    isColored
+                        ? '#ffffff'
+                        : 'var(--avonni-slider-track-color-background, #ecebea)'
+                }`
+            );
+            circle.style.filter = isColored
+                ? 'brightness(1)'
+                : 'brightness(0.4)';
         });
     }
 
