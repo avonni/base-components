@@ -81,6 +81,7 @@ export default {
                 'button',
                 'button-icon',
                 'chip',
+                'combobox',
                 'circular',
                 'rectangular',
                 'text'
@@ -160,4 +161,11 @@ ButtonIcon.args = {
     variantAttributes: {
         variant: 'base'
     }
+};
+
+export const Combobox = Template.bind({});
+Combobox.args = {
+    variant: 'combobox',
+    animation: 'pulse',
+    variantAttributes: {}
 };

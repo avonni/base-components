@@ -236,6 +236,12 @@
     height: 72px;
 }
 
+.avonni-combobox__label {
+    color: var(--avonni-combobox-label-text-color, #3e3e3c);
+    font-size: var(--avonni-combobox-label-font-size, 0.75rem);
+    font-weight: var(--avonni-combobox-label-font-weight, 400);
+}
+
 .avonni-skeleton__variant-button {
 }
 

@@ -106,6 +106,10 @@ export default class Skeleton extends LightningElement {
         if (this.isButtonIconVariant) {
             this.updateButtonIconClassList();
         }
+
+        // if (this.isComboboxVariant) {
+        //     this.updateComboboxClassList();
+        // }
     }
 
     renderedCallback() {
@@ -118,7 +122,7 @@ export default class Skeleton extends LightningElement {
             !this.isButtonIconVariant
         )
             this.handleVariant();
-        console.log(this.variantAttributes.hasIcon);
+        // console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
         //     this._initialAvatarRender = true;
@@ -161,6 +165,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isComboboxVariant() {
+        return this.variant === 'combobox';
+    }
+
+    @api
     get isRegularVariant() {
         return (
             this.variant === 'text' ||
@@ -196,6 +205,11 @@ export default class Skeleton extends LightningElement {
             this.variantAttributes.iconPosition === 'right' &&
             this.variantAttributes.hasIcon === true
         );
+    }
+
+    @api
+    get comboboxRequired() {
+        return this.variantAttributes.required;
     }
 
     @api
@@ -322,6 +336,38 @@ export default class Skeleton extends LightningElement {
             .toString();
     }
 
+    get comboboxLabelClass() {
+        return classSet('avonni-skeleton__base')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
+    }
+
+    /**
+     * Computed CSS Classes for the label.
+     *
+     * @type {string}
+     */
+    get computedComboboxLabelClass() {
+        return (
+            classSet('slds-form-element__label avonni-combobox__label')
+                // .add({
+                //     'slds-assistive-text':
+                //         this.variantAttributes.variant === 'label-hidden'
+                // })
+                .toString()
+        );
+    }
+
+    /**
+     * Computed CSS classes for the comboboxes wrapper.
+     *
+     * @type {string}
+     */
+    get computedComboboxGroupClass() {
+        return this.showScopes ? 'slds-combobox-group' : undefined;
+    }
+
     get badgeClass() {
         return classSet('avonni-badge')
             .add('avonni-skeleton__base')
@@ -383,10 +429,10 @@ export default class Skeleton extends LightningElement {
                 this.handleChipVariant();
                 break;
             case 'combobox':
-                this.handleCombobox();
+                this.handleComboboxVariant();
                 break;
             case 'datatable':
-                this.handleDatable();
+                this.handleDatableVariant();
                 break;
             case 'text':
                 this.setTextSize();
@@ -436,6 +482,12 @@ export default class Skeleton extends LightningElement {
         }
     }
 
+    handleComboboxVariant() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateComboboxClassList();
+        }
+    }
+
     initializeBreadcrumbs() {
         const breadcrumbs = [];
         console.log(`first`);
@@ -453,9 +505,13 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for text variant
      */
     setTextSize() {
+        console.log(`variant: ${this.variant === 'combobox'}`);
+        console.log('inside setTextSize');
         let element = this.skeleton;
+        console.log(`element: ${element}`);
         element.style.height =
             this.height === undefined ? '0.7em' : `${this.height}`;
+        console.log('end setTextSize');
         element.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
     }
@@ -566,5 +622,10 @@ export default class Skeleton extends LightningElement {
             })
             .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
         this.buttonIconWrapper = buttonIconWrapper;
+    }
+
+    updateComboboxClassList() {
+        console.log('inside updateClassList');
+        this.setTextSize();
     }
 }
