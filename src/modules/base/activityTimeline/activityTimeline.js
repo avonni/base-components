@@ -33,6 +33,8 @@
 import { LightningElement, api, track } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { HorizontalActivityTimeline } from './horizontalActivityTimeline';
+import horizontalTimeline from './horizontalActivityTimeline.html';
+import verticalTimeline from './verticalActivityTimeline.html';
 import {
     normalizeBoolean,
     normalizeString,
@@ -135,6 +137,13 @@ export default class ActivityTimeline extends LightningElement {
             );
             this.updateHorizontalTimelineHeader();
         }
+    }
+
+    render() {
+        if (this.isTimelineHorizontal) {
+            return horizontalTimeline;
+        }
+        return verticalTimeline;
     }
 
     /*

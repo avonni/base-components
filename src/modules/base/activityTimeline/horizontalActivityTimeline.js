@@ -70,11 +70,11 @@ const LWC_ICONS_CLASS = {
 
 // ** Functionalities/bug **
 // TODO: Fix popover size
-// TODO: Handle if screen is smaller --> timeline axis label overlap, min size ?
+// TODO: Handle if screen is smaller --> timeline axis label overlap --> change size
 // TODO: Last item : click/drag
+// TODO: Use max-visible-items to set height : default is 10 items. 10 * hauteur
 
 // ** QA/tests/Doc **
-// TODO: Separate HTML with render ?
 // TODO: Refactor
 // TODO: Doc
 // TODO: Tests
