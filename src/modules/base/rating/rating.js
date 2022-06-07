@@ -33,6 +33,7 @@
 import { LightningElement, api } from 'lwc';
 import { normalizeString, normalizeBoolean } from 'c/utilsPrivate';
 import { generateUUID, classSet } from 'c/utils';
+import { FieldConstraintApi, InteractingState } from 'c/inputUtils';
 
 const RATING_SELECTIONS = {
     valid: ['continuous', 'single'],
@@ -96,9 +97,16 @@ export default class Rating extends LightningElement {
     _value;
     _valueHidden = false;
     _variant = LABEL_VARIANTS.default;
+    _required = false;
 
     init = false;
     initStyles = false;
+    helpMessage;
+
+    connectedCallback() {
+        this.interactingState = new InteractingState();
+        this.interactingState.onleave(() => this.showHelpMessageIfInvalid());
+    }
 
     renderedCallback() {
         this.ratingRecalculation();
@@ -113,29 +121,21 @@ export default class Rating extends LightningElement {
                 style.innerText = `
                     .avonni-icon-selected .slds-button:disabled svg {fill: #a5a4a2;}
                     .avonni-icon-selected svg {fill: #1b5297 !important;}
-                    .avonni-rating:hover .avonni-active-star.avonni-continuous-star:not(:hover) svg {
-                        fill: #c9c7c5;
-                        opacity: 0.85;
-                    }
-                    .avonni-rating:hover .avonni-active-star:hover svg{
+                    .avonni-rating:hover .avonni-active-star.avonni-continuous-star svg {
                         fill: #1b5297;
                         opacity: 1;
                     }
                     .avonni-active-star.avonni-continuous-star svg {
                         fill: #c9c7c5;
                     }
-                    .avonni-active-star.avonni-continuous-star:hover svg,
                     .avonni-active-star.avonni-continuous-star:hover ~ .avonni-active-star.avonni-continuous-star svg {
-                        fill: #1b5297 !important;
-                        opacity: 1 !important;
+                        fill: #c9c7c5;
+                        opacity: 1;
                     }
                     .avonni-icon button, 
                     .avonni-icon button:active, 
                     .avonni-icon button:focus {
                         box-shadow: none;
-                    }
-                    .avonni-icon.avonni-active-star svg {
-                        fill: #c9c7c5;
                     }
                 `;
                 selectedIcons.appendChild(style);
@@ -151,6 +151,17 @@ export default class Rating extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Checks if the input is valid.
+     *
+     * @returns {boolean} True if the element meets all constraint validations.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
 
     /**
      * If present, the rating component is disabled and users cannot interact with it.
@@ -252,6 +263,46 @@ export default class Rating extends LightningElement {
     }
 
     /**
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
+     *
+     * @returns {boolean} False if invalid, true if valid.
+     * @public
+     */
+    @api
+    reportValidity() {
+        return this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
+        });
+    }
+
+    /**
+     * If present, the input field must be filled out before the form is submitted.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get required() {
+        return this._required;
+    }
+
+    set required(value) {
+        this._required = normalizeBoolean(value);
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     *
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
+    }
+
+    /**
      * Valid values include continuous and single.
      *
      * @type {string}
@@ -275,6 +326,17 @@ export default class Rating extends LightningElement {
     }
 
     /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
+    /**
      * Specifies the value of the rating.
      *
      * @type {string}
@@ -291,6 +353,17 @@ export default class Rating extends LightningElement {
         if (this.init) {
             this.ratingRecalculation();
         }
+    }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
     }
 
     /**
@@ -357,7 +430,7 @@ export default class Rating extends LightningElement {
             items.push(i);
         }
 
-        return items.reverse();
+        return items;
     }
 
     /**
@@ -387,6 +460,21 @@ export default class Rating extends LightningElement {
                 'slds-assistive-text': this.variant === 'label-hidden'
             })
             .toString();
+    }
+
+    /**
+     * Gets FieldConstraintApi.
+     *
+     * @type {object}
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApi(() => this, {
+                valueMissing: () =>
+                    !this.disabled && this.required && !this._value
+            });
+        }
+        return this._constraintApi;
     }
 
     /*

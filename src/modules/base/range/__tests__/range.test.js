@@ -31,9 +31,12 @@
  */
 
 import { createElement } from 'lwc';
+import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
+
 import Range from 'c/range';
 
 // Not tested because not used:
+// Debounce on mousemove of 50ms
 // messageWhenRangeOverflow
 // messageWhenRangeUnderflow
 // messageWhenStepMismatch
@@ -46,16 +49,17 @@ import Range from 'c/range';
 let element;
 describe('Range', () => {
     afterEach(() => {
+        jest.clearAllMocks();
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
     });
 
     beforeEach(() => {
+        jest.useFakeTimers();
         element = createElement('base-range', {
             is: Range
         });
-
         document.body.appendChild(element);
     });
 
@@ -79,7 +83,7 @@ describe('Range', () => {
         expect(element.unitAttributes).toMatchObject({});
         expect(element.type).toBe('horizontal');
         expect(element.valueLower).toBe(0);
-        expect(element.valueUpper).toBe(0);
+        expect(element.valueUpper).toBe(100);
         expect(element.validity).toBeTruthy();
         expect(element.variant).toBe('standard');
     });
@@ -92,7 +96,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-group-name="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeFalsy();
@@ -105,10 +109,15 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-group-name="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.disabled).toBeTruthy();
+                expect(
+                    element.shadowRoot
+                        .querySelector('[data-element-id="progress-bar"]')
+                        .classList.contains('avonni-range__progress_disabled')
+                ).toBe(true);
             });
         });
     });
@@ -252,7 +261,7 @@ describe('Range', () => {
 
         return Promise.resolve().then(() => {
             const inputs = element.shadowRoot.querySelectorAll(
-                '[data-element-id^="input"]'
+                '[data-group-name="input"]'
             );
             inputs.forEach((input) => {
                 expect(input.step).toBe('3');
@@ -327,16 +336,16 @@ describe('Range', () => {
             const wrapper =
                 element.shadowRoot.querySelector('.avonni-vertical');
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-range__unit-container'
+                '[data-element-id="vertical-max-unit-container"]'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-vertical + .avonni-range__unit-container'
+                '[data-element-id="vertical-min-unit-container"]'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-range__container + .avonni-range__unit-container'
+                '[data-element-id="horizontal-unit-container"]'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
-                '.avonni-range__bubble'
+                '[data-group-name="bubble"]'
             );
 
             expect(wrapper).toBeFalsy();
@@ -356,13 +365,13 @@ describe('Range', () => {
                 '.avonni-range__vertical'
             );
             const verticalMaxLabel = element.shadowRoot.querySelector(
-                'label + .avonni-range__unit-container'
+                '[data-element-id="vertical-max-unit-container"]'
             );
             const verticalMinLabel = element.shadowRoot.querySelector(
-                '.avonni-range__vertical + .avonni-range__unit-container'
+                '[data-element-id="vertical-min-unit-container"]'
             );
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
-                '.avonni-range__container + .avonni-range__unit-container'
+                '[data-element-id="horizontal-unit-container"]'
             );
             const bubbles = element.shadowRoot.querySelectorAll(
                 '.avonni-range__bubble-vertical'
@@ -440,29 +449,47 @@ describe('Range', () => {
         });
     });
 
-    // inputs width
-    // Depends on valueLower, valueUpper, min, max and step
-    it('Range: inputs width', () => {
-        element.valueLower = 34;
-        element.valueUpper = 48;
-        element.min = 10;
-        element.max = 50;
-        element.step = 2;
-
+    // checkValidity
+    it('Range: checkValidity method (true)', () => {
         return Promise.resolve().then(() => {
-            const leftInputWrapper =
-                element.shadowRoot.querySelector('.inverse-left');
-            const rightInputWrapper =
-                element.shadowRoot.querySelector('.inverse-right');
-            expect(leftInputWrapper.style.width).toBe('75%');
-            expect(rightInputWrapper.style.width).toBe('25%');
+            expect(element.checkValidity()).toBeTruthy();
         });
     });
 
-    // checkValidity
-    it('Range: checkValidity method', () => {
+    it('Range: checkValidity method (false)', () => {
+        element.valueUpper = 50;
+        element.max = 5;
+        element.min = 0;
+        element.valueLower = -30;
+        jest.spyOn(
+            FieldConstraintApiWithProxyInput.prototype,
+            'checkValidity'
+        ).mockReturnValue(false);
+
         return Promise.resolve().then(() => {
-            expect(element.checkValidity()).toBeTruthy();
+            expect(element.checkValidity()).toBeFalsy();
+        });
+    });
+
+    // reportValidity
+    it('Range: reportValidity method (true)', () => {
+        return Promise.resolve().then(() => {
+            expect(element.reportValidity()).toBeTruthy();
+        });
+    });
+
+    it('Range: reportValidity method', () => {
+        element.valueUpper = 50;
+        element.max = 5;
+        element.min = 0;
+        element.valueLower = -30;
+        jest.spyOn(
+            FieldConstraintApiWithProxyInput.prototype,
+            'reportValidity'
+        ).mockReturnValue(false);
+
+        return Promise.resolve().then(() => {
+            expect(element.reportValidity()).toBeFalsy();
         });
     });
 
@@ -484,8 +511,8 @@ describe('Range', () => {
             input.dispatchEvent(new CustomEvent('input'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.valueUpper).toBe(48);
             expect(handler.mock.calls[0][0].detail.valueLower).toBe(34);
+            expect(handler.mock.calls[0][0].detail.valueUpper).toBe(48);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -512,5 +539,161 @@ describe('Range', () => {
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
+    });
+
+    it('Range: change event on left input going lower than left input', () => {
+        const inputLeft = element.shadowRoot.querySelector(
+            '[data-element-id="input-left"]'
+        );
+        const inputRight = element.shadowRoot.querySelector(
+            '[data-element-id="input-right"]'
+        );
+        inputRight.value = 30;
+        inputRight.dispatchEvent(new CustomEvent('input'));
+        inputLeft.value = 20;
+        inputLeft.dispatchEvent(new CustomEvent('input'));
+
+        const handler = jest.fn();
+        element.addEventListener('change', handler);
+        inputRight.value = 10;
+        inputRight.dispatchEvent(new CustomEvent('input'));
+
+        return Promise.resolve().then(() => {
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.valueLower).toBe(20);
+            expect(handler.mock.calls[0][0].detail.valueUpper).toBe(20);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    //onmousemove
+    it('Range: onmousemove close to left thumb node', () => {
+        const inputRight = element.shadowRoot.querySelector(
+            '[data-element-id="input-right"]'
+        );
+        const inputLeft = element.shadowRoot.querySelector(
+            '[data-element-id="input-left"]'
+        );
+        inputRight.value = 20;
+        jest.spyOn(inputLeft, 'clientWidth', 'get').mockReturnValue(100);
+        let customEvent = new MouseEvent('mousemove', {
+            offsetX: 0,
+            offsetY: 0
+        });
+        customEvent.offsetX = 0;
+        customEvent.offsetY = 0;
+
+        element.shadowRoot.dispatchEvent(customEvent);
+
+        return Promise.resolve().then(() => {
+            expect(
+                inputLeft.classList.contains('avonni-range__slider-left_above')
+            ).toBe(true);
+        });
+    });
+
+    it('Range: onmousemove close to right thumb node', () => {
+        const inputRight = element.shadowRoot.querySelector(
+            '[data-element-id="input-right"]'
+        );
+        const inputLeft = element.shadowRoot.querySelector(
+            '[data-element-id="input-left"]'
+        );
+        inputRight.value = 20;
+        jest.spyOn(inputLeft, 'clientWidth', 'get').mockReturnValue(100);
+        let customEvent = new MouseEvent('mousemove', {
+            offsetX: 0,
+            offsetY: 0
+        });
+        customEvent.offsetX = 75;
+        customEvent.offsetY = 0;
+
+        element.shadowRoot.dispatchEvent(customEvent);
+
+        return Promise.resolve().then(() => {
+            expect(
+                inputLeft.classList.contains('avonni-range__slider-left_above')
+            ).toBe(false);
+        });
+    });
+
+    //mousedown on input with pins
+    it('Range: onmousedown to right input', () => {
+        element.pin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const inputRight = element.shadowRoot.querySelector(
+                    '[data-element-id="input-right"]'
+                );
+                inputRight.dispatchEvent(new MouseEvent('mousedown'));
+                expect(
+                    element.shadowRoot
+                        .querySelector('[data-element-id="right-bubble"]')
+                        .classList.contains('avonni-range__bubble_visible')
+                ).toBeTruthy();
+                inputRight.dispatchEvent(new MouseEvent('mouseup'));
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot
+                        .querySelector('[data-element-id="right-bubble"]')
+                        .classList.contains('avonni-range__bubble_visible')
+                ).toBeFalsy();
+            });
+    });
+
+    it('Range: onmousedown to left input', () => {
+        element.pin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const inputLeft = element.shadowRoot.querySelector(
+                    '[data-element-id="input-left"]'
+                );
+                inputLeft.dispatchEvent(new MouseEvent('mousedown'));
+                expect(
+                    element.shadowRoot
+                        .querySelector('[data-element-id="left-bubble"]')
+                        .classList.contains('avonni-range__bubble_visible')
+                ).toBeTruthy();
+                inputLeft.dispatchEvent(new MouseEvent('mouseup'));
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot
+                        .querySelector('[data-element-id="left-bubble"]')
+                        .classList.contains('avonni-range__bubble_visible')
+                ).toBeFalsy();
+            });
+    });
+
+    // setBubblePosition with pins
+    it('Range: setBubblePosition() should place bubbles', () => {
+        element.pin = true;
+
+        return Promise.resolve()
+            .then(() => {
+                const inputRight = element.shadowRoot.querySelector(
+                    '[data-element-id="input-right"]'
+                );
+                inputRight.value = 20;
+                inputRight.dispatchEvent(new CustomEvent('input'));
+                jest.advanceTimersToNextTimer();
+            })
+            .then(() => {
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="right-bubble"]'
+                    ).style.left
+                ).toEqual('calc(20% - 11.2px)');
+                expect(
+                    element.shadowRoot.querySelector(
+                        '[data-element-id="left-bubble"]'
+                    ).style.left
+                ).toEqual('calc(0% - 8px)');
+            });
     });
 });

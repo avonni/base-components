@@ -280,6 +280,12 @@ export default class SchedulerAvailableAndDisabledTimes extends LightningElement
         span: 2
     };
 
+    toolbarTimeSpans = [
+        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+        { unit: 'week', span: 2, label: 'Sprint', headers: 'hourDayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
+    ];
+
     connectedCallback() {
         this.rows = this.generateRows();
         this.events = this.generateEvents();

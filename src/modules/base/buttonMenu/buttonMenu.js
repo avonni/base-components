@@ -36,7 +36,8 @@ import {
     normalizeBoolean,
     normalizeString,
     observePosition,
-    keyCodes
+    keyCodes,
+    buttonGroupOrderClass
 } from 'c/utilsPrivate';
 
 import { Tooltip } from 'c/tooltipLibrary';
@@ -104,6 +105,14 @@ export default class ButtonMenu extends LightningElement {
      * @type {string}
      */
     @api draftAlternativeText;
+    /**
+     * Reserved for internal use only.
+     * Describes the order of this element (first, middle or last) inside a lightning-button-group.
+     *
+     * @type {string}
+     * @public
+     */
+    @api groupOrder;
     /**
      * Optional text to be shown on the button.
      *
@@ -445,6 +454,7 @@ export default class ButtonMenu extends LightningElement {
             this.variant === 'bare' || this.variant === 'bare-inverse';
 
         const classes = classSet('slds-button');
+        classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
             classes.add({

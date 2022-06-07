@@ -52,6 +52,7 @@ export const Scheduler = ({
     eventsTheme,
     customHeaders,
     headers,
+    hideToolbar,
     isLoading,
     readOnly,
     recurrentEditModes,
@@ -60,7 +61,8 @@ export const Scheduler = ({
     rows,
     rowsKeyField,
     start,
-    timeSpan
+    timeSpan,
+    toolbarTimeSpans
 }) => {
     const element = document.createElement('ac-base-scheduler');
     element.availableDaysOfTheWeek = availableDaysOfTheWeek;
@@ -80,6 +82,7 @@ export const Scheduler = ({
     element.eventsTheme = eventsTheme;
     element.customHeaders = customHeaders;
     element.headers = headers;
+    element.hideToolbar = hideToolbar;
     element.isLoading = isLoading;
     element.readOnly = readOnly;
     element.recurrentEditModes = recurrentEditModes;
@@ -89,5 +92,6 @@ export const Scheduler = ({
     element.rowsKeyField = rowsKeyField;
     element.start = start;
     element.timeSpan = timeSpan;
+    element.toolbarTimeSpans = toolbarTimeSpans;
     return element;
 };

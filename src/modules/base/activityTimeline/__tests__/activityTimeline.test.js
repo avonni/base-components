@@ -58,6 +58,13 @@ describe('Activity Timeline', () => {
         expect(element.items).toMatchObject([]);
         expect(element.sortedDirection).toBe('desc');
         expect(element.title).toBeUndefined();
+        expect(element.buttonShowLessIconName).toBeUndefined();
+        expect(element.buttonShowLessIconPosition).toBe('left');
+        expect(element.buttonShowLessLabel).toBe('Show less');
+        expect(element.buttonShowMoreIconName).toBeUndefined();
+        expect(element.buttonShowMoreIconPosition).toBe('left');
+        expect(element.buttonShowMoreLabel).toBe('Show more');
+        expect(element.buttonVariant).toBe('neutral');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -179,9 +186,141 @@ describe('Activity Timeline', () => {
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
-                '.slds-media__figure > lightning-icon'
+                '[data-element-id="avonni-activity-timeline-icon"]'
             );
             expect(icon.iconName).toBe('standard:case');
+        });
+    });
+
+    // icon size
+    it('Activity Timeline: icon size (xx-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-activity-timeline-icon"]'
+            );
+            expect(icon.size).toBe('xx-small');
+        });
+    });
+
+    it('Activity Timeline: icon size (x-small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-activity-timeline-icon"]'
+            );
+            expect(icon.size).toBe('x-small');
+        });
+    });
+
+    it('Activity Timeline: icon size (small)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-activity-timeline-icon"]'
+            );
+            expect(icon.size).toBe('small');
+        });
+    });
+
+    it('Activity Timeline: icon size (medium)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-activity-timeline-icon"]'
+            );
+            expect(icon.size).toBe('medium');
+        });
+    });
+
+    it('Activity Timeline: icon size (large)', () => {
+        element.iconName = 'standard:case';
+        element.iconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-activity-timeline-icon"]'
+            );
+            expect(icon.size).toBe('large');
+        });
+    });
+
+    // item icon size
+    it('Activity Timeline: item icon size (xx-small)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'xx-small';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('xx-small')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (x-small)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'x-small';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('x-small')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (small)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'small';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('small')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (medium)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'medium';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('medium')
+            );
+        });
+    });
+
+    it('Activity Timeline: item icon size (large)', () => {
+        element.iconName = 'standard:case';
+        element.itemIconSize = 'large';
+
+        return Promise.resolve().then(() => {
+            const timelinesItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            timelinesItems.forEach((item) =>
+                expect(item.iconSize).toBe('large')
+            );
         });
     });
 
@@ -290,6 +429,110 @@ describe('Activity Timeline', () => {
                     ITEM[index].buttonVariant || 'neutral'
                 );
             });
+        });
+    });
+
+    // max visible items
+    it('Activity Timeline: right number of items displayed if maxVisibleItems is set', () => {
+        element.items = testItems;
+        element.maxVisibleItems = 1;
+        return Promise.resolve().then(() => {
+            const timelineItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            expect(timelineItems).toHaveLength(1);
+            expect(
+                element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button"]'
+                )
+            ).toHaveLength(1);
+        });
+    });
+
+    it('Activity Timeline: if maxVisibleItems is equal to items.length, all elements are shown', () => {
+        element.items = testItems;
+        element.maxVisibleItems = testItems.length;
+        return Promise.resolve().then(() => {
+            const timelineItems = element.shadowRoot.querySelectorAll(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            expect(timelineItems).toHaveLength(testItems.length);
+            expect(
+                element.shadowRoot.querySelectorAll(
+                    '[data-element-id="lightning-button"]'
+                )
+            ).toHaveLength(0);
+        });
+    });
+
+    // button show less icon position
+    it('Activity Timeline: change button show less position to right', () => {
+        element.items = testItems;
+        element.buttonShowLessIconPosition = 'right';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                expect(button.iconPosition).toBe('right');
+            });
+    });
+
+    // button show more icon position
+    it('Activity Timeline: change button show more position to right', () => {
+        element.items = testItems;
+        element.buttonShowMoreIconPosition = 'right';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            expect(button.iconPosition).toBe('right');
+        });
+    });
+
+    // button show less label
+    it("Activity Timeline: click on show button should change button's label to show less", () => {
+        element.items = testItems;
+        element.buttonShowLessLabel = 'Show less';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button"]'
+                );
+                expect(button.label).toBe('Show less');
+            });
+    });
+
+    // button show more label
+    it('Activity Timeline: show button should have label show more', () => {
+        element.items = testItems;
+        element.buttonShowLessLabel = 'Show less';
+        element.buttonShowMoreLabel = 'Show more';
+        element.maxVisibleItems = 1;
+
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button"]'
+            );
+            expect(button.label).toBe('Show more');
         });
     });
 
