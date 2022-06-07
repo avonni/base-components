@@ -73,6 +73,24 @@
  * @default dashed
  * @type styling
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-week-label-text-color
+ * @default #747474
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-week-label-font-size
+ * @default 0.8125em
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-calendar-week-label-font-weight
+ * @default 600
+ * @type font
+ */
 
 /**
  * @typedef {Object} MarkedDate
