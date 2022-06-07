@@ -128,6 +128,25 @@
         </ul>
     </template>
     <template if:true={isButtonVariant}>
-        <button class={buttonWrapper}>button</button>
+        <span class="slds-truncate">
+            <button class={buttonWrapper}>
+                <template if:true={buttonHasLeftIcon}>
+                    <svg
+                        class="slds-button__icon slds-button__icon_left"
+                        aria-hidden="true"
+                    ></svg>
+                </template>
+                button
+                <template if:true={buttonHasRightIcon}>
+                    <svg
+                        class="slds-button__icon slds-button__icon_right"
+                        aria-hidden="true"
+                    ></svg>
+                </template>
+            </button>
+        </span>
+    </template>
+    <template if:true={isButtonIconVariant}>
+        <button class={buttonIconWrapper}></button>
     </template>
 </template>

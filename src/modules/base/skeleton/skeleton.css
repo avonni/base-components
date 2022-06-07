@@ -129,6 +129,10 @@
     animation: pulse-animation 1s infinite;
 }
 
+.avonni-skeleton__buttonIcon-animation-pulse {
+    animation: pulse-animation 1s infinite;
+}
+
 .avonni-skeleton-avatar__paragraph-margin p {
     margin-bottom: 0.25em;
 }
@@ -161,6 +165,24 @@
     );
     background-size: 800px;
     height: 100%;
+    position: relative;
+}
+
+.avonni-skeleton__buttonIcon-animation-wave {
+    position: relative;
+    background-color: var(--avonni-skeleton-color-background-animation);
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: wave-animation;
+    animation-timing-function: linear;
+    background: linear-gradient(
+        to right,
+        var(--avonni-skeleton-color-background) 8%,
+        var(--avonni-skeleton-color-background-animation) 18%,
+        var(--avonni-skeleton-color-background) 33%
+    );
+    background-size: 800px;
     position: relative;
 }
 

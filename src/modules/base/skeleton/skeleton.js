@@ -88,6 +88,7 @@ export default class Skeleton extends LightningElement {
     badgeLabel;
     breadcrumbs = [];
     buttonWrapper;
+    buttonIconWrapper;
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -102,13 +103,20 @@ export default class Skeleton extends LightningElement {
         if (this.isButtonVariant) {
             this.updateButtonClassList();
         }
+        if (this.isButtonIconVariant) {
+            this.updateButtonIconClassList();
+        }
     }
 
     renderedCallback() {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (this.isChipVariant) this.chipLabel = this.variantAttributes.label;
         if (this.isBadgeVariant) this.badgeLabel = this.variantAttributes.label;
-        if (!this.isAvatarVariant && !this.isButtonVariant)
+        if (
+            !this.isAvatarVariant &&
+            !this.isButtonVariant &&
+            !this.isButtonIconVariant
+        )
             this.handleVariant();
         console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
@@ -143,6 +151,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isButtonIconVariant() {
+        return this.variant === 'button-icon';
+    }
+
+    @api
     get isChipVariant() {
         return this.variant === 'chip';
     }
@@ -165,6 +178,22 @@ export default class Skeleton extends LightningElement {
     get badgeHasEndIcon() {
         return (
             this.variantAttributes.iconPosition === 'end' &&
+            this.variantAttributes.hasIcon === true
+        );
+    }
+
+    @api
+    get buttonHasLeftIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'left' &&
+            this.variantAttributes.hasIcon === true
+        );
+    }
+
+    @api
+    get buttonHasRightIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'right' &&
             this.variantAttributes.hasIcon === true
         );
     }
@@ -348,7 +377,7 @@ export default class Skeleton extends LightningElement {
                 this.handleButtonVariant();
                 break;
             case 'button-icon':
-                this.handleAvatarVariant();
+                this.handleButtonIconVariant();
                 break;
             case 'chip':
                 this.handleChipVariant();
@@ -398,6 +427,12 @@ export default class Skeleton extends LightningElement {
     handleButtonVariant() {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateButtonClassList();
+        }
+    }
+
+    handleButtonIconVariant() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateButtonIconClassList();
         }
     }
 
@@ -495,6 +530,8 @@ export default class Skeleton extends LightningElement {
                 'slds-button_brand': this.variantAttributes.variant === 'brand',
                 'slds-button_outline-brand':
                     this.variantAttributes.variant === 'brand-outline',
+                'slds-button_inverse':
+                    this.variantAttributes.variant === 'inverse',
                 'slds-button_destructive':
                     this.variantAttributes.variant === 'destructive',
                 'slds-button_text-destructive':
@@ -504,5 +541,30 @@ export default class Skeleton extends LightningElement {
             })
             .add(`avonni-skeleton__animation-${this.animation}`);
         this.buttonWrapper = buttonWrapper;
+    }
+
+    updateButtonIconClassList() {
+        const buttonIconWrapper = classSet('slds-button')
+            .add('slds-button_icon')
+            .add('slds-button__icon_large')
+            .add({
+                'slds-button_icon-brand':
+                    this.variantAttributes.variant === 'brand',
+                'slds-button_icon-inverse':
+                    this.variantAttributes.variant === 'inverse',
+                'slds-button_icon-container':
+                    this.variantAttributes.variant === 'icon-container-base',
+                'slds-button_icon-border-filled':
+                    this.variantAttributes.variant ===
+                    'icon-container-border-filled',
+                'slds-button_icon-border':
+                    this.variantAttributes.variant ===
+                    'icon-container-border-transparent',
+                'slds-button_icon-border-inverse':
+                    this.variantAttributes.variant ===
+                    'slds-button_icon-border-inverse'
+            })
+            .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
+        this.buttonIconWrapper = buttonIconWrapper;
     }
 }
