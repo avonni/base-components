@@ -388,6 +388,7 @@ export const UnitPercent = Template.bind({});
 UnitPercent.args = {
     label: 'Unit percent slider',
     unit: 'percent',
+    value: 0.5,
     step: 0.01,
     min: 0,
     max: 1,
