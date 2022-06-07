@@ -226,7 +226,7 @@ export default class Kanban extends LightningElement {
     }
 
     /**
-     * The variant change the apparence of the kanban. Valid values include base and path. Default to base.
+     * The variant changes the apparence of the kanban. Valid values include base and path. Default to base.
      * @type {string}
      * @default base
      * @public
@@ -483,7 +483,7 @@ export default class Kanban extends LightningElement {
         if (currentX + 50 > right) scrollXStep = 10;
         else if (currentX - 50 < left) scrollXStep = -10;
 
-        const toScroll = this._draggedTile ? group : fieldContainer;
+        const toScroll = scrollXStep ? fieldContainer : group;
 
         if (
             !this._scrollingInterval &&
@@ -543,6 +543,20 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Calculates the boundaries of the kanban to prevent from dragging outside of the container
+     * @param {EventTarget} currentTarget
+     *
+     */
+    computeKanbanBoundaries(currentTarget) {
+        this._kanbanPos.top = currentTarget.getBoundingClientRect().top;
+        this._kanbanPos.bottom =
+            this._kanbanPos.top + currentTarget.offsetHeight;
+        this._kanbanPos.left = currentTarget.getBoundingClientRect().left;
+        this._kanbanPos.right =
+            this._kanbanPos.left + currentTarget.scrollWidth;
+    }
+
+    /**
      * Clears the timeouts to avoid summarize inconsistencies.
      *
      */
@@ -562,6 +576,34 @@ export default class Kanban extends LightningElement {
 
             this._summaryTimeoutsId = [];
         }
+    }
+
+    /**
+     * Creates space in the group for the dragged tile
+     *
+     */
+    createTileSpace() {
+        const currentGroupTiles = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__group"]'
+        );
+
+        // Sets the right marginBottom on the last tile depending on the hovered group
+        if (this._draggedTile)
+            currentGroupTiles.forEach((group, i) => {
+                if (group.children.length > 0) {
+                    const increment =
+                        this._clickedTileIndex === this._groupsLength[i] - 1
+                            ? 2
+                            : 1;
+                    const marginBottom =
+                        i === this._releasedGroupIndex
+                            ? this._draggedTile.offsetHeight
+                            : 0;
+                    group.children[
+                        group.children.length - increment
+                    ].style.marginBottom = `${marginBottom}px`;
+                }
+            });
     }
 
     /**
@@ -594,6 +636,7 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         )[this._releasedGroupIndex];
 
+        // Distance from the top of the field
         const offsetTop =
             8 * offsetCount +
             offsetHeight +
@@ -982,18 +1025,13 @@ export default class Kanban extends LightningElement {
     handleTileMouseMove(event) {
         if (!this._draggedTile && !this._draggedGroup) return;
 
-        // Sets the boundaries of the kanban
-        this._kanbanPos.top = event.currentTarget.getBoundingClientRect().top;
-        this._kanbanPos.bottom =
-            this._kanbanPos.top + event.currentTarget.offsetHeight;
-        this._kanbanPos.left = event.currentTarget.getBoundingClientRect().left;
-        this._kanbanPos.right =
-            this._kanbanPos.left + event.currentTarget.scrollWidth;
+        this.computeKanbanBoundaries(event.currentTarget);
 
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
 
+        // Calculates the position of the mouse depending on the kanban boundaries
         let currentY = event.clientY;
         let currentX = event.clientX + fieldContainer.scrollLeft;
 
@@ -1025,28 +1063,7 @@ export default class Kanban extends LightningElement {
             }px) rotate(3deg)`;
         }
 
-        const currentGroupTiles = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
-
-        // Sets the right marginBottom on the last tile depending on the hovered group
-        if (this._draggedTile)
-            currentGroupTiles.forEach((group, i) => {
-                if (group.children.length > 0) {
-                    const increment =
-                        this._clickedTileIndex === this._groupsLength[i] - 1
-                            ? 2
-                            : 1;
-                    const marginBottom =
-                        i === this._releasedGroupIndex
-                            ? this._draggedTile.offsetHeight
-                            : 0;
-                    group.children[
-                        group.children.length - increment
-                    ].style.marginBottom = `${marginBottom}px`;
-                }
-            });
-
+        this.createTileSpace();
         this.autoScroll(currentX, currentY);
     }
 
