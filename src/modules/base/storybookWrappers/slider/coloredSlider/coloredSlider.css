@@ -31,8 +31,8 @@
  */
 :host {
     --avonni-slider-thumb-color: hsl(0, 50%, 50%);
-    --avonni-slider-thumb-hover-color: hsl(0, 50%, 50%);
-    --avonni-slider-thumb-focus-shadow-color: hsl(0, 50%, 50%);
+    --avonni-slider-thumb-color-hover: hsl(0, 50%, 50%);
+    --avonni-slider-thumb-color-shadow-focus: hsl(0, 50%, 50%);
     --avonni-slider-pin-color: hsl(0, 50%, 50%);
     --avonni-slider-track-color: hsl(0, 50%, 50%);
 }

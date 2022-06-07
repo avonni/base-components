@@ -77,11 +77,11 @@ export default class ColoredSlider extends LightningElement {
                 `hsl(${this._colorHue}, 50%, 50%)`
             );
             this.template.firstChild.style.setProperty(
-                '--avonni-slider-thumb-hover-color',
+                '--avonni-slider-thumb-color-hover',
                 `hsl(${this._colorHue}, 50%, 30%)`
             );
             this.template.firstChild.style.setProperty(
-                '--avonni-slider-thumb-focus-shadow-color',
+                '--avonni-slider-thumb-color-shadow-focus',
                 `hsl(${180 + this._colorHue}, 70%, 60%)`
             );
             this._colorHue += 5;

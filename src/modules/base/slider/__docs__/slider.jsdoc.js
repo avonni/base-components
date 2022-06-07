@@ -78,13 +78,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-thumb-hover-color
+ * @name --avonni-slider-thumb-color-hover
  * @default #014486
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-thumb-focus-shadow-color
+ * @name --avonni-slider-thumb-color-shadow-focus
  * @default #99d3ff
  * @type color
  */
