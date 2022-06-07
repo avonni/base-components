@@ -438,12 +438,9 @@ MultipleRange.args = {
 export const CustomLabels = CustomLabelTemplate.bind({});
 CustomLabels.args = {
     label: 'Custom labels slider (inner-tick style)',
-    step: 1,
-    value: [5],
+    value: 5,
     min: 0,
     max: 10,
-    size: 'full',
-    tickMarkStyle: 'inner-tick',
     unit: 'custom',
     unitAttributes: {
         customLabels: [
@@ -470,11 +467,9 @@ CustomLabels.args = {
 export const CustomLabelsDot = CustomLabelTemplate.bind({});
 CustomLabelsDot.args = {
     label: 'Custom labels slider (dot style)',
-    step: 1,
-    value: [20],
+    value: 20,
     min: 0,
     max: 40,
-    size: 'full',
     tickMarkStyle: 'dot',
     unit: 'custom',
     unitAttributes: {
@@ -506,13 +501,11 @@ CustomLabelsDot.args = {
 export const Disabled = Template.bind({});
 Disabled.args = {
     label: 'Disabled slider',
-    value: 50,
     disabled: true
 };
 
 export const Vertical = VerticalTemplate.bind({});
 Vertical.args = {
-    label: 'Vertical Slider',
     size: 'x-small',
     variant: 'label-hidden',
     type: 'vertical',
@@ -541,7 +534,6 @@ Vertical.args = {
 export const Colored = ColoredTemplate.bind({});
 Colored.args = {
     label: 'Colored slider',
-    value: 50,
     pin: true
 };
 
