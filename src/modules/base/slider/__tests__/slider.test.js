@@ -115,9 +115,9 @@ describe('Slider', () => {
                 expect(input.disabled).toBeFalsy();
                 expect(
                     element.shadowRoot.querySelector(
-                        '[data-element-id="progress-bar"]'
+                        '[data-element-id="track"]'
                     ).classList
-                ).not.toContain('avonni-slider__progress_disabled');
+                ).not.toContain('avonni-slider__track_disabled');
                 expect(
                     element.shadowRoot.querySelector(
                         '[data-group-name="input"]'
@@ -138,9 +138,9 @@ describe('Slider', () => {
                 expect(input.disabled).toBeTruthy();
                 expect(
                     element.shadowRoot.querySelector(
-                        '[data-element-id="progress-bar"]'
+                        '[data-element-id="track"]'
                     ).classList
-                ).toContain('avonni-slider__progress_disabled');
+                ).toContain('avonni-slider__track_disabled');
                 expect(
                     element.shadowRoot.querySelector(
                         '[data-group-name="input"]'
@@ -325,9 +325,7 @@ describe('Slider', () => {
         return Promise.resolve().then(() => {
             expect(element.removeTrack).toEqual(false);
             expect(
-                element.shadowRoot.querySelector(
-                    '[data-element-id="progress-bar"]'
-                )
+                element.shadowRoot.querySelector('[data-element-id="track"]')
             ).toBeTruthy();
         });
     });
@@ -338,9 +336,7 @@ describe('Slider', () => {
         return Promise.resolve().then(() => {
             expect(element.removeTrack).toEqual(true);
             expect(
-                element.shadowRoot.querySelector(
-                    '[data-element-id="progress-bar"]'
-                )
+                element.shadowRoot.querySelector('[data-element-id="track"]')
             ).toBeFalsy();
         });
     });
@@ -530,7 +526,7 @@ describe('Slider', () => {
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
                 '[data-element-id="horizontal-unit-container"]'
             );
-            const bubbles = element.shadowRoot.querySelectorAll(
+            const pins = element.shadowRoot.querySelectorAll(
                 '[data-group-name="pin"]'
             );
 
@@ -538,7 +534,7 @@ describe('Slider', () => {
             expect(verticalMaxLabel).toBeFalsy();
             expect(verticalMinLabel).toBeFalsy();
             expect(horizontalMinMaxLabels).toBeTruthy();
-            expect(bubbles).toHaveLength(1);
+            expect(pins).toHaveLength(1);
         });
     });
 
@@ -559,7 +555,7 @@ describe('Slider', () => {
             const horizontalMinMaxLabels = element.shadowRoot.querySelector(
                 '[data-element-id="horizontal-unit-container"]'
             );
-            const bubbles = element.shadowRoot.querySelectorAll(
+            const pins = element.shadowRoot.querySelectorAll(
                 '[data-group-name="pin"]'
             );
 
@@ -567,7 +563,7 @@ describe('Slider', () => {
             expect(verticalMaxLabel).toBeTruthy();
             expect(verticalMinLabel).toBeTruthy();
             expect(horizontalMinMaxLabels).toBeFalsy();
-            expect(bubbles).toHaveLength(1);
+            expect(pins).toHaveLength(1);
         });
     });
 
@@ -870,9 +866,7 @@ describe('Slider', () => {
             expect(inputs.length).toEqual(4);
             expect(element.value).toEqual([1, 2, 3, 4]);
             expect(
-                element.shadowRoot.querySelector(
-                    '[data-element-id="progress-bar"]'
-                )
+                element.shadowRoot.querySelector('[data-element-id="track"]')
             ).toBeFalsy();
         });
     });
@@ -1107,7 +1101,7 @@ describe('Slider', () => {
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toEqual(34);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].pins).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
@@ -1127,7 +1121,7 @@ describe('Slider', () => {
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toEqual([1, 2, 3]);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].pins).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
@@ -1193,16 +1187,14 @@ describe('Slider', () => {
                 input.dispatchEvent(new MouseEvent('mousedown'));
             })
             .then(() => {
-                expect(pin.classList).toContain(
-                    'avonni-slider__bubble_visible'
-                );
+                expect(pin.classList).toContain('avonni-slider__pin_visible');
             })
             .then(() => {
                 input.dispatchEvent(new MouseEvent('mouseup'));
             })
             .then(() => {
                 expect(pin.classList).not.toContain(
-                    'avonni-slider__bubble_visible'
+                    'avonni-slider__pin_visible'
                 );
             });
     });
@@ -1261,10 +1253,10 @@ describe('Slider', () => {
                 expect(ruler).toBeTruthy();
                 expect(ruler.firstChild.tagName).toEqual('rect');
                 expect(ruler.childNodes[3].getAttribute('stroke')).toEqual(
-                    '#0176D3'
+                    'var(--avonni-slider-track-color, #0176d3)'
                 );
                 expect(ruler.childNodes[4].getAttribute('stroke')).toEqual(
-                    '#ecebea'
+                    'var(--avonni-slider-track-color-background, #ecebea)'
                 );
                 expect(ruler.childElementCount).toEqual(103);
                 element.value = 50;
@@ -1273,10 +1265,10 @@ describe('Slider', () => {
             .then(() => {
                 expect(ruler.firstChild.tagName).toEqual('rect');
                 expect(ruler.childNodes[3].getAttribute('stroke')).toEqual(
-                    '#0176D3'
+                    'var(--avonni-slider-track-color, #0176d3)'
                 );
                 expect(ruler.childNodes[25].getAttribute('stroke')).toEqual(
-                    '#ecebea'
+                    'var(--avonni-slider-track-color-background, #ecebea)'
                 );
                 expect(ruler.childElementCount).toEqual(103);
             });

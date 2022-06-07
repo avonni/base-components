@@ -45,7 +45,6 @@ const DEFAULT_MIN = 0;
 const DEFAULT_MAX = 100;
 const PERCENT_SCALING_FACTOR = 100;
 const DEFAULT_STEP = 1;
-const INPUT_THUMB_RADIUS = 8.5;
 
 const SLIDER_SIZES = {
     valid: ['x-small', 'small', 'medium', 'large', 'full'],
@@ -804,6 +803,16 @@ export default class Slider extends LightningElement {
         return this.template.querySelector('[data-element-id="ruler"]');
     }
 
+    get _inputThumbRadius() {
+        const thumbRadius = parseInt(
+            getComputedStyle(this.template.host)
+                .getPropertyValue('--avonni-slider-thumb-radius')
+                .split('px')[0],
+            10
+        );
+        return thumbRadius ? thumbRadius : 8;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -970,7 +979,7 @@ export default class Slider extends LightningElement {
         const totalWidth = this.isVertical
             ? this.template.querySelector('[data-element-id="spacer"]')
                   .clientHeight -
-              2 * INPUT_THUMB_RADIUS
+              2 * this._inputThumbRadius
             : this.template.querySelector(
                   '[data-element-id="custom-label-container"]'
               ).clientWidth;
@@ -1002,8 +1011,9 @@ export default class Slider extends LightningElement {
         const numberOfSteps =
             (this._computedMax - this._computedMin) /
             (this.step * this._scalingFactor);
-        const stepWidth = (totalWidth - INPUT_THUMB_RADIUS * 2) / numberOfSteps;
-        let leftPosition = INPUT_THUMB_RADIUS;
+        const stepWidth =
+            (totalWidth - this._inputThumbRadius * 2) / numberOfSteps;
+        let leftPosition = this._inputThumbRadius;
 
         switch (this._tickMarkStyle) {
             case 'tick':
@@ -1050,14 +1060,17 @@ export default class Slider extends LightningElement {
                 backgroundColor = 'white';
             }
             for (let i = 0; i < 2; i++) {
+                const blockWidth = this._inputThumbRadius * 1.5;
                 let line = document.createElementNS(SVG_NAMESPACE, 'rect');
                 line.setAttribute('fill', `${backgroundColor}`);
                 line.setAttribute('height', `15`);
-                line.setAttribute('width', `5`);
+                line.setAttribute('width', `${blockWidth}`);
                 line.setAttribute(
                     'x',
                     `${
-                        i === 0 ? leftPosition - 5 : leftPosition + upperEdgePos
+                        i === 0
+                            ? leftPosition - blockWidth
+                            : leftPosition + upperEdgePos
                     }`
                 );
                 line.setAttribute('y', '10');
@@ -1255,7 +1268,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Handle collision beetween sliders.
+     * Handle collision between sliders.
      *
      * @param {Event} event
      */
@@ -1387,24 +1400,21 @@ export default class Slider extends LightningElement {
         pin.firstChild.firstChild.value = transformedValue;
 
         if (!this.isVertical) {
-            pin.style.left =
-                'calc(' +
-                pinProgress +
-                '% - ' +
-                (pinProgress * 0.16 - 8) +
-                'px)';
+            pin.style.left = `calc(${pinProgress}% - ${
+                pinProgress *
+                    ((this._inputThumbRadius * 2) / PERCENT_SCALING_FACTOR) -
+                this._inputThumbRadius
+            }px)`;
         } else {
-            pin.style.left =
-                'calc(' +
-                pinProgress +
-                '% - ' +
-                (pinProgress * 0.16 + 24) +
-                'px)';
+            pin.style.left = `calc(${pinProgress}% - ${
+                pinProgress *
+                ((this._inputThumbRadius * 2) / PERCENT_SCALING_FACTOR)
+            }px)`;
         }
     }
 
     /**
-     * Updates the inputslidervalues based on its current value.
+     * Updates the input slider values based on its current value.
      *
      * @param {Event} event
      */

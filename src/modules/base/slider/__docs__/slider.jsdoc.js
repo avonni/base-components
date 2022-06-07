@@ -108,6 +108,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-slider-thumb-radius
+ * @default 8.75px
+ * @type radius
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-slider-thumb-radius-border
  * @default 0.25rem
  * @type radius
