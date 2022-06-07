@@ -41,7 +41,7 @@ export const ActivityTimeline = ({
     actions,
     closed,
     collapsible,
-    dateFormat,
+    itemDateFormat,
     iconName,
     iconSize,
     itemIconSize,
@@ -54,7 +54,7 @@ export const ActivityTimeline = ({
     element.actions = actions;
     element.closed = closed;
     element.collapsible = collapsible;
-    element.dateFormat = dateFormat;
+    element.itemDateFormat = itemDateFormat;
     element.groupBy = groupBy;
     element.iconName = iconName;
     element.iconSize = iconSize;

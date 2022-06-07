@@ -66,17 +66,6 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        dateFormat: {
-            name: 'date-format',
-            control: {
-                type: 'text'
-            },
-            description:
-                "The date format to use for each item. See Luxon’s documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
-            table: {
-                type: { summary: 'string' }
-            }
-        },
         groupBy: {
             name: 'group-by',
             control: {
@@ -109,6 +98,17 @@ export default {
                 "The size of title's icon. Valid values are xx-small, x-small, small, medium and large.",
             table: {
                 defaultValue: { summary: 'medium' },
+                type: { summary: 'string' }
+            }
+        },
+        itemDateFormat: {
+            name: 'item-date-format',
+            control: {
+                type: 'text'
+            },
+            description:
+                "The date format to use for each item. See Luxon’s documentation for accepted format. If you want to insert text in the label, you need to escape it using single quote.\n For example, the format of “Jan 14 day shift” would be “LLL dd 'day shift'\". ",
+            table: {
                 type: { summary: 'string' }
             }
         },
@@ -174,7 +174,7 @@ Base.args = {
     iconName: 'standard:timesheet_entry',
     items: items,
     collapsible: true,
-    dateFormat: 'dd LLL yyyy',
+    itemDateFormat: 'dd LLL yyyy',
     actions: actions
 };
 

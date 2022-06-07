@@ -53,7 +53,7 @@ describe('Activity Timeline', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.closed).toBeFalsy();
         expect(element.collapsible).toBeFalsy();
-        expect(element.dateFormat).toBeUndefined();
+        expect(element.itemDateFormat).toBeUndefined();
         expect(element.groupBy).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.items).toMatchObject([]);
@@ -106,11 +106,11 @@ describe('Activity Timeline', () => {
         });
     });
 
-    // dateFormat
-    it('Activity timeline: dateFormat', () => {
+    // itemDateFormat
+    it('Activity timeline: itemDateFormat', () => {
         element.items = testItems;
         element.groupBy = 'week';
-        element.dateFormat = 'dd LLL yyyy';
+        element.itemDateFormat = 'dd LLL yyyy';
 
         return Promise.resolve().then(() => {
             const timelineItems = element.shadowRoot.querySelector(

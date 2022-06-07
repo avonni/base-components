@@ -81,7 +81,7 @@ export default class ActivityTimeline extends LightningElement {
     _actions = [];
     _closed = false;
     _collapsible = false;
-    _dateFormat;
+    _itemDateFormat;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _iconSize = ICON_SIZES.default;
@@ -163,11 +163,11 @@ export default class ActivityTimeline extends LightningElement {
      * @public
      */
     @api
-    get dateFormat() {
-        return this._dateFormat;
+    get itemDateFormat() {
+        return this._itemDateFormat;
     }
-    set dateFormat(value) {
-        this._dateFormat = value && typeof value === 'string' ? value : '';
+    set itemDateFormat(value) {
+        this._itemDateFormat = value && typeof value === 'string' ? value : '';
     }
 
     /**
