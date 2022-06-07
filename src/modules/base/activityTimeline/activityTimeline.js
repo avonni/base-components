@@ -37,6 +37,7 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 
+const DEFAULT_ITEM_DATE_FORMAT = 'LLLL dd, yyyy, t';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
 
 const GROUP_BY_OPTIONS = {
@@ -81,7 +82,7 @@ export default class ActivityTimeline extends LightningElement {
     _actions = [];
     _closed = false;
     _collapsible = false;
-    _itemDateFormat;
+    _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
     _iconSize = ICON_SIZES.default;
@@ -160,6 +161,7 @@ export default class ActivityTimeline extends LightningElement {
      * For example, the format of "Jan 14 day shift" would be <code>"LLL dd 'day shift'"</code>.
      *
      * @type {string}
+     * @default 'LLLL dd, yyyy, t'
      * @public
      */
     @api

@@ -53,7 +53,7 @@ describe('Activity Timeline', () => {
         expect(element.actions).toMatchObject([]);
         expect(element.closed).toBeFalsy();
         expect(element.collapsible).toBeFalsy();
-        expect(element.itemDateFormat).toBeUndefined();
+        expect(element.itemDateFormat).toBe('LLLL dd, yyyy, t');
         expect(element.groupBy).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.items).toMatchObject([]);
