@@ -137,15 +137,23 @@
     margin-bottom: 0.25em;
 }
 
+.avonni-skeleton__datatable {
+    border-color: #ffffff;
+    border-style: solid;
+    border-width: 0.2em 0.1em;
+    border-radius: var(--avonni-skeleton-radius-border);
+    /* margin: 0.25em; */
+}
+
 @keyframes pulse-animation {
     0% {
-        background-color: var(--avonni-skeleton-color-background);
+        background: var(--avonni-skeleton-color-background);
     }
     50% {
-        background-color: var(--avonni-skeleton-color-background-animation);
+        background: var(--avonni-skeleton-color-background-animation);
     }
     100% {
-        background-color: var(--avonni-skeleton-color-background);
+        background: var(--avonni-skeleton-color-background);
     }
 }
 

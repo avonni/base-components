@@ -83,6 +83,7 @@ export default {
                 'chip',
                 'combobox',
                 'circular',
+                'datatable',
                 'rectangular',
                 'text'
             ],
@@ -168,4 +169,14 @@ Combobox.args = {
     variant: 'combobox',
     animation: 'pulse',
     variantAttributes: {}
+};
+
+export const Datatable = Template.bind({});
+Datatable.args = {
+    variant: 'datatable',
+    animation: 'pulse',
+    variantAttributes: {
+        hideCheckboxColumn: false,
+        hideTableHeader: false
+    }
 };

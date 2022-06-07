@@ -170,6 +170,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isDatatableVariant() {
+        return this.variant === 'datatable';
+    }
+
+    @api
     get isRegularVariant() {
         return (
             this.variant === 'text' ||
@@ -210,6 +215,16 @@ export default class Skeleton extends LightningElement {
     @api
     get comboboxRequired() {
         return this.variantAttributes.required;
+    }
+
+    @api
+    get hideCheckboxColumn() {
+        return this.variantAttributes.hideCheckboxColumn;
+    }
+
+    @api
+    get hideTableHeader() {
+        return this.variantAttributes.hideTableHeader;
     }
 
     @api
@@ -392,6 +407,54 @@ export default class Skeleton extends LightningElement {
             .toString();
     }
 
+    get datatableFirstGridClass() {
+        return classSet('slds-col')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .add('avonni-skeleton__datatable')
+            .add('slds-size_1-of-12');
+    }
+
+    get datatableCheckboxGridClass() {
+        return classSet('slds-col')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .add('avonni-skeleton__datatable')
+            .add('slds-size_1-of-12');
+    }
+
+    get datatableGridClass() {
+        return (
+            classSet('slds-col')
+                .add(`avonni-skeleton__animation-${this.animation}`)
+                .add('avonni-skeleton__datatable')
+                // .add('slds-var-m-around_xxx-small')
+                // .add('slds-p-horizontal_medium');
+                // .add('slds-border_bottom')
+                // .add('slds-border_left')
+                // .add('slds-border_right')
+                // .add('slds-border_top')
+                .add('slds-size_1-of-5')
+        );
+    }
+
+    get datatableRowClass() {
+        return classSet('slds-col')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .add('slds-size_1-of-1')
+            .add('avonni-skeleton__datatable');
+    }
+
+    get datatableTDClass() {
+        return classSet('slds-text-align_right')
+            .add('slds-cell_action-mode')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
+    get datatableTHClass() {
+        return classSet('slds-cell_action-mode').add(
+            `avonni-skeleton__animation-${this.animation}`
+        );
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -485,6 +548,12 @@ export default class Skeleton extends LightningElement {
     handleComboboxVariant() {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateComboboxClassList();
+        }
+    }
+
+    handleDatableVariant() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateDatatableClassList();
         }
     }
 
@@ -628,4 +697,6 @@ export default class Skeleton extends LightningElement {
         console.log('inside updateClassList');
         this.setTextSize();
     }
+
+    updateDatatableClassList() {}
 }

@@ -253,4 +253,633 @@
             </div>
         </div> -->
     </template>
+    <template if:true={isDatatableVariant}>
+        <!-- <div class="slds-grid slds-wrap">
+            <template if:false={hideTableHeader}>
+                <div class={datatableFirstGridClass}>
+                    <span>1</span>
+                </div>
+                <template if:false={hideCheckboxColumn}>
+                    <div class={datatableCheckboxGridClass}>
+                        <span>2</span>
+                    </div>
+                </template>
+                <div class={datatableGridClass}>
+                    <span>3</span>
+                </div>
+                <div class={datatableGridClass}>
+                    <span>4</span>
+                </div>
+                <div class={datatableGridClass}>
+                    <span>5</span>
+                </div>
+                <div class={datatableGridClass}>
+                    <span>5</span>
+                </div>
+            </template>
+            <div class={datatableRowClass}>
+                <span>6</span>
+            </div>
+            <div class={datatableRowClass}>
+                <span>8</span>
+            </div>
+            <div class={datatableRowClass}>
+                <span>9</span>
+            </div>
+            <div class={datatableRowClass}>
+                <span>10</span>
+            </div>
+        </div> -->
+        <table
+            aria-multiselectable="true"
+            class="
+                slds-table
+                slds-table_bordered
+                slds-table_fixed-layout
+                slds-table_resizable-cols
+            "
+            role="grid"
+        >
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th
+                        class="slds-text-align_right slds-cell_action-mode"
+                        scope="col"
+                        style="width: 3.25rem"
+                    >
+                        <div class="slds-th__action slds-th__action_form">
+                            <div class="slds-checkbox">
+                                <input
+                                    type="checkbox"
+                                    name="options"
+                                    id="checkbox-unique-id-293"
+                                    value="checkbox-unique-id-293"
+                                    tabindex="0"
+                                    aria-labelledby="check-select-all-label column-group-header"
+                                    disabled=""
+                                />
+                                <label
+                                    class="slds-checkbox__label"
+                                    for="checkbox-unique-id-293"
+                                    id="check-select-all-label"
+                                >
+                                    <span class="slds-checkbox_faux"></span>
+                                    <span
+                                        class="
+                                            slds-form-element__label
+                                            slds-assistive-text
+                                        "
+                                        >Select All</span
+                                    >
+                                </label>
+                            </div>
+                        </div>
+                    </th>
+                    <th
+                        aria-label="Name"
+                        aria-sort="none"
+                        class="
+                            slds-is-resizable slds-is-sortable
+                            slds-cell_action-mode
+                        "
+                        scope="col"
+                    >
+                        <div
+                            class="slds-th__action slds-text-link_reset"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <span class="slds-assistive-text">Sort by: </span>
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-has-flexi-truncate
+                                "
+                            >
+                                <span class="slds-truncate" title="Name"></span>
+                                <span
+                                    class="
+                                        slds-icon_container
+                                        slds-icon-utility-arrowdown
+                                    "
+                                >
+                                    <svg
+                                        class="
+                                            slds-icon slds-icon-text-default
+                                            slds-is-sortable__icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                        ></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-resizable">
+                            <span class="slds-resizable__handle">
+                                <span class="slds-resizable__divider"></span>
+                            </span>
+                        </div>
+                    </th>
+                    <th
+                        aria-label="Account Name"
+                        aria-sort="none"
+                        class="
+                            slds-is-resizable slds-is-sortable
+                            slds-cell_action-mode
+                        "
+                        scope="col"
+                    >
+                        <div
+                            class="slds-th__action slds-text-link_reset"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <span class="slds-assistive-text">Sort by: </span>
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-has-flexi-truncate
+                                "
+                            >
+                                <span
+                                    class="slds-truncate"
+                                    title="Account Name"
+                                ></span>
+                                <span
+                                    class="
+                                        slds-icon_container
+                                        slds-icon-utility-arrowdown
+                                    "
+                                >
+                                    <svg
+                                        class="
+                                            slds-icon slds-icon-text-default
+                                            slds-is-sortable__icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                        ></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-resizable">
+                            <span class="slds-resizable__handle">
+                                <span class="slds-resizable__divider"></span>
+                            </span>
+                        </div>
+                    </th>
+                    <th
+                        aria-label="Close Date"
+                        aria-sort="none"
+                        class="
+                            slds-is-resizable slds-is-sortable
+                            slds-cell_action-mode
+                        "
+                        scope="col"
+                    >
+                        <div
+                            class="slds-th__action slds-text-link_reset"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <span class="slds-assistive-text">Sort by: </span>
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-has-flexi-truncate
+                                "
+                            >
+                                <span
+                                    class="slds-truncate"
+                                    title="Close Date"
+                                ></span>
+                                <span
+                                    class="
+                                        slds-icon_container
+                                        slds-icon-utility-arrowdown
+                                    "
+                                >
+                                    <svg
+                                        class="
+                                            slds-icon slds-icon-text-default
+                                            slds-is-sortable__icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                        ></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-resizable">
+                            <span class="slds-resizable__handle">
+                                <span class="slds-resizable__divider"></span>
+                            </span>
+                        </div>
+                    </th>
+                    <th
+                        aria-label="Stage"
+                        aria-sort="none"
+                        class="
+                            slds-is-resizable slds-is-sortable
+                            slds-cell_action-mode
+                        "
+                        scope="col"
+                    >
+                        <div
+                            class="slds-th__action slds-text-link_reset"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <span class="slds-assistive-text">Sort by: </span>
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-has-flexi-truncate
+                                "
+                            >
+                                <span
+                                    class="slds-truncate"
+                                    title="Stage"
+                                ></span>
+                                <span
+                                    class="
+                                        slds-icon_container
+                                        slds-icon-utility-arrowdown
+                                    "
+                                >
+                                    <svg
+                                        class="
+                                            slds-icon slds-icon-text-default
+                                            slds-is-sortable__icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                        ></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-resizable">
+                            <span class="slds-resizable__handle">
+                                <span class="slds-resizable__divider"></span>
+                            </span>
+                        </div>
+                    </th>
+                    <th
+                        aria-label="Confidence"
+                        aria-sort="none"
+                        class="
+                            slds-is-resizable slds-is-sortable
+                            slds-cell_action-mode
+                        "
+                        scope="col"
+                    >
+                        <div
+                            class="slds-th__action slds-text-link_reset"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <span class="slds-assistive-text">Sort by: </span>
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-has-flexi-truncate
+                                "
+                            >
+                                <span
+                                    class="slds-truncate"
+                                    title="Confidence"
+                                ></span>
+                                <span
+                                    class="
+                                        slds-icon_container
+                                        slds-icon-utility-arrowdown
+                                    "
+                                >
+                                    <svg
+                                        class="
+                                            slds-icon slds-icon-text-default
+                                            slds-is-sortable__icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                        ></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-resizable">
+                            <span class="slds-resizable__handle">
+                                <span class="slds-resizable__divider"></span>
+                            </span>
+                        </div>
+                    </th>
+                    <th
+                        aria-label="Amount"
+                        aria-sort="none"
+                        class="
+                            slds-is-resizable slds-is-sortable
+                            slds-cell_action-mode
+                        "
+                        scope="col"
+                    >
+                        <div
+                            class="slds-th__action slds-text-link_reset"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <span class="slds-assistive-text">Sort by: </span>
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-has-flexi-truncate
+                                "
+                            >
+                                <span
+                                    class="slds-truncate"
+                                    title="Amount"
+                                ></span>
+                                <span
+                                    class="
+                                        slds-icon_container
+                                        slds-icon-utility-arrowdown
+                                    "
+                                >
+                                    <svg
+                                        class="
+                                            slds-icon slds-icon-text-default
+                                            slds-is-sortable__icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                        ></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-resizable">
+                            <span class="slds-resizable__handle">
+                                <span class="slds-resizable__divider"></span>
+                            </span>
+                        </div>
+                    </th>
+                    <th
+                        aria-label="Contact"
+                        aria-sort="none"
+                        class="
+                            slds-is-resizable slds-is-sortable
+                            slds-cell_action-mode
+                        "
+                        scope="col"
+                    >
+                        <div
+                            class="slds-th__action slds-text-link_reset"
+                            role="button"
+                            tabindex="0"
+                        >
+                            <span class="slds-assistive-text">Sort by: </span>
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-has-flexi-truncate
+                                "
+                            >
+                                <span
+                                    class="slds-truncate"
+                                    title="Contact"
+                                ></span>
+                                <span
+                                    class="
+                                        slds-icon_container
+                                        slds-icon-utility-arrowdown
+                                    "
+                                >
+                                    <svg
+                                        class="
+                                            slds-icon slds-icon-text-default
+                                            slds-is-sortable__icon
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#arrowdown"
+                                        ></use>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="slds-resizable">
+                            <span class="slds-resizable__handle">
+                                <span class="slds-resizable__divider"></span>
+                            </span>
+                        </div>
+                    </th>
+                    <th
+                        class="slds-cell_action-mode"
+                        scope="col"
+                        style="width: 3.25rem"
+                    >
+                        <div
+                            class="slds-truncate slds-assistive-text"
+                            title="Actions"
+                        >
+                            Actions
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr aria-selected="false" class="slds-hint-parent">
+                    <td class={datatableTDClass} role="gridcell">
+                        <div class="slds-checkbox">
+                            <input
+                                type="checkbox"
+                                name="options"
+                                id="checkbox-01"
+                                value="checkbox-01"
+                                tabindex="0"
+                                aria-labelledby="check-button-label-01 column-group-header"
+                                disabled=""
+                            />
+                            <label
+                                class="slds-checkbox__label"
+                                for="checkbox-01"
+                                id="check-button-label-01"
+                            >
+                                <span class="slds-checkbox_faux"></span>
+                                <span
+                                    class="
+                                        slds-form-element__label
+                                        slds-assistive-text
+                                    "
+                                    >Select item 1</span
+                                >
+                            </label>
+                        </div>
+                    </td>
+                    <th class={datatableTHClass} scope="row">
+                        <div class="slds-truncate" title="Acme - 1,200 Widgets">
+                            <a href="#" tabindex="0"></a>
+                        </div>
+                    </th>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="Acme"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="4/10/15"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div
+                            class="slds-truncate"
+                            title="Value Proposition"
+                        ></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="30%"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="$25,000,000"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="jrogers@acme.com">
+                            <a href="#" tabindex="0"></a>
+                        </div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell"></td>
+                </tr>
+                <tr aria-selected="false" class="slds-hint-parent">
+                    <td class={datatableTDClass} role="gridcell">
+                        <div class="slds-checkbox">
+                            <input
+                                type="checkbox"
+                                name="options"
+                                id="checkbox-02"
+                                value="checkbox-02"
+                                tabindex="0"
+                                aria-labelledby="check-button-label-02 column-group-header"
+                                disabled=""
+                            />
+                            <label
+                                class="slds-checkbox__label"
+                                for="checkbox-02"
+                                id="check-button-label-02"
+                            >
+                                <span class="slds-checkbox_faux"></span>
+                                <span
+                                    class="
+                                        slds-form-element__label
+                                        slds-assistive-text
+                                    "
+                                ></span>
+                            </label>
+                        </div>
+                    </td>
+                    <th class={datatableTHClass} scope="row">
+                        <div class="slds-truncate" title="Acme - 200 Widgets">
+                            <a href="#" tabindex="0"></a>
+                        </div>
+                    </th>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="Acme"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="1/31/15"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="Prospecting"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="60%"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="$5,000,000"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="bob@acme.com">
+                            <a href="#" tabindex="0"></a>
+                        </div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell"></td>
+                </tr>
+                <tr aria-selected="false" class="slds-hint-parent">
+                    <td class={datatableTDClass} role="gridcell">
+                        <div class="slds-checkbox">
+                            <input
+                                type="checkbox"
+                                name="options"
+                                id="checkbox-03"
+                                value="checkbox-03"
+                                tabindex="0"
+                                aria-labelledby="check-button-label-03 column-group-header"
+                                disabled=""
+                            />
+                            <label
+                                class="slds-checkbox__label"
+                                for="checkbox-03"
+                                id="check-button-label-03"
+                            >
+                                <span class="slds-checkbox_faux"></span>
+                                <span
+                                    class="
+                                        slds-form-element__label
+                                        slds-assistive-text
+                                    "
+                                ></span>
+                            </label>
+                        </div>
+                    </td>
+                    <th class={datatableTHClass} scope="row">
+                        <div
+                            class="slds-truncate"
+                            title="salesforce.com - 1,000 Widgets"
+                        >
+                            <a href="#" tabindex="0"></a>
+                        </div>
+                    </th>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="salesforce.com"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="1/31/15 3:45PM"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div
+                            class="slds-truncate"
+                            title="Id. Decision Makers"
+                        ></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="70%"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div class="slds-truncate" title="$25,000"></div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell">
+                        <div
+                            class="slds-truncate"
+                            title="nathan@salesforce.com"
+                        >
+                            <a href="#" tabindex="0"></a>
+                        </div>
+                    </td>
+                    <td class={datatableTHClass} role="gridcell"></td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
 </template>
