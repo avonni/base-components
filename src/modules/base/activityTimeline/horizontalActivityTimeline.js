@@ -324,38 +324,6 @@ export class HorizontalActivityTimeline {
     }
 
     addItemsToTimeline(dataToDisplay) {
-        // Handler function for mouse over and mouse out
-        const handleMouseOutOnItem = function () {
-            d3.select(this.itemPopoverSelector).style('visibility', 'hidden');
-            this._activityTimeline.handleItemMouseLeave();
-        };
-
-        const handleMouseOverOnItem = function (element, event) {
-            // this.showItemPopOver = true;
-            // this.selectedItem = element;
-            this._activityTimeline.handleItemMouseOver(element);
-
-            const tooltipElement = d3.select(this.itemPopoverSelector);
-            const sizeClassToAdd =
-                (element.fields && element.fields.length > 0) ||
-                element.buttonLabel !== undefined
-                    ? 'avonni-activity-timeline__item-popover-with-fields'
-                    : element.hasError || element.description !== undefined
-                    ? 'avonni-activity-timeline__item-popover-with-errors'
-                    : '';
-
-            tooltipElement
-                .attr(
-                    'class',
-                    'slds-is-fixed avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
-                        sizeClassToAdd
-                )
-                .style('top', event.pageY - 10 + 'px')
-                .style('left', event.pageX - 10 + 'px')
-                .style('visibility', 'visible')
-                .on('mouseout', handleMouseOutOnItem.bind(this));
-        };
-
         //  <--- CREATE EACH ITEM --->
         dataToDisplay.forEach((item) => {
             const itemGroup = this._timelineSVG
@@ -365,136 +333,12 @@ export class HorizontalActivityTimeline {
 
             itemGroup
                 // TODO: change size to better fit popover content
-                .on('mouseover', handleMouseOverOnItem.bind(this, item))
-                .on('mouseout', handleMouseOutOnItem.bind(this, item));
+                .on('mouseover', this.handleMouseOverOnItem.bind(this, item))
+                .on('mouseout', this.handleMouseOutOnItem.bind(this));
         });
     }
 
     addTimeIntervalToScrollAxis() {
-        // <--- DRAW VIEW INTERVAL (BLUE RECT) -->
-        const handleTimeIntervalDrag = function (event) {
-            if (!this._changeIntervalSizeMode) {
-                // To allow only horizontal drag
-                const xPosition = this.validateXMousePosition(
-                    event.sourceEvent.offsetX
-                );
-                this._timeIntervalSelector
-                    .attr('x', xPosition)
-                    .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
-
-                // Refresh timeline view (renderedCallback() is called)
-                this._intervalMinDate = this.scrollTimeScale
-                    .invert(xPosition)
-                    .setHours(0, 0, 0, 0);
-
-                this.setIntervalMaxDate();
-                this._activityTimeline.renderedCallback();
-            }
-        };
-
-        const handleLowerBoundIntervalDrag = function (event) {
-            if (this._changeIntervalSizeMode) {
-                const minXPosition = this.scrollTimeScale(
-                    this.scrollAxisMinDate
-                );
-                const maxXPosition = this.scrollTimeScale(
-                    this._intervalMaxDate
-                );
-                let xPosition = event.x;
-
-                if (xPosition < minXPosition) {
-                    xPosition = minXPosition;
-                } else if (xPosition > maxXPosition) {
-                    xPosition = maxXPosition;
-                }
-
-                const newRectangleWidth =
-                    this.scrollTimeScale(this._intervalMaxDate) - xPosition;
-                this._timeIntervalSelector
-                    .attr('x', xPosition)
-                    .attr('width', newRectangleWidth);
-            }
-        };
-
-        const handleLowerBoundIntervalChange = function () {
-            this.cancelEditIntervalSizeMode();
-            const xDateMinPosition = this._timeIntervalSelector.attr('x');
-            this._intervalMinDate = this.scrollTimeScale
-                .invert(xDateMinPosition)
-                .setHours(0, 0, 0, 0);
-            this._intervalDaysLength = this.calculateDaysBetweenDates(
-                this._intervalMinDate,
-                this._intervalMaxDate
-            );
-
-            // refresh view
-            this._activityTimeline.renderedCallback();
-        };
-
-        const handleUpperBoundIntervalDrag = function (event) {
-            if (this._changeIntervalSizeMode) {
-                const minXPosition = this.scrollTimeScale(
-                    this._intervalMinDate
-                );
-                const maxXPosition = this.scrollTimeScale(
-                    this.scrollAxisMaxDate
-                );
-                let xPosition = event.x;
-
-                if (xPosition < minXPosition) {
-                    xPosition = minXPosition;
-                } else if (xPosition > maxXPosition) {
-                    xPosition = maxXPosition;
-                }
-
-                const newRectangleWidth =
-                    xPosition - this.scrollTimeScale(this._intervalMinDate);
-                this._timeIntervalSelector
-                    .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
-                    .attr('width', newRectangleWidth);
-            }
-        };
-
-        const handleUpperBoundIntervalChange = function () {
-            this.cancelEditIntervalSizeMode();
-            const newIntervalWidth = Number(
-                this._timeIntervalSelector.attr('width')
-            );
-            const xPositionMaxDate =
-                this.scrollTimeScale(this._intervalMinDate) + newIntervalWidth;
-            this._intervalMaxDate = this.scrollTimeScale
-                .invert(xPositionMaxDate)
-                .setHours(23, 59, 59, 999);
-            this._intervalDaysLength = this.calculateDaysBetweenDates(
-                this._intervalMinDate,
-                this._intervalMaxDate
-            );
-
-            // refresh view
-            this._activityTimeline.renderedCallback();
-        };
-
-        const handleClickOnInterval = function () {
-            this._changeIntervalSizeMode = !this._changeIntervalSizeMode;
-
-            if (this._changeIntervalSizeMode) {
-                this._timeIntervalSelector.attr(
-                    'fill',
-                    COLOR_CHANGE_INTERVAL_SIZE
-                );
-
-                // Display interval lines
-                this._leftIntervalLine
-                    .style('opacity', 1)
-                    .attr('class', RESIZE_CURSOR_CLASS);
-                this._rightIntervalLine
-                    .style('opacity', 1)
-                    .attr('class', RESIZE_CURSOR_CLASS);
-            } else {
-                this.cancelEditIntervalSizeMode();
-            }
-        };
-
         // < --- CREATE INTERVAL RECTANGLE -->
         this._timeIntervalSelector = this._scrollAxisSVG
             .append('g')
@@ -505,8 +349,8 @@ export class HorizontalActivityTimeline {
             .attr('height', this._timelineAxisHeight)
             .attr('opacity', 0.3)
             .attr('fill', this._scrollAxisColor)
-            .call(d3.drag().on('drag', handleTimeIntervalDrag.bind(this)))
-            .on('click', handleClickOnInterval.bind(this));
+            .call(d3.drag().on('drag', this.handleTimeIntervalDrag.bind(this)))
+            .on('click', this.handleClickOnInterval.bind(this));
 
         // <--- CREATE LEFT AND RIGHT LINE TO CHANGE WIDTH OF INTERVAL -->
         this._leftIntervalLine = this._scrollAxisSVG
@@ -521,8 +365,8 @@ export class HorizontalActivityTimeline {
             .call(
                 d3
                     .drag()
-                    .on('drag', handleLowerBoundIntervalDrag.bind(this))
-                    .on('end', handleLowerBoundIntervalChange.bind(this))
+                    .on('drag', this.handleLowerBoundIntervalDrag.bind(this))
+                    .on('end', this.handleLowerBoundIntervalChange.bind(this))
             );
 
         this._rightIntervalLine = this._scrollAxisSVG
@@ -537,8 +381,8 @@ export class HorizontalActivityTimeline {
             .call(
                 d3
                     .drag()
-                    .on('drag', handleUpperBoundIntervalDrag.bind(this))
-                    .on('end', handleUpperBoundIntervalChange.bind(this))
+                    .on('drag', this.handleUpperBoundIntervalDrag.bind(this))
+                    .on('end', this.handleUpperBoundIntervalChange.bind(this))
             );
     }
 
@@ -728,30 +572,6 @@ export class HorizontalActivityTimeline {
             .attr('transform', 'translate(0 ' + this._timelineAxisHeight + ')')
             .call(scrollAxis);
 
-        // To handle click on scroll axis to change interval value
-        const handleClickOnScrollAxis = function (event) {
-            if (!this._changeIntervalSizeMode) {
-                let xPosition = event.offsetX;
-                const highestMinDateXPosition =
-                    this.scrollTimeScale(this.scrollAxisMaxDate) -
-                    this.intervalWidth;
-
-                if (xPosition > highestMinDateXPosition) {
-                    xPosition = highestMinDateXPosition;
-                }
-
-                this._timeIntervalSelector
-                    .attr('x', xPosition)
-                    .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
-                this._intervalMinDate = this.scrollTimeScale
-                    .invert(xPosition)
-                    .setHours(0, 0, 0, 0);
-
-                this.setIntervalMaxDate();
-                this._activityTimeline.renderedCallback();
-            }
-        };
-
         // <--- CREATE RECT AROUND SCROLL AXIS --->
         this._scrollAxisSVG
             .append('rect')
@@ -761,7 +581,7 @@ export class HorizontalActivityTimeline {
             .attr('height', this._timelineAxisHeight)
             .attr('stroke', this._scrollAxisColor)
             .attr('fill', 'white')
-            .on('click', handleClickOnScrollAxis.bind(this));
+            .on('click', this.handleClickOnScrollAxis.bind(this));
 
         this.addItemsToScrollAxis();
         this.addTimeIntervalToScrollAxis();
@@ -923,5 +743,177 @@ export class HorizontalActivityTimeline {
             xPosition = minPosition;
         }
         return xPosition;
+    }
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENT HANDLER
+     * -------------------------------------------------------------
+     */
+
+    handleClickOnInterval() {
+        this._changeIntervalSizeMode = !this._changeIntervalSizeMode;
+
+        if (this._changeIntervalSizeMode) {
+            this._timeIntervalSelector.attr('fill', COLOR_CHANGE_INTERVAL_SIZE);
+
+            // Display interval lines
+            this._leftIntervalLine
+                .style('opacity', 1)
+                .attr('class', RESIZE_CURSOR_CLASS);
+            this._rightIntervalLine
+                .style('opacity', 1)
+                .attr('class', RESIZE_CURSOR_CLASS);
+        } else {
+            this.cancelEditIntervalSizeMode();
+        }
+    }
+
+    // To handle click on scroll axis to change interval value
+    handleClickOnScrollAxis(event) {
+        if (!this._changeIntervalSizeMode) {
+            let xPosition = event.offsetX;
+            const highestMinDateXPosition =
+                this.scrollTimeScale(this.scrollAxisMaxDate) -
+                this.intervalWidth;
+
+            if (xPosition > highestMinDateXPosition) {
+                xPosition = highestMinDateXPosition;
+            }
+
+            this._timeIntervalSelector
+                .attr('x', xPosition)
+                .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
+            this._intervalMinDate = this.scrollTimeScale
+                .invert(xPosition)
+                .setHours(0, 0, 0, 0);
+
+            this.setIntervalMaxDate();
+            this._activityTimeline.renderedCallback();
+        }
+    }
+
+    handleLowerBoundIntervalChange() {
+        this.cancelEditIntervalSizeMode();
+        const xDateMinPosition = this._timeIntervalSelector.attr('x');
+        this._intervalMinDate = this.scrollTimeScale
+            .invert(xDateMinPosition)
+            .setHours(0, 0, 0, 0);
+        this._intervalDaysLength = this.calculateDaysBetweenDates(
+            this._intervalMinDate,
+            this._intervalMaxDate
+        );
+
+        // refresh view
+        this._activityTimeline.renderedCallback();
+    }
+
+    handleLowerBoundIntervalDrag(event) {
+        if (this._changeIntervalSizeMode) {
+            const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
+            const maxXPosition = this.scrollTimeScale(this._intervalMaxDate);
+            let xPosition = event.x;
+
+            if (xPosition < minXPosition) {
+                xPosition = minXPosition;
+            } else if (xPosition > maxXPosition) {
+                xPosition = maxXPosition;
+            }
+
+            const newRectangleWidth =
+                this.scrollTimeScale(this._intervalMaxDate) - xPosition;
+            this._timeIntervalSelector
+                .attr('x', xPosition)
+                .attr('width', newRectangleWidth);
+        }
+    }
+
+    // Handler function for mouse over and mouse out
+    handleMouseOutOnItem() {
+        d3.select(this.itemPopoverSelector).style('visibility', 'hidden');
+        this._activityTimeline.handleItemMouseLeave();
+    }
+
+    handleMouseOverOnItem(element, event) {
+        this._activityTimeline.handleItemMouseOver(element);
+
+        const tooltipElement = d3.select(this.itemPopoverSelector);
+        const sizeClassToAdd =
+            (element.fields && element.fields.length > 0) ||
+            element.buttonLabel !== undefined
+                ? 'avonni-activity-timeline__item-popover-with-fields'
+                : element.hasError || element.description !== undefined
+                ? 'avonni-activity-timeline__item-popover-with-errors'
+                : '';
+
+        tooltipElement
+            .attr(
+                'class',
+                'slds-is-fixed avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
+                    sizeClassToAdd
+            )
+            .style('top', event.pageY - 10 + 'px')
+            .style('left', event.pageX - 10 + 'px')
+            .style('visibility', 'visible')
+            .on('mouseout', this.handleMouseOutOnItem.bind(this));
+    }
+
+    handleTimeIntervalDrag(event) {
+        if (!this._changeIntervalSizeMode) {
+            // To allow only horizontal drag
+            const xPosition = this.validateXMousePosition(
+                event.sourceEvent.offsetX
+            );
+            this._timeIntervalSelector
+                .attr('x', xPosition)
+                .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
+
+            // Refresh timeline view (renderedCallback() is called)
+            this._intervalMinDate = this.scrollTimeScale
+                .invert(xPosition)
+                .setHours(0, 0, 0, 0);
+
+            this.setIntervalMaxDate();
+            this._activityTimeline.renderedCallback();
+        }
+    }
+
+    handleUpperBoundIntervalChange() {
+        this.cancelEditIntervalSizeMode();
+        const newIntervalWidth = Number(
+            this._timeIntervalSelector.attr('width')
+        );
+        const xPositionMaxDate =
+            this.scrollTimeScale(this._intervalMinDate) + newIntervalWidth;
+        this._intervalMaxDate = this.scrollTimeScale
+            .invert(xPositionMaxDate)
+            .setHours(23, 59, 59, 999);
+        this._intervalDaysLength = this.calculateDaysBetweenDates(
+            this._intervalMinDate,
+            this._intervalMaxDate
+        );
+
+        // refresh view
+        this._activityTimeline.renderedCallback();
+    }
+
+    handleUpperBoundIntervalDrag(event) {
+        if (this._changeIntervalSizeMode) {
+            const minXPosition = this.scrollTimeScale(this._intervalMinDate);
+            const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
+            let xPosition = event.x;
+
+            if (xPosition < minXPosition) {
+                xPosition = minXPosition;
+            } else if (xPosition > maxXPosition) {
+                xPosition = maxXPosition;
+            }
+
+            const newRectangleWidth =
+                xPosition - this.scrollTimeScale(this._intervalMinDate);
+            this._timeIntervalSelector
+                .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
+                .attr('width', newRectangleWidth);
+        }
     }
 }
