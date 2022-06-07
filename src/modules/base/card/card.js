@@ -31,7 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 import { normalizeString } from '../utilsPrivate/normalize';
 
 const MEDIA_POSITIONS = {
@@ -87,8 +87,6 @@ export default class Card extends LightningElement {
         }
 
         this._showMedia = !!this.mediaSrc || this.showMediaSlot;
-
-        // console.log(this._showMedia, this.showDefaultSlot);
     }
 
     /**
@@ -144,7 +142,6 @@ export default class Card extends LightningElement {
      * @type {Element}
      */
     get defaultSlot() {
-        console.log(this.template.querySelector('slot:not([name])'));
         return this.template.querySelector('slot:not([name])');
     }
 
@@ -215,15 +212,8 @@ export default class Card extends LightningElement {
 
     // private
 
-    /**
-     * Generate unique ID key.
-     */
-    get generateKey() {
-        return generateUUID();
-    }
-
     get computedCardClasses() {
-        return classSet('avonni-card__flex-container')
+        return classSet('avonni-card__body-container')
             .add({ 'image-top': this.mediaPosition === 'top' })
             .add({ 'image-left': this.mediaPosition === 'left' })
             .add({ 'image-right': this.mediaPosition === 'right' })
@@ -241,7 +231,7 @@ export default class Card extends LightningElement {
     }
 
     get computedMediaClasses() {
-        return classSet('avonni-card__image-container')
+        return classSet('avonni-card__media-container')
             .add({ 'hide-media': !this.showMedia })
             .toString();
     }
@@ -259,11 +249,6 @@ export default class Card extends LightningElement {
     }
 
     get computedCenterDefaultSlotClasses() {
-        console.log(
-            this.showDefaultSlot,
-            this.showMedia,
-            this.mediaPosition !== 'center'
-        );
         return classSet('avonni-card__center-default-slot')
             .add({
                 'hide-default-slot':
@@ -281,10 +266,6 @@ export default class Card extends LightningElement {
      */
     get hasStringTitle() {
         return !!this.title;
-    }
-
-    get showCenterMedia() {
-        return this.mediaPosition === 'center';
     }
 
     get showMedia() {

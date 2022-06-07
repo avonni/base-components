@@ -35,27 +35,26 @@
 <template>
     <article class="avonni-card">
         <div class={computedCardClasses}>
-            <!-- only used for media center -->
+            <!-- content for center media -->
             <div class={computedCenterDefaultSlotClasses}>
-                center
-                <slot class="avonni-card__default-area"></slot>
+                <slot></slot>
             </div>
 
             <!-- media -->
             <div class={computedMediaClasses}>
                 <img
-                    class="avonni-card__image"
+                    class="avonni-card__media"
                     src={mediaSrc}
                     if:true={mediaSrc}
                 />
                 <slot name="media"></slot>
-                <div class="avonni-card__media-actions">
+                <div class="avonni-card__media-action">
                     <slot name="media-action"></slot>
                 </div>
             </div>
 
             <!-- title and action -->
-            <div class="slds-has-flexi-truncate avonni-card__body-container">
+            <div class="slds-has-flexi-truncate avonni-card__content-container">
                 <header
                     class="
                         slds-grid slds-has-flexi-truncate
@@ -75,20 +74,21 @@
                             size="small"
                         ></lightning-icon>
 
-                        <div if:true={hasStringTitle} class="slds-truncate">
-                            <h2 class="avonni-card__title-text slds-truncate">
-                                {title}
-                            </h2>
-                        </div>
+                        <h2
+                            if:true={hasStringTitle}
+                            class="avonni-card__title-text slds-truncate"
+                            title={title}
+                        >
+                            {title}
+                        </h2>
 
-                        <div class="slds-truncate">
-                            <slot name="title" class="slds-truncate"></slot>
-                        </div>
+                        <slot name="title"></slot>
                     </div>
 
-                    <div class="avonni-card__action-slot slds-col slds-no-flex">
-                        <slot name="action"></slot>
-                    </div>
+                    <slot
+                        class="avonni-card__action-slot slds-col slds-no-flex"
+                        name="action"
+                    ></slot>
                 </header>
 
                 <!-- default content -->
@@ -98,8 +98,9 @@
             </div>
         </div>
 
-        <div class={computedFooterClasses}>
+        <!-- footer -->
+        <footer class={computedFooterClasses}>
             <slot name="footer"></slot>
-        </div>
+        </footer>
     </article>
 </template>
