@@ -79,8 +79,8 @@
                             data-index={index}
                             data-group-name="input"
                             oninput={handleChange}
-                            onmousedown={showBubble}
-                            onmouseup={hideBubble}
+                            onmousedown={showPin}
+                            onmouseup={hidePin}
                         />
                         <div
                             if:true={pin}
@@ -106,11 +106,11 @@
                 </div>
             </div>
         </template>
-        <div class="avonni-slider__progress-container">
+        <div class="avonni-slider__track-container">
             <div
                 if:false={removeTrack}
                 class={computedProgressClass}
-                data-element-id="progress-bar"
+                data-element-id="track"
             ></div>
         </div>
         <template if:true={showAnyTickMarks}>
@@ -161,7 +161,7 @@
             <template for:each={customLabels} for:item="customLabel">
                 <div
                     class="avonni-slider__custom-label-wrapper"
-                    key={customLabel.value}
+                    key={generateKey}
                 >
                     <div
                         data-value={customLabel.value}

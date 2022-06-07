@@ -535,8 +535,7 @@ Vertical.args = {
 export const Colored = ColoredTemplate.bind({});
 Colored.args = {
     label: 'Colored slider',
+    showTickMarks: true,
+    step: 5,
     pin: true
 };
-
-//TODO: storybook wrapper for colored slider (try rainbow)
-//TODO: storybook wrapper for margin custom labels
