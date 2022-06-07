@@ -58,12 +58,9 @@
                 </div>
             </div>
         </template>
-        <!-- HORIZONTAL TIMELINE -->
+        <!-- Horizontal timeline -->
         <template if:true={isTimelineHorizontal}>
-            <!-- TESTING -->
-            <div class="testing-d3" lwc:dom="manual"></div>
-
-            <!-- HORIZONTAL TIMELINE WITH D3 -->
+            <!-- Horizontal timeline with D3 -->
             <div class="avonni-activity-timeline__horizontal-timeline">
                 <div
                     class="
@@ -89,7 +86,7 @@
                 ></div>
             </div>
 
-            <!-- POPOVER ITEM -->
+            <!-- Popover item -->
             <div
                 if:true={showItemPopOver}
                 class="avonni-activity-timeline__item-popover"
@@ -119,7 +116,7 @@
                 </c-primitive-activity-timeline-item>
             </div>
         </template>
-        <!-- VERTICAL TIMELINE -->
+        <!-- Vertical timeline -->
         <template if:false={isTimelineHorizontal}>
             <template if:true={noGroupBy}>
                 <ul class="slds-timeline">
