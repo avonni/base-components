@@ -799,6 +799,9 @@ export default class Scheduler extends LightningElement {
     }
     set rows(value) {
         this._resources = normalizeArray(value, 'object');
+        console.warn(
+            'The "rows" attribute is deprecated. Use "resources" instead.'
+        );
 
         if (this._connected) {
             this.initResources();
@@ -817,6 +820,9 @@ export default class Scheduler extends LightningElement {
     }
     set rowsKeyField(value) {
         this._resourcesKeyField = value ? value.toString() : undefined;
+        console.warn(
+            'The "rows-key-field" attribute is deprecated. Use "resources-key-field" instead.'
+        );
 
         if (this._connected) {
             this.initResources();
