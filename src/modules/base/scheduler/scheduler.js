@@ -1175,21 +1175,6 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
-     * Computed CSS classes for the schedule wrapper.
-     *
-     * @type {string}
-     */
-    get scheduleWrapperClass() {
-        return classSet(
-            'slds-grid slds-is-relative avonni-scheduler__wrapper slds-theme_shade'
-        )
-            .add({
-                'avonni-scheduler__wrapper_vertical': this.isVertical
-            })
-            .toString();
-    }
-
-    /**
      * Formated starting date of the currently selected event.
      *
      * @type {string}
@@ -1650,6 +1635,15 @@ export default class Scheduler extends LightningElement {
             this.template.host.style = `
                 --avonni-scheduler-cell-height: ${this.cellHeight}px;
             `;
+            const resourceHeaders = this.template.querySelector(
+                '[data-element-id="div-vertical-resource-headers"]'
+            );
+            const scheduleWrapper = this.template.querySelector(
+                '[data-element-id="div-schedule-wrapper"]'
+            );
+            const scrollBarWidth =
+                scheduleWrapper.offsetWidth - scheduleWrapper.clientWidth;
+            resourceHeaders.style.paddingRight = `${scrollBarWidth}px`;
         } else {
             const resourceElements = this.template.querySelectorAll(
                 '[data-element-id="div-resource"]'

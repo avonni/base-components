@@ -149,9 +149,9 @@
             slds-grid
             slds-theme_shade
             slds-border_bottom
-            slds-p-right_medium
             slds-scrollable_none
         "
+        data-element-id="div-vertical-resource-headers"
     >
         <div
             class="
@@ -193,7 +193,11 @@
     </div>
 
     <div
-        class={scheduleWrapperClass}
+        class="
+            slds-grid slds-is-relative
+            avonni-scheduler__wrapper
+            slds-theme_shade
+        "
         data-element-id="div-schedule-wrapper"
         onmouseup={handleMouseUp}
         onmousemove={handleMouseMove}

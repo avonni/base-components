@@ -36,9 +36,6 @@
     max-height: 100vh;
     overflow: auto;
 }
-.avonni-scheduler__wrapper_vertical {
-    overflow-y: scroll;
-}
 
 .avonni-scheduler__first-col {
     background-color: #f3f3f3;

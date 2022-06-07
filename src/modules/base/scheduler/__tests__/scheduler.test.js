@@ -2129,13 +2129,6 @@ describe('Scheduler', () => {
             );
             expect(horizontalHeaders).toBeTruthy();
 
-            const scheduleWrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-schedule-wrapper"]'
-            );
-            expect(scheduleWrapper.classList).not.toContain(
-                'avonni-scheduler__wrapper_vertical'
-            );
-
             const splitter = element.shadowRoot.querySelector(
                 '[data-element-id="div-splitter"]'
             );
@@ -2211,13 +2204,6 @@ describe('Scheduler', () => {
             );
             expect(scheduleCol.classList).toContain(
                 'avonni-scheduler__schedule-col_vertical'
-            );
-
-            const scheduleWrapper = element.shadowRoot.querySelector(
-                '[data-element-id="div-schedule-wrapper"]'
-            );
-            expect(scheduleWrapper.classList).toContain(
-                'avonni-scheduler__wrapper_vertical'
             );
 
             const splitter = element.shadowRoot.querySelector(
