@@ -170,6 +170,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isInputVariant() {
+        return this.variant === 'input';
+    }
+
+    @api
     get isRegularVariant() {
         return (
             this.variant === 'text' ||
@@ -225,6 +230,11 @@ export default class Skeleton extends LightningElement {
     @api
     get hideTableHeader() {
         return this.variantAttributes.hideTableHeader;
+    }
+
+    @api
+    get inputRequired() {
+        return this.variantAttributes.required;
     }
 
     @api
@@ -488,6 +498,24 @@ export default class Skeleton extends LightningElement {
 
     get datatableTHClass() {
         return classSet('slds-cell_action-mode').add(
+            `avonni-skeleton__animation-${this.animation}`
+        );
+    }
+
+    get inputClass() {
+        return classSet('slds-input')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .add('avonni-skeleton__input');
+    }
+
+    get inputLabelClass() {
+        return classSet('slds-list_horizontal').add(
+            'avonni-skeleton__input-label'
+        );
+    }
+
+    get inputLabelTagClass() {
+        return classSet('avonni-skeleton__input-label-tag').add(
             `avonni-skeleton__animation-${this.animation}`
         );
     }

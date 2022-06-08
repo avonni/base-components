@@ -84,6 +84,7 @@ export default {
                 'combobox',
                 'circular',
                 'datatable',
+                'input',
                 'rectangular',
                 'text'
             ],
@@ -188,5 +189,15 @@ Datatable.args = {
     variantAttributes: {
         hideCheckboxColumn: false,
         hideTableHeader: false
+    }
+};
+
+export const Input = Template.bind({});
+Input.args = {
+    variant: 'input',
+    animation: 'pulse',
+    variantAttributes: {
+        variant: '',
+        required: true
     }
 };

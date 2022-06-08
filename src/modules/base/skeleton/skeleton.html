@@ -153,6 +153,21 @@
             data-element-id="button-icon"
         ></button>
     </template>
+    <template if:true={isInputVariant}>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">
+                <div class={inputLabelClass}>
+                    <template if:true={inputRequired}>
+                        <abbr class="slds-required">*</abbr>
+                    </template>
+                    <div class={inputLabelTagClass}></div>
+                </div>
+            </label>
+            <div class="slds-form-element__control">
+                <input class={inputClass} required type="text" />
+            </div>
+        </div>
+    </template>
     <template if:true={isComboboxVariant}>
         <!-- <div data-element-id="avonni-skeleton"></div> -->
         <div class={computedComboboxLabelClass} data-element-id="span-label">

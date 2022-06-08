@@ -233,6 +233,19 @@
     background-color: var(--avonni-skeleton-color-background);
 }
 
+.avonni-skeleton__input {
+}
+
+.avonni-skeleton__input-label {
+    align-items: center;
+}
+
+.avonni-skeleton__input-label-tag {
+    border-radius: var(--avonni-skeleton-radius-border);
+    height: 1em;
+    width: 3em;
+}
+
 .avonni-skeleton__variant-avatar {
     border-color: var(--avonni-skeleton-color-border);
     border-radius: var(--avonni-skeleton-radius-border);
