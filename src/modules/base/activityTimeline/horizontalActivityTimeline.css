@@ -55,10 +55,6 @@
     padding: 0px;
 }
 
-.avonni-activity-timeline__horizontal-timeline-scrolling-container {
-    height: 350px;
-}
-
 .avonni-activity-timeline__horizontal-timeline-resize-cursor {
     cursor: col-resize;
 }

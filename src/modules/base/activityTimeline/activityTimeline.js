@@ -60,6 +60,7 @@ const BUTTON_VARIANTS = {
 const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
 const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
 const DEFAULT_ITEM_ICON_SIZE = 'small';
+const DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL = 10;
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
     default: undefined
@@ -172,11 +173,7 @@ export default class ActivityTimeline extends LightningElement {
         this.initActivityTimeline();
 
         if (this.isTimelineHorizontal) {
-            this.horizontalTimeline = new HorizontalActivityTimeline(
-                this,
-                this.sortedItems
-            );
-            this.horizontalTimeline.setDefaultIntervalDates();
+            this.initializeHorizontalTimeline();
         }
     }
 
@@ -185,9 +182,9 @@ export default class ActivityTimeline extends LightningElement {
             if (!this._resizeObserver) {
                 this._resizeObserver = this.initResizeObserver();
             }
-
             this.horizontalTimeline.createHorizontalActivityTimeline(
-                this.sortedItems
+                this.sortedItems,
+                this._maxVisibleItems
             );
             this.updateHorizontalTimelineHeader();
         }
@@ -553,7 +550,10 @@ export default class ActivityTimeline extends LightningElement {
                       (a, b) =>
                           new Date(a.datetimeValue) - new Date(b.datetimeValue)
                   );
-        return this.showMore && !this.isShowButtonHidden && this.maxVisibleItems
+        return this.showMore &&
+            !this.isShowButtonHidden &&
+            this.maxVisibleItems &&
+            !this.isTimelineHorizontal
             ? items.splice(0, this.maxVisibleItems)
             : items;
     }
@@ -629,6 +629,20 @@ export default class ActivityTimeline extends LightningElement {
     initActivityTimeline() {
         this.sortDates();
         this.groupDates();
+    }
+
+    /**
+     * Initialize horizontal activity timeline.
+     */
+    initializeHorizontalTimeline() {
+        if (!this._maxVisibleItems) {
+            this._maxVisibleItems = DEFAULT_MAX_VISIBLE_ITEMS_HORIZONTAL;
+        }
+        this.horizontalTimeline = new HorizontalActivityTimeline(
+            this,
+            this.sortedItems
+        );
+        this.horizontalTimeline.setDefaultIntervalDates();
     }
 
     /**

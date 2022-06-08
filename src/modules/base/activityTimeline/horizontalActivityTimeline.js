@@ -44,6 +44,7 @@ const DEFAULT_TIMELINE_AXIS_OFFSET = 40;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const INTERVAL_RECTANGLE_OFFSET_Y = 0.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
+const MAX_ITEM_LENGTH = 230;
 const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
@@ -72,7 +73,7 @@ const LWC_ICONS_CLASS = {
 // TODO: Fix popover size
 // TODO: Handle if screen is smaller --> timeline axis label overlap --> change size
 // TODO: Last item : click/drag
-// TODO: Use max-visible-items to set height : default is 10 items. 10 * hauteur
+// TODO: Scroll bar disappeared
 
 // ** QA/tests/Doc **
 // TODO: Refactor
@@ -84,7 +85,6 @@ export class HorizontalActivityTimeline {
     _intervalMinDate = DEFAULT_INTERVAL_MIN_DATE;
     _intervalMaxDate;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
-    _intervalIncrement = 2;
 
     _dateFormat = DEFAULT_DATE_FORMAT;
     _timelineWidth = DEFAULT_TIMELINE_WIDTH;
@@ -95,8 +95,14 @@ export class HorizontalActivityTimeline {
     _scrollAxisColor = DEFAULT_AXIS_SCROLL_COLOR;
     _maxYPositionOfItem = 0;
     _changeIntervalSizeMode = false;
-    _resizeObserver;
     _displayedItems = [];
+
+    // To change visible height of timeline
+    _requestHeightChange = false;
+    _previousMaxYPosition;
+    _maxVisibleItems;
+    _timelineHeightDisplayed;
+    _maxDisplayedItems;
 
     // D3 selector
     _timelineDiv;
@@ -113,14 +119,16 @@ export class HorizontalActivityTimeline {
         this._activityTimeline = activityTimeline;
     }
 
-    createHorizontalActivityTimeline(sortedItems) {
+    createHorizontalActivityTimeline(sortedItems, maxVisibleItems) {
+        this.resetHorizontalTimeline();
         this._sortedItems = sortedItems;
 
-        // Set width to timeline div (screen)
-        this._timelineWidth =
-            this._activityTimeline.divHorizontalTimeline.clientWidth - 25;
+        if (this.isHeightDifferent(sortedItems, maxVisibleItems)) {
+            this._requestHeightChange = true;
+            this._maxVisibleItems = maxVisibleItems;
+        }
 
-        this.resetHorizontalTimeline();
+        this.setTimelineWidth();
         this.createTimelineScrollAxis();
         this.createTimeline();
         this.createTimelineAxis();
@@ -477,9 +485,13 @@ export class HorizontalActivityTimeline {
             Y_GAP_BETWEEN_ITEMS_TIMELINE
         );
 
+        if (this._requestHeightChange) {
+            this.setVisibleTimelineHeight();
+        }
+
         this._timelineHeight = Math.max(
             this._maxYPositionOfItem + 30,
-            DEFAULT_TIMELINE_HEIGHT
+            this._timelineHeightDisplayed
         );
 
         // <--- CREATE NEW SVG FOR TIMELINE --->
@@ -513,10 +525,10 @@ export class HorizontalActivityTimeline {
         this.addItemsToTimeline(dataToDisplay);
 
         // Activate scroll only if needed
-        if (this._timelineHeight > DEFAULT_TIMELINE_HEIGHT) {
-            d3.select(this.divTimelineScroll).style('overflow', 'scroll');
+        if (this._timelineHeight > this._timelineHeightDisplayed) {
+            d3.select(this.divTimelineScroll).style('overflow-y', 'scroll');
         } else {
-            d3.select(this.divTimelineScroll).style('overflow', 'hidden');
+            d3.select(this.divTimelineScroll).style('overflow-y', 'hidden');
         }
     }
 
@@ -591,6 +603,13 @@ export class HorizontalActivityTimeline {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + dayIncrement);
         return nextDate;
+    }
+
+    isHeightDifferent(sortedItems, maxVisibleItems) {
+        return (
+            maxVisibleItems !== this._maxVisibleItems ||
+            this._sortedItems.length !== sortedItems.length
+        );
     }
 
     // Select and remove all elements inside the horizontal timeline to build a new one
@@ -678,15 +697,49 @@ export class HorizontalActivityTimeline {
         );
     }
 
+    // Set width to timeline div (screen)
+    setTimelineWidth() {
+        if (this._activityTimeline.divHorizontalTimeline.clientWidth > 0) {
+            this._timelineWidth =
+                this._activityTimeline.divHorizontalTimeline.clientWidth - 25;
+        }
+    }
+
+    setVisibleTimelineHeight() {
+        if (
+            !this._previousMaxYPosition ||
+            this._maxYPositionOfItem >= this._previousMaxYPosition
+        ) {
+            this._previousMaxYPosition = this._maxYPositionOfItem;
+            this._maxDisplayedItems =
+                (this._maxYPositionOfItem - Y_START_POSITION_TIMELINE_ITEM) /
+                    Y_GAP_BETWEEN_ITEMS_TIMELINE +
+                1;
+        }
+        this._timelineHeightDisplayed =
+            this._maxVisibleItems * Y_GAP_BETWEEN_ITEMS_TIMELINE +
+            Y_START_POSITION_TIMELINE_ITEM * 1.5;
+
+        // To prevent timeline height to be bigger than the max number of items displayed
+        if (this._maxVisibleItems > this._maxDisplayedItems) {
+            this._timelineHeightDisplayed =
+                this._maxDisplayedItems * Y_GAP_BETWEEN_ITEMS_TIMELINE +
+                Y_START_POSITION_TIMELINE_ITEM * 1.5;
+        }
+
+        d3.select(this.divTimelineScroll).style(
+            'height',
+            this._timelineHeightDisplayed + 'px'
+        );
+        this._requestHeightChange = false;
+    }
+
     /**
      * Set the yPosition value of all items to prevent overlap of elements in horizontal timeline
      *
      * @returns array
      */
     setYPositionOfItems(items, yStartPosition, yGapBetweenItems) {
-        // TODO - CALCULATE REAL LENGTH OF EACH ITEM
-        const MAX_ITEM_LENGTH = 230;
-
         // Set all items with startPosition as yPosition and sort them by date
         let dataToDisplay = items.map((element) => ({
             ...element,
@@ -723,8 +776,11 @@ export class HorizontalActivityTimeline {
                 });
             }
 
-            // To find max y position
-            if (item.yPosition > this._maxYPositionOfItem) {
+            // Find max y position - only for timeline axis
+            if (
+                yStartPosition === Y_START_POSITION_TIMELINE_ITEM &&
+                item.yPosition > this._maxYPositionOfItem
+            ) {
                 this._maxYPositionOfItem = item.yPosition;
             }
         });
@@ -804,6 +860,8 @@ export class HorizontalActivityTimeline {
             this._intervalMaxDate
         );
 
+        this._requestHeightChange = true;
+
         // refresh view
         this._activityTimeline.renderedCallback();
     }
@@ -868,7 +926,6 @@ export class HorizontalActivityTimeline {
                 .attr('x', xPosition)
                 .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
 
-            // Refresh timeline view (renderedCallback() is called)
             this._intervalMinDate = this.scrollTimeScale
                 .invert(xPosition)
                 .setHours(0, 0, 0, 0);
@@ -893,6 +950,7 @@ export class HorizontalActivityTimeline {
             this._intervalMaxDate
         );
 
+        this._requestHeightChange = true;
         // refresh view
         this._activityTimeline.renderedCallback();
     }
