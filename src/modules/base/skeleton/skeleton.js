@@ -344,6 +344,31 @@ export default class Skeleton extends LightningElement {
      *
      * @type {string}
      */
+    get badgeClass() {
+        return classSet('avonni-badge')
+            .add({
+                'avonni-chip_outline': this.variantAttributes.outline
+            })
+            .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+            .add('avonni-skeleton__base')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
+    }
+
+    get badgeLabelClass() {
+        return (
+            classSet('avonni-skeleton__variant-text')
+                .add('avonni-skeleton__chip-label')
+                // .add(`avonni-skeleton__animation-${this.animation}`)
+                .toString()
+        );
+    }
+
+    /**
+     * Compute chip class style.
+     *
+     * @type {string}
+     */
     get chipClass() {
         return classSet('avonni-chip')
             .add({
@@ -395,12 +420,6 @@ export default class Skeleton extends LightningElement {
      */
     get computedComboboxGroupClass() {
         return this.showScopes ? 'slds-combobox-group' : undefined;
-    }
-
-    get badgeClass() {
-        return classSet('avonni-badge')
-            .add('avonni-skeleton__base')
-            .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     get slotClass() {

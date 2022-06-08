@@ -79,9 +79,7 @@
                 </span>
             </template>
             <!-- {chipLabel} -->
-            <template if:true={hasChipLabel}>
-                <div class={chipLabelClass} data-element-id="chip-label"></div>
-            </template>
+            <div class={chipLabelClass} data-element-id="chip-label"></div>
             <template if:true={chipHasIcon}>
                 <span
                     class="
@@ -97,29 +95,29 @@
     </template>
     <template if:true={isBadgeVariant}>
         <span class={badgeClass} data-element-id="span-wrapper">
-            <span class="slds-truncate">
-                <template if:false={badgeHasEndIcon}>
-                    <span
-                        class="
-                            slds-badge__icon slds-badge__icon_left
-                            avonni-skeleton__chip-slot-class
-                        "
-                    >
-                        <slot name="left"></slot>
-                    </span>
-                </template>
-                {badgeLabel}
-                <template if:true={badgeHasEndIcon}>
-                    <span
-                        class="
-                            slds-badge__icon slds-badge__icon_right
-                            avonni-skeleton__chip-slot-class
-                        "
-                    >
-                        <slot name="right"></slot>
-                    </span>
-                </template>
-            </span>
+            <!-- <span class="slds-truncate"> -->
+            <template if:false={badgeHasEndIcon}>
+                <span
+                    class="
+                        slds-badge__icon slds-badge__icon_left
+                        avonni-skeleton__chip-slot-class
+                    "
+                >
+                    <slot name="left"></slot>
+                </span>
+            </template>
+            <div class={badgeLabelClass} data-element-id="badge-label"></div>
+            <template if:true={badgeHasEndIcon}>
+                <span
+                    class="
+                        slds-badge__icon slds-badge__icon_right
+                        avonni-skeleton__chip-slot-class
+                    "
+                >
+                    <slot name="right"></slot>
+                </span>
+            </template>
+            <!-- </span> -->
         </span>
     </template>
     <template if:true={isBreadcrumbsVariant}>
