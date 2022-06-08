@@ -194,6 +194,10 @@
     z-index: 4;
 }
 
+.avonni-slider__slider {
+    cursor: pointer;
+}
+
 .avonni-slider__slider_above {
     z-index: 6;
 }
