@@ -301,10 +301,10 @@ export default class Slider extends LightningElement {
      * @default false
      */
     @api
-    get pin() {
+    get showPin() {
         return this._pin;
     }
-    set pin(value) {
+    set showPin(value) {
         this._pin = normalizeBoolean(value);
         this._domModified = true;
     }
@@ -801,23 +801,9 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Returns the track bar html element.
-     * @returns {object}
-     *
+     * Returns the current variable for styling hook of thumb radius.
+     * @returns {number}
      */
-    get _track() {
-        return this.template.querySelector('[data-element-id="track"]');
-    }
-
-    /**
-     *  Returns the tick ruler html element.
-     * @returns {object}
-     *
-     */
-    get _ruler() {
-        return this.template.querySelector('[data-element-id="ruler"]');
-    }
-
     get _inputThumbRadius() {
         const thumbRadius = parseInt(
             getComputedStyle(this.template.host)
@@ -828,6 +814,19 @@ export default class Slider extends LightningElement {
         return thumbRadius ? thumbRadius : 8;
     }
 
+    /**
+     * Returns the track bar html element.
+     * @returns {object}
+     *
+     */
+    get _track() {
+        return this.template.querySelector('[data-element-id="track"]');
+    }
+
+    /**
+     * Returns the current variable for styling hook of track height.
+     * @returns {number}
+     */
     get _trackHeight() {
         const trackHeight = parseInt(
             getComputedStyle(this.template.host)
@@ -836,6 +835,15 @@ export default class Slider extends LightningElement {
             10
         );
         return trackHeight ? trackHeight : 4;
+    }
+
+    /**
+     *  Returns the tick ruler html element.
+     * @returns {object}
+     *
+     */
+    get _ruler() {
+        return this.template.querySelector('[data-element-id="ruler"]');
     }
 
     /*
@@ -1391,7 +1399,7 @@ export default class Slider extends LightningElement {
     /**
      * Display pin.
      */
-    showPin(event) {
+    unhidePin(event) {
         if (this._pin) {
             this.setPinPosition(event);
             this.template

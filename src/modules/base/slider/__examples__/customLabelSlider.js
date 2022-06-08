@@ -45,7 +45,7 @@ export const CustomLabelSlider = ({
     unit,
     unitAttributes,
     value,
-    pin,
+    showPin,
     min,
     max,
     step,
@@ -54,7 +54,13 @@ export const CustomLabelSlider = ({
     showTickMarks,
     disableSwap,
     removeTrack,
-    minimumDistance
+    minimumDistance,
+    messageWhenRangeOverflow,
+    messageWhenRangeUnderflow,
+    messageWhenStepMismatch,
+    messageWhenValueMissing,
+    messageWhenBadInput,
+    messageWhenTypeMismatch
 }) => {
     const element = document.createElement('ac-custom-label-slider');
     element.label = label;
@@ -69,10 +75,16 @@ export const CustomLabelSlider = ({
     element.removeTrack = removeTrack;
     element.minimumDistance = minimumDistance;
     element.value = value;
-    element.pin = pin;
+    element.showPin = showPin;
     element.min = min || 0;
     element.max = max || 100;
     element.step = step || 1;
     element.disabled = disabled;
+    element.messageWhenRangeOverflow = messageWhenRangeOverflow;
+    element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
+    element.messageWhenStepMismatch = messageWhenStepMismatch;
+    element.messageWhenValueMissing = messageWhenValueMissing;
+    element.messageWhenBadInput = messageWhenBadInput;
+    element.messageWhenTypeMismatch = messageWhenTypeMismatch;
     return element;
 };

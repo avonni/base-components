@@ -84,7 +84,7 @@ export default {
                 category: 'Validation'
             }
         },
-        pin: {
+        showPin: {
             control: {
                 type: 'boolean'
             },
@@ -354,7 +354,7 @@ export default {
         disabled: false,
         max: 0,
         min: 0,
-        pin: false,
+        showPin: false,
         tickMarkStyle: 'inner-tick',
         showTickMarks: false,
         removeTrack: false,
@@ -381,7 +381,7 @@ Base.args = {
 export const Pin = Template.bind({});
 Pin.args = {
     label: 'Slide to view value pin',
-    pin: true
+    showPin: true
 };
 
 export const UnitPercent = Template.bind({});
@@ -392,7 +392,7 @@ UnitPercent.args = {
     step: 0.01,
     min: 0,
     max: 1,
-    pin: true
+    showPin: true
 };
 
 export const UnitCurrencyCAD = Template.bind({});
@@ -403,7 +403,7 @@ UnitCurrencyCAD.args = {
     unitAttributes: {
         currencyCode: 'CAD'
     },
-    pin: true
+    showPin: true
 };
 
 export const StepMinMax = Template.bind({});
@@ -414,7 +414,7 @@ StepMinMax.args = {
     max: 20,
     step: 5,
     showTickMarks: true,
-    pin: true
+    showPin: true
 };
 
 export const Range = Template.bind({});
@@ -537,5 +537,5 @@ Colored.args = {
     label: 'Colored slider',
     showTickMarks: true,
     step: 5,
-    pin: true
+    showPin: true
 };

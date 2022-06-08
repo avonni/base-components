@@ -42,7 +42,7 @@ export const Slider = ({
     unit,
     unitAttributes,
     value,
-    pin,
+    showPin,
     min,
     max,
     step,
@@ -56,9 +56,7 @@ export const Slider = ({
     messageWhenRangeUnderflow,
     messageWhenStepMismatch,
     messageWhenValueMissing,
-    messageWhenTooLong,
     messageWhenBadInput,
-    messageWhenPatternMismatch,
     messageWhenTypeMismatch
 }) => {
     const element = document.createElement('ac-slider');
@@ -74,7 +72,7 @@ export const Slider = ({
     element.removeTrack = removeTrack;
     element.minimumDistance = minimumDistance;
     element.value = value;
-    element.pin = pin;
+    element.showPin = showPin;
     element.min = min || 0;
     element.max = max || 100;
     element.step = step || 1;
@@ -83,9 +81,7 @@ export const Slider = ({
     element.messageWhenRangeUnderflow = messageWhenRangeUnderflow;
     element.messageWhenStepMismatch = messageWhenStepMismatch;
     element.messageWhenValueMissing = messageWhenValueMissing;
-    element.messageWhenTooLong = messageWhenTooLong;
     element.messageWhenBadInput = messageWhenBadInput;
-    element.messageWhenPatternMismatch = messageWhenPatternMismatch;
     element.messageWhenTypeMismatch = messageWhenTypeMismatch;
     return element;
 };

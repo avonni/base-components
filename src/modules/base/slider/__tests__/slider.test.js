@@ -87,7 +87,7 @@ describe('Slider', () => {
         expect(element.min).toEqual(0);
         expect(element.minimumDistance).toEqual(0);
         expect(element.label).toBeUndefined();
-        expect(element.pin).toEqual(false);
+        expect(element.showPin).toEqual(false);
         expect(element.removeTrack).toEqual(false);
         expect(element.showTickMarks).toEqual(false);
         expect(element.size).toEqual('full');
@@ -291,12 +291,12 @@ describe('Slider', () => {
         });
     });
 
-    //pin
-    it('pin = false', () => {
+    //showPin
+    it('showPin = false', () => {
         element.pin = false;
 
         return Promise.resolve().then(() => {
-            expect(element.pin).toEqual(false);
+            expect(element.showPin).toEqual(false);
             expect(
                 element.shadowRoot.querySelector(
                     '[data-group-name="pin"][data-index="0"]'
@@ -305,11 +305,11 @@ describe('Slider', () => {
         });
     });
 
-    it('pin = true', () => {
-        element.pin = true;
+    it('showPin = true', () => {
+        element.showPin = true;
 
         return Promise.resolve().then(() => {
-            expect(element.pin).toEqual(true);
+            expect(element.showPin).toEqual(true);
             expect(
                 element.shadowRoot.querySelector(
                     '[data-group-name="pin"][data-index="0"]'
@@ -360,8 +360,8 @@ describe('Slider', () => {
                 '[data-element-id="ruler"]'
             );
             expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('rect');
-            expect(ruler.childElementCount).toEqual(103);
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(101);
             element.showTickMarks = false;
         });
     });
@@ -490,7 +490,7 @@ describe('Slider', () => {
             );
             expect(ruler).toBeTruthy();
             expect(ruler.firstChild.tagName).toEqual('circle');
-            expect(ruler.childElementCount).toEqual(101);
+            expect(ruler.childElementCount).toEqual(99);
         });
     });
 
@@ -503,16 +503,15 @@ describe('Slider', () => {
                 '[data-element-id="ruler"]'
             );
             expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('rect');
-            expect(ruler.childNodes[3].tagName).toEqual('line');
-            expect(ruler.childElementCount).toEqual(103);
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(101);
         });
     });
 
     // type
     it('type = horizontal', () => {
         element.type = 'horizontal';
-        element.pin = true;
+        element.showPin = true;
 
         return Promise.resolve().then(() => {
             const wrapper =
@@ -540,7 +539,7 @@ describe('Slider', () => {
 
     it('type = vertical', () => {
         element.type = 'vertical';
-        element.pin = true;
+        element.showPin = true;
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
@@ -757,7 +756,7 @@ describe('Slider', () => {
             );
             expect(ruler).toBeTruthy();
             expect(ruler.firstChild.tagName).toEqual('circle');
-            expect(ruler.childElementCount).toEqual(5);
+            expect(ruler.childElementCount).toEqual(3);
         });
     });
 
@@ -785,9 +784,8 @@ describe('Slider', () => {
                 '[data-element-id="ruler"]'
             );
             expect(ruler).toBeTruthy();
-            expect(ruler.firstChild.tagName).toEqual('rect');
-            expect(ruler.childNodes[3].tagName).toEqual('line');
-            expect(ruler.childElementCount).toEqual(103);
+            expect(ruler.firstChild.tagName).toEqual('line');
+            expect(ruler.childElementCount).toEqual(101);
         });
     });
 
@@ -1171,9 +1169,9 @@ describe('Slider', () => {
     });
 
     // onmousedown and onmouseup on input
-    it('onmousedown on input && pin = true', () => {
+    it('onmousedown on input && showPin = true', () => {
         element.value = 25;
-        element.pin = true;
+        element.showPin = true;
         let pin;
         let input;
         return Promise.resolve()
@@ -1201,11 +1199,11 @@ describe('Slider', () => {
 
     /* ----- SCENARIOS ----- */
 
-    it('input change with pin = true)', () => {
+    it('input change with showPin = true)', () => {
         element.min = 0;
         element.max = 10;
         element.step = 0.5;
-        element.pin = true;
+        element.showPin = true;
         element.value = 5;
         let input;
         let pin;
@@ -1251,26 +1249,26 @@ describe('Slider', () => {
                     '[data-group-name="input"]'
                 );
                 expect(ruler).toBeTruthy();
-                expect(ruler.firstChild.tagName).toEqual('rect');
-                expect(ruler.childNodes[3].getAttribute('stroke')).toEqual(
+                expect(ruler.firstChild.tagName).toEqual('line');
+                expect(ruler.firstChild.getAttribute('stroke')).toEqual(
                     'var(--avonni-slider-track-color, #0176d3)'
                 );
-                expect(ruler.childNodes[4].getAttribute('stroke')).toEqual(
+                expect(ruler.childNodes[2].getAttribute('stroke')).toEqual(
                     'var(--avonni-slider-track-color-background, #ecebea)'
                 );
-                expect(ruler.childElementCount).toEqual(103);
+                expect(ruler.childElementCount).toEqual(101);
                 element.value = 50;
                 input.dispatchEvent(new CustomEvent('input'));
             })
             .then(() => {
-                expect(ruler.firstChild.tagName).toEqual('rect');
-                expect(ruler.childNodes[3].getAttribute('stroke')).toEqual(
+                expect(ruler.firstChild.tagName).toEqual('line');
+                expect(ruler.childNodes[1].getAttribute('stroke')).toEqual(
                     'var(--avonni-slider-track-color, #0176d3)'
                 );
-                expect(ruler.childNodes[25].getAttribute('stroke')).toEqual(
+                expect(ruler.childNodes[23].getAttribute('stroke')).toEqual(
                     'var(--avonni-slider-track-color-background, #ecebea)'
                 );
-                expect(ruler.childElementCount).toEqual(103);
+                expect(ruler.childElementCount).toEqual(101);
             });
     });
 
