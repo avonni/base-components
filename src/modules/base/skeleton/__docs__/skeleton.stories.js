@@ -114,8 +114,18 @@ const Template = (args) => Skeleton(args);
 
 export const Base = Template.bind({});
 
+export const Avatar = Template.bind({});
+Avatar.args = {
+    animation: 'pulse',
+    variantAttributes: {
+        variant: 'circle',
+        size: 'medium'
+    }
+};
+
 export const Chip = Template.bind({});
 Chip.args = {
+    variant: 'avatar',
     variantAttributes: {
         variant: 'brand',
         animation: 'pulse',

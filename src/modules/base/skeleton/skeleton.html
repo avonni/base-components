@@ -67,29 +67,32 @@
     </template>
     <template if:true={isChipVariant}>
         <span class={chipClass} data-element-id="span-wrapper">
-            <span class="slds-truncate">
-                <template if:true={chipHasIcon}>
-                    <span
-                        class="
-                            slds-badge__icon slds-badge__icon_left
-                            avonni-skeleton__chip-slot-class
-                        "
-                    >
-                        <slot name="left"></slot>
-                    </span>
-                </template>
-                {chipLabel}
-                <template if:true={chipHasIcon}>
-                    <span
-                        class="
-                            slds-badge__icon slds-badge__icon_right
-                            avonni-skeleton__chip-slot-class
-                        "
-                    >
-                        <slot name="right"></slot>
-                    </span>
-                </template>
-            </span>
+            <!-- <span class="slds-truncate"> -->
+            <template if:true={chipHasIcon}>
+                <span
+                    class="
+                        slds-badge__icon slds-badge__icon_left
+                        avonni-skeleton__chip-slot-class
+                    "
+                >
+                    <slot name="left"></slot>
+                </span>
+            </template>
+            <!-- {chipLabel} -->
+            <template if:true={hasChipLabel}>
+                <div class={chipLabelClass}></div>
+            </template>
+            <template if:true={chipHasIcon}>
+                <span
+                    class="
+                        slds-badge__icon slds-badge__icon_right
+                        avonni-skeleton__chip-slot-class
+                    "
+                >
+                    <slot name="right"></slot>
+                </span>
+            </template>
+            <!-- </span> -->
         </span>
     </template>
     <template if:true={isBadgeVariant}>

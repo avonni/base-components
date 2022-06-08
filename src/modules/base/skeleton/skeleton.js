@@ -218,6 +218,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get hasChipLabel() {
+        return this.variantAttributes.chipLabel;
+    }
+
+    @api
     get hideCheckboxColumn() {
         return this.variantAttributes.hideCheckboxColumn;
     }
@@ -349,6 +354,15 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__variant-${this.variant}`)
             .add(`avonni-skeleton__animation-${this.animation}`)
             .toString();
+    }
+
+    get chipLabelClass() {
+        return (
+            classSet('avonni-skeleton__variant-text')
+                .add('avonni-skeleton__chip-label')
+                // .add(`avonni-skeleton__animation-${this.animation}`)
+                .toString()
+        );
     }
 
     get comboboxLabelClass() {
