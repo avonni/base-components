@@ -149,6 +149,19 @@ export default {
                 category: 'Value'
             }
         },
+        hideMinMaxValues: {
+            name: 'hide-min-max-values',
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, min and max value indicators are removed.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'string' },
+                category: 'View'
+            }
+        },
         hideTrack: {
             name: 'hide-track',
             control: {
@@ -357,6 +370,7 @@ export default {
         showPin: false,
         tickMarkStyle: 'inner-tick',
         showTickMarks: false,
+        hideMinMaxValues: false,
         hideTrack: false,
         disableSwap: false,
         minimumDistance: 0,

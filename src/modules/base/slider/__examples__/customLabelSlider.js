@@ -53,6 +53,7 @@ export const CustomLabelSlider = ({
     tickMarkStyle,
     showTickMarks,
     disableSwap,
+    hideMinMaxValues,
     hideTrack,
     minimumDistance,
     messageWhenRangeOverflow,
@@ -72,6 +73,7 @@ export const CustomLabelSlider = ({
     element.tickMarkStyle = tickMarkStyle;
     element.showTickMarks = showTickMarks;
     element.disableSwap = disableSwap;
+    element.hideMinMaxValues = hideMinMaxValues;
     element.hideTrack = hideTrack;
     element.minimumDistance = minimumDistance;
     element.value = value;

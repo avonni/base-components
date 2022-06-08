@@ -40,7 +40,7 @@ export default class CustomLabelSlider extends LightningElement {
     @api unit;
     @api unitAttributes;
     @api value;
-    @api pin;
+    @api showPin;
     @api min;
     @api max;
     @api step;
@@ -48,6 +48,7 @@ export default class CustomLabelSlider extends LightningElement {
     @api tickMarkStyle;
     @api showTickMarks;
     @api disableSwap;
+    @api hideMinMaxValues;
     @api hideTrack;
     @api minimumDistance;
 }

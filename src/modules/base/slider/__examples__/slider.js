@@ -50,6 +50,7 @@ export const Slider = ({
     tickMarkStyle,
     showTickMarks,
     disableSwap,
+    hideMinMaxValues,
     hideTrack,
     minimumDistance,
     messageWhenRangeOverflow,
@@ -69,6 +70,7 @@ export const Slider = ({
     element.tickMarkStyle = tickMarkStyle;
     element.showTickMarks = showTickMarks;
     element.disableSwap = disableSwap;
+    element.hideMinMaxValues = hideMinMaxValues;
     element.hideTrack = hideTrack;
     element.minimumDistance = minimumDistance;
     element.value = value;

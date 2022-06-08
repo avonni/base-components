@@ -87,6 +87,7 @@ describe('Slider', () => {
         expect(element.min).toEqual(0);
         expect(element.minimumDistance).toEqual(0);
         expect(element.label).toBeUndefined();
+        expect(element.hideMinMaxValues).toEqual(false);
         expect(element.hideTrack).toEqual(false);
         expect(element.showPin).toEqual(false);
         expect(element.showTickMarks).toEqual(false);
@@ -291,7 +292,34 @@ describe('Slider', () => {
         });
     });
 
-    //hideTrack
+    // hideMinMaxValues
+    it('hideMinMaxValues = false', () => {
+        element.hideMinMaxValues = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.hideMinMaxValues).toEqual(false);
+            expect(
+                element.shadowRoot.querySelectorAll(
+                    '[data-group-name="min-max-values"]'
+                ).length
+            ).toEqual(2);
+        });
+    });
+
+    it('hideMinMaxValues = true', () => {
+        element.hideMinMaxValues = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.hideMinMaxValues).toEqual(true);
+            expect(
+                element.shadowRoot.querySelectorAll(
+                    '[data-group-name="min-max-values"]'
+                ).length
+            ).toEqual(0);
+        });
+    });
+
+    // hideTrack
     it('hideTrack = false', () => {
         element.hideTrack = false;
 

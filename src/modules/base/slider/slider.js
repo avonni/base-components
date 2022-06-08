@@ -125,7 +125,8 @@ export default class Slider extends LightningElement {
     _min = DEFAULT_MIN;
     _minimumDistance = DEFAULT_MIN;
     _pin = false;
-    _removeTrack = false;
+    _hideTrack = false;
+    _hideMinMaxValues = false;
     _showTickMarks = false;
     _size = SLIDER_SIZES.default;
     _step = DEFAULT_STEP;
@@ -297,6 +298,22 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * If present, min and max value indicators are removed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideMinMaxValues() {
+        return this._hideMinMaxValues;
+    }
+    set hideMinMaxValues(value) {
+        this._hideMinMaxValues = normalizeBoolean(value);
+        this._domModified = true;
+    }
+
+    /**
      * If present, track is removed.
      *
      * @type {boolean}
@@ -305,10 +322,10 @@ export default class Slider extends LightningElement {
      */
     @api
     get hideTrack() {
-        return this._removeTrack;
+        return this._hideTrack;
     }
     set hideTrack(value) {
-        this._removeTrack = normalizeBoolean(value);
+        this._hideTrack = normalizeBoolean(value);
         this._domModified = true;
     }
 
@@ -507,8 +524,7 @@ export default class Slider extends LightningElement {
             this.scaleValues();
             this.capValues();
         }
-        this._removeTrack =
-            this._computedValues.length > 2 || this._removeTrack;
+        this._hideTrack = this._computedValues.length > 2 || this._hideTrack;
         this._domModified = true;
     }
 
@@ -730,7 +746,11 @@ export default class Slider extends LightningElement {
      *
      */
     get isNormalVertical() {
-        return this._type === 'vertical' && !this.hasCustomLabels;
+        return (
+            this._type === 'vertical' &&
+            !this.hasCustomLabels &&
+            !this.hideMinMaxValues
+        );
     }
 
     /**
@@ -739,7 +759,11 @@ export default class Slider extends LightningElement {
      *
      */
     get isNormalHorizontal() {
-        return this._type !== 'vertical' && !this.hasCustomLabels;
+        return (
+            this._type !== 'vertical' &&
+            !this.hasCustomLabels &&
+            !this.hideMinMaxValues
+        );
     }
 
     /**
@@ -1540,7 +1564,7 @@ export default class Slider extends LightningElement {
             this.getInput(i).value = values[i];
             this._computedValues[i] = values[i];
         }
-        if (this._removeTrack) {
+        if (this._hideTrack) {
             this._trackInterval = [
                 this._computedMin - 1,
                 this._computedMin - 1
