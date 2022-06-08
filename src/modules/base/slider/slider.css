@@ -32,6 +32,7 @@
 
 .avonni-slider__label {
     padding-bottom: 0.5rem;
+    max-width: 100%;
 }
 
 .avonni-slider__slider::-webkit-slider-runnable-track {
@@ -68,10 +69,6 @@
 .avonni-slider__container-vertical-size_large {
     height: var(--lwc-sizeLarge, 25rem);
 }
-.avonni-slider__container-vertical-size_responsive {
-    width: 30rem;
-    height: 30rem;
-}
 .avonni-slider__unit-container {
     display: flex;
     justify-content: space-between;
@@ -105,11 +102,6 @@
 .avonni-slider__container-vertical-origin_large {
     transform-origin: calc(var(--lwc-sizeLarge, 25rem) / 2)
         calc(var(--lwc-sizeLarge, 25rem) / 2);
-}
-
-.avonni-slider__container-vertical-origin_responsive {
-    max-width: 30rem;
-    transform-origin: calc(30rem / 2) calc(30rem / 2);
 }
 
 .avonni-slider__pin {

@@ -47,6 +47,7 @@ span {
 }
 
 .avonni-slider__vertical_wrapper {
+    max-height: 1350px;
     width: 100%;
     display: flex;
     flex-direction: row;

@@ -35,5 +35,9 @@
     --avonni-slider-thumb-color-shadow-focus: hsl(0, 50%, 50%);
     --avonni-slider-pin-color: hsl(0, 50%, 50%);
     --avonni-slider-track-color: hsl(0, 50%, 50%);
-    --avonni-slider-pin-radius-border: 2rem;
+    --avonni-slider-pin-radius-border: 5rem;
+    --avonni-slider-track-radius-border: 2.5rem;
+    --avonni-slider-thumb-radius-border: 2.5rem;
+    --avonni-slider-thumb-radius: 20px;
+    --avonni-slider-track-height: 20px;
 }

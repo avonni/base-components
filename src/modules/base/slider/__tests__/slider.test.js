@@ -63,7 +63,7 @@ describe('Slider', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        jest.clearAllMocks();
+        jest.restoreAllMocks();
     });
 
     beforeEach(() => {
@@ -90,7 +90,7 @@ describe('Slider', () => {
         expect(element.showPin).toEqual(false);
         expect(element.hideTrack).toEqual(false);
         expect(element.showTickMarks).toEqual(false);
-        expect(element.size).toEqual('full');
+        expect(element.size).toEqual('responsive');
         expect(element.step).toEqual(1);
         expect(element.tickMarkStyle).toEqual('inner-tick');
         expect(element.type).toEqual('horizontal');
@@ -367,15 +367,57 @@ describe('Slider', () => {
     });
 
     // size
-    it('size = full', () => {
-        element.size = 'full';
+    it('size = responsive', () => {
+        element.size = 'responsive';
 
         return Promise.resolve().then(() => {
             const wrapper = element.shadowRoot.querySelector(
                 '[data-element-id="div-wrapper"]'
             );
             expect(wrapper.className).toBe(
-                'avonni-slider__container-horizontal-size_full'
+                'avonni-slider__container-horizontal-size_responsive'
+            );
+        });
+    });
+
+    it('size = responsive (vertical), no max-width', () => {
+        element.size = 'responsive';
+        element.type = 'vertical';
+
+        jest.spyOn(
+            CSSStyleDeclaration.prototype,
+            'getPropertyValue'
+        ).mockReturnValue('');
+
+        jest.spyOn(Element.prototype, 'clientHeight', 'get').mockReturnValue(
+            1000
+        );
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-slider__container-vertical-origin_responsive'
+            );
+        });
+    });
+
+    it('size = responsive (vertical) max-width', () => {
+        element.size = 'responsive';
+        element.type = 'vertical';
+
+        jest.spyOn(
+            CSSStyleDeclaration.prototype,
+            'getPropertyValue'
+        ).mockReturnValue('1000px');
+
+        return Promise.resolve().then(() => {
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain(
+                'avonni-slider__container-vertical-origin_responsive'
             );
         });
     });

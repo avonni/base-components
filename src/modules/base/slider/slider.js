@@ -184,6 +184,9 @@ export default class Slider extends LightningElement {
             this._resizeObserver = this.initResizeObserver();
         }
         if (!this._rendered || this._domModified) {
+            if (this.isVerticalResponsive) {
+                this.setVerticalResponsiveHeight();
+            }
             this.updateTrack(this._computedValues);
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
@@ -419,6 +422,7 @@ export default class Slider extends LightningElement {
             fallbackValue: SLIDER_TYPES.default,
             validValues: SLIDER_TYPES.valid
         });
+        this._domModified = true;
     }
 
     /**
@@ -640,7 +644,10 @@ export default class Slider extends LightningElement {
     }
 
     get computedSpacerClass() {
-        return classSet(`avonni-slider__container-vertical-size_${this._size}`);
+        return classSet('').add({
+            [`avonni-slider__container-vertical-size_${this._size}`]:
+                this.size !== 'responsive' || !this.isVertical
+        });
     }
 
     /**
@@ -706,6 +713,15 @@ export default class Slider extends LightningElement {
      */
     get isVertical() {
         return this._type === 'vertical';
+    }
+
+    /**
+     * Verify if slider is vertical and responsive
+     * @returns {boolean}
+     *
+     */
+    get isVerticalResponsive() {
+        return this._type === 'vertical' && this.size === 'responsive';
     }
 
     /**
@@ -1257,8 +1273,11 @@ export default class Slider extends LightningElement {
      * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!this.showAnyTickMarks) return null;
+        if (!(this.showAnyTickMarks || this.isVerticalResponsive)) return null;
         const resizeObserver = new AvonniResizeObserver(() => {
+            if (this.isVerticalResponsive) {
+                this.setVerticalResponsiveHeight();
+            }
             if (this.showAnyTickMarks) {
                 this.drawRuler(true);
             }
@@ -1394,6 +1413,34 @@ export default class Slider extends LightningElement {
                 );
             }
         }
+    }
+
+    /**
+     * Sets the vertical wrapper and spacer to dimensions of parent max-height if responsive.
+     *
+     * @param {Event} event
+     */
+    setVerticalResponsiveHeight() {
+        let parentHeight = parseInt(
+            getComputedStyle(this.template.host.parentElement)
+                .getPropertyValue('max-height')
+                .split('px')[0],
+            10
+        );
+        if (isNaN(parentHeight)) {
+            parentHeight = this.template.host.parentElement.clientHeight;
+        }
+        const spacer = this.template.querySelector(
+            '[data-element-id="spacer"]'
+        );
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-wrapper"]'
+        );
+        wrapper.style.transformOrigin = `${(parentHeight - 50) / 2}px ${
+            (parentHeight - 50) / 2
+        }px`;
+        wrapper.style.width = `${parentHeight - 50}px`;
+        spacer.style.height = `${parentHeight - 50}px`;
     }
 
     /**
