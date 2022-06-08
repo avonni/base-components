@@ -87,8 +87,8 @@ describe('Slider', () => {
         expect(element.min).toEqual(0);
         expect(element.minimumDistance).toEqual(0);
         expect(element.label).toBeUndefined();
-        expect(element.showPin).toEqual(false);
         expect(element.hideTrack).toEqual(false);
+        expect(element.showPin).toEqual(false);
         expect(element.showTickMarks).toEqual(false);
         expect(element.size).toEqual('responsive');
         expect(element.step).toEqual(1);
@@ -291,6 +291,29 @@ describe('Slider', () => {
         });
     });
 
+    //hideTrack
+    it('hideTrack = false', () => {
+        element.hideTrack = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.hideTrack).toEqual(false);
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="track"]')
+            ).toBeTruthy();
+        });
+    });
+
+    it('hideTrack = true', () => {
+        element.hideTrack = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.hideTrack).toEqual(true);
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="track"]')
+            ).toBeFalsy();
+        });
+    });
+
     //showPin
     it('showPin = false', () => {
         element.pin = false;
@@ -315,29 +338,6 @@ describe('Slider', () => {
                     '[data-group-name="pin"][data-index="0"]'
                 )
             ).toBeTruthy();
-        });
-    });
-
-    //hideTrack
-    it('hideTrack = false', () => {
-        element.hideTrack = false;
-
-        return Promise.resolve().then(() => {
-            expect(element.hideTrack).toEqual(false);
-            expect(
-                element.shadowRoot.querySelector('[data-element-id="track"]')
-            ).toBeTruthy();
-        });
-    });
-
-    it('hideTrack = true', () => {
-        element.hideTrack = true;
-
-        return Promise.resolve().then(() => {
-            expect(element.hideTrack).toEqual(true);
-            expect(
-                element.shadowRoot.querySelector('[data-element-id="track"]')
-            ).toBeFalsy();
         });
     });
 

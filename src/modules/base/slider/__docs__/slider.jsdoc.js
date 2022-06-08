@@ -96,7 +96,7 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-track-color-
+ * @name --avonni-slider-track-color
  * @default #0176d3
  * @type color
  */
@@ -110,7 +110,7 @@
  * @memberof stylingHooks
  * @name --avonni-slider-track-height
  * @default 4px
- * @type height
+ * @type size
  */
 /**
  * @memberof stylingHooks
@@ -121,7 +121,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-slider-thumb-radius-border
- * @default 0.25rem
+ * @default 0.5rem
  * @type radius
  */
 /**
@@ -133,6 +133,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-slider-pin-radius-border
- * @default #0176d3
+ * @default 2rem
  * @type radius
  */

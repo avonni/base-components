@@ -279,7 +279,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * The minimum distance between nodes if there are many.
+     * The minimum distance between nodes when swap is disabled and there are many nodes.
      *
      * @type {number}
      * @public
@@ -297,22 +297,6 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * If present, a pin containing the value is shown when the knob is pressed.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get showPin() {
-        return this._pin;
-    }
-    set showPin(value) {
-        this._pin = normalizeBoolean(value);
-        this._domModified = true;
-    }
-
-    /**
      * If present, track is removed.
      *
      * @type {boolean}
@@ -325,6 +309,22 @@ export default class Slider extends LightningElement {
     }
     set hideTrack(value) {
         this._removeTrack = normalizeBoolean(value);
+        this._domModified = true;
+    }
+
+    /**
+     * If present, a pin containing the value is shown when the thumb is pressed.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get showPin() {
+        return this._pin;
+    }
+    set showPin(value) {
+        this._pin = normalizeBoolean(value);
         this._domModified = true;
     }
 
