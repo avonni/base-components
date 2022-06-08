@@ -153,21 +153,6 @@
             data-element-id="button-icon"
         ></button>
     </template>
-    <template if:true={isInputVariant}>
-        <div class="slds-form-element">
-            <label class="slds-form-element__label">
-                <div class={inputLabelClass}>
-                    <template if:true={inputRequired}>
-                        <abbr class="slds-required">*</abbr>
-                    </template>
-                    <div class={inputLabelTagClass}></div>
-                </div>
-            </label>
-            <div class="slds-form-element__control">
-                <input class={inputClass} required type="text" />
-            </div>
-        </div>
-    </template>
     <template if:true={isComboboxVariant}>
         <!-- <div data-element-id="avonni-skeleton"></div> -->
         <div class={computedComboboxLabelClass} data-element-id="span-label">
@@ -693,5 +678,58 @@
                 </tr>
             </tbody>
         </table>
+    </template>
+    <template if:true={isInputVariant}>
+        <div class="slds-form-element">
+            <label class="slds-form-element__label">
+                <div class={inputLabelClass}>
+                    <template if:true={inputRequired}>
+                        <abbr class="slds-required">*</abbr>
+                    </template>
+                    <div class={inputLabelTagClass}></div>
+                </div>
+            </label>
+            <div class="slds-form-element__control">
+                <input class={inputClass} required type="text" />
+            </div>
+        </div>
+    </template>
+    <template if:true={isProgressIndicatorVariant}>
+        <div class="slds-progress">
+            <ol class="slds-progress__list">
+                <li class="slds-progress__item">
+                    <div class={progressIndicatorItemClass}>
+                        <span class="slds-assistive-text">Step 1</span>
+                    </div>
+                </li>
+                <li class="slds-progress__item">
+                    <div class={progressIndicatorItemClass}>
+                        <span class="slds-assistive-text">Step 2 </span>
+                    </div>
+                </li>
+                <li class="slds-progress__item">
+                    <div class={progressIndicatorItemClass}>
+                        <span class="slds-assistive-text">Step 3 </span>
+                    </div>
+                </li>
+                <li class="slds-progress__item">
+                    <div class={progressIndicatorItemClass}>
+                        <span class="slds-assistive-text">Step 4 </span>
+                    </div>
+                </li>
+                <li class="slds-progress__item">
+                    <div class={progressIndicatorItemClass}>
+                        <span class="slds-assistive-text">Step 5 </span>
+                    </div>
+                </li>
+            </ol>
+            <div
+                class={progressIndicatorBarClass}
+                aria-valuemin="0"
+                aria-valuemax="100"
+                aria-valuenow="0"
+                role="progressbar"
+            ></div>
+        </div>
     </template>
 </template>

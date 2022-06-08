@@ -53,6 +53,7 @@ const SKELETON_VARIANTS = {
         'paragraph',
         'path',
         'pill',
+        'progress-indicator',
         'rectangular',
         'tabset',
         'text',
@@ -172,6 +173,12 @@ export default class Skeleton extends LightningElement {
     @api
     get isInputVariant() {
         return this.variant === 'input';
+    }
+
+    @api
+    get isProgressIndicatorVariant() {
+        console.log(this.variant);
+        return this.variant === 'progress-indicator';
     }
 
     @api
@@ -520,6 +527,18 @@ export default class Skeleton extends LightningElement {
         );
     }
 
+    get progressIndicatorItemClass() {
+        return classSet('slds-progress__marker').add(
+            `avonni-skeleton__buttonIcon-animation-${this.animation}`
+        );
+    }
+
+    get progressIndicatorBarClass() {
+        return classSet('slds-progress-bar')
+            .add('slds-progress-bar_x-small')
+            .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -561,6 +580,9 @@ export default class Skeleton extends LightningElement {
                 break;
             case 'datatable':
                 this.handleDatableVariant();
+                break;
+            case 'progress-indicator':
+                this.handleProgressIndicator();
                 break;
             case 'text':
                 this.setTextSize();
@@ -619,6 +641,12 @@ export default class Skeleton extends LightningElement {
     handleDatableVariant() {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateDatatableClassList();
+        }
+    }
+
+    handleProgressIndicator() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateProgressIndicatorClassList();
         }
     }
 
@@ -991,4 +1019,6 @@ export default class Skeleton extends LightningElement {
     }
 
     updateDatatableClassList() {}
+
+    updateProgressIndicatorClassList() {}
 }

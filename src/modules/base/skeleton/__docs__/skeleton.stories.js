@@ -85,6 +85,7 @@ export default {
                 'circular',
                 'datatable',
                 'input',
+                'progress-indicator',
                 'rectangular',
                 'text'
             ],
@@ -199,5 +200,15 @@ Input.args = {
     variantAttributes: {
         variant: '',
         required: true
+    }
+};
+
+export const ProgressIndicator = Template.bind({});
+ProgressIndicator.args = {
+    variant: 'progress-indicator',
+    animation: 'pulse',
+    variantAttributes: {
+        variant: '',
+        steps: 3
     }
 };
