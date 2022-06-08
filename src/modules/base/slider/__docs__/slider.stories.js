@@ -100,11 +100,11 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['x-small', 'small', 'medium', 'large', 'full'],
+            options: ['x-small', 'small', 'medium', 'large', 'responsive'],
             description:
                 'The size of the slider. The default is an empty string, which sets the slider to the width of the viewport. Accepted values are x-small, small, medium, and large.',
             table: {
-                defaultValue: { summary: 'full' },
+                defaultValue: { summary: 'responsive' },
                 type: { summary: 'string' },
                 category: 'View'
             }
@@ -360,7 +360,7 @@ export default {
         hideTrack: false,
         disableSwap: false,
         minimumDistance: 0,
-        size: 'full',
+        size: 'responsive',
         step: 1,
         type: 'horizontal',
         unit: 'decimal',

@@ -47,8 +47,8 @@ const PERCENT_SCALING_FACTOR = 100;
 const DEFAULT_STEP = 1;
 
 const SLIDER_SIZES = {
-    valid: ['x-small', 'small', 'medium', 'large', 'full'],
-    default: 'full'
+    valid: ['x-small', 'small', 'medium', 'large', 'responsive'],
+    default: 'responsive'
 };
 const SLIDER_TYPES = {
     valid: ['horizontal', 'vertical'],
@@ -342,11 +342,11 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Size of the slider. Accepted values are full, x-small, small, medium, and large.
+     * Size of the slider. Accepted values are responsive, x-small, small, medium, and large.
      *
      * @type {string}
      * @public
-     * @default full
+     * @default responsive
      */
     @api
     get size() {
