@@ -116,8 +116,7 @@ export default class Skeleton extends LightningElement {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (this.isChipVariant) this.chipLabel = this.variantAttributes.label;
         if (this.isBadgeVariant) this.badgeLabel = this.variantAttributes.label;
-        if (!this.isAvatarVariant && !this.isButtonVariant)
-            this.handleVariant();
+        if (!this.isAvatarVariant) this.handleVariant();
         // console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
@@ -443,6 +442,15 @@ export default class Skeleton extends LightningElement {
             .add('slds-size_1-of-12');
     }
 
+    get buttonLabelClass() {
+        return (
+            classSet('avonni-skeleton__variant-text')
+                .add('avonni-skeleton__button-label')
+                // .add(`avonni-skeleton__animation-${this.animation}`)
+                .toString()
+        );
+    }
+
     get datatableCheckboxGridClass() {
         return classSet('slds-col')
             .add(`avonni-skeleton__animation-${this.animation}`)
@@ -512,7 +520,7 @@ export default class Skeleton extends LightningElement {
                 this.handleBreadcrumbs();
                 break;
             case 'button':
-                this.handleButtonVariant();
+                this.updateVariantButton();
                 break;
             case 'button-icon':
                 this.updateVariantButtonIcon();
@@ -808,7 +816,7 @@ export default class Skeleton extends LightningElement {
                 'slds-button_destructive':
                     this.variantAttributes.variant === 'destructive',
                 'slds-button_text-destructive':
-                    this.variantAttributes.variant === 'destructive-text',
+                    this.variantAttributes.variant === 'text-destructive',
                 'slds-button_success':
                     this.variantAttributes.variant === 'success'
             })
@@ -828,6 +836,84 @@ export default class Skeleton extends LightningElement {
             })
             .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
         this.buttonIconWrapper = buttonIconWrapper;
+    }
+
+    updateVariantButton() {
+        const button = this.template.querySelector(
+            '[data-element-id="button-element"]'
+        );
+
+        const buttonLabel = this.template.querySelector(
+            '[data-element-id="button-label"]'
+        );
+
+        if (this.variantAttributes.variant === 'brand') {
+            button.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#0176d3'
+            );
+
+            button.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#2fa0fa'
+            );
+        }
+        if (this.variantAttributes.variant === 'outline-brand') {
+            button.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#ffffff'
+            );
+            button.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#e1e1e1'
+            );
+            buttonLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#0176d3'
+            );
+        }
+        if (this.variantAttributes.variant === 'inverse') {
+            button.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#16325c'
+            );
+            button.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#5271a1'
+            );
+            buttonLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#f3f3f3'
+            );
+        }
+        if (this.variantAttributes.variant === 'destructive') {
+            button.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#ba0517'
+            );
+            button.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#e34050'
+            );
+            buttonLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+        if (this.variantAttributes.variant === 'text-destructive') {
+            button.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#ffffff'
+            );
+            button.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#e1e1e1'
+            );
+            buttonLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ea001e'
+            );
+        }
     }
 
     updateVariantButtonIcon() {
