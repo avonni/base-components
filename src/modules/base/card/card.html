@@ -34,14 +34,20 @@
 
 <template>
     <article class="avonni-card">
-        <div class={computedCardClasses}>
+        <div
+            class={computedCardClasses}
+            data-element-id="avonni-card-body-container"
+        >
             <!-- content for center media -->
             <div class={computedCenterDefaultSlotClasses}>
                 <slot></slot>
             </div>
 
             <!-- media -->
-            <div class={computedMediaClasses}>
+            <div
+                class={computedMediaClasses}
+                data-element-id="avonni-card-media-container"
+            >
                 <img
                     class="avonni-card__media"
                     src={mediaSrc}
@@ -67,17 +73,22 @@
                             if:true={iconName}
                             icon-name={iconName}
                             size="small"
+                            data-element-id="avonni-card-header-icon"
                         ></lightning-icon>
 
                         <h2
                             if:true={hasStringTitle}
                             class="avonni-card__title-text slds-truncate"
                             title={title}
+                            data-element-id="avonni-card-title"
                         >
                             {title}
                         </h2>
 
-                        <slot name="title"></slot>
+                        <slot
+                            name="title"
+                            data-element-id="avonni-card-title-slot"
+                        ></slot>
                     </div>
 
                     <slot

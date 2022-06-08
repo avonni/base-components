@@ -50,7 +50,8 @@ const MEDIA_POSITIONS = {
 export default class Card extends LightningElement {
     _iconName;
     _title;
-    _mediaPosition;
+    _mediaPosition = 'top';
+    _showMedia = false;
 
     showTitleSlot = false;
     showMediaSlot = false;
@@ -58,7 +59,6 @@ export default class Card extends LightningElement {
     showActionSlot = false;
     showDefaultSlot = false;
     showFooterSlot = false;
-    _showMedia = false;
 
     connectedCallback() {}
 
@@ -79,7 +79,8 @@ export default class Card extends LightningElement {
         }
         if (this.defaultSlot) {
             this.showDefaultSlot =
-                this.defaultSlot.assignedElements().length !== 0;
+                this.defaultSlot.assignedElements().length !== 0 ||
+                this.defaultSlot.innerText.trim().length !== 0;
         }
         if (this.footerSlot) {
             this.showFooterSlot =
@@ -214,18 +215,21 @@ export default class Card extends LightningElement {
 
     get computedCardClasses() {
         return classSet('avonni-card__body-container')
-            .add({ 'image-top': this.mediaPosition === 'top' })
-            .add({ 'image-left': this.mediaPosition === 'left' })
-            .add({ 'image-right': this.mediaPosition === 'right' })
-            .add({ 'image-center': this.mediaPosition === 'center' })
-            .add({ 'image-bottom': this.mediaPosition === 'bottom' })
-            .add({ background: this.mediaPosition === 'background' })
+            .add({ 'avonni-card__media-top': this.mediaPosition === 'top' })
+            .add({ 'avonni-card__media-left': this.mediaPosition === 'left' })
+            .add({ 'avonni-card__media-right': this.mediaPosition === 'right' })
             .add({
-                'background overlay-card': this.mediaPosition === 'overlay'
+                'avonni-card__media-center': this.mediaPosition === 'center'
             })
             .add({
-                'background-centered':
-                    this.mediaPosition === 'background-center'
+                'avonni-card__media-bottom': this.mediaPosition === 'bottom'
+            })
+            .add({
+                'avonni-card__media-background':
+                    this.mediaPosition === 'background'
+            })
+            .add({
+                'avonni-card__media-overlay': this.mediaPosition === 'overlay'
             })
             .toString();
     }
@@ -236,13 +240,9 @@ export default class Card extends LightningElement {
      * @type {boolean}
      */
     get roundMediaTopLeftCorder() {
-        if (this.mediaPosition === 'left') {
-            return true;
-        }
-        if (this.mediaPosition === 'top') {
-            return true;
-        }
         if (
+            this.mediaPosition === 'left' ||
+            this.mediaPosition === 'top' ||
             this.mediaPosition === 'background' ||
             this.mediaPosition === 'overlay'
         ) {
@@ -260,13 +260,9 @@ export default class Card extends LightningElement {
      * @type {boolean}
      */
     get roundMediaTopRightCorder() {
-        if (this.mediaPosition === 'right') {
-            return true;
-        }
-        if (this.mediaPosition === 'top') {
-            return true;
-        }
         if (
+            this.mediaPosition === 'right' ||
+            this.mediaPosition === 'top' ||
             this.mediaPosition === 'background' ||
             this.mediaPosition === 'overlay'
         ) {
@@ -287,16 +283,15 @@ export default class Card extends LightningElement {
         if (this.showFooterSlot) {
             return false;
         }
-        if (this.mediaPosition === 'left' && !this.showFooterSlot) {
-            return true;
-        }
         if (
+            this.mediaPosition === 'left' ||
             this.mediaPosition === 'background' ||
-            this.mediaPosition === 'overlay'
+            this.mediaPosition === 'overlay' ||
+            this.mediaPosition === 'bottom'
         ) {
             return true;
         }
-        if (this.mediaPosition === 'bottom') {
+        if (this.mediaPosition === 'center' && !this.showDefaultSlot) {
             return true;
         }
         return false;
@@ -311,16 +306,52 @@ export default class Card extends LightningElement {
         if (this.showFooterSlot) {
             return false;
         }
-        if (this.mediaPosition === 'right') {
-            return true;
-        }
         if (
+            this.mediaPosition === 'right' ||
             this.mediaPosition === 'background' ||
-            this.mediaPosition === 'overlay'
+            this.mediaPosition === 'overlay' ||
+            this.mediaPosition === 'bottom'
         ) {
             return true;
         }
-        if (this.mediaPosition === 'bottom') {
+        if (this.mediaPosition === 'center' && !this.showDefaultSlot) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Apply bottom border
+     *
+     * @type {boolean}
+     */
+    get hasBottomBorder() {
+        if (
+            this.mediaPosition === 'top' &&
+            (this.showFooterSlot || this.showDefaultSlot || this.hasHeader)
+        ) {
+            return true;
+        }
+        if (
+            this.mediaPosition === 'center' &&
+            (this.showFooterSlot || this.showDefaultSlot)
+        ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Apply top border
+     *
+     * @type {boolean}
+     */
+    get hasTopBorder() {
+        if (
+            (this.mediaPosition === 'bottom' ||
+                this.mediaPosition === 'center') &&
+            this.hasHeader
+        ) {
             return true;
         }
         return false;
@@ -364,6 +395,14 @@ export default class Card extends LightningElement {
                 'avonni-card__media-bottom-left-radius':
                     this.roundMediaBottomLeftCorder
             })
+            .add({ 'avonni-card__media-border-bottom': this.hasBottomBorder })
+            .add({ 'avonni-card__media-border-top': this.hasTopBorder })
+            .add({
+                'avonni-card__media-border-left': this.mediaPosition === 'right'
+            })
+            .add({
+                'avonni-card__media-border-right': this.mediaPosition === 'left'
+            })
             .toString();
     }
 
@@ -381,7 +420,10 @@ export default class Card extends LightningElement {
 
     get computedDefaultSlotClasses() {
         return classSet('avonni-card__default-slot')
-            .add({ 'slds-hide': this.mediaPosition === 'center' })
+            .add({
+                'slds-hide':
+                    this.mediaPosition === 'center' || !this.showDefaultSlot
+            })
             .toString();
     }
 

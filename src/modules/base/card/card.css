@@ -31,6 +31,7 @@
  */
 
 :host() {
+    --avonni-card-radius-border: 0.5rem;
     /* --avonni-card-sizing-border: 0px; */
     /* --avonni-card-shadow: 0px;
     --avonni-card-color-border: #e0e0e0;
@@ -90,12 +91,16 @@
     );
     --avonni-card-background-media-text-color: white;
     --avonni-card-overlay-media-text-color: white; */
+
+    /* --avonni-card-media-color-border: red;
+    --avonni-card-media-sizing-border: 2px; */
 }
 
 article.avonni-card {
     overflow: hidden;
     display: flex;
     flex-direction: column;
+    min-height: 1.5rem;
     background-color: var(--avonni-card-color-background, white);
     color: var(--avonni-card-text-color);
 
@@ -120,7 +125,7 @@ article.avonni-card {
     overflow: hidden;
 }
 
-.background .avonni-card__content-container {
+.avonni-card__media-background .avonni-card__content-container {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -137,7 +142,11 @@ article.avonni-card {
     );
 }
 
-.background.overlay-card .avonni-card__content-container {
+.avonni-card__media-overlay .avonni-card__content-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
     color: var(--avonni-card-overlay-media-text-color, white);
     background-image: var(
         --avonni-card-overlay-media-overlay-background,
@@ -150,21 +159,21 @@ article.avonni-card {
     );
 }
 
-.overlay-card .avonni-card__content-container {
+.avonni-card__media-overlay .avonni-card__content-container {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
-.overlay-card:hover .avonni-card__content-container {
+.avonni-card__media-overlay:hover .avonni-card__content-container {
     opacity: 1;
 }
-.image-left {
+.avonni-card__media-left {
     flex-direction: row;
 }
-.image-right {
+.avonni-card__media-right {
     flex-direction: row-reverse;
 }
-.image-bottom,
-.image-center {
+.avonni-card__media-bottom,
+.avonni-card__media-center {
     flex-direction: column-reverse;
 }
 
@@ -177,49 +186,78 @@ article.avonni-card {
    The overflow: hidden lets the image pass over the border on lower resolution screens.  */
 
 .avonni-card__media-top-left-radius {
-    border-top-left-radius: var(--avonni-card-radius-border, 0.5rem);
+    border-top-left-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) - 1px
+    );
 }
 .avonni-card__media-top-right-radius {
-    border-top-right-radius: var(--avonni-card-radius-border, 0.5rem);
+    border-top-right-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) - 1px
+    );
 }
 .avonni-card__media-bottom-right-radius {
-    border-bottom-right-radius: var(--avonni-card-radius-border, 0.5rem);
+    border-bottom-right-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) - 1px
+    );
 }
 .avonni-card__media-bottom-left-radius {
-    border-bottom-left-radius: var(--avonni-card-radius-border, 0.5rem);
+    border-bottom-left-radius: calc(
+        var(--avonni-card-radius-border, 0.25rem) - 1px
+    );
 }
 
-.background .avonni-card__media-container {
+.avonni-card__media-border-top {
+    border-top-width: var(--avonni-card-media-sizing-border, 1px);
+    border-top-style: solid;
+    border-top-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+.avonni-card__media-border-bottom {
+    border-bottom-width: var(--avonni-card-media-sizing-border, 1px);
+    border-bottom-style: solid;
+    border-bottom-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+.avonni-card__media-border-left {
+    border-left-width: var(--avonni-card-media-sizing-border, 1px);
+    border-left-style: solid;
+    border-left-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+.avonni-card__media-border-right {
+    border-right-width: var(--avonni-card-media-sizing-border, 1px);
+    border-right-style: solid;
+    border-right-color: var(--avonni-card-media-color-border, #e5e5e5);
+}
+
+.avonni-card__media-background .avonni-card__media-container {
     height: var(--avonni-card-background-media-height, 120px);
     width: 100%;
 }
-.overlay-card .avonni-card__media-container {
+.avonni-card__media-overlay .avonni-card__media-container {
     width: 100%;
     height: var(--avonni-card-overlay-media-height, 120px);
 }
-.image-left .avonni-card__media-container {
+.avonni-card__media-left .avonni-card__media-container {
     position: relative;
     object-fit: cover;
     height: auto;
     width: var(--avonni-card-left-media-width, 120px);
 }
-.image-right .avonni-card__media-container {
+.avonni-card__media-right .avonni-card__media-container {
     position: relative;
     object-fit: cover;
     height: auto;
     width: var(--avonni-card-right-media-width, 120px);
 }
-.image-top .avonni-card__media-container {
+.avonni-card__media-top .avonni-card__media-container {
     position: relative;
     width: 100%;
     height: var(--avonni-card-top-media-height, 120px);
 }
-.image-center .avonni-card__media-container {
+.avonni-card__media-center .avonni-card__media-container {
     position: relative;
     width: 100%;
     height: var(--avonni-card-center-media-height, 120px);
 }
-.image-bottom .avonni-card__media-container {
+.avonni-card__media-bottom .avonni-card__media-container {
     position: relative;
     width: 100%;
     height: var(--avonni-card-bottom-media-height, 120px);

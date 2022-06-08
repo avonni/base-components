@@ -92,7 +92,8 @@ const SlotsTemplate = (args) => CardSlots(args);
 export const Base = Template.bind({});
 Base.args = {
     title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1'
+    iconName: 'custom:custom1',
+    mediaPosition: 'left'
 };
 
 export const ImageTop = Template.bind({});
@@ -160,5 +161,6 @@ OverlayCard.args = {
 
 export const BaseWithSlots = SlotsTemplate.bind({});
 BaseWithSlots.args = {
-    mediaPosition: 'top'
+    // title: 'Title Prop: ',
+    // iconName: 'custom:custom1'
 };

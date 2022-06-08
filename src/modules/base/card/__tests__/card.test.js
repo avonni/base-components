@@ -49,19 +49,62 @@ describe('Card', () => {
     });
 
     it('Default attributes', () => {
-        // expect(element.title).toBeUndefined();
+        expect(element.title).toBeUndefined();
+        expect(element.iconName).toBeUndefined();
+        expect(element.mediaPosition).toBe('top');
+        expect(element.mediaSrc).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
 
     // title
-    it('title', () => {
-        // element.title = 'This is a title text';
-        // return Promise.resolve().then(() => {
-        //     const title = element.shadowRoot.querySelector(
-        //         '.slds-section__title'
-        //     );
-        //     expect(title.textContent).toBe('This is a title text');
-        // });
+    it('Card: title', () => {
+        element.title = 'This is a title text';
+
+        return Promise.resolve().then(() => {
+            const title = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-card-title"]'
+            );
+            expect(title.textContent).toBe('This is a title text');
+        });
+    });
+
+    // iconName
+    it('Card: iconName', () => {
+        element.iconName = 'utility:account';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-card-header-icon"]'
+            );
+            expect(icon).toBeTruthy();
+        });
+    });
+
+    // mediaPosition
+    it('Card: mediaPosition', () => {
+        element.mediaPosition = 'left';
+        element.mediaSrc = 'https://via.placeholder.com/300x200';
+
+        return Promise.resolve().then(() => {
+            const bodyContainer = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-card-body-container"]'
+            );
+            expect(bodyContainer.classList).toContain(
+                'avonni-card__media-left'
+            );
+        });
+    });
+
+    // mediaPosition
+    it('Card: mediaSrc without mediaPosition', () => {
+        element.mediaSrc = 'https://via.placeholder.com/300x200';
+
+        return Promise.resolve().then(() => {
+            const bodyContainer = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-card-body-container"]'
+            );
+            expect(bodyContainer.classList).toContain('avonni-card__media-top');
+        });
     });
 });

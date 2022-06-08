@@ -217,3 +217,15 @@
  * @default white
  * @type color
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-media-color-border
+ * @default #e5e5e5
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-media-sizing-border
+ * @default 1px;
+ * @type dimension
+ */
