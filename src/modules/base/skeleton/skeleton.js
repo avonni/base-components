@@ -116,11 +116,7 @@ export default class Skeleton extends LightningElement {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (this.isChipVariant) this.chipLabel = this.variantAttributes.label;
         if (this.isBadgeVariant) this.badgeLabel = this.variantAttributes.label;
-        if (
-            !this.isAvatarVariant &&
-            !this.isButtonVariant &&
-            !this.isButtonIconVariant
-        )
+        if (!this.isAvatarVariant && !this.isButtonVariant)
             this.handleVariant();
         // console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
@@ -519,7 +515,7 @@ export default class Skeleton extends LightningElement {
                 this.handleButtonVariant();
                 break;
             case 'button-icon':
-                this.handleButtonIconVariant();
+                this.updateVariantButtonIcon();
                 break;
             case 'chip':
                 this.handleChipVariant();
@@ -828,21 +824,37 @@ export default class Skeleton extends LightningElement {
                 'slds-button_icon-brand':
                     this.variantAttributes.variant === 'brand',
                 'slds-button_icon-inverse':
-                    this.variantAttributes.variant === 'inverse',
-                'slds-button_icon-container':
-                    this.variantAttributes.variant === 'icon-container-base',
-                'slds-button_icon-border-filled':
-                    this.variantAttributes.variant ===
-                    'icon-container-border-filled',
-                'slds-button_icon-border':
-                    this.variantAttributes.variant ===
-                    'icon-container-border-transparent',
-                'slds-button_icon-border-inverse':
-                    this.variantAttributes.variant ===
-                    'slds-button_icon-border-inverse'
+                    this.variantAttributes.variant === 'inverse'
             })
             .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
         this.buttonIconWrapper = buttonIconWrapper;
+    }
+
+    updateVariantButtonIcon() {
+        const buttonIcon = this.template.querySelector(
+            '[data-element-id="button-icon"]'
+        );
+
+        if (this.variantAttributes.variant === 'brand') {
+            buttonIcon.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#0176d3'
+            );
+            buttonIcon.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#2791e8'
+            );
+        }
+        if (this.variantAttributes.variant === 'inverse') {
+            buttonIcon.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#16325c'
+            );
+            buttonIcon.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#365380'
+            );
+        }
     }
 
     updateComboboxClassList() {
