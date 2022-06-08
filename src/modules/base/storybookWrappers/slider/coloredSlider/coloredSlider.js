@@ -48,7 +48,7 @@ export default class ColoredSlider extends LightningElement {
     @api tickMarkStyle;
     @api showTickMarks;
     @api disableSwap;
-    @api removeTrack;
+    @api hideTrack;
     @api minimumDistance;
 
     _colorHue = 0;

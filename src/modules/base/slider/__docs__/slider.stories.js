@@ -149,8 +149,8 @@ export default {
                 category: 'Value'
             }
         },
-        removeTrack: {
-            name: 'remove-track',
+        hideTrack: {
+            name: 'hide-track',
             control: {
                 type: 'boolean'
             },
@@ -357,7 +357,7 @@ export default {
         showPin: false,
         tickMarkStyle: 'inner-tick',
         showTickMarks: false,
-        removeTrack: false,
+        hideTrack: false,
         disableSwap: false,
         minimumDistance: 0,
         size: 'full',

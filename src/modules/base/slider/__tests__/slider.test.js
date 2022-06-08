@@ -88,7 +88,7 @@ describe('Slider', () => {
         expect(element.minimumDistance).toEqual(0);
         expect(element.label).toBeUndefined();
         expect(element.showPin).toEqual(false);
-        expect(element.removeTrack).toEqual(false);
+        expect(element.hideTrack).toEqual(false);
         expect(element.showTickMarks).toEqual(false);
         expect(element.size).toEqual('full');
         expect(element.step).toEqual(1);
@@ -318,23 +318,23 @@ describe('Slider', () => {
         });
     });
 
-    //removeTrack
-    it('removeTrack = false', () => {
-        element.removeTrack = false;
+    //hideTrack
+    it('hideTrack = false', () => {
+        element.hideTrack = false;
 
         return Promise.resolve().then(() => {
-            expect(element.removeTrack).toEqual(false);
+            expect(element.hideTrack).toEqual(false);
             expect(
                 element.shadowRoot.querySelector('[data-element-id="track"]')
             ).toBeTruthy();
         });
     });
 
-    it('removeTrack = true', () => {
-        element.removeTrack = true;
+    it('hideTrack = true', () => {
+        element.hideTrack = true;
 
         return Promise.resolve().then(() => {
-            expect(element.removeTrack).toEqual(true);
+            expect(element.hideTrack).toEqual(true);
             expect(
                 element.shadowRoot.querySelector('[data-element-id="track"]')
             ).toBeFalsy();

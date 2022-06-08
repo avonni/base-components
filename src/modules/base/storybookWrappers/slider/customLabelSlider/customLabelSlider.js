@@ -48,6 +48,6 @@ export default class CustomLabelSlider extends LightningElement {
     @api tickMarkStyle;
     @api showTickMarks;
     @api disableSwap;
-    @api removeTrack;
+    @api hideTrack;
     @api minimumDistance;
 }

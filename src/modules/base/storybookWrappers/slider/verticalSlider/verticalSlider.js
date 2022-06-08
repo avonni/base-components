@@ -48,7 +48,7 @@ export default class VerticalSlider extends LightningElement {
     @api tickMarkStyle;
     @api showTickMarks;
     @api disableSwap;
-    @api removeTrack;
+    @api hideTrack;
     @api minimumDistance;
 
     get secondsSliderValues() {

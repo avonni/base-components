@@ -317,10 +317,10 @@ export default class Slider extends LightningElement {
      * @default false
      */
     @api
-    get removeTrack() {
+    get hideTrack() {
         return this._removeTrack;
     }
-    set removeTrack(value) {
+    set hideTrack(value) {
         this._removeTrack = normalizeBoolean(value);
         this._domModified = true;
     }
