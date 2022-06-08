@@ -230,28 +230,165 @@ export default class Card extends LightningElement {
             .toString();
     }
 
+    /**
+     * Fix incorrect chrome image border radius and overflow hidden with border.
+     *
+     * @type {boolean}
+     */
+    get roundMediaTopLeftCorder() {
+        if (this.mediaPosition === 'left') {
+            return true;
+        }
+        if (this.mediaPosition === 'top') {
+            return true;
+        }
+        if (
+            this.mediaPosition === 'background' ||
+            this.mediaPosition === 'overlay'
+        ) {
+            return true;
+        }
+        if (this.mediaPosition === 'center' && !this.hasHeader) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Fix incorrect chrome image border radius and overflow hidden with border.
+     *
+     * @type {boolean}
+     */
+    get roundMediaTopRightCorder() {
+        if (this.mediaPosition === 'right') {
+            return true;
+        }
+        if (this.mediaPosition === 'top') {
+            return true;
+        }
+        if (
+            this.mediaPosition === 'background' ||
+            this.mediaPosition === 'overlay'
+        ) {
+            return true;
+        }
+        if (this.mediaPosition === 'center' && !this.hasHeader) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Fix incorrect chrome image border radius and overflow hidden with border.
+     *
+     * @type {boolean}
+     */
+    get roundMediaBottomLeftCorder() {
+        if (this.showFooterSlot) {
+            return false;
+        }
+        if (this.mediaPosition === 'left' && !this.showFooterSlot) {
+            return true;
+        }
+        if (
+            this.mediaPosition === 'background' ||
+            this.mediaPosition === 'overlay'
+        ) {
+            return true;
+        }
+        if (this.mediaPosition === 'bottom') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Fix incorrect chrome image border radius and overflow hidden with border.
+     *
+     * @type {boolean}
+     */
+    get roundMediaBottomRightCorder() {
+        if (this.showFooterSlot) {
+            return false;
+        }
+        if (this.mediaPosition === 'right') {
+            return true;
+        }
+        if (
+            this.mediaPosition === 'background' ||
+            this.mediaPosition === 'overlay'
+        ) {
+            return true;
+        }
+        if (this.mediaPosition === 'bottom') {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Is the header present?
+     *
+     * @type {boolean}
+     */
+    get hasHeader() {
+        return (
+            this.showTitleSlot ||
+            this.hasStringTitle ||
+            !!this.iconName ||
+            this.showActionSlot
+        );
+    }
+
+    /**
+     * Media container classes
+     *
+     * @type {string}
+     */
     get computedMediaClasses() {
         return classSet('avonni-card__media-container')
-            .add({ 'hide-media': !this.showMedia })
+            .add({ 'slds-hide': !this.showMedia })
+            .add({
+                'avonni-card__media-top-right-radius':
+                    this.roundMediaTopRightCorder
+            })
+            .add({
+                'avonni-card__media-top-left-radius':
+                    this.roundMediaTopLeftCorder
+            })
+            .add({
+                'avonni-card__media-bottom-right-radius':
+                    this.roundMediaBottomRightCorder
+            })
+            .add({
+                'avonni-card__media-bottom-left-radius':
+                    this.roundMediaBottomLeftCorder
+            })
+            .toString();
+    }
+
+    get computedHeaderClasses() {
+        return classSet('slds-grid slds-has-flexi-truncate avonni-card__header')
+            .add({ 'slds-hide': !this.hasHeader })
             .toString();
     }
 
     get computedFooterClasses() {
-        return classSet('avonni-card__footer').add({
-            'hide-footer': this.showFooterSlot === false
-        });
+        return classSet('avonni-card__footer')
+            .add({ 'slds-hide': this.showFooterSlot === false })
+            .toString();
     }
 
     get computedDefaultSlotClasses() {
         return classSet('avonni-card__default-slot')
-            .add({ 'hide-default-slot': this.mediaPosition === 'center' })
+            .add({ 'slds-hide': this.mediaPosition === 'center' })
             .toString();
     }
 
     get computedCenterDefaultSlotClasses() {
         return classSet('avonni-card__center-default-slot')
             .add({
-                'hide-default-slot':
+                'slds-hide':
                     this.showDefaultSlot === false ||
                     this.showMedia === false ||
                     this.mediaPosition !== 'center'

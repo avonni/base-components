@@ -31,10 +31,10 @@
  */
 
 :host() {
+    /* --avonni-card-sizing-border: 0px; */
     /* --avonni-card-shadow: 0px;
     --avonni-card-color-border: #e0e0e0;
     --avonni-card-radius-border: 0px;
-    --avonni-card-sizing-border: 1px;
 
     --avonni-card-header-font-weight: bold;
 
@@ -150,10 +150,6 @@ article.avonni-card {
     );
 }
 
-.hide-media {
-    display: none;
-}
-
 .overlay-card .avonni-card__content-container {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
@@ -177,13 +173,29 @@ article.avonni-card {
     overflow: hidden;
 }
 
+/* In chrome, the image corner radius is not applied to the image properly when there is a border.
+   The overflow: hidden lets the image pass over the border on lower resolution screens.  */
+
+.avonni-card__media-top-left-radius {
+    border-top-left-radius: var(--avonni-card-radius-border, 0.5rem);
+}
+.avonni-card__media-top-right-radius {
+    border-top-right-radius: var(--avonni-card-radius-border, 0.5rem);
+}
+.avonni-card__media-bottom-right-radius {
+    border-bottom-right-radius: var(--avonni-card-radius-border, 0.5rem);
+}
+.avonni-card__media-bottom-left-radius {
+    border-bottom-left-radius: var(--avonni-card-radius-border, 0.5rem);
+}
+
 .background .avonni-card__media-container {
     height: var(--avonni-card-background-media-height, 120px);
     width: 100%;
 }
 .overlay-card .avonni-card__media-container {
-    height: var(--avonni-card-overlay-media-height, 120px);
     width: 100%;
+    height: var(--avonni-card-overlay-media-height, 120px);
 }
 .image-left .avonni-card__media-container {
     position: relative;
@@ -259,10 +271,6 @@ article.avonni-card {
     padding-right: var(--avonni-card-body-spacing-inline-end, 0.75rem);
 }
 
-.avonni-card .hide-default-slot {
-    display: none;
-}
-
 .avonni-card__footer {
     padding-top: var(--avonni-card-footer-spacing-block-start, 0.75rem);
     padding-bottom: var(--avonni-card-footer-spacing-block-end, 0.75rem);
@@ -274,8 +282,4 @@ article.avonni-card {
     border-top-width: var(--avonni-card-footer-sizing-border, 1px);
     border-top-style: solid;
     border-top-color: var(--avonni-card-footer-color-border, #c9c9c9);
-}
-
-.hide-footer {
-    display: none;
 }

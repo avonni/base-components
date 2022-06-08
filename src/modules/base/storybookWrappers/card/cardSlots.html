@@ -41,7 +41,6 @@
     >
         <img
             slot="media"
-            class="avonni-card__media"
             style="width: 100%; height: 100%; object-fit: cover"
             src="https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg"
         />
@@ -52,21 +51,19 @@
                 size="x-small"
                 variant="border-filled"
                 alternative-text="Bookmark"
-                class="slds-m-left_xx-small"
-                title="Bookmark"
             ></lightning-button-icon>
         </div>
 
-        <h2 slot="title" class="slds-truncate">
-            Card title card had long truncated title that will trucate
-        </h2>
+        <!-- <h2 slot="title" >
+            Card title will truncate if too long
+        </h2> -->
 
         <div>default slot</div>
-
+        <!-- 
         <div slot="action">
             <button class="slds-button slds-button_neutral">Action slot</button>
-        </div>
+        </div> -->
 
-        <div slot="footer">footer slot</div>
+        <!-- <div slot="footer">footer slot</div> -->
     </c-card>
 </template>
