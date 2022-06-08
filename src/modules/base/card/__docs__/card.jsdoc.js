@@ -10,7 +10,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-text-color
- * @default
  * @type color
  */
 /**
@@ -39,25 +38,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-card-sizing-block-start
+ * @name --avonni-card-spacing-block-start
  * @default 0px;
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-card-sizing-block-end
+ * @name --avonni-card-spacing-block-end
  * @default 0px;
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-card-sizing-inline-start
+ * @name --avonni-card-spacing-inline-start
  * @default 0px;
  * @type dimension
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-card-sizing-inline-end
+ * @name --avonni-card-spacing-inline-end
  * @default 0px;
  * @type dimension
  */
@@ -118,13 +117,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-header-spacing-inline-start
- * @default 0.75rem;
+ * @default 1rem;
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-header-spacing-inline-end
- * @default 0.75rem;
+ * @default 1rem;
  * @type dimension
  */
 /**
@@ -166,13 +165,13 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-spacing-inline-start
- * @default 0.75rem;
+ * @default 1rem;
  * @type dimension
  */
 /**
  * @memberof stylingHooks
  * @name --avonni-card-footer-spacing-inline-end
- * @default 0.75rem;
+ * @default 1rem;
  * @type dimension
  */
 /**
@@ -201,15 +200,15 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-card-overlay-media-overlay-background
- * @default 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.25) 75%, rgba(0, 0, 0, 0) 100%)'
- * @type string
- */
-/**
- * @memberof stylingHooks
  * @name --avonni-card-background-media-text-color
  * @default white
  * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-overlay-media-overlay-background
+ * @default 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.25) 75%, rgba(0, 0, 0, 0) 100%)'
+ * @type string
  */
 /**
  * @memberof stylingHooks

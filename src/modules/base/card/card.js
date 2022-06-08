@@ -59,6 +59,7 @@ export default class Card extends LightningElement {
     showActionSlot = false;
     showDefaultSlot = false;
     showFooterSlot = false;
+    _isEmptyCard = true;
 
     connectedCallback() {}
 
@@ -86,6 +87,18 @@ export default class Card extends LightningElement {
             this.showFooterSlot =
                 this.footerSlot.assignedElements().length !== 0;
         }
+
+        // if there is nothing in the card, show the default slot
+        this._isEmptyCard =
+            !this.showTitleSlot &&
+            !this.showMediaSlot &&
+            !this.showMediaActionSlot &&
+            !this.showActionSlot &&
+            !this.showDefaultSlot &&
+            !this.showFooterSlot &&
+            !this._iconName &&
+            !this._mediaSrc &&
+            !this._title;
 
         this._showMedia = !!this.mediaSrc || this.showMediaSlot;
     }
@@ -372,6 +385,19 @@ export default class Card extends LightningElement {
     }
 
     /**
+     * Is card empty?
+     *
+     * @type {boolean}
+     */
+    get isEmptyCard() {
+        return this._isEmptyCard;
+    }
+
+    set isEmptyCard(value) {
+        this._isEmptyCard = value;
+    }
+
+    /**
      * Media container classes
      *
      * @type {string}
@@ -414,7 +440,7 @@ export default class Card extends LightningElement {
 
     get computedFooterClasses() {
         return classSet('avonni-card__footer')
-            .add({ 'slds-hide': this.showFooterSlot === false })
+            .add({ 'slds-hide': !this.showFooterSlot })
             .toString();
     }
 
@@ -422,7 +448,8 @@ export default class Card extends LightningElement {
         return classSet('avonni-card__default-slot')
             .add({
                 'slds-hide':
-                    this.mediaPosition === 'center' || !this.showDefaultSlot
+                    this.mediaPosition === 'center' ||
+                    (!this.showDefaultSlot && !this.isEmptyCard)
             })
             .toString();
     }
@@ -431,8 +458,8 @@ export default class Card extends LightningElement {
         return classSet('avonni-card__center-default-slot')
             .add({
                 'slds-hide':
-                    this.showDefaultSlot === false ||
-                    this.showMedia === false ||
+                    !this.showDefaultSlot ||
+                    !this.showMedia ||
                     this.mediaPosition !== 'center'
             })
             .toString();

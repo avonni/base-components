@@ -162,5 +162,6 @@ OverlayCard.args = {
 export const BaseWithSlots = SlotsTemplate.bind({});
 BaseWithSlots.args = {
     // title: 'Title Prop: ',
+    // mediaSrc: 'https://www.avonnicomponents.com/assets/images/logo.svg',
     // iconName: 'custom:custom1'
 };

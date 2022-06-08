@@ -31,7 +31,7 @@
  */
 
 :host() {
-    --avonni-card-radius-border: 0.5rem;
+    /* --avonni-card-radius-border: 0.5rem; */
     /* --avonni-card-sizing-border: 0px; */
     /* --avonni-card-shadow: 0px;
     --avonni-card-color-border: #e0e0e0;
@@ -39,10 +39,10 @@
 
     --avonni-card-header-font-weight: bold;
 
-    --avonni-card-sizing-block-start: 0px;
-    --avonni-card-sizing-block-end: 0px;
-    --avonni-card-sizing-inline-start: 0px;
-    --avonni-card-sizing-inline-end: 0px; */
+    --avonni-card-spacing-block-start: 0px;
+    --avonni-card-spacing-block-end: 0px;
+    --avonni-card-spacing-inline-start: 0px;
+    --avonni-card-spacing-inline-end: 0px; */
 
     /* --avonni-card-top-media-height: 20px;
     --avonni-card-center-media-height: 20px;
@@ -60,7 +60,7 @@
 
     /* body */
     /* --avonni-card-body-spacing-block-start: 0px;
-    --avonni-card-body-spacing-block-end: 0px;
+    --avonni-card-body-spacing-block-end: 100px;
     --avonni-card-body-spacing-inline-start: 0px;
     --avonni-card-body-spacing-inline-end: 0px; */
     /* footer */
@@ -100,14 +100,15 @@ article.avonni-card {
     overflow: hidden;
     display: flex;
     flex-direction: column;
-    min-height: 1.5rem;
+
+    /* min-height: calc(var(--avonni-card-body-spacing-block-start, 0.75rem) + var(--avonni-card-body-spacing-block-end, 0.75rem)); */
     background-color: var(--avonni-card-color-background, white);
     color: var(--avonni-card-text-color);
 
-    padding-top: var(--avonni-card-sizing-block-start, 0px);
-    padding-left: var(--avonni-card-sizing-inline-start, 0px);
-    padding-right: var(--avonni-card-sizing-inline-end, 0px);
-    padding-bottom: var(--avonni-card-sizing-block-end, 0px);
+    padding-top: var(--avonni-card-spacing-block-start, 0px);
+    padding-left: var(--avonni-card-spacing-inline-start, 0px);
+    padding-right: var(--avonni-card-spacing-inline-end, 0px);
+    padding-bottom: var(--avonni-card-spacing-block-end, 0px);
 
     border-width: var(--avonni-card-sizing-border, 1px);
     border-style: solid;
@@ -272,8 +273,8 @@ article.avonni-card {
 .avonni-card__header {
     padding-top: var(--avonni-card-header-spacing-block-start, 0.75rem);
     margin-bottom: var(--avonni-card-header-spacing-block-end, 0.75rem);
-    padding-left: var(--avonni-card-header-spacing-inline-start, 0.75rem);
-    padding-right: var(--avonni-card-header-spacing-inline-end, 0.75rem);
+    padding-left: var(--avonni-card-header-spacing-inline-start, 1rem);
+    padding-right: var(--avonni-card-header-spacing-inline-end, 1rem);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -305,15 +306,19 @@ article.avonni-card {
 .avonni-card__default-slot {
     margin-top: var(--avonni-card-body-spacing-block-start, 0.75rem);
     margin-bottom: var(--avonni-card-body-spacing-block-end, 0.75rem);
-    padding-left: var(--avonni-card-body-spacing-inline-start, 0.75rem);
-    padding-right: var(--avonni-card-body-spacing-inline-end, 0.75rem);
+    padding-left: var(--avonni-card-body-spacing-inline-start, 1rem);
+    padding-right: var(--avonni-card-body-spacing-inline-end, 1rem);
+}
+
+.avonni-card__empty-card-placeholder {
+    height: 0.01px;
 }
 
 .avonni-card__footer {
     padding-top: var(--avonni-card-footer-spacing-block-start, 0.75rem);
     padding-bottom: var(--avonni-card-footer-spacing-block-end, 0.75rem);
-    padding-left: var(--avonni-card-footer-spacing-inline-start, 0.75rem);
-    padding-right: var(--avonni-card-footer-padding-right, 0.75rem);
+    padding-left: var(--avonni-card-footer-spacing-inline-start, 1rem);
+    padding-right: var(--avonni-card-footer-padding-right, 1rem);
 
     text-align: var(--avonni-card-footer-text-align, center);
 

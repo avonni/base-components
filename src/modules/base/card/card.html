@@ -99,6 +99,10 @@
 
                 <!-- default content -->
                 <div class={computedDefaultSlotClasses}>
+                    <div
+                        if:true={isEmptyCard}
+                        class="avonni-card__empty-card-placeholder"
+                    ></div>
                     <slot></slot>
                 </div>
             </div>
