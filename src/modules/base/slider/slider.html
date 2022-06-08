@@ -106,18 +106,16 @@
                 </div>
             </div>
         </template>
-        <div class="avonni-slider__track-container">
+        <div class={computedTrackContainerClass}>
             <div
                 if:false={removeTrack}
-                class={computedProgressClass}
+                class={computedTrackClass}
                 data-element-id="track"
             ></div>
         </div>
         <template if:true={showAnyTickMarks}>
             <svg
                 lwc:dom="manual"
-                width="100%"
-                height="40px"
                 xmlns="http://www.w3.org/2000/svg"
                 data-element-id="ruler"
                 class="avonni-slider__tick-mark-container"

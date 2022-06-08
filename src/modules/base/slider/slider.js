@@ -591,9 +591,24 @@ export default class Slider extends LightningElement {
      *
      * @type {string}
      */
-    get computedProgressClass() {
+    get computedTrackClass() {
         return classSet('avonni-slider__track').add({
-            'avonni-slider__track_disabled': this.disabled
+            'avonni-slider__track_disabled': this.disabled,
+            'avonni-slider__track-left-border_round':
+                this._computedValues >= 2 &&
+                !(this.tickMarkStyle === 'inner-tick' && this.showTickMarks)
+        });
+    }
+
+    /**
+     * Computed track class styling.
+     *
+     * @type {string}
+     */
+    get computedTrackContainerClass() {
+        return classSet('avonni-slider__track-container').add({
+            'avonni-slider__track-container-border_square':
+                this.tickMarkStyle === 'inner-tick' && this.showTickMarks
         });
     }
 
@@ -813,6 +828,16 @@ export default class Slider extends LightningElement {
         return thumbRadius ? thumbRadius : 8;
     }
 
+    get _trackHeight() {
+        const trackHeight = parseInt(
+            getComputedStyle(this.template.host)
+                .getPropertyValue('--avonni-slider-track-height')
+                .split('px')[0],
+            10
+        );
+        return trackHeight ? trackHeight : 4;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -1007,7 +1032,7 @@ export default class Slider extends LightningElement {
                 child.remove();
             });
         }
-        const totalWidth = ruler.clientWidth;
+        const totalWidth = this.getInput(0).clientWidth;
         const numberOfSteps =
             (this._computedMax - this._computedMin) /
             (this.step * this._scalingFactor);
@@ -1051,32 +1076,6 @@ export default class Slider extends LightningElement {
         const ruler = this._ruler;
 
         if (drawPositions) {
-            // square slider edges
-            const upperEdgePos = numberOfSteps * stepWidth;
-            let backgroundColor = getComputedStyle(
-                this.template.host
-            ).getPropertyValue('background-color');
-            if (!backgroundColor || backgroundColor === 'rgba(0, 0, 0, 0)') {
-                backgroundColor = 'white';
-            }
-            for (let i = 0; i < 2; i++) {
-                const blockWidth = this._inputThumbRadius * 1.5;
-                let line = document.createElementNS(SVG_NAMESPACE, 'rect');
-                line.setAttribute('fill', `${backgroundColor}`);
-                line.setAttribute('height', `15`);
-                line.setAttribute('width', `${blockWidth}`);
-                line.setAttribute(
-                    'x',
-                    `${
-                        i === 0
-                            ? leftPosition - blockWidth
-                            : leftPosition + upperEdgePos
-                    }`
-                );
-                line.setAttribute('y', '10');
-                ruler.appendChild(line);
-            }
-            // drawTicks
             for (let i = 0; i < numberOfSteps + 1; i++) {
                 let valueOfStep =
                     (i / numberOfSteps) *
@@ -1094,13 +1093,34 @@ export default class Slider extends LightningElement {
                     leftPosition += stepWidth;
                     continue;
                 }
+                let trackMiddle = this._trackHeight / 2 + 10;
                 let line = document.createElementNS(SVG_NAMESPACE, 'line');
-                line.setAttribute('height', `15`);
-                line.setAttribute('width', `5`);
                 line.setAttribute('x1', `${leftPosition}`);
-                line.setAttribute('y1', `${isMajorStep ? 10.65 : 11.3}`);
                 line.setAttribute('x2', `${leftPosition}`);
-                line.setAttribute('y2', `${isMajorStep ? 22.65 : 22}`);
+                line.setAttribute(
+                    'y1',
+                    `${
+                        isMajorStep
+                            ? trackMiddle -
+                              this._trackHeight / 2 -
+                              (3 + 0.2 * this._trackHeight)
+                            : trackMiddle -
+                              this._trackHeight / 2 -
+                              (2 + 0.2 * this._trackHeight)
+                    }`
+                );
+                line.setAttribute(
+                    'y2',
+                    `${
+                        isMajorStep
+                            ? trackMiddle +
+                              this._trackHeight / 2 +
+                              (3 + 0.2 * this._trackHeight)
+                            : trackMiddle +
+                              this._trackHeight / 2 +
+                              (2 + 0.2 * this._trackHeight)
+                    }`
+                );
                 ruler.appendChild(line);
                 line.dataset.tickValue = valueOfStep;
                 leftPosition += stepWidth;
@@ -1150,9 +1170,19 @@ export default class Slider extends LightningElement {
                 line.setAttribute('height', `10`);
                 line.setAttribute('width', `5`);
                 line.setAttribute('x1', `${leftPosition}`);
-                line.setAttribute('y1', '27');
                 line.setAttribute('x2', `${leftPosition}`);
-                line.setAttribute('y2', `${isMajorStep ? 34 : 32}`);
+                line.setAttribute(
+                    'y1',
+                    `${this._trackHeight + (20 + 0.2 * this._trackHeight)}`
+                );
+                line.setAttribute(
+                    'y2',
+                    `${
+                        isMajorStep
+                            ? this._trackHeight + (27 + 0.2 * this._trackHeight)
+                            : this._trackHeight + (26 + 0.2 * this._trackHeight)
+                    }`
+                );
                 ruler.appendChild(line);
                 leftPosition += stepWidth;
             }
@@ -1178,14 +1208,18 @@ export default class Slider extends LightningElement {
                                 customLabel.value === i + this._computedMin
                         );
                 }
-                if (this.showOnlyMajorTicks && !isMajorStep) {
+                if (
+                    (this.showOnlyMajorTicks && !isMajorStep) ||
+                    i === 0 ||
+                    i === numberOfSteps
+                ) {
                     leftPosition += stepWidth;
                     continue;
                 }
                 let circle = document.createElementNS(SVG_NAMESPACE, 'circle');
                 circle.setAttribute('cx', `${leftPosition}`);
-                circle.setAttribute('cy', '16.4');
-                circle.setAttribute('r', '1.2');
+                circle.setAttribute('cy', `${this._trackHeight / 2 + 10}`);
+                circle.setAttribute('r', `${this._trackHeight / 3}`);
                 ruler.appendChild(circle);
                 circle.dataset.tickValue = valueOfStep;
                 leftPosition += stepWidth;

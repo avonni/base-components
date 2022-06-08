@@ -108,8 +108,14 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-slider-track-height
+ * @default 4px
+ * @type height
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-slider-thumb-radius
- * @default 8.75px
+ * @default 8px
  * @type radius
  */
 /**
