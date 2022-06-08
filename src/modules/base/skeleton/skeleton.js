@@ -655,7 +655,126 @@ export default class Skeleton extends LightningElement {
         this.tertiaryTextClass = tertiaryTextClass;
     }
 
-    updateChipClassList() {}
+    updateChipClassList() {
+        const chip = this.template.querySelector(
+            '[data-element-id="span-wrapper"]'
+        );
+        const chipLabel = this.template.querySelector(
+            '[data-element-id="chip-label"]'
+        );
+        if (this.variantAttributes.variant === 'success') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#2e844a'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#4eb571'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+        if (this.variantAttributes.variant === 'brand') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#0070d1'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#3292e6'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+        if (this.variantAttributes.variant === 'inverse') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#001639'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#244c8c'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+        if (this.variantAttributes.variant === 'alt-inverse') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#032d60'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#23538c'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+        if (this.variantAttributes.variant === 'info') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#706e6b'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#8c8c8b'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+        if (this.variantAttributes.variant === 'warning') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#fe9339'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#fcac68'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#000000'
+            );
+        }
+        if (this.variantAttributes.variant === 'error') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#ea001e'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#ff6679'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+        if (this.variantAttributes.variant === 'offline') {
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#444444'
+            );
+            chip.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#7d7d7d'
+            );
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+    }
 
     updateBadgeClassList() {}
 

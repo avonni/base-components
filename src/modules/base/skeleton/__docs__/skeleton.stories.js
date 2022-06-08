@@ -116,6 +116,7 @@ export const Base = Template.bind({});
 
 export const Avatar = Template.bind({});
 Avatar.args = {
+    variant: 'avatar',
     animation: 'pulse',
     variantAttributes: {
         variant: 'circle',
@@ -125,11 +126,11 @@ Avatar.args = {
 
 export const Chip = Template.bind({});
 Chip.args = {
-    variant: 'avatar',
+    variant: 'chip',
+    animation: 'pulse',
     variantAttributes: {
         variant: 'brand',
-        animation: 'pulse',
-        label: 'label',
+        chipLabel: true,
         hasIcon: true,
         outline: false
     }

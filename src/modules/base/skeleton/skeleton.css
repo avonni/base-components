@@ -212,7 +212,7 @@
 
 .avonni-skeleton__chip-label {
     border-radius: 4px/6.7px;
-    background-color: #00000000;
+    background-color: var(--avonni-skeleton-chip-label-background, #00000000);
     min-height: 10px;
     min-width: 30px;
 }
