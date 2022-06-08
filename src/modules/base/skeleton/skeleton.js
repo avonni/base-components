@@ -914,6 +914,20 @@ export default class Skeleton extends LightningElement {
                 '#ea001e'
             );
         }
+        if (this.variantAttributes.variant === 'success') {
+            button.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#45c65a'
+            );
+            button.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#73e686'
+            );
+            buttonLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#181818'
+            );
+        }
     }
 
     updateVariantButtonIcon() {
