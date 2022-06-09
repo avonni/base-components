@@ -80,9 +80,15 @@
                             data-index={index}
                             data-group-name="input"
                             oninput={handleChange}
-                            onmousedown={unhidePin}
-                            onmouseup={hidePin}
+                            onmousemove={manageInputHover}
+                            onmousedown={manageInputHover}
+                            onmouseout={manageInputLeave}
                         />
+                        <div
+                            data-group-name="hitbox"
+                            data-index={index}
+                            class="avonni-slider__thumb-hitbox"
+                        ></div>
                         <div
                             if:true={showPin}
                             class={computedPinClass}

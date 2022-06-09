@@ -844,7 +844,7 @@ export default class Slider extends LightningElement {
      * Returns the current variable for styling hook of thumb radius.
      * @returns {number}
      */
-    get _inputThumbRadius() {
+    get _thumbRadius() {
         const thumbRadius = parseInt(
             getComputedStyle(this.template.host)
                 .getPropertyValue('--avonni-slider-thumb-radius')
@@ -1052,7 +1052,7 @@ export default class Slider extends LightningElement {
         const totalWidth = this.isVertical
             ? this.template.querySelector('[data-element-id="spacer"]')
                   .clientHeight -
-              2 * this._inputThumbRadius
+              2 * this._thumbRadius
             : this.template.querySelector(
                   '[data-element-id="custom-label-container"]'
               ).clientWidth;
@@ -1084,9 +1084,8 @@ export default class Slider extends LightningElement {
         const numberOfSteps =
             (this._computedMax - this._computedMin) /
             (this.step * this._scalingFactor);
-        const stepWidth =
-            (totalWidth - this._inputThumbRadius * 2) / numberOfSteps;
-        let leftPosition = this._inputThumbRadius;
+        const stepWidth = (totalWidth - this._thumbRadius * 2) / numberOfSteps;
+        let leftPosition = this._thumbRadius;
 
         switch (this._tickMarkStyle) {
             case 'tick':
@@ -1348,6 +1347,7 @@ export default class Slider extends LightningElement {
         if (this._pin) {
             this.setPinPosition(event);
         }
+        this.setHitboxPosition(event);
         this.updatePublicValue();
         this.changeSlider();
     }
@@ -1468,29 +1468,60 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     * Test if thumb is hovered.
+     * @returns {boolean}
+     */
+    thumbIsHovered(event) {
+        const inputIndex = event.target.dataset.index;
+        const thumbPosition =
+            this.getPercentOfValue(this._computedValues[inputIndex]) *
+            this.getInput(0).clientWidth;
+        return (
+            event.offsetX - this._thumbRadius < thumbPosition &&
+            thumbPosition < event.offsetX + this._thumbRadius
+        );
+    }
+
+    /**
      * Display pin.
      */
-    unhidePin(event) {
-        if (this._pin) {
-            this.setPinPosition(event);
-            this.template
-                .querySelector(
-                    `[data-group-name="pin"][data-index="${event.target.dataset.index}"]`
-                )
-                .classList.add('avonni-slider__pin_visible');
+    manageInputHover(event) {
+        console.log(event);
+        if (
+            this.thumbIsHovered(event) ||
+            (event.type === 'mousedown' && event.button === 0)
+        ) {
+            this.getInput(event.target.dataset.index).classList.add(
+                'avonni-slider__slider_hovered'
+            );
+            if (this._pin) {
+                this.setPinPosition(event);
+                this.template
+                    .querySelector(
+                        `[data-group-name="pin"][data-index="${event.target.dataset.index}"]`
+                    )
+                    .classList.add('avonni-slider__pin_visible');
+            }
+        } else {
+            this.manageInputLeave(event);
         }
     }
 
     /**
      * Hide pin.
      */
-    hidePin(event) {
-        if (this._pin) {
-            this.template
-                .querySelector(
-                    `[data-group-name="pin"][data-index="${event.target.dataset.index}"]`
-                )
-                .classList.remove('avonni-slider__pin_visible');
+    manageInputLeave(event) {
+        if (!this.thumbIsHovered(event)) {
+            this.getInput(event.target.dataset.index).classList.remove(
+                'avonni-slider__slider_hovered'
+            );
+            if (this._pin) {
+                this.template
+                    .querySelector(
+                        `[data-group-name="pin"][data-index="${event.target.dataset.index}"]`
+                    )
+                    .classList.remove('avonni-slider__pin_visible');
+            }
         }
     }
 
@@ -1515,13 +1546,33 @@ export default class Slider extends LightningElement {
         if (!this.isVertical) {
             pin.style.left = `calc(${pinProgress}% - ${
                 pinProgress *
-                    ((this._inputThumbRadius * 2) / PERCENT_SCALING_FACTOR) -
-                this._inputThumbRadius
+                    ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR) -
+                this._thumbRadius
             }px)`;
         } else {
             pin.style.left = `calc(${pinProgress}% - ${
+                pinProgress * ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR)
+            }px)`;
+        }
+    }
+
+    setHitboxPosition(event) {
+        let hitbox = this.template.querySelector(
+            `[data-group-name="hitbox"][data-index="${event.target.dataset.index}"]`
+        );
+        let pinProgress =
+            this.getPercentOfValue(
+                this._computedValues[parseInt(event.target.dataset.index, 10)]
+            ) * PERCENT_SCALING_FACTOR;
+        if (!this.isVertical) {
+            hitbox.style.left = `calc(${pinProgress}% - ${
                 pinProgress *
-                ((this._inputThumbRadius * 2) / PERCENT_SCALING_FACTOR)
+                    ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR) -
+                this._thumbRadius
+            }px)`;
+        } else {
+            hitbox.style.left = `calc(${pinProgress}% - ${
+                pinProgress * ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR)
             }px)`;
         }
     }

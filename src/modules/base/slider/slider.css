@@ -106,6 +106,7 @@
 
 .avonni-slider__pin {
     opacity: 0;
+    transition: opacity 0.1s ease-in-out;
     position: absolute;
     top: calc(-28px - var(--avonni-slider-thumb-radius, 8px));
     background-color: var(--avonni-slider-pin-color, #1a5296);
@@ -308,7 +309,7 @@
         var(--avonni-slider-thumb-color-shadow-focus, #99d3ff);
 }
 
-.avonni-slider__slider:hover::-webkit-slider-thumb {
+.avonni-slider__slider_hovered::-webkit-slider-thumb {
     background: var(--avonni-slider-thumb-color-hover, #014486);
 }
 
@@ -322,4 +323,15 @@
 
 .avonni-slider__track_disabled {
     background: #919191;
+}
+
+.avonni-slider__thumb-hitbox {
+    position: absolute;
+    height: calc(var(--avonni-slider-thumb-radius, 8px) * 2);
+    width: calc(var(--avonni-slider-thumb-radius, 8px) * 2);
+    left: 50%;
+    top: calc(var(--avonni-slider-track-height, 4px) / 2);
+    border-radius: var(--avonni-slider-thumb-radius-border, 2rem);
+    border: solid rgb(0, 0, 0) 4px;
+    transform: translate(-50%, -50%);
 }
