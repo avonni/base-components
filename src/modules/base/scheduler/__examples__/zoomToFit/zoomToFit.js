@@ -1,24 +1,10 @@
 import { LightningElement } from 'lwc';
 
-export default class SchedulerBase extends LightningElement {
+export default class SchedulerReadOnly extends LightningElement {
     columns = [
         {
-            label: 'Staff',
-            fieldName: 'resourceAvatarSrc',
-            type: 'avatar',
-            typeAttributes: {
-                alternativeText: 'Avatar',
-                fallbackIconName: {
-                    fieldName: 'resourceAvatarFallbackIconName'
-                },
-                initials: { fieldName: 'resourceAvatarInitials' },
-                primaryText: { fieldName: 'resourceName' }
-            }
-        },
-        {
-            label: 'Role',
-            fieldName: 'role',
-            hideDefaultActions: true
+            label: 'Employee',
+            fieldName: 'resourceName'
         }
     ];
 
@@ -27,71 +13,71 @@ export default class SchedulerBase extends LightningElement {
             keyFields: ['3', '4', '5'],
             name: 'event-1',
             title: 'Event 1',
-            from: 1639400400000,
-            to: 1639407600000
+            from: new Date(2021, 2, 1),
+            to: new Date(2021, 3, 1)
         },
         {
             keyFields: ['5', '3', '4'],
             name: 'event-2',
             title: 'Event 2',
-            from: 1639404000000,
-            to: 1639411200000
+            from: new Date(2021, 1, 15),
+            to: new Date(2021, 3, 30)
         },
         {
             keyFields: ['3', '4', '2'],
             name: 'event-3',
             title: 'Event 3',
-            from: 1639407600000,
-            to: 1639414800000
+            from: new Date(2020, 11, 26),
+            to: new Date(2021, 0, 31)
         },
         {
             keyFields: ['1', '4'],
             name: 'event-4',
             title: 'Event 4',
-            from: 1639411200000,
-            to: 1639418400000
+            from: new Date(2021, 3, 12),
+            to: new Date(2021, 4, 31)
         },
         {
             keyFields: ['2', '1'],
             name: 'event-5',
             title: 'Event 5',
-            from: 1639414800000,
-            to: 1639422000000
+            from: new Date(2021, 7, 1),
+            to: new Date(2021, 8, 31)
         },
         {
             keyFields: ['1', '2', '3'],
             name: 'event-6',
             title: 'Event 6',
-            from: 1639418400000,
-            to: 1639425600000
+            from: new Date(2021, 5, 20),
+            to: new Date(2021, 6, 31)
         },
         {
             keyFields: ['1'],
             name: 'event-7',
             title: 'Event 7',
-            from: 1639422000000,
-            to: 1639429200000
+            from: new Date(2021, 6, 1),
+            to: new Date(2021, 7, 31)
         },
         {
             keyFields: ['3'],
             name: 'event-8',
             title: 'Event 8',
-            from: 1639425600000,
-            to: 1639432800000
+            from: new Date(2021, 9, 10),
+            to: new Date(2021, 10, 31)
         },
         {
             keyFields: ['1'],
             name: 'event-9',
             title: 'Event 9',
-            from: 1639429200000,
-            to: 1639436400000
+            from: new Date(2021, 9, 1),
+            to: new Date(2022, 2, 3)
         },
         {
             keyFields: ['2', '3', '4'],
             name: 'event-10',
             title: 'Event 10',
-            from: 1639432800000,
-            to: 1639440000000
+            from: new Date(2021, 10, 1),
+            to: new Date(2021, 11, 31)
         }
     ];
 
@@ -142,5 +128,16 @@ export default class SchedulerBase extends LightningElement {
         }
     ];
 
-    start = new Date(2021, 11, 13, 8);
+    start = new Date(2021, 0, 1);
+
+    timeSpan = {
+        unit: 'year',
+        span: 1
+    };
+
+    toolbarTimeSpans = [
+        { unit: 'week', span: 1, label: 'Week', headers: 'dayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+        { unit: 'year', span: 1, label: 'Year', headers: 'monthAndYear' }
+    ];
 }
