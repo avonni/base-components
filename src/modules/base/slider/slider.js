@@ -1486,17 +1486,6 @@ export default class Slider extends LightningElement {
      * Test if thumb is hovered.
      * @returns {boolean}
      */
-    _thumbIsHovered(event) {
-        const inputIndex = event.target.dataset.index;
-        const thumbPosition =
-            this.getPercentOfValue(this._computedValues[inputIndex]) *
-            this.getInput(0).clientWidth;
-        return (
-            event.offsetX - this._thumbRadius < thumbPosition &&
-            thumbPosition < event.offsetX + this._thumbRadius
-        );
-    }
-
     thumbIsHovered(event) {
         const obj = this.getHitbox(parseInt(event.target.dataset.index, 10));
         const radius = this._thumbRadius;
@@ -1504,8 +1493,10 @@ export default class Slider extends LightningElement {
         const centerPointY = obj.getBoundingClientRect().y + radius;
         if (
             Math.sqrt(
-                (event.pageX - centerPointX) * (event.pageX - centerPointX) +
-                    (event.pageY - centerPointY) * (event.pageY - centerPointY)
+                (event.clientX - centerPointX) *
+                    (event.clientX - centerPointX) +
+                    (event.clientY - centerPointY) *
+                        (event.clientY - centerPointY)
             ) < radius
         ) {
             return true;
@@ -1517,7 +1508,7 @@ export default class Slider extends LightningElement {
      * Display pin and hover color on thumb.
      */
     thumbHovered(event) {
-        if (this.thumbIsHovered(event) || this._pinLocked) {
+        if (this._pinLocked || this.thumbIsHovered(event)) {
             this.getInput(event.target.dataset.index).classList.add(
                 'avonni-slider__slider-thumb_hovered'
             );
@@ -1548,12 +1539,20 @@ export default class Slider extends LightningElement {
         }
     }
 
-    lockPin() {
+    /**
+     * Lock the pin so it is always displayed.
+     */
+    lockPin(event) {
         this._pinLocked = true;
+        this.thumbHovered(event);
     }
 
-    unlockPin() {
+    /**
+     * Unlock the pin so it is not always displayed.
+     */
+    unlockPin(event) {
         this._pinLocked = false;
+        this.thumbHovered(event);
     }
 
     /**
