@@ -30,10 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { Slider } from '../__examples__/slider';
 import { VerticalSlider } from '../__examples__/verticalSlider';
 import { ColoredSlider } from '../__examples__/coloredSlider';
 import { CustomLabelSlider } from '../__examples__/customLabelSlider';
+import { MaxHeightSlider } from '../__examples__/maxHeightSlider';
 
 export default {
     title: 'Example/Slider',
@@ -382,23 +382,23 @@ export default {
     }
 };
 
-const Template = (args) => Slider(args);
+const MaxHeightTemplate = (args) => MaxHeightSlider(args);
 const VerticalTemplate = (args) => VerticalSlider(args);
 const ColoredTemplate = (args) => ColoredSlider(args);
 const CustomLabelTemplate = (args) => CustomLabelSlider(args);
 
-export const Base = Template.bind({});
+export const Base = MaxHeightTemplate.bind({});
 Base.args = {
     label: 'Slider label'
 };
 
-export const Pin = Template.bind({});
+export const Pin = MaxHeightTemplate.bind({});
 Pin.args = {
     label: 'Slide to view value pin',
     showPin: true
 };
 
-export const UnitPercent = Template.bind({});
+export const UnitPercent = MaxHeightTemplate.bind({});
 UnitPercent.args = {
     label: 'Unit percent slider',
     unit: 'percent',
@@ -409,7 +409,7 @@ UnitPercent.args = {
     showPin: true
 };
 
-export const UnitCurrencyCAD = Template.bind({});
+export const UnitCurrencyCAD = MaxHeightTemplate.bind({});
 UnitCurrencyCAD.args = {
     label: 'Unit currency (CAD) slider',
     unit: 'currency',
@@ -420,7 +420,7 @@ UnitCurrencyCAD.args = {
     showPin: true
 };
 
-export const StepMinMax = Template.bind({});
+export const StepMinMax = MaxHeightTemplate.bind({});
 StepMinMax.args = {
     label: 'StepMinMax',
     value: 0,
@@ -431,20 +431,20 @@ StepMinMax.args = {
     showPin: true
 };
 
-export const Range = Template.bind({});
+export const Range = MaxHeightTemplate.bind({});
 Range.args = {
     label: 'Range slider',
     value: [25, 75]
 };
 
-export const RangeCollision = Template.bind({});
+export const RangeCollision = MaxHeightTemplate.bind({});
 RangeCollision.args = {
     label: 'Range slider (with Collision)',
     value: [25, 75],
     disableSwap: true
 };
 
-export const MultipleRange = Template.bind({});
+export const MultipleRange = MaxHeightTemplate.bind({});
 MultipleRange.args = {
     label: 'Multiple range slider',
     value: [25, 50, 75]
@@ -513,7 +513,7 @@ CustomLabelsDot.args = {
     }
 };
 
-export const Disabled = Template.bind({});
+export const Disabled = MaxHeightTemplate.bind({});
 Disabled.args = {
     label: 'Disabled slider',
     disabled: true
@@ -551,5 +551,6 @@ Colored.args = {
     label: 'Colored slider',
     showTickMarks: true,
     step: 5,
-    showPin: true
+    showPin: true,
+    hideMinMaxValues: true
 };
