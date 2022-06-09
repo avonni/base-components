@@ -528,7 +528,6 @@ export default class Slider extends LightningElement {
             this.scaleValues();
             this.capValues();
         }
-        this._hideTrack = this._computedValues.length > 2 || this._hideTrack;
         this._domModified = true;
     }
 
@@ -1020,6 +1019,7 @@ export default class Slider extends LightningElement {
                 Math.round(this._computedValues[index] / this._step) *
                 this._step;
         });
+        this._hideTrack = this._computedValues.length > 2 || this._hideTrack;
         this.updatePublicValue();
     }
 

@@ -167,7 +167,7 @@ export default {
             control: {
                 type: 'boolean'
             },
-            description: 'If present, track progress is removed.',
+            description: 'If present, track is removed.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'string' },
