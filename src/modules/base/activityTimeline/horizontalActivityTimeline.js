@@ -74,7 +74,7 @@ const LWC_ICONS_CLASS = {
 // ** Functionalities/bug **
 // TODO: Fix popover size
 // TODO: Last item : click/drag (when interval width is changed)
-// TODO: Scroll bar disappeared
+// TODO: Fix popover with overflow
 
 // ** QA/tests/Doc **
 // TODO: Refactor
@@ -608,8 +608,7 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Calculate the space between ticks of an axis. Since the space between axis is constant, we can only calculate the difference
-     * between the first two elements.
+     * Calculate the space between ticks of an axis.
      *
      * @return {number}
      */
@@ -632,7 +631,19 @@ export class HorizontalActivityTimeline {
             return AXIS_LABEL_WIDTH;
         }
 
-        return ticksXPositions[1] - ticksXPositions[0] - AXIS_LABEL_WIDTH;
+        let minDistanceBetweenTicks;
+        for (let i = 1; i < ticksXPositions.length; ++i) {
+            const ticksDistance =
+                ticksXPositions[i] - ticksXPositions[i - 1] - AXIS_LABEL_WIDTH;
+            if (
+                !minDistanceBetweenTicks ||
+                ticksDistance < minDistanceBetweenTicks
+            ) {
+                minDistanceBetweenTicks = ticksDistance;
+            }
+        }
+
+        return minDistanceBetweenTicks;
     }
 
     /**

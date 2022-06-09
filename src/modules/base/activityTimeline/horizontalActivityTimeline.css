@@ -53,8 +53,13 @@
 .avonni-activity-timeline__horizontal-timeline-items {
     margin: 0px;
     padding: 0px;
+    opacity: 0.99;
 }
 
 .avonni-activity-timeline__horizontal-timeline-resize-cursor {
     cursor: col-resize;
+}
+
+.avonni-activity-timeline__horizontal-timeline-scrolling-container {
+    width: fit-content;
 }
