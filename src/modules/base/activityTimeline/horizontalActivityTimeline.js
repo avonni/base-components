@@ -75,7 +75,6 @@ const LWC_ICONS_CLASS = {
 // TODO: Fix popover size
 // TODO: Last item : click/drag (when interval width is changed)
 // TODO: Scroll bar disappeared
-// TODO: Handle header change of size
 
 // ** QA/tests/Doc **
 // TODO: Refactor
