@@ -246,6 +246,12 @@
     width: 3em;
 }
 
+.avonni-skeleton__paragraph {
+    border-radius: var(--avonni-skeleton-radius-border);
+    height: 0.7em;
+    width: 100%;
+}
+
 .avonni-skeleton__progress-indicator-path-wave::before {
     top: 0;
     height: calc((2rem / 2) + 0.0625rem);

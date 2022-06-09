@@ -176,6 +176,12 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isParagraphVariant() {
+        console.log(this.variant);
+        return this.variant === 'paragraph';
+    }
+
+    @api
     get isProgressIndicatorVariant() {
         console.log(this.variant);
         return this.variant === 'progress-indicator';
@@ -530,6 +536,14 @@ export default class Skeleton extends LightningElement {
         return classSet('avonni-skeleton__input-label-tag').add(
             `avonni-skeleton__animation-${this.animation}`
         );
+    }
+
+    get paragraphLineClass() {
+        return classSet('avonni-skeleton__variant-text')
+            .add('slds-item')
+            .add('avonni-skeleton__paragraph')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
     }
 
     get progressIndicatorItemClass() {
