@@ -325,9 +325,22 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @param {Event}
      */
     handleActionClick(event) {
-        console.log('action click');
         event.preventDefault();
         const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    /**
+     * Menu select event handler
+     *
+     * @param {Event}
+     */
+    handleMenuSelect(event) {
+        const actionName = event.currentTarget.name;
+        this.actionDispatcher(actionName);
+    }
+
+    actionDispatcher(actionName) {
         const {
             title,
             description,
@@ -363,15 +376,15 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
+        console.log('action dispatched');
     }
 
     /**
-     * Menu select event handler
+     * Prevent the default event browser behavior
      *
      * @param {Event}
      */
-    handleMenuSelect(event) {
+    preventDefault(event) {
         event.preventDefault();
-        console.log('menu select');
     }
 }

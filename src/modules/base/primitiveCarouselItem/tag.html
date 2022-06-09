@@ -86,6 +86,7 @@
                                 variant="border-filled"
                                 data-element-id="lightning-button-menu"
                                 onselect={handleMenuSelect}
+                                onclick={preventDefault}
                             >
                                 <template for:each={actions} for:item="action">
                                     <lightning-menu-item
@@ -94,7 +95,6 @@
                                         label={action.label}
                                         disabled={action.disabled}
                                         prefix-icon-name={action.iconName}
-                                        onclick={handleActionClick}
                                         class="slds-text-color_default"
                                     ></lightning-menu-item>
                                 </template>
@@ -109,6 +109,7 @@
                             variant="border-filled"
                             data-element-id="lightning-button-menu"
                             onselect={handleMenuSelect}
+                            onclick={preventDefault}
                         >
                             <template for:each={actions} for:item="action">
                                 <lightning-menu-item
@@ -117,7 +118,6 @@
                                     label={action.label}
                                     disabled={action.disabled}
                                     prefix-icon-name={action.iconName}
-                                    onclick={handleActionClick}
                                     class="slds-text-color_default"
                                 ></lightning-menu-item>
                             </template>
@@ -193,6 +193,7 @@
                                 variant="border-filled"
                                 data-element-id="lightning-button-menu"
                                 onselect={handleMenuSelect}
+                                onclick={preventDefault}
                             >
                                 <template for:each={actions} for:item="action">
                                     <lightning-menu-item
@@ -201,7 +202,6 @@
                                         label={action.label}
                                         disabled={action.disabled}
                                         prefix-icon-name={action.iconName}
-                                        onclick={handleActionClick}
                                         class="slds-text-color_default"
                                     ></lightning-menu-item>
                                 </template>
@@ -216,6 +216,7 @@
                             variant="border-filled"
                             data-element-id="lightning-button-menu"
                             onselect={handleMenuSelect}
+                            onclick={preventDefault}
                         >
                             <template for:each={actions} for:item="action">
                                 <lightning-menu-item
@@ -224,7 +225,6 @@
                                     label={action.label}
                                     disabled={action.disabled}
                                     prefix-icon-name={action.iconName}
-                                    onclick={handleActionClick}
                                     class="slds-text-color_default"
                                 ></lightning-menu-item>
                             </template>
