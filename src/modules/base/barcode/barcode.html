@@ -33,22 +33,28 @@
 -->
 
 <template>
-    <div class="canvas-value-wrapper">
-        <div class="canvas-wrapper" data-element-id="canvas-wrapper">
-            <template if:true={renderAsSVG}>
-                <svg
-                    class="canvas"
-                    data-element-id="barcode"
-                    lwc:dom="manual"
-                ></svg>
-            </template>
-            <template if:false={renderAsSVG}>
-                <canvas
-                    class="canvas"
-                    data-element-id="barcode"
-                    lwc:dom="manual"
-                ></canvas>
-            </template>
-        </div>
+    <div
+        class="
+            slds-grid
+            slds-grid_vertical
+            slds-grid_align-center
+            slds-grid_vertical-align-center
+        "
+        data-element-id="canvas-wrapper"
+    >
+        <template if:true={renderAsSVG}>
+            <svg
+                class="avonni-barcode__canvas"
+                data-element-id="barcode"
+                lwc:dom="manual"
+            ></svg>
+        </template>
+        <template if:false={renderAsSVG}>
+            <canvas
+                class="avonni-barcode__canvas"
+                data-element-id="barcode"
+                lwc:dom="manual"
+            ></canvas>
+        </template>
     </div>
 </template>

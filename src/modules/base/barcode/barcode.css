@@ -14,12 +14,8 @@
     flex-direction: column;
     align-items: center;
 }
-/* 
-.canvas-wrapper {
-    width: 200px;
-} */
 
-.canvas {
+.avonni-barcode__canvas {
     box-sizing: border-box;
     width: 100%;
 }
