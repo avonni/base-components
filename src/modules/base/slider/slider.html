@@ -80,9 +80,10 @@
                             data-index={index}
                             data-group-name="input"
                             oninput={handleChange}
-                            onmousemove={manageInputHover}
-                            onmousedown={manageInputHover}
-                            onmouseout={manageInputLeave}
+                            onmousedown={lockPin}
+                            onmouseup={unlockPin}
+                            onmousemove={thumbHovered}
+                            onmouseleave={thumbExit}
                         />
                         <div
                             data-group-name="hitbox"

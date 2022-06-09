@@ -143,6 +143,7 @@ export default class Slider extends LightningElement {
     _customLabels = [];
     _helpMessage;
     _moveEventWait = false;
+    _pinLocked = false;
     _previousScalingFactor = 1;
     _trackInterval = [DEFAULT_MIN, (DEFAULT_MAX - DEFAULT_MIN) / 2];
     _resizeObserver;
@@ -189,6 +190,9 @@ export default class Slider extends LightningElement {
                 this.setVerticalResponsiveHeight();
             }
             this.updateTrack(this._computedValues);
+            this._computedValues.forEach((val, index) => {
+                this.setHitboxPosition(index);
+            });
             if (this.hasCustomLabels) {
                 this.displayCustomLabels();
             }
@@ -1326,6 +1330,17 @@ export default class Slider extends LightningElement {
     }
 
     /**
+     *  Returns the hitbox element for certain index.
+     * @returns {object}
+     *
+     */
+    getHitbox(index) {
+        return this.template.querySelector(
+            `[data-group-name="hitbox"][data-index="${index}"]`
+        );
+    }
+
+    /**
      * Get the percentage associated to a value of the slider
      * @param value
      * @type {number}
@@ -1347,7 +1362,7 @@ export default class Slider extends LightningElement {
         if (this._pin) {
             this.setPinPosition(event);
         }
-        this.setHitboxPosition(event);
+        this.setHitboxPosition(parseInt(event.target.dataset.index, 10));
         this.updatePublicValue();
         this.changeSlider();
     }
@@ -1471,7 +1486,7 @@ export default class Slider extends LightningElement {
      * Test if thumb is hovered.
      * @returns {boolean}
      */
-    thumbIsHovered(event) {
+    _thumbIsHovered(event) {
         const inputIndex = event.target.dataset.index;
         const thumbPosition =
             this.getPercentOfValue(this._computedValues[inputIndex]) *
@@ -1482,29 +1497,63 @@ export default class Slider extends LightningElement {
         );
     }
 
-    /**
-     * Display pin.
-     */
-    manageInputHover(event) {
-        console.log(event);
+    thumbIsHovered(event) {
+        const obj = this.getHitbox(parseInt(event.target.dataset.index, 10));
+        const radius = this._thumbRadius;
+        const centerPointX = obj.getBoundingClientRect().x + radius;
+        const centerPointY = obj.getBoundingClientRect().y + radius;
         if (
-            this.thumbIsHovered(event) ||
-            (event.type === 'mousedown' && event.button === 0)
+            Math.sqrt(
+                (event.pageX - centerPointX) * (event.pageX - centerPointX) +
+                    (event.pageY - centerPointY) * (event.pageY - centerPointY)
+            ) < radius
         ) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Display pin and hover color on thumb.
+     */
+    thumbHovered(event) {
+        if (this.thumbIsHovered(event) || this._pinLocked) {
             this.getInput(event.target.dataset.index).classList.add(
-                'avonni-slider__slider_hovered'
+                'avonni-slider__slider-thumb_hovered'
             );
             if (this._pin) {
                 this.setPinPosition(event);
                 this.template
-                    .querySelector(
-                        `[data-group-name="pin"][data-index="${event.target.dataset.index}"]`
-                    )
+                    .querySelector(`[data-group-name="pin"][data-index="0"]`)
                     .classList.add('avonni-slider__pin_visible');
             }
         } else {
-            this.manageInputLeave(event);
+            this.thumbExit(event);
         }
+    }
+
+    /**
+     * Hide pin and remove hover color on thumb.
+     */
+    thumbExit(event) {
+        if (!this.thumbIsHovered(event) && !this._pinLocked) {
+            this.getInput(event.target.dataset.index).classList.remove(
+                'avonni-slider__slider-thumb_hovered'
+            );
+            if (this._pin) {
+                this.template
+                    .querySelector(`[data-group-name="pin"][data-index="0"]`)
+                    .classList.remove('avonni-slider__pin_visible');
+            }
+        }
+    }
+
+    lockPin() {
+        this._pinLocked = true;
+    }
+
+    unlockPin() {
+        this._pinLocked = false;
     }
 
     /**
@@ -1530,7 +1579,7 @@ export default class Slider extends LightningElement {
      */
     setPinPosition(event) {
         let pin = this.template.querySelector(
-            `[data-group-name="pin"][data-index="${event.target.dataset.index}"]`
+            `[data-group-name="pin"][data-index="0"]`
         );
         let pinProgress =
             this.getPercentOfValue(
@@ -1556,14 +1605,13 @@ export default class Slider extends LightningElement {
         }
     }
 
-    setHitboxPosition(event) {
+    setHitboxPosition(index) {
         let hitbox = this.template.querySelector(
-            `[data-group-name="hitbox"][data-index="${event.target.dataset.index}"]`
+            `[data-group-name="hitbox"][data-index="${index}"]`
         );
         let pinProgress =
-            this.getPercentOfValue(
-                this._computedValues[parseInt(event.target.dataset.index, 10)]
-            ) * PERCENT_SCALING_FACTOR;
+            this.getPercentOfValue(this._computedValues[parseInt(index, 10)]) *
+            PERCENT_SCALING_FACTOR;
         if (!this.isVertical) {
             hitbox.style.left = `calc(${pinProgress}% - ${
                 pinProgress *

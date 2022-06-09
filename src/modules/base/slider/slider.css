@@ -309,15 +309,12 @@
         var(--avonni-slider-thumb-color-shadow-focus, #99d3ff);
 }
 
-.avonni-slider__slider_hovered::-webkit-slider-thumb {
+/* Trick to augment specificity (double chaining class)*/
+.avonni-slider__slider-thumb_hovered.avonni-slider__slider-thumb_hovered::-webkit-slider-thumb {
     background: var(--avonni-slider-thumb-color-hover, #014486);
 }
 
 .avonni-slider__slider_disabled::-webkit-slider-thumb {
-    background: #e9e9e9;
-}
-
-.avonni-slider__slider_disabled:hover::-webkit-slider-thumb {
     background: #e9e9e9;
 }
 
@@ -332,6 +329,9 @@
     left: 50%;
     top: calc(var(--avonni-slider-track-height, 4px) / 2);
     border-radius: var(--avonni-slider-thumb-radius-border, 2rem);
-    border: solid rgb(0, 0, 0) 4px;
+    border: solid rgba(0, 0, 0, 0);
     transform: translate(-50%, -50%);
+    cursor: pointer;
+    pointer-events: none;
+    z-index: 20;
 }
