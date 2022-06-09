@@ -411,4 +411,54 @@ describe('Primitive Carousel Item', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
+
+    // Actionclick on menu
+    it('Primitive Carousel Item: menu actionclick', () => {
+        element.title = 'Visit App Exchange';
+        element.description =
+            'Extend Salesforce with the #1 business marketplace.';
+        element.imageAssistiveText = 'Appy';
+        element.src =
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
+        element.href = 'https://www.salesforce.com';
+        element.actions = bareActions;
+        element.name = 'someName';
+
+        const handler = jest.fn();
+        element.addEventListener('actionclick', handler);
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"]'
+            );
+            action.dispatchEvent(new CustomEvent('select'));
+            expect(handler).toHaveBeenCalled();
+            expect(handler.mock.calls[0][0].detail.name).toBe(undefined);
+            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
+            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+        });
+    });
+
+    // Actionclick on orevent deagpwpqmenu
+    it('Primitive Carousel Item: menu preventDefault', () => {
+        element.title = 'Visit App Exchange';
+        element.description =
+            'Extend Salesforce with the #1 business marketplace.';
+        element.imageAssistiveText = 'Appy';
+        element.src =
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
+        element.href = 'https://www.salesforce.com';
+        element.actions = bareActions;
+        element.name = 'someName';
+
+        return Promise.resolve().then(() => {
+            const action = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-menu"]'
+            );
+            const result = action.click();
+            expect(result).toBeFalsy();
+        });
+    });
 });
