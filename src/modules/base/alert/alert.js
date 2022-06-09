@@ -131,6 +131,8 @@ export default class Alert extends LightningElement {
      */
     closeAlert() {
         this.hideAlert = true;
-        this.closeAction();
+        if (typeof this.closeAction === 'function') {
+            this.closeAction();
+        }
     }
 }
