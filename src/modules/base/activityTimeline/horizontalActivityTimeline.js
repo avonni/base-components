@@ -33,6 +33,8 @@
 import * as d3 from 'd3';
 import { dateTimeObjectFrom } from 'c/utilsPrivate';
 
+const AXIS_LABEL_WIDTH = 50.05;
+const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
 const COLOR_CHANGE_INTERVAL_SIZE = '#084d75';
 const DEFAULT_AXIS_SCROLL_COLOR = '#1c82bd';
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
@@ -71,9 +73,9 @@ const LWC_ICONS_CLASS = {
 
 // ** Functionalities/bug **
 // TODO: Fix popover size
-// TODO: Handle if screen is smaller --> timeline axis label overlap --> change size
-// TODO: Last item : click/drag
+// TODO: Last item : click/drag (when interval width is changed)
 // TODO: Scroll bar disappeared
+// TODO: Last label - scroll time axis
 
 // ** QA/tests/Doc **
 // TODO: Refactor
@@ -552,37 +554,132 @@ export class HorizontalActivityTimeline {
             .attr('fill', 'white');
 
         // <--- CREATE TICKS OF AXIS --->
-        const timeAxis = d3
-            .axisBottom(this.viewTimeScale)
-            .tickFormat(d3.timeFormat('%d/%m/%Y'))
-            .ticks(9);
-        axisSVG.append('g').call(timeAxis);
+        this.createTimeAxis(
+            this.viewTimeScale,
+            AXIS_TYPE.timelineAxis,
+            9,
+            axisSVG
+        );
 
         // <--- REMOVE ALL TICK MARKS  --->
         axisSVG.selectAll('.tick').selectAll('line').remove();
     }
 
     /**
+     * Create a time axis using d3 with an acceptable distance between ticks to prevent overlap.
+     */
+    createTimeAxis(scale, axisId, numberOfTicks, destinationSVG) {
+        if (
+            Math.floor(this._timelineWidth / AXIS_LABEL_WIDTH) <
+            numberOfTicks + 2
+        ) {
+            numberOfTicks = Math.floor(numberOfTicks / 2);
+        }
+
+        this.createAxisBottom(scale, axisId, numberOfTicks, destinationSVG);
+        let spaceBetweenTicks = this.calculateSpaceBetweenTicks(
+            destinationSVG.selectAll('.tick')._groups[0]
+        );
+
+        const minDistanceBetweenTicks =
+            axisId === AXIS_TYPE.timelineAxis ? 10 : 5;
+
+        // Reduce number of ticks until the space between ticks is acceptable
+        while (
+            spaceBetweenTicks < minDistanceBetweenTicks &&
+            numberOfTicks >= 2
+        ) {
+            destinationSVG
+                .select('#' + axisId)
+                .selectAll('*')
+                .remove();
+
+            // Lower numberOfTicks to the next even number
+            if (numberOfTicks % 2 === 0) {
+                numberOfTicks -= 2;
+            } else {
+                numberOfTicks -= 3;
+            }
+
+            this.createAxisBottom(scale, axisId, numberOfTicks, destinationSVG);
+            spaceBetweenTicks = this.calculateSpaceBetweenTicks(
+                destinationSVG.selectAll('.tick')._groups[0]
+            );
+        }
+    }
+
+    /**
+     * Calculate the space between ticks of an axis. Since the space between axis is constant, we can only calculate the difference
+     * between the first two elements.
+     *
+     * @return {number}
+     */
+    calculateSpaceBetweenTicks(axisTicksSelector) {
+        // Get all ticks and extract translate X value
+        const ticksXPositions = [];
+        for (const tick of axisTicksSelector) {
+            const transformValue = d3.select(tick).attr('transform');
+            ticksXPositions.push(
+                Number(
+                    transformValue.slice(
+                        'translate('.length,
+                        transformValue.indexOf(',')
+                    )
+                )
+            );
+        }
+
+        if (ticksXPositions.length <= 1) {
+            return AXIS_LABEL_WIDTH;
+        }
+
+        return ticksXPositions[1] - ticksXPositions[0] - AXIS_LABEL_WIDTH;
+    }
+
+    /**
+     * Create an axis bottom element using d3 to insert in destinationSVG
+     */
+    createAxisBottom(scale, axisId, numberOfTicks, destinationSVG) {
+        if (numberOfTicks < 1) {
+            numberOfTicks = 2;
+        }
+
+        const timeAxis = d3
+            .axisBottom(scale)
+            .tickFormat(d3.timeFormat('%d/%m/%Y'))
+            .ticks(numberOfTicks);
+
+        if (axisId === AXIS_TYPE.timelineAxis) {
+            destinationSVG.append('g').attr('id', axisId).call(timeAxis);
+        } else {
+            timeAxis.tickSizeOuter(0);
+            destinationSVG
+                .append('g')
+                .attr(
+                    'transform',
+                    'translate(0 ' + this._timelineAxisHeight + ')'
+                )
+                .call(timeAxis);
+        }
+    }
+
+    /**
      * Create the scroll axis for horizontal timeline to display all dates
      */
     createTimelineScrollAxis() {
-        // <--- CREATE TICKS OF SCROLL AXIS --->
         this._scrollAxisSVG = this._scrollAxisDiv
             .append('svg')
             .attr('width', this._timelineWidth)
             .attr('height', this._timelineAxisHeight * 2)
             .attr('transform', 'translate(0, -25)');
 
-        const scrollAxis = d3
-            .axisBottom(this.scrollTimeScale)
-            .tickFormat(d3.timeFormat('%d/%m/%Y'))
-            .ticks(12)
-            .tickSizeOuter(0);
-
-        this._scrollAxisSVG
-            .append('g')
-            .attr('transform', 'translate(0 ' + this._timelineAxisHeight + ')')
-            .call(scrollAxis);
+        // <--- CREATE TICKS OF SCROLL AXIS --->
+        this.createTimeAxis(
+            this.scrollTimeScale,
+            AXIS_TYPE.scrollAxis,
+            12,
+            this._scrollAxisSVG
+        );
 
         // <--- CREATE RECT AROUND SCROLL AXIS --->
         this._scrollAxisSVG
