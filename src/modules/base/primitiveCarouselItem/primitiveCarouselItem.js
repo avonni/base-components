@@ -325,6 +325,7 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @param {Event}
      */
     handleActionClick(event) {
+        console.log('action click');
         event.preventDefault();
         const actionName = event.currentTarget.name;
         const {
@@ -371,5 +372,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
      */
     handleMenuSelect(event) {
         event.preventDefault();
+        console.log('menu select');
     }
 }
