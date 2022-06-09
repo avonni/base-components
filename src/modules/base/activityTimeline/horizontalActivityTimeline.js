@@ -75,7 +75,7 @@ const LWC_ICONS_CLASS = {
 // TODO: Fix popover size
 // TODO: Last item : click/drag (when interval width is changed)
 // TODO: Scroll bar disappeared
-// TODO: Last label - scroll time axis
+// TODO: Handle header change of size
 
 // ** QA/tests/Doc **
 // TODO: Refactor
@@ -265,11 +265,11 @@ export class HorizontalActivityTimeline {
     }
 
     get scrollAxisMaxDate() {
-        return this.findNextDate(this.maxDate, 4);
+        return this.findNextDate(this.maxDate, 15);
     }
 
     get scrollAxisMinDate() {
-        return this.findNextDate(this.minDate, -1);
+        return this.findNextDate(this.minDate, -5);
     }
 
     /**
@@ -669,7 +669,7 @@ export class HorizontalActivityTimeline {
     createTimelineScrollAxis() {
         this._scrollAxisSVG = this._scrollAxisDiv
             .append('svg')
-            .attr('width', this._timelineWidth)
+            .attr('width', this._timelineWidth + AXIS_LABEL_WIDTH / 3)
             .attr('height', this._timelineAxisHeight * 2)
             .attr('transform', 'translate(0, -25)');
 
