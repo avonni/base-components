@@ -441,7 +441,7 @@ describe('Primitive Carousel Item', () => {
         });
     });
 
-    // Actionclick on orevent deagpwpqmenu
+    // PreventDefault on menu
     it('Primitive Carousel Item: menu preventDefault', () => {
         element.title = 'Visit App Exchange';
         element.description =
