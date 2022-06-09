@@ -376,7 +376,6 @@ export default class PrimitiveCarouselItem extends LightningElement {
                 }
             })
         );
-        console.log('action dispatched');
     }
 
     /**
