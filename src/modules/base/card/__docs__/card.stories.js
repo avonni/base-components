@@ -110,8 +110,7 @@ ImageLeft.args = {
     title: 'Card title card had long truncated title that will trucate',
     iconName: 'custom:custom1',
     mediaPosition: 'left',
-    mediaSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+    mediaSrc: 'https://via.placeholder.com/150x50'
 };
 
 export const ImageRight = Template.bind({});
@@ -119,8 +118,7 @@ ImageRight.args = {
     title: 'Card title card had long truncated title that will trucate',
     iconName: 'custom:custom1',
     mediaPosition: 'right',
-    mediaSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+    mediaSrc: 'https://via.placeholder.com/150'
 };
 
 export const ImageCenter = Template.bind({});
@@ -162,6 +160,7 @@ OverlayCard.args = {
 export const BaseWithSlots = SlotsTemplate.bind({});
 BaseWithSlots.args = {
     // title: 'Title Prop: ',
+    mediaPosition: 'left'
     // mediaSrc: 'https://www.avonnicomponents.com/assets/images/logo.svg',
     // iconName: 'custom:custom1'
 };

@@ -65,7 +65,9 @@ export default class Card extends LightningElement {
 
     renderedCallback() {
         if (this.titleSlot) {
-            this.showTitleSlot = this.titleSlot.assignedElements().length !== 0;
+            this.showTitleSlot =
+                this.titleSlot.assignedElements().length !== 0 &&
+                !this.hasStringTitle;
         }
         if (this.mediaSlot) {
             this.showMediaSlot = this.mediaSlot.assignedElements().length !== 0;
@@ -87,6 +89,8 @@ export default class Card extends LightningElement {
             this.showFooterSlot =
                 this.footerSlot.assignedElements().length !== 0;
         }
+
+        console.log(this.showTitleSlot, this.hasStringTitle);
 
         // if there is nothing in the card, show the default slot
         this._isEmptyCard =
@@ -158,11 +162,14 @@ export default class Card extends LightningElement {
     get defaultSlot() {
         return this.template.querySelector('slot:not([name])');
     }
-
-    // PROPS //
+    /*
+     * -------------------------------------------------------------
+     *  PUBLIC PROPERTIES
+     * -------------------------------------------------------------
+     */
 
     /**
-     * Title
+     * The title in the header of the card, right of the icon. The title attribute supersedes the title slot.
      *
      * @type {string}
      * @public
@@ -177,7 +184,7 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Source for the image or media
+     * Source for the image or media.
      *
      * @type {string}
      * @public
@@ -192,7 +199,8 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Image position in the card. Valid values are
+     * Position of the media relative to the card.
+     * Valid values are "top", "center", "left", "right", "bottom", "background", and "overlay". Defaults to "top".
      *
      * @type {string}
      * @public
@@ -210,7 +218,8 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Icon name
+     * The Lightning Design System name displayed left of the title in the header.
+     * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
      *
      * @type {string}
      * @public
@@ -224,113 +233,64 @@ export default class Card extends LightningElement {
         this._iconName = normalizeString(value);
     }
 
-    // private
-
+    /*
+     * -------------------------------------------------------------
+     *  PRIVATE PROPERTIES
+     * -------------------------------------------------------------
+     */
     get computedCardClasses() {
         return classSet('avonni-card__body-container')
-            .add({ 'avonni-card__media-top': this.mediaPosition === 'top' })
-            .add({ 'avonni-card__media-left': this.mediaPosition === 'left' })
-            .add({ 'avonni-card__media-right': this.mediaPosition === 'right' })
+            .add({
+                'avonni-card__media-top avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'top'
+            })
+            .add({
+                'avonni-card__media-left avonni-card__media-top-left-radius':
+                    this.mediaPosition === 'left'
+            })
+            .add({
+                'avonni-card__media-right avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'right'
+            })
             .add({
                 'avonni-card__media-center': this.mediaPosition === 'center'
+            })
+            .add({
+                'avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'center' && !this.hasHeader
             })
             .add({
                 'avonni-card__media-bottom': this.mediaPosition === 'bottom'
             })
             .add({
-                'avonni-card__media-background':
+                'avonni-card__media-background avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
                     this.mediaPosition === 'background'
             })
             .add({
-                'avonni-card__media-overlay': this.mediaPosition === 'overlay'
+                'avonni-card__media-overlay avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                    this.mediaPosition === 'overlay'
+            })
+            .add({
+                'avonni-card__media-bottom-left-radius':
+                    !this.showFooterSlot &&
+                    (this.mediaPosition === 'left' ||
+                        this.mediaPosition === 'background' ||
+                        this.mediaPosition === 'overlay' ||
+                        this.mediaPosition === 'bottom' ||
+                        (this.mediaPosition === 'center' &&
+                            !this.showDefaultSlot))
+            })
+            .add({
+                'avonni-card__media-bottom-right-radius':
+                    !this.showFooterSlot &&
+                    (this.mediaPosition === 'right' ||
+                        this.mediaPosition === 'background' ||
+                        this.mediaPosition === 'overlay' ||
+                        this.mediaPosition === 'bottom' ||
+                        (this.mediaPosition === 'center' &&
+                            !this.showDefaultSlot))
             })
             .toString();
-    }
-
-    /**
-     * Fix incorrect chrome image border radius and overflow hidden with border.
-     *
-     * @type {boolean}
-     */
-    get roundMediaTopLeftCorder() {
-        if (
-            this.mediaPosition === 'left' ||
-            this.mediaPosition === 'top' ||
-            this.mediaPosition === 'background' ||
-            this.mediaPosition === 'overlay'
-        ) {
-            return true;
-        }
-        if (this.mediaPosition === 'center' && !this.hasHeader) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Fix incorrect chrome image border radius and overflow hidden with border.
-     *
-     * @type {boolean}
-     */
-    get roundMediaTopRightCorder() {
-        if (
-            this.mediaPosition === 'right' ||
-            this.mediaPosition === 'top' ||
-            this.mediaPosition === 'background' ||
-            this.mediaPosition === 'overlay'
-        ) {
-            return true;
-        }
-        if (this.mediaPosition === 'center' && !this.hasHeader) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Fix incorrect chrome image border radius and overflow hidden with border.
-     *
-     * @type {boolean}
-     */
-    get roundMediaBottomLeftCorder() {
-        if (this.showFooterSlot) {
-            return false;
-        }
-        if (
-            this.mediaPosition === 'left' ||
-            this.mediaPosition === 'background' ||
-            this.mediaPosition === 'overlay' ||
-            this.mediaPosition === 'bottom'
-        ) {
-            return true;
-        }
-        if (this.mediaPosition === 'center' && !this.showDefaultSlot) {
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * Fix incorrect chrome image border radius and overflow hidden with border.
-     *
-     * @type {boolean}
-     */
-    get roundMediaBottomRightCorder() {
-        if (this.showFooterSlot) {
-            return false;
-        }
-        if (
-            this.mediaPosition === 'right' ||
-            this.mediaPosition === 'background' ||
-            this.mediaPosition === 'overlay' ||
-            this.mediaPosition === 'bottom'
-        ) {
-            return true;
-        }
-        if (this.mediaPosition === 'center' && !this.showDefaultSlot) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -434,7 +394,7 @@ export default class Card extends LightningElement {
 
     get computedHeaderClasses() {
         return classSet('slds-grid slds-has-flexi-truncate avonni-card__header')
-            .add({ 'slds-hide': !this.hasHeader })
+            .add({ 'slds-hide': !this.hasHeader && !this.isEmptyCard })
             .toString();
     }
 

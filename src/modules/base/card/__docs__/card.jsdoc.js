@@ -1,4 +1,48 @@
 /**
+ * @namespace slots
+ */
+/**
+ * Placeholder for the card title. The title is displayed next to the icon at the top of the content and relative to the media.
+ * Alternatively, use the title attribute if you don't need to pass in extra markup in your title.
+ *
+ * @memberof slots
+ * @name title
+ */
+/**
+ * Placeholder for card acions. the action is displayed to the right of the title.
+ *
+ * @memberof slots
+ * @name actions
+ */
+/**
+ * Placeholder for card media. The media is placed relative to the content.
+ * The media can be placed to the left, right, top, bottom, center, background or overlay using the mediaPosition attribute.
+ *
+ * @memberof slots
+ * @name media
+ */
+/**
+ * Placeholder for card media-actions. The media-actions is placed top right of the media.
+ * To place it elsewhere, place it directly in the media slot.
+ *
+ * @memberof slots
+ * @name media-actions
+ */
+/**
+ * Placeholder for card footer. The footer is always placed at the bottom of the card.
+ *
+ * @memberof slots
+ * @name footer
+ */
+/**
+ * Placeholder for card default content. The default content is placed below the header and relative to the content.
+ * Slot assignment is not required.
+ *
+ * @memberof slots
+ * @name default
+ */
+
+/**
  * @namespace stylingHooks
  */
 /**
@@ -38,6 +82,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-card-header-font-size
+ * @default 1rem
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-card-spacing-block-start
  * @default 0px;
  * @type dimension
@@ -58,48 +108,6 @@
  * @memberof stylingHooks
  * @name --avonni-card-spacing-inline-end
  * @default 0px;
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-top-media-height
- * @default 120px
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-center-media-height
- * @default 120px
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-bottom-media-height
- * @default 120px
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-left-media-width
- * @default 120px
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-right-media-width
- * @default 120px
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-background-media-height
- * @default 120px
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-overlay-media-height
- * @default 120px
  * @type dimension
  */
 /**
@@ -135,18 +143,6 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-body-spacing-block-end
- * @default 0.75rem;
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-body-spacing-inline-start
- * @default 0.75rem;
- * @type dimension
- */
-/**
- * @memberof stylingHooks
- * @name --avonni-card-body-spacing-inline-end
  * @default 0.75rem;
  * @type dimension
  */
