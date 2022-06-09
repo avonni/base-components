@@ -777,6 +777,17 @@ describe('Combobox', () => {
         expect(spy).toHaveBeenCalled();
     });
 
+    // resetLevel
+    it('Combobox: resetLevel method', () => {
+        const combobox = element.shadowRoot.querySelector(
+            '[data-element-id="avonni-primitive-combobox-main"]'
+        );
+        const spy = jest.spyOn(combobox, 'resetLevel');
+
+        element.resetLevel();
+        expect(spy).toHaveBeenCalled();
+    });
+
     // setCustomValidity
     it('Combobox: setCustomValidity method', () => {
         const combobox = element.shadowRoot.querySelector(
