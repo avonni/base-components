@@ -546,7 +546,8 @@ export default class Skeleton extends LightningElement {
 
     get progressIndicatorPathClass() {
         return classSet('slds-path__item')
-            .add('avonni-skeleton__progress-indicator-path')
+            .add('avonni-skeleton__progress-indicator')
+            .add(`avonni-skeleton__progress-indicator-path-${this.animation}`)
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
