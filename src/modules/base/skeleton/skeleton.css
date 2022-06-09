@@ -246,6 +246,71 @@
     width: 3em;
 }
 
+.avonni-skeleton__progress-indicator-path::before {
+    top: 0;
+    height: calc((2rem / 2) + 0.0625rem);
+    transform: skew(28deg) translate3d(0, 0, 0);
+    animation: pulse-animation 1s infinite;
+}
+
+.avonni-skeleton__progress-indicator-path::after {
+    bottom: 0;
+    height: 1rem;
+    transform: skew(-30deg) translate3d(0, 0, 0);
+    animation: pulse-animation 1s infinite;
+}
+
+.avonni-skeleton__progress-indicator-path {
+    height: 2rem;
+    cursor: default !important;
+}
+
+.avonni-skeleton__progress-indicator-path-item:first-child {
+    margin-left: 0;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+    padding-left: 0.625rem;
+}
+
+.avonni-skeleton__progress-indicator-path-item {
+    flex: 1;
+    margin-right: 0.4375rem;
+    min-width: 5rem;
+    text-align: center;
+}
+
+.avonni-skeleton__progress-indicator-path-item::before {
+    top: 0;
+    height: calc((2rem / 2) + 0.0625rem);
+    transform: skew(28deg) translate3d(0, 0, 0);
+    background: red;
+}
+
+.avonni-skeleton__progress-indicator-path-item::after {
+    bottom: 0;
+    height: 1rem;
+    transform: skew(-30deg) translate3d(0, 0, 0);
+    background: red;
+}
+
+.slds-path__item:first-child:before,
+.slds-path__item:first-child:after {
+    left: 1.125rem;
+}
+
+.slds-path__item:before,
+.slds-path__item:after {
+    content: '';
+    position: absolute;
+    right: -0.3125rem;
+    cursor: default;
+}
+
+/* .avonni-skeleton__progress-indicator-path::after {
+    height: 2rem;
+    cursor: default !important;
+} */
+
 .avonni-skeleton__variant-avatar {
     border-color: var(--avonni-skeleton-color-border);
     border-radius: var(--avonni-skeleton-radius-border);

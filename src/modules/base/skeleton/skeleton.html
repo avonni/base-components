@@ -695,41 +695,93 @@
         </div>
     </template>
     <template if:true={isProgressIndicatorVariant}>
-        <div class="slds-progress">
-            <ol class="slds-progress__list">
-                <li class="slds-progress__item">
-                    <div class={progressIndicatorItemClass}>
-                        <span class="slds-assistive-text">Step 1</span>
+        <template if:false={isPathVariant}>
+            <div class="slds-progress">
+                <ol class="slds-progress__list">
+                    <li class="slds-progress__item">
+                        <div class={progressIndicatorItemClass}>
+                            <span class="slds-assistive-text">Step 1</span>
+                        </div>
+                    </li>
+                    <li class="slds-progress__item">
+                        <div class={progressIndicatorItemClass}>
+                            <span class="slds-assistive-text">Step 2 </span>
+                        </div>
+                    </li>
+                    <li class="slds-progress__item">
+                        <div class={progressIndicatorItemClass}>
+                            <span class="slds-assistive-text">Step 3 </span>
+                        </div>
+                    </li>
+                    <li class="slds-progress__item">
+                        <div class={progressIndicatorItemClass}>
+                            <span class="slds-assistive-text">Step 4 </span>
+                        </div>
+                    </li>
+                    <li class="slds-progress__item">
+                        <div class={progressIndicatorItemClass}>
+                            <span class="slds-assistive-text">Step 5 </span>
+                        </div>
+                    </li>
+                </ol>
+                <div
+                    class={progressIndicatorBarClass}
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    role="progressbar"
+                ></div>
+            </div>
+        </template>
+        <template if:true={isPathVariant}>
+            <div class="slds-path">
+                <div class="slds-grid slds-path__track">
+                    <div class="slds-grid slds-path__scroller-container">
+                        <div class="slds-path__scroller">
+                            <div class="slds-path__scroller_inner">
+                                <ul
+                                    class="slds-path__nav"
+                                    role="listbox"
+                                    aria-orientation="horizontal"
+                                >
+                                    <li
+                                        class={progressIndicatorPathClass}
+                                        role="presentation"
+                                    >
+                                        <!-- <div
+                                            class={progressIndicatorPathLinkClass}
+                                        ></div> -->
+                                    </li>
+                                    <li
+                                        class={progressIndicatorPathClass}
+                                        role="presentation"
+                                    >
+                                        <!-- <div class="slds-path__link"></div> -->
+                                    </li>
+                                    <li
+                                        class={progressIndicatorPathClass}
+                                        role="presentation"
+                                    >
+                                        <!-- <div class="slds-path__link"></div> -->
+                                    </li>
+                                    <li
+                                        class={progressIndicatorPathClass}
+                                        role="presentation"
+                                    >
+                                        <!-- <div class="slds-path__link"></div> -->
+                                    </li>
+                                    <li
+                                        class={progressIndicatorPathClass}
+                                        role="presentation"
+                                    >
+                                        <!-- <div class="slds-path__link"></div> -->
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
-                </li>
-                <li class="slds-progress__item">
-                    <div class={progressIndicatorItemClass}>
-                        <span class="slds-assistive-text">Step 2 </span>
-                    </div>
-                </li>
-                <li class="slds-progress__item">
-                    <div class={progressIndicatorItemClass}>
-                        <span class="slds-assistive-text">Step 3 </span>
-                    </div>
-                </li>
-                <li class="slds-progress__item">
-                    <div class={progressIndicatorItemClass}>
-                        <span class="slds-assistive-text">Step 4 </span>
-                    </div>
-                </li>
-                <li class="slds-progress__item">
-                    <div class={progressIndicatorItemClass}>
-                        <span class="slds-assistive-text">Step 5 </span>
-                    </div>
-                </li>
-            </ol>
-            <div
-                class={progressIndicatorBarClass}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-valuenow="0"
-                role="progressbar"
-            ></div>
-        </div>
+                </div>
+            </div>
+        </template>
     </template>
 </template>

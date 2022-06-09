@@ -182,6 +182,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isPathVariant() {
+        return this.variantAttributes.variant === 'path';
+    }
+
+    @api
     get isRegularVariant() {
         return (
             this.variant === 'text' ||
@@ -537,6 +542,18 @@ export default class Skeleton extends LightningElement {
         return classSet('slds-progress-bar')
             .add('slds-progress-bar_x-small')
             .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
+    }
+
+    get progressIndicatorPathClass() {
+        return classSet('slds-path__item')
+            .add('avonni-skeleton__progress-indicator-path')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
+    get progressIndicatorPathLinkClass() {
+        return classSet('slds-path__link')
+            .add('avonni-skeleton__progress-indicator-path')
+            .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     /*
