@@ -56,6 +56,10 @@
     border-radius: var(--lwc-borderRadiusMedium, 0.25rem);
 }
 
+.avonni-input-pen__text-area_cursor.slds-rich-text-editor__textarea {
+    cursor: pointer;
+}
+
 .avonni-input-pen__cursor {
     height: calc(var(--size) * 1px);
     width: calc(var(--size) * 1px);
@@ -80,4 +84,8 @@
     font-size: var(--avonni-input-pen-header-font-size, 0.75rem);
     font-weight: var(--avonni-input-pen-header-font-weight, 400);
     font-style: var(--avonni-input-pen-header-font-style, normal);
+}
+
+.avonni-input-pen__refresh-button {
+    position: absolute;
 }

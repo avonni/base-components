@@ -32,15 +32,16 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { classSet } from '../utils/classSet';
 
 const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
     default: 'bottom-toolbar'
 };
-const PEN_MODES = { valid: ['draw', 'erase'], default: 'draw' };
+const PEN_MODES = { valid: ['draw', 'erase', 'sign'], default: 'draw' };
 
 const DEFAULT_COLOR = '#000';
-const DEFAULT_SIZE = 2;
+const DEFAULT_SIZE = 20;
 
 /**
  * @class
@@ -78,12 +79,13 @@ export default class InputPen extends LightningElement {
     _mode = PEN_MODES.default;
     _readOnly = false;
     _required = false;
+    _signature = true;
     _size = DEFAULT_SIZE;
     _value;
     _variant = TOOLBAR_VARIANTS.default;
 
     sizeList;
-    init = false;
+    _rendered = false;
 
     isDownFlag;
     isDotFlag = false;
@@ -91,21 +93,25 @@ export default class InputPen extends LightningElement {
     currX = 0;
     prevY = 0;
     currY = 0;
+    prevSize = 0;
+    prevDist = 0;
 
     canvasElement;
     ctx;
     cursor;
 
+    constructor() {
+        super();
+        this.onMouseUp = this.handleMouseUp.bind(this);
+        this.onMouseMove = this.handleMouseMove.bind(this);
+        window.addEventListener('mouseup', this.onMouseUp);
+        window.addEventListener('mousemove', this.onMouseMove);
+    }
+
     connectedCallback() {
         this.sizeList = [...Array(100).keys()].slice(1).map((x) => {
             return { label: `${x}px`, value: x };
         });
-
-        this.onMouseUp = this.handleMouseUp.bind(this);
-        this.onMouseMove = this.handleMouseMove.bind(this);
-
-        window.addEventListener('mouseup', this.onMouseUp);
-        window.addEventListener('mousemove', this.onMouseMove);
     }
 
     disconnectedCallback() {
@@ -114,12 +120,17 @@ export default class InputPen extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this.init) {
+        if (!this._rendered) {
             this.canvasElement = this.template.querySelector(
                 '[data-element-id="canvas"]'
             );
             this.ctx = this.canvasElement.getContext('2d');
 
+            if (this._required) {
+                this.setValidity(false);
+            } else {
+                this.setValidity(!this._invalid);
+            }
             if (this.value) {
                 this.initSrc();
             }
@@ -129,7 +140,11 @@ export default class InputPen extends LightningElement {
             this.canvasElement.height =
                 this.canvasElement.parentElement.offsetWidth / 2;
 
-            this.initCursorStyles();
+            if (this._required) {
+                this.template.querySelector('te');
+            } else {
+                this.initCursorStyles();
+            }
 
             if (!this.hideControls && this.showSize) {
                 let srcElement = this.template.querySelector(
@@ -147,7 +162,7 @@ export default class InputPen extends LightningElement {
                 this.classList.remove('avonni-reverse');
             }
 
-            this.init = true;
+            this._rendered = true;
         }
     }
 
@@ -297,6 +312,23 @@ export default class InputPen extends LightningElement {
      *
      * @type {string}
      * @public
+     * @default false
+     */
+    @api
+    get signature() {
+        return this._signature;
+    }
+    set signature(value) {
+        this._signature = normalizeBoolean(value);
+        this._mode = 'sign';
+        this._size = 20;
+    }
+
+    /**
+     * Size of the pen.
+     *
+     * @type {string}
+     * @public
      * @default 2
      */
     @api
@@ -317,7 +349,7 @@ export default class InputPen extends LightningElement {
      */
     @api
     get value() {
-        return this._value;
+        return this.canvasElement.toDataURL();
     }
 
     set value(value) {
@@ -415,6 +447,13 @@ export default class InputPen extends LightningElement {
         );
     }
 
+    get computedTextAreaClasses() {
+        return classSet('slds-rich-text-editor__textarea').add({
+            'slds-grid': true,
+            'avonni-input-pen__text-area_cursor': this._signature
+        });
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
@@ -435,8 +474,13 @@ export default class InputPen extends LightningElement {
                 this.canvasElement.width,
                 this.canvasElement.height
             );
-            this.setDraw();
+            if (this._mode !== 'sign') {
+                this.setDraw();
+            }
             this.handleChangeEvent();
+            if (this._required) {
+                this.setValidity(false);
+            }
         }
     }
 
@@ -465,28 +509,13 @@ export default class InputPen extends LightningElement {
      */
     initSrc() {
         this.clear();
-        this._invalid = false;
-        this.template
-            .querySelector('.slds-form-element')
-            .classList.remove('slds-has-error');
-        this.template
-            .querySelector('.slds-rich-text-editor')
-            .classList.remove('slds-has-error');
-
-        if (this.value && this.value.indexOf('data:image/') === 0) {
+        if (this._value && this._value.indexOf('data:image/') === 0) {
             let img = new Image();
             img.onload = function () {
                 this.ctx.drawImage(img, 0, 0);
             }.bind(this);
-            img.src = this.value;
-        } else if (this.value) {
-            this._invalid = true;
-            this.template
-                .querySelector('.slds-form-element')
-                .classList.add('slds-has-error');
-            this.template
-                .querySelector('.slds-rich-text-editor')
-                .classList.add('slds-has-error');
+            img.src = this._value;
+            this.setValidity(true);
         }
     }
 
@@ -494,9 +523,13 @@ export default class InputPen extends LightningElement {
      * Initialize Cursor styling.
      */
     initCursorStyles() {
-        this.cursor = this.template.querySelector(
-            '[data-element-id="input-pen-cursor"]'
-        );
+        if (this._signature) {
+            this.cursor = { style: { setProperty: () => {} } }; // mock cursor to not throw errors
+        } else {
+            this.cursor = this.template.querySelector(
+                '[data-element-id="input-pen-cursor"]'
+            );
+        }
 
         if (this.cursor) {
             this.cursor.style.setProperty('--size', this.size);
@@ -511,6 +544,7 @@ export default class InputPen extends LightningElement {
      * Set the Mode to Draw.
      */
     setDraw() {
+        console.log('draw set');
         this.setMode('draw');
         if (this.cursor) {
             this.cursor.style.setProperty('--color', this.color);
@@ -521,6 +555,7 @@ export default class InputPen extends LightningElement {
      * Set the Mode to Erase.
      */
     setErase() {
+        console.log('erase set');
         this.setMode('erase');
         if (this.cursor) {
             this.cursor.style.setProperty('--color', '#ffffff');
@@ -558,7 +593,7 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseMove(event) {
-        this.searchCoordinatesForEvent('move', event);
+        this.manageMouseEvent('move', event);
     }
 
     /**
@@ -567,7 +602,7 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseDown(event) {
-        this.searchCoordinatesForEvent('down', event);
+        this.manageMouseEvent('down', event);
     }
 
     /**
@@ -576,7 +611,7 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleMouseUp(event) {
-        this.searchCoordinatesForEvent('up', event);
+        this.manageMouseEvent('up', event);
     }
 
     /**
@@ -587,7 +622,7 @@ export default class InputPen extends LightningElement {
     handleMouseEnter(event) {
         if (!this.disabled && !this.readOnly) {
             this.cursor.style.opacity = 1;
-            this.searchCoordinatesForEvent('enter', event);
+            this.manageMouseEvent('enter', event);
         }
     }
 
@@ -604,50 +639,39 @@ export default class InputPen extends LightningElement {
      * @param {string} requestedEvent
      * @param {Event} event
      */
-    searchCoordinatesForEvent(requestedEvent, event) {
-        if (!this.disabled && !this.readOnly) {
-            if (requestedEvent === 'down') {
+    manageMouseEvent(requestedEvent, event) {
+        if (this.disabled || this.readOnly) {
+            return;
+        }
+        switch (requestedEvent) {
+            case 'down':
                 this.setupCoordinate(event);
 
                 this.isDownFlag = true;
-                this.isDotFlag = true;
-
-                if (this.isDotFlag) {
-                    this.drawDot();
-                    this.isDotFlag = false;
+                this.drawDot();
+                if (this._invalid) {
+                    this.setValidity(true);
                 }
-
-                if (this.invalid) {
-                    this.template
-                        .querySelector('.slds-form-element')
-                        .classList.remove('slds-has-error');
-                    this.template
-                        .querySelector('.slds-rich-text-editor')
-                        .classList.remove('slds-has-error');
-
-                    this._invalid = false;
-                }
-            }
-            if (requestedEvent === 'up') {
+                break;
+            case 'up':
                 if (this.isDownFlag) {
                     this.handleChangeEvent();
                 }
-
                 this.isDownFlag = false;
-            }
-
-            if (requestedEvent === 'enter' && this.isDownFlag) {
-                this.drawDot();
-            }
-
-            if (requestedEvent === 'move') {
+                break;
+            case 'enter':
+                if (this.isDownFlag) {
+                    this.drawDot();
+                }
+                break;
+            default:
+                // default aka 'move'
                 if (this.isDownFlag) {
                     this.setupCoordinate(event);
                     this.redraw();
                 }
-
                 this.moveCursor(event);
-            }
+                break;
         }
     }
 
@@ -663,6 +687,26 @@ export default class InputPen extends LightningElement {
 
         this.cursor.style.left = `${left}px`;
         this.cursor.style.top = `${top}px`;
+    }
+
+    setValidity(isValid) {
+        if (isValid) {
+            this.template
+                .querySelector('.slds-form-element')
+                .classList.remove('slds-has-error');
+            this.template
+                .querySelector('.slds-rich-text-editor')
+                .classList.remove('slds-has-error');
+            this._invalid = false;
+        } else {
+            this.template
+                .querySelector('.slds-form-element')
+                .classList.add('slds-has-error');
+            this.template
+                .querySelector('.slds-rich-text-editor')
+                .classList.add('slds-has-error');
+            this._invalid = true;
+        }
     }
 
     /**
@@ -682,33 +726,58 @@ export default class InputPen extends LightningElement {
      * Redraw Canvas context based on calculated cursor event cycle from previous to current coordinates.
      */
     redraw() {
-        this.ctx.beginPath();
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
-        this.ctx.moveTo(this.prevX, this.prevY);
-        this.ctx.lineTo(this.currX, this.currY);
-        this.ctx.strokeStyle = this.mode === 'draw' ? this.color : '#ffffff';
-        this.ctx.lineWidth = this.size;
-        this.ctx.closePath();
-        this.ctx.stroke();
+        if (this._mode !== 'sign') {
+            this.ctx.beginPath();
+            this.ctx.lineCap = 'round';
+            this.ctx.lineJoin = 'round';
+            this.ctx.moveTo(this.prevX, this.prevY);
+            this.ctx.lineTo(this.currX, this.currY);
+            this.ctx.strokeStyle =
+                this.mode === 'draw' ? this.color : '#ffffff';
+            this.ctx.lineWidth = this._size;
+            this.ctx.closePath();
+            this.ctx.stroke();
+        } else {
+            const distX = this.prevX - this.currX;
+            const distY = this.prevY - this.currY;
+            const distanceTraveled = Math.sqrt(distX * distX + distY * distY);
+            console.log('distanceTraveled: ' + distanceTraveled);
+
+            this.ctx.beginPath();
+            this.ctx.lineCap = 'round';
+            this.ctx.lineJoin = 'round';
+            this.ctx.moveTo(this.prevX, this.prevY);
+            this.ctx.lineTo(this.currX, this.currY);
+            this.ctx.strokeStyle = '#000000';
+            let calculatedSize = this.prevSize;
+            calculatedSize =
+                this._size / Math.sqrt(Math.sqrt(distanceTraveled));
+            this.ctx.lineWidth = calculatedSize;
+            this.ctx.closePath();
+            this.ctx.stroke();
+            this.prevDist = distanceTraveled;
+            this.prevSize = this.calculatedSize;
+        }
     }
 
     /**
      * Canvas draw dot method.
      */
     drawDot() {
-        this.ctx.beginPath();
-        this.ctx.arc(
-            this.currX,
-            this.currY,
-            this.size / 2,
-            0,
-            2 * Math.PI,
-            false
-        );
-        this.ctx.fillStyle = this.mode === 'draw' ? this.color : '#ffffff';
-        this.ctx.fill();
-        this.ctx.closePath();
+        if (this._mode !== 'sign') {
+            this.ctx.beginPath();
+            this.ctx.arc(
+                this.currX,
+                this.currY,
+                this.size / 2,
+                0,
+                2 * Math.PI,
+                false
+            );
+            this.ctx.fillStyle = this.mode === 'draw' ? this.color : '#ffffff';
+            this.ctx.fill();
+            this.ctx.closePath();
+        }
     }
 
     /**

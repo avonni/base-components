@@ -118,7 +118,7 @@ export default {
             control: {
                 type: 'select'
             },
-            options: ['draw', 'erase'],
+            options: ['draw', 'erase', 'sign'],
             description: 'Valid modes include draw and erase.',
             table: {
                 type: { summary: 'string' },
@@ -135,6 +135,18 @@ export default {
                 type: { summary: 'string' },
                 defaultValue: { summary: '#000' },
                 category: 'Pen'
+            }
+        },
+        signature: {
+            control: {
+                type: 'boolean'
+            },
+            description:
+                'If present, the input field will become a signature field',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Validation'
             }
         },
         size: {
@@ -194,6 +206,7 @@ export default {
         mode: 'draw',
         readOnly: false,
         required: false,
+        signature: false,
         size: 2,
         variant: 'bottom-toolbar'
     }
@@ -235,4 +248,12 @@ Disabled.args = {
     value: value,
     disabled: true,
     fieldLevelHelp: 'A default value has been set'
+};
+
+export const Signature = Template.bind({});
+Signature.args = {
+    hideControls: true,
+    label: 'Signature Field',
+    signature: true,
+    size: 14
 };

@@ -67,7 +67,8 @@
                                 title="Draw"
                                 onclick={setDraw}
                                 disabled={disabled}
-                            ></lightning-button-icon>
+                            >
+                            </lightning-button-icon>
                         </li>
                         <li if:true={showErase}>
                             <lightning-button-icon
@@ -77,7 +78,8 @@
                                 title="Erase"
                                 onclick={setErase}
                                 disabled={disabled}
-                            ></lightning-button-icon>
+                            >
+                            </lightning-button-icon>
                         </li>
                         <li if:true={showClear}>
                             <lightning-button-icon
@@ -87,7 +89,8 @@
                                 title="Clear"
                                 onclick={clear}
                                 disabled={disabled}
-                            ></lightning-button-icon>
+                            >
+                            </lightning-button-icon>
                         </li>
                     </ul>
                     <ul class="slds-button-group-list">
@@ -119,16 +122,26 @@
                     </ul>
                 </div>
                 <div
-                    class="slds-rich-text-editor__textarea slds-grid"
+                    class={computedTextAreaClasses}
                     onmousedown={handleMouseDown}
                     onmouseenter={handleMouseEnter}
                     onmouseleave={handleMouseLeave}
                 >
                     <canvas data-element-id="canvas"></canvas>
                     <div
+                        if:false={signature}
                         class="avonni-input-pen__cursor"
                         data-element-id="input-pen-cursor"
                     ></div>
+                    <lightning-button-icon
+                        if:true={signature}
+                        class="avonni-input-pen__refresh-button"
+                        icon-name="utility:refresh"
+                        alternative-text="Refresh"
+                        title="Refresh"
+                        onclick={clear}
+                    >
+                    </lightning-button-icon>
                 </div>
             </div>
         </div>
