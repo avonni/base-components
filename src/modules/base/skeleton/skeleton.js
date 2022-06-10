@@ -85,8 +85,6 @@ export default class Skeleton extends LightningElement {
     primaryTextClass;
     secondaryTextClass;
     tertiaryTextClass;
-    chipLabel;
-    badgeLabel;
     breadcrumbs = [];
     buttonWrapper;
     buttonIconWrapper;
@@ -124,8 +122,6 @@ export default class Skeleton extends LightningElement {
 
     renderedCallback() {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
-        if (this.isChipVariant) this.chipLabel = this.variantAttributes.label;
-        if (this.isBadgeVariant) this.badgeLabel = this.variantAttributes.label;
         if (!this.isAvatarVariant) this.handleVariant();
         // console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
@@ -257,11 +253,6 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
-    get hasChipLabel() {
-        return this.variantAttributes.chipLabel;
-    }
-
-    @api
     get hideCheckboxColumn() {
         return this.variantAttributes.hideCheckboxColumn;
     }
@@ -384,17 +375,18 @@ export default class Skeleton extends LightningElement {
     }
 
     /**
-     * Compute chip class style.
+     * Compute badge class style.
      *
      * @type {string}
      */
     get badgeClass() {
+        console.log(`variant: ${this.variantAttributes.variant}`);
         return (
             classSet('avonni-badge')
                 .add({
                     'avonni-chip_outline': this.variantAttributes.outline
                 })
-                .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+                .add(`avonni-badge_theme-${this.variantAttributes.variant}`)
                 // .add('avonni-skeleton__base')
                 .add(`avonni-skeleton__animation-${this.animation}`)
                 .toString()
@@ -630,7 +622,7 @@ export default class Skeleton extends LightningElement {
                 this.handleAvatarVariant();
                 break;
             case 'badge':
-                this.handleBadge();
+                this.handleBadgeVariant();
                 break;
             case 'breadcrumbs':
                 this.handleBreadcrumbs();
@@ -677,7 +669,7 @@ export default class Skeleton extends LightningElement {
             this.updateChipClassList();
     }
 
-    handleBadge() {
+    handleBadgeVariant() {
         if (Object.keys(this.variantAttributes).length !== 0)
             this.updateBadgeClassList();
     }
@@ -956,7 +948,88 @@ export default class Skeleton extends LightningElement {
         }
     }
 
-    updateBadgeClassList() {}
+    updateBadgeClassList() {
+        const badge = this.template.querySelector(
+            '[data-element-id="span-wrapper"]'
+        );
+        const badgeLabel = this.template.querySelector(
+            '[data-element-id="badge-label"]'
+        );
+        if (this.variantAttributes.variant === 'inverse') {
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#747474'
+            );
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#8c8c8c'
+            );
+            badgeLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+            return;
+        }
+        if (this.variantAttributes.variant === 'lightest') {
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#ffffff'
+            );
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#e3e3e3'
+            );
+            badgeLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+            return;
+        }
+        if (this.variantAttributes.variant === 'success') {
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#2e844a'
+            );
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#55a16e'
+            );
+            badgeLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+            return;
+        }
+        if (this.variantAttributes.variant === 'warning') {
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#fe9339'
+            );
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#ffab63'
+            );
+            badgeLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#000000'
+            );
+            return;
+        }
+        if (this.variantAttributes.variant === 'error') {
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background',
+                '#ea001e'
+            );
+            badge.style.setProperty(
+                '--avonni-skeleton-color-background-animation',
+                '#f75c6f'
+            );
+            badgeLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        }
+    }
 
     updateBreadcrumbsClassList() {}
 

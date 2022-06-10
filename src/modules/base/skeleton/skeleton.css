@@ -48,6 +48,36 @@
     color: var(--avonni-chip-success-text-color, #ffffff);
 }
 
+.avonni-badge_theme-inverse {
+    background-color: var(--avonni-badge-inverse-color-background, #747474);
+    border-color: var(--avonni-badge-inverse-color-border, #e5e5e5);
+    color: var(--avonni-badge-inverse-text-color, #ffffff);
+}
+
+.avonni-badge_theme-lightest {
+    background-color: var(--avonni-badge-lightest-color-background, #ffffff);
+    border-color: var(--avonni-badge-lightest-color-border, transparent);
+    color: var(--avonni-badge-lightest-text-color, #000000);
+}
+
+.avonni-badge_theme-success {
+    background-color: var(--avonni-badge-success-color-background, #2e844a);
+    border-color: var(--avonni-badge-success-color-border, transparent);
+    color: var(--avonni-badge-success-text-color, #ffffff);
+}
+
+.avonni-badge_theme-warning {
+    background-color: var(--avonni-badge-warning-color-background, #fe9339);
+    border-color: var(--avonni-badge-warning-color-border, transparent);
+    color: var(--avonni-badge-warning-text-color, #181818);
+}
+
+.avonni-badge_theme-error {
+    background-color: var(--avonni-badge-error-color-background, #ea001e);
+    border-color: var(--avonni-badge-error-color-border, transparent);
+    color: var(--avonni-badge-error-text-color, #ffffff);
+}
+
 .avonni-badge {
     height: 2rem;
     max-width: 100%;
@@ -221,10 +251,10 @@
 }
 
 .avonni-skeleton__badge-label {
-    padding: 0.25rem 0.5rem;
+    margin: 0.25rem 0.5rem;
     border-radius: var(--avonni-skeleton-radius-border);
     background-color: var(--avonni-skeleton-chip-label-background, #00000000);
-    height: 1.5rem;
+    height: 0.7rem;
     min-width: 40px;
 }
 
