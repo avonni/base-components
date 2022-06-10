@@ -76,7 +76,6 @@ const LWC_ICONS_CLASS = {
 // TODO: Fix popover size
 // TODO: Last item : click/drag (when interval width is changed) -->
 //      --- > change date by calculation of distance and convert to date (Change scroll too )
-// TODO: Fix label left
 // TODO: Fix upper line of rectangle with scroll
 
 // ** QA/tests/Doc **
@@ -504,16 +503,7 @@ export class HorizontalActivityTimeline {
             .append('svg')
             .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', this._timelineHeight)
-            .attr('transform', 'translate(' + this._offsetAxis + ' ,0)');
-
-        this._timelineSVG
-            .append('rect')
-            .attr('x', 0) // this._offsetAxis
-            .attr('y', 0)
-            .attr('width', this._timelineWidth - this._offsetAxis)
-            .attr('height', this._timelineHeight)
-            .attr('stroke', 'black')
-            .attr('fill', 'white');
+            .attr('transform', 'translate(' + this._offsetAxis + ' , 0)');
 
         //  <--- CREATE DASHED LINES ALIGN TO AXIS TICKS --->
         const axis = d3
@@ -526,8 +516,10 @@ export class HorizontalActivityTimeline {
             .append('g')
             .attr('opacity', 0.15)
             .style('stroke-dasharray', '8 8')
+            .attr('transform', 'translate(0, -10)')
             .call(axis);
 
+        this.createTimelineOutline();
         this.addItemsToTimeline(dataToDisplay);
 
         // Activate scroll only if needed
@@ -536,6 +528,44 @@ export class HorizontalActivityTimeline {
         } else {
             d3.select(this.divTimelineScroll).style('overflow-y', 'hidden');
         }
+    }
+
+    /**
+     * Create the timeline outline with top rectangle line fixed.
+     */
+    createTimelineOutline() {
+        d3.select(
+            this._activityTimeline.template.querySelector(
+                '.avonni-activity-timeline__horizontal-timeline-fixed-outline'
+            )
+        )
+            .append('svg')
+            .attr('width', this._timelineWidth - this._offsetAxis)
+            .attr('height', 2)
+            .attr('transform', 'translate(' + this._offsetAxis + ' ,0)')
+            .style('position', 'fixed')
+            .style('z-index', 50)
+            .append('line')
+            .attr('stroke', 'black')
+            .attr('x1', 0)
+            .attr('y1', 0)
+            .attr('x2', this._timelineWidth - this._offsetAxis)
+            .attr('y2', 0);
+
+        this._timelineSVG
+            .append('line')
+            .attr('stroke', 'black')
+            .attr('x1', 0)
+            .attr('y1', 0)
+            .attr('x2', 0)
+            .attr('y2', this._timelineHeight);
+        this._timelineSVG
+            .append('line')
+            .attr('stroke', 'black')
+            .attr('x1', this._timelineWidth - this._offsetAxis)
+            .attr('y1', 0)
+            .attr('x2', this._timelineWidth - this._offsetAxis)
+            .attr('y2', this._timelineHeight);
     }
 
     /**
@@ -741,6 +771,14 @@ export class HorizontalActivityTimeline {
 
         this._scrollAxisDiv = d3.select(this.divTimelineScrollAxisSelector);
         this._scrollAxisDiv.selectAll('*').remove();
+
+        d3.select(
+            this._activityTimeline.template.querySelector(
+                '.avonni-activity-timeline__horizontal-timeline-fixed-outline'
+            )
+        )
+            .selectAll('*')
+            .remove();
     }
 
     /**
