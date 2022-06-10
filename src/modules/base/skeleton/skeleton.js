@@ -491,7 +491,6 @@ export default class Skeleton extends LightningElement {
         return (
             classSet('avonni-skeleton__variant-text')
                 .add('avonni-skeleton__button-label')
-                .add('slds-m-left_x-small')
                 // .add(`avonni-skeleton__animation-${this.animation}`)
                 .toString()
         );
@@ -1052,13 +1051,24 @@ export default class Skeleton extends LightningElement {
                 'slds-button_destructive':
                     this.variantAttributes.variant === 'destructive',
                 'slds-button_text-destructive':
-                    this.variantAttributes.variant === 'text-destructive',
+                    this.variantAttributes.variant === 'destructive-text',
                 'slds-button_success':
                     this.variantAttributes.variant === 'success'
             })
             .add('avonni-button')
             .add(`avonni-skeleton__animation-${this.animation}`);
         this.buttonWrapper = buttonWrapper;
+
+        // const buttonLabel = this.template.querySelector(
+        //     '[data-element-id="button-label"]'
+        // );
+
+        // if (this.variantAttributes.variant === 'base') {
+        //     buttonLabel.style.setProperty(
+        //         '--avonni-skeleton-chip-label-background',
+        //         '#c4c4c4'
+        //     );
+        // }
     }
 
     updateButtonIconClassList() {
