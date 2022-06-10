@@ -75,6 +75,7 @@ const LWC_ICONS_CLASS = {
 // TODO: Fix popover size
 // TODO: Last item : click/drag (when interval width is changed)
 // TODO: Fix popover with overflow
+// TODO: Fix label left
 
 // ** QA/tests/Doc **
 // TODO: Refactor
@@ -120,7 +121,7 @@ export class HorizontalActivityTimeline {
         this._activityTimeline = activityTimeline;
     }
 
-    createHorizontalActivityTimeline(sortedItems, maxVisibleItems) {
+    createHorizontalActivityTimeline(sortedItems, maxVisibleItems, width) {
         this.resetHorizontalTimeline();
         this._sortedItems = sortedItems;
 
@@ -129,7 +130,7 @@ export class HorizontalActivityTimeline {
             this._maxVisibleItems = maxVisibleItems;
         }
 
-        this.setTimelineWidth();
+        this.setTimelineWidth(width);
         this.createTimelineScrollAxis();
         this.createTimeline();
         this.createTimelineAxis();
@@ -805,10 +806,9 @@ export class HorizontalActivityTimeline {
     }
 
     // Set width to timeline div (screen)
-    setTimelineWidth() {
-        if (this._activityTimeline.divHorizontalTimeline.clientWidth > 0) {
-            this._timelineWidth =
-                this._activityTimeline.divHorizontalTimeline.clientWidth - 25;
+    setTimelineWidth(containerWidth) {
+        if (containerWidth > 0) {
+            this._timelineWidth = containerWidth - 25;
         }
     }
 

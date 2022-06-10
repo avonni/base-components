@@ -184,7 +184,8 @@ export default class ActivityTimeline extends LightningElement {
             }
             this.horizontalTimeline.createHorizontalActivityTimeline(
                 this.sortedItems,
-                this._maxVisibleItems
+                this._maxVisibleItems,
+                this.divHorizontalTimeline.clientWidth
             );
             this.updateHorizontalTimelineHeader();
         }
