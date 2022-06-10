@@ -752,11 +752,10 @@
         </ul>
     </template>
     <template if:true={isTabsetVariant}>
-        <div class="slds-tabs_default">
-            <!-- <lightning-tab-bar> -->
+        <!-- <div class="slds-tabs_default">
             <ul role="tablist" class="slds-tabs_default__nav">
                 <li data-tab="true" role="presentation" class={tabsetClass}>
-                    <span class={tabItemClass}></span>
+                    <div class={tabItemClass}></div>
                 </li>
                 <li data-tab="true" role="presentation" class={tabsetClass}>
                     Item Two
@@ -765,7 +764,15 @@
                     Item Three
                 </li>
             </ul>
-            <!-- </lightning-tab-bar> -->
-        </div>
+        </div> -->
+        <!-- <template>
+            <lightning-tabset>
+                <lightning-tab class=""> One Content ! </lightning-tab>
+                <lightning-tab label="Item Two"> Two Content ! </lightning-tab>
+                <lightning-tab label="Item Three">
+                    Three Content !
+                </lightning-tab>
+            </lightning-tabset>
+        </template> -->
     </template>
 </template>

@@ -831,6 +831,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
+            return;
         }
         if (this.variantAttributes.variant === 'brand') {
             chip.style.setProperty(
@@ -845,6 +846,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
+            return;
         }
         if (this.variantAttributes.variant === 'inverse') {
             chip.style.setProperty(
@@ -859,6 +861,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
+            return;
         }
         if (this.variantAttributes.variant === 'alt-inverse') {
             chip.style.setProperty(
@@ -873,6 +876,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
+            return;
         }
         if (this.variantAttributes.variant === 'info') {
             chip.style.setProperty(
@@ -887,6 +891,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
+            return;
         }
         if (this.variantAttributes.variant === 'warning') {
             chip.style.setProperty(
@@ -901,6 +906,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#000000'
             );
+            return;
         }
         if (this.variantAttributes.variant === 'error') {
             chip.style.setProperty(
@@ -915,6 +921,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
+            return;
         }
         if (this.variantAttributes.variant === 'offline') {
             chip.style.setProperty(
@@ -928,6 +935,11 @@ export default class Skeleton extends LightningElement {
             chipLabel.style.setProperty(
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
+            );
+        } else {
+            chipLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#c4c4c4'
             );
         }
     }

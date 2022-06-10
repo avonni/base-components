@@ -149,14 +149,14 @@ Badge.args = {
     }
 };
 
-export const Breadcrumbs = Template.bind({});
-Breadcrumbs.args = {
-    variant: 'breadcrumbs',
-    animation: 'pulse',
-    variantAttributes: {
-        numBreadcrumbs: 3
-    }
-};
+// export const Breadcrumbs = Template.bind({});
+// Breadcrumbs.args = {
+//     variant: 'breadcrumbs',
+//     animation: 'pulse',
+//     variantAttributes: {
+//         numBreadcrumbs: 3
+//     }
+// };
 
 export const Button = Template.bind({});
 Button.args = {
@@ -178,12 +178,12 @@ ButtonIcon.args = {
     }
 };
 
-export const Combobox = Template.bind({});
-Combobox.args = {
-    variant: 'combobox',
-    animation: 'pulse',
-    variantAttributes: {}
-};
+// export const Combobox = Template.bind({});
+// Combobox.args = {
+//     variant: 'combobox',
+//     animation: 'pulse',
+//     variantAttributes: {}
+// };
 
 export const Datatable = Template.bind({});
 Datatable.args = {
