@@ -79,7 +79,7 @@ export default class InputPen extends LightningElement {
     _mode = PEN_MODES.default;
     _readOnly = false;
     _required = false;
-    _signature = true;
+    _signature = false;
     _size = DEFAULT_SIZE;
     _value;
     _variant = TOOLBAR_VARIANTS.default;
@@ -140,11 +140,7 @@ export default class InputPen extends LightningElement {
             this.canvasElement.height =
                 this.canvasElement.parentElement.offsetWidth / 2;
 
-            if (this._required) {
-                this.template.querySelector('te');
-            } else {
-                this.initCursorStyles();
-            }
+            this.initCursorStyles();
 
             if (!this.hideControls && this.showSize) {
                 let srcElement = this.template.querySelector(
@@ -320,8 +316,10 @@ export default class InputPen extends LightningElement {
     }
     set signature(value) {
         this._signature = normalizeBoolean(value);
-        this._mode = 'sign';
-        this._size = 20;
+        if (this._signature) {
+            this._mode = 'sign';
+            this._size = 20;
+        }
     }
 
     /**
@@ -535,7 +533,7 @@ export default class InputPen extends LightningElement {
             this.cursor.style.setProperty('--size', this.size);
             this.cursor.style.setProperty(
                 '--color',
-                this.mode === 'draw' ? this.color : '#ffffff'
+                this.mode === 'draw' ? this.color : '#ffffff00'
             );
         }
     }
@@ -646,9 +644,12 @@ export default class InputPen extends LightningElement {
         switch (requestedEvent) {
             case 'down':
                 this.setupCoordinate(event);
-
                 this.isDownFlag = true;
                 this.drawDot();
+                if (this._mode === 'sign') {
+                    this.prevX = this.currX;
+                    this.prevY = this.currY;
+                }
                 if (this._invalid) {
                     this.setValidity(true);
                 }
@@ -656,6 +657,11 @@ export default class InputPen extends LightningElement {
             case 'up':
                 if (this.isDownFlag) {
                     this.handleChangeEvent();
+                }
+                if (this._mode === 'sign') {
+                    this.prevSize = 4;
+                    this.prevX = this.currX;
+                    this.prevY = this.currY;
                 }
                 this.isDownFlag = false;
                 break;
@@ -667,8 +673,12 @@ export default class InputPen extends LightningElement {
             default:
                 // default aka 'move'
                 if (this.isDownFlag) {
-                    this.setupCoordinate(event);
-                    this.redraw();
+                    if (this._mode === 'sign') {
+                        this.sign(event);
+                    } else {
+                        this.setupCoordinate(event);
+                        this.redraw();
+                    }
                 }
                 this.moveCursor(event);
                 break;
@@ -720,28 +730,55 @@ export default class InputPen extends LightningElement {
         this.prevY = this.currY;
         this.currX = eventParam.clientX - clientRect.left;
         this.currY = eventParam.clientY - clientRect.top;
+        console.log(
+            `setup coords | curX:${this.currX}, curY:${this.currY} | prevX:${this.prevX}, prevY:${this.prevY}`
+        );
     }
 
     /**
      * Redraw Canvas context based on calculated cursor event cycle from previous to current coordinates.
      */
     redraw() {
-        if (this._mode !== 'sign') {
-            this.ctx.beginPath();
-            this.ctx.lineCap = 'round';
-            this.ctx.lineJoin = 'round';
-            this.ctx.moveTo(this.prevX, this.prevY);
-            this.ctx.lineTo(this.currX, this.currY);
-            this.ctx.strokeStyle =
-                this.mode === 'draw' ? this.color : '#ffffff';
-            this.ctx.lineWidth = this._size;
-            this.ctx.closePath();
-            this.ctx.stroke();
-        } else {
-            const distX = this.prevX - this.currX;
-            const distY = this.prevY - this.currY;
-            const distanceTraveled = Math.sqrt(distX * distX + distY * distY);
-            console.log('distanceTraveled: ' + distanceTraveled);
+        this.ctx.beginPath();
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.moveTo(this.prevX, this.prevY);
+        this.ctx.lineTo(this.currX, this.currY);
+        this.ctx.strokeStyle = this.mode === 'draw' ? this.color : '#ffffff';
+        this.ctx.lineWidth = this._size;
+        this.ctx.closePath();
+        this.ctx.stroke();
+    }
+
+    sign(event) {
+        const clientRect = this.canvasElement.getBoundingClientRect();
+
+        const distX = this.currX - (event.clientX - clientRect.left);
+        const distY = this.currY - (event.clientY - clientRect.top);
+        const distanceTraveled =
+            Math.sqrt(distX * distX + distY * distY) + this.prevDist;
+
+        this.currX = event.clientX - clientRect.left;
+        this.currY = event.clientY - clientRect.top;
+
+        if (distanceTraveled > 5) {
+            let calculatedSize = this.prevSize;
+            let wantedSize =
+                this._size /
+                Math.sqrt(Math.sqrt(Math.sqrt(distX * distX + distY * distY)));
+
+            calculatedSize = Math.min(
+                Math.max(
+                    wantedSize,
+                    this.prevSize -
+                        Math.sqrt(
+                            Math.sqrt(Math.abs(this.prevSize - wantedSize))
+                        )
+                ),
+                this.prevSize +
+                    Math.sqrt(Math.sqrt(Math.abs(this.prevSize - wantedSize)))
+            );
+            console.log('calculatedSize: ' + calculatedSize);
 
             this.ctx.beginPath();
             this.ctx.lineCap = 'round';
@@ -749,14 +786,18 @@ export default class InputPen extends LightningElement {
             this.ctx.moveTo(this.prevX, this.prevY);
             this.ctx.lineTo(this.currX, this.currY);
             this.ctx.strokeStyle = '#000000';
-            let calculatedSize = this.prevSize;
-            calculatedSize =
-                this._size / Math.sqrt(Math.sqrt(distanceTraveled));
             this.ctx.lineWidth = calculatedSize;
             this.ctx.closePath();
             this.ctx.stroke();
+            this.prevSize = calculatedSize;
+            this.prevDist = 0;
+        }
+
+        if (distanceTraveled > 5) {
+            this.prevX = this.currX;
+            this.prevY = this.currY;
+        } else {
             this.prevDist = distanceTraveled;
-            this.prevSize = this.calculatedSize;
         }
     }
 
@@ -764,20 +805,18 @@ export default class InputPen extends LightningElement {
      * Canvas draw dot method.
      */
     drawDot() {
-        if (this._mode !== 'sign') {
-            this.ctx.beginPath();
-            this.ctx.arc(
-                this.currX,
-                this.currY,
-                this.size / 2,
-                0,
-                2 * Math.PI,
-                false
-            );
-            this.ctx.fillStyle = this.mode === 'draw' ? this.color : '#ffffff';
-            this.ctx.fill();
-            this.ctx.closePath();
-        }
+        this.ctx.beginPath();
+        this.ctx.arc(
+            this.currX,
+            this.currY,
+            this.size / 2,
+            0,
+            2 * Math.PI,
+            false
+        );
+        this.ctx.fillStyle = this.mode !== 'erase' ? '#ffffff00' : this.color;
+        this.ctx.fill();
+        this.ctx.closePath();
     }
 
     /**

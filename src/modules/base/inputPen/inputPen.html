@@ -127,21 +127,37 @@
                     onmouseenter={handleMouseEnter}
                     onmouseleave={handleMouseLeave}
                 >
-                    <canvas data-element-id="canvas"></canvas>
+                    <template if:true={signature}>
+                        <lightning-button-icon
+                            class="avonni-input-pen__refresh-button"
+                            icon-name="utility:refresh"
+                            alternative-text="Refresh"
+                            title="Refresh"
+                            onclick={clear}
+                            variant="bare"
+                            size="large"
+                        >
+                        </lightning-button-icon>
+
+                        <lightning-icon
+                            icon-name="utility:close"
+                            alternative-text="close"
+                            title="close"
+                            size="small"
+                            class="avonni-input-pen__x-icon"
+                        >
+                        </lightning-icon>
+                        <div class="avonni-input-pen__underline"></div>
+                    </template>
+                    <canvas
+                        data-element-id="canvas"
+                        class="avonni-input-pen__canvas"
+                    ></canvas>
                     <div
                         if:false={signature}
                         class="avonni-input-pen__cursor"
                         data-element-id="input-pen-cursor"
                     ></div>
-                    <lightning-button-icon
-                        if:true={signature}
-                        class="avonni-input-pen__refresh-button"
-                        icon-name="utility:refresh"
-                        alternative-text="Refresh"
-                        title="Refresh"
-                        onclick={clear}
-                    >
-                    </lightning-button-icon>
                 </div>
             </div>
         </div>
