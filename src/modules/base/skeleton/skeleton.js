@@ -491,6 +491,7 @@ export default class Skeleton extends LightningElement {
         return (
             classSet('avonni-skeleton__variant-text')
                 .add('avonni-skeleton__button-label')
+                .add('slds-m-left_x-small')
                 // .add(`avonni-skeleton__animation-${this.animation}`)
                 .toString()
         );
@@ -1055,6 +1056,7 @@ export default class Skeleton extends LightningElement {
                 'slds-button_success':
                     this.variantAttributes.variant === 'success'
             })
+            .add('avonni-button')
             .add(`avonni-skeleton__animation-${this.animation}`);
         this.buttonWrapper = buttonWrapper;
     }

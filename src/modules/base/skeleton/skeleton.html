@@ -105,21 +105,21 @@
     </template>
     <template if:true={isButtonVariant}>
         <!-- <span class="slds-truncate"> -->
-        <button class={buttonWrapper} data-element-id="button-element">
+        <span class={buttonWrapper} data-element-id="button-element">
             <template if:true={buttonHasLeftIcon}>
                 <svg
                     class="slds-button__icon slds-button__icon_left"
                     aria-hidden="true"
                 ></svg>
             </template>
-            <div class={buttonLabelClass} data-element-id="button-label"></div>
+            <div class={buttonLabelClass} data-element-id="button-label">a</div>
             <template if:true={buttonHasRightIcon}>
                 <svg
                     class="slds-button__icon slds-button__icon_right"
                     aria-hidden="true"
                 ></svg>
             </template>
-        </button>
+        </span>
         <!-- </span> -->
     </template>
     <template if:true={isButtonIconVariant}>

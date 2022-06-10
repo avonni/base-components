@@ -102,6 +102,12 @@
     overflow: hidden;
 }
 
+.avonni-button {
+    height: 2rem;
+    max-width: 100%;
+    padding: 0.25rem 0.5rem;
+}
+
 .avonni-chip {
     max-width: 100%;
     padding-top: var(--avonni-chip-spacing-block-start, 0.25rem);
@@ -236,11 +242,12 @@
 }
 
 .avonni-skeleton__button-label {
-    border-radius: 4px/6.7px;
+    margin: 0.25rem 0.5rem;
+    border-radius: var(--avonni-skeleton-radius-border);
     background-color: var(--avonni-skeleton-chip-label-background, #00000000);
-    color: var(--avonni-skeleton-button-label-color, #000000);
-    min-height: 10px;
-    min-width: 30px;
+    color: var(--avonni-skeleton-button-label-color, transparent);
+    height: 0.5em;
+    min-width: 40px;
 }
 
 .avonni-skeleton__chip-label {
