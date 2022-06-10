@@ -1028,6 +1028,11 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
+        } else {
+            badgeLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#c4c4c4'
+            );
         }
     }
 
