@@ -726,26 +726,16 @@
                                     role="listbox"
                                     aria-orientation="horizontal"
                                 >
-                                    <li
-                                        class={progressIndicatorPathClass}
-                                        role="presentation"
-                                    ></li>
-                                    <li
-                                        class={progressIndicatorPathClass}
-                                        role="presentation"
-                                    ></li>
-                                    <li
-                                        class={progressIndicatorPathClass}
-                                        role="presentation"
-                                    ></li>
-                                    <li
-                                        class={progressIndicatorPathClass}
-                                        role="presentation"
-                                    ></li>
-                                    <li
-                                        class={progressIndicatorPathClass}
-                                        role="presentation"
-                                    ></li>
+                                    <template
+                                        for:each={progressItems}
+                                        for:item="progressItem"
+                                    >
+                                        <li
+                                            key={progressItem.key}
+                                            class={progressIndicatorPathClass}
+                                            role="presentation"
+                                        ></li>
+                                    </template>
                                 </ul>
                             </div>
                         </div>
