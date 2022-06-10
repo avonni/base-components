@@ -31,7 +31,6 @@
  */
 
 import { Card } from '../__examples__/card';
-import { CardSlots } from '../__examples__/cardSlots';
 
 export default {
     title: 'Example/Card',
@@ -59,7 +58,7 @@ export default {
                 'background',
                 'overlay'
             ],
-            description: 'Image position.',
+            description: 'Media position.',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'top' }
@@ -87,80 +86,73 @@ export default {
 };
 
 const Template = (args) => Card(args);
-const SlotsTemplate = (args) => CardSlots(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1',
+    title: 'Card Title',
+    iconName: 'custom:custom102',
     mediaPosition: 'left'
 };
 
-export const ImageTop = Template.bind({});
-ImageTop.args = {
-    title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1',
+export const MediaTop = Template.bind({});
+MediaTop.args = {
+    title: 'Card Title',
+    iconName: 'custom:custom102',
     mediaPosition: 'top',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
-export const ImageLeft = Template.bind({});
-ImageLeft.args = {
-    title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1',
+export const MediaLeft = Template.bind({});
+MediaLeft.args = {
+    title: 'Card Title',
+    iconName: 'custom:custom102',
     mediaPosition: 'left',
-    mediaSrc: 'https://via.placeholder.com/150x50'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
-export const ImageRight = Template.bind({});
-ImageRight.args = {
-    title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1',
+export const MediaRight = Template.bind({});
+MediaRight.args = {
+    title: 'Card Title',
+    iconName: 'custom:custom102',
     mediaPosition: 'right',
-    mediaSrc: 'https://via.placeholder.com/150'
+    mediaSrc:
+        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
-export const ImageCenter = Template.bind({});
-ImageCenter.args = {
-    title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1',
+export const MediaCenter = Template.bind({});
+MediaCenter.args = {
+    title: 'Card Title',
+    iconName: 'custom:custom102',
     mediaPosition: 'center',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
-export const ImageBottom = Template.bind({});
-ImageBottom.args = {
-    title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1',
+export const MediaBottom = Template.bind({});
+MediaBottom.args = {
+    title: 'Card Title',
+    iconName: 'custom:custom102',
     mediaPosition: 'bottom',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
-export const ImageBackground = Template.bind({});
-ImageBackground.args = {
-    title: 'Card title card had long truncated title that will trucate',
-    iconName: 'custom:custom1',
+export const MediaBackground = Template.bind({});
+MediaBackground.args = {
+    title: 'Card Title',
+    iconName: 'custom:custom102',
     mediaPosition: 'background',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
 
-export const OverlayCard = Template.bind({});
-OverlayCard.args = {
+export const MediaOverlay = Template.bind({});
+MediaOverlay.args = {
     title: 'Card title',
-    iconName: 'custom:custom1',
+    iconName: 'custom:custom102',
     mediaPosition: 'overlay',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
-};
-
-export const BaseWithSlots = SlotsTemplate.bind({});
-BaseWithSlots.args = {
-    // title: 'Title Prop: ',
-    mediaPosition: 'left'
-    // mediaSrc: 'https://www.avonnicomponents.com/assets/images/logo.svg',
-    // iconName: 'custom:custom1'
 };

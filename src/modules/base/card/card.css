@@ -30,8 +30,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-:host() {
-}
+/* outer card */
 
 article.avonni-card {
     overflow: hidden;
@@ -65,10 +64,21 @@ article.avonni-card {
 .avonni-card__content-container {
     flex: 1 1 auto;
 }
-
 .avonni-card__media-container {
-    flex: 0 4 auto;
+    flex: 1 4 auto;
 }
+.avonni-card__media-left {
+    flex-direction: row;
+}
+.avonni-card__media-right {
+    flex-direction: row-reverse;
+}
+.avonni-card__media-bottom,
+.avonni-card__media-center {
+    flex-direction: column-reverse;
+}
+
+/* card media */
 
 .avonni-card__media-background .avonni-card__content-container {
     position: absolute;
@@ -92,6 +102,8 @@ article.avonni-card {
     bottom: 0;
     left: 0;
     right: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
     color: var(--avonni-card-overlay-media-text-color, white);
     background-image: var(
         --avonni-card-overlay-media-overlay-background,
@@ -104,44 +116,34 @@ article.avonni-card {
     );
 }
 
-.avonni-card__media-overlay .avonni-card__content-container {
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
-}
 .avonni-card__media-overlay:hover .avonni-card__content-container {
     opacity: 1;
 }
-.avonni-card__media-left {
-    flex-direction: row;
-}
-.avonni-card__media-right {
-    flex-direction: row-reverse;
-}
-.avonni-card__media-bottom,
-.avonni-card__media-center {
-    flex-direction: column-reverse;
-}
 
 /* In chrome, the image corner radius is not applied to the image properly when there is a border.
-   The overflow: hidden lets the image pass over the border on lower resolution screens.  */
+    The overflow: hidden lets the image pass over the border on lower resolution screens.  */
 .avonni-card__media-top-left-radius {
     border-top-left-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) - 1px
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
     );
 }
 .avonni-card__media-top-right-radius {
     border-top-right-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) - 1px
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
     );
 }
 .avonni-card__media-bottom-right-radius {
     border-bottom-right-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) - 1px
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
     );
 }
 .avonni-card__media-bottom-left-radius {
     border-bottom-left-radius: calc(
-        var(--avonni-card-radius-border, 0.25rem) - 1px
+        var(--avonni-card-radius-border, 0.25rem) -
+            var(--avonni-card-sizing-border, 1px)
     );
 }
 
@@ -168,15 +170,19 @@ article.avonni-card {
 
 .avonni-card__media-left .avonni-card__media-container {
     position: relative;
-    object-fit: cover;
-    height: auto;
     align-self: auto;
+    height: auto;
+    object-fit: cover;
+    min-width: var(--avonni-card-left-media-width);
+    max-width: var(--avonni-card-left-media-width);
 }
 .avonni-card__media-right .avonni-card__media-container {
     position: relative;
-    object-fit: cover;
-    height: auto;
     align-self: auto;
+    height: auto;
+    object-fit: cover;
+    min-width: var(--avonni-card-right-media-width);
+    max-width: var(--avonni-card-right-media-width);
 }
 .avonni-card__media-background .avonni-card__media-container,
 .avonni-card__media-overlay .avonni-card__media-container,
@@ -192,6 +198,14 @@ article.avonni-card {
     width: 100%;
     object-fit: cover;
 }
+
+.avonni-card__media-action {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+}
+
+/* card header */
 
 .avonni-card__header {
     padding-top: var(--avonni-card-header-spacing-block-start, 0.75rem);
@@ -221,18 +235,14 @@ article.avonni-card {
     line-height: 1.25rem;
 }
 
-.avonni-card__media-action {
-    position: absolute;
-    top: 0.75rem;
-    right: 1rem;
-}
-
+/* card body */
 .avonni-card__center-default-slot,
 .avonni-card__default-slot {
     margin-top: var(--avonni-card-body-spacing-block-start, 0.75rem);
     margin-bottom: var(--avonni-card-body-spacing-block-end, 0.75rem);
 }
 
+/* card footer */
 .avonni-card__footer {
     padding-top: var(--avonni-card-footer-spacing-block-start, 0.75rem);
     padding-bottom: var(--avonni-card-footer-spacing-block-end, 0.75rem);

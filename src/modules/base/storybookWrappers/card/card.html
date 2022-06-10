@@ -39,27 +39,19 @@
         media-position={mediaPosition}
         title={title}
     >
-        <div slot="action">
-            <lightning-button label="Action"></lightning-button>
-        </div>
+        <lightning-button slot="actions" label="Action"></lightning-button>
 
-        default slot
-        <div>
-            <p>content</p>
-            <p>more content</p>
-        </div>
+        <lightning-button-icon
+            slot="media-actions"
+            icon-name="utility:bookmark"
+            size="x-small"
+            variant="border-filled"
+            alternative-text="Bookmark"
+            title="Bookmark"
+        ></lightning-button-icon>
 
-        <div slot="media-action">
-            <lightning-button-icon
-                icon-name="utility:bookmark"
-                size="x-small"
-                variant="border-filled"
-                alternative-text="Bookmark"
-                class="slds-m-left_xx-small"
-                title="Bookmark"
-            ></lightning-button-icon>
-        </div>
+        <p class="slds-p-horizontal_small">Card Body</p>
 
-        <div slot="footer">Footer</div>
+        <div slot="footer">Footer Slot</div>
     </c-card>
 </template>

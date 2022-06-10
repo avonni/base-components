@@ -214,6 +214,16 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-card-left-media-width
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-card-right-media-width
+ * @type dimension
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-card-media-color-border
  * @default #e5e5e5
  * @type color

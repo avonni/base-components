@@ -38,9 +38,9 @@
             class={computedCardClasses}
             data-element-id="avonni-card-body-container"
         >
-            <!-- content for center media -->
+            <!-- default content for center media only -->
             <div class={computedCenterDefaultSlotClasses}>
-                <slot></slot>
+                <slot data-element-id="avonni-card-center-default-slot"></slot>
             </div>
 
             <!-- media -->
@@ -49,58 +49,67 @@
                 data-element-id="avonni-card-media-container"
             >
                 <img
-                    class="avonni-card__media"
-                    src={mediaSrc}
                     if:true={mediaSrc}
+                    src={mediaSrc}
+                    class="avonni-card__media"
+                    alt="card media"
+                    data-element-id="avonni-card-media-image"
                 />
-                <slot name="media"></slot>
+
+                <div if:false={mediaSrc}>
+                    <slot name="media"></slot>
+                </div>
+
                 <div class="avonni-card__media-action">
-                    <slot name="media-action"></slot>
+                    <slot name="media-actions"></slot>
                 </div>
             </div>
 
-            <!-- title and action -->
+            <!-- title and actions -->
             <div class="slds-has-flexi-truncate avonni-card__content-container">
                 <header class={computedHeaderClasses}>
                     <div
                         class="
-                            slds-col slds-has-flexi-truncate
+                            slds-has-flexi-truncate
                             avonni-card__header-title-section
                         "
                     >
                         <lightning-icon
-                            class="avonni-card__header-icon"
                             if:true={iconName}
                             icon-name={iconName}
+                            class="avonni-card__header-icon"
                             size="small"
                             data-element-id="avonni-card-header-icon"
                         ></lightning-icon>
 
                         <h2
-                            if:true={hasStringTitle}
-                            class="avonni-card__title-text slds-truncate"
+                            if:true={title}
                             title={title}
+                            class="avonni-card__title-text slds-truncate"
                             data-element-id="avonni-card-title"
                         >
                             {title}
                         </h2>
 
-                        <div if:false={hasStringTitle}>
+                        <template if:false={title}>
                             <slot
                                 name="title"
                                 data-element-id="avonni-card-title-slot"
                             ></slot>
-                        </div>
+                        </template>
                     </div>
 
                     <slot
-                        class="avonni-card__action-slot slds-col"
-                        name="action"
+                        class="avonni-card__action-slot"
+                        name="actions"
                     ></slot>
                 </header>
 
                 <!-- default content -->
-                <div class={computedDefaultSlotClasses}>
+                <div
+                    class={computedDefaultSlotClasses}
+                    data-element-id="avonni-card-default-slot"
+                >
                     <slot></slot>
                 </div>
             </div>
