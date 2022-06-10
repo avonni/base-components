@@ -86,6 +86,7 @@ export default class InputPen extends LightningElement {
 
     sizeList;
     _rendered = false;
+    _updatedDOM = false;
 
     isDownFlag;
     isDotFlag = false;
@@ -124,7 +125,7 @@ export default class InputPen extends LightningElement {
     }
 
     renderedCallback() {
-        if (!this._rendered) {
+        if (!this._rendered || this._updatedDOM) {
             this.canvasElement = this.template.querySelector(
                 '[data-element-id="canvas"]'
             );
@@ -207,6 +208,7 @@ export default class InputPen extends LightningElement {
         if (this._disabled) {
             this.classList.add('avonni-disabled');
         }
+        this._updatedDOM = true;
     }
 
     /**
@@ -233,6 +235,7 @@ export default class InputPen extends LightningElement {
 
     set hideControls(value) {
         this._hideControls = normalizeBoolean(value);
+        this._updatedDOM = true;
     }
 
     /**
@@ -249,6 +252,7 @@ export default class InputPen extends LightningElement {
 
     set invalid(value) {
         this._invalid = normalizeBoolean(value);
+        this._updatedDOM = true;
     }
 
     /**
@@ -269,6 +273,7 @@ export default class InputPen extends LightningElement {
             validValues: PEN_MODES.valid
         });
         this.initCursorStyles();
+        this._updatedDOM = true;
     }
 
     /**
@@ -285,10 +290,10 @@ export default class InputPen extends LightningElement {
 
     set readOnly(value) {
         this._readOnly = normalizeBoolean(value);
-
         if (this._readOnly) {
             this.classList.add('avonni-disabled');
         }
+        this._updatedDOM = true;
     }
 
     /**
@@ -305,6 +310,7 @@ export default class InputPen extends LightningElement {
 
     set required(value) {
         this._required = normalizeBoolean(value);
+        this._updatedDOM = true;
     }
 
     /**
@@ -324,6 +330,7 @@ export default class InputPen extends LightningElement {
             this._mode = 'sign';
             this._size = 20;
         }
+        this._updatedDOM = true;
     }
 
     /**
@@ -363,6 +370,7 @@ export default class InputPen extends LightningElement {
         if (this.ctx) {
             this.initSrc();
         }
+        this._updatedDOM = true;
     }
 
     /**
