@@ -138,6 +138,7 @@ export default class Card extends LightningElement {
      *
      * @type {string}
      * @public
+     * @default top
      */
     @api
     get mediaPosition() {
