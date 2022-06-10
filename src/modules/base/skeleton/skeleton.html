@@ -720,9 +720,17 @@
         </template>
     </template>
     <template if:true={isParagraphVariant}>
-        <ul class="slds-has-dividers_around">
-            <template for:each={paragraphs} for:item="paragraph">
-                <li key={paragraph.key} class={paragraphLineClass}></li>
+        <ul class="slds-has-dividers_around" data-element-id="paragraph-list">
+            <template for:each={paragraphItems} for:item="paragraphLine">
+                <template
+                    for:each={paragraphLine.line}
+                    for:item="paragraphLineItem"
+                >
+                    <li
+                        key={paragraphLineItem.key}
+                        class={paragraphLineClass}
+                    ></li>
+                </template>
             </template>
         </ul>
     </template>

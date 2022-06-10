@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
-import { classSet } from 'c/utils';
+import { classSet, generateUUID } from 'c/utils';
 
 const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
@@ -88,8 +88,10 @@ export default class Skeleton extends LightningElement {
     breadcrumbs = [];
     buttonWrapper;
     buttonIconWrapper;
-    paragraphs = [];
+    // paragraphs = [];
+    paragraphItems = [];
     progressItems = [];
+    paragraphItemsInitialized = false;
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -108,7 +110,7 @@ export default class Skeleton extends LightningElement {
             this.updateButtonIconClassList();
         }
         if (this.isParagraphVariant) {
-            this.initializeParagraphs();
+            this.initializeParagraphItems();
         }
 
         if (this.isProgressIndicatorVariant) {
@@ -123,6 +125,9 @@ export default class Skeleton extends LightningElement {
     renderedCallback() {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (!this.isAvatarVariant) this.handleVariant();
+        if (this.isParagraphVariant && !this.paragraphItemsInitialized)
+            this.initializeParagraphItems();
+        this.paragraphItemsInitialized = true;
         // console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
@@ -724,14 +729,40 @@ export default class Skeleton extends LightningElement {
         this.breadcrumbs = breadcrumbs;
     }
 
-    initializeParagraphs() {
-        const paragraphs = [];
+    // initializeParagraphs() {
+    //     console.log('inside initialize paragraphs');
+    //     const paragraphs = [];
+    //     for (let i = 0; i < this.variantAttributes.rows; i++) {
+    //         paragraphs.push({
+    //             key: `panel-${i}`
+    //         });
+    //     }
+    //     this.paragraphs = paragraphs;
+    // }
+
+    initializeParagraphItems() {
+        console.log('inside initialize paragraph items');
+        const paragraphItems = [];
+        let percentage = 100;
         for (let i = 0; i < this.variantAttributes.rows; i++) {
-            paragraphs.push({
-                key: `panel-${i}`
+            percentage = 100;
+            paragraphItems.push({
+                key: `paragraph-${i}`,
+                line: []
             });
+            const numItems = Math.floor(Math.random() * 10) + 1;
+            for (let j = 0; j < numItems; j++) {
+                const id = generateUUID();
+                const itemWidthPercentage =
+                    Math.floor(Math.random() * percentage) + 1;
+                paragraphItems[i].line.push({
+                    key: `item-${id}`,
+                    percentage: itemWidthPercentage
+                });
+                percentage -= itemWidthPercentage;
+            }
         }
-        this.paragraphs = paragraphs;
+        this.paragraphItems = paragraphItems;
     }
 
     initializeProgressItems() {
