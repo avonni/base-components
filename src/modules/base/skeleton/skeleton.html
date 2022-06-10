@@ -69,24 +69,14 @@
         <span class={chipClass} data-element-id="span-wrapper">
             <!-- <span class="slds-truncate"> -->
             <template if:true={chipHasIcon}>
-                <span
-                    class="
-                        slds-badge__icon slds-badge__icon_left
-                        avonni-skeleton__chip-slot-class
-                    "
-                >
+                <span class="slds-badge__icon slds-badge__icon_left">
                     <slot name="left"></slot>
                 </span>
             </template>
             <!-- {chipLabel} -->
             <div class={chipLabelClass} data-element-id="chip-label"></div>
             <template if:true={chipHasIcon}>
-                <span
-                    class="
-                        slds-badge__icon slds-badge__icon_right
-                        avonni-skeleton__chip-slot-class
-                    "
-                >
+                <span class="slds-badge__icon slds-badge__icon_right">
                     <slot name="right"></slot>
                 </span>
             </template>
@@ -95,29 +85,17 @@
     </template>
     <template if:true={isBadgeVariant}>
         <span class={badgeClass} data-element-id="span-wrapper">
-            <!-- <span class="slds-truncate"> -->
             <template if:true={badgeHasLeftIcon}>
-                <span
-                    class="
-                        slds-badge__icon slds-badge__icon_left
-                        avonni-skeleton__chip-slot-class
-                    "
-                >
+                <span class="slds-badge__icon slds-badge__icon_left">
                     <slot name="left"></slot>
                 </span>
             </template>
             <div class={badgeLabelClass} data-element-id="badge-label"></div>
             <template if:true={badgeHasRightIcon}>
-                <span
-                    class="
-                        slds-badge__icon slds-badge__icon_right
-                        avonni-skeleton__chip-slot-class
-                    "
-                >
+                <span class="slds-badge__icon slds-badge__icon_right">
                     <slot name="right"></slot>
                 </span>
             </template>
-            <!-- </span> -->
         </span>
     </template>
     <template if:true={isBreadcrumbsVariant}>

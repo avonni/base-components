@@ -213,13 +213,6 @@
     min-width: 30px;
 }
 
-.avonni-skeleton__chip-slot-class {
-    border-radius: 00.25em;
-    border-width: 0.1em;
-    /* border-style: solid; */
-    /* border-color: var(--avonni-skeleton-color-background-animation); */
-}
-
 .avonni-skeleton__chip-label {
     border-radius: var(--avonni-skeleton-radius-border);
     background-color: var(--avonni-skeleton-chip-label-background, #00000000);
