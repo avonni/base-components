@@ -91,6 +91,7 @@ export default class Skeleton extends LightningElement {
     buttonWrapper;
     buttonIconWrapper;
     paragraphs = [];
+    progressItems = [];
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -110,6 +111,10 @@ export default class Skeleton extends LightningElement {
         }
         if (this.isParagraphVariant) {
             this.initializeParagraphs();
+        }
+
+        if (this.isProgressIndicatorVariant) {
+            this.initializeProgressItems();
         }
 
         // if (this.isComboboxVariant) {
@@ -723,6 +728,16 @@ export default class Skeleton extends LightningElement {
             });
         }
         this.paragraphs = paragraphs;
+    }
+
+    initializeProgressItems() {
+        const progressItems = [];
+        for (let i = 0; i < this.variantAttributes.steps; i++) {
+            progressItems.push({
+                key: `panel-${i}`
+            });
+        }
+        this.progressItems = progressItems;
     }
 
     /**

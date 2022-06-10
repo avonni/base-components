@@ -698,31 +698,13 @@
         <template if:false={isPathVariant}>
             <div class="slds-progress">
                 <ol class="slds-progress__list">
-                    <li class="slds-progress__item">
-                        <div class={progressIndicatorItemClass}>
-                            <span class="slds-assistive-text">Step 1</span>
-                        </div>
-                    </li>
-                    <li class="slds-progress__item">
-                        <div class={progressIndicatorItemClass}>
-                            <span class="slds-assistive-text">Step 2 </span>
-                        </div>
-                    </li>
-                    <li class="slds-progress__item">
-                        <div class={progressIndicatorItemClass}>
-                            <span class="slds-assistive-text">Step 3 </span>
-                        </div>
-                    </li>
-                    <li class="slds-progress__item">
-                        <div class={progressIndicatorItemClass}>
-                            <span class="slds-assistive-text">Step 4 </span>
-                        </div>
-                    </li>
-                    <li class="slds-progress__item">
-                        <div class={progressIndicatorItemClass}>
-                            <span class="slds-assistive-text">Step 5 </span>
-                        </div>
-                    </li>
+                    <template for:each={progressItems} for:item="progressItem">
+                        <li key={progressItem.key} class="slds-progress__item">
+                            <div class={progressIndicatorItemClass}>
+                                <span class="slds-assistive-text">Step 1</span>
+                            </div>
+                        </li>
+                    </template>
                 </ol>
                 <div
                     class={progressIndicatorBarClass}
