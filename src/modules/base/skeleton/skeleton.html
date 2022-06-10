@@ -96,7 +96,7 @@
     <template if:true={isBadgeVariant}>
         <span class={badgeClass} data-element-id="span-wrapper">
             <!-- <span class="slds-truncate"> -->
-            <template if:false={badgeHasEndIcon}>
+            <template if:true={badgeHasLeftIcon}>
                 <span
                     class="
                         slds-badge__icon slds-badge__icon_left
@@ -107,7 +107,7 @@
                 </span>
             </template>
             <div class={badgeLabelClass} data-element-id="badge-label"></div>
-            <template if:true={badgeHasEndIcon}>
+            <template if:true={badgeHasRightIcon}>
                 <span
                     class="
                         slds-badge__icon slds-badge__icon_right

@@ -49,14 +49,16 @@
 }
 
 .avonni-badge {
+    height: 2rem;
     max-width: 100%;
-    padding-top: var(--avonni-chip-spacing-block-start, 0.25rem);
+    padding: 0.25rem 0.5rem;
+    /* padding-top: var(--avonni-chip-spacing-block-start, 0.25rem);
     padding-bottom: var(--avonni-chip-spacing-block-end, 0.25rem);
     padding-left: var(--avonni-chip-spacing-inline-start, 0.5rem);
-    padding-right: var(--avonni-chip-spacing-inline-end, 0.5rem);
+    padding-right: var(--avonni-chip-spacing-inline-end, 0.5rem); */
     border-width: var(--avonni-chip-sizing-border, 1px);
     /* border-style: var(--avonni-chip-styling-border, solid); */
-    border-radius: var(--avonni-chip-radius-border, 15rem);
+    border-radius: 15rem;
     font-size: var(--avonni-chip-label-font-size, 0.75rem);
     font-weight: 700;
     line-height: var(--avonni-chip-line-height, normal);
@@ -222,6 +224,14 @@
     border-radius: var(--avonni-skeleton-radius-border);
     background-color: var(--avonni-skeleton-chip-label-background, #00000000);
     min-height: 0.5em;
+    min-width: 40px;
+}
+
+.avonni-skeleton__badge-label {
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--avonni-skeleton-radius-border);
+    background-color: var(--avonni-skeleton-chip-label-background, #00000000);
+    height: 1.5rem;
     min-width: 40px;
 }
 

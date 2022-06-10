@@ -220,9 +220,17 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
-    get badgeHasEndIcon() {
+    get badgeHasLeftIcon() {
         return (
-            this.variantAttributes.iconPosition === 'end' &&
+            this.variantAttributes.iconPosition === 'left' &&
+            this.variantAttributes.hasIcon === true
+        );
+    }
+
+    @api
+    get badgeHasRightIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'right' &&
             this.variantAttributes.hasIcon === true
         );
     }
@@ -381,20 +389,22 @@ export default class Skeleton extends LightningElement {
      * @type {string}
      */
     get badgeClass() {
-        return classSet('avonni-badge')
-            .add({
-                'avonni-chip_outline': this.variantAttributes.outline
-            })
-            .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
-            .add('avonni-skeleton__base')
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .toString();
+        return (
+            classSet('avonni-badge')
+                .add({
+                    'avonni-chip_outline': this.variantAttributes.outline
+                })
+                .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+                // .add('avonni-skeleton__base')
+                .add(`avonni-skeleton__animation-${this.animation}`)
+                .toString()
+        );
     }
 
     get badgeLabelClass() {
         return (
             classSet('avonni-skeleton__variant-text')
-                .add('avonni-skeleton__chip-label')
+                .add('avonni-skeleton__badge-label')
                 // .add(`avonni-skeleton__animation-${this.animation}`)
                 .toString()
         );
@@ -406,15 +416,17 @@ export default class Skeleton extends LightningElement {
      * @type {string}
      */
     get chipClass() {
-        return classSet('avonni-chip')
-            .add({
-                'avonni-chip_outline': this.variantAttributes.outline
-            })
-            .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
-            .add('avonni-skeleton__base')
-            .add(`avonni-skeleton__variant-${this.variant}`)
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .toString();
+        return (
+            classSet('avonni-chip')
+                .add({
+                    'avonni-chip_outline': this.variantAttributes.outline
+                })
+                .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+                // .add('avonni-skeleton__base')
+                .add(`avonni-skeleton__variant-${this.variant}`)
+                .add(`avonni-skeleton__animation-${this.animation}`)
+                .toString()
+        );
     }
 
     get chipLabelClass() {
