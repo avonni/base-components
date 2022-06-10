@@ -207,7 +207,7 @@ export default {
         readOnly: false,
         required: false,
         signature: false,
-        size: 2,
+        size: 10,
         variant: 'bottom-toolbar'
     }
 };
@@ -252,8 +252,7 @@ Disabled.args = {
 
 export const Signature = Template.bind({});
 Signature.args = {
-    hideControls: true,
     label: 'Signature Field',
     signature: true,
-    size: 14
+    size: 16
 };
