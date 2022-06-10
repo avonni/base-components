@@ -37,6 +37,7 @@ const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
 const COLOR_CHANGE_INTERVAL_SIZE = '#084d75';
 const DEFAULT_AXIS_SCROLL_COLOR = '#1c82bd';
+const DEFAULT_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_INTERVAL_MIN_DATE = new Date(2022, 0, 1);
@@ -73,9 +74,10 @@ const LWC_ICONS_CLASS = {
 
 // ** Functionalities/bug **
 // TODO: Fix popover size
-// TODO: Last item : click/drag (when interval width is changed)
-// TODO: Fix popover with overflow
+// TODO: Last item : click/drag (when interval width is changed) -->
+//      --- > change date by calculation of distance and convert to date (Change scroll too )
 // TODO: Fix label left
+// TODO: Fix upper line of rectangle with scroll
 
 // ** QA/tests/Doc **
 // TODO: Refactor
@@ -98,6 +100,7 @@ export class HorizontalActivityTimeline {
     _maxYPositionOfItem = 0;
     _changeIntervalSizeMode = false;
     _displayedItems = [];
+    _timelineAxisTicksNumber = DEFAULT_AXIS_TICKS_NUMBER;
 
     // To change visible height of timeline
     _requestHeightChange = false;
@@ -132,8 +135,8 @@ export class HorizontalActivityTimeline {
 
         this.setTimelineWidth(width);
         this.createTimelineScrollAxis();
-        this.createTimeline();
         this.createTimelineAxis();
+        this.createTimeline();
     }
 
     /*
@@ -294,7 +297,7 @@ export class HorizontalActivityTimeline {
                 this.findNextDate(this._intervalMinDate, -1),
                 this.findNextDate(this._intervalMaxDate, 1)
             ])
-            .range([this._offsetAxis, this._timelineWidth]);
+            .range([0, this._timelineWidth - this._offsetAxis]);
     }
 
     /*
@@ -499,12 +502,13 @@ export class HorizontalActivityTimeline {
         // <--- CREATE NEW SVG FOR TIMELINE --->
         this._timelineSVG = this._timelineDiv
             .append('svg')
-            .attr('width', this._timelineWidth)
-            .attr('height', this._timelineHeight);
+            .attr('width', this._timelineWidth - this._offsetAxis)
+            .attr('height', this._timelineHeight)
+            .attr('transform', 'translate(' + this._offsetAxis + ' ,0)');
 
         this._timelineSVG
             .append('rect')
-            .attr('x', this._offsetAxis)
+            .attr('x', 0) // this._offsetAxis
             .attr('y', 0)
             .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', this._timelineHeight)
@@ -515,7 +519,7 @@ export class HorizontalActivityTimeline {
         const axis = d3
             .axisBottom(this.viewTimeScale)
             .tickFormat(d3.timeFormat('%d/%m/%Y'))
-            .ticks(9)
+            .ticks(this._timelineAxisTicksNumber)
             .tickSizeInner(this._timelineHeight + this._timelineAxisHeight)
             .tickSizeOuter(0);
         this._timelineSVG
@@ -540,24 +544,26 @@ export class HorizontalActivityTimeline {
     createTimelineAxis() {
         const axisSVG = this._timelineAxisDiv
             .append('svg')
-            .attr('width', this._timelineWidth)
-            .attr('height', this._timelineAxisHeight * 2);
+            .attr('width', this._timelineWidth - this._offsetAxis)
+            .attr('height', this._timelineAxisHeight * 2)
+            .attr('transform', 'translate(' + this._offsetAxis + ' ,0)');
 
         // <--- CREATE RECT AROUND AXIS --->
         axisSVG
             .append('rect')
-            .attr('x', this._offsetAxis)
+            .attr('x', '0.3')
             .attr('y', 0) // change position du rectangle blanc sous timeline
-            .attr('width', this._timelineWidth - this._offsetAxis)
+            .attr('width', this._timelineWidth - this._offsetAxis - 0.6)
             .attr('height', 25)
             .attr('stroke', 'black')
+            .attr('stroke-width', '0.5px')
             .attr('fill', 'white');
 
         // <--- CREATE TICKS OF AXIS --->
         this.createTimeAxis(
             this.viewTimeScale,
             AXIS_TYPE.timelineAxis,
-            9,
+            this._timelineAxisTicksNumber,
             axisSVG
         );
 
@@ -658,12 +664,13 @@ export class HorizontalActivityTimeline {
         const timeAxis = d3
             .axisBottom(scale)
             .tickFormat(d3.timeFormat('%d/%m/%Y'))
-            .ticks(numberOfTicks);
+            .ticks(numberOfTicks)
+            .tickSizeOuter(0);
 
         if (axisId === AXIS_TYPE.timelineAxis) {
             destinationSVG.append('g').attr('id', axisId).call(timeAxis);
+            this._timelineAxisTicksNumber = numberOfTicks;
         } else {
-            timeAxis.tickSizeOuter(0);
             destinationSVG
                 .append('g')
                 .attr(
@@ -809,6 +816,10 @@ export class HorizontalActivityTimeline {
     setTimelineWidth(containerWidth) {
         if (containerWidth > 0) {
             this._timelineWidth = containerWidth - 25;
+            d3.select(this.divTimelineItemsSelector).style(
+                'width',
+                this._timelineWidth + 'px'
+            );
         }
     }
 
