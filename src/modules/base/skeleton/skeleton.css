@@ -316,6 +316,15 @@
     cursor: default !important;
 }
 
+.avonni-skeleton_tabset::after {
+    background-color: var(--avonni-skeleton-color-background);
+}
+
+.avonni-skeleton__tabset-item {
+    height: 0.7em;
+    width: 80%;
+}
+
 /* .avonni-skeleton__progress-indicator-path-item:first-child {
     margin-left: 0;
     border-top-left-radius: 2rem;

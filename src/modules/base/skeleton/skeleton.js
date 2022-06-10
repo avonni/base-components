@@ -90,6 +90,7 @@ export default class Skeleton extends LightningElement {
     breadcrumbs = [];
     buttonWrapper;
     buttonIconWrapper;
+    paragraphs = [];
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -106,6 +107,9 @@ export default class Skeleton extends LightningElement {
         }
         if (this.isButtonIconVariant) {
             this.updateButtonIconClassList();
+        }
+        if (this.isParagraphVariant) {
+            this.initializeParagraphs();
         }
 
         // if (this.isComboboxVariant) {
@@ -199,6 +203,10 @@ export default class Skeleton extends LightningElement {
             this.variant === 'circular' ||
             this.variant === 'rectangular'
         );
+    }
+    @api
+    get isTabsetVariant() {
+        return this.variant === 'tabset';
     }
 
     @api
@@ -571,6 +579,18 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
+    get tabsetClass() {
+        return classSet('avonni-skeleton_tabset')
+            .add('slds-tabs_default__item')
+            .add('slds-is-active');
+    }
+
+    get tabItemClass() {
+        return classSet('avonni-skeleton__tabset-item')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -693,6 +713,16 @@ export default class Skeleton extends LightningElement {
         }
         console.log('end');
         this.breadcrumbs = breadcrumbs;
+    }
+
+    initializeParagraphs() {
+        const paragraphs = [];
+        for (let i = 0; i < this.variantAttributes.rows; i++) {
+            paragraphs.push({
+                key: `panel-${i}`
+            });
+        }
+        this.paragraphs = paragraphs;
     }
 
     /**

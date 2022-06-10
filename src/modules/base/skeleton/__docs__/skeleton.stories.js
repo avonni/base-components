@@ -88,6 +88,7 @@ export default {
                 'paragraph',
                 'progress-indicator',
                 'rectangular',
+                'tabset',
                 'text'
             ],
             description: 'The variant changes the appearance of the skeleton.',
@@ -220,5 +221,15 @@ Paragraph.args = {
     animation: 'pulse',
     variantAttributes: {
         rows: 3
+    }
+};
+
+export const Tabset = Template.bind({});
+Tabset.args = {
+    variant: 'tabset',
+    animation: 'pulse',
+    variantAttributes: {
+        variant: '',
+        tabs: 3
     }
 };

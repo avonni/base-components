@@ -747,35 +747,23 @@
                                     <li
                                         class={progressIndicatorPathClass}
                                         role="presentation"
-                                    >
-                                        <!-- <div
-                                            class={progressIndicatorPathLinkClass}
-                                        ></div> -->
-                                    </li>
+                                    ></li>
                                     <li
                                         class={progressIndicatorPathClass}
                                         role="presentation"
-                                    >
-                                        <!-- <div class="slds-path__link"></div> -->
-                                    </li>
+                                    ></li>
                                     <li
                                         class={progressIndicatorPathClass}
                                         role="presentation"
-                                    >
-                                        <!-- <div class="slds-path__link"></div> -->
-                                    </li>
+                                    ></li>
                                     <li
                                         class={progressIndicatorPathClass}
                                         role="presentation"
-                                    >
-                                        <!-- <div class="slds-path__link"></div> -->
-                                    </li>
+                                    ></li>
                                     <li
                                         class={progressIndicatorPathClass}
                                         role="presentation"
-                                    >
-                                        <!-- <div class="slds-path__link"></div> -->
-                                    </li>
+                                    ></li>
                                 </ul>
                             </div>
                         </div>
@@ -786,9 +774,26 @@
     </template>
     <template if:true={isParagraphVariant}>
         <ul class="slds-has-dividers_around">
-            <li class={paragraphLineClass}></li>
-            <li class={paragraphLineClass}></li>
-            <li class={paragraphLineClass}></li>
+            <template for:each={paragraphs} for:item="paragraph">
+                <li key={paragraph.key} class={paragraphLineClass}></li>
+            </template>
         </ul>
+    </template>
+    <template if:true={isTabsetVariant}>
+        <div class="slds-tabs_default">
+            <!-- <lightning-tab-bar> -->
+            <ul role="tablist" class="slds-tabs_default__nav">
+                <li data-tab="true" role="presentation" class={tabsetClass}>
+                    <span class={tabItemClass}></span>
+                </li>
+                <li data-tab="true" role="presentation" class={tabsetClass}>
+                    Item Two
+                </li>
+                <li data-tab="true" role="presentation" class={tabsetClass}>
+                    Item Three
+                </li>
+            </ul>
+            <!-- </lightning-tab-bar> -->
+        </div>
     </template>
 </template>
