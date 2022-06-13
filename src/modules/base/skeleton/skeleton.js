@@ -90,6 +90,7 @@ export default class Skeleton extends LightningElement {
     buttonIconWrapper;
     // paragraphs = [];
     paragraphItems = [];
+    currentParagraphItem = 0;
     progressItems = [];
     paragraphItemsInitialized = false;
 
@@ -125,8 +126,10 @@ export default class Skeleton extends LightningElement {
     renderedCallback() {
         // if (!this.isAvatarVariant) this.setSkeletonSize();
         if (!this.isAvatarVariant) this.handleVariant();
-        if (this.isParagraphVariant && !this.paragraphItemsInitialized)
+        if (this.isParagraphVariant && !this.paragraphItemsInitialized) {
             this.initializeParagraphItems();
+            this.updateParagraphClassList();
+        }
         this.paragraphItemsInitialized = true;
         // console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
@@ -565,6 +568,7 @@ export default class Skeleton extends LightningElement {
             .add('slds-item')
             .add('avonni-skeleton__paragraph')
             .add(`avonni-skeleton__animation-${this.animation}`)
+            .add()
             .toString();
     }
 
@@ -745,18 +749,20 @@ export default class Skeleton extends LightningElement {
         const paragraphItems = [];
         let percentage = 100;
         for (let i = 0; i < this.variantAttributes.rows; i++) {
+            const paragraphId = generateUUID();
             percentage = 100;
             paragraphItems.push({
-                key: `paragraph-${i}`,
+                key: `paragraph-${paragraphId}`,
                 line: []
             });
-            const numItems = Math.floor(Math.random() * 10) + 1;
+            const numItems = Math.floor(Math.random() * (10 - 3)) + 3;
+            console.log(`num of items for row ${i}: ${numItems}`);
             for (let j = 0; j < numItems; j++) {
-                const id = generateUUID();
+                const itemId = generateUUID();
                 const itemWidthPercentage =
                     Math.floor(Math.random() * percentage) + 1;
                 paragraphItems[i].line.push({
-                    key: `item-${id}`,
+                    key: `item-${itemId}`,
                     percentage: itemWidthPercentage
                 });
                 percentage -= itemWidthPercentage;
@@ -1241,6 +1247,22 @@ export default class Skeleton extends LightningElement {
     }
 
     updateDatatableClassList() {}
+
+    updateParagraphClassList() {
+        console.log('INSIDE UPDATE PARAGRAPH CLASS LIST');
+        const paragraphLines = this.template.querySelector(
+            '[data-element-id="paragraph-list"]'
+        );
+        console.log(paragraphLines);
+        // for (let i = 0; i < paragraphLines.length; i++) {
+        //     let paragraphLineItems = paragraphLines[i];
+        //     for (let j = 0; j < paragraphLineItems.length; j++) {
+        //         let paragraphLineItem = paragraphLineItems[j];
+        //         paragraphLineItem.style.width =
+        //             this.paragraphItems[i][j].percentage;
+        //     }
+        // }
+    }
 
     updateProgressIndicatorClassList() {}
 }

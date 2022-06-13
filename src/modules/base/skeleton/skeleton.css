@@ -288,6 +288,7 @@
 
 .avonni-skeleton__paragraph {
     border-radius: var(--avonni-skeleton-radius-border);
+    margin: 0.5em;
     height: 0.7em;
     width: 100%;
 }
