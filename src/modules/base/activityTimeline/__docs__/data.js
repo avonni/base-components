@@ -953,3 +953,227 @@ export const horizontalItems = [
         hasError: false
     }
 ];
+
+export const horizontalItemsTest = [
+    {
+        name: 'item1',
+        title: 'This is a message longer than 30 characters',
+        datetimeValue: '01/01/2022 11:30',
+        href: '#',
+        iconName: 'standard:skill',
+        hasCheckbox: true,
+        hasError: true
+    },
+    {
+        name: 'item2',
+        title: 'Another new item',
+        datetimeValue: '01/04/2022 10:30',
+        href: '#',
+        iconName: 'utility:frozen',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item3',
+        title: 'This is another item to display',
+        datetimeValue: '01/30/2022 2:00',
+        href: '#',
+        iconName: 'standard:reward',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item4',
+        title: 'Item',
+        datetimeValue: '02/02/2022 2:00',
+        href: '#',
+        iconName: 'action:bot',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item5',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 3:30',
+        href: '#',
+        iconName: 'standard:solution',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item6',
+        title: 'Another item with same date',
+        datetimeValue: '02/02/2022 5:30',
+        href: '#',
+        iconName: 'custom:custom74',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item7',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 08:30',
+        href: '#',
+        iconName: 'standard:education',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item8',
+        title: 'Magic item',
+        datetimeValue: '02/02/2022 10:45',
+        href: '#',
+        iconName: 'standard:thanks',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item9',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 20:30',
+        href: '#',
+        iconName: 'standard:lead',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item10',
+        title: 'Another new item',
+        datetimeValue: '02/03/2022 00:00',
+        href: '#',
+        iconName: 'standard:bot',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item11',
+        title: 'Item',
+        datetimeValue: '02/03/2022 10:45',
+        href: '#',
+        iconName: 'custom:custom69',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item12',
+        title: 'Another item',
+        datetimeValue: '02/08/2022 08:00',
+        href: '#',
+        iconName: 'standard:bot',
+        hasCheckbox: true,
+        hasError: false
+    },
+
+    {
+        name: 'item13',
+        title: 'Another new item',
+        datetimeValue: '02/16/2022 00:00',
+        href: '#',
+        iconName: 'action:map',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item14',
+        title: 'Another item',
+        datetimeValue: '03/14/2022 8:30',
+        href: '#',
+        iconName: 'custom:custom47',
+        hasCheckbox: true,
+        hasError: true
+    }
+];
+
+export const displayedItemsHorizontalTest = [
+    {
+        name: 'item4',
+        title: 'Item',
+        datetimeValue: '02/02/2022 2:00',
+        href: '#',
+        iconName: 'action:bot',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item5',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 3:30',
+        href: '#',
+        iconName: 'standard:solution',
+        hasCheckbox: false,
+        hasError: true
+    },
+    {
+        name: 'item6',
+        title: 'Another item with same date',
+        datetimeValue: '02/02/2022 5:30',
+        href: '#',
+        iconName: 'custom:custom74',
+        hasCheckbox: false,
+        hasError: true
+    },
+
+    {
+        name: 'item7',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 08:30',
+        href: '#',
+        iconName: 'standard:education',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item8',
+        title: 'Magic item',
+        datetimeValue: '02/02/2022 10:45',
+        href: '#',
+        iconName: 'standard:thanks',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item9',
+        title: 'Another item',
+        datetimeValue: '02/02/2022 20:30',
+        href: '#',
+        iconName: 'standard:lead',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item10',
+        title: 'Another new item',
+        datetimeValue: '02/03/2022 00:00',
+        href: '#',
+        iconName: 'standard:bot',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item11',
+        title: 'Item',
+        datetimeValue: '02/03/2022 10:45',
+        href: '#',
+        iconName: 'custom:custom69',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item12',
+        title: 'Another item',
+        datetimeValue: '02/08/2022 08:00',
+        href: '#',
+        iconName: 'standard:bot',
+        hasCheckbox: true,
+        hasError: false
+    },
+    {
+        name: 'item13',
+        title: 'Another new item',
+        datetimeValue: '02/16/2022 00:00',
+        href: '#',
+        iconName: 'action:map',
+        hasCheckbox: true,
+        hasError: false
+    }
+];
