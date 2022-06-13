@@ -357,13 +357,36 @@
     cursor: default !important;
 }
 
-.avonni-skeleton_tabset::after {
+.avonni-skeleton_tabset-pulse::after {
     background-color: var(--avonni-skeleton-color-background);
+    animation: pulse-animation 1s infinite;
+    position: relative;
+    height: 0.2em;
+}
+
+.avonni-skeleton_tabset-wave::after {
+    transform: skew(-30deg) translate3d(0, 0, 0);
+    position: relative;
+    background-color: var(--avonni-skeleton-color-background-animation);
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: wave-animation;
+    animation-timing-function: linear;
+    background: linear-gradient(
+        to right,
+        var(--avonni-skeleton-color-background) 8%,
+        var(--avonni-skeleton-color-background-animation) 18%,
+        var(--avonni-skeleton-color-background) 33%
+    );
+    background-size: 800px;
+    height: 0.2em;
 }
 
 .avonni-skeleton__tabset-item {
+    margin-bottom: 5px;
     height: 0.7em;
-    width: 80%;
+    min-width: 4em;
 }
 
 /* .avonni-skeleton__progress-indicator-path-item:first-child {

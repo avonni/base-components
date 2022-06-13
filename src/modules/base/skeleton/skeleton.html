@@ -762,5 +762,14 @@
                 </lightning-tab>
             </lightning-tabset>
         </template> -->
+        <div class="slds-tabs_default">
+            <ul class="slds-tabs_default__nav" role="tablist">
+                <template for:each={tabset} for:item="tab">
+                    <li key={tab.key} class={tabClass} role="presentation">
+                        <div class={tabItemClass}></div>
+                    </li>
+                </template>
+            </ul>
+        </div>
     </template>
 </template>

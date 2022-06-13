@@ -93,6 +93,7 @@ export default class Skeleton extends LightningElement {
     currentParagraphItem = 0;
     progressItems = [];
     paragraphItemsInitialized = false;
+    tabset = [];
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -116,6 +117,10 @@ export default class Skeleton extends LightningElement {
 
         if (this.isProgressIndicatorVariant) {
             this.initializeProgressItems();
+        }
+
+        if (this.isTabsetVariant) {
+            this.initializeTabset();
         }
 
         // if (this.isComboboxVariant) {
@@ -597,16 +602,19 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
-    get tabsetClass() {
-        return classSet('avonni-skeleton_tabset')
-            .add('slds-tabs_default__item')
-            .add('slds-is-active');
+    get tabClass() {
+        return classSet('slds-tabs_default__item')
+            .add('slds-is-active')
+            .add(`avonni-skeleton_tabset-${this.animation}`);
     }
 
     get tabItemClass() {
-        return classSet('avonni-skeleton__tabset-item')
-            .add('avonni-skeleton__variant-text')
-            .add(`avonni-skeleton__animation-${this.animation}`);
+        return (
+            classSet('avonni-skeleton__tabset-item')
+                // .add('slds-tabs_default__link')
+                .add('avonni-skeleton__variant-text')
+                .add(`avonni-skeleton__animation-${this.animation}`)
+        );
     }
 
     /*
@@ -663,6 +671,9 @@ export default class Skeleton extends LightningElement {
             case 'circular':
                 this.setRectangularCircularSize();
                 break;
+            case 'tabset':
+                this.handleTabset();
+                break;
             default:
                 break;
         }
@@ -717,6 +728,12 @@ export default class Skeleton extends LightningElement {
     handleProgressIndicator() {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateProgressIndicatorClassList();
+        }
+    }
+
+    handleTabset() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateTabsetClassList();
         }
     }
 
@@ -779,6 +796,16 @@ export default class Skeleton extends LightningElement {
             });
         }
         this.progressItems = progressItems;
+    }
+
+    initializeTabset() {
+        const tabsetItems = [];
+        for (let i = 0; i < this.variantAttributes.tabs; i++) {
+            tabsetItems.push({
+                key: `tabset-${i}`
+            });
+        }
+        this.tabset = tabsetItems;
     }
 
     /**
@@ -1265,4 +1292,6 @@ export default class Skeleton extends LightningElement {
     }
 
     updateProgressIndicatorClassList() {}
+
+    updateTabsetClassList() {}
 }
