@@ -870,22 +870,52 @@
     <template if:true={isTreeVariant}>
         <div class="slds-tree_container">
             <template if:false={hideTreeHeader}>
-                <h4 class="slds-tree__group-header" id="treeheading">
-                    Tree Group Header
-                </h4>
+                <div class={treeHeaderClass}></div>
             </template>
             <ul aria-labelledby="treeheading" class="slds-tree" role="tree">
-                <li aria-level="1" role="treeitem" tabindex="0">
+                <template for:each={treeItems} for:item="treeItem">
+                    <li
+                        key={treeItem.key}
+                        aria-expanded="false"
+                        aria-label="Tree Branch"
+                        aria-level="1"
+                        role="treeitem"
+                    >
+                        <div class="slds-tree__item">
+                            <div
+                                class="slds-button_icon slds-m-right_x-small"
+                                aria-hidden="true"
+                                tabindex="-1"
+                            >
+                                <svg
+                                    class="
+                                        slds-button__icon
+                                        slds-button__icon_small
+                                    "
+                                    aria-hidden="true"
+                                >
+                                    <use
+                                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                    ></use>
+                                </svg>
+                            </div>
+                            <span class="slds-has-flexi-truncate">
+                                <div class={treeItemClass}></div>
+                            </span>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+            <!-- <li aria-level="1" role="treeitem" tabindex="0">
                     <div class="slds-tree__item">
-                        <button
+                        <div
                             class="
-                                slds-button slds-button_icon
+                                slds-button_icon
                                 slds-m-right_x-small
                                 slds-hidden
                             "
                             aria-hidden="true"
                             tabindex="-1"
-                            title="Expand Tree Item"
                         >
                             <svg
                                 class="
@@ -897,16 +927,9 @@
                                     xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
                                 ></use>
                             </svg>
-                            <span class="slds-assistive-text"
-                                >Expand Tree Item</span
-                            >
-                        </button>
+                        </div>
                         <span class="slds-has-flexi-truncate">
-                            <span
-                                class="slds-tree__item-label slds-truncate"
-                                title="Tree Item"
-                                >Tree Item</span
-                            >
+                            <div class={treeItemClass}></div>
                         </span>
                     </div>
                 </li>
@@ -917,14 +940,10 @@
                     role="treeitem"
                 >
                     <div class="slds-tree__item">
-                        <button
-                            class="
-                                slds-button slds-button_icon
-                                slds-m-right_x-small
-                            "
+                        <div
+                            class="slds-button_icon slds-m-right_x-small"
                             aria-hidden="true"
                             tabindex="-1"
-                            title="Expand Tree Branch"
                         >
                             <svg
                                 class="
@@ -936,19 +955,12 @@
                                     xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
                                 ></use>
                             </svg>
-                            <span class="slds-assistive-text"
-                                >Expand Tree Branch</span
-                            >
-                        </button>
+                        </div>
                         <span class="slds-has-flexi-truncate">
-                            <span
-                                class="slds-tree__item-label slds-truncate"
-                                title="Tree Branch"
-                                >Tree Branch</span
-                            >
+                            <div class={treeItemClass}></div>
                         </span>
-                    </div>
-                    <ul role="group">
+                    </div> -->
+            <!-- <ul role="group">
                         <li aria-level="2" role="treeitem">
                             <div class="slds-tree__item">
                                 <button
@@ -988,8 +1000,8 @@
                                 </span>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul> -->
+            <!-- </li>
                 <li
                     aria-expanded="false"
                     aria-label="Tree Branch"
@@ -997,14 +1009,10 @@
                     role="treeitem"
                 >
                     <div class="slds-tree__item">
-                        <button
-                            class="
-                                slds-button slds-button_icon
-                                slds-m-right_x-small
-                            "
+                        <div
+                            class="slds-button_icon slds-m-right_x-small"
                             aria-hidden="true"
                             tabindex="-1"
-                            title="Expand Tree Branch"
                         >
                             <svg
                                 class="
@@ -1019,16 +1027,12 @@
                             <span class="slds-assistive-text"
                                 >Expand Tree Branch</span
                             >
-                        </button>
+                        </div>
                         <span class="slds-has-flexi-truncate">
-                            <span
-                                class="slds-tree__item-label slds-truncate"
-                                title="Tree Branch"
-                                >Tree Branch</span
-                            >
+                            <div class={treeItemClass}></div>
                         </span>
-                    </div>
-                    <ul role="group">
+                    </div> -->
+            <!-- <ul role="group">
                         <li aria-level="2" role="treeitem">
                             <div class="slds-tree__item">
                                 <button
@@ -1068,13 +1072,13 @@
                                 </span>
                             </div>
                         </li>
-                    </ul>
-                </li>
+                    </ul> -->
+            <!-- </li>
                 <li aria-level="1" role="treeitem">
                     <div class="slds-tree__item">
-                        <button
+                        <div
                             class="
-                                slds-button slds-button_icon
+                                slds-button_icon
                                 slds-m-right_x-small
                                 slds-hidden
                             "
@@ -1096,18 +1100,13 @@
                                 >Expand Tree Item with a Really Really Long Name
                                 That Should Truncate</span
                             >
-                        </button>
+                        </div>
                         <span class="slds-has-flexi-truncate">
-                            <span
-                                class="slds-tree__item-label slds-truncate"
-                                title="Tree Item with a Really Really Long Name That Should Truncate"
-                                >Tree Item with a Really Really Long Name That
-                                Should Truncate</span
-                            >
+                            <div class={treeItemClass}></div>
                         </span>
                     </div>
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </template>
 </template>

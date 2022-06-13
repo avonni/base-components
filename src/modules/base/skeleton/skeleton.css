@@ -402,6 +402,16 @@
     min-width: 4em;
 }
 
+.avonni-skeleton__tree-header {
+    height: 1.5em;
+    width: 8em;
+}
+
+.avonni-skeleton__tree-item {
+    height: 0.7em;
+    width: 4em;
+}
+
 /* .avonni-skeleton__progress-indicator-path-item:first-child {
     margin-left: 0;
     border-top-left-radius: 2rem;

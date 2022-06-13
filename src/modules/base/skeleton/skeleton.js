@@ -94,6 +94,7 @@ export default class Skeleton extends LightningElement {
     progressItems = [];
     paragraphItemsInitialized = false;
     tabset = [];
+    treeItems = [];
 
     connectedCallback() {
         if (this.isAvatarVariant) {
@@ -121,6 +122,10 @@ export default class Skeleton extends LightningElement {
 
         if (this.isTabsetVariant) {
             this.initializeTabset();
+        }
+
+        if (this.isTreeVariant) {
+            this.initializeTreeItems();
         }
 
         // if (this.isComboboxVariant) {
@@ -297,7 +302,6 @@ export default class Skeleton extends LightningElement {
 
     @api
     get hideTreeHeader() {
-        console.log(this.variantAttributes.hideHeader);
         return this.variantAttributes.hideHeader;
     }
 
@@ -656,6 +660,21 @@ export default class Skeleton extends LightningElement {
         );
     }
 
+    get treeHeaderClass() {
+        return classSet('slds-tree__group-header')
+            .add('avonni-skeleton__tree-header')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
+    get treeItemClass() {
+        return classSet('slds-tree__item-label')
+            .add('slds-truncate')
+            .add('avonni-skeleton__tree-item')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -712,6 +731,9 @@ export default class Skeleton extends LightningElement {
                 break;
             case 'tabset':
                 this.handleTabset();
+                break;
+            case 'tree':
+                this.handleTree();
                 break;
             default:
                 break;
@@ -773,6 +795,12 @@ export default class Skeleton extends LightningElement {
     handleTabset() {
         if (Object.keys(this.variantAttributes).length !== 0) {
             this.updateTabsetClassList();
+        }
+    }
+
+    handleTree() {
+        if (Object.keys(this.variantAttributes).length !== 0) {
+            this.updateTreeClassList();
         }
     }
 
@@ -845,6 +873,16 @@ export default class Skeleton extends LightningElement {
             });
         }
         this.tabset = tabsetItems;
+    }
+
+    initializeTreeItems() {
+        const treeItems = [];
+        for (let i = 0; i < this.variantAttributes.items; i++) {
+            treeItems.push({
+                key: `treeItem-${i}`
+            });
+        }
+        this.treeItems = treeItems;
     }
 
     /**
@@ -1333,4 +1371,6 @@ export default class Skeleton extends LightningElement {
     updateProgressIndicatorClassList() {}
 
     updateTabsetClassList() {}
+
+    updateTreeClassList() {}
 }
