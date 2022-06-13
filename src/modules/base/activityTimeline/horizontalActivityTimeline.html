@@ -47,10 +47,13 @@
                     <div class="slds-media__body" if:true={title}>
                         <h2 class="slds-section__title">{title}</h2>
                     </div>
-                    <div class="slds-media__body slds-text-align_right">
+                    <div
+                        class="slds-media__body slds-text-align_right"
+                        data-element-id="avonni-activity-horizontal-timeline-title"
+                    >
                         Showing : {intervalMinDate} - {intervalMaxDate}
                         <span>&#8226;</span> {intervalDaysLength} day(s)
-                        <span>&#8226;</span> {displayedItems.length} item(s)
+                        <span>&#8226;</span> {displayedItemsLength} item(s)
                     </div>
                 </div>
             </div>

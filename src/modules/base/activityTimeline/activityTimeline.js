@@ -182,6 +182,11 @@ export default class ActivityTimeline extends LightningElement {
             if (!this._resizeObserver) {
                 this._resizeObserver = this.initResizeObserver();
             }
+
+            if (!this.horizontalTimeline) {
+                this.initializeHorizontalTimeline();
+            }
+
             this.horizontalTimeline.createHorizontalActivityTimeline(
                 this.sortedItems,
                 this._maxVisibleItems,
@@ -445,8 +450,10 @@ export default class ActivityTimeline extends LightningElement {
      *
      * @type {array}
      */
-    get displayedItems() {
-        return this.horizontalTimeline.displayedItems;
+    get displayedItemsLength() {
+        return this.horizontalTimeline && this.horizontalTimeline.displayedItems
+            ? this.horizontalTimeline.displayedItems.length
+            : 0;
     }
 
     /**
@@ -643,7 +650,6 @@ export default class ActivityTimeline extends LightningElement {
             this,
             this.sortedItems
         );
-        this.horizontalTimeline.setDefaultIntervalDates();
     }
 
     /**
