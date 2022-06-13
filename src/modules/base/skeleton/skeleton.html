@@ -867,5 +867,247 @@
             </div>
         </template>
     </template>
-    <template if:true={isTreeVariant}> </template>
+    <template if:true={isTreeVariant}>
+        <div class="slds-tree_container">
+            <template if:false={hideTreeHeader}>
+                <h4 class="slds-tree__group-header" id="treeheading">
+                    Tree Group Header
+                </h4>
+            </template>
+            <ul aria-labelledby="treeheading" class="slds-tree" role="tree">
+                <li aria-level="1" role="treeitem" tabindex="0">
+                    <div class="slds-tree__item">
+                        <button
+                            class="
+                                slds-button slds-button_icon
+                                slds-m-right_x-small
+                                slds-hidden
+                            "
+                            aria-hidden="true"
+                            tabindex="-1"
+                            title="Expand Tree Item"
+                        >
+                            <svg
+                                class="
+                                    slds-button__icon slds-button__icon_small
+                                "
+                                aria-hidden="true"
+                            >
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                ></use>
+                            </svg>
+                            <span class="slds-assistive-text"
+                                >Expand Tree Item</span
+                            >
+                        </button>
+                        <span class="slds-has-flexi-truncate">
+                            <span
+                                class="slds-tree__item-label slds-truncate"
+                                title="Tree Item"
+                                >Tree Item</span
+                            >
+                        </span>
+                    </div>
+                </li>
+                <li
+                    aria-expanded="false"
+                    aria-label="Tree Branch"
+                    aria-level="1"
+                    role="treeitem"
+                >
+                    <div class="slds-tree__item">
+                        <button
+                            class="
+                                slds-button slds-button_icon
+                                slds-m-right_x-small
+                            "
+                            aria-hidden="true"
+                            tabindex="-1"
+                            title="Expand Tree Branch"
+                        >
+                            <svg
+                                class="
+                                    slds-button__icon slds-button__icon_small
+                                "
+                                aria-hidden="true"
+                            >
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                ></use>
+                            </svg>
+                            <span class="slds-assistive-text"
+                                >Expand Tree Branch</span
+                            >
+                        </button>
+                        <span class="slds-has-flexi-truncate">
+                            <span
+                                class="slds-tree__item-label slds-truncate"
+                                title="Tree Branch"
+                                >Tree Branch</span
+                            >
+                        </span>
+                    </div>
+                    <ul role="group">
+                        <li aria-level="2" role="treeitem">
+                            <div class="slds-tree__item">
+                                <button
+                                    class="
+                                        slds-button slds-button_icon
+                                        slds-m-right_x-small
+                                        slds-hidden
+                                    "
+                                    aria-hidden="true"
+                                    tabindex="-1"
+                                    title="Expand Tree Item"
+                                >
+                                    <svg
+                                        class="
+                                            slds-button__icon
+                                            slds-button__icon_small
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                        ></use>
+                                    </svg>
+                                    <span class="slds-assistive-text"
+                                        >Expand Tree Item</span
+                                    >
+                                </button>
+                                <span class="slds-has-flexi-truncate">
+                                    <span
+                                        class="
+                                            slds-tree__item-label
+                                            slds-truncate
+                                        "
+                                        title="Tree Item"
+                                        >Tree Item</span
+                                    >
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    aria-expanded="false"
+                    aria-label="Tree Branch"
+                    aria-level="1"
+                    role="treeitem"
+                >
+                    <div class="slds-tree__item">
+                        <button
+                            class="
+                                slds-button slds-button_icon
+                                slds-m-right_x-small
+                            "
+                            aria-hidden="true"
+                            tabindex="-1"
+                            title="Expand Tree Branch"
+                        >
+                            <svg
+                                class="
+                                    slds-button__icon slds-button__icon_small
+                                "
+                                aria-hidden="true"
+                            >
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                ></use>
+                            </svg>
+                            <span class="slds-assistive-text"
+                                >Expand Tree Branch</span
+                            >
+                        </button>
+                        <span class="slds-has-flexi-truncate">
+                            <span
+                                class="slds-tree__item-label slds-truncate"
+                                title="Tree Branch"
+                                >Tree Branch</span
+                            >
+                        </span>
+                    </div>
+                    <ul role="group">
+                        <li aria-level="2" role="treeitem">
+                            <div class="slds-tree__item">
+                                <button
+                                    class="
+                                        slds-button slds-button_icon
+                                        slds-m-right_x-small
+                                        slds-hidden
+                                    "
+                                    aria-hidden="true"
+                                    tabindex="-1"
+                                    title="Expand Tree Item"
+                                >
+                                    <svg
+                                        class="
+                                            slds-button__icon
+                                            slds-button__icon_small
+                                        "
+                                        aria-hidden="true"
+                                    >
+                                        <use
+                                            xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                        ></use>
+                                    </svg>
+                                    <span class="slds-assistive-text"
+                                        >Expand Tree Item</span
+                                    >
+                                </button>
+                                <span class="slds-has-flexi-truncate">
+                                    <span
+                                        class="
+                                            slds-tree__item-label
+                                            slds-truncate
+                                        "
+                                        title="Tree Item"
+                                        >Tree Item</span
+                                    >
+                                </span>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li aria-level="1" role="treeitem">
+                    <div class="slds-tree__item">
+                        <button
+                            class="
+                                slds-button slds-button_icon
+                                slds-m-right_x-small
+                                slds-hidden
+                            "
+                            aria-hidden="true"
+                            tabindex="-1"
+                            title="Expand Tree Item with a Really Really Long Name That Should Truncate"
+                        >
+                            <svg
+                                class="
+                                    slds-button__icon slds-button__icon_small
+                                "
+                                aria-hidden="true"
+                            >
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                ></use>
+                            </svg>
+                            <span class="slds-assistive-text"
+                                >Expand Tree Item with a Really Really Long Name
+                                That Should Truncate</span
+                            >
+                        </button>
+                        <span class="slds-has-flexi-truncate">
+                            <span
+                                class="slds-tree__item-label slds-truncate"
+                                title="Tree Item with a Really Really Long Name That Should Truncate"
+                                >Tree Item with a Really Really Long Name That
+                                Should Truncate</span
+                            >
+                        </span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </template>
 </template>

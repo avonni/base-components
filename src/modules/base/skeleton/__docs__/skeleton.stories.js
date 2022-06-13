@@ -89,7 +89,8 @@ export default {
                 'progress-indicator',
                 'rectangular',
                 'tabset',
-                'text'
+                'text',
+                'tree'
             ],
             description: 'The variant changes the appearance of the skeleton.',
             table: {
@@ -232,5 +233,15 @@ Tabset.args = {
     variantAttributes: {
         variant: 'vertical',
         tabs: 3
+    }
+};
+
+export const Tree = Template.bind({});
+Tree.args = {
+    variant: 'tree',
+    animation: 'pulse',
+    variantAttributes: {
+        hideHeader: false,
+        items: 10
     }
 };

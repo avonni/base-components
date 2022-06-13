@@ -239,6 +239,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isTreeVariant() {
+        return this.variant === 'tree';
+    }
+
+    @api
     get chipHasIcon() {
         return this.variantAttributes.hasIcon;
     }
@@ -288,6 +293,12 @@ export default class Skeleton extends LightningElement {
     @api
     get hideTableHeader() {
         return this.variantAttributes.hideTableHeader;
+    }
+
+    @api
+    get hideTreeHeader() {
+        console.log(this.variantAttributes.hideHeader);
+        return this.variantAttributes.hideHeader;
     }
 
     @api
