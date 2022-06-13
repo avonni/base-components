@@ -41,7 +41,6 @@ const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 10;
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
-const DEFAULT_INTERVAL_MIN_DATE = new Date(2022, 0, 1);
 const DEFAULT_TIMELINE_WIDTH = 1300;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 40;
@@ -53,25 +52,17 @@ const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
 const SVG_ICON_SIZE = 25;
+const VALID_ICON_CATEGORIES = [
+    'standard',
+    'utility',
+    'doctype',
+    'action',
+    'custom'
+];
 const Y_START_POSITION_TIMELINE_ITEM = 10;
 const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
-const LWC_ICONS_XLINK_HREF = {
-    standard: '/assets/icons/standard-sprite/svg/symbols.svg#',
-    utility: '/assets/icons/utility-sprite/svg/symbols.svg#',
-    doctype: '/assets/icons/doctype-sprite/svg/symbols.svg#',
-    action: '/assets/icons/action-sprite/svg/symbols.svg#',
-    custom: '/assets/icons/custom-sprite/svg/symbols.svg#'
-};
-
-const LWC_ICONS_CLASS = {
-    standard: 'slds-icon-standard-',
-    utility: 'slds-icon-text-default slds-icon-utility-',
-    doctype: 'slds-icon-doctype-',
-    action: 'slds-icon-action-',
-    custom: 'slds-icon-custom-'
-};
 
 // ** Functionalities/bug **
 // TODO: Fix popover size
@@ -86,7 +77,7 @@ const LWC_ICONS_CLASS = {
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
-    _intervalMinDate = DEFAULT_INTERVAL_MIN_DATE;
+    _intervalMinDate;
     _intervalMaxDate;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
     _dateFormat = DEFAULT_DATE_FORMAT;
@@ -120,6 +111,7 @@ export class HorizontalActivityTimeline {
     constructor(activityTimeline, sortedItems) {
         this._sortedItems = sortedItems;
         this._activityTimeline = activityTimeline;
+        this.setDefaultIntervalDates();
     }
 
     /**
@@ -169,15 +161,6 @@ export class HorizontalActivityTimeline {
             );
         });
         return this._displayedItems;
-    }
-
-    /**
-     * Select div container of horizontal activity timeline
-     */
-    get divHorizontalTimeline() {
-        return this._activityTimeline.template.querySelector(
-            '.avonni-activity-timeline__horizontal-timeline'
-        );
     }
 
     /**
@@ -393,6 +376,10 @@ export class HorizontalActivityTimeline {
         this._timeIntervalSelector = this._scrollAxisSVG
             .append('g')
             .append('rect')
+            .attr(
+                'class',
+                'avonni-horizontal-activity-timeline__time-interval-rectangle'
+            )
             .attr('x', this.scrollTimeScale(new Date(this._intervalMinDate)))
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
             .attr('width', this.intervalWidth)
@@ -466,7 +453,7 @@ export class HorizontalActivityTimeline {
      */
     computedItemTitle(item) {
         if (item.title.length > MAX_LENGTH_TITLE_ITEM) {
-            return ' - ' + item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ... ';
+            return ' - ' + item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ...';
         }
         return ' - ' + item.title;
     }
@@ -498,8 +485,7 @@ export class HorizontalActivityTimeline {
             .attr(
                 'class',
                 'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
-                    iconInformation.categoryIconClass +
-                    iconInformation.iconName.replaceAll('_', '-')
+                    iconInformation.categoryIconClass
             )
             .html(
                 '<svg class="slds-icon"><use xlink:href=' +
@@ -541,6 +527,10 @@ export class HorizontalActivityTimeline {
         // Create SVG for timeline
         this._timelineSVG = this._timelineDiv
             .append('svg')
+            .attr(
+                'class',
+                'avonni-horizontal-activity-timeline__timeline-items-svg'
+            )
             .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', this._timelineHeight)
             .attr('transform', 'translate(' + this._offsetAxis + ' , 0)');
@@ -847,52 +837,40 @@ export class HorizontalActivityTimeline {
      * Determine and set the icon's information (name of the icon, x link href and CSS classes) according to correct category
      */
     setIconInformation(iconName) {
-        const iconInformation = {};
+        const iconCategory = VALID_ICON_CATEGORIES.find((category) => {
+            return iconName.match(category + ':*');
+        });
 
-        // Set lightning icon informations according to its category
-        if (iconName.match('standard:*')) {
-            iconInformation.iconName = iconName.slice(
-                'standard:'.length,
-                iconName.length
-            );
-            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.standard;
-            iconInformation.categoryIconClass = LWC_ICONS_CLASS.standard;
-        } else if (iconName.match('utility:*')) {
-            iconInformation.iconName = iconName.slice(
-                'utility:'.length,
-                iconName.length
-            );
-            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.utility;
-            iconInformation.categoryIconClass = LWC_ICONS_CLASS.utility;
-        } else if (iconName.match('doctype:*')) {
-            iconInformation.iconName = iconName.slice(
-                'doctype:'.length,
-                iconName.length
-            );
-            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.doctype;
-            iconInformation.categoryIconClass = LWC_ICONS_CLASS.doctype;
-        } else if (iconName.match('action:*')) {
-            iconInformation.iconName = iconName.slice(
-                'action:'.length,
-                iconName.length
-            );
-            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.action;
-            iconInformation.categoryIconClass = LWC_ICONS_CLASS.action;
-        } else if (iconName.match('custom:*')) {
-            iconInformation.iconName = iconName.slice(
-                'custom:'.length,
-                iconName.length
-            );
-            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.custom;
-            iconInformation.categoryIconClass = LWC_ICONS_CLASS.custom;
-        } else {
-            iconInformation.iconName = 'default';
-            iconInformation.xLinkHref = LWC_ICONS_XLINK_HREF.standard;
-            iconInformation.categoryIconClass = LWC_ICONS_CLASS.standard;
+        // Invalid icon category - Set default icon
+        if (!iconCategory) {
+            return {
+                iconName: 'default',
+                xLinkHref:
+                    '/assets/icons/standard-sprite/svg/symbols.svg#default',
+                categoryIconClass: 'slds-icon-standard-default'
+            };
         }
-        iconInformation.xLinkHref += iconInformation.iconName;
 
-        return iconInformation;
+        // Set icon's information
+        let iconClass = '';
+        if (iconCategory === 'utility') {
+            iconClass = ' slds-icon-text-default ';
+        }
+        iconClass += 'slds-icon-' + iconCategory + '-';
+        const nameOfIcon = iconName.slice(
+            iconName.indexOf(':') + 1,
+            iconName.length
+        );
+
+        return {
+            iconName: nameOfIcon,
+            xLinkHref:
+                '/assets/icons/' +
+                iconCategory +
+                '-sprite/svg/symbols.svg#' +
+                nameOfIcon,
+            categoryIconClass: iconClass + nameOfIcon.replaceAll('_', '-')
+        };
     }
 
     /**
