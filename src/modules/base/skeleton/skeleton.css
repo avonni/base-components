@@ -390,6 +390,18 @@
     min-width: 4em;
 }
 
+.avonni-skeleton__tabset-scoped-item {
+    margin: 15px 15px;
+    border-right: 1px solid #e5e5e5;
+    height: 0.7em;
+    min-width: 4em;
+}
+
+.avonni-skeleton__tabset-content {
+    height: 0.7em;
+    min-width: 4em;
+}
+
 /* .avonni-skeleton__progress-indicator-path-item:first-child {
     margin-left: 0;
     border-top-left-radius: 2rem;

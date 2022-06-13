@@ -224,6 +224,21 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isTabsetBaseVariant() {
+        return this.variantAttributes.variant === 'base';
+    }
+
+    @api
+    get isTabsetScopedVariant() {
+        return this.variantAttributes.variant === 'scoped';
+    }
+
+    @api
+    get isTabsetVerticalVariant() {
+        return this.variantAttributes.variant === 'vertical';
+    }
+
+    @api
     get chipHasIcon() {
         return this.variantAttributes.hasIcon;
     }
@@ -614,6 +629,19 @@ export default class Skeleton extends LightningElement {
                 // .add('slds-tabs_default__link')
                 .add('avonni-skeleton__variant-text')
                 .add(`avonni-skeleton__animation-${this.animation}`)
+        );
+    }
+
+    get tabScopedItemClass() {
+        return classSet('slds-tabs_scoped__link')
+            .add('avonni-skeleton__tabset-scoped-item')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
+    get tabContentClass() {
+        return classSet('slds-tabs_scoped__content').add(
+            'avonni-skeleton__tabset-content'
         );
     }
 

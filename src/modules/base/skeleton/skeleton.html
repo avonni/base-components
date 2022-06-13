@@ -762,14 +762,110 @@
                 </lightning-tab>
             </lightning-tabset>
         </template> -->
-        <div class="slds-tabs_default">
-            <ul class="slds-tabs_default__nav" role="tablist">
-                <template for:each={tabset} for:item="tab">
-                    <li key={tab.key} class={tabClass} role="presentation">
-                        <div class={tabItemClass}></div>
+        <template if:true={isTabsetBaseVariant}>
+            <div class="slds-tabs_default">
+                <ul class="slds-tabs_default__nav" role="tablist">
+                    <template for:each={tabset} for:item="tab">
+                        <li key={tab.key} class={tabClass} role="presentation">
+                            <div class={tabItemClass}></div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+        <template if:true={isTabsetScopedVariant}>
+            <div class="slds-tabs_scoped">
+                <ul class="slds-tabs_scoped__nav slds-truncate" role="tablist">
+                    <template for:each={tabset} for:item="tab">
+                        <li
+                            key={tab.key}
+                            class="slds-tabs_scoped__item slds-is-active"
+                            role="presentation"
+                        >
+                            <div class={tabScopedItemClass}></div>
+                        </li>
+                    </template>
+                </ul>
+                <div
+                    id="tab-scoped-1"
+                    class="slds-tabs_scoped__content slds-show"
+                    role="tabpanel"
+                >
+                    <div class={tabContentClass}></div>
+                </div>
+            </div>
+        </template>
+        <template if:true={isTabsetVerticalVariant}>
+            <div class="slds-vertical-tabs">
+                <ul
+                    class="slds-vertical-tabs__nav"
+                    role="tablist"
+                    aria-orientation="vertical"
+                >
+                    <li
+                        class="slds-vertical-tabs__nav-item slds-is-active"
+                        role="presentation"
+                    >
+                        <div
+                            class="slds-vertical-tabs__link"
+                            role="tab"
+                            aria-selected="true"
+                        >
+                            <span class="slds-vertical-tabs__left-icon"></span>
+                            <span class="slds-truncate" title="Tab 1"
+                                >Tab 1</span
+                            >
+                            <span class="slds-vertical-tabs__right-icon"></span>
+                        </div>
                     </li>
-                </template>
-            </ul>
-        </div>
+                    <li
+                        class="slds-vertical-tabs__nav-item"
+                        role="presentation"
+                    >
+                        <div
+                            class="slds-vertical-tabs__link"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            <span class="slds-vertical-tabs__left-icon"></span>
+                            <span class="slds-truncate" title="Tab 2"
+                                >Tab 2</span
+                            >
+                            <span class="slds-vertical-tabs__right-icon"></span>
+                        </div>
+                    </li>
+                    <li
+                        class="slds-vertical-tabs__nav-item"
+                        role="presentation"
+                    >
+                        <div
+                            class="slds-vertical-tabs__link"
+                            role="tab"
+                            aria-selected="false"
+                        >
+                            <span class="slds-vertical-tabs__left-icon"></span>
+                            <span
+                                class="slds-truncate"
+                                title="Tab 3 has a really long label and can wrap or truncate"
+                                >Tab 3 has a really long label and can wrap or
+                                truncate</span
+                            >
+                            <span class="slds-vertical-tabs__right-icon"></span>
+                        </div>
+                    </li>
+                </ul>
+                <div
+                    class="slds-vertical-tabs__content slds-show"
+                    id="slds-vertical-tabs-0"
+                    role="tabpanel"
+                    aria-labelledby="slds-vertical-tabs-0__nav"
+                >
+                    <div class="slds-text-longform">
+                        <p>Content for Tab 1</p>
+                    </div>
+                </div>
+            </div>
+        </template>
     </template>
+    <template if:true={isTreeVariant}> </template>
 </template>
