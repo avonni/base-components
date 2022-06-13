@@ -32,7 +32,13 @@
 
 import { createElement } from 'lwc';
 import ActivityTimeline from '../activityTimeline';
-import { actions, testItems } from '../__docs__/data';
+import { HorizontalActivityTimeline } from '../horizontalActivityTimeline';
+import {
+    actions,
+    horizontalItemsTest,
+    testItems,
+    displayedItemsHorizontalTest
+} from '../__docs__/data';
 
 let element;
 describe('Activity Timeline', () => {
@@ -65,6 +71,10 @@ describe('Activity Timeline', () => {
         expect(element.buttonShowMoreIconPosition).toBe('left');
         expect(element.buttonShowMoreLabel).toBe('Show more');
         expect(element.buttonVariant).toBe('neutral');
+        expect(element.position).toBe('vertical');
+        expect(element.horizontalTimeline).toBeUndefined();
+        expect(element.showItemPopOver).toBeFalsy();
+        expect(element.selectedItem).toBeUndefined();
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -701,4 +711,138 @@ describe('Activity Timeline', () => {
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
     });
+
+    // HORIZONTAL TIMELINE
+    // position
+    it('Activity Timeline: position', () => {
+        const createHorizontalTimelineSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'createHorizontalActivityTimeline'
+        );
+        element.title = 'Horizontal Activity Timeline';
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+
+        return Promise.resolve().then(() => {
+            const timelineContainer = element.shadowRoot.querySelectorAll(
+                '.avonni-activity-timeline__horizontal-timeline svg'
+            );
+
+            // Fix : private
+            //const timelineTitle = element.shadowRoot.querySelector('[data-element-id="avonni-activity-horizontal-timeline-title"]');
+            // expect(timelineTitle.textContent).toBe('Showing : 02/02/2022 - 17/02/2022 • 15 day(s) • 10 item(s)');
+            expect(createHorizontalTimelineSpy).toHaveBeenCalled();
+            expect(timelineContainer).toBeDefined();
+            expect(element.maxVisibleItems).toBe(10);
+        });
+    });
+
+    // displayedItems
+    it('Activity Timeline: horizontal - displayedItems', () => {
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+
+        return Promise.resolve().then(() => {
+            const timelineItemsSVG = element.shadowRoot.querySelector(
+                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+            );
+
+            for (const item of displayedItemsHorizontalTest) {
+                const itemCategoryIcon = item.iconName.slice(
+                    0,
+                    item.iconName.indexOf(':')
+                );
+                const itemNameIcon = item.iconName.slice(
+                    item.iconName.indexOf(':') + 1,
+                    item.iconName.length
+                );
+                const itemSVGGroup = timelineItemsSVG.querySelector(
+                    '#timeline-item-' + item.name
+                );
+                const itemIcon = itemSVGGroup.querySelector('span');
+
+                expect(itemSVGGroup).toBeDefined();
+                expect(itemSVGGroup.textContent).toContain(item.title);
+                expect(itemIcon.className).toContain(
+                    'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center slds-icon-' +
+                        itemCategoryIcon +
+                        '-' +
+                        itemNameIcon
+                );
+            }
+        });
+    });
+
+    // changeIntervalSizeMode
+    it('Activity Timeline: horizontal - changeIntervalSizeMode', () => {
+        const cancelEditIntervalSizeModeSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'cancelEditIntervalSizeMode'
+        );
+        const handleClickOnIntervalSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'handleClickOnInterval'
+        );
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+
+        return Promise.resolve().then(() => {
+            // By default, edit mode should be disabled
+            let editModeLines = element.shadowRoot.querySelectorAll(
+                '.avonni-activity-timeline__horizontal-timeline-resize-cursor'
+            );
+            expect(editModeLines.length).toBe(0);
+
+            // First click : Activate edit mode
+            const intervalRectangle = element.shadowRoot.querySelector(
+                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+            );
+            intervalRectangle.dispatchEvent(new CustomEvent('click'));
+
+            editModeLines = element.shadowRoot.querySelectorAll(
+                '.avonni-activity-timeline__horizontal-timeline-resize-cursor'
+            );
+            expect(handleClickOnIntervalSpy).toBeCalled();
+            expect(editModeLines.length).toBe(2);
+
+            // Second click : Cancel edit mode
+            intervalRectangle.dispatchEvent(new CustomEvent('click'));
+            expect(cancelEditIntervalSizeModeSpy).toHaveBeenCalled();
+            editModeLines = element.shadowRoot.querySelectorAll(
+                '.avonni-activity-timeline__horizontal-timeline-resize-cursor'
+            );
+            expect(editModeLines.length).toBe(0);
+        });
+    });
+
+    // Test : yPosition
+
+    // Test :  mouseover on item
+
+    // Test : Drag of interval
+
+    // Test resize : this.divHorizontalTimeline - WIP
+    // it('Activity Timeline: horizontal - Resize', () => {
+    //     const setTimelineWidthSpy = jest.spyOn(HorizontalActivityTimeline.prototype, 'setTimelineWidth');
+    //     element.items = horizontalItemsTest;
+    //     element.position = 'horizontal';
+
+    //     return Promise.resolve().then(() => {
+    //         const timelineContainer = element.shadowRoot.querySelector(
+    //             '.avonni-activity-timeline__horizontal-timeline');
+
+    //         timelineContainer.width = 2040;
+    //         // Object.defineProperty(timelineContainer, 'width', 'set', 2040);
+
+    //         console.log(timelineContainer.getAttribute('width'));
+    //         console.log(timelineContainer.getAttribute('clientWidth'));
+
+    //         const timelineItemsSVG = element.shadowRoot.querySelector('.avonni-horizontal-activity-timeline__timeline-items-svg');
+
+    //         expect(timelineItemsSVG.getAttribute('width')).toBe(2000);
+    //         expect(setTimelineWidthSpy).toHaveBeenCalled();
+    //     });
+    // });
+
+    // Test : maxVisibleItems and height's change
 });
