@@ -32,6 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import { classSet } from '../utils/classSet';
 
 const TOOLBAR_VARIANTS = {
@@ -71,6 +72,13 @@ export default class InputPen extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Error message to be displayed when the value is missing.
+     *
+     * @type {string}
+     * @public
+     */
+    @api messageWhenValueMissing;
 
     _color = DEFAULT_COLOR;
     _disabled = false;
@@ -97,6 +105,9 @@ export default class InputPen extends LightningElement {
     prevSize = 0;
     prevDist = 0;
     prevVelocity = 2;
+
+    _constraintApi;
+    _constraintApiProxyInputUpdater;
 
     canvasElement;
     ctx;
@@ -131,11 +142,6 @@ export default class InputPen extends LightningElement {
             );
             this.ctx = this.canvasElement.getContext('2d');
 
-            if (this._required) {
-                this.setValidity(false);
-            } else {
-                this.setValidity(!this._invalid);
-            }
             if (this.value) {
                 this.initSrc();
             }
@@ -162,7 +168,7 @@ export default class InputPen extends LightningElement {
             } else {
                 this.classList.remove('avonni-reverse');
             }
-
+            this.checkValidity();
             this._rendered = true;
         }
     }
@@ -235,23 +241,6 @@ export default class InputPen extends LightningElement {
 
     set hideControls(value) {
         this._hideControls = normalizeBoolean(value);
-        this._updatedDOM = true;
-    }
-
-    /**
-     * If true, the editor is considered invalid.
-     *
-     * @type {boolean}
-     * @public
-     * @default false
-     */
-    @api
-    get invalid() {
-        return this._invalid;
-    }
-
-    set invalid(value) {
-        this._invalid = normalizeBoolean(value);
         this._updatedDOM = true;
     }
 
@@ -351,6 +340,17 @@ export default class InputPen extends LightningElement {
             this._size = intValue;
             this.initCursorStyles();
         }
+    }
+
+    /**
+     * Represents the validity states that an element can be in, with respect to constraint validation.
+     *
+     * @type {string}
+     * @public
+     */
+    @api
+    get validity() {
+        return this._constraint.validity;
     }
 
     /**
@@ -467,11 +467,47 @@ export default class InputPen extends LightningElement {
         });
     }
 
+    /**
+     * Compute constraintApi with fieldConstraintApiWithProxyInput.
+     */
+    get _constraint() {
+        if (!this._constraintApi) {
+            this._constraintApi = new FieldConstraintApiWithProxyInput(
+                () => this,
+                {
+                    valueMissing: () => {
+                        return !this.value;
+                    }
+                }
+            );
+
+            this._constraintApiProxyInputUpdater =
+                this._constraintApi.setInputAttributes({
+                    type: () => 'number',
+                    value: () => this.value,
+                    formatter: () => this.type,
+                    disabled: () => this.disabled
+                });
+        }
+        return this._constraintApi;
+    }
+
     /*
      * ------------------------------------------------------------
      *  PUBLIC METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Checks if the input is valid.
+     *
+     * @returns {boolean} True if the element meets all constraint validations.
+     * @public
+     */
+    @api
+    checkValidity() {
+        return this._constraint.checkValidity();
+    }
 
     /**
      * Clear the canvas.
@@ -491,10 +527,35 @@ export default class InputPen extends LightningElement {
                 this.setDraw();
             }
             this.handleChangeEvent();
-            if (this._required) {
-                this.setValidity(false);
-            }
         }
+    }
+
+    /**
+     * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
+     *
+     * @returns {boolean} False if invalid, true if valid.
+     * @public
+     */
+    @api
+    reportValidity() {
+        const isValid = this._constraint.reportValidity((message) => {
+            this.helpMessage = message;
+        });
+        if (this._required) {
+            this.setValidity(isValid);
+        }
+        return isValid;
+    }
+
+    /**
+     * Sets a custom error message to be displayed when a form is submitted.
+     *
+     * @param {string} message The string that describes the error. If message is an empty string, the error message is reset.
+     * @public
+     */
+    @api
+    setCustomValidity(message) {
+        this._constraint.setCustomValidity(message);
     }
 
     /**
@@ -511,6 +572,17 @@ export default class InputPen extends LightningElement {
         });
     }
 
+    /**
+     * Displays error messages on invalid fields.
+     * An invalid field fails at least one constraint validation and returns false when <code>checkValidity()</code> is called.
+     *
+     * @public
+     */
+    @api
+    showHelpMessageIfInvalid() {
+        this.reportValidity();
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -521,14 +593,15 @@ export default class InputPen extends LightningElement {
      * Initialize the Image canvas and dom elements.
      */
     initSrc() {
-        this.clear();
         if (this._value && this._value.indexOf('data:image/') === 0) {
             let img = new Image();
             img.onload = function () {
                 this.ctx.drawImage(img, 0, 0);
             }.bind(this);
             img.src = this._value;
-            this.setValidity(true);
+            this.clear();
+        } else {
+            this.clear();
         }
     }
 
@@ -632,16 +705,24 @@ export default class InputPen extends LightningElement {
      */
     handleMouseEnter(event) {
         if (!this.disabled && !this.readOnly) {
-            this.cursor.style.opacity = 1;
+            this.showDrawCursor();
             this.manageMouseEvent('enter', event);
         }
+    }
+
+    hideDrawCursor() {
+        this.cursor.style.opacity = 0;
+    }
+
+    showDrawCursor() {
+        this.cursor.style.opacity = 1;
     }
 
     /**
      * Mouse leave handler. Set opacity to 0.
      */
     handleMouseLeave() {
-        this.cursor.style.opacity = 0;
+        this.hideDrawCursor();
     }
 
     /**
@@ -664,9 +745,6 @@ export default class InputPen extends LightningElement {
                     this.prevSize = this._size / 4;
                     this.prevVelocity = 2;
                 }
-                if (this._invalid) {
-                    this.setValidity(true);
-                }
                 break;
             case 'up':
                 if (this.isDownFlag) {
@@ -682,12 +760,7 @@ export default class InputPen extends LightningElement {
             default:
                 // default aka 'move'
                 if (this.isDownFlag) {
-                    if (this._mode === 'sign') {
-                        this.sign(event);
-                    } else {
-                        this.setupCoordinate(event);
-                        this.redraw();
-                    }
+                    this.useTool(event);
                 }
                 this.moveCursor(event);
                 break;
@@ -741,16 +814,50 @@ export default class InputPen extends LightningElement {
         this.currY = eventParam.clientY - clientRect.top;
     }
 
-    /**
-     * Redraw Canvas context based on calculated cursor event cycle from previous to current coordinates.
-     */
-    redraw() {
+    useTool(event, isDot = false) {
+        if (!isDot) {
+            switch (this._mode) {
+                case 'erase':
+                    this.setupCoordinate(event);
+                    this.erase();
+                    break;
+                case 'sign':
+                    this.sign(event);
+                    break;
+                default:
+                    this.setupCoordinate(event);
+                    this.draw();
+                    break;
+            }
+        } else {
+            this.drawDot(event);
+        }
+    }
+
+    erase() {
         this.ctx.beginPath();
+        this.ctx.globalCompositeOperation = 'destination-out';
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.moveTo(this.prevX, this.prevY);
         this.ctx.lineTo(this.currX, this.currY);
-        this.ctx.strokeStyle = this.mode === 'erase' ? '#ffffff' : this.color;
+        this.ctx.strokeStyle = '#ffffff';
+        this.ctx.lineWidth = this._size;
+        this.ctx.closePath();
+        this.ctx.stroke();
+    }
+
+    /**
+     * Redraw Canvas context based on calculated cursor event cycle from previous to current coordinates.
+     */
+    draw() {
+        this.ctx.beginPath();
+        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.moveTo(this.prevX, this.prevY);
+        this.ctx.lineTo(this.currX, this.currY);
+        this.ctx.strokeStyle = this.color;
         this.ctx.lineWidth = this._size;
         this.ctx.closePath();
         this.ctx.stroke();
@@ -772,7 +879,6 @@ export default class InputPen extends LightningElement {
             Math.max(velocity, this.prevVelocity - 0.2),
             this.prevVelocity + 0.2
         );
-        console.log(this.prevVelocity);
         return Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
     }
 
@@ -788,7 +894,7 @@ export default class InputPen extends LightningElement {
         );
 
         // draw
-        if (distance > 4) {
+        if (distance > 10) {
             this.ctx.beginPath();
             this.ctx.lineCap = 'round';
             this.ctx.lineJoin = 'round';
@@ -812,6 +918,8 @@ export default class InputPen extends LightningElement {
      */
     drawDot() {
         this.ctx.beginPath();
+        this.ctx.globalCompositeOperation =
+            this._mode === 'erase' ? 'destination-out' : 'source-over';
         this.ctx.arc(
             this.currX,
             this.currY,
@@ -820,9 +928,18 @@ export default class InputPen extends LightningElement {
             2 * Math.PI,
             false
         );
-        this.ctx.fillStyle = this.mode === 'erase' ? '#ffffff' : this.color;
+        this.ctx.fillStyle = this.color;
         this.ctx.fill();
         this.ctx.closePath();
+    }
+
+    testEmptyCanvas() {
+        let transparentCanvas = document.createElement('canvas');
+        transparentCanvas.width = this.canvasElement.width;
+        transparentCanvas.height = this.canvasElement.height;
+        if (this.canvasElement.toDataURL() === transparentCanvas.toDataURL()) {
+            this._value = '';
+        }
     }
 
     /**
@@ -830,6 +947,8 @@ export default class InputPen extends LightningElement {
      */
     handleChangeEvent() {
         this._value = this.canvasElement.toDataURL();
+        this.testEmptyCanvas();
+        this._updateProxyInputAttributes('value');
 
         /**
          * The event fired when the value changed.
@@ -841,8 +960,19 @@ export default class InputPen extends LightningElement {
          */
         this.dispatchEvent(
             new CustomEvent('change', {
-                detail: this._value
+                detail: this.value
             })
         );
+    }
+
+    /**
+     * Proxy Input Attributes updater.
+     *
+     * @param {object} attributes
+     */
+    _updateProxyInputAttributes(attributes) {
+        if (this._constraintApiProxyInputUpdater) {
+            this._constraintApiProxyInputUpdater(attributes);
+        }
     }
 }

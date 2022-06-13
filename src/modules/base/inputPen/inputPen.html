@@ -127,18 +127,19 @@
                     onmouseenter={handleMouseEnter}
                     onmouseleave={handleMouseLeave}
                 >
+                    <lightning-button-icon
+                        class="avonni-input-pen__refresh-button"
+                        icon-name="utility:refresh"
+                        alternative-text="Refresh"
+                        title="Refresh"
+                        onclick={clear}
+                        variant="bare"
+                        size="large"
+                        onmouseenter={hideDrawCursor}
+                        onmouseleave={showDrawCursor}
+                    >
+                    </lightning-button-icon>
                     <template if:true={signature}>
-                        <lightning-button-icon
-                            class="avonni-input-pen__refresh-button"
-                            icon-name="utility:refresh"
-                            alternative-text="Refresh"
-                            title="Refresh"
-                            onclick={clear}
-                            variant="bare"
-                            size="large"
-                        >
-                        </lightning-button-icon>
-
                         <lightning-icon
                             icon-name="utility:close"
                             alternative-text="close"
@@ -162,4 +163,13 @@
             </div>
         </div>
     </div>
+    <template if:true={helpMessage}>
+        <div
+            id="message-id"
+            class="slds-form-element__help slds-p-top_xx-small"
+            aria-live="assertive"
+        >
+            {helpMessage}
+        </div>
+    </template>
 </template>

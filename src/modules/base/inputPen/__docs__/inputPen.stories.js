@@ -254,5 +254,6 @@ export const Signature = Template.bind({});
 Signature.args = {
     label: 'Signature Field',
     signature: true,
+    required: true,
     size: 16
 };
