@@ -274,6 +274,7 @@
 }
 
 .avonni-skeleton__input {
+    cursor: default;
 }
 
 .avonni-skeleton__input-label {
