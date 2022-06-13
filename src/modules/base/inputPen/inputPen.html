@@ -81,17 +81,6 @@
                             >
                             </lightning-button-icon>
                         </li>
-                        <li if:true={showClear}>
-                            <lightning-button-icon
-                                icon-name="utility:delete"
-                                variant="border-filled"
-                                alternative-text="Clear"
-                                title="Clear"
-                                onclick={clear}
-                                disabled={disabled}
-                            >
-                            </lightning-button-icon>
-                        </li>
                     </ul>
                     <ul class="slds-button-group-list">
                         <li if:true={showSize}>
@@ -127,18 +116,21 @@
                     onmouseenter={handleMouseEnter}
                     onmouseleave={handleMouseLeave}
                 >
-                    <lightning-button-icon
-                        class="avonni-input-pen__refresh-button"
-                        icon-name="utility:refresh"
-                        alternative-text="Refresh"
-                        title="Refresh"
-                        onclick={clear}
-                        variant="bare"
-                        size="large"
-                        onmouseenter={hideDrawCursor}
-                        onmouseleave={showDrawCursor}
-                    >
-                    </lightning-button-icon>
+                    <template if:true={showClear}>
+                        <lightning-button-icon
+                            class="avonni-input-pen__refresh-button"
+                            icon-name="utility:refresh"
+                            alternative-text="Refresh"
+                            title="Refresh"
+                            onclick={clear}
+                            variant="bare"
+                            size="large"
+                            disabled={disabled}
+                            onmouseenter={hideDrawCursor}
+                            onmouseleave={showDrawCursor}
+                        >
+                        </lightning-button-icon>
+                    </template>
                     <template if:true={signature}>
                         <lightning-icon
                             icon-name="utility:close"
@@ -152,7 +144,7 @@
                     </template>
                     <canvas
                         data-element-id="canvas"
-                        class="avonni-input-pen__canvas"
+                        class={computedCanvasClass}
                     ></canvas>
                     <div
                         if:false={signature}

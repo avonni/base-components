@@ -118,3 +118,7 @@
     background-color: transparent;
     z-index: 1;
 }
+
+.avonni-input-pen__canvas_disabled {
+    filter: grayscale(80%) brightness(1.5);
+}

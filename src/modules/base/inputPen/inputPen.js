@@ -141,7 +141,6 @@ export default class InputPen extends LightningElement {
                 '[data-element-id="canvas"]'
             );
             this.ctx = this.canvasElement.getContext('2d');
-
             if (this.value) {
                 this.initSrc();
             }
@@ -210,7 +209,6 @@ export default class InputPen extends LightningElement {
 
     set disabled(value) {
         this._disabled = normalizeBoolean(value);
-
         if (this._disabled) {
             this.classList.add('avonni-disabled');
         }
@@ -467,6 +465,12 @@ export default class InputPen extends LightningElement {
         });
     }
 
+    get computedCanvasClass() {
+        return classSet('avonni-input-pen__canvas').add({
+            'avonni-input-pen__canvas_disabled': this._disabled
+        });
+    }
+
     /**
      * Compute constraintApi with fieldConstraintApiWithProxyInput.
      */
@@ -594,11 +598,10 @@ export default class InputPen extends LightningElement {
     initSrc() {
         if (this._value && this._value.indexOf('data:image/') === 0) {
             let img = new Image();
-            img.onload = function () {
+            img.onload = () => {
                 this.ctx.drawImage(img, 0, 0);
-            }.bind(this);
+            };
             img.src = this._value;
-            this.clear();
         } else {
             this.clear();
         }
@@ -714,7 +717,9 @@ export default class InputPen extends LightningElement {
     }
 
     showDrawCursor() {
-        this.cursor.style.opacity = 1;
+        if (!this._disabled) {
+            this.cursor.style.opacity = 1;
+        }
     }
 
     /**
@@ -722,6 +727,7 @@ export default class InputPen extends LightningElement {
      */
     handleMouseLeave() {
         this.hideDrawCursor();
+        this.handleChangeEvent();
     }
 
     /**
@@ -937,7 +943,7 @@ export default class InputPen extends LightningElement {
         transparentCanvas.width = this.canvasElement.width;
         transparentCanvas.height = this.canvasElement.height;
         if (this.canvasElement.toDataURL() === transparentCanvas.toDataURL()) {
-            this._value = '';
+            this._value = undefined;
         }
     }
 
