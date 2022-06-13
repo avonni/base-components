@@ -98,6 +98,8 @@ export default class InputPen extends LightningElement {
 
     isDownFlag;
     isDotFlag = false;
+    xPositions = [];
+    yPositions = [];
     prevX = 0;
     currX = 0;
     prevY = 0;
@@ -105,6 +107,7 @@ export default class InputPen extends LightningElement {
     prevSize = 0;
     prevDist = 0;
     prevVelocity = 2;
+    moveCoordinatesAdded = 0;
 
     _constraintApi;
     _constraintApiProxyInputUpdater;
@@ -744,12 +747,14 @@ export default class InputPen extends LightningElement {
             case 'down':
                 this.setupCoordinate(event);
                 this.isDownFlag = true;
-                this.drawDot();
                 if (this._signature) {
+                    this.xPositions = [];
+                    this.yPositions = [];
                     this.setupCoordinate(event);
                     this.prevSize = this._size / 4;
                     this.prevVelocity = 2;
                 }
+                this.drawDot();
                 break;
             case 'up':
                 if (this.isDownFlag) {
@@ -813,19 +818,17 @@ export default class InputPen extends LightningElement {
      */
     setupCoordinate(eventParam) {
         const clientRect = this.canvasElement.getBoundingClientRect();
-        this.prevX = this.currX;
-        this.prevY = this.currY;
-        this.currX = eventParam.clientX - clientRect.left;
-        this.currY = eventParam.clientY - clientRect.top;
+        this.xPositions.pop();
+        this.yPositions.pop();
+        while (this.xPositions.length < 5) {
+            this.xPositions.unshift(eventParam.clientX - clientRect.left);
+            this.yPositions.unshift(eventParam.clientY - clientRect.top);
+        }
     }
 
     useTool(event, isDot = false) {
         if (!isDot) {
             switch (this._mode) {
-                case 'erase':
-                    this.setupCoordinate(event);
-                    this.erase();
-                    break;
                 case 'sign':
                     this.sign(event);
                     break;
@@ -839,29 +842,17 @@ export default class InputPen extends LightningElement {
         }
     }
 
-    erase() {
-        this.ctx.beginPath();
-        this.ctx.globalCompositeOperation = 'destination-out';
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
-        this.ctx.moveTo(this.prevX, this.prevY);
-        this.ctx.lineTo(this.currX, this.currY);
-        this.ctx.strokeStyle = '#ffffff';
-        this.ctx.lineWidth = this._size;
-        this.ctx.closePath();
-        this.ctx.stroke();
-    }
-
     /**
      * Redraw Canvas context based on calculated cursor event cycle from previous to current coordinates.
      */
     draw() {
         this.ctx.beginPath();
-        this.ctx.globalCompositeOperation = 'source-over';
+        this.ctx.globalCompositeOperation =
+            this._mode === 'erase' ? 'destination-out' : 'source-over';
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
-        this.ctx.moveTo(this.prevX, this.prevY);
-        this.ctx.lineTo(this.currX, this.currY);
+        this.ctx.moveTo(this.xPositions[1], this.yPositions[1]);
+        this.ctx.lineTo(this.xPositions[0], this.yPositions[0]);
         this.ctx.strokeStyle = this.color;
         this.ctx.lineWidth = this._size;
         this.ctx.closePath();
@@ -873,10 +864,14 @@ export default class InputPen extends LightningElement {
      */
     getDistanceTraveled(event) {
         const clientRect = this.canvasElement.getBoundingClientRect();
-        const deltaX = this.currX - (event.clientX - clientRect.left);
-        const deltaY = this.currY - (event.clientY - clientRect.top);
-        this.currX = event.clientX - clientRect.left;
-        this.currY = event.clientY - clientRect.top;
+        const deltaX = this.xPositions[0] - (event.clientX - clientRect.left);
+        const deltaY = this.yPositions[0] - (event.clientY - clientRect.top);
+        const distance =
+            Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
+        if (distance > 10) {
+            this.xPositions.unshift(event.clientX - clientRect.left);
+            this.yPositions.unshift(event.clientY - clientRect.top);
+        }
         let velocity = Math.sqrt(
             Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY))
         );
@@ -884,7 +879,7 @@ export default class InputPen extends LightningElement {
             Math.max(velocity, this.prevVelocity - 0.2),
             this.prevVelocity + 0.2
         );
-        return Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
+        return distance;
     }
 
     /**
@@ -892,27 +887,48 @@ export default class InputPen extends LightningElement {
      */
     sign(event) {
         const distance = this.getDistanceTraveled(event);
-        const velocity = this.prevVelocity;
-        const calculatedSize = Math.min(
-            Math.max(this._size / velocity, this.prevSize - velocity),
-            this.prevSize + velocity
-        );
 
         // draw
         if (distance > 10) {
+            const velocity = this.prevVelocity;
+            const calculatedSize = Math.min(
+                Math.max(this._size / velocity, this.prevSize - velocity),
+                this.prevSize + velocity
+            );
             this.ctx.beginPath();
             this.ctx.lineCap = 'round';
             this.ctx.lineJoin = 'round';
-            this.ctx.moveTo(this.prevX, this.prevY);
-            this.ctx.lineTo(this.currX, this.currY);
             this.ctx.strokeStyle = '#000000';
             this.ctx.lineWidth = calculatedSize;
+
+            this.ctx.moveTo(this.xPositions[0], this.yPositions[0]);
+
+            let i = 0;
+
+            for (i = 1; i < this.xPositions.length - 1; i++) {
+                let xc = (this.xPositions[i] + this.xPositions[i + 1]) / 2;
+                let yc = (this.yPositions[i] + this.yPositions[i + 1]) / 2;
+                this.ctx.quadraticCurveTo(
+                    this.xPositions[i],
+                    this.yPositions[i],
+                    xc,
+                    yc
+                );
+            }
+            // curve through the last two points
+            this.ctx.quadraticCurveTo(
+                this.xPositions[i],
+                this.yPositions[i],
+                this.xPositions[i + 1],
+                this.yPositions[i + 1]
+            );
+
             this.ctx.closePath();
             this.ctx.stroke();
             this.prevSize = calculatedSize;
             this.prevDist = 0;
-            this.prevX = this.currX;
-            this.prevY = this.currY;
+            this.xPositions.pop();
+            this.yPositions.pop();
         } else {
             this.prevDist = distance;
         }
@@ -926,8 +942,8 @@ export default class InputPen extends LightningElement {
         this.ctx.globalCompositeOperation =
             this._mode === 'erase' ? 'destination-out' : 'source-over';
         this.ctx.arc(
-            this.currX,
-            this.currY,
+            this.xPositions[0],
+            this.yPositions[0],
             (this._mode === 'sign' ? this._size / 4 : this._size) / 2,
             0,
             2 * Math.PI,
