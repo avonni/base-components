@@ -483,9 +483,8 @@ export default class InputPen extends LightningElement {
 
             this._constraintApiProxyInputUpdater =
                 this._constraintApi.setInputAttributes({
-                    type: () => 'number',
+                    type: () => 'url',
                     value: () => this.value,
-                    formatter: () => this.type,
                     disabled: () => this.disabled
                 });
         }
