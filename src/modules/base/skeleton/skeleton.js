@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { normalizeString } from 'c/utilsPrivate';
-import { classSet, generateUUID } from 'c/utils';
+import { classSet } from 'c/utils';
 
 const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
@@ -139,8 +139,9 @@ export default class Skeleton extends LightningElement {
         if (this.isParagraphVariant && !this.paragraphItemsInitialized) {
             this.initializeParagraphItems();
             this.updateParagraphClassList();
+            this.paragraphItemsInitialized = true;
         }
-        this.paragraphItemsInitialized = true;
+
         // console.log(this.variantAttributes.hasIcon);
         // if (this.isAvatarVariant && !this._initialAvatarRender) {
         //     this.updateAvatarClassList();
@@ -200,13 +201,13 @@ export default class Skeleton extends LightningElement {
 
     @api
     get isParagraphVariant() {
-        console.log(this.variant);
+        // console.log(this.variant);
         return this.variant === 'paragraph';
     }
 
     @api
     get isProgressIndicatorVariant() {
-        console.log(this.variant);
+        // console.log(this.variant);
         return this.variant === 'progress-indicator';
     }
 
@@ -423,7 +424,7 @@ export default class Skeleton extends LightningElement {
      * @type {string}
      */
     get badgeClass() {
-        console.log(`variant: ${this.variantAttributes.variant}`);
+        // console.log(`variant: ${this.variantAttributes.variant}`);
         return (
             classSet('avonni-badge')
                 .add({
@@ -833,20 +834,21 @@ export default class Skeleton extends LightningElement {
         const paragraphItems = [];
         let percentage = 100;
         for (let i = 0; i < this.variantAttributes.rows; i++) {
-            const paragraphId = generateUUID();
+            // const paragraphId = generateUUID();
             percentage = 100;
             paragraphItems.push({
-                key: `paragraph-${paragraphId}`,
+                keyLi: `paragraphLi-${i}`,
+                keyUl: `paragraphUl-${i}`,
                 line: []
             });
             const numItems = Math.floor(Math.random() * (10 - 3)) + 3;
-            console.log(`num of items for row ${i}: ${numItems}`);
+            // console.log(`num of items for row ${i}: ${numItems}`);
             for (let j = 0; j < numItems; j++) {
-                const itemId = generateUUID();
+                // const itemId = generateUUID();
                 const itemWidthPercentage =
                     Math.floor(Math.random() * percentage) + 1;
                 paragraphItems[i].line.push({
-                    key: `item-${itemId}`,
+                    key: `item-${j}`,
                     percentage: itemWidthPercentage
                 });
                 percentage -= itemWidthPercentage;
@@ -889,13 +891,13 @@ export default class Skeleton extends LightningElement {
      * Sets the width and heigh for text variant
      */
     setTextSize() {
-        console.log(`variant: ${this.variant === 'combobox'}`);
-        console.log('inside setTextSize');
+        // console.log(`variant: ${this.variant === 'combobox'}`);
+        // console.log('inside setTextSize');
         let element = this.skeleton;
-        console.log(`element: ${element}`);
+        // console.log(`element: ${element}`);
         element.style.height =
             this.height === undefined ? '0.7em' : `${this.height}`;
-        console.log('end setTextSize');
+        // console.log('end setTextSize');
         element.style.width =
             this.width === undefined ? '100%' : `${this.width}`;
     }
@@ -948,7 +950,7 @@ export default class Skeleton extends LightningElement {
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`);
 
-        console.log('first');
+        // console.log('first');
         this.parentAvatarWrapper = parentWrapperClass;
         this.avatarWrapperClass = wrapperClass;
         this.primaryTextClass = primaryTextClass;
@@ -1346,7 +1348,7 @@ export default class Skeleton extends LightningElement {
     }
 
     updateComboboxClassList() {
-        console.log('inside updateClassList');
+        // console.log('inside updateClassList');
         this.setTextSize();
     }
 
@@ -1356,15 +1358,45 @@ export default class Skeleton extends LightningElement {
         console.log('INSIDE UPDATE PARAGRAPH CLASS LIST');
         const paragraphLines = this.template.querySelector(
             '[data-element-id="paragraph-list"]'
-        );
+        ).children;
         console.log(paragraphLines);
+        // console.log(paragraphLines[0].children);
+        // console.log(
+        //     `first paragraph line has ${paragraphLines[0].children.length} items`
+        // );
+
+        for (let i = 0; i < paragraphLines.length; i++) {
+            console.log(paragraphLines[i].children);
+            console.log(paragraphLines[i].children[0]);
+            console.log(paragraphLines[i].children[0].children);
+            const variable = paragraphLines[i].children[0].children;
+            console.log(variable);
+            console.log(paragraphLines[i].children[0].children.length);
+        }
+
         // for (let i = 0; i < paragraphLines.length; i++) {
-        //     let paragraphLineItems = paragraphLines[i];
+        //     let paragraphLineItems = paragraphLines[i].children.children;
+        //     console.log(
+        //         `paragraphLine ${i} has: ${paragraphLineItems.length} items`
+        //     );
         //     for (let j = 0; j < paragraphLineItems.length; j++) {
         //         let paragraphLineItem = paragraphLineItems[j];
-        //         paragraphLineItem.style.width =
-        //             this.paragraphItems[i][j].percentage;
+        //         // console.log(`paragraphLineItem: ${paragraphLineItem}`);
+        //         console.log(
+        //             `paragraphLineItem width: ${paragraphLineItem.style.width}`
+        //         );
+        //         // paragraphLineItem.style.width =
+        //         //     this.paragraphItems[i][j].percentage;
         //     }
+        // }
+
+        // const paragraphLines = this.template.querySelectorAll('li');
+        // console.log(paragraphLines);
+        // for (let i = 0; i < paragraphLines.length; i++) {
+        //     let paragraphItem = paragraphLines[i];
+        //     console.log(
+        //         `paragraphItem ${i} width: ${paragraphItem.style.width}`
+        //     );
         // }
     }
 
