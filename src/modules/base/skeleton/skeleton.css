@@ -422,6 +422,10 @@
     width: 4em;
 }
 
+.avonni-skeleton__item-container {
+    padding: 0.375rem 0 0.375rem 1rem;
+}
+
 /* .avonni-skeleton__progress-indicator-path-item:first-child {
     margin-left: 0;
     border-top-left-radius: 2rem;
