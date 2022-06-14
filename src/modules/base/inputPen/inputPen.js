@@ -31,6 +31,7 @@
  */
 
 import { LightningElement, api } from 'lwc';
+import { AvonniResizeObserver } from 'c/resizeObserver';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import { classSet } from '../utils/classSet';
@@ -109,6 +110,7 @@ export default class InputPen extends LightningElement {
     prevVelocity = 2;
     moveCoordinatesAdded = 0;
 
+    _resizeTimeout;
     _constraintApi;
     _constraintApiProxyInputUpdater;
 
@@ -151,7 +153,8 @@ export default class InputPen extends LightningElement {
             this.canvasElement.width =
                 this.canvasElement.parentElement.offsetWidth;
             this.canvasElement.height =
-                this.canvasElement.parentElement.offsetWidth / 2;
+                this.canvasElement.parentElement.offsetHeight;
+            this.initResizeObserver();
 
             this.initCursorStyles();
 
@@ -464,6 +467,7 @@ export default class InputPen extends LightningElement {
     get computedTextAreaClasses() {
         return classSet('slds-rich-text-editor__textarea').add({
             'slds-grid': true,
+            'avonni-input-pen__text-area': true,
             'avonni-input-pen__text-area_cursor': this._signature
         });
     }
@@ -820,7 +824,6 @@ export default class InputPen extends LightningElement {
         const clientRect = this.canvasElement.getBoundingClientRect();
         this.xPositions.pop();
         this.yPositions.pop();
-        console.log('setup coords');
         while (this.xPositions.length < 10) {
             this.xPositions.unshift(eventParam.clientX - clientRect.left);
             this.yPositions.unshift(eventParam.clientY - clientRect.top);
@@ -910,7 +913,6 @@ export default class InputPen extends LightningElement {
             cp2y = y2 - ((y3 - y1) / 6) * tension;
             path.push(cp1x, cp1y, cp2x, cp2y, x2, y2);
         }
-        console.log(path);
         return path;
     }
 
@@ -943,12 +945,12 @@ export default class InputPen extends LightningElement {
         const deltaY = this.yPositions[0] - (event.clientY - clientRect.top);
         const distance =
             Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
-        console.log('distance check');
+        this.xPositions[0] = event.clientX - clientRect.left;
+        this.yPositions[0] = event.clientY - clientRect.top;
         if (distance > 0) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
             this.yPositions.unshift(event.clientY - clientRect.top);
-            console.log('' + this.xPositions.length + '+ 2');
         }
         let velocity = Math.sqrt(
             Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY))
@@ -972,10 +974,7 @@ export default class InputPen extends LightningElement {
             if (this.moveCoordinatesAdded >= 6) {
                 this.moveCoordinatesAdded = 0;
                 const velocity = this.prevVelocity;
-                const calculatedSize = Math.min(
-                    Math.max(this._size / velocity, this.prevSize - velocity),
-                    this.prevSize + velocity
-                );
+                const calculatedSize = this._size / velocity;
                 this.drawSpline(this.getSplinePoints(), calculatedSize);
                 this.prevSize = calculatedSize;
             }
@@ -1037,6 +1036,29 @@ export default class InputPen extends LightningElement {
                 detail: this.value
             })
         );
+    }
+
+    /**
+     * Initialize the screen resize observer.
+     *
+     * @returns {AvonniResizeObserver} Resize observer.
+     */
+    initResizeObserver() {
+        if (!this.canvasElement) return null;
+        const resizeObserver = new AvonniResizeObserver(() => {
+            const savedValue = this.value;
+            clearTimeout(this._resizeTimeout);
+            this._resizeTimeout = setTimeout(() => {
+                this.canvasElement.width =
+                    this.canvasElement.parentElement.offsetWidth;
+                this.canvasElement.height =
+                    this.canvasElement.parentElement.offsetHeight;
+                this._value = savedValue;
+                this.initSrc();
+            }, 10);
+        });
+        resizeObserver.observe(this.canvasElement);
+        return resizeObserver;
     }
 
     /**
