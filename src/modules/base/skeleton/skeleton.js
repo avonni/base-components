@@ -88,6 +88,7 @@ export default class Skeleton extends LightningElement {
     breadcrumbs = [];
     buttonWrapper;
     buttonIconWrapper;
+    datatableColumns = [];
     // paragraphs = [];
     paragraphItems = [];
     currentParagraphItem = 0;
@@ -851,6 +852,19 @@ export default class Skeleton extends LightningElement {
         }
         console.log('end');
         this.breadcrumbs = breadcrumbs;
+    }
+
+    initializeDatatableColumns() {
+        const datatableColumns = [];
+        console.log(`first`);
+        for (let i = 0; i < this.variantAttributes.columns; i++) {
+            console.log('middle');
+            datatableColumns.push({
+                key: `column-${i}`
+            });
+        }
+        console.log('end');
+        this.datatableColumns = datatableColumns;
     }
 
     // initializeParagraphs() {

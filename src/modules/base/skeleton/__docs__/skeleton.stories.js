@@ -195,6 +195,7 @@ Datatable.args = {
     variant: 'datatable',
     animation: 'pulse',
     variantAttributes: {
+        columns: 3,
         hideCheckboxColumn: false,
         hideTableHeader: false
     }
