@@ -978,7 +978,6 @@ export default class InputPen extends LightningElement {
                 this.drawSpline(this.getSplinePoints(), calculatedSize);
                 this.prevSize = calculatedSize;
             }
-            console.log('' + this.xPositions.length + '- 2');
             this.xPositions.pop();
             this.yPositions.pop();
         } else {
