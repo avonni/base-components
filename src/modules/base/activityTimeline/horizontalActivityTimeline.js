@@ -392,6 +392,10 @@ export class HorizontalActivityTimeline {
         // Create left and right lines to change width of interval
         this._leftIntervalLine = this._scrollAxisSVG
             .append('line')
+            .attr(
+                'id',
+                'avonni-horizontal-activity-timeline__left-interval-line'
+            )
             .style('stroke', COLOR_CHANGE_INTERVAL_SIZE)
             .style('opacity', 0)
             .style('stroke-width', 1)
@@ -408,6 +412,10 @@ export class HorizontalActivityTimeline {
 
         this._rightIntervalLine = this._scrollAxisSVG
             .append('line')
+            .attr(
+                'id',
+                'avonni-horizontal-activity-timeline__right-interval-line'
+            )
             .style('stroke', COLOR_CHANGE_INTERVAL_SIZE)
             .style('opacity', 0)
             .style('stroke-width', 1)
@@ -746,6 +754,10 @@ export class HorizontalActivityTimeline {
     createTimelineScrollAxis() {
         this._scrollAxisSVG = this._scrollAxisDiv
             .append('svg')
+            .attr(
+                'class',
+                'avonni-horizontal-activity-timeline__scroll-axis-svg'
+            )
             .attr('width', this._timelineWidth + AXIS_LABEL_WIDTH / 3)
             .attr('height', this._timelineAxisHeight * 2)
             .attr('transform', 'translate(0, -25)');
