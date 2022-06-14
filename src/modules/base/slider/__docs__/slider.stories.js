@@ -31,7 +31,6 @@
  */
 
 import { VerticalSlider } from '../__examples__/verticalSlider';
-import { ColoredSlider } from '../__examples__/coloredSlider';
 import { CustomLabelSlider } from '../__examples__/customLabelSlider';
 import { MaxHeightSlider } from '../__examples__/maxHeightSlider';
 
@@ -365,7 +364,7 @@ export default {
     },
     args: {
         disabled: false,
-        max: 0,
+        max: 100,
         min: 0,
         showPin: false,
         tickMarkStyle: 'inner-tick',
@@ -384,7 +383,6 @@ export default {
 
 const MaxHeightTemplate = (args) => MaxHeightSlider(args);
 const VerticalTemplate = (args) => VerticalSlider(args);
-const ColoredTemplate = (args) => ColoredSlider(args);
 const CustomLabelTemplate = (args) => CustomLabelSlider(args);
 
 export const Base = MaxHeightTemplate.bind({});
@@ -544,13 +542,4 @@ Vertical.args = {
             }
         ]
     }
-};
-
-export const Colored = ColoredTemplate.bind({});
-Colored.args = {
-    label: 'Colored slider',
-    showTickMarks: true,
-    step: 5,
-    showPin: true,
-    hideMinMaxValues: true
 };

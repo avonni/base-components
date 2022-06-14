@@ -467,7 +467,7 @@ export default class Slider extends LightningElement {
         }
     }
     /**
-     * Object containing selected fields for the unit type (currencyCode, currencyDisplayAs, minimumIntegerDigits, minimumFractionDigits, maximumFractionDigits, minimumSignificantDigits, maximumSignificantDigits, customLabels).
+     * Object containing selected fields for the unit type (see Units and Unit Attributes table).
      *
      * @type {object}
      * @public
@@ -850,7 +850,7 @@ export default class Slider extends LightningElement {
     get _thumbRadius() {
         const thumbRadius = parseInt(
             getComputedStyle(this.template.host)
-                .getPropertyValue('--avonni-slider-thumb-radius')
+                .getPropertyValue('--avonni-slider-thumb-width')
                 .split('px')[0],
             10
         );

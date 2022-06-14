@@ -1,17 +1,4 @@
 /**
- * @typedef {Object} RangeUnitAttribute
- * @name unitAttributes
- * @property {string} currencyCode Only used if format-style='currency', this attribute determines which currency is
- * displayed. Possible values are the ISO 4217 currency codes, such as 'USD' for the US dollar.
- * @property {string} currencyDisplayAs Determines how currency is displayed. Possible values are symbol, code, and name. This value defaults to symbol.
- * @property {number} minimumIntegerDigits The minimum number of integer digits that are required. Possible values are from 1 to 21.
- * @property {number} minimumFractionDigits The minimum number of fraction digits that are required.
- * @property {number} maximumFractionDigits The maximum number of fraction digits that are allowed.
- * @property {number} minimumSignificantDigits The minimum number of significant digits that are required. Possible values are from 1 to 21.
- * @property {number} maximumSignificantDigits The maximum number of significant digits that are allowed. Possible values are from 1 to 21.
- */
-
-/**
  * @typedef {Object[]} CustomLabels
  * @name customLabels
  * @property {string} label Label to be displayed as custom label.
@@ -85,7 +72,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-slider-thumb-color-shadow-focus
- * @default #99d3ff
+ * @default '0 0 3px 1px #99d3ff'
  * @type color
  */
 /**
@@ -114,25 +101,25 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-thumb-radius
+ * @name --avonni-slider-thumb-width
  * @default 8px
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-thumb-radius-border
+ * @name --avonni-slider-thumb-radius
  * @default 0.5rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-track-radius-border
+ * @name --avonni-slider-track-radius
  * @default 0.5rem
  * @type radius
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-slider-pin-radius-border
+ * @name --avonni-slider-pin-radius
  * @default 2rem
  * @type radius
  */
