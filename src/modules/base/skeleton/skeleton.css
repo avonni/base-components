@@ -401,6 +401,7 @@
 }
 
 .avonni-skeleton__tabset-scoped-item {
+    cursor: default;
     margin: 15px 15px;
     border-right: 1px solid #e5e5e5;
     height: 0.7em;
