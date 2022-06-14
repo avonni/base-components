@@ -821,7 +821,7 @@ export default class InputPen extends LightningElement {
         this.xPositions.pop();
         this.yPositions.pop();
         console.log('setup coords');
-        while (this.xPositions.length < 5) {
+        while (this.xPositions.length < 10) {
             this.xPositions.unshift(eventParam.clientX - clientRect.left);
             this.yPositions.unshift(eventParam.clientY - clientRect.top);
         }
@@ -861,78 +861,75 @@ export default class InputPen extends LightningElement {
     }
 
     getSplinePoints() {
-        const numOfSegments = 16;
+        const tension = 0.5;
 
-        const data = [];
-        this.xPositions.forEach((val, index) => {
-            data.push(val);
-            data.push(this.yPositions[index]);
-        });
-        data.shift();
-        data.shift();
+        let x0;
+        let y0;
+        let x1;
+        let y1;
+        let x2;
+        let y2;
+        let x3;
+        let y3;
+        let cp1x;
+        let cp1y;
+        let cp2x;
+        let cp2y;
 
-        let pts = [];
-        let res = [];
-        let x;
-        let y;
+        const data = [
+            this.xPositions[3],
+            this.yPositions[3],
+            this.xPositions[6],
+            this.yPositions[6],
+            this.xPositions[9],
+            this.yPositions[9]
+        ];
 
-        let t1x;
-        let t2x;
-        let t1y;
-        let t2y;
+        const size = data.length;
+        const last = size - 4;
 
-        let c1;
-        let c2;
-        let c3;
-        let c4;
+        const path = [data[0], data[1]];
 
-        let step;
-        let splineStep;
+        for (let i = 0; i < size - 2; i += 2) {
+            x0 = i ? data[i - 2] : data[0];
+            y0 = i ? data[i - 1] : data[1];
 
-        pts = [...data];
-        pts.unshift(data[1]);
-        pts.unshift(data[0]);
-        pts.push(data[data.length - 2]);
-        pts.push(data[data.length - 1]);
+            x1 = data[i + 0];
+            y1 = data[i + 1];
 
-        // cardinal spline algorithm, based on : https://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
-        for (let i = 2; i < pts.length - 4; i += 2) {
-            for (splineStep = 0; splineStep <= numOfSegments; splineStep++) {
-                t1x = pts[i + 2] - pts[i - 2];
-                t2x = pts[i + 4] - pts[i];
-                t1y = pts[i + 3] - pts[i - 1];
-                t2y = pts[i + 5] - pts[i + 1];
+            x2 = data[i + 2];
+            y2 = data[i + 3];
 
-                // calculate step
-                step = splineStep / numOfSegments;
+            x3 = i !== last ? data[i + 4] : x2;
+            y3 = i !== last ? data[i + 5] : y2;
 
-                // calculate cardinals
-                c1 = 2 * Math.pow(step, 3) - 3 * Math.pow(step, 2) + 1;
-                c2 = -(2 * Math.pow(step, 3)) + 3 * Math.pow(step, 2);
-                c3 = Math.pow(step, 3) - 2 * Math.pow(step, 2) + step;
-                c4 = Math.pow(step, 3) - Math.pow(step, 2);
+            cp1x = x1 + ((x2 - x0) / 6) * tension;
+            cp1y = y1 + ((y2 - y0) / 6) * tension;
 
-                // calc x and y cords with common control vectors
-                x = c1 * pts[i] + c2 * pts[i + 2] + c3 * t1x + c4 * t2x;
-                y = c1 * pts[i + 1] + c2 * pts[i + 3] + c3 * t1y + c4 * t2y;
-
-                //store points in array
-                res.push(x);
-                res.push(y);
-            }
+            cp2x = x2 - ((x3 - x1) / 6) * tension;
+            cp2y = y2 - ((y3 - y1) / 6) * tension;
+            path.push(cp1x, cp1y, cp2x, cp2y, x2, y2);
         }
-        return res;
+        console.log(path);
+        return path;
     }
 
-    drawLines(pts, penSize) {
+    drawSpline(pts, penSize) {
         this.ctx.beginPath();
         this.ctx.lineCap = 'round';
         this.ctx.lineJoin = 'round';
         this.ctx.strokeStyle = '#ff0000';
         this.ctx.lineWidth = penSize;
         this.ctx.moveTo(pts[0], pts[1]);
-        for (let i = 2; i < pts.length - 3; i += 2) {
-            this.ctx.lineTo(pts[i], pts[i + 1]);
+        for (let i = 2; i < pts.length; i += 6) {
+            this.ctx.bezierCurveTo(
+                pts[i],
+                pts[i + 1],
+                pts[i + 2],
+                pts[i + 3],
+                pts[i + 4],
+                pts[i + 5]
+            );
         }
         this.ctx.stroke();
     }
@@ -947,7 +944,7 @@ export default class InputPen extends LightningElement {
         const distance =
             Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
         console.log('distance check');
-        if (distance > 4) {
+        if (distance > 0) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
             this.yPositions.unshift(event.clientY - clientRect.top);
@@ -970,16 +967,16 @@ export default class InputPen extends LightningElement {
         const distance = this.getDistanceTraveled(event);
 
         // draw
-        if (distance > 4) {
+        if (distance > 0) {
             this.prevDist = 0;
-            if (this.moveCoordinatesAdded >= 4) {
+            if (this.moveCoordinatesAdded >= 6) {
                 this.moveCoordinatesAdded = 0;
                 const velocity = this.prevVelocity;
                 const calculatedSize = Math.min(
                     Math.max(this._size / velocity, this.prevSize - velocity),
                     this.prevSize + velocity
                 );
-                this.drawLines(this.getSplinePoints(), calculatedSize);
+                this.drawSpline(this.getSplinePoints(), calculatedSize);
                 this.prevSize = calculatedSize;
             }
             console.log('' + this.xPositions.length + '- 2');
