@@ -758,63 +758,25 @@
                     role="tablist"
                     aria-orientation="vertical"
                 >
-                    <li
-                        class="slds-vertical-tabs__nav-item slds-is-active"
-                        role="presentation"
-                    >
-                        <div
-                            class="slds-vertical-tabs__link"
-                            role="tab"
-                            aria-selected="true"
+                    <template for:each={tabset} for:item="tab">
+                        <li
+                            key={tab.key}
+                            class="slds-vertical-tabs__nav-item"
+                            role="presentation"
                         >
-                            <span class="slds-vertical-tabs__left-icon"></span>
-                            <span class="slds-truncate" title="Tab 1"
-                                >Tab 1</span
+                            <div
+                                class={tabVerticalItemContainerClass}
+                                role="tab"
+                                aria-selected="true"
                             >
-                            <span class="slds-vertical-tabs__right-icon"></span>
-                        </div>
-                    </li>
-                    <li
-                        class="slds-vertical-tabs__nav-item"
-                        role="presentation"
-                    >
-                        <div
-                            class="slds-vertical-tabs__link"
-                            role="tab"
-                            aria-selected="false"
-                        >
-                            <span class="slds-vertical-tabs__left-icon"></span>
-                            <span class="slds-truncate" title="Tab 2"
-                                >Tab 2</span
-                            >
-                            <span class="slds-vertical-tabs__right-icon"></span>
-                        </div>
-                    </li>
-                    <li
-                        class="slds-vertical-tabs__nav-item"
-                        role="presentation"
-                    >
-                        <div
-                            class="slds-vertical-tabs__link"
-                            role="tab"
-                            aria-selected="false"
-                        >
-                            <span class="slds-vertical-tabs__left-icon"></span>
-                            <span
-                                class="slds-truncate"
-                                title="Tab 3 has a really long label and can wrap or truncate"
-                                >Tab 3 has a really long label and can wrap or
-                                truncate</span
-                            >
-                            <span class="slds-vertical-tabs__right-icon"></span>
-                        </div>
-                    </li>
+                                <div class={tabVerticalItemClass}></div>
+                            </div>
+                        </li>
+                    </template>
                 </ul>
                 <div
                     class="slds-vertical-tabs__content slds-show"
-                    id="slds-vertical-tabs-0"
                     role="tabpanel"
-                    aria-labelledby="slds-vertical-tabs-0__nav"
                 >
                     <div class="slds-text-longform">
                         <p>Content for Tab 1</p>

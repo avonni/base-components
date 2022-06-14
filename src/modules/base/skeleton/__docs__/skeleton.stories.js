@@ -234,7 +234,7 @@ Tabset.args = {
     variant: 'tabset',
     animation: 'pulse',
     variantAttributes: {
-        variant: 'scoped',
+        variant: 'vertical',
         tabs: 3
     }
 };

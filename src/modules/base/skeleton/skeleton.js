@@ -671,6 +671,19 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
+    get tabVerticalItemClass() {
+        return classSet('slds-truncate')
+            .add('avonni-skeleton__tabset-vertical-item')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
+    get tabVerticalItemContainerClass() {
+        return classSet('slds-vertical-tabs__link').add(
+            'avonni-skeleton__tabset-vertical-container'
+        );
+    }
+
     get tabContentClass() {
         return classSet('avonni-skeleton__tabset-content')
             .add('avonni-skeleton__variant-text')

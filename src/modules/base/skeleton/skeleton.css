@@ -408,6 +408,17 @@
     min-width: 4em;
 }
 
+.avonni-skeleton__tabset-vertical-item {
+    cursor: default;
+    border-right: 1px solid #e5e5e5;
+    height: 0.7em;
+    min-width: 4em;
+}
+
+.avonni-skeleton__tabset-vertical-container:hover {
+    background: #f3f3f3;
+}
+
 .avonni-skeleton__tabset-content {
     height: 0.7em;
     width: 30%;
