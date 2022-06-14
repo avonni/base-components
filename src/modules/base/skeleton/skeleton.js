@@ -672,9 +672,9 @@ export default class Skeleton extends LightningElement {
     }
 
     get tabContentClass() {
-        return classSet('slds-tabs_scoped__content').add(
-            'avonni-skeleton__tabset-content'
-        );
+        return classSet('avonni-skeleton__tabset-content')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     get treeHeaderClass() {

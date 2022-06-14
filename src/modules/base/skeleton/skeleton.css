@@ -409,7 +409,7 @@
 
 .avonni-skeleton__tabset-content {
     height: 0.7em;
-    min-width: 4em;
+    width: 30%;
 }
 
 .avonni-skeleton__tree-header {

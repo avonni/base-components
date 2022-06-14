@@ -736,19 +736,14 @@
         </template>
         <template if:true={isTabsetScopedVariant}>
             <div class="slds-tabs_scoped">
-                <ul class="slds-tabs_scoped__nav slds-truncate" role="tablist">
+                <ul class="slds-tabs_scoped__nav slds-truncate">
                     <template for:each={tabset} for:item="tab">
-                        <li
-                            key={tab.key}
-                            class="slds-tabs_scoped__item slds-is-active"
-                            role="presentation"
-                        >
+                        <li key={tab.key} class="slds-is-active">
                             <div class={tabScopedItemClass}></div>
                         </li>
                     </template>
                 </ul>
                 <div
-                    id="tab-scoped-1"
                     class="slds-tabs_scoped__content slds-show"
                     role="tabpanel"
                 >
