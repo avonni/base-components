@@ -81,6 +81,7 @@ describe('Combobox', () => {
         expect(element.selectedOptionsAriaLabel).toBe('Selected Options');
         expect(element.selectedOptionsDirection).toBe('horizontal');
         expect(element.sortableSelectedOptions).toBeFalsy();
+        expect(element.sortableSelectedOptionsIconName).toBeUndefined();
         expect(element.scopes).toMatchObject([]);
         expect(element.scopesGroups).toMatchObject([]);
         expect(element.search).toBeUndefined();
@@ -610,6 +611,35 @@ describe('Combobox', () => {
                     '[data-element-id="avonni-pill-container"]'
                 );
                 expect(pillContainer.sortable).toBeTruthy();
+            });
+    });
+
+    // sortable-selected-options-icon-name
+    // Depends on selectedOptionsDirection, isMultiSelect and options
+    it('Combobox: sortableSelectedOptionsIconName', () => {
+        element.options = options;
+        element.isMultiSelect = true;
+        element.sortableSelectedOptionsIconName = 'utility:user';
+        element.selectedOptionsDirection = 'vertical';
+
+        return Promise.resolve()
+            .then(() => {
+                const combobox = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-primitive-combobox-main"]'
+                );
+                combobox.dispatchEvent(
+                    new CustomEvent('privateselect', {
+                        detail: {
+                            selectedOptions: options
+                        }
+                    })
+                );
+            })
+            .then(() => {
+                const list = element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-list"]'
+                );
+                expect(list.sortableIconName).toBe('utility:user');
             });
     });
 
