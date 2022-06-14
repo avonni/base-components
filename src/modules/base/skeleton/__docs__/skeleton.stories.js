@@ -180,12 +180,14 @@ ButtonIcon.args = {
     }
 };
 
-// export const Combobox = Template.bind({});
-// Combobox.args = {
-//     variant: 'combobox',
-//     animation: 'pulse',
-//     variantAttributes: {}
-// };
+export const Combobox = Template.bind({});
+Combobox.args = {
+    variant: 'combobox',
+    animation: 'pulse',
+    variantAttributes: {
+        required: true
+    }
+};
 
 export const Datatable = Template.bind({});
 Datatable.args = {

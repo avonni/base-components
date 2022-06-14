@@ -475,10 +475,16 @@ export default class Skeleton extends LightningElement {
     }
 
     get comboboxLabelClass() {
-        return classSet('avonni-skeleton__base')
+        return classSet('avonni-skeleton__combobox-label')
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`)
             .toString();
+    }
+
+    get comboboxSearchClass() {
+        return classSet('avonni-skeleton__combobox-search')
+            .add('slds-input_faux')
+            .add('slds-has-focus');
     }
 
     /**

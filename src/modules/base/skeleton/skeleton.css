@@ -257,6 +257,16 @@
     min-width: 40px;
 }
 
+.avonni-skeleton__combobox-label {
+    height: 0.7em;
+    width: 30%;
+}
+
+.avonni-skeleton__combobox-search {
+    display: flex;
+    align-items: center;
+}
+
 .avonni-skeleton__badge-label {
     margin: 0.25rem 0.5rem;
     border-radius: var(--avonni-skeleton-radius-border);
