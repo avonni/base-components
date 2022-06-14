@@ -60,8 +60,7 @@ export default {
             ],
             description: 'Media position.',
             table: {
-                type: { summary: 'string' },
-                defaultValue: { summary: 'top' }
+                type: { summary: 'string' }
             }
         },
         iconName: {
@@ -82,6 +81,9 @@ export default {
                 type: { summary: 'string' }
             }
         }
+    },
+    args: {
+        mediaPosition: 'top'
     }
 };
 
@@ -91,14 +93,13 @@ export const Base = Template.bind({});
 Base.args = {
     title: 'Card Title',
     iconName: 'custom:custom102',
-    mediaPosition: 'left'
+    mediaPosition: 'center'
 };
 
 export const MediaTop = Template.bind({});
 MediaTop.args = {
     title: 'Card Title',
     iconName: 'custom:custom102',
-    mediaPosition: 'top',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
@@ -108,8 +109,7 @@ MediaLeft.args = {
     title: 'Card Title',
     iconName: 'custom:custom102',
     mediaPosition: 'left',
-    mediaSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+    mediaSrc: 'https://picsum.photos/id/1022/100'
 };
 
 export const MediaRight = Template.bind({});
@@ -117,8 +117,7 @@ MediaRight.args = {
     title: 'Card Title',
     iconName: 'custom:custom102',
     mediaPosition: 'right',
-    mediaSrc:
-        'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
+    mediaSrc: 'https://picsum.photos/id/1022/100'
 };
 
 export const MediaCenter = Template.bind({});

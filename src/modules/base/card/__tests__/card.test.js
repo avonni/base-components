@@ -41,6 +41,8 @@ describe('Card', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
@@ -48,6 +50,10 @@ describe('Card', () => {
             is: Card
         });
         document.body.appendChild(element);
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
+        });
     });
 
     it('Default attributes', () => {
@@ -99,6 +105,7 @@ describe('Card', () => {
                 '[data-element-id="avonni-card-media-image"]'
             );
             expect(bodyContainer.classList).toContain('avonni-card__media-top');
+            expect(mediaImage).toBeTruthy();
             expect(mediaImage.src).toBe('https://via.placeholder.com/300x200');
         });
     });
@@ -172,9 +179,9 @@ describe('Card', () => {
                 '[data-element-id="avonni-card-default-slot"]'
             );
             expect(bodyContainer.classList).toContain(
-                'avonni-card__media-center'
+                'slds-grid_vertical-reverse'
             );
-            expect(defaultSlot.classList).toContain('slds-hide');
+            expect(defaultSlot).toBeFalsy();
             expect(mediaImage.src).toBe('https://via.placeholder.com/300x200');
         });
     });
@@ -191,7 +198,7 @@ describe('Card', () => {
                 '[data-element-id="avonni-card-media-image"]'
             );
             expect(bodyContainer.classList).toContain(
-                'avonni-card__media-bottom'
+                'slds-grid_vertical-reverse'
             );
             expect(mediaImage.src).toBe('https://via.placeholder.com/300x200');
         });

@@ -1143,6 +1143,8 @@ export default class Calendar extends LightningElement {
 
         if (event.altKey) {
             if (event.keyCode === keyCodes.pageup) {
+                event.preventDefault();
+                event.stopPropagation();
                 nextDate = new Date(
                     initialFocusDate.setFullYear(
                         initialFocusDate.getFullYear() - 1
@@ -1150,6 +1152,8 @@ export default class Calendar extends LightningElement {
                 );
             }
             if (event.keyCode === keyCodes.pagedown) {
+                event.preventDefault();
+                event.stopPropagation();
                 nextDate = initialFocusDate.setFullYear(
                     initialFocusDate.getFullYear() + 1
                 );
@@ -1157,48 +1161,66 @@ export default class Calendar extends LightningElement {
         } else {
             switch (event.keyCode) {
                 case keyCodes.left:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 1
                     );
                     break;
                 case keyCodes.right:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 1
                     );
                     break;
                 case keyCodes.up:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - 7
                     );
                     break;
                 case keyCodes.down:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() + 7
                     );
                     break;
                 case keyCodes.home:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() - initialFocusDate.getDay()
                     );
                     break;
                 case keyCodes.end:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setDate(
                         initialFocusDate.getDate() +
                             (6 - initialFocusDate.getDay())
                     );
                     break;
                 case keyCodes.pagedown:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() - 1
                     );
                     break;
                 case keyCodes.pageup:
+                    event.preventDefault();
+                    event.stopPropagation();
                     nextDate = initialFocusDate.setMonth(
                         initialFocusDate.getMonth() + 1
                     );
                     break;
                 case keyCodes.space:
                 case keyCodes.enter:
+                    event.preventDefault();
+                    event.stopPropagation();
                     {
                         const selectedDay = event.target.querySelector(
                             '[data-element-id="span-day-label"]'

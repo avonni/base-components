@@ -47,35 +47,66 @@ const MEDIA_POSITIONS = {
     default: 'top'
 };
 
+/**
+ * @class
+ * @name Card
+ * @descriptor avonni-card
+ * @storyId example-card--base
+ * @public
+ */
 export default class Card extends LightningElement {
+    /**
+     * The title in the header of the card, right of the icon. The title attribute supersedes the title slot.
+     *
+     * @type {string}
+     * @public
+     */
+    @api title;
+    /**
+     * The Lightning Design System name displayed left of the title in the header.
+     * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
+     *
+     * @type {string}
+     * @public
+     */
+    @api iconName;
+    /**
+     * Source for the image or media.
+     *
+     * @type {string}
+     * @public
+     */
+    @api mediaSrc;
+
     _title;
     _iconName;
-    _mediaPosition = 'top';
+    _mediaPosition = MEDIA_POSITIONS.default;
     _mediaSrc;
 
-    showMedia = false;
-    showMediaSlot = false;
-    showMediaActionsSlot = false;
+    showMedia = true;
+    showMediaSlot = true;
     showTitleSlot = true;
-    showActionsSlot = false;
+    showActionsSlot = true;
     showDefaultSlot = true;
-    showFooterSlot = false;
+    showFooterSlot = true;
 
     renderedCallback() {
-        this.showMedia = !!this.mediaSrc || this.showMediaSlot;
+        this.showMedia = this.mediaSrc || this.showMediaSlot;
         this.showMediaSlot =
-            this.mediaSlot && this.mediaSlot.assignedElements().length !== 0;
-        this.showMediaActionsSlot =
-            this.mediaActionsSlot &&
-            this.mediaActionsSlot.assignedElements().length !== 0;
+            !this.mediaSrc &&
+            this.mediaSlot &&
+            this.mediaSlot.assignedElements().length !== 0;
         this.showActionsSlot =
             this.actionsSlot &&
             this.actionsSlot.assignedElements().length !== 0;
         this.showDefaultSlot =
-            this.defaultSlot &&
-            (this.defaultSlot.assignedElements().length !== 0 ||
-                (this.defaultSlot.textContent &&
-                    this.defaultSlot.textContent.trim().length !== 0));
+            (this.defaultSlot &&
+                this.defaultSlot.assignedElements().length !== 0) ||
+            (this.defaultSlot &&
+                this.defaultSlot.innerText &&
+                this.defaultSlot.innerText.trim().length !== 0);
+        this.showTitleSlot =
+            this.titleSlot && this.titleSlot.assignedElements().length !== 0;
         this.showFooterSlot =
             this.footerSlot && this.footerSlot.assignedElements().length !== 0;
     }
@@ -87,54 +118,8 @@ export default class Card extends LightningElement {
      */
 
     /**
-     * The title in the header of the card, right of the icon. The title attribute supersedes the title slot.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get title() {
-        return this._title;
-    }
-
-    set title(value) {
-        this._title = value;
-    }
-
-    /**
-     * The Lightning Design System name displayed left of the title in the header.
-     * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get iconName() {
-        return this._iconName;
-    }
-
-    set iconName(value) {
-        this._iconName = normalizeString(value);
-    }
-
-    /**
-     * Source for the image or media.
-     *
-     * @type {string}
-     * @public
-     */
-    @api
-    get mediaSrc() {
-        return this._mediaSrc;
-    }
-
-    set mediaSrc(value) {
-        this._mediaSrc = normalizeString(value);
-    }
-
-    /**
      * Position of the media relative to the card.
-     * Valid values are "top", "center", "left", "right", "bottom", "background", and "overlay". Defaults to "top".
+     * Valid values are "top", "center", "left", "right", "bottom", "background", and "overlay".
      *
      * @type {string}
      * @public
@@ -211,7 +196,7 @@ export default class Card extends LightningElement {
      */
     get defaultSlot() {
         return this.template.querySelector(
-            'slot[data-element-id="avonni-card-center-default-slot"]'
+            'slot[data-element-id="avonni-card-default-slot"], slot[data-element-id="avonni-card-center-default-slot"]'
         );
     }
 
@@ -221,16 +206,12 @@ export default class Card extends LightningElement {
      * @type {boolean}
      */
     get hasBottomBorder() {
-        if (
-            this.mediaPosition === 'top' &&
-            (this.showFooterSlot || this.showDefaultSlot || this.hasHeader)
-        ) {
-            return true;
-        }
-        if (this.mediaPosition === 'center' && this.showDefaultSlot) {
-            return true;
-        }
-        return false;
+        return (
+            this.showMedia &&
+            ((this.mediaPosition === 'top' &&
+                (this.showDefaultSlot || this.hasHeader)) ||
+                (this.mediaPosition === 'center' && this.showDefaultSlot))
+        );
     }
 
     /**
@@ -239,14 +220,12 @@ export default class Card extends LightningElement {
      * @type {boolean}
      */
     get hasTopBorder() {
-        if (
-            (this.mediaPosition === 'bottom' ||
-                this.mediaPosition === 'center') &&
-            this.hasHeader
-        ) {
-            return true;
-        }
-        return false;
+        return (
+            this.showMedia &&
+            ((this.mediaPosition === 'center' && this.hasHeader) ||
+                (this.mediaPosition === 'bottom' &&
+                    (this.hasHeader || this.showDefaultSlot)))
+        );
     }
 
     /**
@@ -258,20 +237,22 @@ export default class Card extends LightningElement {
         return (
             this.showTitleSlot ||
             this.title ||
-            !!this.iconName ||
+            this.iconName ||
             this.showActionsSlot
         );
     }
 
     /**
-     * Card body classes
+     * Card body classes ... slds-grid_vertical
      *
      * @type {string}
      */
     get computedCardClasses() {
-        return classSet('avonni-card__body-container')
+        return classSet(
+            'avonni-card__body-container slds-grid slds-is-relative slds-scrollable_none slds-scrollable_none slds-col'
+        )
             .add({
-                'avonni-card__media-top avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
+                'avonni-card__media-top slds-grid_vertical avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
                     this.mediaPosition === 'top'
             })
             .add({
@@ -283,14 +264,13 @@ export default class Card extends LightningElement {
                     this.mediaPosition === 'right'
             })
             .add({
-                'avonni-card__media-center': this.mediaPosition === 'center'
+                'slds-grid_vertical-reverse':
+                    this.mediaPosition === 'center' ||
+                    this.mediaPosition === 'bottom'
             })
             .add({
                 'avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
                     this.mediaPosition === 'center' && !this.hasHeader
-            })
-            .add({
-                'avonni-card__media-bottom': this.mediaPosition === 'bottom'
             })
             .add({
                 'avonni-card__media-background avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
@@ -329,8 +309,7 @@ export default class Card extends LightningElement {
      * @type {string}
      */
     get computedMediaClasses() {
-        return classSet('avonni-card__media-container')
-            .add({ 'slds-hide': !this.showMedia })
+        return classSet('avonni-card__media-container slds-col')
             .add({ 'avonni-card__media-border-bottom': this.hasBottomBorder })
             .add({ 'avonni-card__media-border-top': this.hasTopBorder })
             .add({
@@ -343,55 +322,11 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Header classes
+     * Show default slot for center media.
      *
-     * @type {string}
+     * @type {boolean}
      */
-    get computedHeaderClasses() {
-        return classSet('slds-has-flexi-truncate avonni-card__header')
-            .add({ 'slds-hide': !this.hasHeader && !this.isEmptyCard })
-            .toString();
-    }
-
-    /**
-     * Default slot classes
-     *
-     * @type {string}
-     */
-    get computedDefaultSlotClasses() {
-        return classSet('avonni-card__default-slot')
-            .add({
-                'slds-hide':
-                    this.mediaPosition === 'center' ||
-                    (!this.showDefaultSlot && !this.isEmptyCard)
-            })
-            .toString();
-    }
-
-    /**
-     * Default slot for center media classes
-     *
-     * @type {string}
-     */
-    get computedCenterDefaultSlotClasses() {
-        return classSet('avonni-card__center-default-slot')
-            .add({
-                'slds-hide':
-                    !this.showDefaultSlot ||
-                    !this.showMedia ||
-                    this.mediaPosition !== 'center'
-            })
-            .toString();
-    }
-
-    /**
-     * Footer slot classes
-     *
-     * @type {string}
-     */
-    get computedFooterClasses() {
-        return classSet('avonni-card__footer')
-            .add({ 'slds-hide': !this.showFooterSlot })
-            .toString();
+    get isCenterMedia() {
+        return this.mediaPosition === 'center';
     }
 }

@@ -9,12 +9,6 @@
  * @name title
  */
 /**
- * Placeholder for card acions. the action is displayed to the right of the title.
- *
- * @memberof slots
- * @name actions
- */
-/**
  * Placeholder for card media. The media is placed relative to the content.
  * The media can be placed to the left, right, top, bottom, center, background or overlay using the mediaPosition attribute.
  *
@@ -29,14 +23,19 @@
  * @name media-actions
  */
 /**
+ * Placeholder for card actions. the action is displayed to the right of the title.
+ *
+ * @memberof slots
+ * @name actions
+ */
+/**
  * Placeholder for card footer. The footer is always placed at the bottom of the card.
  *
  * @memberof slots
  * @name footer
  */
 /**
- * Placeholder for card default content. The default content is placed below the header and relative to the content.
- * Slot assignment is not required.
+ * Placeholder for card default content. The default content is placed below the header and relative to the media.
  *
  * @memberof slots
  * @name default
@@ -48,7 +47,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-shadow
- * @default '0 2px 2px 0 rgba(0, 0, 0, 0.1)'
+ * @default 0 2px 2px 0 rgba(0, 0, 0, 0.1)
  * @type string
  */
 /**
@@ -191,7 +190,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-background-media-overlay-background
- * @default 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.25) 75%, rgba(0, 0, 0, 0) 100%)'
+ * @default linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.25) 75%, rgba(0, 0, 0, 0) 100%)
  * @type string
  */
 /**
@@ -203,7 +202,7 @@
 /**
  * @memberof stylingHooks
  * @name --avonni-card-overlay-media-overlay-background
- * @default 'linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.25) 75%, rgba(0, 0, 0, 0) 100%)'
+ * @default linear-gradient(0deg, rgba(0, 0, 0, 0.5) 0%, rgba(0, 0, 0, 0.25) 75%, rgba(0, 0, 0, 0) 100%)
  * @type string
  */
 /**
