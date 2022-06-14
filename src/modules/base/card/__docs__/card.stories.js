@@ -91,15 +91,14 @@ const Template = (args) => Card(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    title: 'Card Title',
-    iconName: 'custom:custom102',
-    mediaPosition: 'center'
+    // title: 'Card Title',
+    // iconName: 'custom:custom102'
 };
 
 export const MediaTop = Template.bind({});
 MediaTop.args = {
-    title: 'Card Title',
-    iconName: 'custom:custom102',
+    // title: 'Card Title',
+    // iconName: 'custom:custom102',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };
