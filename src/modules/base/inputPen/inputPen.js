@@ -864,7 +864,14 @@ export default class InputPen extends LightningElement {
     }
 
     getSplinePoints() {
-        const tension = 0.5;
+        if (
+            this.xPositions[3] === this.xPositions[2] &&
+            this.yPositions[3] === this.yPositions[2]
+        ) {
+            return [];
+        }
+
+        const tension = 1;
 
         let x0;
         let y0;
@@ -882,8 +889,10 @@ export default class InputPen extends LightningElement {
         const data = [
             this.xPositions[3],
             this.yPositions[3],
-            this.xPositions[6],
-            this.yPositions[6],
+            this.xPositions[5],
+            this.yPositions[5],
+            this.xPositions[7],
+            this.yPositions[7],
             this.xPositions[9],
             this.yPositions[9]
         ];
@@ -913,27 +922,31 @@ export default class InputPen extends LightningElement {
             cp2y = y2 - ((y3 - y1) / 6) * tension;
             path.push(cp1x, cp1y, cp2x, cp2y, x2, y2);
         }
-        return path;
+        return path.slice(6, 14);
     }
 
     drawSpline(pts, penSize) {
-        this.ctx.beginPath();
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
-        this.ctx.strokeStyle = '#ff0000';
-        this.ctx.lineWidth = penSize;
-        this.ctx.moveTo(pts[0], pts[1]);
-        for (let i = 2; i < pts.length; i += 6) {
+        const colored = false;
+        console.log(pts);
+        for (let i = 0; i < pts.length; i += 2) {
+            this.ctx.beginPath();
+            this.ctx.lineCap = 'round';
+            this.ctx.lineJoin = 'round';
+            this.ctx.strokeStyle = colored
+                ? `hsl(${Math.random() * 355},75%,50%)`
+                : 'black';
+            this.ctx.lineWidth = penSize;
+            this.ctx.moveTo(pts[i], pts[i + 1]);
             this.ctx.bezierCurveTo(
-                pts[i],
-                pts[i + 1],
                 pts[i + 2],
                 pts[i + 3],
                 pts[i + 4],
-                pts[i + 5]
+                pts[i + 5],
+                pts[i + 6],
+                pts[i + 7]
             );
+            this.ctx.stroke();
         }
-        this.ctx.stroke();
     }
 
     /**
@@ -947,13 +960,16 @@ export default class InputPen extends LightningElement {
             Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
         this.xPositions[0] = event.clientX - clientRect.left;
         this.yPositions[0] = event.clientY - clientRect.top;
-        if (distance > 0) {
+        if (distance > 3) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
             this.yPositions.unshift(event.clientY - clientRect.top);
         }
         let velocity = Math.sqrt(
-            Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY))
+            Math.sqrt(
+                Math.pow(this.xPositions[5] - this.xPositions[7], 2) +
+                    Math.pow(this.yPositions[5] - this.yPositions[7], 2)
+            )
         );
         this.prevVelocity = Math.min(
             Math.max(velocity, this.prevVelocity - 0.2),
@@ -969,12 +985,19 @@ export default class InputPen extends LightningElement {
         const distance = this.getDistanceTraveled(event);
 
         // draw
-        if (distance > 0) {
+        if (distance > 3) {
             this.prevDist = 0;
-            if (this.moveCoordinatesAdded >= 6) {
+            if (this.moveCoordinatesAdded >= 2) {
                 this.moveCoordinatesAdded = 0;
-                const velocity = this.prevVelocity;
-                const calculatedSize = this._size / velocity;
+                const xVelocity = this.xPositions[3] - this.xPositions[6];
+                const yVelocity = this.yPositions[3] - this.yPositions[6];
+
+                const velocity = Math.sqrt(
+                    Math.sqrt(
+                        Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity)
+                    )
+                );
+                const calculatedSize = this.size / velocity;
                 this.drawSpline(this.getSplinePoints(), calculatedSize);
                 this.prevSize = calculatedSize;
             }
