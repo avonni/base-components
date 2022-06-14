@@ -820,6 +820,7 @@ export default class InputPen extends LightningElement {
         const clientRect = this.canvasElement.getBoundingClientRect();
         this.xPositions.pop();
         this.yPositions.pop();
+        console.log('setup coords');
         while (this.xPositions.length < 5) {
             this.xPositions.unshift(eventParam.clientX - clientRect.left);
             this.yPositions.unshift(eventParam.clientY - clientRect.top);
@@ -859,6 +860,83 @@ export default class InputPen extends LightningElement {
         this.ctx.stroke();
     }
 
+    getSplinePoints() {
+        const numOfSegments = 16;
+
+        const data = [];
+        this.xPositions.forEach((val, index) => {
+            data.push(val);
+            data.push(this.yPositions[index]);
+        });
+        data.shift();
+        data.shift();
+
+        let pts = [];
+        let res = [];
+        let x;
+        let y;
+
+        let t1x;
+        let t2x;
+        let t1y;
+        let t2y;
+
+        let c1;
+        let c2;
+        let c3;
+        let c4;
+
+        let step;
+        let splineStep;
+
+        pts = [...data];
+        pts.unshift(data[1]);
+        pts.unshift(data[0]);
+        pts.push(data[data.length - 2]);
+        pts.push(data[data.length - 1]);
+
+        // cardinal spline algorithm, based on : https://stackoverflow.com/questions/7054272/how-to-draw-smooth-curve-through-n-points-using-javascript-html5-canvas
+        for (let i = 2; i < pts.length - 4; i += 2) {
+            for (splineStep = 0; splineStep <= numOfSegments; splineStep++) {
+                t1x = pts[i + 2] - pts[i - 2];
+                t2x = pts[i + 4] - pts[i];
+                t1y = pts[i + 3] - pts[i - 1];
+                t2y = pts[i + 5] - pts[i + 1];
+
+                // calculate step
+                step = splineStep / numOfSegments;
+
+                // calculate cardinals
+                c1 = 2 * Math.pow(step, 3) - 3 * Math.pow(step, 2) + 1;
+                c2 = -(2 * Math.pow(step, 3)) + 3 * Math.pow(step, 2);
+                c3 = Math.pow(step, 3) - 2 * Math.pow(step, 2) + step;
+                c4 = Math.pow(step, 3) - Math.pow(step, 2);
+
+                // calc x and y cords with common control vectors
+                x = c1 * pts[i] + c2 * pts[i + 2] + c3 * t1x + c4 * t2x;
+                y = c1 * pts[i + 1] + c2 * pts[i + 3] + c3 * t1y + c4 * t2y;
+
+                //store points in array
+                res.push(x);
+                res.push(y);
+            }
+        }
+        return res;
+    }
+
+    drawLines(pts, penSize) {
+        this.ctx.beginPath();
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.strokeStyle = '#ff0000';
+        this.ctx.lineWidth = penSize;
+        this.ctx.moveTo(pts[0], pts[1]);
+        for (let i = 2; i < pts.length - 3; i += 2) {
+            this.ctx.lineTo(pts[i], pts[i + 1]);
+        }
+        this.ctx.stroke();
+    }
+
     /**
      * Get object if velocity and distance traveled by cursor.
      */
@@ -868,9 +946,12 @@ export default class InputPen extends LightningElement {
         const deltaY = this.yPositions[0] - (event.clientY - clientRect.top);
         const distance =
             Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
-        if (distance > 10) {
+        console.log('distance check');
+        if (distance > 4) {
+            this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
             this.yPositions.unshift(event.clientY - clientRect.top);
+            console.log('' + this.xPositions.length + '+ 2');
         }
         let velocity = Math.sqrt(
             Math.sqrt(Math.sqrt(deltaX * deltaX + deltaY * deltaY))
@@ -889,44 +970,19 @@ export default class InputPen extends LightningElement {
         const distance = this.getDistanceTraveled(event);
 
         // draw
-        if (distance > 10) {
-            const velocity = this.prevVelocity;
-            const calculatedSize = Math.min(
-                Math.max(this._size / velocity, this.prevSize - velocity),
-                this.prevSize + velocity
-            );
-            this.ctx.beginPath();
-            this.ctx.lineCap = 'round';
-            this.ctx.lineJoin = 'round';
-            this.ctx.strokeStyle = '#000000';
-            this.ctx.lineWidth = calculatedSize;
-
-            this.ctx.moveTo(this.xPositions[0], this.yPositions[0]);
-
-            let i = 0;
-
-            for (i = 1; i < this.xPositions.length - 1; i++) {
-                let xc = (this.xPositions[i] + this.xPositions[i + 1]) / 2;
-                let yc = (this.yPositions[i] + this.yPositions[i + 1]) / 2;
-                this.ctx.quadraticCurveTo(
-                    this.xPositions[i],
-                    this.yPositions[i],
-                    xc,
-                    yc
-                );
-            }
-            // curve through the last two points
-            this.ctx.quadraticCurveTo(
-                this.xPositions[i],
-                this.yPositions[i],
-                this.xPositions[i + 1],
-                this.yPositions[i + 1]
-            );
-
-            this.ctx.closePath();
-            this.ctx.stroke();
-            this.prevSize = calculatedSize;
+        if (distance > 4) {
             this.prevDist = 0;
+            if (this.moveCoordinatesAdded >= 4) {
+                this.moveCoordinatesAdded = 0;
+                const velocity = this.prevVelocity;
+                const calculatedSize = Math.min(
+                    Math.max(this._size / velocity, this.prevSize - velocity),
+                    this.prevSize + velocity
+                );
+                this.drawLines(this.getSplinePoints(), calculatedSize);
+                this.prevSize = calculatedSize;
+            }
+            console.log('' + this.xPositions.length + '- 2');
             this.xPositions.pop();
             this.yPositions.pop();
         } else {
