@@ -185,6 +185,7 @@ Combobox.args = {
     variant: 'combobox',
     animation: 'pulse',
     variantAttributes: {
+        variant: 'base',
         required: true
     }
 };

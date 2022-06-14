@@ -190,6 +190,16 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isBaseComboboxVariant() {
+        return this.variantAttributes.variant === 'base';
+    }
+
+    @api
+    get isLookupComboboxVariant() {
+        return this.variantAttributes.variant === 'lookup';
+    }
+
+    @api
     get isDatatableVariant() {
         return this.variant === 'datatable';
     }
