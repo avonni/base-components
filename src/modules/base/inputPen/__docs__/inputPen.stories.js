@@ -255,5 +255,6 @@ Signature.args = {
     label: 'Signature Field',
     signature: true,
     required: true,
+    hideControls: true,
     size: 16
 };

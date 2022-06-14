@@ -118,6 +118,9 @@ export default class InputPen extends LightningElement {
     ctx;
     cursor;
 
+    showExtraButtons = true;
+    showExtraTools = true;
+
     constructor() {
         super();
         this.onMouseUp = this.handleMouseUp.bind(this);
@@ -141,6 +144,13 @@ export default class InputPen extends LightningElement {
     }
 
     renderedCallback() {
+        if (this.toolSlot) {
+            this.showExtraTool = this.toolSlot.assignedElements().length !== 0;
+        }
+        if (this.buttonSlot) {
+            this.showExtraButton =
+                this.buttonSlot.assignedElements().length !== 0;
+        }
         if (!this._rendered || this._updatedDOM) {
             this.canvasElement = this.template.querySelector(
                 '[data-element-id="canvas"]'
@@ -240,7 +250,7 @@ export default class InputPen extends LightningElement {
             return true;
         }
 
-        return this._hideControls || this._signature;
+        return this._hideControls;
     }
 
     set hideControls(value) {
@@ -926,8 +936,7 @@ export default class InputPen extends LightningElement {
     }
 
     drawSpline(pts, penSize) {
-        const colored = false;
-        console.log(pts);
+        const colored = true;
         for (let i = 0; i < pts.length; i += 2) {
             this.ctx.beginPath();
             this.ctx.lineCap = 'round';
@@ -1058,6 +1067,24 @@ export default class InputPen extends LightningElement {
                 detail: this.value
             })
         );
+    }
+
+    /**
+     * Get the tool slot DOM element.
+     *
+     * @type {Element}
+     */
+    get toolSlot() {
+        return this.template.querySelector('slot[name=tool]');
+    }
+
+    /**
+     * Get the button slot DOM element.
+     *
+     * @type {Element}
+     */
+    get buttonSlot() {
+        return this.template.querySelector('slot[name=button]');
     }
 
     /**
