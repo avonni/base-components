@@ -1115,8 +1115,6 @@ export default class Kanban extends LightningElement {
          * @param {string} action Label of the group the data card has been moved to.
          * @param {object[]} records New records of the Kanban.
          * @public
-         * @bubbles
-         * @cancelable
          */
         this.dispatchEvent(
             new CustomEvent('change', {
@@ -1124,10 +1122,7 @@ export default class Kanban extends LightningElement {
                     id: arr[fromIndex].id,
                     action: arr[fromIndex][this.groupFieldName],
                     records: this.records
-                },
-                composed: false,
-                bubbles: true,
-                cancelable: true
+                }
             })
         );
 
