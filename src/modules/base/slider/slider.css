@@ -30,6 +30,10 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+:host {
+    --avonni-slider-thumb-width: 5px;
+}
+
 .avonni-slider__slider::-webkit-slider-runnable-track {
     background: none;
     border-radius: 0px;
@@ -371,7 +375,6 @@
     left: 50%;
     top: calc(var(--avonni-slider-track-height, 4px) / 2);
     border-radius: var(--avonni-slider-thumb-radius, 2rem);
-    border: solid rgba(0, 0, 0, 0);
     transform: translate(-50%, -50%);
     cursor: pointer;
     pointer-events: none;

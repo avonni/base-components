@@ -859,7 +859,9 @@ export default class Slider extends LightningElement {
      */
     get _thumbRadius() {
         const thumbRadius = parseInt(
-            getComputedStyle(this.template.host)
+            getComputedStyle(
+                this.template.querySelector('.avonni-slider__slider')
+            )
                 .getPropertyValue('--avonni-slider-thumb-width')
                 .split('px')[0],
             10
@@ -894,6 +896,20 @@ export default class Slider extends LightningElement {
      */
     get _ruler() {
         return this.template.querySelector('[data-element-id="ruler"]');
+    }
+
+    /**
+     *  Returns the spacer element height for spacing on vertical slider.
+     * @type {object}
+     *
+     */
+    get _spacerHeight() {
+        return (
+            this.template.querySelector('[data-element-id="spacer"]')
+                .clientHeight -
+            2 * this._thumbRadius -
+            0.5
+        );
     }
 
     /*
@@ -1059,10 +1075,7 @@ export default class Slider extends LightningElement {
             '[data-element-id="custom-label-container"]'
         ).clientWidth;
         if (this.isVertical) {
-            const totalHeight = this.template.querySelector(
-                '[data-element-id="spacer"]'
-            ).clientHeight;
-            totalWidth = totalHeight - 2 * this._thumbRadius;
+            totalWidth = this._spacerHeight;
         }
         customLabelNodes.forEach((element, index) => {
             const value = this.customLabels[index].value;
@@ -1581,13 +1594,8 @@ export default class Slider extends LightningElement {
 
         let totalWidth = this.getInput(0).clientWidth;
         if (this.isVertical) {
-            const totalHeight = this.template.querySelector(
-                '[data-element-id="spacer"]'
-            ).clientHeight;
-            totalWidth = totalHeight - 2 * this._thumbRadius - 0.5;
+            totalWidth = this._spacerHeight;
         }
-        console.log(totalWidth);
-
         if (this.isVertical) {
             pin.style.left = `${pinProgress * totalWidth}px`;
         } else {
@@ -1602,19 +1610,23 @@ export default class Slider extends LightningElement {
         const hitbox = this.template.querySelector(
             `[data-group-name="hitbox"][data-index="${index}"]`
         );
-        const pinProgress =
-            this.getPercentOfValue(this._computedValues[parseInt(index, 10)]) *
-            PERCENT_SCALING_FACTOR;
-        if (!this.isVertical) {
-            hitbox.style.left = `calc(${pinProgress}% - ${
-                pinProgress *
-                    ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR) -
-                this._thumbRadius
-            }px)`;
+        const hitboxProgress = this.getPercentOfValue(
+            this._computedValues[parseInt(index, 10)]
+        );
+
+        let totalWidth = this.getInput(0).clientWidth;
+        if (this.isVertical) {
+            totalWidth = this._spacerHeight;
+        }
+        if (this.isVertical) {
+            hitbox.style.left = `${
+                hitboxProgress * totalWidth + this._thumbRadius
+            }px`;
         } else {
-            hitbox.style.left = `calc(${pinProgress}% - ${
-                pinProgress * ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR)
-            }px)`;
+            hitbox.style.left = `${
+                hitboxProgress * totalWidth +
+                this._thumbRadius * (1 - hitboxProgress * 2)
+            }px`;
         }
     }
 
