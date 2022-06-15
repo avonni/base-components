@@ -393,6 +393,7 @@ Base.args = {
 export const Pin = MaxHeightTemplate.bind({});
 Pin.args = {
     label: 'Slide to view value pin',
+    hideMinMaxValues: true,
     showPin: true
 };
 

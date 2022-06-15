@@ -30,17 +30,17 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-.avonni-slider__label {
-    padding-bottom: 0.5rem;
-    max-width: 100%;
-}
-
 .avonni-slider__slider::-webkit-slider-runnable-track {
     background: none;
     border-radius: 0px;
 }
-.avonni-slider__container {
-    display: flex;
+.avonni-slider__slider::-ms-track {
+    background: none;
+    border-radius: 0px;
+}
+.avonni-slider__slider::-moz-range-track {
+    background: none;
+    border-radius: 0px;
 }
 .avonni-slider__container-horizontal-size_x-small {
     width: var(--lwc-sizeXSmall, 12rem);
@@ -303,7 +303,45 @@
     background: var(--avonni-slider-thumb-color, #0176d3);
 }
 
+.avonni-slider__slider::-ms-thumb {
+    height: calc(var(--avonni-slider-thumb-width, 8px) * 2);
+    width: calc(var(--avonni-slider-thumb-width, 8px) * 2);
+    transform: translate(
+        0px,
+        calc(8px - calc(var(--avonni-slider-thumb-width, 8px)))
+    );
+    border-radius: var(--avonni-slider-thumb-radius, 0.5rem);
+    background: var(--avonni-slider-thumb-color, #0176d3);
+}
+
+.avonni-slider__slider::-moz-range-thumb {
+    height: calc(var(--avonni-slider-thumb-width, 8px) * 2);
+    width: calc(var(--avonni-slider-thumb-width, 8px) * 2);
+    transform: translate(
+        0px,
+        calc(8px - calc(var(--avonni-slider-thumb-width, 8px)))
+    );
+    border-radius: var(--avonni-slider-thumb-radius, 0.5rem);
+    background: var(--avonni-slider-thumb-color, #0176d3);
+}
+
 .avonni-slider__slider:focus::-webkit-slider-thumb {
+    background: var(--avonni-slider-thumb-color, #014486);
+    box-shadow: var(
+        --avonni-slider-thumb-color-shadow-focus,
+        0 0 3px 1px #99d3ff
+    );
+}
+
+.avonni-slider__slider:focus::-ms-thumb {
+    background: var(--avonni-slider-thumb-color, #014486);
+    box-shadow: var(
+        --avonni-slider-thumb-color-shadow-focus,
+        0 0 3px 1px #99d3ff
+    );
+}
+
+.avonni-slider__slider:focus::-moz-range-thumb {
     background: var(--avonni-slider-thumb-color, #014486);
     box-shadow: var(
         --avonni-slider-thumb-color-shadow-focus,
@@ -317,6 +355,14 @@
 }
 
 .avonni-slider__slider_disabled::-webkit-slider-thumb {
+    background: #e9e9e9;
+}
+
+.avonni-slider__slider_disabled::-ms-thumb {
+    background: #e9e9e9;
+}
+
+.avonni-slider__slider_disabled::-moz-range-thumb {
     background: #e9e9e9;
 }
 

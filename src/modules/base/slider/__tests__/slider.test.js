@@ -344,7 +344,7 @@ describe('Slider', () => {
 
     //showPin
     it('showPin = false', () => {
-        element.pin = false;
+        element.showPin = false;
 
         return Promise.resolve().then(() => {
             expect(element.showPin).toEqual(false);
@@ -1169,7 +1169,7 @@ describe('Slider', () => {
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toEqual(34);
-            expect(handler.mock.calls[0][0].pins).toBeFalsy();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
@@ -1189,7 +1189,7 @@ describe('Slider', () => {
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.value).toEqual([1, 2, 3]);
-            expect(handler.mock.calls[0][0].pins).toBeFalsy();
+            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
         });
