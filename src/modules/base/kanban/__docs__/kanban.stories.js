@@ -159,12 +159,12 @@ Base.args = {
 export const path = Template.bind({});
 path.args = {
     variant: 'path',
-    summarizeFieldName: 'percent'
+    summarizeFieldName: 'Percent'
 };
 
 export const readOnly = Template.bind({});
 readOnly.args = {
     variant: 'base',
     readOnly: true,
-    summarizeFieldName: 'percent'
+    summarizeFieldName: 'Percent'
 };

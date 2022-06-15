@@ -732,9 +732,10 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleGroupMouseDown(event) {
-        if (this._variant !== 'base' || this._readOnly) {
+        if (this._variant !== 'base' || this._readOnly || event.button !== 0) {
             return;
         }
+
         // this handles when the user dragged a group out of the kanban, and released his click.
         // a second click on the dragged group (impossible otherwise) behaves has a click release
         if (event.currentTarget.parentElement === this._draggedGroup) {
@@ -901,7 +902,8 @@ export default class Kanban extends LightningElement {
 
         if (
             this.readOnly ||
-            event.target.classList.contains('slds-dropdown-trigger')
+            event.target.classList.contains('slds-dropdown-trigger') ||
+            event.button !== 0
         ) {
             return;
         }
