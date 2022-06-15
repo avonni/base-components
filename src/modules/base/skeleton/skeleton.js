@@ -709,9 +709,7 @@ export default class Skeleton extends LightningElement {
     }
 
     get treeItemContainerClass() {
-        return classSet('avonni-skeleton__item-container').add(
-            'slds-list_horizontal'
-        );
+        return classSet('avonni-skeleton__item-container');
     }
 
     /*

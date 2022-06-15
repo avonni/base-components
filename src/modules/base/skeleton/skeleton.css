@@ -434,7 +434,13 @@
     width: 4em;
 }
 
+.avonni-skeleton__tree-item-content {
+    align-self: center;
+}
+
 .avonni-skeleton__item-container {
+    height: 2.2em;
+    display: flex;
     padding: 0.375rem 0 0.375rem 1rem;
 }
 
