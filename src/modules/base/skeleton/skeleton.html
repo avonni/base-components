@@ -47,7 +47,6 @@
                     data-element-id="avonni-skeleton"
                 ></div>
             </div>
-            <!-- <template if:false={hideAvatarDetails}> -->
             <p
                 if:true={showPrimaryText}
                 class={primaryTextClass}
@@ -104,7 +103,6 @@
         </ul>
     </template>
     <template if:true={isButtonVariant}>
-        <!-- <span class="slds-truncate"> -->
         <span class={buttonWrapper} data-element-id="button-element">
             <template if:true={buttonHasLeftIcon}>
                 <svg
@@ -120,7 +118,6 @@
                 ></svg>
             </template>
         </span>
-        <!-- </span> -->
     </template>
     <template if:true={isButtonIconVariant}>
         <button
@@ -548,82 +545,6 @@
                         </td>
                     </tr>
                 </template>
-                <!-- <tr aria-selected="false" class="slds-hint-parent">
-                    <td class={datatableTDClass} role="gridcell">
-                        <template if:false={hideCheckboxColumn}>
-                            <div class="slds-checkbox">
-                                <input
-                                    type="checkbox"
-                                    name="options"
-                                    id="checkbox-02"
-                                    value="checkbox-02"
-                                    tabindex="0"
-                                    aria-labelledby="check-button-label-02 column-group-header"
-                                    disabled=""
-                                />
-                                <label
-                                    class="slds-checkbox__label"
-                                    for="checkbox-02"
-                                    id="check-button-label-02"
-                                >
-                                    <span class="slds-checkbox_faux"></span>
-                                    <span
-                                        class="
-                                            slds-form-element__label
-                                            slds-assistive-text
-                                        "
-                                    ></span>
-                                </label>
-                            </div>
-                        </template>
-                    </td>
-                    <th class={datatableTHClass} scope="row"></th>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                </tr>
-                <tr aria-selected="false" class="slds-hint-parent">
-                    <td class={datatableTDClass} role="gridcell">
-                        <template if:false={hideCheckboxColumn}>
-                            <div class="slds-checkbox">
-                                <input
-                                    type="checkbox"
-                                    name="options"
-                                    id="checkbox-03"
-                                    value="checkbox-03"
-                                    tabindex="0"
-                                    aria-labelledby="check-button-label-03 column-group-header"
-                                    disabled=""
-                                />
-                                <label
-                                    class="slds-checkbox__label"
-                                    for="checkbox-03"
-                                    id="check-button-label-03"
-                                >
-                                    <span class="slds-checkbox_faux"></span>
-                                    <span
-                                        class="
-                                            slds-form-element__label
-                                            slds-assistive-text
-                                        "
-                                    ></span>
-                                </label>
-                            </div>
-                        </template>
-                    </td>
-                    <th class={datatableTHClass} scope="row"></th>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                    <td class={datatableTHClass} role="gridcell"></td>
-                </tr> -->
             </tbody>
         </table>
     </template>
@@ -725,28 +646,6 @@
         </div>
     </template>
     <template if:true={isTabsetVariant}>
-        <!-- <div class="slds-tabs_default">
-            <ul role="tablist" class="slds-tabs_default__nav">
-                <li data-tab="true" role="presentation" class={tabsetClass}>
-                    <div class={tabItemClass}></div>
-                </li>
-                <li data-tab="true" role="presentation" class={tabsetClass}>
-                    Item Two
-                </li>
-                <li data-tab="true" role="presentation" class={tabsetClass}>
-                    Item Three
-                </li>
-            </ul>
-        </div> -->
-        <!-- <template>
-            <lightning-tabset>
-                <lightning-tab class=""> One Content ! </lightning-tab>
-                <lightning-tab label="Item Two"> Two Content ! </lightning-tab>
-                <lightning-tab label="Item Three">
-                    Three Content !
-                </lightning-tab>
-            </lightning-tabset>
-        </template> -->
         <template if:true={isTabsetBaseVariant}>
             <div class="slds-tabs_default">
                 <ul

@@ -131,10 +131,6 @@ export default class Skeleton extends LightningElement {
         if (this.isTreeVariant) {
             this.initializeTreeItems();
         }
-
-        // if (this.isComboboxVariant) {
-        //     this.updateComboboxClassList();
-        // }
     }
 
     renderedCallback() {
@@ -145,12 +141,6 @@ export default class Skeleton extends LightningElement {
             this.paragraphItemsInitialized = true;
             this.updateParagraphClassList();
         }
-
-        // console.log(this.variantAttributes.hasIcon);
-        // if (this.isAvatarVariant && !this._initialAvatarRender) {
-        //     this.updateAvatarClassList();
-        //     this._initialAvatarRender = true;
-        // }
     }
 
     /*
@@ -158,6 +148,68 @@ export default class Skeleton extends LightningElement {
      *  PUBLIC PROPERTIES
      * -------------------------------------------------------------
      */
+    @api
+    get badgeHasLeftIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'left' &&
+            this.variantAttributes.hasIcon === true
+        );
+    }
+
+    @api
+    get badgeHasRightIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'right' &&
+            this.variantAttributes.hasIcon === true
+        );
+    }
+
+    @api
+    get buttonHasLeftIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'left' &&
+            this.variantAttributes.hasIcon === true
+        );
+    }
+
+    @api
+    get buttonHasRightIcon() {
+        return (
+            this.variantAttributes.iconPosition === 'right' &&
+            this.variantAttributes.hasIcon === true
+        );
+    }
+
+    @api
+    get chipHasIcon() {
+        return this.variantAttributes.hasIcon;
+    }
+
+    @api
+    get comboboxRequired() {
+        return this.variantAttributes.required;
+    }
+
+    @api
+    get hideCheckboxColumn() {
+        return this.variantAttributes.hideCheckboxColumn;
+    }
+
+    @api
+    get hideTableHeader() {
+        return this.variantAttributes.hideTableHeader;
+    }
+
+    @api
+    get hideTreeHeader() {
+        return this.variantAttributes.hideHeader;
+    }
+
+    @api
+    get inputRequired() {
+        return this.variantAttributes.required;
+    }
+
     @api
     get isAvatarVariant() {
         return this.variant === 'avatar';
@@ -214,20 +266,18 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isPathVariant() {
+        return this.variantAttributes.variant === 'path';
+    }
+
+    @api
     get isParagraphVariant() {
-        // console.log(this.variant);
         return this.variant === 'paragraph';
     }
 
     @api
     get isProgressIndicatorVariant() {
-        // console.log(this.variant);
         return this.variant === 'progress-indicator';
-    }
-
-    @api
-    get isPathVariant() {
-        return this.variantAttributes.variant === 'path';
     }
 
     @api
@@ -237,10 +287,6 @@ export default class Skeleton extends LightningElement {
             this.variant === 'circular' ||
             this.variant === 'rectangular'
         );
-    }
-    @api
-    get isTabsetVariant() {
-        return this.variant === 'tabset';
     }
 
     @api
@@ -254,6 +300,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get isTabsetVariant() {
+        return this.variant === 'tabset';
+    }
+
+    @api
     get isTabsetVerticalVariant() {
         return this.variantAttributes.variant === 'vertical';
     }
@@ -261,68 +312,6 @@ export default class Skeleton extends LightningElement {
     @api
     get isTreeVariant() {
         return this.variant === 'tree';
-    }
-
-    @api
-    get chipHasIcon() {
-        return this.variantAttributes.hasIcon;
-    }
-
-    @api
-    get badgeHasLeftIcon() {
-        return (
-            this.variantAttributes.iconPosition === 'left' &&
-            this.variantAttributes.hasIcon === true
-        );
-    }
-
-    @api
-    get badgeHasRightIcon() {
-        return (
-            this.variantAttributes.iconPosition === 'right' &&
-            this.variantAttributes.hasIcon === true
-        );
-    }
-
-    @api
-    get buttonHasLeftIcon() {
-        return (
-            this.variantAttributes.iconPosition === 'left' &&
-            this.variantAttributes.hasIcon === true
-        );
-    }
-
-    @api
-    get buttonHasRightIcon() {
-        return (
-            this.variantAttributes.iconPosition === 'right' &&
-            this.variantAttributes.hasIcon === true
-        );
-    }
-
-    @api
-    get comboboxRequired() {
-        return this.variantAttributes.required;
-    }
-
-    @api
-    get hideCheckboxColumn() {
-        return this.variantAttributes.hideCheckboxColumn;
-    }
-
-    @api
-    get hideTableHeader() {
-        return this.variantAttributes.hideTableHeader;
-    }
-
-    @api
-    get hideTreeHeader() {
-        return this.variantAttributes.hideHeader;
-    }
-
-    @api
-    get inputRequired() {
-        return this.variantAttributes.required;
     }
 
     @api
@@ -346,14 +335,6 @@ export default class Skeleton extends LightningElement {
                 this._variantAttributes.size === 'xx-large') &&
             this.variantAttributes.tertiaryText
         );
-    }
-
-    @api
-    get variantAttributes() {
-        return this._variantAttributes;
-    }
-    set variantAttributes(value) {
-        this._variantAttributes = value;
     }
 
     /**
@@ -403,6 +384,14 @@ export default class Skeleton extends LightningElement {
         });
     }
 
+    @api
+    get variantAttributes() {
+        return this._variantAttributes;
+    }
+    set variantAttributes(value) {
+        this._variantAttributes = value;
+    }
+
     /**
      * Width of the skeleton in px.
      * @type {number}
@@ -422,23 +411,11 @@ export default class Skeleton extends LightningElement {
      * -------------------------------------------------------------
      */
     /**
-     * Wrapper div class, depending on the variant value.
-     * @type {string}
-     */
-    get variantClass() {
-        return classSet('avonni-skeleton__base')
-            .add(`avonni-skeleton__variant-${this.variant}`)
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .toString();
-    }
-
-    /**
      * Compute badge class style.
      *
      * @type {string}
      */
     get badgeClass() {
-        // console.log(`variant: ${this.variantAttributes.variant}`);
         return (
             classSet('avonni-badge')
                 .add({
@@ -455,6 +432,27 @@ export default class Skeleton extends LightningElement {
         return (
             classSet('avonni-skeleton__variant-text')
                 .add('avonni-skeleton__badge-label')
+                // .add(`avonni-skeleton__animation-${this.animation}`)
+                .toString()
+        );
+    }
+
+    get breadcrumbClass() {
+        return classSet('breadcrumbClass')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
+    }
+
+    get breadcrumbsClass() {
+        return classSet('slds-list_horizontal')
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
+    }
+
+    get buttonLabelClass() {
+        return (
+            classSet('avonni-skeleton__variant-text')
+                .add('avonni-skeleton__button-label')
                 // .add(`avonni-skeleton__animation-${this.animation}`)
                 .toString()
         );
@@ -501,76 +499,14 @@ export default class Skeleton extends LightningElement {
             .add('slds-has-focus');
     }
 
-    /**
-     * Computed CSS Classes for the label.
-     *
-     * @type {string}
-     */
-    get computedComboboxLabelClass() {
-        return (
-            classSet('slds-form-element__label avonni-combobox__label')
-                // .add({
-                //     'slds-assistive-text':
-                //         this.variantAttributes.variant === 'label-hidden'
-                // })
-                .toString()
-        );
-    }
-
-    /**
-     * Computed CSS classes for the comboboxes wrapper.
-     *
-     * @type {string}
-     */
-    get computedComboboxGroupClass() {
-        return this.showScopes ? 'slds-combobox-group' : undefined;
-    }
-
-    get slotClass() {
-        return classSet('avonni-skeleton__base')
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .toString();
-    }
-
-    get breadcrumbClass() {
-        return classSet('breadcrumbClass')
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .toString();
-    }
-
-    get breadcrumbsClass() {
-        return classSet('slds-list_horizontal')
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .toString();
-    }
-
-    get datatableFirstGridClass() {
+    get datatableCheckboxGridClass() {
         return classSet('slds-col')
             .add(`avonni-skeleton__animation-${this.animation}`)
             .add('avonni-skeleton__datatable')
             .add('slds-size_1-of-12');
     }
 
-    get buttonLabelClass() {
-        return (
-            classSet('avonni-skeleton__variant-text')
-                .add('avonni-skeleton__button-label')
-                // .add(`avonni-skeleton__animation-${this.animation}`)
-                .toString()
-        );
-    }
-
-    get datatableTableClass() {
-        return classSet('slds-table')
-            .add({
-                'slds-table_bordered':
-                    this.variantAttributes.hideCheckboxColumn === false
-            })
-            .add('slds-table_fixed-layout')
-            .add('slds-table_resizable-cols');
-    }
-
-    get datatableCheckboxGridClass() {
+    get datatableFirstGridClass() {
         return classSet('slds-col')
             .add(`avonni-skeleton__animation-${this.animation}`)
             .add('avonni-skeleton__datatable')
@@ -597,6 +533,16 @@ export default class Skeleton extends LightningElement {
             .add(`avonni-skeleton__animation-${this.animation}`)
             .add('slds-size_1-of-1')
             .add('avonni-skeleton__datatable');
+    }
+
+    get datatableTableClass() {
+        return classSet('slds-table')
+            .add({
+                'slds-table_bordered':
+                    this.variantAttributes.hideCheckboxColumn === false
+            })
+            .add('slds-table_fixed-layout')
+            .add('slds-table_resizable-cols');
     }
 
     get datatableTDClass() {
@@ -645,15 +591,6 @@ export default class Skeleton extends LightningElement {
             .toString();
     }
 
-    get progressIndicatorItemClass() {
-        return classSet('slds-progress__marker').add({
-            'avonni-skeleton__buttonIcon-animation-pulse':
-                this.animation === 'pulse',
-            'avonni-skeleton__progress-indicator-wave':
-                this.animation === 'wave'
-        });
-    }
-
     get progressIndicatorBarClass() {
         return classSet('slds-progress-bar')
             .add('slds-progress-bar_x-small')
@@ -663,6 +600,15 @@ export default class Skeleton extends LightningElement {
                 'avonni-skeleton__progress-indicator-wave':
                     this.animation === 'wave'
             });
+    }
+
+    get progressIndicatorItemClass() {
+        return classSet('slds-progress__marker').add({
+            'avonni-skeleton__buttonIcon-animation-pulse':
+                this.animation === 'pulse',
+            'avonni-skeleton__progress-indicator-wave':
+                this.animation === 'wave'
+        });
     }
 
     get progressIndicatorPathClass() {
@@ -680,6 +626,12 @@ export default class Skeleton extends LightningElement {
 
     get tabClass() {
         return classSet(`avonni-skeleton_tabset-${this.animation}`);
+    }
+
+    get tabContentClass() {
+        return classSet('avonni-skeleton__tabset-content')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     get tabItemClass() {
@@ -711,12 +663,6 @@ export default class Skeleton extends LightningElement {
         );
     }
 
-    get tabContentClass() {
-        return classSet('avonni-skeleton__tabset-content')
-            .add('avonni-skeleton__variant-text')
-            .add(`avonni-skeleton__animation-${this.animation}`);
-    }
-
     get treeHeaderClass() {
         return classSet('slds-tree__group-header')
             .add('avonni-skeleton__tree-header')
@@ -734,6 +680,17 @@ export default class Skeleton extends LightningElement {
 
     get treeItemContainerClass() {
         return classSet('avonni-skeleton__item-container');
+    }
+
+    /**
+     * Wrapper div class, depending on the variant value.
+     * @type {string}
+     */
+    get variantClass() {
+        return classSet('avonni-skeleton__base')
+            .add(`avonni-skeleton__variant-${this.variant}`)
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
     }
 
     /*
@@ -935,7 +892,7 @@ export default class Skeleton extends LightningElement {
         console.log('beginning initialize paragraph items');
         const paragraphItems = [];
         for (let i = 0; i < this.variantAttributes.rows * 12; i++) {
-            const width = Math.floor(Math.random() * (6 - 1)) + 1;
+            const width = Math.floor(Math.random() * (5 - 1)) + 1;
             paragraphItems.push({
                 key: `paragraph-${i}`,
                 width: width
