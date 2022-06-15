@@ -98,8 +98,6 @@ Base.args = {
 
 export const MediaTop = Template.bind({});
 MediaTop.args = {
-    title: 'Card Title',
-    iconName: 'custom:custom102',
     mediaSrc:
         'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
 };

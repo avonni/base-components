@@ -38,11 +38,6 @@
             class={computedCardClasses}
             data-element-id="avonni-card-body-container"
         >
-            <!-- default content for center media only -->
-            <div if:true={isCenterMedia} class="avonni-card__default-slot">
-                <slot data-element-id="avonni-card-center-default-slot"></slot>
-            </div>
-
             <!-- media -->
             <div
                 class={computedMediaClasses}
@@ -114,9 +109,17 @@
                 </header>
 
                 <!-- default content -->
-                <div if:false={isCenterMedia} class="avonni-card__default-slot">
+                <div
+                    if:false={cardHasCenterMedia}
+                    class="avonni-card__default-slot"
+                >
                     <slot data-element-id="avonni-card-default-slot"></slot>
                 </div>
+            </div>
+
+            <!-- default content for center media only -->
+            <div if:true={cardHasCenterMedia} class="avonni-card__default-slot">
+                <slot data-element-id="avonni-card-center-default-slot"></slot>
             </div>
         </div>
 

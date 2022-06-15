@@ -202,12 +202,14 @@ export default class Card extends LightningElement {
         );
     }
 
+    /*** Styling Conditions ***/
+
     /**
      * Apply bottom border
      *
      * @type {boolean}
      */
-    get hasBottomBorder() {
+    get mediaHasBottomBorder() {
         return (
             this.showMedia &&
             ((this.mediaPosition === 'top' &&
@@ -221,7 +223,7 @@ export default class Card extends LightningElement {
      *
      * @type {boolean}
      */
-    get hasTopBorder() {
+    get mediaHasTopBorder() {
         return (
             this.showMedia &&
             ((this.mediaPosition === 'center' && this.hasHeader) ||
@@ -245,6 +247,17 @@ export default class Card extends LightningElement {
     }
 
     /**
+     * Show default slot for center media.
+     *
+     * @type {boolean}
+     */
+    get cardHasCenterMedia() {
+        return this.mediaPosition === 'center';
+    }
+
+    /*** Computed Classes ***/
+
+    /**
      * Card body classes
      *
      * @type {string}
@@ -266,9 +279,11 @@ export default class Card extends LightningElement {
                     this.mediaPosition === 'right'
             })
             .add({
-                'slds-grid_vertical-reverse':
-                    this.mediaPosition === 'center' ||
-                    this.mediaPosition === 'bottom'
+                'slds-grid_vertical avonni-card__media-center':
+                    this.mediaPosition === 'center'
+            })
+            .add({
+                'slds-grid_vertical-reverse': this.mediaPosition === 'bottom'
             })
             .add({
                 'avonni-card__media-top-left-radius avonni-card__media-top-right-radius':
@@ -312,8 +327,10 @@ export default class Card extends LightningElement {
      */
     get computedMediaClasses() {
         return classSet('avonni-card__media-container slds-col')
-            .add({ 'avonni-card__media-border-bottom': this.hasBottomBorder })
-            .add({ 'avonni-card__media-border-top': this.hasTopBorder })
+            .add({
+                'avonni-card__media-border-bottom': this.mediaHasBottomBorder
+            })
+            .add({ 'avonni-card__media-border-top': this.mediaHasTopBorder })
             .add({
                 'avonni-card__media-border-left': this.mediaPosition === 'right'
             })
@@ -321,14 +338,5 @@ export default class Card extends LightningElement {
                 'avonni-card__media-border-right': this.mediaPosition === 'left'
             })
             .toString();
-    }
-
-    /**
-     * Show default slot for center media.
-     *
-     * @type {boolean}
-     */
-    get isCenterMedia() {
-        return this.mediaPosition === 'center';
     }
 }

@@ -33,27 +33,29 @@
 -->
 
 <template>
-    <c-card
-        icon-name={iconName}
-        media-src={mediaSrc}
-        media-position={mediaPosition}
-        title={title}
-    >
-        <span slot="title">Title slot</span>
+    <div style="width: 50%; max-width: 500px; margin: 0 auto">
+        <c-card
+            icon-name={iconName}
+            media-src={mediaSrc}
+            media-position={mediaPosition}
+            title={title}
+        >
+            <span slot="title">Title slot</span>
 
-        <lightning-button slot="actions" label="Action"></lightning-button>
+            <lightning-button slot="actions" label="Action"></lightning-button>
 
-        <lightning-button-icon
-            slot="media-actions"
-            icon-name="utility:bookmark"
-            size="x-small"
-            variant="border-filled"
-            alternative-text="Bookmark"
-            title="Bookmark"
-        ></lightning-button-icon>
+            <lightning-button-icon
+                slot="media-actions"
+                icon-name="utility:bookmark"
+                size="x-small"
+                variant="border-filled"
+                alternative-text="Bookmark"
+                title="Bookmark"
+            ></lightning-button-icon>
 
-        <p class="slds-p-horizontal_small">Card Body</p>
+            <p class="slds-p-horizontal_small">Card Body</p>
 
-        <div slot="footer">Footer Slot</div>
-    </c-card>
+            <div slot="footer">Footer Slot</div>
+        </c-card>
+    </div>
 </template>

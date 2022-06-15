@@ -55,13 +55,15 @@ article.avonni-card {
 .avonni-card__media-container {
     flex: 0 1 auto;
 }
+.avonni-card__media-center .avonni-card__content-container {
+    order: -1;
+}
 
 .avonni-card__media-right {
     flex-direction: row-reverse;
 }
 
 /* card media */
-
 .avonni-card__media-background .avonni-card__content-container {
     position: absolute;
     bottom: 0;
@@ -179,7 +181,6 @@ article.avonni-card {
 }
 
 /* card header */
-
 .avonni-card__header {
     padding-top: var(--avonni-card-header-spacing-block-start, 0.75rem);
     margin-bottom: var(--avonni-card-header-spacing-block-end, 0.75rem);
