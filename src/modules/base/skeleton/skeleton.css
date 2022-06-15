@@ -336,9 +336,10 @@
     background: content-box rgb(84, 105, 141);
     border-width: 1px;
     border-style: solid;
-    border-color: rgb(255, 255, 255);
+    border-color: #ffffff;
     border-image: initial;
-    border-radius: 0px;
+    border-radius: var(--avonni-skeleton-radius-border);
+    animation: pulse-animation 1s infinite;
 }
 
 .avonni-skeleton__progress-indicator-path-wave::before {
