@@ -101,6 +101,7 @@ export default class InputPen extends LightningElement {
     isDotFlag = false;
     xPositions = [];
     yPositions = [];
+    velocities = [];
     prevX = 0;
     currX = 0;
     prevY = 0;
@@ -774,6 +775,9 @@ export default class InputPen extends LightningElement {
                 if (this.isDownFlag) {
                     this.handleChangeEvent();
                 }
+                if (this._mode === 'sign') {
+                    this.clearPositionBuffer(event);
+                }
                 this.isDownFlag = false;
                 break;
             case 'enter':
@@ -873,14 +877,29 @@ export default class InputPen extends LightningElement {
         this.ctx.stroke();
     }
 
-    getSplinePoints() {
-        if (
-            this.xPositions[3] === this.xPositions[2] &&
-            this.yPositions[3] === this.yPositions[2]
-        ) {
-            return [];
+    clearPositionBuffer() {
+        let averageVelocityOnSpline =
+            this.velocities.slice(5, 8).reduce((a, b) => a + b, 0) / 3;
+        let velocity = Math.sqrt(averageVelocityOnSpline);
+        if (this.moveCoordinatesAdded < 2) {
+            //TODO: if 1 then, add "phantom point"
+            this.drawSpline(this.getSplinePoints(), this.size / velocity);
         }
+        for (let i = 0; i < 2; i++) {
+            for (let j = 0; j < 2; j++) {
+                this.xPositions.unshift(this.xPositions[0]);
+                this.yPositions.unshift(this.yPositions[0]);
 
+                this.velocities.unshift(this.velocities[0]);
+            }
+            averageVelocityOnSpline =
+                this.velocities.slice(5, 8).reduce((a, b) => a + b, 0) / 3;
+            velocity = Math.sqrt(averageVelocityOnSpline);
+            this.drawSpline(this.getSplinePoints(), this.size / velocity);
+        }
+    }
+
+    getSplinePoints() {
         const tension = 1;
 
         let x0;
@@ -965,25 +984,25 @@ export default class InputPen extends LightningElement {
         const clientRect = this.canvasElement.getBoundingClientRect();
         const deltaX = this.xPositions[0] - (event.clientX - clientRect.left);
         const deltaY = this.yPositions[0] - (event.clientY - clientRect.top);
-        const distance =
-            Math.sqrt(deltaX * deltaX + deltaY * deltaY) + this.prevDist;
+        let velocity = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
+        const distance = velocity + this.prevDist;
+
+        velocity = Math.min(
+            Math.max(velocity, this.prevVelocity - 0.2),
+            this.prevVelocity + 0.2
+        );
+
+        this.prevVelocity = velocity;
         this.xPositions[0] = event.clientX - clientRect.left;
         this.yPositions[0] = event.clientY - clientRect.top;
         if (distance > 3) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
             this.yPositions.unshift(event.clientY - clientRect.top);
+            this.velocities.unshift(velocity);
         }
-        let velocity = Math.sqrt(
-            Math.sqrt(
-                Math.pow(this.xPositions[5] - this.xPositions[7], 2) +
-                    Math.pow(this.yPositions[5] - this.yPositions[7], 2)
-            )
-        );
-        this.prevVelocity = Math.min(
-            Math.max(velocity, this.prevVelocity - 0.2),
-            this.prevVelocity + 0.2
-        );
+
+        this.prevVelocity = velocity;
         return distance;
     }
 
@@ -998,14 +1017,9 @@ export default class InputPen extends LightningElement {
             this.prevDist = 0;
             if (this.moveCoordinatesAdded >= 2) {
                 this.moveCoordinatesAdded = 0;
-                const xVelocity = this.xPositions[3] - this.xPositions[6];
-                const yVelocity = this.yPositions[3] - this.yPositions[6];
-
-                const velocity = Math.sqrt(
-                    Math.sqrt(
-                        Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity)
-                    )
-                );
+                const averageVelocityOnSpline =
+                    this.velocities.slice(5, 8).reduce((a, b) => a + b, 0) / 3;
+                const velocity = Math.sqrt(averageVelocityOnSpline);
                 const calculatedSize = this.size / velocity;
                 this.drawSpline(this.getSplinePoints(), calculatedSize);
                 this.prevSize = calculatedSize;
