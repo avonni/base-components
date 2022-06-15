@@ -271,7 +271,7 @@
     position: relative;
     width: 100%;
     height: calc(var(--avonni-slider-track-radius, 8px) + 50px);
-    top: calc(-10px - var(--avonni-slider-track-height, 4px));
+    top: calc(-11px - var(--avonni-slider-track-height, 4px));
     z-index: 3;
 }
 

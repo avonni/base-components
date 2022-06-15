@@ -1490,7 +1490,9 @@ export default class Slider extends LightningElement {
      * @returns {boolean}
      */
     thumbIsHovered(event) {
-        const obj = this.getHitbox(parseInt(event.target.dataset.index, 10));
+        const obj = this.getHitbox(
+            parseInt(event.currentTarget.dataset.index, 10)
+        );
         const radius = this._thumbRadius;
         const centerPointX = obj.getBoundingClientRect().x + radius;
         const centerPointY = obj.getBoundingClientRect().y + radius;
@@ -1512,7 +1514,7 @@ export default class Slider extends LightningElement {
      */
     handleThumbHovered(event) {
         if (this._pinLocked || this.thumbIsHovered(event)) {
-            this.getInput(event.target.dataset.index).classList.add(
+            this.getInput(event.currentTarget.dataset.index).classList.add(
                 'avonni-slider__slider-thumb_hovered'
             );
             if (this._pin) {
@@ -1531,7 +1533,7 @@ export default class Slider extends LightningElement {
      */
     handleThumbExit(event) {
         if (!this.thumbIsHovered(event) && !this._pinLocked) {
-            this.getInput(event.target.dataset.index).classList.remove(
+            this.getInput(event.currentTarget.dataset.index).classList.remove(
                 'avonni-slider__slider-thumb_hovered'
             );
             if (this._pin) {
@@ -1565,12 +1567,11 @@ export default class Slider extends LightningElement {
         const pin = this.template.querySelector(
             `[data-group-name="pin"][data-index="0"]`
         );
-        const pinProgress =
-            this.getPercentOfValue(
-                this._computedValues[parseInt(event.target.dataset.index, 10)]
-            ) * PERCENT_SCALING_FACTOR;
-        let transformedValue =
-            this._computedValues[parseInt(event.target.dataset.index, 10)];
+        const pinIndex = parseInt(event.target.dataset.index, 10);
+        const pinProgress = this.getPercentOfValue(
+            this._computedValues[pinIndex]
+        );
+        let transformedValue = this._computedValues[pinIndex];
         if (this._scalingFactor !== 1) {
             transformedValue = transformedValue / this._scalingFactor;
         }
@@ -1578,16 +1579,22 @@ export default class Slider extends LightningElement {
             '[data-element-id="lightning-formatted-number-pin"]'
         ).value = transformedValue;
 
-        if (!this.isVertical) {
-            pin.style.left = `calc(${pinProgress}% - ${
-                pinProgress *
-                    ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR) -
-                this._thumbRadius
-            }px)`;
+        let totalWidth = this.getInput(0).clientWidth;
+        if (this.isVertical) {
+            const totalHeight = this.template.querySelector(
+                '[data-element-id="spacer"]'
+            ).clientHeight;
+            totalWidth = totalHeight - 2 * this._thumbRadius - 0.5;
+        }
+        console.log(totalWidth);
+
+        if (this.isVertical) {
+            pin.style.left = `${pinProgress * totalWidth}px`;
         } else {
-            pin.style.left = `calc(${pinProgress}% - ${
-                pinProgress * ((this._thumbRadius * 2) / PERCENT_SCALING_FACTOR)
-            }px)`;
+            pin.style.left = `${
+                pinProgress * totalWidth +
+                this._thumbRadius * (1 - pinProgress * 2)
+            }px`;
         }
     }
 
@@ -1618,8 +1625,8 @@ export default class Slider extends LightningElement {
      */
     updateInputSliders(event) {
         const newValues = [...this._computedValues];
-        const targetIndex = parseInt(event.target.dataset.index, 10);
-        newValues[targetIndex] = parseInt(event.target.value, 10);
+        const targetIndex = parseInt(event.currentTarget.dataset.index, 10);
+        newValues[targetIndex] = parseInt(event.currentTarget.value, 10);
         if (this._disableSwap) {
             this.manageCollisions(targetIndex, newValues);
         }
