@@ -10,8 +10,8 @@
 }
 
 .avonni-kanban__path_item {
-    min-width: var(--avonni-kanban-column-min-width, 14em);
-    max-width: calc(var(--avonni-kanban-column-max-width, 22.5em) - 8px);
+    min-width: var(--avonni-kanban-column-sizing-min-width, 14em);
+    max-width: calc(var(--avonni-kanban-column-sizing-max-width, 22.5em) - 8px);
 }
 
 .slds-path__nav {
@@ -78,8 +78,8 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    min-width: var(--avonni-kanban-column-min-width, 14em);
-    max-width: var(--avonni-kanban-column-max-width, 22.5em);
+    min-width: var(--avonni-kanban-column-sizing-min-width, 14em);
+    max-width: var(--avonni-kanban-column-sizing-max-width, 22.5em);
     border-right: 1px solid #c9c7c5;
     padding: 5px 0;
     height: fit-content;

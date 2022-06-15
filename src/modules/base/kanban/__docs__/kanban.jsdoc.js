@@ -32,13 +32,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-kanban-column-min-width
+ * @name --avonni-kanban-column-sizing-min-width
  * @default 14.5em
- * @type width
+ * @type (length|percentage)
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-kanban-column-max-width
+ * @name --avonni-kanban-column-sizing-max-width
  * @default 22.5em
- * @type width
+ * @type (length|percentage)
  */

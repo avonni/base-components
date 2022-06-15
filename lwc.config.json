@@ -703,6 +703,10 @@
             "path": "src/modules/base/inputToggle/inputToggle.js"
         },
         {
+            "name": "avonni/kanban",
+            "path": "src/modules/base/kanban/kanban.js"
+        },
+        {
             "name": "avonni/list",
             "path": "src/modules/base/list/list.js"
         },
