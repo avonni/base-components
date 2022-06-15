@@ -368,6 +368,14 @@
     cursor: default !important;
 }
 
+avonni-skeleton_tabset-pulse:hover::after {
+    background-color: transparent;
+}
+
+avonni-skeleton_tabset-wave:hover::after {
+    background-color: transparent;
+}
+
 /* .avonni-skeleton_tabset-pulse::after {
     background-color: var(--avonni-skeleton-color-background);
     animation: pulse-animation 1s infinite;
@@ -398,6 +406,15 @@
     margin-bottom: 5px;
     height: 0.7em;
     min-width: 4em;
+}
+
+.avonni-skeleton__tabset-base {
+    justify-content: left;
+    column-gap: 1.5rem;
+}
+
+.avonni-skeleton__tabset-base:first-child {
+    padding-left: 1em;
 }
 
 .avonni-skeleton__tabset-scoped-item {
