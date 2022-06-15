@@ -336,7 +336,7 @@
     top: 0;
     height: calc((2rem / 2) + 0.0625rem);
     transform: skew(28deg) translate3d(0, 0, 0);
-    position: relative;
+    /* position: relative; */
     background-color: var(--avonni-skeleton-color-background-animation);
     animation-duration: 2s;
     animation-fill-mode: forwards;
@@ -356,7 +356,7 @@
     bottom: 0;
     height: 1rem;
     transform: skew(-30deg) translate3d(0, 0, 0);
-    position: relative;
+    /* position: relative; */
     background-color: var(--avonni-skeleton-color-background-animation);
     animation-duration: 2s;
     animation-fill-mode: forwards;

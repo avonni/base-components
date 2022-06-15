@@ -216,7 +216,7 @@ ProgressIndicator.args = {
     variant: 'progress-indicator',
     animation: 'wave',
     variantAttributes: {
-        variant: '',
+        variant: 'path',
         steps: 3
     }
 };
