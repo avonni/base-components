@@ -194,12 +194,7 @@
     <template if:true={isDatatableVariant}>
         <table
             aria-multiselectable="true"
-            class="
-                slds-table
-                slds-table_bordered
-                slds-table_fixed-layout
-                slds-table_resizable-cols
-            "
+            class={datatableTableClass}
             role="grid"
         >
             <template if:false={hideTableHeader}>
@@ -496,12 +491,12 @@
             <tbody>
                 <template for:each={datatableColumns} for:item="column">
                     <tr
-                        key={column.key}
+                        key={column.keyTr}
                         aria-selected="false"
                         class="slds-hint-parent"
                     >
                         <td
-                            key={column.key}
+                            key={column.keyTd}
                             class={datatableTDClass}
                             role="gridcell"
                         >
@@ -531,14 +526,26 @@
                                 </div>
                             </template>
                         </td>
-                        <th class={datatableTHClass} scope="row"></th>
-                        <td class={datatableTHClass} role="gridcell"></td>
-                        <td class={datatableTHClass} role="gridcell"></td>
-                        <td class={datatableTHClass} role="gridcell"></td>
-                        <td class={datatableTHClass} role="gridcell"></td>
-                        <td class={datatableTHClass} role="gridcell"></td>
-                        <td class={datatableTHClass} role="gridcell"></td>
-                        <td class={datatableTHClass} role="gridcell"></td>
+                        <th key={column.keyTh} scope="row">
+                            <div class={datatableTHClass}></div>
+                        </th>
+                        <td key={column.keyTd} role="gridcell">
+                            <div class={datatableTHClass}></div>
+                        </td>
+                        <td key={column.keyTd} role="gridcell"></td>
+                        <td key={column.keyTd} role="gridcell">
+                            <div class={datatableTHClass}></div>
+                        </td>
+                        <td key={column.keyTd} role="gridcell">
+                            <div class={datatableTHClass}></div>
+                        </td>
+                        <td key={column.keyTd} role="gridcell">
+                            <div class={datatableTHClass}></div>
+                        </td>
+                        <td key={column.keyTd} role="gridcell"></td>
+                        <td key={column.keyTd} role="gridcell">
+                            <div class={datatableTHClass}></div>
+                        </td>
                     </tr>
                 </template>
                 <!-- <tr aria-selected="false" class="slds-hint-parent">

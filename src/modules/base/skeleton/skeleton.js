@@ -113,6 +113,9 @@ export default class Skeleton extends LightningElement {
         if (this.isButtonIconVariant) {
             this.updateButtonIconClassList();
         }
+        if (this.isDatatableVariant) {
+            this.initializeDatatableColumns();
+        }
         if (this.isParagraphVariant) {
             this.initializeParagraphItems();
         }
@@ -557,6 +560,16 @@ export default class Skeleton extends LightningElement {
         );
     }
 
+    get datatableTableClass() {
+        return classSet('slds-table')
+            .add({
+                'slds-table_bordered':
+                    this.variantAttributes.hideCheckboxColumn === false
+            })
+            .add('slds-table_fixed-layout')
+            .add('slds-table_resizable-cols');
+    }
+
     get datatableCheckboxGridClass() {
         return classSet('slds-col')
             .add(`avonni-skeleton__animation-${this.animation}`)
@@ -589,13 +602,20 @@ export default class Skeleton extends LightningElement {
     get datatableTDClass() {
         return classSet('slds-text-align_right')
             .add('slds-cell_action-mode')
+            .add('avonni-skeleton__variant-text')
+            .add('avonni-skeleton__datatable-item')
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     get datatableTHClass() {
-        return classSet('slds-cell_action-mode').add(
-            `avonni-skeleton__animation-${this.animation}`
-        );
+        return classSet('slds-cell_action-mode')
+            .add({
+                'avonni-skeleton__datatable-no-checkbox':
+                    this.variantAttributes.hideCheckboxColumn === true
+            })
+            .add('avonni-skeleton__variant-text')
+            .add('avonni-skeleton__datatable-item')
+            .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     get inputClass() {
@@ -860,11 +880,12 @@ export default class Skeleton extends LightningElement {
 
     initializeDatatableColumns() {
         const datatableColumns = [];
-        console.log(`first`);
+        console.log(`num of columns is: ${this.variantAttributes.columns}`);
         for (let i = 0; i < this.variantAttributes.columns; i++) {
-            console.log('middle');
             datatableColumns.push({
-                key: `column-${i}`
+                keyTr: `columnTr-${i}`,
+                keyTd: `columnTd-${i}`,
+                keyTh: `columnTh-${i}`
             });
         }
         console.log('end');

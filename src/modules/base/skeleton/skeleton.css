@@ -183,6 +183,15 @@
     /* margin: 0.25em; */
 }
 
+.avonni-skeleton__datatable-item {
+    height: 0.7em;
+    width: 30%;
+}
+
+.avonni-skeleton__datatable-no-checkbox {
+    height: 2em;
+}
+
 @keyframes pulse-animation {
     0% {
         background: var(--avonni-skeleton-color-background);
