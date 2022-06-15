@@ -119,6 +119,7 @@
                                 disabled={readOnly}
                                 variant="bare"
                                 icon-name="action:more"
+                                onselect={handleActionClick}
                                 hide-down-arrow
                             >
                                 <template
@@ -129,7 +130,6 @@
                                         key={action.name}
                                         value={action.name}
                                         label={action.label}
-                                        onactionclick={handleActionClick}
                                         disabled={action.disabled}
                                         prefix-icon-name={action.iconName}
                                         class="slds-text-color_default"
@@ -138,7 +138,12 @@
                             </c-button-menu>
                         </div>
                         <div
-                            class="avonni-kanban__summarize_wrapper"
+                            class="
+                                slds-grid
+                                slds-text-align_left
+                                slds-grid_vertical
+                                slds-m-left_x-small
+                            "
                             data-element-id="avonni-kanban__summarize_wrapper"
                         >
                             <h2
@@ -221,7 +226,7 @@
                                 class="avonni-kanban__tile_actions"
                                 if:true={hasActions}
                             >
-                                <lightning-button-menu
+                                <c-button-menu
                                     alternative-text="Show menu"
                                     icon-size="x-small"
                                     menu-alignment="right"
@@ -229,6 +234,7 @@
                                         avonni-kanban__actions_menu
                                         slds-is-relative
                                     "
+                                    onselect={handleActionClick}
                                     disabled={readOnly}
                                 >
                                     <template
@@ -239,7 +245,6 @@
                                             key={action.name}
                                             value={action.name}
                                             label={action.label}
-                                            onactionclick={handleActionClick}
                                             disabled={action.disabled}
                                             prefix-icon-name={action.iconName}
                                             class="
@@ -249,7 +254,7 @@
                                             data-element-id="avonni-kanban__action"
                                         ></lightning-menu-item>
                                     </template>
-                                </lightning-button-menu>
+                                </c-button-menu>
                             </div>
                         </lightning-tile>
                     </div>
@@ -264,7 +269,7 @@
                         <template if:true={group.footerActions}>
                             <template if:true={readOnly}>
                                 <button
-                                    onactionclick={handleActionClick}
+                                    onclick={handleActionClick}
                                     for:each={group.footerActions}
                                     for:item="action"
                                     key={action.name}
@@ -288,7 +293,7 @@
 
                             <template if:false={readOnly}>
                                 <button
-                                    onactionclick={handleActionClick}
+                                    onclick={handleActionClick}
                                     for:each={group.footerActions}
                                     for:item="action"
                                     key={action.name}

@@ -107,13 +107,6 @@
     border: 1px solid #dbdbdb;
 }
 
-.avonni-kanban__variant_base .avonni-kanban__summarize_wrapper {
-    display: flex;
-    text-align: left;
-    flex-direction: column;
-    margin-left: var(--lwc-spacingXSmall, 0.8rem);
-}
-
 .avonni-kanban__variant_base .avonni-kanban__summarize {
     text-align: left;
     font-weight: 500;

@@ -53,22 +53,26 @@ const KANBAN_VARIANTS = {
  */
 export default class Kanban extends LightningElement {
     _actions = [];
+    _fields = [];
+    _groupValues = [];
+    _groupFieldName;
+    _isLoading = false;
+    _readOnly = false;
+    _records = [];
+    _summarizeFieldName;
+
     _clickedGroupIndex = 0;
     _clickOffset = { x: 0, y: 0 };
     _draggedTile;
     _draggedGroup;
     _droppedTileHeight = 0;
-    _fields = [];
     _fieldsDistance = [];
-    _groupFieldName;
-    _groupValues = [];
     _groupsHeight = [];
     _groupsLength = [];
     _groupWidth = 1;
     _initialPos = { x: 0, y: 0 };
     _initialTileIndex = 0;
     _isDragged = false;
-    _isLoading = false;
     _kanbanPos = {
         top: 0,
         bottom: 0,
@@ -76,15 +80,11 @@ export default class Kanban extends LightningElement {
         right: 0
     };
     _oldSummarizeValues = [];
-    _readOnly = false;
-    _records = [];
     _releasedGroupIndex = 0;
     _releasedTileIndex = 0;
     _resizeObserver;
-
     _scrollingInterval;
     _scrollWidth = 0;
-    _summarizeFieldName;
     _summaryTimeoutsId = [];
     _summarizeValues = [];
 
@@ -140,13 +140,7 @@ export default class Kanban extends LightningElement {
      * @type {string}
      * @public
      */
-    @api
-    get groupFieldName() {
-        return this._groupFieldName;
-    }
-    set groupFieldName(values) {
-        this._groupFieldName = normalizeString(values);
-    }
+    @api groupFieldName;
 
     /**
      * Array of group objects. Each group represents one step of the path.
@@ -217,13 +211,7 @@ export default class Kanban extends LightningElement {
      * @type {string}
      * @public
      */
-    @api
-    get summarizeFieldName() {
-        return this._summarizeFieldName;
-    }
-    set summarizeFieldName(value) {
-        this._summarizeFieldName = normalizeString(value);
-    }
+    @api summarizeFieldName;
 
     /**
      * The variant changes the apparence of the kanban. Valid values include base and path. Default to base.
@@ -241,16 +229,6 @@ export default class Kanban extends LightningElement {
             fallbackValue: KANBAN_VARIANTS.default,
             validValues: KANBAN_VARIANTS.valid
         });
-    }
-
-    /**
-     * Wrapper div class, depending on the variant value.
-     * @type {string}
-     */
-    get variantClass() {
-        return classSet()
-            .add(`avonni-kanban__variant_${this._variant}`)
-            .toString();
     }
 
     /*
@@ -276,7 +254,9 @@ export default class Kanban extends LightningElement {
         // creates the group
         computedGroups.forEach((group, i) => {
             group.tiles = [];
-            if (!this._summarizeValues[i]) this._summarizeValues[i] = 0;
+            if (!this._summarizeValues[i]) {
+                this._summarizeValues[i] = 0;
+            }
             this._oldSummarizeValues[i] = 0;
             group.summarize = {
                 value: 0,
@@ -314,9 +294,7 @@ export default class Kanban extends LightningElement {
             if (group) {
                 group.tiles.push(tile);
                 const toSummarize = tile.field.find(
-                    (field) =>
-                        normalizeString(field.label) ===
-                        this._summarizeFieldName
+                    (field) => field.label === this.summarizeFieldName
                 );
                 if (toSummarize && typeof toSummarize.value === 'number') {
                     group.summarize.type = toSummarize.type;
@@ -387,6 +365,16 @@ export default class Kanban extends LightningElement {
      */
     get isPath() {
         return this.variant === 'path';
+    }
+
+    /**
+     * Wrapper div class, depending on the variant value.
+     * @type {string}
+     */
+    get variantClass() {
+        return classSet()
+            .add(`avonni-kanban__variant_${this._variant}`)
+            .toString();
     }
 
     /*
@@ -476,23 +464,30 @@ export default class Kanban extends LightningElement {
 
         // auto scroll when the user is dragging the tile out of the list
         let scrollYStep = 0;
-        if (currentY + 50 > this._kanbanPos.bottom) scrollYStep = 10;
-        else if (currentY - 50 < this._kanbanPos.top) scrollYStep = -10;
+        if (currentY + 50 > this._kanbanPos.bottom) {
+            scrollYStep = 10;
+        } else if (currentY - 50 < this._kanbanPos.top) {
+            scrollYStep = -10;
+        }
 
         let scrollXStep = 0;
-        if (currentX + 50 > right) scrollXStep = 10;
-        else if (currentX - 50 < left) scrollXStep = -10;
+        if (currentX + 50 > right) {
+            scrollXStep = 10;
+        } else if (currentX - 50 < left) {
+            scrollXStep = -10;
+        }
 
         const toScroll = scrollXStep ? fieldContainer : group;
 
         if (
             !this._scrollingInterval &&
             (this._draggedGroup || this._draggedTile)
-        )
+        ) {
             this._scrollingInterval = window.setInterval(() => {
                 toScroll.scrollBy(scrollXStep, scrollYStep);
                 if (this._draggedTile) this.animateTiles(groups);
             }, 20);
+        }
 
         // Resets the timeouts to stop scrolling when the user is dragging the tile inside the list / container
         if (!scrollXStep && !scrollYStep) {
@@ -696,7 +691,9 @@ export default class Kanban extends LightningElement {
         const container = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
-        if (!container) return null;
+        if (!container) {
+            return null;
+        }
 
         const resizeObserver = new AvonniResizeObserver(() => {
             this._scrollWidth = this.template.querySelector(
@@ -747,7 +744,9 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleDropZone(event) {
-        if (event.currentTarget !== this._draggedTile) return;
+        if (event.currentTarget !== this._draggedTile) {
+            return;
+        }
 
         this._releasedGroupIndex = Math.min(
             Math.floor(
@@ -776,7 +775,9 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleGroupMouseDown(event) {
-        if (this._variant !== 'base' || this._readOnly) return;
+        if (this._variant !== 'base' || this._readOnly) {
+            return;
+        }
         // this handles when the user dragged a group out of the kanban, and released his click.
         // a second click on the dragged group (impossible otherwise) behaves has a click release
         if (event.currentTarget.parentElement === this._draggedGroup) {
@@ -818,7 +819,9 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleGroupMouseMove(event) {
-        if (!this._draggedGroup) return;
+        if (!this._draggedGroup) {
+            return;
+        }
         this._releasedGroupIndex = Math.min(
             Math.floor(
                 (event.clientX + 10) / this._groupWidth +
@@ -832,21 +835,22 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__field"]'
         );
         groups.forEach((group, i) => {
-            if (group !== this._draggedGroup)
+            if (group !== this._draggedGroup) {
                 group.classList.add('avonni-kanban__field_moved');
+            }
             if (
                 this._releasedGroupIndex <= i &&
                 this._clickedGroupIndex > i &&
                 group !== this._draggedGroup
-            )
+            ) {
                 group.classList.add('avonni-kanban__translate_right');
-            else if (
+            } else if (
                 this._releasedGroupIndex >= i &&
                 this._clickedGroupIndex < i &&
                 group !== this._draggedGroup
-            )
+            ) {
                 group.classList.add('avonni-kanban__translate_left');
-            else {
+            } else {
                 group.classList.remove('avonni-kanban__translate_right');
                 group.classList.remove('avonni-kanban__translate_left');
             }
@@ -873,7 +877,9 @@ export default class Kanban extends LightningElement {
      *
      */
     handleGroupMouseUp() {
-        if (!this._draggedGroup) return;
+        if (!this._draggedGroup) {
+            return;
+        }
 
         this.swapGroups();
 
@@ -939,8 +945,9 @@ export default class Kanban extends LightningElement {
         if (
             this.readOnly ||
             event.target.classList.contains('slds-dropdown-trigger')
-        )
+        ) {
             return;
+        }
         this._groupWidth = event.currentTarget.parentElement.offsetWidth + 10;
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
@@ -997,7 +1004,9 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseMove(event) {
-        if (!this._draggedTile && !this._draggedGroup) return;
+        if (!this._draggedTile && !this._draggedGroup) {
+            return;
+        }
 
         this.computeKanbanBoundaries(event.currentTarget);
 
@@ -1020,13 +1029,14 @@ export default class Kanban extends LightningElement {
             currentX = this._scrollWidth;
         }
 
-        if (this._draggedTile)
+        if (this._draggedTile) {
             // Sets the position of the dragged tile
             this._draggedTile.style.transform = `translate(${
                 currentX - this._initialPos.x - this._clickOffset.x
             }px, ${
                 currentY - this._initialPos.y - this._clickOffset.y
             }px) rotate(3deg)`;
+        }
         if (this._draggedGroup) {
             // Sets the position of the dragged group
             this.handleGroupMouseMove(event);
@@ -1049,7 +1059,9 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseUp(event) {
-        if (this.readOnly || event.currentTarget !== this._draggedTile) return;
+        if (this.readOnly || event.currentTarget !== this._draggedTile) {
+            return;
+        }
         this.endDrag();
     }
 
@@ -1129,7 +1141,9 @@ export default class Kanban extends LightningElement {
      * @returns {object[]} The array with swapped records
      */
     swapRecords(fromIndex, toIndex) {
-        if (toIndex < 0 || fromIndex < 0) return this.records;
+        if (toIndex < 0 || fromIndex < 0) {
+            return this.records;
+        }
         const arr = JSON.parse(JSON.stringify(this._records));
         arr[fromIndex][this.groupFieldName] =
             this._groupValues[this._releasedGroupIndex].label;
@@ -1151,7 +1165,7 @@ export default class Kanban extends LightningElement {
             new CustomEvent('change', {
                 detail: {
                     id: arr[fromIndex].id,
-                    action: arr[fromIndex][this._groupFieldName],
+                    action: arr[fromIndex][this.groupFieldName],
                     records: this.records
                 },
                 composed: false,
@@ -1177,8 +1191,9 @@ export default class Kanban extends LightningElement {
             if (
                 record[this.groupFieldName] ===
                 this._groupValues[groupIndex].label
-            )
+            ) {
                 tileCount++;
+            }
             return (
                 tileCount === tileIndex &&
                 record[this.groupFieldName] ===
@@ -1220,8 +1235,9 @@ export default class Kanban extends LightningElement {
             ) {
                 scrolledHeight += tile.offsetHeight + 10;
             }
-            if (this._clickedGroupIndex === this._releasedGroupIndex)
+            if (this._clickedGroupIndex === this._releasedGroupIndex) {
                 this._releasedTileIndex--;
+            }
             if (
                 this._draggedTile.getBoundingClientRect().y +
                     scrolledHeight +
