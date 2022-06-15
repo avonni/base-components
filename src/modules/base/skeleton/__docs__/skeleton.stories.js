@@ -134,7 +134,7 @@ Chip.args = {
     variant: 'chip',
     animation: 'pulse',
     variantAttributes: {
-        variant: 'brand',
+        variant: 'base',
         hasIcon: true,
         outline: false
     }

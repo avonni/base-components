@@ -1045,9 +1045,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'brand') {
+        } else if (this.variantAttributes.variant === 'brand') {
             chip.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#0070d1'
@@ -1060,9 +1058,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'inverse') {
+        } else if (this.variantAttributes.variant === 'inverse') {
             chip.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#001639'
@@ -1075,9 +1071,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'alt-inverse') {
+        } else if (this.variantAttributes.variant === 'alt-inverse') {
             chip.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#032d60'
@@ -1090,9 +1084,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'info') {
+        } else if (this.variantAttributes.variant === 'info') {
             chip.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#706e6b'
@@ -1105,9 +1097,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'warning') {
+        } else if (this.variantAttributes.variant === 'warning') {
             chip.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#fe9339'
@@ -1120,9 +1110,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#000000'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'error') {
+        } else if (this.variantAttributes.variant === 'error') {
             chip.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#ea001e'
@@ -1135,9 +1123,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'offline') {
+        } else if (this.variantAttributes.variant === 'offline') {
             chip.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#444444'
@@ -1178,9 +1164,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'lightest') {
+        } else if (this.variantAttributes.variant === 'lightest') {
             badge.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#ffffff'
@@ -1193,9 +1177,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'success') {
+        } else if (this.variantAttributes.variant === 'success') {
             badge.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#2e844a'
@@ -1208,9 +1190,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'warning') {
+        } else if (this.variantAttributes.variant === 'warning') {
             badge.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#fe9339'
@@ -1223,9 +1203,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#000000'
             );
-            return;
-        }
-        if (this.variantAttributes.variant === 'error') {
+        } else if (this.variantAttributes.variant === 'error') {
             badge.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#ea001e'
@@ -1314,8 +1292,11 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-color-background-animation',
                 '#2fa0fa'
             );
-        }
-        if (this.variantAttributes.variant === 'outline-brand') {
+            buttonLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#ffffff'
+            );
+        } else if (this.variantAttributes.variant === 'outline-brand') {
             button.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#ffffff'
@@ -1328,8 +1309,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#0176d3'
             );
-        }
-        if (this.variantAttributes.variant === 'inverse') {
+        } else if (this.variantAttributes.variant === 'inverse') {
             button.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#16325c'
@@ -1342,8 +1322,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#f3f3f3'
             );
-        }
-        if (this.variantAttributes.variant === 'destructive') {
+        } else if (this.variantAttributes.variant === 'destructive') {
             button.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#ba0517'
@@ -1356,8 +1335,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ffffff'
             );
-        }
-        if (this.variantAttributes.variant === 'text-destructive') {
+        } else if (this.variantAttributes.variant === 'text-destructive') {
             button.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#ffffff'
@@ -1370,8 +1348,7 @@ export default class Skeleton extends LightningElement {
                 '--avonni-skeleton-chip-label-background',
                 '#ea001e'
             );
-        }
-        if (this.variantAttributes.variant === 'success') {
+        } else if (this.variantAttributes.variant === 'success') {
             button.style.setProperty(
                 '--avonni-skeleton-color-background',
                 '#45c65a'
@@ -1383,6 +1360,11 @@ export default class Skeleton extends LightningElement {
             buttonLabel.style.setProperty(
                 '--avonni-skeleton-chip-label-background',
                 '#181818'
+            );
+        } else {
+            buttonLabel.style.setProperty(
+                '--avonni-skeleton-chip-label-background',
+                '#c4c4c4'
             );
         }
     }
