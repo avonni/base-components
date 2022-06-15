@@ -51,6 +51,7 @@ const MAX_ITEM_LENGTH = 230;
 const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
+const SPACE_BETWEEN_ICON_AND_TEXT = 5;
 const SVG_ICON_SIZE = 25;
 const VALID_ICON_CATEGORIES = [
     'standard',
@@ -66,13 +67,17 @@ const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
 // ** Functionalities/bug **
 // TODO: Fix popover size
-// TODO: Last item : click/drag (when interval width is changed) -->
-//      --- > change date by calculation of distance and convert to date (Change scroll too )
-
-// ** QA/tests/Doc **
-// TODO: Refactor
-// TODO: Doc
-// TODO: Tests
+// TODO: Change color and appearance
+// -> 1) Interval rectangle : stroke (3), palette-blue-50 (border), color-background-selection (background)
+// -> 2) Scroll axis border : color-gray-6
+// -> 3) Stroke - timeline : card-color-border (increase stroke)
+// TODO: Scroll axis : change tick alignment (left : more space first date, left align) (right: right align)
+// TODO: Fix alignment header and timeline
+// TODO: Remove -
+// TODO: mouse over : hideBorder to remove border on primitive
+// TODO: mouse over on popover keeps it open
+// TODO: No icon + wrong category --> standard:empty
+// TODO: Change activate edit mode : activate on mouseover
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -461,9 +466,9 @@ export class HorizontalActivityTimeline {
      */
     computedItemTitle(item) {
         if (item.title.length > MAX_LENGTH_TITLE_ITEM) {
-            return ' - ' + item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ...';
+            return item.title.slice(0, MAX_LENGTH_TITLE_ITEM) + ' ...';
         }
-        return ' - ' + item.title;
+        return item.title;
     }
 
     /**
@@ -505,7 +510,9 @@ export class HorizontalActivityTimeline {
             .append('text')
             .attr(
                 'x',
-                this.viewTimeScale(new Date(item.datetimeValue)) + SVG_ICON_SIZE
+                this.viewTimeScale(new Date(item.datetimeValue)) +
+                    SVG_ICON_SIZE +
+                    SPACE_BETWEEN_ICON_AND_TEXT
             )
             .attr('y', item.yPosition + 0.64 * SVG_ICON_SIZE)
             .text(this.computedItemTitle(item))
@@ -836,6 +843,17 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Set the icon's information (name of the icon, x link href and CSS classes) to default (standard:empty)
+     */
+    setDefaultIconInformation() {
+        return {
+            iconName: 'empty',
+            xLinkHref: '/assets/icons/standard-sprite/svg/symbols.svg#empty',
+            categoryIconClass: 'slds-icon-standard-empty'
+        };
+    }
+
+    /**
      * Set the interval's min date to the middle datetime value of all items
      */
     setDefaultIntervalDates() {
@@ -851,18 +869,18 @@ export class HorizontalActivityTimeline {
      * Determine and set the icon's information (name of the icon, x link href and CSS classes) according to correct category
      */
     setIconInformation(iconName) {
+        // The item has no icon
+        if (!iconName) {
+            return this.setDefaultIconInformation();
+        }
+
         const iconCategory = VALID_ICON_CATEGORIES.find((category) => {
             return iconName.match(category + ':');
         });
 
         // Invalid icon category - Set default icon
         if (!iconCategory) {
-            return {
-                iconName: 'default',
-                xLinkHref:
-                    '/assets/icons/standard-sprite/svg/symbols.svg#default',
-                categoryIconClass: 'slds-icon-standard-default'
-            };
+            return this.setDefaultIconInformation();
         }
 
         // Set icon's information

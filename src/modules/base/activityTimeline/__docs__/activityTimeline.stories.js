@@ -128,6 +128,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        maxVisibleItems: {
+            name: 'max-visible-items',
+            control: {
+                type: 'number',
+                min: 0
+            },
+            description: 'The maximum number of visible items to display.',
+            table: {
+                type: { summary: 'number' }
+            }
+        },
         position: {
             name: 'position',
             control: {
@@ -139,17 +150,6 @@ export default {
             table: {
                 defaultValue: { summary: 'vertical' },
                 type: { summary: 'string' }
-            }
-        },
-        maxVisibleItems: {
-            name: 'max-visible-items',
-            control: {
-                type: 'number',
-                min: 0
-            },
-            description: 'The maximum number of visible items to display.',
-            table: {
-                type: { summary: 'number' }
             }
         },
         sortedDirection: {

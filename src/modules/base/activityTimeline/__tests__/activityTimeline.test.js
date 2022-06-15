@@ -931,7 +931,7 @@ describe('Activity Timeline', () => {
                 );
                 expect(itemElement).toBeDefined();
                 const title = itemElement.querySelector('text');
-                expect(title.textContent).toBe(' - ' + item.title);
+                expect(title.textContent).toBe(item.title);
             }
         });
     });
@@ -1033,7 +1033,7 @@ describe('Activity Timeline', () => {
                 );
                 expect(itemElement).toBeDefined();
                 const title = itemElement.querySelector('text');
-                expect(title.textContent).toBe(' - ' + item.title);
+                expect(title.textContent).toBe(item.title);
             }
         });
     });
@@ -1095,7 +1095,7 @@ describe('Activity Timeline', () => {
             );
             expect(item).toBeDefined();
             const title = item.querySelector('text');
-            expect(title.textContent).toBe(' - ' + itemAfterDrag.title);
+            expect(title.textContent).toBe(itemAfterDrag.title);
         });
     });
 
@@ -1163,7 +1163,7 @@ describe('Activity Timeline', () => {
                 );
                 expect(itemElement).toBeDefined();
                 const title = itemElement.querySelector('text');
-                expect(title.textContent).toBe(' - ' + item.title);
+                expect(title.textContent).toBe(item.title);
             }
         });
     });

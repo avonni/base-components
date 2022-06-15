@@ -121,7 +121,7 @@ describe('Activity Timeline', () => {
     // computedItemTitle
     it('Horizontal Activity Timeline: computedItemTitle', () => {
         expect(element.computedItemTitle(horizontalItemsTest[0])).toBe(
-            ' - This is a message longer than  ...'
+            'This is a message longer than  ...'
         );
     });
 
@@ -158,12 +158,13 @@ describe('Activity Timeline', () => {
             'standar:bot',
             'ulitity:answer',
             'doc:flash',
-            'customs:custom54'
+            'customs:custom54',
+            ''
         ];
         const expectedIconInformation = {
-            iconName: 'default',
-            xLinkHref: '/assets/icons/standard-sprite/svg/symbols.svg#default',
-            categoryIconClass: 'slds-icon-standard-default'
+            iconName: 'empty',
+            xLinkHref: '/assets/icons/standard-sprite/svg/symbols.svg#empty',
+            categoryIconClass: 'slds-icon-standard-empty'
         };
 
         for (const iconName of invalidIconCategoryNames) {
