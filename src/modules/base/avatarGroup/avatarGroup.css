@@ -39,6 +39,10 @@
     cursor: pointer;
 }
 
+.slds-avatar-grouped {
+    border: none;
+}
+
 .avonni-avatar-group_x-large {
     width: 4.5rem;
     height: 4.5rem;
