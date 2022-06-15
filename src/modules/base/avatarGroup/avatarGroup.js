@@ -625,8 +625,10 @@ export default class AvatarGroup extends LightningElement {
             item = this.listHiddenItems[itemId];
         }
 
+        console.log(item);
         if (item.showMore) {
             this.showPopover = true;
+            console.log('show more');
             this.template.querySelector('.slds-dropdown-trigger').focus();
             this.allowBlur();
         } else {
@@ -650,6 +652,7 @@ export default class AvatarGroup extends LightningElement {
                 })
             );
 
+            console.log('avatarGroup.handleAvatarClick');
             this.showPopover = false;
             this.cancelBlur();
         }
@@ -659,6 +662,7 @@ export default class AvatarGroup extends LightningElement {
      * Dispatch the actionclick event
      */
     handleActionClick() {
+        console.log('avatarGroup.handleActionClick');
         const name = this.name;
 
         /**
@@ -682,6 +686,7 @@ export default class AvatarGroup extends LightningElement {
      * Dispatch the actionclick event
      */
     handleAvatarActionClick = (event) => {
+        console.log('avatarGroup.handleAvatarActionClick');
         const name = event.detail.name;
         const itemId = event.target.dataset.itemId;
         const type = event.target.dataset.type;

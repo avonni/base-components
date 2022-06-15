@@ -250,7 +250,7 @@ const Template = (args) => AvatarGroup(args);
 
 const items = [
     {
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        // src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
         alternativeText: 'This is the alternative text',
         primaryText: 'John Doe',
@@ -258,7 +258,7 @@ const items = [
         tertiaryText: 'FakeCompany Inc.'
     },
     {
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        // src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
         initials: 'UA',
         alternativeText: 'This is the alternative text',
@@ -269,7 +269,7 @@ const items = [
 ];
 const itemsWithPresence = [
     {
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+        // src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
         fallbackIconName: 'standard:user',
         alternativeText: 'This is the alternative text',
         presence: 'online',
@@ -279,7 +279,7 @@ const itemsWithPresence = [
         tertiaryText: 'FakeCompany Inc.'
     },
     {
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        // src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
         initials: 'UA',
         alternativeText: 'This is the alternative text',
@@ -311,7 +311,7 @@ const itemsWithPresence = [
 ];
 const itemsWithStatusAndEntity = [
     {
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+        // src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
         fallbackIconName: 'standard:user',
         alternativeText: 'This is the alternative text',
         status: 'locked',
@@ -343,7 +343,7 @@ const itemsWithStatusAndEntity = [
         ]
     },
     {
-        src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+        // src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
         fallbackIconName: 'standard:user',
         initials: 'UA',
         alternativeText: 'This is the alternative text',

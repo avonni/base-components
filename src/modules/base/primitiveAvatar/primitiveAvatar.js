@@ -541,6 +541,7 @@ export default class PrimitiveAvatar extends LightningElement {
      * @param {event}
      */
     handleActionClick(event) {
+        console.log('primitiveAvatar.handleActionClick', event.detail.name);
         /**
          * The event fired when a user clicks on an action.
          *
@@ -555,6 +556,31 @@ export default class PrimitiveAvatar extends LightningElement {
                 detail: {
                     name: event.currentTarget.value
                 }
+            })
+        );
+    }
+
+    /**
+     * Avatar clicked event handler.
+     * @param {event}
+     *
+     */
+    handleAvatarClick(event) {
+        console.log('primitiveAvatar.handleAvatarClick');
+        /**
+         * The event fired when a user clicks on an avatar.
+         *
+         * @event
+         * @name avatarclick
+         * @bubbles
+         * @public
+         * @type {object}
+         */
+        this.dispatchEvent(
+            new CustomEvent('avatarclick', {
+                bubbles: true,
+                cancelable: true,
+                detail: { item: event.detail }
             })
         );
     }
