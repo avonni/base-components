@@ -97,7 +97,7 @@ describe('Slider', () => {
         expect(element.type).toEqual('horizontal');
         expect(element.unit).toEqual('decimal');
         expect(element.unitAttributes).toEqual({});
-        expect(element.validity).toEqual({});
+        expect(element.validity).toEqual(true);
         expect(element.value).toEqual(50);
         expect(element.variant).toEqual('standard');
     });
@@ -865,25 +865,25 @@ describe('Slider', () => {
         element.max = 1000;
 
         return Promise.resolve().then(() => {
-            expect(element.validity.valid).toEqual(true);
+            expect(element.validity).toEqual(true);
         });
     });
 
-    it('validity should be negative', () => {
+    it('validity should be positive (cappedValues)', () => {
         element.value = 1000;
         element.max = 10;
 
         return Promise.resolve().then(() => {
-            expect(element.validity.valid).toEqual(false);
+            expect(element.validity).toEqual(true);
         });
     });
 
-    it('validity should be negative (two values)', () => {
+    it('validity should be positive (two values and capped)', () => {
         element.value = [1000, 50];
         element.max = 10;
 
         return Promise.resolve().then(() => {
-            expect(element.validity[0].valid).toEqual(false);
+            expect(element.validity).toEqual(true);
         });
     });
 
@@ -1049,19 +1049,19 @@ describe('Slider', () => {
             });
     });
 
-    it('reportValidity() should return false', () => {
+    it('reportValidity() should return true (capped values)', () => {
         element.value = 1000;
         element.max = 10;
         return Promise.resolve()
             .then(() => {
-                expect(element.reportValidity()).toEqual(false);
+                expect(element.reportValidity()).toEqual(true);
             })
             .then(() => {
                 expect(
                     element.shadowRoot.querySelector(
                         '[data-element-id="help-message"]'
                     )
-                ).toBeTruthy();
+                ).toBeFalsy();
             });
     });
 
@@ -1074,11 +1074,11 @@ describe('Slider', () => {
         });
     });
 
-    it('checkValidity() should return false', () => {
+    it('checkValidity() should return true (capped values)', () => {
         element.value = 1000;
         element.max = 10;
         return Promise.resolve().then(() => {
-            expect(element.checkValidity()).toEqual(false);
+            expect(element.checkValidity()).toEqual(true);
         });
     });
 
@@ -1099,7 +1099,7 @@ describe('Slider', () => {
             });
     });
 
-    it('showHelpMessageIfInvalid() should show message', () => {
+    it('showHelpMessageIfInvalid() should not show message (cappedValues)', () => {
         element.value = 1000;
         element.max = 10;
         return Promise.resolve()
@@ -1111,7 +1111,7 @@ describe('Slider', () => {
                     element.shadowRoot.querySelector(
                         '[data-element-id="help-message"]'
                     )
-                ).toBeTruthy();
+                ).toBeFalsy();
             });
     });
 

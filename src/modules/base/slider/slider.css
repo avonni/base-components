@@ -70,9 +70,6 @@
     height: var(--lwc-sizeLarge, 25rem);
 }
 .avonni-slider__unit-container {
-    display: flex;
-    justify-content: space-between;
-    padding-top: 0.5rem;
     color: var(--avonni-slider-unit-text-color, #3e3e3c);
     font-size: var(--avonni-slider-unit-font-size, 0.75rem);
     font-style: var(--avonni-slider-unit-font-style, normal);
@@ -80,8 +77,6 @@
 }
 .avonni-slider__vertical {
     transform: rotate(-90deg);
-    position: absolute;
-    margin-left: 4px;
 }
 
 .avonni-slider__container-vertical-origin_x-small {
@@ -109,8 +104,8 @@
     transition: opacity 0.1s ease-in-out;
     position: absolute;
     top: calc(-28px - var(--avonni-slider-thumb-width, 8px));
-    background-color: var(--avonni-slider-pin-color, #1a5296);
-    color: #fff;
+    background-color: var(--avonni-slider-pin-color-background, #1a5296);
+    color: var(--avonni-slider-pin-text-color, #ffffff);
     height: 2rem;
     border-radius: var(--avonni-slider-pin-radius, 0.25rem);
     width: fit-content;
@@ -137,15 +132,15 @@
     border-right: 16px solid transparent;
     border-top-width: 19px;
     border-top-style: solid;
-    border-top-color: var(--avonni-slider-pin-color, #1a5296);
+    border-top-color: var(--avonni-slider-pin-color-background, #1a5296);
     transform: translate(-50%, -50%);
     z-index: -1;
 }
 .avonni-slider__pin-vertical {
     opacity: 0;
     position: absolute;
-    background-color: var(--avonni-slider-pin-color, #1a5296);
-    color: #fff;
+    background-color: var(--avonni-slider-pin-color-background, #1a5296);
+    color: var(--avonni-slider-pin-text-color, #ffffff);
     border-radius: var(--avonni-slider-pin-radius, 0.25rem);
     top: calc(4px + var(--avonni-slider-thumb-width, 8px));
     padding-left: 0.5rem;
@@ -171,7 +166,7 @@
     border-right: 16px solid transparent;
     border-top-width: 19px;
     border-top-style: solid;
-    border-top-color: var(--avonni-slider-pin-color, #1a5296);
+    border-top-color: var(--avonni-slider-pin-color-background, #1a5296);
     transform: rotate(90deg);
     z-index: -1;
 }
@@ -185,7 +180,6 @@
 
 .avonni-slider__slider {
     position: relative;
-    -webkit-appearance: none;
     outline: none;
     background: transparent;
     margin-bottom: calc(0px - calc(var(--avonni-slider-track-height, 4px)));

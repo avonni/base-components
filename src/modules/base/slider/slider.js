@@ -251,12 +251,13 @@ export default class Slider extends LightningElement {
     }
 
     set max(value) {
-        let intValue = parseInt(value, 10);
+        const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
             this._computedMax = intValue;
             this._max = intValue;
             if (this._connected) {
                 this.scaleValues();
+                this.capValues();
             }
         }
     }
@@ -273,12 +274,13 @@ export default class Slider extends LightningElement {
         return this._min;
     }
     set min(value) {
-        let intValue = parseInt(value, 10);
+        const intValue = parseInt(value, 10);
         if (!isNaN(intValue)) {
             this._computedMin = intValue;
             this._min = intValue;
             if (this._connected) {
                 this.scaleValues();
+                this.capValues();
             }
         }
     }
@@ -464,6 +466,10 @@ export default class Slider extends LightningElement {
         });
         if (this._unit === 'percent') {
             this._scalingFactor = PERCENT_SCALING_FACTOR;
+            if (this._connected) {
+                this.scaleValues();
+                this.capValues();
+            }
         }
     }
     /**
@@ -494,8 +500,10 @@ export default class Slider extends LightningElement {
     @api
     get validity() {
         return this._computedValues.length === 1
-            ? this._constraints[0].validity
-            : this._constraints.map((constraintApi) => constraintApi.validity);
+            ? this._constraints[0].validity.valid
+            : this._constraints.reduce((result, nextConstraintApi) => {
+                  return result && nextConstraintApi.validity.valid;
+              }, true);
     }
 
     /**
@@ -511,15 +519,13 @@ export default class Slider extends LightningElement {
     }
     set value(value) {
         if (value !== 0 && !value) {
+            this._value = (DEFAULT_MAX - DEFAULT_MIN) / 2;
             return;
         }
         if (!isNaN(Number(value))) {
             this._value = [Number(value)];
         } else {
-            this._value = [];
-            normalizeArray(value, 'number').forEach((val) => {
-                this._value.push(val);
-            });
+            this._value = normalizeArray(value, 'number');
         }
         this._value = this._value.sort((a, b) => a - b);
         this._computedValues = [...this._value];
@@ -561,9 +567,8 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedLabelClass() {
-        return classSet('avonni-slider__label').add({
-            'slds-slider-label__label': true,
-            'slds-hide': this._variant === 'label-hidden'
+        return classSet('avonni-slider__label slds-slider-label__label').add({
+            'slds-assistive-text': this._variant === 'label-hidden'
         });
     }
 
@@ -578,6 +583,8 @@ export default class Slider extends LightningElement {
                 [`avonni-slider__container-horizontal-size_${this._size}`]:
                     this._size,
                 'avonni-slider__vertical': this.isVertical,
+                'slds-is-absolute': this.isVertical,
+                'slds-m-left_xx-small': this.isVertical,
                 [`avonni-slider__container-vertical-origin_${this._size}`]:
                     this.isVertical
             })
@@ -602,8 +609,7 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedInputClass() {
-        return classSet('slds-slider__range').add({
-            'avonni-slider__slider': true,
+        return classSet('slds-slider__range avonni-slider__slider').add({
             'avonni-slider__slider_disabled': this.disabled
         });
     }
@@ -674,7 +680,9 @@ export default class Slider extends LightningElement {
      * @type {string}
      */
     get computedUnitContainerClass() {
-        return classSet('avonni-slider__unit-container').add({
+        return classSet(
+            'avonni-slider__unit-container slds-grid slds-grid_align-spread slds-p-top_x-small'
+        ).add({
             'avonni-slider__unit-container_ticks-horizontal':
                 !this.isVertical &&
                 this.showAnyTickMarks &&
