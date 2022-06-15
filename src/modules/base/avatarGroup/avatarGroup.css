@@ -39,10 +39,6 @@
     cursor: pointer;
 }
 
-.slds-avatar-grouped {
-    border: none;
-}
-
 .avonni-avatar-group_x-large {
     width: 4.5rem;
     height: 4.5rem;
@@ -212,7 +208,7 @@
 }
 
 .avonni-avatar-group__avatar_color-border {
-    border-color: var(--avonni-avatar-group-avatar-stack-color-border, #ffffff);
+    border: none;
 }
 
 .avonni-avatar-group__avatar_color-border-circle {
