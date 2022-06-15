@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { classSet } from 'c/utils';
-import { normalizeString } from '../utilsPrivate/normalize';
+import { normalizeString } from 'c/utilsPrivate';
 
 const MEDIA_POSITIONS = {
     valid: [
@@ -106,7 +106,9 @@ export default class Card extends LightningElement {
                 this.defaultSlot.innerText &&
                 this.defaultSlot.innerText.trim().length !== 0);
         this.showTitleSlot =
-            this.titleSlot && this.titleSlot.assignedElements().length !== 0;
+            !this.title &&
+            this.titleSlot &&
+            this.titleSlot.assignedElements().length !== 0;
         this.showFooterSlot =
             this.footerSlot && this.footerSlot.assignedElements().length !== 0;
     }
@@ -243,7 +245,7 @@ export default class Card extends LightningElement {
     }
 
     /**
-     * Card body classes ... slds-grid_vertical
+     * Card body classes
      *
      * @type {string}
      */

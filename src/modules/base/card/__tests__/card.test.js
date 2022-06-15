@@ -41,8 +41,6 @@ describe('Card', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
-        window.requestAnimationFrame.mockRestore();
-        jest.clearAllTimers();
     });
 
     beforeEach(() => {
@@ -50,10 +48,6 @@ describe('Card', () => {
             is: Card
         });
         document.body.appendChild(element);
-        jest.useFakeTimers();
-        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
-            setTimeout(() => cb(), 0);
-        });
     });
 
     it('Default attributes', () => {

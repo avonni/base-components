@@ -1,11 +1,12 @@
 <template>
     <div style="max-width: 500px">
         <avonni-card
-            title="Card title"
             icon-name="custom:custom102"
             media-src="https://picsum.photos/id/1022/100"
             media-position="left"
         >
+            <span slot="title">Title slot</span>
+
             <lightning-button slot="actions" label="Action"></lightning-button>
 
             <lightning-button-icon

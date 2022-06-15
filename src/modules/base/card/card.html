@@ -67,7 +67,13 @@
 
             <!-- title and actions -->
             <div class="slds-has-flexi-truncate avonni-card__content-container">
-                <header class="slds-has-flexi-truncate avonni-card__header">
+                <header
+                    class="
+                        slds-has-flexi-truncate
+                        avonni-card__header
+                        slds-grid
+                    "
+                >
                     <div
                         class="
                             slds-has-flexi-truncate
@@ -95,6 +101,7 @@
                         <template if:true={showTitleSlot}>
                             <slot
                                 name="title"
+                                class="avonni-card__title-text slds-truncate"
                                 data-element-id="avonni-card-title-slot"
                             ></slot>
                         </template>
