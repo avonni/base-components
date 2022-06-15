@@ -368,7 +368,7 @@
     cursor: default !important;
 }
 
-.avonni-skeleton_tabset-pulse::after {
+/* .avonni-skeleton_tabset-pulse::after {
     background-color: var(--avonni-skeleton-color-background);
     animation: pulse-animation 1s infinite;
     position: relative;
@@ -392,7 +392,7 @@
     );
     background-size: 800px;
     height: 0.2em;
-}
+} */
 
 .avonni-skeleton__tabset-item {
     margin-bottom: 5px;

@@ -651,9 +651,11 @@ export default class Skeleton extends LightningElement {
     }
 
     get tabClass() {
-        return classSet('slds-tabs_default__item')
-            .add('slds-is-active')
-            .add(`avonni-skeleton_tabset-${this.animation}`);
+        return (
+            classSet('slds-tabs_default__item')
+                // .add('slds-is-active')
+                .add(`avonni-skeleton_tabset-${this.animation}`)
+        );
     }
 
     get tabItemClass() {
