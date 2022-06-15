@@ -29,15 +29,12 @@
 .avonni-kanban__field_container {
     position: relative;
     max-height: calc(100% - 15px);
+    height: 100%;
     margin-top: 10px;
     right: 0;
     left: 0;
     display: flex;
     width: 100%;
-}
-
-.avonni-kanban__variant_base .avonni-kanban__field_container {
-    height: fit-content;
 }
 
 .avonni-kanban__variant_path .avonni-kanban__field_container {
@@ -55,14 +52,14 @@
     overflow-x: hidden;
 }
 
-.avonni-kanban__variant_base .avonni-kanban__tiles_container {
-    height: fit-content;
-}
-
 .avonni-kanban__header_action {
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+.avonni-kanban__variant_base .avonni-kanban__tiles_container {
+    max-height: calc(100% - 75px);
 }
 
 .avonni-kanban__summarize_wrapper {
@@ -78,18 +75,21 @@
 
 .avonni-kanban__field {
     position: relative;
+    display: flex;
+    flex-direction: column;
     width: 100%;
     min-width: var(--avonni-kanban-column-min-width, 14em);
     max-width: var(--avonni-kanban-column-max-width, 22.5em);
-    max-height: calc(100% - 15px);
-
     border-right: 1px solid #c9c7c5;
     padding: 5px 0;
+    height: fit-content;
 }
 
 .avonni-kanban__field:first-of-type {
     border-left: 1px solid #c9c7c5;
-    height: 100%;
+}
+
+.avonni-kanban__field_capped {
     max-height: 100%;
 }
 

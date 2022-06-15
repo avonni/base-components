@@ -387,21 +387,7 @@ export default class Kanban extends LightningElement {
      * @param {HTMLElement[]} groups Groups containing the tiles to translate
      */
     animateTiles(groups) {
-        const fields = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__field"]'
-        );
-        const container = this.template.querySelector(
-            '[data-element-id="avonni-kanban__field_container"]'
-        );
-
-        fields.forEach((field, i) => {
-            if (this.variant === 'base') field.style.height = 'fit-content';
-            if (field.offsetHeight >= container.offsetHeight)
-                field.style.height = `${container.offsetHeight}px`;
-
-            this._fieldsDistance[i] =
-                container.offsetHeight - field.offsetHeight;
-        });
+        this.capFieldHeight();
 
         // translates the tiles down when the dragged tile hovers over them
         const releasedChilds = Array.from(
@@ -510,10 +496,6 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__container"]'
         ).scrollWidth;
 
-        const actionsContainer = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__footer_action"]'
-        );
-
         const fields = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__field"]'
         );
@@ -521,24 +503,14 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__field_container"]'
         );
 
-        const groupElements = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__group"]'
-        );
-        const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
-        Array.from(groupElements).forEach((group, i) => {
-            group.style.height = 'fit-content';
-            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
+        fields.forEach((field) => {
+            if (field.offsetHeight >= container.offsetHeight) {
+                field.classList.add('avonni-kanban__field_capped');
+            } else {
+                field.classList.remove('avonni-kanban__field_capped');
+            }
         });
-        fields.forEach((field, i) => {
-            const hasScroll =
-                groupElements[i].scrollHeight > groupElements[i].clientHeight;
-            if (this.variant === 'base') field.style.height = 'fit-content';
-            if (field.offsetHeight > container.offsetHeight || hasScroll)
-                field.style.height = `${container.offsetHeight}px`;
 
-            this._fieldsDistance[i] =
-                container.offsetHeight - field.offsetHeight;
-        });
         this._droppedTileHeight = 0;
     }
 
@@ -587,23 +559,16 @@ export default class Kanban extends LightningElement {
             '[data-element-id="avonni-kanban__group"]'
         );
 
-        // Sets the right marginBottom on the last tile depending on the hovered group
-        if (this._draggedTile)
-            currentGroupTiles.forEach((group, i) => {
-                if (group.children.length > 0) {
-                    const increment =
-                        this._clickedTileIndex === this._groupsLength[i] - 1
-                            ? 2
-                            : 1;
-                    const marginBottom =
-                        i === this._releasedGroupIndex
-                            ? this._draggedTile.offsetHeight
-                            : 0;
-                    group.children[
-                        group.children.length - increment
-                    ].style.marginBottom = `${marginBottom}px`;
-                }
-            });
+        // Sets the right paddingBottom on the group to create space for the dragged tile
+        currentGroupTiles.forEach((group, i) => {
+            if (this._draggedTile) {
+                const paddingBottom =
+                    this._releasedGroupIndex === i
+                        ? this._draggedTile.offsetHeight
+                        : 0;
+                group.style.paddingBottom = `${paddingBottom}px`;
+            }
+        });
     }
 
     /**
@@ -683,19 +648,13 @@ export default class Kanban extends LightningElement {
         window.clearInterval(this._scrollingInterval);
         this._scrollingInterval = null;
 
-        const actionsContainer = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__footer_action"]'
-        );
-
         // removes the translation on all tiles
         const groupElements = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__group"]'
         );
-        const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
 
-        Array.from(groupElements).forEach((group, i) => {
-            group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
-
+        Array.from(groupElements).forEach((group) => {
+            group.style.paddingBottom = '0px';
             Array.from(group.children).forEach((tile) => {
                 tile.classList.remove('avonni-kanban__tile_moved');
                 tile.style.transform = `translateY(0px)`;
@@ -1089,24 +1048,8 @@ export default class Kanban extends LightningElement {
         let offsetHeight = 0;
         let offsetCount = 0;
 
-        const actionsContainer = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__footer_action"]'
-        );
-
-        const TILES_CONTAINER_OFFSET = this.variant === 'base' ? '- 75px' : '';
-
         // resets animations
         Array.from(groups).forEach((group, i) => {
-            if (group !== groups[this._releasedGroupIndex]) {
-                group.style.maxHeight = `calc(100% ${TILES_CONTAINER_OFFSET} - ${actionsContainer[i].offsetHeight}px)`;
-                group.style.height = 'fit-content';
-            } else {
-                group.style.height = `${
-                    this._groupsHeight[this._releasedGroupIndex] +
-                    this._draggedTile.offsetHeight
-                }px`;
-            }
-
             // removes the translation on the other tiles
             Array.from(group.children)
                 .filter((child) => child !== this._draggedTile)
