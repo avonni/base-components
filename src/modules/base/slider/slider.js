@@ -70,7 +70,7 @@ const SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
 
 export default class Slider extends LightningElement {
     /**
-     * Text label to describe the slider.
+     * Text label to describe the slider. Provide your own label to describe the slider.
      *
      * @type {string}
      * @public
@@ -447,7 +447,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * Format the value displayed. Valid values include decimal, currency and percent.
+     * Format the value displayed. Accepted units include decimal, currency, percent and custom. See Units and Unit Attributes table for more details.
      *
      * @type {string}
      * @public
@@ -467,7 +467,7 @@ export default class Slider extends LightningElement {
         }
     }
     /**
-     * Object containing selected fields for the unit type (see Units and Unit Attributes table).
+     * Attributes specific to the selected unit. See Units and Unit Attributes table for more details.
      *
      * @type {object}
      * @public
@@ -499,8 +499,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * The value of the slider. If an array is passed, many thumbs will displayed on slider.
-     * Returns a number if one value, returns an array if many values (array is always returned in ascending order).
+     * The value of the slider. If multiple values are given, slider will have multiple thumbs, one for each value.
      *
      * @type {number | number[]}
      * @public
@@ -532,7 +531,7 @@ export default class Slider extends LightningElement {
     }
 
     /**
-     * The variant changes the appearance of the slider. Accepted variants include standard and label-hidden.
+     * The variant changes the appearance of the slider. Accepted variants include standard and label-hidden. The default is standard.
      *
      * @type {string}
      * @public
