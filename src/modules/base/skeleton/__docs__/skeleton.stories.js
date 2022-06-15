@@ -214,9 +214,9 @@ Input.args = {
 export const ProgressIndicator = Template.bind({});
 ProgressIndicator.args = {
     variant: 'progress-indicator',
-    animation: 'pulse',
+    animation: 'wave',
     variantAttributes: {
-        variant: 'path',
+        variant: '',
         steps: 3
     }
 };

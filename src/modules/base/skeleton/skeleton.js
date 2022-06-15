@@ -626,15 +626,23 @@ export default class Skeleton extends LightningElement {
     }
 
     get progressIndicatorItemClass() {
-        return classSet('slds-progress__marker').add(
-            `avonni-skeleton__buttonIcon-animation-${this.animation}`
-        );
+        return classSet('slds-progress__marker').add({
+            'avonni-skeleton__buttonIcon-animation-pulse':
+                this.animation === 'pulse',
+            'avonni-skeleton__progress-indicator-wave':
+                this.animation === 'wave'
+        });
     }
 
     get progressIndicatorBarClass() {
         return classSet('slds-progress-bar')
             .add('slds-progress-bar_x-small')
-            .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
+            .add({
+                'avonni-skeleton__buttonIcon-animation-pulse':
+                    this.animation === 'pulse',
+                'avonni-skeleton__progress-indicator-wave':
+                    this.animation === 'wave'
+            });
     }
 
     get progressIndicatorPathClass() {
