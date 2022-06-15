@@ -146,12 +146,4 @@ export default class KanbanPath extends LightningElement {
         { disabled: false, label: 'Action 2', name: 'Action 2' },
         { disabled: true, label: 'Action 3', name: 'Action 3' }
     ];
-
-    summarizeFieldName = 'Amount';
-
-    readOnly = false;
-
-    isLoading = false;
-
-    variant = 'path';
 }

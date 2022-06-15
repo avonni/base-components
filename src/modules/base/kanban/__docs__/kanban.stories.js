@@ -137,44 +137,34 @@ export default {
             }
         }
     },
-    args: {}
+    args: {
+        groupValues: GROUP_VALUES,
+        fields: FIELDS,
+        records: RECORDS,
+        actions: ACTIONS,
+        readOnly: false,
+        isLoading: false,
+        groupFieldName: 'status'
+    }
 };
 
 const Template = (args) => Kanban(args);
 
 export const Base = Template.bind({});
 Base.args = {
-    groupValues: GROUP_VALUES,
     variant: 'base',
-    fields: FIELDS,
-    records: RECORDS,
-    actions: ACTIONS,
-    readOnly: false,
-    isLoading: false,
-    summarizeFieldName: 'Amount',
-    groupFieldName: 'status'
+    summarizeFieldName: 'Amount'
 };
 
 export const path = Template.bind({});
 path.args = {
-    groupValues: GROUP_VALUES,
-    fields: FIELDS,
-    records: RECORDS,
-    actions: ACTIONS,
-    isLoading: false,
-    summarizeFieldName: 'percent',
-    groupFieldName: 'status',
-    variant: 'path'
+    variant: 'path',
+    summarizeFieldName: 'percent'
 };
 
 export const readOnly = Template.bind({});
 readOnly.args = {
-    groupValues: GROUP_VALUES,
-    fields: FIELDS,
-    records: RECORDS,
-    actions: ACTIONS,
+    variant: 'base',
     readOnly: true,
-    isLoading: false,
-    summarizeFieldName: 'percent',
-    groupFieldName: 'status'
+    summarizeFieldName: 'percent'
 };
