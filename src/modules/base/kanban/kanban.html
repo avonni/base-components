@@ -33,94 +33,206 @@
 -->
 
 <template>
-    <template if:true={isLoading}>
-        <lightning-spinner></lightning-spinner>
-    </template>
-    <template if:false={isLoading}>
-        <div class={variantClass}>
-            <div
-                class="slds-path avonni-kanban__container"
-                data-element-id="avonni-kanban__container"
-            >
-                <div class="slds-grid slds-path__track">
-                    <div
-                        class="
-                            slds-grid
-                            slds-path__scroller-container
-                            avonni-kanban__path_container
-                        "
-                    >
-                        <div class="slds-path__scroller">
-                            <div class="slds-path__scroller_inner">
-                                <ul
-                                    class="slds-path__nav"
-                                    role="listbox"
-                                    aria-orientation="horizontal"
+    <lightning-spinner if:true={isLoading}></lightning-spinner>
+
+    <div if:false={isLoading} class={variantClass}>
+        <div
+            class="slds-path avonni-kanban__container slds-is-relative"
+            data-element-id="avonni-kanban__container"
+        >
+            <div if:true={isPath} class="slds-grid slds-path__track">
+                <div
+                    class="
+                        slds-grid
+                        slds-path__scroller-container
+                        avonni-kanban__path_container
+                    "
+                >
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <ul
+                                class="slds-path__nav"
+                                role="listbox"
+                                aria-orientation="horizontal"
+                            >
+                                <li
+                                    for:each={groupValues}
+                                    for:item="item"
+                                    key={item.value}
+                                    class="
+                                        slds-path__item
+                                        slds-is-active
+                                        avonni-kanban__path_item
+                                    "
+                                    role="presentation"
                                 >
-                                    <li
-                                        for:each={groupValues}
-                                        for:item="item"
-                                        key={item.value}
-                                        class="
-                                            slds-path__item
-                                            slds-is-active
-                                            avonni-kanban__path_item
-                                        "
-                                        role="presentation"
+                                    <a
+                                        aria-selected="true"
+                                        class="slds-path__link"
+                                        role="option"
+                                        tabindex="0"
                                     >
-                                        <a
-                                            aria-selected="true"
-                                            class="slds-path__link"
-                                            role="option"
-                                            tabindex="0"
+                                        <span
+                                            class="slds-path__title"
+                                            data-element-id="path-group"
+                                            >{item.label}</span
                                         >
-                                            <span
-                                                class="slds-path__title"
-                                                data-element-id="path-group"
-                                                >{item.label}</span
-                                            >
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
+                                    </a>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div
+                class="
+                    avonni-kanban__field_container
+                    slds-is-relative
+                    slds-m-top_x-small
+                "
+                data-element-id="avonni-kanban__field_container"
+                onmousemove={handleTileMouseMove}
+            >
                 <div
-                    class="avonni-kanban__field_container"
-                    data-element-id="avonni-kanban__field_container"
-                    onmousemove={handleTileMouseMove}
+                    data-element-id="avonni-kanban__group_dropzone"
+                    class="avonni-kanban__group_dropzone slds-m-around_x-small"
+                ></div>
+                <div
+                    class={computedFieldClass}
+                    data-element-id="avonni-kanban__field"
+                    for:each={computedGroups}
+                    for:item="group"
+                    key={group.index}
                 >
                     <div
-                        data-element-id="avonni-kanban__group_dropzone"
-                        class="avonni-kanban__group_dropzone"
-                    ></div>
-                    <div
-                        class={computedFieldClass}
-                        data-element-id="avonni-kanban__field"
-                        for:each={computedGroups}
-                        for:item="group"
-                        key={group.index}
+                        class="avonni-kanban__group_header"
+                        onmousedown={handleGroupMouseDown}
+                        onmouseup={handleGroupMouseUp}
+                        data-element-id="avonni-kanban__group_header"
                     >
+                        <div if:true={group.headerActions}>
+                            <c-button-menu
+                                alternative-text="Show menu"
+                                icon-size="x-small"
+                                menu-alignment="right"
+                                class="avonni-kanban__header_action"
+                                disabled={readOnly}
+                                variant="bare"
+                                icon-name="action:more"
+                                hide-down-arrow
+                            >
+                                <template
+                                    for:each={group.headerActions}
+                                    for:item="action"
+                                >
+                                    <lightning-menu-item
+                                        key={action.name}
+                                        value={action.name}
+                                        label={action.label}
+                                        onactionclick={handleActionClick}
+                                        disabled={action.disabled}
+                                        prefix-icon-name={action.iconName}
+                                        class="slds-text-color_default"
+                                    ></lightning-menu-item>
+                                </template>
+                            </c-button-menu>
+                        </div>
                         <div
-                            class="avonni-kanban__group_header"
-                            onmousedown={handleGroupMouseDown}
-                            onmouseup={handleGroupMouseUp}
-                            data-element-id="avonni-kanban__group_header"
+                            class="avonni-kanban__summarize_wrapper"
+                            data-element-id="avonni-kanban__summarize_wrapper"
                         >
-                            <div if:true={group.headerActions}>
-                                <c-button-menu
+                            <h2
+                                class="
+                                    avonni-kanban__tile-title
+                                    slds-text-heading_medium
+                                    slds-text-color_weak
+                                    slds-m-horizontal_xx-small
+                                "
+                            >
+                                {group.label}
+                            </h2>
+                            <c-output-data
+                                value={group.summarize.value}
+                                type={group.summarize.type}
+                                type-attributes={group.summarize.typeAttributes}
+                                variant="label-hidden"
+                                class="
+                                    slds-text-align_center
+                                    slds-text-heading_large
+                                    slds-text-color_success
+                                    avonni-kanban__summarize
+                                "
+                                data-element-id="summarize"
+                            ></c-output-data>
+                        </div>
+                    </div>
+                    <div
+                        class="
+                            avonni-kanban__tile_dropzone
+                            slds-m-around_x-small
+                        "
+                        data-element-id="avonni-kanban__tile_dropzone"
+                    ></div>
+
+                    <div
+                        data-element-id="avonni-kanban__group"
+                        class="
+                            avonni-kanban__tiles_container
+                            slds-has-dividers_around-space
+                        "
+                    >
+                        <lightning-tile
+                            for:each={group.tiles}
+                            for:item="record"
+                            key={record.index}
+                            data-element-id="avonni-kanban__tile"
+                            class={computedTileClass}
+                            onmousedown={handleTileMouseDown}
+                            onmouseup={handleTileMouseUp}
+                            onmousemove={handleDropZone}
+                        >
+                            <ul data-element-id="fields">
+                                <li
+                                    for:each={record.field}
+                                    for:item="field"
+                                    key={field.label}
+                                >
+                                    <p class="avonni-kanban__fields">
+                                        <c-output-data
+                                            label={field.label}
+                                            value={field.value}
+                                            type={field.type}
+                                            type-attributes={field.typeAttributes}
+                                            variant="label-inline"
+                                        ></c-output-data>
+                                    </p>
+                                </li>
+                                <li>
+                                    <lightning-icon
+                                        if:true={record.warningIcon}
+                                        class="avonni-kanban__tile_icon"
+                                        size="x-small"
+                                        variant="warning"
+                                        icon-name={record.warningIcon}
+                                    ></lightning-icon>
+                                </li>
+                            </ul>
+                            <div
+                                class="avonni-kanban__tile_actions"
+                                if:true={hasActions}
+                            >
+                                <lightning-button-menu
                                     alternative-text="Show menu"
                                     icon-size="x-small"
                                     menu-alignment="right"
-                                    class="avonni-kanban__header_action"
+                                    class="
+                                        avonni-kanban__actions_menu
+                                        slds-is-relative
+                                    "
                                     disabled={readOnly}
-                                    variant="bare"
-                                    icon-name="action:more"
-                                    hide-down-arrow
                                 >
                                     <template
-                                        for:each={group.headerActions}
+                                        for:each={actions}
                                         for:item="action"
                                     >
                                         <lightning-menu-item
@@ -130,177 +242,77 @@
                                             onactionclick={handleActionClick}
                                             disabled={action.disabled}
                                             prefix-icon-name={action.iconName}
-                                            class="slds-text-color_default"
+                                            class="
+                                                slds-text-color_default
+                                                avonni-kanban__actions_item
+                                            "
+                                            data-element-id="avonni-kanban__action"
                                         ></lightning-menu-item>
                                     </template>
-                                </c-button-menu>
+                                </lightning-button-menu>
                             </div>
-                            <div
-                                class="avonni-kanban__summarize_wrapper"
-                                data-element-id="avonni-kanban__summarize_wrapper"
-                            >
-                                <h2
-                                    class="
-                                        avonni-kanban__tile-title
-                                        slds-text-heading_medium
-                                        slds-text-color_weak
-                                    "
+                        </lightning-tile>
+                    </div>
+                    <div
+                        class="
+                            avonni-kanban__footer_actions_container
+                            slds-p-top_small
+                            slds-m-around_x-small
+                        "
+                        data-element-id="avonni-kanban__footer_action"
+                    >
+                        <template if:true={group.footerActions}>
+                            <template if:true={readOnly}>
+                                <button
+                                    onactionclick={handleActionClick}
+                                    for:each={group.footerActions}
+                                    for:item="action"
+                                    key={action.name}
+                                    disabled={readOnly}
+                                    class="avonni-kanban__footer_action"
                                 >
-                                    {group.label}
-                                </h2>
-                                <c-output-data
-                                    value={group.summarize.value}
-                                    type={group.summarize.type}
-                                    type-attributes={group.summarize.typeAttributes}
-                                    variant="label-hidden"
-                                    class="
-                                        slds-text-align_center
-                                        slds-text-heading_large
-                                        slds-text-color_success
-                                        avonni-kanban__summarize
-                                    "
-                                    data-element-id="summarize"
-                                ></c-output-data>
-                            </div>
-                        </div>
-                        <div
-                            class="avonni-kanban__tile_dropzone"
-                            data-element-id="avonni-kanban__tile_dropzone"
-                        ></div>
-
-                        <div
-                            data-element-id="avonni-kanban__group"
-                            class="
-                                avonni-kanban__tiles_container
-                                slds-has-dividers_around-space
-                            "
-                        >
-                            <lightning-tile
-                                for:each={group.tiles}
-                                for:item="record"
-                                key={record.index}
-                                data-element-id="avonni-kanban__tile"
-                                class={computedTileClass}
-                                onmousedown={handleTileMouseDown}
-                                onmouseup={handleTileMouseUp}
-                                onmousemove={handleDropZone}
-                            >
-                                <ul data-element-id="fields">
-                                    <li
-                                        for:each={record.field}
-                                        for:item="field"
-                                        key={field.label}
+                                    <lightning-icon
+                                        if:true={action.iconName}
+                                        size="small"
+                                        icon-name={action.iconName}
+                                    ></lightning-icon>
+                                    <span
+                                        class="
+                                            slds-text-color_default
+                                            slds-text-body_regular
+                                        "
+                                        >{action.label}</span
                                     >
-                                        <p class="avonni-kanban__fields">
-                                            <c-output-data
-                                                label={field.label}
-                                                value={field.value}
-                                                type={field.type}
-                                                type-attributes={field.typeAttributes}
-                                                variant="label-inline"
-                                            ></c-output-data>
-                                        </p>
-                                    </li>
-                                    <li>
-                                        <lightning-icon
-                                            if:true={record.warningIcon}
-                                            class="avonni-kanban__tile_icon"
-                                            size="x-small"
-                                            variant="warning"
-                                            icon-name={record.warningIcon}
-                                        ></lightning-icon>
-                                    </li>
-                                </ul>
-                                <div
-                                    class="avonni-kanban__tile_actions"
-                                    if:true={hasActions}
-                                >
-                                    <lightning-button-menu
-                                        alternative-text="Show menu"
-                                        icon-size="x-small"
-                                        menu-alignment="right"
-                                        class="avonni-kanban__actions_menu"
-                                        disabled={readOnly}
-                                    >
-                                        <template
-                                            for:each={actions}
-                                            for:item="action"
-                                        >
-                                            <lightning-menu-item
-                                                key={action.name}
-                                                value={action.name}
-                                                label={action.label}
-                                                onactionclick={handleActionClick}
-                                                disabled={action.disabled}
-                                                prefix-icon-name={action.iconName}
-                                                class="
-                                                    slds-text-color_default
-                                                    avonni-kanban__actions_item
-                                                "
-                                                data-element-id="avonni-kanban__action"
-                                            ></lightning-menu-item>
-                                        </template>
-                                    </lightning-button-menu>
-                                </div>
-                            </lightning-tile>
-                        </div>
-                        <div
-                            class="avonni-kanban__footer_actions_container"
-                            data-element-id="avonni-kanban__footer_action"
-                        >
-                            <template if:true={group.footerActions}>
-                                <template if:true={readOnly}>
-                                    <button
-                                        onactionclick={handleActionClick}
-                                        for:each={group.footerActions}
-                                        for:item="action"
-                                        key={action.name}
-                                        disabled={readOnly}
-                                        class="avonni-kanban__footer_action"
-                                    >
-                                        <lightning-icon
-                                            if:true={action.iconName}
-                                            size="small"
-                                            icon-name={action.iconName}
-                                        ></lightning-icon>
-                                        <span
-                                            class="
-                                                slds-text-color_default
-                                                slds-text-body_regular
-                                            "
-                                            >{action.label}</span
-                                        >
-                                    </button>
-                                </template>
-
-                                <template if:false={readOnly}>
-                                    <button
-                                        onactionclick={handleActionClick}
-                                        for:each={group.footerActions}
-                                        for:item="action"
-                                        key={action.name}
-                                        disabled={action.disabled}
-                                        class="avonni-kanban__footer_action"
-                                    >
-                                        <lightning-icon
-                                            if:true={action.iconName}
-                                            size="small"
-                                            icon-name={action.iconName}
-                                        ></lightning-icon>
-                                        <span
-                                            class="
-                                                slds-text-color_default
-                                                slds-text-body_regular
-                                            "
-                                            >{action.label}</span
-                                        >
-                                    </button>
-                                </template>
+                                </button>
                             </template>
-                        </div>
+
+                            <template if:false={readOnly}>
+                                <button
+                                    onactionclick={handleActionClick}
+                                    for:each={group.footerActions}
+                                    for:item="action"
+                                    key={action.name}
+                                    disabled={action.disabled}
+                                    class="avonni-kanban__footer_action"
+                                >
+                                    <lightning-icon
+                                        if:true={action.iconName}
+                                        size="small"
+                                        icon-name={action.iconName}
+                                    ></lightning-icon>
+                                    <span
+                                        class="
+                                            slds-text-color_default
+                                            slds-text-body_regular
+                                        "
+                                        >{action.label}</span
+                                    >
+                                </button>
+                            </template>
+                        </template>
                     </div>
                 </div>
             </div>
         </div>
-    </template>
+    </div>
 </template>

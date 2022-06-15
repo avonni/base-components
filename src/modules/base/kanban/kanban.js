@@ -350,8 +350,11 @@ export default class Kanban extends LightningElement {
      * @type {string}
      */
     get computedFieldClass() {
-        return classSet('avonni-kanban__field').add({
-            'avonni-kanban__field_read_only': this.readOnly
+        return classSet(
+            'avonni-kanban__field slds-p-vertical_x-small slds-col slds-is-relative'
+        ).add({
+            'avonni-kanban__field_read_only': this.readOnly,
+            'slds-m-around_xx-small': this.variant === 'base'
         });
     }
 
@@ -361,7 +364,9 @@ export default class Kanban extends LightningElement {
      * @type {string}
      */
     get computedTileClass() {
-        return classSet('avonni-kanban__tile slds-item').add({
+        return classSet(
+            'avonni-kanban__tile slds-item slds-is-relative slds-m-around_x-small'
+        ).add({
             'avonni-kanban__tile_read_only': this.readOnly
         });
     }
@@ -373,6 +378,15 @@ export default class Kanban extends LightningElement {
      */
     get hasActions() {
         return this.actions && this.actions.length > 0;
+    }
+
+    /**
+     * Check if the variant is path.
+     *
+     * @type {boolean}
+     */
+    get isPath() {
+        return this.variant === 'path';
     }
 
     /*
