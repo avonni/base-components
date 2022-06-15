@@ -987,7 +987,7 @@ export const horizontalItemsTest = [
         title: 'Item',
         datetimeValue: '02/02/2022 2:00',
         href: '#',
-        iconName: 'action:bot',
+        iconName: 'standard:bot',
         hasCheckbox: false,
         hasError: true
     },
@@ -1063,7 +1063,6 @@ export const horizontalItemsTest = [
         hasCheckbox: true,
         hasError: false
     },
-
     {
         name: 'item13',
         title: 'Another new item',
@@ -1090,7 +1089,7 @@ export const displayedItemsHorizontalTest = [
         title: 'Item',
         datetimeValue: '02/02/2022 2:00',
         href: '#',
-        iconName: 'action:bot',
+        iconName: 'standard:bot',
         hasCheckbox: false,
         hasError: true
     },
@@ -1112,7 +1111,6 @@ export const displayedItemsHorizontalTest = [
         hasCheckbox: false,
         hasError: true
     },
-
     {
         name: 'item7',
         title: 'Another item',

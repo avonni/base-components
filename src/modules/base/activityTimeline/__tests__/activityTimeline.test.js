@@ -712,7 +712,7 @@ describe('Activity Timeline', () => {
         });
     });
 
-    // HORIZONTAL TIMELINE
+    // <-- HORIZONTAL TIMELINE -->
     // position
     it('Activity Timeline: position', () => {
         const createHorizontalTimelineSpy = jest.spyOn(
@@ -727,10 +727,6 @@ describe('Activity Timeline', () => {
             const timelineContainer = element.shadowRoot.querySelectorAll(
                 '.avonni-activity-timeline__horizontal-timeline svg'
             );
-
-            // Fix : private
-            //const timelineTitle = element.shadowRoot.querySelector('[data-element-id="avonni-activity-horizontal-timeline-title"]');
-            // expect(timelineTitle.textContent).toBe('Showing : 02/02/2022 - 17/02/2022 • 15 day(s) • 10 item(s)');
             expect(createHorizontalTimelineSpy).toHaveBeenCalled();
             expect(timelineContainer).toBeDefined();
             expect(element.maxVisibleItems).toBe(10);
@@ -871,7 +867,7 @@ describe('Activity Timeline', () => {
                     title: 'Item',
                     datetimeValue: '02/02/2022 2:00',
                     href: '#',
-                    iconName: 'action:bot',
+                    iconName: 'standard:bot',
                     hasCheckbox: false,
                     hasError: true
                 },
@@ -1443,67 +1439,162 @@ describe('Activity Timeline', () => {
         });
     });
 
-    // TODO: Test : yPosition
+    // yPosition of items : No item displayed should overlap even if items share the same date
+    it('Activity Timeline: horizontal - yPositions of items with same date of overlapping', () => {
+        const expectedYPositions = [
+            '10',
+            '38',
+            '66',
+            '94',
+            '122',
+            '150',
+            '178',
+            '206',
+            '234',
+            '262',
+            '290',
+            '318',
+            '10',
+            '10'
+        ];
+        const itemsWithSameDate = [
+            {
+                name: 'item15',
+                title: 'Item 15 title',
+                datetimeValue: '02/02/2022 3:00',
+                href: '#',
+                iconName: 'standard:bot',
+                hasCheckbox: false,
+                hasError: false
+            },
+            {
+                name: 'item16',
+                title: 'Item 16 title',
+                datetimeValue: '02/02/2022 3:00',
+                href: '#',
+                iconName: 'standard:solution',
+                hasCheckbox: false,
+                hasError: false
+            },
+            {
+                name: 'item17',
+                title: 'Item 17 title',
+                datetimeValue: '02/02/2022 9:30',
+                href: '#',
+                iconName: 'custom:custom74',
+                hasCheckbox: false,
+                hasError: true
+            },
+            {
+                name: 'item18',
+                title: 'Item 18 title',
+                datetimeValue: '02/02/2022 6:30',
+                href: '#',
+                iconName: 'custom:custom74',
+                hasCheckbox: false,
+                hasError: true
+            }
+        ];
 
-    // Test resize : this.divHorizontalTimeline - WIP
-    // it('Activity Timeline: horizontal - Resize', () => {
-    //     console.log(' - DEBUT DU TEST -');
-    //     const setTimelineWidthSpy = jest.spyOn(HorizontalActivityTimeline.prototype, 'setTimelineWidth');
-    //     element.items = horizontalItemsTest;
-    //     element.position = 'horizontal';
+        horizontalItemsTest.forEach((item) => itemsWithSameDate.push(item));
+        element.items = itemsWithSameDate;
+        element.position = 'horizontal';
+        element.maxVisibleItems = 30;
 
-    //     // Element.prototype.getBoundingClientRect = jest.fn(() => {
-    //     //     return { width: 2000, height: 100, top: 0, left: 0, bottom: 0, right: 0 };
-    //     //   });
+        return Promise.resolve().then(() => {
+            const timelineItemsSVG = element.shadowRoot.querySelector(
+                '.avonni-horizontal-activity-timeline__timeline-items-svg'
+            );
+            const itemsDisplayed =
+                timelineItemsSVG.querySelectorAll('foreignObject');
+            expect(itemsDisplayed.length).toBe(14);
 
-    //     // global.innerWidth = 2000;
-    //     // global.dispatchEvent(new CustomEvent('resize'));
-    //     // const windowTest = Object.assign(window, { innerWidth: 2000 });
-    //     // document.width = 2000;
-    //     // global.window.width = 2000;
-    //     // global.window.innerWidth = 2000;
-    //     // global.window.dispatchEvent(new CustomEvent('resize'));
+            for (let i = 0; i < itemsDisplayed.length; ++i) {
+                expect(itemsDisplayed[i].getAttribute('y')).toBe(
+                    expectedYPositions[i]
+                );
+            }
+        });
+    });
 
-    //     // const divMock = document.createElement('div');
-    //     // divMock.width = 2000;
-    //     // divMock.height = 1000;
-    //     // console.log(divMock);
-    //     // element.width = 2000;
+    // Change width of timeline
+    it('Activity Timeline: horizontal - set width of timeline', () => {
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
 
-    //     return Promise.resolve().then(() => {
+        return Promise.resolve()
+            .then(() => {
+                element.position = 'vertical';
+                const timelineContainer = element.shadowRoot.querySelector(
+                    '.avonni-activity-timeline__horizontal-timeline'
+                );
+                jest.spyOn(
+                    timelineContainer,
+                    'clientWidth',
+                    'get'
+                ).mockImplementation(() => 2065);
+                element.position = 'horizontal';
+            })
+            .then(() => {
+                const timelineItemsSVG = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                );
+                expect(timelineItemsSVG.getAttribute('width')).toBe('2000');
+            });
+    });
 
-    //         const timelineContainer = element.shadowRoot.querySelector(
-    //             '.avonni-activity-timeline__horizontal-timeline');
-    //         // jest.spyOn(element, 'divHorizontalTimeline', 'get').mockReturnValue(() =>{
-    //         //         return divMock;
-    //         //         });
+    // ticks : Reduce timeline's width to check if ticks do not overlap
+    it('Activity Timeline: horizontal - Number of ticks', () => {
+        const timelineWidth = 240;
+        const createTimeAxisSpy = jest.spyOn(
+            HorizontalActivityTimeline.prototype,
+            'createTimeAxis'
+        );
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
 
-    //         // jest.spyOn(element.divHorizontalTimeline, 'clientWidth', 'get').mockImplementation(() => 2000);
-    //         timelineContainer.setAttribute('width', 2000);
-    //         timelineContainer.setAttribute('clientWidth', 2000);
-    //         timelineContainer.style.width = '2000px';
-    //         timelineContainer.style.clientWidth = '2000px';
-    //         // console.log('style : ' + timelineContainer.style.width);
-    //         Object.assign(timelineContainer, {width: 2000 });
-    //         Object.assign(timelineContainer, {
-    //             innerWidth: 2000,
-    //             outerWidth: 3000,
-    //             width: 2000,
-    //           }).dispatchEvent(new CustomEvent('resize'));
+        return Promise.resolve()
+            .then(() => {
+                // The width of timeline container is reduced to change ticks
+                element.position = 'vertical';
+                const timelineContainer = element.shadowRoot.querySelector(
+                    '.avonni-activity-timeline__horizontal-timeline'
+                );
+                jest.spyOn(
+                    timelineContainer,
+                    'clientWidth',
+                    'get'
+                ).mockImplementation(() => timelineWidth);
+                element.position = 'horizontal';
+            })
+            .then(() => {
+                // Check if the width of the timeline was changed
+                const timelineItemsSVG = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                );
+                expect(timelineItemsSVG.getAttribute('width')).toBe(
+                    (timelineWidth - 65).toString()
+                );
+                expect(createTimeAxisSpy).toBeCalled();
 
-    //         // console.log(windowTest.innerWidth);
-    //         timelineContainer.innerWidth = 2000;
-    //         timelineContainer.dispatchEvent(new CustomEvent('resize'));
-
-    //         timelineContainer.width = 2040;
-
-    //         console.log(timelineContainer.getAttribute('width'));
-    //         console.log(timelineContainer.getAttribute('clientWidth'));
-
-    //         const timelineItemsSVG = element.shadowRoot.querySelector('.avonni-horizontal-activity-timeline__timeline-items-svg');
-
-    //         expect(timelineItemsSVG.getAttribute('width')).toBe(2000);
-    //         expect(setTimelineWidthSpy).toHaveBeenCalled();
-    //     });
-    // });
+                // Check if the number of ticks was change and if they are at least 50 units apart
+                const axisSVG = element.shadowRoot.querySelector(
+                    '.avonni-horizontal-activity-timeline__timeline-axis-svg'
+                );
+                const tickPositions = [];
+                for (const tick of axisSVG.querySelectorAll('.tick')) {
+                    const transformValue = tick.getAttribute('transform');
+                    tickPositions.push(
+                        Number(
+                            transformValue.slice(
+                                'translate('.length,
+                                transformValue.indexOf(',')
+                            )
+                        )
+                    );
+                }
+                expect(tickPositions.length).toBe(2);
+                expect(tickPositions[1] - tickPositions[0]).toBeGreaterThan(50);
+            });
+    });
 });

@@ -612,6 +612,10 @@ export class HorizontalActivityTimeline {
     createTimelineAxis() {
         const axisSVG = this._timelineAxisDiv
             .append('svg')
+            .attr(
+                'class',
+                'avonni-horizontal-activity-timeline__timeline-axis-svg'
+            )
             .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', this._timelineAxisHeight * 2)
             .attr('transform', 'translate(' + this._offsetAxis + ' ,0)');
@@ -648,7 +652,6 @@ export class HorizontalActivityTimeline {
         ) {
             numberOfTicks = Math.floor(numberOfTicks / 2);
         }
-
         this.createAxisBottom(scale, axisId, numberOfTicks, destinationSVG);
         let spaceBetweenTicks = this.calculateSpaceBetweenTicks(
             destinationSVG.selectAll('.tick')._groups[0]
@@ -673,7 +676,6 @@ export class HorizontalActivityTimeline {
             } else {
                 numberOfTicks -= 3;
             }
-
             this.createAxisBottom(scale, axisId, numberOfTicks, destinationSVG);
             spaceBetweenTicks = this.calculateSpaceBetweenTicks(
                 destinationSVG.selectAll('.tick')._groups[0]
@@ -850,7 +852,7 @@ export class HorizontalActivityTimeline {
      */
     setIconInformation(iconName) {
         const iconCategory = VALID_ICON_CATEGORIES.find((category) => {
-            return iconName.match(category + ':*');
+            return iconName.match(category + ':');
         });
 
         // Invalid icon category - Set default icon

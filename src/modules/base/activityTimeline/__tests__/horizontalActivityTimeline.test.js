@@ -125,31 +125,51 @@ describe('Activity Timeline', () => {
         );
     });
 
-    // // WIP
-    // it('Horizontal Activity Timeline: createHorizontalActivityTimeline', () => {
-    //     // Method to mock the different query selector
-    //     jest.spyOn(element, 'divTimelineItemsSelector', 'get').mockReturnValue(() =>{
-    //         return activityTimeline.shadowRoot.querySelector('.avonni-activity-timeline__horizontal-timeline-items');
-    //     });
+    // validateXMousePosition
+    it('Horizontal Activity Timeline: validateXMousePosition', () => {
+        const minPosition = 40;
+        const maxPosition = 1094;
+        const positionsSmallerThanMin = [-100, -40, 0, 10, 30, 39, 40];
+        const positionsBiggerThanMax = [1094, 1095, 1100, 2000, 234234];
+        const validPositions = [41, 59, 233, 425, 734, 923, 1093];
 
-    //     jest.spyOn(element, 'divTimelineAxisSelector', 'get').mockReturnValue(() =>{
-    //         return activityTimeline.shadowRoot.querySelector('.avonni-activity-timeline__horizontal-timeline-axis');
-    //     });
+        for (const position of positionsSmallerThanMin) {
+            expect(element.validateXMousePosition(position)).toBe(minPosition);
+        }
 
-    //     jest.spyOn(element, 'divTimelineScroll', 'get').mockReturnValue(() =>{
-    //         return activityTimeline.shadowRoot.querySelector('.avonni-activity-timeline__horizontal-timeline-scrolling-container');
-    //     });
+        for (const position of positionsBiggerThanMax) {
+            expect(Math.floor(element.validateXMousePosition(position))).toBe(
+                maxPosition
+            );
+        }
 
-    //     jest.spyOn(element, 'divTimelineScrollAxisSelector', 'get').mockReturnValue(() =>{
-    //         return activityTimeline.shadowRoot.querySelector('.avonni-activity-timeline__horizontal-timeline-scroll-axis');
-    //     });
+        // Should be unchanged since the positions are all valid
+        for (const position of validPositions) {
+            expect(element.validateXMousePosition(position)).toBe(position);
+        }
+    });
 
-    //     element.setTimelineWidth = jest.fn();
-    //     jest.spyOn(element, 'intervalDaysLength', 'get').mockReturnValue(55);
+    //setIconInformation : invalid icon category, default icon should be returned
+    it('Horizontal Activity Timeline: setIconInformation', () => {
+        const invalidIconCategoryNames = [
+            'sandard:bot',
+            'default:bot',
+            'actions:bug',
+            'standar:bot',
+            'ulitity:answer',
+            'doc:flash',
+            'customs:custom54'
+        ];
+        const expectedIconInformation = {
+            iconName: 'default',
+            xLinkHref: '/assets/icons/standard-sprite/svg/symbols.svg#default',
+            categoryIconClass: 'slds-icon-standard-default'
+        };
 
-    //     return Promise.resolve().then(() => {
-    //         // element.createHorizontalActivityTimeline(horizontalItemsTest, 10, 1300);
-    //         expect(element.intervalDaysLength).toBe(55);
-    //     });
-    // });
+        for (const iconName of invalidIconCategoryNames) {
+            expect(element.setIconInformation(iconName)).toMatchObject(
+                expectedIconInformation
+            );
+        }
+    });
 });
