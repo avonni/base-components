@@ -82,6 +82,7 @@
     max-width: var(--avonni-kanban-column-sizing-max-width, 22.5em);
     border-right: 1px solid #c9c7c5;
     padding: 5px 0;
+    height: -moz-fit-content;
     height: fit-content;
 }
 

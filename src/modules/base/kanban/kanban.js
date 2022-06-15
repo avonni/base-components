@@ -972,6 +972,7 @@ export default class Kanban extends LightningElement {
 
         this._draggedTile.style.transform = `rotate(3deg)`;
 
+        this.createTileSpace();
         this.handleDropZone(event);
     }
 
