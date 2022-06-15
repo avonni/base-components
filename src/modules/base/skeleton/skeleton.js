@@ -139,8 +139,8 @@ export default class Skeleton extends LightningElement {
         if (!this.isAvatarVariant) this.handleVariant();
         if (this.isParagraphVariant && !this.paragraphItemsInitialized) {
             this.initializeParagraphItems();
-            this.updateParagraphClassList();
             this.paragraphItemsInitialized = true;
+            this.updateParagraphClassList();
         }
 
         // console.log(this.variantAttributes.hasIcon);
@@ -874,31 +874,45 @@ export default class Skeleton extends LightningElement {
     //     this.paragraphs = paragraphs;
     // }
 
+    // initializeParagraphItems() {
+    //     console.log('inside initialize paragraph items');
+    //     const paragraphItems = [];
+    //     let percentage = 100;
+    //     for (let i = 0; i < this.variantAttributes.rows; i++) {
+    //         // const paragraphId = generateUUID();
+    //         percentage = 100;
+    //         paragraphItems.push({
+    //             keyLi: `paragraphLi-${i}`,
+    //             keyUl: `paragraphUl-${i}`,
+    //             line: []
+    //         });
+    //         const numItems = Math.floor(Math.random() * (10 - 3)) + 3;
+    //         // console.log(`num of items for row ${i}: ${numItems}`);
+    //         for (let j = 0; j < numItems; j++) {
+    //             // const itemId = generateUUID();
+    //             const itemWidthPercentage =
+    //                 Math.floor(Math.random() * percentage) + 1;
+    //             paragraphItems[i].line.push({
+    //                 key: `item-${j}`,
+    //                 percentage: itemWidthPercentage
+    //             });
+    //             percentage -= itemWidthPercentage;
+    //         }
+    //     }
+    //     this.paragraphItems = paragraphItems;
+    // }
+
     initializeParagraphItems() {
-        console.log('inside initialize paragraph items');
+        console.log('beginning initialize paragraph items');
         const paragraphItems = [];
-        let percentage = 100;
-        for (let i = 0; i < this.variantAttributes.rows; i++) {
-            // const paragraphId = generateUUID();
-            percentage = 100;
+        for (let i = 0; i < this.variantAttributes.rows * 12; i++) {
+            const width = Math.floor(Math.random() * (6 - 1)) + 1;
             paragraphItems.push({
-                keyLi: `paragraphLi-${i}`,
-                keyUl: `paragraphUl-${i}`,
-                line: []
+                key: `paragraph-${i}`,
+                width: width
             });
-            const numItems = Math.floor(Math.random() * (10 - 3)) + 3;
-            // console.log(`num of items for row ${i}: ${numItems}`);
-            for (let j = 0; j < numItems; j++) {
-                // const itemId = generateUUID();
-                const itemWidthPercentage =
-                    Math.floor(Math.random() * percentage) + 1;
-                paragraphItems[i].line.push({
-                    key: `item-${j}`,
-                    percentage: itemWidthPercentage
-                });
-                percentage -= itemWidthPercentage;
-            }
         }
+        console.log('ending initialize paragraph items');
         this.paragraphItems = paragraphItems;
     }
 
@@ -1400,50 +1414,65 @@ export default class Skeleton extends LightningElement {
     updateDatatableClassList() {}
 
     updateParagraphClassList() {
-        console.log('INSIDE UPDATE PARAGRAPH CLASS LIST');
         const paragraphLines = this.template.querySelector(
             '[data-element-id="paragraph-list"]'
         ).children;
+        console.log(this.paragraphItems);
         console.log(paragraphLines);
-        // console.log(paragraphLines[0].children);
-        // console.log(
-        //     `first paragraph line has ${paragraphLines[0].children.length} items`
-        // );
-
         for (let i = 0; i < paragraphLines.length; i++) {
-            console.log(paragraphLines[i].children);
-            console.log(paragraphLines[i].children[0]);
-            console.log(paragraphLines[i].children[0].children);
-            const variable = paragraphLines[i].children[0].children;
-            console.log(variable);
-            console.log(paragraphLines[i].children[0].children.length);
+            const paragraphItem = paragraphLines[i];
+            // paragraphItem.style.width = this.paragraphItems[i].width;
+            paragraphItem.classList.add(
+                `slds-size_${this.paragraphItems[i].width}-of-12`
+            );
         }
-
-        // for (let i = 0; i < paragraphLines.length; i++) {
-        //     let paragraphLineItems = paragraphLines[i].children.children;
-        //     console.log(
-        //         `paragraphLine ${i} has: ${paragraphLineItems.length} items`
-        //     );
-        //     for (let j = 0; j < paragraphLineItems.length; j++) {
-        //         let paragraphLineItem = paragraphLineItems[j];
-        //         // console.log(`paragraphLineItem: ${paragraphLineItem}`);
-        //         console.log(
-        //             `paragraphLineItem width: ${paragraphLineItem.style.width}`
-        //         );
-        //         // paragraphLineItem.style.width =
-        //         //     this.paragraphItems[i][j].percentage;
-        //     }
-        // }
-
-        // const paragraphLines = this.template.querySelectorAll('li');
-        // console.log(paragraphLines);
-        // for (let i = 0; i < paragraphLines.length; i++) {
-        //     let paragraphItem = paragraphLines[i];
-        //     console.log(
-        //         `paragraphItem ${i} width: ${paragraphItem.style.width}`
-        //     );
-        // }
     }
+
+    // updateParagraphClassList() {
+    //     console.log('INSIDE UPDATE PARAGRAPH CLASS LIST');
+    //     const paragraphLines = this.template.querySelector(
+    //         '[data-element-id="paragraph-list"]'
+    //     ).children;
+    //     console.log(paragraphLines);
+    //     // console.log(paragraphLines[0].children);
+    //     // console.log(
+    //     //     `first paragraph line has ${paragraphLines[0].children.length} items`
+    //     // );
+
+    //     for (let i = 0; i < paragraphLines.length; i++) {
+    //         console.log(paragraphLines[i].children);
+    //         console.log(paragraphLines[i].children[0]);
+    //         console.log(paragraphLines[i].children[0].children);
+    //         const variable = paragraphLines[i].children[0].children;
+    //         console.log(variable);
+    //         console.log(paragraphLines[i].children[0].children.length);
+    //     }
+
+    //     // for (let i = 0; i < paragraphLines.length; i++) {
+    //     //     let paragraphLineItems = paragraphLines[i].children.children;
+    //     //     console.log(
+    //     //         `paragraphLine ${i} has: ${paragraphLineItems.length} items`
+    //     //     );
+    //     //     for (let j = 0; j < paragraphLineItems.length; j++) {
+    //     //         let paragraphLineItem = paragraphLineItems[j];
+    //     //         // console.log(`paragraphLineItem: ${paragraphLineItem}`);
+    //     //         console.log(
+    //     //             `paragraphLineItem width: ${paragraphLineItem.style.width}`
+    //     //         );
+    //     //         // paragraphLineItem.style.width =
+    //     //         //     this.paragraphItems[i][j].percentage;
+    //     //     }
+    //     // }
+
+    //     // const paragraphLines = this.template.querySelectorAll('li');
+    //     // console.log(paragraphLines);
+    //     // for (let i = 0; i < paragraphLines.length; i++) {
+    //     //     let paragraphItem = paragraphLines[i];
+    //     //     console.log(
+    //     //         `paragraphItem ${i} width: ${paragraphItem.style.width}`
+    //     //     );
+    //     // }
+    // }
 
     updateProgressIndicatorClassList() {}
 

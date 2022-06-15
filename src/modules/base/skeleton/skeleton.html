@@ -686,7 +686,7 @@
         </template>
     </template>
     <template if:true={isParagraphVariant}>
-        <ul class="slds-has-dividers_around" data-element-id="paragraph-list">
+        <!-- <ul class="slds-has-dividers_around" data-element-id="paragraph-list">
             <template for:each={paragraphItems} for:item="paragraphLine">
                 <li key={paragraphLine.keyLi}>
                     <ul
@@ -705,7 +705,17 @@
                     </ul>
                 </li>
             </template>
-        </ul>
+        </ul> -->
+        <div class="slds-grid slds-wrap" data-element-id="paragraph-list">
+            <template for:each={paragraphItems} for:item="paragraphLine">
+                <div
+                    key={paragraphLine.key}
+                    class="slds-col avonni-skeleton__paragraph-grid"
+                >
+                    <span>1</span>
+                </div>
+            </template>
+        </div>
     </template>
     <template if:true={isTabsetVariant}>
         <!-- <div class="slds-tabs_default">

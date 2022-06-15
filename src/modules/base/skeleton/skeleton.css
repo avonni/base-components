@@ -304,6 +304,18 @@
     width: 100%;
 }
 
+.avonni-skeleton__paragraph-grid {
+    display: inline-flex;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    background: content-box rgb(84, 105, 141);
+    border-width: 1px;
+    border-style: solid;
+    border-color: rgb(255, 255, 255);
+    border-image: initial;
+    border-radius: 0px;
+}
+
 .avonni-skeleton__progress-indicator-path-wave::before {
     top: 0;
     height: calc((2rem / 2) + 0.0625rem);
