@@ -39,6 +39,7 @@ import {
     normalizeBoolean,
     normalizeString
 } from 'c/utilsPrivate';
+import KanbanGroups from './group';
 
 const KANBAN_VARIANTS = {
     valid: ['base', 'path'],
@@ -87,6 +88,8 @@ export default class Kanban extends LightningElement {
     _scrollWidth = 0;
     _summaryTimeoutsId = [];
     _summarizeValues = [];
+
+    SUMMARY_UPDATE_SPEED = 300;
 
     renderedCallback() {
         if (!this._resizeObserver) {
@@ -238,71 +241,26 @@ export default class Kanban extends LightningElement {
      */
 
     /**
-     * Filters the record array to remove unused fields and separates them in groups
+     * Inits the groups to separate tiles and calculate the summary values.
      *
      * @type {object[]}
      */
-    get computedGroups() {
+    get initGroups() {
         this.clearSummarizeTimeouts();
 
-        let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
-
-        this._summarizeValues = JSON.parse(
-            JSON.stringify(this._oldSummarizeValues)
-        );
-
-        // creates the group
-        computedGroups.forEach((group, i) => {
-            group.tiles = [];
-            if (!this._summarizeValues[i]) {
-                this._summarizeValues[i] = 0;
-            }
-            this._oldSummarizeValues[i] = 0;
-            group.summarize = {
-                value: 0,
-                type: '',
-                typeAttributes: {}
-            };
-            group.index = i;
+        const kanbanGroup = new KanbanGroups({
+            groupValues: this._groupValues,
+            summarizeValues: this._summarizeValues,
+            oldSummarizeValues: this._oldSummarizeValues,
+            records: this._records,
+            fields: this._fields,
+            groupFieldName: this.groupFieldName,
+            summarizeFieldName: this.summarizeFieldName
         });
-        let computedFields = [];
-        // filters each record and adds it to the right group
-        this._records.forEach((record, i) => {
-            computedFields.push({
-                index: record.id,
-                group: record[this.groupFieldName],
-                warningIcon: record.warningIcon,
-                field: []
-            });
-            this._fields.forEach((field) => {
-                if (JSON.stringify(record[field.fieldName])) {
-                    computedFields[i].field.push({
-                        label: field.label,
-                        value: record[field.fieldName],
-                        type: field.type,
-                        typeAttributes: field.typeAttributes
-                    });
-                }
-            });
-        });
+        const computedGroups = kanbanGroup.computeGroups();
 
-        // updates the summarize field if needed
-        computedFields.forEach((tile) => {
-            const group = computedGroups.find(
-                (computedGroup) => computedGroup.label === tile.group
-            );
-            if (group) {
-                group.tiles.push(tile);
-                const toSummarize = tile.field.find(
-                    (field) => field.label === this.summarizeFieldName
-                );
-                if (toSummarize && typeof toSummarize.value === 'number') {
-                    group.summarize.type = toSummarize.type;
-                    group.summarize.typeAttributes = toSummarize.typeAttributes;
-                    this._oldSummarizeValues[group.index] += toSummarize.value;
-                }
-            }
-        });
+        this._summarizeValues = kanbanGroup._summarizeValues;
+        this._oldSummarizeValues = kanbanGroup._oldSummarizeValues;
 
         computedGroups.forEach((group) => {
             this.animateSummary(group);
@@ -413,7 +371,6 @@ export default class Kanban extends LightningElement {
      * @param {object} group Group containing the summary value to animate
      */
     animateSummary(group) {
-        const SUMMARY_UPDATE_SPEED = 300;
         group.summarize.value = this.truncateNumber(
             this._summarizeValues[group.index]
         );
@@ -423,14 +380,14 @@ export default class Kanban extends LightningElement {
                 this._summarizeValues[group.index]
         );
         if (summarizeUpdate !== 0) {
-            for (let j = 0; j < SUMMARY_UPDATE_SPEED; j++) {
+            for (let j = 0; j < this.SUMMARY_UPDATE_SPEED; j++) {
                 this._summaryTimeoutsId[j] = window.setTimeout(() => {
                     const summary = this.template.querySelectorAll(
                         '[data-element-id="summarize"]'
                     )[group.index];
 
                     summary.value += this.truncateNumber(
-                        summarizeUpdate / SUMMARY_UPDATE_SPEED
+                        summarizeUpdate / this.SUMMARY_UPDATE_SPEED
                     );
 
                     summary.value = this.truncateNumber(summary.value);
