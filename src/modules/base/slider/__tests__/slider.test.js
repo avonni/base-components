@@ -967,7 +967,7 @@ describe('Slider', () => {
             const label = element.shadowRoot.querySelector(
                 '[data-element-id="span-label"]'
             );
-            expect(label.classList).not.toContain('slds-hide');
+            expect(label.classList).not.toContain('slds-assistive-text');
         });
     });
 
@@ -980,7 +980,7 @@ describe('Slider', () => {
             const label = element.shadowRoot.querySelector(
                 '[data-element-id="span-label"]'
             );
-            expect(label.classList).toContain('slds-hide');
+            expect(label.classList).toContain('slds-assistive-text');
         });
     });
 

@@ -71,8 +71,8 @@
                     <div class="slds-slider">
                         <input
                             type="range"
-                            min={privateMin}
-                            max={privateMax}
+                            min={computedMin}
+                            max={computedMax}
                             step={step}
                             value={value}
                             class={computedInputClass}
@@ -80,10 +80,10 @@
                             data-index={index}
                             data-group-name="input"
                             oninput={handleChange}
-                            onmousedown={lockPin}
-                            onmouseup={unlockPin}
-                            onmousemove={thumbHovered}
-                            onmouseleave={thumbExit}
+                            onmousedown={handleLockPin}
+                            onmouseup={handleUnlockPin}
+                            onmousemove={handleThumbHovered}
+                            onmouseleave={handleThumbExit}
                         />
                         <div
                             data-group-name="hitbox"
@@ -116,7 +116,7 @@
         </template>
         <div class={computedTrackContainerClass}>
             <div
-                if:false={hideTrack}
+                if:true={showTrack}
                 class={computedTrackClass}
                 data-element-id="track"
             ></div>
@@ -170,11 +170,12 @@
                 <div
                     class="avonni-slider__custom-label-wrapper"
                     key={generateKey}
+                    data-group-name="custom-label-wrapper"
                 >
                     <div
                         data-value={customLabel.value}
                         class={computedCustomLabelClass}
-                        data-element-id="custom-label"
+                        data-group-name="custom-label"
                     >
                         {customLabel.label}
                     </div>
