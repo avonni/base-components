@@ -11,10 +11,6 @@
     font-weight: var(--avonni-carousel-item-title-font-weight, 600);
 }
 
-.avonni-carousel__image {
-    display: flex;
-}
-
 .avonni-carousel__button-icon-top {
     padding: 1px;
     margin: 0px;
