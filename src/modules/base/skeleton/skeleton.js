@@ -30,9 +30,9 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import { LightningElement, api } from 'lwc';
-import { normalizeString } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
+import { normalizeString } from 'c/utilsPrivate';
+import { api, LightningElement } from 'lwc';
 
 const ANIMATION_VARIANTS = {
     valid: ['pulse', 'wave']
@@ -891,13 +891,43 @@ export default class Skeleton extends LightningElement {
     initializeParagraphItems() {
         console.log('beginning initialize paragraph items');
         const paragraphItems = [];
-        for (let i = 0; i < this.variantAttributes.rows * 12; i++) {
-            const width = Math.floor(Math.random() * (5 - 1)) + 1;
+        let id = 0;
+        let temp;
+        for (let i = 0; i < this.variantAttributes.rows; i++) {
+            id++;
+            for (let j = 100; j > 30; ) {
+                id++;
+                // const width = Math.floor(Math.random() * (5 - 1)) + 1;
+                const width = Math.floor(Math.random() * (30 - 10)) + 10;
+                paragraphItems.push({
+                    key: `paragraph-${id}`,
+                    // width: width
+                    width: `${width}%`
+                });
+                j -= width;
+                temp = j;
+            }
+            id++;
             paragraphItems.push({
-                key: `paragraph-${i}`,
-                width: width
+                key: `paragraph-last-item-of-line-${id}`,
+                width: `${temp}%`
             });
         }
+        // let total = 0;
+        // paragraphItems.forEach((item) => {
+        //     const num = parseInt(item.width.slice(0, -1), 10);
+        //     total += num;
+        // });
+        // console.log(`total: ${total}`);
+        // console.log(`needed : ${(this.variantAttributes.rows - 1) * 100}`);
+        // if (total < (this.variantAttributes.rows - 1) * 100) {
+        //     console.log(total);
+        //     const width = (this.variantAttributes.rows - 1) * 100 - total;
+        //     paragraphItems.push({
+        //         key: `paragraph-last-item`,
+        //         width: `${width}%`
+        //     });
+        // }
         console.log('ending initialize paragraph items');
         this.paragraphItems = paragraphItems;
     }
@@ -1385,14 +1415,15 @@ export default class Skeleton extends LightningElement {
         const paragraphLines = this.template.querySelector(
             '[data-element-id="paragraph-list"]'
         ).children;
-        console.log(this.paragraphItems);
-        console.log(paragraphLines);
+        // console.log(this.paragraphItems);
+        // console.log(paragraphLines);
         for (let i = 0; i < paragraphLines.length; i++) {
             const paragraphItem = paragraphLines[i];
             // paragraphItem.style.width = this.paragraphItems[i].width;
-            paragraphItem.classList.add(
-                `slds-size_${this.paragraphItems[i].width}-of-12`
-            );
+            // paragraphItem.classList.add(
+            //     `slds-size_${this.paragraphItems[i].width}-of-12`
+            // );
+            paragraphItem.style.width = this.paragraphItems[i].width;
         }
     }
 
