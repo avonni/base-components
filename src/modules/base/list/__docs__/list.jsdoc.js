@@ -3,6 +3,7 @@
  * @name items
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the item.
  * @property {string} description Description of the item.
+ * @property {string} name Name to identify the item.
  * @property {string} href The URL of the page the link goes to.
  * @property {string[]} icons List of iconName display next to the label.
  * @property {string} imageSrc Image URL for the list item image. If present, the image is disaplyed to the left of the item.
