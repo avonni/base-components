@@ -758,10 +758,17 @@ export default class InputPen extends LightningElement {
                 this.setupCoordinate(event);
                 this.isDownFlag = true;
                 if (this._signature) {
-                    this.xPositions = [];
-                    this.yPositions = [];
-                    this.velocities = Array(6, 10);
-                    this.setupCoordinate(event);
+                    this.moveCoordinatesAdded = 0;
+                    const clientRect =
+                        this.canvasElement.getBoundingClientRect();
+                    this.xPositions = Array(4).fill(
+                        event.clientX - clientRect.left
+                    );
+                    this.yPositions = Array(4).fill(
+                        event.clientY - clientRect.top
+                    );
+                    this.velocities = Array(4).fill(6);
+                    console.log(this.xPositions.length);
                 }
                 this.drawDot();
                 break;
@@ -873,7 +880,7 @@ export default class InputPen extends LightningElement {
 
     clearPositionBuffer() {
         let averageVelocityOnSpline =
-            this.velocities.slice(3, 5).reduce((a, b) => a + b, 0) / 3;
+            this.velocities.slice(2, 4).reduce((a, b) => a + b, 0) / 3;
         let velocity = Math.sqrt(averageVelocityOnSpline);
         for (let i = 0; i < this.moveCoordinatesAdded; i++) {
             this.xPositions.push(this.xPositions[8]);
@@ -888,16 +895,14 @@ export default class InputPen extends LightningElement {
             for (let j = 0; j < 2; j++) {
                 this.xPositions.unshift(this.xPositions[0]);
                 this.yPositions.unshift(this.yPositions[0]);
-
                 this.velocities.unshift(this.velocities[0]);
             }
-            velocity += 0.3;
+            velocity += 0.25;
             this.drawSpline(this.getSplinePoints(), this.size / velocity);
         }
     }
 
     smoothVelocities() {
-        console.log(this.velocities.length);
         for (let i = this.velocities.length - 1; i >= 2; i = i - 1) {
             this.velocities[i - 1] =
                 (this.velocities[i] + this.velocities[i - 2]) / 2;
@@ -905,6 +910,9 @@ export default class InputPen extends LightningElement {
     }
 
     getSplinePoints() {
+        if (this.xPositions.length < 8) {
+            return [];
+        }
         const tension = 1;
 
         let x0;
@@ -1026,8 +1034,12 @@ export default class InputPen extends LightningElement {
                 const calculatedSize = this.size / velocity;
                 this.drawSpline(this.getSplinePoints(), calculatedSize);
             }
-            this.xPositions.pop();
-            this.yPositions.pop();
+            console.log(this.xPositions.length);
+
+            if (this.xPositions.length > 10) {
+                this.xPositions.pop();
+                this.yPositions.pop();
+            }
             if (this.velocities.length > 10) {
                 this.velocities.pop();
             }
@@ -1046,7 +1058,7 @@ export default class InputPen extends LightningElement {
         this.ctx.arc(
             this.xPositions[0],
             this.yPositions[0],
-            (this._mode === 'sign' ? this._size / 4 : this._size) / 2,
+            (this._mode === 'sign' ? this._size / 2.5 : this._size) / 2,
             0,
             2 * Math.PI,
             false
