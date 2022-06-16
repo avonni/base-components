@@ -1034,6 +1034,10 @@ export default class InputPen extends LightningElement {
     drawSpline(pts, penSize) {
         for (let i = 0; i < pts.length; i += 2) {
             this.setupStroke(penSize);
+            if (this._mode === 'paint') {
+                this.ctx.shadowColor = this.color;
+                this.ctx.shadowBlur = 2;
+            }
             this.ctx.moveTo(pts[i], pts[i + 1]);
             this.ctx.bezierCurveTo(
                 pts[i + 2],
