@@ -30,6 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+//TODO: fix bug on fast tool pick and draw (erases last things drawn)
+
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
@@ -40,10 +42,11 @@ const TOOLBAR_VARIANTS = {
     valid: ['bottom-toolbar', 'top-toolbar'],
     default: 'bottom-toolbar'
 };
-const PEN_MODES = { valid: ['draw', 'erase', 'sign'], default: 'draw' };
+const PEN_MODES = { valid: ['draw', 'paint', 'erase', 'ink'], default: 'draw' };
 
 const DEFAULT_COLOR = '#000';
 const DEFAULT_SIZE = 10;
+const INITIAL_VELOCITY = 10;
 
 /**
  * @class
@@ -102,6 +105,7 @@ export default class InputPen extends LightningElement {
     xPositions = [];
     yPositions = [];
     velocities = [];
+    activeVelocity = 8;
     prevX = 0;
     currX = 0;
     prevY = 0;
@@ -326,7 +330,7 @@ export default class InputPen extends LightningElement {
     set signature(value) {
         this._signature = normalizeBoolean(value);
         if (this._signature) {
-            this._mode = 'sign';
+            this._mode = 'ink';
         }
         this._updatedDOM = true;
     }
@@ -449,6 +453,29 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Check if showPaint is shown.
+     *
+     * @type {boolean}
+     */
+    get showPaint() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('paint') === -1
+        );
+    }
+
+    /**
+     * Check if showInk is shown.
+     *
+     * @type {boolean}
+     */
+    get showInk() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('ink') === -1
+        );
+    }
+
+    /**
      * Check if Size is shown.
      *
      * @type {boolean}
@@ -477,14 +504,25 @@ export default class InputPen extends LightningElement {
      * @type {boolean}
      */
     get showCursor() {
-        return this._mode !== 'sign';
+        return this._mode !== 'ink';
+    }
+
+    /**
+     * get the nib size dependant on mode
+     *
+     * @type {boolean}
+     */
+    get nibSize() {
+        return this._mode === 'ink'
+            ? (this._size * 2) / this.activeVelocity
+            : this._size;
     }
 
     get computedTextAreaClasses() {
         return classSet('slds-rich-text-editor__textarea').add({
             'slds-grid': true,
             'avonni-input-pen__text-area': true,
-            'avonni-input-pen__text-area_cursor': this._mode === 'sign'
+            'avonni-input-pen__text-area_cursor': this._mode === 'ink'
         });
     }
 
@@ -549,7 +587,7 @@ export default class InputPen extends LightningElement {
                 this.canvasElement.width,
                 this.canvasElement.height
             );
-            if (this._mode !== 'sign') {
+            if (this._mode === 'erase') {
                 this.setDraw();
             }
             this.handleChangeEvent();
@@ -656,7 +694,6 @@ export default class InputPen extends LightningElement {
      */
     setDraw() {
         this.setMode('draw');
-        this.initCursorStyles();
     }
 
     /**
@@ -670,8 +707,16 @@ export default class InputPen extends LightningElement {
     /**
      * Set the Mode to Draw.
      */
-    setSign() {
-        this.setMode('sign');
+    setInk() {
+        this.setMode('ink');
+        this.initCursorStyles();
+    }
+
+    /**
+     * Set the Mode to Draw.
+     */
+    setPaint() {
+        this.setMode('paint');
         this.initCursorStyles();
     }
 
@@ -746,7 +791,7 @@ export default class InputPen extends LightningElement {
     }
 
     showDrawCursor() {
-        if (!this._disabled) {
+        if (!this._disabled && this._mode !== 'ink') {
             this.cursor.style.opacity = 1;
         }
     }
@@ -773,27 +818,13 @@ export default class InputPen extends LightningElement {
             case 'down':
                 this.setupCoordinate(event);
                 this.isDownFlag = true;
-                if (this._mode === 'sign') {
-                    this.moveCoordinatesAdded = 0;
-                    const clientRect =
-                        this.canvasElement.getBoundingClientRect();
-                    this.xPositions = Array(4).fill(
-                        event.clientX - clientRect.left
-                    );
-                    this.yPositions = Array(4).fill(
-                        event.clientY - clientRect.top
-                    );
-                    this.velocities = Array(4).fill(10);
-                }
                 this.drawDot();
                 break;
             case 'up':
                 if (this.isDownFlag) {
                     this.handleChangeEvent();
                 }
-                if (this._mode === 'sign') {
-                    this.clearPositionBuffer(event);
-                }
+                this.clearPositionBuffer(event);
                 this.isDownFlag = false;
                 break;
             case 'enter':
@@ -850,62 +881,70 @@ export default class InputPen extends LightningElement {
      *
      * @param {Event} eventParam
      */
-    setupCoordinate(eventParam) {
+    setupCoordinate(event) {
+        let nbPoints = 1;
+        this.moveCoordinatesAdded = 0;
+        if (this.mode === 'ink' || this.mode === 'paint') {
+            this.xPositions = [];
+            this.yPositions = [];
+            nbPoints = 4;
+            this.velocities = Array(4).fill(INITIAL_VELOCITY);
+        }
         const clientRect = this.canvasElement.getBoundingClientRect();
-        this.xPositions.pop();
-        this.yPositions.pop();
-        while (this.xPositions.length < 10) {
-            this.xPositions.unshift(eventParam.clientX - clientRect.left);
-            this.yPositions.unshift(eventParam.clientY - clientRect.top);
+        for (let i = 0; i < nbPoints; i++) {
+            this.xPositions.unshift(event.clientX - clientRect.left);
+            this.yPositions.unshift(event.clientY - clientRect.top);
         }
     }
 
+    /**
+     * Draw on canvas as hard edge linear stroke.
+     */
+    hardEdgeDraw() {
+        this.setupStroke(this._size);
+        this.ctx.moveTo(this.xPositions[1], this.yPositions[1]);
+        this.ctx.lineTo(this.xPositions[0], this.yPositions[0]);
+        this.ctx.stroke();
+        this.xPositions.pop();
+        this.yPositions.pop();
+    }
+
+    setupStroke(strokeSize) {
+        const colored = false;
+        this.ctx.beginPath();
+        this.ctx.globalCompositeOperation =
+            this._mode === 'erase' ? 'destination-out' : 'source-over';
+        this.ctx.lineCap = 'round';
+        this.ctx.lineJoin = 'round';
+        this.ctx.strokeStyle = colored
+            ? `hsl(${Math.random() * 355},75%,50%)`
+            : this.color;
+        this.ctx.lineWidth = strokeSize;
+    }
+
     useTool(event, isDot = false) {
-        console.log(this._mode);
-        console.log(this._size);
-        console.log(this.showCursor);
         if (!isDot) {
-            switch (this._mode) {
-                case 'sign':
-                    this.sign(event);
-                    break;
-                default:
-                    this.setupCoordinate(event);
-                    this.draw();
-                    break;
+            if (this.mode === 'draw' || this.mode === 'erase') {
+                this.setupCoordinate(event);
+                this.hardEdgeDraw(event);
+            } else {
+                this.smoothDraw(event);
             }
         } else {
             this.drawDot(event);
         }
     }
 
-    /**
-     * Redraw Canvas context based on calculated cursor event cycle from previous to current coordinates.
-     */
-    draw() {
-        this.ctx.beginPath();
-        this.ctx.globalCompositeOperation =
-            this._mode === 'erase' ? 'destination-out' : 'source-over';
-        this.ctx.lineCap = 'round';
-        this.ctx.lineJoin = 'round';
-        this.ctx.moveTo(this.xPositions[1], this.yPositions[1]);
-        this.ctx.lineTo(this.xPositions[0], this.yPositions[0]);
-        this.ctx.strokeStyle = this.color;
-        this.ctx.lineWidth = this._size;
-        this.ctx.closePath();
-        this.ctx.stroke();
-    }
-
     clearPositionBuffer() {
         let averageVelocityOnSpline =
             this.velocities.slice(2, 4).reduce((a, b) => a + b, 0) / 3;
-        let velocity = Math.sqrt(averageVelocityOnSpline);
+        this.activeVelocity = Math.sqrt(averageVelocityOnSpline);
         for (let i = 0; i < this.moveCoordinatesAdded; i++) {
-            this.xPositions.push(this.xPositions[8]);
+            this.xPositions.push(this.xPositions.last);
             this.xPositions.shift();
-            this.yPositions.push(this.xPositions[8]);
+            this.yPositions.push(this.xPositions.last);
             this.yPositions.shift();
-            this.velocities.push(this.velocities[8]);
+            this.velocities.push(this.velocities.last);
             this.velocities.shift();
         }
         this.smoothVelocities();
@@ -915,8 +954,8 @@ export default class InputPen extends LightningElement {
                 this.yPositions.unshift(this.yPositions[0]);
                 this.velocities.unshift(this.velocities[0]);
             }
-            velocity += 0.25;
-            this.drawSpline(this.getSplinePoints(), (this.size * 2) / velocity);
+            this.activeVelocity += 0.25;
+            this.drawSpline(this.getSplinePoints(), this.nibSize);
         }
         this.xPositions = [];
         this.xPositions = [];
@@ -930,7 +969,22 @@ export default class InputPen extends LightningElement {
         }
     }
 
-    getSplinePoints() {
+    /**
+     * Computes spline points and control points following catmull-rom method.
+     * @returns {number[]} 8 coords: start coords [0,1] && end coords [6,7] and set of control points [2,3] && [4,5]
+     */
+    getSplinePoints(
+        data = [
+            this.xPositions[1],
+            this.yPositions[1],
+            this.xPositions[3],
+            this.yPositions[3],
+            this.xPositions[5],
+            this.yPositions[5],
+            this.xPositions[7],
+            this.yPositions[7]
+        ]
+    ) {
         if (this.xPositions.length < 8) {
             return [];
         }
@@ -948,17 +1002,6 @@ export default class InputPen extends LightningElement {
         let cp1y;
         let cp2x;
         let cp2y;
-
-        const data = [
-            this.xPositions[1],
-            this.yPositions[1],
-            this.xPositions[3],
-            this.yPositions[3],
-            this.xPositions[5],
-            this.yPositions[5],
-            this.xPositions[7],
-            this.yPositions[7]
-        ];
 
         const size = data.length;
         const last = size - 4;
@@ -989,15 +1032,8 @@ export default class InputPen extends LightningElement {
     }
 
     drawSpline(pts, penSize) {
-        const colored = false;
         for (let i = 0; i < pts.length; i += 2) {
-            this.ctx.beginPath();
-            this.ctx.lineCap = 'round';
-            this.ctx.lineJoin = 'round';
-            this.ctx.strokeStyle = colored
-                ? `hsl(${Math.random() * 355},75%,50%)`
-                : this.color;
-            this.ctx.lineWidth = penSize;
+            this.setupStroke(penSize);
             this.ctx.moveTo(pts[i], pts[i + 1]);
             this.ctx.bezierCurveTo(
                 pts[i + 2],
@@ -1033,33 +1069,27 @@ export default class InputPen extends LightningElement {
             this.yPositions.unshift(event.clientY - clientRect.top);
             this.velocities.unshift(velocity);
         }
-
         return distance;
     }
 
     /**
      * Draw on canvas context based on cursor speed.
      */
-    sign(event) {
+    smoothDraw(event) {
         const distance = this.getDistanceTraveled(event);
-
-        // draw
         if (distance > 2) {
             this.prevDist = 0;
             if (this.moveCoordinatesAdded >= 2) {
                 this.smoothVelocities();
                 this.moveCoordinatesAdded = 0;
-                const averageVelocityOnSpline =
-                    this.velocities.slice(2, 4).reduce((a, b) => a + b, 0) / 3;
-                const velocity = Math.sqrt(averageVelocityOnSpline);
-                const calculatedSize = (this.size * 2) / velocity;
-                this.drawSpline(this.getSplinePoints(), calculatedSize);
+                this.activeVelocity = Math.sqrt(
+                    this.velocities.slice(2, 4).reduce((a, b) => a + b, 0) / 3
+                );
+                this.drawSpline(this.getSplinePoints(), this.nibSize);
             }
             if (this.xPositions.length > 10) {
                 this.xPositions.pop();
                 this.yPositions.pop();
-            }
-            if (this.velocities.length > 10) {
                 this.velocities.pop();
             }
         } else {
@@ -1077,7 +1107,7 @@ export default class InputPen extends LightningElement {
         this.ctx.arc(
             this.xPositions[0],
             this.yPositions[0],
-            (this._mode === 'sign' ? this._size / 1.5 : this._size) / 2,
+            (this._mode === 'ink' ? this._size / 1.5 : this._size) / 2,
             0,
             2 * Math.PI,
             false

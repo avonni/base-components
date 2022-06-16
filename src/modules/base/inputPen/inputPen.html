@@ -81,7 +81,30 @@
                             >
                             </lightning-button-icon>
                         </li>
-                        <li if:true={showErase}>
+                        <li if:true={showPaint}>
+                            <button
+                                class="slds-button slds-button_neutral"
+                                onclick={setPaint}
+                            >
+                                <svg
+                                    class="
+                                        slds-button__icon slds-button__icon_left
+                                    "
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <image
+                                        class="
+                                            slds-button__icon
+                                            slds-button__icon_left
+                                        "
+                                        aria-hidden="true"
+                                        href="https://www.svgrepo.com/show/6486/big-paint-brush.svg"
+                                    ></image>
+                                </svg>
+                                paint
+                            </button>
+                        </li>
+                        <li if:true={showInk}>
                             <button
                                 class="slds-button slds-button_neutral"
                                 onclick={setSign}
@@ -181,7 +204,6 @@
                         class={computedCanvasClass}
                     ></canvas>
                     <div
-                        if:true={showCursor}
                         class="avonni-input-pen__cursor"
                         data-element-id="input-pen-cursor"
                     ></div>

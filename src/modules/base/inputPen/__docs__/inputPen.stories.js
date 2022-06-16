@@ -256,5 +256,5 @@ Signature.args = {
     signature: true,
     required: true,
     hideControls: true,
-    size: 16
+    size: 12
 };
