@@ -106,10 +106,6 @@ export default class InputPen extends LightningElement {
     yPositions = [];
     velocities = [];
     activeVelocity = 8;
-    prevX = 0;
-    currX = 0;
-    prevY = 0;
-    currY = 0;
     prevDist = 0;
     moveCoordinatesAdded = 0;
 
@@ -243,6 +239,8 @@ export default class InputPen extends LightningElement {
         if (
             !this.showPen &&
             !this.showErase &&
+            !this.showPaint &&
+            !this.showInk &&
             !this.showClear &&
             !this.showSize &&
             !this.showColor

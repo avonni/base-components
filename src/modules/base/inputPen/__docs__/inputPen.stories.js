@@ -179,7 +179,7 @@ export default {
                 type: 'object'
             },
             description:
-                'A comma-separated list of buttons to remove from the toolbar. Values include pen, eraser, clear, size, color',
+                'A comma-separated list of buttons to remove from the toolbar. Values include pen, eraser, paint, ink, clear, size, color',
             table: {
                 type: { summary: 'string[]' },
                 category: 'Toolbar'

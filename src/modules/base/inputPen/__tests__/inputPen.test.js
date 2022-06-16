@@ -58,6 +58,7 @@ describe('Input pen', () => {
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
+        expect(element.signature).toBeFalsy();
         expect(element.variant).toBe('bottom-toolbar');
         expect(element.hideControls).toBeFalsy();
         expect(element.value).toBeUndefined();
@@ -184,6 +185,28 @@ describe('Input pen', () => {
                 "lightning-button-icon[title='Erase']"
             );
             expect(erase).toBeFalsy();
+        });
+    });
+
+    it('Input pen disabled buttons ink', () => {
+        element.disabledButtons = 'ink';
+
+        return Promise.resolve().then(() => {
+            const ink = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='ink']"
+            );
+            expect(ink).toBeFalsy();
+        });
+    });
+
+    it('Input pen disabled buttons paint', () => {
+        element.disabledButtons = 'paint';
+
+        return Promise.resolve().then(() => {
+            const paint = element.shadowRoot.querySelector(
+                "lightning-button-icon[title='paint']"
+            );
+            expect(paint).toBeFalsy();
         });
     });
 
