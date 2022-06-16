@@ -521,7 +521,9 @@ export default class Kanban extends LightningElement {
                 this.template
                     .querySelectorAll('[data-element-id="summarize"]')
                     .forEach((summarize, i) => {
-                        summarize.value = this._summarizeValues[i];
+                        summarize.value = this.truncateNumber(
+                            this._summarizeValues[i]
+                        );
                     });
             }, 0);
 
@@ -1195,7 +1197,7 @@ export default class Kanban extends LightningElement {
      * @param {number} num Number to truncate
      */
     truncateNumber(num) {
-        return Math.round(num * 1e5) / 1e5;
+        return Math.round(num * 1e6) / 1e6;
     }
 
     /**
