@@ -42,7 +42,7 @@ const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
 const DEFAULT_INTERVAL_DAYS_LENGTH = 15;
 const DEFAULT_TIMELINE_WIDTH = 1300;
 const DEFAULT_TIMELINE_HEIGHT = 350;
-const DEFAULT_TIMELINE_AXIS_OFFSET = 40;
+const DEFAULT_TIMELINE_AXIS_OFFSET = 16.5;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
@@ -292,7 +292,7 @@ export class HorizontalActivityTimeline {
      * Find the min date displayed in the scroll axis
      */
     get scrollAxisMinDate() {
-        return this.findNextDate(this.minDate, -5);
+        return this.findNextDate(this.minDate, -15);
     }
 
     /**
@@ -458,6 +458,47 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Calculate the space between ticks of an axis.
+     *
+     * @return {number}
+     */
+    calculateSpaceBetweenTicks(axisTicksSelector) {
+        // Get all ticks and extract translate X value
+        const ticksXPositions = [];
+        let containTextAnchorStart = false;
+        for (const tick of axisTicksSelector) {
+            if (
+                d3.select(tick).select('text').style('text-anchor') === 'start'
+            ) {
+                containTextAnchorStart = true;
+            }
+            ticksXPositions.push(
+                this.getXTranslateValue(d3.select(tick).attr('transform'))
+            );
+        }
+
+        if (ticksXPositions.length <= 1) {
+            return AXIS_LABEL_WIDTH;
+        }
+
+        let minDistanceBetweenTicks;
+        for (let i = 1; i < ticksXPositions.length; ++i) {
+            if (containTextAnchorStart && i === 1) {
+                ticksXPositions[i] -= AXIS_LABEL_WIDTH / 4;
+            }
+            const ticksDistance =
+                ticksXPositions[i] - ticksXPositions[i - 1] - AXIS_LABEL_WIDTH;
+            if (
+                !minDistanceBetweenTicks ||
+                ticksDistance < minDistanceBetweenTicks
+            ) {
+                minDistanceBetweenTicks = ticksDistance;
+            }
+        }
+        return minDistanceBetweenTicks;
+    }
+
+    /**
      * Cancel edit mode of the size of interval on scroll axis. Lines are removed and default color is restored.
      */
     cancelEditIntervalSizeMode() {
@@ -490,6 +531,15 @@ export class HorizontalActivityTimeline {
      */
     convertDateToFormat(date) {
         return dateTimeObjectFrom(date).toFormat(this._dateFormat);
+    }
+
+    /**
+     * Convert a value from px to em (16 px = 1.00 em).
+     *
+     * @return {number}
+     */
+    convertPxToEm(pxValue) {
+        return Number(pxValue) / 16.0;
     }
 
     /**
@@ -605,8 +655,8 @@ export class HorizontalActivityTimeline {
             )
             .attr('height', 2)
             .attr('transform', 'translate(' + this._offsetAxis + ' ,0)')
-            .style('position', 'fixed')
-            .style('z-index', 50)
+            .style('position', 'absolute')
+            .style('z-index', 8000)
             .append('line')
             .attr('stroke', TIMELINE_COLORS.timelineBorder)
             .attr('stroke-width', 2)
@@ -657,7 +707,7 @@ export class HorizontalActivityTimeline {
                 this._timelineWidth - this._offsetAxis + BORDER_OFFSET * 2
             )
             .attr('height', 25)
-            .attr('transform', 'translate(40 , 0)')
+            .attr('transform', 'translate(' + this._offsetAxis + ', 0)')
             .style('border', '1.5px solid ' + TIMELINE_COLORS.timelineBorder);
 
         this.createTimeAxis(
@@ -694,10 +744,7 @@ export class HorizontalActivityTimeline {
             spaceBetweenTicks < minDistanceBetweenTicks &&
             numberOfTicks >= 2
         ) {
-            destinationSVG
-                .select('#' + axisId)
-                .selectAll('*')
-                .remove();
+            destinationSVG.select('#' + axisId).remove();
 
             // Lower numberOfTicks to the next even number
             if (numberOfTicks % 2 === 0) {
@@ -710,45 +757,6 @@ export class HorizontalActivityTimeline {
                 destinationSVG.selectAll('.tick')._groups[0]
             );
         }
-    }
-
-    /**
-     * Calculate the space between ticks of an axis.
-     *
-     * @return {number}
-     */
-    calculateSpaceBetweenTicks(axisTicksSelector) {
-        // Get all ticks and extract translate X value
-        const ticksXPositions = [];
-        for (const tick of axisTicksSelector) {
-            const transformValue = d3.select(tick).attr('transform');
-            ticksXPositions.push(
-                Number(
-                    transformValue.slice(
-                        'translate('.length,
-                        transformValue.indexOf(',')
-                    )
-                )
-            );
-        }
-
-        if (ticksXPositions.length <= 1) {
-            return AXIS_LABEL_WIDTH;
-        }
-
-        let minDistanceBetweenTicks;
-        for (let i = 1; i < ticksXPositions.length; ++i) {
-            const ticksDistance =
-                ticksXPositions[i] - ticksXPositions[i - 1] - AXIS_LABEL_WIDTH;
-            if (
-                !minDistanceBetweenTicks ||
-                ticksDistance < minDistanceBetweenTicks
-            ) {
-                minDistanceBetweenTicks = ticksDistance;
-            }
-        }
-
-        return minDistanceBetweenTicks;
     }
 
     /**
@@ -778,9 +786,11 @@ export class HorizontalActivityTimeline {
             const yPosition = this._timelineAxisHeight + 1.5 * BORDER_OFFSET;
             destinationSVG
                 .append('g')
+                .attr('id', axisId)
                 .attr('transform', 'translate(0, ' + yPosition + ')')
                 .style('color', TIMELINE_COLORS.axisLabel)
                 .call(timeAxis);
+            this.setFirstAndLastTickLabel();
         }
         destinationSVG.select('.domain').remove();
     }
@@ -835,6 +845,20 @@ export class HorizontalActivityTimeline {
         const nextDate = new Date(date);
         nextDate.setDate(nextDate.getDate() + dayIncrement);
         return nextDate;
+    }
+
+    /**
+     * Find and convert to a number the x value of translate from the value of the transform attribute. The argument should be : translate(x,y)
+     *
+     * @return {number}
+     */
+    getXTranslateValue(transformValue) {
+        return Number(
+            transformValue.slice(
+                'translate('.length,
+                transformValue.indexOf(',')
+            )
+        );
     }
 
     /**
@@ -895,6 +919,40 @@ export class HorizontalActivityTimeline {
         );
         this._intervalMinDate.setHours(0, 0, 0, 0);
         this.setIntervalMaxDate();
+    }
+
+    /**
+     * Change position of first and last tick label of scroll axis to prevent overflow from timeline.
+     */
+    setFirstAndLastTickLabel() {
+        // Set first tick label position
+        const firstTick = this._scrollAxisSVG.select('.tick:first-of-type');
+        const distanceFirstTick =
+            this.getXTranslateValue(firstTick.attr('transform')) -
+            this._offsetAxis * 0.7;
+        firstTick
+            .select('text')
+            .style('text-anchor', 'start')
+            .attr(
+                'dx',
+                '-' + Math.abs(this.convertPxToEm(distanceFirstTick)) + 'em'
+            );
+
+        // Set last tick label position
+        const lastTick = this._scrollAxisSVG.select('.tick:last-of-type');
+        const distanceEndTick =
+            this._timelineWidth -
+            this.getXTranslateValue(lastTick.attr('transform'));
+        if (distanceEndTick < AXIS_LABEL_WIDTH / 2) {
+            lastTick
+                .select('text')
+                .style('text-anchor', 'end')
+                .attr(
+                    'dx',
+                    this.convertPxToEm(distanceEndTick + this._offsetAxis / 2) +
+                        'em'
+                );
+        }
     }
 
     /**
