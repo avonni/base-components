@@ -91,6 +91,14 @@ export default class PrimitiveCombobox extends LightningElement {
     @api fieldLevelHelp;
 
     /**
+     * Deprecated. The selected options are in the combobox component's DOM.
+     *
+     * @type {boolean}
+     * @deprecated
+     */
+    @api hideSelectedOptions;
+
+    /**
      * Text label for the primitive combobox.
      *
      * @type {string}
@@ -121,6 +129,14 @@ export default class PrimitiveCombobox extends LightningElement {
      * @public
      */
     @api name;
+
+    /**
+     * Deprecated. The selected options are in the combobox component's DOM.
+     *
+     * @type {string}
+     * @deprecated
+     */
+    @api selectedOptionsAriaLabel;
 
     _actions = [];
     _allowSearch = false;
