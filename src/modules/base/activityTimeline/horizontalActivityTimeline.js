@@ -35,8 +35,7 @@ import { dateTimeObjectFrom } from 'c/utilsPrivate';
 
 const AXIS_LABEL_WIDTH = 50.05;
 const AXIS_TYPE = { timelineAxis: 'timeline-axis', scrollAxis: 'scroll-axis' };
-const COLOR_CHANGE_INTERVAL_SIZE = '#084d75';
-const DEFAULT_AXIS_SCROLL_COLOR = '#1c82bd';
+const BORDER_OFFSET = 0.5;
 const DEFAULT_TIMELINE_AXIS_TICKS_NUMBER = 9;
 const DEFAULT_SCROLL_AXIS_TICKS_NUMBER = 10;
 const DEFAULT_DATE_FORMAT = 'dd/MM/yyyy';
@@ -45,7 +44,7 @@ const DEFAULT_TIMELINE_WIDTH = 1300;
 const DEFAULT_TIMELINE_HEIGHT = 350;
 const DEFAULT_TIMELINE_AXIS_OFFSET = 40;
 const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
-const INTERVAL_RECTANGLE_OFFSET_Y = 0.5;
+const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
 const RESIZE_CURSOR_CLASS =
@@ -65,18 +64,22 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
+// https://www.lightningdesignsystem.com/design-tokens/
+const TIMELINE_COLORS = {
+    scrollAxisBorder: '#c9c7c5', // $color-gray-6
+    scrollAxisItemRect: '#b0adab', // $color-gray-7
+    intervalBackground: '#1b96ff', // $color-brand
+    intervalBorder: '#0176d3', // $palette-blue-50
+    timelineBorder: '#c9c9c9', // $card-color-border
+    axisLabel: '#181818' // $color-text-action-label-active
+};
+
 // ** Functionalities/bug **
 // TODO: Fix popover size
-// TODO: Change color and appearance
-// -> 1) Interval rectangle : stroke (3), palette-blue-50 (border), color-background-selection (background)
-// -> 2) Scroll axis border : color-gray-6
-// -> 3) Stroke - timeline : card-color-border (increase stroke)
 // TODO: Scroll axis : change tick alignment (left : more space first date, left align) (right: right align)
 // TODO: Fix alignment header and timeline
-// TODO: Remove -
 // TODO: mouse over : hideBorder to remove border on primitive
 // TODO: mouse over on popover keeps it open
-// TODO: No icon + wrong category --> standard:empty
 // TODO: Change activate edit mode : activate on mouseover
 
 export class HorizontalActivityTimeline {
@@ -94,7 +97,6 @@ export class HorizontalActivityTimeline {
     _timelineWidth = DEFAULT_TIMELINE_WIDTH;
     _timelineHeight = DEFAULT_TIMELINE_HEIGHT;
     _timelineAxisHeight = DEFAULT_TIMELINE_AXIS_HEIGHT;
-    _scrollAxisColor = DEFAULT_AXIS_SCROLL_COLOR;
 
     // To change visible height of timeline
     _requestHeightChange = false;
@@ -353,7 +355,7 @@ export class HorizontalActivityTimeline {
             .attr('y', (item) => item.yPosition)
             .attr('width', SCROLL_ITEM_RECTANGLE_WIDTH)
             .attr('height', 3)
-            .attr('fill', this._scrollAxisColor);
+            .attr('fill', TIMELINE_COLORS.scrollAxisItemRect);
     }
 
     /**
@@ -388,9 +390,9 @@ export class HorizontalActivityTimeline {
             .attr('x', this.scrollTimeScale(new Date(this._intervalMinDate)))
             .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
             .attr('width', this.intervalWidth)
-            .attr('height', this._timelineAxisHeight)
-            .attr('opacity', 0.3)
-            .attr('fill', this._scrollAxisColor)
+            .attr('height', this._timelineAxisHeight - 2 * BORDER_OFFSET)
+            .attr('opacity', 0.15)
+            .attr('fill', TIMELINE_COLORS.intervalBackground)
             .call(d3.drag().on('drag', this.handleTimeIntervalDrag.bind(this)))
             .on('click', this.handleClickOnInterval.bind(this));
 
@@ -401,13 +403,16 @@ export class HorizontalActivityTimeline {
                 'id',
                 'avonni-horizontal-activity-timeline__left-interval-line'
             )
-            .style('stroke', COLOR_CHANGE_INTERVAL_SIZE)
             .style('opacity', 0)
-            .style('stroke-width', 1)
             .attr('x1', this.scrollTimeScale(new Date(this._intervalMinDate)))
             .attr('y1', 1.4)
             .attr('x2', this.scrollTimeScale(new Date(this._intervalMinDate)))
-            .attr('y2', this._timelineAxisHeight + INTERVAL_RECTANGLE_OFFSET_Y)
+            .attr(
+                'y2',
+                this._timelineAxisHeight +
+                    INTERVAL_RECTANGLE_OFFSET_Y -
+                    2 * BORDER_OFFSET
+            )
             .call(
                 d3
                     .drag()
@@ -421,13 +426,16 @@ export class HorizontalActivityTimeline {
                 'id',
                 'avonni-horizontal-activity-timeline__right-interval-line'
             )
-            .style('stroke', COLOR_CHANGE_INTERVAL_SIZE)
             .style('opacity', 0)
-            .style('stroke-width', 1)
             .attr('x1', this.scrollTimeScale(new Date(this._intervalMaxDate)))
             .attr('y1', 1.4)
             .attr('x2', this.scrollTimeScale(new Date(this._intervalMaxDate)))
-            .attr('y2', this._timelineAxisHeight + INTERVAL_RECTANGLE_OFFSET_Y)
+            .attr(
+                'y2',
+                this._timelineAxisHeight +
+                    INTERVAL_RECTANGLE_OFFSET_Y -
+                    2 * BORDER_OFFSET
+            )
             .call(
                 d3
                     .drag()
@@ -454,7 +462,10 @@ export class HorizontalActivityTimeline {
      */
     cancelEditIntervalSizeMode() {
         this._changeIntervalSizeMode = false;
-        this._timeIntervalSelector.attr('fill', this._scrollAxisColor);
+        this._timeIntervalSelector.attr(
+            'fill',
+            TIMELINE_COLORS.intervalBackground
+        );
         this._rightIntervalLine.style('opacity', 0).attr('class', '');
         this._leftIntervalLine.style('opacity', 0).attr('class', '');
     }
@@ -546,7 +557,10 @@ export class HorizontalActivityTimeline {
                 'class',
                 'avonni-horizontal-activity-timeline__timeline-items-svg'
             )
-            .attr('width', this._timelineWidth - this._offsetAxis)
+            .attr(
+                'width',
+                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
+            )
             .attr('height', this._timelineHeight)
             .attr('transform', 'translate(' + this._offsetAxis + ' , 0)');
 
@@ -561,7 +575,7 @@ export class HorizontalActivityTimeline {
             .append('g')
             .attr('opacity', 0.15)
             .style('stroke-dasharray', '8 8')
-            .attr('transform', 'translate(0, -10)')
+            .attr('transform', 'translate(0, -12)')
             .call(axis);
 
         this.createTimelineOutline();
@@ -585,31 +599,46 @@ export class HorizontalActivityTimeline {
             )
         )
             .append('svg')
-            .attr('width', this._timelineWidth - this._offsetAxis)
+            .attr(
+                'width',
+                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
+            )
             .attr('height', 2)
             .attr('transform', 'translate(' + this._offsetAxis + ' ,0)')
             .style('position', 'fixed')
             .style('z-index', 50)
             .append('line')
-            .attr('stroke', 'black')
+            .attr('stroke', TIMELINE_COLORS.timelineBorder)
+            .attr('stroke-width', 2)
             .attr('x1', 0)
-            .attr('y1', 0)
-            .attr('x2', this._timelineWidth - this._offsetAxis)
-            .attr('y2', 0);
+            .attr('y1', 0.2)
+            .attr(
+                'x2',
+                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
+            )
+            .attr('y2', 0.2);
 
         this._timelineSVG
             .append('line')
-            .attr('stroke', 'black')
+            .attr('stroke', TIMELINE_COLORS.timelineBorder)
+            .attr('stroke-width', 2)
             .attr('x1', 0)
             .attr('y1', 0)
             .attr('x2', 0)
             .attr('y2', this._timelineHeight);
         this._timelineSVG
             .append('line')
-            .attr('stroke', 'black')
-            .attr('x1', this._timelineWidth - this._offsetAxis)
+            .attr('stroke', TIMELINE_COLORS.timelineBorder)
+            .attr('stroke-width', 2)
+            .attr(
+                'x1',
+                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
+            )
             .attr('y1', 0)
-            .attr('x2', this._timelineWidth - this._offsetAxis)
+            .attr(
+                'x2',
+                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
+            )
             .attr('y2', this._timelineHeight);
     }
 
@@ -623,20 +652,13 @@ export class HorizontalActivityTimeline {
                 'class',
                 'avonni-horizontal-activity-timeline__timeline-axis-svg'
             )
-            .attr('width', this._timelineWidth - this._offsetAxis)
-            .attr('height', this._timelineAxisHeight * 2)
-            .attr('transform', 'translate(' + this._offsetAxis + ' ,0)');
-
-        // Create time axis and rectangle to surround it
-        axisSVG
-            .append('rect')
-            .attr('x', '0.3')
-            .attr('y', 0) // change position du rectangle blanc sous timeline
-            .attr('width', this._timelineWidth - this._offsetAxis - 0.6)
+            .attr(
+                'width',
+                this._timelineWidth - this._offsetAxis + BORDER_OFFSET * 2
+            )
             .attr('height', 25)
-            .attr('stroke', 'black')
-            .attr('stroke-width', '0.5px')
-            .attr('fill', 'white');
+            .attr('transform', 'translate(40 , 0)')
+            .style('border', '1.5px solid ' + TIMELINE_COLORS.timelineBorder);
 
         this.createTimeAxis(
             this.viewTimeScale,
@@ -744,17 +766,23 @@ export class HorizontalActivityTimeline {
             .tickSizeOuter(0);
 
         if (axisId === AXIS_TYPE.timelineAxis) {
-            destinationSVG.append('g').attr('id', axisId).call(timeAxis);
-            this._numberOfTimelineAxisTicks = numberOfTicks;
-        } else {
             destinationSVG
                 .append('g')
-                .attr(
-                    'transform',
-                    'translate(0 ' + this._timelineAxisHeight + ')'
-                )
+                .attr('id', axisId)
+                .attr('transform', 'translate(0, -1.5)')
+                .style('color', TIMELINE_COLORS.axisLabel)
+                .call(timeAxis);
+
+            this._numberOfTimelineAxisTicks = numberOfTicks;
+        } else {
+            const yPosition = this._timelineAxisHeight + 1.5 * BORDER_OFFSET;
+            destinationSVG
+                .append('g')
+                .attr('transform', 'translate(0, ' + yPosition + ')')
+                .style('color', TIMELINE_COLORS.axisLabel)
                 .call(timeAxis);
         }
+        destinationSVG.select('.domain').remove();
     }
 
     /**
@@ -767,9 +795,12 @@ export class HorizontalActivityTimeline {
                 'class',
                 'avonni-horizontal-activity-timeline__scroll-axis-svg'
             )
-            .attr('width', this._timelineWidth + AXIS_LABEL_WIDTH / 3)
+            .attr(
+                'width',
+                this._timelineWidth + AXIS_LABEL_WIDTH / 3 + 2 * BORDER_OFFSET
+            )
             .attr('height', this._timelineAxisHeight * 2)
-            .attr('transform', 'translate(0, -25)');
+            .attr('transform', 'translate(0.5, 5)');
 
         // Create ticks of scroll axis
         this.createTimeAxis(
@@ -779,6 +810,8 @@ export class HorizontalActivityTimeline {
             this._scrollAxisSVG
         );
 
+        this.addItemsToScrollAxis();
+
         // Create the surrounding rectangle of the scroll axis
         this._scrollAxisSVG
             .append('rect')
@@ -786,11 +819,10 @@ export class HorizontalActivityTimeline {
             .attr('y', 1)
             .attr('width', this._timelineWidth - this._offsetAxis)
             .attr('height', this._timelineAxisHeight)
-            .attr('stroke', this._scrollAxisColor)
-            .attr('fill', 'white')
+            .attr('stroke', TIMELINE_COLORS.timelineBorder)
+            .attr('fill', 'transparent')
             .on('click', this.handleClickOnScrollAxis.bind(this));
 
-        this.addItemsToScrollAxis();
         this.addTimeIntervalToScrollAxis();
     }
 
@@ -920,10 +952,12 @@ export class HorizontalActivityTimeline {
      */
     setTimelineWidth(containerWidth) {
         if (containerWidth > 0) {
-            this._timelineWidth = containerWidth - 25;
+            this._timelineWidth = containerWidth - 17;
+            const timelineContainerWidth =
+                this._timelineWidth + 2 * BORDER_OFFSET;
             d3.select(this.divTimelineItemsSelector).style(
                 'width',
-                this._timelineWidth + 'px'
+                timelineContainerWidth + 'px'
             );
         }
     }
@@ -1045,14 +1079,16 @@ export class HorizontalActivityTimeline {
         this._changeIntervalSizeMode = !this._changeIntervalSizeMode;
 
         if (this._changeIntervalSizeMode) {
-            this._timeIntervalSelector.attr('fill', COLOR_CHANGE_INTERVAL_SIZE);
-
             // Display interval lines
             this._leftIntervalLine
                 .style('opacity', 1)
+                .style('stroke', TIMELINE_COLORS.intervalBorder)
+                .style('stroke-width', 3)
                 .attr('class', RESIZE_CURSOR_CLASS);
             this._rightIntervalLine
                 .style('opacity', 1)
+                .style('stroke', TIMELINE_COLORS.intervalBorder)
+                .style('stroke-width', 3)
                 .attr('class', RESIZE_CURSOR_CLASS);
         } else {
             this.cancelEditIntervalSizeMode();
