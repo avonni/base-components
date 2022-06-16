@@ -844,12 +844,12 @@ export default class Kanban extends LightningElement {
         dropZone.style.width = `${
             groups[this._clickedGroupIndex].offsetWidth
         }px`;
-        dropZone.style.transform = `translateX(${
+        dropZone.style.transform = `translateX(calc(${
             (groups[this._clickedGroupIndex].offsetWidth +
-                0.5 *
+                0.625 *
                     parseFloat(getComputedStyle(this.template.host).fontSize)) *
             this._releasedGroupIndex
-        }px)`;
+        }px - 0.3125rem))`;
     }
 
     /**
