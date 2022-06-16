@@ -517,7 +517,7 @@ export default class AvatarGroup extends LightningElement {
      * @type {string}
      */
     get actionButtonWrapperClass() {
-        let classes = classSet(`avonni-action-button-${this.size}`)
+        return classSet(`avonni-action-button-${this.size}`)
             .add({
                 'avonni-avatar-group__action-button-base-layout':
                     this.layout !== 'list',
@@ -527,8 +527,16 @@ export default class AvatarGroup extends LightningElement {
                     this.layout === 'stack'
             })
             .toString();
+    }
 
-        return classes;
+    /**
+     * Class to reorder show more section
+     * @type {string}
+     */
+    get showMoreSectionClass() {
+        return classSet({
+            'slds-grid slds-grid_vertical-reverse': this.layout === 'list'
+        });
     }
 
     /**
@@ -626,8 +634,7 @@ export default class AvatarGroup extends LightningElement {
         }
 
         if (item.showMore) {
-            this.showPopover = true;
-            this.template.querySelector('.slds-dropdown-trigger').focus();
+            this.showPopover = !this.showPopover;
             this.allowBlur();
         } else {
             /**
@@ -650,7 +657,6 @@ export default class AvatarGroup extends LightningElement {
                 })
             );
 
-            this.showPopover = false;
             this.cancelBlur();
         }
     }

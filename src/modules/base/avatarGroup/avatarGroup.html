@@ -144,69 +144,12 @@
                     </span>
                 </template>
             </template>
-            <template if:true={item.showMore}>
-                <template if:true={showPopover}>
-                    <div
-                        key={item.key}
-                        class={hiddenListClass}
-                        onmouseenter={cancelBlur}
-                        onmouseleave={allowBlur}
-                    >
-                        <template
-                            for:each={listHiddenItems}
-                            for:item="item"
-                            for:index="index"
-                        >
-                            <div
-                                key={item.key}
-                                class="
-                                    avonni-avatar-group__hidden-avatar-container
-                                "
-                                onclick={handleAvatarClick}
-                                data-item-id={index}
-                                data-type="hidden"
-                                tabindex="0"
-                            >
-                                <c-primitive-avatar
-                                    alternative-text={item.alternativeText}
-                                    fallback-icon-name={item.fallbackIconName}
-                                    initials={item.initials}
-                                    src={item.src}
-                                    variant={variant}
-                                    size={size}
-                                    status={item.status}
-                                    status-title={item.statusTitle}
-                                    status-position={item.statusPosition}
-                                    presence={item.presence}
-                                    presence-title={item.presenceTitle}
-                                    presence-position={item.presencePosition}
-                                    entity-icon-name={item.entityIconName}
-                                    entity-initials={item.entityInitials}
-                                    entity-variant={item.entityVariant}
-                                    entity-src={item.entitySrc}
-                                    entity-position={item.entityPosition}
-                                    actions={item.actions}
-                                    action-position={item.actionPosition}
-                                    action-menu-icon={item.actionMenuIcon}
-                                    data-element-id="avonni-primitive-avatar-show-more-propover"
-                                    data-item-id={index}
-                                    data-type="hidden"
-                                    class={avatarInlineClass}
-                                    onclick={handleAvatarClick}
-                                    role="button"
-                                    onkeyup={handleAvatarClick}
-                                ></c-primitive-avatar>
-                                <p
-                                    onclick={handleAvatarClick}
-                                    data-item-id={index}
-                                    data-type="hidden"
-                                >
-                                    {item.alternativeText}
-                                </p>
-                            </div>
-                        </template>
-                    </div>
-                </template>
+
+            <span
+                if:true={item.showMore}
+                key={item.key}
+                class={showMoreSectionClass}
+            >
                 <div
                     class="
                         slds-dropdown-trigger slds-dropdown-trigger_click
@@ -255,7 +198,71 @@
                         ></lightning-button>
                     </template>
                 </div>
-            </template>
+
+                <template if:true={showPopover}>
+                    <div
+                        key={item.key}
+                        class={hiddenListClass}
+                        onmouseenter={cancelBlur}
+                        onmouseleave={allowBlur}
+                    >
+                        <template
+                            for:each={listHiddenItems}
+                            for:item="item"
+                            for:index="index"
+                        >
+                            <div
+                                key={item.key}
+                                class="
+                                    avonni-avatar-group__hidden-avatar-container
+                                "
+                                onfocusout={handleBlur}
+                                onfocusin={cancelBlur}
+                                data-item-id={index}
+                                data-type="hidden"
+                                tabindex="0"
+                            >
+                                <c-primitive-avatar
+                                    alternative-text={item.alternativeText}
+                                    fallback-icon-name={item.fallbackIconName}
+                                    initials={item.initials}
+                                    src={item.src}
+                                    variant={variant}
+                                    size={size}
+                                    status={item.status}
+                                    status-title={item.statusTitle}
+                                    status-position={item.statusPosition}
+                                    presence={item.presence}
+                                    presence-title={item.presenceTitle}
+                                    presence-position={item.presencePosition}
+                                    entity-icon-name={item.entityIconName}
+                                    entity-initials={item.entityInitials}
+                                    entity-variant={item.entityVariant}
+                                    entity-src={item.entitySrc}
+                                    entity-position={item.entityPosition}
+                                    actions={item.actions}
+                                    action-position={item.actionPosition}
+                                    action-menu-icon={item.actionMenuIcon}
+                                    data-element-id="avonni-primitive-avatar-show-more-propover"
+                                    data-item-id={index}
+                                    data-type="hidden"
+                                    class={avatarInlineClass}
+                                    onclick={handleAvatarClick}
+                                    role="button"
+                                    onkeyup={handleAvatarClick}
+                                ></c-primitive-avatar>
+                                <p
+                                    onclick={handleAvatarClick}
+                                    data-item-id={index}
+                                    data-type="hidden"
+                                >
+                                    {item.alternativeText}
+                                </p>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </span>
         </template>
         <template if:true={actionIconName}>
             <div class={actionButtonWrapperClass}>
