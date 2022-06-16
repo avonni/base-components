@@ -99,10 +99,13 @@
     z-index: 1;
 }
 
+.avonni-kanban__tile:hover:not(.avonni-kanban__dragged) {
+    z-index: 99;
+}
+
 .avonni-kanban__tile:hover:not(.avonni-kanban__dragged):not(.avonni-kanban__tile_read_only) {
     background-color: #f7f7f7;
     cursor: grab;
-    z-index: 99;
     position: relative;
 }
 

@@ -116,7 +116,6 @@
                                 icon-size="x-small"
                                 menu-alignment="right"
                                 class="avonni-kanban__header_action"
-                                disabled={readOnly}
                                 variant="bare"
                                 icon-name="action:more"
                                 onselect={handleActionClick}
@@ -235,7 +234,6 @@
                                         slds-is-relative
                                     "
                                     onselect={handleActionClick}
-                                    disabled={readOnly}
                                 >
                                     <template
                                         for:each={actions}
@@ -273,7 +271,6 @@
                                     for:each={group.footerActions}
                                     for:item="action"
                                     key={action.name}
-                                    disabled={readOnly}
                                     class="avonni-kanban__footer_action"
                                 >
                                     <lightning-icon
