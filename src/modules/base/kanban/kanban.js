@@ -72,6 +72,7 @@ export default class Kanban extends LightningElement {
     _groupsLength = [];
     _groupWidth = 1;
     _initialPos = { x: 0, y: 0 };
+    _initialScrollWidth = 0;
     _initialTileIndex = 0;
     _isDragged = false;
     _kanbanPos = {
@@ -275,6 +276,9 @@ export default class Kanban extends LightningElement {
 
         requestAnimationFrame(() => {
             this.capFieldHeight();
+            this._initialScrollWidth = this.template.querySelector(
+                '[data-element-id="avonni-kanban__field_container"]'
+            ).scrollWidth;
         });
 
         return computedGroups;
@@ -443,7 +447,14 @@ export default class Kanban extends LightningElement {
             (this._draggedGroup || this._draggedTile)
         ) {
             this._scrollingInterval = window.setInterval(() => {
-                toScroll.scrollBy(scrollXStep, scrollYStep);
+                // Prevents from scrolling outside of the kanban
+                if (
+                    fieldContainer.scrollLeft + fieldContainer.offsetWidth <
+                        this._initialScrollWidth ||
+                    scrollYStep !== 0
+                ) {
+                    toScroll.scrollBy(scrollXStep, scrollYStep);
+                }
                 if (this._draggedTile) this.animateTiles(groups);
             }, 20);
         }
@@ -987,6 +998,13 @@ export default class Kanban extends LightningElement {
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
         );
+
+        // Prevents from dragging outside of the kanban
+        if (this._initialScrollWidth === fieldContainer.offsetWidth) {
+            fieldContainer.style.overflowX = 'hidden';
+        } else {
+            fieldContainer.style.overflowX = 'scroll';
+        }
 
         // Calculates the position of the mouse depending on the kanban boundaries
         let currentY = event.clientY;
