@@ -457,8 +457,9 @@ describe('Primitive Carousel Item', () => {
             const action = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-menu"]'
             );
-            const result = action.click();
-            expect(result).toBeFalsy();
+            const customEvent = new CustomEvent('select');
+            action.dispatchEvent(customEvent);
+            expect(customEvent.defaultPrevented).toBeTruthy();
         });
     });
 });
