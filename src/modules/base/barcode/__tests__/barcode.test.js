@@ -69,29 +69,33 @@ describe('Barcode', () => {
     // alternative type
     it('Barcode: alternative type', () => {
         element.type = 'CODE128';
-        element.renderBarcode();
-        expect(element.type).toBe('CODE128');
+        return Promise.resolve().then(() => {
+            expect(element.type).toBe('CODE128');
+        });
     });
 
     // non valid alternative type
     it('Barcode: non valid alternative type', () => {
         element.type = 'NON VALID';
-        element.renderBarcode();
-        expect(element.type).toBe('NON VALID');
+        return Promise.resolve().then(() => {
+            expect(element.type).toBe('NON VALID');
+        });
     });
 
     // alternative checksum with bwipjs
     it('Barcode: alternative checksum with jsbarcode', () => {
         element.checksum = true;
-        element.renderBarcode();
-        expect(element.checksum).toBe(true);
+        return Promise.resolve().then(() => {
+            expect(element.checksum).toBe(true);
+        });
     });
 
     // alternative checksum with jsbarcode
     it('Barcode: alternative checksum with bwipjs', () => {
         element.checksum = true;
         element.type = 'CODE128';
-        element.renderBarcode();
-        expect(element.type).toBe('CODE128');
+        return Promise.resolve().then(() => {
+            expect(element.type).toBe('CODE128');
+        });
     });
 });
