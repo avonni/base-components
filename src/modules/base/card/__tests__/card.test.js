@@ -172,9 +172,7 @@ describe('Card', () => {
             const defaultSlot = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-card-default-slot"]'
             );
-            expect(bodyContainer.classList).toContain(
-                'slds-grid_vertical-reverse'
-            );
+            expect(bodyContainer.classList).toContain('slds-grid_vertical');
             expect(defaultSlot).toBeFalsy();
             expect(mediaImage.src).toBe('https://via.placeholder.com/300x200');
         });
