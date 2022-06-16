@@ -77,32 +77,11 @@
                                 ></lightning-button-icon>
                             </template>
                         </div>
-                        <div
-                            class="slds-hide_small"
-                            data-element-id="button-menu"
-                        >
-                            <lightning-button-menu
-                                alternative-text="Show menu"
-                                icon-size="x-small"
-                                menu-alignment="auto"
-                                variant="border-filled"
-                                data-element-id="lightning-button-menu"
-                                onselect={handleMenuSelect}
-                            >
-                                <template for:each={actions} for:item="action">
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        value={action.name}
-                                        label={action.label}
-                                        disabled={action.disabled}
-                                        prefix-icon-name={action.iconName}
-                                        class="slds-text-color_default"
-                                    ></lightning-menu-item>
-                                </template>
-                            </lightning-button-menu>
-                        </div>
                     </template>
-                    <template if:true={isMenuVariant}>
+                    <div
+                        class={computedLightningButtonMenuActionClass}
+                        data-element-id="button-menu"
+                    >
                         <lightning-button-menu
                             alternative-text="Show menu"
                             icon-size="x-small"
@@ -122,7 +101,7 @@
                                 ></lightning-menu-item>
                             </template>
                         </lightning-button-menu>
-                    </template>
+                    </div>
                 </div>
             </template>
             <img src={src} alt={imageAssistiveText} data-element-id="img" />
@@ -159,7 +138,10 @@
                             <template for:each={actions} for:item="action">
                                 <lightning-button
                                     if:true={action.label}
-                                    class="slds-m-horizontal_xx-small"
+                                    class="
+                                        slds-m-horizontal_xx-small
+                                        avonni-carousel__button
+                                    "
                                     key={action.name}
                                     icon-name={action.iconName}
                                     label={action.label}
@@ -182,32 +164,11 @@
                                 ></lightning-button-icon>
                             </template>
                         </div>
-                        <div
-                            class="slds-hide_small"
-                            data-element-id="button-menu"
-                        >
-                            <lightning-button-menu
-                                alternative-text="Show menu"
-                                icon-size="x-small"
-                                menu-alignment="auto"
-                                variant="border-filled"
-                                data-element-id="lightning-button-menu"
-                                onselect={handleMenuSelect}
-                            >
-                                <template for:each={actions} for:item="action">
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        value={action.name}
-                                        label={action.label}
-                                        disabled={action.disabled}
-                                        prefix-icon-name={action.iconName}
-                                        class="slds-text-color_default"
-                                    ></lightning-menu-item>
-                                </template>
-                            </lightning-button-menu>
-                        </div>
                     </template>
-                    <template if:true={isMenuVariant}>
+                    <div
+                        class={computedLightningButtonMenuActionClass}
+                        data-element-id="button-menu"
+                    >
                         <lightning-button-menu
                             alternative-text="Show menu"
                             icon-size="x-small"
@@ -227,7 +188,7 @@
                                 ></lightning-menu-item>
                             </template>
                         </lightning-button-menu>
-                    </template>
+                    </div>
                 </div>
             </template>
         </div>

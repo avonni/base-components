@@ -211,6 +211,12 @@ export default class PrimitiveCarouselItem extends LightningElement {
             .toString();
     }
 
+    get computedLightningButtonMenuActionClass() {
+        return classSet('').add({
+            'slds-hide_small': this.isMenuVariant === false
+        });
+    }
+
     /**
      * Computed carousel content class - set to display content bottom if position is bottom.
      *
