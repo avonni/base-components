@@ -784,8 +784,9 @@ export default class List extends LightningElement {
         if (
             event.target.tagName.startsWith('LIGHTNING') ||
             event.target.tagName === 'A'
-        )
+        ) {
             return;
+        }
 
         /**
          * The event fired when a user clicks on an item.
@@ -800,7 +801,8 @@ export default class List extends LightningElement {
             new CustomEvent('itemclick', {
                 detail: {
                     item: this.computedItems[event.currentTarget.dataset.index],
-                    bounds: event.currentTarget.getBoundingClientRect()
+                    bounds: event.currentTarget.getBoundingClientRect(),
+                    name: event.currentTarget.dataset.name
                 }
             })
         );
