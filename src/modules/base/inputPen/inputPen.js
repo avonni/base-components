@@ -106,9 +106,7 @@ export default class InputPen extends LightningElement {
     currX = 0;
     prevY = 0;
     currY = 0;
-    prevSize = 0;
     prevDist = 0;
-    prevVelocity = 2;
     moveCoordinatesAdded = 0;
 
     _resizeTimeout;
@@ -134,9 +132,6 @@ export default class InputPen extends LightningElement {
         this.sizeList = [...Array(100).keys()].slice(1).map((x) => {
             return { label: `${x}px`, value: x };
         });
-        if (this._signature) {
-            this.prevSize = this._size / 2;
-        }
     }
 
     disconnectedCallback() {
@@ -765,9 +760,8 @@ export default class InputPen extends LightningElement {
                 if (this._signature) {
                     this.xPositions = [];
                     this.yPositions = [];
+                    this.velocities = Array(6, 10);
                     this.setupCoordinate(event);
-                    this.prevSize = this._size / 4;
-                    this.prevVelocity = 2;
                 }
                 this.drawDot();
                 break;
@@ -879,12 +873,17 @@ export default class InputPen extends LightningElement {
 
     clearPositionBuffer() {
         let averageVelocityOnSpline =
-            this.velocities.slice(5, 8).reduce((a, b) => a + b, 0) / 3;
+            this.velocities.slice(3, 5).reduce((a, b) => a + b, 0) / 3;
         let velocity = Math.sqrt(averageVelocityOnSpline);
-        if (this.moveCoordinatesAdded < 2) {
-            //TODO: if 1 then, add "phantom point"
-            this.drawSpline(this.getSplinePoints(), this.size / velocity);
+        for (let i = 0; i < this.moveCoordinatesAdded; i++) {
+            this.xPositions.push(this.xPositions[8]);
+            this.xPositions.shift();
+            this.yPositions.push(this.xPositions[8]);
+            this.yPositions.shift();
+            this.velocities.push(this.velocities[8]);
+            this.velocities.shift();
         }
+        this.smoothVelocities();
         for (let i = 0; i < 2; i++) {
             for (let j = 0; j < 2; j++) {
                 this.xPositions.unshift(this.xPositions[0]);
@@ -892,10 +891,16 @@ export default class InputPen extends LightningElement {
 
                 this.velocities.unshift(this.velocities[0]);
             }
-            averageVelocityOnSpline =
-                this.velocities.slice(5, 8).reduce((a, b) => a + b, 0) / 3;
-            velocity = Math.sqrt(averageVelocityOnSpline);
+            velocity += 0.3;
             this.drawSpline(this.getSplinePoints(), this.size / velocity);
+        }
+    }
+
+    smoothVelocities() {
+        console.log(this.velocities.length);
+        for (let i = this.velocities.length - 1; i >= 2; i = i - 1) {
+            this.velocities[i - 1] =
+                (this.velocities[i] + this.velocities[i - 2]) / 2;
         }
     }
 
@@ -916,14 +921,14 @@ export default class InputPen extends LightningElement {
         let cp2y;
 
         const data = [
+            this.xPositions[1],
+            this.yPositions[1],
             this.xPositions[3],
             this.yPositions[3],
             this.xPositions[5],
             this.yPositions[5],
             this.xPositions[7],
-            this.yPositions[7],
-            this.xPositions[9],
-            this.yPositions[9]
+            this.yPositions[7]
         ];
 
         const size = data.length;
@@ -955,7 +960,7 @@ export default class InputPen extends LightningElement {
     }
 
     drawSpline(pts, penSize) {
-        const colored = true;
+        const colored = false;
         for (let i = 0; i < pts.length; i += 2) {
             this.ctx.beginPath();
             this.ctx.lineCap = 'round';
@@ -986,23 +991,20 @@ export default class InputPen extends LightningElement {
         const deltaY = this.yPositions[0] - (event.clientY - clientRect.top);
         let velocity = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
         const distance = velocity + this.prevDist;
-
+        const deltaV = Math.abs(this.velocities[0] - velocity);
         velocity = Math.min(
-            Math.max(velocity, this.prevVelocity - 0.2),
-            this.prevVelocity + 0.2
+            Math.max(velocity, this.velocities[0] - 0.2 * deltaV),
+            this.velocities[0] + 0.2 * deltaV
         );
-
-        this.prevVelocity = velocity;
         this.xPositions[0] = event.clientX - clientRect.left;
         this.yPositions[0] = event.clientY - clientRect.top;
-        if (distance > 3) {
+        if (distance > 4) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
             this.yPositions.unshift(event.clientY - clientRect.top);
             this.velocities.unshift(velocity);
         }
 
-        this.prevVelocity = velocity;
         return distance;
     }
 
@@ -1013,19 +1015,22 @@ export default class InputPen extends LightningElement {
         const distance = this.getDistanceTraveled(event);
 
         // draw
-        if (distance > 3) {
+        if (distance > 4) {
             this.prevDist = 0;
             if (this.moveCoordinatesAdded >= 2) {
+                this.smoothVelocities();
                 this.moveCoordinatesAdded = 0;
                 const averageVelocityOnSpline =
-                    this.velocities.slice(5, 8).reduce((a, b) => a + b, 0) / 3;
+                    this.velocities.slice(2, 4).reduce((a, b) => a + b, 0) / 3;
                 const velocity = Math.sqrt(averageVelocityOnSpline);
                 const calculatedSize = this.size / velocity;
                 this.drawSpline(this.getSplinePoints(), calculatedSize);
-                this.prevSize = calculatedSize;
             }
             this.xPositions.pop();
             this.yPositions.pop();
+            if (this.velocities.length > 10) {
+                this.velocities.pop();
+            }
         } else {
             this.prevDist = distance;
         }
