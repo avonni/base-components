@@ -337,7 +337,7 @@ export default class InputPen extends LightningElement {
      *
      * @type {string}
      * @public
-     * @default 2
+     * @default 10
      */
     @api
     get size() {
@@ -349,6 +349,8 @@ export default class InputPen extends LightningElement {
         if (!isNaN(intValue)) {
             this._size = intValue;
             this.initCursorStyles();
+        } else {
+            this._size = DEFAULT_SIZE;
         }
     }
 
@@ -470,11 +472,20 @@ export default class InputPen extends LightningElement {
         );
     }
 
+    /**
+     * Check if cursor is shown.
+     *
+     * @type {boolean}
+     */
+    get showCursor() {
+        return this._mode !== 'sign';
+    }
+
     get computedTextAreaClasses() {
         return classSet('slds-rich-text-editor__textarea').add({
             'slds-grid': true,
             'avonni-input-pen__text-area': true,
-            'avonni-input-pen__text-area_cursor': this._signature
+            'avonni-input-pen__text-area_cursor': this._mode === 'sign'
         });
     }
 
@@ -624,7 +635,7 @@ export default class InputPen extends LightningElement {
      * Initialize Cursor styling.
      */
     initCursorStyles() {
-        if (this._signature) {
+        if (!this.showCursor) {
             this.cursor = { style: { setProperty: () => {} } }; // mock cursor to not throw errors
         } else {
             this.cursor = this.template.querySelector(
@@ -646,9 +657,7 @@ export default class InputPen extends LightningElement {
      */
     setDraw() {
         this.setMode('draw');
-        if (this.cursor) {
-            this.cursor.style.setProperty('--color', this.color);
-        }
+        this.initCursorStyles();
     }
 
     /**
@@ -656,9 +665,15 @@ export default class InputPen extends LightningElement {
      */
     setErase() {
         this.setMode('erase');
-        if (this.cursor) {
-            this.cursor.style.setProperty('--color', '#ffffff');
-        }
+        this.initCursorStyles();
+    }
+
+    /**
+     * Set the Mode to Draw.
+     */
+    setSign() {
+        this.setMode('sign');
+        this.initCursorStyles();
     }
 
     /**
@@ -671,7 +686,9 @@ export default class InputPen extends LightningElement {
         if (this.cursor) {
             this.cursor.style.setProperty('--color', this.color);
         }
-        this.setDraw();
+        if (this._mode === 'erase') {
+            this.setDraw();
+        }
     }
 
     /**
@@ -757,7 +774,7 @@ export default class InputPen extends LightningElement {
             case 'down':
                 this.setupCoordinate(event);
                 this.isDownFlag = true;
-                if (this._signature) {
+                if (this._mode === 'sign') {
                     this.moveCoordinatesAdded = 0;
                     const clientRect =
                         this.canvasElement.getBoundingClientRect();
@@ -768,7 +785,6 @@ export default class InputPen extends LightningElement {
                         event.clientY - clientRect.top
                     );
                     this.velocities = Array(4).fill(6);
-                    console.log(this.xPositions.length);
                 }
                 this.drawDot();
                 break;
@@ -846,6 +862,9 @@ export default class InputPen extends LightningElement {
     }
 
     useTool(event, isDot = false) {
+        console.log(this._mode);
+        console.log(this._size);
+        console.log(this.showCursor);
         if (!isDot) {
             switch (this._mode) {
                 case 'sign':
@@ -900,6 +919,9 @@ export default class InputPen extends LightningElement {
             velocity += 0.25;
             this.drawSpline(this.getSplinePoints(), this.size / velocity);
         }
+        this.xPositions = [];
+        this.xPositions = [];
+        this.velocities = [];
     }
 
     smoothVelocities() {
@@ -975,7 +997,7 @@ export default class InputPen extends LightningElement {
             this.ctx.lineJoin = 'round';
             this.ctx.strokeStyle = colored
                 ? `hsl(${Math.random() * 355},75%,50%)`
-                : 'black';
+                : this.color;
             this.ctx.lineWidth = penSize;
             this.ctx.moveTo(pts[i], pts[i + 1]);
             this.ctx.bezierCurveTo(
@@ -1034,8 +1056,6 @@ export default class InputPen extends LightningElement {
                 const calculatedSize = this.size / velocity;
                 this.drawSpline(this.getSplinePoints(), calculatedSize);
             }
-            console.log(this.xPositions.length);
-
             if (this.xPositions.length > 10) {
                 this.xPositions.pop();
                 this.yPositions.pop();

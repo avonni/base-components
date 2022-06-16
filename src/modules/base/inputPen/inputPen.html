@@ -81,6 +81,29 @@
                             >
                             </lightning-button-icon>
                         </li>
+                        <li if:true={showErase}>
+                            <button
+                                class="slds-button slds-button_neutral"
+                                onclick={setSign}
+                            >
+                                <svg
+                                    class="
+                                        slds-button__icon slds-button__icon_left
+                                    "
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <image
+                                        class="
+                                            slds-button__icon
+                                            slds-button__icon_left
+                                        "
+                                        aria-hidden="true"
+                                        href="https://www.svgrepo.com/show/21496/pen.svg"
+                                    ></image>
+                                </svg>
+                                Ink
+                            </button>
+                        </li>
                         <li if:true={showExtraTools}>
                             <slot name="tool"> </slot>
                         </li>
@@ -158,7 +181,7 @@
                         class={computedCanvasClass}
                     ></canvas>
                     <div
-                        if:false={signature}
+                        if:true={showCursor}
                         class="avonni-input-pen__cursor"
                         data-element-id="input-pen-cursor"
                     ></div>
