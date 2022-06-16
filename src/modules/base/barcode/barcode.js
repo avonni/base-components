@@ -35,7 +35,8 @@ import {
     normalizeBoolean,
     normalizeString,
     LIBRARY_ENCODING_VALUE,
-    BARCODE_LIBRARY
+    BARCODE_LIBRARY,
+    BARCODE_VALUE_FORMAT
 } from 'c/utilsPrivate';
 import bwipjs from 'bwip-js';
 import JsBarcode from 'jsbarcode';
@@ -135,17 +136,23 @@ export default class Barcode extends LightningElement {
      */
     @api value;
 
-    _renderAs = RENDERING_ENGINE.default;
-    _hideValue = false;
     _checksum = false;
+    _hideValue = false;
+    _renderAs = RENDERING_ENGINE.default;
     _type = SYMBOLOGY.default;
 
     _initialRender = false;
+    invalidValue = false;
 
     renderedCallback() {
         if (!this._initialRender) this.setCanvasWidth();
         this._initialRender = true;
-        this.renderBarcode();
+        try {
+            this.renderBarcode();
+            this.invalidValue = false;
+        } catch (e) {
+            this.invalidValue = true;
+        }
     }
 
     /*
@@ -160,6 +167,14 @@ export default class Barcode extends LightningElement {
      */
     get renderAsSVG() {
         return this.renderAs === 'svg' && this.barcodeLibrary === 'jsbarcode';
+    }
+
+    /**
+     * The format that the barcode value should follow.
+     */
+    @api
+    get formatRules() {
+        return BARCODE_VALUE_FORMAT.get(this.type);
     }
 
     /**

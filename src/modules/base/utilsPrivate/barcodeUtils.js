@@ -73,3 +73,25 @@ export const BARCODE_LIBRARY = new Map([
     ['MSImod1110', 'jsbarcode'],
     ['POSTNET', 'bwipjs']
 ]);
+
+export const BARCODE_VALUE_FORMAT = new Map([
+    ['EAN8', '7 digits'],
+    ['EAN13', '12 digits'],
+    ['UPCE', '7 digits'],
+    ['UPCA', '7 digits'],
+    ['Code11', 'at least one digit (no alphabetic characters)'],
+    ['CODE39', 'at least one digit (no alphabetic characters)'],
+    ['Code39Extended', 'any sequence of at least one alphanumeric character'],
+    ['Code93', 'at least one digit (no alphabetic characters)'],
+    ['Code93Extended', 'any sequence of at least one alphanumeric character'],
+    ['CODE128', 'any sequence of at least one alphanumeric character'],
+    ['CODE128A', 'any sequence of at least one alphanumeric character'],
+    ['CODE128B', 'any sequence of at least one alphanumeric character'],
+    ['CODE128C', 'any sequence of at least one alphanumeric character'],
+    ['GS1-128', '(--)--------------(--)------(--)-------'],
+    ['MSImod10', 'no alphabetic characters'],
+    ['MSImod11', 'no alphabetic characters'],
+    ['MSImod1010', 'no alphabetic characters'],
+    ['MSImod1110', 'no alphabetic characters'],
+    ['POSTNET', '5 digits']
+]);

@@ -37,7 +37,11 @@ export * from './linkUtils';
 export { deepCopy, arraysEqual, ArraySlice } from './utility';
 export { guid } from './guid';
 export { classListMutation } from './classListMutation';
-export { LIBRARY_ENCODING_VALUE, BARCODE_LIBRARY } from './barcodeUtils';
+export {
+    LIBRARY_ENCODING_VALUE,
+    BARCODE_LIBRARY,
+    BARCODE_VALUE_FORMAT
+} from './barcodeUtils';
 export {
     normalizeBoolean,
     normalizeString,
