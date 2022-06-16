@@ -330,8 +330,10 @@ export default class Kanban extends LightningElement {
      * @type {string}
      */
     get variantClass() {
-        return classSet()
-            .add(`avonni-kanban__variant_${this._variant}`)
+        return classSet(`avonni-kanban__variant_${this._variant}`)
+            .add({
+                'avonni-kanban__read_only': this.readOnly
+            })
             .toString();
     }
 
@@ -552,11 +554,6 @@ export default class Kanban extends LightningElement {
                 zone.style.height = `0px`;
                 zone.style.width = `0px`;
             });
-        const increment =
-            this._releasedGroupIndex === this._clickedGroupIndex &&
-            this._initialTileIndex === 0
-                ? 5
-                : 0;
         const summarizeHeight = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__summarize_wrapper"]'
         )[this._releasedGroupIndex].offsetHeight;
@@ -568,29 +565,33 @@ export default class Kanban extends LightningElement {
         )[this._releasedGroupIndex];
 
         // Distance from the top of the field
-        const offsetTop =
-            8 * offsetCount +
-            offsetHeight +
-            summarizeHeight +
-            increment -
-            tilesContainer.scrollTop;
-
+        const offsetTop = `calc(${
+            offsetHeight + summarizeHeight - tilesContainer.scrollTop
+        }px + 0.25rem + ${0.5 * offsetCount}rem)`;
         dropZone.style.height = `${this._draggedTile.offsetHeight}px`;
-        dropZone.style.width = `${this._draggedTile.offsetWidth - 5}px`;
-        dropZone.style.top = `${offsetTop}px`;
+        dropZone.style.width = `calc(${this._draggedTile.offsetWidth}px - 1rem)`;
+        dropZone.style.top = offsetTop;
+
+        const rem = parseFloat(getComputedStyle(this.template.host).fontSize);
+        const topDistance =
+            0.62 * rem * offsetCount +
+            offsetHeight +
+            summarizeHeight -
+            tilesContainer.scrollTop +
+            0.38 * rem;
 
         // clips the dropzone so that it doesnt overflow on the summarize field or on the footer actions
         dropZone.style.clipPath = `inset(0)`;
-        if (offsetTop < summarizeHeight) {
+        if (topDistance < summarizeHeight) {
             dropZone.style.clipPath = `inset(${Math.abs(
-                offsetTop - summarizeHeight
+                topDistance - summarizeHeight
             )}px 0 0 0)`;
         } else if (
-            offsetTop + this._draggedTile.offsetHeight >
+            topDistance + this._draggedTile.offsetHeight >
             summarizeHeight + tilesContainer.offsetHeight
         ) {
             dropZone.style.clipPath = `inset(0 0 ${
-                offsetTop +
+                topDistance +
                 this._draggedTile.offsetHeight -
                 summarizeHeight -
                 tilesContainer.offsetHeight
@@ -607,7 +608,7 @@ export default class Kanban extends LightningElement {
         this._droppedTileHeight = this._draggedTile.offsetHeight;
 
         this._draggedTile.style.transform = '';
-        this._draggedTile.style.width = 'calc(100% - 10px)';
+        this._draggedTile.style.width = 'calc(100% - 1rem)';
         this._draggedTile.classList.remove('avonni-kanban__dragged');
         this._draggedTile = null;
 
@@ -624,7 +625,6 @@ export default class Kanban extends LightningElement {
             Array.from(group.children).forEach((tile) => {
                 tile.classList.remove('avonni-kanban__tile_moved');
                 tile.style.transform = `translateY(0px)`;
-                tile.style.marginBottom = '0px';
             });
         });
 
@@ -707,7 +707,12 @@ export default class Kanban extends LightningElement {
 
         this._releasedGroupIndex = Math.min(
             Math.floor(
-                (event.clientX + 10) / this._groupWidth +
+                (event.clientX +
+                    0.5 *
+                        parseFloat(
+                            getComputedStyle(this.template.host).fontSize
+                        )) /
+                    this._groupWidth +
                     this.template.querySelector(
                         '[data-element-id="avonni-kanban__container"]'
                     ).scrollLeft /
@@ -782,7 +787,12 @@ export default class Kanban extends LightningElement {
         }
         this._releasedGroupIndex = Math.min(
             Math.floor(
-                (event.clientX + 10) / this._groupWidth +
+                (event.clientX +
+                    0.5 *
+                        parseFloat(
+                            getComputedStyle(this.template.host).fontSize
+                        )) /
+                    this._groupWidth +
                     event.currentTarget.parentElement.scrollLeft /
                         this._groupWidth
             ),
@@ -824,7 +834,9 @@ export default class Kanban extends LightningElement {
             groups[this._clickedGroupIndex].offsetWidth
         }px`;
         dropZone.style.transform = `translateX(${
-            (groups[this._clickedGroupIndex].offsetWidth + 10) *
+            (groups[this._clickedGroupIndex].offsetWidth +
+                0.5 *
+                    parseFloat(getComputedStyle(this.template.host).fontSize)) *
             this._releasedGroupIndex
         }px)`;
     }
@@ -907,12 +919,15 @@ export default class Kanban extends LightningElement {
         ) {
             return;
         }
-        this._groupWidth = event.currentTarget.parentElement.offsetWidth + 10;
+        this._groupWidth =
+            event.currentTarget.parentElement.offsetWidth +
+            0.5 * parseFloat(getComputedStyle(this.template.host).fontSize);
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
-        this._draggedTile.style.width = `${
-            parseInt(this._groupWidth, 10) - 20
-        }px`;
+        this._draggedTile.style.width = `calc(${parseInt(
+            this._groupWidth,
+            10
+        )}px - 1rem`;
 
         const fieldContainer = this.template.querySelector(
             '[data-element-id="avonni-kanban__container"]'
@@ -1182,12 +1197,16 @@ export default class Kanban extends LightningElement {
         for (let [i, tile] of currentGroupTiles.entries()) {
             const tileIncrementMultiplier =
                 this._releasedGroupIndex === this._clickedGroupIndex ? 1 : -1;
-            offsetHeight += tile.offsetHeight + 10;
+            offsetHeight +=
+                tile.offsetHeight +
+                parseFloat(getComputedStyle(this.template.host).fontSize);
             this._releasedTileIndex = i;
             if (
                 groupElements[this._releasedGroupIndex].scrollTop > offsetHeight
             ) {
-                scrolledHeight += tile.offsetHeight + 10;
+                scrolledHeight +=
+                    tile.offsetHeight +
+                    parseFloat(getComputedStyle(this.template.host).fontSize);
             }
             if (this._clickedGroupIndex === this._releasedGroupIndex) {
                 this._releasedTileIndex--;
