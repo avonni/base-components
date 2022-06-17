@@ -181,7 +181,8 @@ export default class PrimitivePill extends LightningElement {
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name: actionName
+                    name: actionName,
+                    targetName: 'target name'
                 },
                 bubbles: true
             })

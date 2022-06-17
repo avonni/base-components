@@ -556,6 +556,7 @@ export default class PillContainer extends LightningElement {
      * @param {Event} event
      */
     handleActionClick(event) {
+        console.log(event);
         /**
          * The event fired when a user clicks on an action.
          *
@@ -563,6 +564,7 @@ export default class PillContainer extends LightningElement {
          * @name actionclick
          * @param {number} index Index of the item clicked.
          * @param {string} name Name of the action.
+         * @param {string} targetName Name of the item clicked.
          * @public
          */
         this.dispatchEvent(
