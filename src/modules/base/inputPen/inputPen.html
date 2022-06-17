@@ -81,6 +81,29 @@
                             >
                             </lightning-button-icon>
                         </li>
+                        <li if:true={showInk}>
+                            <button
+                                class="
+                                    slds-button
+                                    slds-button_icon
+                                    slds-button_icon-border-filled
+                                "
+                                title="Ink"
+                                onclick={setInk}
+                            >
+                                <svg
+                                    class="slds-button__icon"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <image
+                                        class="slds-button__icon"
+                                        href="/assets/icons/icon-custom/ink-pen.svg"
+                                    ></image>
+                                </svg>
+                                <span class="slds-assistive-text">Ink</span>
+                            </button>
+                        </li>
                         <li if:true={showErase}>
                             <lightning-button-icon
                                 icon-name="utility:close"
@@ -91,31 +114,6 @@
                                 disabled={disabled}
                             >
                             </lightning-button-icon>
-                        </li>
-                        <li if:true={showInk}>
-                            <button
-                                class="slds-button slds-button_neutral"
-                                onclick={setInk}
-                                title="ink"
-                                disabled={disabled}
-                            >
-                                <svg
-                                    class="
-                                        slds-button__icon slds-button__icon_left
-                                    "
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <image
-                                        class="
-                                            slds-button__icon
-                                            slds-button__icon_left
-                                        "
-                                        aria-hidden="true"
-                                        href="https://www.svgrepo.com/show/21496/pen.svg"
-                                    ></image>
-                                </svg>
-                                Ink
-                            </button>
                         </li>
                     </ul>
                     <ul class="slds-button-group-list">

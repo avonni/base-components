@@ -177,13 +177,13 @@ export default class InputPen extends LightningElement {
             }
 
             this.canvasElement.width =
-                this.canvasElement.parentElement.offsetWidth;
+                this.canvasElement.parentElement.clientWidth;
             this.canvasElement.height =
-                this.canvasElement.parentElement.offsetHeight;
+                this.canvasElement.parentElement.clientHeight;
             this.backgroundCanvasElement.width =
-                this.canvasElement.parentElement.offsetWidth;
+                this.canvasElement.parentElement.clientWidth;
             this.backgroundCanvasElement.height =
-                this.canvasElement.parentElement.offsetHeight;
+                this.canvasElement.parentElement.clientHeight;
 
             this.fillBackground();
             this.initCursorStyles();
@@ -769,6 +769,7 @@ export default class InputPen extends LightningElement {
      */
     setDraw() {
         this.setMode('draw');
+        this.initCursorStyles();
     }
 
     /**
@@ -1126,6 +1127,8 @@ export default class InputPen extends LightningElement {
         this.ctx.moveTo(pts[0], pts[1]);
         this.ctx.bezierCurveTo(pts[2], pts[3], pts[4], pts[5], pts[6], pts[7]);
         this.ctx.stroke();
+        this.ctx.shadowColor = 'none';
+        this.ctx.shadowBlur = 0;
     }
 
     /**
