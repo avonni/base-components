@@ -366,7 +366,11 @@ export default class PrimitiveSchedulerHeaderGroup extends LightningElement {
         return this._visibleWidth;
     }
     set visibleWidth(value) {
-        this._visibleWidth = Number(value);
+        const width = parseInt(value, 10);
+        if (width === this._visibleWidth) {
+            return;
+        }
+        this._visibleWidth = width;
 
         if (this._connected) {
             this.computeCellSize();
