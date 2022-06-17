@@ -105,17 +105,11 @@
     <template if:true={isButtonVariant}>
         <span class={buttonWrapper} data-element-id="button-element">
             <template if:true={buttonHasLeftIcon}>
-                <svg
-                    class="slds-button__icon slds-button__icon_left"
-                    aria-hidden="true"
-                ></svg>
+                <svg class="slds-button__icon slds-button__icon_left"></svg>
             </template>
             <div class={buttonLabelClass} data-element-id="button-label">a</div>
             <template if:true={buttonHasRightIcon}>
-                <svg
-                    class="slds-button__icon slds-button__icon_right"
-                    aria-hidden="true"
-                ></svg>
+                <svg class="slds-button__icon slds-button__icon_right"></svg>
             </template>
         </span>
     </template>
@@ -153,14 +147,7 @@
                             "
                             role="none"
                         >
-                            <div
-                                class={comboboxSearchClass}
-                                aria-labelledby="combobox-label-id-130 combobox-id-2-selected-value"
-                                id="combobox-id-2-selected-value"
-                                aria-controls="listbox-id-4"
-                                aria-expanded="true"
-                                aria-haspopup="listbox"
-                            >
+                            <div class={comboboxSearchClass}>
                                 <div class={comboboxLabelClass}></div>
                             </div>
                             <span
@@ -175,7 +162,6 @@
                                         slds-icon slds-icon slds-icon_x-small
                                         slds-icon-text-default
                                     "
-                                    aria-hidden="true"
                                 >
                                     <template if:true={isBaseComboboxVariant}>
                                         <use
@@ -394,15 +380,11 @@
             <template if:false={hideTreeHeader}>
                 <div class={treeHeaderClass}></div>
             </template>
-            <ul aria-labelledby="treeheading" class="slds-tree" role="tree">
+            <ul class="slds-tree">
                 <template for:each={treeItems} for:item="treeItem">
                     <li key={treeItem.key}>
                         <div class={treeItemContainerClass}>
-                            <div
-                                class="slds-button_icon slds-m-right_x-small"
-                                aria-hidden="true"
-                                tabindex="-1"
-                            >
+                            <div class="slds-button_icon slds-m-right_x-small">
                                 <svg
                                     class="
                                         slds-button__icon
@@ -414,12 +396,7 @@
                                     ></use>
                                 </svg>
                             </div>
-                            <span
-                                class="
-                                    slds-has-flexi-truncate
-                                    avonni-skeleton__tree-item-content
-                                "
-                            >
+                            <span class="avonni-skeleton__tree-item-content">
                                 <div class={treeItemClass}></div>
                             </span>
                         </div>
