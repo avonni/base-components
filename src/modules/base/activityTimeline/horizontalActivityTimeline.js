@@ -47,6 +47,7 @@ const DEFAULT_TIMELINE_AXIS_HEIGHT = 30;
 const INTERVAL_RECTANGLE_OFFSET_Y = 1.5;
 const MAX_LENGTH_TITLE_ITEM = 30;
 const MAX_ITEM_LENGTH = 230;
+const MIN_INTERVAL_WIDTH = 2;
 const RESIZE_CURSOR_CLASS =
     'avonni-activity-timeline__horizontal-timeline-resize-cursor';
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
@@ -76,11 +77,9 @@ const TIMELINE_COLORS = {
 
 // ** Functionalities/bug **
 // TODO: Fix popover size
-// TODO: Scroll axis : change tick alignment (left : more space first date, left align) (right: right align)
-// TODO: Fix alignment header and timeline
 // TODO: mouse over : hideBorder to remove border on primitive
 // TODO: mouse over on popover keeps it open
-// TODO: Change activate edit mode : activate on mouseover
+// TODO: Change click scroll axis --> middle interval instead of start
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -88,6 +87,7 @@ export class HorizontalActivityTimeline {
     _intervalMinDate;
     _intervalMaxDate;
     _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
+    _isResizingInterval = false;
     _dateFormat = DEFAULT_DATE_FORMAT;
     _displayedItems = [];
     _maxYPositionOfItem = 0;
@@ -379,9 +379,15 @@ export class HorizontalActivityTimeline {
      * Add time interval rectangle to scroll axis to allow user to scroll across all dates
      */
     addTimeIntervalToScrollAxis() {
-        // Create the interval rectangle
-        this._timeIntervalSelector = this._scrollAxisSVG
+        // Create group with rectangle and two lines
+        const intervalGroup = this._scrollAxisSVG
             .append('g')
+            .attr('id', 'interval-group')
+            .on('mouseover', this.handleMouseOverOnInterval.bind(this))
+            .on('mouseout', this.cancelEditIntervalSizeMode.bind(this));
+
+        // Create the interval rectangle
+        this._timeIntervalSelector = intervalGroup
             .append('rect')
             .attr(
                 'class',
@@ -393,55 +399,10 @@ export class HorizontalActivityTimeline {
             .attr('height', this._timelineAxisHeight - 2 * BORDER_OFFSET)
             .attr('opacity', 0.15)
             .attr('fill', TIMELINE_COLORS.intervalBackground)
-            .call(d3.drag().on('drag', this.handleTimeIntervalDrag.bind(this)))
-            .on('click', this.handleClickOnInterval.bind(this));
+            .call(d3.drag().on('drag', this.handleTimeIntervalDrag.bind(this)));
 
         // Create left and right lines to change width of interval
-        this._leftIntervalLine = this._scrollAxisSVG
-            .append('line')
-            .attr(
-                'id',
-                'avonni-horizontal-activity-timeline__left-interval-line'
-            )
-            .style('opacity', 0)
-            .attr('x1', this.scrollTimeScale(new Date(this._intervalMinDate)))
-            .attr('y1', 1.4)
-            .attr('x2', this.scrollTimeScale(new Date(this._intervalMinDate)))
-            .attr(
-                'y2',
-                this._timelineAxisHeight +
-                    INTERVAL_RECTANGLE_OFFSET_Y -
-                    2 * BORDER_OFFSET
-            )
-            .call(
-                d3
-                    .drag()
-                    .on('drag', this.handleLowerBoundIntervalDrag.bind(this))
-                    .on('end', this.handleLowerBoundIntervalChange.bind(this))
-            );
-
-        this._rightIntervalLine = this._scrollAxisSVG
-            .append('line')
-            .attr(
-                'id',
-                'avonni-horizontal-activity-timeline__right-interval-line'
-            )
-            .style('opacity', 0)
-            .attr('x1', this.scrollTimeScale(new Date(this._intervalMaxDate)))
-            .attr('y1', 1.4)
-            .attr('x2', this.scrollTimeScale(new Date(this._intervalMaxDate)))
-            .attr(
-                'y2',
-                this._timelineAxisHeight +
-                    INTERVAL_RECTANGLE_OFFSET_Y -
-                    2 * BORDER_OFFSET
-            )
-            .call(
-                d3
-                    .drag()
-                    .on('drag', this.handleUpperBoundIntervalDrag.bind(this))
-                    .on('end', this.handleUpperBoundIntervalChange.bind(this))
-            );
+        this.createIntervalBounds(intervalGroup);
     }
 
     /**
@@ -499,16 +460,13 @@ export class HorizontalActivityTimeline {
     }
 
     /**
-     * Cancel edit mode of the size of interval on scroll axis. Lines are removed and default color is restored.
+     * Cancel edit mode of the size of interval on scroll axis. Lines are removed.
      */
     cancelEditIntervalSizeMode() {
-        this._changeIntervalSizeMode = false;
-        this._timeIntervalSelector.attr(
-            'fill',
-            TIMELINE_COLORS.intervalBackground
-        );
-        this._rightIntervalLine.style('opacity', 0).attr('class', '');
-        this._leftIntervalLine.style('opacity', 0).attr('class', '');
+        if (!this._isResizingInterval) {
+            this._changeIntervalSizeMode = false;
+            this.setIntervalBoundsState();
+        }
     }
 
     /**
@@ -578,6 +536,56 @@ export class HorizontalActivityTimeline {
             .attr('y', item.yPosition + 0.64 * SVG_ICON_SIZE)
             .text(this.computedItemTitle(item))
             .style('font-size', 13);
+    }
+
+    /**
+     * Create the left and right lines on each side of interval rectangle to allow resize.
+     */
+    createIntervalBounds(intervalGroup) {
+        this._leftIntervalLine = intervalGroup
+            .append('line')
+            .attr(
+                'id',
+                'avonni-horizontal-activity-timeline__left-interval-line'
+            )
+            .attr('x1', this.scrollTimeScale(new Date(this._intervalMinDate)))
+            .attr('y1', 1.4)
+            .attr('x2', this.scrollTimeScale(new Date(this._intervalMinDate)))
+            .attr(
+                'y2',
+                this._timelineAxisHeight +
+                    INTERVAL_RECTANGLE_OFFSET_Y -
+                    2 * BORDER_OFFSET
+            )
+            .call(
+                d3
+                    .drag()
+                    .on('drag', this.handleLowerBoundIntervalDrag.bind(this))
+                    .on('end', this.endIntervalResizing.bind(this))
+            );
+
+        this._rightIntervalLine = intervalGroup
+            .append('line')
+            .attr(
+                'id',
+                'avonni-horizontal-activity-timeline__right-interval-line'
+            )
+            .attr('x1', this.scrollTimeScale(new Date(this._intervalMaxDate)))
+            .attr('y1', 1.4)
+            .attr('x2', this.scrollTimeScale(new Date(this._intervalMaxDate)))
+            .attr(
+                'y2',
+                this._timelineAxisHeight +
+                    INTERVAL_RECTANGLE_OFFSET_Y -
+                    2 * BORDER_OFFSET
+            )
+            .call(
+                d3
+                    .drag()
+                    .on('drag', this.handleUpperBoundIntervalDrag.bind(this))
+                    .on('end', this.endIntervalResizing.bind(this))
+            );
+        this.setIntervalBoundsState();
     }
 
     /**
@@ -837,6 +845,15 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * End the interval resizing mode.
+     */
+    endIntervalResizing() {
+        this._isResizingInterval = false;
+        this._changeIntervalSizeMode = false;
+        this.setIntervalBoundsState();
+    }
+
+    /**
      *  Calculate the date after x days of specific date
      *
      * @return {Date}
@@ -996,6 +1013,27 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Set the visibility of the interval bounds.
+     */
+    setIntervalBoundsState() {
+        if (this._isResizingInterval || this._changeIntervalSizeMode) {
+            this._leftIntervalLine
+                .style('opacity', 1)
+                .style('stroke', TIMELINE_COLORS.intervalBorder)
+                .style('stroke-width', 3)
+                .attr('class', RESIZE_CURSOR_CLASS);
+            this._rightIntervalLine
+                .style('opacity', 1)
+                .style('stroke', TIMELINE_COLORS.intervalBorder)
+                .style('stroke-width', 3)
+                .attr('class', RESIZE_CURSOR_CLASS);
+        } else {
+            this._rightIntervalLine.style('opacity', 0).attr('class', '');
+            this._leftIntervalLine.style('opacity', 0).attr('class', '');
+        }
+    }
+
+    /**
      * Set the max date of the interval
      */
     setIntervalMaxDate() {
@@ -1131,26 +1169,11 @@ export class HorizontalActivityTimeline {
      */
 
     /**
-     * Handle the click on time interval on scroll axis. It toggles a mode to edit the interval size.
+     * Handle mouse over on time interval on scroll axis to activate edit mode the interval size.
      */
-    handleClickOnInterval() {
-        this._changeIntervalSizeMode = !this._changeIntervalSizeMode;
-
-        if (this._changeIntervalSizeMode) {
-            // Display interval lines
-            this._leftIntervalLine
-                .style('opacity', 1)
-                .style('stroke', TIMELINE_COLORS.intervalBorder)
-                .style('stroke-width', 3)
-                .attr('class', RESIZE_CURSOR_CLASS);
-            this._rightIntervalLine
-                .style('opacity', 1)
-                .style('stroke', TIMELINE_COLORS.intervalBorder)
-                .style('stroke-width', 3)
-                .attr('class', RESIZE_CURSOR_CLASS);
-        } else {
-            this.cancelEditIntervalSizeMode();
-        }
+    handleMouseOverOnInterval() {
+        this._changeIntervalSizeMode = true;
+        this.setIntervalBoundsState();
     }
 
     /**
@@ -1183,7 +1206,7 @@ export class HorizontalActivityTimeline {
      * Handle the change of width of the interval with the lower bound side. Timeline is re-render.
      */
     handleLowerBoundIntervalChange() {
-        this.cancelEditIntervalSizeMode();
+        this._isResizingInterval = true;
         const xDateMinPosition = this._timeIntervalSelector.attr('x');
         this._intervalMinDate = this.scrollTimeScale
             .invert(xDateMinPosition)
@@ -1201,23 +1224,24 @@ export class HorizontalActivityTimeline {
      * Handle the drag of the lower bound of interval to expand or reduce interval size.
      */
     handleLowerBoundIntervalDrag(event) {
-        if (this._changeIntervalSizeMode) {
-            const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
-            const maxXPosition = this.scrollTimeScale(this._intervalMaxDate);
-            let xPosition = event.x;
+        const minXPosition = this.scrollTimeScale(this.scrollAxisMinDate);
+        const maxXPosition =
+            this.scrollTimeScale(this._intervalMaxDate) - MIN_INTERVAL_WIDTH;
+        let xPosition = event.x;
 
-            if (xPosition < minXPosition) {
-                xPosition = minXPosition;
-            } else if (xPosition > maxXPosition) {
-                xPosition = maxXPosition;
-            }
-
-            const newRectangleWidth =
-                this.scrollTimeScale(this._intervalMaxDate) - xPosition;
-            this._timeIntervalSelector
-                .attr('x', xPosition)
-                .attr('width', newRectangleWidth);
+        if (xPosition < minXPosition) {
+            xPosition = minXPosition;
+        } else if (xPosition > maxXPosition) {
+            xPosition = maxXPosition;
         }
+
+        const newRectangleWidth =
+            this.scrollTimeScale(this._intervalMaxDate) - xPosition;
+        this._timeIntervalSelector
+            .attr('x', xPosition)
+            .attr('width', newRectangleWidth);
+
+        this.handleLowerBoundIntervalChange();
     }
 
     /**
@@ -1259,29 +1283,27 @@ export class HorizontalActivityTimeline {
      * Handle the drag of interval on scroll axis to change dates displayed on main timeline. Timeline is re-render.
      */
     handleTimeIntervalDrag(event) {
-        if (!this._changeIntervalSizeMode) {
-            // To allow only horizontal drag
-            const xPosition = this.validateXMousePosition(
-                event.sourceEvent.offsetX
-            );
-            this._timeIntervalSelector
-                .attr('x', xPosition)
-                .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
+        // To allow only horizontal drag
+        const xPosition = this.validateXMousePosition(
+            event.sourceEvent.offsetX
+        );
+        this._timeIntervalSelector
+            .attr('x', xPosition)
+            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y);
 
-            this._intervalMinDate = this.scrollTimeScale
-                .invert(xPosition)
-                .setHours(0, 0, 0, 0);
+        this._intervalMinDate = this.scrollTimeScale
+            .invert(xPosition)
+            .setHours(0, 0, 0, 0);
 
-            this.setIntervalMaxDate();
-            this._activityTimeline.renderedCallback();
-        }
+        this.setIntervalMaxDate();
+        this._activityTimeline.renderedCallback();
     }
 
     /**
      * Handle the change of size of the interval using the upper bound side. Timeline is re-render.
      */
     handleUpperBoundIntervalChange() {
-        this.cancelEditIntervalSizeMode();
+        this._isResizingInterval = true;
         const newIntervalWidth = Number(
             this._timeIntervalSelector.attr('width')
         );
@@ -1303,22 +1325,23 @@ export class HorizontalActivityTimeline {
      * Handle the drag of the upper bound of interval to expand or reduce interval size.
      */
     handleUpperBoundIntervalDrag(event) {
-        if (this._changeIntervalSizeMode) {
-            const minXPosition = this.scrollTimeScale(this._intervalMinDate);
-            const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
-            let xPosition = event.x;
+        const minXPosition =
+            this.scrollTimeScale(this._intervalMinDate) + MIN_INTERVAL_WIDTH;
+        const maxXPosition = this.scrollTimeScale(this.scrollAxisMaxDate);
+        let xPosition = event.x;
 
-            if (xPosition < minXPosition) {
-                xPosition = minXPosition;
-            } else if (xPosition > maxXPosition) {
-                xPosition = maxXPosition;
-            }
-
-            const newRectangleWidth =
-                xPosition - this.scrollTimeScale(this._intervalMinDate);
-            this._timeIntervalSelector
-                .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
-                .attr('width', newRectangleWidth);
+        if (xPosition < minXPosition) {
+            xPosition = minXPosition;
+        } else if (xPosition > maxXPosition) {
+            xPosition = maxXPosition;
         }
+
+        const newRectangleWidth =
+            xPosition - this.scrollTimeScale(this._intervalMinDate);
+        this._timeIntervalSelector
+            .attr('y', INTERVAL_RECTANGLE_OFFSET_Y)
+            .attr('width', newRectangleWidth);
+
+        this.handleUpperBoundIntervalChange(event);
     }
 }
