@@ -79,7 +79,7 @@ const TIMELINE_COLORS = {
 // TODO: Fix popover size
 // TODO: mouse over : hideBorder to remove border on primitive
 // TODO: mouse over on popover keeps it open
-// TODO: Change click scroll axis --> middle interval instead of start
+// TODO: Fix handle lower bound --> drag max date
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -1181,13 +1181,16 @@ export class HorizontalActivityTimeline {
      */
     handleClickOnScrollAxis(event) {
         if (!this._changeIntervalSizeMode) {
-            let xPosition = event.offsetX;
-            const highestMinDateXPosition =
+            let xPosition = event.offsetX - this.intervalWidth / 2;
+            const maxPosition =
                 this.scrollTimeScale(this.scrollAxisMaxDate) -
                 this.intervalWidth;
+            const minPosition = this.scrollTimeScale(this.scrollAxisMinDate);
 
-            if (xPosition > highestMinDateXPosition) {
-                xPosition = highestMinDateXPosition;
+            if (xPosition < minPosition) {
+                xPosition = minPosition;
+            } else if (xPosition > maxPosition) {
+                xPosition = maxPosition;
             }
 
             this._timeIntervalSelector
