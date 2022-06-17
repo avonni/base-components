@@ -38,6 +38,9 @@ import {
     dateTimeObjectFrom,
     addToDate,
     deepCopy,
+    previousAllowedDay,
+    previousAllowedMonth,
+    previousAllowedTime,
     removeFromDate
 } from 'c/utilsPrivate';
 import { classSet } from 'c/utils';
@@ -3286,7 +3289,29 @@ export default class Scheduler extends LightningElement {
 
     handleToolbarPrevClick() {
         const { unit, span } = this.currentTimeSpan;
+
+        // If the date is set to one that is not available,
+        // the headers will automatically go to the next available date,
+        // preventing the schedule from going in the past
         let date = removeFromDate(this.start, unit, span);
+        if (unit === 'year' || unit === 'month') {
+            date = previousAllowedMonth(date, this.availableMonths);
+        } else if (unit === 'week' || unit === 'day') {
+            date = previousAllowedDay(
+                date,
+                this.availableMonths,
+                this.availableDaysOfTheWeek
+            );
+        } else {
+            date = previousAllowedTime(
+                date,
+                this.availableMonths,
+                this.availableDaysOfTheWeek,
+                this.availableTimeFrames,
+                unit,
+                span
+            );
+        }
         this.goToDate(date);
     }
 
