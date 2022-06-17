@@ -138,3 +138,7 @@
 .avonni-input-pen__custom-icon:focus svg {
     filter: sepia(100%) saturate(1000%) hue-rotate(195deg) brightness(60%);
 }
+
+.avonni-input-pen__custom-icon[disabled] svg {
+    filter: brightness(175%);
+}

@@ -56,7 +56,10 @@
                 <div
                     if:false={hideControls}
                     role="toolbar"
-                    class="slds-rich-text-editor__toolbar slds-shrink-none"
+                    class="
+                        slds-rich-text-editor__toolbar
+                        slds-shrink-none slds-grid
+                    "
                 >
                     <ul class="slds-button-group-list">
                         <li if:true={showPen}>
@@ -163,7 +166,7 @@
                             ></c-color-picker>
                         </li>
                     </ul>
-                    <ul class="slds-button-group-list">
+                    <ul class="slds-button-group-list slds-col">
                         <li if:true={showBackground} title="Background color">
                             <c-color-picker
                                 value={backgroundColor}
@@ -181,10 +184,39 @@
                     </ul>
                     <ul
                         if:true={showExtraButtons}
-                        class="slds-button-group-list"
+                        class="slds-button-group-list slds-col"
                     >
                         <li>
                             <slot name="button"> </slot>
+                        </li>
+                    </ul>
+                    <ul
+                        class="
+                            slds-button-group-list slds-align-bottom
+                            slds-col_bump-left
+                        "
+                    >
+                        <li if:true={showUndo} title="Undo">
+                            <lightning-button-icon
+                                icon-name="utility:undo"
+                                variant="base"
+                                alternative-text="Undo"
+                                title="Undo"
+                                onclick={handleUndo}
+                                disabled={disabled}
+                            >
+                            </lightning-button-icon>
+                        </li>
+                        <li if:true={showRedo} title="Redo">
+                            <lightning-button-icon
+                                icon-name="utility:redo"
+                                variant="base"
+                                alternative-text="Redo"
+                                title="Redo"
+                                onclick={handleRedo}
+                                disabled={disabled}
+                            >
+                            </lightning-button-icon>
                         </li>
                     </ul>
                 </div>

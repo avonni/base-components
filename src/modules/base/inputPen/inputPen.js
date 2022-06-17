@@ -30,8 +30,6 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-//TODO: fix bug on fast tool pick and draw (erases last things drawn)
-
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
 import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
@@ -132,8 +130,8 @@ export default class InputPen extends LightningElement {
     backgroundCtx;
     cursor;
 
-    showExtraButtons = true;
-    showExtraTools = true;
+    showExtraButtons = false;
+    showExtraTools = false;
 
     constructor() {
         super();
@@ -451,6 +449,37 @@ export default class InputPen extends LightningElement {
     get showPen() {
         return (
             !this.disabledButtons || this.disabledButtons.indexOf('pen') === -1
+        );
+    }
+
+    /**
+     * Check if Pen is shown.
+     *
+     * @type {boolean}
+     */
+    get showUndoRedo() {
+        return this.showUndo || this.showRedo;
+    }
+
+    /**
+     * Check if Pen is shown.
+     *
+     * @type {boolean}
+     */
+    get showUndo() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('undo') === -1
+        );
+    }
+
+    /**
+     * Check if Pen is shown.
+     *
+     * @type {boolean}
+     */
+    get showRedo() {
+        return (
+            !this.disabledButtons || this.disabledButtons.indexOf('redo') === -1
         );
     }
 
@@ -872,6 +901,10 @@ export default class InputPen extends LightningElement {
             this.manageMouseEvent('enter', event);
         }
     }
+
+    handleUndo() {}
+
+    handleRedo() {}
 
     hideDrawCursor() {
         this.cursor.style.opacity = 0;
