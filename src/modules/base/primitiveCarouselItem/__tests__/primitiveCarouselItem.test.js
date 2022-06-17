@@ -457,7 +457,11 @@ describe('Primitive Carousel Item', () => {
             const action = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-menu"]'
             );
-            const customEvent = new CustomEvent('select');
+            const customEvent = new CustomEvent('click', {
+                bubbles: true,
+                composed: true,
+                cancelable: true
+            });
             action.dispatchEvent(customEvent);
             expect(customEvent.defaultPrevented).toBeTruthy();
         });
