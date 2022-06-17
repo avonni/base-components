@@ -211,6 +211,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get inputVariantLabelHidden() {
+        return this.variantAttributes.variant === 'label-hidden';
+    }
+
+    @api
     get isAvatarVariant() {
         return this.variant === 'avatar';
     }
@@ -580,6 +585,13 @@ export default class Skeleton extends LightningElement {
         return classSet('avonni-skeleton__input-label-tag').add(
             `avonni-skeleton__animation-${this.animation}`
         );
+    }
+
+    get inputWrapperClass() {
+        return classSet('slds-form-element').add({
+            'slds-form-element_horizontal':
+                this.variantAttributes.variant === 'label-inline'
+        });
     }
 
     get paragraphLineClass() {

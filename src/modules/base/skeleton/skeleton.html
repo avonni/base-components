@@ -549,13 +549,15 @@
         </table>
     </template>
     <template if:true={isInputVariant}>
-        <div class="slds-form-element">
+        <div class={inputWrapperClass}>
             <label class="slds-form-element__label">
                 <div class={inputLabelClass}>
-                    <template if:true={inputRequired}>
-                        <abbr class="slds-required">*</abbr>
+                    <template if:false={inputVariantLabelHidden}>
+                        <template if:true={inputRequired}>
+                            <abbr class="slds-required">*</abbr>
+                        </template>
+                        <div class={inputLabelTagClass}></div>
                     </template>
-                    <div class={inputLabelTagClass}></div>
                 </div>
             </label>
             <div class="slds-form-element__control">
