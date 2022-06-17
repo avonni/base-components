@@ -76,10 +76,9 @@ const TIMELINE_COLORS = {
 };
 
 // ** Functionalities/bug **
-// TODO: Fix popover size
+// TODO: change size to better fit popover content
 // TODO: mouse over : hideBorder to remove border on primitive
 // TODO: mouse over on popover keeps it open
-// TODO: Add ... to bounds of interval
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -106,6 +105,7 @@ export class HorizontalActivityTimeline {
     _maxDisplayedItems;
 
     // D3 selector DOM elements
+    _dragAndDropIcons;
     _timelineDiv;
     _timelineSVG;
     _scrollAxisSVG;
@@ -113,8 +113,6 @@ export class HorizontalActivityTimeline {
     _timelineAxisDiv;
     _scrollAxisDiv;
 
-    // displayedItems = items presented in horizontal timeline (dates are in interval)
-    // sortedItems = all items sorted by date
     constructor(activityTimeline, sortedItems) {
         this._sortedItems = sortedItems;
         this._activityTimeline = activityTimeline;
@@ -371,7 +369,6 @@ export class HorizontalActivityTimeline {
             this.createItem(itemGroup, item);
 
             itemGroup
-                // TODO: change size to better fit popover content
                 .on('mouseover', this.handleMouseOverOnItem.bind(this, item))
                 .on('mouseout', this.handleMouseOutOnItem.bind(this));
         });
@@ -506,26 +503,13 @@ export class HorizontalActivityTimeline {
      *  Create item on horizontal timeline to display lightning icon and item's title
      */
     createItem(itemGroup, item) {
-        const iconInformation = this.setIconInformation(item.iconName);
-        const foreignObjectForIcon = itemGroup.append('foreignObject');
-        foreignObjectForIcon
-            .attr('width', SVG_ICON_SIZE)
-            .attr('height', SVG_ICON_SIZE)
-            .attr('x', this.viewTimeScale(new Date(item.datetimeValue)))
-            .attr('y', item.yPosition);
-
-        foreignObjectForIcon
-            .append('xhtml:span')
-            .attr(
-                'class',
-                'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
-                    iconInformation.categoryIconClass
-            )
-            .html(
-                '<svg class="slds-icon"><use xlink:href=' +
-                    iconInformation.xLinkHref +
-                    '></use></svg>'
-            );
+        this.createSVGIcon(
+            itemGroup,
+            item.iconName,
+            this.viewTimeScale(new Date(item.datetimeValue)),
+            item.yPosition,
+            SVG_ICON_SIZE
+        );
 
         itemGroup
             .append('text')
@@ -541,9 +525,39 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     *  Create svg to display lightning icon.
+     */
+    createSVGIcon(destinationSVG, iconName, xPosition, yPosition, svgSize) {
+        const iconInformation = this.setIconInformation(iconName);
+        const foreignObjectForIcon = destinationSVG.append('foreignObject');
+        foreignObjectForIcon
+            .attr('width', svgSize)
+            .attr('height', svgSize)
+            .attr('x', xPosition)
+            .attr('y', yPosition);
+
+        foreignObjectForIcon
+            .append('xhtml:span')
+            .attr(
+                'class',
+                'slds-icon slds-icon_container slds-icon_small slds-grid slds-grid_vertical-align-center ' +
+                    iconInformation.categoryIconClass
+            )
+            .html(
+                '<svg class="slds-icon"><use xlink:href=' +
+                    iconInformation.xLinkHref +
+                    '></use></svg>'
+            );
+    }
+
+    /**
      * Create the left and right lines on each side of interval rectangle to allow resize.
      */
     createIntervalBounds(intervalGroup) {
+        const maxIntervalPosition =
+            this._timelineAxisHeight +
+            INTERVAL_RECTANGLE_OFFSET_Y -
+            2 * BORDER_OFFSET;
         this._leftIntervalLine = intervalGroup
             .append('line')
             .attr(
@@ -553,12 +567,7 @@ export class HorizontalActivityTimeline {
             .attr('x1', this.scrollTimeScale(new Date(this._intervalMinDate)))
             .attr('y1', 1.4)
             .attr('x2', this.scrollTimeScale(new Date(this._intervalMinDate)))
-            .attr(
-                'y2',
-                this._timelineAxisHeight +
-                    INTERVAL_RECTANGLE_OFFSET_Y -
-                    2 * BORDER_OFFSET
-            )
+            .attr('y2', maxIntervalPosition)
             .call(
                 d3
                     .drag()
@@ -575,18 +584,36 @@ export class HorizontalActivityTimeline {
             .attr('x1', this.scrollTimeScale(new Date(this._intervalMaxDate)))
             .attr('y1', 1.4)
             .attr('x2', this.scrollTimeScale(new Date(this._intervalMaxDate)))
-            .attr(
-                'y2',
-                this._timelineAxisHeight +
-                    INTERVAL_RECTANGLE_OFFSET_Y -
-                    2 * BORDER_OFFSET
-            )
+            .attr('y2', maxIntervalPosition)
             .call(
                 d3
                     .drag()
                     .on('drag', this.handleUpperBoundIntervalDrag.bind(this))
                     .on('end', this.endIntervalResizing.bind(this))
             );
+
+        // Add drag-and-drop icons to lines
+        const middleRectPosition = -0.7 + (maxIntervalPosition - 1.4) / 2;
+        this.createSVGIcon(
+            intervalGroup,
+            'utility:drag_and_drop',
+            this.scrollTimeScale(new Date(this._intervalMinDate)) - 1.9,
+            middleRectPosition,
+            4
+        );
+        this.createSVGIcon(
+            intervalGroup,
+            'utility:drag_and_drop',
+            this.scrollTimeScale(new Date(this._intervalMaxDate)) - 1.8,
+            middleRectPosition,
+            4
+        );
+        this._dragAndDropIcons = intervalGroup
+            .selectAll('.slds-icon')
+            .style('fill', 'white')
+            .style('width', '0.25rem')
+            .style('height', '0.25rem');
+
         this.setIntervalBoundsState();
     }
 
@@ -1029,9 +1056,11 @@ export class HorizontalActivityTimeline {
                 .style('stroke', TIMELINE_COLORS.intervalBorder)
                 .style('stroke-width', 3)
                 .attr('class', RESIZE_CURSOR_CLASS);
+            this._dragAndDropIcons.style('opacity', 1);
         } else {
             this._rightIntervalLine.style('opacity', 0).attr('class', '');
             this._leftIntervalLine.style('opacity', 0).attr('class', '');
+            this._dragAndDropIcons.style('opacity', 0);
         }
     }
 
