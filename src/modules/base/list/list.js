@@ -38,8 +38,6 @@ import {
     deepCopy
 } from 'c/utilsPrivate';
 import { classSet, generateUUID } from 'c/utils';
-import verticalList from './list.html';
-import gridList from './listGrid.html';
 
 const ICON_POSITIONS = {
     valid: ['left', 'right'],
@@ -113,18 +111,6 @@ export default class List extends LightningElement {
     computedItems = [];
     _hasImages;
     _variant;
-
-    /**
-     * Render html template based on variant 'trid'.
-     *
-     * @returns {File} verticalList | gridList
-     */
-    render() {
-        if (this._variant === 'grid') {
-            return gridList;
-        }
-        return verticalList;
-    }
 
     /*
      * ------------------------------------------------------------

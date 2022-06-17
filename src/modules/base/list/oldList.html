@@ -71,53 +71,6 @@
                 aria-describedby="instructions"
                 data-element-id="li-main"
             >
-                <c-card
-                    class="avonni-list-item-borderless"
-                    media-position="left"
-                >
-                    <div slot="media">
-                        <div class="slds-grid slds-grid_vertical-align-center">
-                            <div>
-                                <lightning-icon
-                                    if:true={showIconLeft}
-                                    class="
-                                        slds-p-horizontal_xx-small
-                                        icon-left
-                                        avonni-list__item-sortable-icon-cursor
-                                    "
-                                    icon-name={sortableIconName}
-                                    size="x-small"
-                                    data-element-id="lightning-icon-sort-left"
-                                ></lightning-icon>
-                            </div>
-                            <div style="height: 100%">
-                                <img
-                                    style="
-                                        max-width: 130px;
-                                        height: 100%;
-                                        object-fit: cover;
-                                    "
-                                    if:true={item.imageSrc}
-                                    key={item.imageSrc}
-                                    src={item.imageSrc}
-                                    draggable="false"
-                                    data-element-id="list-img"
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div slot="title">title</div>
-                    <div class="slds-p-horizontal_x-small slds-grid">
-                        <div class="slds-col slds-line-clamp_x-small">
-                            <p>
-                                <lightning-formatted-rich-text
-                                    value={item.description}
-                                ></lightning-formatted-rich-text>
-                            </p>
-                        </div>
-                        <div class="slds-col">action</div>
-                    </div>
-                </c-card>
                 <div class="slds-grid slds-grid_vertical-align-center">
                     <!-- Sort icon -->
                     <lightning-icon
