@@ -79,7 +79,7 @@ const TIMELINE_COLORS = {
 // TODO: Fix popover size
 // TODO: mouse over : hideBorder to remove border on primitive
 // TODO: mouse over on popover keeps it open
-// TODO: Fix handle lower bound --> drag max date
+// TODO: Add ... to bounds of interval
 
 export class HorizontalActivityTimeline {
     // Horizontal view properties
@@ -233,7 +233,9 @@ export class HorizontalActivityTimeline {
      * @type {Date}
      */
     get intervalMaxDate() {
-        this.setIntervalMaxDate();
+        if (!this._isResizingInterval) {
+            this.setIntervalMaxDate();
+        }
         return this.convertDateToFormat(this._intervalMaxDate);
     }
 
