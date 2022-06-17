@@ -100,6 +100,7 @@ describe('List', () => {
                 expect(item.dataset.index).toBe(index.toString());
                 expect(item.ariaLabel).toBe(originalItem.label);
                 expect(item.textContent).toBe(originalItem.label);
+                expect(item.dataset.name).toBe(originalItem.name);
             });
 
             [0, 2].forEach((index) => {
@@ -580,6 +581,7 @@ describe('List', () => {
                 ITEMS[2]
             );
             expect(handler.mock.calls[0][0].detail.bounds).not.toBeUndefined();
+            expect(handler.mock.calls[0][0].detail.name).toBe(ITEMS[2].name);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -604,6 +606,7 @@ describe('List', () => {
                 ITEMS[1]
             );
             expect(handler.mock.calls[0][0].detail.bounds).not.toBeUndefined();
+            expect(handler.mock.calls[0][0].detail.name).toBe(ITEMS[1].name);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();

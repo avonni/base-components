@@ -482,10 +482,11 @@ export default class List extends LightningElement {
                 ''
             );
         });
-        if (this._draggedElement)
+        if (this._draggedElement) {
             this._draggedElement.classList.remove(
                 'avonni-list__item-sortable_dragged'
             );
+        }
 
         this.template.querySelector(
             '.slds-assistive-text[aria-live="assertive"]'
@@ -592,7 +593,9 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     drag(event) {
-        if (!this._draggedElement) return;
+        if (!this._draggedElement) {
+            return;
+        }
         this._draggedElement.classList.add(
             'avonni-list__item-sortable_dragged'
         );
@@ -624,11 +627,15 @@ export default class List extends LightningElement {
         const center = position.bottom - position.height / 2;
 
         const hoveredItem = this.getHoveredItem(center);
-        if (hoveredItem) this.switchWithItem(hoveredItem);
+        if (hoveredItem) {
+            this.switchWithItem(hoveredItem);
+        }
         const buttonMenu = event.currentTarget.querySelector(
             '[data-element-id="lightning-button-menu"]'
         );
-        if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
+        if (buttonMenu) {
+            buttonMenu.classList.remove('slds-is-open');
+        }
     }
 
     dragEnd(event) {
@@ -655,7 +662,9 @@ export default class List extends LightningElement {
             );
         }
 
-        if (!this._draggedElement) return;
+        if (!this._draggedElement) {
+            return;
+        }
 
         const orderHasChanged = this._itemElements.some((item, index) => {
             return Number(item.dataset.index) !== index;
@@ -794,7 +803,8 @@ export default class List extends LightningElement {
          * @event
          * @name itemclick
          * @param {object}  item Item clicked.
-         * @param {DOMRect} bounds Bounds of the item clicked.
+         * @param {DOMRect} bounds The size and position of the item in the viewport.
+         * @param {string}  name Name of the clicked item.
          * @public
          */
         this.dispatchEvent(
