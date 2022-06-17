@@ -1,9 +1,8 @@
 import { LightningElement } from 'lwc';
 
-export default class Chip extends LightningElement {
+export default class Tabset extends LightningElement {
     variantAttributes = {
         variant: 'base',
-        hasIcon: true,
-        outline: false
+        tabs: 3
     };
 }

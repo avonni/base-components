@@ -1,8 +1,7 @@
 import { LightningElement } from 'lwc';
 
-export default class Badge extends LightningElement {
+export default class ButtonIcon extends LightningElement {
     variantAttributes = {
-        hasIcon: true,
         variant: 'base'
     };
 }

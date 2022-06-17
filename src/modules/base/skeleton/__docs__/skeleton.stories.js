@@ -129,6 +129,16 @@ Avatar.args = {
     }
 };
 
+export const Badge = Template.bind({});
+Badge.args = {
+    variant: 'badge',
+    animation: 'pulse',
+    variantAttributes: {
+        hasIcon: true,
+        variant: 'base'
+    }
+};
+
 export const Chip = Template.bind({});
 Chip.args = {
     variant: 'chip',
@@ -137,17 +147,6 @@ Chip.args = {
         variant: 'base',
         hasIcon: true,
         outline: false
-    }
-};
-
-export const Badge = Template.bind({});
-Badge.args = {
-    variant: 'badge',
-    animation: 'pulse',
-    variantAttributes: {
-        label: 'label',
-        hasIcon: true,
-        variant: 'base'
     }
 };
 
@@ -185,7 +184,7 @@ Combobox.args = {
     variant: 'combobox',
     animation: 'pulse',
     variantAttributes: {
-        variant: 'base',
+        variant: 'standard',
         required: true
     }
 };
@@ -206,18 +205,8 @@ Input.args = {
     variant: 'input',
     animation: 'pulse',
     variantAttributes: {
-        variant: '',
+        variant: 'standard',
         required: true
-    }
-};
-
-export const ProgressIndicator = Template.bind({});
-ProgressIndicator.args = {
-    variant: 'progress-indicator',
-    animation: 'wave',
-    variantAttributes: {
-        variant: 'path',
-        steps: 3
     }
 };
 
@@ -227,6 +216,16 @@ Paragraph.args = {
     animation: 'pulse',
     variantAttributes: {
         rows: 3
+    }
+};
+
+export const ProgressIndicator = Template.bind({});
+ProgressIndicator.args = {
+    variant: 'progress-indicator',
+    animation: 'pulse',
+    variantAttributes: {
+        variant: 'path',
+        steps: 3
     }
 };
 
