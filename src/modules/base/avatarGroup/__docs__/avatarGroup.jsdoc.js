@@ -2,7 +2,7 @@
  * @typedef AvatarGroupItem
  * @name Items
  * @property {string} alternativeText The alternative text used to describe the avatar.
- * @property {string} name Name to identify the avatar. It will be returned by the avatarclick event.
+ * @property {string} name Name to identify the avatar. It will be returned by the avatarclick and avataractionclick events.
  * @property {string} initials If the record name contains two words, like first and last name, use the first capitalized letter of each. For records that only have a single word name, use the first two letters of that word using one capital and one lower case letter.
  * @property {string} fallbackIconName The Lightning Design System name of the icon used as a fallback when the image fails to load. The initials fallback relies on this for its background color.
  * Names are written in the format 'standard:account' where 'standard' is the category, and 'account' is the specific icon to be displayed. Only icons from the standard and custom categories are allowed.
