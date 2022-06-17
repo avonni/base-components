@@ -191,6 +191,11 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
+    get comboboxVariantLabelHidden() {
+        return this.variantAttributes.variant === 'label-hidden';
+    }
+
+    @api
     get hideCheckboxColumn() {
         return this.variantAttributes.hideCheckboxColumn;
     }
@@ -502,6 +507,13 @@ export default class Skeleton extends LightningElement {
         return classSet('avonni-skeleton__combobox-search')
             .add('slds-input_faux')
             .add('slds-has-focus');
+    }
+
+    get comboboxWrapperClass() {
+        return classSet('slds-form-element').add({
+            'slds-form-element_horizontal':
+                this.variantAttributes.variant === 'label-inline'
+        });
     }
 
     get datatableCheckboxGridClass() {

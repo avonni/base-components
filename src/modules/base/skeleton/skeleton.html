@@ -126,15 +126,17 @@
         ></button>
     </template>
     <template if:true={isComboboxVariant}>
-        <div class="slds-form-element">
-            <label class="slds-form-element__label">
-                <div class={inputLabelClass}>
-                    <template if:true={comboboxRequired}>
-                        <abbr class="slds-required">*</abbr>
-                    </template>
-                    <div class={inputLabelTagClass}></div>
-                </div>
-            </label>
+        <div class={comboboxWrapperClass}>
+            <template if:false={comboboxVariantLabelHidden}>
+                <label class="slds-form-element__label">
+                    <div class={inputLabelClass}>
+                        <template if:true={comboboxRequired}>
+                            <abbr class="slds-required">*</abbr>
+                        </template>
+                        <div class={inputLabelTagClass}></div>
+                    </div>
+                </label>
+            </template>
             <div class="slds-form-element__control">
                 <div class="slds-combobox_container">
                     <div
