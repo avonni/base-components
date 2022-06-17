@@ -1054,7 +1054,6 @@ describe('Avatar Group', () => {
             );
             avatar.click();
             expect(handler).toHaveBeenCalled();
-
             expect([handler.mock.calls[0][0].detail.item]).toMatchObject(item);
             expect(handler.mock.calls[0][0].detail.name).toBe(item[0].name);
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
