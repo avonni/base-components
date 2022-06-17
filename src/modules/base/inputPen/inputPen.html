@@ -75,7 +75,7 @@
                                 icon-name="utility:brush"
                                 variant="border-filled"
                                 alternative-text="Erase"
-                                title="Erase"
+                                title="Paint"
                                 onclick={setPaint}
                                 disabled={disabled}
                             >
@@ -87,9 +87,11 @@
                                     slds-button
                                     slds-button_icon
                                     slds-button_icon-border-filled
+                                    avonni-input-pen__custom-icon
                                 "
                                 title="Ink"
                                 onclick={setInk}
+                                disabled={disabled}
                             >
                                 <svg
                                     class="slds-button__icon"
@@ -101,25 +103,42 @@
                                         href="/assets/icons/icon-custom/ink-pen.svg"
                                     ></image>
                                 </svg>
-                                <span class="slds-assistive-text">Ink</span>
                             </button>
                         </li>
                         <li if:true={showErase}>
-                            <lightning-button-icon
+                            <button
                                 icon-name="utility:close"
-                                variant="border-filled"
+                                class="
+                                    slds-button
+                                    slds-button_icon
+                                    slds-button_icon-border-filled
+                                    avonni-input-pen__custom-icon
+                                "
                                 alternative-text="Erase"
                                 title="Erase"
                                 onclick={setErase}
                                 disabled={disabled}
                             >
-                            </lightning-button-icon>
+                                <svg
+                                    class="slds-button__icon"
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <image
+                                        class="slds-button__icon"
+                                        href="/assets/icons/icon-custom/eraser.svg"
+                                    ></image>
+                                </svg>
+                            </button>
                         </li>
                     </ul>
                     <ul class="slds-button-group-list">
-                        <li if:true={showSize}>
+                        <li if:true={showSize} title="Pen size">
                             <lightning-combobox
-                                class="avonni-input-pen__combobox"
+                                class="
+                                    avonni-input-pen__combobox
+                                    avonni-input-pen_custom-icon
+                                "
                                 name="size"
                                 label="Size"
                                 variant="label-hidden"
@@ -133,7 +152,7 @@
                         </li>
                     </ul>
                     <ul class="slds-button-group-list">
-                        <li if:true={showColor}>
+                        <li if:true={showColor} title="Pen color">
                             <c-color-picker
                                 value={color}
                                 hide-color-input
@@ -145,7 +164,7 @@
                         </li>
                     </ul>
                     <ul class="slds-button-group-list">
-                        <li if:true={showBackground}>
+                        <li if:true={showBackground} title="Background color">
                             <c-color-picker
                                 value={backgroundColor}
                                 hide-color-input
