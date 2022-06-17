@@ -70,6 +70,17 @@
                             >
                             </lightning-button-icon>
                         </li>
+                        <li if:true={showPaint}>
+                            <lightning-button-icon
+                                icon-name="utility:brush"
+                                variant="border-filled"
+                                alternative-text="Erase"
+                                title="Erase"
+                                onclick={setPaint}
+                                disabled={disabled}
+                            >
+                            </lightning-button-icon>
+                        </li>
                         <li if:true={showErase}>
                             <lightning-button-icon
                                 icon-name="utility:close"
@@ -81,35 +92,12 @@
                             >
                             </lightning-button-icon>
                         </li>
-                        <li if:true={showPaint}>
-                            <button
-                                class="slds-button slds-button_neutral"
-                                onclick={setPaint}
-                                title="paint"
-                            >
-                                <svg
-                                    class="
-                                        slds-button__icon slds-button__icon_left
-                                    "
-                                    xmlns="http://www.w3.org/2000/svg"
-                                >
-                                    <image
-                                        class="
-                                            slds-button__icon
-                                            slds-button__icon_left
-                                        "
-                                        aria-hidden="true"
-                                        href="https://www.svgrepo.com/show/6486/big-paint-brush.svg"
-                                    ></image>
-                                </svg>
-                                paint
-                            </button>
-                        </li>
                         <li if:true={showInk}>
                             <button
                                 class="slds-button slds-button_neutral"
                                 onclick={setInk}
                                 title="ink"
+                                disabled={disabled}
                             >
                                 <svg
                                     class="
@@ -128,9 +116,6 @@
                                 </svg>
                                 Ink
                             </button>
-                        </li>
-                        <li if:true={showExtraTools}>
-                            <slot name="tool"> </slot>
                         </li>
                     </ul>
                     <ul class="slds-button-group-list">
@@ -157,7 +142,24 @@
                                 disabled={disabled}
                                 variant="label-hidden"
                                 onchange={handleColorChange}
+                                type="custom"
                             ></c-color-picker>
+                        </li>
+                    </ul>
+                    <ul class="slds-button-group-list">
+                        <li if:true={showBackground}>
+                            <c-color-picker
+                                value={backgroundColor}
+                                hide-color-input
+                                disabled={disabled}
+                                menu-icon-name="utility:bucket"
+                                variant="label-hidden"
+                                menu-variant="border-filled"
+                                onchange={handleBackgroundColorChange}
+                                opacity
+                                colors={defaultBackgroundColors}
+                            >
+                            </c-color-picker>
                         </li>
                     </ul>
                     <ul
@@ -190,6 +192,10 @@
                         >
                         </lightning-button-icon>
                     </template>
+                    <canvas
+                        data-element-id="background-canvas"
+                        class={computedCanvasClass}
+                    ></canvas>
                     <template if:true={signature}>
                         <lightning-icon
                             icon-name="utility:close"

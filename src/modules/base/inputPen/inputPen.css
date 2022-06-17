@@ -121,7 +121,6 @@
     height: 100%;
     width: 100%;
     background-color: transparent;
-    z-index: 1;
 }
 
 .avonni-input-pen__canvas_disabled {

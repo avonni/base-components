@@ -44,7 +44,18 @@ const TOOLBAR_VARIANTS = {
 };
 const PEN_MODES = { valid: ['draw', 'paint', 'erase', 'ink'], default: 'draw' };
 
+const DEFAULT_BACKGROUND_COLORS = [
+    '#ffffff00',
+    '#000000',
+    '#9fd6ff',
+    '#9de7da',
+    '#9df0bf',
+    '#fff099',
+    '#ffca7f'
+];
+
 const DEFAULT_COLOR = '#000';
+const DEFAULT_BACKGROUND_COLOR = '#ffffff00';
 const DEFAULT_SIZE = 10;
 const INITIAL_VELOCITY = 10;
 
@@ -95,6 +106,7 @@ export default class InputPen extends LightningElement {
     _size = DEFAULT_SIZE;
     _value;
     _variant = TOOLBAR_VARIANTS.default;
+    _backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
     sizeList;
     _rendered = false;
@@ -108,6 +120,7 @@ export default class InputPen extends LightningElement {
     activeVelocity = 8;
     prevDist = 0;
     moveCoordinatesAdded = 0;
+    _foregroundValue = undefined;
 
     _resizeTimeout;
     _constraintApi;
@@ -115,6 +128,8 @@ export default class InputPen extends LightningElement {
 
     canvasElement;
     ctx;
+    backgroundCanvasElement;
+    backgroundCtx;
     cursor;
 
     showExtraButtons = true;
@@ -140,6 +155,7 @@ export default class InputPen extends LightningElement {
     }
 
     renderedCallback() {
+        console.log('rendered? : ' + this._rendered);
         if (this.toolSlot) {
             this.showExtraTool = this.toolSlot.assignedElements().length !== 0;
         }
@@ -151,8 +167,12 @@ export default class InputPen extends LightningElement {
             this.canvasElement = this.template.querySelector(
                 '[data-element-id="canvas"]'
             );
+            this.backgroundCanvasElement = this.template.querySelector(
+                '[data-element-id="background-canvas"]'
+            );
             this.ctx = this.canvasElement.getContext('2d');
-            if (this.value) {
+            this.backgroundCtx = this.backgroundCanvasElement.getContext('2d');
+            if (this._foregroundValue) {
                 this.initSrc();
             }
 
@@ -160,8 +180,12 @@ export default class InputPen extends LightningElement {
                 this.canvasElement.parentElement.offsetWidth;
             this.canvasElement.height =
                 this.canvasElement.parentElement.offsetHeight;
-            this.initResizeObserver();
+            this.backgroundCanvasElement.width =
+                this.canvasElement.parentElement.offsetWidth;
+            this.backgroundCanvasElement.height =
+                this.canvasElement.parentElement.offsetHeight;
 
+            this.fillBackground();
             this.initCursorStyles();
 
             if (!this.hideControls && this.showSize) {
@@ -181,6 +205,7 @@ export default class InputPen extends LightningElement {
             }
             this.checkValidity();
             this._rendered = true;
+            this._updatedDOM = false;
         }
     }
 
@@ -243,7 +268,8 @@ export default class InputPen extends LightningElement {
             !this.showInk &&
             !this.showClear &&
             !this.showSize &&
-            !this.showColor
+            !this.showColor &&
+            !this.showBackground
         ) {
             return true;
         }
@@ -378,7 +404,7 @@ export default class InputPen extends LightningElement {
     }
 
     set value(value) {
-        this._value = value;
+        this._foregroundValue = value;
 
         if (this.ctx) {
             this.initSrc();
@@ -435,6 +461,16 @@ export default class InputPen extends LightningElement {
         return (
             !this.disabledButtons ||
             this.disabledButtons.indexOf('eraser') === -1
+        );
+    }
+
+    /**
+     * Check if Eraser is shown.
+     */
+    get showBackground() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('background') === -1
         );
     }
 
@@ -503,6 +539,20 @@ export default class InputPen extends LightningElement {
      */
     get showCursor() {
         return this._mode !== 'ink';
+    }
+
+    get defaultBackgroundColors() {
+        return DEFAULT_BACKGROUND_COLORS;
+    }
+
+    get dataURL() {
+        let mergedCanvas = document.createElement('canvas');
+        mergedCanvas.width = this.canvasElement.width;
+        mergedCanvas.height = this.canvasElement.height;
+        const mergedCtx = mergedCanvas.getContext('2d');
+        mergedCtx.drawImage(this.canvasElement, 0, 0);
+        mergedCtx.drawImage(this.backgroundCanvasElement, 0, 0);
+        return mergedCanvas.toDataURL();
     }
 
     /**
@@ -588,6 +638,7 @@ export default class InputPen extends LightningElement {
             if (this._mode === 'erase') {
                 this.setDraw();
             }
+            this.fillBackground();
             this.handleChangeEvent();
         }
     }
@@ -655,15 +706,41 @@ export default class InputPen extends LightningElement {
      * Initialize the Image canvas and dom elements.
      */
     initSrc() {
-        if (this._value && this._value.indexOf('data:image/') === 0) {
+        console.log(this._foregroundValue);
+        if (
+            this._foregroundValue &&
+            this._foregroundValue.indexOf('data:image/') === 0
+        ) {
             let img = new Image();
             img.onload = () => {
                 this.ctx.drawImage(img, 0, 0);
             };
-            img.src = this._value;
+            img.src = this._foregroundValue;
         } else {
             this.clear();
         }
+    }
+
+    fillBackground() {
+        const colorInfo = [
+            this._backgroundColor.slice(0, 7),
+            this._backgroundColor.slice(7)
+        ];
+        this.backgroundCtx.clearRect(
+            0,
+            0,
+            this.canvasElement.width,
+            this.canvasElement.height
+        );
+        this.backgroundCtx.globalAlpha = parseInt(colorInfo[1], 16) / 255;
+        this.backgroundCtx.fillStyle = colorInfo[0];
+        this.backgroundCtx.rect(
+            0,
+            0,
+            this.canvasElement.width,
+            this.canvasElement.height
+        );
+        this.backgroundCtx.fill();
     }
 
     /**
@@ -731,6 +808,17 @@ export default class InputPen extends LightningElement {
         if (this._mode === 'erase') {
             this.setDraw();
         }
+    }
+
+    /**
+     * Background color change handler.
+     *
+     * @param {Event} event
+     */
+    handleBackgroundColorChange(event) {
+        this._backgroundColor = event.detail.hexa;
+        this.fillBackground();
+        this.handleChangeEvent();
     }
 
     /**
@@ -1114,7 +1202,7 @@ export default class InputPen extends LightningElement {
         let transparentCanvas = document.createElement('canvas');
         transparentCanvas.width = this.canvasElement.width;
         transparentCanvas.height = this.canvasElement.height;
-        if (this.canvasElement.toDataURL() === transparentCanvas.toDataURL()) {
+        if (this.dataURL === transparentCanvas.toDataURL()) {
             this._value = undefined;
         }
     }
@@ -1123,7 +1211,8 @@ export default class InputPen extends LightningElement {
      * Change event handler.
      */
     handleChangeEvent() {
-        this._value = this.canvasElement.toDataURL();
+        this._value = this.dataURL;
+        this._foregroundValue = this.canvasElement.toDataURL();
         this.testEmptyCanvas();
         this._updateProxyInputAttributes('value');
 
