@@ -1201,6 +1201,25 @@ export default class Scheduler extends LightningElement {
     }
 
     /**
+     * Width of the schedule column, in pixels.
+     *
+     * @type {number}
+     */
+    get scheduleColWidth() {
+        const wrapper = this.template.querySelector(
+            '[data-element-id="div-schedule-wrapper"]'
+        );
+        const firstCol = this.firstCol;
+
+        if (wrapper && firstCol) {
+            const wrapperWidth = wrapper.getBoundingClientRect().width;
+            const firstColWidth = firstCol.getBoundingClientRect().width;
+            return wrapperWidth - firstColWidth;
+        }
+        return 0;
+    }
+
+    /**
      * Computed CSS class for the nested schedule column.
      *
      * @type {string}
@@ -1971,11 +1990,11 @@ export default class Scheduler extends LightningElement {
             '[data-element-id="avonni-primitive-scheduler-event-occurrence"]'
         );
         eventOccurrences.forEach((occurrence) => {
-            if (occurrence.disabled) {
-                occurrence.updateThickness();
-            }
             if (this._updateOccurrencesLength) {
                 occurrence.updateLength();
+            }
+            if (occurrence.disabled) {
+                occurrence.updateThickness();
             }
             occurrence.updatePosition();
         });
@@ -2629,7 +2648,6 @@ export default class Scheduler extends LightningElement {
         } else {
             this.cellWidth = cellSize;
         }
-        this.updateResourcesStyle();
     }
 
     /**
