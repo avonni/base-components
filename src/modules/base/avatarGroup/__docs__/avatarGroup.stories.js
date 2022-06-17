@@ -255,7 +255,8 @@ const items = [
         alternativeText: 'This is the alternative text',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-1'
     },
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -264,7 +265,8 @@ const items = [
         alternativeText: 'This is the alternative text',
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-2'
     }
 ];
 const itemsWithPresence = [
@@ -276,7 +278,8 @@ const itemsWithPresence = [
         presenceTitle: 'Online',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-1'
     },
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -287,7 +290,8 @@ const itemsWithPresence = [
         presenceTitle: 'Blocked',
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'user-2'
     },
     {
         fallbackIconName: 'standard:user',
@@ -296,7 +300,8 @@ const itemsWithPresence = [
         presenceTitle: 'Offline',
         primaryText: 'Vishnu Doe',
         secondaryText: 'VP, Research and Development',
-        tertiaryText: 'MadeUp Co.'
+        tertiaryText: 'MadeUp Co.',
+        name: 'user-3'
     },
     {
         fallbackIconName: 'standard:user',
@@ -306,7 +311,8 @@ const itemsWithPresence = [
         presenceTitle: 'Busy',
         primaryText: 'Eliott Beauchesne',
         secondaryText: 'CEO',
-        tertiaryText: 'MadeUp Co.'
+        tertiaryText: 'MadeUp Co.',
+        name: 'user-4'
     }
 ];
 const itemsWithStatusAndEntity = [
@@ -324,6 +330,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
         tertiaryText: 'FakeCompany Inc.',
+        name: 'user-1',
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'brand', outline: true },
@@ -357,6 +364,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
         tertiaryText: 'FakeCompany Inc.',
+        name: 'user-2',
         tags: [
             { label: 'tag-01', variant: 'warning' },
             { label: 'tag-02', variant: 'error' }
@@ -373,6 +381,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'Vishnu Doe',
         secondaryText: 'VP, Research and Development',
         tertiaryText: 'MadeUp Co.',
+        name: 'user-3',
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'inverse' },
@@ -392,6 +401,7 @@ const itemsWithStatusAndEntity = [
         primaryText: 'Eliott Beauchesne',
         secondaryText: 'CEO',
         tertiaryText: 'MadeUp Co.',
+        name: 'user-4',
         tags: [
             { label: 'tag-01', variant: 'default' },
             { label: 'tag-02', variant: 'inverse' },

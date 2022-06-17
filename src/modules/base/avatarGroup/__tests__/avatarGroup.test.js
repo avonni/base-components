@@ -53,7 +53,8 @@ const item = [
         initials: 'JD',
         presence: 'busy',
         presenceTitle: 'Busy',
-        presencePosition: 'top-right'
+        presencePosition: 'top-right',
+        name: 'avatar-name'
     }
 ];
 
@@ -64,7 +65,8 @@ const items = [
         alternativeText: 'This is the alternative text',
         primaryText: 'John Doe',
         secondaryText: 'VP, Human Resources',
-        tertiaryText: 'FakeCompany Inc.'
+        tertiaryText: 'FakeCompany Inc.',
+        name: 'avatar-name-1'
     },
     {
         src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
@@ -74,6 +76,7 @@ const items = [
         primaryText: 'Jane Doe',
         secondaryText: 'VP, Engineering',
         tertiaryText: 'FakeCompany Inc.',
+        name: 'avatar-name-2',
         actions: [
             {
                 label: 'Edit item',
@@ -1051,7 +1054,9 @@ describe('Avatar Group', () => {
             );
             avatar.click();
             expect(handler).toHaveBeenCalled();
+
             expect([handler.mock.calls[0][0].detail.item]).toMatchObject(item);
+            expect(handler.mock.calls[0][0].detail.name).toBe(item[0].name);
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
@@ -1107,6 +1112,9 @@ describe('Avatar Group', () => {
 
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.name).toBe('edit-item');
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                'avatar-name-1'
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
