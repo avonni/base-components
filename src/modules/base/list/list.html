@@ -75,7 +75,7 @@
                     class="avonni-list-item-borderless"
                     media-position="left"
                 >
-                    <div slot="media">
+                    <div slot="media" style="height: 100%">
                         <div class="slds-grid slds-grid_vertical-align-center">
                             <div>
                                 <lightning-icon
@@ -93,8 +93,8 @@
                             <div style="height: 100%">
                                 <img
                                     style="
-                                        max-width: 130px;
-                                        height: 100%;
+                                        width: 100%;
+                                        height: auto;
                                         object-fit: cover;
                                     "
                                     if:true={item.imageSrc}

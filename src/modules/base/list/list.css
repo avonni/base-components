@@ -49,6 +49,7 @@
 .avonni-list-item-borderless {
     /* border-top: 1px solid red; */
     /* display: none; */
+    --avonni-card-left-media-width: 150px;
     --avonni-card-sizing-border: 0px;
     --avonni-card-media-sizing-border: 0px;
     --avonni-card-shadow: none;
