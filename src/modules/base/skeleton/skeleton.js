@@ -516,6 +516,12 @@ export default class Skeleton extends LightningElement {
         });
     }
 
+    get datatableCheckboxClass() {
+        return classSet('slds-checkbox_faux')
+            .add('avonni-skeleton__datatable-checkbox')
+            .add(`avonni-skeleton__animation-${this.animation}`);
+    }
+
     get datatableCheckboxGridClass() {
         return classSet('slds-col')
             .add(`avonni-skeleton__animation-${this.animation}`)
@@ -563,11 +569,10 @@ export default class Skeleton extends LightningElement {
     }
 
     get datatableTDClass() {
-        return classSet('slds-text-align_right')
-            .add('slds-cell_action-mode')
-            .add('avonni-skeleton__variant-text')
-            .add('avonni-skeleton__datatable-item')
-            .add(`avonni-skeleton__animation-${this.animation}`);
+        return classSet('slds-text-align_right').add('slds-cell_action-mode');
+        // .add('avonni-skeleton__variant-text')
+        // .add('avonni-skeleton__datatable-item')
+        // .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     get datatableTHClass() {

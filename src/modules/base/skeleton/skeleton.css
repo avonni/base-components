@@ -183,9 +183,14 @@
     /* margin: 0.25em; */
 }
 
+.avonni-skeleton__datatable-checkbox {
+    height: 1em;
+    width: 1em;
+}
+
 .avonni-skeleton__datatable-item {
     height: 0.7em;
-    width: 30%;
+    width: 100%;
 }
 
 .avonni-skeleton__datatable-no-checkbox {

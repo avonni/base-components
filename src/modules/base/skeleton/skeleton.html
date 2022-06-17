@@ -222,7 +222,7 @@
                                             id="check-select-all-label"
                                         >
                                             <span
-                                                class="slds-checkbox_faux"
+                                                class={datatableCheckboxClass}
                                             ></span>
                                             <span
                                                 class="
@@ -513,7 +513,9 @@
                                         class="slds-checkbox__label"
                                         for="checkbox-01"
                                     >
-                                        <span class="slds-checkbox_faux"></span>
+                                        <span
+                                            class={datatableCheckboxClass}
+                                        ></span>
                                         <span
                                             class="
                                                 slds-form-element__label
@@ -531,7 +533,6 @@
                         <td key={column.keyTd} role="gridcell">
                             <div class={datatableTHClass}></div>
                         </td>
-                        <td key={column.keyTd} role="gridcell"></td>
                         <td key={column.keyTd} role="gridcell">
                             <div class={datatableTHClass}></div>
                         </td>
@@ -541,7 +542,12 @@
                         <td key={column.keyTd} role="gridcell">
                             <div class={datatableTHClass}></div>
                         </td>
-                        <td key={column.keyTd} role="gridcell"></td>
+                        <td key={column.keyTd} role="gridcell">
+                            <div class={datatableTHClass}></div>
+                        </td>
+                        <td key={column.keyTd} role="gridcell">
+                            <div class={datatableTHClass}></div>
+                        </td>
                         <td key={column.keyTd} role="gridcell">
                             <div class={datatableTHClass}></div>
                         </td>
