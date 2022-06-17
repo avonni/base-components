@@ -35,6 +35,11 @@ import InputPen from 'c/inputPen';
 
 let element;
 
+// Mock for HTMLCanvasElement in tests.
+HTMLCanvasElement.prototype.getContext = () => {
+    return {};
+};
+
 describe('Input pen', () => {
     afterEach(() => {
         while (document.body.firstChild) {
@@ -259,6 +264,39 @@ describe('Input pen', () => {
                 '[data-element-id="form-element"]'
             );
             expect(form.classList).not.toContain('slds-has-error');
+        });
+    });
+
+    // invalid
+    it('signature = false', () => {
+        element.invalid = false;
+
+        return Promise.resolve().then(() => {
+            expect(element.mode).toEqual('draw');
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="x-field"]')
+            ).toBeFalsy();
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="signature-underline"]'
+                )
+            ).toBeFalsy();
+        });
+    });
+
+    it('signature = true', () => {
+        element.signature = true;
+
+        return Promise.resolve().then(() => {
+            expect(element.mode).toEqual('ink');
+            expect(
+                element.shadowRoot.querySelector('[data-element-id="x-field"]')
+            ).toBeTruthy();
+            expect(
+                element.shadowRoot.querySelector(
+                    '[data-element-id="signature-underline"]'
+                )
+            ).toBeTruthy();
         });
     });
 });
