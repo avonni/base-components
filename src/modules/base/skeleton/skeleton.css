@@ -183,9 +183,36 @@
     /* margin: 0.25em; */
 }
 
+.avonni-skeleton__datatable-body {
+    /* border: none !important; */
+    border-collapse: collapse;
+}
+
+.avonni-skeleton__datatable-body::after {
+    color: #ffffff;
+    background-color: #ffffff;
+}
+
+.avonni-skeleton__datatable-body:hover {
+    color: #ffffff;
+    background-color: #ffffff;
+}
+
 .avonni-skeleton__datatable-checkbox {
     height: 1em;
     width: 1em;
+}
+
+.avonni-skeleton__datatable-divider {
+    cursor: default;
+}
+
+.avonni-skeleton__datatable-divider::after {
+    width: 0px;
+}
+
+.avonni-skeleton__datatable-header-checkbox:hover {
+    background-color: #f3f3f3;
 }
 
 .avonni-skeleton__datatable-item {

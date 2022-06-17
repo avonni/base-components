@@ -88,6 +88,7 @@ export default class Skeleton extends LightningElement {
     breadcrumbs = [];
     buttonWrapper;
     buttonIconWrapper;
+    datatableRows = [];
     datatableColumns = [];
     // paragraphs = [];
     paragraphItems = [];
@@ -114,6 +115,7 @@ export default class Skeleton extends LightningElement {
             this.updateButtonIconClassList();
         }
         if (this.isDatatableVariant) {
+            this.initializeDatatableRows();
             this.initializeDatatableColumns();
         }
         if (this.isParagraphVariant) {
@@ -516,6 +518,15 @@ export default class Skeleton extends LightningElement {
         });
     }
 
+    get datatableBodyClass() {
+        return (
+            classSet('slds-hint-parent')
+                // .add('avonni-skeleton__datatable-body')
+                .add('slds-border_right')
+                .add('slds-border_left')
+        );
+    }
+
     get datatableCheckboxClass() {
         return classSet('slds-checkbox_faux')
             .add('avonni-skeleton__datatable-checkbox')
@@ -529,11 +540,21 @@ export default class Skeleton extends LightningElement {
             .add('slds-size_1-of-12');
     }
 
+    get datatableDividerClass() {
+        return classSet('slds-border_right');
+    }
+
     get datatableFirstGridClass() {
         return classSet('slds-col')
             .add(`avonni-skeleton__animation-${this.animation}`)
             .add('avonni-skeleton__datatable')
             .add('slds-size_1-of-12');
+    }
+
+    get datatableHeaderCheckboxClass() {
+        return classSet('slds-th__action')
+            .add('slds-th__action_form')
+            .add('avonni-skeleton__datatable-header-checkbox');
     }
 
     get datatableGridClass() {
@@ -560,6 +581,7 @@ export default class Skeleton extends LightningElement {
 
     get datatableTableClass() {
         return classSet('slds-table')
+            .add('avonni-skeleton__datatable-body')
             .add({
                 'slds-table_bordered':
                     this.variantAttributes.hideCheckboxColumn === false
@@ -864,17 +886,29 @@ export default class Skeleton extends LightningElement {
         this.breadcrumbs = breadcrumbs;
     }
 
-    initializeDatatableColumns() {
-        const datatableColumns = [];
-        console.log(`num of columns is: ${this.variantAttributes.columns}`);
-        for (let i = 0; i < this.variantAttributes.columns; i++) {
-            datatableColumns.push({
-                keyTr: `columnTr-${i}`,
-                keyTd: `columnTd-${i}`,
-                keyTh: `columnTh-${i}`
+    initializeDatatableRows() {
+        const datatableRows = [];
+        console.log(`num of rows is: ${this.variantAttributes.rows}`);
+        for (let i = 0; i < this.variantAttributes.rows; i++) {
+            datatableRows.push({
+                keyTr: `rowsTr-${i}`,
+                keyTd: `rowsTd-${i}`,
+                keyTh: `rowsTh-${i}`
             });
         }
         console.log('end');
+        this.datatableRows = datatableRows;
+    }
+
+    initializeDatatableColumns() {
+        const datatableColumns = [];
+        for (let i = 0; i < this.variantAttributes.columns; i++) {
+            datatableColumns.push({
+                keyTr: `columnsTr-${i}`,
+                keyTd: `columnsTd-${i}`,
+                keyTh: `columnsTh-${i}`
+            });
+        }
         this.datatableColumns = datatableColumns;
     }
 
