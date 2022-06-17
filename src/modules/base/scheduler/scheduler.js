@@ -132,6 +132,7 @@ export default class Scheduler extends LightningElement {
     computedResources = [];
     @track computedEvents = [];
     contextMenuActions = [];
+    currentTimeSpan = {};
     firstColumnIsHidden = false;
     firstColumnIsOpen = false;
     firstColumnWidth = 0;
@@ -146,7 +147,7 @@ export default class Scheduler extends LightningElement {
     smallestHeader;
 
     connectedCallback() {
-        this.normalizeSelectedTimeSpan();
+        this.initCurrentTimeSpan();
         this.crud = eventCrudMethods(this);
         this.initHeaders();
         this.initEvents();
@@ -816,7 +817,8 @@ export default class Scheduler extends LightningElement {
             typeof value === 'string' ? value : DEFAULT_SELECTED_TIME_SPAN;
 
         if (this._connected) {
-            this.normalizeSelectedTimeSpan();
+            this.initCurrentTimeSpan();
+            this.initHeaders();
         }
     }
 
@@ -917,7 +919,8 @@ export default class Scheduler extends LightningElement {
         this._timeSpans = timeSpans;
 
         if (this._connected) {
-            this.normalizeSelectedTimeSpan();
+            this.initCurrentTimeSpan();
+            this.initHeaders();
         }
     }
 
@@ -1061,15 +1064,6 @@ export default class Scheduler extends LightningElement {
         return this.readOnly
             ? actions
             : (actions.length && actions) || DEFAULT_CONTEXT_MENU_EVENT_ACTIONS;
-    }
-
-    /**
-     * Currently selected time span object.
-     *
-     * @type {object}
-     */
-    get currentTimeSpan() {
-        return this.timeSpans.find((ts) => ts.name === this.selectedTimeSpan);
     }
 
     /**
@@ -1369,9 +1363,8 @@ export default class Scheduler extends LightningElement {
      */
     get toolbarTimeSpanButtons() {
         const buttons = deepCopy(this.timeSpans.slice(0, 3));
-        const { span, unit } = this.currentTimeSpan;
         buttons.forEach((button) => {
-            if (button.span === span && button.unit === unit) {
+            if (button.name === this.currentTimeSpan.name) {
                 button.variant = 'brand';
             } else {
                 button.variant = 'neutral';
@@ -1387,9 +1380,8 @@ export default class Scheduler extends LightningElement {
      */
     get toolbarTimeSpanMenuItems() {
         const items = deepCopy(this.timeSpans.slice(3));
-        const { span, unit } = this.currentTimeSpan;
         items.forEach((item) => {
-            if (item.span === span && item.unit === unit) {
+            if (item.name === this.currentTimeSpan.name) {
                 item.checked = true;
             }
         });
@@ -1567,6 +1559,29 @@ export default class Scheduler extends LightningElement {
      */
 
     /**
+     * Set the current time span value.
+     */
+    initCurrentTimeSpan() {
+        this.currentTimeSpan = this.timeSpans.find((tsp) => {
+            return tsp.name === this.selectedTimeSpan;
+        });
+
+        if (
+            !this.currentTimeSpan &&
+            this.selectedTimeSpan !== DEFAULT_SELECTED_TIME_SPAN
+        ) {
+            // Set the current time span to the default time span, if it exists
+            this.currentTimeSpan = this.timeSpans.find((tsp) => {
+                return tsp.name === DEFAULT_SELECTED_TIME_SPAN;
+            });
+        }
+        if (!this.currentTimeSpan) {
+            // Set the selected time span to the first time span
+            this.currentTimeSpan = this.timeSpans[0];
+        }
+    }
+
+    /**
      * Create the computed headers.
      */
     initHeaders() {
@@ -1577,7 +1592,7 @@ export default class Scheduler extends LightningElement {
             const normalizedHeaders = customHeaders.filter((hd) => {
                 const validUnit = UNITS.includes(hd.unit);
                 const validSpan = hd.span > 0;
-                const validLabel = typeof label === 'string';
+                const validLabel = typeof hd.label === 'string';
                 return validUnit && validSpan && validLabel;
             });
 
@@ -1662,6 +1677,7 @@ export default class Scheduler extends LightningElement {
                 avatarInitials: resource.avatarInitials,
                 avatarSrc: resource.avatarSrc,
                 color: this.palette[colorIndex],
+                label: resource.label,
                 name,
                 referenceCells: this.smallestHeader.cells,
                 events: occurrences,
@@ -2327,32 +2343,6 @@ export default class Scheduler extends LightningElement {
             }
             return computedEvents;
         }, []);
-    }
-
-    /**
-     * Set the selected time span to a valid time span.
-     */
-    normalizeSelectedTimeSpan() {
-        const selectedTimeSpan = this.timeSpans.find((tsp) => {
-            return tsp.name === this.selectedTimeSpan;
-        });
-
-        if (
-            !selectedTimeSpan &&
-            this.selectedTimeSpan !== DEFAULT_SELECTED_TIME_SPAN
-        ) {
-            // Set the selected time span to the default time span, if it exists
-            const defaultTimeSpanExists = this.timeSpans.find((tsp) => {
-                return tsp.name === DEFAULT_SELECTED_TIME_SPAN;
-            });
-
-            if (defaultTimeSpanExists) {
-                this._selectedTimeSpan = DEFAULT_SELECTED_TIME_SPAN;
-            }
-        } else if (!selectedTimeSpan) {
-            // Set the selected time span to the first time span
-            this._selectedTimeSpan = this.timeSpans[0].name;
-        }
     }
 
     /**
@@ -3340,12 +3330,13 @@ export default class Scheduler extends LightningElement {
      */
     handleToolbarTimeSpanClick(event) {
         const name = event.target.value;
-        if (!name) {
+        if (!name || name === this._selectedTimeSpan) {
             return;
         }
         this._rowsHeight = [];
         this._selectedTimeSpan = name;
         const timeSpan = this.timeSpans.find((ts) => ts.name === name);
+        this.currentTimeSpan = timeSpan;
         const selectedDate = this.selectedDate || this.start;
         this._start = selectedDate.startOf(timeSpan.unit);
 
@@ -3355,6 +3346,20 @@ export default class Scheduler extends LightningElement {
         }
 
         this.initHeaders();
+
+        /**
+         * The event fired when the selected time span changes.
+         *
+         * @event
+         * @name timespanselect
+         * @param {string} name New selected time span name.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('timespanselect', {
+                detail: { name }
+            })
+        );
     }
 
     /**

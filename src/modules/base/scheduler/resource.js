@@ -38,6 +38,7 @@ export default class SchedulerResource {
         this.avatarFallbackIconName = props.avatarFallbackIconName;
         this.avatarInitials = props.avatarInitials;
         this.color = props.color;
+        this.label = props.label;
         this.data = props.data;
         this.cells = [];
         this.minHeight = 0;
@@ -68,10 +69,6 @@ export default class SchedulerResource {
             };
         }
         return null;
-    }
-
-    get label() {
-        return this.name || this.name;
     }
 
     initCells() {
