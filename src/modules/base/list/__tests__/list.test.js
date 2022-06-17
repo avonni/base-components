@@ -503,6 +503,9 @@ describe('List', () => {
                 ITEMS[0]
             );
             expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -527,6 +530,9 @@ describe('List', () => {
             );
             expect(handler.mock.calls[0][0].detail.name).toBe(
                 ACTION_NO_LABEL[0].name
+            );
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
             );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -557,6 +563,9 @@ describe('List', () => {
                 ITEMS[0]
             );
             expect(handler.mock.calls[0][0].detail.name).toBe(ACTIONS[0].name);
+            expect(handler.mock.calls[0][0].detail.targetName).toBe(
+                ITEMS[0].name
+            );
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -631,6 +640,7 @@ describe('List', () => {
             expect(handler.mock.calls[0][0].detail.item).toMatchObject(
                 ITEMS[2]
             );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ITEMS[2].name);
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -655,6 +665,7 @@ describe('List', () => {
             expect(handler.mock.calls[0][0].detail.item).toMatchObject(
                 ITEMS[1]
             );
+            expect(handler.mock.calls[0][0].detail.name).toBe(ITEMS[1].name);
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();

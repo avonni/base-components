@@ -543,13 +543,15 @@ export default class List extends LightningElement {
              * @event
              * @name itemmousedown
              * @param {object} item Item clicked.
+             * @param {string} name Name of the item clicked.
              * @public
              * @bubbles
              */
             this.dispatchEvent(
                 new CustomEvent('itemmousedown', {
                     detail: {
-                        item: deepCopy(item)
+                        item: deepCopy(item),
+                        name: item.name
                     },
                     bubbles: true
                 })
@@ -561,8 +563,9 @@ export default class List extends LightningElement {
             !this.sortable ||
             event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
             event.target.tagName.startsWith('A')
-        )
+        ) {
             return;
+        }
 
         this._itemElements = Array.from(
             this.template.querySelectorAll('.avonni-list__item-sortable')
@@ -649,13 +652,15 @@ export default class List extends LightningElement {
              * @event
              * @name itemmouseup
              * @param {object} item Item clicked.
+             * @param {string} name Name of the item clicked.
              * @public
              * @bubbles
              */
             this.dispatchEvent(
                 new CustomEvent('itemmouseup', {
                     detail: {
-                        item: deepCopy(item)
+                        item: deepCopy(item),
+                        name: item.name
                     },
                     bubbles: true
                 })
@@ -771,13 +776,15 @@ export default class List extends LightningElement {
          * @name actionclick
          * @param {string} name  Name of the action clicked.
          * @param {object} item Item clicked.
+         * @param {string} targetName Name of the item.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName,
-                    item: this.computedItems[itemIndex]
+                    item: this.computedItems[itemIndex],
+                    targetName: this.computedItems[itemIndex].name
                 }
             })
         );
@@ -812,7 +819,8 @@ export default class List extends LightningElement {
                 detail: {
                     item: this.computedItems[event.currentTarget.dataset.index],
                     bounds: event.currentTarget.getBoundingClientRect(),
-                    name: event.currentTarget.dataset.name
+                    name: this.computedItems[event.currentTarget.dataset.index]
+                        .name
                 }
             })
         );
