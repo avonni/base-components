@@ -120,6 +120,9 @@ export default class InputPen extends LightningElement {
     moveCoordinatesAdded = 0;
     _foregroundValue = undefined;
 
+    undoStack = [];
+    redoStack = [];
+
     _resizeTimeout;
     _constraintApi;
     _constraintApiProxyInputUpdater;
@@ -153,7 +156,6 @@ export default class InputPen extends LightningElement {
     }
 
     renderedCallback() {
-        console.log('rendered? : ' + this._rendered);
         if (this.toolSlot) {
             this.showExtraTool = this.toolSlot.assignedElements().length !== 0;
         }
@@ -735,7 +737,6 @@ export default class InputPen extends LightningElement {
      * Initialize the Image canvas and dom elements.
      */
     initSrc() {
-        console.log(this._foregroundValue);
         if (
             this._foregroundValue &&
             this._foregroundValue.indexOf('data:image/') === 0
@@ -902,9 +903,57 @@ export default class InputPen extends LightningElement {
         }
     }
 
-    handleUndo() {}
+    handleUndo() {
+        this.redoStack = this.undoStack.pop();
+        for (const action of this.undoStack) {
+            this.executeAction(action);
+        }
+    }
 
-    handleRedo() {}
+    handleRedo() {
+        this.undoStack.push(this.redoStack.pop());
+        for (const action of this.undoStack) {
+            this.executeAction(action);
+        }
+    }
+
+    saveAction(event) {
+        this.redoStack = [];
+        let action = {};
+        action.moveCoordinatesAdded = this.moveCoordinatesAdded;
+        action.isDownFlag = this.isDownFlag;
+        action.isDotFlag = this.isDotFlag;
+        action.activeVelocity = this.activeVelocity;
+        action.isAction = true;
+        action._mode = this._mode;
+        action.color = this._color;
+        action.size = this._size;
+        action.xPositions = this.xPositions;
+        action.yPositions = this.yPositions;
+        action.velocities = this.velocities;
+        action.prevDist = this.prevDist;
+        action.requestedEvent = event.name;
+        action.requestedEvent = event.type.split('mouse')[1];
+        action.clientX = event.clientX;
+        action.clientY = event.clientY;
+        console.log(action);
+        this.undoStack.unshift(action);
+    }
+
+    executeAction(action) {
+        this.setMode(action.mode);
+        this.moveCoordinatesAdded = action.moveCoordinatesAdded;
+        this.isDownFlag = action.isDownFlag;
+        this.isDotFlag = action.isDotFlag;
+        this.activeVelocity = action.activeVelocity;
+        this._color = action.color;
+        this._size = action.size;
+        this.xPositions = action.xPositions;
+        this.yPositions = action.yPositions;
+        this.velocities = action.velocities;
+        this.prevDist = action.prevDist;
+        this.manageMouseEvent(action.requestedEvent, action);
+    }
 
     hideDrawCursor() {
         this.cursor.style.opacity = 0;
@@ -933,6 +982,9 @@ export default class InputPen extends LightningElement {
     manageMouseEvent(requestedEvent, event) {
         if (this.disabled || this.readOnly) {
             return;
+        }
+        if (!event.isAction) {
+            this.saveAction(event);
         }
         switch (requestedEvent) {
             case 'down':
