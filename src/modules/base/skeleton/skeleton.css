@@ -184,7 +184,6 @@
 }
 
 .avonni-skeleton__datatable-body {
-    /* border: none !important; */
     border-collapse: collapse;
 }
 
@@ -253,6 +252,22 @@
     background-size: 800px;
     height: 100%;
     position: relative;
+}
+
+.avonni-skeleton__datatable-animation-wave {
+    background-color: var(--avonni-skeleton-color-background-animation);
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-iteration-count: infinite;
+    animation-name: wave-animation;
+    animation-timing-function: linear;
+    background: linear-gradient(
+        to right,
+        var(--avonni-skeleton-color-background) 8%,
+        var(--avonni-skeleton-color-background-animation) 18%,
+        var(--avonni-skeleton-color-background) 33%
+    );
+    background-size: 800px;
 }
 
 .avonni-skeleton__buttonIcon-animation-wave {

@@ -519,25 +519,30 @@ export default class Skeleton extends LightningElement {
     }
 
     get datatableBodyClass() {
-        return (
-            classSet('slds-hint-parent')
-                // .add('avonni-skeleton__datatable-body')
-                .add('slds-border_right')
-                .add('slds-border_left')
-        );
+        return classSet('slds-hint-parent')
+            .add('slds-border_right')
+            .add('slds-border_left');
     }
 
     get datatableCheckboxClass() {
         return classSet('slds-checkbox_faux')
             .add('avonni-skeleton__datatable-checkbox')
-            .add(`avonni-skeleton__animation-${this.animation}`);
+            .add({
+                'avonni-skeleton__animation-pulse': this.animation === 'pulse',
+                'avonni-skeleton__datatable-animation-wave':
+                    this.animation === 'wave'
+            });
     }
 
     get datatableCheckboxGridClass() {
         return classSet('slds-col')
-            .add(`avonni-skeleton__animation-${this.animation}`)
             .add('avonni-skeleton__datatable')
-            .add('slds-size_1-of-12');
+            .add('slds-size_1-of-12')
+            .add({
+                'avonni-skeleton__animation-pulse': this.animation === 'pulse',
+                'avonni-skeleton__datatable-animation-wave':
+                    this.animation === 'wave'
+            });
     }
 
     get datatableDividerClass() {
@@ -546,9 +551,13 @@ export default class Skeleton extends LightningElement {
 
     get datatableFirstGridClass() {
         return classSet('slds-col')
-            .add(`avonni-skeleton__animation-${this.animation}`)
             .add('avonni-skeleton__datatable')
-            .add('slds-size_1-of-12');
+            .add('slds-size_1-of-12')
+            .add({
+                'avonni-skeleton__animation-pulse': this.animation === 'pulse',
+                'avonni-skeleton__datatable-animation-wave':
+                    this.animation === 'wave'
+            });
     }
 
     get datatableHeaderCheckboxClass() {
@@ -560,7 +569,6 @@ export default class Skeleton extends LightningElement {
     get datatableGridClass() {
         return (
             classSet('slds-col')
-                .add(`avonni-skeleton__animation-${this.animation}`)
                 .add('avonni-skeleton__datatable')
                 // .add('slds-var-m-around_xxx-small')
                 // .add('slds-p-horizontal_medium');
@@ -569,14 +577,24 @@ export default class Skeleton extends LightningElement {
                 // .add('slds-border_right')
                 // .add('slds-border_top')
                 .add('slds-size_1-of-5')
+                .add({
+                    'avonni-skeleton__animation-pulse':
+                        this.animation === 'pulse',
+                    'avonni-skeleton__datatable-animation-wave':
+                        this.animation === 'wave'
+                })
         );
     }
 
     get datatableRowClass() {
         return classSet('slds-col')
-            .add(`avonni-skeleton__animation-${this.animation}`)
             .add('slds-size_1-of-1')
-            .add('avonni-skeleton__datatable');
+            .add('avonni-skeleton__datatable')
+            .add({
+                'avonni-skeleton__animation-pulse': this.animation === 'pulse',
+                'avonni-skeleton__datatable-animation-wave':
+                    this.animation === 'wave'
+            });
     }
 
     get datatableTableClass() {
@@ -605,7 +623,11 @@ export default class Skeleton extends LightningElement {
             })
             .add('avonni-skeleton__variant-text')
             .add('avonni-skeleton__datatable-item')
-            .add(`avonni-skeleton__animation-${this.animation}`);
+            .add({
+                'avonni-skeleton__animation-pulse': this.animation === 'pulse',
+                'avonni-skeleton__datatable-animation-wave':
+                    this.animation === 'wave'
+            });
     }
 
     get inputClass() {
