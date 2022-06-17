@@ -35,13 +35,13 @@ const start = new Date(2021, 11, 13, 8);
 const columns = [
     {
         label: 'Staff',
-        fieldName: 'resourceAvatarSrc',
+        fieldName: 'avatarSrc',
         type: 'avatar',
         typeAttributes: {
             alternativeText: 'Avatar',
-            fallbackIconName: { fieldName: 'resourceAvatarFallbackIconName' },
-            initials: { fieldName: 'resourceAvatarInitials' },
-            primaryText: { fieldName: 'resourceName' }
+            fallbackIconName: { fieldName: 'avatarFallbackIconName' },
+            initials: { fieldName: 'avatarInitials' },
+            primaryText: { fieldName: 'name' }
         }
     },
     {
@@ -54,53 +54,48 @@ const columns = [
 const oneColumn = [
     {
         label: 'Employee',
-        fieldName: 'resourceName'
+        fieldName: 'name'
     }
 ];
 
 const resources = [
     {
-        id: '1',
-        resourceAvatarSrc:
+        avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-        resourceAvatarFallbackIconName: 'standard:person_account',
-        resourceAvatarInitials: 'NG',
-        resourceName: 'Nina',
+        avatarFallbackIconName: 'standard:person_account',
+        avatarInitials: 'NG',
+        name: 'Nina',
         role: 'Lead developer',
         sharedField: `This shouldn't show up`
     },
     {
-        id: '2',
-        resourceAvatarSrc:
+        avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-        resourceAvatarFallbackIconName: 'standard:person_account',
-        resourceAvatarInitials: 'DM',
-        resourceName: 'Dave',
+        avatarFallbackIconName: 'standard:person_account',
+        avatarInitials: 'DM',
+        name: 'Dave',
         role: 'UX Specialist',
         customRowField: 'Label coming from a custom field in the row'
     },
     {
-        id: '3',
-        resourceAvatarFallbackIconName: 'standard:person_account',
-        resourceAvatarInitials: 'JP',
-        resourceName: 'Jung',
+        avatarFallbackIconName: 'standard:person_account',
+        avatarInitials: 'JP',
+        name: 'Jung',
         role: 'Product Owner'
     },
     {
-        id: '4',
-        resourceAvatarFallbackIconName: 'standard:article',
-        resourceAvatarInitials: 'LM',
-        resourceName: 'Lily',
+        avatarFallbackIconName: 'standard:article',
+        avatarInitials: 'LM',
+        name: 'Lily',
         role: 'Graphic Designer',
         customField: "This comes from the row's custom field"
     },
     {
-        id: '5',
-        resourceAvatarSrc:
+        avatarSrc:
             'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-        resourceAvatarFallbackIconName: 'standard:person_account',
-        resourceAvatarInitials: 'RM',
-        resourceName: 'Reginald',
+        avatarFallbackIconName: 'standard:person_account',
+        avatarInitials: 'RM',
+        name: 'Reginald',
         role: 'Developer'
     }
 ];
@@ -109,7 +104,6 @@ const lotsOfRows = () => {
     const computedRows = [];
     for (let i = 1; i <= 20; i++) {
         computedRows.push({
-            id: i.toString(),
             name: `Employee #${i}`
         });
     }
@@ -141,9 +135,9 @@ const headers = [
 
 const lotsOfEvents = () => {
     const computedEvents = [];
-    const keyFields = [];
+    const resourceNames = [];
     for (let i = 1; i <= 20; i++) {
-        keyFields.push(i.toString());
+        resourceNames.push(i.toString());
     }
 
     let startTime = start.getTime();
@@ -151,19 +145,19 @@ const lotsOfEvents = () => {
 
     for (let i = 1; i <= 1000; i++) {
         // The event will be on one to three rows
-        const keyFieldsNumber = Math.floor(Math.random() * 3) + 1;
-        const eventKeyFields = [];
-        const computedKeyFields = [...keyFields];
-        for (let j = 0; j < keyFieldsNumber; j++) {
+        const resourceNamesNumber = Math.floor(Math.random() * 3) + 1;
+        const eventResourceNames = [];
+        const computedResourceNames = [...resourceNames];
+        for (let j = 0; j < resourceNamesNumber; j++) {
             const keyFieldIndex = Math.floor(
-                Math.random() * computedKeyFields.length
+                Math.random() * computedResourceNames.length
             );
-            eventKeyFields.push(computedKeyFields[keyFieldIndex]);
-            computedKeyFields.splice(keyFieldIndex, 1);
+            eventResourceNames.push(computedResourceNames[keyFieldIndex]);
+            computedResourceNames.splice(keyFieldIndex, 1);
         }
 
         computedEvents.push({
-            keyFields: eventKeyFields,
+            resourceNames: eventResourceNames,
             name: `event-${i}`,
             title: `Event ${i}`,
             from: startTime,
@@ -179,70 +173,70 @@ const lotsOfEvents = () => {
 
 const basicEvents = [
     {
-        keyFields: ['3', '4', '5'],
+        resourceNames: ['Jung', 'Lily', 'Reginald'],
         name: 'event-1',
         title: 'Event 1',
         from: 1639400400000,
         to: 1639407600000
     },
     {
-        keyFields: ['5', '3', '4'],
+        resourceNames: ['Reginald', 'Jung', 'Lily'],
         name: 'event-2',
         title: 'Event 2',
         from: 1639404000000,
         to: 1639411200000
     },
     {
-        keyFields: ['3', '4', '2'],
+        resourceNames: ['Jung', 'Lily', 'Dave'],
         name: 'event-3',
         title: 'Event 3',
         from: 1639407600000,
         to: 1639414800000
     },
     {
-        keyFields: ['1', '4'],
+        resourceNames: ['Nina', 'Lily'],
         name: 'event-4',
         title: 'Event 4',
         from: 1639411200000,
         to: 1639418400000
     },
     {
-        keyFields: ['2', '1'],
+        resourceNames: ['Dave', 'Nina'],
         name: 'event-5',
         title: 'Event 5',
         from: 1639414800000,
         to: 1639422000000
     },
     {
-        keyFields: ['1', '2', '3'],
+        resourceNames: ['Nina', 'Dave', 'Jung'],
         name: 'event-6',
         title: 'Event 6',
         from: 1639418400000,
         to: 1639425600000
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'event-7',
         title: 'Event 7',
         from: 1639422000000,
         to: 1639429200000
     },
     {
-        keyFields: ['3'],
+        resourceNames: ['Jung'],
         name: 'event-8',
         title: 'Event 8',
         from: 1639425600000,
         to: 1639432800000
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'event-9',
         title: 'Event 9',
         from: 1639429200000,
         to: 1639436400000
     },
     {
-        keyFields: ['2', '3', '4'],
+        resourceNames: ['Dave', 'Jung', 'Lily'],
         name: 'event-10',
         title: 'Event 10',
         from: 1639432800000,
@@ -251,70 +245,70 @@ const basicEvents = [
 ];
 const longEvents = [
     {
-        keyFields: ['3', '4', '5'],
+        resourceNames: ['Jung', 'Lily', 'Reginald'],
         name: 'event-1',
         title: 'Event 1',
         from: new Date(2021, 2, 1),
         to: new Date(2021, 3, 1)
     },
     {
-        keyFields: ['5', '3', '4'],
+        resourceNames: ['Reginald', 'Jung', 'Lily'],
         name: 'event-2',
         title: 'Event 2',
         from: new Date(2021, 1, 15),
         to: new Date(2021, 3, 30)
     },
     {
-        keyFields: ['3', '4', '2'],
+        resourceNames: ['Jung', 'Lily', 'Dave'],
         name: 'event-3',
         title: 'Event 3',
         from: new Date(2020, 11, 26),
         to: new Date(2021, 0, 31)
     },
     {
-        keyFields: ['1', '4'],
+        resourceNames: ['Nina', 'Lily'],
         name: 'event-4',
         title: 'Event 4',
         from: new Date(2021, 3, 12),
         to: new Date(2021, 4, 31)
     },
     {
-        keyFields: ['2', '1'],
+        resourceNames: ['Dave', 'Nina'],
         name: 'event-5',
         title: 'Event 5',
         from: new Date(2021, 7, 1),
         to: new Date(2021, 8, 31)
     },
     {
-        keyFields: ['1', '2', '3'],
+        resourceNames: ['Nina', 'Dave', 'Jung'],
         name: 'event-6',
         title: 'Event 6',
         from: new Date(2021, 5, 20),
         to: new Date(2021, 6, 31)
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'event-7',
         title: 'Event 7',
         from: new Date(2021, 6, 1),
         to: new Date(2021, 7, 31)
     },
     {
-        keyFields: ['3'],
+        resourceNames: ['Jung'],
         name: 'event-8',
         title: 'Event 8',
         from: new Date(2021, 9, 10),
         to: new Date(2021, 10, 31)
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'event-9',
         title: 'Event 9',
         from: new Date(2021, 9, 1),
         to: new Date(2022, 2, 3)
     },
     {
-        keyFields: ['2', '3', '4'],
+        resourceNames: ['Dave', 'Jung', 'Lily'],
         name: 'event-10',
         title: 'Event 10',
         from: new Date(2021, 10, 1),
@@ -324,14 +318,14 @@ const longEvents = [
 
 const events = [
     {
-        keyFields: ['3'],
+        resourceNames: ['Jung'],
         name: 'research',
         title: 'Research',
         from: new Date(2021, 11, 13, 9),
         to: new Date(2021, 11, 14, 12)
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'code-review',
         title: 'Code review',
         from: new Date(2021, 11, 13, 13),
@@ -339,77 +333,77 @@ const events = [
         recurrence: 'daily'
     },
     {
-        keyFields: ['3', '2'],
+        resourceNames: ['Jung', 'Dave'],
         name: 'seminar',
         title: 'Online seminar',
         from: new Date(2021, 11, 14, 8),
         to: new Date(2021, 11, 16)
     },
     {
-        keyFields: ['1', '3'],
+        resourceNames: ['Nina', 'Jung'],
         name: 'write-spec',
         title: 'Write specifications',
         from: new Date(2021, 11, 15),
         allDay: true
     },
     {
-        keyFields: ['2'],
+        resourceNames: ['Dave'],
         name: 'create-wireframe',
         title: 'Create wireframe',
         from: new Date(2021, 11, 13, 10, 15),
         to: new Date(2021, 11, 16, 12)
     },
     {
-        keyFields: ['4'],
+        resourceNames: ['Lily'],
         name: 'create-mockup',
         title: 'Create mockup',
         from: new Date(2021, 11, 20, 7),
         to: new Date(2021, 11, 22, 10, 30)
     },
     {
-        keyFields: ['2'],
+        resourceNames: ['Dave'],
         name: 'test-new-ui',
         title: 'Test new UI',
         from: new Date(2021, 11, 17, 15),
         to: new Date(2021, 11, 21)
     },
     {
-        keyFields: ['5'],
+        resourceNames: ['Reginald'],
         name: 'implement-feature',
         title: 'Implement feature',
         from: new Date(2021, 11, 13, 14),
         to: new Date(2021, 11, 15, 16)
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'push-to-prod',
         title: 'Push to production',
         from: new Date(2021, 11, 16, 11),
         to: new Date(2021, 11, 16, 12)
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'phone-meeting',
         title: 'Phone meeting',
         from: new Date(2021, 11, 21, 10),
         to: new Date(2021, 11, 21, 12)
     },
     {
-        keyFields: ['3'],
+        resourceNames: ['Jung'],
         name: 'update-documentation',
         title: 'Update documentation',
         from: new Date(2021, 11, 17, 11),
         to: new Date(2021, 11, 17, 18)
     },
     {
-        keyFields: ['3'],
+        resourceNames: ['Jung'],
         name: 'presentation',
         title: 'Presentation at the conference',
         from: new Date(2021, 11, 16, 11),
         to: new Date(2021, 11, 16, 18)
     },
     {
-        keyFields: ['2', '4'],
+        resourceNames: ['Dave', 'Lily'],
         name: 'ux-ui-team-meeting',
         title: 'UI/UX team meeting',
         from: new Date(2021, 11, 17, 11),
@@ -417,14 +411,14 @@ const events = [
         recurrence: 'weekly'
     },
     {
-        keyFields: ['1', '2', '3', '4', '5'],
+        resourceNames: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
         name: 'office-party',
         title: 'Office party',
         from: new Date(2021, 11, 24, 12),
         to: new Date(2021, 11, 25)
     },
     {
-        keyFields: ['1', '5'],
+        resourceNames: ['Nina', 'Reginald'],
         name: 'standup',
         title: 'Stand-up meeting',
         from: new Date(2021, 11, 13, 9, 30),
@@ -438,7 +432,7 @@ const events = [
 
 const eventsWithLabels = [
     {
-        keyFields: ['3'],
+        resourceNames: ['Jung'],
         name: 'research',
         title: 'Research',
         from: new Date(2021, 11, 13, 9),
@@ -451,7 +445,7 @@ const eventsWithLabels = [
         }
     },
     {
-        keyFields: ['1'],
+        resourceNames: ['Nina'],
         name: 'code-review',
         title: 'Code review',
         from: new Date(2021, 11, 13, 13),
@@ -459,21 +453,21 @@ const eventsWithLabels = [
         recurrence: 'daily'
     },
     {
-        keyFields: ['3', '2'],
+        resourceNames: ['Jung', 'Dave'],
         name: 'seminar',
         title: 'Online seminar',
         from: new Date(2021, 11, 14, 8),
         to: new Date(2021, 11, 16)
     },
     {
-        keyFields: ['1', '3'],
+        resourceNames: ['Nina', 'Jung'],
         name: 'write-spec',
         title: 'Write specifications',
         from: new Date(2021, 11, 15),
         allDay: true
     },
     {
-        keyFields: ['2'],
+        resourceNames: ['Dave'],
         name: 'create-wireframe',
         title: 'Create wireframe',
         from: new Date(2021, 11, 13, 10, 15),
@@ -489,14 +483,14 @@ const eventsWithLabels = [
         }
     },
     {
-        keyFields: ['5'],
+        resourceNames: ['Reginald'],
         name: 'implement-feature',
         title: 'Implement feature',
         from: new Date(2021, 11, 13, 14),
         to: new Date(2021, 11, 15, 16)
     },
     {
-        keyFields: ['1', '5'],
+        resourceNames: ['Nina', 'Reginald'],
         name: 'standup',
         title: 'Stand-up meeting',
         from: new Date(2021, 11, 13, 9, 30),
@@ -510,7 +504,7 @@ const eventsWithLabels = [
 
 const eventsThemed = [
     {
-        keyFields: ['1', '5', '4'],
+        resourceNames: ['Nina', 'Reginald', 'Lily'],
         name: 'event-1',
         title: 'Theme hollow',
         from: 1639400400000,
@@ -518,7 +512,7 @@ const eventsThemed = [
         theme: 'hollow'
     },
     {
-        keyFields: ['4'],
+        resourceNames: ['Lily'],
         name: 'event-2',
         title: 'Theme line',
         from: 1639404000000,
@@ -526,7 +520,7 @@ const eventsThemed = [
         theme: 'line'
     },
     {
-        keyFields: ['5', '3'],
+        resourceNames: ['Reginald', 'Jung'],
         name: 'event-3',
         title: 'Custom color',
         from: 1639432800000,
@@ -534,7 +528,7 @@ const eventsThemed = [
         color: 'tomato'
     },
     {
-        keyFields: ['2', '4'],
+        resourceNames: ['Dave', 'Lily'],
         name: 'event-4',
         title: 'Theme transparent',
         from: 1639411200000,
@@ -542,7 +536,7 @@ const eventsThemed = [
         theme: 'transparent'
     },
     {
-        keyFields: ['2', '1'],
+        resourceNames: ['Dave', 'Nina'],
         name: 'event-5',
         title: 'Theme rounded',
         from: 1639414800000,
@@ -550,7 +544,7 @@ const eventsThemed = [
         theme: 'rounded'
     },
     {
-        keyFields: ['4', '1'],
+        resourceNames: ['Lily', 'Nina'],
         name: 'event-6',
         title: 'Default theme',
         from: 1639425600000,
@@ -560,7 +554,7 @@ const eventsThemed = [
 
 const disabledDatesTimes = [
     {
-        keyFields: ['1', '2', '3', '4', '5'],
+        resourceNames: ['Nina', 'Dave', 'Jung', 'Lily', 'Reginald'],
         title: 'Lunch',
         iconName: 'custom:custom51',
         from: new Date(2021, 0, 1, 12),
@@ -571,13 +565,13 @@ const disabledDatesTimes = [
         }
     },
     {
-        keyFields: ['4'],
+        resourceNames: ['Lily'],
         title: 'Vacation',
         from: new Date(2021, 11, 6),
         to: new Date(2021, 11, 20)
     },
     {
-        keyFields: ['3'],
+        resourceNames: ['Jung'],
         title: 'Day off',
         from: new Date(2021, 11, 23),
         allDay: true
