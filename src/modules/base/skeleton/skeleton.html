@@ -276,19 +276,11 @@
                 <ol class="slds-progress__list">
                     <template for:each={progressItems} for:item="progressItem">
                         <li key={progressItem.key} class="slds-progress__item">
-                            <div class={progressIndicatorItemClass}>
-                                <span class="slds-assistive-text">Step 1</span>
-                            </div>
+                            <div class={progressIndicatorItemClass}></div>
                         </li>
                     </template>
                 </ol>
-                <div
-                    class={progressIndicatorBarClass}
-                    aria-valuemin="0"
-                    aria-valuemax="100"
-                    aria-valuenow="0"
-                    role="progressbar"
-                ></div>
+                <div class={progressIndicatorBarClass}></div>
             </div>
         </template>
         <template if:true={isPathVariant}>
@@ -297,11 +289,7 @@
                     <div class="slds-grid slds-path__scroller-container">
                         <div class="slds-path__scroller">
                             <div class="slds-path__scroller_inner">
-                                <ul
-                                    class="slds-path__nav"
-                                    role="listbox"
-                                    aria-orientation="horizontal"
-                                >
+                                <ul class="slds-path__nav">
                                     <template
                                         for:each={progressItems}
                                         for:item="progressItem"
@@ -386,31 +374,16 @@
         </template>
         <template if:true={isTabsetVerticalVariant}>
             <div class="slds-vertical-tabs">
-                <ul
-                    class="slds-vertical-tabs__nav"
-                    role="tablist"
-                    aria-orientation="vertical"
-                >
+                <ul class="slds-vertical-tabs__nav">
                     <template for:each={tabset} for:item="tab">
-                        <li
-                            key={tab.key}
-                            class="slds-vertical-tabs__nav-item"
-                            role="presentation"
-                        >
-                            <div
-                                class={tabVerticalItemContainerClass}
-                                role="tab"
-                                aria-selected="true"
-                            >
+                        <li key={tab.key} class="slds-vertical-tabs__nav-item">
+                            <div class={tabVerticalItemContainerClass}>
                                 <div class={tabVerticalItemClass}></div>
                             </div>
                         </li>
                     </template>
                 </ul>
-                <div
-                    class="slds-vertical-tabs__content slds-show"
-                    role="tabpanel"
-                >
+                <div class="slds-vertical-tabs__content slds-show">
                     <div class={tabContentClass}></div>
                 </div>
             </div>
@@ -423,13 +396,7 @@
             </template>
             <ul aria-labelledby="treeheading" class="slds-tree" role="tree">
                 <template for:each={treeItems} for:item="treeItem">
-                    <li
-                        key={treeItem.key}
-                        aria-expanded="false"
-                        aria-label="Tree Branch"
-                        aria-level="1"
-                        role="treeitem"
-                    >
+                    <li key={treeItem.key}>
                         <div class={treeItemContainerClass}>
                             <div
                                 class="slds-button_icon slds-m-right_x-small"
@@ -441,7 +408,6 @@
                                         slds-button__icon
                                         slds-button__icon_small
                                     "
-                                    aria-hidden="true"
                                 >
                                     <use
                                         xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
