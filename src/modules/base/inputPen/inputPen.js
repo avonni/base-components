@@ -1030,23 +1030,14 @@ export default class InputPen extends LightningElement {
     }
 
     drawSpline(pts, penSize) {
-        for (let i = 0; i < pts.length; i += 2) {
-            this.setupStroke(penSize);
-            if (this._mode === 'paint') {
-                this.ctx.shadowColor = this.color;
-                this.ctx.shadowBlur = 2;
-            }
-            this.ctx.moveTo(pts[i], pts[i + 1]);
-            this.ctx.bezierCurveTo(
-                pts[i + 2],
-                pts[i + 3],
-                pts[i + 4],
-                pts[i + 5],
-                pts[i + 6],
-                pts[i + 7]
-            );
-            this.ctx.stroke();
+        this.setupStroke(penSize);
+        if (this._mode === 'paint') {
+            this.ctx.shadowColor = this.color;
+            this.ctx.shadowBlur = 2;
         }
+        this.ctx.moveTo(pts[0], pts[1]);
+        this.ctx.bezierCurveTo(pts[2], pts[3], pts[4], pts[5], pts[6], pts[7]);
+        this.ctx.stroke();
     }
 
     /**
