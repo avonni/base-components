@@ -56,6 +56,7 @@ const BUTTON_VARIANTS = {
     default: 'neutral'
 };
 
+const DISPLAY_BORDER_CLASS = 'slds-timeline__item_expandable';
 const DEFAULT_LOADING_TEXT = 'Loading';
 
 const ICON_SIZES = {
@@ -159,9 +160,11 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     _buttonIconPosition = BUTTON_ICON_POSITIONS.default;
     _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
+    _displayBorderClass = DISPLAY_BORDER_CLASS;
     _fields = [];
     _hasCheckbox = false;
     _hasError = false;
+    _hideBorder = false;
     _iconSize = ICON_SIZES.default;
     _isLoading = false;
     _color;
@@ -294,6 +297,27 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
     }
 
     /**
+     * if true, the color border is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideBorder() {
+        return this.hideBorder;
+    }
+
+    set hideBorder(value) {
+        this._hideBorder = normalizeBoolean(value);
+        if (this._hideBorder) {
+            this._displayBorderClass = '';
+        } else {
+            this._displayBorderClass = DISPLAY_BORDER_CLASS;
+        }
+    }
+
+    /**
      * The size of the item's icon. Valid values are x-small, small, medium and large.
      *
      * @public
@@ -367,7 +391,7 @@ export default class PrimitiveActivityTimelineItem extends LightningElement {
      * @type {string}
      */
     get activityTimelineItemOuterClass() {
-        return classSet('slds-timeline__item_expandable')
+        return classSet(this._displayBorderClass)
             .add({
                 'slds-is-open': !this.closed,
                 'avonni-primitive-activity-timeline-item__icon_xx-small':
