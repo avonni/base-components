@@ -519,7 +519,7 @@ export default class Skeleton extends LightningElement {
     }
 
     get datatableBodyClass() {
-        return classSet('slds-hint-parent')
+        return classSet('avonni-skeleton__datatable-body')
             .add('slds-border_right')
             .add('slds-border_left');
     }
@@ -609,7 +609,7 @@ export default class Skeleton extends LightningElement {
     }
 
     get datatableTDClass() {
-        return classSet('slds-text-align_right').add('slds-cell_action-mode');
+        return classSet('slds-text-align_right').add('');
         // .add('avonni-skeleton__variant-text')
         // .add('avonni-skeleton__datatable-item')
         // .add(`avonni-skeleton__animation-${this.animation}`);

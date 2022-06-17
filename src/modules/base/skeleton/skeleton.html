@@ -198,43 +198,22 @@
         >
             <template if:false={hideTableHeader}>
                 <thead>
-                    <tr class="slds-line-height_reset">
+                    <tr>
                         <th
                             class="
                                 slds-text-align_right
-                                slds-cell_action-mode
                                 slds-border_left slds-border_right
                             "
-                            scope="col"
                             style="width: 3.25rem"
                         >
                             <div class={datatableHeaderCheckboxClass}>
                                 <template if:false={hideCheckboxColumn}>
                                     <div class="slds-checkbox">
-                                        <input
-                                            type="checkbox"
-                                            name="options"
-                                            id="checkbox-unique-id-293"
-                                            value="checkbox-unique-id-293"
-                                            tabindex="0"
-                                            aria-labelledby="check-select-all-label column-group-header"
-                                            disabled=""
-                                        />
-                                        <label
-                                            class="slds-checkbox__label"
-                                            for="checkbox-unique-id-293"
-                                            id="check-select-all-label"
-                                        >
+                                        <input type="checkbox" disabled="" />
+                                        <label class="slds-checkbox__label">
                                             <span
                                                 class={datatableCheckboxClass}
                                             ></span>
-                                            <span
-                                                class="
-                                                    slds-form-element__label
-                                                    slds-assistive-text
-                                                "
-                                                >Select All</span
-                                            >
                                         </label>
                                     </div>
                                 </template>
@@ -243,13 +222,7 @@
                         <template for:each={datatableColumns} for:item="column">
                             <th
                                 key={column.keyTh}
-                                aria-sort="none"
-                                class="
-                                    slds-is-resizable slds-is-sortable
-                                    slds-cell_action-mode
-                                    slds-border_right
-                                "
-                                scope="col"
+                                class="slds-border_right"
                             ></th>
                         </template>
                     </tr>
@@ -257,40 +230,15 @@
             </template>
             <tbody>
                 <template for:each={datatableRows} for:item="row">
-                    <tr
-                        key={row.keyTr}
-                        aria-selected="false"
-                        class={datatableBodyClass}
-                    >
-                        <td
-                            key={row.keyTd}
-                            class={datatableTDClass}
-                            role="gridcell"
-                        >
+                    <tr key={row.keyTr} class={datatableBodyClass}>
+                        <td key={row.keyTd} class={datatableTDClass}>
                             <template if:false={hideCheckboxColumn}>
                                 <div class="slds-checkbox">
-                                    <input
-                                        type="checkbox"
-                                        name="options"
-                                        value="checkbox-01"
-                                        tabindex="0"
-                                        aria-labelledby="check-button-label-01 column-group-header"
-                                        disabled=""
-                                    />
-                                    <label
-                                        class="slds-checkbox__label"
-                                        for="checkbox-01"
-                                    >
+                                    <input type="checkbox" disabled="" />
+                                    <label>
                                         <span
                                             class={datatableCheckboxClass}
                                         ></span>
-                                        <span
-                                            class="
-                                                slds-form-element__label
-                                                slds-assistive-text
-                                            "
-                                            >Select item 1</span
-                                        >
                                     </label>
                                 </div>
                             </template>
