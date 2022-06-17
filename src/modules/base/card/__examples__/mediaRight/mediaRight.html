@@ -1,0 +1,24 @@
+<template>
+    <div style="max-width: 500px">
+        <avonni-card
+            title="Card title"
+            icon-name="custom:custom102"
+            media-src="https://picsum.photos/id/1022/100"
+            media-position="right"
+        >
+            <lightning-button slot="actions" label="Action"></lightning-button>
+
+            <lightning-button-icon
+                slot="media-actions"
+                icon-name="utility:bookmark"
+                size="x-small"
+                variant="border-filled"
+                title="Bookmark"
+            ></lightning-button-icon>
+
+            <p class="slds-p-horizontal_small">Card Body</p>
+
+            <div slot="footer">Footer Slot</div>
+        </avonni-card>
+    </div>
+</template>

@@ -33,8 +33,7 @@
 import { Scheduler } from '../__examples__/scheduler';
 import {
     columns,
-    oneColumn,
-    rows,
+    resources,
     headers,
     events,
     eventsThemed,
@@ -42,9 +41,9 @@ import {
     disabledDatesTimes,
     referenceLines,
     start,
-    lotsOfEvents,
-    lotsOfRows,
-    basicEvents
+    basicEvents,
+    oneColumn,
+    longEvents
 } from './data';
 
 export default {
@@ -81,7 +80,7 @@ export default {
                 'fiveYears'
             ],
             description:
-                'Name of the header preset to use. The headers are displayed in rows above the schedule, and used to create its columns. ',
+                'Name of the header preset to use. The headers are displayed in resources above the schedule, and used to create its columns. ',
             table: {
                 type: { summary: 'string' },
                 defaultValue: { summary: 'hourAndDay' }
@@ -131,7 +130,7 @@ export default {
                 defaultValue: { summary: 'false' }
             }
         },
-        rows: {
+        resources: {
             control: {
                 type: 'object'
             },
@@ -141,8 +140,8 @@ export default {
                 type: { summary: 'object' }
             }
         },
-        rowsKeyField: {
-            name: 'rows-key-field',
+        resourcesKeyField: {
+            name: 'resources-key-field',
             control: {
                 type: 'text'
             },
@@ -161,7 +160,19 @@ export default {
                 'Object used to set the duration of the scheduler. It has two keys: unit (valid values include minute, hour, day, month and year) and span (number).',
             table: {
                 type: { summary: 'object' },
-                defaultValue: { summary: "{ unit: 'hour', span: 12 }" }
+                defaultValue: { summary: "{ unit: 'day', span: 1 }" }
+            }
+        },
+        hideToolbar: {
+            name: 'hide-toolbar',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, the toolbar is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' },
+                category: 'Toolbar'
             }
         },
         events: {
@@ -423,6 +434,49 @@ export default {
                 },
                 category: 'Events'
             }
+        },
+        toolbarTimeSpans: {
+            name: 'toolbar-time-spans',
+            control: {
+                type: 'object'
+            },
+            description:
+                'Time spans, to display as buttons in the toolbar. On click on the button, the scheduler time span will be updated. Only three options can be visible, the others will be listed in a button menu.',
+            table: {
+                type: { summary: 'object[]' },
+                defaultValue: {
+                    summary: `[
+                        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+                        { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+                        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+                        { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+                    ]`
+                },
+                category: 'Toolbar'
+            }
+        },
+        variant: {
+            control: {
+                type: 'select'
+            },
+            options: ['horizontal', 'vertical'],
+            description:
+                'Orientation of the scheduler. Valid values include horizontal and vertical.',
+            table: {
+                type: { summary: 'string' },
+                defaultValue: { summary: 'horizontal' }
+            }
+        },
+        zoomToFit: {
+            name: 'zoom-to-fit',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If present, horizontal scrolling will be prevented.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
         }
     },
     args: {
@@ -459,13 +513,21 @@ export default {
         eventsPalette: 'aurora',
         eventsTheme: 'default',
         headers: 'hourAndDay',
+        hideToolbar: false,
         isLoading: false,
         loadingStateAlternativeText: 'Loading',
         recurrentEditModes: ['all', 'one'],
         readOnly: false,
         resizeColumnDisabled: false,
         start: new Date(),
-        timeSpan: { unit: 'hour', span: 12 }
+        timeSpan: { unit: 'day', span: 1 },
+        toolbarTimeSpans: [
+            { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+            { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+            { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
+        ],
+        variant: 'horizontal',
+        zoomToFit: false
     }
 };
 
@@ -474,48 +536,53 @@ const Template = (args) => Scheduler(args);
 export const Base = Template.bind({});
 Base.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     start,
     events: basicEvents
 };
 
-export const BigDataSet = Template.bind({});
-BigDataSet.args = {
-    columns: oneColumn,
-    rowsKeyField: 'id',
-    rows: lotsOfRows(),
+export const Vertical = Template.bind({});
+Vertical.args = {
+    resourcesKeyField: 'id',
+    resources,
     start,
-    events: lotsOfEvents(),
-    timeSpan: {
-        unit: 'year',
-        span: 3
-    }
+    availableTimeFrames: ['08:00-17:00'],
+    availableDaysOfTheWeek: [1, 2, 3, 4, 5],
+    events,
+    disabledDatesTimes,
+    referenceLines,
+    variant: 'vertical'
 };
 
 export const AvailableAndDisabledTimes = Template.bind({});
 AvailableAndDisabledTimes.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     customHeaders: headers,
     timeSpan: {
         unit: 'week',
         span: 2
     },
     start,
+    toolbarTimeSpans: [
+        { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+        { unit: 'week', span: 2, label: 'Sprint', headers: 'hourDayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' }
+    ],
     availableTimeFrames: ['08:00-17:00'],
     availableDaysOfTheWeek: [1, 2, 3, 4, 5],
     events,
-    disabledDatesTimes: disabledDatesTimes,
-    referenceLines: referenceLines
+    disabledDatesTimes,
+    referenceLines
 };
 
 export const ReadOnly = Template.bind({});
 ReadOnly.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     timeSpan: {
         unit: 'day',
         span: 5
@@ -530,14 +597,36 @@ ReadOnly.args = {
             name: 'see-details',
             label: 'See details'
         }
-    ]
+    ],
+    contextMenuEmptySpotActions: []
+};
+
+export const ZoomToFit = Template.bind({});
+ZoomToFit.args = {
+    zoomToFit: true,
+    columns: oneColumn,
+    resourcesKeyField: 'id',
+    resources,
+    timeSpan: {
+        unit: 'year',
+        span: 1
+    },
+    headers: 'monthAndYear',
+    toolbarTimeSpans: [
+        { unit: 'week', span: 1, label: 'Week', headers: 'dayAndWeek' },
+        { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+        { unit: 'year', span: 1, label: 'Year', headers: 'monthAndYear' }
+    ],
+    start: new Date(2021, 0, 1),
+    events: longEvents,
+    eventsPalette: 'pond'
 };
 
 export const Labels = Template.bind({});
 Labels.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     start,
     events: eventsWithLabels,
     timeSpan: {
@@ -559,7 +648,7 @@ Labels.args = {
             fieldName: 'to'
         },
         center: {
-            fieldName: 'firstName',
+            fieldName: 'resourceName',
             iconName: 'utility:user'
         }
     },
@@ -569,9 +658,10 @@ Labels.args = {
 export const ThemesAndColors = Template.bind({});
 ThemesAndColors.args = {
     columns,
-    rowsKeyField: 'id',
-    rows,
+    resourcesKeyField: 'id',
+    resources,
     start,
     events: eventsThemed,
-    eventsPalette: 'wildflowers'
+    eventsPalette: 'wildflowers',
+    hideToolbar: true
 };

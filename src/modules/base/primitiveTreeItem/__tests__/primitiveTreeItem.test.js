@@ -704,10 +704,10 @@ describe('Primitive Tree Item', () => {
         element.level = 3;
 
         return Promise.resolve().then(() => {
-            const item = element.shadowRoot.querySelector(
-                '.avonni-primitive-tree-item__item'
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
             );
-            expect(item.style.cssText).toContain(
+            expect(wrapper.style.cssText).toContain(
                 '--avonni-tree-item-spacing-inline-left: 3rem;'
             );
         });
@@ -1132,9 +1132,9 @@ describe('Primitive Tree Item', () => {
                     '[data-element-id="lightning-input-inline-label"]'
                 );
                 input.value = 'New label';
-                const keydown = new CustomEvent('keydown');
-                keydown.key = 'Enter';
-                input.dispatchEvent(keydown);
+                const keyup = new CustomEvent('keyup');
+                keyup.key = 'Enter';
+                input.dispatchEvent(keyup);
 
                 expect(element.label).toBe('New label');
                 expect(handler).toHaveBeenCalledTimes(1);

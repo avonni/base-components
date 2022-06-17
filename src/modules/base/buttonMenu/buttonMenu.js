@@ -35,7 +35,9 @@ import { classSet } from 'c/utils';
 import {
     normalizeBoolean,
     normalizeString,
-    observePosition
+    observePosition,
+    keyCodes,
+    buttonGroupOrderClass
 } from 'c/utilsPrivate';
 
 import { Tooltip } from 'c/tooltipLibrary';
@@ -104,6 +106,14 @@ export default class ButtonMenu extends LightningElement {
      */
     @api draftAlternativeText;
     /**
+     * Reserved for internal use only.
+     * Describes the order of this element (first, middle or last) inside a lightning-button-group.
+     *
+     * @type {string}
+     * @public
+     */
+    @api groupOrder;
+    /**
      * Optional text to be shown on the button.
      *
      * @public
@@ -126,7 +136,7 @@ export default class ButtonMenu extends LightningElement {
      */
     @api value = '';
 
-    _accesskey;
+    _accessKey;
     _disabled = false;
     _iconSize = ICON_SIZES.default;
     _isDraft = false;
@@ -146,7 +156,7 @@ export default class ButtonMenu extends LightningElement {
     _dropdownOpened = false;
     _focusOnIndexDuringRenderedCallback = null;
     _positioning = false;
-    _rerenderFocus = true;
+    _rerenderFocus = false;
     _tabindex = 0;
 
     _needsFocusAfterRender = false;
@@ -216,11 +226,11 @@ export default class ButtonMenu extends LightningElement {
      */
     @api
     get accessKey() {
-        return this._accesskey;
+        return this._accessKey;
     }
 
     set accessKey(newValue) {
-        this._accesskey = newValue;
+        this._accessKey = newValue;
     }
 
     /**
@@ -444,6 +454,7 @@ export default class ButtonMenu extends LightningElement {
             this.variant === 'bare' || this.variant === 'bare-inverse';
 
         const classes = classSet('slds-button');
+        classes.add(buttonGroupOrderClass(this.groupOrder));
 
         if (this.label) {
             classes.add({
@@ -543,7 +554,7 @@ export default class ButtonMenu extends LightningElement {
      * @type {string}
      */
     get computedAccessKey() {
-        return this._accesskey;
+        return this._accessKey;
     }
 
     /**
@@ -623,7 +634,6 @@ export default class ButtonMenu extends LightningElement {
      */
     focusOnMenuItemAfterRender() {
         let focusOnIndex = this._focusOnIndexDuringRenderedCallback || 0;
-
         const menuItems = this.getMenuItems();
 
         if (focusOnIndex === 'LAST') {
@@ -640,10 +650,8 @@ export default class ButtonMenu extends LightningElement {
             }
 
             this.focusOnMenuItem(focusOnIndex);
-
             this._focusOnIndexDuringRenderedCallback = null;
         }
-
         this._rerenderFocus = false;
     }
 
@@ -717,9 +725,7 @@ export default class ButtonMenu extends LightningElement {
      */
     handleButtonClick() {
         this.allowBlur();
-
         this.toggleMenuVisibility();
-
         this.focusOnButton();
     }
 
@@ -773,6 +779,57 @@ export default class ButtonMenu extends LightningElement {
     }
 
     /**
+     * Menu item keydown handler.
+     *
+     * @param {Event} event
+     */
+    handleKeyOnMenuItem(event) {
+        const menuItem = this.findMenuItemFromEventTarget(event.target);
+        if (menuItem)
+            this.handleKeyDownOnMenuItem(
+                event,
+                this.findMenuItemIndex(menuItem)
+            );
+    }
+
+    /**
+     * Menu item keydown handler to change focus on correct item.
+     *
+     * @param {Event} event
+     */
+    handleKeyDownOnMenuItem(event, menuItemIndex) {
+        switch (event.keyCode) {
+            case keyCodes.down:
+            case keyCodes.up: {
+                this.preventDefaultAndStopPropagation(event);
+                let nextIndex =
+                    event.keyCode === keyCodes.up
+                        ? menuItemIndex - 1
+                        : menuItemIndex + 1;
+
+                if (nextIndex >= this.getMenuItems().length) {
+                    nextIndex = 0;
+                } else if (nextIndex < 0) {
+                    nextIndex = this.getMenuItems().length - 1;
+                }
+                this.focusOnMenuItem(nextIndex);
+                break;
+            }
+            case keyCodes.escape: {
+                if (this._dropdownVisible) {
+                    if (event.keyCode === keyCodes.escape) {
+                        this.preventDefaultAndStopPropagation(event);
+                    }
+                    this.toggleMenuVisibility();
+                }
+                this.focusOnMenuItem(0);
+                break;
+            }
+            default:
+        }
+    }
+
+    /**
      * Button focus.
      */
     focusOnButton() {
@@ -806,7 +863,7 @@ export default class ButtonMenu extends LightningElement {
     toggleMenuVisibility() {
         if (!this.disabled) {
             this._dropdownVisible = !this._dropdownVisible;
-            this._rerenderFocus = !this._rerenderFocus;
+            this._rerenderFocus = this._dropdownVisible;
 
             if (!this._dropdownVisible) {
                 this.querySelectorAll('.avonni-submenu').forEach((submenu) => {
@@ -1032,5 +1089,15 @@ export default class ButtonMenu extends LightningElement {
                 }
             }, 250);
         }
+    }
+
+    /**
+     * To prevent default action and stop propagation of event
+     *
+     * @param {Event} event
+     */
+    preventDefaultAndStopPropagation(event) {
+        event.preventDefault();
+        event.stopPropagation();
     }
 }

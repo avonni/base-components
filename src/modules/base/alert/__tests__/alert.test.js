@@ -107,21 +107,25 @@ describe('Alert', () => {
         });
     });
 
-    it('Alert: isDismissible', () => {
-        let lightningButtonIcon = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon"]'
-        );
+    it('Alert: isDismissible = false', () => {
+        element.isDismissible = false;
 
-        expect(lightningButtonIcon).toBeTruthy();
+        return Promise.resolve().then(() => {
+            const lightningButtonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="lightning-button-icon"]'
+            );
+            expect(lightningButtonIcon).toBeFalsy();
+        });
+    });
 
+    it('Alert: isDismissible = true', () => {
         element.isDismissible = true;
 
         return Promise.resolve().then(() => {
-            lightningButtonIcon = element.shadowRoot.querySelector(
+            const lightningButtonIcon = element.shadowRoot.querySelector(
                 '[data-element-id="lightning-button-icon"]'
             );
-            expect(element.isDismissible).toBe(true);
-            expect(lightningButtonIcon).toBeFalsy();
+            expect(lightningButtonIcon).toBeTruthy();
         });
     });
 
@@ -145,22 +149,28 @@ describe('Alert', () => {
     });
 
     it('Alert: closeAction', () => {
+        element.isDismissible = true;
         const mockCallBack = jest.fn();
-
-        let div = element.shadowRoot.querySelector('[data-element-id="div"]');
-        let lightningButtonIcon = element.shadowRoot.querySelector(
-            '[data-element-id="lightning-button-icon"]'
-        );
-
-        expect(div).toBeTruthy();
         element.closeAction = mockCallBack;
-        lightningButtonIcon.click();
 
-        expect(mockCallBack.mock.calls.length).toEqual(1);
+        return Promise.resolve()
+            .then(() => {
+                const div = element.shadowRoot.querySelector(
+                    '[data-element-id="div"]'
+                );
+                const lightningButtonIcon = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
 
-        return Promise.resolve().then(() => {
-            div = element.shadowRoot.querySelector('[data-element-id="div"]');
-            expect(div).toBeFalsy();
-        });
+                expect(div).toBeTruthy();
+                lightningButtonIcon.click();
+            })
+            .then(() => {
+                const div = element.shadowRoot.querySelector(
+                    '[data-element-id="div"]'
+                );
+                expect(div).toBeFalsy();
+                expect(mockCallBack.mock.calls.length).toEqual(1);
+            });
     });
 });

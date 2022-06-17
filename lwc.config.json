@@ -87,6 +87,10 @@
             "path": "src/modules/base/calendar/calendar.js"
         },
         {
+            "name": "c/card",
+            "path": "src/modules/base/card/card.js"
+        },
+        {
             "name": "c/carousel",
             "path": "src/modules/base/carousel/carousel.js"
         },
@@ -595,6 +599,10 @@
             "path": "src/modules/base/calendar/calendar.js"
         },
         {
+            "name": "avonni/card",
+            "path": "src/modules/base/card/card.js"
+        },
+        {
             "name": "avonni/carousel",
             "path": "src/modules/base/carousel/carousel.js"
         },
@@ -875,6 +883,7 @@
         "avonni/buttonMenu",
         "avonni/buttonPopover",
         "avonni/calendar",
+        "avonni/card",
         "avonni/carousel",
         "avonni/chip",
         "avonni/colorGradient",

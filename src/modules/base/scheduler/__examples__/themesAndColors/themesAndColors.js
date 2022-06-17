@@ -4,13 +4,15 @@ export default class SchedulerThemesAndColors extends LightningElement {
     columns = [
         {
             label: 'Staff',
-            fieldName: 'avatarSrc',
+            fieldName: 'resourceAvatarSrc',
             type: 'avatar',
             typeAttributes: {
                 alternativeText: 'Avatar',
-                fallbackIconName: { fieldName: 'avatarFallbackIconName' },
-                initials: { fieldName: 'avatarInitials' },
-                primaryText: { fieldName: 'firstName' }
+                fallbackIconName: {
+                    fieldName: 'resourceAvatarFallbackIconName'
+                },
+                initials: { fieldName: 'resourceAvatarInitials' },
+                primaryText: { fieldName: 'resourceName' }
             }
         },
         {
@@ -70,46 +72,49 @@ export default class SchedulerThemesAndColors extends LightningElement {
         }
     ];
 
-    rows = [
+    resources = [
         {
             id: '1',
-            avatarSrc:
+            resourceAvatarSrc:
                 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
-            avatarFallbackIconName: 'standard:person_account',
-            avatarInitials: 'NG',
-            firstName: 'Nina',
-            role: 'Lead developer'
+            resourceAvatarFallbackIconName: 'standard:person_account',
+            resourceAvatarInitials: 'NG',
+            resourceName: 'Nina',
+            role: 'Lead developer',
+            sharedField: `This shouldn't show up`
         },
         {
             id: '2',
-            avatarSrc:
+            resourceAvatarSrc:
                 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
-            avatarFallbackIconName: 'standard:person_account',
-            avatarInitials: 'DM',
-            firstName: 'Dave',
-            role: 'UX Specialist'
+            resourceAvatarFallbackIconName: 'standard:person_account',
+            resourceAvatarInitials: 'DM',
+            resourceName: 'Dave',
+            role: 'UX Specialist',
+            customRowField: 'Label coming from a custom field in the row'
         },
         {
             id: '3',
-            avatarFallbackIconName: 'standard:person_account',
-            avatarInitials: 'JP',
-            firstName: 'Jung',
+            resourceAvatarFallbackIconName: 'standard:person_account',
+            resourceAvatarInitials: 'JP',
+            resourceName: 'Jung',
             role: 'Product Owner'
         },
         {
             id: '4',
-            avatarFallbackIconName: 'standard:article',
-            avatarInitials: 'LM',
-            firstName: 'Lily',
-            role: 'Graphic Designer'
+            resourceAvatarFallbackIconName: 'standard:article',
+            resourceAvatarInitials: 'LM',
+            resourceName: 'Lily',
+            role: 'Graphic Designer',
+            customField: "This comes from the row's custom field"
         },
         {
             id: '5',
-            avatarSrc:
+            resourceAvatarSrc:
                 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
-            avatarFallbackIconName: 'standard:person_account',
-            avatarInitials: 'RM',
-            firstName: 'Reginald',
+            resourceAvatarFallbackIconName: 'standard:person_account',
+            resourceAvatarInitials: 'RM',
+            resourceName: 'Reginald',
             role: 'Developer'
         }
     ];

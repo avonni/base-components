@@ -34,28 +34,32 @@ import { createElement } from 'lwc';
 import PrimitiveSchedulerHeaderGroup from 'avonni/primitiveSchedulerHeaderGroup';
 import { DateTime } from 'c/luxon';
 
-// NB:
-// The component will always render twice on the first time. To make sure all renders are done,
-// we always set the properties before appending the element to the body.
-
 // Not tested because depends on DOM measurement:
-// - Width of the columns, depending on the cellWidth value.
-// - Scrolling, because it depends on the number of visible cells.
+// - Width of the columns and privatecellwidthchange.
 
-const MAX_VISIBLE_COLUMNS = Math.ceil(3840 / 17);
-
-describe('PrimitiveSchedulerHeaderGroup', () => {
+jest.useFakeTimers();
+let element;
+describe('Primitive Scheduler Header Group', () => {
     afterEach(() => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
+    });
+
+    beforeEach(() => {
+        element = createElement('base-primitive-scheduler-header-group', {
+            is: PrimitiveSchedulerHeaderGroup
+        });
+        document.body.appendChild(element);
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => {
+                cb();
+            }, 0);
+        });
     });
 
     it('Scheduler header group: Default attributes', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         expect(element.availableDaysOfTheWeek).toMatchObject([
             0, 1, 2, 3, 4, 5, 6
         ]);
@@ -63,6 +67,12 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11
         ]);
         expect(element.availableTimeFrames).toMatchObject(['00:00-23:59']);
+        expect(element.availableTimeSpans).toMatchObject([
+            { unit: 'day', span: 1, label: 'Day', headers: 'hourAndDay' },
+            { unit: 'week', span: 1, label: 'Week', headers: 'hourAndDay' },
+            { unit: 'month', span: 1, label: 'Month', headers: 'dayAndMonth' },
+            { unit: 'year', span: 1, label: 'Year', headers: 'dayAndMonth' }
+        ]);
         expect(element.headers).toMatchObject([
             {
                 unit: 'hour',
@@ -77,19 +87,21 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         ]);
         expect(element.scrollLeftOffset).toBe(0);
         expect(element.start).toBeInstanceOf(DateTime);
-        expect(element.timeSpan).toMatchObject({ unit: 'hour', span: '12' });
+        expect(element.timeSpan).toMatchObject({ unit: 'day', span: 1 });
+        expect(element.variant).toBe('horizontal');
         expect(element.visibleInterval).toBeUndefined();
+        expect(element.zoomToFit).toBeFalsy();
     });
 
-    /* ----- ATTRIBUTES ----- */
+    /*
+     * ------------------------------------------------------------
+     *  ATTRIBUTES
+     * -------------------------------------------------------------
+     */
 
     // available-days-of-the-week
     // Depends on timeSpan, start and headers
     it('Scheduler header group: availableDaysOfTheWeek', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.availableDaysOfTheWeek = [1, 2];
         element.headers = [
             {
@@ -104,34 +116,22 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         };
         element.start = new Date(2021, 7, 28);
 
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
             );
             expect(labels).toHaveLength(2);
-
-            let isMonday = true;
-            labels.forEach((label) => {
-                if (isMonday) {
-                    expect(label.textContent).toContain('Mon');
-                } else {
-                    expect(label.textContent).toContain('Tue');
-                }
-                isMonday = !isMonday;
-            });
+            expect(labels[0].textContent).toContain('Mon');
+            expect(labels[1].textContent).toContain('Tue');
         });
     });
 
     it('Scheduler header group: availableDaysOfTheWeek, remove last column if empty', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.availableDaysOfTheWeek = [1, 2];
         element.headers = [
             {
@@ -151,11 +151,11 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         };
         element.start = new Date(2021, 7, 28);
 
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -167,10 +167,6 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
     // available-months
     // Depends on timeSpan, start and headers
     it('Scheduler header group: availableMonths', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.availableMonths = [2, 6];
         element.headers = [
             {
@@ -184,26 +180,22 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             span: 2
         };
         element.start = new Date(2021, 11, 20);
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
             );
-            expect(labels).toHaveLength(4);
+            expect(labels).toHaveLength(5);
 
-            let isMarch = true;
-            labels.forEach((label) => {
-                if (isMarch) {
-                    expect(label.textContent).toContain('Mar');
-                } else {
-                    expect(label.textContent).toContain('Jul');
-                }
-                isMarch = !isMarch;
+            [0, 2, 4].forEach((index) => {
+                expect(labels[index].textContent).toContain('Mar');
+            });
+            [1, 3].forEach((index) => {
+                expect(labels[index].textContent).toContain('Jul');
             });
         });
     });
@@ -211,10 +203,6 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
     // available-time-frames
     // Depends on timeSpan, start and headers
     it('Scheduler header group: availableTimeFrames', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.availableTimeFrames = ['10:00-12:00', '14:00-16:00'];
         element.headers = [
             {
@@ -228,12 +216,11 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             span: 1
         };
         element.start = new Date(2021, 7, 31, 5);
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const labels = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -247,13 +234,110 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
+    // available-time-spans
+    // Depends on timeSpan and start
+    it('Scheduler header group: availableTimeSpans and timeSpan match, the headers should end on the unit', () => {
+        element.availableTimeSpans = [
+            {
+                unit: 'day',
+                span: 2,
+                label: 'dd'
+            },
+            {
+                unit: 'week',
+                span: 1,
+                label: 'W'
+            }
+        ];
+        element.timeSpan = {
+            unit: 'day',
+            span: 2
+        };
+        element.start = new Date(2022, 4, 18, 14, 33);
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const end = new Date(2022, 4, 20).getTime() - 1;
+            const lastColumn = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]:last-of-type'
+            );
+            expect(Number(lastColumn.dataset.end)).toBe(end);
+        });
+    });
+
+    it('Scheduler header group: availableTimeSpans and timeSpan match, start is on Sunday and the unit is week', () => {
+        element.availableTimeSpans = [
+            {
+                unit: 'day',
+                span: 2,
+                label: 'dd'
+            },
+            {
+                unit: 'week',
+                span: 1,
+                label: 'W'
+            }
+        ];
+        element.timeSpan = {
+            unit: 'week',
+            span: 1
+        };
+        element.start = new Date(2022, 4, 15, 14, 33);
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const end = new Date(2022, 4, 22).getTime() - 1;
+            const lastColumn = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]:last-of-type'
+            );
+            expect(Number(lastColumn.dataset.end)).toBe(end);
+        });
+    });
+
+    it('Scheduler header group: availableTimeSpans and timeSpan do not match, the headers can end in the middle of a unit', () => {
+        element.availableTimeSpans = [
+            {
+                unit: 'day',
+                span: 2,
+                label: 'dd'
+            },
+            {
+                unit: 'month',
+                span: 1,
+                label: 'MM'
+            }
+        ];
+        element.headers = [
+            {
+                unit: 'day',
+                span: 2,
+                label: 'dd'
+            },
+            {
+                unit: 'month',
+                span: 1,
+                label: 'mm'
+            }
+        ];
+        element.timeSpan = {
+            unit: 'week',
+            span: 3
+        };
+        element.start = new Date(2022, 4, 18, 14, 33);
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const end = new Date(2022, 5, 8).getTime() - 1;
+            const lastColumn = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]:last-of-type'
+            );
+            expect(Number(lastColumn.dataset.end)).toBe(end);
+        });
+    });
+
     // headers
     // Depends on timeSpan and start
     it('Scheduler header group: headers', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.headers = [
             {
                 unit: 'week',
@@ -276,12 +360,11 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             span: 8
         };
         element.start = new Date(2021, 8, 1);
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const rows = element.shadowRoot.querySelectorAll(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             expect(rows).toHaveLength(3);
 
@@ -302,65 +385,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
         });
     });
 
-    it('Scheduler header group: headers, load only a maximum number of cells', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
-        element.headers = [
-            {
-                unit: 'week',
-                span: 1,
-                label: `'Week #'W`
-            },
-            {
-                unit: 'day',
-                span: 1,
-                label: 'ccc dd/LL'
-            },
-            {
-                unit: 'hour',
-                span: 1,
-                label: 'HH:mm'
-            }
-        ];
-        element.timeSpan = {
-            unit: 'month',
-            span: 1
-        };
-        element.start = new Date(2021, 8, 1);
-
-        document.body.appendChild(element);
-
-        return Promise.resolve().then(() => {
-            const rows = element.shadowRoot.querySelectorAll(
-                '.avonni-scheduler__header-row'
-            );
-
-            const weekCells = rows[0].querySelectorAll(
-                '[data-element-id^="span-label"]'
-            );
-            expect(weekCells).toHaveLength(
-                Math.ceil(MAX_VISIBLE_COLUMNS / 24 / 7)
-            );
-
-            const dayCells = rows[1].querySelectorAll(
-                '[data-element-id^="span-label"]'
-            );
-            expect(dayCells).toHaveLength(Math.ceil(MAX_VISIBLE_COLUMNS / 24));
-
-            const hourCells = rows[2].querySelectorAll(
-                '[data-element-id^="span-label"]'
-            );
-            expect(hourCells).toHaveLength(MAX_VISIBLE_COLUMNS);
-        });
-    });
-
     it('Scheduler header group: headers, header span bigger than timeSpan', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.headers = [
             {
                 unit: 'week',
@@ -373,12 +398,11 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             span: 1
         };
         element.start = new Date(2021, 8, 1);
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const row = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-row'
+                '[data-element-id="div-row"]'
             );
             const weekCells = row.querySelectorAll(
                 '[data-element-id^="span-label"]'
@@ -390,19 +414,11 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
     // scroll-left-offset
     // Depends on start
     it('Scheduler header group: scrollLeftOffset', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.start = new Date(2021, 8, 1);
-        document.body.appendChild(element);
 
         return Promise.resolve().then(() => {
-            // We set the scrollLeftOffset here because the updateStickyLabels()
-            // in the renderedCallBack() will never be reached, since the _numberOfVisibleCells
-            // will always be 0 in the tests.
             element.scrollLeftOffset = 30;
-
+            jest.runAllTimers();
             const stickyLabels = element.shadowRoot.querySelectorAll(
                 '[data-element-id="span-label-sticky"]'
             );
@@ -416,117 +432,31 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
     // start
     // Depends on headers and timeSpan
     it('Scheduler header group: start', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         const date = new Date(2021, 1, 4);
         element.start = date;
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell'
+                '[data-element-id="div-cell"]'
             );
             expect(Number(cell.dataset.start)).toBe(date.getTime());
         });
     });
 
     it('Scheduler header group: start in the middle of the year should end in the middle of the year', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.start = new Date(2021, 1, 4);
         element.headers = [
             {
                 unit: 'year',
                 span: 1,
                 label: 'yy'
-            }
-        ];
-        element.timeSpan = {
-            unit: 'year',
-            span: 1
-        };
-
-        document.body.appendChild(element);
-
-        return Promise.resolve().then(() => {
-            const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
-            );
-            const end = new Date(2022, 1, 4).getTime() - 1;
-            expect(Number(cell.dataset.end)).toBe(end);
-        });
-    });
-
-    it('Scheduler header group: start in the middle of the month should end in the middle of the month', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
-        element.start = new Date(2021, 1, 4);
-        element.headers = [
+            },
             {
                 unit: 'month',
                 span: 1,
-                label: 'LL'
-            }
-        ];
-        element.timeSpan = {
-            unit: 'month',
-            span: 1
-        };
-
-        document.body.appendChild(element);
-
-        return Promise.resolve().then(() => {
-            const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
-            );
-            const end = new Date(2021, 2, 4).getTime() - 1;
-            expect(Number(cell.dataset.end)).toBe(end);
-        });
-    });
-
-    it('Scheduler header group: start in the middle of the week should end in the middle of the week', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
-        element.start = new Date(2021, 8, 1);
-        element.headers = [
-            {
-                unit: 'week',
-                span: 1,
-                label: 'W'
-            }
-        ];
-        element.timeSpan = {
-            unit: 'week',
-            span: 1
-        };
-
-        document.body.appendChild(element);
-
-        return Promise.resolve().then(() => {
-            const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
-            );
-            const end = new Date(2021, 8, 8).getTime() - 1;
-            expect(Number(cell.dataset.end)).toBe(end);
-        });
-    });
-
-    it('Scheduler header group: start in the middle of the day should end in the middle of the day', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
-        element.start = new Date(2021, 8, 1, 15);
-        element.headers = [
+                label: 'MMM'
+            },
             {
                 unit: 'day',
                 span: 1,
@@ -534,44 +464,130 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             }
         ];
         element.timeSpan = {
-            unit: 'day',
-            span: 1
+            unit: 'year',
+            span: 2
         };
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
-            const end = new Date(2021, 8, 2, 15).getTime() - 1;
+            const end = new Date(2023, 1, 4).getTime() - 1;
+            expect(Number(cell.dataset.end)).toBe(end);
+        });
+    });
+
+    it('Scheduler header group: start in the middle of the month should end in the middle of the month', () => {
+        element.start = new Date(2021, 1, 4);
+        element.headers = [
+            {
+                unit: 'month',
+                span: 1,
+                label: 'LL'
+            },
+            {
+                unit: 'day',
+                span: 1,
+                label: 'dd'
+            }
+        ];
+        element.timeSpan = {
+            unit: 'month',
+            span: 4
+        };
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]:last-of-type'
+            );
+            const end = new Date(2021, 5, 4).getTime() - 1;
+            expect(Number(cell.dataset.end)).toBe(end);
+        });
+    });
+
+    it('Scheduler header group: start in the middle of the week should end in the middle of the week', () => {
+        element.start = new Date(2021, 8, 3);
+        element.headers = [
+            {
+                unit: 'week',
+                span: 1,
+                label: 'W'
+            },
+            {
+                unit: 'day',
+                span: 1,
+                label: 'dd'
+            }
+        ];
+        element.timeSpan = {
+            unit: 'week',
+            span: 3
+        };
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]:last-of-type'
+            );
+            const end = new Date(2021, 8, 24).getTime() - 1;
+            expect(Number(cell.dataset.end)).toBe(end);
+        });
+    });
+
+    it('Scheduler header group: start in the middle of the day should end in the middle of the day', () => {
+        element.start = new Date(2021, 8, 1, 15);
+        element.headers = [
+            {
+                unit: 'day',
+                span: 1,
+                label: 'dd'
+            },
+            {
+                unit: 'minute',
+                span: 15,
+                label: 'HH:mm'
+            }
+        ];
+        element.timeSpan = {
+            unit: 'day',
+            span: 2
+        };
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const cell = element.shadowRoot.querySelector(
+                '[data-element-id="div-cell"]:last-of-type'
+            );
+            const end = new Date(2021, 8, 3, 15).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
         });
     });
 
     it('Scheduler header group: start in the middle of the hour should end in the middle of the hour', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
         element.start = new Date(2021, 8, 1, 15, 15);
         element.headers = [
             {
                 unit: 'hour',
                 span: 1,
                 label: 'hh'
+            },
+            {
+                unit: 'minute',
+                span: 15,
+                label: 'mm'
             }
         ];
         element.timeSpan = {
             unit: 'hour',
             span: 1
         };
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
             const end = new Date(2021, 8, 1, 16, 15).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
@@ -581,11 +597,7 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
     // time-span
     // Depends on start and headers
     it('Scheduler header group: timeSpan', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
-        });
-
-        element.start = new Date(2021, 8, 1, 11);
+        element.start = new Date(2021, 8, 4, 11);
         element.headers = [
             {
                 unit: 'day',
@@ -595,69 +607,135 @@ describe('PrimitiveSchedulerHeaderGroup', () => {
             {
                 unit: 'hour',
                 span: 1,
-                label: 'HH:mm'
+                label: 'hh'
             }
         ];
+
         element.timeSpan = {
             unit: 'week',
-            span: 1
+            span: 2
         };
-
-        document.body.appendChild(element);
+        jest.runAllTimers();
 
         return Promise.resolve().then(() => {
             const cell = element.shadowRoot.querySelector(
-                '.avonni-scheduler__header-cell:last-of-type'
+                '[data-element-id="div-cell"]:last-of-type'
             );
-            const end = new Date(2021, 8, 8, 11).getTime() - 1;
+            const end = new Date(2021, 8, 17, 11).getTime() - 1;
             expect(Number(cell.dataset.end)).toBe(end);
         });
     });
 
-    /* ----- EVENTS ----- */
+    // variant
+    it('Scheduler header group: horizontal variant', () => {
+        element.variant = 'horizontal';
+        jest.runAllTimers();
 
-    // privateheaderregister and privatevisibleheaderchange
-    it('Scheduler header group: privateheaderregister event and privatevisibleheaderchange event', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
+        return Promise.resolve().then(() => {
+            const cells = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-row"]'
+            );
+            cells.forEach((cell) => {
+                expect(cell.classList).not.toContain(
+                    'avonni-scheduler-header-group__header_vertical'
+                );
+                expect(cell.classList).not.toContain('slds-grid_vertical');
+            });
+
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).not.toContain('slds-grid');
         });
-
-        // Register event
-        let scrollHeadersTo;
-        const registerHandler = jest.fn((event) => {
-            scrollHeadersTo = event.detail.callbacks.scrollHeadersTo;
-        });
-        element.addEventListener('privateheaderregister', registerHandler);
-
-        document.body.appendChild(element);
-
-        expect(registerHandler).toHaveBeenCalled();
-
-        // Visible header change event
-        const changeHandler = jest.fn();
-        element.addEventListener('privatevisibleheaderchange', changeHandler);
-        scrollHeadersTo('right');
-        expect(changeHandler).toHaveBeenCalled();
-        expect(changeHandler.mock.calls[0][0].detail.direction).toBe('right');
-        expect(changeHandler.mock.calls[0][0].detail.visibleCells).toBe(0);
-        expect(
-            changeHandler.mock.calls[0][0].detail.visibleInterval
-        ).toMatchObject(element.visibleInterval);
     });
 
-    // privatecellwidthchange
-    it('Scheduler header group: privatecellwidthchange event', () => {
-        const element = createElement('base-primitive-scheduler-header-group', {
-            is: PrimitiveSchedulerHeaderGroup
+    it('Scheduler header group: vertical variant', () => {
+        element.variant = 'vertical';
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const cells = element.shadowRoot.querySelectorAll(
+                '[data-element-id="div-row"]'
+            );
+            cells.forEach((cell) => {
+                expect(cell.classList).toContain(
+                    'avonni-scheduler-header-group__header_vertical'
+                );
+                expect(cell.classList).toContain('slds-grid_vertical');
+            });
+
+            const wrapper = element.shadowRoot.querySelector(
+                '[data-element-id="div-wrapper"]'
+            );
+            expect(wrapper.classList).toContain('slds-grid');
         });
+    });
 
+    // visible-interval
+    // Depends on start and timeSpan
+    it('Scheduler header group: visibleInterval', () => {
+        element.start = new Date(2022, 4, 18);
+        element.timeSpan = {
+            unit: 'day',
+            span: 1
+        };
+        jest.runAllTimers();
+
+        return Promise.resolve().then(() => {
+            const start = new Date(2022, 4, 18).getTime();
+            const end = new Date(2022, 4, 19).getTime() - 1;
+            expect(element.visibleInterval.s.ts).toBe(start);
+            expect(element.visibleInterval.e.ts).toBe(end);
+        });
+    });
+
+    // zoom-to-fit
+    it('Scheduler header group: zoomToFit', () => {
+        element.shadowRoot.host.getBoundingClientRect = jest.fn(() => {
+            return { width: 120 };
+        });
         const handler = jest.fn();
-        element.addEventListener('privatecellwidthchange', handler);
+        element.addEventListener('privatecellsizechange', handler);
+        element.start = new Date(2022, 4, 18);
+        element.timeSpan = {
+            unit: 'day',
+            span: 1
+        };
+        element.zoomToFit = true;
+        jest.runAllTimers();
 
-        document.body.appendChild(element);
-
-        // The padding added is 20px.
         expect(handler).toHaveBeenCalled();
-        expect(handler.mock.calls[0][0].detail.cellWidth).toBe(20);
+        expect(handler.mock.calls[0][0].detail.cellSize).toBe(5);
+    });
+
+    /*
+     * ------------------------------------------------------------
+     *  EVENTS
+     * -------------------------------------------------------------
+     */
+
+    // privateheaderchange
+    it('Scheduler header group: privateheaderchange event', () => {
+        const handler = jest.fn();
+        element.addEventListener('privateheaderchange', handler);
+        element.headers = [
+            {
+                unit: 'day',
+                span: 1,
+                label: 'dd'
+            },
+            {
+                unit: 'hour',
+                span: 1,
+                label: 'hh'
+            }
+        ];
+        jest.runAllTimers();
+        expect(handler).toHaveBeenCalled();
+        const call = handler.mock.calls[0][0];
+        expect(call.detail.smallestHeader).toBeTruthy();
+        expect(call.bubbles).toBeFalsy();
+        expect(call.composed).toBeFalsy();
+        expect(call.cancelable).toBeFalsy();
     });
 });
