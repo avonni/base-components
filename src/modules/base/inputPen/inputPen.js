@@ -925,7 +925,7 @@ export default class InputPen extends LightningElement {
         action.isDotFlag = this.isDotFlag;
         action.activeVelocity = this.activeVelocity;
         action.isAction = true;
-        action._mode = this._mode;
+        action.mode = this._mode;
         action.color = this._color;
         action.size = this._size;
         action.xPositions = this.xPositions;
@@ -941,7 +941,7 @@ export default class InputPen extends LightningElement {
     }
 
     executeAction(action) {
-        this.setMode(action.mode);
+        this._mode = action.mode;
         this.moveCoordinatesAdded = action.moveCoordinatesAdded;
         this.isDownFlag = action.isDownFlag;
         this.isDotFlag = action.isDotFlag;
