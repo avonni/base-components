@@ -936,7 +936,6 @@ export default class InputPen extends LightningElement {
         action.requestedEvent = event.type.split('mouse')[1];
         action.clientX = event.clientX;
         action.clientY = event.clientY;
-        console.log(action);
         this.undoStack.unshift(action);
     }
 
@@ -1200,7 +1199,26 @@ export default class InputPen extends LightningElement {
             cp2y = y2 - ((y3 - y1) / 6) * tension;
             path.push(cp1x, cp1y, cp2x, cp2y, x2, y2);
         }
+        console.log(path);
         return path.slice(6, 14);
+    }
+
+    findTopPoints(splinePoints) {
+        const vector1 = splinePoints.splice();
+        const vectorPerp = vector1;
+        const unitVectorPerp = vectorPerp / 1;
+        console.log(unitVectorPerp);
+    }
+
+    findBottomPoints() {}
+
+    drawSmoothSpline() {
+        const centerSplinePoints = this.getSplinePoints();
+        const topSplinePoints = this.findTopPoints(centerSplinePoints);
+        const bottomSplinePoints = this.findBottomPoints(centerSplinePoints);
+
+        this.drawSpline(topSplinePoints, this.nibSize);
+        this.drawSpline(bottomSplinePoints, this.nibSize);
     }
 
     drawSpline(pts, penSize) {
@@ -1254,7 +1272,7 @@ export default class InputPen extends LightningElement {
                 this.activeVelocity = Math.sqrt(
                     this.velocities.slice(2, 4).reduce((a, b) => a + b, 0) / 3
                 );
-                this.drawSpline(this.getSplinePoints(), this.nibSize);
+                this.drawSmoothSpline();
             }
             if (this.xPositions.length > 10) {
                 this.xPositions.pop();
