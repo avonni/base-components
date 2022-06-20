@@ -42,3 +42,9 @@
  * @default 22.5em
  * @type (length|percentage)
  */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-path-color-background
+ * @default #014486
+ * @type color
+ */

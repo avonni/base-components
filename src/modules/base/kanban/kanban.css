@@ -14,7 +14,21 @@
 
 .avonni-kanban__path_item {
     min-width: var(--avonni-kanban-column-sizing-min-width, 14em);
-    max-width: calc(var(--avonni-kanban-column-sizing-max-width, 22.5em) - 8px);
+    max-width: calc(
+        var(--avonni-kanban-column-sizing-max-width, 22.5em) - 0.5rem
+    );
+    background-color: var(
+        --avonni-kanban-path-color-background,
+        #014486
+    ) !important;
+}
+
+.avonni-kanban__path_item::before,
+.avonni-kanban__path_item::after {
+    background-color: var(
+        --avonni-kanban-path-color-background,
+        #014486
+    ) !important;
 }
 
 .slds-path__nav {
@@ -57,6 +71,10 @@
     position: absolute;
     top: 10px;
     right: 10px;
+}
+
+.avonni-kanban__read_only .avonni-kanban__header_action {
+    pointer-events: all;
 }
 
 .avonni-kanban__variant_base .avonni-kanban__tiles_container {
