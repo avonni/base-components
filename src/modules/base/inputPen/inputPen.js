@@ -917,7 +917,11 @@ export default class InputPen extends LightningElement {
         }
         console.log('------------');
         this.clear(true);
-        for (const action of this.undoStack) {
+        let lastClearIndex = -1;
+        for (const [index, action] of this.undoStack.entries()) {
+            if (index < lastClearIndex) {
+                continue;
+            }
             this.executeAction(action);
         }
         this.redoStack.unshift(this.undoStack.pop());
