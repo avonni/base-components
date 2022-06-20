@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,13 +30,20 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-// import { LightningElement, api } from 'lwc';
-
-// export default class SkeletonChip extends LightningElement {
-//     @api variantAttributes;
-//     @api animation;
-//     @api variant;
-//     @api height;
-//     @api width;
-// }
+<template>
+    <span class={chipClass} data-element-id="span-wrapper">
+        <template if:true={chipHasIcon}>
+            <span class="slds-badge__icon slds-badge__icon_left">
+                <div class="avonni-skeleton__chip-slot"></div>
+            </span>
+        </template>
+        <div class={chipLabelClass} data-element-id="chip-label"></div>
+        <template if:true={chipHasIcon}>
+            <span class="slds-badge__icon slds-badge__icon_right">
+                <div class="avonni-skeleton__chip-slot"></div>
+            </span>
+        </template>
+    </span>
+</template>

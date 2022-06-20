@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,13 +30,30 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-// import { LightningElement, api } from 'lwc';
-
-// export default class SkeletonChip extends LightningElement {
-//     @api variantAttributes;
-//     @api animation;
-//     @api variant;
-//     @api height;
-//     @api width;
-// }
+<template>
+    <c-media-object
+        class={parentAvatarWrapper}
+        data-element-id="avatar-media-object"
+    >
+        <div class={avatarWrapperClass} slot="figure">
+            <div class={variantClass} data-element-id="avonni-skeleton"></div>
+        </div>
+        <p
+            if:true={showPrimaryText}
+            class={primaryTextClass}
+            data-element-id="avonni-avatar-primary-text"
+        ></p>
+        <p
+            if:true={showSecondaryText}
+            class={secondaryTextClass}
+            data-element-id="avonni-avatar-secondary-text"
+        ></p>
+        <p
+            if:true={showTertiaryText}
+            class={tertiaryTextClass}
+            data-element-id="avonni-avatar-tertiary-text"
+        ></p>
+    </c-media-object>
+</template>

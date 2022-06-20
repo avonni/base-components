@@ -30,7 +30,8 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-import Component from '../../storybookWrappers/skeleton/chip';
+// import Component from '../../storybookWrappers/skeleton/chip';
+import Component from 'avonni/skeleton';
 
 customElements.define('ac-base-skeleton', Component.CustomElementConstructor);
 

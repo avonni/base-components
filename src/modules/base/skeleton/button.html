@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,13 +30,16 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-// import { LightningElement, api } from 'lwc';
-
-// export default class SkeletonChip extends LightningElement {
-//     @api variantAttributes;
-//     @api animation;
-//     @api variant;
-//     @api height;
-//     @api width;
-// }
+<template>
+    <span class={buttonWrapper} data-element-id="button-element">
+        <template if:true={buttonHasLeftIcon}>
+            <svg class="slds-button__icon slds-button__icon_left"></svg>
+        </template>
+        <div class={buttonLabelClass} data-element-id="button-label">a</div>
+        <template if:true={buttonHasRightIcon}>
+            <svg class="slds-button__icon slds-button__icon_right"></svg>
+        </template>
+    </span>
+</template>

@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,13 +30,43 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-// import { LightningElement, api } from 'lwc';
-
-// export default class SkeletonChip extends LightningElement {
-//     @api variantAttributes;
-//     @api animation;
-//     @api variant;
-//     @api height;
-//     @api width;
-// }
+<template>
+    <template if:false={isPathVariant}>
+        <div class="slds-progress">
+            <ol class="slds-progress__list">
+                <template for:each={progressItems} for:item="progressItem">
+                    <li key={progressItem.key} class="slds-progress__item">
+                        <div class={progressIndicatorItemClass}></div>
+                    </li>
+                </template>
+            </ol>
+            <div class={progressIndicatorBarClass}></div>
+        </div>
+    </template>
+    <template if:true={isPathVariant}>
+        <div class="slds-path">
+            <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container">
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <ul class="slds-path__nav">
+                                <template
+                                    for:each={progressItems}
+                                    for:item="progressItem"
+                                >
+                                    <li
+                                        key={progressItem.key}
+                                        class={progressIndicatorPathClass}
+                                        role="presentation"
+                                    ></li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>

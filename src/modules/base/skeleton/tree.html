@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,13 +30,34 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-// import { LightningElement, api } from 'lwc';
-
-// export default class SkeletonChip extends LightningElement {
-//     @api variantAttributes;
-//     @api animation;
-//     @api variant;
-//     @api height;
-//     @api width;
-// }
+<template>
+    <div class="slds-tree_container">
+        <template if:false={hideTreeHeader}>
+            <div class={treeHeaderClass}></div>
+        </template>
+        <ul class="slds-tree">
+            <template for:each={treeItems} for:item="treeItem">
+                <li key={treeItem.key}>
+                    <div class={treeItemContainerClass}>
+                        <div class="slds-button_icon slds-m-right_x-small">
+                            <svg
+                                class="
+                                    slds-button__icon slds-button__icon_small
+                                "
+                            >
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"
+                                ></use>
+                            </svg>
+                        </div>
+                        <span class="avonni-skeleton__tree-item-content">
+                            <div class={treeItemClass}></div>
+                        </span>
+                    </div>
+                </li>
+            </template>
+        </ul>
+    </div>
+</template>

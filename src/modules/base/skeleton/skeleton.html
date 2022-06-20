@@ -64,40 +64,36 @@
             ></p>
         </c-media-object>
     </template> -->
-    <template if:true={isChipVariant}>
+    <!-- <template if:true={isChipVariant}>
         <span class={chipClass} data-element-id="span-wrapper">
             <template if:true={chipHasIcon}>
                 <span class="slds-badge__icon slds-badge__icon_left">
-                    <!-- <slot name="left"></slot> -->
                     <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
             <div class={chipLabelClass} data-element-id="chip-label"></div>
             <template if:true={chipHasIcon}>
                 <span class="slds-badge__icon slds-badge__icon_right">
-                    <!-- <slot name="right"></slot> -->
                     <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
         </span>
-    </template>
-    <template if:true={isBadgeVariant}>
+    </template> -->
+    <!-- <template if:true={isBadgeVariant}>
         <span class={badgeClass} data-element-id="span-wrapper">
             <template if:true={badgeHasLeftIcon}>
                 <span class="slds-badge__icon slds-badge__icon_left">
-                    <!-- <slot name="left"></slot> -->
                     <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
             <div class={badgeLabelClass} data-element-id="badge-label"></div>
             <template if:true={badgeHasRightIcon}>
                 <span class="slds-badge__icon slds-badge__icon_right">
-                    <!-- <slot name="right"></slot> -->
                     <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
         </span>
-    </template>
+    </template> -->
     <template if:true={isBreadcrumbsVariant}>
         <ul class="slds-list_horizontal breadcrumbsClass">
             <template for:each={breadcrumbs} for:item="breadcrumb">
@@ -106,7 +102,7 @@
             </template>
         </ul>
     </template>
-    <template if:true={isButtonVariant}>
+    <!-- <template if:true={isButtonVariant}>
         <span class={buttonWrapper} data-element-id="button-element">
             <template if:true={buttonHasLeftIcon}>
                 <svg class="slds-button__icon slds-button__icon_left"></svg>
@@ -116,14 +112,14 @@
                 <svg class="slds-button__icon slds-button__icon_right"></svg>
             </template>
         </span>
-    </template>
-    <template if:true={isButtonIconVariant}>
+    </template> -->
+    <!-- <template if:true={isButtonIconVariant}>
         <button
             class={buttonIconWrapper}
             data-element-id="button-icon"
         ></button>
-    </template>
-    <template if:true={isComboboxVariant}>
+    </template> -->
+    <!-- <template if:true={isComboboxVariant}>
         <div class={comboboxWrapperClass}>
             <template if:false={comboboxVariantLabelHidden}>
                 <label class="slds-form-element__label">
@@ -179,8 +175,8 @@
                 </div>
             </div>
         </div>
-    </template>
-    <template if:true={isDatatableVariant}>
+    </template> -->
+    <!-- <template if:true={isDatatableVariant}>
         <table
             aria-multiselectable="true"
             class={datatableTableClass}
@@ -242,8 +238,8 @@
                 </template>
             </tbody>
         </table>
-    </template>
-    <template if:true={isInputVariant}>
+    </template> -->
+    <!-- <template if:true={isInputVariant}>
         <div class={inputWrapperClass}>
             <label class="slds-form-element__label">
                 <div class={inputLabelClass}>
@@ -259,8 +255,8 @@
                 <input class={inputClass} disabled="" required type="text" />
             </div>
         </div>
-    </template>
-    <template if:true={isProgressIndicatorVariant}>
+    </template> -->
+    <!-- <template if:true={isProgressIndicatorVariant}>
         <template if:false={isPathVariant}>
             <div class="slds-progress">
                 <ol class="slds-progress__list">
@@ -297,9 +293,9 @@
                 </div>
             </div>
         </template>
-    </template>
-    <template if:true={isParagraphVariant}>
-        <!-- <ul class="slds-has-dividers_around" data-element-id="paragraph-list">
+    </template> -->
+    <!-- <template if:true={isParagraphVariant}> -->
+    <!-- <ul class="slds-has-dividers_around" data-element-id="paragraph-list">
             <template for:each={paragraphItems} for:item="paragraphLine">
                 <li key={paragraphLine.keyLi}>
                     <ul
@@ -319,7 +315,7 @@
                 </li>
             </template>
         </ul> -->
-        <div class="slds-grid slds-wrap" data-element-id="paragraph-list">
+    <!-- <div class="slds-grid slds-wrap" data-element-id="paragraph-list">
             <template for:each={paragraphItems} for:item="paragraphLine">
                 <div
                     key={paragraphLine.key}
@@ -329,8 +325,8 @@
                 </div>
             </template>
         </div>
-    </template>
-    <template if:true={isTabsetVariant}>
+    </template> -->
+    <!-- <template if:true={isTabsetVariant}>
         <template if:true={isTabsetBaseVariant}>
             <div class="slds-tabs_default">
                 <ul
@@ -378,8 +374,8 @@
                 </div>
             </div>
         </template>
-    </template>
-    <template if:true={isTreeVariant}>
+    </template> -->
+    <!-- <template if:true={isTreeVariant}>
         <div class="slds-tree_container">
             <template if:false={hideTreeHeader}>
                 <div class={treeHeaderClass}></div>
@@ -408,5 +404,5 @@
                 </template>
             </ul>
         </div>
-    </template>
+    </template> -->
 </template>

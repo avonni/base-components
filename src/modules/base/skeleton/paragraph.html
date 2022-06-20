@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,13 +30,37 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-// import { LightningElement, api } from 'lwc';
-
-// export default class SkeletonChip extends LightningElement {
-//     @api variantAttributes;
-//     @api animation;
-//     @api variant;
-//     @api height;
-//     @api width;
-// }
+<template>
+    <!-- <ul class="slds-has-dividers_around" data-element-id="paragraph-list">
+        <template for:each={paragraphItems} for:item="paragraphLine">
+            <li key={paragraphLine.keyLi}>
+                <ul
+                    class="slds-list_horizontal slds-has-block-links_space"
+                    key={paragraphLine.keyUl}
+                >
+                    <template
+                        for:each={paragraphLine.line}
+                        for:item="paragraphLineItem"
+                    >
+                        <li
+                            key={paragraphLineItem.key}
+                            class={paragraphLineClass}
+                        ></li>
+                    </template>
+                </ul>
+            </li>
+        </template>
+    </ul> -->
+    <div class="slds-grid slds-wrap" data-element-id="paragraph-list">
+        <template for:each={paragraphItems} for:item="paragraphLine">
+            <div
+                key={paragraphLine.key}
+                class="slds-col avonni-skeleton__paragraph-grid"
+            >
+                <span>1</span>
+            </div>
+        </template>
+    </div>
+</template>

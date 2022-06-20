@@ -1,3 +1,4 @@
+<!--
 /**
  * BSD 3-Clause License
  *
@@ -29,13 +30,22 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
+-->
 
-// import { LightningElement, api } from 'lwc';
-
-// export default class SkeletonChip extends LightningElement {
-//     @api variantAttributes;
-//     @api animation;
-//     @api variant;
-//     @api height;
-//     @api width;
-// }
+<template>
+    <div class={inputWrapperClass}>
+        <label class="slds-form-element__label">
+            <div class={inputLabelClass}>
+                <template if:false={inputVariantLabelHidden}>
+                    <template if:true={inputRequired}>
+                        <abbr class="slds-required">*</abbr>
+                    </template>
+                    <div class={inputLabelTagClass}></div>
+                </template>
+            </div>
+        </label>
+        <div class="slds-form-element__control">
+            <input class={inputClass} disabled="" required type="text" />
+        </div>
+    </div>
+</template>
