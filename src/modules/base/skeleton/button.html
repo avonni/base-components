@@ -33,11 +33,14 @@
 -->
 
 <template>
-    <span class={buttonWrapper} data-element-id="button-element">
+    <span
+        class={buttonWrapper}
+        data-element-id="avonni-skeleton-button-element"
+    >
         <template if:true={buttonHasLeftIcon}>
             <svg class="slds-button__icon slds-button__icon_left"></svg>
         </template>
-        <div class={buttonLabelClass} data-element-id="button-label">a</div>
+        <div class={buttonLabelClass} data-element-id="button-label"></div>
         <template if:true={buttonHasRightIcon}>
             <svg class="slds-button__icon slds-button__icon_right"></svg>
         </template>

@@ -531,12 +531,10 @@ export default class Skeleton extends LightningElement {
     }
 
     get buttonLabelClass() {
-        return (
-            classSet('avonni-skeleton__variant-text')
-                .add('avonni-skeleton__button-label')
-                // .add(`avonni-skeleton__animation-${this.animation}`)
-                .toString()
-        );
+        return classSet('avonni-skeleton__button-label')
+            .add('slds-m-vertical_xx-small')
+            .add('slds-m-horizontal_x-small')
+            .toString();
     }
 
     /**
@@ -1389,20 +1387,11 @@ export default class Skeleton extends LightningElement {
                 'slds-button_success':
                     this.variantAttributes.variant === 'success'
             })
-            .add('avonni-button')
+            .add('slds-p-vertical_xx-small')
+            .add('slds-p-horizontal_x-small')
             .add(`avonni-skeleton__animation-${this.animation}`);
+
         this.buttonWrapper = buttonWrapper;
-
-        // const buttonLabel = this.template.querySelector(
-        //     '[data-element-id="button-label"]'
-        // );
-
-        // if (this.variantAttributes.variant === 'base') {
-        //     buttonLabel.style.setProperty(
-        //         '--avonni-skeleton-chip-label-background',
-        //         '#c4c4c4'
-        //     );
-        // }
     }
 
     updateButtonIconClassList() {
@@ -1421,7 +1410,7 @@ export default class Skeleton extends LightningElement {
 
     updateVariantButton() {
         const buttonElement = this.template.querySelector(
-            '[data-element-id="button-element"]'
+            '[data-element-id="avonni-skeleton-button-element"]'
         );
 
         const buttonLabel = this.template.querySelector(
