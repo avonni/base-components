@@ -78,13 +78,13 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-carousel-item-image-background
+ * @name --avonni-carousel-item-image-color-background
  * @default #ffffff
  * @type color
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-carousel-item-sizing-height
+ * @name --avonni-carousel-item-image-sizing-height
  * @type length-percentage
  */
 /**
