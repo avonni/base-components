@@ -183,6 +183,11 @@
     /* margin: 0.25em; */
 }
 
+.avonni-skeleton__chip-slot {
+    height: 1.25rem;
+    width: 1.25rem;
+}
+
 .avonni-skeleton__datatable-body {
     border-collapse: collapse;
 }

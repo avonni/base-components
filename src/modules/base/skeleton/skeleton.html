@@ -36,7 +36,7 @@
     <template if:true={isRegularVariant}>
         <div class={variantClass} data-element-id="avonni-skeleton"></div>
     </template>
-    <template if:true={isAvatarVariant}>
+    <!-- <template if:true={isAvatarVariant}>
         <c-media-object
             class={parentAvatarWrapper}
             data-element-id="avatar-media-object"
@@ -63,18 +63,20 @@
                 data-element-id="avonni-avatar-tertiary-text"
             ></p>
         </c-media-object>
-    </template>
+    </template> -->
     <template if:true={isChipVariant}>
         <span class={chipClass} data-element-id="span-wrapper">
             <template if:true={chipHasIcon}>
                 <span class="slds-badge__icon slds-badge__icon_left">
-                    <slot name="left"></slot>
+                    <!-- <slot name="left"></slot> -->
+                    <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
             <div class={chipLabelClass} data-element-id="chip-label"></div>
             <template if:true={chipHasIcon}>
                 <span class="slds-badge__icon slds-badge__icon_right">
-                    <slot name="right"></slot>
+                    <!-- <slot name="right"></slot> -->
+                    <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
         </span>
@@ -83,13 +85,15 @@
         <span class={badgeClass} data-element-id="span-wrapper">
             <template if:true={badgeHasLeftIcon}>
                 <span class="slds-badge__icon slds-badge__icon_left">
-                    <slot name="left"></slot>
+                    <!-- <slot name="left"></slot> -->
+                    <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
             <div class={badgeLabelClass} data-element-id="badge-label"></div>
             <template if:true={badgeHasRightIcon}>
                 <span class="slds-badge__icon slds-badge__icon_right">
-                    <slot name="right"></slot>
+                    <!-- <slot name="right"></slot> -->
+                    <div class="avonni-skeleton__chip-slot"></div>
                 </span>
             </template>
         </span>
