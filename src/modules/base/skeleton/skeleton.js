@@ -1292,7 +1292,7 @@ export default class Skeleton extends LightningElement {
 
     updateBadgeClassList() {
         const badgeElement = this.template.querySelector(
-            '[data-element-id="span-wrapper"]'
+            '[data-element-id="avonni-skeleton-avatar-wrapper"]'
         );
         const badgeLabel = this.template.querySelector(
             '[data-element-id="badge-label"]'

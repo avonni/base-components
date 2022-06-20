@@ -138,7 +138,8 @@ Badge.args = {
     animation: 'pulse',
     variantAttributes: {
         hasIcon: true,
-        variant: 'base'
+        variant: 'base',
+        iconPosition: 'left'
     }
 };
 
