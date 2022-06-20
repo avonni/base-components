@@ -153,12 +153,12 @@ article.avonni-card {
     border-right-color: var(--avonni-card-media-color-border, #e5e5e5);
 }
 
-.avonni-card__media-left .avonni-card__media-container,
+.avonni-card__media-left .avonni-card__media-container {
+    min-width: var(--avonni-card-left-media-width);
+    max-width: var(--avonni-card-left-media-width);
+}
+
 .avonni-card__media-right .avonni-card__media-container {
-    position: relative;
-    align-self: auto;
-    height: auto;
-    object-fit: cover;
     min-width: var(--avonni-card-right-media-width);
     max-width: var(--avonni-card-right-media-width);
 }

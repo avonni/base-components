@@ -118,7 +118,10 @@
             </div>
 
             <!-- default content for center media only -->
-            <div if:true={cardHasCenterMedia} class="avonni-card__default-slot">
+            <div
+                if:true={showCenterMediaContent}
+                class="avonni-card__default-slot"
+            >
                 <slot data-element-id="avonni-card-center-default-slot"></slot>
             </div>
         </div>
