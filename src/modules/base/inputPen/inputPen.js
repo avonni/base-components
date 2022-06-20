@@ -1202,10 +1202,14 @@ export default class InputPen extends LightningElement {
         return path.slice(6, 14);
     }
 
-    findTopPoints(splinePoints, bigRadius, smallRadius) {
-        if (bigRadius > smallRadius) {
-            for (let i = 0; i < 2; i += 2) {
-                let temp = splinePoints[i];
+    findMarginPoints(splinePoints, bigRadius, smallRadius) {
+        if (smallRadius > bigRadius) {
+            console.log('swap');
+            let temp = bigRadius;
+            bigRadius = smallRadius;
+            smallRadius = temp;
+            for (let i = 0; i < 4; i += 2) {
+                temp = splinePoints[i];
                 splinePoints[i] = splinePoints[6 - i];
                 splinePoints[6 - i] = temp;
                 temp = splinePoints[i + 1];
@@ -1213,12 +1217,14 @@ export default class InputPen extends LightningElement {
                 splinePoints[7 - i] = temp;
             }
         }
+        console.log('small : ' + smallRadius);
+        console.log('big : ' + bigRadius);
 
         const vector1 = Array(2);
         vector1[0] = splinePoints[2] - splinePoints[0];
         vector1[1] = splinePoints[3] - splinePoints[1];
         // switch for top vs bottom ->
-        const vectorPerp = [vector1[1], -vector1[0]];
+        const vectorPerp = [-vector1[1], vector1[0]];
 
         const vectorNorm = Math.sqrt(
             vectorPerp[0] * vectorPerp[0] + vectorPerp[1] * vectorPerp[1]
@@ -1229,94 +1235,45 @@ export default class InputPen extends LightningElement {
             vectorPerp[1] / vectorNorm
         ];
 
-        const newSplinePoints = [...splinePoints];
+        const newTopPoints = [...splinePoints];
+        newTopPoints[0] =
+            splinePoints[0] +
+            unitVectorPerp[0] * ((bigRadius - smallRadius) / 2);
+        newTopPoints[1] =
+            splinePoints[1] +
+            (unitVectorPerp[1] * (bigRadius - smallRadius)) / 2;
 
-        newSplinePoints[0] =
-            splinePoints[0] + unitVectorPerp[0] * (bigRadius - smallRadius);
-        newSplinePoints[1] =
-            splinePoints[1] + unitVectorPerp[1] * (bigRadius - smallRadius);
-
-        console.log('------------');
-        console.log(splinePoints.slice(0, 4));
-        console.log(unitVectorPerp);
-        return newSplinePoints;
-    }
-
-    findBottomPoints(splinePoints, bigRadius, smallRadius) {
-        if (bigRadius > smallRadius) {
-            for (let i = 0; i < 2; i += 2) {
-                let temp = splinePoints[i];
-                splinePoints[i] = splinePoints[6 - i];
-                splinePoints[6 - i] = temp;
-                temp = splinePoints[i + 1];
-                splinePoints[i + 1] = splinePoints[7 - i];
-                splinePoints[7 - i] = temp;
-            }
-        }
-
-        const vector1 = Array(2);
-        vector1[0] = splinePoints[2] - splinePoints[0];
-        vector1[1] = splinePoints[3] - splinePoints[1];
-        // switch for top vs bottom ->
-        const vectorPerp = [vector1[1], -vector1[0]];
-
-        const vectorNorm = Math.sqrt(
-            vectorPerp[0] * vectorPerp[0] + vectorPerp[1] * vectorPerp[1]
-        );
-
-        const unitVectorPerp = [
-            vectorPerp[0] / vectorNorm,
-            vectorPerp[1] / vectorNorm
-        ];
-
-        const newSplinePoints = [...splinePoints];
-
-        newSplinePoints[0] =
+        const newBottomPoints = [...splinePoints];
+        newBottomPoints[0] =
             splinePoints[0] -
-            unitVectorPerp[0] * (bigRadius - smallRadius - 0.3);
-        newSplinePoints[1] =
+            (unitVectorPerp[0] * (bigRadius - smallRadius)) / 2;
+        newBottomPoints[1] =
             splinePoints[1] -
-            unitVectorPerp[1] * (bigRadius - smallRadius - 0.3);
+            (unitVectorPerp[1] * (bigRadius - smallRadius)) / 2;
 
-        console.log('------------');
         console.log(splinePoints.slice(0, 4));
         console.log(unitVectorPerp);
-        return newSplinePoints;
+        console.log('------------');
+        return [newBottomPoints, newTopPoints];
     }
 
     drawSmoothSpline() {
         const centerSplinePoints = this.getSplinePoints();
-        const bigRadius = (this._size * 2) / Math.sqrt(this.velocities[3]);
-        const smallRadius = (this._size * 2) / Math.sqrt(this.velocities[5]);
-        if (Math.abs(this.bigRadius - this.smallRadius) < 0.2) {
-            this.drawSpline(centerSplinePoints);
-        }
-
-        const topSplinePoints = this.findTopPoints(
-            centerSplinePoints,
-            bigRadius,
-            smallRadius
-        );
-        const bottomSplinePoints = this.findBottomPoints(
+        const bigRadius = (this._size * 2) / Math.sqrt(this.velocities[5]);
+        const smallRadius = (this._size * 2) / Math.sqrt(this.velocities[3]);
+        const marginPoints = this.findMarginPoints(
             centerSplinePoints,
             bigRadius,
             smallRadius
         );
 
-        this.drawSpline(
-            topSplinePoints,
-            (this.size * 2) /
-                Math.sqrt(Math.min(this.velocities[3], this.velocities[5]))
-        );
-        this.drawSpline(
-            bottomSplinePoints,
-            (this.size * 2) /
-                Math.sqrt(Math.min(this.velocities[3], this.velocities[5]))
-        );
+        this.drawSpline(marginPoints[0], Math.min(bigRadius, smallRadius));
+        this.drawSpline(marginPoints[1], Math.min(bigRadius, smallRadius));
     }
 
     drawSpline(pts, penSize) {
         this.setupStroke(penSize);
+        this.ctx.globalCompositeOperation = 'destination-over';
         if (this._mode === 'paint') {
             this.ctx.shadowColor = this.color;
             this.ctx.shadowBlur = 2;
