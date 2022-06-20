@@ -32,7 +32,7 @@
 
 import { LightningElement, api } from 'lwc';
 import { AvonniResizeObserver } from 'c/resizeObserver';
-import { normalizeBoolean, normalizeString } from 'c/utilsPrivate';
+import { normalizeBoolean, normalizeString, deepCopy } from 'c/utilsPrivate';
 import { FieldConstraintApiWithProxyInput } from 'c/inputUtils';
 import { classSet } from '../utils/classSet';
 
@@ -911,6 +911,11 @@ export default class InputPen extends LightningElement {
         ) {
             this.redoStack.unshift(this.undoStack.pop());
         }
+        console.log('events to recreate... ------------');
+        for (const action of this.undoStack) {
+            console.log(action.requestedEvent);
+        }
+        console.log('------------');
         this.clear(true);
         for (const action of this.undoStack) {
             this.executeAction(action);
@@ -922,6 +927,7 @@ export default class InputPen extends LightningElement {
         if (this.redoStack.length === 0) {
             return;
         }
+        console.log('recreated...');
         let actionsRecreated = -1;
         for (const [index, action] of this.redoStack.entries()) {
             if (action.requestedEvent === 'state' && index !== 0) {
@@ -930,12 +936,18 @@ export default class InputPen extends LightningElement {
             }
             this.executeAction(action);
             this.undoStack.push(action);
+            console.log(action.requestedEvent);
         }
         if (actionsRecreated === -1) {
             this.redoStack = [];
         } else {
             this.redoStack = this.redoStack.slice(actionsRecreated);
         }
+        console.log('redos left :');
+        for (const action of this.redoStack) {
+            console.log(action.requestedEvent);
+        }
+        console.log('------------');
     }
 
     saveAction(event) {
@@ -950,9 +962,10 @@ export default class InputPen extends LightningElement {
         action.mode = this._mode;
         action.color = this._color;
         action.size = this._size;
-        action.xPositions = this.xPositions;
-        action.yPositions = this.yPositions;
-        action.velocities = this.velocities;
+
+        action.xPositions = deepCopy(this.xPositions);
+        action.yPositions = deepCopy(this.yPositions);
+        action.velocities = deepCopy(this.velocities);
         action.prevDist = this.prevDist;
         action.requestedEvent = event.type.split('mouse')[1];
         if (!action.requestedEvent) {
@@ -974,6 +987,7 @@ export default class InputPen extends LightningElement {
         this._color = action.color;
         this._backgroundColor = action.backgroundColor;
         this._size = action.size;
+        // TODO: why is array loaded cracked out the wazoo?
         this.xPositions = action.xPositions;
         this.yPositions = action.yPositions;
         this.velocities = action.velocities;
@@ -1055,16 +1069,6 @@ export default class InputPen extends LightningElement {
                     if (!event.isAction) {
                         this.saveAction(event);
                     }
-                    console.log(
-                        'did: ' +
-                            event.requestedEvent +
-                            ' at ' +
-                            this.xPositions[0] +
-                            ', ' +
-                            this.yPositions[0] +
-                            ' - on mode: ' +
-                            this._mode
-                    );
                     this.useTool(event);
                 }
                 this.moveCursor(event);
@@ -1169,11 +1173,8 @@ export default class InputPen extends LightningElement {
 
     clearPositionBuffer() {
         for (let i = 0; i < this.moveCoordinatesAdded; i++) {
-            this.xPositions.push(this.xPositions.last);
             this.xPositions.shift();
-            this.yPositions.push(this.xPositions.last);
             this.yPositions.shift();
-            this.velocities.push(this.velocities.last);
             this.velocities.shift();
         }
         this.smoothVelocities();
@@ -1192,7 +1193,7 @@ export default class InputPen extends LightningElement {
             );
         }
         this.xPositions = [];
-        this.xPositions = [];
+        this.yPositions = [];
         this.velocities = [];
     }
 
@@ -1358,8 +1359,6 @@ export default class InputPen extends LightningElement {
         );
         this.xPositions[0] = event.clientX - clientRect.left;
         this.yPositions[0] = event.clientY - clientRect.top;
-        console.log(' for x position: ' + this.xPositions[0]);
-        console.log(' for y position: ' + this.yPositions[0]);
         if (distance > 2) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
