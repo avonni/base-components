@@ -11,6 +11,15 @@
     font-weight: var(--avonni-carousel-item-title-font-weight, 600);
 }
 
+.avonni-carousel__image {
+    height: var(--avonni-carousel-item-image-sizing-height);
+    background-color: var(
+        --avonni-carousel-item-image-color-background,
+        #ffffff
+    );
+    object-fit: contain;
+}
+
 .avonni-carousel__actions {
     display: flex;
     width: 100%;
