@@ -34,7 +34,10 @@
     display: inline-block;
     position: relative;
     transition: transform 0.1s ease-out 0s;
-    --avonni-avatar-color-border: #fff;
+    --avonni-avatar-color-border: var(
+        --avonni-avatar-group-avatar-stack-color-border,
+        #ffffff
+    );
     --avonni-avatar-sizing-border: 1px;
     cursor: pointer;
 }
@@ -140,7 +143,7 @@
 .avonni-avatar-group__hidden-avatar-container:focus,
 .avonni-avatar-group__action-button:focus {
     outline: none;
-    box-shadow: rgb(53, 125, 219) 0 0 0 2px !important;
+    box-shadow: rgb(53, 125, 219) 0 0 0 2px;
 }
 .avonni-avatar-group__avatar .slds-avatar-grouped {
     border-radius: var(--lwc-borderRadiusMedium, 0.3rem);
@@ -209,15 +212,8 @@
 
 .avonni-avatar-group__avatar_color-border {
     border: none;
-}
-
-.avonni-avatar-group__avatar_color-border-circle {
-    border: 1px solid
-        var(--avonni-avatar-group-avatar-stack-color-border, #ffffff);
-}
-
-.avonni-avatar-group__avatar_color-border-square {
-    border: 1px solid
-        var(--avonni-avatar-group-avatar-stack-color-border, #ffffff);
-    border-radius: 5px;
+    background-color: var(
+        --avonni-avatar-group-avatar-stack-color-border,
+        #ffffff
+    );
 }

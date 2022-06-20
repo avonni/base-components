@@ -442,11 +442,7 @@ export default class AvatarGroup extends LightningElement {
     get avatarInlineClass() {
         return classSet('avonni-avatar-group__avatar')
             .add({
-                'avonni-avatar-group_in-line': this.layout === 'stack',
-                'avonni-avatar-group__avatar_color-border-circle':
-                    this.layout === 'stack' && this.variant === 'circle',
-                'avonni-avatar-group__avatar_color-border-square':
-                    this.layout === 'stack' && this.variant === 'square'
+                'avonni-avatar-group_in-line': this.layout === 'stack'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -459,11 +455,7 @@ export default class AvatarGroup extends LightningElement {
     get avatarInlinePlusClass() {
         return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
             .add({
-                'avonni-avatar-group_in-line ': this.layout === 'stack',
-                'avonni-avatar-group__avatar_color-border-circle':
-                    this.layout === 'stack' && this.variant === 'circle',
-                'avonni-avatar-group__avatar_color-border-square':
-                    this.layout === 'stack' && this.variant === 'square'
+                'avonni-avatar-group_in-line ': this.layout === 'stack'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -492,9 +484,9 @@ export default class AvatarGroup extends LightningElement {
                     this.layout === 'stack'
             })
             .add({
-                'avonni-avatar-group__action-button_circle avonni-avatar-group__avatar_color-border-circle':
+                'avonni-avatar-group__action-button_circle':
                     this.variant === 'circle',
-                'avonni-avatar-group__action-button_square avonni-avatar-group__avatar_color-border-square':
+                'avonni-avatar-group__action-button_square':
                     this.variant === 'square',
                 'avonni-avatar-group__action-button_x-large':
                     this.size === 'x-large',
@@ -535,7 +527,8 @@ export default class AvatarGroup extends LightningElement {
      */
     get showMoreSectionClass() {
         return classSet({
-            'slds-grid slds-grid_vertical-reverse': this.layout === 'list'
+            'slds-grid slds-grid_vertical-reverse': this.layout === 'list',
+            'slds-show_inline': this.layout !== 'list'
         });
     }
 
