@@ -73,6 +73,8 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
+// TODO: mouse over block scroll
+
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
@@ -98,7 +100,6 @@ export class HorizontalActivityTimeline {
     _maxDisplayedItems;
 
     // D3 selector DOM elements
-    _dragAndDropIcons;
     _timelineDiv;
     _timelineSVG;
     _scrollAxisSVG;
@@ -583,28 +584,6 @@ export class HorizontalActivityTimeline {
                     .on('end', this.endIntervalResizing.bind(this))
             );
 
-        // Add drag-and-drop icons to lines
-        const middleRectPosition = -0.7 + (maxIntervalPosition - 1.4) / 2;
-        this.createSVGIcon(
-            intervalGroup,
-            'utility:drag_and_drop',
-            this.scrollTimeScale(new Date(this._intervalMinDate)) - 1.9,
-            middleRectPosition,
-            4
-        );
-        this.createSVGIcon(
-            intervalGroup,
-            'utility:drag_and_drop',
-            this.scrollTimeScale(new Date(this._intervalMaxDate)) - 1.8,
-            middleRectPosition,
-            4
-        );
-        this._dragAndDropIcons = intervalGroup
-            .selectAll('.slds-icon')
-            .style('fill', 'white')
-            .style('width', '0.25rem')
-            .style('height', '0.25rem');
-
         this.setIntervalBoundsState();
     }
 
@@ -1051,11 +1030,9 @@ export class HorizontalActivityTimeline {
                 .style('stroke', TIMELINE_COLORS.intervalBorder)
                 .style('stroke-width', 3)
                 .attr('class', RESIZE_CURSOR_CLASS);
-            this._dragAndDropIcons.style('opacity', 1);
         } else {
             this._rightIntervalLine.style('opacity', 0).attr('class', '');
             this._leftIntervalLine.style('opacity', 0).attr('class', '');
-            this._dragAndDropIcons.style('opacity', 0);
         }
     }
 
