@@ -65,7 +65,7 @@ describe('Activity Timeline', () => {
         expect(element._changeIntervalSizeMode).toBeFalsy();
         expect(element._dateFormat).toBe('dd/MM/yyyy');
         expect(element._intervalDaysLength).toBe(15);
-        expect(element._offsetAxis).toBe(40);
+        expect(element._offsetAxis).toBe(16.5);
         expect(element._displayedItems).toMatchObject([]);
         expect(element._maxYPositionOfItem).toBe(0);
         expect(element._numberOfScrollAxisTicks).toBe(10);
@@ -73,7 +73,6 @@ describe('Activity Timeline', () => {
         expect(element._timelineWidth).toBe(1300);
         expect(element._timelineHeight).toBe(350);
         expect(element._timelineAxisHeight).toBe(30);
-        expect(element._scrollAxisColor).toBe('#1c82bd');
         expect(element._requestHeightChange).toBeFalsy();
     });
 
@@ -100,10 +99,10 @@ describe('Activity Timeline', () => {
         expect(element.convertDateToFormat(element.maxDate)).toBe('14/03/2022');
     });
 
-    // scrollAxisMaxDate (15 days after maxDate) and scrollAxisMinDate (5 days before minDate)
+    // scrollAxisMaxDate (15 days after maxDate) and scrollAxisMinDate (15 days before minDate)
     it('Horizontal Activity Timeline: scrollAxisMaxDate and scrollAxisMinDate', () => {
         expect(element.convertDateToFormat(element.scrollAxisMinDate)).toBe(
-            '27/12/2021'
+            '17/12/2021'
         );
         expect(element.convertDateToFormat(element.scrollAxisMaxDate)).toBe(
             '29/03/2022'
@@ -127,11 +126,11 @@ describe('Activity Timeline', () => {
 
     // validateXMousePosition
     it('Horizontal Activity Timeline: validateXMousePosition', () => {
-        const minPosition = 40;
-        const maxPosition = 1094;
-        const positionsSmallerThanMin = [-100, -40, 0, 10, 30, 39, 40];
-        const positionsBiggerThanMax = [1094, 1095, 1100, 2000, 234234];
-        const validPositions = [41, 59, 233, 425, 734, 923, 1093];
+        const minPosition = 16.5;
+        const maxPosition = 1110;
+        const positionsSmallerThanMin = [-100, -40, 0, 10, 16, 16.5];
+        const positionsBiggerThanMax = [1110, 1111, 1300, 2000, 234234];
+        const validPositions = [17, 40, 233, 425, 734, 923, 1093];
 
         for (const position of positionsSmallerThanMin) {
             expect(element.validateXMousePosition(position)).toBe(minPosition);
@@ -172,5 +171,16 @@ describe('Activity Timeline', () => {
                 expectedIconInformation
             );
         }
+    });
+
+    // endIntervalResizing
+    it('Horizontal Activity Timeline: endIntervalResizing', () => {
+        element.setIntervalBoundsState = jest.fn();
+        element.position = 'horizontal';
+        element._isResizingInterval = true;
+        element._changeIntervalSizeMode = true;
+        element.endIntervalResizing();
+        expect(element._isResizingInterval).toBeFalsy();
+        expect(element._changeIntervalSizeMode).toBeFalsy();
     });
 });

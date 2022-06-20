@@ -600,7 +600,30 @@ export const horizontalItems = [
         href: 'salesforce.com',
         iconName: 'standard:task',
         icons: ['utility:refresh'],
-        hasCheckbox: true
+        hasCheckbox: true,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value: 'Need to finalize proposals and brand details before the meeting',
+                type: 'text'
+            }
+        ]
     },
     {
         name: 'item2',
@@ -608,7 +631,30 @@ export const horizontalItems = [
         description: 'You logged a call with Adam Chan',
         href: '#',
         datetimeValue: new Date(),
-        iconName: 'standard:log_a_call'
+        iconName: 'standard:log_a_call',
+        fields: [
+            {
+                label: 'Name',
+                value: 'Adam Chan',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Adam Chan'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value: 'Adam seemed interested in closing this deal quickly! Let’s move.',
+                type: 'text'
+            }
+        ]
     },
     {
         name: 'item3',
@@ -619,7 +665,30 @@ export const horizontalItems = [
         iconName: 'standard:email',
         icons: ['utility:groups', 'utility:attach'],
         buttonLabel: 'Public Sharing',
-        buttonIconName: 'utility:world'
+        buttonIconName: 'utility:world',
+        fields: [
+            {
+                label: 'Name',
+                value: 'Jackie Dewar',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Jackie Dewar'
+                }
+            },
+            {
+                label: 'To Address',
+                value: 'Lea Chan',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Lea Chan'
+                }
+            },
+            {
+                label: 'Text Body',
+                value: 'Hi everyone, Thanks for meeting with the team today and going through the proposals we saw. This goes on and wraps if needed.',
+                type: 'text'
+            }
+        ]
     },
     {
         name: 'item4',
@@ -631,7 +700,30 @@ export const horizontalItems = [
         iconName: 'standard:event',
         buttonLabel: 'Public Sharing',
         buttonIconName: 'utility:activity',
-        closed: true
+        closed: true,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            },
+            {
+                label: 'Description',
+                value: 'Need to finalize proposals and brand details before the meeting',
+                type: 'text'
+            }
+        ]
     },
     {
         name: 'item5',
@@ -662,6 +754,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'custom:custom47',
         hasCheckbox: true,
+        closed: true,
         hasError: true
     },
     {
@@ -689,6 +782,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:service_request_detail',
         hasCheckbox: false,
+        closed: true,
         hasError: true
     },
     {
@@ -698,7 +792,25 @@ export const horizontalItems = [
         href: '#',
         iconName: 'action:log_event',
         hasCheckbox: false,
-        hasError: true
+        hasError: true,
+        fields: [
+            {
+                label: 'Name',
+                value: 'Charlie Gomez',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Charlie Gomez'
+                }
+            },
+            {
+                label: 'Related To',
+                value: 'Tesla Cloudhub + Anypoint Connectors',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Tesla Cloudhub + Anypoint Connectors'
+                }
+            }
+        ]
     },
     {
         name: 'item10',
@@ -716,6 +828,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:bot',
         hasCheckbox: true,
+        closed: true,
         hasError: false
     },
     {
@@ -725,6 +838,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'action:map',
         hasCheckbox: true,
+        closed: true,
         hasError: false
     },
     {
@@ -743,6 +857,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:education',
         hasCheckbox: true,
+        closed: true,
         hasError: false
     },
     {
@@ -770,6 +885,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'custom:custom69',
         hasCheckbox: true,
+        closed: true,
         hasError: false
     },
     {
@@ -779,6 +895,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:announcement',
         hasCheckbox: true,
+        closed: false,
         hasError: false
     },
     {
@@ -804,9 +921,33 @@ export const horizontalItems = [
         title: 'Event 21',
         datetimeValue: '02/02/2022 08:30',
         href: '#',
+        closed: false,
         iconName: 'utility:animal_and_nature',
         hasCheckbox: true,
-        hasError: false
+        hasError: false,
+        fields: [
+            {
+                label: 'When ?',
+                value: 'Sunday',
+                type: 'url',
+                typeAttributes: {
+                    label: 'Sunday morning at 10AM'
+                }
+            },
+            {
+                label: 'Where ?',
+                value: 'The parc',
+                type: 'url',
+                typeAttributes: {
+                    label: 'The parc'
+                }
+            },
+            {
+                label: 'Description',
+                value: 'Bring your pet!',
+                type: 'text'
+            }
+        ]
     },
     {
         name: 'item22',
@@ -815,6 +956,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:trailhead',
         hasCheckbox: true,
+        closed: false,
         hasError: false
     },
     {
@@ -824,6 +966,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'utility:palette',
         hasCheckbox: true,
+        closed: false,
         hasError: false
     },
     {
@@ -833,6 +976,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'utility:pin',
         hasCheckbox: true,
+        closed: false,
         hasError: false
     },
     {
@@ -932,6 +1076,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:swarm_request',
         hasCheckbox: true,
+        closed: false,
         hasError: false
     },
     {
@@ -941,6 +1086,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:process_exception',
         hasCheckbox: true,
+        closed: false,
         hasError: false
     },
     {
@@ -950,6 +1096,7 @@ export const horizontalItems = [
         href: '#',
         iconName: 'standard:reward',
         hasCheckbox: true,
+        closed: true,
         hasError: false
     }
 ];

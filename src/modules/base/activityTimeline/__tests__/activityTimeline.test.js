@@ -775,9 +775,9 @@ describe('Activity Timeline', () => {
             HorizontalActivityTimeline.prototype,
             'cancelEditIntervalSizeMode'
         );
-        const handleClickOnIntervalSpy = jest.spyOn(
+        const handleMouseOverOnIntervalSpy = jest.spyOn(
             HorizontalActivityTimeline.prototype,
-            'handleClickOnInterval'
+            'handleMouseOverOnInterval'
         );
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
@@ -789,20 +789,20 @@ describe('Activity Timeline', () => {
             );
             expect(editModeLines.length).toBe(0);
 
-            // First click : Activate edit mode
+            // Mouse over : Activate edit mode
             const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
+                '.avonni-horizontal-activity-timeline__interval-group'
             );
-            intervalRectangle.dispatchEvent(new CustomEvent('click'));
+            intervalRectangle.dispatchEvent(new CustomEvent('mouseover'));
 
             editModeLines = element.shadowRoot.querySelectorAll(
                 '.avonni-activity-timeline__horizontal-timeline-resize-cursor'
             );
-            expect(handleClickOnIntervalSpy).toBeCalled();
+            expect(handleMouseOverOnIntervalSpy).toBeCalled();
             expect(editModeLines.length).toBe(2);
 
-            // Second click : Cancel edit mode
-            intervalRectangle.dispatchEvent(new CustomEvent('click'));
+            // Mouse out : Cancel edit mode
+            intervalRectangle.dispatchEvent(new CustomEvent('mouseout'));
             expect(cancelEditIntervalSizeModeSpy).toHaveBeenCalled();
             editModeLines = element.shadowRoot.querySelectorAll(
                 '.avonni-activity-timeline__horizontal-timeline-resize-cursor'
@@ -824,14 +824,14 @@ describe('Activity Timeline', () => {
 
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
-        const initialIntervalPosition = '541.0843920145192';
+        const initialIntervalPosition = '602.8452332242226';
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             // Activate edit mode
-            intervalRectangle.dispatchEvent(new CustomEvent('click'));
+            intervalRectangle.dispatchEvent(new CustomEvent('mouseover'));
             expect(intervalRectangle.getAttribute('x')).toBe(
                 initialIntervalPosition
             );
@@ -858,7 +858,7 @@ describe('Activity Timeline', () => {
             expect(intervalRectangle.getAttribute('x')).toBe(
                 initialIntervalPosition
             );
-            expect(intervalRectangle.getAttribute('width')).toBe('0');
+            expect(intervalRectangle.getAttribute('width')).toBe('2');
 
             // Check the items displayed, the new interval should be : [02/02/2022, 03/02/2022[
             const itemsAfterDrag = [
@@ -949,16 +949,15 @@ describe('Activity Timeline', () => {
 
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
-        const dragPosition = '40';
+        const dragPosition = '16.5';
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             // Activate edit mode
-            intervalRectangle.dispatchEvent(new CustomEvent('click'));
             expect(intervalRectangle.getAttribute('x')).toBe(
-                '541.0843920145192'
+                '602.8452332242226'
             );
 
             // drag of left interval line
@@ -983,7 +982,7 @@ describe('Activity Timeline', () => {
 
             expect(intervalRectangle.getAttribute('x')).toBe(dragPosition);
             expect(intervalRectangle.getAttribute('width')).toBe(
-                '706.8920145190564'
+                '775.4041530278232'
             );
 
             // Check the items displayed, the new interval should be : [27/12/2021, 17/02/2022]
@@ -1057,7 +1056,7 @@ describe('Activity Timeline', () => {
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
-                '541.0843920145192'
+                '602.8452332242226'
             );
 
             // To simulate drag --> mouse down, mouse move, mouse up events
@@ -1113,7 +1112,7 @@ describe('Activity Timeline', () => {
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
-                '541.0843920145192'
+                '602.8452332242226'
             );
 
             // To simulate drag --> mouse down, mouse move, mouse up events
@@ -1126,87 +1125,15 @@ describe('Activity Timeline', () => {
             intervalRectangle.dispatchEvent(new MouseEvent('mouseup'));
 
             expect(handleTimeIntervalDragSpy).toBeCalled();
-            expect(intervalRectangle.getAttribute('x')).toBe('40');
+            expect(intervalRectangle.getAttribute('x')).toBe('16.5');
 
-            // Check the items displayed, the new interval should be : [27/12/2021, 11/01/2022]
-            const itemsAfterDrag = [
-                {
-                    name: 'item1',
-                    title: 'This is a message longer than  ...',
-                    datetimeValue: '01/01/2022 11:30',
-                    href: '#',
-                    iconName: 'standard:skill',
-                    hasCheckbox: true,
-                    hasError: true
-                },
-                {
-                    name: 'item2',
-                    title: 'Another new item',
-                    datetimeValue: '01/04/2022 10:30',
-                    href: '#',
-                    iconName: 'utility:frozen',
-                    hasCheckbox: true,
-                    hasError: false
-                }
-            ];
-
+            // Check the items displayed, the new interval should be : [27/12/2021, 01/01/2022]
+            // No item should be displayed
             const timelineSVG = element.shadowRoot.querySelector(
                 '.avonni-horizontal-activity-timeline__timeline-items-svg'
             );
             expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
-                itemsAfterDrag.length
-            );
-
-            for (const item of itemsAfterDrag) {
-                const itemElement = timelineSVG.querySelector(
-                    '#timeline-item-' + item.name
-                );
-                expect(itemElement).toBeDefined();
-                const title = itemElement.querySelector('text');
-                expect(title.textContent).toBe(item.title);
-            }
-        });
-    });
-
-    // Drag of interval rectangle : disabled if edit mode is activated
-    it('Activity Timeline: horizontal - drag of interval rectangle (edit mode activated)', () => {
-        const handleTimeIntervalDragSpy = jest.spyOn(
-            HorizontalActivityTimeline.prototype,
-            'handleTimeIntervalDrag'
-        );
-        element.items = horizontalItemsTest;
-        element.position = 'horizontal';
-        const initialPosition = '541.0843920145192';
-
-        return Promise.resolve().then(() => {
-            const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
-            );
-
-            // Activate edit mode
-            intervalRectangle.dispatchEvent(
-                new MouseEvent('click', { view: window })
-            );
-            expect(intervalRectangle.getAttribute('x')).toBe(initialPosition);
-
-            // Drag event
-            const sourceEvent = new MouseEvent('mousemove');
-            sourceEvent.offsetX = 1000;
-
-            intervalRectangle.dispatchEvent(
-                new MouseEvent('mousedown', { view: window })
-            );
-            intervalRectangle.dispatchEvent(sourceEvent);
-
-            expect(handleTimeIntervalDragSpy).toBeCalled();
-            expect(intervalRectangle.getAttribute('x')).toBe(initialPosition);
-
-            // Should be all the same items
-            const timelineSVG = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__timeline-items-svg'
-            );
-            expect(timelineSVG.querySelectorAll('foreignObject').length).toBe(
-                displayedItemsHorizontalTest.length
+                0
             );
         });
     });
@@ -1244,18 +1171,18 @@ describe('Activity Timeline', () => {
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
         const clickPosition = '1150';
-        const maxPositionForInterval = '1094.1923774954628';
+        const maxPositionForInterval = '1055.4705400981998';
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
-                '541.0843920145192'
+                '602.8452332242226'
             );
 
             const scrollAxis = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__scroll-axis-svg rect'
+                '.avonni-horizontal-activity-timeline__scroll-axis-rectangle'
             );
             const clickEvent = new MouseEvent('click');
             clickEvent.offsetX = clickPosition;
@@ -1275,61 +1202,27 @@ describe('Activity Timeline', () => {
 
         element.items = horizontalItemsTest;
         element.position = 'horizontal';
-        const newIntervalPosition = '1000';
+        const newIntervalPosition = '810.9410801963995';
+        const halfIntervalWidth = 189.0589198036006 / 2;
 
         return Promise.resolve().then(() => {
             const intervalRectangle = element.shadowRoot.querySelector(
                 '.avonni-horizontal-activity-timeline__time-interval-rectangle'
             );
             expect(intervalRectangle.getAttribute('x')).toBe(
-                '541.0843920145192'
+                '602.8452332242226'
             );
 
             const scrollAxis = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__scroll-axis-svg rect'
+                '.avonni-horizontal-activity-timeline__scroll-axis-rectangle'
             );
             const clickEvent = new MouseEvent('click');
             clickEvent.offsetX = newIntervalPosition;
             scrollAxis.dispatchEvent(clickEvent);
             expect(handleClickOnScrollAxisSpy).toHaveBeenCalled();
-            expect(intervalRectangle.getAttribute('x')).toBe(
-                newIntervalPosition
+            expect(Number(intervalRectangle.getAttribute('x'))).toBe(
+                newIntervalPosition - halfIntervalWidth
             );
-        });
-    });
-
-    // Click on scroll axis: if edit mode of interval is activated, click on scroll axis has no effect
-    it('Activity Timeline: horizontal - click on scroll axis (edit mode activated)', () => {
-        const handleClickOnScrollAxisSpy = jest.spyOn(
-            HorizontalActivityTimeline.prototype,
-            'handleClickOnScrollAxis'
-        );
-        const handleClickOnIntervalSpy = jest.spyOn(
-            HorizontalActivityTimeline.prototype,
-            'handleClickOnInterval'
-        );
-        element.items = horizontalItemsTest;
-        element.position = 'horizontal';
-
-        return Promise.resolve().then(() => {
-            // Activate edit mode
-            const intervalRectangle = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__time-interval-rectangle'
-            );
-            intervalRectangle.dispatchEvent(new CustomEvent('click'));
-            expect(handleClickOnIntervalSpy).toBeCalled();
-
-            // Click on scroll axis : x position of interval rectangle should not change
-            const previousPosition = intervalRectangle.getAttribute('x');
-            const scrollAxis = element.shadowRoot.querySelector(
-                '.avonni-horizontal-activity-timeline__scroll-axis-svg rect'
-            );
-
-            const clickEvent = new MouseEvent('click');
-            clickEvent.offsetX = 1000;
-            scrollAxis.dispatchEvent(clickEvent);
-            expect(handleClickOnScrollAxisSpy).toHaveBeenCalled();
-            expect(intervalRectangle.getAttribute('x')).toBe(previousPosition);
         });
     });
 
@@ -1384,6 +1277,43 @@ describe('Activity Timeline', () => {
                     );
                     expect(handleMouseOutOnItemSpy).toHaveBeenCalled();
                     expect(popoverItem).toBeNull();
+                })
+        );
+    });
+
+    // mouseover on item - right position
+    it('Activity Timeline: horizontal - Mouseover on item (right position)', () => {
+        element.items = horizontalItemsTest;
+        element.position = 'horizontal';
+        let item;
+        let popoverItem;
+
+        return (
+            Promise.resolve()
+                // Get specific item to activate mouse over
+                .then(() => {
+                    const timelineSVG = element.shadowRoot.querySelector(
+                        '.avonni-horizontal-activity-timeline__timeline-items-svg'
+                    );
+                    item = timelineSVG.querySelector('#timeline-item-item12');
+                    item.dispatchEvent(new CustomEvent('mouseover'));
+                })
+                // Check if popover is present
+                .then(() => {
+                    item.dispatchEvent(new CustomEvent('mouseover'));
+                    popoverItem = element.shadowRoot.querySelector(
+                        '.avonni-activity-timeline__item-popover'
+                    );
+                    const primitiveActivityTimelineItem =
+                        popoverItem.querySelector(
+                            'c-primitive-activity-timeline-item'
+                        );
+
+                    expect(primitiveActivityTimelineItem.name).toBe('item12');
+                    expect(popoverItem.className).toBe(
+                        'slds-is-fixed avonni-activity-timeline__item-popover slds-popover'
+                    );
+                    expect(popoverItem.style.visibility).toBe('visible');
                 })
         );
     });
@@ -1532,7 +1462,7 @@ describe('Activity Timeline', () => {
                     timelineContainer,
                     'clientWidth',
                     'get'
-                ).mockImplementation(() => 2065);
+                ).mockImplementation(() => 2032.5);
                 element.position = 'horizontal';
             })
             .then(() => {
@@ -1573,7 +1503,7 @@ describe('Activity Timeline', () => {
                     '.avonni-horizontal-activity-timeline__timeline-items-svg'
                 );
                 expect(timelineItemsSVG.getAttribute('width')).toBe(
-                    (timelineWidth - 65).toString()
+                    (timelineWidth - 32.5).toString()
                 );
                 expect(createTimeAxisSpy).toBeCalled();
 

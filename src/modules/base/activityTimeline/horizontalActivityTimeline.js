@@ -364,6 +364,7 @@ export class HorizontalActivityTimeline {
             const itemGroup = this._timelineSVG
                 .append('g')
                 .attr('id', 'timeline-item-' + item.name);
+
             this.createItem(itemGroup, item);
 
             itemGroup
@@ -379,7 +380,10 @@ export class HorizontalActivityTimeline {
         // Create group with rectangle and two lines
         const intervalGroup = this._scrollAxisSVG
             .append('g')
-            .attr('id', 'interval-group')
+            .attr(
+                'class',
+                'avonni-horizontal-activity-timeline__interval-group'
+            )
             .on('mouseover', this.handleMouseOverOnInterval.bind(this))
             .on('mouseout', this.cancelEditIntervalSizeMode.bind(this));
 
@@ -860,6 +864,10 @@ export class HorizontalActivityTimeline {
         // Create the surrounding rectangle of the scroll axis
         this._scrollAxisSVG
             .append('rect')
+            .attr(
+                'class',
+                'avonni-horizontal-activity-timeline__scroll-axis-rectangle'
+            )
             .attr('x', this._offsetAxis)
             .attr('y', 1)
             .attr('width', this._timelineWidth - this._offsetAxis)
