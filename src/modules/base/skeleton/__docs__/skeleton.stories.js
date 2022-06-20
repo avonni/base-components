@@ -125,7 +125,10 @@ Avatar.args = {
     animation: 'pulse',
     variantAttributes: {
         variant: 'circle',
-        size: 'medium'
+        size: 'x-large',
+        primaryText: 'primary',
+        secondaryText: 'secondary',
+        tertiaryText: 'tertiary'
     }
 };
 

@@ -92,12 +92,11 @@ export default class Skeleton extends LightningElement {
     _waveVariant;
     _initialAvatarRender = false;
 
-    parentAvatarWrapper;
     avatarWrapperClass;
     avatarClass;
-    primaryTextClass;
-    secondaryTextClass;
-    tertiaryTextClass;
+    primaryAvatarTextClass;
+    secondaryAvatarTextClass;
+    tertiaryAvatarTextClass;
     breadcrumbs = [];
     buttonWrapper;
     buttonIconWrapper;
@@ -166,10 +165,6 @@ export default class Skeleton extends LightningElement {
         switch (this.variant) {
             case 'avatar':
                 this.htmlVariant = avatar;
-                this.updateAvatarClassList();
-                this.primaryText = this.variantAttributes.primaryText;
-                this.secondaryText = this.variantAttributes.secondaryText;
-                this.tertiaryText = this.variantAttributes.tertiaryText;
                 break;
             case 'badge':
                 this.htmlVariant = badge;
@@ -182,6 +177,9 @@ export default class Skeleton extends LightningElement {
                 break;
             case 'chip':
                 this.htmlVariant = chip;
+                break;
+            case 'circular':
+                this.htmlVariant = skeleton;
                 break;
             case 'combobox':
                 this.htmlVariant = combobox;
@@ -198,8 +196,14 @@ export default class Skeleton extends LightningElement {
             case 'progress-indicator':
                 this.htmlVariant = progressIndicator;
                 break;
+            case 'rectangular':
+                this.htmlVariant = skeleton;
+                break;
             case 'tabset':
                 this.htmlVariant = tabset;
+                break;
+            case 'text':
+                this.htmlVariant = skeleton;
                 break;
             case 'tree':
                 this.htmlVariant = tree;
@@ -357,14 +361,14 @@ export default class Skeleton extends LightningElement {
         return this.variant === 'progress-indicator';
     }
 
-    @api
-    get isRegularVariant() {
-        return (
-            this.variant === 'text' ||
-            this.variant === 'circular' ||
-            this.variant === 'rectangular'
-        );
-    }
+    // @api
+    // get isRegularVariant() {
+    //     return (
+    //         this.variant === 'text' ||
+    //         this.variant === 'circular' ||
+    //         this.variant === 'rectangular'
+    //     );
+    // }
 
     @api
     get isTabsetBaseVariant() {
@@ -392,12 +396,12 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
-    get showPrimaryText() {
+    get showAvatarPrimaryText() {
         return this.variantAttributes.primaryText;
     }
 
     @api
-    get showSecondaryText() {
+    get showAvatarSecondaryText() {
         return this.variantAttributes.secondaryText;
     }
 
@@ -406,7 +410,7 @@ export default class Skeleton extends LightningElement {
      *
      * @type {boolean}
      */
-    get showTertiaryText() {
+    get showAvatarTertiaryText() {
         return (
             (this._variantAttributes.size === 'x-large' ||
                 this._variantAttributes.size === 'xx-large') &&
@@ -820,17 +824,6 @@ export default class Skeleton extends LightningElement {
         return classSet('avonni-skeleton__item-container');
     }
 
-    /**
-     * Wrapper div class, depending on the variant value.
-     * @type {string}
-     */
-    get variantClass() {
-        return classSet('avonni-skeleton__base')
-            .add(`avonni-skeleton__variant-${this.variant}`)
-            .add(`avonni-skeleton__animation-${this.animation}`)
-            .toString();
-    }
-
     /*
      * ------------------------------------------------------------
      * PRIVATE METHODS
@@ -1139,9 +1132,9 @@ export default class Skeleton extends LightningElement {
     }
 
     updateAvatarClassList() {
-        const wrapperClass = classSet('')
-            .add('slds-avatar')
+        const avatarWrapperClass = classSet('slds-avatar')
             // .add(`avonni-avatar_${this.avatarVariant}`)
+            .add(`avonni-skeleton__animation-${this.animation}`)
             .add({
                 'avonni-avatar_xx-small':
                     this.variantAttributes.size === 'xx-small',
@@ -1158,29 +1151,24 @@ export default class Skeleton extends LightningElement {
                     this.variantAttributes.variant === 'circle'
             });
 
-        const parentWrapperClass = classSet('').add(
-            'avonni-skeleton-avatar__paragraph-margin'
-        );
-
-        const primaryTextClass = classSet('slds-text-title_bold')
+        const primaryAvatarTextClass = classSet('slds-m-bottom_xx-small')
             .add('avonni-avatar__primary-text')
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`);
 
-        const secondaryTextClass = classSet('avonni-avatar__secondary-text')
+        const secondaryAvatarTextClass = classSet('slds-m-bottom_xx-small')
+            .add('avonni-avatar__secondary-text')
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`);
 
-        const tertiaryTextClass = classSet('avonni-avatar__tertiary-text')
+        const tertiaryAvatarTextClass = classSet('avonni-avatar__tertiary-text')
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`);
 
-        // console.log('first');
-        this.parentAvatarWrapper = parentWrapperClass;
-        this.avatarWrapperClass = wrapperClass;
-        this.primaryTextClass = primaryTextClass;
-        this.secondaryTextClass = secondaryTextClass;
-        this.tertiaryTextClass = tertiaryTextClass;
+        this.avatarWrapperClass = avatarWrapperClass;
+        this.primaryAvatarTextClass = primaryAvatarTextClass;
+        this.secondaryAvatarTextClass = secondaryAvatarTextClass;
+        this.tertiaryAvatarTextClass = tertiaryAvatarTextClass;
     }
 
     updateChipClassList() {

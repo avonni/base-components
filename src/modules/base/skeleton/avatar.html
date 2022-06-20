@@ -33,27 +33,22 @@
 -->
 
 <template>
-    <c-media-object
-        class={parentAvatarWrapper}
-        data-element-id="avatar-media-object"
-    >
-        <div class={avatarWrapperClass} slot="figure">
-            <div class={variantClass} data-element-id="avonni-skeleton"></div>
-        </div>
+    <c-media-object data-element-id="avonni-skeleton__avatar-media-object">
+        <div class={avatarWrapperClass} slot="figure"></div>
         <p
-            if:true={showPrimaryText}
-            class={primaryTextClass}
-            data-element-id="avonni-avatar-primary-text"
+            if:true={showAvatarPrimaryText}
+            class={primaryAvatarTextClass}
+            data-element-id="avonni-skeleton__avatar-primary-text"
         ></p>
         <p
-            if:true={showSecondaryText}
-            class={secondaryTextClass}
-            data-element-id="avonni-avatar-secondary-text"
+            if:true={showAvatarSecondaryText}
+            class={secondaryAvatarTextClass}
+            data-element-id="avonni-skeleton__avatar-secondary-text"
         ></p>
         <p
-            if:true={showTertiaryText}
-            class={tertiaryTextClass}
-            data-element-id="avonni-avatar-tertiary-text"
+            if:true={showAvatarTertiaryText}
+            class={tertiaryAvatarTextClass}
+            data-element-id="avonni-skeleton__avatar-tertiary-text"
         ></p>
     </c-media-object>
 </template>
