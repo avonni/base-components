@@ -911,17 +911,8 @@ export default class InputPen extends LightningElement {
         ) {
             this.redoStack.unshift(this.undoStack.pop());
         }
-        console.log('events to recreate... ------------');
-        for (const action of this.undoStack) {
-            console.log(action.requestedEvent);
-        }
-        console.log('------------');
         this.clear(true);
-        let lastClearIndex = -1;
-        for (const [index, action] of this.undoStack.entries()) {
-            if (index < lastClearIndex) {
-                continue;
-            }
+        for (const action of this.undoStack) {
             this.executeAction(action);
         }
         this.redoStack.unshift(this.undoStack.pop());
@@ -931,7 +922,6 @@ export default class InputPen extends LightningElement {
         if (this.redoStack.length === 0) {
             return;
         }
-        console.log('recreated...');
         let actionsRecreated = -1;
         for (const [index, action] of this.redoStack.entries()) {
             if (action.requestedEvent === 'state' && index !== 0) {
@@ -940,30 +930,23 @@ export default class InputPen extends LightningElement {
             }
             this.executeAction(action);
             this.undoStack.push(action);
-            console.log(action.requestedEvent);
         }
-        console.log('actionsRecreated : ' + actionsRecreated);
         if (actionsRecreated === -1) {
             this.redoStack = [];
         } else {
             this.redoStack = this.redoStack.slice(actionsRecreated);
         }
-        console.log('redo left ----');
-        for (const action of this.redoStack) {
-            console.log(action.requestedEvent);
-        }
-        console.log('------------');
     }
 
     saveAction(event) {
         this.redoStack = [];
         let action = {};
+        action.isAction = true;
         action.moveCoordinatesAdded = this.moveCoordinatesAdded;
         action.isDownFlag = this.isDownFlag;
         action.isDotFlag = this.isDotFlag;
         action.activeVelocity = this.activeVelocity;
         action.backgroundColor = this._backgroundColor;
-        action.isAction = true;
         action.mode = this._mode;
         action.color = this._color;
         action.size = this._size;
@@ -980,7 +963,6 @@ export default class InputPen extends LightningElement {
         if (action.requestedEvent === 'down') {
             this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
         }
-        console.log('saving! ' + event.type);
         this.undoStack.push(action);
     }
 
@@ -989,7 +971,6 @@ export default class InputPen extends LightningElement {
         this.moveCoordinatesAdded = action.moveCoordinatesAdded;
         this.isDownFlag = action.isDownFlag;
         this.isDotFlag = action.isDotFlag;
-        this.activeVelocity = action.activeVelocity;
         this._color = action.color;
         this._backgroundColor = action.backgroundColor;
         this._size = action.size;
@@ -1063,20 +1044,32 @@ export default class InputPen extends LightningElement {
                     if (!event.isAction) {
                         this.saveAction(event);
                     }
-                    this.handleChangeEvent();
                     this.clearPositionBuffer(event);
+                    this.handleChangeEvent();
                 }
                 this.isDownFlag = false;
                 break;
-            default:
+            case 'move':
                 // default aka 'move'
                 if (this.isDownFlag) {
                     if (!event.isAction) {
                         this.saveAction(event);
                     }
+                    console.log(
+                        'did: ' +
+                            event.requestedEvent +
+                            ' at ' +
+                            this.xPositions[0] +
+                            ', ' +
+                            this.yPositions[0] +
+                            ' - on mode: ' +
+                            this._mode
+                    );
                     this.useTool(event);
                 }
                 this.moveCursor(event);
+                break;
+            default:
                 break;
         }
     }
@@ -1193,7 +1186,9 @@ export default class InputPen extends LightningElement {
             this.activeVelocity += 0.25;
             this.drawSpline(
                 this.getSplinePoints(),
-                (this._size * 2) / this.activeVelocity - 0.2
+                this._mode === 'paint'
+                    ? this._size
+                    : (this._size * 2) / this.activeVelocity
             );
         }
         this.xPositions = [];
@@ -1363,6 +1358,8 @@ export default class InputPen extends LightningElement {
         );
         this.xPositions[0] = event.clientX - clientRect.left;
         this.yPositions[0] = event.clientY - clientRect.top;
+        console.log(' for x position: ' + this.xPositions[0]);
+        console.log(' for y position: ' + this.yPositions[0]);
         if (distance > 2) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
