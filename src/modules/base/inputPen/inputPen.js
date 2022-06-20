@@ -647,7 +647,7 @@ export default class InputPen extends LightningElement {
      * @public
      */
     @api
-    clear() {
+    clear(automatedClear = false) {
         if (!this.readOnly) {
             this.ctx.clearRect(
                 0,
@@ -660,6 +660,10 @@ export default class InputPen extends LightningElement {
             }
             this.fillBackground();
             this.handleChangeEvent();
+        }
+        if (!automatedClear) {
+            this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
+            this.saveAction({ type: 'clear', clientX: 0, clientY: 0 });
         }
     }
 
@@ -736,7 +740,7 @@ export default class InputPen extends LightningElement {
             };
             img.src = this._foregroundValue;
         } else {
-            this.clear();
+            this.clear(true);
         }
     }
 
@@ -778,7 +782,7 @@ export default class InputPen extends LightningElement {
             this.cursor.style.setProperty('--size', this._size);
             this.cursor.style.setProperty(
                 '--color',
-                this.mode === 'erase' ? '#ffffff' : this.color
+                this._mode === 'erase' ? '#ffffff' : this.color
             );
         }
     }
@@ -836,7 +840,13 @@ export default class InputPen extends LightningElement {
      * @param {Event} event
      */
     handleBackgroundColorChange(event) {
+        this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
         this._backgroundColor = event.detail.hexa;
+        this.saveAction({
+            type: 'fill',
+            clientX: 0,
+            clientY: 0
+        });
         this.fillBackground();
         this.handleChangeEvent();
     }
@@ -893,17 +903,52 @@ export default class InputPen extends LightningElement {
     }
 
     handleUndo() {
-        this.redoStack = this.undoStack.pop();
+        if (this.undoStack.length === 0) {
+            return;
+        }
+        while (
+            this.undoStack[this.undoStack.length - 1].requestedEvent !== 'state'
+        ) {
+            this.redoStack.unshift(this.undoStack.pop());
+        }
+        console.log('events to recreate... ------------');
+        for (const action of this.undoStack) {
+            console.log(action.requestedEvent);
+        }
+        console.log('------------');
+        this.clear(true);
         for (const action of this.undoStack) {
             this.executeAction(action);
         }
+        this.redoStack.unshift(this.undoStack.pop());
     }
 
     handleRedo() {
-        this.undoStack.push(this.redoStack.pop());
-        for (const action of this.undoStack) {
-            this.executeAction(action);
+        if (this.redoStack.length === 0) {
+            return;
         }
+        console.log('recreated...');
+        let actionsRecreated = -1;
+        for (const [index, action] of this.redoStack.entries()) {
+            if (action.requestedEvent === 'state' && index !== 0) {
+                actionsRecreated = index;
+                break;
+            }
+            this.executeAction(action);
+            this.undoStack.push(action);
+            console.log(action.requestedEvent);
+        }
+        console.log('actionsRecreated : ' + actionsRecreated);
+        if (actionsRecreated === -1) {
+            this.redoStack = [];
+        } else {
+            this.redoStack = this.redoStack.slice(actionsRecreated);
+        }
+        console.log('redo left ----');
+        for (const action of this.redoStack) {
+            console.log(action.requestedEvent);
+        }
+        console.log('------------');
     }
 
     saveAction(event) {
@@ -913,6 +958,7 @@ export default class InputPen extends LightningElement {
         action.isDownFlag = this.isDownFlag;
         action.isDotFlag = this.isDotFlag;
         action.activeVelocity = this.activeVelocity;
+        action.backgroundColor = this._backgroundColor;
         action.isAction = true;
         action.mode = this._mode;
         action.color = this._color;
@@ -921,26 +967,54 @@ export default class InputPen extends LightningElement {
         action.yPositions = this.yPositions;
         action.velocities = this.velocities;
         action.prevDist = this.prevDist;
-        action.requestedEvent = event.name;
         action.requestedEvent = event.type.split('mouse')[1];
+        if (!action.requestedEvent) {
+            action.requestedEvent = event.type;
+        }
         action.clientX = event.clientX;
         action.clientY = event.clientY;
-        this.undoStack.unshift(action);
+        if (action.requestedEvent === 'down') {
+            this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
+        }
+        console.log('saving! ' + event.type);
+        this.undoStack.push(action);
     }
 
-    executeAction(action) {
+    loadAction(action) {
         this._mode = action.mode;
         this.moveCoordinatesAdded = action.moveCoordinatesAdded;
         this.isDownFlag = action.isDownFlag;
         this.isDotFlag = action.isDotFlag;
         this.activeVelocity = action.activeVelocity;
         this._color = action.color;
+        this._backgroundColor = action.backgroundColor;
         this._size = action.size;
         this.xPositions = action.xPositions;
         this.yPositions = action.yPositions;
         this.velocities = action.velocities;
+        this.activeVelocity = action.activeVelocity;
         this.prevDist = action.prevDist;
+    }
+
+    executeAction(action) {
+        this.loadAction(action);
+        if (action.requestedEvent === 'clear') {
+            this.clear(true);
+        }
+        if (
+            action.requestedEvent === 'state' ||
+            action.requestedEvent === 'fill'
+        ) {
+            this.fillBackground();
+        }
         this.manageMouseEvent(action.requestedEvent, action);
+    }
+
+    handleReset(event) {
+        this.clear();
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        event.stopPropagation();
     }
 
     hideDrawCursor() {
@@ -971,30 +1045,31 @@ export default class InputPen extends LightningElement {
         if (this.disabled || this.readOnly) {
             return;
         }
-        if (!event.isAction) {
-            this.saveAction(event);
-        }
         switch (requestedEvent) {
             case 'down':
+                if (!event.isAction) {
+                    this.saveAction(event);
+                }
                 this.setupCoordinate(event);
                 this.isDownFlag = true;
                 this.drawDot();
                 break;
             case 'up':
                 if (this.isDownFlag) {
+                    if (!event.isAction) {
+                        this.saveAction(event);
+                    }
                     this.handleChangeEvent();
+                    this.clearPositionBuffer(event);
                 }
-                this.clearPositionBuffer(event);
                 this.isDownFlag = false;
-                break;
-            case 'enter':
-                if (this.isDownFlag) {
-                    this.drawDot();
-                }
                 break;
             default:
                 // default aka 'move'
                 if (this.isDownFlag) {
+                    if (!event.isAction) {
+                        this.saveAction(event);
+                    }
                     this.useTool(event);
                 }
                 this.moveCursor(event);
@@ -1044,7 +1119,7 @@ export default class InputPen extends LightningElement {
     setupCoordinate(event) {
         let nbPoints = 1;
         this.moveCoordinatesAdded = 0;
-        if (this.mode === 'ink' || this.mode === 'paint') {
+        if (this._mode === 'ink' || this._mode === 'paint') {
             this.xPositions = [];
             this.yPositions = [];
             nbPoints = 4;
@@ -1084,7 +1159,7 @@ export default class InputPen extends LightningElement {
 
     useTool(event, isDot = false) {
         if (!isDot) {
-            if (this.mode === 'draw' || this.mode === 'erase') {
+            if (this._mode === 'draw' || this._mode === 'erase') {
                 this.setupCoordinate(event);
                 this.hardEdgeDraw(event);
             } else {
@@ -1193,7 +1268,6 @@ export default class InputPen extends LightningElement {
 
     findMarginPoints(splinePoints, bigRadius, smallRadius) {
         if (smallRadius > bigRadius) {
-            console.log('swap');
             let temp = bigRadius;
             bigRadius = smallRadius;
             smallRadius = temp;
@@ -1206,8 +1280,6 @@ export default class InputPen extends LightningElement {
                 splinePoints[7 - i] = temp;
             }
         }
-        console.log('small : ' + smallRadius);
-        console.log('big : ' + bigRadius);
 
         const vector1 = Array(2);
         vector1[0] = splinePoints[2] - splinePoints[0];
@@ -1240,9 +1312,6 @@ export default class InputPen extends LightningElement {
             splinePoints[1] -
             (unitVectorPerp[1] * (bigRadius - smallRadius)) / 2;
 
-        console.log(splinePoints.slice(0, 4));
-        console.log(unitVectorPerp);
-        console.log('------------');
         return [newBottomPoints, newTopPoints];
     }
 
@@ -1272,7 +1341,6 @@ export default class InputPen extends LightningElement {
         this.ctx.stroke();
         this.ctx.shadowColor = 'none';
         this.ctx.shadowBlur = 0;
-        this.ctx.closePath();
     }
 
     /**
@@ -1316,10 +1384,7 @@ export default class InputPen extends LightningElement {
                 if (this._mode === 'ink') {
                     this.drawSmoothSpline();
                 } else {
-                    this.drawSpline(
-                        this.getSplinePoints(),
-                        (this._size * 2) / this.activeVelocity
-                    );
+                    this.drawSpline(this.getSplinePoints(), this._size);
                 }
             }
             if (this.xPositions.length > 10) {
@@ -1349,7 +1414,6 @@ export default class InputPen extends LightningElement {
         );
         this.ctx.fillStyle = this.color;
         this.ctx.fill();
-        this.ctx.closePath();
     }
 
     testEmptyCanvas() {
