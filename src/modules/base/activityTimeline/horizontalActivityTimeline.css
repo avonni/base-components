@@ -31,11 +31,11 @@
  */
 
 .avonni-activity-timeline__item-popover {
-    min-width: 20rem;
-    width: 37rem;
-    max-width: 40rem;
-    height: 80px;
+    min-width: 400px;
+    width: fit-content;
+    height: fit-content;
     visibility: hidden;
+    padding: 5px;
 }
 
 .avonni-activity-timeline__item-popover-with-fields {

@@ -76,10 +76,8 @@ const TIMELINE_COLORS = {
 };
 
 // ** Functionalities/bug **
-// TODO: change size to better fit popover content
-// TODO: mouse over : hideBorder to remove border on primitive
-// TODO: mouse over on popover keeps it open
 
+// TEST + DOC -> Activity timeline primitive : hideBorder
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
@@ -1291,26 +1289,43 @@ export class HorizontalActivityTimeline {
      */
     handleMouseOverOnItem(element, event) {
         this._activityTimeline.handleItemMouseOver(element);
-
         const tooltipElement = d3.select(this.itemPopoverSelector);
-        const sizeClassToAdd =
-            (element.fields && element.fields.length > 0) ||
-            element.buttonLabel !== undefined
-                ? 'avonni-activity-timeline__item-popover-with-fields'
-                : element.hasError || element.description !== undefined
-                ? 'avonni-activity-timeline__item-popover-with-errors'
-                : '';
 
+        if (
+            !tooltipElement._groups[0][0] ||
+            tooltipElement._groups[0][0] === null
+        ) {
+            return;
+        }
+
+        let popoverXPosition = event.pageX - 10;
+        const popoverSize = Number(
+            tooltipElement
+                .style('width')
+                .slice(0, tooltipElement.style('width').length - 2)
+        );
+        const maxVisiblePositionOfPopover = this._timelineWidth - popoverSize;
+
+        // Check if popover should be right or left
+        if (popoverXPosition > maxVisiblePositionOfPopover) {
+            popoverXPosition = event.pageX - popoverSize + 20;
+            if (popoverXPosition < 0) {
+                popoverXPosition =
+                    this._offsetAxis +
+                    this.viewTimeScale(new Date(element.datetimeValue));
+            }
+        }
+
+        // Set popover position and classes
         tooltipElement
             .attr(
                 'class',
-                'slds-is-fixed avonni-activity-timeline__item-popover slds-popover slds-dropdown slds-dropdown_left ' +
-                    sizeClassToAdd
+                'slds-is-fixed avonni-activity-timeline__item-popover slds-popover'
             )
             .style('top', event.pageY - 10 + 'px')
-            .style('left', event.pageX - 10 + 'px')
+            .style('left', popoverXPosition + 'px')
             .style('visibility', 'visible')
-            .on('mouseout', this.handleMouseOutOnItem.bind(this));
+            .on('mouseleave', this.handleMouseOutOnItem.bind(this));
     }
 
     /**
