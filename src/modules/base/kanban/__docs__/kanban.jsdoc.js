@@ -48,3 +48,34 @@
  * @default #014486
  * @type color
  */
+
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-summarize-header-sizing-height
+ * @default 3rem
+ * @type (length|percentage)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-summarize-header-sizing-line-height
+ * @default 2.5rem
+ * @type (length|percentage)
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-summary-color-text
+ * @default #10AA52
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-summarize-font-size
+ * @default 1.25rem
+ * @type font
+ */
+/**
+ * @memberof stylingHooks
+ * @name --avonni-kanban-summarize-font-weight
+ * @default 400
+ * @type font
+ */

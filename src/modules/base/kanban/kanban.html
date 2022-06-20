@@ -33,7 +33,6 @@
 -->
 
 <template>
-    <p if:true={disableColumnDragAndDrop}>test</p>
     <lightning-spinner if:true={isLoading}></lightning-spinner>
 
     <div if:false={isLoading} class={variantClass}>
@@ -164,8 +163,6 @@
                                 variant="label-hidden"
                                 class="
                                     slds-text-align_center
-                                    slds-text-heading_large
-                                    slds-text-color_success
                                     avonni-kanban__summarize
                                 "
                                 data-element-id="summarize"

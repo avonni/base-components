@@ -57,6 +57,7 @@ describe('Kanban', () => {
         expect(element.summarizeFieldName).toBeUndefined();
         expect(element.actions).toMatchObject([]);
         expect(element.disableItemDragAndDrop).toBeFalsy();
+        expect(element.disableColumnDragAndDrop).toBeFalsy();
         expect(element.groupFieldName).toBeUndefined();
         expect(element.isLoading).toBeFalsy();
         expect(element.variant).toBeUndefined();
@@ -67,13 +68,14 @@ describe('Kanban', () => {
     // groupValues
     it('Kanban : groupValues', () => {
         element.groupValues = GROUP_VALUES;
+        element.variant = 'path';
         return Promise.resolve().then(() => {
             const groups = element.shadowRoot.querySelectorAll(
                 '[data-element-id="path-group"]'
             );
-            expect(groups[0].textContent).toBe('Open');
-            expect(groups[1].textContent).toBe('In Progress');
-            expect(groups[2].textContent).toBe('Closed');
+            expect(groups[0].textContent).toBe('Open (0)');
+            expect(groups[1].textContent).toBe('In Progress (0)');
+            expect(groups[2].textContent).toBe('Closed (0)');
         });
     });
 
@@ -116,7 +118,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
         return Promise.resolve().then(() => {
             jest.runAllTimers();
@@ -127,47 +129,47 @@ describe('Kanban', () => {
         });
     });
 
-    // readOnly
-    // it('Kanban : readOnly true', () => {
-    //     element.groupValues = GROUP_VALUES;
-    //     element.records = RECORDS;
-    //     element.fields = FIELDS;
-    //     element.groupFieldName = 'status';
-    //     element.summarizeFieldName = 'amount';
-    //     element.actions = ACTIONS;
-    //     element.readOnly = true;
-    //     return Promise.resolve().then(() => {
-    //         const tile = element.shadowRoot.querySelector(
-    //             '[data-element-id="avonni-kanban__tile"]'
-    //         );
-    //         tile.dispatchEvent(new MouseEvent('mousedown'));
-    //         expect(tile.classList).not.toContain('avonni-kanban__dragged');
-    //     });
-    // });
-
-    // actions
-    it('Kanban : actions', () => {
+    // drag and drop disabled
+    it('Kanban : disableItemDragAndDrop true', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
+        element.disableItemDragAndDrop = true;
         return Promise.resolve().then(() => {
-            const actions = element.shadowRoot.querySelectorAll(
-                '[data-element-id="avonni-kanban__action"]'
+            const tile = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-kanban__tile"]'
             );
-            expect(actions[0].label).toBe('Action 1');
-            expect(actions[0].value).toBe('Action 1');
-            expect(actions[0].disabled).toBeFalsy();
-            expect(actions[1].label).toBe('Action 2');
-            expect(actions[1].value).toBe('Action 2');
-            expect(actions[1].disabled).toBeFalsy();
-            expect(actions[2].label).toBe('Action 3');
-            expect(actions[2].value).toBe('Action 3');
-            expect(actions[2].disabled).toBeTruthy();
+            tile.dispatchEvent(new MouseEvent('mousedown'));
+            expect(tile.classList).not.toContain('avonni-kanban__dragged');
         });
     });
+
+    // actions
+    // it('Kanban : actions', () => {
+    //     element.groupValues = GROUP_VALUES;
+    //     element.records = RECORDS;
+    //     element.fields = FIELDS;
+    //     element.groupFieldName = 'status';
+    //     element.summarizeFieldName = 'Amount';
+    //     element.actions = ACTIONS;
+    //     return Promise.resolve().then(() => {
+    //         const actions = element.shadowRoot.querySelectorAll(
+    //             '[data-element-id="avonni-kanban__action"]'
+    //         );
+    //         expect(actions[0].label).toBe('Action 1');
+    //         expect(actions[0].value).toBe('Action 1');
+    //         expect(actions[0].disabled).toBeFalsy();
+    //         expect(actions[1].label).toBe('Action 2');
+    //         expect(actions[1].value).toBe('Action 2');
+    //         expect(actions[1].disabled).toBeFalsy();
+    //         expect(actions[2].label).toBe('Action 3');
+    //         expect(actions[2].value).toBe('Action 3');
+    //         expect(actions[2].disabled).toBeTruthy();
+    //     });
+    // });
 
     /* ----- EVENTS ----- */
 
@@ -176,7 +178,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
 
         const handler = jest.fn();
@@ -200,7 +202,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
         return Promise.resolve().then(() => {
             const tile = element.shadowRoot.querySelector(
@@ -231,7 +233,7 @@ describe('Kanban', () => {
         element.records = RECORDS;
         element.fields = FIELDS;
         element.groupFieldName = 'status';
-        element.summarizeFieldName = 'amount';
+        element.summarizeFieldName = 'Amount';
         element.actions = ACTIONS;
         element.variant = 'base';
         return Promise.resolve().then(() => {
