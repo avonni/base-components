@@ -84,8 +84,7 @@ export default {
     args: {
         isCollapsible: false,
         alternativeText: 'Selected Options:',
-        isExpanded: false,
-        sortable: false
+        isExpanded: false
     }
 };
 
