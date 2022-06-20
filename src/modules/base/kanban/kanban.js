@@ -58,7 +58,8 @@ export default class Kanban extends LightningElement {
     _groupValues = [];
     _groupFieldName;
     _isLoading = false;
-    _readOnly = false;
+    _disableItemDragAndDrop = false;
+    _disableColumnDragAndDrop = false;
     _records = [];
     _summarizeFieldName;
 
@@ -179,18 +180,35 @@ export default class Kanban extends LightningElement {
     /**
      *
      *
-     * If present, the tiles are read-only and cannot be dragged by users.
+     * If present, the columns cannot be dragged by users.
      *
      * @type {boolean}
      * @public
      * @default false
      */
     @api
-    get readOnly() {
-        return this._readOnly;
+    get disableColumnDragAndDrop() {
+        return this._disableColumnDragAndDrop;
     }
-    set readOnly(value) {
-        this._readOnly = normalizeBoolean(value);
+    set disableColumnDragAndDrop(value) {
+        this._disableColumnDragAndDrop = normalizeBoolean(value);
+    }
+
+    /**
+     *
+     *
+     * If present, the tiles cannot be dragged by users.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get disableItemDragAndDrop() {
+        return this._disableItemDragAndDrop;
+    }
+    set disableItemDragAndDrop(value) {
+        this._disableItemDragAndDrop = normalizeBoolean(value);
     }
 
     /**
@@ -293,13 +311,14 @@ export default class Kanban extends LightningElement {
         return classSet(
             'avonni-kanban__field slds-p-vertical_x-small slds-col slds-is-relative'
         ).add({
-            'avonni-kanban__field_read_only': this.readOnly,
+            'avonni-kanban__field_disabled_column_drag':
+                this.disableColumnDragAndDrop,
             'slds-m-around_xx-small': this.variant === 'base'
         });
     }
 
     /**
-     * Gets the class of the tile depending on readOnly
+     * Gets the class of the tile depending on disableItemDragAndDrop
      *
      * @type {string}
      */
@@ -307,7 +326,7 @@ export default class Kanban extends LightningElement {
         return classSet(
             'avonni-kanban__tile slds-item slds-is-relative slds-m-around_x-small'
         ).add({
-            'avonni-kanban__tile_read_only': this.readOnly
+            'avonni-kanban__tile_disabled_drag': this.disableItemDragAndDrop
         });
     }
 
@@ -361,7 +380,10 @@ export default class Kanban extends LightningElement {
     get variantClass() {
         return classSet(`avonni-kanban__variant_${this._variant}`)
             .add({
-                'avonni-kanban__read_only': this.readOnly
+                'avonni-kanban__disabled_item_drag':
+                    this.disableItemDragAndDrop,
+                'avonni-kanban__disabled_column_drag':
+                    this.disableColumnDragAndDrop
             })
             .toString();
     }
@@ -775,9 +797,15 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleGroupMouseDown(event) {
-        if (this._variant !== 'base' || this._readOnly || event.button !== 0) {
+        if (
+            this._variant !== 'base' ||
+            this._disableColumnDragAndDrop ||
+            event.button !== 0
+        ) {
             return;
         }
+
+        console.log(this._disableColumnDragAndDrop);
 
         // this handles when the user dragged a group out of the kanban, and released his click.
         // a second click on the dragged group (impossible otherwise) behaves has a click release
@@ -951,7 +979,7 @@ export default class Kanban extends LightningElement {
             event.clientY - event.currentTarget.getBoundingClientRect().y;
 
         if (
-            this.readOnly ||
+            this.disableItemDragAndDrop ||
             event.target.classList.contains('slds-dropdown-trigger') ||
             event.button !== 0
         ) {
@@ -1078,7 +1106,10 @@ export default class Kanban extends LightningElement {
      * @param {Event} event
      */
     handleTileMouseUp(event) {
-        if (this.readOnly || event.currentTarget !== this._draggedTile) {
+        if (
+            this.disableItemDragAndDrop ||
+            event.currentTarget !== this._draggedTile
+        ) {
             return;
         }
         this.endDrag();

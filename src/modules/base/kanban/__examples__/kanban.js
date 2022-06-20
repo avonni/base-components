@@ -40,7 +40,8 @@ export const Kanban = ({
     records,
     summarizeFieldName,
     actions,
-    readOnly,
+    disableColumnDragAndDrop,
+    disableItemDragAndDrop,
     groupFieldName,
     isLoading,
     variant
@@ -51,7 +52,8 @@ export const Kanban = ({
     element.records = records;
     element.summarizeFieldName = summarizeFieldName;
     element.actions = actions;
-    element.readOnly = readOnly;
+    element.disableItemDragAndDrop = disableItemDragAndDrop;
+    element.disableColumnDragAndDrop = disableColumnDragAndDrop;
     element.groupFieldName = groupFieldName;
     element.isLoading = isLoading;
     element.variant = variant;

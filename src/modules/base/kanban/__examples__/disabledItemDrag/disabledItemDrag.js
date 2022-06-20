@@ -1,6 +1,6 @@
 import { LightningElement } from 'lwc';
 
-export default class KanbanReadOnly extends LightningElement {
+export default class KanbanDisabledItemDrag extends LightningElement {
     groupValues = [
         { label: 'Open', value: 'open' },
         { label: 'In Progress', value: 'inProgress' },

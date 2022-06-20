@@ -90,13 +90,23 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
-        readOnly: {
-            name: 'read-only',
+        disableColumnDragAndDrop: {
+            name: 'disable-column-drag-and-drop',
             control: {
                 type: 'boolean'
             },
-            description:
-                ' If present, the tiles are read-only and cannot be dragged by users.',
+            description: ' If present, the columns cannot be dragged by users.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
+        disableItemDragAndDrop: {
+            name: 'disable-item-drag-and-drop',
+            control: {
+                type: 'boolean'
+            },
+            description: ' If present, the tiles cannot be dragged by users.',
             table: {
                 defaultValue: { summary: 'false' },
                 type: { summary: 'boolean' }
@@ -142,7 +152,7 @@ export default {
         fields: FIELDS,
         records: RECORDS,
         actions: ACTIONS,
-        readOnly: false,
+        disableItemDragAndDrop: false,
         isLoading: false,
         groupFieldName: 'status'
     }
@@ -162,9 +172,16 @@ path.args = {
     summarizeFieldName: 'Percent'
 };
 
-export const readOnly = Template.bind({});
-readOnly.args = {
+export const disabledItemDrag = Template.bind({});
+disabledItemDrag.args = {
     variant: 'base',
-    readOnly: true,
+    disableItemDragAndDrop: true,
     summarizeFieldName: 'Percent'
+};
+
+export const disabledColumnDrag = Template.bind({});
+disabledColumnDrag.args = {
+    variant: 'base',
+    disableColumnDragAndDrop: true,
+    summarizeFieldName: 'Amount'
 };

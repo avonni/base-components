@@ -6,7 +6,8 @@ export default class Kanban extends LightningElement {
     @api records;
     @api actions;
     @api summarizeFieldName;
-    @api readOnly;
+    @api disableItemDragAndDrop;
+    @api disableColumnDragAndDrop;
     @api isLoading;
     @api variant;
     @api groupFieldName;
