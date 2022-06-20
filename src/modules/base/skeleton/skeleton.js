@@ -1405,6 +1405,7 @@ export default class Skeleton extends LightningElement {
                     this.variantAttributes.variant === 'inverse'
             })
             .add(`avonni-skeleton__buttonIcon-animation-${this.animation}`);
+
         this.buttonIconWrapper = buttonIconWrapper;
     }
 
@@ -1506,7 +1507,7 @@ export default class Skeleton extends LightningElement {
 
     updateVariantButtonIcon() {
         const buttonIconElement = this.template.querySelector(
-            '[data-element-id="button-icon"]'
+            '[data-element-id="avonni-skeleton-button-icon"]'
         );
 
         if (this.variantAttributes.variant === 'brand') {
