@@ -53,6 +53,14 @@ const RESIZE_CURSOR_CLASS =
 const SCROLL_ITEM_RECTANGLE_WIDTH = 4;
 const SPACE_BETWEEN_ICON_AND_TEXT = 5;
 const SVG_ICON_SIZE = 25;
+const TIMELINE_COLORS = {
+    scrollAxisBorder: '#c9c7c5', // $color-gray-6
+    scrollAxisItemRect: '#b0adab', // $color-gray-7
+    intervalBackground: '#1b96ff', // $color-brand
+    intervalBorder: '#0176d3', // $palette-blue-50
+    timelineBorder: '#c9c9c9', // $card-color-border
+    axisLabel: '#181818' // $color-text-action-label-active
+};
 const VALID_ICON_CATEGORIES = [
     'standard',
     'utility',
@@ -65,19 +73,6 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
-// https://www.lightningdesignsystem.com/design-tokens/
-const TIMELINE_COLORS = {
-    scrollAxisBorder: '#c9c7c5', // $color-gray-6
-    scrollAxisItemRect: '#b0adab', // $color-gray-7
-    intervalBackground: '#1b96ff', // $color-brand
-    intervalBorder: '#0176d3', // $palette-blue-50
-    timelineBorder: '#c9c9c9', // $card-color-border
-    axisLabel: '#181818' // $color-text-action-label-active
-};
-
-// ** Functionalities/bug **
-
-// TEST + DOC -> Activity timeline primitive : hideBorder
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
@@ -134,12 +129,6 @@ export class HorizontalActivityTimeline {
         this.createTimelineAxis();
         this.createTimeline();
     }
-
-    /*
-     * ------------------------------------------------------------
-     *  PUBLIC PROPERTIES
-     * -------------------------------------------------------------
-     */
 
     /*
      * ------------------------------------------------------------
@@ -653,7 +642,7 @@ export class HorizontalActivityTimeline {
             .attr('height', this._timelineHeight)
             .attr('transform', 'translate(' + this._offsetAxis + ' , 0)');
 
-        //  Create dashed lines aligned to axis ticks
+        // Create dashed lines aligned to axis ticks
         const axis = d3
             .axisBottom(this.viewTimeScale)
             .tickFormat(d3.timeFormat('%d/%m/%Y'))
@@ -1206,14 +1195,6 @@ export class HorizontalActivityTimeline {
      */
 
     /**
-     * Handle mouse over on time interval on scroll axis to activate edit mode the interval size.
-     */
-    handleMouseOverOnInterval() {
-        this._changeIntervalSizeMode = true;
-        this.setIntervalBoundsState();
-    }
-
-    /**
      * Handle click on scroll axis to change interval values. Timeline is re-render.
      */
     handleClickOnScrollAxis(event) {
@@ -1290,6 +1271,14 @@ export class HorizontalActivityTimeline {
     handleMouseOutOnItem() {
         d3.select(this.itemPopoverSelector).style('visibility', 'hidden');
         this._activityTimeline.handleItemMouseLeave();
+    }
+
+    /**
+     * Handle mouse over on time interval on scroll axis to activate edit mode the interval size.
+     */
+    handleMouseOverOnInterval() {
+        this._changeIntervalSizeMode = true;
+        this.setIntervalBoundsState();
     }
 
     /**
