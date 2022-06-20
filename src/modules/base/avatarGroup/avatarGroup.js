@@ -444,8 +444,7 @@ export default class AvatarGroup extends LightningElement {
             .add({
                 'avonni-avatar-group_in-line': this.layout === 'stack',
                 'avonni-avatar-group__avatar_color-border-square':
-                    (this.layout === 'stack' && this.variant === 'square') ||
-                    (this.layout === 'grid' && this.variant === 'square')
+                    this.layout !== 'list' && this.variant === 'square'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -460,8 +459,7 @@ export default class AvatarGroup extends LightningElement {
             .add({
                 'avonni-avatar-group_in-line ': this.layout === 'stack',
                 'avonni-avatar-group__avatar_color-border-square':
-                    (this.layout === 'stack' && this.variant === 'square') ||
-                    (this.layout === 'grid' && this.variant === 'square')
+                    this.layout !== 'list' && this.variant === 'square'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
