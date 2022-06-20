@@ -33,16 +33,19 @@
 -->
 
 <template>
-    <span class={chipClass} data-element-id="span-wrapper">
+    <span class={chipClass} data-element-id="avonni-skeleton-chip-wrapper">
         <template if:true={chipHasIcon}>
             <span class="slds-badge__icon slds-badge__icon_left">
-                <div class="avonni-skeleton__chip-slot"></div>
+                <div class="avonni-skeleton__chip-icon"></div>
             </span>
         </template>
-        <div class={chipLabelClass} data-element-id="chip-label"></div>
+        <div
+            class={chipLabelClass}
+            data-element-id="avonni-skeleton-chip-label"
+        ></div>
         <template if:true={chipHasIcon}>
             <span class="slds-badge__icon slds-badge__icon_right">
-                <div class="avonni-skeleton__chip-slot"></div>
+                <div class="avonni-skeleton__chip-icon"></div>
             </span>
         </template>
     </span>

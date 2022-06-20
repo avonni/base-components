@@ -108,24 +108,11 @@
 
 .avonni-chip {
     max-width: 100%;
-    padding-top: var(--avonni-chip-spacing-block-start, 0.25rem);
-    padding-bottom: var(--avonni-chip-spacing-block-end, 0.25rem);
-    padding-left: var(--avonni-chip-spacing-inline-start, 0.5rem);
-    padding-right: var(--avonni-chip-spacing-inline-end, 0.5rem);
     border-width: var(--avonni-chip-sizing-border, 1px);
-    /* border-style: var(--avonni-chip-styling-border, solid); */
     border-radius: var(--avonni-chip-radius-border, 15rem);
     font-size: var(--avonni-chip-label-font-size, 0.75rem);
-    font-weight: 700;
-    line-height: var(--avonni-chip-line-height, normal);
-    white-space: nowrap;
-    display: -webkit-inline-box;
-    display: -ms-inline-flexbox;
     display: inline-flex;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
     align-items: center;
-    overflow: hidden;
 }
 
 .avonni-chip_outline {
@@ -162,7 +149,7 @@
     /* margin: 0.25em; */
 }
 
-.avonni-skeleton__chip-slot {
+.avonni-skeleton__chip-icon {
     height: 1.25rem;
     width: 1.25rem;
 }

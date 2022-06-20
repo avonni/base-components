@@ -543,26 +543,19 @@ export default class Skeleton extends LightningElement {
      * @type {string}
      */
     get chipClass() {
-        return (
-            classSet('avonni-chip')
-                .add({
-                    'avonni-chip_outline': this.variantAttributes.outline
-                })
-                .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
-                // .add('avonni-skeleton__base')
-                .add(`avonni-skeleton__variant-${this.variant}`)
-                .add(`avonni-skeleton__animation-${this.animation}`)
-                .toString()
-        );
+        return classSet('avonni-chip')
+            .add('slds-p-vertical_xx-small')
+            .add('slds-p-horizontal_x-small')
+            .add({
+                'avonni-chip_outline': this.variantAttributes.outline
+            })
+            .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
+            .add(`avonni-skeleton__animation-${this.animation}`)
+            .toString();
     }
 
     get chipLabelClass() {
-        return (
-            classSet('avonni-skeleton__variant-text')
-                .add('avonni-skeleton__chip-label')
-                // .add(`avonni-skeleton__animation-${this.animation}`)
-                .toString()
-        );
+        return classSet('avonni-skeleton__chip-label').toString();
     }
 
     get comboboxLabelClass() {
@@ -1171,10 +1164,10 @@ export default class Skeleton extends LightningElement {
 
     updateChipClassList() {
         const chipElement = this.template.querySelector(
-            '[data-element-id="span-wrapper"]'
+            '[data-element-id="avonni-skeleton-chip-wrapper"]'
         );
         const chipLabel = this.template.querySelector(
-            '[data-element-id="chip-label"]'
+            '[data-element-id="avonni-skeleton-chip-label"]'
         );
         if (this.variantAttributes.variant === 'success') {
             chipElement.style.setProperty(
