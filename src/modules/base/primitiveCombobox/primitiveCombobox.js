@@ -1782,7 +1782,6 @@ export default class PrimitiveCombobox extends LightningElement {
         const selectedOption = this.visibleOptions.find((option) => {
             return option.value === this._highlightedOption.dataset.value;
         });
-        if (this.name === 'boubou') console.log(selectedOption);
 
         // If the option has children options, change the visible options
         if (selectedOption.hasChildren) {
