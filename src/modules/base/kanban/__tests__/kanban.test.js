@@ -147,56 +147,6 @@ describe('Kanban', () => {
         });
     });
 
-    // actions
-    // it('Kanban : actions', () => {
-    //     element.groupValues = GROUP_VALUES;
-    //     element.records = RECORDS;
-    //     element.fields = FIELDS;
-    //     element.groupFieldName = 'status';
-    //     element.summarizeFieldName = 'Amount';
-    //     element.actions = ACTIONS;
-    //     return Promise.resolve().then(() => {
-    //         const actions = element.shadowRoot.querySelectorAll(
-    //             '[data-element-id="avonni-kanban__action"]'
-    //         );
-    //         expect(actions[0].label).toBe('Action 1');
-    //         expect(actions[0].value).toBe('Action 1');
-    //         expect(actions[0].disabled).toBeFalsy();
-    //         expect(actions[1].label).toBe('Action 2');
-    //         expect(actions[1].value).toBe('Action 2');
-    //         expect(actions[1].disabled).toBeFalsy();
-    //         expect(actions[2].label).toBe('Action 3');
-    //         expect(actions[2].value).toBe('Action 3');
-    //         expect(actions[2].disabled).toBeTruthy();
-    //     });
-    // });
-
-    /* ----- EVENTS ----- */
-
-    it('Kanban: action clicked event', () => {
-        element.groupValues = GROUP_VALUES;
-        element.records = RECORDS;
-        element.fields = FIELDS;
-        element.groupFieldName = 'status';
-        element.summarizeFieldName = 'Amount';
-        element.actions = ACTIONS;
-
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="avonni-kanban__action"]'
-            );
-            action.dispatchEvent(new CustomEvent('actionclick'));
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.action).toBe('Action 1');
-            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeTruthy();
-        });
-    });
-
     it('Kanban : tile drag and drop', () => {
         element.groupValues = GROUP_VALUES;
         element.records = RECORDS;

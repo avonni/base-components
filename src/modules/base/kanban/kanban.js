@@ -805,8 +805,6 @@ export default class Kanban extends LightningElement {
             return;
         }
 
-        console.log(this._disableColumnDragAndDrop);
-
         // this handles when the user dragged a group out of the kanban, and released his click.
         // a second click on the dragged group (impossible otherwise) behaves has a click release
         if (event.currentTarget.parentElement === this._draggedGroup) {
@@ -988,6 +986,9 @@ export default class Kanban extends LightningElement {
         this._groupWidth =
             event.currentTarget.parentElement.offsetWidth +
             0.5 * parseFloat(getComputedStyle(this.template.host).fontSize);
+
+        this._groupWidth = this._groupWidth ? this._groupWidth : 10;
+
         this._draggedTile = event.currentTarget;
         this._draggedTile.classList.add('avonni-kanban__dragged');
         this._draggedTile.style.width = `calc(${parseInt(
@@ -1263,7 +1264,9 @@ export default class Kanban extends LightningElement {
      */
     updateReleasedTileIndex(groupElements) {
         let offsetHeight = 0;
-
+        this._releasedGroupIndex = this._releasedGroupIndex
+            ? this._releasedGroupIndex
+            : 0;
         const currentGroupTiles = Array.from(
             groupElements[this._releasedGroupIndex].children
         );
