@@ -586,17 +586,6 @@ export default class InputPen extends LightningElement {
         return mergedCanvas.toDataURL();
     }
 
-    /**
-     * get the nib size dependant on mode
-     *
-     * @type {boolean}
-     */
-    get nibSize() {
-        return this._mode === 'ink'
-            ? (this._size * 2) / this.activeVelocity
-            : this._size;
-    }
-
     get computedTextAreaClasses() {
         return classSet('slds-rich-text-editor__textarea').add({
             'slds-grid': true,
@@ -1107,9 +1096,6 @@ export default class InputPen extends LightningElement {
     }
 
     clearPositionBuffer() {
-        let averageVelocityOnSpline =
-            this.velocities.slice(2, 4).reduce((a, b) => a + b, 0) / 3;
-        this.activeVelocity = Math.sqrt(averageVelocityOnSpline);
         for (let i = 0; i < this.moveCoordinatesAdded; i++) {
             this.xPositions.push(this.xPositions.last);
             this.xPositions.shift();
@@ -1126,7 +1112,10 @@ export default class InputPen extends LightningElement {
                 this.velocities.unshift(this.velocities[0]);
             }
             this.activeVelocity += 0.25;
-            this.drawSpline(this.getSplinePoints(), this.nibSize);
+            this.drawSpline(
+                this.getSplinePoints(),
+                (this._size * 2) / this.activeVelocity - 0.2
+            );
         }
         this.xPositions = [];
         this.xPositions = [];
@@ -1324,7 +1313,14 @@ export default class InputPen extends LightningElement {
                 this.activeVelocity = Math.sqrt(
                     this.velocities.slice(3, 5).reduce((a, b) => a + b, 0) / 3
                 );
-                this.drawSmoothSpline();
+                if (this._mode === 'ink') {
+                    this.drawSmoothSpline();
+                } else {
+                    this.drawSpline(
+                        this.getSplinePoints(),
+                        (this._size * 2) / this.activeVelocity
+                    );
+                }
             }
             if (this.xPositions.length > 10) {
                 this.xPositions.pop();
