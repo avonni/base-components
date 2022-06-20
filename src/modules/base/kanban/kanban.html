@@ -56,9 +56,9 @@
                                 aria-orientation="horizontal"
                             >
                                 <li
-                                    for:each={groupValues}
+                                    for:each={groupsHeader}
                                     for:item="item"
-                                    key={item.value}
+                                    key={item.label}
                                     class="
                                         slds-path__item
                                         slds-is-active
@@ -75,7 +75,8 @@
                                         <span
                                             class="slds-path__title"
                                             data-element-id="path-group"
-                                            >{item.label}</span
+                                            >{item.label}
+                                            ({item.tiles.length})</span
                                         >
                                     </a>
                                 </li>
@@ -153,7 +154,7 @@
                                     slds-m-horizontal_xx-small
                                 "
                             >
-                                {group.label}
+                                {group.label} ({group.tiles.length})
                             </h2>
                             <c-output-data
                                 value={group.summarize.value}

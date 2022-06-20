@@ -312,6 +312,31 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * Gets the name and the length of the groups
+     *
+     * @type {object[]}
+     */
+    get groupsHeader() {
+        let computedGroups = JSON.parse(JSON.stringify(this._groupValues));
+
+        computedGroups.forEach((group) => {
+            group.tiles = [];
+        });
+
+        this._records.forEach((tile) => {
+            const group = computedGroups.find(
+                (computedGroup) =>
+                    computedGroup.label === tile[this.groupFieldName]
+            );
+            if (group) {
+                group.tiles.push(tile);
+            }
+        });
+
+        return computedGroups;
+    }
+
+    /**
      * Check if actions exist.
      *
      * @type {boolean}
