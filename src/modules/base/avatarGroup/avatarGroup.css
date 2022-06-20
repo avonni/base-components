@@ -217,3 +217,7 @@
         #ffffff
     );
 }
+
+.avonni-avatar-group__avatar_color-border-square {
+    border-radius: 4px;
+}
