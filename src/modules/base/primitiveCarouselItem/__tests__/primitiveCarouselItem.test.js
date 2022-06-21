@@ -66,18 +66,6 @@ const menuActions = [
     }
 ];
 
-const ex = [
-    {
-        title: 'Visit App Exchange',
-        name: 'someName',
-        description: 'Extend Salesforce with the #1 business marketplace.',
-        imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    }
-];
-
 let element;
 describe('Primitive Carousel Item', () => {
     afterEach(() => {
@@ -360,23 +348,15 @@ describe('Primitive Carousel Item', () => {
     it('Primitive Carousel Item: item click', () => {
         const handler = jest.fn();
         element.addEventListener('itemclick', handler);
-        element.title = 'Visit App Exchange';
         element.name = 'someName';
-        element.description =
-            'Extend Salesforce with the #1 business marketplace.';
-        element.imageAssistiveText = 'Appy';
-        element.src =
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
-        element.href = 'https://www.salesforce.com';
-        element.actions = bareActions;
 
         return Promise.resolve().then(() => {
             const item = element.shadowRoot.querySelector(
-                '[data-element-id="a-actions-tag"]'
+                '[data-element-id^="a-actions"]'
             );
             item.click();
             expect(handler).toHaveBeenCalled();
-            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
+            expect(handler.mock.calls[0][0].detail.name).toEqual('someName');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
@@ -385,15 +365,7 @@ describe('Primitive Carousel Item', () => {
 
     // Actionclick
     it('Primitive Carousel Item: actionclick', () => {
-        element.title = 'Visit App Exchange';
-        element.description =
-            'Extend Salesforce with the #1 business marketplace.';
-        element.imageAssistiveText = 'Appy';
-        element.src =
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
-        element.href = 'https://www.salesforce.com';
         element.actions = bareActions;
-        element.name = 'someName';
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
@@ -405,36 +377,6 @@ describe('Primitive Carousel Item', () => {
             action.click();
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.name).toBe('action-add');
-            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-        });
-    });
-
-    // Actionclick on menu
-    it('Primitive Carousel Item: menu actionclick', () => {
-        element.title = 'Visit App Exchange';
-        element.description =
-            'Extend Salesforce with the #1 business marketplace.';
-        element.imageAssistiveText = 'Appy';
-        element.src =
-            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg';
-        element.href = 'https://www.salesforce.com';
-        element.actions = bareActions;
-        element.name = 'someName';
-
-        const handler = jest.fn();
-        element.addEventListener('actionclick', handler);
-
-        return Promise.resolve().then(() => {
-            const action = element.shadowRoot.querySelector(
-                '[data-element-id="lightning-button-menu"]'
-            );
-            action.dispatchEvent(new CustomEvent('select'));
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe(undefined);
-            expect([handler.mock.calls[0][0].detail.item]).toMatchObject(ex);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();

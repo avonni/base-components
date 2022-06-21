@@ -575,18 +575,22 @@ export default class Carousel extends LightningElement {
      * @param {event}
      */
     handleItemClick(event) {
+        const itemName = event.detail.name;
+        const item = this.items.find((it) => it.name === itemName);
         /**
          * The event fired when an item is clicked.
          *
          * @event
          * @name itemclick
-         * @param {object} item The item data clicked.
+         * @param {object} item Item clicked.
+         * @param {string} name Unique name of the clicked item.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: event.detail.item
+                    item,
+                    name: itemName
                 }
             })
         );
@@ -598,20 +602,26 @@ export default class Carousel extends LightningElement {
      * @param {event}
      */
     handleActionClick(event) {
+        const name = event.detail.name;
+        const itemName = event.currentTarget.name;
+        const item = this.items.find((it) => it.name === itemName);
+
         /**
          * The event fired when a user clicks on an action.
          *
          * @event
          * @name actionclick
          * @param {string} name Name of the action clicked.
-         * @param {object} item Item clicked.
+         * @param {object} item Item the action belongs to.
+         * @param {string} targetName Unique name of the item that the action belongs to.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name: event.detail.name,
-                    item: event.detail.item
+                    name,
+                    item,
+                    targetName: itemName
                 }
             })
         );

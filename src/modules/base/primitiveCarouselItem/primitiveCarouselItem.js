@@ -291,35 +291,18 @@ export default class PrimitiveCarouselItem extends LightningElement {
      * @param {event}
      */
     handleItemClick() {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
         /**
          * The event fired when an item is clicked.
          *
          * @event
          * @name itemclick
-         * @param {object} item The item data clicked.
+         * @param {object} name Name of the item.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: {
-                        title,
-                        description,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText,
-                        name
-                    }
+                    name: this.name
                 }
             })
         );
@@ -347,38 +330,18 @@ export default class PrimitiveCarouselItem extends LightningElement {
     }
 
     actionDispatcher(actionName) {
-        const {
-            title,
-            description,
-            src,
-            href,
-            actions,
-            imageAssistiveText,
-            name
-        } = this;
-
         /**
          * The event fired when a user clicks on an action.
          *
          * @event
          * @name actionclick
          * @param {string} name Name of the action clicked.
-         * @param {object} item Item clicked.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
-                    name: actionName,
-                    item: {
-                        title,
-                        description,
-                        name,
-                        src,
-                        href,
-                        actions,
-                        imageAssistiveText
-                    }
+                    name: actionName
                 }
             })
         );

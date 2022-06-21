@@ -118,18 +118,6 @@ const items = [
     }
 ];
 
-const ex = [
-    {
-        title: 'Visit App Exchange',
-        name: 'someName',
-        description: 'Extend Salesforce with the #1 business marketplace.',
-        imageAssistiveText: 'Appy',
-        src: 'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg',
-        href: 'https://www.salesforce.com',
-        actions: bareActions
-    }
-];
-
 let element;
 describe('Carousel', () => {
     afterEach(() => {
@@ -652,14 +640,16 @@ describe('Carousel', () => {
             item.dispatchEvent(
                 new CustomEvent('itemclick', {
                     detail: {
-                        item: ex
+                        name: items[1].name
                     }
                 })
             );
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe(items[1].name);
+            expect(call.detail.item).toMatchObject(items[1]);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 
@@ -677,17 +667,18 @@ describe('Carousel', () => {
             item.dispatchEvent(
                 new CustomEvent('actionclick', {
                     detail: {
-                        name: 'action-name',
-                        item: ex
+                        name: 'action-name'
                     }
                 })
             );
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('action-name');
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(ex);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.name).toBe('action-name');
+            expect(call.detail.item).toMatchObject(items[0]);
+            expect(call.detail.targetName).toBe(items[0].name);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.composed).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
         });
     });
 });
