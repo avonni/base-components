@@ -300,6 +300,8 @@
 }
 
 .avonni-skeleton__paragraph-grid {
+    height: 0.7em;
+    margin: 0.1em;
     display: inline-flex;
     color: rgb(255, 255, 255);
     text-align: center;
@@ -427,7 +429,6 @@ avonni-skeleton_tabset-wave:hover::after {
 
 .avonni-skeleton__tabset-scoped-item {
     cursor: default;
-    margin: 15px 15px;
     border-right: 1px solid #e5e5e5;
     height: 0.7em;
     min-width: 4em;
@@ -466,7 +467,6 @@ avonni-skeleton_tabset-wave:hover::after {
 .avonni-skeleton__item-container {
     height: 2.2em;
     display: flex;
-    padding: 0.375rem 0 0.375rem 1rem;
 }
 
 /* .avonni-skeleton__progress-indicator-path-item:first-child {

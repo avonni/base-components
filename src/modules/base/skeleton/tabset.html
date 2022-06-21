@@ -35,12 +35,9 @@
 <template>
     <template if:true={isTabsetBaseVariant}>
         <div class="slds-tabs_default">
-            <ul
-                class="slds-tabs_default__nav avonni-skeleton__tabset-base"
-                role="tablist"
-            >
+            <ul class="slds-tabs_default__nav avonni-skeleton__tabset-base">
                 <template for:each={tabset} for:item="tab">
-                    <li key={tab.key} class={tabClass} role="presentation">
+                    <li key={tab.key} class={tabClass}>
                         <div class={tabItemClass}></div>
                     </li>
                 </template>

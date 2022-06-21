@@ -33,33 +33,13 @@
 -->
 
 <template>
-    <!-- <ul class="slds-has-dividers_around" data-element-id="paragraph-list">
-        <template for:each={paragraphItems} for:item="paragraphLine">
-            <li key={paragraphLine.keyLi}>
-                <ul
-                    class="slds-list_horizontal slds-has-block-links_space"
-                    key={paragraphLine.keyUl}
-                >
-                    <template
-                        for:each={paragraphLine.line}
-                        for:item="paragraphLineItem"
-                    >
-                        <li
-                            key={paragraphLineItem.key}
-                            class={paragraphLineClass}
-                        ></li>
-                    </template>
-                </ul>
-            </li>
-        </template>
-    </ul> -->
     <div class="slds-grid slds-wrap" data-element-id="paragraph-list">
         <template for:each={paragraphItems} for:item="paragraphLine">
             <div
                 key={paragraphLine.key}
                 class="slds-col avonni-skeleton__paragraph-grid"
             >
-                <span>1</span>
+                <span></span>
             </div>
         </template>
     </div>

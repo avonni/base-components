@@ -743,7 +743,6 @@ export default class Skeleton extends LightningElement {
 
     get progressIndicatorPathClass() {
         return classSet('slds-path__item')
-            .add('avonni-skeleton__progress-indicator')
             .add(`avonni-skeleton__progress-indicator-path-${this.animation}`)
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
@@ -765,17 +764,15 @@ export default class Skeleton extends LightningElement {
     }
 
     get tabItemClass() {
-        return (
-            classSet('avonni-skeleton__tabset-item')
-                // .add('slds-tabs_default__link')
-                .add('avonni-skeleton__variant-text')
-                .add(`avonni-skeleton__animation-${this.animation}`)
-        );
+        return classSet('avonni-skeleton__tabset-item')
+            .add('avonni-skeleton__variant-text')
+            .add(`avonni-skeleton__animation-${this.animation}`);
     }
 
     get tabScopedItemClass() {
         return classSet('slds-tabs_scoped__link')
             .add('avonni-skeleton__tabset-scoped-item')
+            .add('slds-m-around_medium')
             .add('avonni-skeleton__variant-text')
             .add(`avonni-skeleton__animation-${this.animation}`);
     }
@@ -809,7 +806,9 @@ export default class Skeleton extends LightningElement {
     }
 
     get treeItemContainerClass() {
-        return classSet('avonni-skeleton__item-container');
+        return classSet('avonni-skeleton__item-container')
+            .add('slds-p-horizontal_medium')
+            .add('slds-p-vertical_xx-small');
     }
 
     /*
@@ -1029,7 +1028,8 @@ export default class Skeleton extends LightningElement {
             for (let j = 100; j > 30; ) {
                 id++;
                 // const width = Math.floor(Math.random() * (5 - 1)) + 1;
-                const width = Math.floor(Math.random() * (30 - 10)) + 10;
+                const width = Math.floor(Math.random() * (30 - 20)) + 10; // min: 10 % max 20 %
+                console.log(`width: ${width}`);
                 paragraphItems.push({
                     key: `paragraph-${id}`,
                     // width: width
@@ -1438,15 +1438,16 @@ export default class Skeleton extends LightningElement {
         const paragraphLines = this.template.querySelector(
             '[data-element-id="paragraph-list"]'
         ).children;
+        console.log(`html element: ${paragraphLines}`);
+        console.log(`js pararaph: ${this.paragraphItems}`);
         // console.log(this.paragraphItems);
         // console.log(paragraphLines);
         for (let i = 0; i < paragraphLines.length; i++) {
-            const paragraphItem = paragraphLines[i];
+            paragraphLines[i].style.width = this.paragraphItems[i].width;
             // paragraphItem.style.width = this.paragraphItems[i].width;
             // paragraphItem.classList.add(
             //     `slds-size_${this.paragraphItems[i].width}-of-12`
             // );
-            paragraphItem.style.width = this.paragraphItems[i].width;
         }
     }
 
