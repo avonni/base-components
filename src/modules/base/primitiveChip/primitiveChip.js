@@ -62,17 +62,23 @@ const MEDIA_POSITION = {
 
 const DEFAULT_AVATAR_SIZE = 'x-small';
 
-const DEFAULT_ICON_NAME = 'utility:check';
-
 export default class PrimitiveChip extends LightningElement {
     _label = '';
     _outline = false;
     _variant = CHIP_VARIANTS.default;
     _avatar = null;
     _mediaPosition = MEDIA_POSITION.default;
-    _iconName = DEFAULT_ICON_NAME;
+    _prefixIconName = undefined;
+    _suffixIconName = undefined;
     _showIcon = false;
     _hidden = false;
+
+    _connected = false;
+
+    connectedCallback() {
+        this._showIcon = this._prefixIconName && this._suffixIconName;
+        this._connected = true;
+    }
 
     /**
      * Label displayed in the chip.
@@ -159,20 +165,36 @@ export default class PrimitiveChip extends LightningElement {
         });
     }
 
-    /** The name of the icon to display.
+    /** The prefix name of the icon to display.
      *  @public
      *  @type {string}
      *  @default x-small
      */
     @api
-    get iconName() {
-        return this._iconName;
+    get prefixIconName() {
+        return this._prefixIconName;
     }
-    set iconName(value) {
-        if (value) {
-            this._iconName = value;
-            this._showIcon = true;
-        } else this._showIcon = false;
+    set prefixIconName(value) {
+        this._prefixIconName = value;
+        if (this._connected) {
+            this._showIcon = this._prefixIconName && this._suffixIconName;
+        }
+    }
+
+    /** The suffix name of the icon to display.
+     *  @public
+     *  @type {string}
+     *  @default x-small
+     */
+    @api
+    get suffixIconName() {
+        return this._suffixIconName;
+    }
+    set suffixIconName(value) {
+        this._suffixIconName = value;
+        if (this._connected) {
+            this._showIcon = this._prefixIconName && this._suffixIconName;
+        }
     }
 
     @api
@@ -183,29 +205,39 @@ export default class PrimitiveChip extends LightningElement {
         this._hidden = normalizeBoolean(value);
     }
 
-    /**
-     *  If icon media is to be shown.
-     */
-    get showIcon() {
-        return this._showIcon && this.avatar == null;
-    }
-
-    /**
-     *  Returns true if avatar is left, if not, returns false.
-     */
-    get showMediaLeft() {
-        return this.mediaPosition !== 'right';
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
 
+    /**
+     *  Computed class for chip.
+     */
     get computedChipClass() {
         return classSet('').add({
             'slds-hide': this._hidden
         });
+    }
+
+    /**
+     *  Full name of the icon to display
+     */
+    get iconName() {
+        return `${this._prefixIconName}:${this._suffixIconName}`;
+    }
+
+    /**
+     *  If icon media is to be shown.
+     */
+    get showIcon() {
+        return this._showIcon && this._avatar == null;
+    }
+
+    /**
+     *  Returns true if avatar is left, if not, returns false.
+     */
+    get showMediaLeft() {
+        return this._mediaPosition !== 'right';
     }
 }

@@ -60,7 +60,7 @@ describe('Primitive Chip', () => {
         expect(element.avatar).toEqual(null);
         expect(element.variant).toEqual('base');
         expect(element.hidden).toEqual(false);
-        expect(element.iconName).toEqual('utility:check');
+        expect(element.iconName).toEqual(undefined);
         expect(element.mediaPosition).toEqual('left');
     });
 
@@ -104,14 +104,13 @@ describe('Primitive Chip', () => {
     // iconName
     it('iconName', () => {
         element.mediaPosition = 'left';
-        element.iconName = 'utility:user';
+        element.prefixIconName = 'utility';
+        element.suffixIconName = 'user';
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
                 '[data-element-id="icon-left"]'
             );
-
-            expect(element.iconName).toBe('utility:user');
             expect(icon.iconName).toBe('utility:user');
         });
     });
@@ -129,7 +128,8 @@ describe('Primitive Chip', () => {
 
     // mediaPosition
     it('mediaPosition (icon)', () => {
-        element.iconName = 'utility:down';
+        element.prefixIconName = 'utility';
+        element.suffixIconName = 'down';
         element.mediaPosition = 'right';
         return Promise.resolve().then(() => {
             expect(
