@@ -303,7 +303,7 @@ export class HorizontalActivityTimeline {
                 this.findNextDate(this._intervalMinDate, -1),
                 this.findNextDate(this._intervalMaxDate, 1)
             ])
-            .range([0, this._timelineWidth - this._offsetAxis]);
+            .range([0, this._timelineWidth]);
     }
 
     /*
@@ -612,12 +612,8 @@ export class HorizontalActivityTimeline {
                 'class',
                 'avonni-horizontal-activity-timeline__timeline-items-svg'
             )
-            .attr(
-                'width',
-                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
-            )
-            .attr('height', this._timelineHeight)
-            .attr('transform', 'translate(' + this._offsetAxis + ' , 0)');
+            .attr('width', this._timelineWidth + 2 * BORDER_OFFSET)
+            .attr('height', this._timelineHeight);
 
         // Create dashed lines aligned to axis ticks
         const axis = d3
@@ -633,7 +629,6 @@ export class HorizontalActivityTimeline {
             .attr('transform', 'translate(0, -12)')
             .call(axis);
 
-        this.createTimelineOutline();
         this.addItemsToTimeline(dataToDisplay);
 
         // Activate scroll only if needed
@@ -642,59 +637,6 @@ export class HorizontalActivityTimeline {
         } else {
             d3.select(this.divTimelineScroll).style('overflow-y', 'hidden');
         }
-    }
-
-    /**
-     * Create the timeline outline with top rectangle line fixed.
-     */
-    createTimelineOutline() {
-        d3.select(
-            this._activityTimeline.template.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-fixed-outline'
-            )
-        )
-            .append('svg')
-            .attr(
-                'width',
-                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
-            )
-            .attr('height', 2)
-            .attr('transform', 'translate(' + this._offsetAxis + ' ,0)')
-            .style('position', 'absolute')
-            .style('z-index', 8000)
-            .append('line')
-            .attr('stroke', TIMELINE_COLORS.timelineBorder)
-            .attr('stroke-width', 2)
-            .attr('x1', 0)
-            .attr('y1', 0.2)
-            .attr(
-                'x2',
-                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
-            )
-            .attr('y2', 0.2);
-
-        this._timelineSVG
-            .append('line')
-            .attr('stroke', TIMELINE_COLORS.timelineBorder)
-            .attr('stroke-width', 2)
-            .attr('x1', 0)
-            .attr('y1', 0)
-            .attr('x2', 0)
-            .attr('y2', this._timelineHeight);
-        this._timelineSVG
-            .append('line')
-            .attr('stroke', TIMELINE_COLORS.timelineBorder)
-            .attr('stroke-width', 2)
-            .attr(
-                'x1',
-                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
-            )
-            .attr('y1', 0)
-            .attr(
-                'x2',
-                this._timelineWidth - this._offsetAxis + 2 * BORDER_OFFSET
-            )
-            .attr('y2', this._timelineHeight);
     }
 
     /**
@@ -707,13 +649,27 @@ export class HorizontalActivityTimeline {
                 'class',
                 'avonni-horizontal-activity-timeline__timeline-axis-svg'
             )
-            .attr(
-                'width',
-                this._timelineWidth - this._offsetAxis + BORDER_OFFSET * 2
-            )
+            .attr('width', this._timelineWidth + BORDER_OFFSET)
             .attr('height', 25)
-            .attr('transform', 'translate(' + this._offsetAxis + ', 0)')
-            .style('border', '1.5px solid ' + TIMELINE_COLORS.timelineBorder);
+            .attr('transform', 'translate(0 ,0)');
+
+        // Add upper and lower line of timeline axis
+        axisSVG
+            .append('line')
+            .attr('stroke', TIMELINE_COLORS.timelineBorder)
+            .attr('stroke-width', 1)
+            .attr('x1', 0)
+            .attr('y1', BORDER_OFFSET)
+            .attr('x2', this._timelineWidth + 2 * BORDER_OFFSET)
+            .attr('y2', BORDER_OFFSET);
+        axisSVG
+            .append('line')
+            .attr('stroke', TIMELINE_COLORS.timelineBorder)
+            .attr('stroke-width', 1)
+            .attr('x1', 0)
+            .attr('y1', 21)
+            .attr('x2', this._timelineWidth + 2 * BORDER_OFFSET)
+            .attr('y2', 21);
 
         this.createTimeAxis(
             this.viewTimeScale,
@@ -815,7 +771,7 @@ export class HorizontalActivityTimeline {
                 this._timelineWidth + AXIS_LABEL_WIDTH / 3 + 2 * BORDER_OFFSET
             )
             .attr('height', this._timelineAxisHeight * 2)
-            .attr('transform', 'translate(0.5, 5)');
+            .attr('transform', 'translate(-8.75, 5)');
 
         // Create ticks of scroll axis
         this.createTimeAxis(
@@ -906,14 +862,6 @@ export class HorizontalActivityTimeline {
 
         this._scrollAxisDiv = d3.select(this.divTimelineScrollAxisSelector);
         this._scrollAxisDiv.selectAll('*').remove();
-
-        d3.select(
-            this._activityTimeline.template.querySelector(
-                '.avonni-activity-timeline__horizontal-timeline-fixed-outline'
-            )
-        )
-            .selectAll('*')
-            .remove();
     }
 
     /**
@@ -1094,7 +1042,7 @@ export class HorizontalActivityTimeline {
      */
     setTimelineWidth(containerWidth) {
         if (containerWidth > 0) {
-            this._timelineWidth = containerWidth - 17;
+            this._timelineWidth = containerWidth;
             const timelineContainerWidth =
                 this._timelineWidth + 2 * BORDER_OFFSET;
             d3.select(this.divTimelineItemsSelector).style(

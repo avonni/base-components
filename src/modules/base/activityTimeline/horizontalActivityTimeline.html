@@ -35,7 +35,13 @@
 <template>
     <div class="avonni-activity-timeline__container">
         <template if:true={hasHeader}>
-            <div class="slds-card__header">
+            <div
+                class="
+                    slds-card__header
+                    slds-m-bottom_x-small
+                    slds-p-around_none
+                "
+            >
                 <div class="slds-media slds-media_center">
                     <div class="slds-media__figure" if:true={iconName}>
                         <lightning-icon
@@ -48,7 +54,11 @@
                         <h2 class="slds-section__title">{title}</h2>
                     </div>
                     <div
-                        class="slds-media__body slds-text-align_right"
+                        class="
+                            slds-media__body
+                            slds-text-align_right
+                            slds-text-body_small
+                        "
                         data-element-id="avonni-activity-horizontal-timeline-title"
                     >
                         Showing : {intervalMinDate} - {intervalMaxDate}
@@ -60,13 +70,13 @@
         </template>
 
         <!-- Horizontal timeline with D3 -->
-        <div class="avonni-activity-timeline__horizontal-timeline">
-            <div
-                class="
-                    avonni-activity-timeline__horizontal-timeline-fixed-outline
-                "
-                lwc:dom="manual"
-            ></div>
+        <div
+            class="
+                avonni-activity-timeline__horizontal-timeline
+                slds-box slds-box_xx-small
+                slds-p-around_none
+            "
+        >
             <div
                 class="
                     avonni-activity-timeline__horizontal-timeline-scrolling-container
