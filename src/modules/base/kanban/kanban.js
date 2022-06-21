@@ -488,7 +488,7 @@ export default class Kanban extends LightningElement {
         }
 
         const toScroll = scrollXStep ? fieldContainer : group;
-
+        scrollYStep = this._draggedGroup ? 0 : scrollYStep;
         if (
             !this._scrollingInterval &&
             (this._draggedGroup || this._draggedTile)
