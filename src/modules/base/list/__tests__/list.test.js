@@ -498,13 +498,13 @@ describe('List', () => {
             button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(ACTION[0].name);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.item).toMatchObject(ITEMS[0]);
+            expect(call.detail.name).toBe(ACTION[0].name);
+            expect(call.detail.targetName).toBe(ITEMS[0].name);
+            expect(call.bubbles).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
         });
     });
 
@@ -521,15 +521,10 @@ describe('List', () => {
             button.dispatchEvent(new CustomEvent('click'));
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(
-                ACTION_NO_LABEL[0].name
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.item).toMatchObject(ITEMS[0]);
+            expect(detail.name).toBe(ACTION_NO_LABEL[0].name);
+            expect(detail.targetName).toBe(ITEMS[0].name);
         });
     });
 
@@ -552,13 +547,10 @@ describe('List', () => {
             );
 
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[0]
-            );
-            expect(handler.mock.calls[0][0].detail.name).toBe(ACTIONS[0].name);
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.item).toMatchObject(ITEMS[0]);
+            expect(detail.name).toBe(ACTIONS[0].name);
+            expect(detail.targetName).toBe(ITEMS[0].name);
         });
     });
 
@@ -576,13 +568,13 @@ describe('List', () => {
 
             items[2].dispatchEvent(new CustomEvent('click'));
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[2]
-            );
-            expect(handler.mock.calls[0][0].detail.bounds).not.toBeUndefined();
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.item).toMatchObject(ITEMS[2]);
+            expect(call.detail.name).toBe(ITEMS[2].name);
+            expect(call.detail.bounds).not.toBeUndefined();
+            expect(call.bubbles).toBeFalsy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
         });
     });
 
@@ -600,10 +592,10 @@ describe('List', () => {
             event.key = 'Enter';
             items[1].dispatchEvent(event);
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[1]
-            );
-            expect(handler.mock.calls[0][0].detail.bounds).not.toBeUndefined();
+            const detail = handler.mock.calls[0][0].detail;
+            expect(detail.item).toMatchObject(ITEMS[1]);
+            expect(detail.bounds).not.toBeUndefined();
+            expect(detail.name).toBe(ITEMS[1].name);
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -625,12 +617,12 @@ describe('List', () => {
             event.button = 0;
             items[2].dispatchEvent(event);
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[2]
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.item).toMatchObject(ITEMS[2]);
+            expect(call.detail.name).toBe(ITEMS[2].name);
+            expect(call.bubbles).toBeTruthy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
         });
     });
 
@@ -649,12 +641,12 @@ describe('List', () => {
             event.button = 0;
             items[1].dispatchEvent(event);
             expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.item).toMatchObject(
-                ITEMS[1]
-            );
-            expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
+            const call = handler.mock.calls[0][0];
+            expect(call.detail.item).toMatchObject(ITEMS[1]);
+            expect(call.detail.name).toBe(ITEMS[1].name);
+            expect(call.bubbles).toBeTruthy();
+            expect(call.cancelable).toBeFalsy();
+            expect(call.composed).toBeFalsy();
         });
     });
 

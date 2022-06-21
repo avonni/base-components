@@ -542,13 +542,15 @@ export default class List extends LightningElement {
              * @event
              * @name itemmousedown
              * @param {object} item Item clicked.
+             * @param {string} name Unique name of the item clicked.
              * @public
              * @bubbles
              */
             this.dispatchEvent(
                 new CustomEvent('itemmousedown', {
                     detail: {
-                        item: deepCopy(item)
+                        item: deepCopy(item),
+                        name: item.name
                     },
                     bubbles: true
                 })
@@ -642,13 +644,15 @@ export default class List extends LightningElement {
              * @event
              * @name itemmouseup
              * @param {object} item Item clicked.
+             * @param {string} name Unique name of the item clicked.
              * @public
              * @bubbles
              */
             this.dispatchEvent(
                 new CustomEvent('itemmouseup', {
                     detail: {
-                        item: deepCopy(item)
+                        item: deepCopy(item),
+                        name: item.name
                     },
                     bubbles: true
                 })
@@ -753,7 +757,8 @@ export default class List extends LightningElement {
         const actionName = this.hasMultipleActions
             ? event.detail.value
             : event.target.value;
-        const itemIndex = event.currentTarget.dataset.itemIndex;
+        const itemIndex = Number(event.currentTarget.dataset.itemIndex);
+        const item = deepCopy(this.items[itemIndex]);
 
         /**
          * The event fired when a user clicks on an action.
@@ -762,13 +767,15 @@ export default class List extends LightningElement {
          * @name actionclick
          * @param {string} name  Name of the action clicked.
          * @param {object} item Item clicked.
+         * @param {string} targetName Unique name of the item clicked.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName,
-                    item: this.computedItems[itemIndex]
+                    item,
+                    targetName: item.name
                 }
             })
         );
@@ -787,20 +794,24 @@ export default class List extends LightningElement {
         )
             return;
 
+        const index = Number(event.currentTarget.dataset.index);
+        const item = deepCopy(this.items[index]);
         /**
          * The event fired when a user clicks on an item.
          *
          * @event
          * @name itemclick
-         * @param {object}  item Item clicked.
+         * @param {object} item Item clicked.
          * @param {DOMRect} bounds Bounds of the item clicked.
+         * @param {string} name Unique name of the item clicked.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('itemclick', {
                 detail: {
-                    item: this.computedItems[event.currentTarget.dataset.index],
-                    bounds: event.currentTarget.getBoundingClientRect()
+                    item,
+                    bounds: event.currentTarget.getBoundingClientRect(),
+                    name: item.name
                 }
             })
         );
