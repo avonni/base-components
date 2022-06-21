@@ -76,7 +76,11 @@
                                             class="slds-path__title"
                                             data-element-id="path-group"
                                             >{item.label}
-                                            ({item.tiles.length})</span
+                                            <span
+                                                if:true="{item.showItemCount}"
+                                            >
+                                                ({item.tiles.length})</span
+                                            ></span
                                         >
                                     </a>
                                 </li>
@@ -154,7 +158,10 @@
                                     slds-m-horizontal_xx-small
                                 "
                             >
-                                {group.label} ({group.tiles.length})
+                                {group.label}
+                                <span if:true="{group.showItemCount}">
+                                    ({group.tiles.length})</span
+                                >
                             </h2>
                             <c-output-data
                                 value={group.summarize.value}

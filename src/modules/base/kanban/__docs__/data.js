@@ -34,7 +34,7 @@ const GROUP_VALUES = [
     {
         label: 'Open',
         value: 'open',
-        backgroundColor: '#fcfcfc',
+        backgroundColor: '#fffff',
         headerActions: [
             { disabled: false, label: 'Action 1', name: 'Action 1' }
         ]
@@ -42,7 +42,7 @@ const GROUP_VALUES = [
     {
         label: 'In Progress',
         value: 'inProgress',
-        backgroundColor: '#fcfcfc',
+        backgroundColor: '#fffff',
         footerActions: [
             {
                 disabled: false,
@@ -54,12 +54,13 @@ const GROUP_VALUES = [
         headerActions: [
             { disabled: false, label: 'Action 1', name: 'Action 1' },
             { disabled: false, label: 'Action 2', name: 'Action 2' }
-        ]
+        ],
+        showItemCount: true
     },
     {
         label: 'Closed',
         value: 'closed',
-        backgroundColor: '#fdf2f2',
+        backgroundColor: '#fffff',
         footerActions: [
             {
                 disabled: false,
