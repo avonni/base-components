@@ -437,15 +437,23 @@ export default class AvatarGroup extends LightningElement {
     }
 
     /**
+     * Class to add a flex row gap to grid and stack layouts
+     * @type {string}
+     */
+    get avatarFlexWrapperClass() {
+        return classSet({
+            'avonni-avatar-group__avatar-wrapper': this.layout !== 'list'
+        });
+    }
+
+    /**
      * Class of avatars when displayed in a line
      * @type {string}
      */
     get avatarInlineClass() {
         return classSet('avonni-avatar-group__avatar')
             .add({
-                'avonni-avatar-group_in-line': this.layout === 'stack',
-                'avonni-avatar-group__avatar_color-border-square':
-                    this.layout !== 'list' && this.variant === 'square'
+                'avonni-avatar-group_in-line': this.layout === 'stack'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();
@@ -458,9 +466,7 @@ export default class AvatarGroup extends LightningElement {
     get avatarInlinePlusClass() {
         return classSet('avonni-avatar-group__avatar avonni-avatar-group__plus')
             .add({
-                'avonni-avatar-group_in-line ': this.layout === 'stack',
-                'avonni-avatar-group__avatar_color-border-square':
-                    this.layout !== 'list' && this.variant === 'square'
+                'avonni-avatar-group_in-line ': this.layout === 'stack'
             })
             .add(`avonni-avatar-${this.size}`)
             .toString();

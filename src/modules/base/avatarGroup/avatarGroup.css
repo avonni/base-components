@@ -31,15 +31,15 @@
  */
 
 .avonni-avatar-group__avatar {
-    display: inline-block;
     position: relative;
     transition: transform 0.1s ease-out 0s;
-    --avonni-avatar-color-border: var(
-        --avonni-avatar-group-avatar-color-border,
-        transparent
-    );
-    --avonni-avatar-sizing-border: 1px;
     cursor: pointer;
+}
+
+.avonni-avatar-group__avatar-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    row-gap: 0.3rem;
 }
 
 .avonni-avatar-group_in-line {
@@ -47,15 +47,14 @@
         --avonni-avatar-group-avatar-stack-color-border,
         #ffffff
     );
-}
-
-button.avonni-avatar-group__action-button {
-    border: 1px solid
-        var(--avonni-avatar-group-avatar-color-border, transparent);
+    --avonni-avatar-sizing-border: var(
+        --avonni-avatar-group-avatar-stack-sizing-border,
+        1px
+    );
 }
 
 button.avonni-avatar-group_action-button-in-line {
-    border: 1px solid
+    border: var(--avonni-avatar-group-avatar-stack-sizing-border, 1px) solid
         var(--avonni-avatar-group-avatar-stack-color-border, #ffffff);
 }
 
@@ -237,8 +236,4 @@ button.avonni-avatar-group_action-button-in-line {
         --avonni-avatar-group-avatar-stack-color-border,
         #ffffff
     );
-}
-
-.avonni-avatar-group__avatar_color-border-square {
-    border-radius: 4px;
 }

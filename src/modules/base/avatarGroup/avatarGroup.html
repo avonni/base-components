@@ -100,7 +100,7 @@
             ></c-primitive-avatar>
         </span>
     </template>
-    <template if:false={isClassic}>
+    <div if:false={isClassic} class={avatarFlexWrapperClass}>
         <template for:each={listItems} for:item="item" for:index="index">
             <template if:false={item.showMore}>
                 <template if:true={item.key}>
@@ -285,5 +285,5 @@
                 </button>
             </div>
         </template>
-    </template>
+    </div>
 </template>

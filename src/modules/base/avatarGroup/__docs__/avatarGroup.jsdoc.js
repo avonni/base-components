@@ -39,9 +39,9 @@
  */
 /**
  * @memberof stylingHooks
- * @name --avonni-avatar-group-avatar-color-border
- * @default transparent
- * @type color
+ * @name --avonni-avatar-group-avatar-stack-sizing-border
+ * @default 1px
+ * @type sizing
  */
 /**
  * @memberof stylingHooks
