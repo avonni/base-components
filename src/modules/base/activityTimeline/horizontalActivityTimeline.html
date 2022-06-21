@@ -70,12 +70,46 @@
             <div
                 class="
                     avonni-activity-timeline__horizontal-timeline-scrolling-container
+                    slds-is-relative
                 "
             >
                 <div
                     class="avonni-activity-timeline__horizontal-timeline-items"
                     lwc:dom="manual"
                 ></div>
+                <!-- Popover item -->
+                <div
+                    if:true={showItemPopOver}
+                    class="
+                        avonni-activity-timeline__item-popover
+                        slds-is-absolute
+                    "
+                >
+                    <c-primitive-activity-timeline-item
+                        title={selectedItem.title}
+                        description={selectedItem.description}
+                        datetime-value={selectedItem.datetimeValue}
+                        href={selectedItem.href}
+                        icon-name={selectedItem.iconName}
+                        icon-size={itemIconSize}
+                        fields={selectedItem.fields}
+                        has-error={selectedItem.hasError}
+                        closed={selectedItem.closed}
+                        hide-border="true"
+                        button-label={selectedItem.buttonLabel}
+                        button-icon-name={selectedItem.buttonIconName}
+                        button-variant={selectedItem.buttonVariant}
+                        button-icon-position={selectedItem.buttonIconPosition}
+                        button-disabled={selectedItem.buttonDisabled}
+                        is-loading={selectedItem.isLoading}
+                        is-active={selectedItem.isActive}
+                        loading-state-alternative-text={selectedItem.loadingStateAlternativeText}
+                        name={selectedItem.name}
+                        data-element-id="avonni-primitive-activity-timeline-item"
+                        data-name={selectedItem.name}
+                    >
+                    </c-primitive-activity-timeline-item>
+                </div>
             </div>
             <div
                 class="avonni-activity-timeline__horizontal-timeline-axis"
@@ -87,37 +121,6 @@
                 "
                 lwc:dom="manual"
             ></div>
-        </div>
-
-        <!-- Popover item -->
-        <div
-            if:true={showItemPopOver}
-            class="avonni-activity-timeline__item-popover"
-        >
-            <c-primitive-activity-timeline-item
-                title={selectedItem.title}
-                description={selectedItem.description}
-                datetime-value={selectedItem.datetimeValue}
-                href={selectedItem.href}
-                icon-name={selectedItem.iconName}
-                icon-size={itemIconSize}
-                fields={selectedItem.fields}
-                has-error={selectedItem.hasError}
-                closed={selectedItem.closed}
-                hide-border="true"
-                button-label={selectedItem.buttonLabel}
-                button-icon-name={selectedItem.buttonIconName}
-                button-variant={selectedItem.buttonVariant}
-                button-icon-position={selectedItem.buttonIconPosition}
-                button-disabled={selectedItem.buttonDisabled}
-                is-loading={selectedItem.isLoading}
-                is-active={selectedItem.isActive}
-                loading-state-alternative-text={selectedItem.loadingStateAlternativeText}
-                name={selectedItem.name}
-                data-element-id="avonni-primitive-activity-timeline-item"
-                data-name={selectedItem.name}
-            >
-            </c-primitive-activity-timeline-item>
         </div>
     </div>
 </template>

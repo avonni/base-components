@@ -1047,6 +1047,51 @@ export class HorizontalActivityTimeline {
     }
 
     /**
+     * Set the position (x, y) of item's popover.
+     *
+     * @return {object}
+     */
+    setPopoverPosition(tooltipElement, event, element) {
+        const popoverPosition = { x: event.pageX - 20, y: element.yPosition };
+
+        const popoverWidth = Number(
+            tooltipElement
+                .style('width')
+                .slice(0, tooltipElement.style('width').length - 2)
+        );
+        const maxVisiblePositionOfPopover = this._timelineWidth - popoverWidth;
+
+        // Check if popover should be right or left
+        if (popoverPosition.x > maxVisiblePositionOfPopover) {
+            popoverPosition.x = event.pageX - popoverWidth + 20;
+            if (popoverPosition.x < 0) {
+                popoverPosition.x =
+                    this._offsetAxis +
+                    this.viewTimeScale(new Date(element.datetimeValue));
+            }
+        }
+
+        // Check if popover is hidden by timeline displayed height
+        const popoverHeight = Number(
+            tooltipElement
+                .style('height')
+                .slice(0, tooltipElement.style('height').length - 2)
+        );
+        if (
+            popoverPosition.y + popoverHeight >
+            this._timelineHeightDisplayed + this.divTimelineScroll.scrollTop
+        ) {
+            const distanceToAdjust =
+                this._timelineHeightDisplayed +
+                this.divTimelineScroll.scrollTop -
+                (popoverPosition.y + popoverHeight);
+            popoverPosition.y += distanceToAdjust;
+        }
+
+        return popoverPosition;
+    }
+
+    /**
      * Set width of the timeline div (screen)
      */
     setTimelineWidth(containerWidth) {
@@ -1272,32 +1317,19 @@ export class HorizontalActivityTimeline {
             return;
         }
 
-        let popoverXPosition = event.pageX - 10;
-        const popoverSize = Number(
-            tooltipElement
-                .style('width')
-                .slice(0, tooltipElement.style('width').length - 2)
-        );
-        const maxVisiblePositionOfPopover = this._timelineWidth - popoverSize;
-
-        // Check if popover should be right or left
-        if (popoverXPosition > maxVisiblePositionOfPopover) {
-            popoverXPosition = event.pageX - popoverSize + 20;
-            if (popoverXPosition < 0) {
-                popoverXPosition =
-                    this._offsetAxis +
-                    this.viewTimeScale(new Date(element.datetimeValue));
-            }
-        }
-
         // Set popover position and classes
+        const popoverPosition = this.setPopoverPosition(
+            tooltipElement,
+            event,
+            element
+        );
         tooltipElement
             .attr(
                 'class',
-                'slds-is-fixed avonni-activity-timeline__item-popover slds-popover'
+                'slds-is-absolute avonni-activity-timeline__item-popover slds-popover'
             )
-            .style('top', event.pageY - 10 + 'px')
-            .style('left', popoverXPosition + 'px')
+            .style('top', popoverPosition.y + 'px')
+            .style('left', popoverPosition.x + 'px')
             .style('visibility', 'visible')
             .on('mouseleave', this.handleMouseOutOnItem.bind(this));
     }
