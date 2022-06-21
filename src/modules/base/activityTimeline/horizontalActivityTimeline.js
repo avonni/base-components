@@ -73,17 +73,15 @@ const Y_GAP_BETWEEN_ITEMS_TIMELINE = 28;
 const Y_START_POSITION_SCROLL_ITEM = 4;
 const Y_GAP_BETWEEN_ITEMS_SCROLL = 4;
 
-// TODO: mouse over block scroll
-
 export class HorizontalActivityTimeline {
     // Horizontal view properties
     _changeIntervalSizeMode = false;
-    _intervalMinDate;
-    _intervalMaxDate;
-    _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
-    _isResizingInterval = false;
     _dateFormat = DEFAULT_DATE_FORMAT;
     _displayedItems = [];
+    _intervalDaysLength = DEFAULT_INTERVAL_DAYS_LENGTH;
+    _intervalMinDate;
+    _intervalMaxDate;
+    _isResizingInterval = false;
     _maxYPositionOfItem = 0;
     _numberOfScrollAxisTicks = DEFAULT_SCROLL_AXIS_TICKS_NUMBER;
     _numberOfTimelineAxisTicks = DEFAULT_TIMELINE_AXIS_TICKS_NUMBER;
@@ -93,19 +91,19 @@ export class HorizontalActivityTimeline {
     _timelineAxisHeight = DEFAULT_TIMELINE_AXIS_HEIGHT;
 
     // To change visible height of timeline
-    _requestHeightChange = false;
-    _previousMaxYPosition;
-    _maxVisibleItems;
-    _timelineHeightDisplayed;
     _maxDisplayedItems;
+    _maxVisibleItems;
+    _previousMaxYPosition;
+    _requestHeightChange = false;
+    _timelineHeightDisplayed;
 
     // D3 selector DOM elements
-    _timelineDiv;
-    _timelineSVG;
-    _scrollAxisSVG;
     _timeIntervalSelector;
     _timelineAxisDiv;
+    _timelineDiv;
+    _timelineSVG;
     _scrollAxisDiv;
+    _scrollAxisSVG;
 
     constructor(activityTimeline, sortedItems) {
         this._sortedItems = sortedItems;
