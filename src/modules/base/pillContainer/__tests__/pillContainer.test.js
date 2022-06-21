@@ -40,16 +40,19 @@ const ITEMS = [
     {
         href: '#first-pill',
         label: 'First pill',
+        name: 'first-pill',
         avatar: {
             fallbackIconName: 'custom:custom1',
             variant: 'circle'
         }
     },
     {
-        label: 'Second pill'
+        label: 'Second pill',
+        name: 'second-pill'
     },
     {
         label: 'Third pill',
+        name: 'third-pill',
         avatar: {
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
             initials: 'FP'
@@ -445,6 +448,7 @@ describe('Pill Container', () => {
             const event = handler.mock.calls[0][0];
             expect(event.detail.name).toBe('action-1');
             expect(event.detail.index).toBe(2);
+            expect(event.detail.targetName).toBe(ITEMS[2].name);
             expect(event.bubbles).toBeFalsy();
             expect(event.cancelable).toBeFalsy();
             expect(event.composed).toBeFalsy();
