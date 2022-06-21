@@ -122,7 +122,7 @@ describe('Calendar', () => {
     it('Calendar: disabled dates', () => {
         element.value = '05/09/2021';
         element.disabledDates = '05/06/2021';
-        element.min = new Date('05/20/2021');
+        element.min = new Date('05/01/2021');
         element.max = new Date('05/25/2021');
 
         return Promise.resolve().then(() => {
