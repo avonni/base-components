@@ -1036,6 +1036,7 @@ export default class Kanban extends LightningElement {
 
         this.createTileSpace();
         this.handleDropZone(event);
+        this.handleTileMouseMove(event);
     }
 
     /**
