@@ -430,7 +430,8 @@ export default class AvatarGroup extends LightningElement {
                 'slds-avatar-group_large': this.size === 'large',
                 'avonni-avatar-group_x-large': this.size === 'x-large',
                 'avonni-avatar-group_xx-large': this.size === 'xx-large',
-                'avonni-avatar-group_circle': this.variant === 'circle'
+                'avonni-avatar-group_circle': this.variant === 'circle',
+                'avonni-avatar-group_in-line': this.layout === 'stack'
             })
             .toString();
     }

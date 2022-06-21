@@ -35,11 +35,18 @@
     position: relative;
     transition: transform 0.1s ease-out 0s;
     --avonni-avatar-color-border: var(
-        --avonni-avatar-group-avatar-stack-color-border,
-        #ffffff
+        --avonni-avatar-group-avatar-color-border,
+        red
     );
     --avonni-avatar-sizing-border: 1px;
     cursor: pointer;
+}
+
+.avonni-avatar-group_in-line {
+    --avonni-avatar-color-border: var(
+        --avonni-avatar-group-avatar-stack-color-border,
+        blue
+    );
 }
 
 .avonni-avatar-group_x-large {
@@ -234,4 +241,12 @@
 
 .avonni-avatar-group__avatar_color-border-square {
     border-radius: 4px;
+}
+
+button.avonni-avatar-group__action-button {
+    border: 1px solid var(--avonni-avatar-group-avatar-color-border, red);
+}
+
+button.avonni-avatar-group_action-button-in-line {
+    border: 1px solid var(--avonni-avatar-group-avatar-stack-color-border, blue);
 }

@@ -39,6 +39,12 @@
  */
 /**
  * @memberof stylingHooks
+ * @name --avonni-avatar-group-avatar-color-border
+ * @default transparent
+ * @type color
+ */
+/**
+ * @memberof stylingHooks
  * @name --avonni-avatar-group-avatar-stack-color-border
  * @default #ffffff
  * @type color
