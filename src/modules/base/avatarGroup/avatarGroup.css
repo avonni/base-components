@@ -31,6 +31,7 @@
  */
 
 .avonni-avatar-group__avatar {
+    display: inline-block;
     position: relative;
     transition: transform 0.1s ease-out 0s;
     cursor: pointer;
@@ -236,4 +237,8 @@ button.avonni-avatar-group_action-button-in-line {
         --avonni-avatar-group-avatar-stack-color-border,
         #ffffff
     );
+}
+
+.avonni-avatar-group__avatar_color-border-square {
+    border-radius: 4px;
 }
