@@ -391,20 +391,6 @@ export default class Calendar extends LightningElement {
     }
 
     /**
-     * Check if value is after max date.
-     */
-    get isAfterMax() {
-        return this._value[0].getTime() > this.max.getTime();
-    }
-
-    /**
-     * Check if value is before min date.
-     */
-    get isBeforeMin() {
-        return this._value[0].getTime() < this.min.getTime();
-    }
-
-    /**
      * Check if current date is between the min-max interval.
      */
     get isCurrentDateBetweenMinAndMax() {
@@ -412,13 +398,6 @@ export default class Calendar extends LightningElement {
             this.min.getTime() <= new Date().getTime() &&
             new Date().getTime() <= this.max.getTime()
         );
-    }
-
-    /**
-     * Check if value is an invalid date.
-     */
-    get isInvalidDate() {
-        return this._value[0].toString() === 'Invalid Date';
     }
 
     /**
@@ -465,6 +444,27 @@ export default class Calendar extends LightningElement {
      *  PRIVATE METHODS
      * -------------------------------------------------------------
      */
+
+    /**
+     * Check if value is after max date.
+     */
+    isAfterMax(value) {
+        return value.getTime() > this.max.getTime();
+    }
+
+    /**
+     * Check if value is before min date.
+     */
+    isBeforeMin(value) {
+        return value.getTime() < this.min.getTime();
+    }
+
+    /**
+     * Check if value is an invalid date.
+     */
+    isInvalidDate(value) {
+        return value.toString() === 'Invalid Date';
+    }
 
     /**
      * Create Dates array.
@@ -819,16 +819,18 @@ export default class Calendar extends LightningElement {
             return;
         }
 
-        if (this.isInvalidDate) {
-            if (this.isCurrentDateBetweenMinAndMax) {
-                this._value[0] = new Date();
-            } else {
-                this._value[0] = this.min;
+        for (let i = 0; i < this._value.length; ++i) {
+            if (this.isInvalidDate(this._value[i])) {
+                if (this.isCurrentDateBetweenMinAndMax) {
+                    this._value[i] = new Date();
+                } else {
+                    this._value[i] = this.min;
+                }
+            } else if (this.isAfterMax(this._value[i])) {
+                this._value[i] = this.max;
+            } else if (this.isBeforeMin(this._value[i])) {
+                this._value[i] = this.min;
             }
-        } else if (this.isAfterMax) {
-            this._value[0] = this.max;
-        } else if (this.isBeforeMin) {
-            this._value[0] = this.min;
         }
 
         this.updateDate();
