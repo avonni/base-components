@@ -36,7 +36,7 @@ import ChipContainer from '../chipContainer';
 const MOCK_ITEM_SET = [
     {
         label: 'First chip',
-        iconName: 'utility:table',
+        prefixIconName: 'utility:table',
         variant: 'base',
         outline: true
     },
@@ -156,7 +156,7 @@ describe('Chip Container', () => {
                 expect(chip.label).toBe(MOCK_ITEM_SET[index].label);
                 expect(chip.variant).toBe(MOCK_ITEM_SET[index].variant);
                 expect(chip.iconName).toBe(
-                    MOCK_ITEM_SET[index].iconName || 'utility:check'
+                    MOCK_ITEM_SET[index].prefixIconName || 'utility:check'
                 );
                 expect(chip.avatar).toEqual(
                     MOCK_ITEM_SET[index].avatar || null

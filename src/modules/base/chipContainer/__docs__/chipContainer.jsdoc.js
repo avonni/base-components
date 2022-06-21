@@ -5,7 +5,7 @@
  * @property {string} variant The variant changes the appearance of the chip. Accepted variants include base, brand, inverse, alt-inverse, success, info, warning, error, offline.
  * @property {boolean} outline If true, display an outline style button.
  * @property {object} avatar Avatar object. If present, the avatar is displayed to the left of the label. Overwrites icon if both medias are present.
- * @property {string} iconName Icon name. If present, the icon is displayed to the left of the label.
+ * @property {string} prefixIconName Icon name. If present, the icon is displayed to the left of the label.
  * @property {string} mediaPosition Position of the media element. Valid values include left (default) and right.
  *
  */
