@@ -73,9 +73,9 @@ describe('Kanban', () => {
             const groups = element.shadowRoot.querySelectorAll(
                 '[data-element-id="path-group"]'
             );
-            expect(groups[0].textContent).toBe('Open (0)');
-            expect(groups[1].textContent).toBe('In Progress (0)');
-            expect(groups[2].textContent).toBe('Closed (0)');
+            expect(groups[0].textContent).toBe('Open ');
+            expect(groups[1].textContent).toBe('In Progress ');
+            expect(groups[2].textContent).toBe('Closed ');
         });
     });
 
