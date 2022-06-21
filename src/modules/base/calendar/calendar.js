@@ -292,14 +292,7 @@ export default class Calendar extends LightningElement {
             if (this._isConnected) {
                 this.validateCurrentDayValue();
             }
-
-            this._value = this._value.filter(
-                (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
-            );
-            this.date = this._value.length
-                ? new Date(this._value[0])
-                : DEFAULT_DATE;
-            this.updateDateParameters();
+            this.updateDate();
         }
     }
 
@@ -395,6 +388,37 @@ export default class Calendar extends LightningElement {
      */
     get generateKey() {
         return generateUUID();
+    }
+
+    /**
+     * Check if value is after max date.
+     */
+    get isAfterMax() {
+        return this._value[0].getTime() > this.max.getTime();
+    }
+
+    /**
+     * Check if value is before min date.
+     */
+    get isBeforeMin() {
+        return this._value[0].getTime() < this.min.getTime();
+    }
+
+    /**
+     * Check if current date is between the min-max interval.
+     */
+    get isCurrentDateBetweenMinAndMax() {
+        return (
+            this.min.getTime() <= new Date().getTime() &&
+            new Date().getTime() <= this.max.getTime()
+        );
+    }
+
+    /**
+     * Check if value is an invalid date.
+     */
+    get isInvalidDate() {
+        return this._value[0].toString() === 'Invalid Date';
     }
 
     /**
@@ -494,6 +518,19 @@ export default class Calendar extends LightningElement {
         });
 
         return dates;
+    }
+
+    /**
+     * Update value, date and refresh calendar.
+     */
+    updateDate() {
+        this._value = this._value.filter(
+            (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
+        );
+        this.date = this._value.length
+            ? new Date(this._value[0])
+            : DEFAULT_DATE;
+        this.updateDateParameters();
     }
 
     /**
@@ -778,19 +815,23 @@ export default class Calendar extends LightningElement {
      * If invalid current day, center calendar's current day to closest date in min-max interval
      */
     validateCurrentDayValue() {
-        if (!Array.isArray(this._value) || !this._value[0]) return;
-        if (this._value[0].toString() === 'Invalid Date') {
-            if (
-                this.min.getFullYear() <= new Date().getFullYear() &&
-                new Date().getFullYear() <= this.max.getFullYear()
-            )
+        if (!Array.isArray(this._value) || !this._value[0]) {
+            return;
+        }
+
+        if (this.isInvalidDate) {
+            if (this.isCurrentDateBetweenMinAndMax) {
                 this._value[0] = new Date();
-            else this._value[0] = this.min;
-        } else if (this._value[0].getFullYear() > this.max.getFullYear()) {
+            } else {
+                this._value[0] = this.min;
+            }
+        } else if (this.isAfterMax) {
             this._value[0] = this.max;
-        } else if (this._value[0].getFullYear() < this.min.getFullYear()) {
+        } else if (this.isBeforeMin) {
             this._value[0] = this.min;
         }
+
+        this.updateDate();
     }
 
     /**
