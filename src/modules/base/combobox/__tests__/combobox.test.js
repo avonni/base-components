@@ -252,7 +252,10 @@ describe('Combobox', () => {
                     '[data-element-id="avonni-pill-container"]'
                 );
                 expect(pillContainer).toBeTruthy();
-                expect(pillContainer.items).toEqual(options);
+                const optionsWithName = options.map((opt) => {
+                    return { ...opt, name: opt.value };
+                });
+                expect(pillContainer.items).toEqual(optionsWithName);
             });
     });
 
@@ -945,10 +948,11 @@ describe('Combobox', () => {
             const combobox = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-primitive-combobox-main"]'
             );
+            const optionValue = options[3].options[0].options[0].value;
             combobox.dispatchEvent(
                 new CustomEvent('levelchange', {
                     detail: {
-                        optionValue: options[3].options[0].options[0].value
+                        optionValue
                     }
                 })
             );
@@ -958,6 +962,7 @@ describe('Combobox', () => {
             expect(event.detail.option).toEqual(
                 options[3].options[0].options[0]
             );
+            expect(event.detail.value).toBe(optionValue);
             expect(event.bubbles).toBeTruthy();
             expect(event.composed).toBeFalsy();
             expect(event.cancelable).toBeFalsy();
@@ -1159,7 +1164,7 @@ describe('Combobox', () => {
                 pillContainer.dispatchEvent(
                     new CustomEvent('actionclick', {
                         detail: {
-                            index: 2
+                            targetName: options[2].value
                         }
                     })
                 );

@@ -677,7 +677,11 @@ export default class Combobox extends LightningElement {
      * @type {object[]}
      */
     get normalizedSelectedOptions() {
-        return deepCopy(this.selectedOptions);
+        const options = deepCopy(this.selectedOptions);
+        options.forEach((opt) => {
+            opt.name = opt.value;
+        });
+        return options;
     }
 
     /**
@@ -994,7 +998,8 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleLevelChange(event) {
-        const option = this.getOption(event.detail.optionValue);
+        const value = event.detail.optionValue;
+        const option = this.getOption(value);
 
         /**
          * The event fired when an option with nested options has been selected.
@@ -1002,13 +1007,15 @@ export default class Combobox extends LightningElement {
          * @event
          * @name levelchange
          * @param {object} option Option clicked.
+         * @param {string} value Unique value of the clicked option.
          * @public
          * @bubbles
          */
         this.dispatchEvent(
             new CustomEvent('levelchange', {
                 detail: {
-                    option: deepCopy(option)
+                    option: deepCopy(option),
+                    value
                 },
                 bubbles: true
             })
@@ -1053,8 +1060,7 @@ export default class Combobox extends LightningElement {
      * @param {Event} event
      */
     handleRemovePill(event) {
-        const index = event.detail.index;
-        const value = this.selectedOptions[index].value;
+        const value = event.detail.targetName;
         this.mainCombobox.removeSelectedOption(value);
     }
 
