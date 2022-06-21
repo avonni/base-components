@@ -58,7 +58,6 @@
                             slds-combobox__form-element
                             slds-input-has-icon slds-input-has-icon_right
                         "
-                        role="none"
                     >
                         <div class={comboboxSearchClass}>
                             <div class={comboboxLabelClass}></div>
@@ -76,11 +75,9 @@
                                     slds-icon-text-default
                                 "
                             >
-                                <template if:true={isBaseComboboxVariant}>
-                                    <use
-                                        xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"
-                                    ></use>
-                                </template>
+                                <use
+                                    xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"
+                                ></use>
                             </svg>
                         </span>
                     </div>
