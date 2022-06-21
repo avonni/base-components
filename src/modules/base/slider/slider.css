@@ -186,15 +186,10 @@
     position: relative;
     outline: none;
     background: transparent;
+    cursor: pointer;
     margin-bottom: calc(0px - calc(var(--avonni-slider-track-height, 4px)));
-    max-height: var(--avonni-slider-track-height, 4px);
-    min-height: var(--avonni-slider-track-height, 4px);
     height: var(--avonni-slider-track-height, 4px);
     z-index: 4;
-}
-
-.avonni-slider__slider {
-    cursor: pointer;
 }
 
 .avonni-slider__slider_above {
@@ -379,4 +374,13 @@
     cursor: pointer;
     pointer-events: none;
     z-index: 20;
+}
+
+@-moz-document url-prefix() {
+    .avonni-slider__slider {
+        transform: translate(
+            0,
+            calc(1px - var(--avonni-slider-track-height, 4px))
+        );
+    }
 }
