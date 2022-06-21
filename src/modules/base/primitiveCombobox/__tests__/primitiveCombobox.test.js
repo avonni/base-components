@@ -49,6 +49,7 @@ import { deepCopy } from 'c/utilsPrivate';
 //   * option mouse enter
 //   * removeSelectedOptions
 //   * change event
+//   * resetLevel method
 
 let element;
 describe('PrimitiveCombobox', () => {

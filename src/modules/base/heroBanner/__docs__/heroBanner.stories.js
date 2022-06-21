@@ -194,15 +194,15 @@ Base.args = {
     height: 300
 };
 
-export const BaseAbsoluteCenterWithContentWidth = Template.bind({});
-BaseAbsoluteCenterWithContentWidth.args = {
+export const BaseAbsoluteCenter = Template.bind({});
+BaseAbsoluteCenter.args = {
     caption: 'This is a caption',
     title: 'This is a title',
     subtitle: 'This is a subtitle',
     src: 'https://help.salesforce.com/resource/HelpStaticResource/assets/images/hero_large.png',
     height: 300,
     contentHorizontalAlignment: 'center',
-    contentWidth: 15
+    contentWidth: 100
 };
 
 export const BaseTopLeftWithMaxWidth = Template.bind({});

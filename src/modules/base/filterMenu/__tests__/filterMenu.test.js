@@ -95,8 +95,8 @@ describe('FilterMenu', () => {
         expect(element.disabled).toBeFalsy();
         expect(element.dropdownAlignment).toBe('left');
         expect(element.dropdownLength).toBe('7-items');
-        expect(element.dropdownWidth).toBe('small');
         expect(element.dropdownNubbin).toBeFalsy();
+        expect(element.dropdownWidth).toBe('small');
         expect(element.hideApplyResetButtons).toBeFalsy();
         expect(element.hideSelectedItems).toBeFalsy();
         expect(element.iconName).toBe('utility:down');
@@ -105,6 +105,7 @@ describe('FilterMenu', () => {
         expect(element.items).toMatchObject([]);
         expect(element.label).toBeUndefined();
         expect(element.loadingStateAlternativeText).toBe('Loading');
+        expect(element.name).toBeUndefined();
         expect(element.resetButtonLabel).toBe('Reset');
         expect(element.searchInputPlaceholder).toBe('Search...');
         expect(element.showSearchBox).toBeFalsy();
@@ -1242,6 +1243,28 @@ describe('FilterMenu', () => {
                 '[data-element-id="lightning-spinner"]'
             );
             expect(spinner.alternativeText).toBe('A string alt text');
+        });
+    });
+
+    // name
+    it('Filter menu: name horizontal', () => {
+        element.name = 'A string name';
+        return Promise.resolve().then(() => {
+            const button = element.shadowRoot.querySelector(
+                '[data-element-id="button"]'
+            );
+            expect(button.name).toBe('A string name');
+        });
+    });
+
+    it('Filter menu: name vertical', () => {
+        element.name = 'A string name';
+        element.variant = 'vertical';
+        return Promise.resolve().then(() => {
+            const input = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-input-choice-set"]'
+            );
+            expect(input.name).toBe('A string name');
         });
     });
 

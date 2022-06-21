@@ -37,9 +37,34 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 
+const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
+
+const BUTTON_VARIANTS = {
+    valid: [
+        'neutral',
+        'base',
+        'brand',
+        'brand-outline',
+        'destructive',
+        'destructive-text',
+        'inverse',
+        'success'
+    ],
+    default: 'neutral'
+};
+
+const DEFAULT_BUTTON_SHOW_MORE_LABEL = 'Show more';
+const DEFAULT_BUTTON_SHOW_LESS_LABEL = 'Show less';
+const DEFAULT_ITEM_ICON_SIZE = 'small';
+
 const GROUP_BY_OPTIONS = {
     valid: ['week', 'month', 'year'],
     default: undefined
+};
+
+const ICON_SIZES = {
+    valid: ['xx-small', 'x-small', 'small', 'medium', 'large'],
+    default: 'medium'
 };
 
 const SORTED_DIRECTIONS = {
@@ -71,11 +96,47 @@ export default class ActivityTimeline extends LightningElement {
      */
     @api title;
 
+    /**
+     * Label of the button that appears when the number of item exceeds the max-visible-items number.
+     * @type {string}
+     * @default Show more
+     * @public
+     */
+    @api buttonShowMoreLabel = DEFAULT_BUTTON_SHOW_MORE_LABEL;
+
+    /**
+     * Label of the button that appears when all items are displayed and max-visible-items value is set.
+     * @type {string}
+     * @default Show less
+     * @public
+     */
+    @api buttonShowLessLabel = DEFAULT_BUTTON_SHOW_LESS_LABEL;
+
+    /**
+     * The Lightning Design System name of the show more button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * @type {string}
+     * @public
+     */
+    @api buttonShowMoreIconName;
+
+    /**
+     * The Lightning Design System name of the show less button icon. Specify the name in the format 'utility:down' where 'utility' is the category, and 'down' is the specific icon to be displayed.
+     * @type {string}
+     * @public
+     */
+    @api buttonShowLessIconName;
+
     _actions = [];
+    _buttonShowMoreIconPosition = BUTTON_ICON_POSITIONS.default;
+    _buttonShowLessIconPosition = BUTTON_ICON_POSITIONS.default;
+    _buttonVariant = BUTTON_VARIANTS.default;
     _closed = false;
     _collapsible = false;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
+    _maxVisibleItems;
+    _iconSize = ICON_SIZES.default;
+    _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
     _sortedDirection = SORTED_DIRECTIONS.default;
 
     _key;
@@ -83,6 +144,8 @@ export default class ActivityTimeline extends LightningElement {
     _presentDates = [];
     _pastDates = [];
     _upcomingDates = [];
+
+    showMore = true;
 
     @track orderedDates = [];
 
@@ -110,6 +173,60 @@ export default class ActivityTimeline extends LightningElement {
 
     set actions(value) {
         this._actions = normalizeArray(value);
+    }
+
+    /**
+     * Position of the show less button’s icon. Valid values include left and right.
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get buttonShowLessIconPosition() {
+        return this._buttonShowLessIconPosition;
+    }
+
+    set buttonShowLessIconPosition(value) {
+        this._buttonShowLessIconPosition = normalizeString(value, {
+            fallbackValue: BUTTON_ICON_POSITIONS.default,
+            validValues: BUTTON_ICON_POSITIONS.valid
+        });
+    }
+
+    /**
+     * Position of the show more button’s icon. Valid values include left and right.
+     * @type {string}
+     * @default left
+     * @public
+     */
+    @api
+    get buttonShowMoreIconPosition() {
+        return this._buttonShowMoreIconPosition;
+    }
+
+    set buttonShowMoreIconPosition(value) {
+        this._buttonShowMoreIconPosition = normalizeString(value, {
+            fallbackValue: BUTTON_ICON_POSITIONS.default,
+            validValues: BUTTON_ICON_POSITIONS.valid
+        });
+    }
+
+    /**
+     * Variant of the button that appears when the number of items exceeds the max-visible-items number.
+     * @type {string}
+     * @default neutral
+     * @public
+     */
+    @api
+    get buttonVariant() {
+        return this._buttonVariant;
+    }
+
+    set buttonVariant(value) {
+        this._buttonVariant = normalizeString(value, {
+            fallbackValue: BUTTON_VARIANTS.default,
+            validValues: BUTTON_VARIANTS.valid
+        });
     }
 
     /**
@@ -177,7 +294,63 @@ export default class ActivityTimeline extends LightningElement {
 
     set items(value) {
         this._items = normalizeArray(value);
-        if (this._isConnected) this.initActivityTimeline();
+        if (this._isConnected) {
+            this.initActivityTimeline();
+        }
+    }
+
+    /**
+     * The maximum number of visible items to display
+     * @type {number}
+     * @public
+     */
+    @api
+    get maxVisibleItems() {
+        return this._maxVisibleItems;
+    }
+
+    set maxVisibleItems(value) {
+        if (value && value > 0) {
+            this._maxVisibleItems = value;
+        }
+    }
+
+    /**
+     * The size of the title's icon. Valid values are xx-small, x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default medium
+     */
+    @api
+    get iconSize() {
+        return this._iconSize;
+    }
+
+    set iconSize(value) {
+        this._iconSize = normalizeString(value, {
+            fallbackValue: ICON_SIZES.default,
+            validValues: ICON_SIZES.valid
+        });
+    }
+
+    /**
+     * The size of all the items' icon. Valid values are xx-small, x-small, small, medium and large.
+     *
+     * @public
+     * @type {string}
+     * @default small
+     */
+    @api
+    get itemIconSize() {
+        return this._itemIconSize;
+    }
+
+    set itemIconSize(value) {
+        this._itemIconSize = normalizeString(value, {
+            fallbackValue: DEFAULT_ITEM_ICON_SIZE,
+            validValues: ICON_SIZES.valid
+        });
     }
 
     /**
@@ -205,6 +378,36 @@ export default class ActivityTimeline extends LightningElement {
      */
 
     /**
+     * Current label of the show button (show more or show less)
+     * @type {string}
+     */
+    get currentShowButtonLabel() {
+        return this.showMore
+            ? this.buttonShowMoreLabel
+            : this.buttonShowLessLabel;
+    }
+
+    /**
+     * Current icon name of the show button (show more or show less)
+     * @type {string}
+     */
+    get currentShowButtonIcon() {
+        return this.showMore
+            ? this.buttonShowMoreIconName
+            : this.buttonShowLessIconName;
+    }
+
+    /**
+     * Current icon position of the show button (show more or show less)
+     * @type {string}
+     */
+    get currentShowButtonPosition() {
+        return this.showMore
+            ? this.buttonShowMoreIconPosition
+            : this.buttonShowLessIconPosition;
+    }
+
+    /**
      * Verify if dates exist.
      *
      * @type {boolean}
@@ -223,6 +426,17 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Verify if show button should be hidden or not
+     *
+     * @type {boolean}
+     */
+    get isShowButtonHidden() {
+        return (
+            !this.maxVisibleItems || this.maxVisibleItems >= this.items.length
+        );
+    }
+
+    /**
      * Toggle for grouping dates.
      *
      * @type {boolean}
@@ -235,15 +449,19 @@ export default class ActivityTimeline extends LightningElement {
      * Compute sortedItems and ungrouped array.
      */
     get sortedItems() {
-        return this._sortedDirection === 'desc'
-            ? [...this.items].sort(
-                  (a, b) =>
-                      new Date(b.datetimeValue) - new Date(a.datetimeValue)
-              )
-            : [...this.items].sort(
-                  (a, b) =>
-                      new Date(a.datetimeValue) - new Date(b.datetimeValue)
-              );
+        const items =
+            this._sortedDirection === 'desc'
+                ? [...this.items].sort(
+                      (a, b) =>
+                          new Date(b.datetimeValue) - new Date(a.datetimeValue)
+                  )
+                : [...this.items].sort(
+                      (a, b) =>
+                          new Date(a.datetimeValue) - new Date(b.datetimeValue)
+                  );
+        return this.showMore && !this.isShowButtonHidden && this.maxVisibleItems
+            ? items.splice(0, this.maxVisibleItems)
+            : items;
     }
 
     /*
@@ -452,5 +670,13 @@ export default class ActivityTimeline extends LightningElement {
                 }
             })
         );
+    }
+
+    /**
+     * Toggle the show more button
+     */
+    handleToggleShowMoreButton() {
+        this.showMore = !this.showMore;
+        this.initActivityTimeline();
     }
 }

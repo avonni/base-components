@@ -33,7 +33,7 @@
 import { createElement } from 'lwc';
 import Calendar from 'c/calendar';
 
-// not tested : mouse over, mouse out events on calendar
+// not tested : mouse over, mouse out events on calendar, keyboard selecting a date ouside current month, trying to select a disabled date, previous month and next month buttons
 
 let element;
 describe('Calendar', () => {
@@ -41,11 +41,17 @@ describe('Calendar', () => {
         while (document.body.firstChild) {
             document.body.removeChild(document.body.firstChild);
         }
+        window.requestAnimationFrame.mockRestore();
+        jest.clearAllTimers();
     });
 
     beforeEach(() => {
         element = createElement('base-calendar', {
             is: Calendar
+        });
+        jest.useFakeTimers();
+        jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => {
+            setTimeout(() => cb(), 0);
         });
         document.body.appendChild(element);
     });
@@ -111,9 +117,7 @@ describe('Calendar', () => {
                 '[data-element-id^="span-day-label"]'
             );
             tds.forEach((td) => {
-                expect(td.className).toBe(
-                    'avonni-calendar__disabled-cell slds-day'
-                );
+                expect(td.className).toContain('slds-day');
             });
         });
     });
@@ -137,8 +141,244 @@ describe('Calendar', () => {
         });
     });
 
+    // Focus Date
+    it('Calendar: focusDate', () => {
+        element.value = '05/12/2022';
+
+        return Promise.resolve().then(() => {
+            const day8 = element.shadowRoot
+                .querySelector('span[data-date="8"]')
+                .closest('td');
+            const spy8 = jest.spyOn(day8, 'focus');
+
+            element.focusDate('05/08/2022');
+            jest.runAllTimers();
+
+            expect(spy8).toHaveBeenCalled();
+        });
+    });
+
+    /**
+     * Keyboard accessibility:
+     *  [right = 39], [left = 37], [down = 40], [up = 38]
+     *  [PageUp = 33], [PageDown = 34]
+     */
+    it('Calendar: keyboard accessibility - [left]', () => {
+        element.value = '05/09/2021';
+
+        return Promise.resolve().then(() => {
+            const day8 = element.shadowRoot
+                .querySelector('span[data-date="8"]')
+                .closest('td');
+            const spy8 = jest.spyOn(day8, 'focus');
+
+            jest.runOnlyPendingTimers();
+            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
+            day9.dispatchEvent(
+                new KeyboardEvent('keydown', { keyCode: 37, bubbles: true })
+            );
+            jest.runOnlyPendingTimers();
+
+            expect(spy8).toHaveBeenCalled();
+        });
+    });
+
+    it('Calendar: keyboard accessibility - [right]', () => {
+        element.value = '05/09/2021';
+
+        return Promise.resolve().then(() => {
+            const day10 = element.shadowRoot
+                .querySelector('span[data-date="10"]')
+                .closest('td');
+            const spy10 = jest.spyOn(day10, 'focus');
+
+            jest.runOnlyPendingTimers();
+            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
+            day9.dispatchEvent(
+                new KeyboardEvent('keydown', { keyCode: 39, bubbles: true })
+            );
+            jest.runOnlyPendingTimers();
+
+            expect(spy10).toHaveBeenCalled();
+        });
+    });
+
+    it('Calendar: keyboard accessibility - [up]', () => {
+        element.value = '05/09/2021';
+
+        return Promise.resolve().then(() => {
+            const day2 = element.shadowRoot
+                .querySelector('span[data-date="2"]')
+                .closest('td');
+            const spy2 = jest.spyOn(day2, 'focus');
+
+            jest.runOnlyPendingTimers();
+            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
+            day9.dispatchEvent(
+                new KeyboardEvent('keydown', { keyCode: 38, bubbles: true })
+            );
+            jest.runOnlyPendingTimers();
+
+            expect(spy2).toHaveBeenCalled();
+        });
+    });
+
+    it('Calendar: keyboard accessibility - [down]', () => {
+        element.value = '05/09/2021';
+
+        return Promise.resolve().then(() => {
+            const day16 = element.shadowRoot
+                .querySelector('span[data-date="16"]')
+                .closest('td');
+            const spy16 = jest.spyOn(day16, 'focus');
+
+            jest.runOnlyPendingTimers();
+            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
+            day9.dispatchEvent(
+                new KeyboardEvent('keydown', { keyCode: 40, bubbles: true })
+            );
+            jest.runOnlyPendingTimers();
+
+            expect(spy16).toHaveBeenCalled();
+        });
+    });
+
+    it('Calendar: keyboard accessibility - go to Sunday [home]', () => {
+        element.value = '05/10/2022';
+
+        return Promise.resolve().then(() => {
+            const day8 = element.shadowRoot
+                .querySelector('span[data-date="8"]')
+                .closest('td');
+            const spy8 = jest.spyOn(day8, 'focus');
+
+            jest.runAllTimers();
+            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
+            day9.dispatchEvent(
+                new KeyboardEvent('keydown', { keyCode: 36, bubbles: true })
+            );
+            jest.runAllTimers();
+
+            expect(spy8).toHaveBeenCalled();
+        });
+    });
+
+    it('Calendar: keyboard accessibility - go to Saturday [end]', () => {
+        element.value = '05/09/2022';
+
+        return Promise.resolve().then(() => {
+            const day14 = element.shadowRoot
+                .querySelector('span[data-date="14"]')
+                .closest('td');
+            const spy14 = jest.spyOn(day14, 'focus');
+
+            jest.runAllTimers();
+            const day9 = element.shadowRoot.querySelector('td[tabindex="0"]');
+            day9.dispatchEvent(
+                new KeyboardEvent('keydown', { keyCode: 35, bubbles: true })
+            );
+            jest.runAllTimers();
+
+            expect(spy14).toHaveBeenCalled();
+        });
+    });
+
+    it('Calendar: keyboard accessibility - Month down [PageDown]', () => {
+        element.value = '05/09/2022';
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="9"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 34, bubbles: true })
+                );
+            })
+            .then(() => {
+                const monthLabel = element.shadowRoot.querySelector(
+                    '[data-element-id="h2"]'
+                );
+                expect(monthLabel.textContent).toBe('April');
+                // value should not change with month change
+                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+            });
+    });
+
+    it('Calendar: keyboard accessibility - Month up [PageUp]', () => {
+        element.value = '05/09/2022';
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="9"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', { keyCode: 33, bubbles: true })
+                );
+            })
+            .then(() => {
+                const monthLabel = element.shadowRoot.querySelector(
+                    '[data-element-id="h2"]'
+                );
+
+                expect(monthLabel.textContent).toBe('June');
+                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+            });
+    });
+
+    it('Calendar: keyboard accessibility - Year up [alt + PageDown]', () => {
+        element.value = '05/09/2022';
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="9"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        keyCode: 34,
+                        altKey: true,
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                const comboBoxYear = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-combobox"]'
+                );
+                expect(comboBoxYear.value).toBe(2023);
+                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+            });
+    });
+
+    it('Calendar keyboard accessibility: Year down [alt + PageUp]', () => {
+        element.value = '05/09/2022';
+
+        return Promise.resolve()
+            .then(() => {
+                const day9 = element.shadowRoot
+                    .querySelector('span[data-date="9"]')
+                    .closest('td');
+                day9.dispatchEvent(
+                    new KeyboardEvent('keydown', {
+                        keyCode: 33,
+                        altKey: true,
+                        bubbles: true
+                    })
+                );
+            })
+            .then(() => {
+                const comboBoxYear = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-combobox"]'
+                );
+                expect(comboBoxYear.value).toBe(2021);
+                expect(element.value).toMatchObject([new Date('05/09/2022')]);
+            });
+    });
+
     // disabled all sundays
-    it('Calendar disabled all sundays', () => {
+    it('Calendar: disabled all sundays', () => {
         element.value = '05/08/2022';
         element.disabledDates = 'Sun';
         element.min = new Date('05/01/2022');
@@ -230,10 +470,10 @@ describe('Calendar', () => {
             const day24 = element.shadowRoot.querySelector(
                 'span[data-date="24"]'
             );
-            expect(day14).toBeFalsy();
+            day14.click();
             day18.click();
+            day24.click();
             expect(element.value).toMatchObject([new Date('05/18/2021')]);
-            expect(day24).toBeFalsy();
         });
     });
 
@@ -527,7 +767,10 @@ describe('Calendar', () => {
             const previousButton = element.shadowRoot.querySelector(
                 '[data-element-id="previous-lightning-button-icon"]'
             );
-            previousButton.dispatchEvent(new CustomEvent('focus'));
+
+            previousButton.dispatchEvent(
+                new CustomEvent('focusin', { bubbles: true })
+            );
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
@@ -541,10 +784,10 @@ describe('Calendar', () => {
         element.addEventListener('privateblur', handler);
 
         return Promise.resolve().then(() => {
-            const previousButton = element.shadowRoot.querySelector(
-                '[data-element-id="previous-lightning-button-icon"]'
+            const calendarContainer = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-calendar__container"]'
             );
-            previousButton.dispatchEvent(new CustomEvent('blur'));
+            calendarContainer.dispatchEvent(new CustomEvent('blur'));
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].bubbles).toBeTruthy();
             expect(handler.mock.calls[0][0].composed).toBeTruthy();
