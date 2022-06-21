@@ -37,7 +37,6 @@ import {
     normalizeArray
 } from 'c/utilsPrivate';
 
-
 const BUTTON_ICON_POSITIONS = { valid: ['left', 'right'], default: 'left' };
 
 const BUTTON_VARIANTS = {
@@ -137,6 +136,7 @@ export default class ActivityTimeline extends LightningElement {
     _itemDateFormat = DEFAULT_ITEM_DATE_FORMAT;
     _groupBy = GROUP_BY_OPTIONS.default;
     _items = [];
+    _hideItemDate = false;
     _maxVisibleItems;
     _iconSize = ICON_SIZES.default;
     _itemIconSize = DEFAULT_ITEM_ICON_SIZE;
@@ -278,7 +278,33 @@ export default class ActivityTimeline extends LightningElement {
         return this._itemDateFormat;
     }
     set itemDateFormat(value) {
-        this._itemDateFormat = value && typeof value === 'string' ? value : '';
+        if (this._hideItemDate) {
+            this._itemDateFormat = '';
+        } else {
+            this._itemDateFormat =
+                value && typeof value === 'string'
+                    ? value
+                    : DEFAULT_ITEM_DATE_FORMAT;
+        }
+    }
+
+    /**
+     * If true, the date of each item is hidden.
+     *
+     * @public
+     * @type {boolean}
+     * @default false
+     */
+    @api
+    get hideItemDate() {
+        return this._closed;
+    }
+
+    set hideItemDate(value) {
+        this._hideItemDate = normalizeBoolean(value);
+        if (this._hideItemDate) {
+            this._itemDateFormat = '';
+        }
     }
 
     /**

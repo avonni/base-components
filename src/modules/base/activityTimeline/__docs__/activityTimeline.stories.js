@@ -134,6 +134,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        hideItemDate: {
+            name: 'hide-item-date',
+            control: {
+                type: 'boolean'
+            },
+            description: 'If true, the date of each item is hidden.',
+            table: {
+                type: { summary: 'boolean' },
+                defaultValue: { summary: 'false' }
+            }
+        },
         maxVisibleItems: {
             name: 'max-visible-items',
             control: {
@@ -283,7 +294,8 @@ export default {
         buttonVariant: 'neutral',
         iconSize: 'medium',
         itemDateFormat: 'LLLL dd, yyyy, t',
-        itemIconSize: 'small'
+        itemIconSize: 'small',
+        hideItemDate: false
     }
 };
 
@@ -362,5 +374,6 @@ WithoutIcons.args = {
     iconName: 'standard:timesheet_entry',
     items: itemsWithoutIcons,
     collapsible: true,
-    actions: actions
+    actions: actions,
+    hideItemDate: true
 };

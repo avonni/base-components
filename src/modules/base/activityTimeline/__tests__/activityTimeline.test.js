@@ -57,6 +57,7 @@ describe('Activity Timeline', () => {
         expect(element.groupBy).toBeUndefined();
         expect(element.iconName).toBeUndefined();
         expect(element.items).toMatchObject([]);
+        expect(element.hideItemDate).toBeFalsy();
         expect(element.sortedDirection).toBe('desc');
         expect(element.title).toBeUndefined();
         expect(element.buttonShowLessIconName).toBeUndefined();
@@ -124,6 +125,22 @@ describe('Activity Timeline', () => {
                 '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
             expect(timelineItems.dateFormat).toBe('dd LLL yyyy');
+        });
+    });
+
+    // hideItemDate
+    it('Activity timeline: hideItemDate', () => {
+        element.items = testItems;
+        element.groupBy = 'week';
+        element.itemDateFormat = 'dd LLL yyyy';
+        element.hideItemDate = true;
+
+        return Promise.resolve().then(() => {
+            const timelineItems = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-primitive-activity-timeline-item"]'
+            );
+            expect(timelineItems.dateFormat).toBeUndefined();
+            expect(element.itemDateFormat).toBe('');
         });
     });
 

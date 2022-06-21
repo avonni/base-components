@@ -53,6 +53,7 @@ export const ActivityTimeline = ({
     iconSize,
     itemIconSize,
     items,
+    hideItemDate,
     groupBy,
     maxVisibleItems,
     sortedDirection,
@@ -75,6 +76,7 @@ export const ActivityTimeline = ({
     element.iconSize = iconSize;
     element.itemIconSize = itemIconSize;
     element.items = items;
+    element.hideItemDate = hideItemDate;
     element.maxVisibleItems = maxVisibleItems;
     element.sortedDirection = sortedDirection;
     element.title = title;
