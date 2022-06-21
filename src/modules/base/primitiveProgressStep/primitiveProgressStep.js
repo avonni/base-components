@@ -346,36 +346,57 @@ export default class ProgressStep extends LightningElement {
     }
 
     handleStepMouseEnter() {
-        this.dispatchEvent(new CustomEvent('stepmouseenter'));
+        this.dispatchEvent(new CustomEvent('stepmouseenter', {
+            detail: { value: this.value },
+            bubbles: true
+        }));
     }
 
     handleStepMouseLeave() {
-        this.dispatchEvent(new CustomEvent('stepmouseleave'));
+        this.dispatchEvent(new CustomEvent('stepmouseleave', {
+            detail: { value: this.value },
+            bubbles: true
+        }));
     }
 
     handleStepFocus() {
         if (this._popoverHidden) {
             this._popoverVisible = !this._popoverVisible;
         }
-        this.dispatchEvent(new CustomEvent('stepfocus'));
+        this.dispatchEvent(new CustomEvent('stepfocus', {
+            detail: { value: this.value },
+            bubbles: true
+        }));
     }
 
     handleStepBlur() {
         if (this._popoverHidden) {
             this._popoverVisible = !this._popoverVisible;
         }
-        this.dispatchEvent(new CustomEvent('stepblur'));
+        this.dispatchEvent(new CustomEvent('stepblur', {
+            detail: { value: this.value },
+            bubbles: true
+        }));
     }
 
     handleStepClick() {
-        this.dispatchEvent(new CustomEvent('stepclick'));
+        this.dispatchEvent(new CustomEvent('stepclick', {
+            detail: { value: this.value },
+            bubbles: true
+        }));
     }
 
     handleStepButtonClick() {
-        this.dispatchEvent(new CustomEvent('stepbuttonclick'));
+        this.dispatchEvent(new CustomEvent('stepbuttonclick', {
+            detail: { value: this.value },
+            bubbles: true
+        }));
     }
 
     handleStepPopoverClick() {
-        this.dispatchEvent(new CustomEvent('steppopoverclick'));
+        this.dispatchEvent(new CustomEvent('steppopoverclick', {
+            detail: { value: this.value },
+            bubbles: true
+        }));
     }
 }

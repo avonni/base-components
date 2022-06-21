@@ -34,7 +34,16 @@
 
 <template>
     <div class={computedOuterClass} if:true={steps}>
-        <ol class="slds-progress__list">
+        <ol
+            class="slds-progress__list"
+            onstepclick={handleStepClick}
+            onstepblur={handleStepBlur}
+            onstepfocus={handleStepFocus}
+            onstepmouseenter={handleStepMouseEnter}
+            onstepmouseleave={handleStepMouseLeave}
+            onstepbuttonclick={handleStepButtonClick}
+            onsteppopoverclick={handleStepPopoverClick}
+        >
             <template for:each={steps} for:item="step">
                 <c-primitive-progress-step
                     class="avonni-progress-step_position-relative"
@@ -66,13 +75,6 @@
                     popover-hidden={step.popoverHidden}
                     assistive-text={step.assistiveText}
                     data-element-id="avonni-primitive-progress-step"
-                    onstepclick={dispatchStepClick}
-                    onstepblur={dispatchStepBlur}
-                    onstepfocus={dispatchStepFocus}
-                    onstepmouseenter={dispatchStepMouseEnter}
-                    onstepmouseleave={dispatchStepMouseLeave}
-                    onstepbuttonclick={dispatchStepButtonClick}
-                    onsteppopoverclick={dispatchStepPopoverClick}
                 ></c-primitive-progress-step>
             </template>
         </ol>
