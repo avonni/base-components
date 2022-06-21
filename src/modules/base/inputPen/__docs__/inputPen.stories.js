@@ -137,7 +137,7 @@ export default {
                 category: 'Pen'
             }
         },
-        signature: {
+        showSignaturePad: {
             control: {
                 type: 'boolean'
             },
@@ -206,7 +206,7 @@ export default {
         mode: 'draw',
         readOnly: false,
         required: false,
-        signature: false,
+        showSignaturePad: false,
         size: 10,
         variant: 'bottom-toolbar'
     }
@@ -253,7 +253,7 @@ Disabled.args = {
 export const Signature = Template.bind({});
 Signature.args = {
     label: 'Signature Field',
-    signature: true,
+    showSignaturePad: true,
     required: true,
     hideControls: true,
     size: 12

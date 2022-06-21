@@ -63,7 +63,7 @@ describe('Input pen', () => {
         expect(element.fieldLevelHelp).toBeUndefined();
         expect(element.readOnly).toBeFalsy();
         expect(element.required).toBeFalsy();
-        expect(element.signature).toBeFalsy();
+        expect(element.showSignaturePad).toBeFalsy();
         expect(element.variant).toBe('bottom-toolbar');
         expect(element.hideControls).toBeFalsy();
         expect(element.value).toBeUndefined();
@@ -268,7 +268,7 @@ describe('Input pen', () => {
     });
 
     // invalid
-    it('signature = false', () => {
+    it('showSignaturePad = false', () => {
         element.invalid = false;
 
         return Promise.resolve().then(() => {
@@ -284,8 +284,8 @@ describe('Input pen', () => {
         });
     });
 
-    it('signature = true', () => {
-        element.signature = true;
+    it('showSignaturePad = true', () => {
+        element.showSignaturePad = true;
 
         return Promise.resolve().then(() => {
             expect(element.mode).toEqual('ink');

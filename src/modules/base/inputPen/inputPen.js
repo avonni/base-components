@@ -100,7 +100,7 @@ export default class InputPen extends LightningElement {
     _mode = PEN_MODES.default;
     _readOnly = false;
     _required = false;
-    _signature = false;
+    _showSignaturePad = false;
     _size = DEFAULT_SIZE;
     _value;
     _variant = TOOLBAR_VARIANTS.default;
@@ -348,12 +348,12 @@ export default class InputPen extends LightningElement {
      * @default false
      */
     @api
-    get signature() {
-        return this._signature;
+    get showSignaturePad() {
+        return this._showSignaturePad;
     }
-    set signature(value) {
-        this._signature = normalizeBoolean(value);
-        if (this._signature) {
+    set showSignaturePad(value) {
+        this._showSignaturePad = normalizeBoolean(value);
+        if (this._showSignaturePad) {
             this._mode = 'ink';
         }
         this._updatedDOM = true;
