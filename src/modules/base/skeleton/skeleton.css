@@ -108,16 +108,16 @@
     width: 1.25rem;
 }
 
-.avonni-skeleton__datatable-body {
+.avonni-skeleton__datatable-borders {
     border-collapse: collapse;
 }
 
-.avonni-skeleton__datatable-body::after {
+.avonni-skeleton__datatable-borders::after {
     color: #ffffff;
     background-color: #ffffff;
 }
 
-.avonni-skeleton__datatable-body:hover {
+.avonni-skeleton__datatable-borders:hover {
     color: #ffffff;
     background-color: #ffffff;
 }

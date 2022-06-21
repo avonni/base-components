@@ -327,16 +327,6 @@ export default class Skeleton extends LightningElement {
     }
 
     @api
-    get isBaseComboboxVariant() {
-        return this.variantAttributes.variant === 'base';
-    }
-
-    @api
-    get isLookupComboboxVariant() {
-        return this.variantAttributes.variant === 'lookup';
-    }
-
-    @api
     get isDatatableVariant() {
         return this.variant === 'datatable';
     }
@@ -575,9 +565,7 @@ export default class Skeleton extends LightningElement {
     }
 
     get datatableBodyClass() {
-        return classSet('avonni-skeleton__datatable-body')
-            .add('slds-border_right')
-            .add('slds-border_left');
+        return classSet('').add('slds-border_right').add('slds-border_left');
     }
 
     get datatableCheckboxClass() {
@@ -655,11 +643,8 @@ export default class Skeleton extends LightningElement {
 
     get datatableTableClass() {
         return classSet('slds-table')
-            .add('avonni-skeleton__datatable-body')
-            .add({
-                'slds-table_bordered':
-                    this.variantAttributes.hideCheckboxColumn === false
-            })
+            .add('avonni-skeleton__datatable-borders')
+            .add('slds-table_bordered')
             .add('slds-table_fixed-layout')
             .add('slds-table_resizable-cols');
     }
@@ -672,18 +657,34 @@ export default class Skeleton extends LightningElement {
     }
 
     get datatableTHClass() {
-        return classSet('slds-cell_action-mode')
-            .add({
-                'avonni-skeleton__datatable-no-checkbox':
-                    this.variantAttributes.hideCheckboxColumn === true
-            })
-            .add('avonni-skeleton__variant-text')
-            .add('avonni-skeleton__datatable-item')
-            .add({
-                'avonni-skeleton__animation-pulse': this.animation === 'pulse',
-                'avonni-skeleton__datatable-animation-wave':
-                    this.animation === 'wave'
-            });
+        return classSet('').add({
+            'avonni-skeleton__datatable-no-checkbox':
+                this.variantAttributes.hideCheckboxColumn === true
+        });
+    }
+
+    get datatableTHContentClass() {
+        return (
+            classSet('slds-cell_action-mode')
+                // .add({
+                //     'avonni-skeleton__datatable-no-checkbox':
+                //         this.variantAttributes.hideCheckboxColumn === true
+                // })
+                .add('avonni-skeleton__variant-text')
+                .add('avonni-skeleton__datatable-item')
+                .add({
+                    'avonni-skeleton__animation-pulse':
+                        this.animation === 'pulse',
+                    'avonni-skeleton__datatable-animation-wave':
+                        this.animation === 'wave'
+                })
+        );
+    }
+
+    get datatableTHHeaderClass() {
+        return this.datatableTHClass
+            .add('slds-border_right')
+            .add('slds-border_left');
     }
 
     get inputClass() {

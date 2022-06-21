@@ -33,10 +33,10 @@
 -->
 
 <template>
-    <table aria-multiselectable="true" class={datatableTableClass} role="grid">
+    <table class={datatableTableClass}>
         <template if:false={hideTableHeader}>
             <thead>
-                <tr>
+                <template if:false={hideCheckboxColumn}>
                     <th
                         class="
                             slds-text-align_right
@@ -45,40 +45,40 @@
                         style="width: 3.25rem"
                     >
                         <div class={datatableHeaderCheckboxClass}>
-                            <template if:false={hideCheckboxColumn}>
-                                <div class="slds-checkbox">
-                                    <input type="checkbox" disabled="" />
-                                    <label class="slds-checkbox__label">
-                                        <span
-                                            class={datatableCheckboxClass}
-                                        ></span>
-                                    </label>
-                                </div>
-                            </template>
+                            <div class="slds-checkbox">
+                                <input type="checkbox" disabled="" />
+                                <label class="slds-checkbox__label">
+                                    <span class={datatableCheckboxClass}></span>
+                                </label>
+                            </div>
                         </div>
                     </th>
-                    <template for:each={datatableColumns} for:item="column">
-                        <th key={column.keyTh} class="slds-border_right"></th>
-                    </template>
-                </tr>
+                </template>
+                <template for:each={datatableColumns} for:item="column">
+                    <th key={column.keyTh} class={datatableTHHeaderClass}></th>
+                </template>
             </thead>
         </template>
         <tbody>
             <template for:each={datatableRows} for:item="row">
                 <tr key={row.keyTr} class={datatableBodyClass}>
-                    <td key={row.keyTd} class={datatableTDClass}>
-                        <template if:false={hideCheckboxColumn}>
+                    <template if:false={hideCheckboxColumn}>
+                        <td
+                            key={row.keyTd}
+                            class={datatableTDClass}
+                            style="width: 3.25rem"
+                        >
                             <div class="slds-checkbox">
                                 <input type="checkbox" disabled="" />
                                 <label>
                                     <span class={datatableCheckboxClass}></span>
                                 </label>
                             </div>
-                        </template>
-                    </td>
+                        </td>
+                    </template>
                     <template for:each={datatableColumns} for:item="column">
-                        <th key={column.keyTh} scope="row">
-                            <div class={datatableTHClass}></div>
+                        <th key={column.keyTh} class={datatableTHClass}>
+                            <div class={datatableTHContentClass}></div>
                         </th>
                     </template>
                 </tr>
