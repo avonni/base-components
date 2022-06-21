@@ -13,11 +13,11 @@
 
 .avonni-carousel__image {
     height: var(--avonni-carousel-item-image-sizing-height);
-    background-color: var(
-        --avonni-carousel-item-image-color-background,
-        #ffffff
+    background: var(--avonni-carousel-item-image-color-background, #ffffff);
+    object-fit: var(--avonni-carousel-item-image-positioning-object-fit, cover);
+    object-position: var(
+        --avonni-carousel-item-image-positioning-object-position
     );
-    object-fit: contain;
 }
 
 .avonni-carousel__actions {
