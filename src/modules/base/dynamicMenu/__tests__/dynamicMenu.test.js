@@ -883,21 +883,29 @@ describe('Dynamic Menu', () => {
     it('Dynamic Menu: event: action click', () => {
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
+        element.items = listViewItems;
 
-        return Promise.resolve().then(() => {
-            element.dispatchEvent(
-                new CustomEvent('actionclick', {
-                    detail: {
-                        name: 'action-name'
-                    }
-                })
-            );
-            expect(handler).toHaveBeenCalled();
-            expect(handler.mock.calls[0][0].detail.name).toBe('action-name');
-            expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
-            expect(handler.mock.calls[0][0].composed).toBeFalsy();
-            expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
-        });
+        return Promise.resolve()
+            .then(() => {
+                const button = element.shadowRoot.querySelector(
+                    '[data-element-id="lightning-button-icon"]'
+                );
+                button.click();
+            })
+            .then(() => {
+                const action = element.shadowRoot.querySelector(
+                    '[data-element-id="action"]'
+                );
+                action.click();
+
+                expect(handler).toHaveBeenCalled();
+                const call = handler.mock.calls[0][0];
+                expect(call.detail.name).toBe('action-1');
+                expect(call.detail.targetName).toBe(listViewItems[0].value);
+                expect(call.bubbles).toBeFalsy();
+                expect(call.composed).toBeFalsy();
+                expect(call.cancelable).toBeFalsy();
+            });
     });
 
     it('Dynamic Menu: event: select item', () => {

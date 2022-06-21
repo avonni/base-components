@@ -914,8 +914,9 @@ export default class DynamicMenu extends LightningElement {
      * @param {Event} event
      */
     handleItemClick(event) {
-        let target = event.target.getAttribute('data-element-id');
-        let value = event.currentTarget.getAttribute('data-value');
+        const target = event.target.dataset.elementId;
+        const value = event.currentTarget.dataset.value;
+
         if (target === 'action') {
             /**
              * The event fired when a user clicks on an action.
@@ -923,14 +924,14 @@ export default class DynamicMenu extends LightningElement {
              * @event
              * @name actionclick
              * @param {string} name Name of the action clicked.
-             * @param {string} item The value of the item.
+             * @param {string} targetName Unique value of the item the action belongs to.
              * @public
              */
             this.dispatchEvent(
                 new CustomEvent('actionclick', {
                     detail: {
                         name: event.target.name,
-                        item: value
+                        targetName: value
                     }
                 })
             );
