@@ -659,14 +659,14 @@ export default class ActivityTimeline extends LightningElement {
          * @event
          * @name check
          * @param {boolean} checked True if the item is checked, false otherwise.
-         * @param {string} targetName Unique name of the item.
+         * @param {string} name Unique name of the item.
          * @public
          */
         this.dispatchEvent(
             new CustomEvent('check', {
                 detail: {
                     checked: event.detail.checked,
-                    targetName: event.currentTarget.dataset.name
+                    name: event.currentTarget.dataset.name
                 }
             })
         );

@@ -635,7 +635,7 @@ describe('Activity Timeline', () => {
             );
             expect(handler).toHaveBeenCalled();
             expect(handler.mock.calls[0][0].detail.checked).toBeTruthy();
-            expect(handler.mock.calls[0][0].detail.targetName).toBe('item1');
+            expect(handler.mock.calls[0][0].detail.name).toBe('item1');
             expect(handler.mock.calls[0][0].bubbles).toBeFalsy();
             expect(handler.mock.calls[0][0].composed).toBeFalsy();
             expect(handler.mock.calls[0][0].cancelable).toBeFalsy();
