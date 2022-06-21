@@ -36,7 +36,8 @@ import PrimitiveChip from '../primitiveChip';
 const MOCK_AVATAR = {
     fallbackIconName: 'standard:user',
     variant: 'circle',
-    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg'
+    src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+    position: 'left'
 };
 
 let element;
@@ -123,40 +124,6 @@ describe('Primitive Chip', () => {
                 '[data-element-id="chip"]'
             );
             expect(chip.label).toBe('This is a label text');
-        });
-    });
-
-    // mediaPosition
-    it('mediaPosition (icon)', () => {
-        element.prefixIconName = 'utility';
-        element.suffixIconName = 'down';
-        element.mediaPosition = 'right';
-        return Promise.resolve().then(() => {
-            expect(
-                element.shadowRoot.querySelector(
-                    '[data-element-id="icon-left"]'
-                )
-            ).toBeFalsy();
-            const icon = element.shadowRoot.querySelector(
-                '[data-element-id="icon-right"]'
-            );
-            expect(icon.slot).toBe('right');
-        });
-    });
-
-    it('mediaPosition (avatar)', () => {
-        element.avatar = MOCK_AVATAR;
-        element.mediaPosition = 'right';
-        return Promise.resolve().then(() => {
-            expect(
-                element.shadowRoot.querySelector(
-                    '[data-element-id="avatar-left"]'
-                )
-            ).toBeFalsy();
-            const avatar = element.shadowRoot.querySelector(
-                '[data-element-id="avatar-right"]'
-            );
-            expect(avatar.slot).toBe('right');
         });
     });
 

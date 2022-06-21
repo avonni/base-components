@@ -9,10 +9,10 @@ const ITEMS = [
     {
         label: 'Second chip',
         variant: 'base',
-        mediaPosition: 'left',
         avatar: {
             fallbackIconName: 'custom:custom1',
-            variant: 'circle'
+            variant: 'circle',
+            position: 'left'
         }
     },
     {
@@ -28,11 +28,11 @@ const ITEMS = [
     {
         label: 'Fourth chip',
         variant: 'base',
-        mediaPosition: 'left',
         avatar: {
             fallbackIconName: 'standard:user',
             variant: 'circle',
-            initials: 'FP'
+            initials: 'FP',
+            position: 'left'
         }
     },
     {
@@ -53,10 +53,10 @@ const ITEMS = [
         label: 'Seventh chip',
         avatar: {
             variant: 'circle',
+            position: 'right',
             src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg'
         },
         variant: 'offline',
-        mediaPosition: 'right',
         outline: true
     },
     {

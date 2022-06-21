@@ -238,6 +238,7 @@ export default class PrimitiveChip extends LightningElement {
      *  Returns true if avatar is left, if not, returns false.
      */
     get showMediaLeft() {
-        return this._mediaPosition !== 'right';
+        if (this._avatar) return this.avatar.position === 'left';
+        return true;
     }
 }
