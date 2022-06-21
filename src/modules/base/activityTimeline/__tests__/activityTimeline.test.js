@@ -1264,7 +1264,7 @@ describe('Activity Timeline', () => {
 
                     expect(primitiveActivityTimelineItem.name).toBe('item8');
                     expect(popoverItem.className).toBe(
-                        'avonni-activity-timeline__item-popover'
+                        'avonni-activity-timeline__item-popover slds-is-absolute'
                     );
                     expect(handleMouseOverOnItemSpy).toHaveBeenCalled();
 
@@ -1311,7 +1311,7 @@ describe('Activity Timeline', () => {
 
                     expect(primitiveActivityTimelineItem.name).toBe('item12');
                     expect(popoverItem.className).toBe(
-                        'slds-is-fixed avonni-activity-timeline__item-popover slds-popover'
+                        'slds-is-absolute avonni-activity-timeline__item-popover slds-popover'
                     );
                     expect(popoverItem.style.visibility).toBe('visible');
                 })
