@@ -75,10 +75,8 @@
                                         <span
                                             class="slds-path__title"
                                             data-element-id="path-group"
-                                            >{item.label}
-                                            <span
-                                                if:true="{item.showItemCount}"
-                                            >
+                                            >{item.label} <span> </span>
+                                            <span if:true={item.showItemCount}>
                                                 ({item.tiles.length})</span
                                             ></span
                                         >
@@ -158,8 +156,8 @@
                                     slds-m-horizontal_xx-small
                                 "
                             >
-                                {group.label}
-                                <span if:true="{group.showItemCount}">
+                                {group.label} <span> </span>
+                                <span if:true={group.showItemCount}>
                                     ({group.tiles.length})</span
                                 >
                             </h2>
