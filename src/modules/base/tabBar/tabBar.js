@@ -83,7 +83,8 @@ export default class TabBar extends LightningElement {
     }
 
     set tabsHidden(value) {
-        this._tabsHidden = value;
+        const number = parseInt(value, 10);
+        this._tabsHidden = isNaN(number) ? 0 : number;
     }
 
     /**
@@ -286,7 +287,7 @@ export default class TabBar extends LightningElement {
          *
          * @event
          * @name select
-         * @param {string} tab Name of the selected tab.
+         * @param {string} value Label of the selected tab.
          * @public
          */
         this.dispatchEvent(
