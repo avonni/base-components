@@ -1462,14 +1462,14 @@ describe('Activity Timeline', () => {
                     timelineContainer,
                     'clientWidth',
                     'get'
-                ).mockImplementation(() => 2032.5);
+                ).mockImplementation(() => 2000);
                 element.position = 'horizontal';
             })
             .then(() => {
                 const timelineItemsSVG = element.shadowRoot.querySelector(
                     '.avonni-horizontal-activity-timeline__timeline-items-svg'
                 );
-                expect(timelineItemsSVG.getAttribute('width')).toBe('2000');
+                expect(timelineItemsSVG.getAttribute('width')).toBe('2001');
             });
     });
 
@@ -1503,7 +1503,7 @@ describe('Activity Timeline', () => {
                     '.avonni-horizontal-activity-timeline__timeline-items-svg'
                 );
                 expect(timelineItemsSVG.getAttribute('width')).toBe(
-                    (timelineWidth - 32.5).toString()
+                    (timelineWidth + 1).toString()
                 );
                 expect(createTimeAxisSpy).toBeCalled();
 
