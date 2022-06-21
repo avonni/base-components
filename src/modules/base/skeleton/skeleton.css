@@ -7,47 +7,6 @@
     --avonni-skeleton-color-background-animation: #dedede;
 }
 
-.avonni-chip_theme-alt-inverse {
-    background-color: var(--avonni-chip-alt-inverse-color-background, #032d60);
-    border-color: var(--avonni-chip-alt-inverse-color-border, transparent);
-    color: var(--avonni-chip-alt-inverse-text-color, #ffffff);
-}
-.avonni-chip_theme-base {
-    background-color: var(--avonni-chip-base-color-background, #ecebea);
-    border-color: var(--avonni-chip-base-color-border, transparent);
-    color: var(--avonni-chip-base-text-color, #080707);
-}
-.avonni-chip_theme-brand {
-    background-color: var(--avonni-chip-brand-color-background, #0070d1);
-    border-color: var(--avonni-chip-brand-color-border, transparent);
-    color: var(--avonni-chip-brand-text-color, #ffffff);
-}
-.avonni-chip_theme-error {
-    background-color: var(--avonni-chip-error-color-background, #ea001e);
-    border-color: var(--avonni-chip-error-color-border, transparent);
-    color: var(--avonni-chip-error-text-color, #ffffff);
-}
-.avonni-chip_theme-info {
-    background-color: var(--avonni-chip-info-color-background, #706e6b);
-    border-color: var(--avonni-chip-info-color-border, transparent);
-    color: var(--avonni-chip-info-text-color, #ffffff);
-}
-.avonni-chip_theme-inverse {
-    background-color: var(--avonni-chip-inverse-color-background, #001639);
-    border-color: var(--avonni-chip-inverse-color-border, transparent);
-    color: var(--avonni-chip-inverse-text-color, #ffffff);
-}
-.avonni-chip_theme-offline {
-    background-color: var(--avonni-chip-offline-color-background, #444444);
-    border-color: var(--avonni-chip-offline-color-border, transparent);
-    color: var(--avonni-chip-offline-text-color, #ffffff);
-}
-.avonni-chip_theme-success {
-    background-color: var(--avonni-chip-success-color-background, #2e844a);
-    border-color: var(--avonni-chip-success-color-border, transparent);
-    color: var(--avonni-chip-success-text-color, #ffffff);
-}
-
 .avonni-badge_theme-inverse {
     background-color: var(--avonni-badge-inverse-color-background, #747474);
     border-color: var(--avonni-badge-inverse-color-border, #e5e5e5);
@@ -113,11 +72,6 @@
     font-size: var(--avonni-chip-label-font-size, 0.75rem);
     display: inline-flex;
     align-items: center;
-}
-
-.avonni-chip_outline {
-    border-color: var(--avonni-skeleton-color-background-animation) !important;
-    border-width: 0.1em !important;
 }
 
 .avonni-avatar__primary-text {

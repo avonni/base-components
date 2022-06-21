@@ -31,7 +31,7 @@
  */
 
 import { classSet } from 'c/utils';
-import { normalizeString } from 'c/utilsPrivate';
+import { normalizeString, CHIP_VARIANT_VALUES } from 'c/utilsPrivate';
 import { api, LightningElement } from 'lwc';
 import avatar from './avatar.html';
 import badge from './badge.html';
@@ -546,10 +546,6 @@ export default class Skeleton extends LightningElement {
         return classSet('avonni-chip')
             .add('slds-p-vertical_xx-small')
             .add('slds-p-horizontal_x-small')
-            .add({
-                'avonni-chip_outline': this.variantAttributes.outline
-            })
-            .add(`avonni-chip_theme-${this.variantAttributes.variant}`)
             .add(`avonni-skeleton__animation-${this.animation}`)
             .toString();
     }
@@ -1169,116 +1165,21 @@ export default class Skeleton extends LightningElement {
         const chipLabel = this.template.querySelector(
             '[data-element-id="avonni-skeleton-chip-label"]'
         );
-        if (this.variantAttributes.variant === 'success') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#2e844a'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#4eb571'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'brand') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#0070d1'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#3292e6'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'inverse') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#001639'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#244c8c'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'alt-inverse') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#032d60'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#23538c'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'info') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#706e6b'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#8c8c8b'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'warning') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#fe9339'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#fcac68'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#000000'
-            );
-        } else if (this.variantAttributes.variant === 'error') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#ea001e'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#ff6679'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else if (this.variantAttributes.variant === 'offline') {
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background',
-                '#444444'
-            );
-            chipElement.style.setProperty(
-                '--avonni-skeleton-color-background-animation',
-                '#7d7d7d'
-            );
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#ffffff'
-            );
-        } else {
-            chipLabel.style.setProperty(
-                '--avonni-skeleton-chip-label-background',
-                '#c4c4c4'
-            );
-        }
+        const chipVariantAttributes = CHIP_VARIANT_VALUES.get(
+            this.variantAttributes.variant
+        );
+        chipElement.style.setProperty(
+            '--avonni-skeleton-color-background',
+            chipVariantAttributes.background
+        );
+        chipElement.style.setProperty(
+            '--avonni-skeleton-color-background-animation',
+            chipVariantAttributes.backgroundAnimation
+        );
+        chipLabel.style.setProperty(
+            '--avonni-skeleton-chip-label-background',
+            chipVariantAttributes.labelColor
+        );
     }
 
     updateBadgeClassList() {
