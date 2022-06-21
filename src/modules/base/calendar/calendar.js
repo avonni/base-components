@@ -82,6 +82,7 @@ const LABEL_ICON_POSITIONS = {
 export default class Calendar extends LightningElement {
     _disabled = false;
     _disabledDates = [];
+    _isConnected = false;
     _markedDates = [];
     _max = DEFAULT_MAX;
     _min = DEFAULT_MIN;
@@ -100,6 +101,8 @@ export default class Calendar extends LightningElement {
 
     connectedCallback() {
         this.updateDateParameters();
+        this._isConnected = true;
+        this.validateCurrentDayValue();
     }
 
     /*
@@ -216,6 +219,9 @@ export default class Calendar extends LightningElement {
     set max(max) {
         this._max = this.formattedWithTimezoneOffset(new Date(max));
         this._max.setHours(0, 0, 0, 0);
+        if (this._isConnected) {
+            this.validateCurrentDayValue();
+        }
     }
 
     /**
@@ -233,6 +239,9 @@ export default class Calendar extends LightningElement {
     set min(min) {
         this._min = this.formattedWithTimezoneOffset(new Date(min));
         this._min.setHours(0, 0, 0, 0);
+        if (this._isConnected) {
+            this.validateCurrentDayValue();
+        }
     }
 
     /**
@@ -280,7 +289,10 @@ export default class Calendar extends LightningElement {
                               )
                           )
                       ];
-            this.validateCurrentDayValue();
+            if (this._isConnected) {
+                this.validateCurrentDayValue();
+            }
+
             this._value = this._value.filter(
                 (x) => x.setHours(0, 0, 0, 0) !== NULL_DATE
             );
