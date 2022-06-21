@@ -911,11 +911,6 @@ export default class InputPen extends LightningElement {
         ) {
             this.redoStack.unshift(deepCopy(this.undoStack.pop()));
         }
-        console.log('events to recreate... ------------');
-        for (const action of this.undoStack) {
-            console.log(action.requestedEvent);
-        }
-        console.log('------------');
         this.clear(true);
         for (const action of deepCopy(this.undoStack)) {
             this.executeAction(action);
@@ -927,7 +922,6 @@ export default class InputPen extends LightningElement {
         if (this.redoStack.length === 0) {
             return;
         }
-        console.log('recreated...');
         let actionsRecreated = -1;
         for (const [index, action] of deepCopy(this.redoStack).entries()) {
             if (action.requestedEvent === 'state' && index !== 0) {
@@ -936,18 +930,12 @@ export default class InputPen extends LightningElement {
             }
             this.undoStack.push(deepCopy(action));
             this.executeAction(action);
-            console.log(action.requestedEvent);
         }
         if (actionsRecreated === -1) {
             this.redoStack = [];
         } else {
             this.redoStack = this.redoStack.slice(actionsRecreated);
         }
-        console.log('redos left :');
-        for (const action of this.redoStack) {
-            console.log(action.requestedEvent);
-        }
-        console.log('------------');
     }
 
     saveAction(event) {
