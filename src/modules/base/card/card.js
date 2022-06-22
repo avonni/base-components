@@ -89,9 +89,9 @@ export default class Card extends LightningElement {
     showActionsSlot = true;
     showDefaultSlot = true;
     showFooterSlot = true;
+    showCenterMediaContent = true;
 
     renderedCallback() {
-        this.showMedia = this.mediaSrc || this.showMediaSlot;
         this.showMediaSlot =
             !this.mediaSrc &&
             this.mediaSlot &&
@@ -111,6 +111,10 @@ export default class Card extends LightningElement {
             this.titleSlot.assignedElements().length !== 0;
         this.showFooterSlot =
             this.footerSlot && this.footerSlot.assignedElements().length !== 0;
+
+        this.showMedia = this.mediaSrc || this.showMediaSlot;
+        this.showCenterMediaContent =
+            this.showDefaultSlot && this.mediaPosition === 'center';
     }
 
     /*
@@ -326,7 +330,9 @@ export default class Card extends LightningElement {
      * @type {string}
      */
     get computedMediaClasses() {
-        return classSet('avonni-card__media-container slds-col')
+        return classSet(
+            'avonni-card__media-container slds-col slds-is-relative'
+        )
             .add({
                 'avonni-card__media-border-bottom': this.mediaHasBottomBorder
             })

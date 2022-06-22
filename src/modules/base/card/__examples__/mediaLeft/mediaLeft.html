@@ -1,14 +1,11 @@
 <template>
     <div style="max-width: 500px">
         <avonni-card
-            icon-name="custom:custom102"
-            media-src="https://picsum.photos/id/1022/100"
+            title="Card title"
+            icon-name="standard:article"
+            media-src="https://images.unsplash.com/photo-1560141343-966cb5212777?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=180&q=80"
             media-position="left"
         >
-            <span slot="title">Title slot</span>
-
-            <lightning-button slot="actions" label="Action"></lightning-button>
-
             <lightning-button-icon
                 slot="media-actions"
                 icon-name="utility:bookmark"
@@ -16,10 +13,6 @@
                 variant="border-filled"
                 title="Bookmark"
             ></lightning-button-icon>
-
-            <p class="slds-p-horizontal_small">Card Body</p>
-
-            <div slot="footer">Footer Slot</div>
         </avonni-card>
     </div>
 </template>
