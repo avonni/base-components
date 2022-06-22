@@ -110,7 +110,7 @@ export default class Skeleton extends LightningElement {
     connectedCallback() {
         console.log(`connected callback variant: ${this.variant}`);
         if (this.isAvatarVariant) {
-            this.updateAvatarClassList();
+            this._updateAvatarClassList();
         }
         if (this.isBreadcrumbsVariant) {
             this.initializeBreadcrumbs();
@@ -1112,7 +1112,7 @@ export default class Skeleton extends LightningElement {
             this.width === undefined ? '100%' : `${this.width}`;
     }
 
-    updateAvatarClassList() {
+    _updateAvatarClassList() {
         const avatarWrapperClass = classSet('slds-avatar')
             .add({
                 'avonni-skeleton__avatar-animation-pulse':

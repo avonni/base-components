@@ -199,13 +199,66 @@ describe('Skeleton', () => {
         };
 
         return Promise.resolve().then(() => {
-            const skeletonAvatar = element.shadowRoot.querySelector(
+            const skeletonAvatarFigure = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__avatar-figure"]'
             );
-            console.log(skeletonAvatar);
-            expect(skeletonAvatar.className).toContain(
+
+            expect(skeletonAvatarFigure.className).toContain(
                 'avonni-skeleton__avatar-animation-pulse'
             );
         });
+
+        // return Promise.resolve().then(() => {
+        //     const skeletonAvatar = element.shadowRoot.querySelector(
+        //         '[data-element-id="avonni-skeleton__avatar-figure"]'
+        //     );
+        //     const skeletonAvatarPrimaryText = element.shadowRoot.querySelector(
+        //         '[data-element-id="avonni-skeleton__avatar-primary-text"]'
+        //     );
+        //     const skeletonAvatarSecondaryText =
+        //         element.shadowRoot.querySelector(
+        //             '[data-element-id="avonni-skeleton__avatar-secondary-text"]'
+        //         );
+        //     const skeletonAvatarTertiaryText = element.shadowRoot.querySelector(
+        //         '[data-element-id="avonni-skeleton__avatar-tertiary-text"]'
+        //     );
+        //     expect(skeletonAvatar).toBeTruthy();
+        //     expect(skeletonAvatarPrimaryText).toBeTruthy();
+        //     expect(skeletonAvatarSecondaryText).toBeTruthy();
+        //     expect(skeletonAvatarTertiaryText).toBeTruthy();
+        // });
     });
+
+    // avatar variant
+    // it('Skeleton Avatar: size medium', () => {
+    //     element.variant = 'avatar';
+    //     element.animation = 'pulse';
+    //     element.variantAttributes = {
+    //         variant: 'circle',
+    //         size: 'medium',
+    //         primaryText: 'primary',
+    //         secondaryText: 'secondary',
+    //         tertiaryText: 'tertiary'
+    //     };
+
+    //     return Promise.resolve().then(() => {
+    //         const skeletonAvatar = element.shadowRoot.querySelector(
+    //             '[data-element-id="avonni-skeleton__avatar-figure"]'
+    //         );
+    //         const skeletonAvatarPrimaryText = element.shadowRoot.querySelector(
+    //             '[data-element-id="avonni-skeleton__avatar-primary-text"]'
+    //         );
+    //         const skeletonAvatarSecondaryText =
+    //             element.shadowRoot.querySelector(
+    //                 '[data-element-id="avonni-skeleton__avatar-secondary-text"]'
+    //             );
+    //         const skeletonAvatarTertiaryText = element.shadowRoot.querySelector(
+    //             '[data-element-id="avonni-skeleton__avatar-tertiary-text"]'
+    //         );
+    //         expect(skeletonAvatar).toBeTruthy();
+    //         expect(skeletonAvatarPrimaryText).toBeTruthy();
+    //         expect(skeletonAvatarSecondaryText).toBeTruthy();
+    //         expect(skeletonAvatarTertiaryText).not.toBeTruthy();
+    //     });
+    // });
 });
