@@ -16,7 +16,7 @@ const ITEMS = [
     {
         label: 'Third chip',
         variant: 'warning',
-        suffixIconName: 'utility:table',
+        suffixIconName: 'utility:bug',
         outline: true
     },
     {

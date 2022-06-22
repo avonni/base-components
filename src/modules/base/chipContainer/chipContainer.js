@@ -54,6 +54,7 @@ export default class ChipContainer extends LightningElement {
 
     _wrappedChips = 0;
     _resizeObserver;
+    _hasMedia = false;
 
     renderedCallback() {
         if (this.showMore) {
@@ -131,6 +132,7 @@ export default class ChipContainer extends LightningElement {
     }
     set items(value) {
         this._items = normalizeArray(value, 'object');
+        this.checkForMedia();
     }
 
     /*
@@ -188,6 +190,20 @@ export default class ChipContainer extends LightningElement {
         return generateUUID();
     }
 
+    set hasMedia(value) {
+        this._hasMedia = value;
+        if (this._hasMedia) {
+            this.template.host.style.setProperty(
+                '--avonni-chip-line-height',
+                '23px'
+            );
+        } else {
+            this.template.host.style.removeProperty(
+                '--avonni-chip-line-height'
+            );
+        }
+    }
+
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -234,5 +250,14 @@ export default class ChipContainer extends LightningElement {
             }
         }
         this._wrappedChips = wrappedChips;
+    }
+
+    checkForMedia() {
+        this._hasMedia = false;
+        this.items.forEach((item) => {
+            if (item.avatar || item.prefixIconName || item.suffixIconName) {
+                this.hasMedia = true;
+            }
+        });
     }
 }
