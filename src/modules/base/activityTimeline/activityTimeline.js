@@ -278,14 +278,10 @@ export default class ActivityTimeline extends LightningElement {
         return this._itemDateFormat;
     }
     set itemDateFormat(value) {
-        if (this._hideItemDate) {
-            this._itemDateFormat = '';
-        } else {
-            this._itemDateFormat =
-                value && typeof value === 'string'
-                    ? value
-                    : DEFAULT_ITEM_DATE_FORMAT;
-        }
+        this._itemDateFormat =
+            value && typeof value === 'string'
+                ? value
+                : DEFAULT_ITEM_DATE_FORMAT;
     }
 
     /**
@@ -297,14 +293,11 @@ export default class ActivityTimeline extends LightningElement {
      */
     @api
     get hideItemDate() {
-        return this._closed;
+        return this._hideItemDate;
     }
 
     set hideItemDate(value) {
         this._hideItemDate = normalizeBoolean(value);
-        if (this._hideItemDate) {
-            this._itemDateFormat = '';
-        }
     }
 
     /**
@@ -422,6 +415,17 @@ export default class ActivityTimeline extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Computed item date format.
+     * @type {string}
+     */
+    get computedItemDateFormat() {
+        if (this._hideItemDate) {
+            return '';
+        }
+        return this._itemDateFormat;
+    }
 
     /**
      * Current label of the show button (show more or show less)
