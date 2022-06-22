@@ -50,35 +50,33 @@ export const COLUMNS = [
 export const RESOURCES = [
     {
         name: 'resource-1',
-        resourceName: 'Resource 1',
-        resourceAvatarSrc: 'some fake avatar src',
-        resourceAvatarFallbackIconName: 'utility:user',
-        resourceAvatarInitials: 'R1',
+        label: 'Resource 1',
+        avatarSrc: 'some fake avatar src',
+        avatarFallbackIconName: 'utility:user',
+        avatarInitials: 'R1',
         col1: 'Resource 1, column 1',
         col2: 'Resource 1, column 2',
         col3: 'Resource 1, column 3'
     },
     {
         name: 'resource-2',
-        resourceName: 'Resource 2',
+        label: 'Resource 2',
         col1: 'Resource 2, column 1',
         col2: 'Resource 2, column 2',
         col3: 'Resource 2, column 3'
     },
     {
         name: 'resource-3',
-        resourceName: 'Resource 3',
+        label: 'Resource 3',
         col1: 'Resource 3, column 1',
         col2: 'Resource 3, column 2',
         col3: 'Resource 3, column 3'
     }
 ];
 
-export const RESOURCES_KEY_FIELD = 'name';
-
 export const EVENTS = [
     {
-        keyFields: ['resource-2', 'resource-1'],
+        resourceNames: ['resource-2', 'resource-1'],
         name: 'event-1',
         title: 'Event 1',
         from: new Date(2021, 8, 2),
@@ -86,14 +84,14 @@ export const EVENTS = [
         color: '#333'
     },
     {
-        keyFields: ['resource-3'],
+        resourceNames: ['resource-3'],
         name: 'event-2',
         title: 'Event 2',
         from: new Date(2021, 8, 2),
         to: new Date(2021, 8, 3)
     },
     {
-        keyFields: ['resource-3'],
+        resourceNames: ['resource-3'],
         name: 'event-3',
         title: 'Event 3',
         from: new Date(2021, 8, 3),
@@ -103,20 +101,20 @@ export const EVENTS = [
 
 export const DISABLED_DATES_TIMES = [
     {
-        keyFields: ['resource-2', 'resource-1'],
+        resourceNames: ['resource-2', 'resource-1'],
         title: 'Disabled date 1',
         iconName: 'utility:apps',
         from: new Date(2021, 8, 2, 10),
         to: new Date(2021, 8, 3)
     },
     {
-        keyFields: ['resource-3'],
+        resourceNames: ['resource-3'],
         title: 'Disabled date 2',
         from: new Date(2021, 8, 2),
         to: new Date(2021, 8, 3)
     },
     {
-        keyFields: ['resource-3'],
+        resourceNames: ['resource-3'],
         title: 'Disabled date 3',
         from: new Date(2021, 7, 31),
         to: new Date(2021, 8, 5)
@@ -127,3 +125,46 @@ export const MONTH_TIME_SPAN = {
     unit: 'month',
     span: 1
 };
+
+export const TIME_SPANS = [
+    {
+        name: 'monthSpan',
+        unit: 'month',
+        span: 3,
+        label: '3 months',
+        headers: 'weekMonthAndYear'
+    },
+    {
+        unit: 'day',
+        name: 'daySpan',
+        span: 1,
+        label: '1 day',
+        headers: 'dayAndWeek',
+        customHeaders: [
+            {
+                unit: 'day',
+                span: 3,
+                label: 'dd'
+            },
+            {
+                unit: 'month',
+                span: 1,
+                label: 'mmmm'
+            }
+        ]
+    },
+    {
+        unit: 'hour',
+        name: 'hourSpan',
+        span: 6,
+        label: '6 hours',
+        headers: 'hourDayAndWeek'
+    },
+    {
+        unit: 'year',
+        name: 'yearSpan',
+        span: 2,
+        label: '2 years',
+        headers: 'quartersAndYear'
+    }
+];

@@ -69,26 +69,26 @@ const TO = new Date(2021, 7, 30, 10);
 const RESOURCE_KEY = '3';
 const RESOURCES = [
     {
-        key: '1',
+        name: '1',
         height: 30,
         color: 'rgb(0, 0, 0)',
         data: {
             customField: 'Some useless string',
             overwrittenField: 'Another useless string',
             height: 30,
-            key: '1',
+            name: '1',
             color: 'rgb(0, 0, 0)'
         }
     },
     {
-        key: '3',
+        name: '3',
         height: 50,
         color: 'rgb(51, 51, 51)',
         data: {
             customField: 'Row field',
             overwrittenField: 'This will not show',
             height: 50,
-            key: '3',
+            name: '3',
             color: 'rgb(51, 51, 51)'
         }
     }
