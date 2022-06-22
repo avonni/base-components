@@ -1484,7 +1484,11 @@ export default class Slider extends LightningElement {
         );
         if (isNaN(parentHeight)) {
             parentHeight = this.template.host.parentElement.clientHeight;
+            if (parentHeight > 1350) {
+                return;
+            }
         }
+        console.log(parentHeight);
         const spacer = this.template.querySelector(
             '[data-element-id="spacer"]'
         );
