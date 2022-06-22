@@ -269,7 +269,10 @@ export default class InputPen extends LightningElement {
             !this.showClear &&
             !this.showSize &&
             !this.showColor &&
-            !this.showBackground
+            !this.showBackground &&
+            !this.showDownload &&
+            !this.showUndo &&
+            !this.showRedo
         ) {
             return true;
         }
@@ -389,7 +392,7 @@ export default class InputPen extends LightningElement {
      */
     @api
     get validity() {
-        return this._constraint.validity;
+        return this._constraint.validity.valid;
     }
 
     /**
@@ -442,6 +445,15 @@ export default class InputPen extends LightningElement {
      *  PRIVATE PROPERTIES
      * -------------------------------------------------------------
      */
+
+    /**
+     * Check if input has value.
+     *
+     * @type {boolean}
+     */
+    get hasValue() {
+        return !this.validity || this.disabled;
+    }
 
     /**
      * Check if Pen is shown.
@@ -502,6 +514,16 @@ export default class InputPen extends LightningElement {
         return (
             !this.disabledButtons ||
             this.disabledButtons.indexOf('background') === -1
+        );
+    }
+
+    /**
+     * Check if Eraser is shown.
+     */
+    get showDownload() {
+        return (
+            !this.disabledButtons ||
+            this.disabledButtons.indexOf('download') === -1
         );
     }
 
@@ -902,6 +924,15 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    handleDownload() {
+        if (this.value) {
+            const a = document.createElement('a');
+            a.href = this.value;
+            a.download = 'Signature.png';
+            a.click();
+        }
+    }
+
     handleUndo() {
         if (this.undoStack.length === 0) {
             return;
@@ -916,6 +947,7 @@ export default class InputPen extends LightningElement {
             this.executeAction(action);
         }
         this.redoStack.unshift(deepCopy(this.undoStack.pop()));
+        this.handleChangeEvent();
     }
 
     handleRedo() {
@@ -936,6 +968,7 @@ export default class InputPen extends LightningElement {
         } else {
             this.redoStack = this.redoStack.slice(actionsRecreated);
         }
+        this.handleChangeEvent();
     }
 
     saveAction(event) {

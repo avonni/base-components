@@ -194,6 +194,23 @@
                             slds-col_bump-left
                         "
                     >
+                        <li if:true={showDownload} title="Download PNG">
+                            <lightning-button-icon
+                                variant="container"
+                                icon-name="utility:download"
+                                alternative-text="download PNG"
+                                onclick={handleDownload}
+                                disabled={hasValue}
+                            >
+                            </lightning-button-icon>
+                        </li>
+                    </ul>
+                    <ul
+                        class="
+                            slds-button-group-list slds-align-bottom
+                            slds-col_bump-left
+                        "
+                    >
                         <li if:true={showUndo} title="Undo">
                             <lightning-button-icon
                                 icon-name="utility:undo"
