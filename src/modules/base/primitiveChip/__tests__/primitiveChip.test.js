@@ -62,7 +62,6 @@ describe('Primitive Chip', () => {
         expect(element.variant).toEqual('base');
         expect(element.hidden).toEqual(false);
         expect(element.iconName).toEqual(undefined);
-        expect(element.mediaPosition).toEqual('left');
     });
 
     /* ----- ATTRIBUTES ----- */
@@ -102,15 +101,24 @@ describe('Primitive Chip', () => {
         });
     });
 
-    // iconName
-    it('iconName', () => {
-        element.mediaPosition = 'left';
-        element.prefixIconName = 'utility';
-        element.suffixIconName = 'user';
+    // iconNames
+    it('prefixIconName', () => {
+        element.prefixIconName = 'utility:user';
 
         return Promise.resolve().then(() => {
             const icon = element.shadowRoot.querySelector(
                 '[data-element-id="icon-left"]'
+            );
+            expect(icon.iconName).toBe('utility:user');
+        });
+    });
+
+    it('suffixIconName', () => {
+        element.suffixIconName = 'utility:user';
+
+        return Promise.resolve().then(() => {
+            const icon = element.shadowRoot.querySelector(
+                '[data-element-id="icon-right"]'
             );
             expect(icon.iconName).toBe('utility:user');
         });

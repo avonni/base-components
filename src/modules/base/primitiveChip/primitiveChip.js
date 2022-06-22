@@ -67,18 +67,11 @@ export default class PrimitiveChip extends LightningElement {
     _outline = false;
     _variant = CHIP_VARIANTS.default;
     _avatar = null;
-    _mediaPosition = MEDIA_POSITION.default;
+    _position = MEDIA_POSITION.default;
     _prefixIconName = undefined;
     _suffixIconName = undefined;
     _showIcon = false;
     _hidden = false;
-
-    _connected = false;
-
-    connectedCallback() {
-        this._showIcon = this._prefixIconName && this._suffixIconName;
-        this._connected = true;
-    }
 
     /**
      * Label displayed in the chip.
@@ -148,23 +141,6 @@ export default class PrimitiveChip extends LightningElement {
         }
     }
 
-    /**
-     *  The position of the media to display. Can be set to 'left' or 'right'. Left by default.
-     *  @public
-     *  @type {string}
-     *  @default left
-     */
-    @api
-    get mediaPosition() {
-        return this._mediaPosition;
-    }
-    set mediaPosition(position) {
-        this._mediaPosition = normalizeString(position, {
-            fallbackValue: MEDIA_POSITION.default,
-            validValues: MEDIA_POSITION.valid
-        });
-    }
-
     /** The prefix name of the icon to display.
      *  @public
      *  @type {string}
@@ -176,9 +152,7 @@ export default class PrimitiveChip extends LightningElement {
     }
     set prefixIconName(value) {
         this._prefixIconName = value;
-        if (this._connected) {
-            this._showIcon = this._prefixIconName && this._suffixIconName;
-        }
+        this._showIcon = true;
     }
 
     /** The suffix name of the icon to display.
@@ -192,9 +166,7 @@ export default class PrimitiveChip extends LightningElement {
     }
     set suffixIconName(value) {
         this._suffixIconName = value;
-        if (this._connected) {
-            this._showIcon = this._prefixIconName && this._suffixIconName;
-        }
+        this._showIcon = true;
     }
 
     @api
@@ -221,13 +193,6 @@ export default class PrimitiveChip extends LightningElement {
     }
 
     /**
-     *  Full name of the icon to display
-     */
-    get iconName() {
-        return `${this._prefixIconName}:${this._suffixIconName}`;
-    }
-
-    /**
      *  If icon media is to be shown.
      */
     get showIcon() {
@@ -235,10 +200,36 @@ export default class PrimitiveChip extends LightningElement {
     }
 
     /**
-     *  Returns true if avatar is left, if not, returns false.
+     *  If left icon media is to be shown.
+     */
+    get showIconLeft() {
+        return this.showIcon && this.prefixIconName;
+    }
+
+    /**
+     *  If right icon media is to be shown.
+     */
+    get showIconRight() {
+        return this.showIcon && this.suffixIconName;
+    }
+
+    /**
+     *  Returns true if media is left, if not, returns false.
      */
     get showMediaLeft() {
-        if (this._avatar) return this.avatar.position === 'left';
-        return true;
+        return (
+            (this.avatar && this.avatar.position !== 'right') ||
+            this.showIconLeft
+        );
+    }
+
+    /**
+     *  Returns true if media is left, if not, returns false.
+     */
+    get showMediaRight() {
+        return (
+            (this.avatar && this.avatar.position === 'right') ||
+            this.showIconRight
+        );
     }
 }

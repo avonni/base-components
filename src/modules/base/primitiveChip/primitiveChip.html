@@ -52,17 +52,17 @@
                         data-element-id="avatar-left"
                     ></c-primitive-avatar>
                 </template>
-                <template if:true={showIcon}>
+                <template if:true={showIconLeft}>
                     <c-primitive-icon
                         slot="left"
-                        icon-name={iconName}
+                        icon-name={prefixIconName}
                         size="x-small"
                         data-element-id="icon-left"
                     >
                     </c-primitive-icon>
                 </template>
             </template>
-            <template if:false={showMediaLeft}>
+            <template if:true={showMediaRight}>
                 <template if:true={avatar}>
                     <c-primitive-avatar
                         slot="right"
@@ -74,10 +74,10 @@
                         data-element-id="avatar-right"
                     ></c-primitive-avatar>
                 </template>
-                <template if:true={showIcon}>
+                <template if:true={showIconRight}>
                     <c-primitive-icon
                         slot="right"
-                        icon-name={iconName}
+                        icon-name={suffixIconName}
                         size="x-small"
                         data-element-id="icon-right"
                     >
