@@ -221,7 +221,18 @@
                             onmouseup={handleTileMouseUp}
                             onmousemove={handleDropZone}
                         >
-                            <ul data-element-id="fields">
+                            <div
+                                if:true={record.field.coverImage}
+                                class="
+                                    avonni-kanban__tile_image
+                                    slds-m-bottom_small
+                                "
+                                data-element-id="avonni-kanban__tile_image"
+                            ></div>
+                            <ul
+                                data-element-id="fields"
+                                class="avonni-kanban__tile_fields"
+                            >
                                 <li
                                     for:each={record.field}
                                     for:item="field"
@@ -260,6 +271,7 @@
                                         slds-is-relative
                                     "
                                     onselect={handleActionClick}
+                                    variant="border-filled"
                                 >
                                     <template
                                         for:each={actions}

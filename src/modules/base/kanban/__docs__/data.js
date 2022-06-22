@@ -117,7 +117,9 @@ const RECORDS = [
         phone: '+375292567896',
         date: '1547250828000',
         percent: 0.28,
-        available: true
+        available: true,
+        coverImage:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
     },
     {
         id: '002',

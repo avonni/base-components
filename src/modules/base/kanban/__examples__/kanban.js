@@ -43,6 +43,7 @@ export const Kanban = ({
     disableColumnDragAndDrop,
     disableItemDragAndDrop,
     groupFieldName,
+    coverImageFieldName,
     isLoading,
     variant
 }) => {
@@ -57,5 +58,6 @@ export const Kanban = ({
     element.groupFieldName = groupFieldName;
     element.isLoading = isLoading;
     element.variant = variant;
+    element.coverImageFieldName = coverImageFieldName;
     return element;
 };

@@ -127,6 +127,7 @@
     background-color: #ffffff;
     user-select: none;
     z-index: 1;
+    padding: 0;
 }
 
 .avonni-kanban__tile:hover:not(.avonni-kanban__dragged) {
@@ -168,15 +169,15 @@
 
 .avonni-kanban__tile_icon {
     position: absolute;
-    right: 3px;
-    bottom: 3px;
+    right: 0.75rem;
+    bottom: 0.75rem;
 }
 
 .avonni-kanban__tile_actions {
     position: absolute;
     z-index: 99;
-    right: 3px;
-    top: 3px;
+    right: 0.75rem;
+    top: 0.75rem;
 }
 
 .avonni-kanban__tile_dropzone,
@@ -301,4 +302,17 @@
 
 .avonni-kanban__variant_base .avonni-kanban__avatar {
     margin-right: -5%;
+}
+
+.avonni-kanban__tile_image {
+    max-height: 200px;
+    width: 100%;
+    background-size: cover;
+    background-position: 50%;
+    border-top-left-radius: 0.25rem;
+    border-top-right-radius: 0.25rem;
+}
+
+.avonni-kanban__tile_fields {
+    padding: 0.75rem;
 }

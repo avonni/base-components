@@ -148,6 +148,13 @@ export default class Kanban extends LightningElement {
     @api groupFieldName;
 
     /**
+     * Name of the field containing the cover image of the tile.
+     * @type {string}
+     * @public
+     */
+    @api coverImageFieldName;
+
+    /**
      * Array of group objects. Each group represents one step of the path.
      *
      * @type {object[]}
@@ -274,7 +281,8 @@ export default class Kanban extends LightningElement {
             records: this._records,
             fields: this._fields,
             groupFieldName: this.groupFieldName,
-            summarizeFieldName: this.summarizeFieldName
+            summarizeFieldName: this.summarizeFieldName,
+            coverImageFieldName: this.coverImageFieldName
         });
         const computedGroups = kanbanGroup.computeGroups();
 
@@ -292,6 +300,7 @@ export default class Kanban extends LightningElement {
             });
         });
 
+        this.displayCoverImage(computedGroups);
         requestAnimationFrame(() => {
             this.capFieldHeight();
             this._initialScrollWidth = this.template.querySelector(
@@ -416,6 +425,28 @@ export default class Kanban extends LightningElement {
         }
 
         this.resetAnimations(groups);
+    }
+
+    /**
+     * Displays the cover image if needed
+     * @param {object} groups
+     */
+    displayCoverImage(groups) {
+        groups.forEach((group) => {
+            group.tiles.forEach((tile, i) => {
+                if (tile.field.coverImage) {
+                    requestAnimationFrame(() => {
+                        const tileElement = this.template.querySelectorAll(
+                            '[data-element-id="avonni-kanban__tile"]'
+                        )[i];
+                        tileElement.children[0].style.backgroundImage = `url(${tile.field.coverImage})`;
+                        tileElement.children[0].style.height = `${
+                            tileElement.offsetWidth * 0.75
+                        }px`;
+                    });
+                }
+            });
+        });
     }
 
     /**

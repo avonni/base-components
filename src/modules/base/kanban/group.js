@@ -7,6 +7,7 @@ export default class KanbanGroups {
         this._fields = props.fields;
         this.groupFieldName = props.groupFieldName;
         this.summarizeFieldName = props.summarizeFieldName;
+        this.coverImageFieldName = props.coverImageFieldName;
     }
 
     /**
@@ -54,6 +55,14 @@ export default class KanbanGroups {
                     });
                 }
             });
+            if (
+                Object.keys(record).find(
+                    (key) => key === this.coverImageFieldName
+                )
+            ) {
+                computedFields[i].field.coverImage =
+                    record[this.coverImageFieldName];
+            }
         });
 
         // updates the summarize field if needed
@@ -73,7 +82,6 @@ export default class KanbanGroups {
                 }
             }
         });
-
         return computedGroups;
     }
 }

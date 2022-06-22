@@ -67,6 +67,17 @@ export default {
                 type: { summary: 'object[]' }
             }
         },
+        coverImageFieldName: {
+            name: 'cover-image-field-name',
+            control: {
+                type: 'text'
+            },
+            description:
+                ' Name of the field that contains the cover image for the tile.',
+            table: {
+                type: { summary: 'String' }
+            }
+        },
         groupFieldName: {
             name: 'group-field-name',
             control: {
@@ -153,6 +164,8 @@ export default {
         records: RECORDS,
         actions: ACTIONS,
         disableItemDragAndDrop: false,
+        disableColumnDragAndDrop: false,
+        coverImageFieldName: 'coverImage',
         isLoading: false,
         groupFieldName: 'status'
     }
@@ -255,7 +268,9 @@ avatar.args = {
             phone: '+375292567896',
             date: '1547250828000',
             percent: 0.28,
-            available: true
+            available: true,
+            coverImage:
+                'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-01.jpg'
         },
         {
             id: '002',
