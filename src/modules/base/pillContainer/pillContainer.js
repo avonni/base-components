@@ -733,8 +733,6 @@ export default class PillContainer extends LightningElement {
         }
 
         event.stopPropagation();
-
-        // should we dispatch an event when a pill is clicked?
     }
 
     /**
