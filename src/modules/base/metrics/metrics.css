@@ -1,0 +1,60 @@
+.avonni-metrics__description {
+    font-size: var(--avonni-metrics-description-font-size, 0.75rem);
+    font-weight: var(--avonni-metrics-description-font-weight, normal);
+    color: var(--avonni-metrics-description-text-color, #747474);
+}
+
+.avonni-metrics__label {
+    font-size: var(--avonni-metrics-label-font-size, 0.875rem);
+    font-weight: var(--avonni-metrics-label-font-weight, normal);
+    color: var(--avonni-metrics-label-text-color, #444444);
+}
+
+.avonni-metrics__prefix {
+    font-size: var(--avonni-metrics-prefix-font-size, 1rem);
+    font-weight: var(--avonni-metrics-prefix-font-weight, bold);
+    color: var(--avonni-metrics-prefix-text-color, #181818);
+}
+
+.avonni-metrics__suffix {
+    font-size: var(--avonni-metrics-suffix-font-size, 1rem);
+    font-weight: var(--avonni-metrics-suffix-font-weight, bold);
+    color: var(--avonni-metrics-suffix-text-color, #181818);
+}
+
+.avonni-metrics__value {
+    font-size: var(--avonni-metrics-value-font-size, 1.5rem);
+    font-weight: var(--avonni-metrics-value-font-weight, bold);
+    line-height: var(--avonni-metrics-value-line-height, 1.25);
+    color: var(--avonni-metrics-value-text-color, #181818);
+}
+
+/* Secondary */
+.avonni-metrics__secondary-value {
+    font-size: var(--avonni-metrics-secondary-value-font-size, 0.8125rem);
+    font-weight: var(--avonni-metrics-secondary-value-font-weight, bold);
+}
+
+.avonni-metrics__secondary_positive-trend {
+    color: var(--avonni-metrics-secondary-positive-trend-text-color, #2e844a);
+    background-color: var(
+        --avonni-metrics-secondary-positive-trend-color-background,
+        #cdefc4
+    );
+    border-radius: var(
+        --avonni-metrics-secondary-positive-trend-radius,
+        0.25rem
+    );
+}
+
+.avonni-metrics__secondary_negative-trend {
+    color: var(--avonni-metrics-secondary-positive-trend-text-color, #ba0517);
+    background-color: var(
+        --avonni-metrics-secondary-positive-trend-color-background,
+        #feded8
+    );
+    border-radius: var(
+        --avonni-metrics-secondary-positive-trend-radius,
+        0.25rem
+    );
+}

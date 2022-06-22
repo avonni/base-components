@@ -243,6 +243,10 @@
             "path": "src/modules/base/messageDispatcher/messageDispatcher.js"
         },
         {
+            "name": "c/metrics",
+            "path": "src/modules/base/metrics/metrics.js"
+        },
+        {
             "name": "c/outputData",
             "path": "src/modules/base/outputData/outputData.js"
         },
@@ -715,6 +719,10 @@
             "path": "src/modules/base/menuItemDialog/menuItemDialog.js"
         },
         {
+            "name": "avonni/metrics",
+            "path": "src/modules/base/metrics/metrics.js"
+        },
+        {
             "name": "avonni/outputData",
             "path": "src/modules/base/outputData/outputData.js"
         },
@@ -902,6 +910,7 @@
         "avonni/map",
         "avonni/mediaObject",
         "avonni/menuItemDialog",
+        "avonni/metrics",
         "avonni/outputData",
         "avonni/pageHeader",
         "avonni/pagination",

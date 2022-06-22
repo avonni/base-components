@@ -1,0 +1,109 @@
+/**
+ * BSD 3-Clause License
+ *
+ * Copyright (c) 2021, Avonni Labs, Inc.
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * - Redistributions of source code must retain the above copyright notice, this
+ *   list of conditions and the following disclaimer.
+ *
+ * - Redistributions in binary form must reproduce the above copyright notice,
+ *   this list of conditions and the following disclaimer in the documentation
+ *   and/or other materials provided with the distribution.
+ *
+ * - Neither the name of the copyright holder nor the names of its
+ *   contributors may be used to endorse or promote products derived from
+ *   this software without specific prior written permission.
+ *
+ * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+ * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+ * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+ * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+ * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+ * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+import Component from '../metrics';
+
+customElements.define('ac-metrics', Component.CustomElementConstructor);
+
+export const Metrics = ({
+    align,
+    avatar,
+    currencyCode,
+    currencyDisplayAs,
+    description,
+    enableTrend,
+    formatStyle,
+    label,
+    maximumFractionDigits,
+    maximumSignificantDigits,
+    minimumFractionDigits,
+    minimumIntegerDigits,
+    minimumSignificantDigits,
+    positiveTrend,
+    prefix,
+    secondaryCurrencyCode,
+    secondaryCurrencyDisplayAs,
+    secondaryEnableTrend,
+    secondaryFormatStyles,
+    secondaryMaximumFractionDigits,
+    secondaryMaximumSignificantDigits,
+    secondaryMinimumFractionDigits,
+    secondaryMinimumIntegerDigits,
+    secondaryMinimumSignificantDigits,
+    secondaryPositiveTrend,
+    secondaryPrefix,
+    secondarySignDisplay,
+    secondarySuffix,
+    secondaryValue,
+    signDisplay,
+    suffix,
+    tooltip,
+    value
+}) => {
+    const element = document.createElement('ac-metrics');
+    element.align = align;
+    element.avatar = avatar;
+    element.currencyCode = currencyCode;
+    element.currencyDisplayAs = currencyDisplayAs;
+    element.description = description;
+    element.enableTrend = enableTrend;
+    element.formatStyle = formatStyle;
+    element.label = label;
+    element.maximumFractionDigits = maximumFractionDigits;
+    element.maximumSignificantDigits = maximumSignificantDigits;
+    element.minimumFractionDigits = minimumFractionDigits;
+    element.minimumIntegerDigits = minimumIntegerDigits;
+    element.minimumSignificantDigits = minimumSignificantDigits;
+    element.positiveTrend = positiveTrend;
+    element.prefix = prefix;
+    element.secondaryCurrencyCode = secondaryCurrencyCode;
+    element.secondaryCurrencyDisplayAs = secondaryCurrencyDisplayAs;
+    element.secondaryEnableTrend = secondaryEnableTrend;
+    element.secondaryFormatStyles = secondaryFormatStyles;
+    element.secondaryMaximumFractionDigits = secondaryMaximumFractionDigits;
+    element.secondaryMaximumSignificantDigits =
+        secondaryMaximumSignificantDigits;
+    element.secondaryMinimumFractionDigits = secondaryMinimumFractionDigits;
+    element.secondaryMinimumIntegerDigits = secondaryMinimumIntegerDigits;
+    element.secondaryMinimumSignificantDigits =
+        secondaryMinimumSignificantDigits;
+    element.secondaryPositiveTrend = secondaryPositiveTrend;
+    element.secondaryPrefix = secondaryPrefix;
+    element.secondarySignDisplay = secondarySignDisplay;
+    element.secondarySuffix = secondarySuffix;
+    element.secondaryValue = secondaryValue;
+    element.signDisplay = signDisplay;
+    element.suffix = suffix;
+    element.tooltip = tooltip;
+    element.value = value;
+    return element;
+};
