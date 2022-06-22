@@ -140,7 +140,6 @@ describe('Activity Timeline', () => {
                 '[data-element-id="avonni-primitive-activity-timeline-item"]'
             );
             expect(timelineItems.dateFormat).toBeUndefined();
-            expect(element.itemDateFormat).toBe('');
         });
     });
 
