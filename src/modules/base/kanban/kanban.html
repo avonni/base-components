@@ -73,9 +73,22 @@
                                         tabindex="0"
                                     >
                                         <span
-                                            class="slds-path__title"
+                                            class="
+                                                slds-path__title
+                                                avonni-kanban_path__title
+                                            "
                                             data-element-id="path-group"
-                                            >{item.label} <span> </span>
+                                        >
+                                            <c-avatar
+                                                if:true={item.avatar}
+                                                size="small"
+                                                class="avonni-kanban__avatar"
+                                                fallback-icon-name={item.avatar.fallbackIconName}
+                                                initials={item.avatar.initials}
+                                                variant={item.avatar.variant}
+                                                src={item.avatar.src}
+                                            ></c-avatar>
+                                            {item.label}&nbsp;
                                             <span if:true={item.showItemCount}>
                                                 ({item.tiles.length})</span
                                             ></span
@@ -156,7 +169,16 @@
                                     slds-m-horizontal_xx-small
                                 "
                             >
-                                {group.label} <span> </span>
+                                <c-avatar
+                                    if:true={group.avatar}
+                                    class="avonni-kanban__avatar"
+                                    fallback-icon-name={group.avatar.fallbackIconName}
+                                    initials={group.avatar.initials}
+                                    variant={group.avatar.variant}
+                                    src={group.avatar.src}
+                                ></c-avatar>
+
+                                {group.label}&nbsp;
                                 <span if:true={group.showItemCount}>
                                     ({group.tiles.length})</span
                                 >

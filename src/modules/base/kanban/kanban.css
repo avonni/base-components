@@ -282,3 +282,23 @@
     cursor: grabbing;
     box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
 }
+
+.avonni-kanban__tile-title {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.avonni-kanban_path__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.avonni-kanban__variant_path .avonni-kanban__avatar {
+    margin-right: -25%;
+}
+
+.avonni-kanban__variant_base .avonni-kanban__avatar {
+    margin-right: -5%;
+}

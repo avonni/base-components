@@ -37,7 +37,13 @@ const GROUP_VALUES = [
         backgroundColor: '#fffff',
         headerActions: [
             { disabled: false, label: 'Action 1', name: 'Action 1' }
-        ]
+        ],
+        avatar: {
+            fallbackIconName: 'utility:down',
+            initials: 'AS',
+            src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+            variant: 'circle'
+        }
     },
     {
         label: 'In Progress',
