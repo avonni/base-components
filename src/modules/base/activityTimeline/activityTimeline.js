@@ -811,6 +811,30 @@ export default class ActivityTimeline extends LightningElement {
     }
 
     /**
+     * Handle the click on an item. Dispatch the itemclick event.
+     *
+     * @param {Event} event
+     */
+    handleItemClick(event) {
+        /**
+         * The event fired when a user clicks on an item.
+         *
+         * @event
+         * @name itemClick
+         * @param {string} name Name of the item clicked.
+         * @public
+         */
+        this.dispatchEvent(
+            new CustomEvent('itemclick', {
+                detail: {
+                    ...event.detail,
+                    name: event.currentTarget.dataset.name
+                }
+            })
+        );
+    }
+
+    /**
      * Handle the mouse leave on item for horizontal view timeline.
      *
      */
