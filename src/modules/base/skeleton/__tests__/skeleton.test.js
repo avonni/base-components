@@ -202,63 +202,404 @@ describe('Skeleton', () => {
             const skeletonAvatarFigure = element.shadowRoot.querySelector(
                 '[data-element-id="avonni-skeleton__avatar-figure"]'
             );
-
+            const skeletonAvatarPrimaryText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__avatar-primary-text"]'
+            );
+            const skeletonAvatarSecondaryText =
+                element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-skeleton__avatar-secondary-text"]'
+                );
+            const skeletonAvatarTertiaryText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__avatar-tertiary-text"]'
+            );
+            expect(skeletonAvatarFigure.className).toContain('slds-avatar');
             expect(skeletonAvatarFigure.className).toContain(
                 'avonni-skeleton__avatar-animation-pulse'
             );
+            expect(skeletonAvatarFigure.className).toContain(
+                'avonni-avatar_x-large'
+            );
+            expect(skeletonAvatarPrimaryText.className).toContain(
+                'slds-m-bottom_xx-small'
+            );
+            expect(skeletonAvatarPrimaryText.className).toContain(
+                'avonni-avatar__primary-text'
+            );
+            expect(skeletonAvatarPrimaryText.className).toContain(
+                'avonni-skeleton__variant-text'
+            );
+            expect(skeletonAvatarPrimaryText.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonAvatarSecondaryText.className).toContain(
+                'slds-m-bottom_xx-small'
+            );
+            expect(skeletonAvatarSecondaryText.className).toContain(
+                'avonni-avatar__secondary-text'
+            );
+            expect(skeletonAvatarSecondaryText.className).toContain(
+                'avonni-skeleton__variant-text'
+            );
+            expect(skeletonAvatarSecondaryText.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonAvatarTertiaryText.className).toContain(
+                'avonni-avatar__tertiary-text'
+            );
+            expect(skeletonAvatarTertiaryText.className).toContain(
+                'avonni-skeleton__variant-text'
+            );
+            expect(skeletonAvatarTertiaryText.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
         });
-
-        // return Promise.resolve().then(() => {
-        //     const skeletonAvatar = element.shadowRoot.querySelector(
-        //         '[data-element-id="avonni-skeleton__avatar-figure"]'
-        //     );
-        //     const skeletonAvatarPrimaryText = element.shadowRoot.querySelector(
-        //         '[data-element-id="avonni-skeleton__avatar-primary-text"]'
-        //     );
-        //     const skeletonAvatarSecondaryText =
-        //         element.shadowRoot.querySelector(
-        //             '[data-element-id="avonni-skeleton__avatar-secondary-text"]'
-        //         );
-        //     const skeletonAvatarTertiaryText = element.shadowRoot.querySelector(
-        //         '[data-element-id="avonni-skeleton__avatar-tertiary-text"]'
-        //     );
-        //     expect(skeletonAvatar).toBeTruthy();
-        //     expect(skeletonAvatarPrimaryText).toBeTruthy();
-        //     expect(skeletonAvatarSecondaryText).toBeTruthy();
-        //     expect(skeletonAvatarTertiaryText).toBeTruthy();
-        // });
     });
 
     // avatar variant
-    // it('Skeleton Avatar: size medium', () => {
-    //     element.variant = 'avatar';
-    //     element.animation = 'pulse';
-    //     element.variantAttributes = {
-    //         variant: 'circle',
-    //         size: 'medium',
-    //         primaryText: 'primary',
-    //         secondaryText: 'secondary',
-    //         tertiaryText: 'tertiary'
-    //     };
+    it('Skeleton Avatar: size medium', () => {
+        element.variant = 'avatar';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'circle',
+            size: 'medium',
+            primaryText: 'primary',
+            secondaryText: 'secondary',
+            tertiaryText: 'tertiary'
+        };
 
-    //     return Promise.resolve().then(() => {
-    //         const skeletonAvatar = element.shadowRoot.querySelector(
-    //             '[data-element-id="avonni-skeleton__avatar-figure"]'
-    //         );
-    //         const skeletonAvatarPrimaryText = element.shadowRoot.querySelector(
-    //             '[data-element-id="avonni-skeleton__avatar-primary-text"]'
-    //         );
-    //         const skeletonAvatarSecondaryText =
-    //             element.shadowRoot.querySelector(
-    //                 '[data-element-id="avonni-skeleton__avatar-secondary-text"]'
-    //             );
-    //         const skeletonAvatarTertiaryText = element.shadowRoot.querySelector(
-    //             '[data-element-id="avonni-skeleton__avatar-tertiary-text"]'
-    //         );
-    //         expect(skeletonAvatar).toBeTruthy();
-    //         expect(skeletonAvatarPrimaryText).toBeTruthy();
-    //         expect(skeletonAvatarSecondaryText).toBeTruthy();
-    //         expect(skeletonAvatarTertiaryText).not.toBeTruthy();
-    //     });
-    // });
+        return Promise.resolve().then(() => {
+            const skeletonAvatar = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__avatar-figure"]'
+            );
+            const skeletonAvatarPrimaryText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__avatar-primary-text"]'
+            );
+            const skeletonAvatarSecondaryText =
+                element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-skeleton__avatar-secondary-text"]'
+                );
+            const skeletonAvatarTertiaryText = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__avatar-tertiary-text"]'
+            );
+            expect(skeletonAvatar).toBeTruthy();
+            expect(skeletonAvatarPrimaryText).toBeTruthy();
+            expect(skeletonAvatarSecondaryText).toBeTruthy();
+            expect(skeletonAvatarTertiaryText).not.toBeTruthy();
+        });
+    });
+
+    // badge variant
+    it('Skeleton Badge: size medium', () => {
+        element.variant = 'badge';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            hasIcon: true,
+            variant: 'base',
+            iconPosition: 'left'
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonBadge = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__badge-wrapper"]'
+            );
+            const skeletonBadgeLabel = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__badge-label"]'
+            );
+
+            expect(skeletonBadge.className).toContain('avonni-badge');
+            expect(skeletonBadge.className).not.toContain(
+                'avonni-chip_outline'
+            );
+            expect(skeletonBadge.className).toContain(
+                'avonni-badge_theme-base'
+            );
+            expect(skeletonBadge.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonBadgeLabel.className).toContain(
+                'avonni-skeleton__variant-text'
+            );
+            expect(skeletonBadgeLabel.className).toContain(
+                'avonni-skeleton__badge-label'
+            );
+        });
+    });
+
+    // badge variant
+    it('Skeleton Button: size medium', () => {
+        element.variant = 'button';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'base',
+            hasIcon: true,
+            outline: false
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonButton = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-button-element"]'
+            );
+            const skeletonButtonLabel = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton__button-label"]'
+            );
+
+            expect(skeletonButton.className).toContain('slds-button');
+            expect(skeletonButton.className).toContain(
+                'slds-p-vertical_xx-small'
+            );
+            expect(skeletonButton.className).toContain(
+                'slds-p-horizontal_x-small'
+            );
+            expect(skeletonButton.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonButtonLabel.className).toContain(
+                'avonni-skeleton__button-label'
+            );
+            expect(skeletonButtonLabel.className).toContain(
+                'slds-m-vertical_xx-small'
+            );
+            expect(skeletonButtonLabel.className).toContain(
+                'slds-m-horizontal_x-small'
+            );
+        });
+    });
+
+    // Button Icon variant
+    it('Skeleton Button Icon: size medium', () => {
+        element.variant = 'button-icon';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'base'
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonButtonIcon = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-button-icon"]'
+            );
+
+            expect(skeletonButtonIcon.className).toContain('slds-button');
+            expect(skeletonButtonIcon.className).toContain('slds-button_icon');
+            expect(skeletonButtonIcon.className).toContain(
+                'avonni-skeleton__buttonIcon-animation-pulse'
+            );
+        });
+    });
+
+    // Chip variant
+    it('Skeleton Chip: size medium', () => {
+        element.variant = 'chip';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'base',
+            hasIcon: true,
+            outline: false
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonChip = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-chip-wrapper"]'
+            );
+
+            const skeletonChipLabel = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-chip-label"]'
+            );
+
+            expect(skeletonChip.className).toContain('avonni-chip');
+            expect(skeletonChip.className).toContain(
+                'slds-p-vertical_xx-small'
+            );
+            expect(skeletonChip.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonChipLabel.className).toContain(
+                'avonni-skeleton__chip-label'
+            );
+        });
+    });
+
+    // Combobox variant
+    it('Skeleton Combobox: size medium', () => {
+        element.variant = 'combobox';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'standard',
+            required: true
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonCombobox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-combobox-wrapper"]'
+            );
+
+            const skeletonComboboxInputLabel = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-combobox-input-label"]'
+            );
+
+            const skeletonComboboxInputLabelTag =
+                element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-skeleton-combobox-input-label-tag"]'
+                );
+
+            const skeletonComboboxLabel = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-combobox-label"]'
+            );
+
+            expect(skeletonCombobox.className).toContain('slds-form-element');
+            expect(skeletonComboboxInputLabel.className).toContain(
+                'slds-list_horizontal'
+            );
+            expect(skeletonComboboxInputLabel.className).toContain(
+                'avonni-skeleton__input-label'
+            );
+            expect(skeletonComboboxInputLabelTag.className).toContain(
+                'avonni-skeleton__input-label-tag'
+            );
+            expect(skeletonComboboxInputLabelTag.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonComboboxLabel.className).toContain(
+                'avonni-skeleton__combobox-label'
+            );
+            expect(skeletonComboboxLabel.className).toContain(
+                'avonni-skeleton__variant-text'
+            );
+            expect(skeletonComboboxLabel.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+        });
+    });
+
+    // Datatable variant
+    it('Skeleton Datatable: size medium', () => {
+        element.variant = 'datatable';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            columns: 3,
+            rows: 7,
+            hideCheckboxColumn: false,
+            hideTableHeader: false
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonDatatableCheckbox = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-datatable-checkbox"]'
+            );
+
+            expect(skeletonDatatableCheckbox.className).toContain(
+                'slds-checkbox_faux'
+            );
+            expect(skeletonDatatableCheckbox.className).toContain(
+                'avonni-skeleton__datatable-checkbox'
+            );
+            expect(skeletonDatatableCheckbox.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+        });
+    });
+
+    // Input variant
+    it('Skeleton Input: size medium', () => {
+        element.variant = 'input';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'standard',
+            required: true
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonInputWrapper = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-input-wrapper"]'
+            );
+
+            const skeletonInputLabelTag = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-input-label-tag"]'
+            );
+
+            const skeletonInput = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-input"]'
+            );
+
+            expect(skeletonInputWrapper.className).toContain(
+                'slds-form-element'
+            );
+            expect(skeletonInputLabelTag.className).toContain(
+                'avonni-skeleton__input-label-tag'
+            );
+            expect(skeletonInputLabelTag.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonInput.className).toContain('slds-input');
+            expect(skeletonInput.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+            expect(skeletonInput.className).toContain('avonni-skeleton__input');
+        });
+    });
+
+    // Progress Indicator variant
+    it('Skeleton Progress Indicator: size medium', () => {
+        element.variant = 'progress-indicator';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: '',
+            steps: 3
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonProgressIndicatorBar =
+                element.shadowRoot.querySelector(
+                    '[data-element-id="avonni-skeleton-progress-indicator-bar"]'
+                );
+            expect(skeletonProgressIndicatorBar.className).toContain(
+                'slds-progress-bar'
+            );
+            expect(skeletonProgressIndicatorBar.className).toContain(
+                'slds-progress-bar_x-small'
+            );
+            expect(skeletonProgressIndicatorBar.className).toContain(
+                'avonni-skeleton__buttonIcon-animation-pulse'
+            );
+        });
+    });
+
+    // Tabset variant
+    it('Skeleton Tabset: size medium', () => {
+        element.variant = 'tabset';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'base',
+            tabs: 3
+        };
+
+        return Promise.resolve().then(() => {});
+    });
+
+    // Tree variant
+    it('Skeleton Tree: size medium', () => {
+        element.variant = 'tree';
+        element.animation = 'pulse';
+        element.variantAttributes = {
+            variant: 'path',
+            steps: 3
+        };
+
+        return Promise.resolve().then(() => {
+            const skeletonTreeHeader = element.shadowRoot.querySelector(
+                '[data-element-id="avonni-skeleton-tree-header"]'
+            );
+            expect(skeletonTreeHeader.className).toContain(
+                'slds-tree__group-header'
+            );
+            expect(skeletonTreeHeader.className).toContain(
+                'avonni-skeleton__tree-header'
+            );
+            expect(skeletonTreeHeader.className).toContain(
+                'avonni-skeleton__variant-text'
+            );
+            expect(skeletonTreeHeader.className).toContain(
+                'avonni-skeleton__animation-pulse'
+            );
+        });
+    });
 });
