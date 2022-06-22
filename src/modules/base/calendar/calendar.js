@@ -315,7 +315,6 @@ export default class Calendar extends LightningElement {
             if (this._isConnected) {
                 this.validateCurrentDayValue();
             }
-            this.updateDate();
         }
         this.updateDateParameters();
     }
