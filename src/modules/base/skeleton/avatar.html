@@ -34,7 +34,11 @@
 
 <template>
     <c-media-object data-element-id="avonni-skeleton__avatar-media-object">
-        <div class={avatarWrapperClass} slot="figure"></div>
+        <div
+            class={avatarWrapperClass}
+            slot="figure"
+            data-element-id="avonni-skeleton__avatar-figure"
+        ></div>
         <p
             if:true={showAvatarPrimaryText}
             class={primaryAvatarTextClass}

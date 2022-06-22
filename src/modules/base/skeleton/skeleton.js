@@ -94,16 +94,12 @@ export default class Skeleton extends LightningElement {
 
     avatarWrapperClass;
     avatarClass;
-    primaryAvatarTextClass;
-    secondaryAvatarTextClass;
-    tertiaryAvatarTextClass;
     breadcrumbs = [];
     buttonWrapper;
     buttonIconWrapper;
     datatableRows = [];
     datatableColumns = [];
     htmlVariant;
-    // paragraphs = [];
     paragraphItems = [];
     currentParagraphItem = 0;
     progressItems = [];
@@ -115,9 +111,6 @@ export default class Skeleton extends LightningElement {
         console.log(`connected callback variant: ${this.variant}`);
         if (this.isAvatarVariant) {
             this.updateAvatarClassList();
-            this.primaryText = this.variantAttributes.primaryText;
-            this.secondaryText = this.variantAttributes.secondaryText;
-            this.tertiaryText = this.variantAttributes.tertiaryText;
         }
         if (this.isBreadcrumbsVariant) {
             this.initializeBreadcrumbs();
@@ -1121,8 +1114,12 @@ export default class Skeleton extends LightningElement {
 
     updateAvatarClassList() {
         const avatarWrapperClass = classSet('slds-avatar')
-            // .add(`avonni-avatar_${this.avatarVariant}`)
-            .add(`avonni-skeleton__animation-${this.animation}`)
+            .add({
+                'avonni-skeleton__avatar-animation-pulse':
+                    this.animation === 'pulse',
+                'avonni-skeleton__avatar-animation-wave':
+                    this.animation === 'wave'
+            })
             .add({
                 'avonni-avatar_xx-small':
                     this.variantAttributes.size === 'xx-small',
