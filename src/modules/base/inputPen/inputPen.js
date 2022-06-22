@@ -140,8 +140,10 @@ export default class InputPen extends LightningElement {
         super();
         this.onMouseUp = this.handleMouseUp.bind(this);
         this.onMouseMove = this.handleMouseMove.bind(this);
+        this.onKeyDown = this.handleKeyDown.bind(this);
         window.addEventListener('mouseup', this.onMouseUp);
         window.addEventListener('mousemove', this.onMouseMove);
+        window.addEventListener('keydown', this.onKeyDown);
     }
 
     connectedCallback() {
@@ -153,6 +155,7 @@ export default class InputPen extends LightningElement {
     disconnectedCallback() {
         window.removeEventListener('mouseup', this.onMouseUp);
         window.removeEventListener('mousemove', this.onMouseMove);
+        window.removeEventListener('keydown', this.onKeyDown);
     }
 
     renderedCallback() {
@@ -941,6 +944,19 @@ export default class InputPen extends LightningElement {
 
     handleDownload() {
         this.download();
+    }
+
+    handleKeyDown(event) {
+        switch (event.keyCode) {
+            case 89: // ctrl-y
+                this.handleRedo();
+                break;
+            case 90: // ctrl-z
+                this.handleUndo();
+                break;
+            default:
+                break;
+        }
     }
 
     handleUndo() {
