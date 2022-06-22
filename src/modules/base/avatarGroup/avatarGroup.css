@@ -43,7 +43,8 @@
     row-gap: 0.3rem;
 }
 
-.avonni-avatar-group_in-line {
+.avonni-avatar-group_in-line .avonni-avatar-group__avatar_color-border,
+span .avonni-avatar-group_in-line {
     --avonni-avatar-color-border: var(
         --avonni-avatar-group-avatar-stack-color-border,
         #ffffff
@@ -51,6 +52,10 @@
     --avonni-avatar-sizing-border: var(
         --avonni-avatar-group-avatar-stack-sizing-border,
         1px
+    );
+    background-color: var(
+        --avonni-avatar-group-avatar-stack-color-border,
+        #ffffff
     );
 }
 
