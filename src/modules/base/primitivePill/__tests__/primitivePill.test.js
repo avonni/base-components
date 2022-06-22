@@ -244,6 +244,7 @@ describe('Primitive Pill', () => {
     // actionclick
     it('Primitive pill: actionclick event', () => {
         element.actions = ACTIONS;
+        element.name = 'pill-name';
 
         const handler = jest.fn();
         element.addEventListener('actionclick', handler);
@@ -265,6 +266,7 @@ describe('Primitive Pill', () => {
                 expect(handler).toHaveBeenCalledTimes(1);
                 const firstEvent = handler.mock.calls[0][0];
                 expect(firstEvent.detail.name).toBe(ACTIONS[1].name);
+                expect(firstEvent.detail.targetName).toBe('pill-name');
                 expect(firstEvent.bubbles).toBeTruthy();
                 expect(firstEvent.cancelable).toBeFalsy();
                 expect(firstEvent.composed).toBeFalsy();
@@ -280,6 +282,7 @@ describe('Primitive Pill', () => {
                 expect(handler).toHaveBeenCalledTimes(2);
                 const secondEvent = handler.mock.calls[1][0];
                 expect(secondEvent.detail.name).toBe(ACTIONS[2].name);
+                expect(secondEvent.detail.targetName).toBe('pill-name');
             });
     });
 
