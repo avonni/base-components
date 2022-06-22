@@ -884,7 +884,7 @@ export default class Slider extends LightningElement {
      */
     get _trackHeight() {
         const trackHeight = this.template.querySelector(
-            '[data-element-id="track"]'
+            '[data-element-id="track-container"]'
         ).offsetHeight;
         return trackHeight ? trackHeight : 4;
     }

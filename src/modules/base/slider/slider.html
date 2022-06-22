@@ -114,7 +114,10 @@
                 </div>
             </div>
         </template>
-        <div class={computedTrackContainerClass}>
+        <div
+            class={computedTrackContainerClass}
+            data-element-id="track-container"
+        >
             <div
                 if:true={showTrack}
                 class={computedTrackClass}
