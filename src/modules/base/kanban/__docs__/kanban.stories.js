@@ -185,3 +185,130 @@ disabledColumnDrag.args = {
     disableColumnDragAndDrop: true,
     summarizeFieldName: 'Amount'
 };
+
+export const avatar = Template.bind({});
+avatar.args = {
+    summarizeFieldName: 'Amount',
+    groupValues: [
+        {
+            label: 'John Doe',
+            value: 'johnDoe',
+            avatar: {
+                fallbackIconName: 'utility:down',
+                initials: 'AS',
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar1.jpg',
+                variant: 'circle'
+            },
+            footerActions: [
+                {
+                    disabled: false,
+                    label: 'Email',
+                    name: 'Email',
+                    iconName: 'utility:email'
+                }
+            ]
+        },
+        {
+            label: 'Jane Doe',
+            value: 'janeDoe',
+            avatar: {
+                fallbackIconName: 'utility:down',
+                initials: 'AS',
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar2.jpg',
+                variant: 'circle'
+            },
+            footerActions: [
+                {
+                    disabled: false,
+                    label: 'Email',
+                    name: 'Email',
+                    iconName: 'utility:email'
+                }
+            ]
+        },
+        {
+            label: 'John Smith',
+            value: 'johnSmith',
+            avatar: {
+                fallbackIconName: 'utility:down',
+                initials: 'AS',
+                src: 'https://www.lightningdesignsystem.com/assets/images/avatar3.jpg',
+                variant: 'circle'
+            },
+            footerActions: [
+                {
+                    disabled: false,
+                    label: 'Email',
+                    name: 'Email',
+                    iconName: 'utility:email'
+                }
+            ]
+        }
+    ],
+    records: [
+        {
+            id: '001',
+            responsible: 'John Doe',
+            opportunityName: 'Opportunity 1',
+            amount: 25000,
+            warningIcon: 'utility:warning',
+            phone: '+375292567896',
+            date: '1547250828000',
+            percent: 0.28,
+            available: true
+        },
+        {
+            id: '002',
+            responsible: 'John Doe',
+            opportunityName: 'Opportunity 2',
+            amount: 13200,
+            phone: '+375292567896',
+            date: '1347250828000',
+            percent: 0.77,
+            available: true
+        },
+        {
+            id: '003',
+            responsible: 'John Doe',
+
+            opportunityName: 'Opportunity 3',
+            amount: 5100,
+            phone: '+37529888888',
+            date: '1547250828000',
+            percent: 0.83,
+            available: false
+        },
+        {
+            id: '004',
+            responsible: 'Jane Doe',
+            opportunityName: 'Opportunity 4',
+            amount: 21570,
+            phone: '+375292567896',
+            date: '1647250828000',
+            percent: 0.2,
+            available: false
+        },
+        {
+            id: '005',
+            responsible: 'John Smith',
+
+            opportunityName: 'Opportunity 5',
+            amount: 200,
+            phone: '+375299999999',
+            date: '1347250828000',
+            percent: 0.18,
+            available: true
+        },
+        {
+            id: '006',
+            responsible: 'Jane Doe',
+            opportunityName: 'Opportunity 6',
+            amount: 17500,
+            phone: '+375292567896',
+            date: '1547250828000',
+            percent: 0.92,
+            available: true
+        }
+    ],
+    groupFieldName: 'responsible'
+};
