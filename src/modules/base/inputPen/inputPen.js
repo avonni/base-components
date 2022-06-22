@@ -690,6 +690,21 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Downloads the currently displayed content.
+     *
+     * @public
+     */
+    @api
+    download() {
+        const a = document.createElement('a');
+        a.download = 'Signature.png';
+        a.href = this.value
+            ? this.value
+            : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+        a.click();
+    }
+
+    /**
      * Displays the error messages. If the input is valid, <code>reportValidity()</code> clears displayed error messages.
      *
      * @returns {boolean} False if invalid, true if valid.
@@ -925,12 +940,7 @@ export default class InputPen extends LightningElement {
     }
 
     handleDownload() {
-        if (this.value) {
-            const a = document.createElement('a');
-            a.href = this.value;
-            a.download = 'Signature.png';
-            a.click();
-        }
+        this.download();
     }
 
     handleUndo() {
