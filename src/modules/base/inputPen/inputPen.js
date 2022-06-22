@@ -700,7 +700,7 @@ export default class InputPen extends LightningElement {
         a.download = 'Signature.png';
         a.href = this.value
             ? this.value
-            : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+            : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'; // empty image
         a.click();
     }
 

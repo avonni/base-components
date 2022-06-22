@@ -37,7 +37,13 @@ let element;
 
 // Mock for HTMLCanvasElement in tests.
 HTMLCanvasElement.prototype.getContext = () => {
-    return {};
+    return {
+        clearRect: () => {},
+        rect: () => {},
+        fill: () => {},
+        stroke: () => {},
+        moveTo: () => {}
+    };
 };
 
 describe('Input pen', () => {
@@ -230,7 +236,9 @@ describe('Input pen', () => {
         element.disabledButtons = 'size';
 
         return Promise.resolve().then(() => {
-            const size = element.shadowRoot.querySelector('lightning-combobox');
+            const size = element.shadowRoot.querySelector(
+                '[data-element-id="size-picker"]'
+            );
             expect(size).toBeFalsy();
         });
     });
@@ -239,8 +247,54 @@ describe('Input pen', () => {
         element.disabledButtons = 'color';
 
         return Promise.resolve().then(() => {
-            const color = element.shadowRoot.querySelector('c-color-picker');
+            const color = element.shadowRoot.querySelector(
+                '[data-element-id="color-picker"]'
+            );
             expect(color).toBeFalsy();
+        });
+    });
+
+    it('Input pen disabled buttons background color', () => {
+        element.disabledButtons = 'background';
+
+        return Promise.resolve().then(() => {
+            const background = element.shadowRoot.querySelector(
+                '[data-element-id="background-color-picker"]'
+            );
+            expect(background).toBeFalsy();
+        });
+    });
+
+    it('Input pen disabled buttons download', () => {
+        element.disabledButtons = 'download';
+
+        return Promise.resolve().then(() => {
+            const download = element.shadowRoot.querySelector(
+                '[data-element-id="download"]'
+            );
+            expect(download).toBeFalsy();
+        });
+    });
+
+    it('Input pen disabled buttons undo', () => {
+        element.disabledButtons = 'undo';
+
+        return Promise.resolve().then(() => {
+            const undo = element.shadowRoot.querySelector(
+                '[data-element-id="undo"]'
+            );
+            expect(undo).toBeFalsy();
+        });
+    });
+
+    it('Input pen disabled buttons redo', () => {
+        element.disabledButtons = 'redo';
+
+        return Promise.resolve().then(() => {
+            const redo = element.shadowRoot.querySelector(
+                '[data-element-id="redo"]'
+            );
+            expect(redo).toBeFalsy();
         });
     });
 

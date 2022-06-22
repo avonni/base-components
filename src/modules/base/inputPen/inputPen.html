@@ -148,6 +148,7 @@
                                 options={sizeList}
                                 onchange={handleSizeChange}
                                 disabled={disabled}
+                                data-element-id="size-picker"
                             >
                             </lightning-combobox>
                         </li>
@@ -161,6 +162,7 @@
                                 variant="label-hidden"
                                 onchange={handleColorChange}
                                 type="custom"
+                                data-element-id="color-picker"
                             ></c-color-picker>
                         </li>
                     </ul>
@@ -176,6 +178,7 @@
                                 onchange={handleBackgroundColorChange}
                                 opacity
                                 colors={defaultBackgroundColors}
+                                data-element-id="background-color-picker"
                             >
                             </c-color-picker>
                         </li>
@@ -201,6 +204,7 @@
                                 alternative-text="download PNG"
                                 onclick={handleDownload}
                                 disabled={hasValue}
+                                data-element-id="download"
                             >
                             </lightning-button-icon>
                         </li>
@@ -219,6 +223,7 @@
                                 title="Undo"
                                 onclick={handleUndo}
                                 disabled={disabled}
+                                data-element-id="undo"
                             >
                             </lightning-button-icon>
                         </li>
@@ -230,6 +235,7 @@
                                 title="Redo"
                                 onclick={handleRedo}
                                 disabled={disabled}
+                                data-element-id="redo"
                             >
                             </lightning-button-icon>
                         </li>
