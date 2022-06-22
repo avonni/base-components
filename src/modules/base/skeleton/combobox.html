@@ -33,14 +33,23 @@
 -->
 
 <template>
-    <div class={comboboxWrapperClass}>
+    <div
+        class={comboboxWrapperClass}
+        data-element-id="avonni-skeleton-combobox-wrapper"
+    >
         <template if:false={comboboxVariantLabelHidden}>
             <label class="slds-form-element__label">
-                <div class={inputLabelClass}>
+                <div
+                    class={inputLabelClass}
+                    data-element-id="avonni-skeleton-combobox-input-label"
+                >
                     <template if:true={comboboxRequired}>
                         <abbr class="slds-required">*</abbr>
                     </template>
-                    <div class={inputLabelTagClass}></div>
+                    <div
+                        class={inputLabelTagClass}
+                        data-element-id="avonni-skeleton-combobox-input-label-tag"
+                    ></div>
                 </div>
             </label>
         </template>
@@ -59,8 +68,18 @@
                             slds-input-has-icon slds-input-has-icon_right
                         "
                     >
-                        <div class={comboboxSearchClass}>
-                            <div class={comboboxLabelClass}></div>
+                        <div
+                            class="
+                                avonni-skeleton__combobox-search
+                                slds-input_faux
+                                slds-has-focus
+                            "
+                            data-element-id="avonni-skeleton-combobox-search"
+                        >
+                            <div
+                                class={comboboxLabelClass}
+                                data-element-id="avonni-skeleton-combobox-label"
+                            ></div>
                         </div>
                         <span
                             class="

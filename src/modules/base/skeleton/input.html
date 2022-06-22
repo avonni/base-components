@@ -33,19 +33,31 @@
 -->
 
 <template>
-    <div class={inputWrapperClass}>
+    <div
+        class={inputWrapperClass}
+        data-element-id="avonni-skeleton-input-wrapper"
+    >
         <label class="slds-form-element__label">
-            <div class={inputLabelClass}>
+            <div class="slds-list_horizontal avonni-skeleton__input-label">
                 <template if:false={inputVariantLabelHidden}>
                     <template if:true={inputRequired}>
                         <abbr class="slds-required">*</abbr>
                     </template>
-                    <div class={inputLabelTagClass}></div>
+                    <div
+                        class={inputLabelTagClass}
+                        data-element-id="avonni-skeleton-input-label-tag"
+                    ></div>
                 </template>
             </div>
         </label>
         <div class="slds-form-element__control">
-            <input class={inputClass} disabled="" required type="text" />
+            <input
+                class={inputClass}
+                disabled=""
+                required
+                type="text"
+                data-element-id="avonni-skeleton-input"
+            />
         </div>
     </div>
 </template>

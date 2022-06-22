@@ -33,7 +33,16 @@
 -->
 
 <template>
-    <table class={datatableTableClass}>
+    <table
+        class="
+            slds-table
+            avonni-skeleton__datatable-borders
+            slds-table_bordered
+            slds-table_fixed-layout
+            slds-table_resizable-cols
+        "
+        data-element-id="avonni-skeleton-datatable-table"
+    >
         <template if:false={hideTableHeader}>
             <thead>
                 <template if:false={hideCheckboxColumn}>
@@ -44,11 +53,19 @@
                         "
                         style="width: 3.25rem"
                     >
-                        <div class={datatableHeaderCheckboxClass}>
+                        <div
+                            class="
+                                slds-th__action slds-th__action_form
+                                avonni-skeleton__datatable-header-checkbox
+                            "
+                        >
                             <div class="slds-checkbox">
                                 <input type="checkbox" disabled="" />
                                 <label class="slds-checkbox__label">
-                                    <span class={datatableCheckboxClass}></span>
+                                    <span
+                                        class={datatableCheckboxClass}
+                                        data-element-id="avonni-skeleton-datatable-checkbox"
+                                    ></span>
                                 </label>
                             </div>
                         </div>

@@ -33,13 +33,16 @@
 -->
 
 <template>
-    <span class={badgeClass} data-element-id="avonni-skeleton-avatar-wrapper">
+    <span class={badgeClass} data-element-id="avonni-skeleton__badge-wrapper">
         <template if:true={badgeHasLeftIcon}>
             <span class="slds-badge__icon slds-badge__icon_left">
                 <div class="slds-avatar_x-small"></div>
             </span>
         </template>
-        <div class={badgeLabelClass} data-element-id="badge-label"></div>
+        <div
+            class={badgeLabelClass}
+            data-element-id="avonni-skeleton__badge-label"
+        ></div>
         <template if:true={badgeHasRightIcon}>
             <span class="slds-badge__icon slds-badge__icon_right">
                 <div class="slds-avatar_x-small"></div>

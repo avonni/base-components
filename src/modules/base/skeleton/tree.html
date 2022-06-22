@@ -35,12 +35,21 @@
 <template>
     <div class="slds-tree_container">
         <template if:false={hideTreeHeader}>
-            <div class={treeHeaderClass}></div>
+            <div
+                class={treeHeaderClass}
+                data-element-id="avonni-skeleton-tree-header"
+            ></div>
         </template>
         <ul class="slds-tree">
             <template for:each={treeItems} for:item="treeItem">
                 <li key={treeItem.key}>
-                    <div class={treeItemContainerClass}>
+                    <div
+                        class="
+                            avonni-skeleton__item-container
+                            slds-p-horizontal_medium
+                            slds-p-vertical_xx-small
+                        "
+                    >
                         <div class="slds-button_icon slds-m-right_x-small">
                             <svg
                                 class="
