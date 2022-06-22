@@ -92,7 +92,6 @@ export default class Card extends LightningElement {
     showCenterMediaContent = true;
 
     renderedCallback() {
-        this.showMedia = this.mediaSrc || this.showMediaSlot;
         this.showMediaSlot =
             !this.mediaSrc &&
             this.mediaSlot &&
@@ -113,6 +112,7 @@ export default class Card extends LightningElement {
         this.showFooterSlot =
             this.footerSlot && this.footerSlot.assignedElements().length !== 0;
 
+        this.showMedia = this.mediaSrc || this.showMediaSlot;
         this.showCenterMediaContent =
             this.showDefaultSlot && this.mediaPosition === 'center';
     }

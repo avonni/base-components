@@ -103,6 +103,7 @@ Base.args = {
 export const MediaTop = TopMediaTemplate.bind({});
 MediaTop.args = {
     title: 'Real-time Collaborative Docs',
+    iconName: 'standard:custom_notification',
     mediaSrc:
         'https://www.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg'
 };
