@@ -71,6 +71,7 @@ describe('Primitive Pill', () => {
         expect(element.avatar).toBeUndefined();
         expect(element.href).toBeUndefined();
         expect(element.label).toBeUndefined();
+        expect(element.name).toBeUndefined();
     });
 
     /*

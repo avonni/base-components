@@ -45,6 +45,13 @@ export default class PrimitivePill extends LightningElement {
      * @public
      */
     @api label;
+    /**
+     * Name to identify the pill.
+     *
+     * @type {string}
+     * @public;
+     */
+    @api name;
 
     _actions = [];
     _avatar;
@@ -175,6 +182,7 @@ export default class PrimitivePill extends LightningElement {
          * @event
          * @name actionclick
          * @param {string} name Name of the action.
+         * @param {string} targetName Name of the pill the action belongs to.
          * @public
          * @bubbles
          */
@@ -182,7 +190,7 @@ export default class PrimitivePill extends LightningElement {
             new CustomEvent('actionclick', {
                 detail: {
                     name: actionName,
-                    targetName: 'target name'
+                    targetName: this.name
                 },
                 bubbles: true
             })
