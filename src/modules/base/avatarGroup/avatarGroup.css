@@ -54,7 +54,7 @@
     );
 }
 
-button.avonni-avatar-group_action-button-in-line {
+button.avonni-avatar-group__avatar-in-line-button {
     border: var(--avonni-avatar-group-avatar-stack-sizing-border, 1px) solid
         var(--avonni-avatar-group-avatar-stack-color-border, #ffffff);
 }
@@ -88,32 +88,32 @@ button.avonni-avatar-group_action-button-in-line {
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-x-small,
-.avonni-avatar-group_action-button-in-line.avonni-action-button-x-small {
+.avonni-avatar-group__avatar-button-in-line.avonni-action-button-x-small {
     margin-left: -4px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-small,
-.avonni-avatar-group_action-button-in-line.avonni-action-button-small {
+.avonni-avatar-group__avatar-button-in-line.avonni-action-button-small {
     margin-left: -6px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-medium,
-.avonni-avatar-group_action-button-in-line.avonni-action-button-medium {
+.avonni-avatar-group__avatar-button-in-line.avonni-action-button-medium {
     margin-left: -8px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-large,
-.avonni-avatar-group_action-button-in-line.avonni-action-button-large {
+.avonni-avatar-group__avatar-button-in-line.avonni-action-button-large {
     margin-left: -10px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-x-large,
-.avonni-avatar-group_action-button-in-line.avonni-action-button-x-large {
+.avonni-avatar-group__avatar-button-in-line.avonni-action-button-x-large {
     margin-left: -12px;
 }
 
 .avonni-avatar-group_in-line.avonni-avatar-xx-large,
-.avonni-avatar-group_action-button-in-line.avonni-action-button-xx-large {
+.avonni-avatar-group__avatar-button-in-line.avonni-action-button-xx-large {
     margin-left: -14px;
 }
 
@@ -239,6 +239,6 @@ button.avonni-avatar-group_action-button-in-line {
     );
 }
 
-.avonni-avatar-group__avatar_color-border-square {
+.avonni-avatar-group__avatar_radius-border-square {
     border-radius: 4px;
 }
