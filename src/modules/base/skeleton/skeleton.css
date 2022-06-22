@@ -41,12 +41,7 @@
     height: 2rem;
     max-width: 100%;
     padding: 0.25rem;
-    /* padding-top: var(--avonni-chip-spacing-block-start, 0.25rem);
-    padding-bottom: var(--avonni-chip-spacing-block-end, 0.25rem);
-    padding-left: var(--avonni-chip-spacing-inline-start, 0.5rem);
-    padding-right: var(--avonni-chip-spacing-inline-end, 0.5rem); */
     border-width: var(--avonni-chip-sizing-border, 1px);
-    /* border-style: var(--avonni-chip-styling-border, solid); */
     border-radius: 15rem;
     font-size: var(--avonni-chip-label-font-size, 0.75rem);
     font-weight: 700;
@@ -60,10 +55,6 @@
     align-items: center;
     overflow: hidden;
 }
-
-/* .avonni-button {
-    height: 2rem;
-} */
 
 .avonni-chip {
     max-width: 100%;
@@ -104,7 +95,6 @@
     border-style: solid;
     border-width: 0.2em 0.1em;
     border-radius: var(--avonni-skeleton-radius-border);
-    /* margin: 0.25em; */
 }
 
 .avonni-skeleton__chip-icon {
@@ -340,7 +330,6 @@
     top: 0;
     height: calc((2rem / 2) + 0.0625rem);
     transform: skew(28deg) translate3d(0, 0, 0);
-    /* position: relative; */
     background-color: var(--avonni-skeleton-color-background-animation);
     animation-duration: 2s;
     animation-fill-mode: forwards;
@@ -360,7 +349,6 @@
     bottom: 0;
     height: 1rem;
     transform: skew(-30deg) translate3d(0, 0, 0);
-    /* position: relative; */
     background-color: var(--avonni-skeleton-color-background-animation);
     animation-duration: 2s;
     animation-fill-mode: forwards;
@@ -407,32 +395,6 @@ avonni-skeleton_tabset-pulse:hover::after {
 avonni-skeleton_tabset-wave:hover::after {
     background-color: transparent;
 }
-
-/* .avonni-skeleton_tabset-pulse::after {
-    background-color: var(--avonni-skeleton-color-background);
-    animation: pulse-animation 1s infinite;
-    position: relative;
-    height: 0.2em;
-}
-
-.avonni-skeleton_tabset-wave::after {
-    transform: skew(-30deg) translate3d(0, 0, 0);
-    position: relative;
-    background-color: var(--avonni-skeleton-color-background-animation);
-    animation-duration: 2s;
-    animation-fill-mode: forwards;
-    animation-iteration-count: infinite;
-    animation-name: wave-animation;
-    animation-timing-function: linear;
-    background: linear-gradient(
-        to right,
-        var(--avonni-skeleton-color-background) 8%,
-        var(--avonni-skeleton-color-background-animation) 18%,
-        var(--avonni-skeleton-color-background) 33%
-    );
-    background-size: 800px;
-    height: 0.2em;
-} */
 
 .avonni-skeleton__tabset-item {
     margin-bottom: 5px;
@@ -491,52 +453,6 @@ avonni-skeleton_tabset-wave:hover::after {
     display: flex;
 }
 
-/* .avonni-skeleton__progress-indicator-path-item:first-child {
-    margin-left: 0;
-    border-top-left-radius: 2rem;
-    border-bottom-left-radius: 2rem;
-    padding-left: 0.625rem;
-}
-
-.avonni-skeleton__progress-indicator-path-item {
-    flex: 1;
-    margin-right: 0.4375rem;
-    min-width: 5rem;
-    text-align: center;
-}
-
-.avonni-skeleton__progress-indicator-path-item::before {
-    top: 0;
-    height: calc((2rem / 2) + 0.0625rem);
-    transform: skew(28deg) translate3d(0, 0, 0);
-    background: red;
-}
-
-.avonni-skeleton__progress-indicator-path-item::after {
-    bottom: 0;
-    height: 1rem;
-    transform: skew(-30deg) translate3d(0, 0, 0);
-    background: red;
-} */
-
-/* .slds-path__item:first-child:before,
-.slds-path__item:first-child:after {
-    left: 1.125rem;
-}
-
-.slds-path__item:before,
-.slds-path__item:after {
-    content: '';
-    position: absolute;
-    right: -0.3125rem;
-    cursor: default;
-} */
-
-/* .avonni-skeleton__progress-indicator-path::after {
-    height: 2rem;
-    cursor: default !important;
-} */
-
 .avonni-skeleton__variant-avatar {
     border-color: var(--avonni-skeleton-color-border);
     border-radius: var(--avonni-skeleton-radius-border);
@@ -569,39 +485,9 @@ avonni-skeleton_tabset-wave:hover::after {
     font-weight: var(--avonni-combobox-label-font-weight, 400);
 }
 
-.avonni-skeleton__variant-button {
-}
-
-.avonni-skeleton__variant-button-icon {
-}
-
-.avonni-skeleton__variant-badge {
-}
-
-.avonni-skeleton__variant-breadcrumbs {
-}
-
 .avonni-skeleton__variant-circular {
     --avonni-skeleton-radius-border: 50%;
     border-radius: var(--avonni-skeleton-radius-border);
-}
-
-.avonni-skeleton__variant-combobox {
-}
-
-.avonni-skeleton__variant-datatable {
-}
-
-.avonni-skeleton__variant-input {
-}
-
-.avonni-skeleton__variant-paragraph {
-}
-
-.avonni-skeleton__variant-path {
-}
-
-.avonni-skeleton__variant-pill {
 }
 
 .avonni-skeleton__variant-rectangular {
@@ -609,14 +495,8 @@ avonni-skeleton_tabset-wave:hover::after {
     border-radius: var(--avonni-skeleton-radius-border);
 }
 
-.avonni-skeleton__variant-tabset {
-}
-
 .avonni-skeleton__variant-text {
     border-radius: var(--avonni-skeleton-radius-border);
-}
-
-.avonni-skeleton__variant-tree {
 }
 
 .breadcrumbsClass {
