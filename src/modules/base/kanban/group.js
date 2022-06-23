@@ -55,6 +55,7 @@ export default class KanbanGroups {
                     });
                 }
             });
+
             if (
                 Object.keys(record).find(
                     (key) => key === this.coverImageFieldName

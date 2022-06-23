@@ -273,7 +273,6 @@ export default class Kanban extends LightningElement {
      */
     get initGroups() {
         this.clearSummarizeTimeouts();
-
         const kanbanGroup = new KanbanGroups({
             groupValues: this._groupValues,
             summarizeValues: this._summarizeValues,
@@ -433,12 +432,10 @@ export default class Kanban extends LightningElement {
      */
     displayCoverImage(groups) {
         groups.forEach((group) => {
-            group.tiles.forEach((tile, i) => {
+            group.tiles.forEach((tile) => {
                 if (tile.field.coverImage) {
                     requestAnimationFrame(() => {
-                        const tileElement = this.template.querySelectorAll(
-                            '[data-element-id="avonni-kanban__tile"]'
-                        )[i];
+                        const tileElement = this.findTileElement(tile);
                         tileElement.children[0].style.backgroundImage = `url(${tile.field.coverImage})`;
                         tileElement.children[0].style.height = `${
                             tileElement.offsetWidth * 0.75
@@ -447,6 +444,27 @@ export default class Kanban extends LightningElement {
                 }
             });
         });
+    }
+
+    /**
+     * Finds the tile element in the DOM corresponding to the record
+     * @param {object} tile
+     * @returns {HTMLElement}
+     */
+    findTileElement(tile) {
+        const tiles = this.template.querySelectorAll(
+            '[data-element-id="avonni-kanban__tile"]'
+        );
+
+        let correspondingTile;
+
+        tiles.forEach((tileElement) => {
+            if (tileElement.dataset.recordIndex === tile.index) {
+                correspondingTile = tileElement;
+            }
+        });
+
+        return correspondingTile;
     }
 
     /**
