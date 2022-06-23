@@ -418,8 +418,8 @@ SortableWithImagesAndAvatars.args = {
 
 export const SortableGridWithImagesAndAvatars = Template.bind({});
 SortableGridWithImagesAndAvatars.args = {
-    label: 'Sortable grid with Images, Avatars and Icons',
-    items: itemsWithImagesAndAvatars,
+    label: 'Sortable grid with Avatars and Icons',
+    items: itemsWithAvatars,
     actions: actions,
     sortableIconName: 'utility:drag_and_drop',
     sortableIconPosition: 'left',

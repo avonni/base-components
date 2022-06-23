@@ -75,6 +75,7 @@
 
 .avonni-list__item-borderless {
     --avonni-card-sizing-border: 0px;
+    --avonni-card-shadow: none;
 }
 
 .avonni-list__header_font {

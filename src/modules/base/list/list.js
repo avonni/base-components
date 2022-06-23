@@ -105,6 +105,7 @@ export default class List extends LightningElement {
     _itemElements;
     _savedComputedItems;
     _currentItemDraggedHeight;
+    _currentItemDraggedWidth;
     _hasActions = false;
     _imageSrc = [];
     computedActions = [];
@@ -495,11 +496,17 @@ export default class List extends LightningElement {
         if (target.style.transform !== '') {
             target.style.transform = '';
         } else {
-            const translationValue =
+            const translationXValue =
+                targetIndex > index
+                    ? -this._currentItemDraggedWidth
+                    : this._currentItemDraggedWidth;
+            const translationYValue =
                 targetIndex > index
                     ? -this._currentItemDraggedHeight
                     : this._currentItemDraggedHeight;
-            target.style.transform = `translateY(${translationValue + 'px'})`;
+            target.style.transform = `translate(${translationXValue + 'px'}, ${
+                translationYValue + 'px'
+            })`;
         }
 
         // Make the switch in computed items
@@ -557,6 +564,8 @@ export default class List extends LightningElement {
             .getBoundingClientRect();
         this._menuTop = menuPosition.top;
         this._menuBottom = menuPosition.bottom;
+        this._menuLeft = menuPosition.left;
+        this._menuRight = menuPosition.right;
 
         this._initialY =
             event.type === 'touchstart'
@@ -616,6 +625,7 @@ export default class List extends LightningElement {
         );
         this._draggedElement = event.currentTarget;
         this._currentItemDraggedHeight = this._draggedElement.offsetHeight;
+        this._currentItemDraggedWidth = this._draggedElement.offsetWidth;
         this._draggedIndex = Number(this._draggedElement.dataset.index);
 
         if (event.type !== 'keydown') {
@@ -651,23 +661,34 @@ export default class List extends LightningElement {
             event.type === 'touchmove'
                 ? event.touches[0].clientY
                 : event.clientY;
-        const menuTop = this._menuTop;
-        const menuBottom = this._menuBottom;
+        const mouseX =
+            event.type === 'touchmove'
+                ? event.touches[0].clientX
+                : event.clientX;
 
         // Make sure it is not possible to drag the item out of the menu
         let currentY;
-        if (mouseY < menuTop) {
-            currentY = menuTop;
-        } else if (mouseY > menuBottom) {
-            currentY = menuBottom;
+        if (mouseY < this._menuTop) {
+            currentY = this._menuTop;
+        } else if (mouseY > this._menuBottom) {
+            currentY = this._menuBottom;
         } else {
             currentY = mouseY;
         }
+        let currentX;
+        if (mouseX < this._menuLeft) {
+            currentX = this._menuLeft;
+        } else if (mouseX > this._menuRight) {
+            currentX = this._menuRight;
+        } else {
+            currentX = mouseX;
+        }
 
         // Stick the dragged item to the mouse position
-        this._draggedElement.style.transform = `translateY(${
-            currentY - this._initialY
-        }px)`;
+        this._draggedElement.style.transform = `translate(
+            ${currentX - this._initialX + 'px'},
+            ${currentY - this._initialY + 'px'}
+       )`;
 
         // Get the position of the dragged item
         const position = this._draggedElement.getBoundingClientRect();
