@@ -306,25 +306,31 @@ export default class Kanban extends LightningElement {
 
         computedGroups.forEach((group) => {
             if (!this.hideHeader) this.animateSummary(group);
-
             // Set the right background color on each group
+            const defaultBackgroundColor =
+                this.variant === 'path' ? '#ffffff' : '#fcfcfc';
             requestAnimationFrame(() => {
-                if (this.variant === 'path') {
+                if (
+                    this.variant === 'path' &&
+                    group.pathColor &&
+                    !this.hideHeader
+                ) {
+                    /* eslint-disable no-unexpected-multiline */
+
                     this.template
                         .querySelectorAll(
                             '[data-element-id="avonni-kanban__path_item"]'
                         )
-                        [
-                            // eslint-disable-next-line no-unexpected-multiline
-                            group.index
-                        ].setAttribute(
+                        [group.index].setAttribute(
                             'style',
                             `background:${group.pathColor} !important`
                         );
                 }
                 this.template.querySelectorAll(
                     '[data-element-id="avonni-kanban__field"]'
-                )[group.index].style.background = group.backgroundColor;
+                )[group.index].style.background = group.backgroundColor
+                    ? group.backgroundColor
+                    : defaultBackgroundColor;
             });
         });
 

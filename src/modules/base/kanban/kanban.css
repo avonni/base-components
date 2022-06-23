@@ -324,3 +324,8 @@
 .avonni-kanban__path_item::before {
     background-color: inherit !important;
 }
+
+.avonni-kanban__group_header_hidden {
+    height: 0.5rem;
+    width: 100%;
+}

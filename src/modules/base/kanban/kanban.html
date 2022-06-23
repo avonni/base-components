@@ -122,6 +122,17 @@
                     key={group.index}
                 >
                     <div
+                        if:true={hideHeader}
+                        class="
+                            avonni-kanban__group_header
+                            avonni-kanban__group_header_hidden
+                        "
+                        data-element-id="avonni-kanban__group_header"
+                        onmousedown={handleGroupMouseDown}
+                        onmouseup={handleGroupMouseUp}
+                    ></div>
+
+                    <div
                         class="avonni-kanban__group_header"
                         onmousedown={handleGroupMouseDown}
                         onmouseup={handleGroupMouseUp}
