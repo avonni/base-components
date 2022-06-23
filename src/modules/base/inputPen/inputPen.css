@@ -75,6 +75,13 @@
 
 .avonni-input-pen__combobox {
     width: 80px;
+
+    /* does not work on children elements? */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .avonni-input-pen__label-container {
@@ -142,7 +149,7 @@
     height: 350px;
 }
 
-.avonni-input-pen__custom-icon:hover svg path {
+.avonni-input-pen__avonni-input-pen__combobox:hover svg path {
     fill: #024486;
 }
 

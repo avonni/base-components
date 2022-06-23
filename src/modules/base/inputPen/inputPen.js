@@ -96,7 +96,6 @@ export default class InputPen extends LightningElement {
     _color = DEFAULT_COLOR;
     _disabled = false;
     _hideControls = false;
-    _invalid = false;
     _mode = PEN_MODES.default;
     _readOnly = false;
     _required = false;
@@ -111,7 +110,6 @@ export default class InputPen extends LightningElement {
     _updatedDOM = false;
 
     isDownFlag;
-    isDotFlag = false;
     xPositions = [];
     yPositions = [];
     velocities = [];
@@ -123,9 +121,13 @@ export default class InputPen extends LightningElement {
     undoStack = [];
     redoStack = [];
 
-    _resizeTimeout;
+    helpMessage;
+    _invalidField = false;
     _constraintApi;
     _constraintApiProxyInputUpdater;
+
+    _resizeObserver;
+    _resizeTimeout;
 
     canvasElement;
     ctx;
@@ -451,7 +453,14 @@ export default class InputPen extends LightningElement {
      */
 
     /**
-     * Check if input has value.
+     * The default tab color shown in background fill tool.
+     */
+    get defaultBackgroundColors() {
+        return DEFAULT_BACKGROUND_COLORS;
+    }
+
+    /**
+     * Check if the canvas has value.
      *
      * @type {boolean}
      */
@@ -460,8 +469,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if Pen is shown.
-     *
+     * Check if pen tool is shown.
      * @type {boolean}
      */
     get showPen() {
@@ -471,16 +479,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if Pen is shown.
-     *
-     * @type {boolean}
-     */
-    get showUndoRedo() {
-        return this.showUndo || this.showRedo;
-    }
-
-    /**
-     * Check if Pen is shown.
+     * Check if undo button is shown.
      *
      * @type {boolean}
      */
@@ -491,9 +490,18 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if Pen is shown.
-     *
+     * Check if undo and redo buttons are shown.
      * @type {boolean}
+     *
+     */
+    get showUndoRedo() {
+        return this.showUndo || this.showRedo;
+    }
+
+    /**
+     * Check if redo button is shown.
+     * @type {boolean}
+     *
      */
     get showRedo() {
         return (
@@ -502,7 +510,9 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if Eraser is shown.
+     * Check if eraser tool is shown.
+     * @type {boolean}
+     *
      */
     get showErase() {
         return (
@@ -512,7 +522,9 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if Eraser is shown.
+     * Check if background fill tool is shown.
+     * @type {boolean}
+     *
      */
     get showBackground() {
         return (
@@ -522,7 +534,9 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Check if Eraser is shown.
+     * Check if download button is shown.
+     * @type {boolean}
+     *
      */
     get showDownload() {
         return (
@@ -598,10 +612,9 @@ export default class InputPen extends LightningElement {
         return this._mode !== 'ink';
     }
 
-    get defaultBackgroundColors() {
-        return DEFAULT_BACKGROUND_COLORS;
-    }
-
+    /**
+     * DataURL value of the background and foreground.
+     */
     get dataURL() {
         let mergedCanvas = document.createElement('canvas');
         mergedCanvas.width = this.canvasElement.width;
@@ -612,6 +625,9 @@ export default class InputPen extends LightningElement {
         return mergedCanvas.toDataURL();
     }
 
+    /**
+     * Computed class of the text area.
+     */
     get computedTextAreaClasses() {
         return classSet(
             'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area'
@@ -624,6 +640,9 @@ export default class InputPen extends LightningElement {
         });
     }
 
+    /**
+     * Computed class of the canvas.
+     */
     get computedCanvasClass() {
         return classSet('avonni-input-pen__canvas').add({
             'avonni-input-pen__canvas_disabled': this._disabled
@@ -631,7 +650,7 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Compute constraintApi with fieldConstraintApiWithProxyInput.
+     * Compute the constraintApi with fieldConstraintApiWithProxyInput.
      */
     get _constraint() {
         if (!this._constraintApi) {
@@ -698,6 +717,56 @@ export default class InputPen extends LightningElement {
     }
 
     /**
+     * Undo the last stroke.
+     *
+     * @public
+     */
+    @api
+    undo() {
+        if (this.undoStack.length === 0) {
+            return;
+        }
+        while (
+            this.undoStack[this.undoStack.length - 1].requestedEvent !== 'state'
+        ) {
+            this.redoStack.unshift(deepCopy(this.undoStack.pop()));
+        }
+        this.clear(true);
+        for (const action of deepCopy(this.undoStack)) {
+            this.executeAction(action);
+        }
+        this.redoStack.unshift(deepCopy(this.undoStack.pop()));
+        this.handleChangeEvent();
+    }
+
+    /**
+     * Redo the last stroke that was undid.
+     *
+     * @public
+     */
+    @api
+    redo() {
+        if (this.redoStack.length === 0) {
+            return;
+        }
+        let actionsRecreated = -1;
+        for (const [index, action] of deepCopy(this.redoStack).entries()) {
+            if (action.requestedEvent === 'state' && index !== 0) {
+                actionsRecreated = index;
+                break;
+            }
+            this.undoStack.push(deepCopy(action));
+            this.executeAction(action);
+        }
+        if (actionsRecreated === -1) {
+            this.redoStack = [];
+        } else {
+            this.redoStack = this.redoStack.slice(actionsRecreated);
+        }
+        this.handleChangeEvent();
+    }
+
+    /**
      * Downloads the currently displayed content.
      *
      * @public
@@ -725,6 +794,7 @@ export default class InputPen extends LightningElement {
         });
         if (this._required) {
             this.setValidity(isValid);
+            this._invalidField = !isValid;
         }
         return isValid;
     }
@@ -782,6 +852,7 @@ export default class InputPen extends LightningElement {
             let img = new Image();
             img.onload = () => {
                 this.ctx.drawImage(img, 0, 0);
+                this.handleChangeEvent();
             };
             img.src = this._foregroundValue;
         } else {
@@ -789,6 +860,9 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Fill background color to backgroundColor value.
+     */
     fillBackground() {
         const colorInfo = [
             this._backgroundColor.slice(0, 7),
@@ -947,106 +1021,107 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * handle download event
+     *
+     */
     handleDownload() {
         this.download();
     }
 
+    /**
+     * handle key down event
+     * @param {Event} event
+     *
+     */
     handleKeyDown(event) {
         switch (event.keyCode) {
             case 89: // ctrl-y
-                this.handleRedo();
+                this.redo();
                 break;
             case 90: // ctrl-z
-                this.handleUndo();
+                this.undo();
                 break;
             default:
                 break;
         }
     }
 
+    /**
+     * handle undo event
+     *
+     */
     handleUndo() {
-        if (this.undoStack.length === 0) {
-            return;
-        }
-        while (
-            this.undoStack[this.undoStack.length - 1].requestedEvent !== 'state'
-        ) {
-            this.redoStack.unshift(deepCopy(this.undoStack.pop()));
-        }
-        this.clear(true);
-        for (const action of deepCopy(this.undoStack)) {
-            this.executeAction(action);
-        }
-        this.redoStack.unshift(deepCopy(this.undoStack.pop()));
-        this.handleChangeEvent();
+        this.undo();
     }
 
+    /**
+     * handle redo event
+     */
     handleRedo() {
-        if (this.redoStack.length === 0) {
-            return;
-        }
-        let actionsRecreated = -1;
-        for (const [index, action] of deepCopy(this.redoStack).entries()) {
-            if (action.requestedEvent === 'state' && index !== 0) {
-                actionsRecreated = index;
-                break;
-            }
-            this.undoStack.push(deepCopy(action));
-            this.executeAction(action);
-        }
-        if (actionsRecreated === -1) {
-            this.redoStack = [];
-        } else {
-            this.redoStack = this.redoStack.slice(actionsRecreated);
-        }
-        this.handleChangeEvent();
+        this.redo();
     }
 
-    saveAction(event) {
+    /**
+     * Saves action to undo buffer.
+     * @param {object | Event} event event to save as action
+     * @param {boolean} checkForAction check if event is an action. If it is, don't save it.
+     *
+     */
+    saveAction(event, checkForAction = false) {
+        if (checkForAction) {
+            if (event.isAction) {
+                return;
+            }
+        }
         this.redoStack = [];
+
         let action = {};
         action.isAction = true;
         action.moveCoordinatesAdded = this.moveCoordinatesAdded;
         action.isDownFlag = this.isDownFlag;
-        action.isDotFlag = this.isDotFlag;
-        action.activeVelocity = this.activeVelocity;
         action.backgroundColor = this._backgroundColor;
         action.mode = this._mode;
         action.color = this._color;
         action.size = this._size;
-
         action.xPositions = deepCopy(this.xPositions);
         action.yPositions = deepCopy(this.yPositions);
         action.velocities = deepCopy(this.velocities);
         action.prevDist = this.prevDist;
+
         action.requestedEvent = event.type.split('mouse')[1];
         if (!action.requestedEvent) {
             action.requestedEvent = event.type;
         }
-        action.clientX = event.clientX;
-        action.clientY = event.clientY;
+        if (event.clientX) action.clientX = event.clientX;
+        if (event.clientY) action.clientY = event.clientY;
         if (action.requestedEvent === 'down') {
             this.saveAction({ type: 'state', clientX: 0, clientY: 0 });
         }
         this.undoStack.push(action);
     }
 
+    /**
+     * loads an action state onto component
+     * @param {object} action action to load
+     */
     loadAction(action) {
         this._mode = action.mode;
         this.moveCoordinatesAdded = action.moveCoordinatesAdded;
         this.isDownFlag = action.isDownFlag;
-        this.isDotFlag = action.isDotFlag;
         this._color = action.color;
         this._backgroundColor = action.backgroundColor;
         this._size = action.size;
-        // TODO: why is array loaded cracked out the wazoo?
         this.xPositions = action.xPositions;
         this.yPositions = action.yPositions;
         this.velocities = action.velocities;
-        this.activeVelocity = action.activeVelocity;
         this.prevDist = action.prevDist;
     }
 
+    /**
+     * Execute an action
+     * @param {object} action
+     */
     executeAction(action) {
         this.loadAction(action);
         if (action.requestedEvent === 'clear') {
@@ -1061,6 +1136,10 @@ export default class InputPen extends LightningElement {
         this.manageMouseEvent(action.requestedEvent, action);
     }
 
+    /**
+     * handle reset event
+     * @param {Event} event
+     */
     handleReset(event) {
         this.clear();
         event.preventDefault();
@@ -1068,10 +1147,16 @@ export default class InputPen extends LightningElement {
         event.stopPropagation();
     }
 
+    /**
+     * Hides draw cursor
+     */
     hideDrawCursor() {
         this.cursor.style.opacity = 0;
     }
 
+    /**
+     * shows draw cursor
+     */
     showDrawCursor() {
         if (!this._disabled && this._mode !== 'ink') {
             this.cursor.style.opacity = 1;
@@ -1098,18 +1183,14 @@ export default class InputPen extends LightningElement {
         }
         switch (requestedEvent) {
             case 'down':
-                if (!event.isAction) {
-                    this.saveAction(event);
-                }
+                this.saveAction(event, true);
                 this.setupCoordinate(event);
                 this.isDownFlag = true;
                 this.drawDot();
                 break;
             case 'up':
                 if (this.isDownFlag) {
-                    if (!event.isAction) {
-                        this.saveAction(event);
-                    }
+                    this.saveAction(event, true);
                     this.clearPositionBuffer(event);
                     this.handleChangeEvent();
                 }
@@ -1118,9 +1199,7 @@ export default class InputPen extends LightningElement {
             case 'move':
                 // default aka 'move'
                 if (this.isDownFlag) {
-                    if (!event.isAction) {
-                        this.saveAction(event);
-                    }
+                    this.saveAction(event, true);
                     this.useTool(event);
                 }
                 this.moveCursor(event);
@@ -1144,23 +1223,18 @@ export default class InputPen extends LightningElement {
         this.cursor.style.top = `${top}px`;
     }
 
+    /**
+     * Sets validity classes when invalid and removes them when valid.
+     */
     setValidity(isValid) {
         if (isValid) {
             this.template
-                .querySelector('.slds-form-element')
-                .classList.remove('slds-has-error');
-            this.template
                 .querySelector('.slds-rich-text-editor')
                 .classList.remove('slds-has-error');
-            this._invalid = false;
         } else {
             this.template
-                .querySelector('.slds-form-element')
-                .classList.add('slds-has-error');
-            this.template
                 .querySelector('.slds-rich-text-editor')
                 .classList.add('slds-has-error');
-            this._invalid = true;
         }
     }
 
@@ -1197,6 +1271,9 @@ export default class InputPen extends LightningElement {
         this.yPositions.pop();
     }
 
+    /**
+     * Setup stroke for drawing
+     */
     setupStroke(strokeSize) {
         const colored = false;
         this.ctx.beginPath();
@@ -1210,6 +1287,9 @@ export default class InputPen extends LightningElement {
         this.ctx.lineWidth = strokeSize;
     }
 
+    /**
+     * Choses the method to call depending on the current usedTool for move action.
+     */
     useTool(event, isDot = false) {
         if (!isDot) {
             if (this._mode === 'draw' || this._mode === 'erase') {
@@ -1223,7 +1303,11 @@ export default class InputPen extends LightningElement {
         }
     }
 
+    /**
+     * Draws the last couple positions left in the positions buffer.
+     */
     clearPositionBuffer() {
+        // remove any extra points we saved since last draw
         for (let i = 0; i < this.moveCoordinatesAdded; i++) {
             this.xPositions.shift();
             this.yPositions.shift();
@@ -1231,24 +1315,23 @@ export default class InputPen extends LightningElement {
         }
         this.smoothVelocities();
         for (let i = 0; i < 2; i++) {
+            // add two "phantom" points for calculations
             for (let j = 0; j < 2; j++) {
                 this.xPositions.unshift(this.xPositions[0]);
                 this.yPositions.unshift(this.yPositions[0]);
-                this.velocities.unshift(this.velocities[0]);
+                this.velocities.unshift(this.velocities[0] + 2);
             }
-            this.activeVelocity += 0.25;
-            this.drawSpline(
-                this.getSplinePoints(),
-                this._mode === 'paint'
-                    ? this._size
-                    : (this._size * 2) / this.activeVelocity
-            );
+            this.drawSpline();
         }
+        // clear buffer for next action
         this.xPositions = [];
         this.yPositions = [];
         this.velocities = [];
     }
 
+    /**
+     * Smooth the current velocity buffer
+     */
     smoothVelocities() {
         for (let i = this.velocities.length - 1; i >= 2; i = i - 1) {
             this.velocities[i - 1] =
@@ -1260,8 +1343,11 @@ export default class InputPen extends LightningElement {
      * Computes spline points and control points following catmull-rom method.
      * @returns {number[]} 8 coords: start coords [0,1] && end coords [6,7] and set of control points [2,3] && [4,5]
      */
-    getSplinePoints(
-        data = [
+    getSplinePoints() {
+        if (this.xPositions.length < 8) {
+            return [];
+        }
+        let data = [
             this.xPositions[7],
             this.yPositions[7],
             this.xPositions[5],
@@ -1270,11 +1356,7 @@ export default class InputPen extends LightningElement {
             this.yPositions[3],
             this.xPositions[1],
             this.yPositions[1]
-        ]
-    ) {
-        if (this.xPositions.length < 8) {
-            return [];
-        }
+        ];
         const tension = 1;
 
         let x0;
@@ -1293,7 +1375,7 @@ export default class InputPen extends LightningElement {
         const size = data.length;
         const last = size - 4;
 
-        const path = [data[0], data[1]];
+        const spline = [data[0], data[1]];
 
         for (let i = 0; i < size - 2; i += 2) {
             x0 = i ? data[i - 2] : data[0];
@@ -1313,13 +1395,21 @@ export default class InputPen extends LightningElement {
 
             cp2x = x2 - ((x3 - x1) / 6) * tension;
             cp2y = y2 - ((y3 - y1) / 6) * tension;
-            path.push(cp1x, cp1y, cp2x, cp2y, x2, y2);
+            spline.push(cp1x, cp1y, cp2x, cp2y, x2, y2);
         }
-        return path.slice(6, 14);
+        return spline.slice(6, 14);
     }
 
-    findMarginPoints(splinePoints, bigRadius, smallRadius) {
+    /**
+     * Finds the coordinates for the two splines needed to draw a tapering spline.
+     * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
+     * @param {number} bigRadius Size of first radius (beginning of spline)
+     * @param {number} smallRadius Size of second radius (end of spline)
+     *
+     */
+    findAdjustedPoints(splinePoints, smallRadius, bigRadius) {
         if (smallRadius > bigRadius) {
+            // swap radius values and line direction
             let temp = bigRadius;
             bigRadius = smallRadius;
             smallRadius = temp;
@@ -1333,58 +1423,91 @@ export default class InputPen extends LightningElement {
             }
         }
 
-        const vector1 = Array(2);
-        vector1[0] = splinePoints[2] - splinePoints[0];
-        vector1[1] = splinePoints[3] - splinePoints[1];
-        // switch for top vs bottom ->
-        const vectorPerp = [-vector1[1], vector1[0]];
+        // get vector tangent to spline
+        const tangentVector = Array(2);
+        tangentVector[0] = splinePoints[2] - splinePoints[0];
+        tangentVector[1] = splinePoints[3] - splinePoints[1];
 
+        // find perpendicular unit vector of tangent vector
+        const perpendicularVector = [-tangentVector[1], tangentVector[0]];
         const vectorNorm = Math.sqrt(
-            vectorPerp[0] * vectorPerp[0] + vectorPerp[1] * vectorPerp[1]
+            perpendicularVector[0] * perpendicularVector[0] +
+                perpendicularVector[1] * perpendicularVector[1]
         );
-
-        const unitVectorPerp = [
-            vectorPerp[0] / vectorNorm,
-            vectorPerp[1] / vectorNorm
+        const unitPerpendicularVector = [
+            perpendicularVector[0] / vectorNorm,
+            perpendicularVector[1] / vectorNorm
         ];
 
+        // multiply vector by inner radius displacement
+        let innerRadius = (bigRadius - smallRadius) / 2;
         const newTopPoints = [...splinePoints];
-        newTopPoints[0] =
-            splinePoints[0] +
-            unitVectorPerp[0] * ((bigRadius - smallRadius) / 2);
-        newTopPoints[1] =
-            splinePoints[1] +
-            (unitVectorPerp[1] * (bigRadius - smallRadius)) / 2;
-
         const newBottomPoints = [...splinePoints];
-        newBottomPoints[0] =
-            splinePoints[0] -
-            (unitVectorPerp[0] * (bigRadius - smallRadius)) / 2;
-        newBottomPoints[1] =
-            splinePoints[1] -
-            (unitVectorPerp[1] * (bigRadius - smallRadius)) / 2;
+        for (const pointSet of [newTopPoints, newBottomPoints]) {
+            pointSet[0] =
+                splinePoints[0] + unitPerpendicularVector[0] * innerRadius;
+            pointSet[1] =
+                splinePoints[1] + unitPerpendicularVector[1] * innerRadius;
+            innerRadius = -innerRadius;
+        }
 
         return [newBottomPoints, newTopPoints];
     }
 
-    drawSmoothSpline() {
-        const centerSplinePoints = this.getSplinePoints();
-        const bigRadius = (this._size * 2) / Math.sqrt(this.velocities[5]);
-        const smallRadius = (this._size * 2) / Math.sqrt(this.velocities[3]);
-        const marginPoints = this.findMarginPoints(
-            centerSplinePoints,
-            bigRadius,
-            smallRadius
-        );
-
-        this.drawSpline(marginPoints[0], Math.min(bigRadius, smallRadius));
-        this.drawSpline(marginPoints[1], Math.min(bigRadius, smallRadius));
+    /**
+     * Draws a spline depending on the mode
+     */
+    drawSpline() {
+        switch (this._mode) {
+            case 'ink':
+                this.drawTaperSpline(
+                    this.getSplinePoints(),
+                    (this._size * 2) / Math.sqrt(this.velocities[3]),
+                    (this._size * 2) / Math.sqrt(this.velocities[5])
+                );
+                break;
+            case 'paint':
+                this.drawBasicSpline(this.getSplinePoints());
+                break;
+            default:
+                break;
+        }
     }
 
-    drawSpline(pts, penSize) {
+    /**
+     * Draws a tapering spline using the initial and final radius.
+     * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
+     * @param {number} firstRadius Size of first radius (beginning of spline)
+     * @param {number} secondRadius Size of second radius (end of spline)
+     *
+     */
+    drawTaperSpline(pts, firstRadius, secondRadius) {
+        const adjustedPoints = this.findAdjustedPoints(
+            pts,
+            firstRadius,
+            secondRadius
+        );
+
+        this.drawBasicSpline(
+            adjustedPoints[0],
+            Math.min(firstRadius, secondRadius)
+        );
+        this.drawBasicSpline(
+            adjustedPoints[1],
+            Math.min(firstRadius, secondRadius)
+        );
+    }
+
+    /**
+     * Draws a basic spline using 4 coordinates.
+     * @param {number[]} pts coordinates for the spline in this order [x1, y1, cpx1, cpy1, cpx2, cpy2, x2, y2].
+     * @param {string} penSize Size of the pen to draw the spline. Default to current size.
+     */
+    drawBasicSpline(pts, penSize = this._size) {
         this.setupStroke(penSize);
         this.ctx.globalCompositeOperation = 'destination-over';
         if (this._mode === 'paint') {
+            this.ctx.lineWidth = this._size;
             this.ctx.shadowColor = this.color;
             this.ctx.shadowBlur = 2;
         }
@@ -1396,21 +1519,30 @@ export default class InputPen extends LightningElement {
     }
 
     /**
-     * Get object if velocity and distance traveled by cursor.
+     * Distance traveled since last point
+     * @param {Event} event
+     * @returns {number} distance
      */
     getDistanceTraveled(event) {
+        // get positions
         const clientRect = this.canvasElement.getBoundingClientRect();
         const deltaX = this.xPositions[0] - (event.clientX - clientRect.left);
         const deltaY = this.yPositions[0] - (event.clientY - clientRect.top);
+        this.xPositions[0] = event.clientX - clientRect.left;
+        this.yPositions[0] = event.clientY - clientRect.top;
+
+        // get velocity an distance
         let velocity = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2));
-        const distance = velocity + this.prevDist;
         const deltaV = Math.abs(this.velocities[0] - velocity);
+        const distance = velocity + this.prevDist;
+
+        // prevent velocity change from being too drastic
         velocity = Math.min(
             Math.max(velocity, this.velocities[0] - 0.3 * deltaV),
             this.velocities[0] + 0.3 * deltaV
         );
-        this.xPositions[0] = event.clientX - clientRect.left;
-        this.yPositions[0] = event.clientY - clientRect.top;
+
+        // adds coordinate to buffer if we have moved 2 pixels at least since last time
         if (distance > 2) {
             this.moveCoordinatesAdded++;
             this.xPositions.unshift(event.clientX - clientRect.left);
@@ -1428,16 +1560,9 @@ export default class InputPen extends LightningElement {
         if (distance > 2) {
             this.prevDist = 0;
             if (this.moveCoordinatesAdded >= 2) {
-                this.smoothVelocities();
                 this.moveCoordinatesAdded = 0;
-                this.activeVelocity = Math.sqrt(
-                    this.velocities.slice(3, 5).reduce((a, b) => a + b, 0) / 3
-                );
-                if (this._mode === 'ink') {
-                    this.drawSmoothSpline();
-                } else {
-                    this.drawSpline(this.getSplinePoints(), this._size);
-                }
+                this.smoothVelocities();
+                this.drawSpline();
             }
             if (this.xPositions.length > 10) {
                 this.xPositions.pop();
@@ -1468,12 +1593,16 @@ export default class InputPen extends LightningElement {
         this.ctx.fill();
     }
 
+    /**
+     * Test for empty canvas, if its empty, value is set to undefined
+     */
     testEmptyCanvas() {
         let transparentCanvas = document.createElement('canvas');
         transparentCanvas.width = this.canvasElement.width;
         transparentCanvas.height = this.canvasElement.height;
         if (this.dataURL === transparentCanvas.toDataURL()) {
             this._value = undefined;
+            this._foregroundValue = undefined;
         }
     }
 
@@ -1485,6 +1614,9 @@ export default class InputPen extends LightningElement {
         this._foregroundValue = this.canvasElement.toDataURL();
         this.testEmptyCanvas();
         this._updateProxyInputAttributes('value');
+        if (this._invalidField) {
+            this.reportValidity();
+        }
 
         /**
          * The event fired when the value changed.
@@ -1522,11 +1654,10 @@ export default class InputPen extends LightningElement {
     /**
      * Initialize the screen resize observer.
      *
-     * @returns {AvonniResizeObserver} Resize observer.
      */
     initResizeObserver() {
-        if (!this.canvasElement) return null;
-        const resizeObserver = new AvonniResizeObserver(() => {
+        if (!this.canvasElement) return;
+        this._resizeObserver = new AvonniResizeObserver(() => {
             const savedValue = this._foregroundValue;
             clearTimeout(this._resizeTimeout);
             this._resizeTimeout = setTimeout(() => {
@@ -1539,8 +1670,7 @@ export default class InputPen extends LightningElement {
                 this.fillBackground();
             }, 100);
         });
-        resizeObserver.observe(this.canvasElement);
-        return resizeObserver;
+        this._resizeObserver.observe(this.canvasElement);
     }
 
     /**
