@@ -32,7 +32,7 @@
 
 import { ChipContainer } from '../__examples__/chipContainer';
 import { MaxWidthChipContainer } from '../__examples__/maxWidthChipContainer';
-import { ITEMS, DEFAULT_ALTERNATIVE_TEXT } from './data.js';
+import { ITEMS, ITEMS_NO_MEDIA, DEFAULT_ALTERNATIVE_TEXT } from './data.js';
 
 export default {
     title: 'Example/Chip Container',
@@ -94,6 +94,14 @@ const TemplateWithMaxWidth = (args) => MaxWidthChipContainer(args);
 export const Base = Template.bind({});
 Base.args = {
     items: ITEMS,
+    alternativeText: DEFAULT_ALTERNATIVE_TEXT,
+    isCollapsible: false,
+    isExpanded: false
+};
+
+export const NoMedia = Template.bind({});
+NoMedia.args = {
+    items: ITEMS_NO_MEDIA,
     alternativeText: DEFAULT_ALTERNATIVE_TEXT,
     isCollapsible: false,
     isExpanded: false

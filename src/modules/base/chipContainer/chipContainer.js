@@ -195,7 +195,7 @@ export default class ChipContainer extends LightningElement {
         if (this._hasMedia) {
             this.template.host.style.setProperty(
                 '--avonni-chip-line-height',
-                '23px'
+                '20px'
             );
         } else {
             this.template.host.style.removeProperty(
@@ -253,7 +253,7 @@ export default class ChipContainer extends LightningElement {
     }
 
     checkForMedia() {
-        this._hasMedia = false;
+        this.hasMedia = false;
         this.items.forEach((item) => {
             if (item.avatar || item.prefixIconName || item.suffixIconName) {
                 this.hasMedia = true;

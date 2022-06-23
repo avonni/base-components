@@ -58,6 +58,33 @@ const ITEMS = [
     }
 ];
 
+const ITEMS_NO_MEDIA = [
+    {
+        label: 'First chip',
+        variant: 'base'
+    },
+    {
+        label: 'Second chip',
+        variant: 'offline'
+    },
+    {
+        label: 'Third chip',
+        variant: 'error'
+    },
+    {
+        label: 'Fourth chip',
+        variant: 'warning'
+    },
+    {
+        label: 'Fifth chip',
+        variant: 'success'
+    },
+    {
+        label: 'Sixth chip',
+        variant: 'brand'
+    }
+];
+
 const DEFAULT_ALTERNATIVE_TEXT = 'Selected Options:';
 
-export { ITEMS, DEFAULT_ALTERNATIVE_TEXT };
+export { ITEMS, ITEMS_NO_MEDIA, DEFAULT_ALTERNATIVE_TEXT };
