@@ -51,6 +51,11 @@
     align-items: center;
     overflow: hidden;
 }
+
+.avonni-chip__chip-label {
+    vertical-align: middle;
+}
+
 .avonni-chip_outline {
     background-color: #ffffff !important;
 }
