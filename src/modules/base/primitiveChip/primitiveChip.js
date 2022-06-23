@@ -132,9 +132,6 @@ export default class PrimitiveChip extends LightningElement {
     set avatar(value) {
         if (value) {
             const tempAvatar = deepCopy(normalizeObject(value));
-            if (!tempAvatar.position) {
-                tempAvatar.position = 'left';
-            }
             this._avatar = tempAvatar;
         }
     }
@@ -204,17 +201,14 @@ export default class PrimitiveChip extends LightningElement {
         return this._showIcon && this.suffixIconName;
     }
 
+    get showAvatar() {
+        return this._avatar;
+    }
+
     /**
      *  If left icon media is to be shown.
      */
     get showAvatarLeft() {
-        return this._avatar && this._avatar.position === 'left';
-    }
-
-    /**
-     *  If right icon media is to be shown.
-     */
-    get showAvatarRight() {
-        return this._avatar && this._avatar.position === 'right';
+        return this.showAvatar && this._avatar.position !== 'right';
     }
 }

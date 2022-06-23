@@ -49,27 +49,29 @@
                 >
                 </c-primitive-icon>
             </template>
-            <template if:true={showAvatarLeft}>
-                <c-primitive-avatar
-                    slot="left"
-                    size="x-small"
-                    src={avatar.src}
-                    fallback-icon-name={avatar.fallbackIconName}
-                    initials={avatar.initials}
-                    variant={avatar.variant}
-                    data-element-id="avatar-left"
-                ></c-primitive-avatar>
-            </template>
-            <template if:true={showAvatarRight}>
-                <c-primitive-avatar
-                    slot="right"
-                    size="x-small"
-                    src={avatar.src}
-                    fallback-icon-name={avatar.fallbackIconName}
-                    initials={avatar.initials}
-                    variant={avatar.variant}
-                    data-element-id="avatar-right"
-                ></c-primitive-avatar>
+            <template if:true={showAvatar}>
+                <template if:true={showAvatarLeft}>
+                    <c-primitive-avatar
+                        slot="left"
+                        size="x-small"
+                        src={avatar.src}
+                        fallback-icon-name={avatar.fallbackIconName}
+                        initials={avatar.initials}
+                        variant={avatar.variant}
+                        data-element-id="avatar-left"
+                    ></c-primitive-avatar>
+                </template>
+                <template if:false={showAvatarLeft}>
+                    <c-primitive-avatar
+                        slot="right"
+                        size="x-small"
+                        src={avatar.src}
+                        fallback-icon-name={avatar.fallbackIconName}
+                        initials={avatar.initials}
+                        variant={avatar.variant}
+                        data-element-id="avatar-right"
+                    ></c-primitive-avatar>
+                </template>
             </template>
             <template if:true={showIconRight}>
                 <c-primitive-icon

@@ -44,23 +44,23 @@ const MOCK_ITEM_SET = [
     {
         label: 'loooooooooooooooooooooooooooooooooooooooooooooooong 2nd chip',
         variant: 'warning',
-        mediaPosition: 'left',
         outline: false,
         avatar: {
             fallbackIconName: 'custom:custom1',
             size: 'x-small',
-            variant: 'circle'
+            variant: 'circle',
+            position: 'left'
         }
     },
     {
         label: 'third chip',
-        mediaPosition: 'right',
         outline: false,
         variant: 'base',
         avatar: {
             fallbackIconName: 'custom:custom1',
             variant: 'circle',
-            size: 'x-small'
+            size: 'x-small',
+            position: 'right'
         }
     }
 ];
@@ -164,9 +164,6 @@ describe('Chip Container', () => {
                 );
                 expect(chip.avatar).toEqual(
                     MOCK_ITEM_SET[index].avatar || null
-                );
-                expect(chip.avatarPosition).toBe(
-                    MOCK_ITEM_SET[index].avatarPosition
                 );
                 expect(chip.outline).toBe(MOCK_ITEM_SET[index].outline);
             });
