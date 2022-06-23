@@ -109,8 +109,11 @@ export default class List extends LightningElement {
     _imageSrc = [];
     computedActions = [];
     computedItems = [];
-    _hasImages;
+    hasImages;
     _variant;
+    showMediaDragIcon = true;
+
+    renderedCallback() {}
 
     /*
      * ------------------------------------------------------------
@@ -337,6 +340,21 @@ export default class List extends LightningElement {
         return (
             this.sortable &&
             this.sortableIconName &&
+            this.sortableIconPosition === 'left' &&
+            !this.showImageIconLeft
+        );
+    }
+
+    /**
+     * Check if Icon is left of the image.
+     *
+     * @type {boolean}
+     */
+    get showImageIconLeft() {
+        return (
+            this.hasImages &&
+            this.sortable &&
+            this.sortableIconName &&
             this.sortableIconPosition === 'left'
         );
     }
@@ -351,14 +369,16 @@ export default class List extends LightningElement {
             this.computedItems.length > 0 &&
             Object.keys(...this.computedItems).includes('imageSrc')
         ) {
-            this._hasImages = true;
+            this.hasImages = true;
         }
-        return classSet('avonni-list__item-menu')
+        return classSet('avonni-list__item-menu slds-grid')
             .add({
-                'slds-has-dividers_around': this.divider === 'around',
+                'slds-grid_vertical': this.variant === 'list',
+                'avonni-list__grid-display': this.variant === 'grid',
+                'avonni-list__has-card-style': this.divider === 'around',
                 'slds-has-dividers_top-space': this.divider === 'top',
                 'slds-has-dividers_bottom-space': this.divider === 'bottom',
-                'avonni-list__has-images': this._hasImages
+                'avonni-list__has-images': this.hasImages
             })
             .toString();
     }
@@ -385,14 +405,15 @@ export default class List extends LightningElement {
      * @type {string}
      */
     get computedItemClass() {
-        return classSet('slds-grid avonni-list__item slds-item')
+        return classSet('avonni-list__item')
             .add({
                 'avonni-list__item-sortable': this.sortable,
                 'avonni-list__item-expanded': this._hasActions,
-                'slds-p-vertical_x-small': !this._divider,
+                'avonni-list__item-borderless': !this._divider,
                 'avonni-list__item-divider_top': this._divider === 'top',
                 'avonni-list__item-divider_bottom': this._divider === 'bottom',
-                'avonni-list__item-divider_around': this._divider === 'around'
+                'avonni-list__item-card-style': this._divider === 'around',
+                'slcs-col slds-size_4-of-12': this.variant === 'grid'
             })
             .toString();
     }
@@ -507,10 +528,11 @@ export default class List extends LightningElement {
                 ''
             );
         });
-        if (this._draggedElement)
+        if (this._draggedElement) {
             this._draggedElement.classList.remove(
                 'avonni-list__item-sortable_dragged'
             );
+        }
 
         this.template.querySelector(
             '.slds-assistive-text[aria-live="assertive"]'
@@ -585,8 +607,9 @@ export default class List extends LightningElement {
             !this.sortable ||
             event.target.tagName.startsWith('LIGHTNING-BUTTON') ||
             event.target.tagName.startsWith('A')
-        )
+        ) {
             return;
+        }
 
         this._itemElements = Array.from(
             this.template.querySelectorAll('.avonni-list__item-sortable')
@@ -617,7 +640,9 @@ export default class List extends LightningElement {
      * @param {Event} event
      */
     drag(event) {
-        if (!this._draggedElement) return;
+        if (!this._draggedElement) {
+            return;
+        }
         this._draggedElement.classList.add(
             'avonni-list__item-sortable_dragged'
         );
@@ -649,11 +674,15 @@ export default class List extends LightningElement {
         const center = position.bottom - position.height / 2;
 
         const hoveredItem = this.getHoveredItem(center);
-        if (hoveredItem) this.switchWithItem(hoveredItem);
+        if (hoveredItem) {
+            this.switchWithItem(hoveredItem);
+        }
         const buttonMenu = event.currentTarget.querySelector(
             '[data-element-id="lightning-button-menu"]'
         );
-        if (buttonMenu) buttonMenu.classList.remove('slds-is-open');
+        if (buttonMenu) {
+            buttonMenu.classList.remove('slds-is-open');
+        }
     }
 
     dragEnd(event) {
@@ -680,7 +709,9 @@ export default class List extends LightningElement {
             );
         }
 
-        if (!this._draggedElement) return;
+        if (!this._draggedElement) {
+            return;
+        }
 
         const orderHasChanged = this._itemElements.some((item, index) => {
             return Number(item.dataset.index) !== index;
@@ -809,8 +840,9 @@ export default class List extends LightningElement {
         if (
             event.target.tagName.startsWith('LIGHTNING') ||
             event.target.tagName === 'A'
-        )
+        ) {
             return;
+        }
 
         /**
          * The event fired when a user clicks on an item.

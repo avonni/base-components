@@ -84,6 +84,7 @@ export default class Card extends LightningElement {
     _mediaSrc;
 
     showMedia = true;
+    showTitle = true;
     showMediaSlot = true;
     showTitleSlot = true;
     showActionsSlot = true;
@@ -113,6 +114,7 @@ export default class Card extends LightningElement {
             this.footerSlot && this.footerSlot.assignedElements().length !== 0;
 
         this.showMedia = this.mediaSrc || this.showMediaSlot;
+        this.showTitle = this.title || this.showTitleSlot;
         this.showCenterMediaContent =
             this.showDefaultSlot && this.mediaPosition === 'center';
     }
@@ -268,7 +270,7 @@ export default class Card extends LightningElement {
      */
     get computedCardClasses() {
         return classSet(
-            'avonni-card__body-container slds-grid slds-is-relative slds-scrollable_none slds-scrollable_none slds-col'
+            'avonni-card__body-container slds-grid slds-is-relative slds-col'
         )
             .add({
                 'avonni-card__media-top slds-grid_vertical avonni-card__media-top-left-radius avonni-card__media-top-right-radius':

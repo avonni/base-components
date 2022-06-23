@@ -50,11 +50,13 @@
         >{alternativeText}</span
     >
 
-    <ul class={computedListClass} role={menuRole}>
+    <div class={computedListClass} role={menuRole}>
         <template for:each={computedItems} for:item="item" for:index="index">
-            <li
-                key={generateKey}
+            <c-card
+                role="listitem"
                 class={computedItemClass}
+                media-position="left"
+                key={generateKey}
                 onmousedown={dragStart}
                 onmousemove={drag}
                 onmouseup={dragEnd}
@@ -65,230 +67,225 @@
                 onclick={handleItemClick}
                 data-index={index}
                 data-position="0"
-                role={itemRole}
                 tabindex="0"
                 aria-label={item.label}
                 aria-describedby="instructions"
                 data-element-id="li-main"
             >
-                <c-card
-                    class="avonni-list-item-borderless"
-                    media-position="left"
-                    style="width: 100%"
-                >
-                    <div slot="media" style="height: 100%">
+                <div slot="media" style="height: 100%" if:true={hasImages}>
+                    <div
+                        class="slds-grid slds-grid_vertical-align-center"
+                        style="height: 100%"
+                    >
+                        <div>
+                            <lightning-icon
+                                if:true={showImageIconLeft}
+                                class="
+                                    slds-p-horizontal_xx-small
+                                    icon-left
+                                    avonni-list__item-sortable-icon-cursor
+                                "
+                                icon-name={sortableIconName}
+                                size="x-small"
+                                data-element-id="lightning-icon-sort-left"
+                            ></lightning-icon>
+                        </div>
                         <div
-                            class="slds-grid slds-grid_vertical-align-center"
-                            style="height: 100%"
+                            class="avonni-list__item-image-container"
+                            style="width: 128px"
                         >
-                            <div>
-                                <lightning-icon
-                                    if:true={showIconLeft}
-                                    class="
-                                        slds-p-horizontal_xx-small
-                                        icon-left
-                                        avonni-list__item-sortable-icon-cursor
-                                    "
-                                    icon-name={sortableIconName}
-                                    size="x-small"
-                                    data-element-id="lightning-icon-sort-left"
-                                ></lightning-icon>
-                            </div>
-                            <div
-                                class="avonni-list__item-image-container"
-                                style="width: 100%"
-                            >
-                                <img
-                                    class="avonni-list__item-img"
-                                    style="width: 100%; object-fit: cover"
-                                    if:true={item.imageSrc}
-                                    key={item.imageSrc}
-                                    src={item.imageSrc}
-                                    draggable="false"
-                                    data-element-id="list-img"
-                                />
-                            </div>
+                            <img
+                                class="avonni-list__item-img"
+                                style="width: 100%; object-fit: cover"
+                                if:true={item.imageSrc}
+                                key={item.imageSrc}
+                                src={item.imageSrc}
+                                draggable="false"
+                                data-element-id="list-img"
+                            />
                         </div>
                     </div>
-                    <div class="slds-grid slds-grid_vertical-align-center">
-                        <div
-                            class="
-                                slds-grid slds-col
-                                slds-grid_vertical-align-center
-                                slds-p-around_x-small
-                                slds-has-flexi-truncate
-                            "
-                        >
-                            <!-- Avatar -->
+                </div>
+                <div class="slds-grid slds-grid_vertical-align-center">
+                    <lightning-icon
+                        if:true={showIconLeft}
+                        class="
+                            slds-p-horizontal_xx-small
+                            icon-left
+                            avonni-list__item-sortable-icon-cursor
+                        "
+                        icon-name={sortableIconName}
+                        size="x-small"
+                        data-element-id="lightning-icon-sort-left"
+                    ></lightning-icon>
+                    <div
+                        class="
+                            slds-grid slds-col
+                            slds-grid_vertical-align-center
+                            slds-p-around_x-small
+                            slds-has-flexi-truncate
+                        "
+                    >
+                        <!-- Avatar -->
 
-                            <c-avatar
-                                if:true={item.avatar}
-                                class="slds-m-right_x-small"
-                                fallback-icon-name={item.avatar.fallbackIconName}
-                                src={item.avatar.src}
-                                size={item.avatar.size}
-                                initials={item.avatar.initials}
-                                variant={item.avatar.variant}
-                                presence={item.presence}
-                                presence-position={item.presencePosition}
-                                hide-avatar-details="true"
-                                data-element-id="avonni-avatar"
-                            ></c-avatar>
-                            <div class="slds-col slds-has-flexi-truncate">
-                                <!-- Item label and icons -->
+                        <c-avatar
+                            if:true={item.avatar}
+                            class="slds-m-right_x-small"
+                            fallback-icon-name={item.avatar.fallbackIconName}
+                            src={item.avatar.src}
+                            size={item.avatar.size}
+                            initials={item.avatar.initials}
+                            variant={item.avatar.variant}
+                            presence={item.presence}
+                            presence-position={item.presencePosition}
+                            hide-avatar-details="true"
+                            data-element-id="avonni-avatar"
+                        ></c-avatar>
+                        <div class="slds-col slds-has-flexi-truncate">
+                            <!-- Item label and icons -->
+                            <div
+                                class="
+                                    slds-grid slds-grid_vertical-align-center
+                                    slds-margin-bottom_xx-small
+                                "
+                            >
                                 <div
                                     class="
-                                        slds-grid
-                                        slds-grid_vertical-align-center
-                                        slds-margin-bottom_xx-small
+                                        slds-truncate
+                                        avonni-list__item-header_font
                                     "
+                                    data-element-id="div-item-label"
                                 >
-                                    <div
-                                        class="
-                                            slds-truncate
-                                            avonni-list__item-header_font
-                                        "
-                                        data-element-id="div-item-label"
-                                    >
-                                        <template if:true={item.href}>
-                                            <a href={item.href}>{item.label}</a>
-                                        </template>
-                                        <template if:false={item.href}>
-                                            {item.label}
-                                        </template>
-                                    </div>
-                                    <template if:true={item.icons}>
-                                        <template
-                                            for:each={item.icons}
-                                            for:item="icon"
-                                        >
-                                            <lightning-icon
-                                                key={generateKey}
-                                                icon-name={icon}
-                                                size="xx-small"
-                                                class="slds-p-left_x-small"
-                                            ></lightning-icon>
-                                        </template>
+                                    <template if:true={item.href}>
+                                        <a href={item.href}>{item.label}</a>
+                                    </template>
+                                    <template if:false={item.href}>
+                                        {item.label}
                                     </template>
                                 </div>
-
-                                <!-- Description -->
-                                <p
-                                    if:true={item.description}
-                                    class="
-                                        slds-text-body_regular
-                                        slds-line-clamp_x-small
-                                        avonni-list__item-description_font
-                                    "
-                                >
-                                    <lightning-formatted-rich-text
-                                        value={item.description}
-                                    ></lightning-formatted-rich-text>
-                                </p>
-
-                                <!-- Info -->
-                                <template if:true={item.infos}>
-                                    <ul
-                                        if:true={item.infos.length}
-                                        class="
-                                            slds-list_horizontal
-                                            slds-has-dividers_left
-                                            slds-has-block-links
-                                        "
+                                <template if:true={item.icons}>
+                                    <template
+                                        for:each={item.icons}
+                                        for:item="icon"
                                     >
-                                        <template
-                                            for:each={item.infos}
-                                            for:item="info"
-                                        >
-                                            <li
-                                                key={info.label}
-                                                class="slds-item"
-                                            >
-                                                <a href={info.href}
-                                                    >{info.label}</a
-                                                >
-                                            </li>
-                                        </template>
-                                    </ul>
+                                        <lightning-icon
+                                            key={generateKey}
+                                            icon-name={icon}
+                                            size="xx-small"
+                                            class="slds-p-left_x-small"
+                                        ></lightning-icon>
+                                    </template>
                                 </template>
                             </div>
-                        </div>
 
-                        <!-- Sort icon -->
-                        <lightning-icon
-                            if:true={showIconRight}
-                            class="
-                                slds-m-right_x-small
-                                icon-right
-                                avonni-list__item-sortable-icon-cursor
-                            "
-                            icon-name={sortableIconName}
-                            size="x-small"
-                            data-element-id="lightning-icon-sort-right"
-                        ></lightning-icon>
-
-                        <!-- Actions -->
-                        <div
-                            if:true={actions.length}
-                            class="slds-m-right_x-small"
-                        >
-                            <lightning-button-menu
-                                if:true={hasMultipleActions}
-                                class="slds-m-right_none"
-                                menu-alignment="right"
-                                icon-size="x-small"
-                                data-element-id="lightning-button-menu"
-                                data-item-index={index}
-                                onmousedown={stopPropagation}
-                                ontouchstart={stopPropagation}
-                                onselect={handleActionClick}
+                            <!-- Description -->
+                            <p
+                                if:true={item.description}
+                                class="
+                                    slds-text-body_regular
+                                    slds-line-clamp_x-small
+                                    avonni-list__item-description_font
+                                "
                             >
-                                <template
-                                    for:each={computedActions}
-                                    for:item="action"
+                                <lightning-formatted-rich-text
+                                    value={item.description}
+                                ></lightning-formatted-rich-text>
+                            </p>
+
+                            <!-- Info -->
+                            <template if:true={item.infos}>
+                                <ul
+                                    if:true={item.infos.length}
+                                    class="
+                                        slds-list_horizontal
+                                        slds-has-dividers_left
+                                        slds-has-block-links
+                                    "
                                 >
-                                    <lightning-menu-item
-                                        key={action.name}
-                                        value={action.name}
-                                        label={action.label}
-                                        disabled={action.disabled}
-                                        icon-name={action.iconName}
-                                        data-element-id="lightning-menu-item"
-                                    ></lightning-menu-item>
-                                </template>
-                            </lightning-button-menu>
-                            <template if:false={hasMultipleActions}>
-                                <lightning-button
-                                    if:true={firstAction.label}
-                                    class="slds-m-right_none"
-                                    key={firstAction.name}
-                                    value={firstAction.name}
-                                    label={firstAction.label}
-                                    disabled={firstAction.disabled}
-                                    icon-name={firstAction.iconName}
-                                    data-item-index={index}
-                                    data-element-id="lightning-button"
-                                    onclick={handleActionClick}
-                                    ontouchstart={stopPropagation}
-                                ></lightning-button>
-                                <lightning-button-icon
-                                    if:false={firstAction.label}
-                                    class="slds-m-right_none"
-                                    key={firstAction.name}
-                                    value={firstAction.name}
-                                    disabled={firstAction.disabled}
-                                    icon-name={firstAction.iconName}
-                                    variant="bare"
-                                    data-item-index={index}
-                                    data-element-id="lightning-button-icon"
-                                    onclick={handleActionClick}
-                                    ontouchstart={stopPropagation}
-                                ></lightning-button-icon>
+                                    <template
+                                        for:each={item.infos}
+                                        for:item="info"
+                                    >
+                                        <li key={info.label} class="slds-item">
+                                            <a href={info.href}>{info.label}</a>
+                                        </li>
+                                    </template>
+                                </ul>
                             </template>
                         </div>
                     </div>
-                </c-card>
-            </li>
+
+                    <!-- Sort icon -->
+                    <lightning-icon
+                        if:true={showIconRight}
+                        class="
+                            slds-m-right_x-small
+                            icon-right
+                            avonni-list__item-sortable-icon-cursor
+                        "
+                        icon-name={sortableIconName}
+                        size="x-small"
+                        data-element-id="lightning-icon-sort-right"
+                    ></lightning-icon>
+
+                    <!-- Actions -->
+                    <div if:true={actions.length} class="slds-m-right_x-small">
+                        <lightning-button-menu
+                            if:true={hasMultipleActions}
+                            class="slds-m-right_none"
+                            menu-alignment="right"
+                            icon-size="x-small"
+                            data-element-id="lightning-button-menu"
+                            data-item-index={index}
+                            onmousedown={stopPropagation}
+                            ontouchstart={stopPropagation}
+                            onselect={handleActionClick}
+                        >
+                            <template
+                                for:each={computedActions}
+                                for:item="action"
+                            >
+                                <lightning-menu-item
+                                    key={action.name}
+                                    value={action.name}
+                                    label={action.label}
+                                    disabled={action.disabled}
+                                    icon-name={action.iconName}
+                                    data-element-id="lightning-menu-item"
+                                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                        <template if:false={hasMultipleActions}>
+                            <lightning-button
+                                if:true={firstAction.label}
+                                class="slds-m-right_none"
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                label={firstAction.label}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
+                                data-item-index={index}
+                                data-element-id="lightning-button"
+                                onclick={handleActionClick}
+                                ontouchstart={stopPropagation}
+                            ></lightning-button>
+                            <lightning-button-icon
+                                if:false={firstAction.label}
+                                class="slds-m-right_none"
+                                key={firstAction.name}
+                                value={firstAction.name}
+                                disabled={firstAction.disabled}
+                                icon-name={firstAction.iconName}
+                                variant="bare"
+                                data-item-index={index}
+                                data-element-id="lightning-button-icon"
+                                onclick={handleActionClick}
+                                ontouchstart={stopPropagation}
+                            ></lightning-button-icon>
+                        </template>
+                    </div>
+                </div>
+            </c-card>
         </template>
-    </ul>
+    </div>
 </template>
