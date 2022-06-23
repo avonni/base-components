@@ -123,6 +123,17 @@ export default {
                 type: { summary: 'boolean' }
             }
         },
+        hideHeader: {
+            name: 'hide-header',
+            control: {
+                type: 'boolean'
+            },
+            description: ' If present, the group headers are hidden.',
+            table: {
+                defaultValue: { summary: 'false' },
+                type: { summary: 'boolean' }
+            }
+        },
         records: {
             control: {
                 type: 'object'
@@ -177,6 +188,13 @@ export const Base = Template.bind({});
 Base.args = {
     variant: 'base',
     summarizeFieldName: 'Amount'
+};
+
+export const hideHeader = Template.bind({});
+hideHeader.args = {
+    variant: 'base',
+    summarizeFieldName: 'Amount',
+    hideHeader: true
 };
 
 export const path = Template.bind({});

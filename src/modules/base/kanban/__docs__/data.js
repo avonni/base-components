@@ -165,7 +165,9 @@ const RECORDS = [
         id: '006',
         status: 'Closed',
         opportunityName: 'Opportunity 6',
-        amount: 17500
+        amount: 17500,
+        coverImage:
+            'https://react.lightningdesignsystem.com/assets/images/carousel/carousel-02.jpg'
     },
     {
         id: '007',

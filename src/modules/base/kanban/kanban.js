@@ -60,6 +60,7 @@ export default class Kanban extends LightningElement {
     _isLoading = false;
     _disableItemDragAndDrop = false;
     _disableColumnDragAndDrop = false;
+    _hideHeader = false;
     _records = [];
     _summarizeFieldName;
 
@@ -219,6 +220,21 @@ export default class Kanban extends LightningElement {
     }
 
     /**
+     * If present, the group headers are hidden.
+     *
+     * @type {boolean}
+     * @public
+     * @default false
+     */
+    @api
+    get hideHeader() {
+        return this._hideHeader;
+    }
+    set hideHeader(value) {
+        this._hideHeader = normalizeBoolean(value);
+    }
+
+    /**
      * Array of data objects. Each object will be displayed as a data card in one of the steps.
      * The objects should have a key <code>id</code>, used as their unique identifier. The other keys should correspond to the available fields, and/or the summarize and group field names.
      *
@@ -272,7 +288,7 @@ export default class Kanban extends LightningElement {
      * @type {object[]}
      */
     get initGroups() {
-        this.clearSummarizeTimeouts();
+        if (!this.hideHeader) this.clearSummarizeTimeouts();
         const kanbanGroup = new KanbanGroups({
             groupValues: this._groupValues,
             summarizeValues: this._summarizeValues,
@@ -289,7 +305,7 @@ export default class Kanban extends LightningElement {
         this._oldSummarizeValues = kanbanGroup._oldSummarizeValues;
 
         computedGroups.forEach((group) => {
-            this.animateSummary(group);
+            if (!this.hideHeader) this.animateSummary(group);
 
             // Set the right background color on each group
             requestAnimationFrame(() => {
@@ -378,7 +394,7 @@ export default class Kanban extends LightningElement {
      * @type {boolean}
      */
     get isPath() {
-        return this.variant === 'path';
+        return this.variant === 'path' && !this.hideHeader;
     }
 
     /**
@@ -663,9 +679,11 @@ export default class Kanban extends LightningElement {
                 zone.style.height = `0px`;
                 zone.style.width = `0px`;
             });
-        const summarizeHeight = this.template.querySelectorAll(
-            '[data-element-id="avonni-kanban__summarize_wrapper"]'
-        )[this._releasedGroupIndex].offsetHeight;
+        const summarizeHeight = this.hideHeader
+            ? 0
+            : this.template.querySelectorAll(
+                  '[data-element-id="avonni-kanban__summarize_wrapper"]'
+              )[this._releasedGroupIndex].offsetHeight;
         const dropZone = this.template.querySelectorAll(
             '[data-element-id="avonni-kanban__tile_dropzone"]'
         )[this._releasedGroupIndex];

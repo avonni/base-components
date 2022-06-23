@@ -45,6 +45,7 @@ export const Kanban = ({
     groupFieldName,
     coverImageFieldName,
     isLoading,
+    hideHeader,
     variant
 }) => {
     const element = document.createElement('ac-kanban');
@@ -59,5 +60,6 @@ export const Kanban = ({
     element.isLoading = isLoading;
     element.variant = variant;
     element.coverImageFieldName = coverImageFieldName;
+    element.hideHeader = hideHeader;
     return element;
 };

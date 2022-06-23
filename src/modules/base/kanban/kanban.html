@@ -125,6 +125,7 @@
                         onmousedown={handleGroupMouseDown}
                         onmouseup={handleGroupMouseUp}
                         data-element-id="avonni-kanban__group_header"
+                        if:false={hideHeader}
                     >
                         <div if:true={group.headerActions}>
                             <c-button-menu

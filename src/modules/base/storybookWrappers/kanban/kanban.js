@@ -10,6 +10,7 @@ export default class Kanban extends LightningElement {
     @api disableColumnDragAndDrop;
     @api isLoading;
     @api variant;
+    @api hideHeader;
     @api groupFieldName;
     @api coverImageFieldName;
 }
