@@ -188,6 +188,7 @@ export default class InputPen extends LightningElement {
             this.backgroundCanvasElement.height =
                 this.canvasElement.parentElement.clientHeight;
 
+            this.initResizeObserver();
             this.fillBackground();
             this.initCursorStyles();
 
@@ -612,9 +613,13 @@ export default class InputPen extends LightningElement {
     }
 
     get computedTextAreaClasses() {
-        return classSet('slds-rich-text-editor__textarea').add({
-            'slds-grid': true,
-            'avonni-input-pen__text-area': true,
+        return classSet(
+            'slds-rich-text-editor__textarea slds-grid avonni-input-pen__text-area'
+        ).add({
+            'avonni-input-pen__rich-text_border-radius-top':
+                this.variant === 'bottom-toolbar',
+            'avonni-input-pen__rich-text_border-radius-bottom':
+                this.variant === 'top-toolbar',
             'avonni-input-pen__text-area_cursor': this._mode === 'ink'
         });
     }
@@ -1531,7 +1536,7 @@ export default class InputPen extends LightningElement {
                     this.canvasElement.parentElement.offsetHeight;
                 this._value = savedValue;
                 this.initSrc();
-            }, 10);
+            }, 100);
         });
         resizeObserver.observe(this.canvasElement);
         return resizeObserver;

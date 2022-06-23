@@ -114,6 +114,16 @@
     background-color: #e1e1e1;
 }
 
+.avonni-input-pen__rich-text_border-radius-bottom {
+    border-radius: 0px 0px var(--lwc-borderRadiusMedium, 0.25rem)
+        var(--lwc-borderRadiusMedium, 0.25rem);
+}
+
+.avonni-input-pen__rich-text_border-radius-top {
+    border-radius: var(--lwc-borderRadiusMedium, 0.25rem)
+        var(--lwc-borderRadiusMedium, 0.25rem) 0px 0px;
+}
+
 .avonni-input-pen__canvas {
     position: absolute;
     top: 0;
