@@ -58,7 +58,7 @@ describe('Primitive Chip', () => {
     it('Default attributes', () => {
         expect(element.label).toEqual('');
         expect(element.outline).toEqual(false);
-        expect(element.avatar).toEqual(null);
+        expect(element.avatar).toEqual(undefined);
         expect(element.variant).toEqual('base');
         expect(element.hidden).toEqual(false);
         expect(element.iconName).toEqual(undefined);
@@ -95,7 +95,7 @@ describe('Primitive Chip', () => {
             expect(
                 element.shadowRoot
                     .querySelector('[data-element-id="chip-wrapper"]')
-                    .classList.contains('slds-hide')
+                    .classList.contains('slds-is-collapsed')
             ).toBeTruthy();
             expect(element.hidden).toBe(true);
         });

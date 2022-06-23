@@ -54,7 +54,6 @@ export default class ChipContainer extends LightningElement {
 
     _wrappedChips = 0;
     _resizeObserver;
-    _hasMedia = false;
 
     renderedCallback() {
         if (this.showMore) {
@@ -189,20 +188,6 @@ export default class ChipContainer extends LightningElement {
         return generateUUID();
     }
 
-    set hasMedia(value) {
-        this._hasMedia = value;
-        if (this._hasMedia) {
-            this.template.host.style.setProperty(
-                '--avonni-chip-line-height',
-                '20px'
-            );
-        } else {
-            this.template.host.style.removeProperty(
-                '--avonni-chip-line-height'
-            );
-        }
-    }
-
     /*
      * ------------------------------------------------------------
      *  PRIVATE METHODS
@@ -252,11 +237,18 @@ export default class ChipContainer extends LightningElement {
     }
 
     checkForMedia() {
-        this.hasMedia = false;
-        this.items.forEach((item) => {
+        this.template.host.style.removeProperty(
+            '--avonni-chip-line-height',
+            '20px'
+        );
+        for (const item of this.items) {
             if (item.avatar || item.prefixIconName || item.suffixIconName) {
-                this.hasMedia = true;
+                this.template.host.style.setProperty(
+                    '--avonni-chip-line-height',
+                    '20px'
+                );
+                break;
             }
-        });
+        }
     }
 }

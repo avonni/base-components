@@ -64,11 +64,10 @@ export default class PrimitiveChip extends LightningElement {
     _label = '';
     _outline = false;
     _variant = CHIP_VARIANTS.default;
-    _avatar = null;
+    _avatar = undefined;
     _position = MEDIA_POSITION.default;
     _prefixIconName = undefined;
     _suffixIconName = undefined;
-    _showIcon = false;
     _hidden = false;
 
     /**
@@ -133,6 +132,8 @@ export default class PrimitiveChip extends LightningElement {
         if (value) {
             const tempAvatar = deepCopy(normalizeObject(value));
             this._avatar = tempAvatar;
+        } else {
+            this._avatar = null;
         }
     }
 
@@ -147,7 +148,6 @@ export default class PrimitiveChip extends LightningElement {
     }
     set prefixIconName(value) {
         this._prefixIconName = value;
-        this._showIcon = true;
     }
 
     /** The suffix name of the icon to display.
@@ -161,7 +161,6 @@ export default class PrimitiveChip extends LightningElement {
     }
     set suffixIconName(value) {
         this._suffixIconName = value;
-        this._showIcon = true;
     }
 
     @api
@@ -191,14 +190,14 @@ export default class PrimitiveChip extends LightningElement {
      *  If left icon media is to be shown.
      */
     get showIconLeft() {
-        return this._showIcon && this.prefixIconName;
+        return this.prefixIconName;
     }
 
     /**
      *  If right icon media is to be shown.
      */
     get showIconRight() {
-        return this._showIcon && this.suffixIconName;
+        return this.suffixIconName;
     }
 
     get showAvatar() {
